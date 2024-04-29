@@ -138,6 +138,33 @@ export const FarOgFarFødsel: Story = {
     },
 };
 
+export const FarOgFarAdopsjon: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMedfar: 'Anders Utvikler',
+            type: Situasjon.FAR_OG_FAR,
+        },
+        fordeling: {
+            antallUkerSøker1: 5,
+        },
+        hvorLangPeriode: {
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        },
+        omBarnet: {
+            erFødsel: false,
+            termindato: '2022-01-24',
+            antallBarn: '1',
+            overtakelsesdato: '2022-10-24',
+            fødselsdato: '2022-01-24',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: true,
+        },
+    },
+};
+
 export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
     args: {
         hvemPlanlegger: {
@@ -181,7 +208,7 @@ export const FlereForsørgereHundreProsentAdopsjon: Story = {
             erBarnetFødt: true,
             fødselsdato: '2022-07-10',
             antallBarn: '1',
-            overtakelsesdato: '2022-010-10',
+            overtakelsesdato: '2022-10-10',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
