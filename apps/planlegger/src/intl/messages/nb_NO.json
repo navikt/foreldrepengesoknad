@@ -154,6 +154,7 @@
     "OppsummeringSteg.Perioden": "Perioden med foreldrepenger",
     "OppsummeringSteg.DereValgte": "Dere valgte {prosent} % i {antallUker} uker og fordeler fellesperioden med {uker} uker til {hvem} og {uker2} uker til {hvem2}.",
     "OppsummeringSteg.Periodene": "<b>{hvem}s periode:</b> {fom} – {tom}",
+    "OppsummeringSteg.Periode": "<b>Periode:</b> {fom} – {tom}",
     "OppsummeringSteg.TilbakeTil": "Tilbake til spørsmålene",
     "OppsummeringSteg.AndreVeivisere": "Andre veivisere:",
     "OppsummeringSteg.VeiviserHvorMye": "Hvor mye?",

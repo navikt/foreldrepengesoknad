@@ -57,7 +57,7 @@ describe('<OppsummeringSteg>', () => {
 
         expect(screen.getByText('Barnet')).toBeInTheDocument();
         expect(
-            screen.getByText('Barnet skal adopteres med omsorgsovertakelse 10. okt. 22 og ble født 10. juli 22.'),
+            screen.getByText('Barnet skal adopteres med omsorgsovertakelse 10. okt. 2022 og ble født 10. juli 2022.'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
@@ -75,11 +75,13 @@ describe('<OppsummeringSteg>', () => {
         ).toBeInTheDocument();
     });
 
-    it('skal ikke vise informasjon om periodefordeling ved fødsel far og far', async () => {
+    it('skal kun vise periode ved fødsel far og far', async () => {
         render(<FarOgFarFødsel />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
-        expect(screen.queryByText('Perioden med foreldrepenger')).not.toBeInTheDocument();
+        expect(screen.getByText('Perioden med foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText(/Periode:/)).toBeInTheDocument();
+        expect(screen.getByText(/24. okt. 2022 – 08. sep. 2023/)).toBeInTheDocument();
     });
 
     it('skal vise info der det er flere forsørgere og kun mor har rett til foreldrepenger', async () => {
@@ -114,7 +116,7 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Du har ikke rett til foreldrepenger')).toBeInTheDocument();
 
         expect(screen.getByText('Barnet')).toBeInTheDocument();
-        expect(screen.getByText('Barnet har termin 24. okt. 22.')).toBeInTheDocument();
+        expect(screen.getByText('Barnet har termin 24. okt. 2022.')).toBeInTheDocument();
 
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(screen.getByText('Klara er ufør.')).toBeInTheDocument();
