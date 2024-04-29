@@ -1,7 +1,6 @@
 import { ChatElipsisIcon } from '@navikt/aksel-icons';
 import GreenPanel from 'components/boxes/GreenPanel';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
-import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
@@ -95,8 +94,16 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             values={{
                                                 antallBarn,
                                                 erFødt,
-                                                dato: dayjs(barnet.fødselsdato).format('D. MMM YY'),
-                                                dato2: dayjs(barnet.termindato).format('D. MMM YY'),
+                                                dato: intl.formatDate(barnet.fødselsdato, {
+                                                    day: 'numeric',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                }),
+                                                dato2: intl.formatDate(barnet.termindato, {
+                                                    day: 'numeric',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                }),
                                             }}
                                         />
                                     </BodyLong>
@@ -108,7 +115,11 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             values={{
                                                 antallBarn,
                                                 erFødt,
-                                                dato: dayjs(barnet.termindato).format('D. MMM YY'),
+                                                dato: intl.formatDate(barnet.termindato, {
+                                                    day: 'numeric',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                }),
                                             }}
                                         />
                                     </BodyLong>
@@ -119,8 +130,16 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             id="OppgittInformasjon.InformasjonOmBarnAdopsjon"
                                             values={{
                                                 antallBarn,
-                                                dato2: dayjs(barnet.fødselsdato).format('D. MMM YY'),
-                                                dato: dayjs(barnet.overtakelsesdato).format('D. MMM YY'),
+                                                dato2: intl.formatDate(barnet.fødselsdato, {
+                                                    day: 'numeric',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                }),
+                                                dato: intl.formatDate(barnet.overtakelsesdato, {
+                                                    day: 'numeric',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                }),
                                             }}
                                         />
                                     </BodyLong>
