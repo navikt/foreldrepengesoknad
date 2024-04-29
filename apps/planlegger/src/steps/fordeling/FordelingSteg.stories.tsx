@@ -123,10 +123,10 @@ export const FarOgFar: Story = {
             type: Situasjon.FAR_OG_FAR,
         },
         omBarnet: {
-            erBarnetFødt: false,
-            erFødsel: true,
-            termindato: '2024-01-01',
+            erFødsel: false,
+            fødselsdato: '2024-01-01',
             antallBarn: '2',
+            overtakelsesdato: '2024-01-01',
         },
     },
 };
