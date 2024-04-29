@@ -19,7 +19,7 @@ const scriptTag = document.createElement('script');
 scriptTag.type = 'text/json';
 scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
-    REST_API_URL: '',
+    REST_API_URL: 'https://foreldrepengesoknad-api.nav.no/rest',
 });
 document.head.appendChild(scriptTag);
 

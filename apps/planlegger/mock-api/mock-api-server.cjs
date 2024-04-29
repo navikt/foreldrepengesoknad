@@ -37,3 +37,13 @@ const port = process.env.PORT || 8888;
 app.listen(port, () => {
     console.log(`Mock-api listening on port: ${port}`);
 });
+
+router.post('/rest/konto', async (_req, res) => {
+    try {
+        const data = await fetch('https://foreldrepengesoknad-api.nav.no/rest/konto');
+        const jsonResponse = await data.json();
+        res.send(jsonResponse);
+    } catch (err) {
+        console.log(err);
+    }
+});
