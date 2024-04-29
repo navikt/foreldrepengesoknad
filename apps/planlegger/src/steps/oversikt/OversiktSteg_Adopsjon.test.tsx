@@ -15,10 +15,10 @@ const {
     BareMorSøkerOgHarRett,
     BareFarSøkerOgHarRett,
     FarOgFarBeggeHarRett,
+    FarOgFarKunFarHarRett,
+    FarOgFarKunMedfarHarRett,
     MorOgMedmorKunMorHarRettOmsorgsovertakelseIHelgen,
 } = composeStories(stories);
-
-//TODO Skriv testar for farOgFar-bareFarHarRett og farOgFar-bareMedfarHarRett
 
 describe('<OversiktSteg - adopsjon>', () => {
     it('skal vise korrekt data for adopsjon - mor og far - begge har rett', async () => {
@@ -365,6 +365,74 @@ describe('<OversiktSteg - adopsjon>', () => {
         const feb2025 = screen.getByTestId('year:2025;month:1');
         expect(within(feb2025).getByTestId('day:26;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
         expect(within(feb2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(18);
+    });
+
+    it('skal vise korrekt data for fødsel - far og far søker - kun far har rett', async () => {
+        render(<FarOgFarKunFarHarRett />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        expect(screen.getByText('100 % foreldrepenger i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+            'true',
+        );
+        expect(screen.getByText('80 % foreldrepenger i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+            'false',
+        );
+        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        expect(screen.getByText('Espen, 8 uker uten aktivitetskrav til far')).toBeInTheDocument();
+        expect(screen.getByText('Espen, 32 uker med aktivitetskrav til far')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelsesdato 11. apr.')).toBeInTheDocument();
+
+        const april = screen.getByTestId('year:2024;month:3');
+        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:11;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:12;dayColor:BLUE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(13);
+
+        const juni = screen.getByTestId('year:2024;month:5');
+        expect(within(juni).getByTestId('day:5;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(juni).getByTestId('day:6;dayColor:GREEN;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juni).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(3);
+        expect(within(juni).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(17);
+
+        const jan2025 = screen.getByTestId('year:2025;month:0');
+        expect(within(jan2025).getByTestId('day:15;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(jan2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(11);
+    });
+
+    it('skal vise korrekt data for fødsel - far og far søker - kun medfar har rett', async () => {
+        render(<FarOgFarKunMedfarHarRett />);
+
+        expect(await screen.findByText('Planen deres')).toBeInTheDocument();
+
+        expect(screen.getByText('100 % foreldrepenger i 40 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+            'true',
+        );
+        expect(screen.getByText('80 % foreldrepenger i 48 uker').closest('button')?.getAttribute('aria-checked')).toBe(
+            'false',
+        );
+        expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+        expect(screen.getByText('Anders, 15 uker uten aktivitetskrav til far')).toBeInTheDocument();
+        expect(screen.getByText('Anders, 25 uker med aktivitetskrav til far')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelsesdato 11. apr.')).toBeInTheDocument();
+
+        const april = screen.getByTestId('year:2024;month:3');
+        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:11;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:12;dayColor:BLUE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(13);
+
+        const juli = screen.getByTestId('year:2024;month:6');
+        expect(within(juli).getByTestId('day:24;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:25;dayColor:GREEN;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(18);
+        expect(within(juli).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(5);
+
+        const jan2025 = screen.getByTestId('year:2025;month:0');
+        expect(within(jan2025).getByTestId('day:15;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(jan2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(11);
     });
 
     it('skal vise korrekt data for adopsjon - mor og medmor - kun mor har rett', async () => {
