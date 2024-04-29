@@ -60,10 +60,10 @@ const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale 
 
     const options = useMemo(
         () => ({
-            isSuspended: arbeidssituasjon === undefined,
+            isSuspended: hvemHarRett === undefined || hvemHarRett === 'ingenHarRett',
             withCredentials: false,
         }),
-        [arbeidssituasjon],
+        [hvemHarRett],
     );
 
     const requestData = usePostRequest<TilgjengeligeStønadskontoer>(
