@@ -27,9 +27,18 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
             shouldFadeIn
         >
             <BodyLong>
+                <FormattedMessage id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett" />
+            </BodyLong>
+            <BodyLong>
                 <FormattedMessage
-                    id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett"
-                    values={{ erAlenesøker, navn: fornavn }}
+                    id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRettAnnenPart"
+                    values={{
+                        a: (msg: any) => (
+                            <Link inlineText href={links.foreldrepenger} target="_blank">
+                                {msg}
+                            </Link>
+                        ),
+                    }}
                 />
             </BodyLong>
             {!erSøker2 && !erFarOgFar && (

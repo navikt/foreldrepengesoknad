@@ -29,6 +29,7 @@
     "Arbeidssituasjon.Ufør.Infoboks.ErUfør": "Since {erAlenesøker, select, true {you} other {{navn}}} are disabled, {erAlenesøker, select, true {you} other {{navn}}} will not be entitled to parental benefits.",
     "Arbeidssituasjon.Ufør.Infoboks.LesMer": "On NAV's website, you can read more about the rules that apply  <a>if {erAlenesøker, select, true {you} other {{navn}}} is receiving disability benefits</a>.",
     "Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett": "If you have not worked 6 of the last 10 months and have not earned more than 59,310 kr, you are not entitled to parental benefits.",
+    "Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRettAnnenPart": "Some payments from NAV count as income when NAV assesses whether you are entitled to parental benefit. This applies, for example, to sick pay and unemployment benefit. You can read more about <a>which payments apply on NAV's website</a>.",
     "Arbeidssituasjon.Ingen.Infoboks.Engangsstønad": "{erAlenesøker, select, true {You} other {{navn}}} might be entitled to a lump-sum grant instead. You can use <a>NAV's guide for lump-sum grant or parental benefits</a> to learn more.",
     "Arbeidssituasjon.AndreForelder": "Has {navn} worked 6 of the last 10 months and earned more than 59,310 kr last year?",
     "Arbeidssituasjon.AndreForelder.Required": "You must answer if {navn} has worked 6 of the last 10 months and earned more than 59 310 kr last year before proceeding.",
