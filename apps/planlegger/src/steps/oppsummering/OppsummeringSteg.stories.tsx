@@ -202,3 +202,22 @@ export const OppsummeringAleneforsørgerMorErUfør: Story = {
         },
     },
 };
+export const OppsummeringFarOgFarKunFar2HarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMedfar: 'Hugo Utvikler',
+            type: Situasjon.FAR_OG_FAR,
+        },
+        omBarnet: {
+            erFødsel: true,
+            erBarnetFødt: false,
+            termindato: '2022-10-24',
+            antallBarn: '1',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.INGEN,
+            jobberAnnenPart: true,
+        },
+    },
+};
