@@ -9,6 +9,7 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import {
     erAlenesøker as erAlene,
     erFarDelAvSøknaden,
+    erFarOgFar,
     erMorDelAvSøknaden,
     getFornavnPåSøker1,
 } from 'utils/HvemPlanleggerUtils';
@@ -52,6 +53,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
 
     const erAlenesøker = erAlene(hvemPlanlegger);
     const erFar = erFarDelAvSøknaden(hvemPlanlegger);
+    const erFedre = erFarOgFar(hvemPlanlegger);
 
     return (
         <VStack gap="5">
@@ -109,7 +111,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                                 }}
                             />
                         </BodyLong>
-                        {erFarDelAvSøknaden(hvemPlanlegger) && (
+                        {erFarDelAvSøknaden(hvemPlanlegger) && !erFedre && (
                             <BodyLong>
                                 <FormattedMessage
                                     id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
@@ -143,30 +145,37 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                         }
                         shouldFadeIn
                     >
-                        <BodyLong>
-                            {hvemPlanlegger.type === Situasjon.MOR && (
-                                <FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTermin" values={{ erAlenesøker }} />
-                            )}
-                        </BodyLong>
-                        {!erAlenesøker && hvemPlanlegger.type !== Situasjon.FAR_OG_FAR && (
-                            <BodyLong>
-                                <FormattedMessage
-                                    id="ErIkkeFødtPanel.UnderTreMndTilTermin"
-                                    values={{ erAlenesøker, navn: getFornavnPåSøker1(hvemPlanlegger, intl) }}
-                                />
-                            </BodyLong>
-                        )}
-                        {(!erAlenesøker || hvemPlanlegger.type === Situasjon.FAR) && (
-                            <BodyLong>
-                                <FormattedMessage
-                                    id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
-                                    values={{
-                                        erAlenesøker,
-                                        erFar,
-                                        hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                    }}
-                                />
-                            </BodyLong>
+                        {!erFedre && (
+                            <>
+                                <BodyLong>
+                                    {hvemPlanlegger.type === Situasjon.MOR && (
+                                        <FormattedMessage
+                                            id="ErIkkeFødtPanel.UnderTreMndTilTermin"
+                                            values={{ erAlenesøker }}
+                                        />
+                                    )}
+                                </BodyLong>
+                                {!erAlenesøker && (
+                                    <BodyLong>
+                                        <FormattedMessage
+                                            id="ErIkkeFødtPanel.UnderTreMndTilTermin"
+                                            values={{ erAlenesøker, navn: getFornavnPåSøker1(hvemPlanlegger, intl) }}
+                                        />
+                                    </BodyLong>
+                                )}
+                                {(!erAlenesøker || hvemPlanlegger.type === Situasjon.FAR) && (
+                                    <BodyLong>
+                                        <FormattedMessage
+                                            id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
+                                            values={{
+                                                erAlenesøker,
+                                                erFar,
+                                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                            }}
+                                        />
+                                    </BodyLong>
+                                )}
+                            </>
                         )}
                     </Infobox>
                 </>
