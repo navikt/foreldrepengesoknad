@@ -62,7 +62,9 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
 
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
-    const farOgFarKunEnPartHarRett = hvemHarRett === 'kunFarSøker1HarRett' || hvemHarRett === 'kunMedfarHarRett';
+    const farOgFarKunEnPartHarRett =
+        hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
+        (hvemHarRett === 'kunFarSøker1HarRett' || hvemHarRett === 'kunMedfarHarRett');
 
     const uttaksdata100 = finnUttaksdata(
         hvemHarRett,
