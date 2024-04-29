@@ -52,6 +52,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
 
     const erFarOgFarOgFødsel = erFarOgFar && !erAdoptert;
     const erFarOgFarOgAdopsjon = erFarOgFar && erAdoptert;
+
     const skalViseAntallUkerLabels =
         !erFarOgFarOgFødsel &&
         (hvemHarRett === 'beggeHarRett' ||
@@ -91,7 +92,9 @@ const OversiktLabels: FunctionComponent<Props> = ({
                         utenAktivitetskrav
                         valgtStønadskonto={valgtStønadskonto}
                         hvemPlanlegger={hvemPlanlegger}
-                        annenPartTekst={søker2Tekst}
+                        annenPartTekst={
+                            hvemHarRett === 'kunFarSøker1HarRett' && erFarOgFarOgAdopsjon ? søker1Tekst : søker2Tekst
+                        }
                         startdato={startdatoPeriode1}
                         sluttdato={sluttdatoPeriode1}
                         isBluePanel
@@ -99,7 +102,9 @@ const OversiktLabels: FunctionComponent<Props> = ({
                     <AktivitetskravLabel
                         valgtStønadskonto={valgtStønadskonto}
                         hvemPlanlegger={hvemPlanlegger}
-                        annenPartTekst={søker2Tekst}
+                        annenPartTekst={
+                            hvemHarRett === 'kunFarSøker1HarRett' && erFarOgFarOgAdopsjon ? søker1Tekst : søker2Tekst
+                        }
                         startdato={startdatoPeriode2}
                         sluttdato={sluttdatoPeriode2}
                     />
