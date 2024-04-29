@@ -1,17 +1,21 @@
 import { BabyWrappedIcon } from '@navikt/aksel-icons';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
+import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
 interface Props {
     hvemPlanlegger: HvemPlanlegger;
+    arbeidssituasjon: Arbeidssituasjon;
 }
-const DeFørsteSeksUkene: React.FunctionComponent<Props> = ({ hvemPlanlegger }) => {
+const DeFørsteSeksUkene: React.FunctionComponent<Props> = ({ hvemPlanlegger, arbeidssituasjon }) => {
     const intl = useIntl();
-    const erAlenemor = hvemPlanlegger.type === Situasjon.MOR;
+    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
+    const kunMorHarRett = hvemHarRett === 'kunMorHarRett';
     return (
         <>
             <HStack gap="5" wrap={false}>
@@ -25,7 +29,7 @@ const DeFørsteSeksUkene: React.FunctionComponent<Props> = ({ hvemPlanlegger }) 
                         <FormattedMessage id="OmÅTilpassePlanen.DeFørsteSeksUkene" />
                     </Heading>
                     <BodyLong>
-                        {erAlenemor ? (
+                        {kunMorHarRett ? (
                             <FormattedMessage id="OmÅTilpassePlanen.DeFørsteSeksUkene.TekstAlenemor" />
                         ) : (
                             <FormattedMessage
