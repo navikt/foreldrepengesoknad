@@ -7,7 +7,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
 import {
@@ -17,6 +17,7 @@ import {
     getFornavnPåSøker1,
     getFornavnPåSøker2,
 } from 'utils/HvemPlanleggerUtils';
+import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
 import { getAntallUker, getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
@@ -65,6 +66,8 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
         fordeling?.antallUkerSøker1,
     );
 
+    const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(barnet);
+
     return (
         <>
             <ExpansionCard aria-label="">
@@ -83,7 +86,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
                     <VStack gap="5">
-                        {hvemHarRett === 'beggeHarRett' && (
+                        {hvemHarRett === 'beggeHarRett' && !erFarOgFarFødsel && (
                             <GreenPanel>
                                 <Heading level="4" size="small">
                                     <FormattedMessage id="OppsummeringSteg.Perioden" />
