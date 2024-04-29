@@ -21,6 +21,7 @@ import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtil
 
 import { BodyLong, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
+import { links } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { LocaleAll } from '@navikt/fp-types';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -137,7 +138,19 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                 <BodyLong>
                                     <FormattedMessage
                                         id="HvorLangPeriodeSteg.Infoboks.ManFårEnDel"
-                                        values={{ a: (msg: any) => <Link>{msg}</Link> }}
+                                        values={{
+                                            a: (msg: any) => (
+                                                <Link
+                                                    inlineText
+                                                    href={links.godkjentAktivitet}
+                                                    className="lenke"
+                                                    rel="noreferrer"
+                                                    target="_blank"
+                                                >
+                                                    {msg}
+                                                </Link>
+                                            ),
+                                        }}
                                     />
                                 </BodyLong>
                             </Infobox>
