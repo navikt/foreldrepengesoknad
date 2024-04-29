@@ -206,7 +206,7 @@
     "OmÅTilpassePlanen.FørTermin": "Før termin",
     "OmÅTilpassePlanen.FørTermin.Tekst": "{erAlenesøker, select, true {Du} other {Mor}} har tre uker som kun kan brukes før fødsel. Hvis mor føder før termin, begynner hun å bruke av sin kvote fra fødsel. Resten av de tre ukene slettes. Føder mor etter termin, bruker hun av fellesperioden fram til fødselen.",
     "OmÅTilpassePlanen.DeFørsteSeksUkene": "De første seks ukene",
-    "OmÅTilpassePlanen.DeFørsteSeksUkene.Tekst": "De første seks ukene etter fødsel er forbeholdt mor og låst til dette tidspunket. Ofte får {hvem} permisjon dekket de første to ukene etter fødsel fra arbeidsgiveren sin. Hvis man ikke får dette {hvem} bruke foreldrepenger i disse to ukene.",
+    "OmÅTilpassePlanen.DeFørsteSeksUkene.Tekst": "De første seks ukene etter fødsel er forbeholdt mor og låst til dette tidspunket. Ofte får {hvem} permisjon dekket de første to ukene etter fødsel fra arbeidsgiveren sin. Hvis man ikke får dette kan {hvem} bruke foreldrepenger i disse to ukene.",
     "OmÅTilpassePlanen.DeFørsteSeksUkene.TekstAlenemor": "De første seks ukene etter fødsel er forbeholdt mor og låst til dette tidspunket.",
     "OmÅTilpassePlanen.LeggeTilFerie": "Legge til ferie",
     "OmÅTilpassePlanen.LeggeTilFerie.Tekst": "Hvis ingen av foreldrene skal ha foreldrepenger kan man legge til perioder uten foreldrepenger, hvor man for eksempel får feriepenger fra arbeidsgiver.",
