@@ -90,7 +90,7 @@
     "HvorLangPeriodeSteg.Infoboks.SisteDagTittel": "Siste dag med foreldrepengar kan bli {dato}",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstTermin": "Om {antallBarn, select, 1 {barnet} other {borna}} vert fødd på termindato{kunEnPartSkalHa, select, true {.} other { og om de tar permisjon samanhengande frå {erMorDelAvSøknaden, select, true {tre veker før termindato } other {termin}}.}}",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstFødsel": "Om {antallBarn, select, 1 {barnet} other {borna}} vart fødd {dato}{kunEnPartSkalHa, select, true {.} other { og om de tar permisjon samanhengande frå fødsel.}}",
-    "HvorLangPeriodeSteg.Infoboks.SisteDagTekstAdopsjon": "Om {antallBarn, select, 1 {barnet} other {borna}} har omsorgsovertakingsdato den {dato} {kunEnPartSkalHa, select, true {.} other {og om de tar permisjon samanhengande frå overtakinga.}}",
+    "HvorLangPeriodeSteg.Infoboks.SisteDagTekstAdopsjon": "Om {kunEnPartSkalHa, select, true {du} other {de}} har omsorgsovertakingsdato den {dato} {kunEnPartSkalHa, select, true {.} other {og om de tar permisjon samanhengande frå overtakinga.}}",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker": "<b>{uker} av dei {uker2} vekene</b> kan {hvem} bruke utan aktivitetskrav til mor.",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.AndreUker": "<b>{uker} av dei {uker2} vekene</b> kan {hvem} bruke om mor er i <a>godkjent aktivitet</a>.",
     "OmBarnetSteg.HvorMange": "Kor mange barn ventar {erAlenesøker, select, true {du} other {de}}?",
