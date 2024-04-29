@@ -138,7 +138,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                             <UførInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker1} />
                         )}
                         {status === Arbeidsstatus.INGEN && (
-                            <AnnetInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker1} />
+                            <AnnetInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker1} erFarOgFar />
                         )}
                         {!erAlenesøker && status && (
                             <>
@@ -172,7 +172,12 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                                     <JobberInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker2} />
                                 )}
                                 {jobberSøker2 === false && fornavnSøker2 && (
-                                    <AnnetInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker2} erSøker2 />
+                                    <AnnetInfoboks
+                                        erAlenesøker={erAlenesøker}
+                                        fornavn={fornavnSøker2}
+                                        erSøker2
+                                        erFarOgFar
+                                    />
                                 )}
                             </>
                         )}
