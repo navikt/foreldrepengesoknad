@@ -1,4 +1,5 @@
 import { Periode } from '@navikt/fp-common';
+
 import { leggTilPeriode } from './leggTilPeriode';
 import { slettPeriode } from './slettPeriode';
 import { slåSammenLikePerioder } from './uttaksplanbuilderUtils';
