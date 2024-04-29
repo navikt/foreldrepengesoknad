@@ -58,7 +58,12 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
                                 <FørTermin hvemPlanlegger={hvemPlanlegger} barnet={barnet} />
                             )}
 
-                            {!morHarIkkeRett && !erFedre && <DeFørsteSeksUkene hvemPlanlegger={hvemPlanlegger} />}
+                            {!morHarIkkeRett && !erFedre && (
+                                <DeFørsteSeksUkene
+                                    hvemPlanlegger={hvemPlanlegger}
+                                    arbeidssituasjon={arbeidssituasjon}
+                                />
+                            )}
 
                             {(kunFarEllerMedmorHarRett || erFedre) && (
                                 <ToUkerRundtFødsel hvemPlanlegger={hvemPlanlegger} />
