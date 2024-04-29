@@ -4,7 +4,6 @@ import { useLocation } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
-import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { decodeBase64 } from 'utils/urlEncodingUtils';
@@ -18,8 +17,8 @@ import Environment from './appData/Environment';
 
 export const planleggerApi = createApi(Environment.REST_API_URL);
 
-const finnBrukerRolle = (hvemPlanlegger: HvemPlanlegger) => {
-    return erMorDelAvSøknaden(hvemPlanlegger) ? 'MOR' : 'FAR';
+const finnBrukerRolle = (hvemHarRett: HvemHarRett) => {
+    return hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunMorHarRett' ? 'MOR' : 'FAR';
 };
 
 const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
@@ -48,7 +47,7 @@ const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale 
     const params = useMemo(
         () => ({
             rettighetstype: hvemPlanlegger && hvemHarRett ? finnRettighetstype(hvemPlanlegger, hvemHarRett) : undefined,
-            brukerrolle: hvemPlanlegger ? finnBrukerRolle(hvemPlanlegger) : undefined,
+            brukerrolle: hvemPlanlegger && hvemHarRett ? finnBrukerRolle(hvemHarRett) : undefined,
             antallBarn: omBarnet?.antallBarn,
             fødselsdato: omBarnet && erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined,
             termindato: omBarnet && erBarnetUFødt(omBarnet) ? omBarnet.termindato : undefined,
