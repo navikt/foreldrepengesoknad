@@ -202,7 +202,7 @@ export const FlereForsørgereKunFarHarRett: Story = {
         },
     },
 };
-export const FlereForsørgereFarOgFarKunFar1HarRett: Story = {
+export const FlereForsørgereFarOgFarKunFar1HarRettAdopsjon: Story = {
     args: {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
@@ -210,9 +210,10 @@ export const FlereForsørgereFarOgFarKunFar1HarRett: Story = {
             type: Situasjon.FAR_OG_FAR,
         },
         omBarnet: {
-            erBarnetFødt: false,
-            erFødsel: true,
-            termindato: '2024-01-01',
+            erBarnetFødt: true,
+            fødselsdato: '2024-01-01',
+            erFødsel: false,
+            overtakelsesdato: '2024-01-01',
             antallBarn: '1',
         },
         arbeidssituasjon: {

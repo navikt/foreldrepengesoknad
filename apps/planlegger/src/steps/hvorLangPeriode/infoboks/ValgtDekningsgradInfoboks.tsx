@@ -87,7 +87,11 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                 {erAdopsjon && (
                     <FormattedMessage
                         id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstAdopsjon"
-                        values={{ antallBarn, kunEnPartSkalHa, dato: familiehendelsedato }}
+                        values={{
+                            antallBarn,
+                            kunEnPartSkalHa,
+                            dato: familiehendelsedato,
+                        }}
                     />
                 )}
                 {!erAdopsjon && erFødt && (
