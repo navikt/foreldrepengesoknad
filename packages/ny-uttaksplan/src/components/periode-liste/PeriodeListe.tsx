@@ -1,9 +1,19 @@
+import { FunctionComponent } from 'react';
+
+import { Periode } from '@navikt/fp-common';
+
 import PeriodeListeItem from './../periode-liste-item/PeriodeListeItem';
 
-const PeriodeListe = () => {
+interface Props {
+    perioder: Periode[];
+}
+
+const PeriodeListe: FunctionComponent<Props> = ({ perioder }) => {
     return (
         <div>
-            <PeriodeListeItem />
+            {perioder.map((periode) => {
+                return <PeriodeListeItem periode={periode} />;
+            })}
         </div>
     );
 };
