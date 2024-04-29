@@ -41,7 +41,11 @@ const UforutsetteEndringer: React.FunctionComponent<Props> = ({ hvemPlanlegger, 
                     {erMorDelAvSøknaden(hvemPlanlegger) && !morHarIkkeRett ? (
                         <>
                             <HvisManBlirSyk arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} />
-                            <HvisMorBlirSyk barnet={barnet} hvemPlanlegger={hvemPlanlegger} />
+                            <HvisMorBlirSyk
+                                barnet={barnet}
+                                hvemPlanlegger={hvemPlanlegger}
+                                arbeidssituasjon={arbeidssituasjon}
+                            />
 
                             <NyttBarnFørTreÅr />
                         </>
