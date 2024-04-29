@@ -60,3 +60,23 @@ export const FødselMorOgFarKunFarHarRett: Story = {
         },
     },
 };
+export const FødselMorOgFarKunMorHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            type: Situasjon.MOR_OG_FAR,
+            navnPåMor: 'Mor',
+            navnPåFar: 'Far',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: false,
+        },
+        barnet: {
+            antallBarn: '1',
+            termindato: '2022-01-01',
+            fødselsdato: '2022-01-01',
+            erFødsel: true,
+            erBarnetFødt: true,
+        },
+    },
+};
