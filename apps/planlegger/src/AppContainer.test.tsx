@@ -9,6 +9,8 @@ import * as stories from './AppContainer.stories';
 
 const { Default } = composeStories(stories);
 
+// Denne testen har kun ein test grunna at context ikkje blir sletta mellom testande. Skriv derfor testane i Planlegger.test.tsx
+
 describe('<AppContainer>', () => {
     it('skal gå gjennom applikasjonen og så tilbake', async () => {
         const utils = render(<Default brukStønadskontoMock />);

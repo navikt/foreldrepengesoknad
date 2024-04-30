@@ -36,7 +36,7 @@ interface Props {
     changeLocale: (locale: LocaleAll) => void;
 }
 
-const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale }) => {
+export const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale }) => {
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
     const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);
