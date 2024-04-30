@@ -14,7 +14,7 @@ import {
 } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 
-import { BodyLong, VStack } from '@navikt/ds-react';
+import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { Datepicker } from '@navikt/fp-form-hooks';
@@ -88,20 +88,20 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                     icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" aria-hidden />}
                     shouldFadeIn
                 >
-                    <BodyLong>
+                    <BodyShort>
                         <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" />
-                    </BodyLong>
+                    </BodyShort>
 
-                    <BodyLong>
+                    <BodyShort>
                         <FormattedMessage
                             id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
                             values={{
                                 erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
                             }}
                         />
-                    </BodyLong>
+                    </BodyShort>
                     {erFarDelAvSøknaden(hvemPlanlegger) && (
-                        <BodyLong>
+                        <BodyShort>
                             <FormattedMessage
                                 id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
                                 values={{
@@ -109,7 +109,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                                     hvem: finnSøker2Tekst(intl, hvemPlanlegger),
                                 }}
                             />
-                        </BodyLong>
+                        </BodyShort>
                     )}
                 </Infobox>
             )}
@@ -124,12 +124,12 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                     icon={<TasklistStartIcon height={28} width={28} color="#236B7D" fontSize="1.5rem" />}
                     shouldFadeIn
                 >
-                    <BodyLong>
+                    <BodyShort>
                         <FormattedMessage id="ErFødtPanel.Født.InfoboksTekst.EldreEnnTreÅr" values={{ antallBarn }} />
-                    </BodyLong>
-                    <BodyLong>
+                    </BodyShort>
+                    <BodyShort>
                         <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" values={{ erFar }} />
-                    </BodyLong>
+                    </BodyShort>
                 </Infobox>
             )}
         </VStack>

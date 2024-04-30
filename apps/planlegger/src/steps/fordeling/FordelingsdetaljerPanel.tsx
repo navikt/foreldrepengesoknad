@@ -8,7 +8,7 @@ import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
 import { Uttaksdata } from 'utils/uttakUtils';
 
-import { BodyLong } from '@navikt/ds-react';
+import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
     barnet: OmBarnet;
@@ -40,7 +40,7 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
             icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
             shouldFadeIn
         >
-            <BodyLong>
+            <BodyShort>
                 {erFødsel && (
                     <>
                         {antallBarn !== '1' ? (
@@ -74,8 +74,8 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
                         }}
                     />
                 )}
-            </BodyLong>
-            <BodyLong>
+            </BodyShort>
+            <BodyShort>
                 <FormattedMessage
                     id="FordelingsdetaljerPanel.Infoboks.Periode"
                     values={{
@@ -85,9 +85,9 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
                         b: (b) => <b>{b}</b>,
                     }}
                 />
-            </BodyLong>
+            </BodyShort>
             {fornavnSøker2 && sluttdatoPeriode2 && (
-                <BodyLong>
+                <BodyShort>
                     <FormattedMessage
                         id="FordelingsdetaljerPanel.Infoboks.Periode"
                         values={{
@@ -105,7 +105,7 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
                             b: (b) => <b>{b}</b>,
                         }}
                     />
-                </BodyLong>
+                </BodyShort>
             )}
         </Infobox>
     );

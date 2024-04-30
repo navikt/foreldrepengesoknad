@@ -19,7 +19,7 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
-import { BodyLong, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
@@ -110,7 +110,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                             }
                             isGray
                         >
-                            <BodyLong>
+                            <BodyShort>
                                 <FormattedMessage
                                     id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst"
                                     values={{
@@ -119,7 +119,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                         uker80: antallUker80,
                                     }}
                                 />
-                            </BodyLong>
+                            </BodyShort>
                         </Infobox>
                         {!erAlenesøker && hvemHarRett !== 'beggeHarRett' && !farOgFarKunEnPartHarRett && (
                             <NårBareEnPartHarRettInfoboks
@@ -132,10 +132,10 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                 header={<FormattedMessage id="HvorLangPeriodeSteg.Infoboks.KunEnAvFedreneHarRett" />}
                                 isGray
                             >
-                                <BodyLong>
+                                <BodyShort>
                                     <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.NårBareEnHarRett" />
-                                </BodyLong>
-                                <BodyLong>
+                                </BodyShort>
+                                <BodyShort>
                                     <FormattedMessage
                                         id="HvorLangPeriodeSteg.Infoboks.ManFårEnDel"
                                         values={{
@@ -152,7 +152,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                             ),
                                         }}
                                     />
-                                </BodyLong>
+                                </BodyShort>
                             </Infobox>
                         )}
                         <GreenRadioGroup
