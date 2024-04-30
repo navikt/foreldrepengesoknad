@@ -36,7 +36,7 @@ const UførInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn }) => 
                                 {msg}
                             </Link>
                         ),
-                        navn: fornavn,
+                        hvem: fornavn,
                         erAlenesøker,
                     }}
                 />

@@ -29,18 +29,6 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
             <BodyShort>
                 <FormattedMessage id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett" />
             </BodyShort>
-            <BodyShort>
-                <FormattedMessage
-                    id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRettAnnenPart"
-                    values={{
-                        a: (msg: any) => (
-                            <Link inlineText href={links.foreldrepenger} target="_blank">
-                                {msg}
-                            </Link>
-                        ),
-                    }}
-                />
-            </BodyShort>
             {!erSøker2 && !erFarOgFar && (
                 <BodyShort>
                     <FormattedMessage
@@ -63,6 +51,18 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
                     />
                 </BodyShort>
             )}
+            <BodyShort>
+                <FormattedMessage
+                    id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRettAnnenPart"
+                    values={{
+                        a: (msg: any) => (
+                            <Link inlineText href={links.foreldrepenger} target="_blank">
+                                {msg}
+                            </Link>
+                        ),
+                    }}
+                />
+            </BodyShort>
         </Infobox>
     );
 };

@@ -121,10 +121,10 @@ describe('<OmÅTilpassePlanen>', () => {
         expect(await screen.findByText('Om å tilpasse planen')).toBeInTheDocument();
 
         expect(screen.getByText('Før termin')).toBeInTheDocument();
-        expect(screen.getByText('De første seks ukene')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
         expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
+        expect(screen.queryByText('De første seks ukene')).not.toBeInTheDocument();
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
     });
     // har denne riktig info?
@@ -133,10 +133,10 @@ describe('<OmÅTilpassePlanen>', () => {
 
         expect(await screen.findByText('Om å tilpasse planen')).toBeInTheDocument();
 
-        expect(screen.getByText('De første seks ukene')).toBeInTheDocument();
         expect(screen.getByText('Legge til ferie')).toBeInTheDocument();
         expect(screen.getByText('Jobbe samtidig')).toBeInTheDocument();
 
+        expect(screen.queryByText('De første seks ukene')).not.toBeInTheDocument();
         expect(screen.queryByText('Før termin')).not.toBeInTheDocument();
         expect(screen.queryByText('Permisjon samtidig')).not.toBeInTheDocument();
         expect(screen.queryByText('To uker rundt fødsel')).not.toBeInTheDocument();

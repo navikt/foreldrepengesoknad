@@ -8,9 +8,10 @@ import { BodyShort } from '@navikt/ds-react';
 interface Props {
     erAlenesøker: boolean;
     fornavn: string;
+    erSøker2?: boolean;
 }
 
-const JobberInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn }) => {
+const JobberInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSøker2 = false }) => {
     return (
         <Infobox
             header={
@@ -23,10 +24,18 @@ const JobberInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn }) =>
             shouldFadeIn
         >
             <BodyShort>
-                <FormattedMessage
-                    id="Arbeidssituasjon.Jobber.Infoboks.HarJobbetSeksAvTiMnd"
-                    values={{ erAlenesøker, navn: fornavn }}
-                />
+                {!erSøker2 && (
+                    <FormattedMessage
+                        id="Arbeidssituasjon.Jobber.Infoboks.UtIfraInformasjonen"
+                        values={{ erAlenesøker, navn: fornavn }}
+                    />
+                )}
+                {erSøker2 && (
+                    <FormattedMessage
+                        id="Arbeidssituasjon.Jobber.Infoboks.HarJobbetSeksAvTiMnd"
+                        values={{ erAlenesøker, navn: fornavn }}
+                    />
+                )}
             </BodyShort>
         </Infobox>
     );
