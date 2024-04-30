@@ -53,7 +53,7 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
             )}
             <BodyShort>
                 <FormattedMessage
-                    id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRettAnnenPart"
+                    id="Arbeidssituasjon.Ingen.Infoboks.NoenUtbetalinger"
                     values={{
                         a: (msg: any) => (
                             <Link inlineText href={links.foreldrepenger} target="_blank">
