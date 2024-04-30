@@ -99,7 +99,7 @@ describe('<OppsummeringSteg>', () => {
 
         expect(screen.getByText(/Espens periode:/)).toBeInTheDocument();
         expect(screen.getByText(/24. okt. 2022 – 10. mars 2023/)).toBeInTheDocument();
-        expect(screen.getByText(/Anderss periode:/)).toBeInTheDocument();
+        expect(screen.getByText(/Anders' periode:/)).toBeInTheDocument();
         expect(screen.getByText(/13. mars 2023 – 08. sep. 2023/)).toBeInTheDocument();
     });
 
