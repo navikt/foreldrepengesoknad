@@ -9,7 +9,7 @@ const ShareDataInfobox: React.FunctionComponent = () => (
     <Infoboks
         header={<FormattedMessage id="OmPlanleggerenSteg.TaVarePåHeader" />}
         isGray
-        icon={<BookmarkIcon aria-hidden height={25} width={25} />}
+        icon={<BookmarkIcon aria-hidden height={24} width={24} />}
     >
         <BodyShort>
             <FormattedMessage id="OmPlanleggerenSteg.TaVarePå" />

@@ -12,7 +12,7 @@ import { erAlenesøker as erAlene, erFarOgFar } from 'utils/HvemPlanleggerUtils'
 import { erBarnetFødt } from 'utils/barnetUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
-import { BodyLong, BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
