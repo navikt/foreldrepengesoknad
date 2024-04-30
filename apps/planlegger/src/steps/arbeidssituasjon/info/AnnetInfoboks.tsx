@@ -1,4 +1,4 @@
-import { XMarkIcon } from '@navikt/aksel-icons';
+import { CircleSlashIcon } from '@navikt/aksel-icons';
 import Infobox from 'components/boxes/Infobox';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -23,7 +23,7 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
                     values={{ erAlenesøker, navn: fornavn }}
                 />
             }
-            icon={<XMarkIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
+            icon={<CircleSlashIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
             shouldFadeIn
         >
             <BodyLong>
