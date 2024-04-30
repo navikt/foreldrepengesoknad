@@ -19,7 +19,7 @@ import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { finnUttaksdata } from 'utils/uttakUtils';
 
-import { BodyLong, Heading, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { LocaleAll } from '@navikt/fp-types';
@@ -143,9 +143,9 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) =>
                             }
                             isGray
                         >
-                            <BodyLong>
+                            <BodyShort>
                                 <FormattedMessage id="FordelingSteg.Infoboks.HvordanFordeleTekst" />
-                            </BodyLong>
+                            </BodyShort>
                         </Infobox>
                         <GreenPanel isDarkGreen={fordeling === undefined}>
                             <Select

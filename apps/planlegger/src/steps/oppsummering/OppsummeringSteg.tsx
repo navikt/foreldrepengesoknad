@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, LinkIcon, TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import Infoboks from 'components/boxes/Infobox';
+import Infobox from 'components/boxes/Infobox';
 import ShareDataInfobox from 'components/boxes/ShareDataInfobox';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
@@ -12,7 +12,7 @@ import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
-import { Alert, BodyLong, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
@@ -68,7 +68,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ locale, stønadskontoer })
                 <VStack gap="10">
                     {!harRett && (
                         <VStack gap="5">
-                            <Infoboks
+                            <Infobox
                                 header={
                                     erAleneforsørger ? (
                                         <FormattedMessage id="OppsummeringSteg.Infoboks.IngenHarRettDeg" />
@@ -78,42 +78,44 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ locale, stønadskontoer })
                                 }
                                 icon={<TasklistStartIcon height={28} width={28} color="#236B7D" aria-hidden />}
                             >
-                                <BodyLong>
+                                <BodyShort>
                                     <FormattedMessage
                                         id="OppsummeringSteg.Infoboks.BasertPåSvarene"
                                         values={{ erAleneforsørger }}
                                     />
-                                </BodyLong>
-                                <BodyLong>
+                                </BodyShort>
+                                <BodyShort>
                                     <FormattedMessage id="OppsummeringSteg.Infoboks.Engangsstønad" />
                                     <Link inlineText href={links.veiviser}>
                                         <FormattedMessage id="OppsummeringSteg.Infoboks.Engangsstønad.Link" />
                                     </Link>
-                                </BodyLong>
-                            </Infoboks>
+                                </BodyShort>
+                            </Infobox>
                         </VStack>
                     )}
                     <Alert variant="info">
-                        {!harRett ? (
-                            <FormattedMessage id="OppsummeringSteg.InformasjonPlanleggerErUnderUtviklingIkkeRett" />
-                        ) : (
-                            <FormattedMessage
-                                id="OppsummeringSteg.InformasjonPlanleggerErUnderUtvikling"
-                                values={{
-                                    a: (msg: any) => (
-                                        <Link
-                                            inlineText
-                                            href={links.søknadForeldrepenger}
-                                            target="_blank"
-                                            className="lenke"
-                                            rel="noreferrer"
-                                        >
-                                            {msg}
-                                        </Link>
-                                    ),
-                                }}
-                            />
-                        )}
+                        <BodyShort>
+                            {!harRett ? (
+                                <FormattedMessage id="OppsummeringSteg.InformasjonPlanleggerErUnderUtviklingIkkeRett" />
+                            ) : (
+                                <FormattedMessage
+                                    id="OppsummeringSteg.InformasjonPlanleggerErUnderUtvikling"
+                                    values={{
+                                        a: (msg: any) => (
+                                            <Link
+                                                inlineText
+                                                href={links.søknadForeldrepenger}
+                                                target="_blank"
+                                                className="lenke"
+                                                rel="noreferrer"
+                                            >
+                                                {msg}
+                                            </Link>
+                                        ),
+                                    }}
+                                />
+                            )}
+                        </BodyShort>
                     </Alert>
                     {stønadskontoer && valgtStønadskonto && hvorLangPeriode && arbeidssituasjon && (
                         <VStack gap="5">

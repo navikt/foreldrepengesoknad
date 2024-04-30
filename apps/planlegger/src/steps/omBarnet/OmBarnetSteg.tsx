@@ -2,7 +2,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import Infoboks from 'components/boxes/Infobox';
+import Infobox from 'components/boxes/Infobox';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
@@ -12,7 +12,7 @@ import { erAlenesøker as erAlene, erFarOgFar } from 'utils/HvemPlanleggerUtils'
 import { erBarnetFødt } from 'utils/barnetUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
-import { BodyLong, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
@@ -102,11 +102,11 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ locale }) => {
                             </Radio>
                         </GreenRadioGroup>
                         {erFødsel !== undefined && erFødsel === true && erFedre && (
-                            <Infoboks header={<FormattedMessage id="OmBarnetSteg.Fødsel.Infoboks" />}>
-                                <BodyLong>
+                            <Infobox header={<FormattedMessage id="OmBarnetSteg.Fødsel.Infoboks" />}>
+                                <BodyShort>
                                     <FormattedMessage id="OmBarnetSteg.Fødsel.Infoboks.DenSomErBiologiskFar" />
-                                </BodyLong>
-                                <BodyLong>
+                                </BodyShort>
+                                <BodyShort>
                                     <FormattedMessage
                                         id="OmBarnetSteg.Fødsel.Infoboks.LesMer"
                                         values={{
@@ -117,8 +117,8 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ locale }) => {
                                             ),
                                         }}
                                     />
-                                </BodyLong>
-                            </Infoboks>
+                                </BodyShort>
+                            </Infobox>
                         )}
                         {erFødsel !== undefined && (
                             <GreenRadioGroup

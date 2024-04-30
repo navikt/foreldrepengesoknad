@@ -14,7 +14,7 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerAktivitetsfriKvote, getAntallUkerForeldrepenger } from 'utils/stønadskontoerUtils';
 import { Uttaksdata, finnUttaksdata } from 'utils/uttakUtils';
 
-import { BodyLong, Link, VStack } from '@navikt/ds-react';
+import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 
@@ -83,7 +83,7 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
             icon={<CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
             shouldFadeIn
         >
-            <BodyLong>
+            <BodyShort>
                 {erAdopsjon && (
                     <FormattedMessage
                         id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstAdopsjon"
@@ -115,10 +115,10 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                         }}
                     />
                 )}
-            </BodyLong>
+            </BodyShort>
             {søker1HarIkkeRett && (
                 <VStack gap="2">
-                    <BodyLong>
+                    <BodyShort>
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker"
                             values={{
@@ -129,8 +129,8 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                                 erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
                             }}
                         />
-                    </BodyLong>
-                    <BodyLong>
+                    </BodyShort>
+                    <BodyShort>
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.AndreUker"
                             values={{
@@ -152,7 +152,7 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                                 erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
                             }}
                         />
-                    </BodyLong>
+                    </BodyShort>
                 </VStack>
             )}
         </Infobox>

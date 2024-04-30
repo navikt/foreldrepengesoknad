@@ -7,7 +7,7 @@ import { erBarnetFødt } from 'types/Barnet';
 import { erMorDelAvSøknaden } from 'types/HvemPlanlegger';
 import { Uttaksdata } from 'utils/uttakHjelper';
 
-import { BodyLong } from '@navikt/ds-react';
+import { BodyShort } from '@navikt/ds-react';
 
 interface Props {
     barnet: OmBarnet;
@@ -129,8 +129,8 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
                         }}
                     />
                 )}
-            </BodyLong>
-            <BodyLong>
+            </BodyShort>
+            <BodyShort>
                 <FormattedMessage
                     id="FordelingsdetaljerPanel.Infoboks.Periode"
                     values={{
@@ -140,9 +140,9 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
                         b: (b) => <b>{b}</b>,
                     }}
                 />
-            </BodyLong>
+            </BodyShort>
             {fornavnSøker2 && sluttdatoPeriode2 && (
-                <BodyLong>
+                <BodyShort>
                     <FormattedMessage
                         id="FordelingsdetaljerPanel.Infoboks.Periode"
                         values={{
@@ -160,7 +160,7 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
                             b: (b) => <b>{b}</b>,
                         }}
                     />
-                </BodyLong>
+                </BodyShort>
             )}
         </Infobox>
     );
