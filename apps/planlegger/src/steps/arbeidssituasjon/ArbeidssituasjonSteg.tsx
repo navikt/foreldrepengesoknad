@@ -137,7 +137,11 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                             <UførInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker1} />
                         )}
                         {status === Arbeidsstatus.INGEN && (
-                            <AnnetInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker1} erFarOgFar />
+                            <AnnetInfoboks
+                                erAlenesøker={erAlenesøker}
+                                fornavn={fornavnSøker1}
+                                erFarOgFar={erFarOgFar}
+                            />
                         )}
                         {!erAlenesøker && status && (
                             <>
@@ -168,14 +172,14 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                                     </Radio>
                                 </GreenRadioGroup>
                                 {jobberSøker2 === true && fornavnSøker2 && (
-                                    <JobberInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker2} />
+                                    <JobberInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker2} erSøker2 />
                                 )}
                                 {jobberSøker2 === false && fornavnSøker2 && (
                                     <AnnetInfoboks
                                         erAlenesøker={erAlenesøker}
                                         fornavn={fornavnSøker2}
                                         erSøker2
-                                        erFarOgFar
+                                        erFarOgFar={erFarOgFar}
                                     />
                                 )}
                             </>
