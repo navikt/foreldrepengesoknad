@@ -1,3 +1,7 @@
+import enMessages from './i18n/common.en.json';
+import nbMessages from './i18n/common.nb.json';
+import nnMessages from './i18n/common.nn.json';
+
 export { default as LanguageToggle } from './components/language-toggle/LanguageToggle';
 export { default as Sidebanner } from './components/sidebanner/Sidebanner';
 export { default as Block } from './components/block/Block';
@@ -70,3 +74,9 @@ export { uttaksplanDatoavgrensninger } from './utils/uttaksplanDatoavgrensninger
 export { guid } from './utils/guid';
 
 export type { VeilederProps } from './components/veileder/Veileder';
+
+export const fpCommonMessages = {
+    nb: nbMessages,
+    nn: nnMessages,
+    en: enMessages,
+};
