@@ -1,7 +1,10 @@
 {
     "app": "planlegger",
     "dekoratoren": "dekoratoren.ekstern.dev.nav.no",
-    "ingresses": ["https://foreldrepengeplanlegger.intern.dev.nav.no"],
+    "ingresses": [
+        "https://foreldrepengeplanlegger.intern.dev.nav.no",
+        "https://www.intern.dev.nav.no/foreldrepenger/planlegger"
+    ],
     "env": {
         "APPRES_CMS_URL": "https://dekoratoren.ekstern.dev.nav.no",
         "REST_API_URL": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest",
