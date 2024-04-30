@@ -3,7 +3,7 @@ import Infobox from 'components/boxes/Infobox';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { BodyLong, Link } from '@navikt/ds-react';
+import { BodyShort, Link } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 
@@ -26,10 +26,10 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
             icon={<CircleSlashIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
             shouldFadeIn
         >
-            <BodyLong>
+            <BodyShort>
                 <FormattedMessage id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett" />
-            </BodyLong>
-            <BodyLong>
+            </BodyShort>
+            <BodyShort>
                 <FormattedMessage
                     id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRettAnnenPart"
                     values={{
@@ -40,9 +40,9 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
                         ),
                     }}
                 />
-            </BodyLong>
+            </BodyShort>
             {!erSøker2 && !erFarOgFar && (
-                <BodyLong>
+                <BodyShort>
                     <FormattedMessage
                         id="Arbeidssituasjon.Ingen.Infoboks.Engangsstønad"
                         values={{
@@ -61,7 +61,7 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
                             erAlenesøker,
                         }}
                     />
-                </BodyLong>
+                </BodyShort>
             )}
         </Infobox>
     );
