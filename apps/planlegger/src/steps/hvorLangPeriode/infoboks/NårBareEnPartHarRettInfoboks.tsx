@@ -35,7 +35,7 @@ const NårBareEnPartHarRettInfoboks: FunctionComponent<Props> = ({ hvemPlanlegge
                     }}
                 />
             }
-            icon={<PersonGroupIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
+            icon={<PersonGroupIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
             isGray
         >
             {søker2HarIkkeRett && (

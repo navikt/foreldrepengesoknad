@@ -55,7 +55,7 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
                     <HStack justify="center">
                         <Button
                             onClick={navigator.goToNextDefaultStep}
-                            icon={<ArrowRightIcon aria-hidden />}
+                            icon={<ArrowRightIcon aria-hidden height={24} width={24} />}
                             iconPosition="right"
                             className={styles.button}
                             autoFocus

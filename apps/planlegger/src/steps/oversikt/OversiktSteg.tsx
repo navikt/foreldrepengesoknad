@@ -118,7 +118,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
                         <Infobox
                             header={<FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DereHarOppgitt" />}
                             icon={
-                                <PersonGroupIcon height={28} width={28} fontSize="1.5rem" color="#0067C5" aria-hidden />
+                                <PersonGroupIcon height={24} width={24} fontSize="1.5rem" color="#0067C5" aria-hidden />
                             }
                         >
                             <div>

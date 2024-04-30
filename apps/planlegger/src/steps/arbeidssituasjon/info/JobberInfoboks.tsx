@@ -19,7 +19,7 @@ const JobberInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn }) =>
                     values={{ erAlenesøker, navn: fornavn }}
                 />
             }
-            icon={<CheckmarkIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
+            icon={<CheckmarkIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
             shouldFadeIn
         >
             <BodyShort>

@@ -106,7 +106,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                         <Infobox
                             header={<FormattedMessage id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTittel" />}
                             icon={
-                                <CalendarIcon height={28} width={28} color="#020C1CAD" fontSize="1.5rem" aria-hidden />
+                                <CalendarIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />
                             }
                             isGray
                         >

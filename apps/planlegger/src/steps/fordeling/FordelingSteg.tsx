@@ -134,8 +134,8 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) =>
                             header={<FormattedMessage id="FordelingSteg.Infoboks.HvordanFordeleTittel" />}
                             icon={
                                 <SectorChartIcon
-                                    height={28}
-                                    width={28}
+                                    height={24}
+                                    width={24}
                                     color="#020C1CAD"
                                     fontSize="1.5rem"
                                     aria-hidden

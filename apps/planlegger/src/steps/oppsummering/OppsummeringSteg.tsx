@@ -76,7 +76,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ locale, stønadskontoer })
                                         <FormattedMessage id="OppsummeringSteg.Infoboks.IngenHarRett" />
                                     )
                                 }
-                                icon={<TasklistStartIcon height={28} width={28} color="#236B7D" aria-hidden />}
+                                icon={<TasklistStartIcon height={24} width={24} color="#236B7D" aria-hidden />}
                             >
                                 <BodyShort>
                                     <FormattedMessage
@@ -145,7 +145,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ locale, stønadskontoer })
                             <Button
                                 className={styles.button}
                                 variant="primary"
-                                icon={<LinkIcon aria-hidden />}
+                                icon={<LinkIcon aria-hidden height={24} width={24} />}
                                 onClick={copyUrlToClipboard}
                             >
                                 <FormattedMessage id="OppsummeringSteg.KopierUrl" />
@@ -157,7 +157,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ locale, stønadskontoer })
                             <Button
                                 variant="secondary"
                                 onClick={navigator.goToPreviousDefaultStep}
-                                icon={<ArrowLeftIcon aria-hidden />}
+                                icon={<ArrowLeftIcon aria-hidden height={24} width={24} />}
                             >
                                 <FormattedMessage id="OppsummeringSteg.TilbakeTil" />
                             </Button>
