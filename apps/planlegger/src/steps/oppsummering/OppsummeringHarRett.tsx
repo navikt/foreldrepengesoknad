@@ -2,6 +2,7 @@ import { CalendarIcon } from '@navikt/aksel-icons';
 import GreenPanel from 'components/boxes/GreenPanel';
 import Calendar from 'components/calendar/Calendar';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
+import CalendarLabels from 'components/labels/CalendarLabels';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
@@ -47,7 +48,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
 
     const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
 
-    const { sluttdatoPeriode1, startdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2 } = finnUttaksdata(
+    const uttaksdata = finnUttaksdata(
         hvemHarRett,
         hvemPlanlegger,
         valgtStønadskonto,
@@ -112,12 +113,12 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                         id="OppsummeringSteg.Periodene"
                                         values={{
                                             hvem: getNavnGenitivEierform(fornavnSøker1, intl.locale),
-                                            fom: intl.formatDate(startdatoPeriode1, {
+                                            fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
                                                 day: '2-digit',
                                                 month: 'short',
                                                 year: 'numeric',
                                             }),
-                                            tom: intl.formatDate(sluttdatoPeriode1, {
+                                            tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
                                                 day: '2-digit',
                                                 month: 'short',
                                                 year: 'numeric',
@@ -131,12 +132,12 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                         id="OppsummeringSteg.Periodene"
                                         values={{
                                             hvem: getNavnGenitivEierform(fornavnSøker2, intl.locale),
-                                            fom: intl.formatDate(startdatoPeriode2, {
+                                            fom: intl.formatDate(uttaksdata.startdatoPeriode2, {
                                                 day: '2-digit',
                                                 month: 'short',
                                                 year: 'numeric',
                                             }),
-                                            tom: intl.formatDate(sluttdatoPeriode2, {
+                                            tom: intl.formatDate(uttaksdata.sluttdatoPeriode2, {
                                                 day: '2-digit',
                                                 month: 'short',
                                                 year: 'numeric',
@@ -156,12 +157,12 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                     <FormattedMessage
                                         id="OppsummeringSteg.Periode"
                                         values={{
-                                            fom: intl.formatDate(startdatoPeriode1, {
+                                            fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
                                                 day: '2-digit',
                                                 month: 'short',
                                                 year: 'numeric',
                                             }),
-                                            tom: intl.formatDate(sluttdatoPeriode1, {
+                                            tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
                                                 day: '2-digit',
                                                 month: 'short',
                                                 year: 'numeric',
@@ -173,6 +174,13 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             </GreenPanel>
                         )}
                         <Calendar periods={uttaksperioder} useSmallerWidth />
+                        <CalendarLabels
+                            uttaksdata={uttaksdata}
+                            hvemPlanlegger={hvemPlanlegger}
+                            barnet={barnet}
+                            valgtStønadskonto={valgtStønadskonto}
+                            hvemHarRett={hvemHarRett}
+                        />
                     </VStack>
                 </ExpansionCard.Content>
             </ExpansionCard>

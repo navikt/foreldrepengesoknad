@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { Situasjon } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
@@ -59,10 +58,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ locale, stønadskontoer })
     const harRett =
         (erBarnetFødt(barnet) && dayjs(barnet.fødselsdato).isBefore(DATE_3_YEARS_AGO)) ||
         (arbeidssituasjon?.status === Arbeidsstatus.INGEN && arbeidssituasjon?.jobberAnnenPart !== true) ||
-        (arbeidssituasjon?.status === Arbeidsstatus.UFØR && arbeidssituasjon?.jobberAnnenPart !== true) ||
-        (Situasjon.FAR_OG_FAR &&
-            arbeidssituasjon?.status === Arbeidsstatus.JOBBER &&
-            arbeidssituasjon.jobberAnnenPart === false)
+        (arbeidssituasjon?.status === Arbeidsstatus.UFØR && arbeidssituasjon?.jobberAnnenPart !== true)
             ? false
             : true;
 

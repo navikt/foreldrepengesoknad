@@ -1,20 +1,19 @@
-import { HeartFillIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
 import { finnSøker1Tekst, finnSøker2Tekst, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
-import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
+import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { HvemHarRett } from 'utils/hvemHarRettUtils';
 import { Uttaksdata } from 'utils/uttakUtils';
 
-import { BodyShort, HStack, VStack } from '@navikt/ds-react';
+import { HStack, VStack } from '@navikt/ds-react';
 
-import AktivitetskravLabel from './AktivitetskravLabel';
-import AntallUkerFpLabel from './AntallUkerFpLabel';
-import ForeldrepengerLabel from './ForeldrepengerLabel';
-import styles from './oversiktLabels.module.css';
+import AktivitetskravLabel from './calendarLabels/AktivitetskravLabel';
+import AntallUkerFpLabel from './calendarLabels/AntallUkerFpLabel';
+import FamiliehendelseLabel from './calendarLabels/FamiliehendelseLabel';
+import ForeldrepengerLabel from './calendarLabels/ForeldrepengerLabel';
 
 interface Props {
     barnet: OmBarnet;
@@ -24,7 +23,7 @@ interface Props {
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
 }
 
-const OversiktLabels: FunctionComponent<Props> = ({
+const CalendarLabels: FunctionComponent<Props> = ({
     barnet,
     uttaksdata,
     hvemPlanlegger,
@@ -33,8 +32,6 @@ const OversiktLabels: FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
 
-    const erFødt = erBarnetFødt(barnet);
-    const erIkkeFødt = erBarnetUFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
 
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
@@ -47,8 +44,7 @@ const OversiktLabels: FunctionComponent<Props> = ({
             ? getFornavnPåSøker2(hvemPlanlegger, intl)
             : finnSøker2Tekst(intl, hvemPlanlegger);
 
-    const { startdatoPeriode1, sluttdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2, familiehendelsedato } =
-        uttaksdata;
+    const { startdatoPeriode1, sluttdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2 } = uttaksdata;
 
     const erFarOgFarOgFødsel = erFarOgFar && !erAdoptert;
     const erFarOgFarOgAdopsjon = erFarOgFar && erAdoptert;
@@ -114,50 +110,10 @@ const OversiktLabels: FunctionComponent<Props> = ({
                 {erFarOgFarOgFødsel && (
                     <ForeldrepengerLabel startdato={startdatoPeriode1} sluttdato={sluttdatoPeriode1} />
                 )}
-                <div className={styles.pinkPanel}>
-                    <HStack gap="2" align="center">
-                        <BodyShort>
-                            {erFødt && (
-                                <FormattedMessage
-                                    id="OversiktSteg.Fødselsdato"
-                                    values={{
-                                        mnd: familiehendelsedato,
-                                        dato: intl.formatDate(barnet.fødselsdato, {
-                                            day: '2-digit',
-                                            month: 'short',
-                                        }),
-                                    }}
-                                />
-                            )}
-                            {erIkkeFødt && (
-                                <FormattedMessage
-                                    id="OversiktSteg.Termindato"
-                                    values={{
-                                        dato: intl.formatDate(barnet.termindato, {
-                                            day: '2-digit',
-                                            month: 'short',
-                                        }),
-                                    }}
-                                />
-                            )}
-                            {erAdoptert && (
-                                <FormattedMessage
-                                    id="OversiktSteg.Omsorgsovertakelse"
-                                    values={{
-                                        dato: intl.formatDate(barnet.overtakelsesdato, {
-                                            day: '2-digit',
-                                            month: 'short',
-                                        }),
-                                    }}
-                                />
-                            )}
-                        </BodyShort>
-                        <HeartFillIcon color="#F68282" aria-hidden />
-                    </HStack>
-                </div>
+                <FamiliehendelseLabel barnet={barnet} />
             </HStack>
         </VStack>
     );
 };
 
-export default OversiktLabels;
+export default CalendarLabels;

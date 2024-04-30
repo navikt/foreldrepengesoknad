@@ -88,7 +88,7 @@ const trekkUttaksdagerFraDato = (dato: string, uttaksdager: number): string => {
     return nyDato;
 };
 
-const getFamiliehendelsedato = (barnet: OmBarnet) => {
+export const getFamiliehendelsedato = (barnet: OmBarnet) => {
     if (erBarnetAdoptert(barnet)) {
         return barnet.overtakelsesdato;
     }

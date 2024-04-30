@@ -4,6 +4,7 @@ import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import { default as Infoboks, default as Infobox } from 'components/boxes/Infobox';
 import Calendar from 'components/calendar/Calendar';
+import CalendarLabels from 'components/labels/CalendarLabels';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -27,7 +28,6 @@ import { LocaleAll } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import OversiktLabels from './labels/OversiktLabels';
 import styles from './oversiktSteg.module.css';
 import OmÅTilpassePlanen from './tilpassePlanen/OmÅTilpassePlanen';
 import UforutsetteEndringer from './uforutsetteEndringer/UforutsetteEndringer';
@@ -177,7 +177,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
                                 ))}
                             </Select>
                         )}
-                    <OversiktLabels
+                    <CalendarLabels
                         uttaksdata={
                             hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? uttaksdata100 : uttaksdata80
                         }

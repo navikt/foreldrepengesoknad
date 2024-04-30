@@ -107,6 +107,7 @@ describe('<OppsummeringSteg>', () => {
         render(<KunMorHarRett />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(screen.getByText('Planen deres')).toBeInTheDocument();
         expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
 
         expect(screen.getByText('Barnet')).toBeInTheDocument();
@@ -124,7 +125,7 @@ describe('<OppsummeringSteg>', () => {
         ).toBeInTheDocument();
 
         expect(screen.getByText('Lengde')).toBeInTheDocument();
-        expect(screen.getByText('Dere valgte 100 % foreldrepenger i 46 uker.')).toBeInTheDocument();
+        expect(screen.getByText('Dere valgte 100 % foreldrepenger i 49 uker.')).toBeInTheDocument();
     });
 
     it('skal vise info der det er mor er ufør aleneforsørger', async () => {

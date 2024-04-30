@@ -112,6 +112,51 @@ export const FlereForsørgereHundreProsentTermin: Story = {
     },
 };
 
+export const MorOgFarKunFarHarRett: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåMor: 'Klara Utvikler',
+            navnPåFar: 'Espen Utvikler',
+            type: Situasjon.MOR_OG_FAR,
+        },
+        hvorLangPeriode: {
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        },
+        omBarnet: {
+            erFødsel: true,
+            erBarnetFødt: false,
+            termindato: '2022-10-24',
+            antallBarn: '1',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.INGEN,
+            jobberAnnenPart: true,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: [
+                    { konto: StønadskontoType.Foreldrepenger, dager: 155 },
+                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 95 },
+                ],
+                minsteretter: {
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+            '100': {
+                kontoer: [
+                    { konto: StønadskontoType.Foreldrepenger, dager: 125 },
+                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 75 },
+                ],
+                minsteretter: {
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+        },
+    },
+};
+
 export const FarOgFarFødsel: Story = {
     args: {
         hvemPlanlegger: {
@@ -246,11 +291,11 @@ export const KunMorHarRett: Story = {
             type: Situasjon.MOR_OG_FAR,
         },
         omBarnet: {
-            erFødsel: false,
+            erFødsel: true,
             erBarnetFødt: true,
-            fødselsdato: '2022-07-10',
+            termindato: '2024-07-10',
+            fødselsdato: '2024-07-10',
             antallBarn: '1',
-            overtakelsesdato: '2022-010-10',
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
