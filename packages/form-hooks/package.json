@@ -31,11 +31,11 @@
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@originjs/vite-plugin-commonjs": "^1.0.3",
-        "@storybook/addon-essentials": "^8.0.0",
-        "@storybook/addon-interactions": "^8.0.0",
-        "@storybook/addon-links": "^8.0.0",
-        "@storybook/builder-vite": "^8.0.0",
-        "@storybook/react": "^8.0.0",
+        "@storybook/addon-essentials": "^8.0.9",
+        "@storybook/addon-interactions": "^8.0.9",
+        "@storybook/addon-links": "^8.0.9",
+        "@storybook/builder-vite": "^8.0.9",
+        "@storybook/react": "^8.0.9",
         "@testing-library/jest-dom": "^6.4.2",
         "@testing-library/react": "^14.2.1",
         "@testing-library/user-event": "^14.5.2",
@@ -43,12 +43,12 @@
         "@types/react-dom": "^18.2.23",
         "@vitejs/plugin-react": "^4.2.1",
         "cross-env": "^7.0.3",
-        "storybook": "8.0.0",
+        "storybook": "8.0.9",
         "tsconfig": "workspace:*",
         "typescript": "^5.4.3",
-        "vite": "^5.1.6",
+        "vite": "^5.2.10",
         "vite-plugin-checker": "^0.6.4",
-        "vitest": "^1.4.0"
+        "vitest": "^1.5.3"
     },
     "peerDependencies": {
         "react": "^18.2.0"
