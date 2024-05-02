@@ -37,7 +37,7 @@
     "Arbeidssituasjon.Ingen.Infoboks.Engangsstønad": "{erAlenesøker, select, true {You} other {{navn}}} might be entitled to a lump-sum grant instead. You can use <a>NAV's guide for lump-sum grant or parental benefits</a> to learn more.",
     "Arbeidssituasjon.AndreForelder": "Has {navn} worked 6 of the last 10 months and earned more than 59,310 kr last year?",
     "Arbeidssituasjon.AndreForelder.Required": "You must answer if {navn} has worked 6 of the last 10 months and earned more than 59 310 kr last year before proceeding.",
-    "Arbeidssituasjon.Forelder": "Have you worked 6 of the last 10 months and earned more than 59,310 kr last year?",
+    "Arbeidssituasjon.Forelder": "Have {fornavnSøker1} worked 6 of the last 10 months and earned more than 59,310 kr last year?",
     "Arbeidssituasjon.Forelder.Required": "You must answer if you have worked 6 of the last 10 months and earned more than 59 310 kr last year before proceeding.",
     "BarnehageplassSteg.Tittel": "Childcare place",
     "FlereForsørgereBarnehageplass.KommuneTekstDeg": "You do not apply for a childcare place at NAV, but in the municipality where you live. The date is used for your own part, to see how many days you potentially stand without parental benefits before the child is in childcare.",

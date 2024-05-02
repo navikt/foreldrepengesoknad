@@ -77,9 +77,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                         </Heading>
                         {(erAlenesøker || erFarOgFar) && (
                             <GreenRadioGroup
-                                label={
-                                    <FormattedMessage id="Arbeidssituasjon.Forelder" values={{ navn: fornavnSøker1 }} />
-                                }
+                                label={<FormattedMessage id="Arbeidssituasjon.Forelder" values={{ fornavnSøker1 }} />}
                                 name="status"
                                 validate={[
                                     isRequired(
