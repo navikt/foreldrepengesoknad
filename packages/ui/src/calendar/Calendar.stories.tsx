@@ -4,7 +4,7 @@ import Calendar from './Calendar';
 import { DayColor } from './Day';
 
 const meta = {
-    title: 'components/Calendar',
+    title: 'Calendar',
     component: Calendar,
     render: (args) => (
         <div style={{ maxWidth: '704px' }}>
