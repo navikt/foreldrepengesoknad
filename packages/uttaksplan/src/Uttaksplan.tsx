@@ -311,35 +311,54 @@ const Uttaksplan: FunctionComponent<Props> = ({
         <>
             <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
             {visningsModus === 'liste' && (
-                <Block padBottom="l">
-                    <Planlegger
-                        uttaksplan={uttaksplan}
-                        familiehendelsesdato={familiehendelsesdatoDate}
-                        handleUpdatePeriode={handleUpdatePeriode}
-                        stønadskontoer={stønadskontoer}
-                        navnPåForeldre={navnPåForeldre}
-                        annenForelder={annenForelder}
-                        arbeidsforhold={oldFormatArbeidsforhold}
-                        handleDeletePeriode={handleDeletePeriode}
-                        handleAddPeriode={handleAddPeriode}
-                        erFarEllerMedmor={erFarEllerMedmor}
-                        erFlerbarnssøknad={erFlerbarnssøknad}
-                        erDeltUttak={erDeltUttak}
-                        erAleneOmOmsorg={erAleneOmOmsorg}
-                        situasjon={situasjon}
-                        meldingerPerPeriode={meldingerPerPeriode}
-                        erMorUfør={erMorUfør}
-                        setPerioderErGyldige={setPerioderErGyldige}
-                        erEndringssøknad={erEndringssøknad}
-                        setSlettUttaksplanModalOpen={setSlettUttaksplanModalOpen}
-                        setResetUttaksplanModalOpen={setResetUttaksplanModalOpen}
-                        termindato={termindato}
-                        barn={barn}
-                        utsettelserIPlan={utsettelserIPlan}
-                        barnFraNesteSak={barnFraNesteSak}
-                        perioderErGyldige={perioderErGyldige}
-                    />
-                </Block>
+                <>
+                    <Block padBottom="l">
+                        <Planlegger
+                            uttaksplan={uttaksplan}
+                            familiehendelsesdato={familiehendelsesdatoDate}
+                            handleUpdatePeriode={handleUpdatePeriode}
+                            stønadskontoer={stønadskontoer}
+                            navnPåForeldre={navnPåForeldre}
+                            annenForelder={annenForelder}
+                            arbeidsforhold={oldFormatArbeidsforhold}
+                            handleDeletePeriode={handleDeletePeriode}
+                            handleAddPeriode={handleAddPeriode}
+                            erFarEllerMedmor={erFarEllerMedmor}
+                            erFlerbarnssøknad={erFlerbarnssøknad}
+                            erDeltUttak={erDeltUttak}
+                            erAleneOmOmsorg={erAleneOmOmsorg}
+                            situasjon={situasjon}
+                            meldingerPerPeriode={meldingerPerPeriode}
+                            erMorUfør={erMorUfør}
+                            setPerioderErGyldige={setPerioderErGyldige}
+                            erEndringssøknad={erEndringssøknad}
+                            setSlettUttaksplanModalOpen={setSlettUttaksplanModalOpen}
+                            setResetUttaksplanModalOpen={setResetUttaksplanModalOpen}
+                            termindato={termindato}
+                            barn={barn}
+                            utsettelserIPlan={utsettelserIPlan}
+                            barnFraNesteSak={barnFraNesteSak}
+                            perioderErGyldige={perioderErGyldige}
+                        />
+                    </Block>
+                    <Block padBottom="xl">
+                        <OversiktKvoter
+                            tilgjengeligeStønadskontoer={stønadskontoer}
+                            uttaksplan={uttaksplan}
+                            erDeltUttak={erDeltUttak}
+                            foreldreparSituasjon={foreldreSituasjon}
+                            familiehendelsesdato={familiehendelsesdatoDate}
+                            annenForelderHarRettINorge={annenForelderHarRettINorge}
+                            toTetteReglerGjelder={toTetteReglerGjelder}
+                            intl={intl}
+                            erAleneOmOmsorg={erAleneOmOmsorg}
+                            erEndringssøknad={erEndringssøknad}
+                            rolle={søkersituasjon.rolle}
+                            situasjon={søkersituasjon.situasjon}
+                            navnPåForeldre={navnPåForeldre}
+                        />
+                    </Block>
+                </>
             )}
             {visningsModus === 'kalender' && (
                 <Block padBottom="xxl">
@@ -350,23 +369,6 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     />
                 </Block>
             )}
-            <Block padBottom="xl">
-                <OversiktKvoter
-                    tilgjengeligeStønadskontoer={stønadskontoer}
-                    uttaksplan={uttaksplan}
-                    erDeltUttak={erDeltUttak}
-                    foreldreparSituasjon={foreldreSituasjon}
-                    familiehendelsesdato={familiehendelsesdatoDate}
-                    annenForelderHarRettINorge={annenForelderHarRettINorge}
-                    toTetteReglerGjelder={toTetteReglerGjelder}
-                    intl={intl}
-                    erAleneOmOmsorg={erAleneOmOmsorg}
-                    erEndringssøknad={erEndringssøknad}
-                    rolle={søkersituasjon.rolle}
-                    situasjon={søkersituasjon.situasjon}
-                    navnPåForeldre={navnPåForeldre}
-                />
-            </Block>
             <Block visible={uttaksplanVeilederInfo.length > 0} padBottom="l">
                 <VeilederInfo
                     messages={uttaksplanVeilederInfo}
