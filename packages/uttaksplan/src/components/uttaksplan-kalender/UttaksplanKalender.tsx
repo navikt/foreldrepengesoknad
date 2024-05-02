@@ -83,7 +83,7 @@ const getKalenderFargeForPeriodeType = (
         case Periodetype.Utsettelse:
             return DayColor.PURPLE;
         case Periodetype.PeriodeUtenUttak:
-            return DayColor.GRAY;
+            return DayColor.NONE;
         case Periodetype.Hull:
             return DayColor.ORANGE;
         case Periodetype.Overføring:
