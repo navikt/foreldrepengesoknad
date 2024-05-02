@@ -178,6 +178,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) =>
                         </GreenPanel>
                         {antallUkerSøker1 !== undefined && (
                             <FordelingsdetaljerPanel
+                                key={antallUkerSøker1}
                                 barnet={barnet}
                                 hvemPlanlegger={hvemPlanlegger}
                                 fornavnSøker1={fornavnSøker1}

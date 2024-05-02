@@ -181,6 +181,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                         </GreenRadioGroup>
                         {valgtStønadskonto && (
                             <ValgtDekningsgradInfoboks
+                                key={valgtDekningsgrad}
                                 barnet={barnet}
                                 hvemPlanlegger={hvemPlanlegger}
                                 arbeidssituasjon={arbeidssituasjon}
