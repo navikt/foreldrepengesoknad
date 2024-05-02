@@ -1,0 +1,36 @@
+.bluePanel {
+    border-radius: 1.25rem;
+    background-color: var(--a-blue-50);
+    display: flex;
+    padding-left: 10px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    width: fit-content;
+}
+
+.greenPanel {
+    border-radius: 1.25rem;
+    background-color: var(--a-green-100);
+    display: flex;
+    padding-left: 10px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    width: fit-content;
+}
+
+.pinkPanel {
+    border-radius: 1.25rem;
+    background-color: var(--a-red-50);
+    display: flex;
+    padding-left: 10px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    width: fit-content;
+}
+
+.margin {
+    margin-bottom: -3px;
+}
