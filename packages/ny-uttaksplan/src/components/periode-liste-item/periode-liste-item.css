@@ -1,3 +1,7 @@
+.periode-liste-item__item {
+    margin-bottom: 0.25rem;
+}
+
 .periode-liste-item__header {
     width: 100%;
 }

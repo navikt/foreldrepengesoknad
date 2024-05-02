@@ -6,7 +6,7 @@
 
 .periode-liste-header__dato {
     padding: 0.5rem 1rem;
-    min-width: 40%;
+    min-width: 30%;
 }
 
 .periode-liste-header__uker {
@@ -15,7 +15,7 @@
 }
 
 .periode-liste-header__hendelse {
-    min-width: 30%;
+    min-width: 40%;
     padding: 0.5rem 1rem;
     border-radius: 1.25rem;
 }
@@ -36,6 +36,16 @@
 
 .periode-liste-header--farge-bg-lysblaa {
     background-color: var(--a-blue-50);
+}
+
+.periode-liste-header--farge-bg-lysblaa-gronn {
+    background: linear-gradient(
+        135deg,
+        var(--a-green-100) 0%,
+        var(--a-green-100) 50%,
+        var(--a-blue-50) 50%,
+        var(--a-blue-50) 100%
+    );
 }
 
 .periode-liste-header--farge-bg-gul {

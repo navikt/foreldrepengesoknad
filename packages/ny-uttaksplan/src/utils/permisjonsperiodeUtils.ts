@@ -18,22 +18,45 @@ export const mapPerioderToPermisjonsperiode = (
 
     let nyPermisjonsperiode: Permisjonsperiode | undefined = undefined;
     let forelderForrigePeriode: Forelder | undefined = undefined;
+    let erSamtidigUttak = false;
 
     perioder.forEach((periode, index) => {
         const nestePeriodeIndex = index + 1;
         let nestePeriode = undefined;
-        let erSamtidigUttak = false;
 
-        if (nestePeriodeIndex < perioder.length - 1) {
+        if (erSamtidigUttak) {
+            // Forrige periode var samtidig uttak. Skip
+            erSamtidigUttak = false;
+            return;
+        }
+
+        if (nestePeriodeIndex < perioder.length) {
             nestePeriode = perioder[nestePeriodeIndex];
+        } else {
+            nestePeriode = undefined;
         }
 
         if (nestePeriode !== undefined) {
             erSamtidigUttak = Tidsperioden(periode.tidsperiode).erLik(nestePeriode.tidsperiode);
-            console.log(erSamtidigUttak);
         }
 
-        if (erSamtidigUttak) {
+        if (erSamtidigUttak && nestePeriode !== undefined) {
+            console.log(`Er samtidig uttak: ${index}`);
+
+            nyPermisjonsperiode = {
+                perioder: [{ ...periode }, { ...nestePeriode }],
+                tidsperiode: {
+                    fom: dateToISOString(periode.tidsperiode.fom),
+                    tom: dateToISOString(periode.tidsperiode.tom),
+                },
+                samtidigUttak: true,
+            };
+
+            permisjonsPerioder.push(nyPermisjonsperiode);
+            nyPermisjonsperiode = undefined;
+            forelderForrigePeriode = undefined;
+            erSamtidigUttak = true;
+            return;
         }
 
         if (isUttakAnnenPart(periode)) {
@@ -67,6 +90,7 @@ export const mapPerioderToPermisjonsperiode = (
             }
 
             forelderForrigePeriode = periode.forelder;
+            return;
         }
 
         if (isUttaksperiode(periode)) {
@@ -100,6 +124,7 @@ export const mapPerioderToPermisjonsperiode = (
             }
 
             forelderForrigePeriode = periode.forelder;
+            return;
         }
     });
 

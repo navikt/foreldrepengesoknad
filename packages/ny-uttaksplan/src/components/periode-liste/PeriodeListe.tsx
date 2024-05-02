@@ -16,8 +16,8 @@ const PeriodeListe: FunctionComponent<Props> = ({ perioder }) => {
 
     return (
         <div>
-            {perioder.map((periode) => {
-                return <PeriodeListeItem periode={periode} />;
+            {permisjonsperioder.map((p) => {
+                return <PeriodeListeItem permisjonsperiode={p} />;
             })}
         </div>
     );

@@ -6,36 +6,38 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort, Heading } from '@navikt/ds-react';
 
-import {
-    Forelder,
-    Periode,
-    Tidsperioden,
-    bemUtils,
-    formatDateShortMonth,
-    getVarighetString,
-    isPeriodeUtenUttak,
-    isUttaksperiode,
-} from '@navikt/fp-common';
+import { Forelder, Tidsperioden, bemUtils, formatDateShortMonth, getVarighetString } from '@navikt/fp-common';
+import { ISOStringToDate } from '@navikt/fp-formik';
 
+import Permisjonsperiode from '../../types/Permisjonsperiode';
 import './periode-liste-header.css';
 
 interface Props {
-    periode: Periode;
+    permisjonsperiode: Permisjonsperiode;
     termindato: string;
 }
 
-const PeriodeListeHeader: FunctionComponent<Props> = ({ periode, termindato }) => {
+const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, termindato }) => {
     const intl = useIntl();
     const bem = bemUtils('periode-liste-header');
 
-    const periodeFørTermindato = dayjs(termindato).isAfter(periode.tidsperiode.tom);
-    const erMor = isUttaksperiode(periode) && periode.forelder === Forelder.mor;
-    const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
-    const erPeriodeUtenUttak = isPeriodeUtenUttak(periode);
+    const periodeFørTermindato = dayjs(termindato).isAfter(permisjonsperiode.tidsperiode.tom);
+    const erMor = permisjonsperiode.forelder === Forelder.mor;
+    const { tidsperiode } = permisjonsperiode;
+    const antallDager = Tidsperioden({
+        fom: ISOStringToDate(tidsperiode.fom)!,
+        tom: ISOStringToDate(tidsperiode.tom)!,
+    }).getAntallUttaksdager();
+    const erPeriodeUtenUttak = permisjonsperiode.forelder === undefined && !!permisjonsperiode.samtidigUttak === false;
+    const erSamtidigUttak = permisjonsperiode.forelder === undefined && !!permisjonsperiode.samtidigUttak;
 
     const getFarge = () => {
         if (erPeriodeUtenUttak) {
             return bem.modifier('farge-bg-gul');
+        }
+
+        if (erSamtidigUttak) {
+            return bem.modifier('farge-bg-lysblaa-gronn');
         }
 
         if (erMor) {
@@ -53,6 +55,18 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ periode, termindato }) =
         return bem.modifier('farge-gronn');
     };
 
+    const getTekst = () => {
+        if (erPeriodeUtenUttak) {
+            return 'Uten foreldrepenger';
+        }
+
+        if (erSamtidigUttak) {
+            return 'Du og Petter i permisjon';
+        }
+
+        return 'Du i permisjon';
+    };
+
     const getIkon = () => {
         if (periodeFørTermindato) {
             return <PersonPregnantFillIcon className={getIkonFarge()} width={24} height={24} />;
@@ -65,7 +79,8 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ periode, termindato }) =
         <div className={bem.block}>
             <div className={bem.element('dato')}>
                 <Heading size="xsmall" as="p">
-                    {formatDateShortMonth(periode.tidsperiode.fom)} - {formatDateShortMonth(periode.tidsperiode.tom)}
+                    {formatDateShortMonth(permisjonsperiode.tidsperiode.fom)} -{' '}
+                    {formatDateShortMonth(permisjonsperiode.tidsperiode.tom)}
                 </Heading>
             </div>
             <div className={bem.element('uker')}>
@@ -73,8 +88,8 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ periode, termindato }) =
             </div>
             <div className={classNames(bem.element('hendelse'), getFarge())}>
                 <BodyShort className={classNames(bem.element('hendelse-wrapper'))}>
-                    <div>{erPeriodeUtenUttak ? 'Ikke uttak' : 'Du i permisjon'}</div>
-                    {erPeriodeUtenUttak ? null : getIkon()}
+                    <div>{getTekst()}</div>
+                    {erPeriodeUtenUttak || erSamtidigUttak ? null : getIkon()}
                 </BodyShort>
             </div>
         </div>

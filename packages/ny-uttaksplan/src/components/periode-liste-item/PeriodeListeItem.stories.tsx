@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ComponentProps } from 'react';
 
-import { Forelder, Periodetype, StønadskontoType } from '@navikt/fp-common';
+import { Forelder } from '@navikt/fp-common';
 
 import PeriodeListeItem from './PeriodeListeItem';
 
@@ -9,8 +9,8 @@ type StoryArgs = ComponentProps<typeof PeriodeListeItem>;
 
 type Story = StoryObj<StoryArgs>;
 
-const customRenderer = ({ periode }: StoryArgs) => {
-    return <PeriodeListeItem periode={periode} />;
+const customRenderer = ({ permisjonsperiode }: StoryArgs) => {
+    return <PeriodeListeItem permisjonsperiode={permisjonsperiode} />;
 };
 
 const meta = {
@@ -22,28 +22,26 @@ export default meta;
 
 export const Uttaksperiode: Story = {
     args: {
-        periode: {
-            id: '1',
+        permisjonsperiode: {
             tidsperiode: {
-                fom: new Date('2024-06-01'),
-                tom: new Date('2024-06-31'),
+                fom: '2024-06-01',
+                tom: '2024-06-31',
             },
-            type: Periodetype.Uttak,
-            konto: StønadskontoType.Mødrekvote,
             forelder: Forelder.mor,
+            perioder: [],
         },
     },
 };
 
 export const PeriodeUtenUttak: Story = {
     args: {
-        periode: {
-            id: '2',
+        permisjonsperiode: {
             tidsperiode: {
-                fom: new Date('2024-08-01'),
-                tom: new Date('2024-08-31'),
+                fom: '2024-08-01',
+                tom: '2024-08-31',
             },
-            type: Periodetype.PeriodeUtenUttak,
+            forelder: Forelder.farMedmor,
+            perioder: [],
         },
     },
 };
