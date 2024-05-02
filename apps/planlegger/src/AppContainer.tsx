@@ -1,6 +1,6 @@
 import ErrorPage from 'components/error/ErrorPage';
 import dayjs from 'dayjs';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { LocaleAll } from '@navikt/fp-types';
