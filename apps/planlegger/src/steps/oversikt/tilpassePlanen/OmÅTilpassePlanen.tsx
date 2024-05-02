@@ -94,7 +94,7 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
 
                             <JobbeSamtidig />
 
-                            {(!erAlene || !erFedre) && !kunEnPartSkalHa && <PermisjonSamtidig />}
+                            {(!erAlene || !erFedre) && !kunEnPartSkalHa && <PermisjonSamtidig erAdopsjon />}
                         </>
                     )}
                 </VStack>

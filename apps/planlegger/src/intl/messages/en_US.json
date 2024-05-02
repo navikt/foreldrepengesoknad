@@ -220,7 +220,7 @@
     "OmÅTilpassePlanen.JobbeSamtidig": "Work simultaneously",
     "OmÅTilpassePlanen.JobbeSamtidig.Tekst": "You can work part-time while receiving partial parental benefits, and the period with parental benefits will then last longer.",
     "OmÅTilpassePlanen.PermisjonSamtidig": "Leave at the same time",
-    "OmÅTilpassePlanen.PermisjonSamtidig.Tekst": "Both parents can be at home simultaneously with up to 150 % parental benefits. This is possible from week 7 after birth, if one parent uses the joint period while the other uses their own quota.",
+    "OmÅTilpassePlanen.PermisjonSamtidig.Tekst": "Both parents can be at home simultaneously with up to 150 % parental benefits. {erAdopsjon, select, true {This is possible} other {This is possible from week 7 after birth,}} if one parent uses the joint period while the other uses their own quota.",
     "OmÅTilpassePlanen.ToUkerRundtFødsel": "Two weeks around birth",
     "OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst": "Often {hvem}s have leave covered for the first two weeks after birth by their employer. If not, the {hvem} can use parental benefits in these two weeks.",
     "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "If the {hvem} is not taking parental benefits, you can add a period without parental benefits, where one, for example, receives holiday pay from the employer."

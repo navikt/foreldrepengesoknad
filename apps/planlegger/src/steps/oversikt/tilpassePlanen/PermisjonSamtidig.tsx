@@ -4,7 +4,11 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
-const PermisjonSamtidig: React.FunctionComponent = () => {
+interface Props {
+    erAdopsjon?: boolean;
+}
+
+const PermisjonSamtidig: React.FunctionComponent<Props> = ({ erAdopsjon = false }) => {
     return (
         <HStack gap="5" wrap={false}>
             <div>
@@ -17,7 +21,7 @@ const PermisjonSamtidig: React.FunctionComponent = () => {
                     <FormattedMessage id="OmÅTilpassePlanen.PermisjonSamtidig" />
                 </Heading>
                 <BodyLong>
-                    <FormattedMessage id="OmÅTilpassePlanen.PermisjonSamtidig.Tekst" />
+                    <FormattedMessage id="OmÅTilpassePlanen.PermisjonSamtidig.Tekst" values={{ erAdopsjon }} />
                 </BodyLong>
             </div>
         </HStack>
