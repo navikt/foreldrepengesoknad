@@ -10,8 +10,4 @@ export default meta;
 
 type Story = StoryObj<typeof ErrorPage>;
 
-export const Default: Story = {
-    args: {
-        text: 'Dette er en tekst',
-    },
-};
+export const Default: Story = {};
