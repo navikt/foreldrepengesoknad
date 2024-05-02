@@ -1,14 +1,15 @@
 import { useIntl } from 'react-intl';
 
+import { PeriodeColor } from '@navikt/fp-constants';
+
 import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
-import { UttaksplanColor } from 'app/types/UttaksplanColor';
 import { finnTekstForUtsettelseÅrsak } from 'app/utils/periodeUtils';
 
 import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
 
-export const getUtsettelseFarge = (): UttaksplanColor => {
-    return UttaksplanColor.purple;
+export const getUtsettelseFarge = (): PeriodeColor => {
+    return PeriodeColor.PURPLE;
 };
 
 export interface Props {

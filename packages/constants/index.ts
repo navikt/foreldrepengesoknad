@@ -1,6 +1,7 @@
 export { links } from './src/links';
 export { Skjemanummer } from './src/skjemanummer';
 export { AttachmentType } from './src/attachmentType';
+export { PeriodeColor } from './src/colors';
 export {
     DATE_4_YEARS_AGO,
     ISO_DATE_REGEX,

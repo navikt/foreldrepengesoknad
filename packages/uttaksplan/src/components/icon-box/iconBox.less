@@ -1,8 +1,14 @@
 @import './../../styles/variables.less';
 
 .striped(@color1, @color2) {
-    @pos: 6.2px;
-    background: repeating-linear-gradient(-45deg, @color1, @color1 @pos, @color2 @pos, @color2 @pos + 1.5px);
+    @pos: 7.5px;
+    background: repeating-linear-gradient(
+        45deg,
+        var(--a-data-surface-5),
+        var(--a-data-surface-5) @pos,
+        var(--a-green-200) @pos,
+        var(--a-green-200) @pos + 2.5px
+    );
 }
 
 .iconBox {
@@ -13,48 +19,48 @@
     align-items: center;
     position: relative;
     overflow: hidden;
-    &--orange {
+    &--ORANGE {
         background-color: var(--a-data-surface-3);
         &--striped {
             .striped(var(--a-data-surface-3),var(--a-data-surface-3));
         }
     }
 
-    &--purple {
+    &--PURPLE {
         background-color: var(--a-data-surface-6);
         &--striped {
             .striped(var(--a-data-surface-6),var(--a-data-surface-6));
         }
     }
 
-    &--green {
+    &--GREEN {
         background-color: var(--a-data-surface-5);
         &--striped {
             .striped(var(--a-data-surface-5), var(--a-data-surface-5-subtle));
         }
     }
 
-    &--lightGreen {
+    &--LIGHTGREEN {
         background-color: var(--a-data-surface-5-subtle);
         &--striped {
             .striped(var(--a-data-surface-5-subtle), var(--a-data-surface-5));
         }
     }
-    &--blue {
+    &--BLUE {
         background-color: var(--a-data-surface-1);
         &--striped {
             .striped(var(--a-data-surface-1), var(--a-data-surface-2-subtle));
         }
     }
 
-    &--lightBlue {
+    &--LIGHTBLUE {
         background-color: var(--a-data-surface-2-subtle);
         &--striped {
             .striped(var(--a-data-surface-2-subtle),var(--a-data-surface-1));
         }
     }
 
-    &--blueLightGreen {
+    &--LIGHTGREENBLUE {
         background: repeating-linear-gradient(
             -45deg,
             var(--a-data-surface-1),
@@ -82,7 +88,7 @@
         }
     }
 
-    &--greenLightBlue {
+    &--LIGHTBLUEGREEN {
         background: repeating-linear-gradient(
             -45deg,
             var(--a-data-surface-5),

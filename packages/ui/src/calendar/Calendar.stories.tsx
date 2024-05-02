@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
 
+import { PeriodeColor } from '@navikt/fp-constants';
+
 import Calendar from './Calendar';
-import { DayColor } from './Day';
 
 const meta = {
     title: 'Calendar',
@@ -22,22 +23,22 @@ export const Default: Story = {
             {
                 fom: '2024-01-31',
                 tom: '2024-02-20',
-                color: DayColor.BLUE,
+                color: PeriodeColor.BLUE,
             },
             {
                 fom: '2024-02-21',
                 tom: '2024-02-21',
-                color: DayColor.PINK,
+                color: PeriodeColor.PINK,
             },
             {
                 fom: '2024-02-22',
                 tom: '2024-05-05',
-                color: DayColor.BLUE,
+                color: PeriodeColor.BLUE,
             },
             {
                 fom: '2024-05-06',
                 tom: '2024-08-30',
-                color: DayColor.GREEN,
+                color: PeriodeColor.LIGHTGREEN,
             },
         ],
     },
@@ -49,12 +50,12 @@ export const PeriodsWithGap: Story = {
             {
                 fom: '2024-01-31',
                 tom: '2024-02-20',
-                color: DayColor.BLUE,
+                color: PeriodeColor.BLUE,
             },
             {
                 fom: '2024-05-06',
                 tom: '2024-08-30',
-                color: DayColor.GREEN,
+                color: PeriodeColor.LIGHTGREEN,
             },
         ],
     },
@@ -66,12 +67,12 @@ export const PeriodsThatSpanOverAYear: Story = {
             {
                 fom: '2024-02-01',
                 tom: '2024-02-20',
-                color: DayColor.BLUE,
+                color: PeriodeColor.BLUE,
             },
             {
                 fom: '2025-05-06',
                 tom: '2025-07-30',
-                color: DayColor.GREEN,
+                color: PeriodeColor.LIGHTGREEN,
             },
         ],
     },

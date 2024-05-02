@@ -11,11 +11,11 @@ import {
     isInfoPeriode,
     isUttaksperiode,
 } from '@navikt/fp-common';
+import { PeriodeColor } from '@navikt/fp-constants';
 import { dateToISOString } from '@navikt/fp-formik';
-import { Calendar, DayColor } from '@navikt/fp-ui';
+import { Calendar } from '@navikt/fp-ui';
 
 import { getIndexOfSistePeriodeFørDato } from './../../components/periodeliste/Periodeliste';
-import { UttaksplanColor } from './../../types/UttaksplanColor';
 import { getForelderFarge, getStønadskontoFarge } from './../../utils/styleUtils';
 
 interface Props {
@@ -24,53 +24,35 @@ interface Props {
     familiehendelsesdato: string;
 }
 
-const mapUttaksplanFargeTilDayColor = (uttaksplanFarge: UttaksplanColor) => {
-    switch (uttaksplanFarge) {
-        case UttaksplanColor.blue:
-            return DayColor.BLUE;
-        case UttaksplanColor.lightBlue:
-            return DayColor.LIGHTBLUE;
-        case UttaksplanColor.green:
-            return DayColor.DARKGREEN;
-        case UttaksplanColor.lightGreen:
-            return DayColor.GREEN;
-        case UttaksplanColor.purple:
-            return DayColor.PURPLE;
-        default:
-            return DayColor.NONE;
-    }
-};
-
 const getKalenderFargeForUttaksperiode = (
     periode: Uttaksperiode | Overføringsperiode,
     uttaksplan: Periode[],
     erFarEllerMedmor: boolean,
-): DayColor => {
+): PeriodeColor => {
     const annenForelderSamtidigUttaksperiode = isUttaksperiode(periode)
         ? getAnnenForelderSamtidigUttakPeriode(periode, uttaksplan)
         : undefined;
     if (annenForelderSamtidigUttaksperiode) {
-        return erFarEllerMedmor ? DayColor.LIGHTBLUEDARKGREEN : DayColor.GREENBLUE;
+        return erFarEllerMedmor ? PeriodeColor.LIGHTBLUEGREEN : PeriodeColor.LIGHTGREENBLUE;
     }
-    if (isUttaksperiode(periode) && periode.gradert) {
-        return erFarEllerMedmor ? DayColor.DARKGREENGREY : DayColor.BLUEGREY;
+    if (!annenForelderSamtidigUttaksperiode && isUttaksperiode(periode) && periode.gradert) {
+        return erFarEllerMedmor ? PeriodeColor.GREENSTRIPED : PeriodeColor.BLUESTRIPED;
     }
-    const uttaksplanFarge = getStønadskontoFarge(periode.konto, periode.forelder, erFarEllerMedmor);
-    return mapUttaksplanFargeTilDayColor(uttaksplanFarge);
+    return getStønadskontoFarge(periode.konto, periode.forelder, erFarEllerMedmor);
 };
 
 const getKalenderFargeForInfoperiode = (
     infoType: PeriodeInfoType,
     forelder: Forelder,
     erFarEllerMedmor: boolean,
-): DayColor => {
+): PeriodeColor => {
     switch (infoType) {
         case PeriodeInfoType.utsettelseAnnenPart:
-            return DayColor.PURPLE;
+            return PeriodeColor.PURPLE;
         case PeriodeInfoType.uttakAnnenPart:
-            return mapUttaksplanFargeTilDayColor(getForelderFarge(forelder, erFarEllerMedmor));
+            return getForelderFarge(forelder, erFarEllerMedmor);
         default:
-            return DayColor.NONE;
+            return PeriodeColor.NONE;
     }
 };
 
@@ -78,23 +60,23 @@ const getKalenderFargeForPeriodeType = (
     periode: Periode,
     erFarEllerMedmor: boolean,
     uttaksplan: Periode[],
-): DayColor => {
+): PeriodeColor => {
     switch (periode.type) {
         case Periodetype.Utsettelse:
-            return DayColor.PURPLE;
+            return PeriodeColor.PURPLE;
         case Periodetype.PeriodeUtenUttak:
-            return DayColor.NONE;
+            return PeriodeColor.NONE;
         case Periodetype.Hull:
-            return DayColor.ORANGE;
+            return PeriodeColor.ORANGE;
         case Periodetype.Overføring:
         case Periodetype.Uttak:
             return getKalenderFargeForUttaksperiode(periode, uttaksplan, erFarEllerMedmor);
         case Periodetype.Opphold:
-            return mapUttaksplanFargeTilDayColor(getForelderFarge(periode.forelder, erFarEllerMedmor));
+            return getForelderFarge(periode.forelder, erFarEllerMedmor);
         case Periodetype.Info:
             return getKalenderFargeForInfoperiode(periode.infotype, periode.forelder, erFarEllerMedmor);
         default:
-            return DayColor.NONE;
+            return PeriodeColor.NONE;
     }
 };
 
@@ -110,7 +92,7 @@ const UttaksplanKalender: FunctionComponent<Props> = ({ uttaksplan, erFarEllerMe
     periods.splice(indexOfFamiliehendelse, 0, {
         fom: familiehendelsesdato,
         tom: familiehendelsesdato,
-        color: DayColor.PINK,
+        color: PeriodeColor.PINK,
     });
 
     return <Calendar periods={periods} />;

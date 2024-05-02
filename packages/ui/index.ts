@@ -25,5 +25,4 @@ export { default as Step } from './src/step/pageStep/Step';
 export { default as ProgressStepper } from './src/step/progressStepper/ProgressStepper';
 export { default as Calendar } from './src/calendar/Calendar';
 export { default as CalendarLabel } from './src/calendar/label/CalendarLabel';
-export { DayColor } from './src/calendar/Day';
 export type { ProgressStep } from './src/step/progressStepper/ProgressStepper';

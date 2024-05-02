@@ -1,12 +1,13 @@
+import { PeriodeColor } from '@navikt/fp-constants';
+
 import { Forelder } from 'app/types/Forelder';
 import { StønadskontoType } from 'app/types/StønadskontoType';
-import { UttaksplanColor } from 'app/types/UttaksplanColor';
 
 export const getForelderFarge = (forelder: Forelder, erFarEllerMedmor: boolean) => {
     if (forelder === Forelder.mor) {
-        return erFarEllerMedmor ? UttaksplanColor.lightBlue : UttaksplanColor.blue;
+        return erFarEllerMedmor ? PeriodeColor.LIGHTBLUE : PeriodeColor.BLUE;
     }
-    return erFarEllerMedmor ? UttaksplanColor.green : UttaksplanColor.lightGreen;
+    return erFarEllerMedmor ? PeriodeColor.GREEN : PeriodeColor.LIGHTGREEN;
 };
 
 export const getStønadskontoFarge = (
@@ -14,25 +15,25 @@ export const getStønadskontoFarge = (
     forelder: Forelder | undefined,
     erFarEllerMedmor: boolean,
     harMidlertidigOmsorg?: boolean,
-): UttaksplanColor => {
+): PeriodeColor => {
     if (harMidlertidigOmsorg) {
-        return erFarEllerMedmor ? UttaksplanColor.green : UttaksplanColor.blue;
+        return erFarEllerMedmor ? PeriodeColor.GREEN : PeriodeColor.BLUE;
     }
 
     if (forelder === undefined) {
         switch (konto) {
             case StønadskontoType.Fedrekvote:
             case StønadskontoType.AktivitetsfriKvote:
-                return erFarEllerMedmor ? UttaksplanColor.green : UttaksplanColor.lightGreen;
+                return erFarEllerMedmor ? PeriodeColor.GREEN : PeriodeColor.LIGHTGREEN;
             case StønadskontoType.ForeldrepengerFørFødsel:
             case StønadskontoType.Mødrekvote:
-                return erFarEllerMedmor ? UttaksplanColor.lightBlue : UttaksplanColor.blue;
+                return erFarEllerMedmor ? PeriodeColor.LIGHTBLUE : PeriodeColor.BLUE;
             case StønadskontoType.Foreldrepenger:
-                return erFarEllerMedmor ? UttaksplanColor.green : UttaksplanColor.blue;
+                return erFarEllerMedmor ? PeriodeColor.GREEN : PeriodeColor.BLUE;
             case StønadskontoType.Fellesperiode:
-                return erFarEllerMedmor ? UttaksplanColor.greenLightBlue : UttaksplanColor.blueLightGreen;
+                return erFarEllerMedmor ? PeriodeColor.LIGHTBLUEGREEN : PeriodeColor.LIGHTGREENBLUE;
             default:
-                return UttaksplanColor.transparent;
+                return PeriodeColor.NONE;
         }
     }
     return getForelderFarge(forelder, erFarEllerMedmor);
