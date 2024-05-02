@@ -8,9 +8,21 @@ import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
+
 import HvisManBlirSyk from './HvisManBlirSyk';
 import HvisMorBlirSyk from './HvisMorBlirSyk';
 import NyttBarnFørTreÅr from './NyttBarnFørTreÅr';
+
+const onToggleExpansionCard = (open: boolean) => {
+    if (open) {
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: 'planlegger',
+            team: 'foreldrepenger',
+            pageKey: 'toggle-uforutsette-endringer',
+        });
+    }
+};
 
 interface Props {
     hvemPlanlegger: HvemPlanlegger;
@@ -21,7 +33,7 @@ const UforutsetteEndringer: React.FunctionComponent<Props> = ({ hvemPlanlegger, 
     const morHarIkkeRett =
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
     return (
-        <ExpansionCard aria-label=".">
+        <ExpansionCard aria-label="." onToggle={onToggleExpansionCard}>
             <ExpansionCard.Header>
                 <HStack gap="10" align="center" wrap={false}>
                     <div>

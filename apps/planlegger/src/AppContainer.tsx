@@ -3,8 +3,10 @@ import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
+import { useBeforeUnload } from '@navikt/fp-utils';
 
 import PlanleggerDataInit from './Planlegger';
 import enMessages from './intl/messages/en_US.json';
@@ -45,6 +47,14 @@ const initLocale = (): LocaleAll => {
 const AppContainer = () => {
     const origLocale = useMemo(() => initLocale(), []);
     const [locale, setLocale] = useState<LocaleAll>(origLocale);
+
+    useBeforeUnload(() => {
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: 'planlegger',
+            team: 'foreldrepenger',
+            pageKey: 'page-unload',
+        });
+    });
 
     const changeLocale = useCallback((activeLocale: LocaleAll) => {
         setLocale(activeLocale);

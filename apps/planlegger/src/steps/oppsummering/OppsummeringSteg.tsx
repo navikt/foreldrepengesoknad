@@ -16,6 +16,7 @@ import { Alert, BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@n
 
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -27,6 +28,11 @@ import HvorMyeIkon from './ikoner/HvorMyeIkon';
 import styles from './oppsummeringSteg.module.css';
 
 const copyUrlToClipboard = async () => {
+    logAmplitudeEvent('applikasjon-hendelse', {
+        app: 'planlegger',
+        team: 'foreldrepenger',
+        pageKey: 'copy-url',
+    });
     try {
         await navigator.clipboard.writeText(window.location.href);
     } catch (err) {

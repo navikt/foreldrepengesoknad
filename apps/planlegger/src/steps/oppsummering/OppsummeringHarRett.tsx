@@ -27,6 +27,18 @@ import { finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
+
+const onToggleExpansionCard = (open: boolean) => {
+    if (open) {
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: 'planlegger',
+            team: 'foreldrepenger',
+            pageKey: 'toggle-oppsummering-planen',
+        });
+    }
+};
+
 interface Props {
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
     hvorLangPeriode: HvorLangPeriode;
@@ -74,7 +86,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
 
     return (
         <>
-            <ExpansionCard aria-label="">
+            <ExpansionCard aria-label="" onToggle={onToggleExpansionCard}>
                 <ExpansionCard.Header>
                     <HStack gap="5" align="center" wrap={false}>
                         <IconCircleWrapper size="large" color="green">

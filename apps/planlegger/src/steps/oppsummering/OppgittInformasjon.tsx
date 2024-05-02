@@ -26,6 +26,18 @@ import {
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
+
+const onToggleExpansionCard = (open: boolean) => {
+    if (open) {
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: 'planlegger',
+            team: 'foreldrepenger',
+            pageKey: 'toggle-oppgitt-informasjon',
+        });
+    }
+};
+
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoer;
     barnet: OmBarnet;
@@ -68,7 +80,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
 
     return (
         <VStack gap="10">
-            <ExpansionCard aria-label="">
+            <ExpansionCard aria-label="" onToggle={onToggleExpansionCard}>
                 <ExpansionCard.Header>
                     <HStack gap="5" align="center" wrap={false}>
                         <IconCircleWrapper size="large" color="green">

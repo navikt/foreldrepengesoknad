@@ -10,12 +10,24 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
+
 import DeFørsteSeksUkene from './DeFørsteSeksUkene';
 import FørTermin from './FørTermin';
 import JobbeSamtidig from './JobbeSamtidig';
 import LeggeTilFerie from './LeggeTilFerie';
 import PermisjonSamtidig from './PermisjonSamtidig';
 import ToUkerRundtFødsel from './ToUkerRundtFødsel';
+
+const onToggleExpansionCard = (open: boolean) => {
+    if (open) {
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: 'planlegger',
+            team: 'foreldrepenger',
+            pageKey: 'toggle-tilpasse-planen',
+        });
+    }
+};
 
 interface Props {
     hvemPlanlegger: HvemPlanlegger;
@@ -32,7 +44,7 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
     const kunFarEllerMedmorHarRett = hvemHarRett === 'kunMedmorEllerFarSøker2HarRett';
 
     return (
-        <ExpansionCard aria-label="Expansion card">
+        <ExpansionCard aria-label="Expansion card" onToggle={onToggleExpansionCard}>
             <ExpansionCard.Header>
                 <HStack gap="10" align="center" wrap={false}>
                     <div>
