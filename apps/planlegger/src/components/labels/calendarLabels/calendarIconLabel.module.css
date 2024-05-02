@@ -2,7 +2,10 @@
     border-radius: 1.25rem;
     background-color: var(--a-blue-50);
     display: flex;
-    padding: 10px;
+    padding-left: 10px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     width: fit-content;
 }
 
@@ -10,7 +13,10 @@
     border-radius: 1.25rem;
     background-color: var(--a-green-100);
     display: flex;
-    padding: 10px;
+    padding-left: 10px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     width: fit-content;
 }
 
@@ -18,7 +24,10 @@
     border-radius: 1.25rem;
     background-color: var(--a-red-50);
     display: flex;
-    padding: 10px;
+    padding-left: 10px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     width: fit-content;
 }
 
