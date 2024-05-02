@@ -32,6 +32,25 @@
     background-color: var(--a-blue-300);
 }
 
+.lightblueDay {
+    background-color: var(--a-data-surface-2-subtle);
+    border-top: 1px solid var(--a-blue-300);
+    border-bottom: 1px solid var(--a-blue-300);
+}
+
+.lightblueDay.firstDay {
+    border-left: 1px solid var(--a-blue-300);
+}
+
+.lightblueDay.lastDay {
+    border-right: 1px solid var(--a-blue-300);
+}
+
+.lightblueDay.firstAndLastDay {
+    border-left: 1px solid var(--a-blue-300);
+    border-right: 1px solid var(--a-blue-300);
+}
+
 .greenDay {
     background-color: var(--a-green-100);
     border-top: 1px solid var(--a-green-300);
@@ -51,8 +70,124 @@
     border-right: 1px solid var(--a-green-300);
 }
 
+.darkgreenDay {
+    background-color: var(--a-data-surface-5);
+}
+
+.darkgreenGreyDay {
+    background: linear-gradient(
+        to top right,
+        var(--a-data-surface-5),
+        var(--a-data-surface-5),
+        var(--a-gray-200),
+        var(--a-data-surface-5)
+    );
+    border-top: 1px solid var(--a-data-surface-5);
+    border-bottom: 1px solid var(--a-data-surface-5);
+}
+
+.darkgreenGreyDay.firstDay {
+    border-left: 1px solid var(--a-data-surface-5);
+}
+
+.darkgreenGreyDay.lastDay {
+    border-right: 1px solid var(--a-data-surface-5);
+}
+
+.darkgreenGreyDay.firstAndLastDay {
+    border-left: 1px solid var(--a-data-surface-5);
+    border-right: 1px solid var(--a-data-surface-5);
+}
+
+.blueGreyDay {
+    background: linear-gradient(
+        to top right,
+        var(--a-blue-300),
+        var(--a-blue-300),
+        var(--a-gray-200),
+        var(--a-blue-300)
+    );
+    border-top: 1px solid var(--a-blue-300);
+    border-bottom: 1px solid var(--a-blue-300);
+}
+
+.blueGreyDay.firstDay {
+    border-left: 1px solid var(--a-blue-300);
+}
+
+.blueGreyDay.lastDay {
+    border-right: 1px solid var(--a-blue-300);
+}
+
+.blueGreyDay.firstAndLastDay {
+    border-left: 1px solid var(--a-blue-300);
+    border-right: 1px solid var(--a-blue-300);
+}
+
 .grayDay {
     background-color: var(--a-gray-200);
+}
+
+.orangeDay {
+    background-color: #ff9100;
+}
+
+.purpleDay {
+    background-color: var(--a-data-surface-6);
+}
+
+.lightBlueDarkGreenDay {
+    background: linear-gradient(
+        to top,
+        var(--a-data-surface-5),
+        var(--a-data-surface-5) 50%,
+        var(--a-data-surface-2-subtle) 50%,
+        var(--a-data-surface-2-subtle) 75%,
+        var(--a-data-surface-2-subtle) 100%
+    );
+    border-top: 1px solid var(--a-data-surface-5);
+    border-bottom: 1px solid var(--a-data-surface-5);
+    /* background: linear-gradient(to top, var(--a-data-surface-5), var(--a-data-surface-2-subtle)); */
+}
+
+.lightBlueDarkGreenDay.firstDay {
+    border-left: 1px solid var(--a-data-surface-5);
+}
+
+.lightBlueDarkGreenDay.lastDay {
+    border-right: 1px solid var(--a-data-surface-5);
+}
+
+.lightBlueDarkGreenDay.firstAndLastDay {
+    border-left: 1px solid var(--a-data-surface-5);
+    border-right: 1px solid var(--a-data-surface-5);
+}
+
+.greenBlueDay {
+    background: linear-gradient(
+        to top,
+        var(--a-blue-300),
+        var(--a-blue-300) 50%,
+        var(--a-green-100) 50%,
+        var(--a-green-100) 75%,
+        var(--a-green-100) 100%
+    );
+    border-top: 1px solid var(--a-blue-300);
+    border-bottom: 1px solid var(--a-blue-300);
+    /* background: linear-gradient(to top, var(--a-blue-300), var(--a-green-100)); */
+}
+
+.greenBlueDay.firstDay {
+    border-left: 1px solid var(--a-blue-300);
+}
+
+.greenBlueDay.lastDay {
+    border-right: 1px solid var(--a-blue-300);
+}
+
+.greenBlueDay.firstAndLastDay {
+    border-left: 1px solid var(--a-blue-300);
+    border-right: 1px solid var(--a-blue-300);
 }
 
 .none {

@@ -3,9 +3,17 @@ import styles from './day.module.css';
 export enum DayColor {
     NONE = 'NONE',
     PINK = 'PINK',
+    LIGHTBLUE = 'LIGHTBLUE',
     BLUE = 'BLUE',
+    DARKGREEN = 'DARKGREEN',
     GREEN = 'GREEN',
     GRAY = 'GRAY',
+    ORANGE = 'ORANGE',
+    PURPLE = 'PURPLE',
+    LIGHTBLUEDARKGREEN = 'LIGHTBLUEDARKGREEN',
+    GREENBLUE = 'GREENBLUE',
+    DARKGREENGREY = 'DARKGREENGREY',
+    BLUEGREY = 'BLUEGREY',
 }
 
 export enum DayType {
@@ -21,6 +29,14 @@ const DAY_STYLE = {
     [DayColor.GREEN]: styles.greenDay,
     [DayColor.GRAY]: styles.grayDay,
     [DayColor.PINK]: styles.pinkDay,
+    [DayColor.ORANGE]: styles.orangeDay,
+    [DayColor.PURPLE]: styles.purpleDay,
+    [DayColor.LIGHTBLUE]: styles.lightblueDay,
+    [DayColor.DARKGREEN]: styles.darkgreenDay,
+    [DayColor.LIGHTBLUEDARKGREEN]: styles.lightBlueDarkGreenDay,
+    [DayColor.GREENBLUE]: styles.greenBlueDay,
+    [DayColor.DARKGREENGREY]: styles.darkgreenGreyDay,
+    [DayColor.BLUEGREY]: styles.blueGreyDay,
 };
 
 type Props = {

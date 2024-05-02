@@ -35,8 +35,10 @@ import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
 import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
 import OversiktKvoter from './components/oversikt-kvoter/OversiktKvoter';
 import Planlegger from './components/planlegger/Planlegger';
+import PlanvisningToggle from './components/planvisning-toggle/PlanvisningToggle';
 import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttaksplanModal';
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
+import UttaksplanKalender from './components/uttaksplan-kalender/UttaksplanKalender';
 import { getHarAktivitetskravIPeriodeUtenUttak } from './utils/uttaksplanUtils';
 import { validerUttaksplan } from './validering/validerUttaksplan';
 import VeilederInfo from './validering/veilederInfo/VeilederInfo';
@@ -141,6 +143,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
+    const [visningsModus, setVisningsmodus] = useState<string>('liste');
     const [perioderErGyldige, setPerioderErGyldige] = useState<PeriodeValidState[]>([]);
     const [slettUttaksplanModalOpen, setSlettUttaksplanModalOpen] = useState(false);
     const [resetUttaksplanModalOpen, setResetUttaksplanModalOpen] = useState(false);
@@ -306,36 +309,47 @@ const Uttaksplan: FunctionComponent<Props> = ({
 
     return (
         <>
-            <Block padBottom="l">
-                <Planlegger
-                    uttaksplan={uttaksplan}
-                    familiehendelsesdato={familiehendelsesdatoDate}
-                    handleUpdatePeriode={handleUpdatePeriode}
-                    stønadskontoer={stønadskontoer}
-                    navnPåForeldre={navnPåForeldre}
-                    annenForelder={annenForelder}
-                    arbeidsforhold={oldFormatArbeidsforhold}
-                    handleDeletePeriode={handleDeletePeriode}
-                    handleAddPeriode={handleAddPeriode}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                    erFlerbarnssøknad={erFlerbarnssøknad}
-                    erDeltUttak={erDeltUttak}
-                    erAleneOmOmsorg={erAleneOmOmsorg}
-                    situasjon={situasjon}
-                    meldingerPerPeriode={meldingerPerPeriode}
-                    erMorUfør={erMorUfør}
-                    setPerioderErGyldige={setPerioderErGyldige}
-                    erEndringssøknad={erEndringssøknad}
-                    setSlettUttaksplanModalOpen={setSlettUttaksplanModalOpen}
-                    setResetUttaksplanModalOpen={setResetUttaksplanModalOpen}
-                    termindato={termindato}
-                    barn={barn}
-                    utsettelserIPlan={utsettelserIPlan}
-                    barnFraNesteSak={barnFraNesteSak}
-                    perioderErGyldige={perioderErGyldige}
-                />
-            </Block>
-
+            <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
+            {visningsModus === 'liste' && (
+                <Block padBottom="l">
+                    <Planlegger
+                        uttaksplan={uttaksplan}
+                        familiehendelsesdato={familiehendelsesdatoDate}
+                        handleUpdatePeriode={handleUpdatePeriode}
+                        stønadskontoer={stønadskontoer}
+                        navnPåForeldre={navnPåForeldre}
+                        annenForelder={annenForelder}
+                        arbeidsforhold={oldFormatArbeidsforhold}
+                        handleDeletePeriode={handleDeletePeriode}
+                        handleAddPeriode={handleAddPeriode}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                        erFlerbarnssøknad={erFlerbarnssøknad}
+                        erDeltUttak={erDeltUttak}
+                        erAleneOmOmsorg={erAleneOmOmsorg}
+                        situasjon={situasjon}
+                        meldingerPerPeriode={meldingerPerPeriode}
+                        erMorUfør={erMorUfør}
+                        setPerioderErGyldige={setPerioderErGyldige}
+                        erEndringssøknad={erEndringssøknad}
+                        setSlettUttaksplanModalOpen={setSlettUttaksplanModalOpen}
+                        setResetUttaksplanModalOpen={setResetUttaksplanModalOpen}
+                        termindato={termindato}
+                        barn={barn}
+                        utsettelserIPlan={utsettelserIPlan}
+                        barnFraNesteSak={barnFraNesteSak}
+                        perioderErGyldige={perioderErGyldige}
+                    />
+                </Block>
+            )}
+            {visningsModus === 'kalender' && (
+                <Block padBottom="xxl">
+                    <UttaksplanKalender
+                        uttaksplan={uttaksplan}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                        familiehendelsesdato={familiehendelsesdato}
+                    />
+                </Block>
+            )}
             <Block padBottom="xl">
                 <OversiktKvoter
                     tilgjengeligeStønadskontoer={stønadskontoer}

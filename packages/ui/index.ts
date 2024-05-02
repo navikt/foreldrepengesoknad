@@ -23,4 +23,6 @@ export { default as LanguageToggle } from './src/languageToggle/LanguageToggle';
 export { default as IntlProvider } from './src/i18n/IntlProvider';
 export { default as Step } from './src/step/pageStep/Step';
 export { default as ProgressStepper } from './src/step/progressStepper/ProgressStepper';
+export { default as Calendar } from './src/calendar/Calendar';
 export type { ProgressStep } from './src/step/progressStepper/ProgressStepper';
+export { DayColor } from './src/calendar/Day';
