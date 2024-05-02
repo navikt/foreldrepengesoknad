@@ -1,12 +1,13 @@
 import * as Sentry from '@sentry/browser';
-import { Component } from 'react';
+import { Component, ReactElement } from 'react';
 
 import ErrorPage, { AppName } from './ErrorPage';
 
 interface Props {
     appName: AppName;
     children: React.ReactNode;
-    retryCallback: () => void;
+    retryCallback?: () => void;
+    customErrorPage?: ReactElement;
 }
 
 interface State {
@@ -32,15 +33,17 @@ class ErrorBoundary extends Component<Props, State> {
     }
 
     render() {
-        const { appName, retryCallback } = this.props;
+        const { appName, retryCallback, customErrorPage } = this.props;
         const { errorMessage, errorInfo } = this.state;
 
         if (this.state.hasError) {
-            return errorMessage ? (
-                <ErrorPage appName={appName} errorMessage={errorMessage} retryCallback={retryCallback} />
-            ) : (
-                <div>{errorMessage || errorInfo}</div>
-            );
+            if (customErrorPage) {
+                return customErrorPage;
+            }
+            if (errorMessage && retryCallback) {
+                return <ErrorPage appName={appName} errorMessage={errorMessage} retryCallback={retryCallback} />;
+            }
+            return <div>{errorMessage || errorInfo}</div>;
         }
         return this.props.children;
     }

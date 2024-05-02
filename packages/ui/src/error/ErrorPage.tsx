@@ -10,7 +10,7 @@ import ContentWrapper from '../contentWrapper/ContentWrapper';
 export type AppName = 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger' | 'Foreldrepengeplanlegger';
 
 export interface Props {
-    appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger' | 'Foreldrepengeplanlegger';
+    appName: AppName;
     errorMessage: string;
     retryCallback: () => void;
 }
@@ -22,7 +22,6 @@ const ErrorPage: FunctionComponent<Props> = ({ appName, errorMessage, retryCallb
                 {appName === 'Engangsstønad' && <FormattedMessage id="ErrorPage.Engangsstønad" />}
                 {appName === 'Foreldrepenger' && <FormattedMessage id="ErrorPage.Foreldrepenger" />}
                 {appName === 'Svangerskapspenger' && <FormattedMessage id="ErrorPage.Svangerskapspenger" />}
-                {appName === 'Foreldrepengeplanlegger' && <FormattedMessage id="ErrorPage.Foreldrepengeplanlegger" />}
             </Heading>
             <VStack gap="10">
                 <Alert variant="warning">

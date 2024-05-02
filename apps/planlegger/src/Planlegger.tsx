@@ -1,4 +1,5 @@
 import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
+import ErrorPage from 'components/error/ErrorPage';
 import { FunctionComponent, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
@@ -10,7 +11,6 @@ import { decodeBase64 } from 'utils/urlEncodingUtils';
 
 import { createApi, usePostRequest } from '@navikt/fp-api';
 import { LocaleAll } from '@navikt/fp-types';
-import { ErrorPage } from '@navikt/fp-ui';
 
 import PlanleggerRouter from './PlanleggerRouter';
 import Environment from './appData/Environment';
@@ -73,13 +73,7 @@ export const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, change
     );
 
     if (requestData.error) {
-        return (
-            <ErrorPage
-                appName="Foreldrepengeplanlegger"
-                errorMessage={requestData.error.message}
-                retryCallback={() => location.reload()}
-            />
-        );
+        return <ErrorPage />;
     }
 
     return <PlanleggerRouter locale={locale} changeLocale={changeLocale} stønadskontoer={requestData.data} />;

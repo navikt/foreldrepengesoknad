@@ -1,5 +1,6 @@
+import ErrorPage from 'components/error/ErrorPage';
 import dayjs from 'dayjs';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { LocaleAll } from '@navikt/fp-types';
@@ -41,10 +42,6 @@ const initLocale = (): LocaleAll => {
     return locale;
 };
 
-const retryCallback = async () => {
-    window.location.href = window.location.origin;
-};
-
 const AppContainer = () => {
     const origLocale = useMemo(() => initLocale(), []);
     const [locale, setLocale] = useState<LocaleAll>(origLocale);
@@ -57,7 +54,7 @@ const AppContainer = () => {
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary appName="Foreldrepengeplanlegger" retryCallback={retryCallback}>
+            <ErrorBoundary appName="Foreldrepengeplanlegger" customErrorPage={<ErrorPage />}>
                 <BrowserRouter>
                     <PlanleggerDataInit locale={locale} changeLocale={changeLocale} />
                 </BrowserRouter>
