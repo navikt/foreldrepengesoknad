@@ -95,7 +95,7 @@
     "HvorLangPeriodeSteg.Infoboks.SisteDagTittel": "The last day with parental benefits can be {dato}",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstTermin": "If the {antallBarn, select, 1 {child} other {children}} is born on the due date{kunEnPartSkalHa, select, true {.} other { and if you take leave continuously from {erMorDelAvSøknaden, select, true {three weeks before the due date} other {the due date}}.}}",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstFødsel": "If the {antallBarn, select, 1 {child} other {children}} is born {dato}{kunEnPartSkalHa, select, true {.} other { and if you take leave continuously from the birth.}}",
-    "HvorLangPeriodeSteg.Infoboks.SisteDagTekstAdopsjon": "If you're taking over the care of on the {dato} {kunEnPartSkalHa, select, true {.} other { and if you take leave continuously from that date.}}",
+    "HvorLangPeriodeSteg.Infoboks.SisteDagTekstAdopsjon": "If you're taking over the care of the child on the {dato} {kunEnPartSkalHa, select, true {.} other { and if you take leave continuously from that date.}}",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker": "<b>{uker} of the {uker2} weeks</b> can be used by the {hvem} without requirements for the mother.",
     "HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.AndreUker": "<b>{uker} of the {uker2} weeks</b> can be used by the {hvem} if the mother is in <a>approved activity</a>.",
     "OmBarnetSteg.HvorMange": "How many children are you expecting?",
