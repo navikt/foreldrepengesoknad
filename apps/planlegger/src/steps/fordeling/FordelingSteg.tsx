@@ -150,7 +150,12 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) =>
                         <GreenPanel isDarkGreen={fordeling === undefined}>
                             <Select
                                 name="antallUkerSøker1"
-                                label={<FormattedMessage id="FordelingSteg.FordelingTittel" />}
+                                label={
+                                    <FormattedMessage
+                                        id="FordelingSteg.FordelingTittel"
+                                        values={{ uker: antallUkerFellesperiode }}
+                                    />
+                                }
                                 autofocusWhenEmpty
                                 validate={[
                                     isRequired(intl.formatMessage({ id: 'FordelingSteg.FordelingTittel.Required' })),

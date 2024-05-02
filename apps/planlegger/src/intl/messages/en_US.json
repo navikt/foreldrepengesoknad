@@ -55,7 +55,7 @@
     "FordelingSteg.Tittel": "Distribution",
     "FordelingSteg.Infoboks.HvordanFordeleTittel": "How to distribute the weeks you will be at home",
     "FordelingSteg.Infoboks.HvordanFordeleTekst": "Since both of you will receive parental benefits, the period consists of three parts, one for each parent and a joint period. You can share the joint period between you.",
-    "FordelingSteg.FordelingTittel": "How do you want to distribute the joint period?",
+    "FordelingSteg.FordelingTittel": "How do you want to distribute the {uker} weeks of joint period?",
     "FordelingSteg.FordelingOptionAlt": "{uker} weeks to {hvem}",
     "FordelingSteg.FordelingTittel.Required": "You must answer how you want to distribute the joint period before proceeding.",
     "FordelingSteg.FordelingOptions": "{uker} to {hvem}, {uker2} to {hvem2}",

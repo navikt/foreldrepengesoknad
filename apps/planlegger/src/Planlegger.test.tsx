@@ -53,7 +53,7 @@ describe('<Planlegger>', () => {
 
         expect(screen.getByText('Fordeling')).toBeInTheDocument();
         expect(screen.getByText('Steg 5 av 7')).toBeInTheDocument();
-        await userEvent.selectOptions(utils.getByLabelText('Hvordan vil dere fordele fellesperioden?'), '1');
+        await userEvent.selectOptions(utils.getByLabelText('Hvordan vil dere fordele 16 uker med fellesperiode?'), '1');
         await userEvent.click(screen.getByText('Neste'));
 
         expect(screen.getByText('Planen deres')).toBeInTheDocument();

@@ -55,7 +55,7 @@
     "FordelingSteg.Tittel": "Fordeling",
     "FordelingSteg.Infoboks.HvordanFordeleTittel": "Korleis fordele vekene de skal vere heime",
     "FordelingSteg.Infoboks.HvordanFordeleTekst": "Sidan de begge skal ha foreldrepengar, består perioden av tre deler, ein til kvar av foreldra og ein fellesperiode. De kan dele fellesperioden mellom dykk.",
-    "FordelingSteg.FordelingTittel": "Korleis ønskjer de å fordele fellesperioden?",
+    "FordelingSteg.FordelingTittel": "Korleis ynskjer dykk å fordela {uker} veker med fellesperiode?",
     "FordelingSteg.FordelingTittel.Required": "Du må svara på korleis de vil fordela fellesperioden før du går vidare.",
     "FordelingSteg.FordelingOptionAlt": "{uker} veker til {hvem}",
     "FordelingSteg.FordelingOptions": "{uker} til {hvem}, {uker2} til {hvem2}",
