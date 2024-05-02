@@ -77,12 +77,10 @@
 .greenStripedDay {
     background: repeating-linear-gradient(
         45deg,
-        var(--a-data-surface-5) 0px,
-        var(--a-data-surface-5) 12.5px,
-        var(--a-green-200) 12.5px,
-        var(--a-green-200) 15px,
-        var(--a-data-surface-5) 15px,
-        var(--a-data-surface-5) 20px
+        var(--a-data-surface-5) 0%,
+        var(--a-data-surface-5) 30%,
+        var(--a-green-200) 30%,
+        var(--a-green-200) 60%
     );
     border-top: 1px solid var(--a-data-surface-5);
     border-bottom: 1px solid var(--a-data-surface-5);
@@ -92,11 +90,11 @@
     border-left: 1px solid var(--a-data-surface-5);
 }
 
-.greenStripedDay.lastDay {
+.darkgreenStripedDay.lastDay {
     border-right: 1px solid var(--a-data-surface-5);
 }
 
-.greenStripedDay.firstAndLastDay {
+.darkgreenStripedDay.firstAndLastDay {
     border-left: 1px solid var(--a-data-surface-5);
     border-right: 1px solid var(--a-data-surface-5);
 }

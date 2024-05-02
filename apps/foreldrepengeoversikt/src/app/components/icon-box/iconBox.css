@@ -3,31 +3,31 @@
     max-height: 32px;
     border-radius: 0.5rem;
 }
-.iconBox--orange {
+.iconBox--ORANGE {
     background-color: var(--a-data-surface-3);
 }
 
-.iconBox--purple {
+.iconBox--PURPLE {
     background-color: var(--a-data-surface-6);
 }
 
-.iconBox--blue {
+.iconBox--BLUE {
     background-color: var(--a-data-surface-1);
 }
 
-.iconBox--lightBlue {
+.iconBox--LIGHTBLUE {
     background-color: var(--a-data-surface-2-subtle);
 }
 
-.iconBox--green {
+.iconBox--GREEN {
     background-color: var(--a-data-surface-5);
 }
 
-.iconBox--lightGreen {
+.iconBox--LIGHTGREEN {
     background-color: var(--a-data-surface-5-subtle);
 }
 
-.iconBox--blueLightGreen {
+.iconBox--LIGHTGREENBLUE {
     background: repeating-linear-gradient(
         -45deg,
         var(--a-data-surface-1),
@@ -37,7 +37,7 @@
     );
 }
 
-.iconBox--greenLightBlue {
+.iconBox--LIGHTBLUEGREEN {
     background: repeating-linear-gradient(
         -45deg,
         var(--a-data-surface-5),
@@ -46,7 +46,7 @@
         var(--a-data-surface-2-subtle) 100%
     );
 }
-.iconBox--gray {
+.iconBox--GRAY {
     background-color: var(--a-gray-400);
 }
 
