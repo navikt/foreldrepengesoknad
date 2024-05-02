@@ -358,6 +358,12 @@ const Uttaksplan: FunctionComponent<Props> = ({
                             navnPåForeldre={navnPåForeldre}
                         />
                     </Block>
+                    <Block visible={uttaksplanVeilederInfo.length > 0} padBottom="l">
+                        <VeilederInfo
+                            messages={uttaksplanVeilederInfo}
+                            ariaTittel={intlUtils(intl, 'uttaksplan.regelAvvik.ariaTittel')}
+                        />
+                    </Block>
                 </>
             )}
             {visningsModus === 'kalender' && (
@@ -369,12 +375,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     />
                 </Block>
             )}
-            <Block visible={uttaksplanVeilederInfo.length > 0} padBottom="l">
-                <VeilederInfo
-                    messages={uttaksplanVeilederInfo}
-                    ariaTittel={intlUtils(intl, 'uttaksplan.regelAvvik.ariaTittel')}
-                />
-            </Block>
+
             <SlettUttaksplanModal
                 isOpen={slettUttaksplanModalOpen}
                 erEndringssøknad={erEndringssøknad}
