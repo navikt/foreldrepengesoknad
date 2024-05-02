@@ -129,11 +129,11 @@
 }
 
 .orangeDay {
-    background-color: #ff9100;
+    background-color: var(--a-surface-warning);
 }
 
 .purpleDay {
-    background-color: var(--a-data-surface-6);
+    background-color: var(--a-purple-300);
 }
 
 .lightBlueDarkGreenDay {
