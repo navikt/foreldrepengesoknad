@@ -30,11 +30,13 @@ const UttaksplanNy: FunctionComponent = () => {
         },
         {
             id: '3',
+            forelder: Forelder.mor,
             tidsperiode: {
                 fom: new Date('2024-05-22'),
                 tom: new Date('2024-05-31'),
             },
-            type: Periodetype.PeriodeUtenUttak,
+            type: Periodetype.Uttak,
+            konto: StønadskontoType.Fellesperiode,
         },
         {
             id: '4',
