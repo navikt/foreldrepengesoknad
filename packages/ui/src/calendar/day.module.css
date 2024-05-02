@@ -78,6 +78,7 @@
     background: linear-gradient(
         to top right,
         var(--a-data-surface-5),
+        var(--a-gray-200),
         var(--a-data-surface-5),
         var(--a-gray-200),
         var(--a-data-surface-5)
@@ -147,7 +148,6 @@
     );
     border-top: 1px solid var(--a-data-surface-5);
     border-bottom: 1px solid var(--a-data-surface-5);
-    /* background: linear-gradient(to top, var(--a-data-surface-5), var(--a-data-surface-2-subtle)); */
 }
 
 .lightBlueDarkGreenDay.firstDay {
@@ -174,7 +174,6 @@
     );
     border-top: 1px solid var(--a-blue-300);
     border-bottom: 1px solid var(--a-blue-300);
-    /* background: linear-gradient(to top, var(--a-blue-300), var(--a-green-100)); */
 }
 
 .greenBlueDay.firstDay {
