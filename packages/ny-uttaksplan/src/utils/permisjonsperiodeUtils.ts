@@ -1,4 +1,11 @@
-import { Forelder, Periode, Tidsperioden, isUttakAnnenPart, isUttaksperiode } from '@navikt/fp-common';
+import {
+    Forelder,
+    Periode,
+    Tidsperioden,
+    isPeriodeUtenUttak,
+    isUttakAnnenPart,
+    isUttaksperiode,
+} from '@navikt/fp-common';
 import { dateToISOString } from '@navikt/fp-formik';
 
 import Permisjonsperiode from '../types/Permisjonsperiode';
@@ -41,8 +48,6 @@ export const mapPerioderToPermisjonsperiode = (
         }
 
         if (erSamtidigUttak && nestePeriode !== undefined) {
-            console.log(`Er samtidig uttak: ${index}`);
-
             nyPermisjonsperiode = {
                 perioder: [{ ...periode }, { ...nestePeriode }],
                 tidsperiode: {
@@ -125,6 +130,35 @@ export const mapPerioderToPermisjonsperiode = (
 
             forelderForrigePeriode = periode.forelder;
             return;
+        }
+
+        if (isPeriodeUtenUttak(periode)) {
+            if (!nyPermisjonsperiode) {
+                nyPermisjonsperiode = {
+                    perioder: [{ ...periode }],
+                    tidsperiode: {
+                        fom: dateToISOString(periode.tidsperiode.fom),
+                        tom: dateToISOString(periode.tidsperiode.tom),
+                    },
+                };
+
+                permisjonsPerioder.push(nyPermisjonsperiode);
+                forelderForrigePeriode = undefined;
+                nyPermisjonsperiode = undefined;
+            } else {
+                nyPermisjonsperiode = {
+                    perioder: [{ ...periode }],
+                    tidsperiode: {
+                        fom: dateToISOString(periode.tidsperiode.fom),
+                        tom: dateToISOString(periode.tidsperiode.tom),
+                    },
+                };
+
+                permisjonsPerioder.push(nyPermisjonsperiode);
+
+                forelderForrigePeriode = undefined;
+                nyPermisjonsperiode = undefined;
+            }
         }
     });
 
