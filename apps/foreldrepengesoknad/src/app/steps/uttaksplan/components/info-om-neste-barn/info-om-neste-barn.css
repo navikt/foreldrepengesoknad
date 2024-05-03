@@ -1,0 +1,14 @@
+.infoOmNesteBarn {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+}
+
+.infoOmNesteBarn__ikon {
+    background: var(--a-blue-200);
+    border-radius: 50%;
+    height: 35px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
