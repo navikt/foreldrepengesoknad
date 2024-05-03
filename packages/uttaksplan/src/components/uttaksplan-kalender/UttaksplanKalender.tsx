@@ -1,4 +1,9 @@
+import { DownloadIcon } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
+import generatePDF, { Margin, Options, Resolution } from 'react-to-pdf';
+
+import { Button } from '@navikt/ds-react';
 
 import {
     Forelder,
@@ -6,6 +11,7 @@ import {
     Periode,
     PeriodeInfoType,
     Periodetype,
+    Uttaksdagen,
     Uttaksperiode,
     getAnnenForelderSamtidigUttakPeriode,
     isInfoPeriode,
@@ -83,7 +89,9 @@ const getKalenderFargeForPeriodeType = (
 const UttaksplanKalender: FunctionComponent<Props> = ({ uttaksplan, erFarEllerMedmor, familiehendelsesdato }) => {
     const perioderForVisning = uttaksplan.filter((p) => !isInfoPeriode(p) || p.visPeriodeIPlan);
     const periods = perioderForVisning.map((p) => ({
-        fom: dateToISOString(p.tidsperiode.fom),
+        fom: dayjs(p.tidsperiode.fom).isSame(dayjs(familiehendelsesdato), 'd')
+            ? Uttaksdagen(p.tidsperiode.fom).neste().toDateString()
+            : dateToISOString(p.tidsperiode.fom),
         tom: dateToISOString(p.tidsperiode.tom),
         color: getKalenderFargeForPeriodeType(p, erFarEllerMedmor, uttaksplan),
     }));
@@ -95,7 +103,28 @@ const UttaksplanKalender: FunctionComponent<Props> = ({ uttaksplan, erFarEllerMe
         color: PeriodeColor.PINK,
     });
 
-    return <Calendar periods={periods} />;
+    const pdfOptionsSave = {
+        resolution: Resolution.HIGH,
+        page: {
+            margin: Margin.MEDIUM,
+        },
+    } as Options;
+    const getTargetElement = () => document.getElementById('content-id');
+
+    return (
+        <>
+            <div id="content-id">
+                <Calendar periods={periods} />
+            </div>
+            <Button
+                variant="secondary"
+                icon={<DownloadIcon />}
+                onClick={() => generatePDF(getTargetElement, pdfOptionsSave)}
+            >
+                Last ned kalender
+            </Button>
+        </>
+    );
 };
 
 export default UttaksplanKalender;
