@@ -8,7 +8,8 @@ import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { Situasjon, getNavnPåSøker, isAlene } from 'types/HvemPlanlegger';
+import { Situasjon } from 'types/HvemPlanlegger';
+import { erAlenesøker as erAlene, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';

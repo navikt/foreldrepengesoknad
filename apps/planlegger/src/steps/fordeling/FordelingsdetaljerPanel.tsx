@@ -2,10 +2,11 @@ import { CalendarIcon } from '@navikt/aksel-icons';
 import Infobox from 'components/boxes/Infobox';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidsstatus } from 'types/Arbeidssituasjon';
-import { erBarnetFødt } from 'types/Barnet';
-import { erMorDelAvSøknaden } from 'types/HvemPlanlegger';
-import { Uttaksdata } from 'utils/uttakHjelper';
+import { OmBarnet } from 'types/Barnet';
+import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
+import { erBarnetFødt } from 'utils/barnetUtils';
+import { Uttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort } from '@navikt/ds-react';
 
@@ -39,64 +40,8 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
             icon={<CalendarIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
             shouldFadeIn
         >
-            <BodyLong>
-                <FormattedMessage
-                    id="FordelingsdetaljerPanel.InfoboksTekst.FørsteDag"
-                    values={{
-                        hvem: fornavnPart1,
-                        dag: intl.formatDate(startdatoSøker1, {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: '2-digit',
-                        }),
-                    }}
-                />
-            </BodyLong>
-            <BodyLong spacing>
-                <FormattedMessage
-                    id="FordelingsdetaljerPanel.InfoboksTekst.SisteDag"
-                    values={{
-                        hvem: fornavnPart1,
-                        dag: intl.formatDate(sluttdatoSøker1, {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: '2-digit',
-                        }),
-                    }}
-                />
-            </BodyLong>
-            {fornavnPart2 && sluttdatoSøker2 && (
-                <>
-                    <BodyLong>
-                        <FormattedMessage
-                            id="FordelingsdetaljerPanel.InfoboksTekst.FørsteDag"
-                            values={{
-                                hvem: fornavnPart2,
-                                dag: intl.formatDate(startdatoSøker2, {
-                                    day: '2-digit',
-                                    month: '2-digit',
-                                    year: '2-digit',
-                                }),
-                            }}
-                        />
-                    </BodyLong>
-                    <BodyLong spacing>
-                        <FormattedMessage
-                            id="FordelingsdetaljerPanel.InfoboksTekst.SisteDag"
-                            values={{
-                                hvem: fornavnPart2,
-                                dag: intl.formatDate(sluttdatoSøker2, {
-                                    day: '2-digit',
-                                    month: '2-digit',
-                                    year: '2-digit',
-                                }),
-                            }}
-                        />
-                    </BodyLong>
-                </>
-            )}
-            <BodyLong size="small">
-                {erFødsel ? (
+            <BodyShort>
+                {erFødsel && (
                     <>
                         {antallBarn !== '1' ? (
                             <FormattedMessage
