@@ -8,8 +8,9 @@ import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/Tilgjengelige
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
+import { erMorDelAvSøknaden } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert } from './barnetUtils';
-import { utledHvemSomHarRett } from './hvemHarRettUtils';
+import { harMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from './hvemHarRettUtils';
 import { finnUttaksdata } from './uttakUtils';
 
 export const lagKalenderPerioder = (
@@ -19,7 +20,7 @@ export const lagKalenderPerioder = (
     arbeidssituasjon: Arbeidssituasjon,
     antallUkerFellesperiodeSøker1?: number,
 ): Period[] => {
-    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
+    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
     const { startdatoPeriode1, sluttdatoPeriode1, familiehendelsedato, startdatoPeriode2, sluttdatoPeriode2 } =
         finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerFellesperiodeSøker1);
@@ -27,7 +28,7 @@ export const lagKalenderPerioder = (
     const erAdoptert = erBarnetAdoptert(barnet);
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
 
-    if (hvemHarRett === 'kunMorHarRett') {
+    if (hvemHarRett === 'kunSøker1HarRett' && erMorDelAvSøknaden(hvemPlanlegger)) {
         const perioder = [] as Period[];
         if (!erAdoptert) {
             perioder.push({
@@ -94,7 +95,7 @@ export const lagKalenderPerioder = (
         }
     }
 
-    if (hvemHarRett === 'kunFarSøker1HarRett' && (!erFarOgFar || !erAdoptert)) {
+    if (hvemHarRett === 'kunSøker1HarRett' && (hvemPlanlegger.type === Situasjon.FAR || (erFarOgFar && !erAdoptert))) {
         return [
             {
                 fom: familiehendelsedato,
@@ -110,9 +111,8 @@ export const lagKalenderPerioder = (
     }
 
     if (
-        hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' ||
-        hvemHarRett === 'kunMedfarHarRett' ||
-        hvemHarRett === 'kunFarSøker1HarRett' ||
+        hvemHarRett === 'kunSøker2HarRett' ||
+        (hvemHarRett === 'kunSøker1HarRett' && hvemPlanlegger.type === Situasjon.FAR_OG_FAR) ||
         !erAdoptert
     ) {
         if (erFarOgFar && !erAdoptert) {
@@ -151,7 +151,7 @@ export const lagKalenderPerioder = (
         }
     }
 
-    if ((hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett') && erAdoptert) {
+    if (harMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) && erAdoptert) {
         return [
             {
                 fom: familiehendelsedato,
@@ -166,5 +166,5 @@ export const lagKalenderPerioder = (
         ];
     }
 
-    throw Error('Ingen perioder');
+    throw Error('Ingen perioder finnes');
 };

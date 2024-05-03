@@ -3,18 +3,9 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 import { erMorDelAvSøknaden } from './HvemPlanleggerUtils';
 
-export type HvemHarRett =
-    | 'beggeHarRett'
-    | 'kunMorHarRett'
-    | 'kunFarSøker1HarRett'
-    | 'kunMedfarHarRett'
-    | 'kunMedmorEllerFarSøker2HarRett'
-    | 'ingenHarRett';
+export type HvemHarRett = 'beggeHarRett' | 'kunSøker1HarRett' | 'kunSøker2HarRett' | 'ingenHarRett';
 
-export const utledHvemSomHarRett = (
-    hvemPlanlegger: HvemPlanlegger,
-    arbeidssituasjon: Arbeidssituasjon,
-): HvemHarRett => {
+export const utledHvemSomHarRett = (arbeidssituasjon: Arbeidssituasjon): HvemHarRett => {
     const beggeHarRett = arbeidssituasjon.status === Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart === true;
     const kunSøker1HarRett =
         arbeidssituasjon.status === Arbeidsstatus.JOBBER && arbeidssituasjon.jobberAnnenPart !== true;
@@ -24,33 +15,28 @@ export const utledHvemSomHarRett = (
     if (beggeHarRett) {
         return 'beggeHarRett';
     }
-
     if (kunSøker1HarRett) {
-        if (erMorDelAvSøknaden(hvemPlanlegger)) {
-            return 'kunMorHarRett';
-        }
-        if (hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
-            return 'kunFarSøker1HarRett';
-        }
+        return 'kunSøker1HarRett';
     }
-
-    if (kunSøker2HarRett) {
-        if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
-            return 'kunMedfarHarRett';
-        }
-        if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR || hvemPlanlegger.type === Situasjon.MOR_OG_FAR) {
-            return 'kunMedmorEllerFarSøker2HarRett';
-        }
-    }
-
-    return 'ingenHarRett';
+    return kunSøker2HarRett ? 'kunSøker2HarRett' : 'ingenHarRett';
 };
 
-export const harFarEllerMedmorRett = (hvemHarRett?: HvemHarRett): boolean =>
-    hvemHarRett === 'beggeHarRett' ||
-    hvemHarRett === 'kunFarSøker1HarRett' ||
-    hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' ||
-    hvemHarRett === 'kunMedfarHarRett';
+export const harMedmorEllerFarSøker2Rett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
+    hvemHarRett === 'kunSøker2HarRett' &&
+    (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR ||
+        hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
+        hvemPlanlegger.type === Situasjon.MOR_OG_FAR);
 
-export const harMorRett = (hvemHarRett?: HvemHarRett): boolean =>
-    hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunMorHarRett';
+export const harFarSøker1Rett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
+    (hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.FAR_OG_FAR) &&
+    (hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunSøker1HarRett');
+
+export const harKunFarSøker1Rett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
+    (hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.FAR_OG_FAR) &&
+    hvemHarRett === 'kunSøker1HarRett';
+
+export const harMorRett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
+    erMorDelAvSøknaden(hvemPlanlegger) && (hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunSøker1HarRett');
+
+export const harKunMorRett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
+    erMorDelAvSøknaden(hvemPlanlegger) && hvemHarRett === 'kunSøker1HarRett';

@@ -6,7 +6,7 @@ import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
-import { HvemHarRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { decodeBase64 } from 'utils/urlEncodingUtils';
 
 import { createApi, usePostRequest } from '@navikt/fp-api';
@@ -17,8 +17,8 @@ import Environment from './appData/Environment';
 
 export const planleggerApi = createApi(Environment.REST_API_URL);
 
-const finnBrukerRolle = (hvemHarRett: HvemHarRett) => {
-    return hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunMorHarRett' ? 'MOR' : 'FAR';
+const finnBrukerRolle = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
+    return harMorRett(hvemHarRett, hvemPlanlegger) ? 'MOR' : 'FAR';
 };
 
 const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
@@ -41,13 +41,12 @@ export const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, change
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
     const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);
 
-    const hvemHarRett =
-        hvemPlanlegger && arbeidssituasjon ? utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon) : undefined;
+    const hvemHarRett = arbeidssituasjon ? utledHvemSomHarRett(arbeidssituasjon) : undefined;
 
     const params = useMemo(
         () => ({
             rettighetstype: hvemPlanlegger && hvemHarRett ? finnRettighetstype(hvemPlanlegger, hvemHarRett) : undefined,
-            brukerrolle: hvemPlanlegger && hvemHarRett ? finnBrukerRolle(hvemHarRett) : undefined,
+            brukerrolle: hvemPlanlegger && hvemHarRett ? finnBrukerRolle(hvemPlanlegger, hvemHarRett) : undefined,
             antallBarn: omBarnet?.antallBarn,
             fødselsdato: omBarnet && erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined,
             termindato: omBarnet && erBarnetUFødt(omBarnet) ? omBarnet.termindato : undefined,

@@ -68,14 +68,9 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
     const dekningsgrad = formMethods.watch('dekningsgrad');
     const valgtDekningsgrad = dekningsgrad || periode?.dekningsgrad;
 
-    const søker1HarIkkeRett =
-        arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
-    const søker2HarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
-    const kunEnPartSkalHa = erAlenesøker || søker1HarIkkeRett || søker2HarIkkeRett;
-    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
-    const farOgFarKunEnPartHarRett = hvemHarRett === 'kunFarSøker1HarRett' || hvemHarRett === 'kunMedfarHarRett';
+    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
-    const deSomHarRett = getTekstForDeSomHarRett(hvemPlanlegger, arbeidssituasjon, intl);
+    const deSomHarRett = getTekstForDeSomHarRett(hvemPlanlegger, hvemHarRett, intl);
 
     const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
     const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
@@ -92,6 +87,8 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
     const antallUker100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
     const antallUker80 = finnAntallUkerMedForeldrepenger(uttaksdata80);
     const antallUker = valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? antallUker100 : antallUker80;
+
+    const kunEnAvSøkereneHarRett = hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett';
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
@@ -114,20 +111,20 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                 <FormattedMessage
                                     id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst"
                                     values={{
-                                        kunEnPartSkalHa,
+                                        kunEnPartSkalHa: erAlenesøker || hvemHarRett === 'ingenHarRett',
                                         uker100: antallUker100,
                                         uker80: antallUker80,
                                     }}
                                 />
                             </BodyShort>
                         </Infobox>
-                        {!erAlenesøker && hvemHarRett !== 'beggeHarRett' && !farOgFarKunEnPartHarRett && (
+                        {!erAlenesøker && kunEnAvSøkereneHarRett && hvemPlanlegger.type !== Situasjon.FAR_OG_FAR && (
                             <NårBareEnPartHarRettInfoboks
                                 hvemPlanlegger={hvemPlanlegger}
                                 arbeidssituasjon={arbeidssituasjon}
                             />
                         )}
-                        {farOgFarKunEnPartHarRett && (
+                        {kunEnAvSøkereneHarRett && hvemPlanlegger.type === Situasjon.FAR_OG_FAR && (
                             <Infobox
                                 header={<FormattedMessage id="HvorLangPeriodeSteg.Infoboks.KunEnAvFedreneHarRett" />}
                                 isGray

@@ -3,7 +3,7 @@ import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
+import { erMorDelAvSøknaden, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
@@ -14,8 +14,10 @@ interface Props {
 }
 const DeFørsteSeksUkene: React.FunctionComponent<Props> = ({ hvemPlanlegger, arbeidssituasjon }) => {
     const intl = useIntl();
-    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
-    const kunMorHarRett = hvemHarRett === 'kunMorHarRett';
+
+    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
+    const kunMorHarRett = erMorDelAvSøknaden(hvemPlanlegger) && hvemHarRett === 'kunSøker1HarRett';
+
     return (
         <>
             <HStack gap="5" wrap={false}>

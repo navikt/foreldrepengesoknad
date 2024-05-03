@@ -7,6 +7,7 @@ import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/Tilgjengelige
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { treUkerSiden } from '@navikt/fp-utils';
 
+import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from './barnetUtils';
 import { HvemHarRett } from './hvemHarRettUtils';
 import {
@@ -241,7 +242,7 @@ const finnEnsligUttaksdata = (
         };
     }
 
-    if (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' || hvemHarRett === 'kunMedfarHarRett') {
+    if (hvemHarRett === 'kunSøker2HarRett' && (erFarSøker2(hvemPlanlegger) || erMedmorDelAvSøknaden(hvemPlanlegger))) {
         const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
         const sluttAktivitetsfri = dayjs(familiehendelsedato)

@@ -5,7 +5,7 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
 import { finnSøker1Tekst, finnSøker2Tekst, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
-import { HvemHarRett } from 'utils/hvemHarRettUtils';
+import { HvemHarRett, harKunFarSøker1Rett, harKunMorRett, harMedmorEllerFarSøker2Rett } from 'utils/hvemHarRettUtils';
 import { Uttaksdata } from 'utils/uttakUtils';
 
 import { HStack, VStack } from '@navikt/ds-react';
@@ -52,16 +52,15 @@ const CalendarLabels: FunctionComponent<Props> = ({
     const skalViseAntallUkerLabels =
         !erFarOgFarOgFødsel &&
         (hvemHarRett === 'beggeHarRett' ||
-            (hvemHarRett === 'kunFarSøker1HarRett' && !erFarOgFarOgAdopsjon) ||
-            hvemHarRett === 'kunMorHarRett');
+            (harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger) && !erFarOgFarOgAdopsjon) ||
+            harKunMorRett(hvemHarRett, hvemPlanlegger));
     const skalViseAktivitetskravLabels =
         !erFarOgFarOgFødsel &&
         søker2Tekst &&
         startdatoPeriode2 &&
         sluttdatoPeriode2 &&
-        (hvemHarRett === 'kunMedmorEllerFarSøker2HarRett' ||
-            hvemHarRett === 'kunMedfarHarRett' ||
-            (hvemHarRett === 'kunFarSøker1HarRett' && erFarOgFarOgAdopsjon));
+        (harMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) ||
+            (hvemHarRett === 'kunSøker1HarRett' && erFarOgFarOgAdopsjon));
 
     return (
         <VStack gap={{ sm: '1', md: '2' }}>
@@ -89,7 +88,7 @@ const CalendarLabels: FunctionComponent<Props> = ({
                         valgtStønadskonto={valgtStønadskonto}
                         hvemPlanlegger={hvemPlanlegger}
                         annenPartTekst={
-                            hvemHarRett === 'kunFarSøker1HarRett' && erFarOgFarOgAdopsjon ? søker1Tekst : søker2Tekst
+                            hvemHarRett === 'kunSøker1HarRett' && erFarOgFarOgAdopsjon ? søker1Tekst : søker2Tekst
                         }
                         startdato={startdatoPeriode1}
                         sluttdato={sluttdatoPeriode1}
@@ -99,7 +98,7 @@ const CalendarLabels: FunctionComponent<Props> = ({
                         valgtStønadskonto={valgtStønadskonto}
                         hvemPlanlegger={hvemPlanlegger}
                         annenPartTekst={
-                            hvemHarRett === 'kunFarSøker1HarRett' && erFarOgFarOgAdopsjon ? søker1Tekst : søker2Tekst
+                            hvemHarRett === 'kunSøker1HarRett' && erFarOgFarOgAdopsjon ? søker1Tekst : søker2Tekst
                         }
                         startdato={startdatoPeriode2}
                         sluttdato={sluttdatoPeriode2}

@@ -113,7 +113,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) =>
 
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
 
-    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
+    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerSøker1);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerSøker1);
 

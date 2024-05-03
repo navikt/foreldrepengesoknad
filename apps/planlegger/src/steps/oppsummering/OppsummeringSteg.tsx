@@ -6,10 +6,10 @@ import ShareDataInfobox from 'components/boxes/ShareDataInfobox';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
+import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { Alert, BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
@@ -61,18 +61,18 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ locale, stønadskontoer })
     const valgtStønadskonto =
         stønadskontoer && hvorLangPeriode ? stønadskontoer[hvorLangPeriode.dekningsgrad] : undefined;
 
-    const harRett =
-        (erBarnetFødt(barnet) && dayjs(barnet.fødselsdato).isBefore(DATE_3_YEARS_AGO)) ||
-        (arbeidssituasjon?.status === Arbeidsstatus.INGEN && arbeidssituasjon?.jobberAnnenPart !== true) ||
-        (arbeidssituasjon?.status === Arbeidsstatus.UFØR && arbeidssituasjon?.jobberAnnenPart !== true)
-            ? false
-            : true;
+    const erBarnetFødtForMerEnnTreÅrSiden =
+        erBarnetFødt(barnet) && dayjs(barnet.fødselsdato).isBefore(DATE_3_YEARS_AGO);
+
+    const hvemHarRett = arbeidssituasjon ? utledHvemSomHarRett(arbeidssituasjon) : 'ingenHarRett';
+
+    const harRettTilForeldrepenger = !erBarnetFødtForMerEnnTreÅrSiden && hvemHarRett !== 'ingenHarRett';
 
     return (
         <>
             <OppsummeringHeader>
                 <VStack gap="10">
-                    {!harRett && (
+                    {!harRettTilForeldrepenger && (
                         <VStack gap="5">
                             <Infobox
                                 header={
@@ -101,7 +101,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ locale, stønadskontoer })
                     )}
                     <Alert variant="info">
                         <BodyShort>
-                            {!harRett ? (
+                            {!harRettTilForeldrepenger ? (
                                 <FormattedMessage id="OppsummeringSteg.InformasjonPlanleggerErUnderUtviklingIkkeRett" />
                             ) : (
                                 <FormattedMessage
@@ -125,7 +125,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ locale, stønadskontoer })
                     </Alert>
                     {stønadskontoer && valgtStønadskonto && hvorLangPeriode && arbeidssituasjon && (
                         <VStack gap="5">
-                            {harRett && (
+                            {harRettTilForeldrepenger && (
                                 <OppsummeringHarRett
                                     valgtStønadskonto={valgtStønadskonto}
                                     hvorLangPeriode={hvorLangPeriode}

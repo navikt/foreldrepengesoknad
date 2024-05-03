@@ -3,7 +3,7 @@ import Infobox from 'components/boxes/Infobox';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
@@ -45,12 +45,11 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
     const erAdopsjon = erBarnetAdoptert(barnet);
     const erFødt = erBarnetFødt(barnet);
 
-    const søker1HarIkkeRett =
-        arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
-    const søker2HarIkkeRett = arbeidssituasjon.jobberAnnenPart === false;
-    const kunEnPartSkalHa = erAlenesøker(hvemPlanlegger) || søker1HarIkkeRett || søker2HarIkkeRett;
+    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
-    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
+    const kunEnPartSkalHa =
+        erAlenesøker(hvemPlanlegger) || hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett';
+
     const uttaksdata = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet);
 
     const familiehendelsedato = dayjs(uttaksdata.familiehendelsedato).format('D. MMMM');
@@ -116,7 +115,7 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                     />
                 )}
             </BodyShort>
-            {søker1HarIkkeRett && (
+            {hvemHarRett !== 'kunSøker1HarRett' && (
                 <VStack gap="2">
                     <BodyShort>
                         <FormattedMessage

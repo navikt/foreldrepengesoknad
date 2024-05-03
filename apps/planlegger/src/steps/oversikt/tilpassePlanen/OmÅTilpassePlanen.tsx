@@ -1,7 +1,7 @@
 import { PencilWritingIcon } from '@navikt/aksel-icons';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage } from 'react-intl';
-import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { erAlenesøker, erFarOgFar } from 'utils/HvemPlanleggerUtils';
@@ -35,13 +35,15 @@ interface Props {
     barnet: OmBarnet;
 }
 const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, arbeidssituasjon, barnet }) => {
-    const morHarIkkeRett =
-        arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
     const erAlene = erAlenesøker(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);
-    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
+
+    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
-    const kunFarEllerMedmorHarRett = hvemHarRett === 'kunMedmorEllerFarSøker2HarRett';
+    const kunFarSøker2EllerMedmorHarRett =
+        hvemHarRett === 'kunSøker2HarRett' &&
+        (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR || hvemPlanlegger.type === Situasjon.MOR_OG_FAR);
+    const søker1HarRett = hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunSøker1HarRett';
 
     return (
         <ExpansionCard aria-label="Expansion card" onToggle={onToggleExpansionCard}>
@@ -66,18 +68,18 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
                     </BodyLong>
                     {!erBarnetAdoptert(barnet) && (
                         <>
-                            {!morHarIkkeRett && !erFedre && hvemPlanlegger.type !== Situasjon.FAR && (
+                            {søker1HarRett && !erFedre && hvemPlanlegger.type !== Situasjon.FAR && (
                                 <FørTermin hvemPlanlegger={hvemPlanlegger} barnet={barnet} />
                             )}
 
-                            {!morHarIkkeRett && !erFedre && !erAlene && (
+                            {søker1HarRett && !erFedre && !erAlene && (
                                 <DeFørsteSeksUkene
                                     hvemPlanlegger={hvemPlanlegger}
                                     arbeidssituasjon={arbeidssituasjon}
                                 />
                             )}
 
-                            {(kunFarEllerMedmorHarRett || erFedre) && (
+                            {(kunFarSøker2EllerMedmorHarRett || erFedre) && (
                                 <ToUkerRundtFødsel hvemPlanlegger={hvemPlanlegger} />
                             )}
 

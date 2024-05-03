@@ -58,7 +58,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
 
-    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
+    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
     const uttaksdata = finnUttaksdata(
         hvemHarRett,

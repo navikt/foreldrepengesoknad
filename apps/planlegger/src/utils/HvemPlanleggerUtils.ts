@@ -1,8 +1,7 @@
 import { IntlShape } from 'react-intl';
-import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { Far, FarOgFar, HvemPlanlegger, Mor, MorOgFar, MorOgMedmor, Situasjon } from 'types/HvemPlanlegger';
 
-import { utledHvemSomHarRett } from './hvemHarRettUtils';
+import { HvemHarRett } from './hvemHarRettUtils';
 
 export const erFlereSøkere = (hvemPlanlegger: HvemPlanlegger) =>
     hvemPlanlegger.type === Situasjon.MOR_OG_FAR ||
@@ -27,42 +26,8 @@ export const erMedmorDelAvSøknaden = (hvemPlanlegger: HvemPlanlegger): hvemPlan
 export const erFarOgFar = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is FarOgFar =>
     hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
 
-export const getTekstForDeSomHarRett = (
-    hvemPlanlegger: HvemPlanlegger,
-    arbeidssituasjon: Arbeidssituasjon,
-    intl: IntlShape,
-): string | undefined => {
-    if (erAlenesøker(hvemPlanlegger)) {
-        return intl.formatMessage({ id: 'Du' });
-    }
-
-    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
-    switch (hvemHarRett) {
-        case 'kunMedfarHarRett':
-            if (erFarOgFar(hvemPlanlegger)) {
-                return hvemPlanlegger.navnPåMedfar ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
-            }
-            throw new Error('Medfar er ikke en del av planleggingen.');
-        case 'kunMedmorEllerFarSøker2HarRett':
-        case 'kunFarSøker1HarRett':
-            if (erFarDelAvSøknaden(hvemPlanlegger)) {
-                return hvemPlanlegger.navnPåFar ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
-            }
-            if (erMedmorDelAvSøknaden(hvemPlanlegger)) {
-                return hvemPlanlegger.navnPåMedmor ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' });
-            }
-            throw new Error('Far eller medmor er ikke en del av planleggingen.');
-        case 'kunMorHarRett':
-            if (erMorDelAvSøknaden(hvemPlanlegger)) {
-                return hvemPlanlegger.navnPåMor ?? intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' });
-            }
-            throw new Error('Mor er ikke en del av planleggingen.');
-        case 'beggeHarRett':
-            return intl.formatMessage({ id: 'Dere' });
-        case 'ingenHarRett':
-            return undefined;
-    }
-};
+export const erFarSøker2 = (hvemPlanlegger: HvemPlanlegger): hvemPlanlegger is FarOgFar | MorOgFar =>
+    hvemPlanlegger.type === Situasjon.FAR_OG_FAR || hvemPlanlegger.type === Situasjon.MOR_OG_FAR;
 
 export const getNavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
     if (erMorDelAvSøknaden(hvemPlanlegger)) {
@@ -111,6 +76,28 @@ export const finnSøker2Tekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger
     return undefined;
 };
 
+export const getTekstForDeSomHarRett = (
+    hvemPlanlegger: HvemPlanlegger,
+    hvemHarRett: HvemHarRett,
+    intl: IntlShape,
+): string | undefined => {
+    if (erAlenesøker(hvemPlanlegger)) {
+        return intl.formatMessage({ id: 'Du' });
+    }
+
+    if (hvemHarRett === 'kunSøker1HarRett') {
+        return getNavnPåSøker1(hvemPlanlegger, intl);
+    }
+    if (hvemHarRett === 'kunSøker2HarRett') {
+        return getNavnPåSøker2(hvemPlanlegger, intl);
+    }
+    if (hvemHarRett === 'beggeHarRett') {
+        return intl.formatMessage({ id: 'Dere' });
+    }
+
+    throw new Error('Ugyldig tilstand');
+};
+
 const navnSlutterPåSLyd = (navn: string): boolean => {
     const sisteBokstav = navn.charAt(navn.length - 1).toLowerCase();
     return sisteBokstav === 's' || sisteBokstav === 'x' || sisteBokstav === 'z';
@@ -120,10 +107,11 @@ export const getNavnGenitivEierform = (navn: string, locale: string): string => 
     if (locale !== 'nb' && locale !== 'nn' && locale !== 'en') {
         return navn;
     }
-    if (navnSlutterPåSLyd(navn) && locale === 'en') {
+    const slutterPåSLyd = navnSlutterPåSLyd(navn);
+    if (slutterPåSLyd && locale === 'en') {
         return `${navn}'s`;
     }
-    if (navnSlutterPåSLyd(navn)) {
+    if (slutterPåSLyd) {
         return `${navn}'`;
     }
     return `${navn}s`;

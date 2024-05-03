@@ -61,10 +61,10 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
 
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
 
-    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
+    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const farOgFarKunEnPartHarRett =
         hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
-        (hvemHarRett === 'kunFarSøker1HarRett' || hvemHarRett === 'kunMedfarHarRett');
+        (hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett');
 
     const uttaksdata100 = finnUttaksdata(
         hvemHarRett,

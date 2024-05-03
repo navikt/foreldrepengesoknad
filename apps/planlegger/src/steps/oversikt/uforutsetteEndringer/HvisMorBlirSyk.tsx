@@ -15,9 +15,11 @@ interface Props {
     barnet: OmBarnet;
 }
 const HvisMorBlirSyk: React.FunctionComponent<Props> = ({ arbeidssituasjon, barnet, hvemPlanlegger }) => {
-    const antallBarn = barnet.antallBarn;
     const intl = useIntl();
-    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
+
+    const antallBarn = barnet.antallBarn;
+
+    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
 
     return (

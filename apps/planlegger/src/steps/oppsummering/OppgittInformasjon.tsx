@@ -76,7 +76,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const antallUkerFellesperiodeSøker1 = fordeling ? fordeling.antallUkerSøker1 : '';
     const antallUkerFellesperiodeSøker2 = fordeling ? antallUkerFellesperiode - fordeling.antallUkerSøker1 : '';
 
-    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
+    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
     return (
         <VStack gap="10">

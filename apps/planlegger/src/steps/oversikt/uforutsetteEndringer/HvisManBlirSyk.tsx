@@ -2,17 +2,15 @@ import { StethoscopeIcon } from '@navikt/aksel-icons';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
 interface Props {
     arbeidssituasjon: Arbeidssituasjon;
-    hvemPlanlegger: HvemPlanlegger;
 }
-const HvisManBlirSyk: React.FunctionComponent<Props> = ({ arbeidssituasjon, hvemPlanlegger }) => {
-    const hvemHarRett = utledHvemSomHarRett(hvemPlanlegger, arbeidssituasjon);
+const HvisManBlirSyk: React.FunctionComponent<Props> = ({ arbeidssituasjon }) => {
+    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
     return (
         <HStack gap="5" wrap={false}>

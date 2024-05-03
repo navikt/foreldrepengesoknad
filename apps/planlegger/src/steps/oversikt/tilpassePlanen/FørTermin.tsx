@@ -14,6 +14,7 @@ interface Props {
 const FørTermin: React.FunctionComponent<Props> = ({ barnet, hvemPlanlegger }) => {
     const antallBarn = barnet.antallBarn;
     const erAlenesøker = erAlene(hvemPlanlegger);
+
     return (
         <>
             <HStack gap="5" wrap={false}>
