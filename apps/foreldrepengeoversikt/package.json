@@ -62,7 +62,7 @@
         "react-intl": "^6.6.4",
         "react-modal": "^3.16.1",
         "react-motion": "^0.5.2",
-        "react-responsive": "^9.0.2",
+        "react-responsive": "^10.0.0",
         "react-router-dom": "^6.22.3",
         "react-transition-group": "^4.4.5",
         "request": "^2.88.2",
