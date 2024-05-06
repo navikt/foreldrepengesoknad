@@ -201,7 +201,7 @@
     "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk": "Om ein vert sjuk i sin periode med foreldrepengar",
     "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Alene": "Om ein vert sjuk når ein har foreldrepengar",
     "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Tekst": "Den andre forelderen kan ta over perioden med foreldrepengar når ein er sjuk. Forelderen som er sjuk får vanlegvis sjukepengar i staden for foreldrepengar.",
-    "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.TekstAlene": "Om ein er for sjuk til å ta seg av {antallBarn, select, true {barnet} other {borna}} kan ein få sjukepengar i staden for foreldrepengar.",
+    "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.TekstAlene": "Om ein er for sjuk til å ta seg av barnet kan ein vanlegvis få sjukepengar i staden for foreldrepengar.",
     "UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk": "Om mor vert sjuk i dei første seks vekene med foreldrepengar",
     "UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.Tekst": "Dei første seks vekene etter fødsel er reservert for mor, og det er i utgangspunktet ikkje mogleg å flytte dei til eit seinare tidspunkt. Unntaket er om mor vert sjuk og ikkje kan ta seg av {antallBarn, select, 1 {barnet} other {borna}}. Då kan {hvem} ta over perioden.",
     "UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.TekstAlene": "Dei første seks vekene etter fødsel er reservert for mor, og det er i utgangspunktet ikkje mogleg å flytte dei til eit seinare tidspunkt. Unntaket er om mor vert sjuk og ikkje kan ta seg av {antallBarn, select, 1 {barnet} other {borna}}.",

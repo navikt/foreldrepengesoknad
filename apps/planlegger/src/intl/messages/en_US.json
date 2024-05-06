@@ -201,7 +201,7 @@
     "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk": "If one becomes sick during their period with parental benefits",
     "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Alene": "If one becomes sick when receiving parental benefits",
     "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.Tekst": "The other parent can take over the period with parental benefits when one is sick. The parent who is sick usually receives sick pay instead of parental benefits.",
-    "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.TekstAlene": "If one is sick, they usually receive sick pay instead of parental benefits.",
+    "UforutsetteEndringer.UforutsetteEndringer.HvisManBlirSyk.TekstAlene": "If you are too ill to take care of the child, you can usually receive sickness benefit instead of parental benefit during the period of illness.",
     "UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk": "If the mother becomes sick in the first six weeks with parental benefits",
     "UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.Tekst": "The first six weeks after birth are reserved for the mother, and it is generally not possible to move them to a later date. The exception is if the mother becomes sick and cannot care for the {antallBarn, select, 1 {child} other {children}}. Then the {hvem} can take over the period.",
     "UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk.TekstAlene": "The first six weeks after birth are reserved for the mother, and it is generally not possible to move them to a later date. The exception is if the mother becomes sick and cannot care for the {antallBarn, select, 1 {child} other {children}}.",
