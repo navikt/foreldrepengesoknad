@@ -171,7 +171,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ locale }) => {
                                     </Radio>
                                 </GreenRadioGroup>
                                 {jobberSøker2 === true && fornavnSøker2 && (
-                                    <JobberInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker2} erSøker2 />
+                                    <JobberInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker2} />
                                 )}
                                 {jobberSøker2 === false && fornavnSøker2 && (
                                     <AnnetInfoboks

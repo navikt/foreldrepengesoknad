@@ -19,21 +19,19 @@ const Infoboks: React.FC<Props> = ({ header, children, icon, isGray = false, sho
         padding="4"
         borderRadius="large"
     >
-        <VStack gap="2">
-            <HStack justify="space-between" wrap={false} gap="4">
-                <VStack gap="1">
-                    <Heading size="xsmall" className={styles.header} level="3">
-                        {header}
-                    </Heading>
-                    {children}
-                </VStack>
-                {icon && (
-                    <IconCircleWrapper size="medium" color={isGray ? 'gray' : 'blue'}>
-                        {icon}
-                    </IconCircleWrapper>
-                )}
-            </HStack>
-        </VStack>
+        <HStack wrap={false} gap="4">
+            <VStack gap="2" className={styles.leftCol}>
+                <Heading size="xsmall" level="3">
+                    {header}
+                </Heading>
+                {children}
+            </VStack>
+            {icon && (
+                <IconCircleWrapper size="medium" color={isGray ? 'gray' : 'blue'}>
+                    {icon}
+                </IconCircleWrapper>
+            )}
+        </HStack>
     </Box>
 );
 
