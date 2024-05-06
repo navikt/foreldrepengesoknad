@@ -42,6 +42,9 @@ export interface Props {
     defaultMonth?: Date | Dayjs | string;
     showMonthAndYearDropdowns?: boolean;
     disableWeekends?: boolean;
+    autofocusWhenEmpty?: boolean;
+    customErrorFormatter?: (error: string | undefined) => ReactNode;
+    useStrategyAbsolute?: boolean;
 }
 
 const Datepicker: FunctionComponent<Props> = ({
@@ -55,6 +58,9 @@ const Datepicker: FunctionComponent<Props> = ({
     defaultMonth,
     showMonthAndYearDropdowns,
     disableWeekends,
+    autofocusWhenEmpty,
+    customErrorFormatter,
+    useStrategyAbsolute = false,
 }): JSX.Element => {
     const {
         formState: { errors },
@@ -113,7 +119,7 @@ const Datepicker: FunctionComponent<Props> = ({
         <DatePicker
             {...datepickerProps}
             disabled={disabledDays}
-            strategy="fixed"
+            strategy={useStrategyAbsolute ? 'absolute' : 'fixed'}
             dropdownCaption={showMonthAndYearDropdowns}
             fromDate={fromDate}
             toDate={toDate}
@@ -126,8 +132,9 @@ const Datepicker: FunctionComponent<Props> = ({
                 value={fieldValue}
                 label={label}
                 description={description}
-                error={getError(errors, name)}
+                error={customErrorFormatter ? customErrorFormatter(getError(errors, name)) : getError(errors, name)}
                 placeholder="dd.mm.åååå"
+                autoFocus={autofocusWhenEmpty && field.value === undefined}
             />
         </DatePicker>
     );

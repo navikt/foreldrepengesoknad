@@ -6,14 +6,25 @@ export interface OwnProps<FormValues extends FieldValues> {
     children: ReactNode;
     onSubmit?: SubmitHandler<FormValues>;
     className?: string;
+    shouldUseFlexbox?: boolean;
 }
 
-const Form = <FormValues extends FieldValues>({ formMethods, children, onSubmit, className }: OwnProps<FormValues>) => {
+const Form = <FormValues extends FieldValues>({
+    formMethods,
+    children,
+    onSubmit,
+    className,
+    shouldUseFlexbox = false,
+}: OwnProps<FormValues>) => {
     const { handleSubmit } = formMethods;
 
     return (
         <FormProvider {...formMethods}>
-            <form className={className} onSubmit={onSubmit ? handleSubmit((values) => onSubmit(values)) : undefined}>
+            <form
+                style={shouldUseFlexbox ? { display: 'flex', flexDirection: 'column', flex: '1' } : undefined}
+                className={className}
+                onSubmit={onSubmit ? handleSubmit((values) => onSubmit(values)) : undefined}
+            >
                 {children}
             </form>
         </FormProvider>

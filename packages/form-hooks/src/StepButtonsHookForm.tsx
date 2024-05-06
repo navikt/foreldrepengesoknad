@@ -1,5 +1,6 @@
-import { FieldValues, useFormContext } from 'react-hook-form';
 import { useCallback } from 'react';
+import { FieldValues, useFormContext } from 'react-hook-form';
+
 import { StepButtons } from '@navikt/fp-ui';
 
 interface Props<DATA_TYPE extends FieldValues> {
@@ -7,6 +8,7 @@ interface Props<DATA_TYPE extends FieldValues> {
     saveDataOnPreviousClick?: (data: DATA_TYPE) => void;
     nextButtonOnClick?: () => void;
     isDisabledAndLoading?: boolean;
+    useSimplifiedTexts?: boolean;
 }
 
 const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({
@@ -14,6 +16,7 @@ const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({
     saveDataOnPreviousClick,
     nextButtonOnClick,
     isDisabledAndLoading = false,
+    useSimplifiedTexts = false,
 }: Props<DATA_TYPE>) => {
     const {
         getValues,
@@ -32,6 +35,7 @@ const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({
             goToPreviousStep={onBackButtonClick}
             nextButtonOnClick={nextButtonOnClick}
             isDisabledAndLoading={isDisabledAndLoading || isSubmitting}
+            useSimplifiedTexts={useSimplifiedTexts}
         />
     );
 };

@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
 import { AxiosInstance, isAxiosError } from 'axios';
+import { useEffect, useState } from 'react';
+
 import { ApiAccessError, ApiGeneralError } from './error';
 
 export const useRequest = <T>(instance: AxiosInstance, url: string) => {
@@ -12,7 +13,10 @@ export const useRequest = <T>(instance: AxiosInstance, url: string) => {
         const fetch = async () => {
             try {
                 setLoading(true);
-                const response = await instance.get<T>(url, { withCredentials: true, timeout: 60 * 1000 });
+                const response = await instance.get<T>(url, {
+                    withCredentials: true,
+                    timeout: 60 * 1000,
+                });
                 if (!ignore) {
                     setData(response.data);
                 }

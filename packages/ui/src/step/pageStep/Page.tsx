@@ -5,7 +5,6 @@ import './page.css';
 
 export interface PageProps {
     className?: string;
-    title: string;
     id?: string;
     ariaLabel?: string;
     topContentRenderer?: () => React.ReactElement<any>;

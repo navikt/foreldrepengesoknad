@@ -11,7 +11,7 @@ variable "CACHE_TAG" {
 }
 
 group "default" {
-  targets = ["foreldrepengesoknad", "engangsstonad", "svangerskapspengesoknad", "foreldrepengeoversikt"]
+  targets = ["foreldrepengesoknad", "engangsstonad", "svangerskapspengesoknad", "foreldrepengeoversikt", "planlegger"]
 }
 
 target "docker-metadata-action" {}
@@ -77,5 +77,21 @@ target "foreldrepengeoversikt" {
 
   args = {
     APP = "foreldrepengeoversikt"
+  }
+}
+
+target "planlegger" {
+  inherits = ["docker-metadata-action"]
+  //   tags     = ["ghcr.io/${GITHUB_REPOSITORY}/planlegger:${TAG}"]
+  dockerfile = "Dockerfile"
+
+  cache-to = ["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/planlegger/build-cache:${CACHE_TAG},mode=max"]
+  cache-from = [
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/planlegger/build-cache:${CACHE_TAG}",
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/planlegger/build-cache:master"
+  ]
+
+  args = {
+    APP = "planlegger"
   }
 }

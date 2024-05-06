@@ -12,6 +12,7 @@ interface Props {
     isLoading?: boolean;
     isNexButtonVisible?: boolean;
     isSendButton?: boolean;
+    useSimplifiedTexts?: boolean;
 }
 
 const StepButtons: FunctionComponent<Props> = ({
@@ -22,11 +23,16 @@ const StepButtons: FunctionComponent<Props> = ({
     isLoading = false,
     isNexButtonVisible = true,
     isSendButton = false,
+    useSimplifiedTexts = false,
 }) => {
     return (
         <HStack gap="2">
             <Button type="button" variant="secondary" onClick={goToPreviousStep} style={{ flex: 1 }}>
-                <FormattedMessage id="StepButtons.Forrige" />
+                {useSimplifiedTexts ? (
+                    <FormattedMessage id="StepButtons.ForrigeSimple" />
+                ) : (
+                    <FormattedMessage id="StepButtons.Forrige" />
+                )}
             </Button>
             {isNexButtonVisible && (
                 <Button
@@ -38,8 +44,9 @@ const StepButtons: FunctionComponent<Props> = ({
                     loading={isLoading || isDisabledAndLoading}
                     style={{ flex: 1 }}
                 >
-                    {isSendButton && <FormattedMessage id="StepButtons.Send" />}
-                    {!isSendButton && <FormattedMessage id="StepButtons.Neste" />}
+                    {isSendButton && <FormattedMessage id={'StepButtons.Send'} />}
+                    {!isSendButton && !useSimplifiedTexts && <FormattedMessage id={'StepButtons.Neste'} />}
+                    {!isSendButton && useSimplifiedTexts && <FormattedMessage id={'StepButtons.NesteSimple'} />}
                 </Button>
             )}
         </HStack>

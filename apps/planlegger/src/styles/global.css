@@ -1,0 +1,24 @@
+body {
+    font-family: 'Source Sans Pro', Arial !important;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--a-black-100);
+    background-color: var(--a-white-100);
+    font-style: normal;
+    font-weight: 400;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#app {
+    flex: 1;
+    background-color: var(--a-gray-100);
+}
+
+@media (max-width: 768px) {
+    #app {
+        display: flex;
+        flex-direction: column;
+    }
+}
