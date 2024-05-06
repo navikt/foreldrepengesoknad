@@ -1,6 +1,5 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import Infobox from 'components/boxes/Infobox';
-import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
@@ -52,7 +51,11 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
 
     const uttaksdata = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet);
 
-    const familiehendelsedato = dayjs(uttaksdata.familiehendelsedato).format('D. MMMM');
+    const familiehendelsedato = intl.formatDate(uttaksdata.familiehendelsedato, {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+    });
 
     const sluttdatoSøker1 =
         valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT

@@ -9,7 +9,7 @@ describe('<ErrorPage>', () => {
     it('skal vise feilside', async () => {
         render(<Default />);
         expect(
-            await screen.getByText('Beklager, det ser ut som at noe har gått galt grunn av en teknisk feil hos NAV'),
+            await screen.getByText('Beklager, det ser ut som at noe har gått galt på grunn av en teknisk feil hos NAV'),
         ).toBeInTheDocument();
     });
 });
