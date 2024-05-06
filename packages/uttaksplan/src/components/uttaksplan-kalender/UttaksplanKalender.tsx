@@ -6,6 +6,7 @@ import generatePDF, { Margin, Options, Resolution } from 'react-to-pdf';
 import { Button } from '@navikt/ds-react';
 
 import {
+    Barn,
     Forelder,
     Overføringsperiode,
     Periode,
@@ -14,6 +15,7 @@ import {
     Uttaksdagen,
     Uttaksperiode,
     getAnnenForelderSamtidigUttakPeriode,
+    getFamiliehendelsedato,
     isInfoPeriode,
     isUttaksperiode,
 } from '@navikt/fp-common';
@@ -23,11 +25,13 @@ import { Calendar } from '@navikt/fp-ui';
 
 import { getIndexOfSistePeriodeFørDato } from './../../components/periodeliste/Periodeliste';
 import { getForelderFarge, getStønadskontoFarge } from './../../utils/styleUtils';
+import UttaksplanLegend from './UttaksplanLegend';
 
 interface Props {
     uttaksplan: Periode[];
     erFarEllerMedmor: boolean;
-    familiehendelsesdato: string;
+    barn: Barn;
+    navnAnnenPart: string;
 }
 
 const getKalenderFargeForUttaksperiode = (
@@ -86,8 +90,9 @@ const getKalenderFargeForPeriodeType = (
     }
 };
 
-const UttaksplanKalender: FunctionComponent<Props> = ({ uttaksplan, erFarEllerMedmor, familiehendelsesdato }) => {
+const UttaksplanKalender: FunctionComponent<Props> = ({ uttaksplan, erFarEllerMedmor, barn, navnAnnenPart }) => {
     const perioderForVisning = uttaksplan.filter((p) => !isInfoPeriode(p) || p.visPeriodeIPlan);
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
     const periods = perioderForVisning.map((p) => ({
         fom: dayjs(p.tidsperiode.fom).isSame(dayjs(familiehendelsesdato), 'd')
             ? Uttaksdagen(p.tidsperiode.fom).neste().toDateString()
@@ -103,6 +108,8 @@ const UttaksplanKalender: FunctionComponent<Props> = ({ uttaksplan, erFarEllerMe
         color: PeriodeColor.PINK,
     });
 
+    const uniquePeriodColors = [...new Set(periods.map((period) => period.color))];
+
     const pdfOptionsSave = {
         resolution: Resolution.HIGH,
         page: {
@@ -113,6 +120,9 @@ const UttaksplanKalender: FunctionComponent<Props> = ({ uttaksplan, erFarEllerMe
 
     return (
         <>
+            <div id="content-id">
+                <UttaksplanLegend uniqueColors={uniquePeriodColors} barn={barn} navnAnnenPart={navnAnnenPart} />
+            </div>
             <div id="content-id">
                 <Calendar periods={periods} />
             </div>

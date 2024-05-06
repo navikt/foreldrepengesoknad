@@ -126,9 +126,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                 const periodeErGyldig = periodeMedValidState ? periodeMedValidState.isValid : true;
                 return (
                     <div key={p.id}>
-                        {indexOfFørstePeriodeEtterFødsel === index ? (
-                            <FamiliehendelsedatoDisplay barn={barn} familiehendelsedato={familiehendelsesdato} />
-                        ) : null}
+                        {indexOfFørstePeriodeEtterFødsel === index ? <FamiliehendelsedatoDisplay barn={barn} /> : null}
                         {barnFraNesteSak !== undefined &&
                         indexOfSistePeriodeFørNyStøndasperiodeNyttBarn !== undefined &&
                         indexOfSistePeriodeFørNyStøndasperiodeNyttBarn === index ? (
@@ -176,7 +174,7 @@ const Periodeliste: FunctionComponent<Props> = ({
                             periodeErGyldig={periodeErGyldig}
                         />
                         {erAllePerioderIPlanenFørFødsel && index === uttaksplan.length - 1 ? (
-                            <FamiliehendelsedatoDisplay barn={barn} familiehendelsedato={familiehendelsesdato} />
+                            <FamiliehendelsedatoDisplay barn={barn} />
                         ) : null}
                         {barnFraNesteSak !== undefined &&
                         index === uttaksplan.length - 1 &&

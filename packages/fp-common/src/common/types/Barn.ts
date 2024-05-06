@@ -1,3 +1,5 @@
+import { ISOStringToDate } from '@navikt/fp-formik';
+
 export enum BarnType {
     FØDT = 'født',
     UFØDT = 'ufødt',
@@ -90,3 +92,19 @@ export const harFødselsdato = (barn: Barn): barn is IkkeUtfyltTypeBarn | FødtB
 };
 
 export default Barn;
+
+export const getFamiliehendelsedato = (barn: Barn): string => {
+    if (isFødtBarn(barn) || isIkkeUtfyltTypeBarn(barn)) {
+        return barn.fødselsdatoer[0];
+    }
+    if (isUfødtBarn(barn)) {
+        return barn.termindato;
+    }
+
+    return barn.adopsjonsdato;
+};
+
+export const getFamiliehendelsedatoDate = (barn: Barn): Date => {
+    const familiehendelse = getFamiliehendelsedato(barn);
+    return ISOStringToDate(familiehendelse)!;
+};

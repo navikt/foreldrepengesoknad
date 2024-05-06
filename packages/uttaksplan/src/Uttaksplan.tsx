@@ -306,7 +306,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const meldingerPerPeriode = getPeriodelisteMeldinger(uttaksplanVeilederInfo);
 
     const utsettelserIPlan = uttaksplan.filter((p) => isUtsettelsesperiode(p)) as Utsettelsesperiode[];
-
+    const navnAnnenPart = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     return (
         <>
             <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
@@ -371,11 +371,11 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     <UttaksplanKalender
                         uttaksplan={uttaksplan}
                         erFarEllerMedmor={erFarEllerMedmor}
-                        familiehendelsesdato={familiehendelsesdato}
+                        barn={barn}
+                        navnAnnenPart={navnAnnenPart}
                     />
                 </Block>
             )}
-
             <SlettUttaksplanModal
                 isOpen={slettUttaksplanModalOpen}
                 erEndringssøknad={erEndringssøknad}

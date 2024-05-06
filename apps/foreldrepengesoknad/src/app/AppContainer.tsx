@@ -1,3 +1,4 @@
+import { uttaksplanMessages } from '@navikt/uttaksplan';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
@@ -26,6 +27,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...uiMessages.nb,
         ...utenlandsoppholdMessages.nb,
         ...oppsummeringMessages.nb,
+        ...uttaksplanMessages.nb,
     },
     nn: {
         ...nnMessages,
@@ -33,6 +35,7 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...uiMessages.nn,
         ...utenlandsoppholdMessages.nn,
         ...oppsummeringMessages.nn,
+        ...uttaksplanMessages.nn,
     },
 };
 

@@ -30,6 +30,7 @@
         "typescript": "^5.4.3"
     },
     "devDependencies": {
+        "@formatjs/cli-lib": "6.3.6",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-types": "workspace:*",
@@ -38,6 +39,7 @@
         "@types/lodash": "^4.17.0",
         "@types/lodash.throttle": "^4.1.9",
         "@vitejs/plugin-react": "^4.2.1",
+        "fast-glob": "^3.3.2",
         "lodash.throttle": "^4.1.1",
         "mockdate": "^3.0.5",
         "path": "^0.12.7",
