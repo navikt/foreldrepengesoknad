@@ -79,9 +79,7 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
                                 />
                             )}
 
-                            {(kunFarSøker2EllerMedmorHarRett || erFedre) && (
-                                <ToUkerRundtFødsel hvemPlanlegger={hvemPlanlegger} />
-                            )}
+                            {kunFarSøker2EllerMedmorHarRett && <ToUkerRundtFødsel hvemPlanlegger={hvemPlanlegger} />}
 
                             <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} />
 

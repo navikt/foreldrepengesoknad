@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 import {
@@ -77,6 +77,8 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const antallUkerFellesperiodeSøker2 = fordeling ? antallUkerFellesperiode - fordeling.antallUkerSøker1 : '';
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
+
+    const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdoptert;
 
     return (
         <VStack gap="10">
@@ -224,19 +226,31 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                             </Heading>
                             <VStack gap="5">
                                 <BodyLong>
-                                    <FormattedMessage
-                                        id="OppgittInformasjon.FordelingOptionsMedUker"
-                                        values={{
-                                            erAlenesøker,
-                                            prosent: hvorLangPeriode.dekningsgrad,
-                                            uker: erAdoptert ? antallUkerAdopsjon : antallUker,
-                                            fellesuker: antallUkerFellesperiodeSøker1,
-                                            fellesuker2: antallUkerFellesperiodeSøker2,
-                                            hvem: finnSøker1Tekst(intl, hvemPlanlegger),
-                                            hvem2: finnSøker2Tekst(intl, hvemPlanlegger),
-                                            kunEnPartSkalHa: hvemHarRett !== 'beggeHarRett',
-                                        }}
-                                    />
+                                    {!erFarOgFarFødsel && (
+                                        <FormattedMessage
+                                            id="OppgittInformasjon.FordelingOptionsMedUker"
+                                            values={{
+                                                erAlenesøker,
+                                                prosent: hvorLangPeriode.dekningsgrad,
+                                                uker: erAdoptert ? antallUkerAdopsjon : antallUker,
+                                                fellesuker: antallUkerFellesperiodeSøker1,
+                                                fellesuker2: antallUkerFellesperiodeSøker2,
+                                                hvem: finnSøker1Tekst(intl, hvemPlanlegger),
+                                                hvem2: finnSøker2Tekst(intl, hvemPlanlegger),
+                                                kunEnPartSkalHa: hvemHarRett !== 'beggeHarRett',
+                                            }}
+                                        />
+                                    )}
+                                    {erFarOgFarFødsel && (
+                                        <FormattedMessage
+                                            id="OppgittInformasjon.FordelingOptionsMedUkerFarOgFarFødsel"
+                                            values={{
+                                                erAlenesøker,
+                                                prosent: hvorLangPeriode.dekningsgrad,
+                                                uker: erAdoptert ? antallUkerAdopsjon : antallUker,
+                                            }}
+                                        />
+                                    )}
                                 </BodyLong>
                             </VStack>
                         </GreenPanel>

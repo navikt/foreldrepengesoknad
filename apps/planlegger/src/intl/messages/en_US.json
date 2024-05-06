@@ -175,6 +175,7 @@
     "OppgittInformasjon.ArbeidssituasjonAnnenPart": "{navn} {arbeidssituasjon, select, jobber {has had earnings 6 of the last 10 months and earned more than NOK 59,310 in the last year} other {har not had earnings 6 of the last 10 months and earned more than NOK 59,310 in the last year}}",
     "OppgittInformasjon.LengdeOgFordeling": "Length {kunEnPartSkalHa, select, true {} other { and distribution}}",
     "OppgittInformasjon.FordelingOptionsMedUker": "You chose {prosent} % parental benefit over {uker} weeks{kunEnPartSkalHa, select, true {.} other{ and distributes the joint period with {fellesuker} weeks for the {hvem} and {fellesuker2} weeks for the {hvem2}.}}",
+    "OppgittInformasjon.FordelingOptionsMedUkerFarOgFarFødsel": "You chose {prosent} % parental benefit over {uker} weeks.",
     "OversiktSteg.Mor": "mother",
     "OversiktSteg.Far": "father",
     "OversiktSteg.Medmor": "co-mother",

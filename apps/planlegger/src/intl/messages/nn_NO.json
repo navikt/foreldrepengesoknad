@@ -175,6 +175,7 @@
     "OppgittInformasjon.ArbeidssituasjonAnnenPart": "{navn} {arbeidssituasjon, select, true {har hatt opptening 6 av dei siste 10 månadene og tent meir enn 59 310 kr det siste året.} other {har ikkje hatt opptening 6 av dei siste 10 månadene og tent meir enn 59 310 kr det siste året.}}",
     "OppgittInformasjon.LengdeOgFordeling": "Lengde {kunEnPartSkalHa, select, true {} other { og fordeling}}",
     "OppgittInformasjon.FordelingOptionsMedUker": "{erAlenesøker, select, true {Du} other {De}} valde {prosent} % foreldrepengar i {uker} veker{kunEnPartSkalHa, select, true {.} other{ og fordelar fellesperioden med {fellesuker} veker til {hvem} og {fellesuker2} veker til {hvem2}.}}",
+    "OppgittInformasjon.FordelingOptionsMedUkerFarOgFarFødsel": "{erAlenesøker, select, true {Du} other {De}} valde {prosent} % foreldrepengar i {uker} veker.",
     "OversiktSteg.Mor": "mor",
     "OversiktSteg.Far": "far",
     "OversiktSteg.Medmor": "medmor",
