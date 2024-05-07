@@ -13,7 +13,6 @@ import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { BodyShort, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
-import { LocaleAll } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
 import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';
@@ -26,13 +25,9 @@ const erFarDelAvSøknadenGittType = (type: Situasjon) => {
     return type === Situasjon.MOR_OG_FAR || type === Situasjon.FAR_OG_FAR || type === Situasjon.FAR;
 };
 
-interface Props {
-    locale: LocaleAll;
-}
-
-const HvemPlanleggerSteg: FunctionComponent<Props> = ({ locale }) => {
+const HvemPlanleggerSteg: FunctionComponent = () => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator(locale);
+    const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
     const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);

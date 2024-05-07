@@ -163,7 +163,6 @@
     "OppsummeringSteg.AndreVeivisere": "Andre veivisere:",
     "OppsummeringSteg.VeiviserHvorMye": "Hvor mye?",
     "OppsummeringSteg.VeiviserHvaSkjerNår": "Hva skjer når?",
-    "OppsummeringSteg.KopierUrl": "Kopier lenken",
     "OppsummeringHeader.Tittel": "Oppsummering",
     "OppgittInformasjon.OppgittInformasjon": "Dette svarte {erAlenesøker, select, true {du} other {dere}}",
     "OppgittInformasjon.InformasjonOmBarn": "{antallBarn, select, 1 {Barnet} other {Barna}} {erFødt, select, true {ble født} other {har termin}} {dato}{erFødt, select, false {.} other { og hadde termin {dato2}.}}",

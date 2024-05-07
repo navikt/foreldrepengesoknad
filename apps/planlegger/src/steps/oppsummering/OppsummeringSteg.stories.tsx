@@ -73,7 +73,7 @@ const customRenderer = ({
                     [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                 }}
             >
-                <OppsummeringSteg stønadskontoer={stønadskontoer} locale="nb" />
+                <OppsummeringSteg stønadskontoer={stønadskontoer} />
             </PlanleggerDataContext>
         </MemoryRouter>
     );

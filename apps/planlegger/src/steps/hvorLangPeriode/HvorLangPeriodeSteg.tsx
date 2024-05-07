@@ -23,7 +23,6 @@ import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-reac
 
 import { links } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { LocaleAll } from '@navikt/fp-types';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import NårBareEnPartHarRettInfoboks from './infoboks/NårBareEnPartHarRettInfoboks';
@@ -31,12 +30,11 @@ import ValgtDekningsgradInfoboks from './infoboks/ValgtDekningsgradInfoboks';
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoer;
-    locale: LocaleAll;
 }
 
-const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => {
+const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator(locale);
+    const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
     const periode = useContextGetData(ContextDataType.HVOR_LANG_PERIODE);

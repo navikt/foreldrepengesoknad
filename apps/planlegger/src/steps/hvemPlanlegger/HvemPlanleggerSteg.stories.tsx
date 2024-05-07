@@ -27,7 +27,7 @@ export const Default: Story = {
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.HVEM_PLANLEGGER]}>
                 <PlanleggerDataContext onDispatch={gåTilNesteSide}>
-                    <HvemPlanleggerSteg locale="nb" />
+                    <HvemPlanleggerSteg />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );

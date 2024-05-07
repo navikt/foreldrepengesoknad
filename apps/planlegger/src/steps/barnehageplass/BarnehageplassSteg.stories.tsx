@@ -30,7 +30,7 @@ const customRenderer = ({ hvemPlanlegger, omBarnet, gåTilNesteSide = action('bu
                 }}
                 onDispatch={gåTilNesteSide}
             >
-                <BarnehageplassSteg locale="nb" />
+                <BarnehageplassSteg />
             </PlanleggerDataContext>
         </MemoryRouter>
     );

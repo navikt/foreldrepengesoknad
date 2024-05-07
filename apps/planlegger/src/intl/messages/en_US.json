@@ -163,7 +163,6 @@
     "OppsummeringSteg.AndreVeivisere": "Other guides:",
     "OppsummeringSteg.VeiviserHvorMye": "How much?",
     "OppsummeringSteg.VeiviserHvaSkjerNår": "What happens when?",
-    "OppsummeringSteg.KopierUrl": "Copy link",
     "OppsummeringHeader.Tittel": "Summary",
     "OppgittInformasjon.OppgittInformasjon": "This is what you answered",
     "OppgittInformasjon.InformasjonOmBarn": "The {antallBarn, select, 1 {child} other {children}} {erFødt, select, true {was born} other {has due date}} {dato}{erFødt, select, false {.} other { and due date was {dato2}.}}",

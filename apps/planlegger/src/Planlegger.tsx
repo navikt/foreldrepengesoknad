@@ -1,13 +1,11 @@
 import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
 import ErrorPage from 'components/error/ErrorPage';
 import { FunctionComponent, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { decodeBase64 } from 'utils/urlEncodingUtils';
 
 import { createApi, usePostRequest } from '@navikt/fp-api';
 import { LocaleAll } from '@navikt/fp-types';
@@ -79,13 +77,8 @@ export const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, change
 };
 
 const PlanleggerDataInit: FunctionComponent<Props> = ({ locale, changeLocale }) => {
-    const locations = useLocation();
-
-    const dataParam = new URLSearchParams(locations.search).get('data');
-    const data = dataParam ? JSON.parse(decodeBase64(dataParam)) : undefined;
-
     return (
-        <PlanleggerDataContext initialState={data}>
+        <PlanleggerDataContext>
             <PlanleggerDataFetcher locale={locale} changeLocale={changeLocale} />
         </PlanleggerDataContext>
     );

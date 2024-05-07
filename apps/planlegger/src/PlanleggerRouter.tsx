@@ -1,6 +1,6 @@
 import { PlanleggerRoutes } from 'appData/routes';
-import { FunctionComponent } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { FunctionComponent, useEffect, useState } from 'react';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import ArbeidssituasjonSteg from 'steps/arbeidssituasjon/ArbeidssituasjonSteg';
 import FordelingSteg from 'steps/fordeling/FordelingSteg';
 import HvemPlanleggerSteg from 'steps/hvemPlanlegger/HvemPlanleggerSteg';
@@ -22,38 +22,43 @@ interface Props {
 }
 
 const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stønadskontoer }) => {
+    const navigate = useNavigate();
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
+
+    useEffect(() => {
+        setIsFirstLoad(false);
+        navigate(PlanleggerRoutes.OM_PLANLEGGEREN);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    if (isFirstLoad) {
+        return null;
+    }
+
     return (
         <Routes>
             <Route
                 path={PlanleggerRoutes.OM_PLANLEGGEREN}
                 element={<OmPlanleggerenSteg locale={locale} changeLocale={changeLocale} />}
             />
-            <Route path={PlanleggerRoutes.HVEM_PLANLEGGER} element={<HvemPlanleggerSteg locale={locale} />} />
-            <Route path={PlanleggerRoutes.OM_BARNET} element={<OmBarnetSteg locale={locale} />} />
-            <Route path={PlanleggerRoutes.ARBEIDSSITUASJON} element={<ArbeidssituasjonSteg locale={locale} />} />
+            <Route path={PlanleggerRoutes.HVEM_PLANLEGGER} element={<HvemPlanleggerSteg />} />
+            <Route path={PlanleggerRoutes.OM_BARNET} element={<OmBarnetSteg />} />
+            <Route path={PlanleggerRoutes.ARBEIDSSITUASJON} element={<ArbeidssituasjonSteg />} />
             <Route
                 path={PlanleggerRoutes.HVOR_LANG_PERIODE}
-                element={
-                    stønadskontoer ? (
-                        <HvorLangPeriodeSteg locale={locale} stønadskontoer={stønadskontoer} />
-                    ) : (
-                        <Loader />
-                    )
-                }
+                element={stønadskontoer ? <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} /> : <Loader />}
             />
             <Route
                 path={PlanleggerRoutes.FORDELING}
-                element={
-                    stønadskontoer ? <FordelingSteg locale={locale} stønadskontoer={stønadskontoer} /> : <Loader />
-                }
+                element={stønadskontoer ? <FordelingSteg stønadskontoer={stønadskontoer} /> : <Loader />}
             />
             <Route
                 path={PlanleggerRoutes.OVERSIKT}
-                element={stønadskontoer ? <OversiktSteg locale={locale} stønadskontoer={stønadskontoer} /> : <Loader />}
+                element={stønadskontoer ? <OversiktSteg stønadskontoer={stønadskontoer} /> : <Loader />}
             />
             <Route
                 path={PlanleggerRoutes.OPPSUMMERING}
-                element={<OppsummeringSteg locale={locale} stønadskontoer={stønadskontoer} />}
+                element={<OppsummeringSteg stønadskontoer={stønadskontoer} />}
             />
             <Route path="*" element={<Navigate to={PlanleggerRoutes.OM_PLANLEGGEREN} />} />
         </Routes>

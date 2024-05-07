@@ -27,7 +27,7 @@ const customRenderer = ({ hvemPlanlegger, gåTilNesteSide = action('button-click
                 }}
                 onDispatch={gåTilNesteSide}
             >
-                <OmBarnetSteg locale="nb" />
+                <OmBarnetSteg />
             </PlanleggerDataContext>
         </MemoryRouter>
     );

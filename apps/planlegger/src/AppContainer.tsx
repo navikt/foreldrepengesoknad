@@ -1,6 +1,6 @@
 import ErrorPage from 'components/error/ErrorPage';
 import dayjs from 'dayjs';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
@@ -30,23 +30,8 @@ const MESSAGES_GROUPED_BY_LOCALE = {
     en: { ...enMessages, ...uiMessages.en },
 };
 
-const initLocale = (): LocaleAll => {
-    const queryString = window.location.search;
-    const languageParam = new URLSearchParams(queryString).get('language');
-    const locale =
-        languageParam === 'nb' || languageParam === 'nn' || languageParam === 'en'
-            ? (languageParam as LocaleAll)
-            : 'nb';
-
-    dayjs.locale(locale);
-    document.documentElement.setAttribute('lang', locale);
-
-    return locale;
-};
-
 const AppContainer = () => {
-    const origLocale = useMemo(() => initLocale(), []);
-    const [locale, setLocale] = useState<LocaleAll>(origLocale);
+    const [locale, setLocale] = useState<LocaleAll>('nb');
 
     useBeforeUnload(() => {
         logAmplitudeEvent('applikasjon-hendelse', {

@@ -33,7 +33,7 @@ const customRenderer = ({ hvemPlanlegger, gåTilNesteSide = action('button-click
                 }}
                 onDispatch={gåTilNesteSide}
             >
-                <ArbeidssituasjonSteg locale="nb" />
+                <ArbeidssituasjonSteg />
             </PlanleggerDataContext>
         </MemoryRouter>
     );

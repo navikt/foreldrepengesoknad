@@ -17,7 +17,6 @@ import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-reac
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { LocaleAll } from '@navikt/fp-types';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import GreenRadioGroup from '../../components/formWrappers/GreenRadioGroup';
@@ -32,13 +31,9 @@ const finnHvorMangeBarnLabel = (erAlenesøker: boolean, erFødsel: boolean) => {
     return <FormattedMessage id="OmBarnetSteg.Adopsjon.HvorMange" values={{ erAlenesøker }} />;
 };
 
-interface Props {
-    locale: LocaleAll;
-}
-
-const OmBarnetSteg: React.FunctionComponent<Props> = ({ locale }) => {
+const OmBarnetSteg: React.FunctionComponent = () => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator(locale);
+    const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
 
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);

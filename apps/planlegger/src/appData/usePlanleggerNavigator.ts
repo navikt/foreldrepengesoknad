@@ -1,17 +1,14 @@
 import { PlanleggerRoutes } from 'appData/routes';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { encodeToBase64 } from 'utils/urlEncodingUtils';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
-import { useContextComplete } from './PlanleggerDataContext';
 import useStepData from './useStepData';
 
-const usePlanleggerNavigator = (locale: string) => {
+const usePlanleggerNavigator = () => {
     const navigate = useNavigate();
     const stepConfig = useStepData();
-    const context = useContextComplete();
 
     const [path, setPath] = useState<PlanleggerRoutes | undefined>();
 
@@ -27,7 +24,7 @@ const usePlanleggerNavigator = (locale: string) => {
 
     useEffect(() => {
         if (path) {
-            navigate(`${path}?language=${locale}&data=${encodeToBase64(JSON.stringify(context))}`);
+            navigate(path);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [path]);

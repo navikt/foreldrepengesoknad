@@ -19,7 +19,7 @@ interface Props {
 }
 
 const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) => {
-    const navigator = usePlanleggerNavigator(locale);
+    const navigator = usePlanleggerNavigator();
 
     return (
         <PlanleggerForside locale={locale} changeLocale={changeLocale}>
