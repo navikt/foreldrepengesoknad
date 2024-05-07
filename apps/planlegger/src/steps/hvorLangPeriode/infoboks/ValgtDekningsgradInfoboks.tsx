@@ -118,10 +118,8 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                     />
                 )}
             </BodyShort>
-            {(hvemHarRett !== 'kunSøker1HarRett' ||
-                (hvemHarRett === 'kunSøker1HarRett' &&
-                    hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
-                    !erAdopsjon)) && (
+            {(hvemHarRett === 'kunSøker2HarRett' ||
+                (hvemHarRett === 'kunSøker1HarRett' && hvemPlanlegger.type === Situasjon.FAR_OG_FAR && erAdopsjon)) && (
                 <VStack gap="2">
                     <BodyShort>
                         <FormattedMessage

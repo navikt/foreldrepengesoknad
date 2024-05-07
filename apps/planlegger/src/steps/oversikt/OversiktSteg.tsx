@@ -13,6 +13,7 @@ import {
     getFellesperiodefordelingSelectOptions,
 } from 'steps/fordeling/FordelingSteg';
 import { Dekningsgrad } from 'types/Dekningsgrad';
+import { Fordeling } from 'types/Fordeling';
 import { Situasjon } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 import { erAlenesøker, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
@@ -31,6 +32,19 @@ import { notEmpty } from '@navikt/fp-validation';
 import styles from './oversiktSteg.module.css';
 import OmÅTilpassePlanen from './tilpassePlanen/OmÅTilpassePlanen';
 import UforutsetteEndringer from './uforutsetteEndringer/UforutsetteEndringer';
+
+const finnAntallUkerSøker1 = (
+    dekningsgrad: Dekningsgrad,
+    stønadskontoer: TilgjengeligeStønadskontoer,
+    fordeling: Fordeling,
+) => {
+    const ukerFellesperiode = getAntallUkerFellesperiode(
+        dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+            ? stønadskontoer[Dekningsgrad.HUNDRE_PROSENT]
+            : stønadskontoer[Dekningsgrad.ÅTTI_PROSENT],
+    );
+    return fordeling.antallUkerSøker1 > ukerFellesperiode ? ukerFellesperiode : fordeling.antallUkerSøker1;
+};
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoer;
@@ -60,6 +74,16 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
         hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
 
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
+
+    const oppdaterPeriodeOgFordeling = (value: string) => {
+        const dekningsgrad = value as Dekningsgrad;
+        lagreHvorLangPeriode({ dekningsgrad });
+        if (fordeling) {
+            lagreFordeling({
+                antallUkerSøker1: finnAntallUkerSøker1(dekningsgrad, stønadskontoer, fordeling),
+            });
+        }
+    };
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const farOgFarKunEnPartHarRett =
@@ -134,7 +158,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
                         defaultValue={hvorLangPeriode?.dekningsgrad}
                         size="medium"
                         variant="neutral"
-                        onChange={(value) => lagreHvorLangPeriode({ dekningsgrad: value as Dekningsgrad })}
+                        onChange={oppdaterPeriodeOgFordeling}
                         style={{ width: '100%' }}
                     >
                         <ToggleGroup.Item value={Dekningsgrad.HUNDRE_PROSENT}>
