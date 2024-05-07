@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
 import { erAlenesøker, erMorDelAvSøknaden, finnSøker1Tekst, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
@@ -118,7 +118,10 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                     />
                 )}
             </BodyShort>
-            {hvemHarRett !== 'kunSøker1HarRett' && (
+            {(hvemHarRett !== 'kunSøker1HarRett' ||
+                (hvemHarRett === 'kunSøker1HarRett' &&
+                    hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
+                    !erAdopsjon)) && (
                 <VStack gap="2">
                     <BodyShort>
                         <FormattedMessage
