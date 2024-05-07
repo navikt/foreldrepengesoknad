@@ -83,7 +83,6 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
 
     const antallUker100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
     const antallUker80 = finnAntallUkerMedForeldrepenger(uttaksdata80);
-    const ukerFødsel = antallUker100 + 6;
 
     const erAleneforsørger = erAlenesøker(hvemPlanlegger);
 
@@ -125,12 +124,8 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => 
                                 <BodyShort>
                                     <FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DenSomErBiologisk" />
                                 </BodyShort>
-
                                 <BodyShort>
-                                    <FormattedMessage
-                                        id="OversiktSteg.Infoboks.FarOgFar.HvisDetErStebarnsadopsjon"
-                                        values={{ uker: antallUker100, ukerFødsel: ukerFødsel, uker2: antallUker80 }}
-                                    />
+                                    <FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.HvisDetErStebarnsadopsjon" />
                                 </BodyShort>
                             </div>
                         </Infobox>

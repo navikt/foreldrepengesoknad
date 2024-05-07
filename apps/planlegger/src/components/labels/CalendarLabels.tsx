@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
-import { finnSøker1Tekst, finnSøker2Tekst, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+import { getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { HvemHarRett, harKunFarSøker1Rett, harKunMorRett, harMedmorEllerFarSøker2Rett } from 'utils/hvemHarRettUtils';
 import { Uttaksdata } from 'utils/uttakUtils';
@@ -35,14 +35,8 @@ const CalendarLabels: FunctionComponent<Props> = ({
     const erAdoptert = erBarnetAdoptert(barnet);
 
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
-    const søker1Tekst =
-        erFarOgFar && hvemPlanlegger.navnPåMedfar
-            ? getFornavnPåSøker1(hvemPlanlegger, intl)
-            : finnSøker1Tekst(intl, hvemPlanlegger);
-    const søker2Tekst =
-        erFarOgFar && hvemPlanlegger.navnPåMedfar
-            ? getFornavnPåSøker2(hvemPlanlegger, intl)
-            : finnSøker2Tekst(intl, hvemPlanlegger);
+    const søker1Tekst = getFornavnPåSøker1(hvemPlanlegger, intl);
+    const søker2Tekst = getFornavnPåSøker2(hvemPlanlegger, intl);
 
     const { startdatoPeriode1, sluttdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2 } = uttaksdata;
 
@@ -61,6 +55,8 @@ const CalendarLabels: FunctionComponent<Props> = ({
         sluttdatoPeriode2 &&
         (harMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) ||
             (hvemHarRett === 'kunSøker1HarRett' && erFarOgFarOgAdopsjon));
+
+    const farOgFarAdopsjonDerKunSøker1HarRett = hvemHarRett === 'kunSøker1HarRett' && erFarOgFarOgAdopsjon;
 
     return (
         <VStack gap={{ sm: '1', md: '2' }}>
@@ -86,20 +82,16 @@ const CalendarLabels: FunctionComponent<Props> = ({
                     <AktivitetskravLabel
                         utenAktivitetskrav
                         valgtStønadskonto={valgtStønadskonto}
-                        hvemPlanlegger={hvemPlanlegger}
-                        annenPartTekst={
-                            hvemHarRett === 'kunSøker1HarRett' && erFarOgFarOgAdopsjon ? søker1Tekst : søker2Tekst
-                        }
+                        tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
+                        tekstPart2={farOgFarAdopsjonDerKunSøker1HarRett ? søker2Tekst : søker1Tekst}
                         startdato={startdatoPeriode1}
                         sluttdato={sluttdatoPeriode1}
                         isBluePanel
                     />
                     <AktivitetskravLabel
                         valgtStønadskonto={valgtStønadskonto}
-                        hvemPlanlegger={hvemPlanlegger}
-                        annenPartTekst={
-                            hvemHarRett === 'kunSøker1HarRett' && erFarOgFarOgAdopsjon ? søker1Tekst : søker2Tekst
-                        }
+                        tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
+                        tekstPart2={farOgFarAdopsjonDerKunSøker1HarRett ? søker2Tekst : søker1Tekst}
                         startdato={startdatoPeriode2}
                         sluttdato={sluttdatoPeriode2}
                     />

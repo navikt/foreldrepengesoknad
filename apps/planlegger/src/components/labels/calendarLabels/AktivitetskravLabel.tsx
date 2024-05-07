@@ -1,8 +1,6 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
-import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { getAntallUkerAktivitetsfriKvote, getAntallUkerForeldrepenger } from 'utils/stønadskontoerUtils';
 
 import { BodyShort } from '@navikt/ds-react';
@@ -15,8 +13,8 @@ import styles from './oversiktLabels.module.css';
 interface Props {
     utenAktivitetskrav?: boolean;
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
-    hvemPlanlegger: HvemPlanlegger;
-    annenPartTekst: string;
+    tekstPart1: string;
+    tekstPart2: string;
     startdato: string;
     sluttdato: string;
     isBluePanel?: boolean;
@@ -24,12 +22,12 @@ interface Props {
 
 const AktivitetskravLabel: FunctionComponent<Props> = ({
     utenAktivitetskrav = false,
-    annenPartTekst,
+    tekstPart1,
+    tekstPart2,
     startdato,
     sluttdato,
     isBluePanel = false,
     valgtStønadskonto,
-    hvemPlanlegger,
 }) => {
     const intl = useIntl();
 
@@ -40,9 +38,9 @@ const AktivitetskravLabel: FunctionComponent<Props> = ({
                     <FormattedMessage
                         id="OversiktSteg.UkerUtenAktivitetskrav"
                         values={{
-                            hvem: capitalizeFirstLetter(annenPartTekst),
+                            hvem: capitalizeFirstLetter(tekstPart1),
                             uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
-                            erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
+                            hvemPart2: capitalizeFirstLetter(tekstPart2),
                         }}
                     />
                 )}
@@ -50,9 +48,9 @@ const AktivitetskravLabel: FunctionComponent<Props> = ({
                     <FormattedMessage
                         id="OversiktSteg.UkerMedAktivitetskrav"
                         values={{
-                            hvem: capitalizeFirstLetter(annenPartTekst),
+                            hvem: capitalizeFirstLetter(tekstPart1),
                             uker: getAntallUkerForeldrepenger(valgtStønadskonto),
-                            erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
+                            hvemPart2: capitalizeFirstLetter(tekstPart2),
                         }}
                     />
                 )}
@@ -61,7 +59,7 @@ const AktivitetskravLabel: FunctionComponent<Props> = ({
                 <FormattedMessage
                     id="OversiktSteg.PeriodeSrOnly"
                     values={{
-                        hvem: capitalizeFirstLetter(annenPartTekst),
+                        hvem: capitalizeFirstLetter(tekstPart1),
                         startdato: intl.formatDate(startdato, {
                             day: '2-digit',
                             month: 'long',

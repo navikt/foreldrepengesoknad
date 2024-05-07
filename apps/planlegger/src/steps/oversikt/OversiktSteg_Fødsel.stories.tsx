@@ -310,28 +310,6 @@ export const FarOgFarKunFarHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
-        stønadskontoer: {
-            '80': {
-                kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 210 },
-                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 40 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            },
-            '100': {
-                kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 160 },
-                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 40 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            },
-        },
     },
 };
 
@@ -342,28 +320,6 @@ export const FarOgFarKunMedfarHarRett: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,
-        },
-        stønadskontoer: {
-            '80': {
-                kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 210 },
-                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 40 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            },
-            '100': {
-                kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 160 },
-                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 40 },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            },
         },
     },
 };
