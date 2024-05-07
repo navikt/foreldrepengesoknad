@@ -186,7 +186,7 @@
     "OversiktSteg.Infoboks.Utkast": "Dette er et utkast",
     "OversiktSteg.Infoboks.FarOgFar.DereHarOppgitt": "Dere har oppgitt at kun én av dere har rett til foreldrepenger",
     "OversiktSteg.Infoboks.FarOgFar.DenSomErBiologisk": "Den som er biologisk far kan ha foreldrepenger fra fødsel, mens den som stebarnsadopterer må vente til adopsjonen går gjennom før man har foreldrepenger.",
-    "OversiktSteg.Infoboks.FarOgFar.HvisDetErStebarnsadopsjon": "Hvis det kun er den som stebarnsadopterer som skal ha foreldrepenger, vil man ha rett på 40 uker i stedet for 49 ved 100% og 50 uker ved 80% foreldrepenger.",
+    "OversiktSteg.Infoboks.FarOgFar.HvisDetErStebarnsadopsjon": "Hvis det kun er den som stebarnsadopterer som skal ha foreldrepenger, vil man ha rett på 40 uker i stedet for 46 ved 100% og 56 uker ved 80% foreldrepenger.",
     "OversiktSteg.Fellesperiodefordeling": "Fordeling av fellesperioden",
     "OversiktSteg.UkerForeldrepenger": "{hvem}, {uker} uker, starter {dato} ",
     "OversiktSteg.PeriodeSrOnly": "{hvem}, starter {startdato}, slutter {sluttdato} ",

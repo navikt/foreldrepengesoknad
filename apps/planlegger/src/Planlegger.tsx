@@ -25,7 +25,7 @@ const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHar
     if (hvemPlanlegger.type === Situasjon.MOR || hvemPlanlegger.type === Situasjon.FAR) {
         return 'ALENEOMSORG';
     }
-    if (hvemHarRett === 'beggeHarRett') {
+    if (hvemHarRett === 'beggeHarRett' || hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
         return 'BEGGE_RETT';
     }
     return 'BARE_SØKER_RETT';
