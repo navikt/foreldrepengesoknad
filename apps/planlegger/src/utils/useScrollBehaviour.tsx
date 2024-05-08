@@ -12,7 +12,7 @@ const useScrollBehaviour = () => {
 
     useEffect(() => {
         if (ref.current && scrollCounter > 0) {
-            ref.current.scrollIntoView();
+            ref.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
     }, [scrollCounter]);
 
