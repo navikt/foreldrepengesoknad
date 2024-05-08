@@ -10,6 +10,7 @@ export default defineConfig({
         }),
         checker({ typescript: true }),
     ],
+    base: '/foreldrepenger/planlegger',
     build: {
         sourcemap: true,
     },
