@@ -52,6 +52,10 @@ const startServer = async (html) => {
         },
     });
 
+    server.get('/', (req, res) => {
+        res.redirect('/foreldrepenger/planlegger');
+    });
+
     server.get(/^\/(?!.*dist).*$/, (req, _res, next) => {
         const fullPath = path
             .resolve(__dirname, decodeURIComponent(req.path.substring(1)))
