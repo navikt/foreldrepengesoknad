@@ -31,10 +31,9 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 };
 
 const initLocale = (): LocaleAll => {
-    const defautlLocale = 'nb';
-    dayjs.locale(defautlLocale);
-    document.documentElement.setAttribute('lang', defautlLocale);
-    return defautlLocale;
+    const defaultLocale = 'nb';
+    dayjs.locale(defaultLocale);
+    return defaultLocale;
 };
 
 const AppContainer = () => {
