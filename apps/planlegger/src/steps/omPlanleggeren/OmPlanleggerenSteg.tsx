@@ -1,6 +1,5 @@
 import { ArrowRightIcon, CalendarIcon, QuestionmarkIcon } from '@navikt/aksel-icons';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import ShareDataInfobox from 'components/boxes/ShareDataInfobox';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import LanguageToggle from 'components/language/LanguageToggle';
 import { FunctionComponent } from 'react';
@@ -28,29 +27,26 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
                     <FormattedMessage id="OmPlanleggerenSteg.Ingress" />
                 </BodyShort>
                 <VStack gap={{ xs: '8', sm: '20' }}>
-                    <VStack gap={{ xs: '4', sm: '10' }}>
-                        <VStack gap={{ xs: '2', sm: '5' }}>
-                            <Heading level="2" size="xsmall">
-                                <FormattedMessage id="OmPlanleggerenSteg.Underoverskrift" />
-                            </Heading>
-                            <HStack gap="4" align="center" wrap={false}>
-                                <IconCircleWrapper color="green" size="medium">
-                                    <QuestionmarkIcon width="24" height="25" aria-hidden />
-                                </IconCircleWrapper>
-                                <BodyShort>
-                                    <FormattedMessage id="OmPlanleggerenSteg.Trinn1" />
-                                </BodyShort>
-                            </HStack>
-                            <HStack gap="4" align="center" wrap={false}>
-                                <IconCircleWrapper color="green" size="medium">
-                                    <CalendarIcon width="24" height="25" aria-hidden />
-                                </IconCircleWrapper>
-                                <BodyShort>
-                                    <FormattedMessage id="OmPlanleggerenSteg.Trinn2" />
-                                </BodyShort>
-                            </HStack>
-                        </VStack>
-                        <ShareDataInfobox />
+                    <VStack gap={{ xs: '2', sm: '5' }}>
+                        <Heading level="2" size="xsmall">
+                            <FormattedMessage id="OmPlanleggerenSteg.Underoverskrift" />
+                        </Heading>
+                        <HStack gap="4" align="center" wrap={false}>
+                            <IconCircleWrapper color="green" size="medium">
+                                <QuestionmarkIcon width="24" height="25" aria-hidden />
+                            </IconCircleWrapper>
+                            <BodyShort>
+                                <FormattedMessage id="OmPlanleggerenSteg.Trinn1" />
+                            </BodyShort>
+                        </HStack>
+                        <HStack gap="4" align="center" wrap={false}>
+                            <IconCircleWrapper color="green" size="medium">
+                                <CalendarIcon width="24" height="25" aria-hidden />
+                            </IconCircleWrapper>
+                            <BodyShort>
+                                <FormattedMessage id="OmPlanleggerenSteg.Trinn2" />
+                            </BodyShort>
+                        </HStack>
                     </VStack>
                     <HStack justify="center">
                         <Button
