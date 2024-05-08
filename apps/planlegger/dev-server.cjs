@@ -53,10 +53,16 @@ const startServer = async (html) => {
     });
 
     server.get(/^\/(?!.*dist).*$/, (req, _res, next) => {
-        const fullPath = path.resolve(__dirname, decodeURIComponent(req.path.substring(1)));
+        const fullPath = path
+            .resolve(__dirname, decodeURIComponent(req.path.substring(1)))
+            .split('/foreldrepenger/planlegger')
+            .join('');
         const fileExists = fs.existsSync(fullPath);
 
-        if ((!fileExists && !req.url.startsWith('/@')) || req.url === '/') {
+        if (
+            (!fileExists && !req.url.startsWith('/foreldrepenger/planlegger/@')) ||
+            req.url === '/foreldrepenger/planlegger'
+        ) {
             req.url = '/index-decorated.html';
         }
         next();

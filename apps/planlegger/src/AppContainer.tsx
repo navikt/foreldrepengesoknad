@@ -57,7 +57,7 @@ const AppContainer = () => {
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <ErrorBoundary appName="Foreldrepengeplanlegger" customErrorPage={<ErrorPage />}>
-                <BrowserRouter>
+                <BrowserRouter basename="/foreldrepenger/planlegger">
                     <PlanleggerDataInit locale={locale} changeLocale={changeLocale} />
                 </BrowserRouter>
             </ErrorBoundary>
