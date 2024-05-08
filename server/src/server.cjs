@@ -43,6 +43,7 @@ const startServer = async (html) => {
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
 
     server.use('/assets', express.static(path.resolve(viewsDir, 'assets')));
+    server.use('/foreldrepenger/planlegger/assets', express.static(path.resolve(viewsDir, 'assets')));
     server.get(/^\/(?!.*dist).*$/, (_req, res) => {
         res.send(html);
     });
