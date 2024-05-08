@@ -2,13 +2,7 @@
 
 .striped(@color1, @color2) {
     @pos: 7.5px;
-    background: repeating-linear-gradient(
-        45deg,
-        var(--a-data-surface-5),
-        var(--a-data-surface-5) @pos,
-        var(--a-green-200) @pos,
-        var(--a-green-200) @pos + 2.5px
-    );
+    background: repeating-linear-gradient(45deg, @color1, @color1 @pos, @color2 @pos, @color2 @pos + 2.5px);
 }
 
 .iconBox {
@@ -26,11 +20,14 @@
         }
     }
 
-    &--PURPLE {
-        background-color: var(--a-data-surface-6);
-        &--striped {
-            .striped(var(--a-data-surface-6),var(--a-data-surface-6));
-        }
+    &--BLUEOUTLINE {
+        color: var(--a-data-surface-1);
+        border-radius: 0.75rem;
+    }
+
+    &--GREENOUTLINE {
+        color: var(--a-data-surface-5);
+        border-radius: 0.75rem;
     }
 
     &--GREEN {

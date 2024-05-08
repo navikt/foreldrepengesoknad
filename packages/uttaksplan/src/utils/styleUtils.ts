@@ -37,8 +37,8 @@ export const getStønadskontoFarge = (
     return getForelderFarge(forelder, erFarEllerMedmor);
 };
 
-export const getUtsettelseFarge = (): PeriodeColor => {
-    return PeriodeColor.PURPLE;
+export const getUtsettelseFarge = (forelder: Forelder): PeriodeColor => {
+    return forelder === Forelder.farMedmor ? PeriodeColor.GREENOUTLINE : PeriodeColor.BLUEOUTLINE;
 };
 
 export const getOppholdFarge = (periode: Oppholdsperiode, erFarEllerMedmor: boolean): PeriodeColor => {

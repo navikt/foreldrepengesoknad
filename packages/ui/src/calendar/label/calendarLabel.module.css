@@ -31,20 +31,9 @@
     width: fit-content;
 }
 
-.purplePanel {
+.grayPanel {
     border-radius: 1.25rem;
-    background-color: var(--a-purple-100);
-    display: flex;
-    padding-left: 10px;
-    padding-right: 8px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    width: fit-content;
-}
-
-.orangePanel {
-    border-radius: 1.25rem;
-    background-color: var--a-orange-100;
+    background-color: var(--a-gray-50);
     display: flex;
     padding-left: 10px;
     padding-right: 8px;

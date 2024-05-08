@@ -11,12 +11,18 @@ import {
     Overføringsperiode,
     Periode,
     PeriodeInfoType,
+    PeriodeUtenUttak,
     Periodetype,
+    Utsettelsesperiode,
     Uttaksdagen,
     Uttaksperiode,
     getAnnenForelderSamtidigUttakPeriode,
     getFamiliehendelsedato,
+    isForeldrepengerFørFødselUttaksperiode,
+    isFødtBarn,
     isInfoPeriode,
+    isUfødtBarn,
+    isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { PeriodeColor } from '@navikt/fp-constants';
@@ -48,7 +54,20 @@ const getKalenderFargeForUttaksperiode = (
     if (!annenForelderSamtidigUttaksperiode && isUttaksperiode(periode) && periode.gradert) {
         return erFarEllerMedmor ? PeriodeColor.GREENSTRIPED : PeriodeColor.BLUESTRIPED;
     }
+    if (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin) {
+        return PeriodeColor.ORANGE;
+    }
     return getStønadskontoFarge(periode.konto, periode.forelder, erFarEllerMedmor);
+};
+
+const getKalenderFargeForPeriodeUtenUttak = (periode: PeriodeUtenUttak, barn: Barn): PeriodeColor => {
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const erFødsel = isFødtBarn(barn) || isUfødtBarn(barn);
+    const treUkerFørFamhendelse = dayjs(familiehendelsesdato).subtract(3, 'weeks');
+    if (erFødsel && dayjs(periode.tidsperiode.tom).isBetween(familiehendelsesdato, treUkerFørFamhendelse, 'd')) {
+        return PeriodeColor.ORANGE;
+    }
+    return PeriodeColor.NONE;
 };
 
 const getKalenderFargeForInfoperiode = (
@@ -58,7 +77,7 @@ const getKalenderFargeForInfoperiode = (
 ): PeriodeColor => {
     switch (infoType) {
         case PeriodeInfoType.utsettelseAnnenPart:
-            return PeriodeColor.PURPLE;
+            return erFarEllerMedmor ? PeriodeColor.BLUEOUTLINE : PeriodeColor.GREENOUTLINE;
         case PeriodeInfoType.uttakAnnenPart:
             return getForelderFarge(forelder, erFarEllerMedmor);
         default:
@@ -70,12 +89,13 @@ const getKalenderFargeForPeriodeType = (
     periode: Periode,
     erFarEllerMedmor: boolean,
     uttaksplan: Periode[],
+    barn: Barn,
 ): PeriodeColor => {
     switch (periode.type) {
         case Periodetype.Utsettelse:
-            return PeriodeColor.PURPLE;
+            return periode.forelder === Forelder.farMedmor ? PeriodeColor.GREENOUTLINE : PeriodeColor.BLUEOUTLINE;
         case Periodetype.PeriodeUtenUttak:
-            return PeriodeColor.NONE;
+            return getKalenderFargeForPeriodeUtenUttak(periode, barn);
         case Periodetype.Hull:
             return PeriodeColor.ORANGE;
         case Periodetype.Overføring:
@@ -98,7 +118,7 @@ const UttaksplanKalender: FunctionComponent<Props> = ({ uttaksplan, erFarEllerMe
             ? Uttaksdagen(p.tidsperiode.fom).neste().toDateString()
             : dateToISOString(p.tidsperiode.fom),
         tom: dateToISOString(p.tidsperiode.tom),
-        color: getKalenderFargeForPeriodeType(p, erFarEllerMedmor, uttaksplan),
+        color: getKalenderFargeForPeriodeType(p, erFarEllerMedmor, uttaksplan, barn),
     }));
 
     const indexOfFamiliehendelse = getIndexOfSistePeriodeFørDato(uttaksplan, new Date(familiehendelsesdato)) || 0;
@@ -108,7 +128,9 @@ const UttaksplanKalender: FunctionComponent<Props> = ({ uttaksplan, erFarEllerMe
         color: PeriodeColor.PINK,
     });
 
-    const uniquePeriodColors = [...new Set(periods.map((period) => period.color))];
+    const unikePeriodColors = [...new Set(periods.map((period) => period.color))];
+    const utsettelser = uttaksplan.filter((p) => isUtsettelsesperiode(p)) as Utsettelsesperiode[];
+    const unikeUtsettelseÅrsaker = [...new Set(utsettelser.map((u) => u.årsak))];
 
     const pdfOptionsSave = {
         resolution: Resolution.HIGH,
@@ -116,18 +138,22 @@ const UttaksplanKalender: FunctionComponent<Props> = ({ uttaksplan, erFarEllerMe
             margin: Margin.MEDIUM,
         },
     } as Options;
-    const getTargetElement = () => document.getElementById('content-id');
+    const getTargetElement = () => document.getElementById('print-content');
 
     return (
         <>
-            <div id="content-id">
-                <UttaksplanLegend uniqueColors={uniquePeriodColors} barn={barn} navnAnnenPart={navnAnnenPart} />
-            </div>
-            <div id="content-id">
+            <div id="print-content">
+                <UttaksplanLegend
+                    uniqueColors={unikePeriodColors}
+                    barn={barn}
+                    navnAnnenPart={navnAnnenPart}
+                    unikeUtsettelseÅrsaker={unikeUtsettelseÅrsaker}
+                    erFarEllerMedmor={erFarEllerMedmor}
+                />
                 <Calendar periods={periods} />
             </div>
             <Button
-                variant="secondary"
+                variant="tertiary"
                 icon={<DownloadIcon />}
                 onClick={() => generatePDF(getTargetElement, pdfOptionsSave)}
             >

@@ -3,13 +3,29 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { Barn, getNavnGenitivEierform } from '@navikt/fp-common';
+import { Barn, UtsettelseÅrsakType, getNavnGenitivEierform, intlUtils } from '@navikt/fp-common';
 import { PeriodeColor } from '@navikt/fp-constants';
 import { CalendarLabel } from '@navikt/fp-ui';
 
 import { getFamiliehendelseTekst } from './../familiehendelsedato-display/FamiliehendelsedatoDisplay';
 
-const getCalendarLabel = (color: PeriodeColor, barn: Barn, navnAnnenPart: string, intl: IntlShape): ReactNode => {
+const getUtsettelseLabel = (unikeUtsettelseÅrsaker: UtsettelseÅrsakType[], intl: IntlShape): ReactNode => {
+    if (unikeUtsettelseÅrsaker.length === 1) {
+        const årsakTekst = intlUtils(intl, `kalender.utsettelse.${unikeUtsettelseÅrsaker[0]}`);
+        return <FormattedMessage id="kalender.utsettelse" values={{ årsak: årsakTekst }} />;
+    }
+
+    return <FormattedMessage id="kalender.dinUtsettelse" />;
+};
+
+const getCalendarLabel = (
+    color: PeriodeColor,
+    barn: Barn,
+    navnAnnenPart: string,
+    unikeUtsettelseÅrsaker: UtsettelseÅrsakType[],
+    erFarEllerMedmor: boolean,
+    intl: IntlShape,
+): ReactNode => {
     switch (color) {
         case PeriodeColor.PINK:
             return getFamiliehendelseTekst(barn);
@@ -30,8 +46,18 @@ const getCalendarLabel = (color: PeriodeColor, barn: Barn, navnAnnenPart: string
         case PeriodeColor.LIGHTBLUEGREEN:
         case PeriodeColor.LIGHTGREENBLUE:
             return <FormattedMessage id="kalender.samtidigUttak" values={{ navnAnnenPart }} />;
-        case PeriodeColor.PURPLE:
-            return <FormattedMessage id="kalender.dinUtsettelse" />;
+        case PeriodeColor.GREENOUTLINE:
+            return erFarEllerMedmor ? (
+                getUtsettelseLabel(unikeUtsettelseÅrsaker, intl)
+            ) : (
+                <FormattedMessage id="kalender.utsettelseAnnenPart" values={{ navnAnnenPart }} />
+            );
+        case PeriodeColor.BLUEOUTLINE:
+            return erFarEllerMedmor ? (
+                <FormattedMessage id="kalender.utsettelseAnnenPart" values={{ navnAnnenPart }} />
+            ) : (
+                getUtsettelseLabel(unikeUtsettelseÅrsaker, intl)
+            );
         case PeriodeColor.ORANGE:
             return <FormattedMessage id="kalender.tapteDager" />;
         default:
@@ -43,14 +69,24 @@ interface Props {
     uniqueColors: PeriodeColor[];
     barn: Barn;
     navnAnnenPart: string;
+    unikeUtsettelseÅrsaker: UtsettelseÅrsakType[];
+    erFarEllerMedmor: boolean;
 }
 
-const UttaksplanLegend: FunctionComponent<Props> = ({ uniqueColors, barn, navnAnnenPart }) => {
+const UttaksplanLegend: FunctionComponent<Props> = ({
+    uniqueColors,
+    barn,
+    navnAnnenPart,
+    unikeUtsettelseÅrsaker,
+    erFarEllerMedmor,
+}) => {
     const intl = useIntl();
     return uniqueColors.map((color) => (
         <div key={color} style={{ paddingBottom: '1rem' }}>
             <CalendarLabel iconType={color}>
-                <BodyShort>{getCalendarLabel(color, barn, navnAnnenPart, intl)}</BodyShort>
+                <BodyShort>
+                    {getCalendarLabel(color, barn, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl)}
+                </BodyShort>
             </CalendarLabel>
         </div>
     ));
