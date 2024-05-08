@@ -30,8 +30,15 @@ const MESSAGES_GROUPED_BY_LOCALE = {
     en: { ...enMessages, ...uiMessages.en },
 };
 
+const initLocale = (): LocaleAll => {
+    const defautlLocale = 'nb';
+    dayjs.locale(defautlLocale);
+    document.documentElement.setAttribute('lang', defautlLocale);
+    return defautlLocale;
+};
+
 const AppContainer = () => {
-    const [locale, setLocale] = useState<LocaleAll>('nb');
+    const [locale, setLocale] = useState<LocaleAll>(initLocale());
 
     useBeforeUnload(() => {
         logAmplitudeEvent('applikasjon-hendelse', {
