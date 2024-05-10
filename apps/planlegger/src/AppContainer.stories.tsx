@@ -9,7 +9,7 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import AppContainer from './AppContainer';
 import { planleggerApi } from './Planlegger';
 
-const kontoer = {
+export const kontoer = {
     '100': {
         kontoer: [
             {
