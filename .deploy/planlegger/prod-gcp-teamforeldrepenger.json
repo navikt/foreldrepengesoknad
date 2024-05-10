@@ -2,7 +2,6 @@
     "app": "planlegger",
     "dekoratoren": "www.nav.no",
     "ingresses": [
-        "https://foreldrepengeplanlegger.nav.no",
         "https://www.nav.no/foreldrepenger/planlegger"
     ],
     "env": {
