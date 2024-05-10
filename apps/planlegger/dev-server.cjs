@@ -57,10 +57,20 @@ const startServer = async (html) => {
     });
 
     server.get(/^\/(?!.*dist).*$/, (req, _res, next) => {
-        const fullPath = path
-            .resolve(__dirname, decodeURIComponent(req.path.substring(1)))
-            .split('/foreldrepenger/planlegger')
-            .join('');
+        let isWin = process.platform === 'win32';
+        let fullPath = undefined;
+
+        if (isWin) {
+            fullPath = path
+                .resolve(__dirname, decodeURIComponent(req.path.substring(1)))
+                .split('\\foreldrepenger\\planlegger')
+                .join('');
+        } else {
+            fullPath = path
+                .resolve(__dirname, decodeURIComponent(req.path.substring(1)))
+                .split('/foreldrepenger/planlegger')
+                .join('');
+        }
         const fileExists = fs.existsSync(fullPath);
 
         if (
