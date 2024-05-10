@@ -13,8 +13,6 @@ const {
     HarIkkeRett,
 } = composeStories(stories);
 
-//TODO Skriv fleire testar
-
 describe('<OppsummeringSteg>', () => {
     it('skal vise info der det er flere forsørgere og ingen har rett til foreldrepenger', async () => {
         render(<HarIkkeRett />);

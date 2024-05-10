@@ -10,7 +10,7 @@ import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import { erMorDelAvSøknaden } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert } from './barnetUtils';
-import { HvemHarRett, harMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from './hvemHarRettUtils';
+import { HvemHarRett, utledHvemSomHarRett } from './hvemHarRettUtils';
 import { finnUttaksdata } from './uttakUtils';
 
 const finnPerioderForKunEnHarRett = (familiehendelsedato: string, sluttdatoPeriode1: string): Period[] => {
@@ -147,10 +147,8 @@ export const lagKalenderPerioder = (
     }
 
     if (
-        (hvemHarRett === 'kunSøker2HarRett' ||
-            erFarOgFarKunSøker1HarRett(hvemPlanlegger, hvemHarRett) ||
-            !erAdoptert) &&
-        harPeriode2
+        harPeriode2 &&
+        (hvemHarRett === 'kunSøker2HarRett' || erFarOgFarKunSøker1HarRett(hvemPlanlegger, hvemHarRett) || !erAdoptert)
     ) {
         return finnPerioderOppdeltIAktivitetskrav(
             startdatoPeriode1,
@@ -159,10 +157,6 @@ export const lagKalenderPerioder = (
             startdatoPeriode2,
             sluttdatoPeriode2,
         );
-    }
-
-    if (harMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) && erAdoptert) {
-        return finnPerioderForKunEnHarRett(sluttdatoPeriode1, familiehendelsedato);
     }
 
     throw Error('Ingen perioder finnes');
