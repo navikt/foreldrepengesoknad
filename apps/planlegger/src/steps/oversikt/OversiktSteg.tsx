@@ -194,18 +194,22 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 ))}
                             </Select>
                         )}
-                    <CalendarLabels
-                        uttaksdata={
-                            hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? uttaksdata100 : uttaksdata80
-                        }
-                        hvemPlanlegger={hvemPlanlegger}
-                        barnet={barnet}
-                        valgtStønadskonto={valgtStønadskonto}
-                        hvemHarRett={hvemHarRett}
-                    />
-                    <div className={styles.calendar}>
-                        <Calendar periods={uttaksperioder} />
-                    </div>
+                    <VStack gap="5">
+                        <CalendarLabels
+                            uttaksdata={
+                                hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+                                    ? uttaksdata100
+                                    : uttaksdata80
+                            }
+                            hvemPlanlegger={hvemPlanlegger}
+                            barnet={barnet}
+                            valgtStønadskonto={valgtStønadskonto}
+                            hvemHarRett={hvemHarRett}
+                        />
+                        <div className={styles.calendar}>
+                            <Calendar periods={uttaksperioder} />
+                        </div>
+                    </VStack>
                     <VStack gap="5">
                         <OmÅTilpassePlanen
                             arbeidssituasjon={arbeidssituasjon}

@@ -6,7 +6,7 @@
     grid-template-columns: repeat(3, 1fr);
 }
 
-@media (max-width: 360px) {
+@media (max-width: 320px) {
     .gridColumnsWide {
         grid-template-columns: repeat(2, 1fr);
     }

@@ -59,7 +59,7 @@ const CalendarLabels: FunctionComponent<Props> = ({
     const farOgFarAdopsjonDerKunSøker1HarRett = hvemHarRett === 'kunSøker1HarRett' && erFarOgFarOgAdopsjon;
 
     return (
-        <VStack gap={{ sm: '1', md: '2' }}>
+        <VStack gap="1">
             {skalViseAntallUkerLabels && (
                 <HStack gap="1">
                     <AntallUkerFpLabel

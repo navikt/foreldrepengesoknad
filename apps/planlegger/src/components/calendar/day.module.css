@@ -71,7 +71,14 @@
         conic-gradient(from -45deg at 50% 85.5%, var(--c) 90deg, #0000 0) bottom/100% 50%;
     background-repeat: no-repeat;
     padding: 0 2px 2px 2px;
-    margin-left: 1px;
+    margin-left: 2px;
+}
+
+@media (max-width: 630px) {
+    .pinkDay {
+        margin-left: -1px;
+        margin-top: 1px;
+    }
 }
 
 .firstDay {

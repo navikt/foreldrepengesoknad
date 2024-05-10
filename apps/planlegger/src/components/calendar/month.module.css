@@ -9,3 +9,10 @@
         width: 120px;
     }
 }
+
+@media (max-width: 400px) {
+    .box {
+        padding-top: 2px;
+        width: 95px;
+    }
+}

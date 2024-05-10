@@ -1,20 +1,9 @@
 .calendar {
     padding: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-@media (max-width: 768px) {
-    .calendar {
-        padding: 0px;
-    }
 }
 
 @media (max-width: 479px) {
     .calendar {
         padding: 0px;
-        margin-left: -32px;
-        margin-right: -32px;
     }
 }

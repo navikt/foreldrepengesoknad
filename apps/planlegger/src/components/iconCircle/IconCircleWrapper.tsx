@@ -34,8 +34,11 @@ interface Props {
     size: CircleSize;
 }
 
-const IconCircle: FunctionComponent<Props> = ({ children, color, size }) => (
-    <div className={`${getSize(size)} ${getColor(color)}`}>{children}</div>
+const IconCircleWrapper: FunctionComponent<Props> = ({ children, color, size }) => (
+    //Den ytre div'en ligg der for at bredden på denne alltid skal fungera i HStack
+    <div>
+        <div className={`${getSize(size)} ${getColor(color)}`}>{children}</div>
+    </div>
 );
 
-export default IconCircle;
+export default IconCircleWrapper;
