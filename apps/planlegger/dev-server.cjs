@@ -52,31 +52,11 @@ const startServer = async (html) => {
         },
     });
 
-    server.get('/', (req, res) => {
-        res.redirect('/foreldrepenger/planlegger');
-    });
-
     server.get(/^\/(?!.*dist).*$/, (req, _res, next) => {
-        let isWin = process.platform === 'win32';
-        let fullPath = undefined;
-
-        if (isWin) {
-            fullPath = path
-                .resolve(__dirname, decodeURIComponent(req.path.substring(1)))
-                .split('\\foreldrepenger\\planlegger')
-                .join('');
-        } else {
-            fullPath = path
-                .resolve(__dirname, decodeURIComponent(req.path.substring(1)))
-                .split('/foreldrepenger/planlegger')
-                .join('');
-        }
+        const fullPath = path.resolve(__dirname, decodeURIComponent(req.path.substring(1)));
         const fileExists = fs.existsSync(fullPath);
 
-        if (
-            (!fileExists && !req.url.startsWith('/foreldrepenger/planlegger/@')) ||
-            req.url === '/foreldrepenger/planlegger'
-        ) {
+        if ((!fileExists && !req.url.startsWith('/@')) || req.url === '/') {
             req.url = '/index-decorated.html';
         }
         next();

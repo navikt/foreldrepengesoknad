@@ -9,6 +9,7 @@ import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { useBeforeUnload } from '@navikt/fp-utils';
 
 import PlanleggerDataInit from './Planlegger';
+import Environment from './appData/Environment';
 import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
@@ -56,7 +57,7 @@ const AppContainer = () => {
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <ErrorBoundary appName="Foreldrepengeplanlegger" customErrorPage={<ErrorPage />}>
-                <BrowserRouter basename="/foreldrepenger/planlegger">
+                <BrowserRouter basename={Environment.PUBLIC_PATH}>
                     <PlanleggerDataInit locale={locale} changeLocale={changeLocale} />
                 </BrowserRouter>
             </ErrorBoundary>

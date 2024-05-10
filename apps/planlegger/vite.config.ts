@@ -10,7 +10,7 @@ export default defineConfig({
         }),
         checker({ typescript: true }),
     ],
-    base: '/foreldrepenger/planlegger',
+    base: process.env.PUBLIC_PATH,
     build: {
         sourcemap: true,
     },

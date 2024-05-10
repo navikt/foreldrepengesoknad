@@ -8,9 +8,9 @@
             "intl/*": ["intl/*"],
             "types/*": ["types/*"],
             "appData/*": ["appData/*"],
-            "utils/*": ["utils/*"],
+            "utils/*": ["utils/*"]
         },
-        "types": ["@testing-library/jest-dom", "vitest/globals"],
+        "types": ["@testing-library/jest-dom", "vitest/globals"]
     },
-    "exclude": ["node_modules"],
+    "exclude": ["node_modules"]
 }
