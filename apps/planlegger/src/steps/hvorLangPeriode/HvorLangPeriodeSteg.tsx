@@ -73,11 +73,8 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
     const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
 
-    const valgtStønadskonto = valgtDekningsgrad
-        ? valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-            ? stønadskonto100
-            : stønadskonto80
-        : undefined;
+    const stønadskonto = valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
+    const valgtStønadskonto = valgtDekningsgrad ? stønadskonto : undefined;
 
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, barnet);

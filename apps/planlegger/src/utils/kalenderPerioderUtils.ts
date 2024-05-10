@@ -13,7 +13,7 @@ import { erBarnetAdoptert } from './barnetUtils';
 import { HvemHarRett, harMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from './hvemHarRettUtils';
 import { finnUttaksdata } from './uttakUtils';
 
-const finnPerioderForFarFarFødsel = (familiehendelsedato: string, sluttdatoPeriode1: string): Period[] => {
+const finnPerioderForKunEnHarRett = (familiehendelsedato: string, sluttdatoPeriode1: string): Period[] => {
     return [
         {
             fom: familiehendelsedato,
@@ -28,15 +28,16 @@ const finnPerioderForFarFarFødsel = (familiehendelsedato: string, sluttdatoPeri
     ];
 };
 
-const finnPerioderForBeggeHarRett = (
+const finnPerioderForBeggeHarRettEllerKunMorHarRett = (
     erAdoptert: boolean,
     startdatoPeriode1: string,
     sluttdatoPeriode1: string,
     familiehendelsedato: string,
-    startdatoPeriode2: string,
-    sluttdatoPeriode2: string,
+    startdatoPeriode2?: string,
+    sluttdatoPeriode2?: string,
 ): Period[] => {
     const perioder = [] as Period[];
+
     if (!erAdoptert) {
         perioder.push({
             fom: startdatoPeriode1,
@@ -44,87 +45,30 @@ const finnPerioderForBeggeHarRett = (
             color: DayColor.BLUE,
         });
     }
-    return perioder.concat(
-        {
-            fom: familiehendelsedato,
-            tom: familiehendelsedato,
-            color: DayColor.PINK,
-        },
-        {
-            fom: dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT),
-            tom: sluttdatoPeriode1,
-            color: DayColor.BLUE,
-        },
-        {
+
+    perioder.push({
+        fom: familiehendelsedato,
+        tom: familiehendelsedato,
+        color: DayColor.PINK,
+    });
+    perioder.push({
+        fom: dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT),
+        tom: sluttdatoPeriode1,
+        color: DayColor.BLUE,
+    });
+
+    if (startdatoPeriode2 && sluttdatoPeriode2) {
+        perioder.push({
             fom: startdatoPeriode2,
             tom: sluttdatoPeriode2,
             color: DayColor.GREEN,
-        },
-    );
-};
-
-const finnPerioderForKunMorHarRett = (
-    erAdoptert: boolean,
-    startdatoPeriode1: string,
-    sluttdatoPeriode1: string,
-    familiehendelsedato: string,
-): Period[] => {
-    const perioder = [] as Period[];
-    if (!erAdoptert) {
-        perioder.push({
-            fom: startdatoPeriode1,
-            tom: dayjs(familiehendelsedato).subtract(1, 'day').format(ISO_DATE_FORMAT),
-            color: DayColor.BLUE,
         });
     }
-    return perioder.concat([
-        {
-            fom: familiehendelsedato,
-            tom: familiehendelsedato,
-            color: DayColor.PINK,
-        },
-        {
-            fom: dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT),
-            tom: sluttdatoPeriode1,
-            color: DayColor.BLUE,
-        },
-    ]);
+
+    return perioder;
 };
 
-const finnPerioderForKunFarSomSøker1HarRett = (sluttdatoPeriode1: string, familiehendelsedato: string): Period[] => {
-    return [
-        {
-            fom: familiehendelsedato,
-            tom: familiehendelsedato,
-            color: DayColor.PINK,
-        },
-        {
-            fom: dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT),
-            tom: sluttdatoPeriode1,
-            color: DayColor.BLUE,
-        },
-    ];
-};
-
-const finnPerioderForKunMedmorEllerFarSøker2HarRett = (
-    sluttdatoPeriode1: string,
-    familiehendelsedato: string,
-): Period[] => {
-    return [
-        {
-            fom: familiehendelsedato,
-            tom: familiehendelsedato,
-            color: DayColor.PINK,
-        },
-        {
-            fom: dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT),
-            tom: sluttdatoPeriode1,
-            color: DayColor.BLUE,
-        },
-    ];
-};
-
-const finnPerioderOppdeltIAktivitetskravDerEnSøkerHarRett = (
+const finnPerioderOppdeltIAktivitetskrav = (
     startdatoPeriode1: string,
     sluttdatoPeriode1: string,
     familiehendelsedato: string,
@@ -150,11 +94,14 @@ const finnPerioderOppdeltIAktivitetskravDerEnSøkerHarRett = (
     ];
 };
 
-const erFarOgFarFødsel = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett, erAdoptert: boolean) =>
+const erFarOgFarFødsel = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett, erAdoptert: boolean): boolean =>
     hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdoptert && hvemHarRett !== 'ingenHarRett';
 
-const erFarOgFarKunSøker1HarRett = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) =>
+const erFarOgFarKunSøker1HarRett = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett): boolean =>
     hvemHarRett === 'kunSøker1HarRett' && hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
+
+const erFarAlenesøkerOgHarRett = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett): boolean =>
+    hvemHarRett === 'kunSøker1HarRett' && hvemPlanlegger.type === Situasjon.FAR;
 
 export const lagKalenderPerioder = (
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
@@ -172,12 +119,15 @@ export const lagKalenderPerioder = (
 
     const harPeriode2 = startdatoPeriode2 && sluttdatoPeriode2;
 
-    if (erFarOgFarFødsel(hvemPlanlegger, hvemHarRett, erAdoptert)) {
-        return finnPerioderForFarFarFødsel(familiehendelsedato, sluttdatoPeriode1);
+    if (
+        erFarOgFarFødsel(hvemPlanlegger, hvemHarRett, erAdoptert) ||
+        erFarAlenesøkerOgHarRett(hvemPlanlegger, hvemHarRett)
+    ) {
+        return finnPerioderForKunEnHarRett(familiehendelsedato, sluttdatoPeriode1);
     }
 
     if (hvemHarRett === 'beggeHarRett' && harPeriode2) {
-        return finnPerioderForBeggeHarRett(
+        return finnPerioderForBeggeHarRettEllerKunMorHarRett(
             erAdoptert,
             startdatoPeriode1,
             sluttdatoPeriode1,
@@ -188,11 +138,12 @@ export const lagKalenderPerioder = (
     }
 
     if (hvemHarRett === 'kunSøker1HarRett' && erMorDelAvSøknaden(hvemPlanlegger)) {
-        return finnPerioderForKunMorHarRett(erAdoptert, startdatoPeriode1, sluttdatoPeriode1, familiehendelsedato);
-    }
-
-    if (hvemHarRett === 'kunSøker1HarRett' && hvemPlanlegger.type === Situasjon.FAR) {
-        return finnPerioderForKunFarSomSøker1HarRett(sluttdatoPeriode1, familiehendelsedato);
+        return finnPerioderForBeggeHarRettEllerKunMorHarRett(
+            erAdoptert,
+            startdatoPeriode1,
+            sluttdatoPeriode1,
+            familiehendelsedato,
+        );
     }
 
     if (
@@ -201,7 +152,7 @@ export const lagKalenderPerioder = (
             !erAdoptert) &&
         harPeriode2
     ) {
-        return finnPerioderOppdeltIAktivitetskravDerEnSøkerHarRett(
+        return finnPerioderOppdeltIAktivitetskrav(
             startdatoPeriode1,
             sluttdatoPeriode1,
             familiehendelsedato,
@@ -211,7 +162,7 @@ export const lagKalenderPerioder = (
     }
 
     if (harMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) && erAdoptert) {
-        return finnPerioderForKunMedmorEllerFarSøker2HarRett(sluttdatoPeriode1, familiehendelsedato);
+        return finnPerioderForKunEnHarRett(sluttdatoPeriode1, familiehendelsedato);
     }
 
     throw Error('Ingen perioder finnes');
