@@ -3,37 +3,39 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 
-export default defineConfig({
-    plugins: [
-        react({
-            include: '**/*.{jsx,tsx}',
-        }),
-        checker({ typescript: true }),
-    ],
-    base: process.env.PUBLIC_PATH,
-    build: {
-        sourcemap: true,
-    },
-    resolve: {
-        alias: {
-            steps: path.resolve(__dirname, './src/steps'),
-            components: path.resolve(__dirname, './src/components'),
-            appData: path.resolve(__dirname, './src/appData'),
-            types: path.resolve(__dirname, './src/types'),
-            utils: path.resolve(__dirname, './src/utils'),
+export default defineConfig(({ mode }) => {
+    return {
+        plugins: [
+            react({
+                include: '**/*.{jsx,tsx}',
+            }),
+            checker({ typescript: true }),
+        ],
+        base: mode === 'development' ? '' : '/foreldrepenger/planlegger',
+        build: {
+            sourcemap: true,
         },
-    },
-    test: {
-        globals: true,
-        environment: 'jsdom',
-        setupFiles: './vitest/setupTests.ts',
-        deps: {
-            inline: ['@navikt/ds-react'],
+        resolve: {
+            alias: {
+                steps: path.resolve(__dirname, './src/steps'),
+                components: path.resolve(__dirname, './src/components'),
+                appData: path.resolve(__dirname, './src/appData'),
+                types: path.resolve(__dirname, './src/types'),
+                utils: path.resolve(__dirname, './src/utils'),
+            },
         },
-        coverage: {
-            include: ['src/**/*'],
-            exclude: [],
+        test: {
+            globals: true,
+            environment: 'jsdom',
+            setupFiles: './vitest/setupTests.ts',
+            deps: {
+                inline: ['@navikt/ds-react'],
+            },
+            coverage: {
+                include: ['src/**/*'],
+                exclude: [],
+            },
+            testTimeout: 15000,
         },
-        testTimeout: 15000,
-    },
+    };
 });

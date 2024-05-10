@@ -10,7 +10,7 @@
             "appData/*": ["appData/*"],
             "utils/*": ["utils/*"]
         },
-        "types": ["@testing-library/jest-dom", "vitest/globals"]
+        "types": ["@testing-library/jest-dom", "vitest/globals", "vite/client"]
     },
     "exclude": ["node_modules"]
 }
