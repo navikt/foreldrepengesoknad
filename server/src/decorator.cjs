@@ -20,6 +20,9 @@ const extractDecoratorFragments = (html) => {
         APP_SETTINGS: JSON.stringify({
             REST_API_URL: `${process.env.REST_API_URL}`,
             LOGIN_URL: `${process.env.LOGIN_URL}`,
+            LOG_VALIDATION: `${process.env.LOG_VALIDATION}`,
+            APP_VERSION: `${process.env.APP_VERSION}`,
+            INNSYN: `${process.env.INNSYN}`,
             PUBLIC_PATH: `${process.env.PUBLIC_PATH}`,
         }),
     };
