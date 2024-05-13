@@ -113,7 +113,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                 ]}
                                 onChange={scrollToBottom}
                             >
-                                <Radio value={Arbeidsstatus.JOBBER} autoFocus>
+                                <Radio value={Arbeidsstatus.JOBBER}>
                                     <FormattedMessage id="ArbeidssituasjonSteg.Jobber" />
                                 </Radio>
                                 <Radio value={Arbeidsstatus.UFØR}>

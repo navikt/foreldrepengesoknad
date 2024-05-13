@@ -49,7 +49,6 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                         label={<FormattedMessage id="ErFødtPanel.Fødselsdato" values={{ antallBarn }} />}
                         name="fødselsdato"
                         maxDate={dayjs().toDate()}
-                        autofocusWhenEmpty
                         useStrategyAbsolute
                         validate={[
                             isRequired(intl.formatMessage({ id: 'Fødselsdato.Required' })),

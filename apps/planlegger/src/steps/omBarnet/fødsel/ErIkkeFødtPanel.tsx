@@ -63,7 +63,6 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                     name="termindato"
                     minDate={dayjs().subtract(3, 'week').toDate()}
                     maxDate={dayjs().add(1, 'year').toDate()}
-                    autofocusWhenEmpty
                     useStrategyAbsolute
                     validate={[
                         isRequired(intl.formatMessage({ id: 'Termindato.Required' })),

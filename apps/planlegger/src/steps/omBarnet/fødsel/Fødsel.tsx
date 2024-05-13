@@ -51,7 +51,7 @@ const Fødsel: React.FunctionComponent<Props> = ({
                     scrollToBottom();
                 }}
             >
-                <Radio value={true} autoFocus={erOmBarnetIkkeOppgittFraFør}>
+                <Radio value={true}>
                     <FormattedMessage id="DefaultMessage.Ja" />
                 </Radio>
                 <Radio value={false}>

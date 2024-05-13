@@ -135,7 +135,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                     scrollToBottom();
                                 }}
                             >
-                                <Radio value="1" autoFocus={omBarnet === undefined}>
+                                <Radio value="1">
                                     <FormattedMessage id="OmBarnetSteg.Ett" />
                                 </Radio>
                                 <Radio value="2">

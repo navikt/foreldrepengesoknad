@@ -46,7 +46,6 @@ const Adopsjon: React.FunctionComponent<Props> = ({
                         label={<FormattedMessage id="Adopsjon.Overtakelsesdato" values={{ erAlenesøker, flereBarn }} />}
                         name="overtakelsesdato"
                         minDate={dayjs().subtract(6, 'month').toDate()}
-                        autofocusWhenEmpty
                         validate={[
                             isRequired(
                                 intl.formatMessage({ id: 'Overtakelsesdato.Required' }, { erAlenesøker, flereBarn }),

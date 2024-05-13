@@ -91,7 +91,6 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         <TextField
                                             label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Mor' })}
                                             name="navnPåMor"
-                                            autofocusWhenEmpty
                                             customErrorFormatter={formatError}
                                         />
                                     )}
