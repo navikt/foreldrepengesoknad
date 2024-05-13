@@ -1,9 +1,10 @@
 import { DownloadIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
+import { FormattedMessage } from 'react-intl';
 import generatePDF, { Margin, Options, Resolution } from 'react-to-pdf';
 
-import { Button } from '@navikt/ds-react';
+import { Alert, Button } from '@navikt/ds-react';
 
 import {
     Barn,
@@ -18,6 +19,7 @@ import {
     Uttaksperiode,
     getAnnenForelderSamtidigUttakPeriode,
     getFamiliehendelsedato,
+    isAvslåttPeriode,
     isForeldrepengerFørFødselUttaksperiode,
     isFødtBarn,
     isInfoPeriode,
@@ -139,17 +141,24 @@ const UttaksplanKalender: FunctionComponent<Props> = ({ uttaksplan, erFarEllerMe
         },
     } as Options;
     const getTargetElement = () => document.getElementById('print-content');
-
+    const harAvslåttePerioder = uttaksplan.find((p) => isAvslåttPeriode(p));
     return (
         <>
+            {harAvslåttePerioder && (
+                <Alert variant="info" style={{ margin: '1.5rem 0rem' }}>
+                    <FormattedMessage id="kalender.avslåttePerioder" />
+                </Alert>
+            )}
             <div id="print-content">
-                <UttaksplanLegend
-                    uniqueColors={unikePeriodColors}
-                    barn={barn}
-                    navnAnnenPart={navnAnnenPart}
-                    unikeUtsettelseÅrsaker={unikeUtsettelseÅrsaker}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                />
+                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                    <UttaksplanLegend
+                        uniqueColors={unikePeriodColors}
+                        barn={barn}
+                        navnAnnenPart={navnAnnenPart}
+                        unikeUtsettelseÅrsaker={unikeUtsettelseÅrsaker}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                    />
+                </div>
                 <Calendar periods={periods} />
             </div>
             <Button

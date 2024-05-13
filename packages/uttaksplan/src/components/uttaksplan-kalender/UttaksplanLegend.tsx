@@ -81,15 +81,17 @@ const UttaksplanLegend: FunctionComponent<Props> = ({
     erFarEllerMedmor,
 }) => {
     const intl = useIntl();
-    return uniqueColors.map((color) => (
-        <div key={color} style={{ paddingBottom: '1rem' }}>
-            <CalendarLabel iconType={color}>
-                <BodyShort>
-                    {getCalendarLabel(color, barn, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl)}
-                </BodyShort>
-            </CalendarLabel>
-        </div>
-    ));
+    return uniqueColors
+        .filter((c) => c !== PeriodeColor.NONE)
+        .map((color) => (
+            <div key={color} style={{ paddingRight: '0.5rem', paddingBottom: '0.5rem', width: 'fit-content' }}>
+                <CalendarLabel iconType={color}>
+                    <BodyShort style={{ whiteSpace: 'nowrap' }}>
+                        {getCalendarLabel(color, barn, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl)}
+                    </BodyShort>
+                </CalendarLabel>
+            </div>
+        ));
 };
 
 export default UttaksplanLegend;
