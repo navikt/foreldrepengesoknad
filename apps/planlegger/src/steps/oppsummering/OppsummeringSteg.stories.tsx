@@ -186,8 +186,6 @@ export const FarOgFarFødsel: Story = {
 export const FarOgFarAdopsjon: Story = {
     args: {
         hvemPlanlegger: {
-            navnPåFar: 'Espen Utvikler',
-            navnPåMedfar: 'Anders Utvikler',
             type: Situasjon.FAR_OG_FAR,
         },
         fordeling: {
@@ -205,7 +203,7 @@ export const FarOgFarAdopsjon: Story = {
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
-            jobberAnnenPart: true,
+            jobberAnnenPart: false,
         },
     },
 };

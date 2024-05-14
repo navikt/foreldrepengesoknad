@@ -169,6 +169,8 @@
     "OppgittInformasjon.InformasjonOmBarnAdopsjon": "{antallBarn, select, 1 {Barnet} other {Borna}} skal adopterast med omsorgsovertaking {dato} og{antallBarn, select, 1 {} other { det eldste barnet}} vert fødd {dato2}.",
     "OppgittInformasjon.Barnet.Tittel": "{antallBarn, select, 1 {Barnet} other {Borna}}",
     "OppgittInformasjon.Arbeid.Tittel": "Arbeidssituasjon",
+    "OppgittInformasjon.TekstFar1": "Den eine faren",
+    "OppgittInformasjon.TekstFar2": "Den andre faren",
     "OppgittInformasjon.ArbeidssituasjonBeggeJobber": "Både {navn} og {navn2} har hatt opptening 6 av dei siste 10 månadene og har tent meir enn 59 310 kr det siste året.",
     "OppgittInformasjon.Arbeidssituasjon": "{navn} {arbeidssituasjon, select, jobber {har hatt opptening 6 av dei siste 10 månadene og tent meir enn 59 310 kr det siste året.} ufør {er ufør.} other {har ikkje hatt opptening 6 av dei siste 10 månadene og tent meir enn 59 310 kr det siste året.}}",
     "OppgittInformasjon.ArbeidssituasjonAnnenPart": "{navn} {arbeidssituasjon, select, true {har hatt opptening 6 av dei siste 10 månadene og tent meir enn 59 310 kr det siste året.} other {har ikkje hatt opptening 6 av dei siste 10 månadene og tent meir enn 59 310 kr det siste året.}}",

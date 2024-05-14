@@ -11,6 +11,7 @@ import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 import {
     erAlenesøker as erAlene,
+    erFarOgFar,
     finnSøker1Tekst,
     finnSøker2Tekst,
     getFornavnPåSøker1,
@@ -61,9 +62,32 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const erAdoptert = erBarnetAdoptert(barnet);
     const antallBarn = barnet.antallBarn;
 
+    const erFedre = erFarOgFar(hvemPlanlegger);
     const erAlenesøker = erAlene(hvemPlanlegger);
     const fornavn1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavn2 = getFornavnPåSøker2(hvemPlanlegger, intl);
+
+    const getTekstTilFar1 = () => {
+        if (
+            getFornavnPåSøker1(hvemPlanlegger, intl) === 'Far' ||
+            getFornavnPåSøker1(hvemPlanlegger, intl) === 'Father'
+        ) {
+            return <FormattedMessage id="OppgittInformasjon.TekstFar1" />;
+        }
+        return getFornavnPåSøker1(hvemPlanlegger, intl);
+    };
+    const getTekstTilFar2 = () => {
+        if (
+            getFornavnPåSøker2(hvemPlanlegger, intl) === 'Far' ||
+            getFornavnPåSøker2(hvemPlanlegger, intl) === 'Father'
+        ) {
+            return <FormattedMessage id="OppgittInformasjon.TekstFar2" />;
+        }
+        return getFornavnPåSøker2(hvemPlanlegger, intl);
+    };
+
+    const fornavnFar1 = getTekstTilFar1();
+    const fornavnFar2 = getTekstTilFar2();
 
     const valgtStønadskonto = stønadskontoer[hvorLangPeriode.dekningsgrad];
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
@@ -191,7 +215,29 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                                 />
                                             </BodyLong>
                                         )}
-                                        {hvemHarRett !== 'beggeHarRett' && (
+                                        {hvemHarRett !== 'beggeHarRett' && erFedre && (
+                                            <>
+                                                <BodyLong>
+                                                    <FormattedMessage
+                                                        id="OppgittInformasjon.Arbeidssituasjon"
+                                                        values={{
+                                                            navn: fornavnFar1 ? fornavnFar1 : fornavn1,
+                                                            arbeidssituasjon: arbeidssituasjon.status,
+                                                        }}
+                                                    />
+                                                </BodyLong>
+                                                <BodyLong>
+                                                    <FormattedMessage
+                                                        id="OppgittInformasjon.ArbeidssituasjonAnnenPart"
+                                                        values={{
+                                                            navn: fornavn2 ? fornavnFar2 : fornavn2,
+                                                            arbeidssituasjon: arbeidssituasjon.jobberAnnenPart,
+                                                        }}
+                                                    />
+                                                </BodyLong>
+                                            </>
+                                        )}
+                                        {hvemHarRett !== 'beggeHarRett' && !erFedre && (
                                             <>
                                                 <BodyLong>
                                                     <FormattedMessage
