@@ -22,7 +22,7 @@ import { Datepicker } from '@navikt/fp-form-hooks';
 import { isLessThanThreeWeeksAgo, isRequired, isValidDate } from '@navikt/fp-validation';
 
 const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months');
-const DATO_3_MND_SIDEN = dayjs().startOf('days').subtract(3, 'months');
+const TODAY = dayjs().startOf('days').toDate();
 const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
     if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
         return intl.formatMessage({ id: 'OversiktSteg.Medmor' });
@@ -78,7 +78,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                     onChange={scrollToBottom}
                 />
             </GreenPanel>
-            {termindato !== undefined && dayjs(termindato).isBefore(DATO_3_MND_SIDEN) && (
+            {termindato !== undefined && dayjs(termindato).isBefore(TODAY) && (
                 <Infobox
                     header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}
                     icon={<TasklistStartIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />}
@@ -109,64 +109,56 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                     )}
                 </Infobox>
             )}
-            {termindato !== undefined &&
-                dayjs(termindato).isAfter(DATO_3_MND_FRAM) &&
-                dayjs(termindato).isAfter(DATO_3_MND_SIDEN) && (
-                    <>
-                        <Infobox
-                            header={
-                                <FormattedMessage
-                                    id="ErIkkeFødtPanel.ForeldrepengerInfo"
-                                    values={{
-                                        erAlenesøker,
-                                        dato: dayjs(datoSvangerskapsuke22).format('DD.MM.YY'),
-                                    }}
-                                />
-                            }
-                            icon={
-                                <TasklistStartIcon
-                                    height={24}
-                                    width={24}
-                                    color="#236B7D"
-                                    fontSize="1.5rem"
-                                    aria-hidden
-                                />
-                            }
-                            shouldFadeIn
-                        >
+            {termindato !== undefined && dayjs(termindato).isAfter(DATO_3_MND_FRAM) && (
+                <>
+                    <Infobox
+                        header={
+                            <FormattedMessage
+                                id="ErIkkeFødtPanel.ForeldrepengerInfo"
+                                values={{
+                                    erAlenesøker,
+                                    dato: dayjs(datoSvangerskapsuke22).format('DD.MM.YY'),
+                                }}
+                            />
+                        }
+                        icon={
+                            <TasklistStartIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />
+                        }
+                        shouldFadeIn
+                    >
+                        <BodyShort>
+                            <FormattedMessage
+                                id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke"
+                                values={{
+                                    erAlenesøker,
+                                }}
+                            />
+                        </BodyShort>
+                        <BodyShort>
+                            <FormattedMessage
+                                id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.NAVanbefaler"
+                                values={{
+                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
+                                }}
+                            />
+                        </BodyShort>
+                        {erFarDelAvSøknaden(hvemPlanlegger) && !erFedre && (
                             <BodyShort>
                                 <FormattedMessage
-                                    id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke"
+                                    id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
                                     values={{
-                                        erAlenesøker,
+                                        erFar,
+                                        hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
                                     }}
                                 />
                             </BodyShort>
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.NAVanbefaler"
-                                    values={{
-                                        erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                                    }}
-                                />
-                            </BodyShort>
-                            {erFarDelAvSøknaden(hvemPlanlegger) && !erFedre && (
-                                <BodyShort>
-                                    <FormattedMessage
-                                        id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
-                                        values={{
-                                            erFar,
-                                            hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                        }}
-                                    />
-                                </BodyShort>
-                            )}
-                        </Infobox>
-                    </>
-                )}
+                        )}
+                    </Infobox>
+                </>
+            )}
             {termindato !== undefined &&
-                dayjs(termindato).isSameOrBefore(DATO_3_MND_FRAM) &&
-                dayjs(termindato).isAfter(DATO_3_MND_SIDEN) && (
+                dayjs(termindato).isSameOrAfter(TODAY) &&
+                dayjs(termindato).isSameOrBefore(DATO_3_MND_FRAM) && (
                     <>
                         <Infobox
                             header={

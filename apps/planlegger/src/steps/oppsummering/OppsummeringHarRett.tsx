@@ -167,6 +167,16 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                 </Heading>
                                 <BodyLong>
                                     <FormattedMessage
+                                        id="OppsummeringSteg.DereValgteFedre"
+                                        values={{
+                                            prosent: hvorLangPeriode.dekningsgrad,
+
+                                            antallUker: getAntallUker(valgtStønadskonto),
+                                        }}
+                                    />
+                                </BodyLong>
+                                <BodyLong>
+                                    <FormattedMessage
                                         id="OppsummeringSteg.Periode"
                                         values={{
                                             fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
