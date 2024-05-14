@@ -113,11 +113,18 @@ const getKalenderFargeForPeriodeType = (
 };
 
 const UttaksplanKalender: FunctionComponent<Props> = ({ uttaksplan, erFarEllerMedmor, barn, navnAnnenPart }) => {
-    const perioderForVisning = uttaksplan.filter((p) => !isInfoPeriode(p) || p.visPeriodeIPlan);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const perioderForVisning = uttaksplan.filter(
+        (p) =>
+            (!isInfoPeriode(p) || p.visPeriodeIPlan) &&
+            !(
+                dayjs(p.tidsperiode.fom).isSame(familiehendelsesdato, 'd') &&
+                dayjs(p.tidsperiode.tom).isSame(familiehendelsesdato, 'd')
+            ),
+    );
     const periods = perioderForVisning.map((p) => ({
         fom: dayjs(p.tidsperiode.fom).isSame(dayjs(familiehendelsesdato), 'd')
-            ? Uttaksdagen(p.tidsperiode.fom).neste().toDateString()
+            ? dateToISOString(Uttaksdagen(p.tidsperiode.fom).neste())
             : dateToISOString(p.tidsperiode.fom),
         tom: dateToISOString(p.tidsperiode.tom),
         color: getKalenderFargeForPeriodeType(p, erFarEllerMedmor, uttaksplan, barn),

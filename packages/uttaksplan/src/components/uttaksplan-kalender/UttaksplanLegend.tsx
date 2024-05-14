@@ -3,7 +3,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { Barn, UtsettelseÅrsakType, getNavnGenitivEierform, intlUtils } from '@navikt/fp-common';
+import { Barn, UtsettelseÅrsakType, capitalizeFirstLetter, getNavnGenitivEierform, intlUtils } from '@navikt/fp-common';
 import { PeriodeColor } from '@navikt/fp-constants';
 import { CalendarLabel } from '@navikt/fp-ui';
 
@@ -40,7 +40,9 @@ const getCalendarLabel = (
             return (
                 <FormattedMessage
                     id="kalender.annenPartPeriode"
-                    values={{ navnAnnenPart: getNavnGenitivEierform(navnAnnenPart, intl.locale) }}
+                    values={{
+                        navnAnnenPart: getNavnGenitivEierform(capitalizeFirstLetter(navnAnnenPart), intl.locale),
+                    }}
                 />
             );
         case PeriodeColor.LIGHTBLUEGREEN:
