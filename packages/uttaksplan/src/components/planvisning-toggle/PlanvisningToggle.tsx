@@ -8,6 +8,8 @@ import { bemUtils, intlUtils } from '@navikt/fp-common';
 
 import './planvisning-toggle.css';
 
+export type Visningsmodus = 'liste' | 'kalender';
+
 interface Props {
     setVisningsmodus: Dispatch<SetStateAction<string>>;
 }
@@ -20,7 +22,7 @@ const PlanvisningToggle: FunctionComponent<Props> = ({ setVisningsmodus }) => {
             className={bem.block}
             defaultValue="liste"
             variant="neutral"
-            onChange={(value) => setVisningsmodus(value)}
+            onChange={(value) => setVisningsmodus(value as Visningsmodus)}
         >
             <ToggleGroup.Item value="liste">
                 <BulletListIcon aria-hidden />
