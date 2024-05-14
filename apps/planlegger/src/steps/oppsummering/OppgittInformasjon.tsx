@@ -68,26 +68,20 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const fornavn2 = getFornavnPåSøker2(hvemPlanlegger, intl);
 
     const getTekstTilFar1 = () => {
-        if (
-            getFornavnPåSøker1(hvemPlanlegger, intl) === 'Far' ||
-            getFornavnPåSøker1(hvemPlanlegger, intl) === 'Father'
-        ) {
+        if (erFarOgFar(hvemPlanlegger) && !hvemPlanlegger.navnPåFar) {
             return <FormattedMessage id="OppgittInformasjon.TekstFar1" />;
         }
         return getFornavnPåSøker1(hvemPlanlegger, intl);
     };
     const getTekstTilFar2 = () => {
-        if (
-            getFornavnPåSøker2(hvemPlanlegger, intl) === 'Far' ||
-            getFornavnPåSøker2(hvemPlanlegger, intl) === 'Father'
-        ) {
+        if (erFarOgFar(hvemPlanlegger) && !hvemPlanlegger.navnPåMedfar) {
             return <FormattedMessage id="OppgittInformasjon.TekstFar2" />;
         }
         return getFornavnPåSøker2(hvemPlanlegger, intl);
     };
 
-    const fornavnFar1 = getTekstTilFar1();
-    const fornavnFar2 = getTekstTilFar2();
+    const denEneFaren = getTekstTilFar1();
+    const denAndreFaren = getTekstTilFar2();
 
     const valgtStønadskonto = stønadskontoer[hvorLangPeriode.dekningsgrad];
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
@@ -221,7 +215,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                                     <FormattedMessage
                                                         id="OppgittInformasjon.Arbeidssituasjon"
                                                         values={{
-                                                            navn: fornavnFar1 ? fornavnFar1 : fornavn1,
+                                                            navn: denEneFaren ? denEneFaren : fornavn1,
                                                             arbeidssituasjon: arbeidssituasjon.status,
                                                         }}
                                                     />
@@ -230,7 +224,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                                     <FormattedMessage
                                                         id="OppgittInformasjon.ArbeidssituasjonAnnenPart"
                                                         values={{
-                                                            navn: fornavn2 ? fornavnFar2 : fornavn2,
+                                                            navn: denAndreFaren ? denAndreFaren : fornavn2,
                                                             arbeidssituasjon: arbeidssituasjon.jobberAnnenPart,
                                                         }}
                                                     />
