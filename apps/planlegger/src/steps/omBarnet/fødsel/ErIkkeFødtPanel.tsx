@@ -49,7 +49,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
     const termindato = formMethods.watch('termindato');
 
     const datoSvangerskapsuke22 =
-        termindato !== undefined ? dayjs(termindato).subtract(18, 'weeks').subtract(2, 'days').toDate() : undefined;
+        termindato !== undefined ? dayjs(termindato).subtract(18, 'weeks').toDate() : undefined;
 
     const erAlenesøker = erAlene(hvemPlanlegger);
     const erFar = erFarDelAvSøknaden(hvemPlanlegger);
