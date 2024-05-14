@@ -10,7 +10,7 @@
         var(--a-green-200) 60%
     );
     border-color: var(--a-data-surface-5);
-    margin-bottom: 50%;
+    margin-bottom: 25%;
 }
 
 .blueStripedCircle {
@@ -26,7 +26,7 @@
         var(--a-blue-300) 40%
     );
     border-color: var(--a-data-surface-5);
-    margin-bottom: 50%;
+    margin-bottom: 25%;
 }
 
 .lightblueGreenCircle {
@@ -41,7 +41,7 @@
         var(--a-data-surface-2-subtle) 100%
     ) !important;
     border: 2px solid var(--a-data-surface-5);
-    margin-bottom: 50%;
+    margin-bottom: 25%;
 }
 
 .lightgreenBlueCircle {
@@ -58,7 +58,7 @@
         UKgree
     ) !important;
     border: 2px solid var(--a-data-surface-1);
-    margin-bottom: 50%;
+    margin-bottom: 25%;
 }
 
 .blueOutlineCircle {
@@ -66,7 +66,7 @@
     height: 16px;
     border-radius: 50%;
     border: 2px solid var(--a-data-surface-1);
-    margin-bottom: 50%;
+    margin-bottom: 25%;
 }
 
 .greenOutlineCircle {
@@ -74,13 +74,13 @@
     height: 16px;
     border-radius: 50%;
     border: 2px solid var(--a-data-surface-5);
-    margin-bottom: 50%;
+    margin-bottom: 25%;
 }
 
 .blackCircle {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: black;
-    margin-bottom: 50%;
+    background-color: var(--a-gray-800);
+    margin-bottom: 25%;
 }

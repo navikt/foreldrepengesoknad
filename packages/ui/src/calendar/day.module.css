@@ -137,7 +137,7 @@
 }
 
 .orangeDay {
-    background-color: black;
+    background-color: var(--a-gray-800);
     color: white;
 }
 
