@@ -19,7 +19,7 @@ const OppsummeringHeader: React.FunctionComponent<Props> = ({ children }) => (
                     <GreenHeading isDarkGreen>
                         <HStack gap="4" align="center">
                             <IconCircleWrapper color="darkGreen" size="xl">
-                                <CheckmarkIcon height={28} width={28} fontSize="1.5rem" aria-hidden />
+                                <CheckmarkIcon height={40} width={40} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
                             <Heading size="medium">
                                 <FormattedMessage id="OppsummeringHeader.Tittel" />
