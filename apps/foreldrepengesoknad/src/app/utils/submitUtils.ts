@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+
 import {
     Forelder,
     Periode,
@@ -51,7 +52,11 @@ export const finnEndringerIUttaksplan = (
         )
         .filter(erPeriodeSomSkalSendesInn);
 
-    if (nyPlanForInnsending.length === 0 && opprinneligPlan.length > nyPlan.length) {
+    if (
+        nyPlanForInnsending.length === 0 &&
+        (opprinneligPlan.length > nyPlan.length ||
+            opprinneligPlan.filter(erPeriodeSomSkalSendesInn).length > nyPlan.filter(erPeriodeSomSkalSendesInn).length)
+    ) {
         const førsteSlettedePeriode = opprinneligPlan.find((p) =>
             dayjs(p.tidsperiode.fom).isSame(endringstidspunkt, 'day'),
         );

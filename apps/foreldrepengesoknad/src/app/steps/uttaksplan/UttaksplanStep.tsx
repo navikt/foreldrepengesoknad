@@ -528,7 +528,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         oppdaterUttaksplan(nyPlan);
 
         const tidspunktForEndring = getEndringstidspunkt(opprinneligPlan, nyPlan, erEndringssøknad);
-
         setEndringstidspunkt(tidspunktForEndring);
 
         const perioderForÅSendeInn = getPerioderSomSkalSendesInn(
