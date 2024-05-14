@@ -20,7 +20,7 @@ import { BodyLong, VStack } from '@navikt/ds-react';
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { isLessThanThreeWeeksAgo, isRequired, isValidDate } from '@navikt/fp-validation';
 
-const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months').add(1, 'day');
+const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months');
 const TODAY = dayjs().startOf('days');
 const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
     if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
@@ -124,7 +124,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                     </Infobox>
                 </>
             )}
-            {termindato !== undefined && dayjs(termindato).isBefore(DATO_3_MND_FRAM) && (
+            {termindato !== undefined && dayjs(termindato).isSameOrBefore(DATO_3_MND_FRAM) && (
                 <>
                     <Infobox
                         header={
