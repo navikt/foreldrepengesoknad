@@ -86,13 +86,13 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
 
     return (
         <>
-            <ExpansionCard aria-label="" onToggle={onToggleExpansionCard}>
+            <ExpansionCard aria-label="" onToggle={onToggleExpansionCard} size="small">
                 <ExpansionCard.Header>
-                    <HStack gap="5" align="center" wrap={false}>
-                        <IconCircleWrapper size="large" color="green">
-                            <CalendarIcon height={28} width={28} fontSize="1.5rem" aria-hidden />
+                    <HStack gap="6" align="center" wrap={false}>
+                        <IconCircleWrapper size="medium" color="green">
+                            <CalendarIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
-                        <ExpansionCard.Title size="medium">
+                        <ExpansionCard.Title size="small">
                             <FormattedMessage
                                 id="OppsummeringSteg.Planen"
                                 values={{ erAlenesøker: erAlenesøker(hvemPlanlegger) }}

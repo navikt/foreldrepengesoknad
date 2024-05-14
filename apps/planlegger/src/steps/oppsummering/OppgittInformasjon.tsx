@@ -106,13 +106,13 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
 
     return (
         <VStack gap="10">
-            <ExpansionCard aria-label="" onToggle={onToggleExpansionCard}>
+            <ExpansionCard aria-label="" onToggle={onToggleExpansionCard} size="small">
                 <ExpansionCard.Header>
-                    <HStack gap="5" align="center" wrap={false}>
-                        <IconCircleWrapper size="large" color="green">
-                            <ChatElipsisIcon height={28} width={28} fontSize="1.5rem" aria-hidden />
+                    <HStack gap="6" align="center" wrap={false}>
+                        <IconCircleWrapper size="medium" color="green">
+                            <ChatElipsisIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
-                        <ExpansionCard.Title size="medium">
+                        <ExpansionCard.Title size="small">
                             <FormattedMessage id="OppgittInformasjon.OppgittInformasjon" values={{ erAlenesøker }} />
                         </ExpansionCard.Title>
                     </HStack>
