@@ -683,7 +683,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                                 søker={søkerInfo.søker}
                             />
                         </Block>
-                        <UttaksplanNy />
+                        <UttaksplanNy uttaksplan={uttaksplan} />
                         <Uttaksplan
                             foreldreSituasjon={foreldreSituasjon}
                             forelderVedAleneomsorg={forelderVedAleneomsorg}

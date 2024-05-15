@@ -34,6 +34,10 @@
     color: var(--a-green-400);
 }
 
+.periode-liste-header--farge-gul {
+    color: var(--a-orange-300);
+}
+
 .periode-liste-header--farge-bg-lysblaa {
     background-color: var(--a-blue-50);
 }

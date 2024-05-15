@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import {
     Forelder,
     Periode,
@@ -10,11 +12,61 @@ import { dateToISOString } from '@navikt/fp-formik';
 
 import Permisjonsperiode from '../types/Permisjonsperiode';
 
+const beggePerioderFørFamiliehendelsedato = (
+    permisjonsperiode: Permisjonsperiode | undefined,
+    periode: Periode | undefined,
+    famdato: string,
+) => {
+    if (!periode || !permisjonsperiode) {
+        return false;
+    }
+
+    if (
+        dayjs(permisjonsperiode.tidsperiode.tom).isBefore(famdato) &&
+        dayjs(periode.tidsperiode.tom).isBefore(famdato)
+    ) {
+        return true;
+    }
+
+    return false;
+};
+
+const beggePerioderEtterFamiliehendelsedato = (
+    permisjonsperiode: Permisjonsperiode | undefined,
+    periode: Periode | undefined,
+    famdato: string,
+) => {
+    if (!periode || !permisjonsperiode) {
+        return false;
+    }
+
+    if (
+        dayjs(permisjonsperiode.tidsperiode.fom).isSameOrAfter(famdato) &&
+        dayjs(periode.tidsperiode.fom).isSameOrAfter(famdato)
+    ) {
+        return true;
+    }
+
+    return false;
+};
+
+const beggePerioderFørEllerEtterFamiliehendelsedato = (
+    permisjonsperiode: Permisjonsperiode | undefined,
+    periode: Periode | undefined,
+    famdato: string,
+) => {
+    return (
+        beggePerioderEtterFamiliehendelsedato(permisjonsperiode, periode, famdato) ||
+        beggePerioderFørFamiliehendelsedato(permisjonsperiode, periode, famdato)
+    );
+};
+
 export const mapPerioderToPermisjonsperiode = (
     perioder: Periode[],
     søkerErFarEllerMedmor: boolean,
 ): Permisjonsperiode[] => {
     const permisjonsPerioder: Permisjonsperiode[] = [];
+    const famdato = '2024-05-03';
 
     if (perioder.length === 0) {
         return permisjonsPerioder;
@@ -43,6 +95,12 @@ export const mapPerioderToPermisjonsperiode = (
             nestePeriode = undefined;
         }
 
+        const beggePerioderErPåSammeSideAvFamdato = beggePerioderFørEllerEtterFamiliehendelsedato(
+            nyPermisjonsperiode,
+            periode,
+            famdato,
+        );
+
         if (nestePeriode !== undefined) {
             erSamtidigUttak = Tidsperioden(periode.tidsperiode).erLik(nestePeriode.tidsperiode);
         }
@@ -64,27 +122,25 @@ export const mapPerioderToPermisjonsperiode = (
             return;
         }
 
-        if (isUttakAnnenPart(periode)) {
+        if (isUttaksperiode(periode) || isUttakAnnenPart(periode)) {
+            const forelderType = isUttakAnnenPart(periode) ? forelderTypeAnnenPart : forelderTypeSøker;
+
             if (!nyPermisjonsperiode) {
                 nyPermisjonsperiode = {
-                    forelder: forelderTypeAnnenPart,
+                    forelder: forelderType,
                     perioder: [{ ...periode }],
                     tidsperiode: {
                         fom: dateToISOString(periode.tidsperiode.fom),
                         tom: dateToISOString(periode.tidsperiode.tom),
                     },
                 };
-
-                permisjonsPerioder.push(nyPermisjonsperiode);
             } else {
-                if (forelderForrigePeriode === periode.forelder) {
+                if (forelderForrigePeriode === periode.forelder && beggePerioderErPåSammeSideAvFamdato) {
                     nyPermisjonsperiode.perioder = [...nyPermisjonsperiode.perioder, { ...periode }];
                     nyPermisjonsperiode.tidsperiode.tom = dateToISOString(periode.tidsperiode.tom);
                 } else {
-                    permisjonsPerioder.push(nyPermisjonsperiode);
-
                     nyPermisjonsperiode = {
-                        forelder: forelderTypeAnnenPart,
+                        forelder: forelderType,
                         perioder: [{ ...periode }],
                         tidsperiode: {
                             fom: dateToISOString(periode.tidsperiode.fom),
@@ -94,38 +150,8 @@ export const mapPerioderToPermisjonsperiode = (
                 }
             }
 
-            forelderForrigePeriode = periode.forelder;
-            return;
-        }
-
-        if (isUttaksperiode(periode)) {
-            if (!nyPermisjonsperiode) {
-                nyPermisjonsperiode = {
-                    forelder: forelderTypeSøker,
-                    perioder: [{ ...periode }],
-                    tidsperiode: {
-                        fom: dateToISOString(periode.tidsperiode.fom),
-                        tom: dateToISOString(periode.tidsperiode.tom),
-                    },
-                };
-
+            if (!permisjonsPerioder.includes(nyPermisjonsperiode)) {
                 permisjonsPerioder.push(nyPermisjonsperiode);
-            } else {
-                if (forelderForrigePeriode === periode.forelder) {
-                    nyPermisjonsperiode.perioder = [...nyPermisjonsperiode.perioder, { ...periode }];
-                    nyPermisjonsperiode.tidsperiode.tom = dateToISOString(periode.tidsperiode.tom);
-                } else {
-                    permisjonsPerioder.push(nyPermisjonsperiode);
-
-                    nyPermisjonsperiode = {
-                        forelder: forelderTypeSøker,
-                        perioder: [{ ...periode }],
-                        tidsperiode: {
-                            fom: dateToISOString(periode.tidsperiode.fom),
-                            tom: dateToISOString(periode.tidsperiode.tom),
-                        },
-                    };
-                }
             }
 
             forelderForrigePeriode = periode.forelder;

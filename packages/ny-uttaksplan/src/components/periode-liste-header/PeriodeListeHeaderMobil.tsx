@@ -10,16 +10,16 @@ import { Forelder, Tidsperioden, bemUtils, formatDateShortMonth, getVarighetStri
 import { ISOStringToDate } from '@navikt/fp-formik';
 
 import Permisjonsperiode from '../../types/Permisjonsperiode';
-import './periode-liste-header.css';
+import './periode-liste-header-mobil.css';
 
 interface Props {
     permisjonsperiode: Permisjonsperiode;
     termindato: string;
 }
 
-const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, termindato }) => {
+const PeriodeListeHeaderMobil: FunctionComponent<Props> = ({ permisjonsperiode, termindato }) => {
     const intl = useIntl();
-    const bem = bemUtils('periode-liste-header');
+    const bem = bemUtils('periode-liste-header-mobil');
 
     const periodeFørTermindato = dayjs(termindato).isAfter(permisjonsperiode.tidsperiode.tom);
     const erMor = permisjonsperiode.forelder === Forelder.mor;
@@ -86,22 +86,22 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, termi
     return (
         <div className={bem.block}>
             <div className={bem.element('dato')}>
-                <Heading size="xsmall" as="p">
-                    {formatDateShortMonth(permisjonsperiode.tidsperiode.fom)} -{' '}
-                    {formatDateShortMonth(permisjonsperiode.tidsperiode.tom)}
-                </Heading>
-            </div>
-            <div className={bem.element('uker')}>
-                <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Heading size="xsmall" as="p">
+                        {formatDateShortMonth(permisjonsperiode.tidsperiode.fom)} -{' '}
+                        {formatDateShortMonth(permisjonsperiode.tidsperiode.tom)}
+                    </Heading>
+                    <div style={{ marginLeft: '1rem' }}>
+                        <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>
+                    </div>
+                </div>
+                <BodyShort>{getTekst()}</BodyShort>
             </div>
             <div className={classNames(bem.element('hendelse'), getFarge())}>
-                <BodyShort className={classNames(bem.element('hendelse-wrapper'))}>
-                    <div>{getTekst()}</div>
-                    {getIkon()}
-                </BodyShort>
+                <BodyShort className={classNames(bem.element('hendelse-wrapper'))}>{getIkon()}</BodyShort>
             </div>
         </div>
     );
 };
 
-export default PeriodeListeHeader;
+export default PeriodeListeHeaderMobil;

@@ -578,7 +578,6 @@ describe('Test av legg til periode i uttaksplan', () => {
             erFarEllerMedmor: false,
             førsteUttaksdagNesteBarnsSak: new Date('2025-03-21'),
         });
-        console.log('RES: ', result);
         expect(result.length).toEqual(4);
         expect(result[0].tidsperiode.fom).toEqual(nyPeriode.tidsperiode.fom);
         expect(result[0].tidsperiode.tom).toEqual(new Date('2024-04-30'));

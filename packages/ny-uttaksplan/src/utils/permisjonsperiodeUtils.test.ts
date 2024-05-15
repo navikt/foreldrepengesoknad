@@ -68,12 +68,12 @@ describe('Skal gruppere perioder på søker og ikke kvote', () => {
     it('Skal fungere', () => {
         const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder1, false);
 
-        expect(permisjonsperioder.length).toBe(3);
+        expect(permisjonsperioder.length).toBe(4);
 
         expect(permisjonsperioder[0].forelder).toEqual(Forelder.mor);
         expect(permisjonsperioder[0].tidsperiode).toEqual({
             fom: dateToISODateString(perioder1[0].tidsperiode.fom),
-            tom: dateToISODateString(perioder1[2].tidsperiode.tom),
+            tom: dateToISODateString(perioder1[0].tidsperiode.tom),
         });
     });
 });

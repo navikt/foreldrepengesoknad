@@ -1,0 +1,56 @@
+.periode-liste-header-mobil {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.periode-liste-header-mobil__dato {
+    min-width: 60%;
+}
+
+.periode-liste-header-mobil__uker {
+    min-width: 20%;
+}
+
+.periode-liste-header-mobil__hendelse {
+    padding: 1rem;
+    border-radius: 2rem;
+}
+
+.periode-liste-header-mobil__hendelse-wrapper {
+    display: flex;
+}
+
+.periode-liste-header-mobil--farge-blaa {
+    color: var(--a-blue-400);
+}
+
+.periode-liste-header-mobil--farge-gronn {
+    color: var(--a-green-400);
+}
+
+.periode-liste-header-mobil--farge-gul {
+    color: var(--a-orange-300);
+}
+
+.periode-liste-header-mobil--farge-bg-lysblaa {
+    background-color: var(--a-blue-50);
+}
+
+.periode-liste-header-mobil--farge-bg-lysblaa-gronn {
+    background: linear-gradient(
+        135deg,
+        var(--a-green-100) 0%,
+        var(--a-green-100) 50%,
+        var(--a-blue-50) 50%,
+        var(--a-blue-50) 100%
+    );
+}
+
+.periode-liste-header-mobil--farge-bg-gul {
+    background-color: var(--a-orange-100);
+}
+
+.periode-liste-header-mobil--farge-bg-gronn {
+    background-color: var(--a-green-100);
+}

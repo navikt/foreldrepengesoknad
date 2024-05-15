@@ -12,8 +12,6 @@ interface Props {
 const PeriodeListe: FunctionComponent<Props> = ({ perioder }) => {
     const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder, false);
 
-    console.log(permisjonsperioder);
-
     return (
         <div>
             {permisjonsperioder.map((p) => {
