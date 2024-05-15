@@ -82,6 +82,29 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             </Infobox>
                         </VStack>
                     )}
+                    {stønadskontoer && valgtStønadskonto && hvorLangPeriode && arbeidssituasjon && (
+                        <VStack gap="5">
+                            {harRettTilForeldrepenger && (
+                                <OppsummeringHarRett
+                                    valgtStønadskonto={valgtStønadskonto}
+                                    hvorLangPeriode={hvorLangPeriode}
+                                    hvemPlanlegger={hvemPlanlegger}
+                                    barnet={barnet}
+                                    arbeidssituasjon={arbeidssituasjon}
+                                    fordeling={fordeling}
+                                />
+                            )}
+                            <OppgittInformasjon
+                                stønadskontoer={stønadskontoer}
+                                barnet={barnet}
+                                hvemPlanlegger={hvemPlanlegger}
+                                arbeidssituasjon={arbeidssituasjon}
+                                hvorLangPeriode={hvorLangPeriode}
+                                fordeling={fordeling}
+                            />
+                        </VStack>
+                    )}
+
                     <Alert variant="info">
                         <BodyShort>
                             {!harRettTilForeldrepenger ? (
@@ -106,28 +129,6 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             )}
                         </BodyShort>
                     </Alert>
-                    {stønadskontoer && valgtStønadskonto && hvorLangPeriode && arbeidssituasjon && (
-                        <VStack gap="5">
-                            {harRettTilForeldrepenger && (
-                                <OppsummeringHarRett
-                                    valgtStønadskonto={valgtStønadskonto}
-                                    hvorLangPeriode={hvorLangPeriode}
-                                    hvemPlanlegger={hvemPlanlegger}
-                                    barnet={barnet}
-                                    arbeidssituasjon={arbeidssituasjon}
-                                    fordeling={fordeling}
-                                />
-                            )}
-                            <OppgittInformasjon
-                                stønadskontoer={stønadskontoer}
-                                barnet={barnet}
-                                hvemPlanlegger={hvemPlanlegger}
-                                arbeidssituasjon={arbeidssituasjon}
-                                hvorLangPeriode={hvorLangPeriode}
-                                fordeling={fordeling}
-                            />
-                        </VStack>
-                    )}
                     <VStack gap="10">
                         <HStack>
                             <Button

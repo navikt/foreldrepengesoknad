@@ -154,7 +154,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     )}
                     <ToggleGroup
                         defaultValue={hvorLangPeriode?.dekningsgrad}
-                        size="medium"
+                        size="small"
                         variant="neutral"
                         onChange={oppdaterPeriodeOgFordeling}
                         style={{ width: '100%' }}

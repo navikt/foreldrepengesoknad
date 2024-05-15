@@ -33,16 +33,16 @@ const UforutsetteEndringer: React.FunctionComponent<Props> = ({ hvemPlanlegger, 
     const morHarIkkeRett =
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
     return (
-        <ExpansionCard aria-label="." onToggle={onToggleExpansionCard}>
+        <ExpansionCard aria-label="." onToggle={onToggleExpansionCard} size="small">
             <ExpansionCard.Header>
-                <HStack gap="10" align="center" wrap={false}>
+                <HStack gap="6" align="center" wrap={false}>
                     <div>
-                        <IconCircleWrapper color="green" size="large">
-                            <ExclamationmarkIcon height={22} width={22} fontSize="1.5rem" aria-hidden />
+                        <IconCircleWrapper color="green" size="medium">
+                            <ExclamationmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
                     </div>
                     <div>
-                        <ExpansionCard.Title size="medium">
+                        <ExpansionCard.Title size="small">
                             <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer" />
                         </ExpansionCard.Title>
                     </div>

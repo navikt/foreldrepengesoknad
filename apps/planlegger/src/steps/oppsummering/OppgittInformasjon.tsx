@@ -11,6 +11,7 @@ import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 import {
     erAlenesøker as erAlene,
+    erFarOgFar,
     finnSøker1Tekst,
     finnSøker2Tekst,
     getFornavnPåSøker1,
@@ -61,9 +62,26 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const erAdoptert = erBarnetAdoptert(barnet);
     const antallBarn = barnet.antallBarn;
 
+    const erFedre = erFarOgFar(hvemPlanlegger);
     const erAlenesøker = erAlene(hvemPlanlegger);
     const fornavn1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavn2 = getFornavnPåSøker2(hvemPlanlegger, intl);
+
+    const getTekstTilFar1 = () => {
+        if (erFarOgFar(hvemPlanlegger) && !hvemPlanlegger.navnPåFar) {
+            return <FormattedMessage id="OppgittInformasjon.TekstFar1" />;
+        }
+        return getFornavnPåSøker1(hvemPlanlegger, intl);
+    };
+    const getTekstTilFar2 = () => {
+        if (erFarOgFar(hvemPlanlegger) && !hvemPlanlegger.navnPåMedfar) {
+            return <FormattedMessage id="OppgittInformasjon.TekstFar2" />;
+        }
+        return getFornavnPåSøker2(hvemPlanlegger, intl);
+    };
+
+    const denEneFaren = getTekstTilFar1();
+    const denAndreFaren = getTekstTilFar2();
 
     const valgtStønadskonto = stønadskontoer[hvorLangPeriode.dekningsgrad];
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
@@ -82,13 +100,13 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
 
     return (
         <VStack gap="10">
-            <ExpansionCard aria-label="" onToggle={onToggleExpansionCard}>
+            <ExpansionCard aria-label="" onToggle={onToggleExpansionCard} size="small">
                 <ExpansionCard.Header>
-                    <HStack gap="5" align="center" wrap={false}>
-                        <IconCircleWrapper size="large" color="green">
-                            <ChatElipsisIcon height={28} width={28} fontSize="1.5rem" aria-hidden />
+                    <HStack gap="6" align="center" wrap={false}>
+                        <IconCircleWrapper size="medium" color="green">
+                            <ChatElipsisIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
-                        <ExpansionCard.Title size="medium">
+                        <ExpansionCard.Title size="small">
                             <FormattedMessage id="OppgittInformasjon.OppgittInformasjon" values={{ erAlenesøker }} />
                         </ExpansionCard.Title>
                     </HStack>
@@ -191,7 +209,29 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                                 />
                                             </BodyLong>
                                         )}
-                                        {hvemHarRett !== 'beggeHarRett' && (
+                                        {hvemHarRett !== 'beggeHarRett' && erFedre && (
+                                            <>
+                                                <BodyLong>
+                                                    <FormattedMessage
+                                                        id="OppgittInformasjon.Arbeidssituasjon"
+                                                        values={{
+                                                            navn: denEneFaren ? denEneFaren : fornavn1,
+                                                            arbeidssituasjon: arbeidssituasjon.status,
+                                                        }}
+                                                    />
+                                                </BodyLong>
+                                                <BodyLong>
+                                                    <FormattedMessage
+                                                        id="OppgittInformasjon.ArbeidssituasjonAnnenPart"
+                                                        values={{
+                                                            navn: denAndreFaren ? denAndreFaren : fornavn2,
+                                                            arbeidssituasjon: arbeidssituasjon.jobberAnnenPart,
+                                                        }}
+                                                    />
+                                                </BodyLong>
+                                            </>
+                                        )}
+                                        {hvemHarRett !== 'beggeHarRett' && !erFedre && (
                                             <>
                                                 <BodyLong>
                                                     <FormattedMessage

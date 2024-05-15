@@ -46,16 +46,16 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
     const søker1HarRett = hvemHarRett === 'beggeHarRett' || hvemHarRett === 'kunSøker1HarRett';
 
     return (
-        <ExpansionCard aria-label="Expansion card" onToggle={onToggleExpansionCard}>
+        <ExpansionCard aria-label="Expansion card" onToggle={onToggleExpansionCard} size="small">
             <ExpansionCard.Header>
-                <HStack gap="10" align="center" wrap={false}>
+                <HStack gap="6" align="center" wrap={false}>
                     <div>
-                        <IconCircleWrapper color="green" size="large">
-                            <PencilWritingIcon height={22} width={22} fontSize="1.5rem" aria-hidden />
+                        <IconCircleWrapper color="green" size="medium">
+                            <PencilWritingIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
                     </div>
                     <div>
-                        <ExpansionCard.Title size="medium">
+                        <ExpansionCard.Title size="small">
                             <FormattedMessage id="OmÅTilpassePlanen.Oversikt.OmÅTilpassePlanen" />
                         </ExpansionCard.Title>
                     </div>
