@@ -1,3 +1,4 @@
+import { PersonGroupIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
@@ -97,7 +98,18 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                             </Radio>
                         </GreenRadioGroup>
                         {erFødsel !== undefined && erFødsel === true && erFedre && (
-                            <Infobox header={<FormattedMessage id="OmBarnetSteg.Fødsel.Infoboks" />}>
+                            <Infobox
+                                header={<FormattedMessage id="OmBarnetSteg.Fødsel.Infoboks" />}
+                                icon={
+                                    <PersonGroupIcon
+                                        height={24}
+                                        width={24}
+                                        color="#236B7D"
+                                        fontSize="1.5rem"
+                                        aria-hidden
+                                    />
+                                }
+                            >
                                 <BodyShort>
                                     <FormattedMessage id="OmBarnetSteg.Fødsel.Infoboks.DenSomErBiologiskFar" />
                                 </BodyShort>

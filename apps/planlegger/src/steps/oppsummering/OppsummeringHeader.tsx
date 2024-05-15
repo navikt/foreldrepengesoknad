@@ -1,4 +1,4 @@
-import { CheckmarkCircleIcon, CheckmarkIcon } from '@navikt/aksel-icons';
+import { CheckmarkIcon } from '@navikt/aksel-icons';
 import GreenHeading from 'components/boxes/GreenHeading';
 import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import PlanleggerStep from 'components/page/PlanleggerPage';
@@ -18,8 +18,8 @@ const OppsummeringHeader: React.FunctionComponent<Props> = ({ children }) => (
                 <Show below="md">
                     <GreenHeading isDarkGreen>
                         <HStack gap="4" align="center">
-                            <IconCircleWrapper color="darkGreen" size="xl">
-                                <CheckmarkCircleIcon height={28} width={28} fontSize="1.5rem" aria-hidden />
+                            <IconCircleWrapper color="darkGreen" size="large">
+                                <CheckmarkIcon height={34} width={34} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
                             <Heading size="medium">
                                 <FormattedMessage id="OppsummeringHeader.Tittel" />

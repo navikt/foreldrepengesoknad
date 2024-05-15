@@ -22,10 +22,10 @@ import {
 import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
-import { getAntallUker, getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
+import { getAntallUker, getAntallUkerAktivitetsfriKvote, getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
 import { finnUttaksdata } from 'utils/uttakUtils';
 
-import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
@@ -71,6 +71,8 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
     const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
     const antallUkerFellesperiodeSøker1 = fordeling ? fordeling.antallUkerSøker1 : '';
     const antallUkerFellesperiodeSøker2 = fordeling ? antallUkerFellesperiode - fordeling.antallUkerSøker1 : '';
+    const antallUkerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
+    const antallUkerAktivitetskrav = getAntallUker(valgtStønadskonto) - antallUkerAktivitetsfriKvote;
 
     const uttaksperioder = lagKalenderPerioder(
         valgtStønadskonto,
@@ -86,13 +88,13 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
 
     return (
         <>
-            <ExpansionCard aria-label="" onToggle={onToggleExpansionCard}>
+            <ExpansionCard aria-label="" onToggle={onToggleExpansionCard} size="small">
                 <ExpansionCard.Header>
-                    <HStack gap="5" align="center" wrap={false}>
-                        <IconCircleWrapper size="large" color="green">
-                            <CalendarIcon height={28} width={28} fontSize="1.5rem" aria-hidden />
+                    <HStack gap="6" align="center" wrap={false}>
+                        <IconCircleWrapper size="medium" color="green">
+                            <CalendarIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
-                        <ExpansionCard.Title size="medium">
+                        <ExpansionCard.Title size="small">
                             <FormattedMessage
                                 id="OppsummeringSteg.Planen"
                                 values={{ erAlenesøker: erAlenesøker(hvemPlanlegger) }}
@@ -160,21 +162,92 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                 </BodyLong>
                             </GreenPanel>
                         )}
-                        {hvemHarRett === 'beggeHarRett' && erFarOgFarFødsel && (
+                        {(erAlenesøker(hvemPlanlegger) ||
+                            !erFarOgFarFødsel ||
+                            (hvemHarRett === 'beggeHarRett' && erFarOgFarFødsel)) && (
                             <GreenPanel>
-                                <Heading level="4" size="small">
-                                    <FormattedMessage id="OppsummeringSteg.Perioden" />
-                                </Heading>
-                                <BodyLong>
+                                <VStack gap="2">
+                                    <Heading level="4" size="small">
+                                        <FormattedMessage id="OppsummeringSteg.Perioden" />
+                                    </Heading>
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="OppsummeringSteg.DereValgteFedreEllerAlene"
+                                            values={{
+                                                prosent: hvorLangPeriode.dekningsgrad,
+                                                erAlenesøker: erAlenesøker(hvemPlanlegger),
+                                                antallUker: getAntallUker(valgtStønadskonto),
+                                            }}
+                                        />
+                                    </BodyShort>
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="OppsummeringSteg.Periode"
+                                            values={{
+                                                fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
+                                                    day: '2-digit',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                }),
+                                                tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
+                                                    day: '2-digit',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                }),
+                                                b: (msg: any) => <b>{msg}</b>,
+                                            }}
+                                        />
+                                    </BodyShort>
+                                </VStack>
+                            </GreenPanel>
+                        )}
+                        {hvemHarRett === 'kunSøker2HarRett' && fornavnSøker2 && (
+                            <GreenPanel>
+                                <VStack gap="2">
+                                    <Heading level="4" size="small">
+                                        <FormattedMessage id="OppsummeringSteg.Perioden" />
+                                    </Heading>
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="OppsummeringSteg.DereValgteAktivitetskrav"
+                                            values={{
+                                                uker1: antallUkerAktivitetsfriKvote,
+                                                uker2: antallUkerAktivitetskrav,
+                                                hvem: fornavnSøker1,
+                                                prosent: hvorLangPeriode.dekningsgrad,
+                                                antallUker: getAntallUker(valgtStønadskonto),
+                                            }}
+                                        />
+                                    </BodyShort>
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="OppsummeringSteg.UtenAktivitetskrav"
+                                            values={{
+                                                fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
+                                                    day: '2-digit',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                }),
+                                                tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
+                                                    day: '2-digit',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                }),
+                                                b: (msg: any) => <b>{msg}</b>,
+                                            }}
+                                        />
+                                    </BodyShort>{' '}
+                                </VStack>
+                                <BodyShort>
                                     <FormattedMessage
-                                        id="OppsummeringSteg.Periode"
+                                        id="OppsummeringSteg.MedAktivitetskrav"
                                         values={{
-                                            fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
+                                            fom: intl.formatDate(uttaksdata.startdatoPeriode2, {
                                                 day: '2-digit',
                                                 month: 'short',
                                                 year: 'numeric',
                                             }),
-                                            tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
+                                            tom: intl.formatDate(uttaksdata.sluttdatoPeriode2, {
                                                 day: '2-digit',
                                                 month: 'short',
                                                 year: 'numeric',
@@ -182,7 +255,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                             b: (msg: any) => <b>{msg}</b>,
                                         }}
                                     />
-                                </BodyLong>
+                                </BodyShort>
                             </GreenPanel>
                         )}
                         <Calendar periods={uttaksperioder} useSmallerWidth />
