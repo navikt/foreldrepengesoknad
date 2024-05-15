@@ -6,6 +6,8 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
 import {
+    AnnenForelder,
+    Barn,
     Periode,
     Perioden,
     hasValue,
@@ -19,6 +21,9 @@ import { SøkerBarn } from '@navikt/fp-types';
 import { isISODateString } from '@navikt/fp-utils';
 
 import { Alder } from 'app/types/Alder';
+
+import { getIsDeltUttak } from './annenForelderUtils';
+import { getFamiliehendelsedato } from './barnUtils';
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
@@ -242,4 +247,15 @@ const getOldestDate = (
     return dayjs(endringstidspunktNyPlan).isSameOrBefore(dayjs(endringstidspunktOpprinneligPlan))
         ? endringstidspunktNyPlan
         : endringstidspunktOpprinneligPlan;
+};
+
+export const getVis1Juli2024Info = (barn: Barn, annenForelder: AnnenForelder) => {
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const erDeltUttak = getIsDeltUttak(annenForelder);
+    return (
+        dayjs(familiehendelsesdato).isSameOrAfter(dayjs('2024-07-01'), 'd') &&
+        dayjs().isBefore(dayjs('2024-07-01'), 'd') &&
+        erDeltUttak &&
+        barn.antallBarn === 1
+    );
 };

@@ -30,7 +30,7 @@ import PeriodeMedForeldrepenger from 'app/context/types/PeriodeMedForeldrepenger
 import { getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 
-import './dekningsgradForm.less';
+import './panelWithCircleIcon.less';
 
 const finnSisteDagMedForeldrepenger = (stønadskontoer: TilgjengeligStønadskonto[], barn: Barn): string | undefined => {
     const erAdopsjon = isAdoptertBarn(barn);

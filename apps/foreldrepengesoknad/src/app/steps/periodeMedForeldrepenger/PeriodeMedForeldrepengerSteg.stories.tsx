@@ -624,3 +624,53 @@ FarEllerMedmorSøkerOgMorHarLagetUttaksplan.args = {
     stønadskonto100: STØNADSKONTO_100,
     stønadskonto80: STØNADSKONTO_80,
 };
+
+export const FarMedMorMedTermin1Juli2024 = Template.bind({});
+FarMedMorMedTermin1Juli2024.args = {
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'far',
+    },
+    barnet: {
+        type: BarnType.UFØDT,
+        termindato: '2024-07-01',
+        antallBarn: 1,
+    },
+    annenForelder: {
+        fornavn: 'Helga',
+        etternavn: 'Utvikler',
+        fnr: '12117212090',
+        harRettPåForeldrepengerINorge: true,
+        kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
+    },
+    stønadskonto100: STØNADSKONTO_100,
+    stønadskonto80: STØNADSKONTO_80,
+};
+
+export const MorMedTermin1Juli2024OgFarsSøknad = Template.bind({});
+MorMedTermin1Juli2024OgFarsSøknad.args = {
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'mor',
+    },
+    barnet: {
+        type: BarnType.UFØDT,
+        termindato: '2024-07-01',
+        antallBarn: 1,
+    },
+    annenForelder: {
+        fornavn: 'Espen',
+        etternavn: 'Utvikler',
+        fnr: '12117212090',
+        harRettPåForeldrepengerINorge: true,
+        kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
+    },
+    annenPartVedtak: {
+        perioder: [uttaksperiode],
+        dekningsgrad: DekningsgradDTO.ÅTTI_PROSENT,
+    },
+    stønadskonto100: STØNADSKONTO_100,
+    stønadskonto80: STØNADSKONTO_80,
+};

@@ -1,6 +1,7 @@
 import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import MockDate from 'mockdate';
 
 import { Dekningsgrad } from '@navikt/fp-common';
 
@@ -18,6 +19,8 @@ const {
     MorFødselMedTvillingFlerbarnsuker,
     MorFødselAleneomsorgMedTrillingFlerbarnsuker,
     FarEllerMedmorSøkerOgMorHarLagetUttaksplan,
+    FarMedMorMedTermin1Juli2024,
+    MorMedTermin1Juli2024OgFarsSøknad,
 } = composeStories(stories);
 
 describe('<PeriodeMedForeldrepengerSteg>', () => {
@@ -362,5 +365,77 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
+    });
+    it('skal vise informasjon om utvidet 80% dekningsgrad for far som søker første gang med barn med termin etter 1 juli 2024 og søkedato før 1 juli 2024', async () => {
+        MockDate.set(new Date('2024-06-30'));
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        render(
+            <FarMedMorMedTermin1Juli2024
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+
+        expect(
+            await screen.findByText(
+                'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
+            ),
+        ).toBeInTheDocument();
+        MockDate.reset();
+    });
+    it('skal ikke vise informasjon om utvidet 80% dekningsgrad for far som søker første gang hvis søkedato er etter 1 juli 2024', async () => {
+        MockDate.set(new Date('2024-07-01'));
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        render(
+            <FarMedMorMedTermin1Juli2024
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+
+        expect(
+            await screen.queryByText(
+                'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
+            ),
+        ).not.toBeInTheDocument();
+        MockDate.reset();
+    });
+    it('skal vise informasjon om utvidet 80% dekningsgrad for mor som søker etter far der far valgte 80% dekning for et barn med termin etter 1 juli 2024 og søkedato før 1 juli 2024', async () => {
+        MockDate.set(new Date('2024-06-30'));
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        render(
+            <MorMedTermin1Juli2024OgFarsSøknad
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+
+        expect(
+            await screen.findByText(
+                'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
+            ),
+        ).toBeInTheDocument();
+        MockDate.reset();
+    });
+    it('skal ikke vise informasjon om utvidet 80% dekningsgrad for mor som søker etter far der far valgte 80% dekning hvis søkedato er etter 1 juli 2024', async () => {
+        MockDate.set(new Date('2024-07-01'));
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        render(
+            <MorMedTermin1Juli2024OgFarsSøknad
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+
+        expect(
+            await screen.queryByText(
+                'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
+            ),
+        ).not.toBeInTheDocument();
+        MockDate.reset();
     });
 });
