@@ -66,7 +66,7 @@
     height: 16px;
     border-radius: 50%;
     border: 2px solid var(--a-data-surface-1);
-    margin-bottom: 25%;
+    margin-bottom: 50%;
 }
 
 .greenOutlineCircle {
@@ -74,7 +74,7 @@
     height: 16px;
     border-radius: 50%;
     border: 2px solid var(--a-data-surface-5);
-    margin-bottom: 25%;
+    margin-bottom: 50%;
 }
 
 .blackCircle {
@@ -83,4 +83,20 @@
     border-radius: 50%;
     background-color: var(--a-gray-800);
     margin-bottom: 25%;
+}
+
+.greenCircle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--a-data-surface-5);
+    margin-bottom: 50%;
+}
+
+.blueCircle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--a-blue-300);
+    margin-bottom: 50%;
 }

@@ -6,22 +6,18 @@ import { HStack } from '@navikt/ds-react';
 import { PeriodeColor } from '@navikt/fp-constants';
 
 import styles from './calendarLabel.module.css';
-import BlueSirkel from './icons/BlueSirkel';
-import GreenSirkel from './icons/GreenSirkel';
-import LightblueSirkel from './icons/LightblueSirkel';
-import LightgreenSirkel from './icons/LightgreenSirkel';
 import circleStyles from './icons/circle.module.css';
 
 export const getSirkel = (color: PeriodeColor) => {
     switch (color) {
         case PeriodeColor.LIGHTBLUE:
-            return <LightblueSirkel />;
+            return <div className={circleStyles.blueOutlineCircle} />;
         case PeriodeColor.BLUE:
-            return <BlueSirkel />;
+            return <div className={circleStyles.blueCircle} />;
         case PeriodeColor.LIGHTGREEN:
-            return <LightgreenSirkel />;
+            return <div className={circleStyles.greenOutlineCircle} />;
         case PeriodeColor.GREEN:
-            return <GreenSirkel />;
+            return <div className={circleStyles.greenCircle} />;
         case PeriodeColor.ORANGE:
             return <div className={circleStyles.blackCircle} />;
         case PeriodeColor.GREENOUTLINE:

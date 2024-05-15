@@ -34,7 +34,7 @@
 }
 
 .lightblueDay {
-    background-color: var(--a-data-surface-2-subtle) !important;
+    background-color: var(--a-data-surface-1-subtle) !important;
     print-color-adjust: exact;
     border-top: 2px solid var(--a-blue-300);
     border-bottom: 2px solid var(--a-blue-300);
