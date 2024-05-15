@@ -6,7 +6,7 @@ import { HStack } from '@navikt/ds-react';
 import { PeriodeColor } from '@navikt/fp-constants';
 
 import styles from './calendarLabel.module.css';
-import circleStyles from './icons/circle.module.css';
+import circleStyles from './circle.module.css';
 
 export const getSirkel = (color: PeriodeColor) => {
     switch (color) {
