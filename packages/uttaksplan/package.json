@@ -7,7 +7,9 @@
     "main": "src/index.ts",
     "types": "src/index.ts",
     "scripts": {
-        "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}"
+        "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}",
+        "build-storybook": "storybook build -o .storybook-static-build",
+        "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
         "@navikt/aksel-icons": "^6.3.3",
@@ -18,6 +20,7 @@
         "@navikt/fp-metrics": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
+        "@navikt/fp-utils-test": "workspace:*",
         "@navikt/sif-common-question-config": "^0.0.7",
         "@types/react": "^18.2.73",
         "classnames": "^2.5.1",
@@ -34,6 +37,11 @@
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-types": "workspace:*",
+        "@storybook/addon-essentials": "^8.0.0",
+        "@storybook/addon-interactions": "^8.0.0",
+        "@storybook/addon-links": "^8.0.0",
+        "@storybook/builder-vite": "^8.0.0",
+        "@storybook/react": "^8.0.0",
         "@testing-library/jest-dom": "^6.4.2",
         "@testing-library/react": "^14.2.1",
         "@types/lodash": "^4.17.0",
@@ -43,6 +51,7 @@
         "lodash.throttle": "^4.1.1",
         "mockdate": "^3.0.5",
         "path": "^0.12.7",
+        "storybook": "8.0.0",
         "tsconfig": "workspace:*",
         "vite": "^5.1.6",
         "vite-plugin-checker": "^0.6.4",

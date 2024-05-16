@@ -9,11 +9,13 @@
     "kalender.tapteDager": "Dagar du kan tape",
     "kalender.utsettelse": "Du utsetter foreldrepengar {årsak}",
     "kalender.utsettelse.ARBEID": "fordi du skal jobbe",
-    "kalender.utsettelse.FRI": "",
     "kalender.utsettelse.INSTITUSJONSOPPHOLD_BARNET": "fordi barnet er innlagt",
     "kalender.utsettelse.INSTITUSJONSOPPHOLD_SØKER": "fordi du er innlagt",
     "kalender.utsettelse.LOVBESTEMT_FERIE": "fordi du er på ferie",
     "kalender.utsettelse.SYKDOM": "fordi du er sjuk",
     "kalender.utsettelse.HV_OVELSE": "pga. øving eller teneste i Heimevernet",
-    "kalender.utsettelse.NAV_TILTAK": "pga. NAV tiltak som utgjer 100% arbeid"
+    "kalender.utsettelse.NAV_TILTAK": "pga. NAV tiltak som utgjer 100% arbeid",
+    "uttaksplan.familiehendelsesdato.født": "{antallBarn, plural, one{Barnet} other {Barna}} er født {dato}",
+    "uttaksplan.familiehendelsesdato.termin": "Termin {dato}",
+    "uttaksplan.familiehendelsesdato.adopsjon": "{antallBarn, plural, one{Barnet} other {Barna}} er adoptert {dato}"
 }

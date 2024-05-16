@@ -6,38 +6,37 @@ import { HStack } from '@navikt/ds-react';
 import { PeriodeColor } from '@navikt/fp-constants';
 
 import styles from './calendarLabel.module.css';
-import circleStyles from './circle.module.css';
 
 export const getSirkel = (color: PeriodeColor) => {
     switch (color) {
         case PeriodeColor.LIGHTBLUE:
-            return <div className={circleStyles.blueOutlineCircle} />;
+            return <div className={styles.blueOutlineCircle} />;
         case PeriodeColor.BLUE:
-            return <div className={circleStyles.blueCircle} />;
+            return <div className={styles.blueCircle} />;
         case PeriodeColor.LIGHTGREEN:
-            return <div className={circleStyles.greenOutlineCircle} />;
+            return <div className={styles.greenOutlineCircle} />;
         case PeriodeColor.GREEN:
-            return <div className={circleStyles.greenCircle} />;
+            return <div className={styles.greenCircle} />;
         case PeriodeColor.ORANGE:
-            return <div className={circleStyles.blackCircle} />;
+            return <div className={styles.blackCircle} />;
         case PeriodeColor.GREENOUTLINE:
-            return <div className={circleStyles.greenOutlineCircle} />;
+            return <div className={styles.greenOutlineCircle} />;
         case PeriodeColor.BLUEOUTLINE:
-            return <div className={circleStyles.blueOutlineCircle} />;
+            return <div className={styles.blueOutlineCircle} />;
         case PeriodeColor.LIGHTBLUEGREEN:
-            return <div className={circleStyles.lightblueGreenCircle} />;
+            return <div className={styles.lightblueGreenCircle} />;
         case PeriodeColor.LIGHTGREENBLUE:
-            return <div className={circleStyles.lightgreenBlueCircle} />;
+            return <div className={styles.lightgreenBlueCircle} />;
         case PeriodeColor.BLUESTRIPED:
-            return <div className={circleStyles.blueStripedCircle} />;
+            return <div className={styles.blueStripedCircle} />;
         case PeriodeColor.GREENSTRIPED:
-            return <div className={circleStyles.greenStripedCircle} />;
+            return <div className={styles.greenStripedCircle} />;
         default:
             return null;
     }
 };
 
-const ICON_STYLE = {
+const PANEL_STYLE = {
     [PeriodeColor.NONE]: styles.none,
     [PeriodeColor.BLUE]: styles.bluePanel,
     [PeriodeColor.LIGHTBLUE]: styles.bluePanel,
@@ -82,7 +81,7 @@ const CalendarLabel: FunctionComponent<Props> = ({ children, iconType }) => {
         );
     } else {
         return (
-            <div className={`${ICON_STYLE[iconType]}`}>
+            <div className={`${PANEL_STYLE[iconType]}`}>
                 <HStack gap="2" align="end" wrap={false}>
                     {children}
                     <div className={styles.margin}>{getSirkel(iconType)}</div>

@@ -45,3 +45,91 @@
 .margin {
     margin-bottom: -3px;
 }
+
+.greenStripedCircle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: repeating-linear-gradient(45deg, var(--a-green-200) 0%, var(--a-green-200) 20%, white 20%, white 40%);
+    border: 2px solid var(--a-data-surface-5);
+    margin-bottom: 50%;
+}
+
+.blueStripedCircle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: repeating-linear-gradient(45deg, var(--a-blue-200) 0%, var(--a-blue-200) 20%, white 20%, white 40%);
+    border: 2px solid var(--a-blue-300);
+    margin-bottom: 50%;
+}
+
+.lightblueGreenCircle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: linear-gradient(
+        to top,
+        var(--a-data-surface-5),
+        var(--a-data-surface-5) 50%,
+        var(--a-data-surface-1-subtle) 50%,
+        var(--a-data-surface-1-subtle) 100%
+    ) !important;
+    border: 2px solid var(--a-data-surface-5);
+    margin-bottom: 50%;
+}
+
+.lightgreenBlueCircle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: linear-gradient(
+        to top,
+        var(--a-data-surface-1),
+        var(--a-data-surface-1) 50%,
+        var(--a-data-surface-5-subtle) 50%,
+        var(--a-data-surface-5-subtle) 100%
+    ) !important;
+    border: 2px solid var(--a-data-surface-1);
+    margin-bottom: 50%;
+}
+
+.blueOutlineCircle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--a-data-surface-1);
+    margin-bottom: 50%;
+}
+
+.greenOutlineCircle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--a-data-surface-5);
+    margin-bottom: 50%;
+}
+
+.blackCircle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--a-gray-800);
+    margin-bottom: 25%;
+}
+
+.greenCircle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--a-data-surface-5);
+    margin-bottom: 50%;
+}
+
+.blueCircle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--a-blue-300);
+    margin-bottom: 50%;
+}

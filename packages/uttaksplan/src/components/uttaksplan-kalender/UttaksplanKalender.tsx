@@ -35,7 +35,7 @@ import { getIndexOfSistePeriodeFørDato } from './../../components/periodeliste/
 import { getForelderFarge, getStønadskontoFarge } from './../../utils/styleUtils';
 import UttaksplanLegend from './UttaksplanLegend';
 
-interface Props {
+export interface UttaksplanKalenderProps {
     uttaksplan: Periode[];
     erFarEllerMedmor: boolean;
     barn: Barn;
@@ -112,7 +112,12 @@ const getKalenderFargeForPeriodeType = (
     }
 };
 
-const UttaksplanKalender: FunctionComponent<Props> = ({ uttaksplan, erFarEllerMedmor, barn, navnAnnenPart }) => {
+const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
+    uttaksplan,
+    erFarEllerMedmor,
+    barn,
+    navnAnnenPart,
+}) => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const perioderForVisning = uttaksplan.filter(
         (p) =>

@@ -81,10 +81,11 @@
 .greenStripedDay {
     background: repeating-linear-gradient(
         45deg,
-        var(--a-data-surface-5) 0%,
-        var(--a-data-surface-5) 30%,
-        var(--a-green-200) 30%,
-        var(--a-green-200) 60%
+        var(--a-green-200) 0%,
+        var(--a-green-200) 15%,
+        white 15%,
+        white 30%,
+        var(--a-green-200) 30%
     ) !important;
     border-top: 2px solid var(--a-data-surface-5);
     border-bottom: 2px solid var(--a-data-surface-5);
@@ -107,11 +108,11 @@
 .blueStripedDay {
     background: repeating-linear-gradient(
         45deg,
-        var(--a-blue-300) 0%,
-        var(--a-blue-300) 20%,
-        var(--a-gray-200) 20%,
-        var(--a-gray-200) 40%,
-        var(--a-blue-300) 40%
+        var(--a-blue-200) 0%,
+        var(--a-blue-200) 15%,
+        white 15%,
+        white 30%,
+        var(--a-blue-200) 30%
     ) !important;
     border-top: 2px solid var(--a-blue-300);
     border-bottom: 2px solid var(--a-blue-300);
@@ -211,8 +212,8 @@
         to top,
         var(--a-data-surface-5),
         var(--a-data-surface-5) 50%,
-        var(--a-data-surface-2-subtle) 50%,
-        var(--a-data-surface-2-subtle) 100%
+        var(--a-data-surface-1-subtle) 50%,
+        var(--a-data-surface-1-subtle) 100%
     ) !important;
     border-top: 2px solid var(--a-data-surface-5);
     border-bottom: 2px solid var(--a-data-surface-5);
