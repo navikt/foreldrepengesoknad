@@ -10,6 +10,23 @@ export const getForelderFarge = (forelder: Forelder, erFarEllerMedmor: boolean) 
     return erFarEllerMedmor ? PeriodeColor.GREEN : PeriodeColor.LIGHTGREEN;
 };
 
+export const getKontoFarge = (konto: StønadskontoType, erFarEllerMedmor: boolean) => {
+    switch (konto) {
+        case StønadskontoType.Fedrekvote:
+        case StønadskontoType.AktivitetsfriKvote:
+            return erFarEllerMedmor ? PeriodeColor.GREEN : PeriodeColor.LIGHTGREEN;
+        case StønadskontoType.ForeldrepengerFørFødsel:
+        case StønadskontoType.Mødrekvote:
+            return erFarEllerMedmor ? PeriodeColor.LIGHTBLUE : PeriodeColor.BLUE;
+        case StønadskontoType.Foreldrepenger:
+            return erFarEllerMedmor ? PeriodeColor.GREEN : PeriodeColor.BLUE;
+        case StønadskontoType.Fellesperiode:
+            return erFarEllerMedmor ? PeriodeColor.LIGHTBLUEGREEN : PeriodeColor.LIGHTGREENBLUE;
+        default:
+            return PeriodeColor.NONE;
+    }
+};
+
 export const getStønadskontoFarge = (
     konto: StønadskontoType,
     forelder: Forelder | undefined,
@@ -21,20 +38,7 @@ export const getStønadskontoFarge = (
     }
 
     if (forelder === undefined) {
-        switch (konto) {
-            case StønadskontoType.Fedrekvote:
-            case StønadskontoType.AktivitetsfriKvote:
-                return erFarEllerMedmor ? PeriodeColor.GREEN : PeriodeColor.LIGHTGREEN;
-            case StønadskontoType.ForeldrepengerFørFødsel:
-            case StønadskontoType.Mødrekvote:
-                return erFarEllerMedmor ? PeriodeColor.LIGHTBLUE : PeriodeColor.BLUE;
-            case StønadskontoType.Foreldrepenger:
-                return erFarEllerMedmor ? PeriodeColor.GREEN : PeriodeColor.BLUE;
-            case StønadskontoType.Fellesperiode:
-                return erFarEllerMedmor ? PeriodeColor.LIGHTBLUEGREEN : PeriodeColor.LIGHTGREENBLUE;
-            default:
-                return PeriodeColor.NONE;
-        }
+        return getKontoFarge(konto, erFarEllerMedmor);
     }
     return getForelderFarge(forelder, erFarEllerMedmor);
 };

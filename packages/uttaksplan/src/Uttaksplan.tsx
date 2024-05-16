@@ -143,7 +143,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
 }) => {
     const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato)!;
     const intl = useIntl();
-    const [visningsModus, setVisningsmodus] = useState<string>('liste');
+    const [visningsmodus, setVisningsmodus] = useState<string>('liste');
     const [perioderErGyldige, setPerioderErGyldige] = useState<PeriodeValidState[]>([]);
     const [slettUttaksplanModalOpen, setSlettUttaksplanModalOpen] = useState(false);
     const [resetUttaksplanModalOpen, setResetUttaksplanModalOpen] = useState(false);
@@ -310,7 +310,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     return (
         <>
             <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
-            {visningsModus === 'liste' && (
+            {visningsmodus === 'liste' && (
                 <>
                     <Block padBottom="l">
                         <Planlegger
@@ -360,7 +360,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                     </Block>
                 </>
             )}
-            {visningsModus === 'kalender' && (
+            {visningsmodus === 'kalender' && (
                 <Block padBottom="xxl">
                     <UttaksplanKalender
                         uttaksplan={uttaksplan}
