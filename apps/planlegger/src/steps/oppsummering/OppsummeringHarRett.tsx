@@ -19,7 +19,6 @@ import {
     getFornavnPåSøker2,
     getNavnGenitivEierform,
 } from 'utils/HvemPlanleggerUtils';
-import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
 import { getAntallUker, getAntallUkerAktivitetsfriKvote, getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
@@ -82,7 +81,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
         fordeling?.antallUkerSøker1,
     );
 
-    const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(barnet);
+    const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
 
@@ -104,7 +103,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
                     <VStack gap="5">
-                        {hvemHarRett === 'beggeHarRett' && !erFarOgFarFødsel && fornavnSøker2 && (
+                        {hvemHarRett === 'beggeHarRett' && !erFarOgFar && fornavnSøker2 && (
                             <GreenPanel>
                                 <Heading level="4" size="small">
                                     <FormattedMessage id="OppsummeringSteg.Perioden" />
@@ -162,9 +161,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                 </BodyLong>
                             </GreenPanel>
                         )}
-                        {(erAlenesøker(hvemPlanlegger) ||
-                            !erFarOgFarFødsel ||
-                            (hvemHarRett === 'beggeHarRett' && erFarOgFarFødsel)) && (
+                        {(erAlenesøker(hvemPlanlegger) || erFarOgFar) && (
                             <GreenPanel>
                                 <VStack gap="2">
                                     <Heading level="4" size="small">
