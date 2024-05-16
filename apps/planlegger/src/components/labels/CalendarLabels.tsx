@@ -21,6 +21,7 @@ interface Props {
     hvemPlanlegger: HvemPlanlegger;
     hvemHarRett: HvemHarRett;
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
+    erOppsummering?: boolean;
 }
 
 const CalendarLabels: FunctionComponent<Props> = ({
@@ -29,6 +30,7 @@ const CalendarLabels: FunctionComponent<Props> = ({
     hvemPlanlegger,
     hvemHarRett,
     valgtStønadskonto,
+    erOppsummering,
 }) => {
     const intl = useIntl();
 
@@ -77,7 +79,7 @@ const CalendarLabels: FunctionComponent<Props> = ({
                     )}
                 </HStack>
             )}
-            {skalViseAktivitetskravLabels && (
+            {skalViseAktivitetskravLabels && !erOppsummering && (
                 <>
                     <AktivitetskravLabel
                         utenAktivitetskrav
@@ -94,6 +96,28 @@ const CalendarLabels: FunctionComponent<Props> = ({
                         tekstPart2={farOgFarAdopsjonDerKunSøker1HarRett ? søker2Tekst : søker1Tekst}
                         startdato={startdatoPeriode2}
                         sluttdato={sluttdatoPeriode2}
+                    />
+                </>
+            )}
+            {skalViseAktivitetskravLabels && erOppsummering && (
+                <>
+                    <AktivitetskravLabel
+                        utenAktivitetskrav
+                        valgtStønadskonto={valgtStønadskonto}
+                        tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
+                        tekstPart2={farOgFarAdopsjonDerKunSøker1HarRett ? søker2Tekst : søker1Tekst}
+                        startdato={startdatoPeriode1}
+                        sluttdato={sluttdatoPeriode1}
+                        isBluePanel
+                        visUkerAktivitetskrav={false}
+                    />
+                    <AktivitetskravLabel
+                        valgtStønadskonto={valgtStønadskonto}
+                        tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
+                        tekstPart2={farOgFarAdopsjonDerKunSøker1HarRett ? søker2Tekst : søker1Tekst}
+                        startdato={startdatoPeriode2}
+                        sluttdato={sluttdatoPeriode2}
+                        visUkerAktivitetskrav={false}
                     />
                 </>
             )}

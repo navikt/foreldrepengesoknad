@@ -198,6 +198,8 @@
     "OversiktSteg.ForeldrepengerSrOnly": "Parental benefit starts {startdato}, ends {sluttdato} ",
     "OversiktSteg.UkerUtenAktivitetskrav": "{hvem}, {uker} weeks without requirements for {hvemPart2}",
     "OversiktSteg.UkerMedAktivitetskrav": "{hvem}, {uker} weeks with requirements for {hvemPart2}",
+    "OversiktSteg.UtenAktivitetskrav": "Without requirements",
+    "OversiktSteg.MedAktivitetskrav": "With requirements",
     "FamiliehendelseLabel.Termindato": "Due date {dato}",
     "FamiliehendelseLabel.Fødselsdato": "Date of birth {dato}",
     "FamiliehendelseLabel.Omsorgsovertakelse": "Date of care transfer {dato}",

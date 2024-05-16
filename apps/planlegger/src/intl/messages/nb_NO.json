@@ -198,6 +198,8 @@
     "OversiktSteg.UkerForeldrepengerSlutter": "{hvem}, {uker} uker, slutter {dato} ",
     "OversiktSteg.UkerUtenAktivitetskrav": "{hvem}, {uker} uker uten aktivitetskrav til {hvemPart2}",
     "OversiktSteg.UkerMedAktivitetskrav": "{hvem}, {uker} uker med aktivitetskrav til {hvemPart2}",
+    "OversiktSteg.UtenAktivitetskrav": "Uten aktivitetskrav",
+    "OversiktSteg.MedAktivitetskrav": "Med aktivitetskrav",
     "FamiliehendelseLabel.Termindato": "Termindato {dato}",
     "FamiliehendelseLabel.Fødselsdato": "Fødselsdato {dato}",
     "FamiliehendelseLabel.Omsorgsovertakelse": "Omsorgsovertakelsesdato {dato}",

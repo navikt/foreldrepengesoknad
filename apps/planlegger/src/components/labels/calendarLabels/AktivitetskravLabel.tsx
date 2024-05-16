@@ -18,6 +18,7 @@ interface Props {
     startdato: string;
     sluttdato: string;
     isBluePanel?: boolean;
+    visUkerAktivitetskrav?: boolean;
 }
 
 const AktivitetskravLabel: FunctionComponent<Props> = ({
@@ -28,31 +29,41 @@ const AktivitetskravLabel: FunctionComponent<Props> = ({
     sluttdato,
     isBluePanel = false,
     valgtStønadskonto,
+    visUkerAktivitetskrav = true,
 }) => {
     const intl = useIntl();
 
     return (
         <CalendarIconLabel iconType={isBluePanel ? 'blue' : 'green'}>
             <BodyShort>
-                {utenAktivitetskrav && (
-                    <FormattedMessage
-                        id="OversiktSteg.UkerUtenAktivitetskrav"
-                        values={{
-                            hvem: capitalizeFirstLetter(tekstPart1),
-                            uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
-                            hvemPart2: capitalizeFirstLetter(tekstPart2),
-                        }}
-                    />
-                )}
-                {!utenAktivitetskrav && (
-                    <FormattedMessage
-                        id="OversiktSteg.UkerMedAktivitetskrav"
-                        values={{
-                            hvem: capitalizeFirstLetter(tekstPart1),
-                            uker: getAntallUkerForeldrepenger(valgtStønadskonto),
-                            hvemPart2: capitalizeFirstLetter(tekstPart2),
-                        }}
-                    />
+                {visUkerAktivitetskrav ? (
+                    <>
+                        {utenAktivitetskrav && (
+                            <FormattedMessage
+                                id="OversiktSteg.UkerUtenAktivitetskrav"
+                                values={{
+                                    hvem: capitalizeFirstLetter(tekstPart1),
+                                    uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
+                                    hvemPart2: capitalizeFirstLetter(tekstPart2),
+                                }}
+                            />
+                        )}
+                        {!utenAktivitetskrav && (
+                            <FormattedMessage
+                                id="OversiktSteg.UkerMedAktivitetskrav"
+                                values={{
+                                    hvem: capitalizeFirstLetter(tekstPart1),
+                                    uker: getAntallUkerForeldrepenger(valgtStønadskonto),
+                                    hvemPart2: capitalizeFirstLetter(tekstPart2),
+                                }}
+                            />
+                        )}
+                    </>
+                ) : (
+                    <>
+                        {utenAktivitetskrav && <FormattedMessage id="OversiktSteg.UtenAktivitetskrav" />}
+                        {!utenAktivitetskrav && <FormattedMessage id="OversiktSteg.MedAktivitetskrav" />}
+                    </>
                 )}
             </BodyShort>
             <div className={styles.srOnly}>
