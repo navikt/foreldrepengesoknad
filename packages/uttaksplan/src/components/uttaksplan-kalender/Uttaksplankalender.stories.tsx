@@ -474,8 +474,8 @@ UtsettelseMorArbeid.args = {
     navnAnnenPart: 'Hans',
 };
 
-export const UtsettelseMorFerie = Template.bind({});
-UtsettelseMorFerie.args = {
+export const UtsettelseMorFerieMedFarsUtsettelse = Template.bind({});
+UtsettelseMorFerieMedFarsUtsettelse.args = {
     uttaksplan: [
         {
             type: Periodetype.Utsettelse,
@@ -485,6 +485,16 @@ UtsettelseMorFerie.args = {
             tidsperiode: {
                 fom: new Date('2021-06-15'),
                 tom: new Date('2021-06-28'),
+            },
+        },
+        {
+            type: Periodetype.Utsettelse,
+            id: '2',
+            forelder: Forelder.farMedmor,
+            årsak: UtsettelseÅrsakType.Ferie,
+            tidsperiode: {
+                fom: new Date('2021-06-29'),
+                tom: new Date('2021-07-28'),
             },
         },
     ] as Periode[],
