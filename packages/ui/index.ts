@@ -26,3 +26,4 @@ export { default as ProgressStepper } from './src/step/progressStepper/ProgressS
 export { default as Calendar } from './src/calendar/Calendar';
 export { default as CalendarLabel } from './src/calendar/label/CalendarLabel';
 export type { ProgressStep } from './src/step/progressStepper/ProgressStepper';
+export type { Period } from './src/calendar/Calendar';

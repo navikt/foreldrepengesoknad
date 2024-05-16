@@ -148,21 +148,6 @@ const uttaksplanMor = [
     },
 ];
 
-const uttaksplanMorUtenUttakFørTermin = [
-    {
-        type: Periodetype.Uttak,
-        id: '1',
-        konto: StønadskontoType.ForeldrepengerFørFødsel,
-        tidsperiode: {
-            fom: new Date('2024-03-15'),
-            tom: new Date('2024-04-03'),
-        },
-        forelder: Forelder.mor,
-        skalIkkeHaUttakFørTermin: true,
-    },
-    uttaksplanMor[1],
-];
-
 const uttaksplanFar = [
     {
         type: Periodetype.Info,
@@ -383,9 +368,44 @@ MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering.args = {
     navnAnnenPart: 'Hans',
 };
 
-export const MorSøkerIngenUttakFørTermin = Template.bind({});
-MorSøkerIngenUttakFørTermin.args = {
-    uttaksplan: uttaksplanMorUtenUttakFørTermin as Periode[],
+export const MorVelgerIngenUttakFørTerminIUttaksplan = Template.bind({});
+MorVelgerIngenUttakFørTerminIUttaksplan.args = {
+    uttaksplan: [
+        {
+            type: Periodetype.Uttak,
+            id: '1',
+            konto: StønadskontoType.ForeldrepengerFørFødsel,
+            tidsperiode: {
+                fom: new Date('2024-03-15'),
+                tom: new Date('2024-04-03'),
+            },
+            forelder: Forelder.mor,
+            skalIkkeHaUttakFørTermin: true,
+        },
+        uttaksplanMor[1],
+    ] as Periode[],
+    barn: {
+        type: BarnType.FØDT,
+        fødselsdatoer: ['2024-04-04'],
+        antallBarn: 1,
+    },
+    erFarEllerMedmor: false,
+    navnAnnenPart: 'Hans',
+};
+
+export const MorVelgerIngenUttakFørTerminIStegetFør = Template.bind({});
+MorVelgerIngenUttakFørTerminIStegetFør.args = {
+    uttaksplan: [
+        {
+            type: Periodetype.Uttak,
+            id: '1',
+            konto: StønadskontoType.ForeldrepengerFørFødsel,
+            tidsperiode: {},
+            forelder: Forelder.mor,
+            skalIkkeHaUttakFørTermin: true,
+        },
+        uttaksplanMor[1],
+    ] as Periode[],
     barn: {
         type: BarnType.FØDT,
         fødselsdatoer: ['2024-04-04'],
