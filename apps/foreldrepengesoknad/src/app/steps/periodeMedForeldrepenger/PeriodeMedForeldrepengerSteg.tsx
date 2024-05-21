@@ -1,8 +1,16 @@
+import { CalendarIcon } from '@navikt/aksel-icons';
 import { useIntl } from 'react-intl';
 
-import { Loader } from '@navikt/ds-react';
+import { Box, HStack, Loader } from '@navikt/ds-react';
 
-import { Dekningsgrad, DekningsgradDTO, Step, getKjønnFromFnr, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import {
+    Dekningsgrad,
+    DekningsgradDTO,
+    Step,
+    bemUtils,
+    getKjønnFromFnr,
+    isAnnenForelderOppgitt,
+} from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -14,10 +22,13 @@ import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { RequestStatus } from 'app/types/RequestState';
 import { getAnnenPartVedtakParam, shouldSuspendAnnenPartVedtakApiRequest } from 'app/utils/annenForelderUtils';
+import { getVis1Juli2024Info } from 'app/utils/dateUtils';
 import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 
 import DekningsgradForm from './DekningsgradForm';
 import DekningsgradValgtAvAnnenPartPanel from './DekningsgradValgtAvAnnenPartPanel';
+import InfoOmUtvidet80ProsentPeriode from './InfoOmUtvidet80ProsentPeriode';
+import './panelWithCircleIcon.less';
 
 type Props = {
     arbeidsforhold: Arbeidsforhold[];
@@ -31,7 +42,7 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
     avbrytSøknad,
 }) => {
     const intl = useIntl();
-
+    const bem = bemUtils('circle');
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
 
@@ -40,7 +51,6 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
-
     const suspendAnnenPartVedtakApiRequest = shouldSuspendAnnenPartVedtakApiRequest(annenForelder);
 
     const { data: annenPartsVedtak, requestStatus: statusAnnenPartVedtak } = useApiPostData(
@@ -79,6 +89,7 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
             : undefined;
 
     const visAnnenPartsValg = annenPartsVedtak && annenPartsVedtak.perioder.length > 0;
+    const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && !annenPartsVedtak;
 
     return (
         <Step
@@ -94,6 +105,16 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
             )}
             {tilgjengeligeStønadskontoer && (
                 <>
+                    {vis1Juli2024Info && (
+                        <Box padding="4" background="surface-alt-3-subtle" style={{ marginBottom: '2rem' }}>
+                            <HStack justify="space-between" align="start">
+                                <InfoOmUtvidet80ProsentPeriode />
+                                <div className={bem.block}>
+                                    <CalendarIcon height={24} width={24} color="#005B82" />
+                                </div>
+                            </HStack>
+                        </Box>
+                    )}
                     {visAnnenPartsValg && isAnnenForelderOppgitt(annenForelder) && (
                         <DekningsgradValgtAvAnnenPartPanel
                             goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}

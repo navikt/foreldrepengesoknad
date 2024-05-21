@@ -1,0 +1,96 @@
+.days {
+    height: 19px;
+    padding: 2px 2px 2px 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2px 0 2px 0;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 13px;
+    letter-spacing: 0.06px;
+}
+
+@media (max-width: 630px) {
+    .days {
+        height: 15px;
+        padding: 2px 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 2px 0 2px 0;
+        font-size: 10px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 13px;
+        letter-spacing: 0.06px;
+    }
+}
+
+.blueDay {
+    background-color: var(--a-blue-300);
+}
+
+.greenDay {
+    background-color: var(--a-green-100);
+    border-top: 1px solid var(--a-green-300);
+    border-bottom: 1px solid var(--a-green-300);
+}
+
+.greenDay.firstDay {
+    border-left: 1px solid var(--a-green-300);
+}
+
+.greenDay.lastDay {
+    border-right: 1px solid var(--a-green-300);
+}
+
+.greenDay.firstAndLastDay {
+    border-left: 1px solid var(--a-green-300);
+    border-right: 1px solid var(--a-green-300);
+}
+
+.grayDay {
+    background-color: var(--a-gray-200);
+}
+
+.none {
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.pinkDay {
+    --c: var(--a-red-100);
+    width: 20px;
+    height: 20px;
+    aspect-ratio: 1;
+    background:
+        radial-gradient(circle at 60% 65%, var(--c) 64%, #0000 65%) top left/50% 50%,
+        radial-gradient(circle at 40% 65%, var(--c) 64%, #0000 65%) top right/50% 50%,
+        conic-gradient(from -45deg at 50% 85.5%, var(--c) 90deg, #0000 0) bottom/100% 50%;
+    background-repeat: no-repeat;
+    padding: 0 2px 2px 2px;
+    margin-left: 2px;
+}
+
+@media (max-width: 630px) {
+    .pinkDay {
+        margin-left: -1px;
+        margin-top: 1px;
+    }
+}
+
+.firstDay {
+    border-radius: 1rem 0 0 1rem;
+    margin-left: 1px;
+}
+
+.lastDay {
+    border-radius: 0 1rem 1rem 0;
+    margin-right: 1px;
+}
+
+.firstAndLastDay {
+    border-radius: 1rem;
+}

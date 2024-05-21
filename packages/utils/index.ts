@@ -12,6 +12,7 @@ export { omitOne, omitMany } from './src/objectUtils';
 export { overlapperTidsperioder } from './src/tidsperiodeUtils';
 export { redirect, redirectToLogin } from './src/loginUtils';
 export { default as useDocumentTitle } from './src/hooks/useDocumentTitle';
+export { default as useBeforeUnload } from './src/hooks/useBeforeUnload';
 export { default as bemUtils } from './src/bemUtils';
 export { getFloatFromString } from './src/numberUtils';
 export { capitalizeFirstLetter } from './src/stringUtils';

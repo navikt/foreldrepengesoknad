@@ -22,6 +22,7 @@ on:
           - foreldrepengeoversikt
           - engangsstonad
           - svangerskapspengesoknad
+          - planlegger
 
 jobs:
   deploy:

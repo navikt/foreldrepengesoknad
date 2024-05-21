@@ -1,4 +1,5 @@
 export { useRequest } from './src/useRequest';
+export { usePostRequest } from './src/usePostRequest';
 export { default as useAbortSignal } from './src/useAbortSignal';
 export { default as getSaveAttachment, attachmentApi } from './src/attachmentApi';
 export { default as createApi } from './src/createApi';

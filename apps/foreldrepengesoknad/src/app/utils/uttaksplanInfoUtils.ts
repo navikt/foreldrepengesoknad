@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { Situasjon, Tidsperioden } from '@navikt/fp-common';
 
 export const skalViseInfoOmPrematuruker = (
-    fødselsdato: string | string | undefined,
+    fødselsdato: string | undefined,
     termindato: Date | string | undefined,
     situasjon: Situasjon,
 ): boolean => {

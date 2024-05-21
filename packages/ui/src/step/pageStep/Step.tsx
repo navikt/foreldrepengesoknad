@@ -42,7 +42,6 @@ const Step = <TYPE extends string>({
     return (
         <Page
             className={bem.block}
-            title={title}
             ariaLabel={pageAriaLabel}
             topContentRenderer={() => <>{bannerTitle && <StepBanner text={bannerTitle} />}</>}
         >

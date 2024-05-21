@@ -4,12 +4,12 @@
         "jsx": "react-jsx",
         "baseUrl": "./src",
         "paths": {
-            "app/*": ["./app/*"],
+            "app/*": ["./app/*"]
         },
         "rootDir": "src",
-        "types": ["@testing-library/jest-dom", "vitest/globals"],
+        "types": ["@testing-library/jest-dom", "vitest/globals"]
     },
 
-    "include": ["src/app/**/*", "src/@types", "src/storybook"],
-    "exclude": ["node_modules", "build", "src/build", "dist", "**.js"],
+    "include": ["src/app/**/*", "./@types"],
+    "exclude": ["node_modules", "build", "src/build", "dist", "**.js"]
 }

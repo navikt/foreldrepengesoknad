@@ -51,8 +51,6 @@
         "APP_VERSION",
         "LOG_VALIDATION",
         "NODE_ENV",
-        "VITE_APPRES_CMS_URL",
-        "VITE_REST_API_URL",
-        "VITE_LOGIN_URL"
+        "PUBLIC_PATH"
     ]
 }

@@ -1,6 +1,8 @@
 import { CSSProperties, FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
-import { useFormContext, useController } from 'react-hook-form';
+import { useController, useFormContext } from 'react-hook-form';
+
 import { Select as DsSelect } from '@navikt/ds-react';
+
 import { getError, getValidationRules } from './formUtils';
 
 export interface Props {
@@ -13,6 +15,8 @@ export interface Props {
     disabled?: boolean;
     className?: string;
     style?: CSSProperties;
+    autofocusWhenEmpty?: boolean;
+    customErrorFormatter?: (error: string | undefined) => ReactNode;
 }
 
 const Select: FunctionComponent<Props> = ({
@@ -25,6 +29,8 @@ const Select: FunctionComponent<Props> = ({
     className,
     children,
     style,
+    autofocusWhenEmpty,
+    customErrorFormatter,
 }) => {
     const {
         formState: { errors },
@@ -52,12 +58,13 @@ const Select: FunctionComponent<Props> = ({
             ref={field.ref}
             value={field.value}
             className={className}
-            error={getError(errors, name)}
+            error={customErrorFormatter ? customErrorFormatter(getError(errors, name)) : getError(errors, name)}
             label={label}
             description={description}
             disabled={disabled}
             onChange={onChangeFn}
             style={style}
+            autoFocus={autofocusWhenEmpty && field.value === undefined}
         >
             <option style={{ display: 'none' }} />,{children}
         </DsSelect>

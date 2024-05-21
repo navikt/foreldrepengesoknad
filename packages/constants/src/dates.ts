@@ -16,6 +16,7 @@ export const DATE_TODAY = dayjs().toDate();
 export const SIX_MONTHS_AGO = dayjs().subtract(6, 'month').startOf('day').toDate();
 export const DATE_1_YEAR_FROM_NOW = dayjs().add(1, 'years').toDate();
 export const DATE_1_YEAR_AGO = dayjs().subtract(1, 'years').toDate();
+export const DATE_3_YEARS_AGO = dayjs().startOf('days').subtract(3, 'years').startOf('day');
 export const DATE_4_YEARS_AGO = dayjs().subtract(4, 'year').startOf('day');
 
 export const DATE_5_MONTHS_AGO = dayjs().subtract(5, 'month').startOf('day').toDate();
