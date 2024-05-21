@@ -1,6 +1,11 @@
-import ArbeidIkon from 'assets/ArbeidIkon';
-import FerieIkon from 'assets/FerieIkon';
-import SykdomIkon from 'assets/SykdomIkon';
+import {
+    BandageIcon,
+    Buildings3Icon,
+    ExclamationmarkTriangleFillIcon,
+    InformationSquareIcon,
+    ParasolBeachIcon,
+    XMarkOctagonFillIcon,
+} from '@navikt/aksel-icons';
 import UttakIkon from 'assets/UttakIkon';
 import { SVGProps } from 'react';
 
@@ -27,11 +32,17 @@ export interface Props {
 const UttaksplanIkon: React.FunctionComponent<Props> = ({ ikon, title }) => {
     switch (ikon) {
         case 'arbeid':
-            return <ArbeidIkon title={title} />;
+            return <Buildings3Icon title={title} width={32} height={32} />;
         case 'ferie':
-            return <FerieIkon title={title} />;
+            return <ParasolBeachIcon title={title} width={32} height={32} />;
         case 'sykdom':
-            return <SykdomIkon title={title} />;
+            return <BandageIcon title={title} width={32} height={32} />;
+        case 'info':
+            return <InformationSquareIcon />;
+        case 'advarsel':
+            return <ExclamationmarkTriangleFillIcon />;
+        case 'feil':
+            return <XMarkOctagonFillIcon />;
         default:
             return <UttakIkon title={title} />;
     }

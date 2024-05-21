@@ -23,8 +23,36 @@
     background-color: var(--a-data-surface-5);
 }
 
+.iconBox--GREEN-striped {
+    background: repeating-linear-gradient(
+        45deg,
+        var(--a-data-surface-5),
+        var(--a-data-surface-5) 7.5px,
+        var(--a-data-surface-5-subtle) 7.5px,
+        var(--a-data-surface-5-subtle) 10px
+    );
+}
+
+.iconBox--BLUE-striped {
+    background: repeating-linear-gradient(
+        45deg,
+        var(--a-data-surface-1),
+        var(--a-data-surface-1) 7.5px,
+        var(--a-data-surface-2-subtle) 7.5px,
+        var(--a-data-surface-2-subtle) 10px
+    );
+}
+
 .iconBox--LIGHTGREEN {
     background-color: var(--a-data-surface-5-subtle);
+}
+
+.iconBox--BLUEOUTLINE {
+    color: var(--a-data-surface-1);
+}
+
+.iconBox--GREENOUTLINE {
+    color: var(--a-data-surface-5);
 }
 
 .iconBox--LIGHTGREENBLUE {

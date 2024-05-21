@@ -36,14 +36,36 @@
                     {
                         "fom": "2024-04-22",
                         "tom": "2024-04-26",
-                        "kontoType": "MØDREKVOTE",
+                        "kontoType": "FEDREKVOTE",
                         "resultat": {
                             "innvilget": true,
                             "trekkerMinsterett": true,
                             "trekkerDager": true,
                             "årsak": "ANNET"
                         },
-                        "overføringÅrsak": "SYKDOM_ANNEN_FORELDER",
+                        "gradering": {
+                            "arbeidstidprosent": 50,
+                            "aktivitet": {
+                                "type": "FRILANS",
+                                "arbeidsgiver": {
+                                    "id": "string",
+                                    "type": "PRIVAT"
+                                }
+                            }
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2024-04-22",
+                        "tom": "2024-04-26",
+                        " utsettelseÅrsak": "HV_ØVELSE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+
                         "flerbarnsdager": false
                     }
                 ]

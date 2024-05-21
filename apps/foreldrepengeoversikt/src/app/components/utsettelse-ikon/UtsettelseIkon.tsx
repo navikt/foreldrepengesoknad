@@ -10,7 +10,7 @@ import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
 
 export const getUtsettelseFarge = (forelder: Forelder): PeriodeColor => {
-    return forelder === 'mor' ? PeriodeColor.BLUEOUTLINE : PeriodeColor.GREENOUTLINE;
+    return forelder === Forelder.farMedmor ? PeriodeColor.GREENOUTLINE : PeriodeColor.BLUEOUTLINE;
 };
 
 export interface Props {

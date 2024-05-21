@@ -11,7 +11,7 @@ export interface Props {
     forelder: Forelder;
 }
 
-const getIkonForKonto = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
+const getIkonForÅrsak = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
     switch (årsak) {
         case UtsettelseÅrsakType.Ferie:
             return UttaksplanIkonKeys.ferie;
@@ -33,7 +33,7 @@ const UtsettelseIkon: React.FunctionComponent<Props> = ({ årsak, forelder }) =>
     return (
         <IconBox color={getUtsettelseFarge(forelder)}>
             <UttaksplanIkon
-                ikon={getIkonForKonto(årsak)}
+                ikon={getIkonForÅrsak(årsak)}
                 title={intlUtils(intl, `uttaksplan.utsettelsesårsak.${årsak || 'ukjent'}`)}
             />
         </IconBox>
