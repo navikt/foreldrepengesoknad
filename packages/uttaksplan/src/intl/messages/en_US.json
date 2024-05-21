@@ -6,6 +6,7 @@
     "kalender.samtidigUttak": "You and {navnAnnenPart} are on leave at the same time",
     "kalender.dinUtsettelse": "You postpone parental benefits",
     "kalender.utsettelseAnnenPart": "{navnAnnenPart} postpones parental benefits",
+    "kalender.helg": "Weekend (not days with parental allowance)",
     "kalender.tapteDager": "Days you can lose",
     "kalender.utsettelse": "You postpone parental benefits due to {reason}",
     "kalender.utsettelse.ARBEID": "because you are working",

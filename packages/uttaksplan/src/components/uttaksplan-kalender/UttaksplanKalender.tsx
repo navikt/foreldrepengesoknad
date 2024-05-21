@@ -184,6 +184,17 @@ const getKalenderFargeForPeriodeType = (
     }
 };
 
+const getInneholderKalenderHelgedager = (periods: Period[]): boolean => {
+    const førsteDag = periods[0].fom;
+    const sisteDag = periods[periods.length - 1].tom;
+    if (dayjs(sisteDag).diff(dayjs(førsteDag), 'days') > 5) {
+        return true;
+    }
+    const førsteDagNr = dayjs(førsteDag).get('day');
+    const sisteDagNr = dayjs(sisteDag).get('day');
+    return sisteDagNr < førsteDagNr;
+};
+
 const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
     uttaksplan,
     erFarEllerMedmor,
@@ -203,6 +214,10 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
         },
     } as Options;
     const { toPDF, targetRef } = usePDF(pdfOptions);
+    const inkludererHelg = getInneholderKalenderHelgedager(periods);
+    if (inkludererHelg) {
+        unikePeriodColors.push(PeriodeColor.GRAY);
+    }
     return (
         <>
             {harAvslåttePerioder && (

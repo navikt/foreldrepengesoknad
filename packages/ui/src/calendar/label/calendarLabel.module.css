@@ -20,6 +20,28 @@
     width: fit-content;
 }
 
+.greenOutlinePanel {
+    border-radius: 1.25rem;
+    border: 2px solid var(--a-data-surface-5);
+    display: flex;
+    padding-left: 10px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    width: fit-content;
+}
+
+.blueOutlinePanel {
+    border-radius: 1.25rem;
+    border: 2px solid var(--a-data-surface-1);
+    display: flex;
+    padding-left: 10px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    width: fit-content;
+}
+
 .pinkPanel {
     border-radius: 1.25rem;
     background-color: var(--a-red-50);
@@ -131,5 +153,13 @@
     height: 16px;
     border-radius: 50%;
     background-color: var(--a-blue-300);
+    margin-bottom: 50%;
+}
+
+.grayCircle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--a-gray-300);
     margin-bottom: 50%;
 }

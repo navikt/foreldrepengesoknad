@@ -29,6 +29,8 @@ export const getSirkel = (color: PeriodeColor) => {
             return <div className={styles.blueStripedCircle} />;
         case PeriodeColor.GREENSTRIPED:
             return <div className={styles.greenStripedCircle} />;
+        case PeriodeColor.GRAY:
+            return <div className={styles.grayCircle} />;
         default:
             return null;
     }
@@ -47,8 +49,8 @@ const PANEL_STYLE = {
     [PeriodeColor.GRAY]: styles.grayPanel,
     [PeriodeColor.PINK]: styles.pinkPanel,
     [PeriodeColor.ORANGE]: styles.grayPanel,
-    [PeriodeColor.GREENOUTLINE]: styles.grayPanel,
-    [PeriodeColor.BLUEOUTLINE]: styles.grayPanel,
+    [PeriodeColor.GREENOUTLINE]: styles.greenOutlinePanel,
+    [PeriodeColor.BLUEOUTLINE]: styles.blueOutlinePanel,
 };
 
 interface Props {

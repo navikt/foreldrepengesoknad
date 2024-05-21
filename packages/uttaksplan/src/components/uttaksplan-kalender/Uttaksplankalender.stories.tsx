@@ -677,3 +677,49 @@ UtsettelseFarFlereÅrsaker.args = {
     erFarEllerMedmor: true,
     navnAnnenPart: 'Hanne',
 };
+
+export const KortPeriodeMedHelg = Template.bind({});
+KortPeriodeMedHelg.args = {
+    uttaksplan: [
+        {
+            type: Periodetype.Uttak,
+            id: '1',
+            forelder: Forelder.mor,
+            konto: StønadskontoType.Mødrekvote,
+            tidsperiode: {
+                fom: new Date('2024-05-24'),
+                tom: new Date('2024-05-27'),
+            },
+        },
+    ] as Periode[],
+    barn: {
+        type: BarnType.FØDT,
+        fødselsdatoer: ['2024-05-23'],
+        antallBarn: 1,
+    },
+    erFarEllerMedmor: false,
+    navnAnnenPart: 'Hans',
+};
+
+export const KortPeriodeUtenHelg = Template.bind({});
+KortPeriodeUtenHelg.args = {
+    uttaksplan: [
+        {
+            type: Periodetype.Uttak,
+            id: '1',
+            forelder: Forelder.mor,
+            konto: StønadskontoType.Mødrekvote,
+            tidsperiode: {
+                fom: new Date('2024-05-22'),
+                tom: new Date('2024-05-24'),
+            },
+        },
+    ] as Periode[],
+    barn: {
+        type: BarnType.FØDT,
+        fødselsdatoer: ['2024-05-21'],
+        antallBarn: 1,
+    },
+    erFarEllerMedmor: false,
+    navnAnnenPart: 'Hans',
+};

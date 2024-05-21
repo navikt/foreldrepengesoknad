@@ -6,6 +6,7 @@
     "kalender.samtidigUttak": "Du og {navnAnnenPart} har permisjon samtidig",
     "kalender.dinUtsettelse": "Du utsetter foreldrepengar",
     "kalender.utsettelseAnnenPart": "{navnAnnenPart} utsetter foreldrepengar",
+    "kalender.helg": "Helg (er ikkje dagar med foreldrepengar)",
     "kalender.tapteDager": "Dagar du kan tape",
     "kalender.utsettelse": "Du utsetter foreldrepengar {årsak}",
     "kalender.utsettelse.ARBEID": "fordi du skal jobbe",

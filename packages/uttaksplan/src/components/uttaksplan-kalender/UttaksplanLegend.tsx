@@ -73,6 +73,8 @@ const getCalendarLabel = (
             );
         case PeriodeColor.ORANGE:
             return <FormattedMessage id="kalender.tapteDager" />;
+        case PeriodeColor.GRAY:
+            return <FormattedMessage id="kalender.helg" />;
         default:
             return null;
     }
