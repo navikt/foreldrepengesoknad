@@ -2,7 +2,7 @@ import { DownloadIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import generatePDF, { Margin, Options, Resolution } from 'react-to-pdf';
+import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
 import { Alert, Button } from '@navikt/ds-react';
 
@@ -195,14 +195,14 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
     const utsettelser = uttaksplan.filter((p) => isUtsettelsesperiode(p)) as Utsettelsesperiode[];
     const unikeUtsettelseÅrsaker = [...new Set(utsettelser.map((u) => u.årsak))];
     const harAvslåttePerioder = uttaksplan.find((p) => isAvslåttPeriode(p));
-    const pdfOptionsSave = {
+    const pdfOptions = {
+        filename: 'Min foreldrepengeplan.pdf',
         resolution: Resolution.HIGH,
         page: {
             margin: Margin.MEDIUM,
         },
     } as Options;
-    const getTargetElement = () => document.getElementById('print-content');
-
+    const { toPDF, targetRef } = usePDF(pdfOptions);
     return (
         <>
             {harAvslåttePerioder && (
@@ -210,7 +210,7 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
                     <FormattedMessage id="kalender.avslåttePerioder" />
                 </Alert>
             )}
-            <div id="print-content">
+            <div ref={targetRef}>
                 <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                     <UttaksplanLegend
                         uniqueColors={unikePeriodColors}
@@ -222,11 +222,7 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
                 </div>
                 <Calendar periods={periods} />
             </div>
-            <Button
-                variant="tertiary"
-                icon={<DownloadIcon />}
-                onClick={() => generatePDF(getTargetElement, pdfOptionsSave)}
-            >
+            <Button variant="tertiary" icon={<DownloadIcon />} onClick={() => toPDF()}>
                 <FormattedMessage id="kalender.lastNed" />
             </Button>
         </>
