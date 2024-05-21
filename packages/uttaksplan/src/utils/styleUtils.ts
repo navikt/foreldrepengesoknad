@@ -25,7 +25,7 @@ export const getKontoFarge = (konto: StønadskontoType, erFarEllerMedmor: boolea
     }
 };
 
-export const getStønadskontoFarge = (
+export const getUttaksperiodeFarge = (
     konto: StønadskontoType,
     forelder: Forelder | undefined,
     erFarEllerMedmor: boolean,

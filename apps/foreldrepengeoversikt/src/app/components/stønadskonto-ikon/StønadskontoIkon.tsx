@@ -7,7 +7,7 @@ import { PeriodeResultat } from 'app/types/PeriodeResultat';
 import { StønadskontoType } from 'app/types/StønadskontoType';
 import { getStønadskontoForelderNavn } from 'app/utils/periodeUtils';
 import { NavnPåForeldre } from 'app/utils/personUtils';
-import { getStønadskontoFarge } from 'app/utils/styleUtils';
+import { getUttaksperiodeFarge } from 'app/utils/styleUtils';
 
 import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
@@ -36,7 +36,7 @@ const StønadskontoIkon: FunctionComponent<Props> = ({
     const intl = useIntl();
 
     return (
-        <IconBox color={getStønadskontoFarge(konto, forelder, erFarEllerMedmor)} stripes={gradert}>
+        <IconBox color={getUttaksperiodeFarge(konto, forelder, erFarEllerMedmor)} stripes={gradert}>
             <UttaksplanIkon
                 ikon={UttaksplanIkonKeys.uttak}
                 title={getStønadskontoForelderNavn(

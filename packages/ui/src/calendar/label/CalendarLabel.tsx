@@ -9,20 +9,18 @@ import styles from './calendarLabel.module.css';
 
 export const getSirkel = (color: PeriodeColor) => {
     switch (color) {
-        case PeriodeColor.LIGHTBLUE:
-            return <div className={styles.blueOutlineCircle} />;
         case PeriodeColor.BLUE:
             return <div className={styles.blueCircle} />;
-        case PeriodeColor.LIGHTGREEN:
-            return <div className={styles.greenOutlineCircle} />;
         case PeriodeColor.GREEN:
             return <div className={styles.greenCircle} />;
-        case PeriodeColor.ORANGE:
-            return <div className={styles.blackCircle} />;
-        case PeriodeColor.GREENOUTLINE:
-            return <div className={styles.greenOutlineCircle} />;
+        case PeriodeColor.LIGHTBLUE:
         case PeriodeColor.BLUEOUTLINE:
             return <div className={styles.blueOutlineCircle} />;
+        case PeriodeColor.GREENOUTLINE:
+        case PeriodeColor.LIGHTGREEN:
+            return <div className={styles.greenOutlineCircle} />;
+        case PeriodeColor.ORANGE:
+            return <div className={styles.blackCircle} />;
         case PeriodeColor.LIGHTBLUEGREEN:
             return <div className={styles.lightblueGreenCircle} />;
         case PeriodeColor.LIGHTGREENBLUE:
@@ -40,11 +38,11 @@ const PANEL_STYLE = {
     [PeriodeColor.NONE]: styles.none,
     [PeriodeColor.BLUE]: styles.bluePanel,
     [PeriodeColor.LIGHTBLUE]: styles.bluePanel,
-    [PeriodeColor.LIGHTBLUEGREEN]: styles.greenPanel,
     [PeriodeColor.BLUESTRIPED]: styles.bluePanel,
+    [PeriodeColor.LIGHTGREENBLUE]: styles.bluePanel,
+    [PeriodeColor.LIGHTBLUEGREEN]: styles.greenPanel,
     [PeriodeColor.GREEN]: styles.greenPanel,
     [PeriodeColor.LIGHTGREEN]: styles.greenPanel,
-    [PeriodeColor.LIGHTGREENBLUE]: styles.bluePanel,
     [PeriodeColor.GREENSTRIPED]: styles.greenPanel,
     [PeriodeColor.GRAY]: styles.grayPanel,
     [PeriodeColor.PINK]: styles.pinkPanel,

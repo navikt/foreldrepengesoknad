@@ -137,7 +137,7 @@
     print-color-adjust: exact;
 }
 
-.orangeDay {
+blackDay {
     background-color: var(--a-gray-800);
     color: white;
 }

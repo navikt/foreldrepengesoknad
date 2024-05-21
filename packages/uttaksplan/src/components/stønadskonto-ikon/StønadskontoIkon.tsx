@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 
 import { Forelder, NavnPåForeldre, Situasjon, StønadskontoType, getStønadskontoNavn } from '@navikt/fp-common';
 
-import { getStønadskontoFarge } from '../../utils/styleUtils';
+import { getUttaksperiodeFarge } from '../../utils/styleUtils';
 import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
 
@@ -30,7 +30,7 @@ const StønadskontoIkon: FunctionComponent<Props> = ({
     const intl = useIntl();
     return (
         <IconBox
-            color={getStønadskontoFarge(konto, forelder, erFarEllerMedmor, harMidlertidigOmsorg)}
+            color={getUttaksperiodeFarge(konto, forelder, erFarEllerMedmor, harMidlertidigOmsorg)}
             stripes={gradert}
         >
             <UttaksplanIkon

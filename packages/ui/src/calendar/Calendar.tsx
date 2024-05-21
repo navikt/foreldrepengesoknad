@@ -20,7 +20,7 @@ export type Period = {
     color: PeriodeColor;
 };
 
-const findDayColor = (year: number, month: number, day: number, periods: Period[]) => {
+const findDayColor = (year: number, month: number, day: number, periods: Period[]): PeriodeColor => {
     const date = dayjs().year(year).month(month).date(day);
 
     const fomFirstPeriod = periods[0].fom;
@@ -31,10 +31,6 @@ const findDayColor = (year: number, month: number, day: number, periods: Period[
     }
 
     const period = periods.find((period) => date.isBetween(period.fom, period.tom, 'day', '[]'));
-
-    if (period?.color === PeriodeColor.PINK) {
-        return PeriodeColor.PINK;
-    }
 
     if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
         return PeriodeColor.GRAY;

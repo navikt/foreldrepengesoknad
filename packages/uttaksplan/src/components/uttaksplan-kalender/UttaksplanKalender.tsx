@@ -33,7 +33,7 @@ import { ISOStringToDate, dateToISOString } from '@navikt/fp-formik';
 import { Calendar, Period } from '@navikt/fp-ui';
 
 import { getIndexOfSistePeriodeFørDato } from './../../components/periodeliste/Periodeliste';
-import { getForelderFarge, getStønadskontoFarge } from './../../utils/styleUtils';
+import { getForelderFarge, getUttaksperiodeFarge } from './../../utils/styleUtils';
 import UttaksplanLegend from './UttaksplanLegend';
 
 export interface UttaksplanKalenderProps {
@@ -72,13 +72,13 @@ const getTapteDagerFørFødselPeriode = (
 };
 
 const getIndexOfFamiliehendelse = (uttaksplan: Periode[], familiehendelsesdato: string) => {
-    const indexAvPeriodeUtenUttakFørFødsel = uttaksplan.findIndex(
+    const indexAvPeriodeUtenForeldrepengerFørFødsel = uttaksplan.findIndex(
         (p) => isForeldrepengerFørFødselUttaksperiode(p) && p.skalIkkeHaUttakFørTermin,
     );
-    if (indexAvPeriodeUtenUttakFørFødsel !== -1) {
-        return indexAvPeriodeUtenUttakFørFødsel + 1;
+    if (indexAvPeriodeUtenForeldrepengerFørFødsel !== -1) {
+        return indexAvPeriodeUtenForeldrepengerFørFødsel + 1;
     }
-    return getIndexOfSistePeriodeFørDato(uttaksplan, new Date(familiehendelsesdato)) || 0;
+    return getIndexOfSistePeriodeFørDato(uttaksplan, ISOStringToDate(familiehendelsesdato)) || 0;
 };
 
 const getPerioderForKalendervisning = (uttaksplan: Periode[], erFarEllerMedmor: boolean, barn: Barn) => {
@@ -131,7 +131,7 @@ const getKalenderFargeForUttaksperiode = (
     if (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin) {
         return PeriodeColor.ORANGE;
     }
-    return getStønadskontoFarge(periode.konto, periode.forelder, erFarEllerMedmor);
+    return getUttaksperiodeFarge(periode.konto, periode.forelder, erFarEllerMedmor);
 };
 
 const getKalenderFargeForPeriodeUtenUttak = (periode: PeriodeUtenUttak, barn: Barn): PeriodeColor => {

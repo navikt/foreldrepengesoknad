@@ -47,16 +47,27 @@ const getCalendarLabel = (
             );
         case PeriodeColor.LIGHTBLUEGREEN:
         case PeriodeColor.LIGHTGREENBLUE:
-            return <FormattedMessage id="kalender.samtidigUttak" values={{ navnAnnenPart }} />;
+            return (
+                <FormattedMessage
+                    id="kalender.samtidigUttak"
+                    values={{ navnAnnenPart: capitalizeFirstLetter(navnAnnenPart) }}
+                />
+            );
         case PeriodeColor.GREENOUTLINE:
             return erFarEllerMedmor ? (
                 getUtsettelseLabel(unikeUtsettelseÅrsaker, intl)
             ) : (
-                <FormattedMessage id="kalender.utsettelseAnnenPart" values={{ navnAnnenPart }} />
+                <FormattedMessage
+                    id="kalender.utsettelseAnnenPart"
+                    values={{ navnAnnenPart: capitalizeFirstLetter(navnAnnenPart) }}
+                />
             );
         case PeriodeColor.BLUEOUTLINE:
             return erFarEllerMedmor ? (
-                <FormattedMessage id="kalender.utsettelseAnnenPart" values={{ navnAnnenPart }} />
+                <FormattedMessage
+                    id="kalender.utsettelseAnnenPart"
+                    values={{ navnAnnenPart: capitalizeFirstLetter(navnAnnenPart) }}
+                />
             ) : (
                 getUtsettelseLabel(unikeUtsettelseÅrsaker, intl)
             );
