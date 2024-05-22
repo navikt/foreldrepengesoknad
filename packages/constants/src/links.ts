@@ -21,7 +21,7 @@ export const links = {
     engangsstonadHvem: 'https://www.nav.no/engangsstonad#hvem',
     scanneDokument: 'https://www.nav.no/brukerstotte#bilde-vedlegg',
     svangerskapspengerUtland: 'https://www.nav.no/no/person/familie/relatert-informasjon/svangerskapspenger-og-utland',
-    søknadsfrister: 'https://www.nav.no/foreldrepenger#soknadsfrister',
+    søknadsfrister: 'https://www.nav.no/foreldrepenger#for-soknad',
     hvorLenge: 'https://www.nav.no/foreldrepenger#hvor-lenge',
     svangerskapspenger: 'https://familie.nav.no/om-svangerskapspenger',
     tilretteleggingsskjema:
@@ -39,7 +39,7 @@ export const links = {
     omLottOgHyre: 'https://www.skatteetaten.no/en/rettskilder/type/handboker/skatte-abc/2021/fiske/F-13.014/F-13.048/',
     adoptere: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#adoptere',
     fleksibeltuttak: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#samtidig',
-    viktigeFrister: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#soknadsfrister',
+    viktigeFrister: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#for-soknad',
     nav_aktivitetskrav: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#hvor-lenge',
     morsAktivitetskrav: 'https://www.nav.no/no/person/familie/foreldrepenger/foreldrepenger#hvor-lenge',
     familie: 'https://familie.nav.no/',
