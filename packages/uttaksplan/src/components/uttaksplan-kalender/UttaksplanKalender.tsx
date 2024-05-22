@@ -17,6 +17,7 @@ import {
     Utsettelsesperiode,
     Uttaksdagen,
     Uttaksperiode,
+    bemUtils,
     getAnnenForelderSamtidigUttakPeriode,
     getFamiliehendelsedato,
     getFørsteUttaksdagForeldrepengerFørFødsel,
@@ -35,6 +36,7 @@ import { Calendar, Period } from '@navikt/fp-ui';
 import { getIndexOfSistePeriodeFørDato } from './../../components/periodeliste/Periodeliste';
 import { getForelderFarge, getUttaksperiodeFarge } from './../../utils/styleUtils';
 import UttaksplanLegend from './UttaksplanLegend';
+import './uttaksplanKalender.css';
 
 export interface UttaksplanKalenderProps {
     uttaksplan: Periode[];
@@ -201,6 +203,7 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
     barn,
     navnAnnenPart,
 }) => {
+    const bem = bemUtils('uttaksplanKalender');
     const periods = getPerioderForKalendervisning(uttaksplan, erFarEllerMedmor, barn);
     const unikePeriodColors = [...new Set(periods.map((period) => period.color))];
     const utsettelser = uttaksplan.filter((p) => isUtsettelsesperiode(p)) as Utsettelsesperiode[];
@@ -226,7 +229,7 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
                 </Alert>
             )}
             <div ref={targetRef}>
-                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                <div className={bem.element('legend')} style={{ display: 'flex', flexWrap: 'wrap' }}>
                     <UttaksplanLegend
                         uniqueColors={unikePeriodColors}
                         barn={barn}
