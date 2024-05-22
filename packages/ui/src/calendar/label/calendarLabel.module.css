@@ -1,5 +1,6 @@
 .bluePanel {
     border-radius: 1.25rem;
+    border: 2px solid var(--a-blue-50);
     background-color: var(--a-blue-50);
     display: flex;
     padding-left: 10px;
@@ -11,6 +12,7 @@
 
 .greenPanel {
     border-radius: 1.25rem;
+    border: 2px solid var(--a-green-100);
     background-color: var(--a-green-100);
     display: flex;
     padding-left: 10px;
@@ -44,6 +46,7 @@
 
 .pinkPanel {
     border-radius: 1.25rem;
+    border: 2px solid var(--a-red-50);
     background-color: var(--a-red-50);
     display: flex;
     padding-left: 10px;
@@ -55,6 +58,7 @@
 
 .grayPanel {
     border-radius: 1.25rem;
+    border: 2px solid var(--a-gray-50);
     background-color: var(--a-gray-50);
     display: flex;
     padding-left: 10px;
