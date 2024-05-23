@@ -1,26 +1,26 @@
 {
     "søker": {
-        "fnr": "13410550312",
-        "fornavn": "Ullen",
-        "etternavn": "Brosme",
+        "fnr": "16410596494",
+        "fornavn": "Produktiv",
+        "etternavn": "Hengekøye",
         "kjønn": "K",
-        "fødselsdato": "2005-01-13",
+        "fødselsdato": "2005-01-16",
         "bankkonto": {
             "kontonummer": "",
             "banknavn": ""
         },
         "barn": [
             {
-                "fnr": "11432450874",
-                "fornavn": "Utakknemlig",
-                "etternavn": "Servise",
+                "fnr": "22412450632",
+                "fornavn": "Oppriktig",
+                "etternavn": "Opposisjon",
                 "kjønn": "K",
-                "fødselsdato": "2024-03-11",
+                "fødselsdato": "2024-01-22",
                 "annenForelder": {
-                    "fnr": "04420556212",
-                    "fornavn": "Tørr",
-                    "etternavn": "Mandag",
-                    "fødselsdato": "2005-02-04"
+                    "fnr": "16500479977",
+                    "fornavn": "Rund",
+                    "etternavn": "Håndkrem",
+                    "fødselsdato": "2004-10-16"
                 }
             }
         ],
@@ -28,13 +28,5 @@
             "type": "GIFT"
         }
     },
-    "arbeidsforhold": [
-        {
-            "arbeidsgiverId": "896929119",
-            "arbeidsgiverIdType": "orgnr",
-            "arbeidsgiverNavn": "SAUEFABRIKK",
-            "stillingsprosent": 100,
-            "fom": "2017-03-24"
-        }
-    ]
+    "arbeidsforhold": []
 }

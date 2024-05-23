@@ -8,9 +8,11 @@ import PeriodeListe from './components/periode-liste/PeriodeListe';
 
 interface Props {
     uttaksplan: Periode[];
+    familiehendelsesdato: string;
+    erFarEllerMedmor: boolean;
 }
 
-const UttaksplanNy: FunctionComponent<Props> = ({ uttaksplan }) => {
+const UttaksplanNy: FunctionComponent<Props> = ({ uttaksplan, familiehendelsesdato, erFarEllerMedmor }) => {
     // const perioder: Periode[] = [
     //     {
     //         id: '1',
@@ -117,7 +119,11 @@ const UttaksplanNy: FunctionComponent<Props> = ({ uttaksplan }) => {
 
     return (
         <div style={{ padding: '2rem 0' }}>
-            <PeriodeListe perioder={uttaksplan} />
+            <PeriodeListe
+                perioder={uttaksplan}
+                familiehendelsesdato={familiehendelsesdato}
+                erFarEllerMedmor={erFarEllerMedmor}
+            />
         </div>
     );
 };

@@ -1,41 +1,52 @@
 {
     "foreldrepenger": [
         {
-            "saksnummer": "352014672",
+            "saksnummer": "352014461",
             "sakAvsluttet": false,
             "kanSøkeOmEndring": true,
-            "sakTilhørerMor": false,
+            "sakTilhørerMor": true,
             "gjelderAdopsjon": false,
             "morUføretrygd": false,
             "harAnnenForelderTilsvarendeRettEØS": false,
             "ønskerJustertUttakVedFødsel": false,
             "rettighetType": "BEGGE_RETT",
             "annenPart": {
-                "fnr": "04420556212"
+                "fnr": "16500479977"
             },
             "familiehendelse": {
-                "fødselsdato": "2024-03-11",
-                "termindato": "2024-03-13",
+                "fødselsdato": "2024-01-22",
+                "termindato": "2024-01-16",
                 "antallBarn": 1
             },
             "gjeldendeVedtak": {
                 "perioder": [
                     {
-                        "fom": "2024-03-25",
-                        "tom": "2024-04-21",
-                        "kontoType": "MØDREKVOTE",
+                        "fom": "2024-01-01",
+                        "tom": "2024-01-19",
+                        "kontoType": "FORELDREPENGER_FØR_FØDSEL",
                         "resultat": {
                             "innvilget": true,
                             "trekkerMinsterett": true,
                             "trekkerDager": true,
                             "årsak": "ANNET"
                         },
-                        "overføringÅrsak": "SYKDOM_ANNEN_FORELDER",
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2024-04-22",
-                        "tom": "2024-04-26",
+                        "fom": "2024-01-22",
+                        "tom": "2024-03-01",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": false,
+                            "trekkerDager": false,
+                            "årsak": "ANNET"
+                        },
+                        "utsettelseÅrsak": "SØKER_SYKDOM",
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2024-03-04",
+                        "tom": "2024-05-03",
                         "kontoType": "MØDREKVOTE",
                         "resultat": {
                             "innvilget": true,
@@ -43,18 +54,29 @@
                             "trekkerDager": true,
                             "årsak": "ANNET"
                         },
-                        "overføringÅrsak": "SYKDOM_ANNEN_FORELDER",
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2024-05-06",
+                        "tom": "2024-06-28",
+                        "kontoType": "FELLESPERIODE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
                         "flerbarnsdager": false
                     }
                 ]
             },
             "barn": [
                 {
-                    "fnr": "11432450874"
+                    "fnr": "22412450632"
                 }
             ],
             "dekningsgrad": "HUNDRE",
-            "oppdatertTidspunkt": "2024-03-13T13:48:07.569"
+            "oppdatertTidspunkt": "2024-02-28T21:01:11.086"
         }
     ],
     "engangsstønad": [],

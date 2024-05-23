@@ -4,7 +4,9 @@ import {
     Forelder,
     Periode,
     Tidsperioden,
+    isOverføringsperiode,
     isPeriodeUtenUttak,
+    isUtsettelsesperiode,
     isUttakAnnenPart,
     isUttaksperiode,
 } from '@navikt/fp-common';
@@ -64,9 +66,9 @@ const beggePerioderFørEllerEtterFamiliehendelsedato = (
 export const mapPerioderToPermisjonsperiode = (
     perioder: Periode[],
     søkerErFarEllerMedmor: boolean,
+    familiehendelsesdato: string,
 ): Permisjonsperiode[] => {
     const permisjonsPerioder: Permisjonsperiode[] = [];
-    const famdato = '2024-05-03';
 
     if (perioder.length === 0) {
         return permisjonsPerioder;
@@ -98,7 +100,7 @@ export const mapPerioderToPermisjonsperiode = (
         const beggePerioderErPåSammeSideAvFamdato = beggePerioderFørEllerEtterFamiliehendelsedato(
             nyPermisjonsperiode,
             periode,
-            famdato,
+            familiehendelsesdato,
         );
 
         if (nestePeriode !== undefined) {
@@ -122,7 +124,7 @@ export const mapPerioderToPermisjonsperiode = (
             return;
         }
 
-        if (isUttaksperiode(periode) || isUttakAnnenPart(periode)) {
+        if (isUttaksperiode(periode) || isUttakAnnenPart(periode) || isOverføringsperiode(periode)) {
             const forelderType = isUttakAnnenPart(periode) ? forelderTypeAnnenPart : forelderTypeSøker;
 
             if (!nyPermisjonsperiode) {
@@ -185,6 +187,21 @@ export const mapPerioderToPermisjonsperiode = (
                 forelderForrigePeriode = undefined;
                 nyPermisjonsperiode = undefined;
             }
+        }
+
+        if (isUtsettelsesperiode(periode)) {
+            nyPermisjonsperiode = {
+                perioder: [{ ...periode }],
+                tidsperiode: {
+                    fom: dateToISOString(periode.tidsperiode.fom),
+                    tom: dateToISOString(periode.tidsperiode.tom),
+                },
+                erUtsettelse: true,
+            };
+
+            permisjonsPerioder.push(nyPermisjonsperiode);
+            forelderForrigePeriode = undefined;
+            nyPermisjonsperiode = undefined;
         }
     });
 

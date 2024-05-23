@@ -5,6 +5,7 @@ interface Permisjonsperiode {
     perioder: Periode[];
     tidsperiode: Tidsperiode;
     samtidigUttak?: boolean;
+    erUtsettelse?: boolean;
 }
 
 export default Permisjonsperiode;

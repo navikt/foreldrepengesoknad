@@ -23,12 +23,15 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, termi
 
     const periodeFørTermindato = dayjs(termindato).isAfter(permisjonsperiode.tidsperiode.tom);
     const erMor = permisjonsperiode.forelder === Forelder.mor;
-    const { tidsperiode } = permisjonsperiode;
+    const { tidsperiode, erUtsettelse } = permisjonsperiode;
     const antallDager = Tidsperioden({
         fom: ISOStringToDate(tidsperiode.fom)!,
         tom: ISOStringToDate(tidsperiode.tom)!,
     }).getAntallUttaksdager();
-    const erPeriodeUtenUttak = permisjonsperiode.forelder === undefined && !!permisjonsperiode.samtidigUttak === false;
+    const erPeriodeUtenUttak =
+        permisjonsperiode.forelder === undefined &&
+        !!permisjonsperiode.samtidigUttak === false &&
+        !!permisjonsperiode.erUtsettelse === false;
     const erSamtidigUttak = permisjonsperiode.forelder === undefined && !!permisjonsperiode.samtidigUttak;
 
     const getFarge = () => {
@@ -44,12 +47,20 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, termi
             return bem.modifier('farge-bg-lysblaa');
         }
 
+        if (erUtsettelse) {
+            return bem.modifier('farge-bg-lysblaa');
+        }
+
         return bem.modifier('farge-bg-gronn');
     };
 
     const getIkonFarge = () => {
         if (erPeriodeUtenUttak) {
             return bem.modifier('farge-gul');
+        }
+
+        if (erUtsettelse) {
+            return bem.modifier('farge-blaa');
         }
 
         if (erMor) {

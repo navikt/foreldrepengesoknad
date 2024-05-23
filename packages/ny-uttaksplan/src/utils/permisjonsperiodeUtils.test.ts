@@ -66,7 +66,7 @@ const perioder1: Periode[] = [
 
 describe('Skal gruppere perioder på søker og ikke kvote', () => {
     it('Skal fungere', () => {
-        const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder1, false);
+        const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder1, false, '2024-05-03');
 
         expect(permisjonsperioder.length).toBe(4);
 

@@ -17,7 +17,7 @@ interface Props {
 const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode }) => {
     const bem = bemUtils('periode-liste-item');
 
-    const termindato = '2024-05-21';
+    const termindato = '2024-01-22';
 
     return (
         <Accordion className={bem.element('item')}>
