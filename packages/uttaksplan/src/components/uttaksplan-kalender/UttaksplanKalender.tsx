@@ -209,6 +209,7 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
     const utsettelser = uttaksplan.filter((p) => isUtsettelsesperiode(p)) as Utsettelsesperiode[];
     const unikeUtsettelseÅrsaker = [...new Set(utsettelser.map((u) => u.årsak))];
     const harAvslåttePerioder = uttaksplan.find((p) => isAvslåttPeriode(p));
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
     const pdfOptions = {
         filename: 'Min foreldrepengeplan.pdf',
         resolution: Resolution.HIGH,
@@ -238,7 +239,7 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
                         erFarEllerMedmor={erFarEllerMedmor}
                     />
                 </div>
-                <Calendar periods={periods} />
+                <Calendar periods={periods} familiehendelsesdato={familiehendelsesdato} />
             </div>
             <Button variant="tertiary" icon={<DownloadIcon />} onClick={() => toPDF()}>
                 <FormattedMessage id="kalender.lastNed" />
