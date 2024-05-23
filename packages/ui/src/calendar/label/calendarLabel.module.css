@@ -1,71 +1,77 @@
 .bluePanel {
     border-radius: 1.25rem;
-    border: 2px solid var(--a-blue-50);
-    background-color: var(--a-blue-50);
+    border: 2px solid var(--a-blue-50) !important;
+    background-color: var(--a-blue-50) !important;
     display: flex;
     padding-left: 10px;
     padding-right: 8px;
     padding-top: 4px;
     padding-bottom: 4px;
     width: fit-content;
+    print-color-adjust: exact;
 }
 
 .greenPanel {
     border-radius: 1.25rem;
-    border: 2px solid var(--a-green-100);
-    background-color: var(--a-green-100);
+    border: 2px solid var(--a-green-100) !important;
+    background-color: var(--a-green-100) !important;
     display: flex;
     padding-left: 10px;
     padding-right: 8px;
     padding-top: 4px;
     padding-bottom: 4px;
     width: fit-content;
+    print-color-adjust: exact;
 }
 
 .greenOutlinePanel {
     border-radius: 1.25rem;
-    border: 2px solid var(--a-data-surface-5);
+    border: 2px solid var(--a-data-surface-5) !important;
     display: flex;
     padding-left: 10px;
     padding-right: 8px;
     padding-top: 4px;
     padding-bottom: 4px;
     width: fit-content;
+    print-color-adjust: exact;
 }
 
 .blueOutlinePanel {
     border-radius: 1.25rem;
-    border: 2px solid var(--a-data-surface-1);
+    border: 2px solid var(--a-data-surface-1) !important;
     display: flex;
     padding-left: 10px;
     padding-right: 8px;
     padding-top: 4px;
     padding-bottom: 4px;
     width: fit-content;
+    print-color-adjust: exact;
 }
 
 .pinkPanel {
     border-radius: 1.25rem;
-    border: 2px solid var(--a-red-50);
-    background-color: var(--a-red-50);
+    border: 2px solid var(--a-red-50) !important;
+    background-color: var(--a-red-50) !important;
     display: flex;
     padding-left: 10px;
     padding-right: 8px;
     padding-top: 4px;
     padding-bottom: 4px;
     width: fit-content;
+    print-color-adjust: exact;
 }
 
 .grayPanel {
     border-radius: 1.25rem;
-    border: 2px solid var(--a-gray-50);
-    background-color: var(--a-gray-50);
+    border: 2px solid var(--a-gray-50) !important;
+    background-color: var(--a-gray-50) !important;
     display: flex;
     padding-left: 10px;
     padding-right: 8px;
     padding-top: 4px;
     padding-bottom: 4px;
     width: fit-content;
+    print-color-adjust: exact;
 }
 
 .margin {
@@ -76,18 +82,46 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: repeating-linear-gradient(45deg, var(--a-green-200) 0%, var(--a-green-200) 20%, white 20%, white 40%);
-    border: 2px solid var(--a-data-surface-5);
+    background: linear-gradient(
+        45deg,
+        var(--a-green-200) 0%,
+        var(--a-green-200) 20%,
+        white 20%,
+        white 40%,
+        var(--a-green-200) 40%,
+        var(--a-green-200) 60%,
+        white 60%,
+        white 80%,
+        var(--a-green-200) 80%,
+        var(--a-green-200) 100%,
+        white 100%
+    ) !important;
+    border: 2px solid var(--a-data-surface-5) !important;
     margin-bottom: 50%;
+    print-color-adjust: exact;
 }
 
 .blueStripedCircle {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: repeating-linear-gradient(45deg, var(--a-blue-200) 0%, var(--a-blue-200) 20%, white 20%, white 40%);
-    border: 2px solid var(--a-blue-300);
+    background: linear-gradient(
+        45deg,
+        var(--a-blue-200) 0%,
+        var(--a-blue-200) 20%,
+        white 20%,
+        white 40%,
+        var(--a-blue-200) 40%,
+        var(--a-blue-200) 60%,
+        white 60%,
+        white 80%,
+        var(--a-blue-200) 80%,
+        var(--a-blue-200) 100%,
+        white 100%
+    ) !important;
+    border: 2px solid var(--a-blue-300) !important;
     margin-bottom: 50%;
+    print-color-adjust: exact;
 }
 
 .lightblueGreenCircle {
@@ -101,8 +135,9 @@
         var(--a-data-surface-1-subtle) 50%,
         var(--a-data-surface-1-subtle) 100%
     ) !important;
-    border: 2px solid var(--a-data-surface-5);
+    border: 2px solid var(--a-data-surface-5) !important;
     margin-bottom: 50%;
+    print-color-adjust: exact;
 }
 
 .lightgreenBlueCircle {
@@ -116,54 +151,61 @@
         var(--a-data-surface-5-subtle) 50%,
         var(--a-data-surface-5-subtle) 100%
     ) !important;
-    border: 2px solid var(--a-data-surface-1);
+    border: 2px solid var(--a-data-surface-1) !important;
     margin-bottom: 50%;
+    print-color-adjust: exact;
 }
 
 .blueOutlineCircle {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    border: 2px solid var(--a-data-surface-1);
+    border: 2px solid var(--a-data-surface-1) !important;
     margin-bottom: 50%;
+    print-color-adjust: exact;
 }
 
 .greenOutlineCircle {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    border: 2px solid var(--a-data-surface-5);
+    border: 2px solid var(--a-data-surface-5) !important;
     margin-bottom: 50%;
+    print-color-adjust: exact;
 }
 
 .blackCircle {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: var(--a-gray-800);
+    background-color: var(--a-gray-800) !important;
     margin-bottom: 25%;
+    print-color-adjust: exact;
 }
 
 .greenCircle {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: var(--a-data-surface-5);
+    background-color: var(--a-data-surface-5) !important;
     margin-bottom: 50%;
+    print-color-adjust: exact;
 }
 
 .blueCircle {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: var(--a-blue-300);
+    background-color: var(--a-blue-300) !important;
     margin-bottom: 50%;
+    print-color-adjust: exact;
 }
 
 .grayCircle {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: var(--a-gray-300);
+    background-color: var(--a-gray-300) !important;
     margin-bottom: 50%;
+    print-color-adjust: exact;
 }

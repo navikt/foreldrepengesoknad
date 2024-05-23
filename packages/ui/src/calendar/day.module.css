@@ -12,22 +12,6 @@
     letter-spacing: 0.06px;
 }
 
-@media (max-width: 630px) {
-    .days {
-        height: 15px;
-        padding: 2px 0px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 2px 0 2px 0;
-        font-size: 10px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: 13px;
-        letter-spacing: 0.06px;
-    }
-}
-
 .blueDay {
     background-color: var(--a-blue-300) !important;
     print-color-adjust: exact;
@@ -35,9 +19,9 @@
 
 .lightblueDay {
     background-color: var(--a-data-surface-1-subtle) !important;
-    print-color-adjust: exact;
     border-top: 2px solid var(--a-blue-300);
     border-bottom: 2px solid var(--a-blue-300);
+    print-color-adjust: exact;
 }
 
 .lightblueDay.firstDay {
@@ -55,9 +39,9 @@
 
 .lightgreenDay {
     background-color: var(--a-green-100) !important;
-    print-color-adjust: exact;
     border-top: 2px solid var(--a-green-300);
     border-bottom: 2px solid var(--a-green-300);
+    print-color-adjust: exact;
 }
 
 .lightgreenDay.firstDay {
@@ -79,13 +63,21 @@
 }
 
 .greenStripedDay {
-    background: repeating-linear-gradient(
+    background: linear-gradient(
         45deg,
         var(--a-green-200) 0%,
         var(--a-green-200) 15%,
         white 15%,
         white 30%,
-        var(--a-green-200) 30%
+        var(--a-green-200) 30%,
+        var(--a-green-200) 45%,
+        white 45%,
+        white 60%,
+        var(--a-green-200) 60%,
+        var(--a-green-200) 75%,
+        white 75%,
+        white 90%,
+        var(--a-green-200) 90%
     ) !important;
     border-top: 2px solid var(--a-data-surface-5);
     border-bottom: 2px solid var(--a-data-surface-5);
@@ -106,13 +98,21 @@
 }
 
 .blueStripedDay {
-    background: repeating-linear-gradient(
+    background: linear-gradient(
         45deg,
         var(--a-blue-200) 0%,
         var(--a-blue-200) 15%,
         white 15%,
         white 30%,
-        var(--a-blue-200) 30%
+        var(--a-blue-200) 30%,
+        var(--a-blue-200) 45%,
+        white 45%,
+        white 60%,
+        var(--a-blue-200) 60%,
+        var(--a-blue-200) 75%,
+        white 75%,
+        white 90%,
+        var(--a-blue-200) 90%
     ) !important;
     border-top: 2px solid var(--a-blue-300);
     border-bottom: 2px solid var(--a-blue-300);
@@ -138,14 +138,15 @@
 }
 
 .blackDay {
-    background-color: var(--a-gray-800);
+    background-color: var(--a-gray-800) !important;
     color: white;
+    print-color-adjust: exact;
 }
 
 .blueOutlineDay {
-    print-color-adjust: exact;
     border-top: 2px solid var(--a-blue-300);
     border-bottom: 2px solid var(--a-blue-300);
+    print-color-adjust: exact;
 }
 
 .blueOutlineDay.firstDay {
@@ -162,9 +163,9 @@
 }
 
 .greenOutlineDay {
-    print-color-adjust: exact;
     border-top: 2px solid var(--a-green-300);
     border-bottom: 2px solid var(--a-green-300);
+    print-color-adjust: exact;
 }
 
 .greenOutlineDay.firstDay {
@@ -265,4 +266,20 @@
 
 .firstAndLastDay {
     border-radius: 1rem;
+}
+
+@media (max-width: 630px) {
+    .days {
+        height: 15px;
+        padding: 2px 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 2px 0 2px 0;
+        font-size: 10px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 13px;
+        letter-spacing: 0.06px;
+    }
 }
