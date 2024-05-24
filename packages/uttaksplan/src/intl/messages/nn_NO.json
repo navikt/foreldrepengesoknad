@@ -1,4 +1,7 @@
 {
+    "kalender.fødsel": "Fødsel",
+    "kalender.termin": "Termin",
+    "kalender.adopsjon": "Adopsjon",
     "kalender.avslåttePerioder": "Avslåtte periodar vises ikkje i kalenderen.",
     "kalender.dinPeriode": "Din periode",
     "kalender.dinPeriode.gradert": "Du kombinerer jobb og foreldrepengar",

@@ -26,7 +26,7 @@
 
 .greenOutlinePanel {
     border-radius: 1.25rem;
-    border: 2px solid var(--a-data-surface-5) !important;
+    border: 2px solid var(--a-green-300) !important;
     display: flex;
     padding-left: 10px;
     padding-right: 8px;
@@ -85,18 +85,18 @@
     background: linear-gradient(
         45deg,
         var(--a-green-200) 0%,
-        var(--a-green-200) 20%,
-        white 20%,
+        var(--a-green-200) 25%,
+        white 25%,
         white 40%,
         var(--a-green-200) 40%,
         var(--a-green-200) 60%,
         white 60%,
-        white 80%,
-        var(--a-green-200) 80%,
+        white 75%,
+        var(--a-green-200) 75%,
         var(--a-green-200) 100%,
         white 100%
     ) !important;
-    border: 2px solid var(--a-data-surface-5) !important;
+    border: 2px solid var(--a-green-300) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }
@@ -108,14 +108,14 @@
     background: linear-gradient(
         45deg,
         var(--a-blue-200) 0%,
-        var(--a-blue-200) 20%,
-        white 20%,
+        var(--a-blue-200) 25%,
+        white 25%,
         white 40%,
         var(--a-blue-200) 40%,
         var(--a-blue-200) 60%,
         white 60%,
-        white 80%,
-        var(--a-blue-200) 80%,
+        white 75%,
+        var(--a-blue-200) 75%,
         var(--a-blue-200) 100%,
         white 100%
     ) !important;
@@ -130,12 +130,12 @@
     border-radius: 50%;
     background: linear-gradient(
         to top,
-        var(--a-data-surface-5),
-        var(--a-data-surface-5) 50%,
+        var(--a-green-300),
+        var(--a-green-300) 50%,
         var(--a-data-surface-1-subtle) 50%,
         var(--a-data-surface-1-subtle) 100%
     ) !important;
-    border: 2px solid var(--a-data-surface-5) !important;
+    border: 2px solid var(--a-green-300) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }
@@ -148,8 +148,8 @@
         to top,
         var(--a-data-surface-1),
         var(--a-data-surface-1) 50%,
-        var(--a-data-surface-5-subtle) 50%,
-        var(--a-data-surface-5-subtle) 100%
+        var(--a-green-100) 50%,
+        var(--a-green-100) 100%
     ) !important;
     border: 2px solid var(--a-data-surface-1) !important;
     margin-bottom: 50%;
@@ -169,7 +169,7 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    border: 2px solid var(--a-data-surface-5) !important;
+    border: 2px solid var(--a-green-300) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }
@@ -187,7 +187,7 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background-color: var(--a-data-surface-5) !important;
+    background-color: var(--a-green-300) !important;
     margin-bottom: 50%;
     print-color-adjust: exact;
 }

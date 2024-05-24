@@ -58,7 +58,7 @@
 }
 
 .greenDay {
-    background-color: var(--a-data-surface-5) !important;
+    background-color: var(--a-green-300) !important;
     print-color-adjust: exact;
 }
 
@@ -79,22 +79,22 @@
         white 90%,
         var(--a-green-200) 90%
     ) !important;
-    border-top: 2px solid var(--a-data-surface-5);
-    border-bottom: 2px solid var(--a-data-surface-5);
+    border-top: 2px solid var(--a-green-300);
+    border-bottom: 2px solid var(--a-green-300);
     print-color-adjust: exact;
 }
 
 .greenStripedDay.firstDay {
-    border-left: 2px solid var(--a-data-surface-5);
+    border-left: 2px solid var(--a-green-300);
 }
 
 .greenStripedDay.lastDay {
-    border-right: 2px solid var(--a-data-surface-5);
+    border-right: 2px solid var(--a-green-300);
 }
 
 .greenStripedDay.firstAndLastDay {
-    border-left: 2px solid var(--a-data-surface-5);
-    border-right: 2px solid var(--a-data-surface-5);
+    border-left: 2px solid var(--a-green-300);
+    border-right: 2px solid var(--a-green-300);
 }
 
 .blueStripedDay {
@@ -211,27 +211,27 @@
 .lightblueGreenDay {
     background: linear-gradient(
         to top,
-        var(--a-data-surface-5),
-        var(--a-data-surface-5) 50%,
+        var(--a-green-300),
+        var(--a-green-300) 50%,
         var(--a-data-surface-1-subtle) 50%,
         var(--a-data-surface-1-subtle) 100%
     ) !important;
-    border-top: 2px solid var(--a-data-surface-5);
-    border-bottom: 2px solid var(--a-data-surface-5);
+    border-top: 2px solid var(--a-green-300);
+    border-bottom: 2px solid var(--a-green-300);
     print-color-adjust: exact;
 }
 
 .lightblueGreenDay.firstDay {
-    border-left: 2px solid var(--a-data-surface-5);
+    border-left: 2px solid var(--a-green-300);
 }
 
 .lightblueGreenDay.lastDay {
-    border-right: 2px solid var(--a-data-surface-5);
+    border-right: 2px solid var(--a-green-300);
 }
 
 .lightblueGreenDay.firstAndLastDay {
-    border-left: 2px solid var(--a-data-surface-5);
-    border-right: 2px solid var(--a-data-surface-5);
+    border-left: 2px solid var(--a-green-300);
+    border-right: 2px solid var(--a-green-300);
 }
 
 .none {

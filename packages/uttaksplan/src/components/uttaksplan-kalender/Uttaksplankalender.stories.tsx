@@ -443,8 +443,8 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering = Template.bin
 FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering.args = {
     uttaksplan: uttaksplanFar as Periode[],
     barn: {
-        type: BarnType.FØDT,
-        fødselsdatoer: ['2024-04-04'],
+        type: BarnType.UFØDT,
+        termindato: '2024-04-04',
         antallBarn: 1,
     },
     erFarEllerMedmor: true,
@@ -693,8 +693,9 @@ KortPeriodeMedHelg.args = {
         },
     ] as Periode[],
     barn: {
-        type: BarnType.FØDT,
+        type: BarnType.ADOPTERT_ANNET_BARN,
         fødselsdatoer: ['2024-05-23'],
+        adopsjonsdato: '2024-05-23',
         antallBarn: 1,
     },
     erFarEllerMedmor: false,
@@ -716,8 +717,9 @@ KortPeriodeUtenHelg.args = {
         },
     ] as Periode[],
     barn: {
-        type: BarnType.FØDT,
+        type: BarnType.ADOPTERT_STEBARN,
         fødselsdatoer: ['2024-05-21'],
+        adopsjonsdato: '2024-05-21',
         antallBarn: 1,
     },
     erFarEllerMedmor: false,
