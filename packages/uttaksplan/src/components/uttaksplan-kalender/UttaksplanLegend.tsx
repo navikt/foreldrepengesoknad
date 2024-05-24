@@ -3,11 +3,17 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { Barn, UtsettelseÅrsakType, capitalizeFirstLetter, getNavnGenitivEierform, intlUtils } from '@navikt/fp-common';
+import {
+    Barn,
+    UtsettelseÅrsakType,
+    capitalizeFirstLetter,
+    getNavnGenitivEierform,
+    intlUtils,
+    isAdoptertBarn,
+    isFødtBarn,
+} from '@navikt/fp-common';
 import { PeriodeColor } from '@navikt/fp-constants';
 import { CalendarLabel } from '@navikt/fp-ui';
-
-import { getFamiliehendelseTekst } from './../familiehendelsedato-display/FamiliehendelsedatoDisplay';
 
 const getUtsettelseLabel = (unikeUtsettelseÅrsaker: UtsettelseÅrsakType[], intl: IntlShape): ReactNode => {
     if (unikeUtsettelseÅrsaker.length === 1 && unikeUtsettelseÅrsaker[0] !== UtsettelseÅrsakType.Fri) {
@@ -16,6 +22,18 @@ const getUtsettelseLabel = (unikeUtsettelseÅrsaker: UtsettelseÅrsakType[], int
     }
 
     return <FormattedMessage id="kalender.dinUtsettelse" />;
+};
+
+export const getFamiliehendelseLabel = (barn: Barn): ReactNode => {
+    if (!isAdoptertBarn(barn)) {
+        if (isFødtBarn(barn)) {
+            return <FormattedMessage id="kalender.fødsel" />;
+        }
+
+        return <FormattedMessage id="kalender.termin" />;
+    }
+
+    return <FormattedMessage id="kalender.adopsjon" />;
 };
 
 const getCalendarLabel = (
@@ -28,7 +46,7 @@ const getCalendarLabel = (
 ): ReactNode => {
     switch (color) {
         case PeriodeColor.PINK:
-            return getFamiliehendelseTekst(barn);
+            return getFamiliehendelseLabel(barn);
         case PeriodeColor.BLUE:
         case PeriodeColor.GREEN:
             return <FormattedMessage id="kalender.dinPeriode" />;

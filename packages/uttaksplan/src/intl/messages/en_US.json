@@ -1,4 +1,7 @@
 {
+    "kalender.fødsel": "Birth",
+    "kalender.termin": "Due date",
+    "kalender.adopsjon": "Adoption",
     "kalender.avslåttePerioder": "Rejected periods are not displayed in the calendar.",
     "kalender.dinPeriode": "Your period",
     "kalender.dinPeriode.gradert": "You combine work and parental benefits",

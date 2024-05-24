@@ -20,7 +20,13 @@ export type Period = {
     color: PeriodeColor;
 };
 
-const findDayColor = (year: number, month: number, day: number, periods: Period[]): PeriodeColor => {
+const findDayColor = (
+    year: number,
+    month: number,
+    day: number,
+    periods: Period[],
+    familiehendelsesdato: string,
+): PeriodeColor => {
     const date = dayjs().year(year).month(month).date(day);
 
     const fomFirstPeriod = periods[0].fom;
@@ -32,35 +38,37 @@ const findDayColor = (year: number, month: number, day: number, periods: Period[
 
     const period = periods.find((period) => date.isBetween(period.fom, period.tom, 'day', '[]'));
 
-    if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
+    if ((date.isoWeekday() === 6 || date.isoWeekday() === 7) && !date.isSame(familiehendelsesdato, 'd')) {
         return PeriodeColor.GRAY;
     }
 
     return period?.color || PeriodeColor.NONE;
 };
 
-const isFirstDay = (date: Dayjs, day: number, periods: Period[]) => {
+const isFirstDay = (date: Dayjs, day: number, periods: Period[], familiehendelsesdato: string) => {
     return (
         date.isoWeekday() === 6 ||
         date.isoWeekday() === 1 ||
         day === 1 ||
-        periods.some((period) => date.isSame(period.fom, 'day'))
+        periods.some((period) => date.isSame(period.fom, 'day')) ||
+        dayjs(familiehendelsesdato).isSame(date.subtract(1, 'day'), 'day')
     );
 };
 
-const isLastDay = (date: Dayjs, day: number, periods: Period[]) => {
+const isLastDay = (date: Dayjs, day: number, periods: Period[], familiehendelsesdato: string) => {
     return (
         date.isoWeekday() === 7 ||
         date.isoWeekday() === 5 ||
         day === date.daysInMonth() ||
-        periods.some((period) => date.isSame(period.tom, 'day'))
+        periods.some((period) => date.isSame(period.tom, 'day')) ||
+        dayjs(familiehendelsesdato).isSame(date.add(1, 'day'), 'day')
     );
 };
 
-const findDayType = (year: number, month: number, day: number, periods: Period[]) => {
+const findDayType = (year: number, month: number, day: number, periods: Period[], familiehendelsesdato: string) => {
     const date = dayjs().year(year).month(month).date(day);
-    const firstDay = isFirstDay(date, day, periods);
-    const lastDay = isLastDay(date, day, periods);
+    const firstDay = isFirstDay(date, day, periods, familiehendelsesdato);
+    const lastDay = isLastDay(date, day, periods, familiehendelsesdato);
 
     if (firstDay && lastDay) {
         return DayType.FIRST_AND_LAST_DAY;
@@ -99,10 +107,11 @@ const findMonths = (firstDate: string, lastDate: string): Array<{ month: number;
 
 interface Props {
     periods: Period[];
+    familiehendelsesdato: string;
     useSmallerWidth?: boolean;
 }
 
-const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }) => {
+const Calendar: FunctionComponent<Props> = ({ periods, familiehendelsesdato, useSmallerWidth = false }) => {
     const months = findMonths(periods[0].fom, periods[periods.length - 1].tom);
 
     return (
@@ -122,8 +131,20 @@ const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }
                         <Day
                             key={monthData.year + monthData.month + day}
                             day={day + 1}
-                            periodeColor={findDayColor(monthData.year, monthData.month, day + 1, periods)}
-                            dayType={findDayType(monthData.year, monthData.month, day + 1, periods)}
+                            periodeColor={findDayColor(
+                                monthData.year,
+                                monthData.month,
+                                day + 1,
+                                periods,
+                                familiehendelsesdato,
+                            )}
+                            dayType={findDayType(
+                                monthData.year,
+                                monthData.month,
+                                day + 1,
+                                periods,
+                                familiehendelsesdato,
+                            )}
                         />
                     ))}
                 </Month>
