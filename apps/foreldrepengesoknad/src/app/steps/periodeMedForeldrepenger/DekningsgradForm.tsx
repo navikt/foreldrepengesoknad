@@ -202,7 +202,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                         }
                     >
                         <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad" />
-                        <Link href={links.søknadsfrister} target="_blank">
+                        <Link href={links.opphold} target="_blank">
                             <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad.link" />
                             <ExternalLinkIcon title="a11y-title" fontSize="1.5rem" />
                         </Link>
