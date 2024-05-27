@@ -83,7 +83,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         </VStack>
                     )}
                     {stønadskontoer && valgtStønadskonto && hvorLangPeriode && arbeidssituasjon && (
-                        <VStack gap="5">
+                        <VStack gap="1">
                             {harRettTilForeldrepenger && (
                                 <OppsummeringHarRett
                                     valgtStønadskonto={valgtStønadskonto}
