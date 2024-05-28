@@ -81,7 +81,7 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
 
                             {kunFarSøker2EllerMedmorHarRett && <ToUkerRundtFødsel hvemPlanlegger={hvemPlanlegger} />}
 
-                            <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} />
+                            <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} />
 
                             {<JobbeSamtidig />}
 
@@ -90,7 +90,7 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
                     )}
                     {erBarnetAdoptert(barnet) && (
                         <>
-                            <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} />
+                            <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} />
 
                             <JobbeSamtidig />
 
