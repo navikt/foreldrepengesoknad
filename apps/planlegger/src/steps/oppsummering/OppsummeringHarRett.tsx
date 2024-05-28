@@ -262,7 +262,6 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             barnet={barnet}
                             valgtStønadskonto={valgtStønadskonto}
                             hvemHarRett={hvemHarRett}
-                            erOppsummering={true}
                         />
                     </VStack>
                 </ExpansionCard.Content>

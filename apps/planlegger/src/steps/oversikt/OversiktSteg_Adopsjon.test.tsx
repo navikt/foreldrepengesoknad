@@ -30,9 +30,9 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect((screen.getByRole('option', { name: '16 uker til far' }) as HTMLOptionElement).selected).toBe(true);
 
-        expect(screen.getByText('Olga, 15 uker, starter torsdag 11. apr.')).toBeInTheDocument();
-        expect(screen.getByText('Espen, 31 uker, starter torsdag 25. juli')).toBeInTheDocument();
-        expect(screen.getByText('Omsorgsovertakelsesdato 11. apr.')).toBeInTheDocument();
+        expect(screen.getByText('Olga')).toBeInTheDocument();
+        expect(screen.getByText('Espen')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -59,8 +59,8 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Olga, 46 uker, starter torsdag 11. apr.')).toBeInTheDocument();
-        expect(screen.getByText('Omsorgsovertakelsesdato 11. apr.')).toBeInTheDocument();
+        expect(screen.getByText('Olga')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -82,9 +82,9 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Espen, 15 uker uten aktivitetskrav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Espen, 25 uker med aktivitetskrav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Omsorgsovertakelsesdato 11. apr.')).toBeInTheDocument();
+        expect(screen.getByText('Espen, uker uten krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Espen, uker med krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -112,9 +112,9 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Espen, 8 uker uten aktivitetskrav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Espen, 32 uker med aktivitetskrav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Omsorgsovertakelsesdato 11. apr.')).toBeInTheDocument();
+        expect(screen.getByText('Espen, uker uten krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Espen, uker med krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -142,9 +142,9 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect((screen.getByRole('option', { name: '16 uker til medmor' }) as HTMLOptionElement).selected).toBe(true);
 
-        expect(screen.getByText('Olga, 15 uker, starter torsdag 11. apr.')).toBeInTheDocument();
-        expect(screen.getByText('Helga, 31 uker, starter torsdag 25. juli')).toBeInTheDocument();
-        expect(screen.getByText('Omsorgsovertakelsesdato 11. apr.')).toBeInTheDocument();
+        expect(screen.getByText('Olga')).toBeInTheDocument();
+        expect(screen.getByText('Helga')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -171,8 +171,8 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Olga, 46 uker, starter torsdag 11. apr.')).toBeInTheDocument();
-        expect(screen.getByText('Omsorgsovertakelsesdato 11. apr.')).toBeInTheDocument();
+        expect(screen.getByText('Olga')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -194,9 +194,9 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Helga, 15 uker uten aktivitetskrav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Helga, 25 uker med aktivitetskrav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Omsorgsovertakelsesdato 11. apr.')).toBeInTheDocument();
+        expect(screen.getByText('Helga, uker uten krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Helga, uker med krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -224,9 +224,9 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Helga, 8 uker uten aktivitetskrav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Helga, 32 uker med aktivitetskrav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Omsorgsovertakelsesdato 11. apr.')).toBeInTheDocument();
+        expect(screen.getByText('Helga, uker uten krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Helga, uker med krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -254,8 +254,8 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Olga, 46 uker, starter torsdag 11. apr.')).toBeInTheDocument();
-        expect(screen.getByText('Omsorgsovertakelsesdato 11. apr.')).toBeInTheDocument();
+        expect(screen.getByText('Olga')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -277,8 +277,8 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Espen, 46 uker, starter torsdag 11. apr.')).toBeInTheDocument();
-        expect(screen.getByText('Omsorgsovertakelsesdato 11. apr.')).toBeInTheDocument();
+        expect(screen.getByText('Espen')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -302,9 +302,9 @@ describe('<OversiktSteg - adopsjon>', () => {
             true,
         );
 
-        expect(screen.getByText('Espen, 15 uker, starter torsdag 11. apr.')).toBeInTheDocument();
-        expect(screen.getByText('Anders, 31 uker, starter torsdag 25. juli')).toBeInTheDocument();
-        expect(screen.getByText('Omsorgsovertakelsesdato 11. apr.')).toBeInTheDocument();
+        expect(screen.getByText('Espen')).toBeInTheDocument();
+        expect(screen.getByText('Anders')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -332,9 +332,9 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Espen, 8 uker uten aktivitetskrav til Anders')).toBeInTheDocument();
-        expect(screen.getByText('Espen, 32 uker med aktivitetskrav til Anders')).toBeInTheDocument();
-        expect(screen.getByText('Omsorgsovertakelsesdato 11. apr.')).toBeInTheDocument();
+        expect(screen.getByText('Espen, uker uten krav til Anders')).toBeInTheDocument();
+        expect(screen.getByText('Espen, uker med krav til Anders')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -362,9 +362,9 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 48 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Anders, 15 uker uten aktivitetskrav til Espen')).toBeInTheDocument();
-        expect(screen.getByText('Anders, 25 uker med aktivitetskrav til Espen')).toBeInTheDocument();
-        expect(screen.getByText('Omsorgsovertakelsesdato 11. apr.')).toBeInTheDocument();
+        expect(screen.getByText('Anders, uker uten krav til Espen')).toBeInTheDocument();
+        expect(screen.getByText('Anders, uker med krav til Espen')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
         expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
@@ -392,8 +392,8 @@ describe('<OversiktSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Olga, 46 uker, starter mandag 13. mai')).toBeInTheDocument();
-        expect(screen.getByText('Omsorgsovertakelsesdato 12. mai')).toBeInTheDocument();
+        expect(screen.getByText('Olga')).toBeInTheDocument();
+        expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const mai = screen.getByTestId('year:2024;month:4');
         expect(within(mai).getByTestId('day:10;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
