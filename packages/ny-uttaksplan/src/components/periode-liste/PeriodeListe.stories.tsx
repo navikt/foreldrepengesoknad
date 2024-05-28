@@ -10,7 +10,7 @@ type StoryArgs = ComponentProps<typeof PeriodeListe>;
 type Story = StoryObj<StoryArgs>;
 
 const customRenderer = ({ perioder }: StoryArgs) => {
-    return <PeriodeListe perioder={perioder} />;
+    return <PeriodeListe perioder={perioder} erFarEllerMedmor={true} familiehendelsesdato="2024-04-22" />;
 };
 
 const meta = {

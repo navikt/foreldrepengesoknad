@@ -65,7 +65,7 @@ const perioder1: Periode[] = [
 ];
 
 describe('Skal gruppere perioder på søker og ikke kvote', () => {
-    it('Skal fungere', () => {
+    it('Skal gruppere mors perioder i tid hun er hjemme uavbrutt og ikke kvoter', () => {
         const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder1, false, '2024-05-03');
 
         expect(permisjonsperioder.length).toBe(4);
@@ -74,6 +74,24 @@ describe('Skal gruppere perioder på søker og ikke kvote', () => {
         expect(permisjonsperioder[0].tidsperiode).toEqual({
             fom: dateToISODateString(perioder1[0].tidsperiode.fom),
             tom: dateToISODateString(perioder1[0].tidsperiode.tom),
+        });
+
+        expect(permisjonsperioder[1].forelder).toEqual(Forelder.mor);
+        expect(permisjonsperioder[1].tidsperiode).toEqual({
+            fom: dateToISODateString(perioder1[1].tidsperiode.fom),
+            tom: dateToISODateString(perioder1[2].tidsperiode.tom),
+        });
+
+        expect(permisjonsperioder[2].forelder).toEqual(undefined);
+        expect(permisjonsperioder[2].tidsperiode).toEqual({
+            fom: dateToISODateString(perioder1[3].tidsperiode.fom),
+            tom: dateToISODateString(perioder1[3].tidsperiode.tom),
+        });
+
+        expect(permisjonsperioder[3].forelder).toEqual(Forelder.mor);
+        expect(permisjonsperioder[3].tidsperiode).toEqual({
+            fom: dateToISODateString(perioder1[4].tidsperiode.fom),
+            tom: dateToISODateString(perioder1[4].tidsperiode.tom),
         });
     });
 });

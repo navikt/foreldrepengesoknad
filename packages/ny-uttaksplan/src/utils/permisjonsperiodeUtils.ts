@@ -4,6 +4,7 @@ import {
     Forelder,
     Periode,
     Tidsperioden,
+    isHull,
     isOverføringsperiode,
     isPeriodeUtenUttak,
     isUtsettelsesperiode,
@@ -161,32 +162,19 @@ export const mapPerioderToPermisjonsperiode = (
         }
 
         if (isPeriodeUtenUttak(periode)) {
-            if (!nyPermisjonsperiode) {
-                nyPermisjonsperiode = {
-                    perioder: [{ ...periode }],
-                    tidsperiode: {
-                        fom: dateToISOString(periode.tidsperiode.fom),
-                        tom: dateToISOString(periode.tidsperiode.tom),
-                    },
-                };
+            nyPermisjonsperiode = {
+                perioder: [{ ...periode }],
+                tidsperiode: {
+                    fom: dateToISOString(periode.tidsperiode.fom),
+                    tom: dateToISOString(periode.tidsperiode.tom),
+                },
+                erPeriodeUtenUttak: true,
+            };
 
-                permisjonsPerioder.push(nyPermisjonsperiode);
-                forelderForrigePeriode = undefined;
-                nyPermisjonsperiode = undefined;
-            } else {
-                nyPermisjonsperiode = {
-                    perioder: [{ ...periode }],
-                    tidsperiode: {
-                        fom: dateToISOString(periode.tidsperiode.fom),
-                        tom: dateToISOString(periode.tidsperiode.tom),
-                    },
-                };
+            permisjonsPerioder.push(nyPermisjonsperiode);
 
-                permisjonsPerioder.push(nyPermisjonsperiode);
-
-                forelderForrigePeriode = undefined;
-                nyPermisjonsperiode = undefined;
-            }
+            forelderForrigePeriode = undefined;
+            nyPermisjonsperiode = undefined;
         }
 
         if (isUtsettelsesperiode(periode)) {
@@ -197,6 +185,21 @@ export const mapPerioderToPermisjonsperiode = (
                     tom: dateToISOString(periode.tidsperiode.tom),
                 },
                 erUtsettelse: true,
+            };
+
+            permisjonsPerioder.push(nyPermisjonsperiode);
+            forelderForrigePeriode = undefined;
+            nyPermisjonsperiode = undefined;
+        }
+
+        if (isHull(periode)) {
+            nyPermisjonsperiode = {
+                perioder: [{ ...periode }],
+                tidsperiode: {
+                    fom: dateToISOString(periode.tidsperiode.fom),
+                    tom: dateToISOString(periode.tidsperiode.tom),
+                },
+                erHull: true,
             };
 
             permisjonsPerioder.push(nyPermisjonsperiode);

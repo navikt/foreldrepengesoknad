@@ -6,6 +6,8 @@ interface Permisjonsperiode {
     tidsperiode: Tidsperiode;
     samtidigUttak?: boolean;
     erUtsettelse?: boolean;
+    erHull?: boolean;
+    erPeriodeUtenUttak?: boolean;
 }
 
 export default Permisjonsperiode;

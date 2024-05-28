@@ -33,6 +33,14 @@
     color: var(--a-orange-300);
 }
 
+.periode-liste-header-mobil--farge-graa {
+    color: var(--a-gray-400);
+}
+
+.periode-liste-header-mobil--farge-lilla {
+    color: var(--a-purple-400);
+}
+
 .periode-liste-header-mobil--farge-bg-lysblaa {
     background-color: var(--a-blue-50);
 }
@@ -53,4 +61,18 @@
 
 .periode-liste-header-mobil--farge-bg-gronn {
     background-color: var(--a-green-100);
+}
+
+.periode-liste-header-mobil--farge-bg-graa {
+    background-color: var(--a-surface-hover);
+}
+
+.periode-liste-header-mobil--farge-bg-lilla {
+    background-color: white;
+}
+
+.periode-liste-header-mobil--farge-bg-blaa {
+    background-color: white;
+    padding: -2px;
+    border: 2px solid var(--a-blue-400);
 }

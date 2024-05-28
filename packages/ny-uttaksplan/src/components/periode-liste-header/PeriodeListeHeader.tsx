@@ -1,4 +1,3 @@
-import { BabyWrappedFillIcon, CloudFillIcon, PersonPregnantFillIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
@@ -10,6 +9,7 @@ import { Forelder, Tidsperioden, bemUtils, formatDateShortMonth, getVarighetStri
 import { ISOStringToDate } from '@navikt/fp-formik';
 
 import Permisjonsperiode from '../../types/Permisjonsperiode';
+import { getFarge, getIkon, getTekst } from './PeriodeListeHeaderUtils';
 import './periode-liste-header.css';
 
 interface Props {
@@ -23,7 +23,7 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, termi
 
     const periodeFørTermindato = dayjs(termindato).isAfter(permisjonsperiode.tidsperiode.tom);
     const erMor = permisjonsperiode.forelder === Forelder.mor;
-    const { tidsperiode, erUtsettelse } = permisjonsperiode;
+    const { tidsperiode, erUtsettelse, erHull } = permisjonsperiode;
     const antallDager = Tidsperioden({
         fom: ISOStringToDate(tidsperiode.fom)!,
         tom: ISOStringToDate(tidsperiode.tom)!,
@@ -32,67 +32,7 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, termi
         permisjonsperiode.forelder === undefined &&
         !!permisjonsperiode.samtidigUttak === false &&
         !!permisjonsperiode.erUtsettelse === false;
-    const erSamtidigUttak = permisjonsperiode.forelder === undefined && !!permisjonsperiode.samtidigUttak;
-
-    const getFarge = () => {
-        if (erPeriodeUtenUttak) {
-            return bem.modifier('farge-bg-gul');
-        }
-
-        if (erSamtidigUttak) {
-            return bem.modifier('farge-bg-lysblaa-gronn');
-        }
-
-        if (erMor) {
-            return bem.modifier('farge-bg-lysblaa');
-        }
-
-        if (erUtsettelse) {
-            return bem.modifier('farge-bg-lysblaa');
-        }
-
-        return bem.modifier('farge-bg-gronn');
-    };
-
-    const getIkonFarge = () => {
-        if (erPeriodeUtenUttak) {
-            return bem.modifier('farge-gul');
-        }
-
-        if (erUtsettelse) {
-            return bem.modifier('farge-blaa');
-        }
-
-        if (erMor) {
-            return bem.modifier('farge-blaa');
-        }
-
-        return bem.modifier('farge-gronn');
-    };
-
-    const getTekst = () => {
-        if (erPeriodeUtenUttak) {
-            return 'Uten foreldrepenger';
-        }
-
-        if (erSamtidigUttak) {
-            return 'Du og Petter i permisjon';
-        }
-
-        return 'Du i permisjon';
-    };
-
-    const getIkon = () => {
-        if (periodeFørTermindato) {
-            return <PersonPregnantFillIcon className={getIkonFarge()} width={24} height={24} />;
-        }
-
-        if (erPeriodeUtenUttak) {
-            return <CloudFillIcon className={getIkonFarge()} width={24} height={24} />;
-        }
-
-        return <BabyWrappedFillIcon className={getIkonFarge()} width={24} height={24} />;
-    };
+    const erSamtidigUttak = !!permisjonsperiode.samtidigUttak;
 
     return (
         <div className={bem.block}>
@@ -105,10 +45,15 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, termi
             <div className={bem.element('uker')}>
                 <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>
             </div>
-            <div className={classNames(bem.element('hendelse'), getFarge())}>
+            <div
+                className={classNames(
+                    bem.element('hendelse'),
+                    getFarge({ bem, erMor, erPeriodeUtenUttak, erSamtidigUttak, erUtsettelse, erHull }),
+                )}
+            >
                 <BodyShort className={classNames(bem.element('hendelse-wrapper'))}>
-                    <div>{getTekst()}</div>
-                    {getIkon()}
+                    <div>{getTekst({ erPeriodeUtenUttak, erSamtidigUttak, erHull, erUtsettelse })}</div>
+                    {getIkon({ bem, erMor, erPeriodeUtenUttak, periodeFørTermindato, erUtsettelse, erHull })}
                 </BodyShort>
             </div>
         </div>

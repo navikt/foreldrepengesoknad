@@ -1,4 +1,3 @@
-import { BabyWrappedFillIcon, CloudFillIcon, PersonPregnantFillIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
@@ -10,6 +9,7 @@ import { Forelder, Tidsperioden, bemUtils, formatDateShortMonth, getVarighetStri
 import { ISOStringToDate } from '@navikt/fp-formik';
 
 import Permisjonsperiode from '../../types/Permisjonsperiode';
+import { getFarge, getIkon, getTekst } from './PeriodeListeHeaderUtils';
 import './periode-liste-header-mobil.css';
 
 interface Props {
@@ -23,65 +23,16 @@ const PeriodeListeHeaderMobil: FunctionComponent<Props> = ({ permisjonsperiode, 
 
     const periodeFørTermindato = dayjs(termindato).isAfter(permisjonsperiode.tidsperiode.tom);
     const erMor = permisjonsperiode.forelder === Forelder.mor;
-    const { tidsperiode } = permisjonsperiode;
+    const { tidsperiode, erUtsettelse, erHull } = permisjonsperiode;
     const antallDager = Tidsperioden({
         fom: ISOStringToDate(tidsperiode.fom)!,
         tom: ISOStringToDate(tidsperiode.tom)!,
     }).getAntallUttaksdager();
-    const erPeriodeUtenUttak = permisjonsperiode.forelder === undefined && !!permisjonsperiode.samtidigUttak === false;
+    const erPeriodeUtenUttak =
+        permisjonsperiode.forelder === undefined &&
+        !!permisjonsperiode.samtidigUttak === false &&
+        !!permisjonsperiode.erUtsettelse === false;
     const erSamtidigUttak = permisjonsperiode.forelder === undefined && !!permisjonsperiode.samtidigUttak;
-
-    const getFarge = () => {
-        if (erPeriodeUtenUttak) {
-            return bem.modifier('farge-bg-gul');
-        }
-
-        if (erSamtidigUttak) {
-            return bem.modifier('farge-bg-lysblaa-gronn');
-        }
-
-        if (erMor) {
-            return bem.modifier('farge-bg-lysblaa');
-        }
-
-        return bem.modifier('farge-bg-gronn');
-    };
-
-    const getIkonFarge = () => {
-        if (erPeriodeUtenUttak) {
-            return bem.modifier('farge-gul');
-        }
-
-        if (erMor) {
-            return bem.modifier('farge-blaa');
-        }
-
-        return bem.modifier('farge-gronn');
-    };
-
-    const getTekst = () => {
-        if (erPeriodeUtenUttak) {
-            return 'Uten foreldrepenger';
-        }
-
-        if (erSamtidigUttak) {
-            return 'Du og Petter i permisjon';
-        }
-
-        return 'Du i permisjon';
-    };
-
-    const getIkon = () => {
-        if (periodeFørTermindato) {
-            return <PersonPregnantFillIcon className={getIkonFarge()} width={24} height={24} />;
-        }
-
-        if (erPeriodeUtenUttak) {
-            return <CloudFillIcon className={getIkonFarge()} width={24} height={24} />;
-        }
-
-        return <BabyWrappedFillIcon className={getIkonFarge()} width={24} height={24} />;
-    };
 
     return (
         <div className={bem.block}>
@@ -95,10 +46,17 @@ const PeriodeListeHeaderMobil: FunctionComponent<Props> = ({ permisjonsperiode, 
                         <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>
                     </div>
                 </div>
-                <BodyShort>{getTekst()}</BodyShort>
+                <BodyShort>{getTekst({ erPeriodeUtenUttak, erSamtidigUttak, erHull, erUtsettelse })}</BodyShort>
             </div>
-            <div className={classNames(bem.element('hendelse'), getFarge())}>
-                <BodyShort className={classNames(bem.element('hendelse-wrapper'))}>{getIkon()}</BodyShort>
+            <div
+                className={classNames(
+                    bem.element('hendelse'),
+                    getFarge({ bem, erMor, erPeriodeUtenUttak, erSamtidigUttak, erUtsettelse, erHull }),
+                )}
+            >
+                <BodyShort className={classNames(bem.element('hendelse-wrapper'))}>
+                    {getIkon({ bem, erMor, erPeriodeUtenUttak, periodeFørTermindato, erUtsettelse, erHull })}
+                </BodyShort>
             </div>
         </div>
     );

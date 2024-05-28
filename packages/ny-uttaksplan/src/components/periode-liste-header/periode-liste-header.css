@@ -38,6 +38,14 @@
     color: var(--a-orange-300);
 }
 
+.periode-liste-header--farge-graa {
+    color: var(--a-gray-400);
+}
+
+.periode-liste-header--farge-lilla {
+    color: var(--a-purple-400);
+}
+
 .periode-liste-header--farge-bg-lysblaa {
     background-color: var(--a-blue-50);
 }
@@ -58,4 +66,17 @@
 
 .periode-liste-header--farge-bg-gronn {
     background-color: var(--a-green-100);
+}
+
+.periode-liste-header--farge-bg-graa {
+    background-color: var(--a-surface-hover);
+}
+
+.periode-liste-header--farge-bg-lilla {
+    background-color: var(--a-purple-100);
+}
+
+.periode-liste-header--farge-bg-blaa {
+    background-color: white;
+    border: 2px solid var(--a-blue-400);
 }
