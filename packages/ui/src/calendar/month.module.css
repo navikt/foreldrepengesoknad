@@ -1,6 +1,7 @@
 .box {
     padding-top: 20px;
     width: 170px;
+    break-inside: avoid;
 }
 
 @media (max-width: 630px) {
