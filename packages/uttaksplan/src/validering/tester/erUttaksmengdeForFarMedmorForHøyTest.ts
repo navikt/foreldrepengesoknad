@@ -4,13 +4,12 @@ import {
     Periode,
     PeriodeInfoType,
     StønadskontoType,
-    StønadskontoUttak,
     Søknadsinfo,
-    TilgjengeligStønadskonto,
     beregnGjenståendeUttaksdager,
     isInfoPeriodeAnnenPart,
     isUttaksperiode,
 } from '@navikt/fp-common';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
@@ -26,7 +25,7 @@ const harSøktOmFellesperiode = (periode: Periode) => {
 
 const erUttaksmengdeForFarMedmorForHøy = (
     uttaksplan: Periode[],
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     farEllerMedmor: boolean,
 ): boolean => {
     const harFarMedmorSøktOmFellesperiode = uttaksplan.find((p) => harSøktOmFellesperiode(p)) !== undefined;
@@ -49,7 +48,7 @@ const erUttaksmengdeForFarMedmorForHøy = (
 
     if (farEllerMedmor === true) {
         const kontoUttak = beregnGjenståendeUttaksdager(tilgjengeligeStønadskontoer, perioderSomSkalBrukes, false);
-        return kontoUttak.some((konto: StønadskontoUttak) => konto.dager < 0);
+        return kontoUttak.some((konto) => konto.dager < 0);
     } else {
         return false;
     }

@@ -249,7 +249,7 @@ const missingAttachmentForAktivitetskrav = (
         søknadsinfo.familiehendelsesdato,
         søknadsinfo.termindato,
         søknadsinfo.søkersituasjon.situasjon,
-        søknadsinfo.stønadskontoer,
+        søknadsinfo.stønadskontoer.kontoer,
         !søknadsinfo.morHarRett,
     );
 };

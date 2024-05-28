@@ -10,7 +10,6 @@ import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
 import {
     erAlenesøker,
     finnSøker1Tekst,
@@ -27,6 +26,7 @@ import { finnUttaksdata } from 'utils/uttakUtils';
 import { BodyLong, BodyShort, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 const onToggleExpansionCard = (open: boolean) => {
     if (open) {

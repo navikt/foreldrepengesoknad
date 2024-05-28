@@ -3,18 +3,17 @@ import {
     Periode,
     Periodene,
     StønadskontoType,
-    StønadskontoUttak,
-    TilgjengeligStønadskonto,
     Uttaksperiode,
     beregnBrukteUttaksdager,
     getAllePerioderMedUttaksinfoFraUttaksplan,
     isUttaksperiode,
 } from '@navikt/fp-common';
+import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 interface ForeldersBrukteDager {
-    førTermin: StønadskontoUttak[];
-    etterTermin: StønadskontoUttak[];
-    alle: StønadskontoUttak[];
+    førTermin: Stønadskonto[];
+    etterTermin: Stønadskonto[];
+    alle: Stønadskonto[];
     dagerTotalt: number;
     dagerEgneKvoter: number;
     dagerAnnenForeldersKvote: number;
@@ -24,7 +23,7 @@ interface ForeldersBrukteDager {
 export interface BrukteDager {
     mor: ForeldersBrukteDager;
     farMedmor: ForeldersBrukteDager;
-    alle: StønadskontoUttak[];
+    alle: Stønadskonto[];
 }
 
 const isMorsPeriode = (periode: Uttaksperiode): boolean => {
@@ -33,9 +32,9 @@ const isMorsPeriode = (periode: Uttaksperiode): boolean => {
 const isFarsPeriode = (periode: Uttaksperiode): boolean => {
     return periode.forelder === Forelder.farMedmor;
 };
-const isFellesperiodeKvote = (uttak: StønadskontoUttak): boolean => uttak.konto === StønadskontoType.Fellesperiode;
+const isFellesperiodeKvote = (uttak: Stønadskonto): boolean => uttak.konto === StønadskontoType.Fellesperiode;
 
-const isMorsKvote = (uttak: StønadskontoUttak): boolean => {
+const isMorsKvote = (uttak: Stønadskonto): boolean => {
     switch (uttak.konto) {
         case StønadskontoType.ForeldrepengerFørFødsel:
         case StønadskontoType.Mødrekvote:
@@ -45,16 +44,16 @@ const isMorsKvote = (uttak: StønadskontoUttak): boolean => {
     }
 };
 
-const isFarMedmorsKvote = (uttak: StønadskontoUttak): boolean => {
+const isFarMedmorsKvote = (uttak: Stønadskonto): boolean => {
     return uttak.konto === StønadskontoType.Fedrekvote;
 };
 
-const summerBrukteUttaksdager = (uttak: StønadskontoUttak[]) => {
+const summerBrukteUttaksdager = (uttak: Stønadskonto[]) => {
     return uttak.reduce((dager, u) => dager + u.dager, 0);
 };
 
 const getBrukteDagerForForelder = (
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     perioder: Uttaksperiode[],
     familiehendelsesdato: Date,
     forelder: Forelder,
@@ -87,7 +86,7 @@ const getBrukteDagerForForelder = (
 };
 
 export const getBrukteDager = (
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     perioder: Periode[],
     familiehendelsesdato: Date,
 ): BrukteDager => {

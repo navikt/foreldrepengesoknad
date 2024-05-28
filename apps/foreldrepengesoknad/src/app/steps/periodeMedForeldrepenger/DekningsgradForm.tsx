@@ -8,13 +8,12 @@ import { BodyShort, Box, HStack, Heading, Link, Radio, ReadMore, VStack } from '
 import {
     Barn,
     Dekningsgrad,
-    StønadskontoType,
     Tidsperioden,
-    TilgjengeligStønadskonto,
     Uttaksdagen,
     bemUtils,
     capitalizeFirstLetter,
     getAntallUker,
+    getAntallUkerFraStønadskontoer,
     getFlerbarnsuker,
     getVarighetString,
     isAdoptertBarn,
@@ -22,7 +21,7 @@ import {
 } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { SøkersituasjonFp } from '@navikt/fp-types';
+import { StønadskontoType, SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
@@ -32,7 +31,10 @@ import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 
 import './panelWithCircleIcon.less';
 
-const finnSisteDagMedForeldrepenger = (stønadskontoer: TilgjengeligStønadskonto[], barn: Barn): string | undefined => {
+const finnSisteDagMedForeldrepenger = (
+    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+    barn: Barn,
+): string | undefined => {
     const erAdopsjon = isAdoptertBarn(barn);
     const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
@@ -44,7 +46,9 @@ const finnSisteDagMedForeldrepenger = (stønadskontoer: TilgjengeligStønadskont
     }
 
     const dagerSomSkalLeggesTil =
-        getAntallUker(stønadskontoer.filter((s) => s.konto !== StønadskontoType.ForeldrepengerFørFødsel)) * 5;
+        getAntallUkerFraStønadskontoer(
+            stønadskontoer.kontoer.filter((s) => s.konto !== StønadskontoType.ForeldrepengerFørFødsel),
+        ) * 5;
 
     const førsteDag = Uttaksdagen(dayjs(dato).toDate()).denneEllerNeste();
     const sisteDag = Uttaksdagen(førsteDag).leggTil(dagerSomSkalLeggesTil - 1);
@@ -78,8 +82,8 @@ type Props = {
     goToNextDefaultStep: () => Promise<void>;
     barn: Barn;
     søkersituasjon: SøkersituasjonFp;
-    stønadskonto100: TilgjengeligStønadskonto[];
-    stønadskonto80: TilgjengeligStønadskonto[];
+    stønadskonto100: TilgjengeligeStønadskontoerForDekningsgrad;
+    stønadskonto80: TilgjengeligeStønadskontoerForDekningsgrad;
 };
 
 const DekningsgradForm: React.FunctionComponent<Props> = ({

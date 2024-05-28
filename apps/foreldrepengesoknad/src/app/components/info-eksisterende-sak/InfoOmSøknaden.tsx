@@ -10,12 +10,11 @@ import {
     InfoPeriode,
     Periodene,
     Periodetype,
-    TilgjengeligStønadskonto,
     Uttaksdagen,
     bemUtils,
     formatDate,
     formaterDato,
-    getAntallUker,
+    getAntallUkerFraStønadskontoer,
     getFarMedmorErAleneOmOmsorg,
     getForeldreparSituasjon,
     getKjønnFromFnr,
@@ -34,7 +33,7 @@ import InnholdMedIllustrasjon from '@navikt/fp-common/src/common/components/innh
 import SituasjonSirkel from '@navikt/fp-common/src/common/components/situasjon-sirkel/SituasjonSirkel';
 import UkerSirkel from '@navikt/fp-common/src/common/components/uker-sirkel/UkerSirkel';
 import { links } from '@navikt/fp-constants';
-import { Søker } from '@navikt/fp-types';
+import { Stønadskonto, Søker } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
@@ -62,7 +61,7 @@ const getHvem = (
 };
 
 export interface Props {
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    tilgjengeligeStønadskontoer: Stønadskonto[];
     eksisterendeSak: EksisterendeSak | undefined;
     erIUttaksplanenSteg: boolean;
     minsterettUkerToTette?: number;
@@ -85,7 +84,7 @@ const InfoOmSøknaden: React.FunctionComponent<Props> = ({
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
 
-    const uker = getAntallUker(tilgjengeligeStønadskontoer);
+    const uker = getAntallUkerFraStønadskontoer(tilgjengeligeStønadskontoer);
     const annenForelderKjønn = getKjønnFromFnr(annenForelder);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const annenForelderNavn = isAnnenForelderOppgitt(annenForelder) ? annenForelder.fornavn : '';

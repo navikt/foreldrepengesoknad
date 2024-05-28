@@ -8,7 +8,6 @@ import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
-import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 import {
     erAlenesøker as erAlene,
     erFarOgFar,
@@ -28,6 +27,7 @@ import {
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 const onToggleExpansionCard = (open: boolean) => {
     if (open) {

@@ -4,8 +4,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad, TilgjengeligStønadskonto, bemUtils, getAntallUker, getVarighetString } from '@navikt/fp-common';
-import { Kjønn } from '@navikt/fp-types';
+import { Dekningsgrad, bemUtils, getAntallUker, getVarighetString } from '@navikt/fp-common';
+import { Kjønn, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -21,7 +21,7 @@ type Props = {
     fornavnAnnenForelder: string;
     kjønnAnnenForelder?: Kjønn;
     dekningsgrad: Dekningsgrad;
-    valgtStønadskonto: TilgjengeligStønadskonto[];
+    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
 };
 
 const DekningsgradValgtAvAnnenPartPanel: React.FunctionComponent<Props> = ({

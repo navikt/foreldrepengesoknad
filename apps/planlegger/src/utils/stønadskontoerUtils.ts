@@ -1,4 +1,4 @@
-import { StønadskontoType, TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
+import { StønadskontoType, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 export const getAntallUker = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number => {
     return Object.values(stønadskontoer.kontoer).reduce((sum: number, konto) => sum + konto.dager / 5, 0);

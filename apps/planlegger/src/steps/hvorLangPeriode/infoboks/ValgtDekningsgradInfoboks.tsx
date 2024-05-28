@@ -6,7 +6,6 @@ import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
 import { erAlenesøker, erMorDelAvSøknaden, finnSøker1Tekst, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -16,6 +15,7 @@ import { Uttaksdata, finnUttaksdata } from 'utils/uttakUtils';
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 interface Props {
     barnet: OmBarnet;

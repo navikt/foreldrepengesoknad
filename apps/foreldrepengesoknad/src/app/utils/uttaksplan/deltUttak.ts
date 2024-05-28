@@ -8,7 +8,6 @@ import {
     Situasjon,
     StønadskontoType,
     Tidsperioden,
-    TilgjengeligStønadskonto,
     Uttaksdagen,
     andreAugust2022ReglerGjelder,
     dateIsSameOrAfter,
@@ -21,11 +20,12 @@ import {
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
+import { Stønadskonto } from '@navikt/fp-types/src/TilgjengeligeStønadskontoer';
 
 const deltUttakAdopsjonSøktFørst = (
     famDato: Date,
     erFarEllerMedmor: boolean,
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    tilgjengeligeStønadskontoer: Stønadskonto[],
     startdatoPermisjon: Date | undefined,
     fellesperiodeukerMor: number | undefined,
     harAnnenForelderSøktFP: boolean | undefined,
@@ -36,7 +36,7 @@ const deltUttakAdopsjonSøktFørst = (
         const perioder: Periode[] = [];
         const kontoType = erFarEllerMedmor ? StønadskontoType.Fedrekvote : StønadskontoType.Mødrekvote;
         const forelder = erFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
-        const konto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find((k) =>
+        const konto = tilgjengeligeStønadskontoer.find((k) =>
             erFarEllerMedmor ? k.konto === StønadskontoType.Fedrekvote : k.konto === StønadskontoType.Mødrekvote,
         );
         let currentTomDate: Date = førsteUttaksdag;
@@ -94,7 +94,7 @@ const deltUttakAdopsjonSøktFørst = (
 
 const deltUttakAdopsjonSøktSist = (
     familiehendelsesdato: Date,
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    tilgjengeligeStønadskontoer: Stønadskonto[],
     erFarEllerMedmor: boolean,
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date,
@@ -156,7 +156,7 @@ const deltUttakAdopsjonSøktSist = (
 const deltUttakAdopsjon = (
     famDato: Date,
     erFarEllerMedmor: boolean,
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    tilgjengeligeStønadskontoer: Stønadskonto[],
     startdatoPermisjon: Date | undefined,
     fellesperiodeukerMor: number | undefined,
     harAnnenForelderSøktFP: boolean | undefined,
@@ -190,19 +190,17 @@ const deltUttakAdopsjon = (
 
 const deltUttakFødselMor = (
     famDato: Date,
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    tilgjengeligeStønadskontoer: Stønadskonto[],
     ønsketStartdatoPermisjon: Date,
     fellesperiodeukerMor: number | undefined,
 ): Periode[] => {
     const førsteUttaksdag = Uttaksdagen(famDato).denneEllerNeste();
     const perioder: Periode[] = [];
     const skalHaForeldrePengerFørFødsel = dayjs(ønsketStartdatoPermisjon).isBefore(dayjs(famDato), 'd');
-    const fpFørFødselKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
+    const fpFørFødselKonto = tilgjengeligeStønadskontoer.find(
         (konto) => konto.konto === StønadskontoType.ForeldrepengerFørFødsel,
     );
-    const mkKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
-        (konto) => konto.konto === StønadskontoType.Mødrekvote,
-    );
+    const mkKonto = tilgjengeligeStønadskontoer.find((konto) => konto.konto === StønadskontoType.Mødrekvote);
     let currentTomDate: Date = førsteUttaksdag;
     if (fpFørFødselKonto !== undefined && skalHaForeldrePengerFørFødsel && ønsketStartdatoPermisjon) {
         const startdatoPermisjon = Uttaksdagen(ønsketStartdatoPermisjon).denneEllerNeste();
@@ -295,7 +293,7 @@ const deltUttakFødselMor = (
 };
 
 const deltUttakFødselFarMedmor = (
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    tilgjengeligeStønadskontoer: Stønadskonto[],
     antallUkerFellesperiodeFarMedmor: number | undefined,
     morSinSisteUttaksdag: Date,
     farSinFørsteUttaksdag: Date,
@@ -316,12 +314,8 @@ const deltUttakFødselFarMedmor = (
     const perioder: Periode[] = [];
     const startDatoUttak = Uttaksdagen(farSinFørsteUttaksdag).denneEllerNeste();
     let sisteUttaksDag = Uttaksdagen(farSinFørsteUttaksdag).denneEllerNeste();
-    const fedrekvoteKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
-        (konto) => konto.konto === StønadskontoType.Fedrekvote,
-    );
-    const fellesKonto: TilgjengeligStønadskonto | undefined = tilgjengeligeStønadskontoer.find(
-        (konto) => konto.konto === StønadskontoType.Fellesperiode,
-    );
+    const fedrekvoteKonto = tilgjengeligeStønadskontoer.find((konto) => konto.konto === StønadskontoType.Fedrekvote);
+    const fellesKonto = tilgjengeligeStønadskontoer.find((konto) => konto.konto === StønadskontoType.Fellesperiode);
 
     const morHarRett = true;
 
@@ -403,7 +397,7 @@ const deltUttakFødselFarMedmor = (
 const deltUttakFødsel = (
     famDato: Date,
     erFarEllerMedmor: boolean,
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    tilgjengeligeStønadskontoer: Stønadskonto[],
     startdatoPermisjon: Date,
     fellesperiodeukerMor: number | undefined,
     antallUkerFellesperiodeFarMedmor: number | undefined,
@@ -437,7 +431,7 @@ export interface DeltUttakParams {
     situasjon: Situasjon;
     famDato: Date;
     erFarEllerMedmor: boolean;
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    tilgjengeligeStønadskontoer: Stønadskonto[];
     startdatoPermisjon: Date;
     fellesperiodeUkerMor: number | undefined;
     harAnnenForelderSøktFP: boolean | undefined;

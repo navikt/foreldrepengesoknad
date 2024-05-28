@@ -1,19 +1,19 @@
+import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
+
+import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
-import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { createContext, useReducer, FunctionComponent, ReactNode, useContext } from 'react';
 
 export enum FpApiDataType {
     ANNEN_PART_VEDTAK = 'ANNEN_PART_VEDTAK',
     NESTE_SAK_ANNEN_PART_VEDTAK = 'NESTE_SAK_ANNEN_PART_VEDTAK',
-    STØNADSKONTOER_100 = 'STØNADSKONTOER_100',
-    STØNADSKONTOER_80 = 'STØNADSKONTOER_80',
+    STØNADSKONTOER = 'STØNADSKONTOER',
 }
 
 export type FpApiDataHashMap = {
     [FpApiDataType.ANNEN_PART_VEDTAK]?: [number, AnnenPartVedtakDTO];
     [FpApiDataType.NESTE_SAK_ANNEN_PART_VEDTAK]?: [number, AnnenPartVedtakDTO];
-    [FpApiDataType.STØNADSKONTOER_100]?: [number, TilgjengeligeStønadskontoerDTO];
-    [FpApiDataType.STØNADSKONTOER_80]?: [number, TilgjengeligeStønadskontoerDTO];
+    [FpApiDataType.STØNADSKONTOER]?: [number, TilgjengeligeStønadskontoer];
 };
 
 const defaultInitialState = {} as FpApiDataHashMap;

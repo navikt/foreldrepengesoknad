@@ -5,7 +5,6 @@ import Infobox from 'components/boxes/Infobox';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -15,6 +14,7 @@ import { Alert, BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@n
 
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
+import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import OppgittInformasjon from './OppgittInformasjon';

@@ -1,11 +1,15 @@
-import { IntlShape } from 'react-intl';
-import { getForelderNavn } from './periodeUtils';
-import { capitalizeFirstLetter } from './stringUtils';
-import { Forelder, NavnPåForeldre, StønadskontoType, TilgjengeligStønadskonto } from '../types';
-import { getNavnGenitivEierform } from './personUtils';
-import intlUtils from './intlUtils';
 import dayjs from 'dayjs';
+import { IntlShape } from 'react-intl';
+
+import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { Stønadskonto } from '@navikt/fp-types/src/TilgjengeligeStønadskontoer';
+
+import { Forelder, NavnPåForeldre, StønadskontoType } from '../types';
 import { Uttaksdagen } from './Uttaksdagen';
+import intlUtils from './intlUtils';
+import { getForelderNavn } from './periodeUtils';
+import { getNavnGenitivEierform } from './personUtils';
+import { capitalizeFirstLetter } from './stringUtils';
 
 export const getFiltrerteVelgbareStønadskontotyper = (
     valgbareKontoer: StønadskontoType[],
@@ -27,7 +31,7 @@ export const getFiltrerteVelgbareStønadskontotyper = (
     return kontoer;
 };
 
-export const getVelgbareStønadskontotyper = (stønadskontoTyper: TilgjengeligStønadskonto[]): StønadskontoType[] =>
+export const getVelgbareStønadskontotyper = (stønadskontoTyper: Stønadskonto[]): StønadskontoType[] =>
     stønadskontoTyper
         .filter(
             (kontoType) =>
@@ -107,45 +111,40 @@ export const getUttakAnnenPartStønadskontoNavn = (
     return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
 };
 
-export const getAntallUker = (kontoer: TilgjengeligStønadskonto[]): number => {
-    return kontoer.reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
+export const getAntallUker = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number => {
+    return Object.values(stønadskontoer.kontoer).reduce((sum: number, konto) => sum + konto.dager / 5, 0);
 };
 
-export const getAntallUkerForeldrepengerFørFødsel = (kontoer: TilgjengeligStønadskonto[]): number => {
-    return kontoer
-        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.ForeldrepengerFørFødsel)
-        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
+export const getAntallUkerFraStønadskontoer = (stønadskontoer: Stønadskonto[]): number => {
+    return Object.values(stønadskontoer).reduce((sum: number, konto) => sum + konto.dager / 5, 0);
 };
 
-export const getAntallUkerMødrekvote = (kontoer: TilgjengeligStønadskonto[]): number => {
-    return kontoer
-        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.Mødrekvote)
-        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
+const getDagerForKonto = (
+    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+    stønadskontoType: StønadskontoType,
+) => {
+    const konto = stønadskontoer.kontoer.find((k) => k.konto === stønadskontoType);
+    return konto ? konto.dager / 5 : 0;
 };
 
-export const getAntallUkerFedrekvote = (kontoer: TilgjengeligStønadskonto[]): number => {
-    return kontoer
-        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.Fedrekvote)
-        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
-};
+export const getAntallUkerForeldrepengerFørFødsel = (
+    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+): number => getDagerForKonto(stønadskontoer, StønadskontoType.ForeldrepengerFørFødsel);
 
-export const getAntallUkerFellesperiode = (kontoer: TilgjengeligStønadskonto[]): number => {
-    return kontoer
-        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.Fellesperiode)
-        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
-};
+export const getAntallUkerMødrekvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
+    getDagerForKonto(stønadskontoer, StønadskontoType.Mødrekvote);
 
-export const getAntallUkerForeldrepenger = (kontoer: TilgjengeligStønadskonto[]): number => {
-    return kontoer
-        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.Foreldrepenger)
-        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
-};
+export const getAntallUkerFedrekvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
+    getDagerForKonto(stønadskontoer, StønadskontoType.Fedrekvote);
 
-export const getAntallUkerAktivitetsfriKvote = (kontoer: TilgjengeligStønadskonto[]): number => {
-    return kontoer
-        .filter((konto: TilgjengeligStønadskonto) => konto.konto === StønadskontoType.AktivitetsfriKvote)
-        .reduce((sum: number, konto: TilgjengeligStønadskonto) => sum + konto.dager / 5, 0);
-};
+export const getAntallUkerFellesperiode = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
+    getDagerForKonto(stønadskontoer, StønadskontoType.Fellesperiode);
+
+export const getAntallUkerForeldrepenger = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
+    getDagerForKonto(stønadskontoer, StønadskontoType.Foreldrepenger);
+
+export const getAntallUkerAktivitetsfriKvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
+    getDagerForKonto(stønadskontoer, StønadskontoType.AktivitetsfriKvote);
 
 export const getAntallUkerMinsterett = (minsteRettDager: number | undefined): number | undefined => {
     if (minsteRettDager !== undefined) {

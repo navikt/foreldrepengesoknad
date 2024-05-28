@@ -1,12 +1,14 @@
+import dayjs from 'dayjs';
+
 import {
     Periodetype,
     Situasjon,
     StønadskontoType,
-    StønadskontoUttak,
     TidsperiodeDate,
     getSisteUttaksdag6UkerEtterFødsel,
 } from '@navikt/fp-common';
-import dayjs from 'dayjs';
+import { Stønadskonto } from '@navikt/fp-types';
+
 import kontoSkalBesvares from './kontoSkalBesvarer';
 import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 
@@ -42,7 +44,7 @@ export const aktivitetskravMorSkalBesvares = (
     familiehendelsesdato: Date,
     termindato: Date | undefined,
     situasjon: Situasjon,
-    stønadskontoer: StønadskontoUttak[],
+    stønadskontoer: Stønadskonto[],
     bareFarMedmorHarRett: boolean,
 ): boolean => {
     if (
