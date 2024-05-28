@@ -1,6 +1,5 @@
 import { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { weeksBetween } from 'utils/uttakUtils';
+import { FormattedMessage } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
@@ -11,14 +10,10 @@ import styles from './oversiktLabels.module.css';
 
 interface Props {
     søkerTekst: string;
-    startdato: string;
-    sluttdato: string;
     isBluePanel?: boolean;
 }
 
-const AntallUkerFpLabel: FunctionComponent<Props> = ({ søkerTekst, startdato, sluttdato, isBluePanel = false }) => {
-    const intl = useIntl();
-
+const AntallUkerFpLabel: FunctionComponent<Props> = ({ søkerTekst, isBluePanel = false }) => {
     return (
         <CalendarIconLabel iconType={isBluePanel ? 'blue' : 'green'}>
             <BodyShort>
@@ -26,12 +21,6 @@ const AntallUkerFpLabel: FunctionComponent<Props> = ({ søkerTekst, startdato, s
                     id="OversiktSteg.UkerForeldrepenger"
                     values={{
                         hvem: capitalizeFirstLetter(søkerTekst),
-                        uker: weeksBetween(startdato, sluttdato),
-                        dato: intl.formatDate(startdato, {
-                            day: '2-digit',
-                            month: 'short',
-                            weekday: 'long',
-                        }),
                     }}
                 />
             </BodyShort>
@@ -40,12 +29,6 @@ const AntallUkerFpLabel: FunctionComponent<Props> = ({ søkerTekst, startdato, s
                     id="OversiktSteg.UkerForeldrepengerSlutter"
                     values={{
                         hvem: capitalizeFirstLetter(søkerTekst),
-                        uker: weeksBetween(startdato, sluttdato),
-                        dato: intl.formatDate(sluttdato, {
-                            day: '2-digit',
-                            month: 'short',
-                            weekday: 'long',
-                        }),
                     }}
                 />
             </div>
