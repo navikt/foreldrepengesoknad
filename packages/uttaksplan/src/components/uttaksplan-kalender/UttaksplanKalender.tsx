@@ -20,7 +20,6 @@ import {
     bemUtils,
     getAnnenForelderSamtidigUttakPeriode,
     getFamiliehendelsedato,
-    getFørsteUttaksdagForeldrepengerFørFødsel,
     isAvslåttPeriode,
     isForeldrepengerFørFødselUttaksperiode,
     isFødtBarn,
@@ -45,34 +44,6 @@ export interface UttaksplanKalenderProps {
     navnAnnenPart: string;
 }
 
-const getTapteDagerFørFødselPeriode = (
-    uttaksplan: Periode[],
-    indexPeriodeFørFødsel: number,
-    familiehendelsesdato: string,
-): Period => {
-    let fom;
-    let tom;
-    if (indexPeriodeFørFødsel === 0) {
-        const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
-        fom = getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdatoDate!);
-    } else {
-        const periodeFørTom = uttaksplan[indexPeriodeFørFødsel - 1].tidsperiode.tom;
-        fom = Uttaksdagen(periodeFørTom).neste();
-    }
-    if (indexPeriodeFørFødsel === uttaksplan.length - 1) {
-        const familiehendelsesdatoDate = ISOStringToDate(familiehendelsesdato);
-        tom = Uttaksdagen(familiehendelsesdatoDate!).forrige();
-    } else {
-        const periodeEtterFom = uttaksplan[indexPeriodeFørFødsel + 1].tidsperiode.fom;
-        tom = Uttaksdagen(periodeEtterFom).forrige();
-    }
-    return {
-        fom: dateToISOString(fom),
-        tom: dateToISOString(tom),
-        color: PeriodeColor.ORANGE,
-    };
-};
-
 const getIndexOfFamiliehendelse = (uttaksplan: Periode[], familiehendelsesdato: string) => {
     const indexAvPeriodeUtenForeldrepengerFørFødsel = uttaksplan.findIndex(
         (p) => isForeldrepengerFørFødselUttaksperiode(p) && p.skalIkkeHaUttakFørTermin,
@@ -93,19 +64,13 @@ const getPerioderForKalendervisning = (uttaksplan: Periode[], erFarEllerMedmor: 
                 dayjs(p.tidsperiode.tom).isSame(familiehendelsesdato, 'd')
             ),
     );
-    const periods = perioderForVisning.map((p, index) => {
-        if (isForeldrepengerFørFødselUttaksperiode(p) && p.skalIkkeHaUttakFørTermin) {
-            return getTapteDagerFørFødselPeriode(uttaksplan, index, familiehendelsesdato);
-        } else {
-            return {
-                fom: dayjs(p.tidsperiode.fom).isSame(dayjs(familiehendelsesdato), 'd')
-                    ? dateToISOString(Uttaksdagen(p.tidsperiode.fom).neste())
-                    : dateToISOString(p.tidsperiode.fom),
-                tom: dateToISOString(p.tidsperiode.tom),
-                color: getKalenderFargeForPeriodeType(p, erFarEllerMedmor, uttaksplan, barn),
-            };
-        }
-    });
+    const periods = perioderForVisning.map((p) => ({
+        fom: dayjs(p.tidsperiode.fom).isSame(dayjs(familiehendelsesdato), 'd')
+            ? dateToISOString(Uttaksdagen(p.tidsperiode.fom).neste())
+            : dateToISOString(p.tidsperiode.fom),
+        tom: dateToISOString(p.tidsperiode.tom),
+        color: getKalenderFargeForPeriodeType(p, erFarEllerMedmor, uttaksplan, barn),
+    }));
 
     const indexOfFamiliehendelse = getIndexOfFamiliehendelse(uttaksplan, familiehendelsesdato);
     periods.splice(indexOfFamiliehendelse, 0, {
@@ -131,7 +96,7 @@ const getKalenderFargeForUttaksperiode = (
         return erFarEllerMedmor ? PeriodeColor.GREENSTRIPED : PeriodeColor.BLUESTRIPED;
     }
     if (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin) {
-        return PeriodeColor.ORANGE;
+        return PeriodeColor.NONE;
     }
     return getUttaksperiodeFarge(periode.konto, periode.forelder, erFarEllerMedmor);
 };
