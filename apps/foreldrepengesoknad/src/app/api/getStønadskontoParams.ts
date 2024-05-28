@@ -3,11 +3,9 @@ import {
     Barn,
     BarnFraNesteSak,
     EksisterendeSak,
-    formaterDato,
     getErMorUfør,
     getFarMedmorErAleneOmOmsorg,
     getMorErAleneOmOmsorg,
-    hasValue,
     isAdoptertAnnetBarn,
     isAdoptertStebarn,
     isAnnenForelderOppgitt,
@@ -76,10 +74,6 @@ export const getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter = (
     return antallBarnSaksgrunnlag;
 };
 
-const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?: string): string | undefined => {
-    return hasValue(dato) ? formaterDato(dato, datoformat) : undefined;
-};
-
 const finnRettighetstype = (
     farHarRett: boolean,
     morHarRett: boolean,
@@ -142,8 +136,6 @@ const getStønadskontoParams = (
     const erFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
 
-    const fpUttakServiceDateFormat = 'YYYYMMDD';
-
     return {
         rettighetstype: finnRettighetstype(
             getFarHarRettINorge(erFarMedmor, annenForelder),
@@ -152,19 +144,10 @@ const getStønadskontoParams = (
             farMedmorErAleneOmOmsorg || false,
         ),
         brukerrolle: søkerErFarEllerMedmor ? 'FAR' : 'MOR',
-        antallBarn: saksgrunnlagsAntallBarn,
-        fødselsdato: formaterStønadskontoParamsDatoer(
-            isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined,
-            fpUttakServiceDateFormat,
-        ),
-        termindato: formaterStønadskontoParamsDatoer(
-            getTermindatoSomSkalBrukes(barn, saksgrunnlagsTermindato),
-            fpUttakServiceDateFormat,
-        ),
-        omsorgsovertakelseDato: formaterStønadskontoParamsDatoer(
-            isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? barn.adopsjonsdato : undefined,
-            fpUttakServiceDateFormat,
-        ),
+        antallBarn: saksgrunnlagsAntallBarn.toString(),
+        fødselsdato: isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined,
+        termindato: getTermindatoSomSkalBrukes(barn, saksgrunnlagsTermindato),
+        omsorgsovertakelseDato: isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? barn.adopsjonsdato : undefined,
         morHarUføretrygd: getErMorUfør(annenForelder, søkerErFarEllerMedmor),
     };
 };
