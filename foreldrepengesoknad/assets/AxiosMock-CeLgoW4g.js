@@ -1,1 +1,0 @@
-import{r as e}from"./index-Cu9bd8lq.js";import{M as s}from"./index-B_cCgG6K.js";import{g as a}from"./apiInterceptor-D_vgNGab.js";const r=new s(a()),i=({children:o,mock:t})=>(e.useEffect(()=>(t(r),()=>{r.reset()})),o);export{i as A};
