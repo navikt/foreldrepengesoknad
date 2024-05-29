@@ -49,7 +49,7 @@ const getIndexOfFamiliehendelse = (uttaksplan: Periode[], familiehendelsesdato: 
         (p) => isForeldrepengerFørFødselUttaksperiode(p) && p.skalIkkeHaUttakFørTermin,
     );
     if (indexAvPeriodeUtenForeldrepengerFørFødsel !== -1) {
-        return indexAvPeriodeUtenForeldrepengerFørFødsel + 1;
+        return indexAvPeriodeUtenForeldrepengerFørFødsel;
     }
     return getIndexOfSistePeriodeFørDato(uttaksplan, ISOStringToDate(familiehendelsesdato)) || 0;
 };
@@ -62,7 +62,9 @@ const getPerioderForKalendervisning = (uttaksplan: Periode[], erFarEllerMedmor: 
             !(
                 dayjs(p.tidsperiode.fom).isSame(familiehendelsesdato, 'd') &&
                 dayjs(p.tidsperiode.tom).isSame(familiehendelsesdato, 'd')
-            ),
+            ) &&
+            p.tidsperiode.fom !== undefined &&
+            p.tidsperiode.tom !== undefined,
     );
     const periods = perioderForVisning.map((p) => ({
         fom: dayjs(p.tidsperiode.fom).isSame(dayjs(familiehendelsesdato), 'd')
