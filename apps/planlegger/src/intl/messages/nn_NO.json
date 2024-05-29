@@ -153,7 +153,6 @@
     "OppsummeringSteg.Infoboks.Engangsstønad.Link": "vegvisaren “Foreldrepenger eller engangsstønad”.",
     "OppsummeringSteg.InformasjonPlanleggerErUnderUtviklingIkkeRett": "Planleggjaren er under utvikling og vil snart få meir funksjonalitet!",
     "OppsummeringSteg.InformasjonPlanleggerErUnderUtvikling": "Planleggjaren er under utvikling og vil snart få meir funksjonalitet! Om ein ønskjer å planlegge meir i detalj og flytte og endre på periodar, kan ein bruke <a>søknaden om foreldrepengar</a>.",
-    "OppsummeringSteg.Planen": "Planen {erAlenesøker, select, true {din} other {dykkar}}",
     "OppsummeringSteg.Perioden": "Perioden med foreldrepengar",
     "OppsummeringSteg.DereValgte": "De valde {prosent} % i {antallUker} veker og fordelar fellesperioden med {uker} veker til {hvem} og {uker2} veker til {hvem2}.",
     "OppsummeringSteg.DereValgteFedreEllerAlene": "{erAlenesøker, select, true {Du} other {De}} valde {prosent} % i {antallUker} veker.",

@@ -55,80 +55,82 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         <>
             <OppsummeringHeader>
                 <VStack gap="10">
-                    {!harRettTilForeldrepenger && (
-                        <VStack gap="5">
-                            <Infobox
-                                header={
-                                    erAleneforsørger ? (
-                                        <FormattedMessage id="OppsummeringSteg.Infoboks.IngenHarRettDeg" />
-                                    ) : (
-                                        <FormattedMessage id="OppsummeringSteg.Infoboks.IngenHarRett" />
-                                    )
-                                }
-                                icon={<TasklistStartIcon height={24} width={24} color="#236B7D" aria-hidden />}
-                            >
-                                <BodyShort>
+                    <VStack gap="5">
+                        <Alert variant="info">
+                            <BodyShort>
+                                {!harRettTilForeldrepenger ? (
+                                    <FormattedMessage id="OppsummeringSteg.InformasjonPlanleggerErUnderUtviklingIkkeRett" />
+                                ) : (
                                     <FormattedMessage
-                                        id="OppsummeringSteg.Infoboks.BasertPåSvarene"
-                                        values={{ erAleneforsørger }}
+                                        id="OppsummeringSteg.InformasjonPlanleggerErUnderUtvikling"
+                                        values={{
+                                            a: (msg: any) => (
+                                                <Link
+                                                    inlineText
+                                                    href={links.søknadForeldrepenger}
+                                                    target="_blank"
+                                                    className="lenke"
+                                                    rel="noreferrer"
+                                                >
+                                                    {msg}
+                                                </Link>
+                                            ),
+                                        }}
                                     />
-                                </BodyShort>
-                                <BodyShort>
-                                    <FormattedMessage id="OppsummeringSteg.Infoboks.Engangsstønad" />
-                                    <Link inlineText href={links.veiviser}>
-                                        <FormattedMessage id="OppsummeringSteg.Infoboks.Engangsstønad.Link" />
-                                    </Link>
-                                </BodyShort>
-                            </Infobox>
-                        </VStack>
-                    )}
-                    {stønadskontoer && valgtStønadskonto && hvorLangPeriode && arbeidssituasjon && (
-                        <VStack gap="1">
-                            {harRettTilForeldrepenger && (
-                                <OppsummeringHarRett
-                                    valgtStønadskonto={valgtStønadskonto}
-                                    hvorLangPeriode={hvorLangPeriode}
-                                    hvemPlanlegger={hvemPlanlegger}
+                                )}
+                            </BodyShort>
+                        </Alert>
+                        {!harRettTilForeldrepenger && (
+                            <VStack gap="5">
+                                <Infobox
+                                    header={
+                                        erAleneforsørger ? (
+                                            <FormattedMessage id="OppsummeringSteg.Infoboks.IngenHarRettDeg" />
+                                        ) : (
+                                            <FormattedMessage id="OppsummeringSteg.Infoboks.IngenHarRett" />
+                                        )
+                                    }
+                                    icon={<TasklistStartIcon height={24} width={24} color="#236B7D" aria-hidden />}
+                                >
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="OppsummeringSteg.Infoboks.BasertPåSvarene"
+                                            values={{ erAleneforsørger }}
+                                        />
+                                    </BodyShort>
+                                    <BodyShort>
+                                        <FormattedMessage id="OppsummeringSteg.Infoboks.Engangsstønad" />
+                                        <Link inlineText href={links.veiviser}>
+                                            <FormattedMessage id="OppsummeringSteg.Infoboks.Engangsstønad.Link" />
+                                        </Link>
+                                    </BodyShort>
+                                </Infobox>
+                            </VStack>
+                        )}
+                        {stønadskontoer && valgtStønadskonto && hvorLangPeriode && arbeidssituasjon && (
+                            <VStack gap="5">
+                                <OppgittInformasjon
+                                    stønadskontoer={stønadskontoer}
                                     barnet={barnet}
+                                    hvemPlanlegger={hvemPlanlegger}
                                     arbeidssituasjon={arbeidssituasjon}
+                                    hvorLangPeriode={hvorLangPeriode}
                                     fordeling={fordeling}
                                 />
-                            )}
-                            <OppgittInformasjon
-                                stønadskontoer={stønadskontoer}
-                                barnet={barnet}
-                                hvemPlanlegger={hvemPlanlegger}
-                                arbeidssituasjon={arbeidssituasjon}
-                                hvorLangPeriode={hvorLangPeriode}
-                                fordeling={fordeling}
-                            />
-                        </VStack>
-                    )}
+                                {harRettTilForeldrepenger && (
+                                    <OppsummeringHarRett
+                                        valgtStønadskonto={valgtStønadskonto}
+                                        hvorLangPeriode={hvorLangPeriode}
+                                        hvemPlanlegger={hvemPlanlegger}
+                                        barnet={barnet}
+                                        arbeidssituasjon={arbeidssituasjon}
+                                        fordeling={fordeling}
+                                    />
+                                )}
+                            </VStack>
+                        )}
+                    </VStack>
 
-                    <Alert variant="info">
-                        <BodyShort>
-                            {!harRettTilForeldrepenger ? (
-                                <FormattedMessage id="OppsummeringSteg.InformasjonPlanleggerErUnderUtviklingIkkeRett" />
-                            ) : (
-                                <FormattedMessage
-                                    id="OppsummeringSteg.InformasjonPlanleggerErUnderUtvikling"
-                                    values={{
-                                        a: (msg: any) => (
-                                            <Link
-                                                inlineText
-                                                href={links.søknadForeldrepenger}
-                                                target="_blank"
-                                                className="lenke"
-                                                rel="noreferrer"
-                                            >
-                                                {msg}
-                                            </Link>
-                                        ),
-                                    }}
-                                />
-                            )}
-                        </BodyShort>
-                    </Alert>
                     <VStack gap="10">
                         <HStack>
                             <Button
