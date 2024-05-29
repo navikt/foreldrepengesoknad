@@ -1,23 +1,41 @@
+import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 
-import { Periode } from '@navikt/fp-common';
+import { BodyShort } from '@navikt/ds-react';
 
+import { Periode, isValidTidsperiode } from '@navikt/fp-common';
+
+import Permisjonsperiode from '../../types/Permisjonsperiode';
 import { mapPerioderToPermisjonsperiode } from '../../utils/permisjonsperiodeUtils';
 import PeriodeListeItem from './../periode-liste-item/PeriodeListeItem';
 
 interface Props {
     perioder: Periode[];
-    familiehendelsesdato: string;
+    familiehendelsedato: string;
     erFarEllerMedmor: boolean;
 }
 
-const PeriodeListe: FunctionComponent<Props> = ({ perioder, familiehendelsesdato, erFarEllerMedmor }) => {
-    const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder, erFarEllerMedmor, familiehendelsesdato);
+const getIndexOfFørstePeriodeEtterFødsel = (permisjonsperioder: Permisjonsperiode[], familiehendelsesdato: string) => {
+    return permisjonsperioder.findIndex(
+        (p) => isValidTidsperiode(p.tidsperiode) && dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'd'),
+    );
+};
+
+const PeriodeListe: FunctionComponent<Props> = ({ perioder, familiehendelsedato, erFarEllerMedmor }) => {
+    const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder, erFarEllerMedmor, familiehendelsedato);
+    const indexOfFørstePeriodeEtterFødsel = getIndexOfFørstePeriodeEtterFødsel(permisjonsperioder, familiehendelsedato);
 
     return (
         <div>
-            {permisjonsperioder.map((p) => {
-                return <PeriodeListeItem permisjonsperiode={p} />;
+            {permisjonsperioder.map((p, index) => {
+                return (
+                    <>
+                        {indexOfFørstePeriodeEtterFødsel === index ? (
+                            <BodyShort>{familiehendelsedato}</BodyShort>
+                        ) : null}
+                        <PeriodeListeItem permisjonsperiode={p} familiehendelsedato={familiehendelsedato} />
+                    </>
+                );
             })}
         </div>
     );

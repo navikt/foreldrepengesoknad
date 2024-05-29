@@ -12,24 +12,29 @@ import './periode-liste-item.css';
 
 interface Props {
     permisjonsperiode: Permisjonsperiode;
+    familiehendelsedato: string;
 }
 
-const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode }) => {
+const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode, familiehendelsedato }) => {
     const bem = bemUtils('periode-liste-item');
-
-    const termindato = '2024-01-22';
 
     return (
         <Accordion className={bem.element('item')}>
             <Accordion.Item>
                 <Show asChild above="md">
                     <Accordion.Header className={bem.element('header')}>
-                        <PeriodeListeHeader permisjonsperiode={permisjonsperiode} termindato={termindato} />
+                        <PeriodeListeHeader
+                            permisjonsperiode={permisjonsperiode}
+                            familiehendelsedato={familiehendelsedato}
+                        />
                     </Accordion.Header>
                 </Show>
                 <Hide asChild above="md">
                     <Accordion.Header className={bem.element('header')}>
-                        <PeriodeListeHeaderMobil permisjonsperiode={permisjonsperiode} termindato={termindato} />
+                        <PeriodeListeHeaderMobil
+                            permisjonsperiode={permisjonsperiode}
+                            familiehendelsedato={familiehendelsedato}
+                        />
                     </Accordion.Header>
                 </Hide>
                 <Accordion.Content>

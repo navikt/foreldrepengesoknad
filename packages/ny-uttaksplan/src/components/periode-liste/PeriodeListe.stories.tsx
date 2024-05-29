@@ -9,8 +9,14 @@ type StoryArgs = ComponentProps<typeof PeriodeListe>;
 
 type Story = StoryObj<StoryArgs>;
 
-const customRenderer = ({ perioder }: StoryArgs) => {
-    return <PeriodeListe perioder={perioder} erFarEllerMedmor={true} familiehendelsesdato="2024-04-22" />;
+const customRenderer = ({ perioder, erFarEllerMedmor, familiehendelsedato }: StoryArgs) => {
+    return (
+        <PeriodeListe
+            perioder={perioder}
+            erFarEllerMedmor={erFarEllerMedmor}
+            familiehendelsedato={familiehendelsedato}
+        />
+    );
 };
 
 const meta = {
@@ -22,6 +28,8 @@ export default meta;
 
 export const UttaksperioderMor: Story = {
     args: {
+        erFarEllerMedmor: false,
+        familiehendelsedato: '2024-04-22',
         perioder: [
             {
                 id: '1',
@@ -91,6 +99,8 @@ export const UttaksperioderMor: Story = {
 
 export const UttaksperioderMorOgFar: Story = {
     args: {
+        erFarEllerMedmor: false,
+        familiehendelsedato: '2024-04-22',
         perioder: [
             {
                 id: '1',
@@ -160,6 +170,8 @@ export const UttaksperioderMorOgFar: Story = {
 
 export const UttaksperioderFarMorIkkeRett: Story = {
     args: {
+        erFarEllerMedmor: true,
+        familiehendelsedato: '2024-05-01',
         perioder: [
             {
                 id: '1',
@@ -207,6 +219,8 @@ export const UttaksperioderFarMorIkkeRett: Story = {
 
 export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
     args: {
+        erFarEllerMedmor: false,
+        familiehendelsedato: '2024-04-22',
         perioder: [
             {
                 id: '1',

@@ -685,7 +685,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                         </Block>
                         <UttaksplanNy
                             uttaksplan={uttaksplan}
-                            familiehendelsesdato={familiehendelsesdato}
+                            familiehendelsedato={familiehendelsesdato}
                             erFarEllerMedmor={erFarEllerMedmor}
                         />
                         <Uttaksplan

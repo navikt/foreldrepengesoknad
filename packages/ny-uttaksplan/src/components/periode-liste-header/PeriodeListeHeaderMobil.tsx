@@ -14,14 +14,14 @@ import './periode-liste-header-mobil.css';
 
 interface Props {
     permisjonsperiode: Permisjonsperiode;
-    termindato: string;
+    familiehendelsedato: string;
 }
 
-const PeriodeListeHeaderMobil: FunctionComponent<Props> = ({ permisjonsperiode, termindato }) => {
+const PeriodeListeHeaderMobil: FunctionComponent<Props> = ({ permisjonsperiode, familiehendelsedato }) => {
     const intl = useIntl();
     const bem = bemUtils('periode-liste-header-mobil');
 
-    const periodeFørTermindato = dayjs(termindato).isAfter(permisjonsperiode.tidsperiode.tom);
+    const periodeFørTermindato = dayjs(familiehendelsedato).isAfter(permisjonsperiode.tidsperiode.tom);
     const erMor = permisjonsperiode.forelder === Forelder.mor;
     const { tidsperiode, erUtsettelse, erHull } = permisjonsperiode;
     const antallDager = Tidsperioden({
