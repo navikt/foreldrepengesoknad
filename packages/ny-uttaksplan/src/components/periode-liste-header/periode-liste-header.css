@@ -46,6 +46,10 @@
     color: var(--a-purple-400);
 }
 
+.periode-liste-header--farge-red {
+    color: var(--a-red-500);
+}
+
 .periode-liste-header--farge-bg-lysblaa {
     background-color: var(--a-blue-50);
 }
@@ -78,5 +82,9 @@
 
 .periode-liste-header--farge-bg-blaa {
     background-color: white;
-    border: 2px solid var(--a-blue-400);
+    box-shadow: inset 0px 0px 0px 2px var(--a-blue-400);
+}
+
+.periode-liste-header--farge-bg-red {
+    background-color: var(--a-red-50);
 }

@@ -13,9 +13,10 @@ import './periode-liste-item.css';
 interface Props {
     permisjonsperiode: Permisjonsperiode;
     familiehendelsedato: string;
+    erFamiliehendelse?: boolean;
 }
 
-const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode, familiehendelsedato }) => {
+const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode, familiehendelsedato, erFamiliehendelse }) => {
     const bem = bemUtils('periode-liste-item');
 
     return (
@@ -26,6 +27,7 @@ const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode, familie
                         <PeriodeListeHeader
                             permisjonsperiode={permisjonsperiode}
                             familiehendelsedato={familiehendelsedato}
+                            erFamiliehendelse={erFamiliehendelse}
                         />
                     </Accordion.Header>
                 </Show>
@@ -34,6 +36,7 @@ const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode, familie
                         <PeriodeListeHeaderMobil
                             permisjonsperiode={permisjonsperiode}
                             familiehendelsedato={familiehendelsedato}
+                            erFamiliehendelse={erFamiliehendelse}
                         />
                     </Accordion.Header>
                 </Hide>

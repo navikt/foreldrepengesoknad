@@ -1614,6 +1614,9 @@ importers:
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
+      '@storybook/addon-viewport':
+        specifier: ^8.1.4
+        version: 8.1.4
       '@storybook/react':
         specifier: ^8.0.0
         version: 8.0.0(react-dom@18.2.0)(react@18.2.0)(typescript@5.4.3)
@@ -5376,6 +5379,12 @@ packages:
 
   /@storybook/addon-viewport@8.0.0:
     resolution: {integrity: sha512-eqgyZszJSz6C3GXJTn8/8bmL8zqALr4dnBFg8w/RJ+gydVCk17Ow3ifYTWrEGVLXCCwd0XbCZGj9tAmfhovjTQ==}
+    dependencies:
+      memoizerific: 1.11.3
+    dev: true
+
+  /@storybook/addon-viewport@8.1.4:
+    resolution: {integrity: sha512-OmHJzs6ZzLxD2ihNoc3s2YOJS9PDQNvDej6yYlWRLzS8DAW8ADE3DYl0i8wv/zDXbgEVxyEYwe8JhouIu8x5MA==}
     dependencies:
       memoizerific: 1.11.3
     dev: true

@@ -66,7 +66,6 @@ const beggePerioderFørEllerEtterFamiliehendelsedato = (
 
 export const mapPerioderToPermisjonsperiode = (
     perioder: Periode[],
-    søkerErFarEllerMedmor: boolean,
     familiehendelsesdato: string,
 ): Permisjonsperiode[] => {
     const permisjonsPerioder: Permisjonsperiode[] = [];
@@ -74,9 +73,6 @@ export const mapPerioderToPermisjonsperiode = (
     if (perioder.length === 0) {
         return permisjonsPerioder;
     }
-
-    const forelderTypeSøker = søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
-    const forelderTypeAnnenPart = søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor;
 
     let nyPermisjonsperiode: Permisjonsperiode | undefined = undefined;
     let forelderForrigePeriode: Forelder | undefined = undefined;
@@ -126,7 +122,7 @@ export const mapPerioderToPermisjonsperiode = (
         }
 
         if (isUttaksperiode(periode) || isUttakAnnenPart(periode) || isOverføringsperiode(periode)) {
-            const forelderType = isUttakAnnenPart(periode) ? forelderTypeAnnenPart : forelderTypeSøker;
+            const forelderType = periode.forelder;
 
             if (!nyPermisjonsperiode) {
                 nyPermisjonsperiode = {

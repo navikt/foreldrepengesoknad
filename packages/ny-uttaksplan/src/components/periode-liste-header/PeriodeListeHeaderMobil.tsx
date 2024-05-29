@@ -15,9 +15,14 @@ import './periode-liste-header-mobil.css';
 interface Props {
     permisjonsperiode: Permisjonsperiode;
     familiehendelsedato: string;
+    erFamiliehendelse?: boolean;
 }
 
-const PeriodeListeHeaderMobil: FunctionComponent<Props> = ({ permisjonsperiode, familiehendelsedato }) => {
+const PeriodeListeHeaderMobil: FunctionComponent<Props> = ({
+    permisjonsperiode,
+    familiehendelsedato,
+    erFamiliehendelse,
+}) => {
     const intl = useIntl();
     const bem = bemUtils('periode-liste-header-mobil');
 
@@ -46,16 +51,34 @@ const PeriodeListeHeaderMobil: FunctionComponent<Props> = ({ permisjonsperiode, 
                         <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>
                     </div>
                 </div>
-                <BodyShort>{getTekst({ erPeriodeUtenUttak, erSamtidigUttak, erHull, erUtsettelse })}</BodyShort>
+                <BodyShort>
+                    {getTekst({ erPeriodeUtenUttak, erSamtidigUttak, erHull, erUtsettelse, erFamiliehendelse })}
+                </BodyShort>
             </div>
             <div
                 className={classNames(
                     bem.element('hendelse'),
-                    getFarge({ bem, erMor, erPeriodeUtenUttak, erSamtidigUttak, erUtsettelse, erHull }),
+                    getFarge({
+                        bem,
+                        erMor,
+                        erPeriodeUtenUttak,
+                        erSamtidigUttak,
+                        erUtsettelse,
+                        erHull,
+                        erFamiliehendelse,
+                    }),
                 )}
             >
                 <BodyShort className={classNames(bem.element('hendelse-wrapper'))}>
-                    {getIkon({ bem, erMor, erPeriodeUtenUttak, periodeFørTermindato, erUtsettelse, erHull })}
+                    {getIkon({
+                        bem,
+                        erMor,
+                        erPeriodeUtenUttak,
+                        periodeFørTermindato,
+                        erUtsettelse,
+                        erHull,
+                        erFamiliehendelse,
+                    })}
                 </BodyShort>
             </div>
         </div>

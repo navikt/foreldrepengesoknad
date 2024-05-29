@@ -15,9 +15,14 @@ import './periode-liste-header.css';
 interface Props {
     permisjonsperiode: Permisjonsperiode;
     familiehendelsedato: string;
+    erFamiliehendelse?: boolean;
 }
 
-const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, familiehendelsedato }) => {
+const PeriodeListeHeader: FunctionComponent<Props> = ({
+    permisjonsperiode,
+    familiehendelsedato,
+    erFamiliehendelse,
+}) => {
     const intl = useIntl();
     const bem = bemUtils('periode-liste-header');
 
@@ -42,18 +47,38 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, famil
                     {formatDateShortMonth(permisjonsperiode.tidsperiode.tom)}
                 </Heading>
             </div>
-            <div className={bem.element('uker')}>
-                <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>
-            </div>
+            {erFamiliehendelse !== true ? (
+                <div className={bem.element('uker')}>
+                    <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>
+                </div>
+            ) : null}
             <div
                 className={classNames(
                     bem.element('hendelse'),
-                    getFarge({ bem, erMor, erPeriodeUtenUttak, erSamtidigUttak, erUtsettelse, erHull }),
+                    getFarge({
+                        bem,
+                        erMor,
+                        erPeriodeUtenUttak,
+                        erSamtidigUttak,
+                        erUtsettelse,
+                        erHull,
+                        erFamiliehendelse,
+                    }),
                 )}
             >
                 <BodyShort className={classNames(bem.element('hendelse-wrapper'))}>
-                    <div>{getTekst({ erPeriodeUtenUttak, erSamtidigUttak, erHull, erUtsettelse })}</div>
-                    {getIkon({ bem, erMor, erPeriodeUtenUttak, periodeFørTermindato, erUtsettelse, erHull })}
+                    <div>
+                        {getTekst({ erPeriodeUtenUttak, erSamtidigUttak, erHull, erUtsettelse, erFamiliehendelse })}
+                    </div>
+                    {getIkon({
+                        bem,
+                        erMor,
+                        erPeriodeUtenUttak,
+                        periodeFørTermindato,
+                        erUtsettelse,
+                        erHull,
+                        erFamiliehendelse,
+                    })}
                 </BodyShort>
             </div>
         </div>

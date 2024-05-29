@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ComponentProps } from 'react';
 
-import { Forelder, Periodetype, StønadskontoType } from '@navikt/fp-common';
+import { Forelder, PeriodeHullÅrsak, Periodetype, StønadskontoType, UtsettelseÅrsakType } from '@navikt/fp-common';
 
 import PeriodeListe from './PeriodeListe';
 
@@ -27,6 +27,7 @@ const meta = {
 export default meta;
 
 export const UttaksperioderMor: Story = {
+    name: 'Mor søker',
     args: {
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',
@@ -98,6 +99,7 @@ export const UttaksperioderMor: Story = {
 };
 
 export const UttaksperioderMorOgFar: Story = {
+    name: 'Mor og far med samtidig uttak',
     args: {
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',
@@ -169,6 +171,7 @@ export const UttaksperioderMorOgFar: Story = {
 };
 
 export const UttaksperioderFarMorIkkeRett: Story = {
+    name: 'Far søker og mor har ikke rett',
     args: {
         erFarEllerMedmor: true,
         familiehendelsedato: '2024-05-01',
@@ -218,6 +221,7 @@ export const UttaksperioderFarMorIkkeRett: Story = {
 };
 
 export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
+    name: 'Mor og far med flerbarnsdager og samtidig uttak',
     args: {
         erFarEllerMedmor: false,
         familiehendelsedato: '2024-04-22',
@@ -255,6 +259,86 @@ export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
                 forelder: Forelder.farMedmor,
                 ønskerFlerbarnsdager: true,
                 samtidigUttakProsent: '100',
+            },
+        ],
+    },
+};
+
+export const UttaksperioderMorIkkeSøktFørsteSeksUker: Story = {
+    name: 'Mor har ikke lagt inn uttak første seks uker',
+    args: {
+        erFarEllerMedmor: false,
+        familiehendelsedato: '2024-04-22',
+        perioder: [
+            {
+                id: '1',
+                tidsperiode: {
+                    fom: new Date('2024-04-01'),
+                    tom: new Date('2024-04-19'),
+                },
+                type: Periodetype.Uttak,
+                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                forelder: Forelder.mor,
+            },
+            {
+                id: '2',
+                tidsperiode: {
+                    fom: new Date('2024-04-22'),
+                    tom: new Date('2024-05-31'),
+                },
+                type: Periodetype.Hull,
+                årsak: PeriodeHullÅrsak.fridag,
+            },
+            {
+                id: '3',
+                tidsperiode: {
+                    fom: new Date('2024-06-03'),
+                    tom: new Date('2024-06-28'),
+                },
+                type: Periodetype.Uttak,
+                konto: StønadskontoType.Mødrekvote,
+                forelder: Forelder.mor,
+            },
+        ],
+    },
+};
+
+export const UttaksperioderMorInnlagtFørsteSeksUker: Story = {
+    name: 'Mor er innlagt første seks uker',
+    args: {
+        erFarEllerMedmor: false,
+        familiehendelsedato: '2024-04-22',
+        perioder: [
+            {
+                id: '1',
+                tidsperiode: {
+                    fom: new Date('2024-04-01'),
+                    tom: new Date('2024-04-19'),
+                },
+                type: Periodetype.Uttak,
+                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                forelder: Forelder.mor,
+            },
+            {
+                id: '2',
+                tidsperiode: {
+                    fom: new Date('2024-04-22'),
+                    tom: new Date('2024-05-31'),
+                },
+                type: Periodetype.Utsettelse,
+                årsak: UtsettelseÅrsakType.InstitusjonSøker,
+                erArbeidstaker: true,
+                forelder: Forelder.mor,
+            },
+            {
+                id: '3',
+                tidsperiode: {
+                    fom: new Date('2024-06-03'),
+                    tom: new Date('2024-06-28'),
+                },
+                type: Periodetype.Uttak,
+                konto: StønadskontoType.Mødrekvote,
+                forelder: Forelder.mor,
             },
         ],
     },

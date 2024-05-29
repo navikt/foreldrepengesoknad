@@ -2,6 +2,7 @@ import {
     BabyWrappedFillIcon,
     BandageFillIcon,
     CloudFillIcon,
+    HeartFillIcon,
     InformationSquareFillIcon,
     PersonPregnantFillIcon,
 } from '@navikt/aksel-icons';
@@ -12,10 +13,23 @@ type GetFargeProps = {
     erMor: boolean;
     erHull: boolean | undefined;
     erUtsettelse: boolean | undefined;
+    erFamiliehendelse: boolean | undefined;
     bem: any;
 };
 
-export const getFarge = ({ bem, erPeriodeUtenUttak, erSamtidigUttak, erUtsettelse, erMor, erHull }: GetFargeProps) => {
+export const getFarge = ({
+    bem,
+    erPeriodeUtenUttak,
+    erSamtidigUttak,
+    erUtsettelse,
+    erMor,
+    erHull,
+    erFamiliehendelse,
+}: GetFargeProps) => {
+    if (erFamiliehendelse) {
+        return bem.modifier('farge-bg-red');
+    }
+
     if (erHull) {
         return bem.modifier('farge-bg-graa');
     }
@@ -44,10 +58,22 @@ type GetIkonFargeProps = {
     erMor: boolean;
     erUtsettelse: boolean | undefined;
     erHull: boolean | undefined;
+    erFamiliehendelse: boolean | undefined;
     bem: any;
 };
 
-export const getIkonFarge = ({ erPeriodeUtenUttak, erMor, erUtsettelse, bem, erHull }: GetIkonFargeProps) => {
+export const getIkonFarge = ({
+    erPeriodeUtenUttak,
+    erMor,
+    erUtsettelse,
+    bem,
+    erHull,
+    erFamiliehendelse,
+}: GetIkonFargeProps) => {
+    if (erFamiliehendelse) {
+        return bem.modifier('farge-red');
+    }
+
     if (erHull) {
         return bem.modifier('farge-svart');
     }
@@ -72,9 +98,20 @@ type GetTekstProps = {
     erSamtidigUttak: boolean;
     erHull: boolean | undefined;
     erUtsettelse: boolean | undefined;
+    erFamiliehendelse: boolean | undefined;
 };
 
-export const getTekst = ({ erPeriodeUtenUttak, erSamtidigUttak, erHull, erUtsettelse }: GetTekstProps) => {
+export const getTekst = ({
+    erPeriodeUtenUttak,
+    erSamtidigUttak,
+    erHull,
+    erUtsettelse,
+    erFamiliehendelse,
+}: GetTekstProps) => {
+    if (erFamiliehendelse) {
+        return 'Fødsel';
+    }
+
     if (erUtsettelse) {
         return 'Du er innlagt på sykehus';
     }
@@ -100,6 +137,7 @@ type GetIkonProps = {
     erMor: boolean;
     erUtsettelse: boolean | undefined;
     erHull: boolean | undefined;
+    erFamiliehendelse: boolean | undefined;
     bem: any;
 };
 
@@ -110,11 +148,22 @@ export const getIkon = ({
     bem,
     erUtsettelse,
     erHull,
+    erFamiliehendelse,
 }: GetIkonProps) => {
+    if (erFamiliehendelse) {
+        return (
+            <HeartFillIcon
+                className={getIkonFarge({ bem, erMor, erPeriodeUtenUttak, erUtsettelse, erHull, erFamiliehendelse })}
+                width={24}
+                height={24}
+            />
+        );
+    }
+
     if (erHull) {
         return (
             <InformationSquareFillIcon
-                className={getIkonFarge({ bem, erMor, erPeriodeUtenUttak, erUtsettelse, erHull })}
+                className={getIkonFarge({ bem, erMor, erPeriodeUtenUttak, erUtsettelse, erHull, erFamiliehendelse })}
                 width={24}
                 height={24}
             />
@@ -124,7 +173,7 @@ export const getIkon = ({
     if (erUtsettelse) {
         return (
             <BandageFillIcon
-                className={getIkonFarge({ bem, erMor, erPeriodeUtenUttak, erUtsettelse, erHull })}
+                className={getIkonFarge({ bem, erMor, erPeriodeUtenUttak, erUtsettelse, erHull, erFamiliehendelse })}
                 width={24}
                 height={24}
             />
@@ -134,7 +183,7 @@ export const getIkon = ({
     if (periodeFørTermindato) {
         return (
             <PersonPregnantFillIcon
-                className={getIkonFarge({ bem, erMor, erPeriodeUtenUttak, erUtsettelse, erHull })}
+                className={getIkonFarge({ bem, erMor, erPeriodeUtenUttak, erUtsettelse, erHull, erFamiliehendelse })}
                 width={24}
                 height={24}
             />
@@ -144,7 +193,7 @@ export const getIkon = ({
     if (erPeriodeUtenUttak) {
         return (
             <CloudFillIcon
-                className={getIkonFarge({ bem, erMor, erPeriodeUtenUttak, erUtsettelse, erHull })}
+                className={getIkonFarge({ bem, erMor, erPeriodeUtenUttak, erUtsettelse, erHull, erFamiliehendelse })}
                 width={24}
                 height={24}
             />
@@ -153,7 +202,7 @@ export const getIkon = ({
 
     return (
         <BabyWrappedFillIcon
-            className={getIkonFarge({ bem, erMor, erPeriodeUtenUttak, erUtsettelse, erHull })}
+            className={getIkonFarge({ bem, erMor, erPeriodeUtenUttak, erUtsettelse, erHull, erFamiliehendelse })}
             width={24}
             height={24}
         />

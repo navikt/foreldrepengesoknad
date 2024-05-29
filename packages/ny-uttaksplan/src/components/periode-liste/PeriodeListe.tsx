@@ -1,8 +1,6 @@
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 
-import { BodyShort } from '@navikt/ds-react';
-
 import { Periode, isValidTidsperiode } from '@navikt/fp-common';
 
 import Permisjonsperiode from '../../types/Permisjonsperiode';
@@ -21,8 +19,8 @@ const getIndexOfFørstePeriodeEtterFødsel = (permisjonsperioder: Permisjonsperi
     );
 };
 
-const PeriodeListe: FunctionComponent<Props> = ({ perioder, familiehendelsedato, erFarEllerMedmor }) => {
-    const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder, erFarEllerMedmor, familiehendelsedato);
+const PeriodeListe: FunctionComponent<Props> = ({ perioder, familiehendelsedato }) => {
+    const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder, familiehendelsedato);
     const indexOfFørstePeriodeEtterFødsel = getIndexOfFørstePeriodeEtterFødsel(permisjonsperioder, familiehendelsedato);
 
     return (
@@ -31,7 +29,11 @@ const PeriodeListe: FunctionComponent<Props> = ({ perioder, familiehendelsedato,
                 return (
                     <>
                         {indexOfFørstePeriodeEtterFødsel === index ? (
-                            <BodyShort>{familiehendelsedato}</BodyShort>
+                            <PeriodeListeItem
+                                permisjonsperiode={p}
+                                familiehendelsedato={familiehendelsedato}
+                                erFamiliehendelse={true}
+                            />
                         ) : null}
                         <PeriodeListeItem permisjonsperiode={p} familiehendelsedato={familiehendelsedato} />
                     </>

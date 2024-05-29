@@ -4,6 +4,7 @@ const config = {
         name: '@storybook/react-vite',
         options: {},
     },
+    addons: ['@storybook/addon-viewport'],
 };
 
 export default config;
