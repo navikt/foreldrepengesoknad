@@ -179,7 +179,7 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
         filename: 'Min foreldrepengeplan.pdf',
         resolution: Resolution.HIGH,
         page: {
-            margin: Margin.MEDIUM,
+            margin: Margin.LARGE,
         },
     } as Options;
     const { toPDF, targetRef } = usePDF(pdfOptions);
