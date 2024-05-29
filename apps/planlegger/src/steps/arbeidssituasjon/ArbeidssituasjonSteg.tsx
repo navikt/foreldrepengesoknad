@@ -156,9 +156,10 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                         ),
                                     ]}
                                     shouldFadeIn
+                                    shouldAutofocus
                                     onChange={scrollToBottom}
                                 >
-                                    <Radio value={true} autoFocus>
+                                    <Radio value={true}>
                                         <FormattedMessage id="DefaultMessage.Ja" />
                                     </Radio>
                                     <Radio value={false}>
