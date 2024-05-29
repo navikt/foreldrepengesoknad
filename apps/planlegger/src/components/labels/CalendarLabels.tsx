@@ -22,7 +22,6 @@ interface Props {
     hvemPlanlegger: HvemPlanlegger;
     hvemHarRett: HvemHarRett;
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
-    erOppsummering?: boolean;
 }
 
 const CalendarLabels: FunctionComponent<Props> = ({
