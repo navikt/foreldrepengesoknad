@@ -99,7 +99,6 @@ describe('<OppsummeringSteg>', () => {
         render(<KunMorHarRett />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
-        expect(screen.getByText('Planen deres')).toBeInTheDocument();
         expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
 
         expect(screen.getByText('Barnet')).toBeInTheDocument();

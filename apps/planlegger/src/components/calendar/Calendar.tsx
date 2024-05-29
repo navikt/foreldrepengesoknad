@@ -107,7 +107,7 @@ const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }
 
     return (
         <HGrid
-            gap={{ xs: '1', sm: '4', md: '8' }}
+            gap={{ xs: '2', sm: '4', md: '8' }}
             className={useSmallerWidth ? styles.gridColumnsSmall : styles.gridColumnsWide}
         >
             {months.map((monthData, index) => (
