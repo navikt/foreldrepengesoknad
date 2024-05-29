@@ -86,3 +86,13 @@
     border-bottom-right-radius: 0.5rem;
     background-color: var(--a-limegreen-700);
 }
+
+@media print {
+    .progressStepper__progressBar {
+        display: none;
+    }
+
+    .progressStepper__stepsInfo {
+        display: none;
+    }
+}

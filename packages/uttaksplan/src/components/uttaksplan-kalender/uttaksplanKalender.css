@@ -3,3 +3,9 @@
         padding-bottom: 0.5rem;
     }
 }
+
+@media print {
+    .uttaksplanKalender__button {
+        display: none;
+    }
+}

@@ -208,7 +208,12 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
                 </div>
                 <Calendar periods={periods} familiehendelsesdato={familiehendelsesdato} />
             </div>
-            <Button variant="tertiary" icon={<DownloadIcon />} onClick={() => toPDF()}>
+            <Button
+                className={bem.element('button')}
+                variant="tertiary"
+                icon={<DownloadIcon />}
+                onClick={() => toPDF()}
+            >
                 <FormattedMessage id="kalender.lastNed" />
             </Button>
         </>
