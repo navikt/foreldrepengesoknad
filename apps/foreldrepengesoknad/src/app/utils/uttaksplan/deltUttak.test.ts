@@ -1,6 +1,7 @@
 import MockDate from 'mockdate';
 
-import { StønadskontoType, TilgjengeligStønadskonto } from '@navikt/fp-common';
+import { StønadskontoType } from '@navikt/fp-common';
+import { Stønadskonto } from '@navikt/fp-types';
 
 import { deltUttak } from './deltUttak';
 
@@ -18,7 +19,7 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             situasjon: 'fødsel',
             famDato: new Date('2022-08-08T00:00:00.000Z'),
             erFarEllerMedmor: true,
-            tilgjengeligeStønadskontoer: [fedrekvote] as TilgjengeligStønadskonto[],
+            tilgjengeligeStønadskontoer: [fedrekvote] as Stønadskonto[],
             startdatoPermisjon: new Date('2022-08-08T00:00:00.000Z'),
             fellesperiodeUkerMor: undefined,
             harAnnenForelderSøktFP: true,
@@ -38,7 +39,7 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             situasjon: 'fødsel',
             famDato: new Date('2022-08-08T00:00:00.000Z'),
             erFarEllerMedmor: true,
-            tilgjengeligeStønadskontoer: [fedrekvote] as TilgjengeligStønadskonto[],
+            tilgjengeligeStønadskontoer: [fedrekvote] as Stønadskonto[],
             startdatoPermisjon: new Date('2022-08-08T00:00:00.000Z'),
             fellesperiodeUkerMor: undefined,
             harAnnenForelderSøktFP: true,
@@ -58,7 +59,7 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             situasjon: 'fødsel',
             famDato: new Date('2022-08-08T00:00:00.000Z'),
             erFarEllerMedmor: true,
-            tilgjengeligeStønadskontoer: [fedrekvote] as TilgjengeligStønadskonto[],
+            tilgjengeligeStønadskontoer: [fedrekvote] as Stønadskonto[],
             startdatoPermisjon: new Date('2022-08-01T00:00:00.000Z'),
             fellesperiodeUkerMor: undefined,
             harAnnenForelderSøktFP: true,
@@ -80,7 +81,7 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             situasjon: 'fødsel',
             famDato: new Date('2022-08-08T00:00:00.000Z'),
             erFarEllerMedmor: true,
-            tilgjengeligeStønadskontoer: [fedrekvote] as TilgjengeligStønadskonto[],
+            tilgjengeligeStønadskontoer: [fedrekvote] as Stønadskonto[],
             startdatoPermisjon: new Date('2022-08-08T00:00:00.000Z'),
             fellesperiodeUkerMor: undefined,
             harAnnenForelderSøktFP: true,
@@ -100,7 +101,7 @@ describe('deltUttakFødselFarMedmor - når WLB gjelder', () => {
             situasjon: 'adopsjon',
             famDato: new Date('2022-08-08T00:00:00.000Z'),
             erFarEllerMedmor: true,
-            tilgjengeligeStønadskontoer: [fedrekvote] as TilgjengeligStønadskonto[],
+            tilgjengeligeStønadskontoer: [fedrekvote] as Stønadskonto[],
             startdatoPermisjon: new Date('2022-08-08T00:00:00.000Z'),
             fellesperiodeUkerMor: undefined,
             harAnnenForelderSøktFP: true,
@@ -131,7 +132,7 @@ describe('deltUttakFødselFarMedmor - når WLB ikke gjelder', () => {
             situasjon: 'fødsel',
             famDato: new Date('2022-08-08T00:00:00.000Z'),
             erFarEllerMedmor: true,
-            tilgjengeligeStønadskontoer: [fedrekvote] as TilgjengeligStønadskonto[],
+            tilgjengeligeStønadskontoer: [fedrekvote] as Stønadskonto[],
             startdatoPermisjon: new Date('2022-08-08T00:00:00.000Z'),
             fellesperiodeUkerMor: undefined,
             harAnnenForelderSøktFP: true,
@@ -149,7 +150,7 @@ describe('deltUttakFødselFarMedmor - når WLB ikke gjelder', () => {
             situasjon: 'fødsel',
             famDato: new Date('2022-08-08T00:00:00.000Z'),
             erFarEllerMedmor: true,
-            tilgjengeligeStønadskontoer: [fedrekvote] as TilgjengeligStønadskonto[],
+            tilgjengeligeStønadskontoer: [fedrekvote] as Stønadskonto[],
             startdatoPermisjon: new Date('2022-08-08T00:00:00.000Z'),
             fellesperiodeUkerMor: undefined,
             harAnnenForelderSøktFP: true,

@@ -9,9 +9,8 @@ import {
     EksisterendeSak,
     Periode,
     Periodetype,
-    StønadskontoType,
 } from '@navikt/fp-common';
-import { Søker, SøkersituasjonFp } from '@navikt/fp-types';
+import { StønadskontoType, Søker, SøkersituasjonFp } from '@navikt/fp-types';
 
 import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import SøkerData from 'app/context/types/SøkerData';

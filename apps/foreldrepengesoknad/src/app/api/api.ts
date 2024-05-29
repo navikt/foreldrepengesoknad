@@ -1,15 +1,13 @@
 import { AxiosResponse } from 'axios';
 
-import { BarnFraNesteSak, Dekningsgrad, EksisterendeSak, Periode, formaterDato, hasValue } from '@navikt/fp-common';
+import { BarnFraNesteSak, Dekningsgrad, EksisterendeSak, Periode } from '@navikt/fp-common';
 import { Attachment, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 
-import Environment from 'app/Environment';
 import Fordeling from 'app/context/types/Fordeling';
 import { Søknad } from 'app/context/types/Søknad';
 import SøknadRoutes from 'app/routes/routes';
 import { Kvittering } from 'app/types/Kvittering';
 import { SakerOppslag } from 'app/types/SakerOppslag';
-import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { useGetRequest } from 'app/utils/hooks/useRequest';
 
 import getAxiosInstance from './apiInterceptor';
@@ -34,11 +32,6 @@ export interface TilgjengeligeStønadskontoerParams {
     familieHendelseDatoNesteSak: string | undefined;
 }
 
-const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?: string): string | undefined => {
-    return hasValue(dato) ? formaterDato(dato, datoformat) : undefined;
-};
-
-const uttakBaseUrl = Environment.REST_API_URL;
 const sendSøknadUrl = '/soknad';
 const sendEndringssøknadUrl = '/soknad/endre';
 
@@ -101,63 +94,6 @@ const getStorageKvittering = (fnr: string): Promise<AxiosResponse<Kvittering>> =
     });
 };
 
-const useGetUttakskontoer = (params: TilgjengeligeStønadskontoerParams, isSuspended = false) => {
-    const {
-        antallBarn,
-        farHarRettINorge,
-        morHarRettINorge,
-        harAnnenForelderTilsvarendeRettEØS,
-        dekningsgrad,
-        fødselsdato,
-        termindato,
-        omsorgsovertakelsesdato,
-        morHarAleneomsorg,
-        farHarAleneomsorg,
-        startdatoUttak,
-        minsterett,
-        erMor,
-        morHarUføretrygd,
-        familieHendelseDatoNesteSak,
-    } = params;
-
-    const fpUttakServiceDateFormat = 'YYYYMMDD';
-
-    const urlParams = {
-        farHarRett: farHarRettINorge,
-        morHarRett: morHarRettINorge,
-        harAnnenForelderTilsvarendeRettEØS,
-        morHarAleneomsorg: morHarAleneomsorg || false,
-        farHarAleneomsorg: farHarAleneomsorg || false,
-        dekningsgrad,
-        antallBarn,
-        fødselsdato: formaterStønadskontoParamsDatoer(fødselsdato, fpUttakServiceDateFormat),
-        termindato: formaterStønadskontoParamsDatoer(termindato, fpUttakServiceDateFormat),
-        omsorgsovertakelseDato: formaterStønadskontoParamsDatoer(omsorgsovertakelsesdato, fpUttakServiceDateFormat),
-        startdatoUttak: formaterStønadskontoParamsDatoer(startdatoUttak, fpUttakServiceDateFormat),
-        minsterett,
-        erMor,
-        morHarUføretrygd,
-        familieHendelseDatoNesteSak: formaterStønadskontoParamsDatoer(
-            familieHendelseDatoNesteSak,
-            fpUttakServiceDateFormat,
-        ),
-    };
-
-    const { data, error } = useGetRequest<TilgjengeligeStønadskontoerDTO>(`${uttakBaseUrl}/konto`, {
-        config: {
-            timeout: 15 * 1000,
-            params: urlParams,
-            withCredentials: false,
-        },
-        isSuspended,
-    });
-
-    return {
-        tilgjengeligeStønadskontoerData: data,
-        tilgjengeligeStønadskontoerError: error,
-    };
-};
-
 const sendSøknad = (søknad: SøknadForInnsending | EndringssøknadForInnsending, fnr: string, signal: AbortSignal) => {
     const url = søknad.erEndringssøknad ? sendEndringssøknadUrl : sendSøknadUrl;
 
@@ -191,7 +127,6 @@ const deleteMellomlagredeVedlegg = (fnr: string, vedlegg: Attachment[], signal: 
 };
 
 const Api = {
-    useGetUttakskontoer,
     storeAppState,
     getStorageKvittering,
     useStoredAppState,

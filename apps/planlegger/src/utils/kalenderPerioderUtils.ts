@@ -4,9 +4,9 @@ import dayjs from 'dayjs';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import { erMorDelAvSøknaden } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert } from './barnetUtils';

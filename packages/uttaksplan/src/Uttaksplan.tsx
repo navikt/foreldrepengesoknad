@@ -17,7 +17,6 @@ import {
     Periode,
     Situasjon,
     Søkersituasjon,
-    TilgjengeligStønadskonto,
     Utsettelsesperiode,
     Uttaksperiode,
     farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
@@ -29,7 +28,7 @@ import {
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { Arbeidsforhold, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
 import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
@@ -67,7 +66,7 @@ interface Props {
     uttaksplan: Periode[];
     familiehendelsesdato: string;
     handleOnPlanChange: (nyPlan: Periode[]) => void;
-    stønadskontoer: TilgjengeligStønadskonto[];
+    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: Arbeidsforhold[];

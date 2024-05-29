@@ -1,16 +1,12 @@
-import {
-    Periodetype,
-    StønadskontoUttak,
-    TidsperiodeDate,
-    andreAugust2022ReglerGjelder,
-    isValidTidsperiode,
-} from '@navikt/fp-common';
 import dayjs from 'dayjs';
+
+import { Periodetype, TidsperiodeDate, andreAugust2022ReglerGjelder, isValidTidsperiode } from '@navikt/fp-common';
+import { Stønadskonto } from '@navikt/fp-types';
 
 const kontoSkalBesvares = (
     periodetype: Periodetype,
     tidsperiode: TidsperiodeDate,
-    stønadskontoer: StønadskontoUttak[],
+    stønadskontoer: Stønadskonto[],
     familiehendelsesdato: Date,
     erFarEllerMedmor: boolean,
 ): boolean => {

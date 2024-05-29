@@ -7,9 +7,9 @@ import { MemoryRouter } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import { StønadskontoType } from 'types/TilgjengeligeStønadskontoer';
 
 import { initAmplitude } from '@navikt/fp-metrics';
+import { StønadskontoType } from '@navikt/fp-types';
 
 import HvorLangPeriodeSteg from './HvorLangPeriodeSteg';
 

@@ -1,14 +1,9 @@
-import {
-    Periode,
-    StønadskontoType,
-    StønadskontoUttak,
-    TilgjengeligStønadskonto,
-    beregnGjenståendeUttaksdager,
-} from '@navikt/fp-common';
+import { Periode, StønadskontoType, beregnGjenståendeUttaksdager } from '@navikt/fp-common';
+import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 export interface Uttaksstatus {
     gjelderDagerBrukt: boolean;
-    uttak: StønadskontoUttak[];
+    uttak: Stønadskonto[];
 }
 
 export const getUttaksstatus = ({
@@ -23,11 +18,7 @@ export const getUttaksstatus = ({
         (erEndringssøknad && harKomplettUttaksplan !== true) ||
         (erDeltUttak && erFarEllerMedmor && harKomplettUttaksplan !== true);
 
-    const uttak: StønadskontoUttak[] = beregnGjenståendeUttaksdager(
-        tilgjengeligeStønadskontoer,
-        uttaksplan,
-        gjelderDagerBrukt,
-    );
+    const uttak = beregnGjenståendeUttaksdager(tilgjengeligeStønadskontoer, uttaksplan, gjelderDagerBrukt);
     return {
         gjelderDagerBrukt,
         uttak: erFarEllerMedmor
@@ -41,7 +32,7 @@ export interface UttaksstatusFuncParams {
     erEndringssøknad: boolean;
     harKomplettUttaksplan: boolean;
     erFarEllerMedmor: boolean;
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
     uttaksplan: Periode[];
 }
 

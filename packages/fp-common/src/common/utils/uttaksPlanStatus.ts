@@ -1,6 +1,5 @@
-import { Perioden } from './Perioden';
-import { getStønadskontoFromOppholdsårsak } from './periodeUtils';
-import { getFloatFromString } from './numberUtils';
+import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+
 import {
     AvslåttPeriode,
     InfoPeriode,
@@ -9,8 +8,6 @@ import {
     Periode,
     PeriodeInfoType,
     Periodetype,
-    StønadskontoUttak,
-    TilgjengeligStønadskonto,
     UttakAnnenPartInfoPeriode,
     Uttaksperiode,
     isAvslåttPeriode,
@@ -19,6 +16,9 @@ import {
     isOverføringsperiode,
     isUttaksperiode,
 } from '../types';
+import { Perioden } from './Perioden';
+import { getFloatFromString } from './numberUtils';
+import { getStønadskontoFromOppholdsårsak } from './periodeUtils';
 
 export const finnAntallDagerÅTrekke = (periode: Periode): number => {
     const dager = Perioden(periode).getAntallUttaksdager();
@@ -50,12 +50,12 @@ export const getAllePerioderMedUttaksinfoFraUttaksplan = (perioder: Periode[]): 
 };
 
 export const beregnGjenståendeUttaksdager = (
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     uttaksplan: Periode[],
     beregnDagerBrukt: boolean,
-): StønadskontoUttak[] => {
+): Stønadskonto[] => {
     const alleUttakIUttaksplan = getAllePerioderMedUttaksinfoFraUttaksplan(uttaksplan);
-    return tilgjengeligeStønadskontoer.map((konto): StønadskontoUttak => {
+    return tilgjengeligeStønadskontoer.kontoer.map((konto) => {
         let antallDager = beregnDagerBrukt ? 0 : konto.dager;
         const uttaksplanPerioder = alleUttakIUttaksplan.filter((p) => p.konto === konto.konto);
         if (uttaksplanPerioder) {
@@ -78,9 +78,9 @@ export const beregnGjenståendeUttaksdager = (
 };
 
 export const beregnBrukteUttaksdager = (
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     uttaksplan: Periode[],
-): StønadskontoUttak[] => {
+): Stønadskonto[] => {
     return beregnGjenståendeUttaksdager(tilgjengeligeStønadskontoer, uttaksplan, true);
 };
 

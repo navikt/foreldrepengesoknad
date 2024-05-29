@@ -3,12 +3,11 @@ import ErrorPage from 'components/error/ErrorPage';
 import { FunctionComponent, useMemo } from 'react';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { createApi, usePostRequest } from '@navikt/fp-api';
-import { LocaleAll } from '@navikt/fp-types';
+import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import PlanleggerRouter from './PlanleggerRouter';
 import Environment from './appData/Environment';

@@ -9,11 +9,10 @@ import OmBarnetSteg from 'steps/omBarnet/OmBarnetSteg';
 import OmPlanleggerenSteg from 'steps/omPlanleggeren/OmPlanleggerenSteg';
 import OppsummeringSteg from 'steps/oppsummering/OppsummeringSteg';
 import OversiktSteg from 'steps/oversikt/OversiktSteg';
-import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 
 import { Loader } from '@navikt/ds-react';
 
-import { LocaleAll } from '@navikt/fp-types';
+import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 interface Props {
     locale: LocaleAll;

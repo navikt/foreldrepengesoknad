@@ -1,10 +1,10 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
 import { getAntallUkerAktivitetsfriKvote, getAntallUkerForeldrepenger } from 'utils/stønadskontoerUtils';
 
 import { BodyShort } from '@navikt/ds-react';
 
+import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import CalendarIconLabel from './CalendarIconLabel';

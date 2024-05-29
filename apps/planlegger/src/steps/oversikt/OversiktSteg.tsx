@@ -15,7 +15,6 @@ import {
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { Situasjon } from 'types/HvemPlanlegger';
-import { TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 import { erAlenesøker, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
@@ -25,6 +24,7 @@ import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtil
 
 import { BodyLong, BodyShort, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
+import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 

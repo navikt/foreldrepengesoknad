@@ -15,7 +15,7 @@ import { Arbeidsforhold } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
-import { useApiGetData, useApiPostData } from 'app/api/context/useFpApiData';
+import { useApiPostData } from 'app/api/context/useFpApiData';
 import getStønadskontoParams from 'app/api/getStønadskontoParams';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
@@ -23,7 +23,6 @@ import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { RequestStatus } from 'app/types/RequestState';
 import { getAnnenPartVedtakParam, shouldSuspendAnnenPartVedtakApiRequest } from 'app/utils/annenForelderUtils';
 import { getVis1Juli2024Info } from 'app/utils/dateUtils';
-import { getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 
 import DekningsgradForm from './DekningsgradForm';
 import DekningsgradValgtAvAnnenPartPanel from './DekningsgradValgtAvAnnenPartPanel';
@@ -59,34 +58,15 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
         suspendAnnenPartVedtakApiRequest,
     );
 
-    const params = getStønadskontoParams(
-        barn,
-        annenForelder,
-        søkersituasjon,
-        barnFraNesteSak,
-        annenPartsVedtak,
-        eksisterendeSak,
-    );
-
     const suspendStønadskontoApiRequests = suspendAnnenPartVedtakApiRequest
         ? false
         : statusAnnenPartVedtak !== RequestStatus.FINISHED;
 
-    const { data: tilgjengeligeStønadskontoer80 } = useApiGetData(
-        FpApiDataType.STØNADSKONTOER_80,
-        params.stønadskontoParams80,
+    const { data: tilgjengeligeStønadskontoer } = useApiPostData(
+        FpApiDataType.STØNADSKONTOER,
+        getStønadskontoParams(barn, annenForelder, søkersituasjon, barnFraNesteSak, annenPartsVedtak, eksisterendeSak),
         suspendStønadskontoApiRequests,
     );
-    const { data: tilgjengeligeStønadskontoer100 } = useApiGetData(
-        FpApiDataType.STØNADSKONTOER_100,
-        params.stønadskontoParams100,
-        suspendStønadskontoApiRequests,
-    );
-
-    const tilgjengeligeStønadskontoer =
-        tilgjengeligeStønadskontoer80 && tilgjengeligeStønadskontoer100
-            ? getValgtStønadskontoFor80Og100Prosent(tilgjengeligeStønadskontoer80, tilgjengeligeStønadskontoer100)
-            : undefined;
 
     const visAnnenPartsValg = annenPartsVedtak && annenPartsVedtak.perioder.length > 0;
     const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && !annenPartsVedtak;

@@ -15,7 +15,7 @@ import { Arbeidsforhold, Søker } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
-import { useApiGetData, useApiPostData } from 'app/api/context/useFpApiData';
+import { useApiPostData } from 'app/api/context/useFpApiData';
 import getStønadskontoParams, {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
@@ -32,7 +32,6 @@ import {
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
-import { getValgtMinsterett, getValgtStønadskontoFor80Og100Prosent } from 'app/utils/stønadskontoUtils';
 
 import FordelingForm from './fordeling-form/FordelingForm';
 import FordelingOversikt from './fordeling-oversikt/FordelingOversikt';
@@ -81,27 +80,13 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
         suspendAnnenPartVedtakApiRequest,
     );
 
-    const params = getStønadskontoParams(
-        barn,
-        annenForelder,
-        søkersituasjon,
-        barnFraNesteSak,
-        annenPartsVedtak,
-        eksisterendeSak,
-    );
-
     const suspendStønadskontoApiRequests = suspendAnnenPartVedtakApiRequest
         ? false
         : statusAnnenPartVedtak !== RequestStatus.FINISHED;
 
-    const { data: tilgjengeligeStønadskontoer80 } = useApiGetData(
-        FpApiDataType.STØNADSKONTOER_80,
-        params.stønadskontoParams80,
-        suspendStønadskontoApiRequests,
-    );
-    const { data: tilgjengeligeStønadskontoer100 } = useApiGetData(
-        FpApiDataType.STØNADSKONTOER_100,
-        params.stønadskontoParams100,
+    const { data: tilgjengeligeStønadskontoer } = useApiPostData(
+        FpApiDataType.STØNADSKONTOER,
+        getStønadskontoParams(barn, annenForelder, søkersituasjon, barnFraNesteSak, annenPartsVedtak, eksisterendeSak),
         suspendStønadskontoApiRequests,
     );
 
@@ -116,12 +101,8 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
             ),
         [annenPartsVedtak, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak],
     );
-    const tilgjengeligeStønadskontoer =
-        tilgjengeligeStønadskontoer80 && tilgjengeligeStønadskontoer100
-            ? getValgtStønadskontoFor80Og100Prosent(tilgjengeligeStønadskontoer80, tilgjengeligeStønadskontoer100)
-            : undefined;
 
-    const minsterett = getValgtMinsterett(dekningsgrad, tilgjengeligeStønadskontoer100, tilgjengeligeStønadskontoer80);
+    const minsterett = tilgjengeligeStønadskontoer ? tilgjengeligeStønadskontoer[dekningsgrad].minsteretter : undefined;
 
     const valgtStønadskonto = tilgjengeligeStønadskontoer
         ? tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)]
@@ -206,9 +187,6 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
                     goToPreviousDefaultStep={navigator.goToPreviousDefaultStep}
                     goToNextDefaultStep={navigator.goToNextDefaultStep}
                     førsteDagEtterAnnenForelder={førsteDagEtterAnnenForelder}
-                    valgtStønadskonto={valgtStønadskonto}
-                    eksisterendeVedtakAnnenPart={eksisterendeVedtakAnnenPart}
-                    ukerMedFellesperiode={ukerMedFellesperiode}
                 ></FordelingForm>
             </VStack>
         </Step>

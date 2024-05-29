@@ -1,9 +1,11 @@
+import { AxiosError } from 'axios';
 import { useEffect } from 'react';
-import { FpApiDataHashMap, FpApiDataType, useApiContextGetData, useApiContextSaveData } from './FpApiDataContext';
-import { useGetRequest, usePostRequest } from 'app/utils/hooks/useRequest';
+
 import Environment from 'app/Environment';
 import { RequestStatus } from 'app/types/RequestState';
-import { AxiosError } from 'axios';
+import { usePostRequest } from 'app/utils/hooks/useRequest';
+
+import { FpApiDataHashMap, FpApiDataType, useApiContextGetData, useApiContextSaveData } from './FpApiDataContext';
 
 const sortObject = (unordered: Record<string, any>) =>
     Object.keys(unordered)
@@ -26,46 +28,7 @@ const hashCode = (string: string) => {
 const TYPE_URL_MAP = {
     [FpApiDataType.ANNEN_PART_VEDTAK]: `/innsyn/v2/annenPartVedtak`,
     [FpApiDataType.NESTE_SAK_ANNEN_PART_VEDTAK]: `/innsyn/v2/annenPartVedtak`,
-    [FpApiDataType.STØNADSKONTOER_80]: `${Environment.REST_API_URL}/konto`,
-    [FpApiDataType.STØNADSKONTOER_100]: `${Environment.REST_API_URL}/konto`,
-};
-
-export const useApiGetData = <DATA_TYPE extends FpApiDataType, PARAMS extends object>(
-    type: DATA_TYPE,
-    params: PARAMS,
-    suspendRequest: boolean,
-): {
-    data: NonNullable<FpApiDataHashMap[DATA_TYPE]>[1] | undefined;
-    requestStatus: RequestStatus;
-    error: AxiosError<any, any> | null;
-} => {
-    const hashedParams = hashCode(JSON.stringify(sortObject(params)));
-
-    const apiData = useApiContextGetData<DATA_TYPE>(type, hashedParams);
-    const hasHashedData = !!apiData;
-    const updateApiData = useApiContextSaveData(type, hashedParams);
-
-    const { data, requestStatus, error } = useGetRequest<typeof apiData>(TYPE_URL_MAP[type], {
-        config: {
-            timeout: 15 * 1000,
-            params,
-            withCredentials: false,
-        },
-        isSuspended: hasHashedData || suspendRequest,
-    });
-
-    useEffect(() => {
-        if (data) {
-            updateApiData(data);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data]);
-
-    return {
-        data: hasHashedData ? apiData : data,
-        requestStatus: hasHashedData ? RequestStatus.FINISHED : requestStatus,
-        error,
-    };
+    [FpApiDataType.STØNADSKONTOER]: `${Environment.REST_API_URL}/konto`,
 };
 
 export const useApiPostData = <DATA_TYPE extends FpApiDataType, PARAMS extends object>(
