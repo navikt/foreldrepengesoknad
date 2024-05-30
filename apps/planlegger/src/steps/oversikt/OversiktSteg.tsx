@@ -118,6 +118,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
+    const erOversiktSteg = true;
 
     return (
         <form>
@@ -152,48 +153,52 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             </div>
                         </Infobox>
                     )}
-                    <ToggleGroup
-                        defaultValue={hvorLangPeriode?.dekningsgrad}
-                        size="small"
-                        variant="neutral"
-                        onChange={oppdaterPeriodeOgFordeling}
-                        style={{ width: '100%' }}
-                    >
-                        <ToggleGroup.Item value={Dekningsgrad.HUNDRE_PROSENT}>
-                            <FormattedMessage
-                                id="OversiktSteg.100"
-                                values={{
-                                    uker: antallUker100,
-                                }}
-                            />
-                        </ToggleGroup.Item>
-                        <ToggleGroup.Item value={Dekningsgrad.ÅTTI_PROSENT}>
-                            <FormattedMessage id="OversiktSteg.80" values={{ uker: antallUker80 }} />
-                        </ToggleGroup.Item>
-                    </ToggleGroup>
-                    {hvemHarRett === 'beggeHarRett' &&
-                        (!barnet.erFødsel || hvemPlanlegger.type !== Situasjon.FAR_OG_FAR) && (
-                            <Select
-                                defaultValue={fordeling?.antallUkerSøker1}
-                                label={<FormattedMessage id="OversiktSteg.Fellesperiodefordeling" />}
-                                name="antallUkerSøker1"
-                                onChange={(e) => {
-                                    lagreFordeling({ antallUkerSøker1: parseInt(e.target.value, 10) });
-                                }}
-                            >
-                                {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (
-                                    <option key={value.antallUkerSøker1} value={value.antallUkerSøker1}>
-                                        {finnFellesperiodeFordelingOptionTekst(
-                                            intl,
-                                            value,
-                                            hvemPlanlegger,
-                                            fornavnSøker1,
-                                            fornavnSøker2,
-                                        )}
-                                    </option>
-                                ))}
-                            </Select>
-                        )}
+                    <VStack gap="1">
+                        <ToggleGroup
+                            defaultValue={hvorLangPeriode?.dekningsgrad}
+                            size="small"
+                            variant="neutral"
+                            onChange={oppdaterPeriodeOgFordeling}
+                            style={{ width: '100%' }}
+                        >
+                            <ToggleGroup.Item value={Dekningsgrad.HUNDRE_PROSENT}>
+                                <FormattedMessage
+                                    id="OversiktSteg.100"
+                                    values={{
+                                        uker: antallUker100,
+                                    }}
+                                />
+                            </ToggleGroup.Item>
+                            <ToggleGroup.Item value={Dekningsgrad.ÅTTI_PROSENT}>
+                                <FormattedMessage id="OversiktSteg.80" values={{ uker: antallUker80 }} />
+                            </ToggleGroup.Item>
+                        </ToggleGroup>
+                        {hvemHarRett === 'beggeHarRett' &&
+                            (!barnet.erFødsel || hvemPlanlegger.type !== Situasjon.FAR_OG_FAR) && (
+                                <Select
+                                    defaultValue={fordeling?.antallUkerSøker1}
+                                    label={''}
+                                    name="antallUkerSøker1"
+                                    onChange={(e) => {
+                                        lagreFordeling({ antallUkerSøker1: parseInt(e.target.value, 10) });
+                                    }}
+                                >
+                                    {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (
+                                        <option key={value.antallUkerSøker1} value={value.antallUkerSøker1}>
+                                            {finnFellesperiodeFordelingOptionTekst(
+                                                intl,
+                                                value,
+                                                hvemPlanlegger,
+                                                fornavnSøker1,
+                                                fornavnSøker2,
+                                                erOversiktSteg,
+                                            )}
+                                        </option>
+                                    ))}
+                                </Select>
+                            )}
+                    </VStack>
+
                     <VStack gap="5">
                         <CalendarLabels
                             uttaksdata={

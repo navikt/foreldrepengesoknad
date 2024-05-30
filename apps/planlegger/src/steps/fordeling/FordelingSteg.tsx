@@ -45,6 +45,7 @@ export const finnFellesperiodeFordelingOptionTekst = (
     hvemPlanlegger: HvemPlanlegger,
     fornavnSøker1?: string,
     fornavnSøker2?: string,
+    erOversiktSteg?: boolean,
 ) => {
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
     const søker1Tekst = erFarOgFar && fornavnSøker1 ? fornavnSøker1 : finnSøker1Tekst(intl, hvemPlanlegger);
@@ -54,7 +55,7 @@ export const finnFellesperiodeFordelingOptionTekst = (
         return (
             <FormattedMessage
                 id="FordelingSteg.FordelingOptionAlt"
-                values={{ hvem: søker2Tekst, uker: value.antallUkerSøker2 }}
+                values={{ hvem: søker2Tekst, uker: value.antallUkerSøker2, erOversiktSteg }}
             />
         );
     }
@@ -62,7 +63,7 @@ export const finnFellesperiodeFordelingOptionTekst = (
         return (
             <FormattedMessage
                 id="FordelingSteg.FordelingOptionAlt"
-                values={{ hvem: søker1Tekst, uker: value.antallUkerSøker1 }}
+                values={{ hvem: søker1Tekst, uker: value.antallUkerSøker1, erOversiktSteg }}
             />
         );
     }
@@ -74,6 +75,7 @@ export const finnFellesperiodeFordelingOptionTekst = (
                 hvem2: søker2Tekst,
                 uker: value.antallUkerSøker1,
                 uker2: value.antallUkerSøker2,
+                erOversiktSteg,
             }}
         />
     );
