@@ -63,7 +63,7 @@
     "FordelingsdetaljerPanel.Infoboks.HvisBarnetFlereBarn": "Hvis barna {erFødt, select, true {ble født {dato}} other {blir født på termin}} og dere tar sammenhengende permisjon fra {erMorDelAvSøknaden, select, true {tre uker før} other {}} {erFødt, select, true {fødselsdato} other {termin}} kan permisjonen se sånn ut med fordelingen dere valgte:",
     "FordelingsdetaljerPanel.Infoboks.HvisAdopsjon": "Hvis {antallBarn, select, 1 {barnet} other {barna}} har omsorgsovertakelsedato {dato} og dere tar permisjon sammenhengende fra overtakelsen kan permisjonen se sånn ut med fordelingen dere valgte:",
     "FordelingsdetaljerPanel.Infoboks.Periode": "<b>{hvem}: {fom} – {tom}</b>",
-    "HvemPlanleggerSteg.HvemPlanlegger": "Hvem planlegger",
+    "HvemPlanleggerSteg.HvemPlanlegger": "Hvem planlegger?",
     "HvemPlanleggerSteg.HvemPlanlegger.Required": "Du må svare på hvem som planlegger foreldrepenger før du går videre.",
     "HvemPlanleggerSteg.MorOgFar": "Mor og far",
     "HvemPlanleggerSteg.MorOgMedmor": "Mor og medmor",
