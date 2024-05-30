@@ -48,7 +48,7 @@ export const useApiPostData = <DATA_TYPE extends FpApiDataType, PARAMS extends o
 
     const { data, requestStatus, error } = usePostRequest<typeof apiData>(TYPE_URL_MAP[type], params, {
         config: {
-            withCredentials: true,
+            withCredentials: type !== FpApiDataType.STØNADSKONTOER,
         },
         isSuspended: hasHashedData || suspendRequest,
     });
