@@ -47,9 +47,11 @@ const PeriodeListeHeaderMobil: FunctionComponent<Props> = ({
                         {formatDateShortMonth(permisjonsperiode.tidsperiode.fom)} -{' '}
                         {formatDateShortMonth(permisjonsperiode.tidsperiode.tom)}
                     </Heading>
-                    <div style={{ marginLeft: '1rem' }}>
-                        <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>
-                    </div>
+                    {erFamiliehendelse !== true ? (
+                        <div style={{ marginLeft: '1rem' }}>
+                            <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>
+                        </div>
+                    ) : null}
                 </div>
                 <BodyShort>
                     {getTekst({ erPeriodeUtenUttak, erSamtidigUttak, erHull, erUtsettelse, erFamiliehendelse })}

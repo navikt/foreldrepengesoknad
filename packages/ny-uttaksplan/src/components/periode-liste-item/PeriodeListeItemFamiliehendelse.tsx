@@ -16,7 +16,11 @@ interface Props {
     erFamiliehendelse?: boolean;
 }
 
-const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode, familiehendelsedato, erFamiliehendelse }) => {
+const PeriodeListeItemFamiliehendelse: FunctionComponent<Props> = ({
+    permisjonsperiode,
+    familiehendelsedato,
+    erFamiliehendelse,
+}) => {
     const bem = bemUtils('periode-liste-item');
 
     return (
@@ -41,13 +45,14 @@ const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode, familie
                     </Accordion.Header>
                 </Hide>
                 <Accordion.Content>
-                    {permisjonsperiode.perioder.map((p) => {
-                        return <PeriodeListeContent periode={p} erFamiliehendelse={!!erFamiliehendelse} />;
-                    })}
+                    <PeriodeListeContent
+                        periode={permisjonsperiode.perioder[0]}
+                        erFamiliehendelse={!!erFamiliehendelse}
+                    />
                 </Accordion.Content>
             </Accordion.Item>
         </Accordion>
     );
 };
 
-export default PeriodeListeItem;
+export default PeriodeListeItemFamiliehendelse;

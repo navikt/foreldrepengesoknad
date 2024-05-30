@@ -5,6 +5,7 @@ import { Periode, isValidTidsperiode } from '@navikt/fp-common';
 
 import Permisjonsperiode from '../../types/Permisjonsperiode';
 import { mapPerioderToPermisjonsperiode } from '../../utils/permisjonsperiodeUtils';
+import PeriodeListeItemFamiliehendelse from '../periode-liste-item/PeriodeListeItemFamiliehendelse';
 import PeriodeListeItem from './../periode-liste-item/PeriodeListeItem';
 
 interface Props {
@@ -29,7 +30,7 @@ const PeriodeListe: FunctionComponent<Props> = ({ perioder, familiehendelsedato 
                 return (
                     <>
                         {indexOfFørstePeriodeEtterFødsel === index ? (
-                            <PeriodeListeItem
+                            <PeriodeListeItemFamiliehendelse
                                 permisjonsperiode={p}
                                 familiehendelsedato={familiehendelsedato}
                                 erFamiliehendelse={true}
