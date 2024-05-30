@@ -8,7 +8,6 @@ import {
     Situasjon,
     StønadskontoType,
     Tidsperioden,
-    TilgjengeligStønadskonto,
     Uttaksdagen,
     Uttaksperiode,
     andreAugust2022ReglerGjelder,
@@ -19,13 +18,14 @@ import {
     sorterPerioder,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
+import { Stønadskonto } from '@navikt/fp-types';
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
     famDato: Date,
-    foreldrepengerKonto: TilgjengeligStønadskonto,
+    foreldrepengerKonto: Stønadskonto,
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined,
+    aktivitetsfriKvote: Stønadskonto | undefined,
     bareFarMedmorHarRett: boolean,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ) => {
@@ -134,7 +134,7 @@ const ikkeDeltUttakAdopsjonFarMedmor = (
 
 const ikkeDeltUttakAdopsjonMor = (
     famDato: Date,
-    foreldrepengerKonto: TilgjengeligStønadskonto,
+    foreldrepengerKonto: Stønadskonto,
     startdatoPermisjon: Date | undefined,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ) => {
@@ -160,10 +160,10 @@ const ikkeDeltUttakAdopsjonMor = (
 const ikkeDeltUttakAdopsjon = (
     famDato: Date,
     erFarEllerMedmor: boolean,
-    foreldrepengerKonto: TilgjengeligStønadskonto,
+    foreldrepengerKonto: Stønadskonto,
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined,
+    aktivitetsfriKvote: Stønadskonto | undefined,
     bareFarMedmorHarRett: boolean,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ) => {
@@ -184,9 +184,9 @@ const ikkeDeltUttakAdopsjon = (
 
 const ikkeDeltUttakFødselMor = (
     famDato: Date,
-    foreldrepengerKonto: TilgjengeligStønadskonto,
+    foreldrepengerKonto: Stønadskonto,
     startdatoPermisjon: Date | undefined,
-    foreldrePengerFørFødselKonto: TilgjengeligStønadskonto,
+    foreldrePengerFørFødselKonto: Stønadskonto,
 ) => {
     const førsteUttaksdag = Uttaksdagen(famDato).denneEllerNeste();
     const perioder: Periode[] = [];
@@ -267,10 +267,10 @@ const ikkeDeltUttakFødselMor = (
 
 const ikkeDeltUttakFødselFarMedmor = (
     famDato: Date,
-    foreldrepengerKonto: TilgjengeligStønadskonto,
+    foreldrepengerKonto: Stønadskonto,
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined,
+    aktivitetsfriKvote: Stønadskonto | undefined,
     bareFarMedmorHarRett: boolean,
     termindato: Date | undefined,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
@@ -371,11 +371,11 @@ const ikkeDeltUttakFødselFarMedmor = (
 const ikkeDeltUttakFødsel = (
     famDato: Date,
     erFarEllerMedmor: boolean,
-    foreldrepengerKonto: TilgjengeligStønadskonto,
+    foreldrepengerKonto: Stønadskonto,
     startdatoPermisjon: Date | undefined,
-    foreldrePengerFørFødselKonto: TilgjengeligStønadskonto | undefined,
+    foreldrePengerFørFødselKonto: Stønadskonto | undefined,
     erMorUfør: boolean | undefined,
-    aktivitetsfriKvote: TilgjengeligStønadskonto | undefined,
+    aktivitetsfriKvote: Stønadskonto | undefined,
     bareFarMedmorHarRett: boolean,
     termindato: Date | undefined,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
@@ -400,7 +400,7 @@ export const ikkeDeltUttak = (
     situasjon: Situasjon,
     famDato: Date,
     erFarEllerMedmor: boolean,
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[],
+    tilgjengeligeStønadskontoer: Stønadskonto[],
     startdatoPermisjon: Date | undefined,
     erMorUfør: boolean | undefined,
     bareFarMedmorHarRett: boolean,

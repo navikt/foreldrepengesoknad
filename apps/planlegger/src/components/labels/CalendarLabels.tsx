@@ -2,13 +2,14 @@ import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from 'types/TilgjengeligeStønadskontoer';
 import { getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { HvemHarRett, harKunFarSøker1Rett, harKunMorRett, harMedmorEllerFarSøker2Rett } from 'utils/hvemHarRettUtils';
 import { Uttaksdata } from 'utils/uttakUtils';
 
 import { HStack, VStack } from '@navikt/ds-react';
+
+import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import AktivitetskravLabel from './calendarLabels/AktivitetskravLabel';
 import AntallUkerFpLabel from './calendarLabels/AntallUkerFpLabel';
@@ -21,7 +22,6 @@ interface Props {
     hvemPlanlegger: HvemPlanlegger;
     hvemHarRett: HvemHarRett;
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
-    erOppsummering?: boolean;
 }
 
 const CalendarLabels: FunctionComponent<Props> = ({
@@ -30,7 +30,6 @@ const CalendarLabels: FunctionComponent<Props> = ({
     hvemPlanlegger,
     hvemHarRett,
     valgtStønadskonto,
-    erOppsummering,
 }) => {
     const intl = useIntl();
 
@@ -63,70 +62,37 @@ const CalendarLabels: FunctionComponent<Props> = ({
     return (
         <VStack gap="1">
             {skalViseAntallUkerLabels && (
-                <HStack gap="1">
-                    <AntallUkerFpLabel
-                        søkerTekst={søker1Tekst}
-                        startdato={startdatoPeriode1}
-                        sluttdato={sluttdatoPeriode1}
-                        isBluePanel
-                    />
+                <HStack gap="2">
+                    <AntallUkerFpLabel søkerTekst={søker1Tekst} isBluePanel />
                     {søker2Tekst && hvemHarRett === 'beggeHarRett' && startdatoPeriode2 && sluttdatoPeriode2 && (
-                        <AntallUkerFpLabel
-                            søkerTekst={søker2Tekst}
-                            startdato={startdatoPeriode2}
-                            sluttdato={sluttdatoPeriode2}
-                        />
+                        <AntallUkerFpLabel søkerTekst={søker2Tekst} />
                     )}
+                    <FamiliehendelseLabel barnet={barnet} />
                 </HStack>
             )}
-            {skalViseAktivitetskravLabels && !erOppsummering && (
-                <>
+            {skalViseAktivitetskravLabels && (
+                <HStack gap="2">
                     <AktivitetskravLabel
                         utenAktivitetskrav
                         valgtStønadskonto={valgtStønadskonto}
                         tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
                         tekstPart2={farOgFarAdopsjonDerKunSøker1HarRett ? søker2Tekst : søker1Tekst}
-                        startdato={startdatoPeriode1}
-                        sluttdato={sluttdatoPeriode1}
                         isBluePanel
                     />
                     <AktivitetskravLabel
                         valgtStønadskonto={valgtStønadskonto}
                         tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
                         tekstPart2={farOgFarAdopsjonDerKunSøker1HarRett ? søker2Tekst : søker1Tekst}
-                        startdato={startdatoPeriode2}
-                        sluttdato={sluttdatoPeriode2}
                     />
-                </>
+                    <FamiliehendelseLabel barnet={barnet} />
+                </HStack>
             )}
-            {skalViseAktivitetskravLabels && erOppsummering && (
-                <>
-                    <AktivitetskravLabel
-                        utenAktivitetskrav
-                        valgtStønadskonto={valgtStønadskonto}
-                        tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
-                        tekstPart2={farOgFarAdopsjonDerKunSøker1HarRett ? søker2Tekst : søker1Tekst}
-                        startdato={startdatoPeriode1}
-                        sluttdato={sluttdatoPeriode1}
-                        isBluePanel
-                        visUkerAktivitetskrav={false}
-                    />
-                    <AktivitetskravLabel
-                        valgtStønadskonto={valgtStønadskonto}
-                        tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
-                        tekstPart2={farOgFarAdopsjonDerKunSøker1HarRett ? søker2Tekst : søker1Tekst}
-                        startdato={startdatoPeriode2}
-                        sluttdato={sluttdatoPeriode2}
-                        visUkerAktivitetskrav={false}
-                    />
-                </>
-            )}
-            <HStack gap="2">
-                {erFarOgFarOgFødsel && (
+            {erFarOgFarOgFødsel && (
+                <HStack gap="2">
                     <ForeldrepengerLabel startdato={startdatoPeriode1} sluttdato={sluttdatoPeriode1} />
-                )}
-                <FamiliehendelseLabel barnet={barnet} />
-            </HStack>
+                    <FamiliehendelseLabel barnet={barnet} />
+                </HStack>
+            )}
         </VStack>
     );
 };

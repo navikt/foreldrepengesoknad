@@ -16,6 +16,13 @@ export type { Søker, SøkerBarn, SøkerAnnenForelder } from './src/Søker';
 export type { Arbeidsforhold } from './src/Arbeidsforhold';
 export type { Søkerinfo } from './src/Søkerinfo';
 export type { DatepickerDateRange } from './src/DatepickerDateRange';
+export { StønadskontoType } from './src/TilgjengeligeStønadskontoer';
+export type {
+    TilgjengeligeStønadskontoer,
+    TilgjengeligeStønadskontoerForDekningsgrad,
+    TilgjengeligeMinsterettskontoer,
+    Stønadskonto,
+} from './src/TilgjengeligeStønadskontoer';
 export type {
     Utenlandsopphold,
     UtenlandsoppholdPeriode,

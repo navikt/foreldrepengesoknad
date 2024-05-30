@@ -19,7 +19,6 @@ import {
     Situasjon,
     StønadskontoType,
     TidsperiodeDate,
-    TilgjengeligStønadskonto,
     Utsettelsesperiode,
     andreAugust2022ReglerGjelder,
     bemUtils,
@@ -37,6 +36,7 @@ import {
     isValidTidsperiode,
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
 } from '@navikt/fp-common';
+import { Stønadskonto } from '@navikt/fp-types';
 
 import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from '../../uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
@@ -68,7 +68,7 @@ interface Props {
     periode: Periode;
     erEndringssøknad: boolean;
     familiehendelsesdato: Date;
-    stønadskontoer: TilgjengeligStønadskonto[];
+    stønadskontoer: Stønadskonto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: Arbeidsforhold[];

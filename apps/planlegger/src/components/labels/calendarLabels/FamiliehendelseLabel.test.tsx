@@ -8,16 +8,16 @@ const { FødselLabel, OmsorgsovertakelseLabel, TermindatoLabel } = composeStorie
 describe('<FamiliehendelseLabel>', () => {
     it('skal vise label for fødsel', async () => {
         render(<FødselLabel />);
-        expect(await screen.findByText('Fødselsdato 04. jan.')).toBeInTheDocument();
+        expect(await screen.findByText('Fødselsdato')).toBeInTheDocument();
     });
 
     it('skal vise label for termin', async () => {
         render(<TermindatoLabel />);
-        expect(await screen.findByText('Termindato 04. jan.')).toBeInTheDocument();
+        expect(await screen.findByText('Termin')).toBeInTheDocument();
     });
 
     it('skal vise label for omsorgsovertakelse', async () => {
         render(<OmsorgsovertakelseLabel />);
-        expect(await screen.findByText('Omsorgsovertakelsesdato 04. jan.')).toBeInTheDocument();
+        expect(await screen.findByText('Omsorgsovertakelse')).toBeInTheDocument();
     });
 });

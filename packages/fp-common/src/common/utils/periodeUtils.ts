@@ -1,6 +1,9 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
+import { dateToISOString } from '@navikt/fp-formik';
+import { Stønadskonto } from '@navikt/fp-types';
+
 import {
     EksisterendeSak,
     Forelder,
@@ -15,7 +18,6 @@ import {
     Periodetype,
     Situasjon,
     StønadskontoType,
-    StønadskontoUttak,
     Tidsperiode,
     TidsperiodeDate,
     Utsettelsesperiode,
@@ -44,7 +46,6 @@ import { getFloatFromString } from './numberUtils';
 import { capitalizeFirstLetter } from './stringUtils';
 import { getStønadskontoNavn, getUttakAnnenPartStønadskontoNavn } from './stønadskontoerUtils';
 import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from './wlbUtils';
-import { dateToISOString } from '@navikt/fp-formik';
 
 export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
     return {
@@ -362,7 +363,7 @@ export const getSamtidigUttaksprosent = (
 
 export const justerAndrePartsUttakAvFellesperiodeOmMulig = (
     perioder: Periode[],
-    uttakFellesperiode: StønadskontoUttak | undefined,
+    uttakFellesperiode: Stønadskonto | undefined,
 ): Periode[] => {
     if (uttakFellesperiode === undefined || uttakFellesperiode.dager >= 0 || perioder.length === 0) {
         return perioder;

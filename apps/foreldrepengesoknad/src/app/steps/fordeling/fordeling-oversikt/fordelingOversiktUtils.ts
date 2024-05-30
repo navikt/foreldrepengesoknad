@@ -9,7 +9,6 @@ import {
     NavnPåForeldre,
     Periode,
     StønadskontoType,
-    TilgjengeligStønadskonto,
     Uttaksdagen,
     førsteOktober2021ReglerGjelder,
     getAntallUkerAktivitetsfriKvote,
@@ -30,11 +29,14 @@ import {
 } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import { ISOStringToDate } from '@navikt/fp-formik';
-import { SøkersituasjonFp } from '@navikt/fp-types';
+import {
+    SøkersituasjonFp,
+    TilgjengeligeMinsterettskontoer,
+    TilgjengeligeStønadskontoerForDekningsgrad,
+} from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { DelInformasjon, FordelingEier, FordelingFargekode } from 'app/types/FordelingOversikt';
-import { TilgjengeligeMinsterettskontoer } from 'app/types/TilgjengeligeStønadskontoerDTO';
 import { getErAleneOmOmsorg } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { getAntallPrematurdager, skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
@@ -222,7 +224,7 @@ const getFellesInfoTekst = (
 
 const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
     uttaksplanAnnenPart: Periode[] | undefined,
-    kontoer: TilgjengeligStønadskonto[],
+    kontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     erFarEllerMedmor: boolean,
     familiehendelsesdato: Date,
 ): number => {
@@ -238,7 +240,7 @@ const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
 
 const getAntallDagerFellesperiodeBruktAvAnnenPart = (
     uttaksplanAnnenPart: Periode[] | undefined,
-    kontoer: TilgjengeligStønadskonto[],
+    kontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     erFarEllerMedmor: boolean,
     familiehendelsesdato: Date,
 ): number => {
@@ -630,7 +632,7 @@ export const getFarTekst = (erFarEllerMedmor: boolean, navnFar: string, intl: In
 };
 
 export const getFordelingFraKontoer = (
-    kontoer: TilgjengeligStønadskonto[],
+    kontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     minsteretter: TilgjengeligeMinsterettskontoer,
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,
@@ -782,7 +784,7 @@ export const getFordelingFraKontoer = (
 };
 
 export const getBeggeHarRettGrafFordeling = (
-    kontoer: TilgjengeligStønadskonto[],
+    kontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     erAdopsjon: boolean,
     erFarEllerMedmor: boolean,
     navnMor: string,

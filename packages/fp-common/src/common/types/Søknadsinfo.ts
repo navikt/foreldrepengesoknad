@@ -1,3 +1,5 @@
+import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+
 import { AnnenForelder } from './AnnenForelder';
 import { Arbeidsforhold } from './Arbeidsforhold';
 import Barn from './Barn';
@@ -6,7 +8,6 @@ import { EksisterendeSak } from './EksisterendeSak';
 import { NavnPåForeldre } from './NavnPåForeldre';
 import { Periode } from './Periode';
 import { Søkersituasjon } from './Søkersituasjon';
-import { TilgjengeligStønadskonto } from './TilgjengeligStønadskonto';
 
 export interface Søknadsinfo {
     søkersituasjon: Søkersituasjon;
@@ -25,7 +26,7 @@ export interface Søknadsinfo {
     erFlerbarnssøknad: boolean;
     familiehendelsesdato: Date;
     termindato: Date | undefined;
-    stønadskontoer: TilgjengeligStønadskonto[];
+    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
     perioder: Periode[];
     harKomplettUttaksplan: boolean;
     eksisterendeSak: EksisterendeSak | undefined;

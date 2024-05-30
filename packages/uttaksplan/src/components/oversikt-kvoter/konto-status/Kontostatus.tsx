@@ -3,21 +3,15 @@ import { IntlShape, injectIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import {
-    NavnPåForeldre,
-    Situasjon,
-    StønadskontoType,
-    StønadskontoUttak,
-    bemUtils,
-    getVarighetString,
-} from '@navikt/fp-common';
+import { NavnPåForeldre, Situasjon, StønadskontoType, bemUtils, getVarighetString } from '@navikt/fp-common';
 import { getStønadskontoNavn } from '@navikt/fp-common/src/common/utils/stønadskontoerUtils';
+import { Stønadskonto } from '@navikt/fp-types';
 
 import StønadskontoIkon from '../../stønadskonto-ikon/StønadskontoIkon';
 import './kontostatus.less';
 
 export interface Props {
-    uttak: StønadskontoUttak;
+    uttak: Stønadskonto;
     navnPåForeldre: NavnPåForeldre;
     erEndringssøknad: boolean;
     intl: IntlShape;

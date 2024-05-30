@@ -2,15 +2,10 @@ import {
     AnnenForelder,
     Barn,
     BarnFraNesteSak,
-    Dekningsgrad,
     EksisterendeSak,
-    ISOStringToDate,
-    andreAugust2022ReglerGjelder,
-    formaterDato,
     getErMorUfør,
     getFarMedmorErAleneOmOmsorg,
     getMorErAleneOmOmsorg,
-    hasValue,
     isAdoptertAnnetBarn,
     isAdoptertStebarn,
     isAnnenForelderOppgitt,
@@ -18,7 +13,6 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { dateToISOString } from '@navikt/fp-formik';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
@@ -44,14 +38,6 @@ export const getMorHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenFo
 
     if (isAnnenForelderOppgitt(annenForelder)) {
         return !!annenForelder.harRettPåForeldrepengerINorge;
-    }
-
-    return false;
-};
-
-const getAnnenForelderHarRettIEØS = (annenForelder: AnnenForelder): boolean => {
-    if (isAnnenForelderOppgitt(annenForelder)) {
-        return !!annenForelder.harRettPåForeldrepengerIEØS;
     }
 
     return false;
@@ -88,8 +74,19 @@ export const getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter = (
     return antallBarnSaksgrunnlag;
 };
 
-const formaterStønadskontoParamsDatoer = (dato: string | undefined, datoformat?: string): string | undefined => {
-    return hasValue(dato) ? formaterDato(dato, datoformat) : undefined;
+const finnRettighetstype = (
+    farHarRett: boolean,
+    morHarRett: boolean,
+    morErAleneOmOmsorg: boolean,
+    farHarAleneomsorg: boolean,
+) => {
+    if (morErAleneOmOmsorg || farHarAleneomsorg) {
+        return 'ALENEOMSORG';
+    }
+    if (farHarRett && morHarRett) {
+        return 'BEGGE_RETT';
+    }
+    return 'BARE_SØKER_RETT';
 };
 
 const getStønadskontoParams = (
@@ -114,8 +111,6 @@ const getStønadskontoParams = (
         annenForelder,
     );
 
-    const familieHendelseDatoNesteSak = barnFraNesteSak?.familiehendelsesdato;
-
     const førsteUttaksdagNesteBarnsSak =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
 
@@ -139,50 +134,21 @@ const getStønadskontoParams = (
     );
 
     const erFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn));
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
 
-    const fpUttakServiceDateFormat = 'YYYYMMDD';
-
-    const params = {
-        farHarRett: getFarHarRettINorge(erFarMedmor, annenForelder),
-        morHarRett: getMorHarRettINorge(erFarMedmor, annenForelder),
-        harAnnenForelderTilsvarendeRettEØS: getAnnenForelderHarRettIEØS(annenForelder),
-        morHarAleneomsorg: morErAleneOmOmsorg || false,
-        farHarAleneomsorg: farMedmorErAleneOmOmsorg || false,
-        antallBarn: saksgrunnlagsAntallBarn,
-        fødselsdato: formaterStønadskontoParamsDatoer(
-            isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined,
-            fpUttakServiceDateFormat,
-        ),
-        termindato: formaterStønadskontoParamsDatoer(
-            getTermindatoSomSkalBrukes(barn, saksgrunnlagsTermindato),
-            fpUttakServiceDateFormat,
-        ),
-        omsorgsovertakelseDato: formaterStønadskontoParamsDatoer(
-            isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? barn.adopsjonsdato : undefined,
-            fpUttakServiceDateFormat,
-        ),
-        startdatoUttak: formaterStønadskontoParamsDatoer(getFamiliehendelsedato(barn), fpUttakServiceDateFormat),
-        minsterett: andreAugust2022ReglerGjelder(familiehendelsesdato!),
-        erMor: !søkerErFarEllerMedmor,
-        morHarUføretrygd: getErMorUfør(annenForelder, søkerErFarEllerMedmor),
-
-        familieHendelseDatoNesteSak: formaterStønadskontoParamsDatoer(
-            dateToISOString(familieHendelseDatoNesteSak),
-            fpUttakServiceDateFormat,
-        ),
-    };
-
     return {
-        stønadskontoParams100: {
-            ...params,
-            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-        },
-        stønadskontoParams80: {
-            ...params,
-            dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
-        },
+        rettighetstype: finnRettighetstype(
+            getFarHarRettINorge(erFarMedmor, annenForelder),
+            getMorHarRettINorge(erFarMedmor, annenForelder),
+            morErAleneOmOmsorg || false,
+            farMedmorErAleneOmOmsorg || false,
+        ),
+        brukerrolle: søkerErFarEllerMedmor ? 'FAR' : 'MOR',
+        antallBarn: saksgrunnlagsAntallBarn.toString(),
+        fødselsdato: isFødtBarn(barn) ? barn.fødselsdatoer[0] : undefined,
+        termindato: getTermindatoSomSkalBrukes(barn, saksgrunnlagsTermindato),
+        omsorgsovertakelseDato: isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? barn.adopsjonsdato : undefined,
+        morHarUføretrygd: getErMorUfør(annenForelder, søkerErFarEllerMedmor),
     };
 };
 

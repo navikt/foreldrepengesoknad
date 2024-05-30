@@ -3,9 +3,9 @@ import { Action, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import MockAdapter from 'axios-mock-adapter';
 import { StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { StønadskontoType, TilgjengeligeStønadskontoer } from 'types/TilgjengeligeStønadskontoer';
 
 import { initAmplitude } from '@navikt/fp-metrics';
+import { StønadskontoType, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 
 import { PlanleggerDataFetcher, planleggerApi } from './Planlegger';

@@ -14,7 +14,6 @@ import {
     Periode,
     PeriodeValidState,
     Situasjon,
-    TilgjengeligStønadskonto,
     Utsettelsesperiode,
     bemUtils,
     formatDate,
@@ -23,6 +22,7 @@ import {
 } from '@navikt/fp-common';
 import { getAnnenForelderSamtidigUttakPeriode } from '@navikt/fp-common/src/common/utils/periodeUtils';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
 import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
@@ -33,7 +33,7 @@ interface Props {
     uttaksplan: Periode[];
     familiehendelsesdato: Date;
     handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
-    stønadskontoer: TilgjengeligStønadskonto[];
+    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: Arbeidsforhold[];

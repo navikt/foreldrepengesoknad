@@ -10,9 +10,9 @@ import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
-import { StønadskontoType } from 'types/TilgjengeligeStønadskontoer';
 
 import { initAmplitude } from '@navikt/fp-metrics';
+import { StønadskontoType } from '@navikt/fp-types';
 
 import OversiktSteg from './OversiktSteg';
 
