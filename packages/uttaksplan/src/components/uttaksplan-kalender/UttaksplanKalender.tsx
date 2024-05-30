@@ -54,7 +54,41 @@ const getIndexOfFamiliehendelse = (uttaksplan: Periode[], familiehendelsesdato: 
     return getIndexOfSistePeriodeFørDato(uttaksplan, ISOStringToDate(familiehendelsesdato)) || 0;
 };
 
-const getPerioderForKalendervisning = (uttaksplan: Periode[], erFarEllerMedmor: boolean, barn: Barn) => {
+const slåSammenPeriods = (periods: Period[]) => {
+    if (periods.length <= 1) {
+        return periods;
+    }
+    const nyePeriods: Period[] = [];
+    let forrigePeriod: Period | undefined = { ...periods[0] };
+    periods.forEach((periode, index) => {
+        if (index === 0) {
+            return;
+        }
+        if (forrigePeriod === undefined) {
+            forrigePeriod = periode;
+            return;
+        }
+        if (
+            periode.color === forrigePeriod.color &&
+            dayjs(Uttaksdagen(ISOStringToDate(forrigePeriod.tom)!).neste()).isSame(dayjs(periode.fom), 'day')
+        ) {
+            const nyPeriod = {
+                fom: forrigePeriod.fom,
+                tom: periode.tom,
+                color: periode.color,
+            };
+            nyePeriods.push(nyPeriod);
+            forrigePeriod = nyPeriod;
+            return;
+        }
+        nyePeriods.push(forrigePeriod);
+        forrigePeriod = periode;
+    });
+    nyePeriods.push(forrigePeriod);
+    return nyePeriods;
+};
+
+const getPerioderForKalendervisning = (uttaksplan: Periode[], erFarEllerMedmor: boolean, barn: Barn): Period[] => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const perioderForVisning = uttaksplan.filter(
         (p) =>
@@ -80,7 +114,7 @@ const getPerioderForKalendervisning = (uttaksplan: Periode[], erFarEllerMedmor: 
         tom: familiehendelsesdato,
         color: PeriodeColor.PINK,
     });
-    return periods;
+    return slåSammenPeriods(periods);
 };
 
 const getKalenderFargeForUttaksperiode = (
