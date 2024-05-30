@@ -638,8 +638,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     };
     const antallUkerIUttaksplan = getAntallUker(valgteStønadskontoer!);
 
-    const kontoer = valgteStønadskontoer?.kontoer;
-
     return (
         <UttaksplanFormComponents.FormikWrapper
             initialValues={getUttaksplanFormInitialValues(
