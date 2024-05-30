@@ -177,11 +177,12 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
     const unikeUtsettelseÅrsaker = [...new Set(utsettelser.map((u) => u.årsak))];
     const harAvslåttePerioder = uttaksplan.find((p) => isAvslåttPeriode(p));
     const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const legendDivHeight = document.getElementById('legend')?.clientHeight;
     const pdfOptions = {
         filename: 'Min foreldrepengeplan.pdf',
         resolution: Resolution.HIGH,
         page: {
-            margin: Margin.LARGE,
+            margin: legendDivHeight && legendDivHeight > 45 ? Margin.MEDIUM : Margin.LARGE,
         },
     } as Options;
     const { toPDF, targetRef } = usePDF(pdfOptions);
@@ -189,6 +190,7 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
     if (inkludererHelg) {
         unikePeriodColors.push(PeriodeColor.GRAY);
     }
+
     return (
         <>
             {harAvslåttePerioder && (
@@ -197,7 +199,7 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
                 </Alert>
             )}
             <div ref={targetRef}>
-                <div className={bem.element('legend')} style={{ display: 'flex', flexWrap: 'wrap' }}>
+                <div className={bem.element('legend')} style={{ display: 'flex', flexWrap: 'wrap' }} id="legend">
                     <UttaksplanLegend
                         uniqueColors={unikePeriodColors}
                         barn={barn}

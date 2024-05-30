@@ -117,7 +117,7 @@ const UttaksplanLegend: FunctionComponent<Props> = ({
     return uniqueColors
         .filter((c) => c !== PeriodeColor.NONE)
         .map((color) => (
-            <div key={color} style={{ paddingRight: '0.5rem', paddingBottom: '0.5rem', width: 'fit-content' }}>
+            <div key={color} style={{ paddingRight: '0.5rem', paddingBottom: '0.46rem', width: 'fit-content' }}>
                 <CalendarLabel iconType={color}>
                     <BodyShort style={{ whiteSpace: 'nowrap' }}>
                         {getCalendarLabel(color, barn, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl)}
