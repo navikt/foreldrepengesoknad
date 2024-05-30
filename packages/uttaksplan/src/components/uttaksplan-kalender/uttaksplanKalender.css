@@ -1,3 +1,7 @@
+.uttaksplanKalender__button {
+    padding-top: 2rem;
+}
+
 @media (max-width: 768px) {
     .uttaksplanKalender__legend {
         padding-bottom: 0.5rem;
