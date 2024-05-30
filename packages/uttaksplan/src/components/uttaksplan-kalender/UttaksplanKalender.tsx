@@ -58,34 +58,26 @@ const slåSammenPeriods = (periods: Period[]) => {
     if (periods.length <= 1) {
         return periods;
     }
-    const nyePeriods: Period[] = [];
-    let forrigePeriod: Period | undefined = { ...periods[0] };
-    periods.forEach((periode, index) => {
+
+    const result = periods.reduce((res, period, index) => {
         if (index === 0) {
-            return;
+            res.push(period);
+            return res;
         }
-        if (forrigePeriod === undefined) {
-            forrigePeriod = periode;
-            return;
-        }
+
         if (
-            periode.color === forrigePeriod.color &&
-            dayjs(Uttaksdagen(ISOStringToDate(forrigePeriod.tom)!).neste()).isSame(dayjs(periode.fom), 'day')
+            period.color === res[res.length - 1].color &&
+            dayjs(Uttaksdagen(ISOStringToDate(res[res.length - 1].tom)!).neste()).isSame(dayjs(period.fom), 'day')
         ) {
-            const nyPeriod = {
-                fom: forrigePeriod.fom,
-                tom: periode.tom,
-                color: periode.color,
-            };
-            nyePeriods.push(nyPeriod);
-            forrigePeriod = nyPeriod;
-            return;
+            res[res.length - 1].tom = period.tom;
+            return res;
+        } else {
+            res.push(period);
+            return res;
         }
-        nyePeriods.push(forrigePeriod);
-        forrigePeriod = periode;
-    });
-    nyePeriods.push(forrigePeriod);
-    return nyePeriods;
+    }, [] as Period[]);
+
+    return result;
 };
 
 const getPerioderForKalendervisning = (uttaksplan: Periode[], erFarEllerMedmor: boolean, barn: Barn): Period[] => {
