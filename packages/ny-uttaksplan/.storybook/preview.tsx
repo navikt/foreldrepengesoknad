@@ -1,3 +1,4 @@
+import { INITIAL_VIEWPORTS, MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
 import { Preview } from '@storybook/react';
 
 import '@navikt/ds-css';
@@ -13,6 +14,14 @@ const withIntlProvider = getIntlDecorator({
 
 const preview: Preview = {
     decorators: [withIntlProvider],
+    parameters: {
+        viewport: {
+            viewports: {
+                ...INITIAL_VIEWPORTS,
+                ...MINIMAL_VIEWPORTS,
+            },
+        },
+    },
 };
 
 export default preview;

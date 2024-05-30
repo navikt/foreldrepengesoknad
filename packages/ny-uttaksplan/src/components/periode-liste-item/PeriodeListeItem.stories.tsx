@@ -10,7 +10,7 @@ type StoryArgs = ComponentProps<typeof PeriodeListeItem>;
 type Story = StoryObj<StoryArgs>;
 
 const customRenderer = ({ permisjonsperiode }: StoryArgs) => {
-    return <PeriodeListeItem permisjonsperiode={permisjonsperiode} />;
+    return <PeriodeListeItem permisjonsperiode={permisjonsperiode} familiehendelsedato="2024-06-01" />;
 };
 
 const meta = {
