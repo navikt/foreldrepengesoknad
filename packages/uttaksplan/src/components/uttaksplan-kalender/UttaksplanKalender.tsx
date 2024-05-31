@@ -239,7 +239,7 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
                         erFarEllerMedmor={erFarEllerMedmor}
                     />
                 </div>
-                <Calendar periods={periods} familiehendelsesdato={familiehendelsesdato} />
+                <Calendar periods={periods} />
             </div>
             <Button
                 className={bem.element('button')}
