@@ -9,6 +9,7 @@ import { Alert, Button } from '@navikt/ds-react';
 import {
     Barn,
     Forelder,
+    InfoPeriode,
     Overføringsperiode,
     Periode,
     PeriodeInfoType,
@@ -21,6 +22,7 @@ import {
     getAnnenForelderSamtidigUttakPeriode,
     getFamiliehendelsedato,
     isAvslåttPeriode,
+    isAvslåttPeriodeFørsteSeksUkerMor,
     isForeldrepengerFørFødselUttaksperiode,
     isFødtBarn,
     isInfoPeriode,
@@ -137,16 +139,17 @@ const getKalenderFargeForPeriodeUtenUttak = (periode: PeriodeUtenUttak, barn: Ba
     return PeriodeColor.NONE;
 };
 
-const getKalenderFargeForInfoperiode = (
-    infoType: PeriodeInfoType,
-    forelder: Forelder,
-    erFarEllerMedmor: boolean,
-): PeriodeColor => {
-    switch (infoType) {
+const getKalenderFargeForInfoperiode = (periode: InfoPeriode, erFarEllerMedmor: boolean, barn: Barn): PeriodeColor => {
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    switch (periode.infotype) {
         case PeriodeInfoType.utsettelseAnnenPart:
             return erFarEllerMedmor ? PeriodeColor.BLUEOUTLINE : PeriodeColor.GREENOUTLINE;
         case PeriodeInfoType.uttakAnnenPart:
-            return getForelderFarge(forelder, erFarEllerMedmor);
+            return getForelderFarge(periode.forelder, erFarEllerMedmor);
+        case PeriodeInfoType.avslåttPeriode:
+            return !erFarEllerMedmor && isAvslåttPeriodeFørsteSeksUkerMor(periode, familiehendelsesdato)
+                ? PeriodeColor.ORANGE
+                : PeriodeColor.NONE;
         default:
             return PeriodeColor.NONE;
     }
@@ -171,7 +174,7 @@ const getKalenderFargeForPeriodeType = (
         case Periodetype.Opphold:
             return getForelderFarge(periode.forelder, erFarEllerMedmor);
         case Periodetype.Info:
-            return getKalenderFargeForInfoperiode(periode.infotype, periode.forelder, erFarEllerMedmor);
+            return getKalenderFargeForInfoperiode(periode, erFarEllerMedmor, barn);
         default:
             return PeriodeColor.NONE;
     }
@@ -199,8 +202,13 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
     const unikePeriodColors = [...new Set(periods.map((period) => period.color))];
     const utsettelser = uttaksplan.filter((p) => isUtsettelsesperiode(p)) as Utsettelsesperiode[];
     const unikeUtsettelseÅrsaker = [...new Set(utsettelser.map((u) => u.årsak))];
-    const harAvslåttePerioder = uttaksplan.find((p) => isAvslåttPeriode(p));
     const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const harAvslåttePerioderSomIkkeGirTapteDager =
+        uttaksplan.filter(
+            (p) =>
+                isAvslåttPeriode(p) &&
+                (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsesdato)),
+        ).length > 0;
     const pdfOptions = {
         filename: 'Min foreldrepengeplan.pdf',
         resolution: Resolution.HIGH,
@@ -216,7 +224,7 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
 
     return (
         <>
-            {harAvslåttePerioder && (
+            {harAvslåttePerioderSomIkkeGirTapteDager && (
                 <Alert variant="info" style={{ margin: '1.5rem 0rem' }}>
                     <FormattedMessage id="kalender.avslåttePerioder" />
                 </Alert>
