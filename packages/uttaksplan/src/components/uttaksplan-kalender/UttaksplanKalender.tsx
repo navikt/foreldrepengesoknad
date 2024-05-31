@@ -59,7 +59,7 @@ const slåSammenPeriods = (periods: Period[]) => {
         return periods;
     }
 
-    const result = periods.reduce((res, period, index) => {
+    return periods.reduce((res, period, index) => {
         if (index === 0) {
             res.push(period);
             return res;
@@ -76,8 +76,6 @@ const slåSammenPeriods = (periods: Period[]) => {
             return res;
         }
     }, [] as Period[]);
-
-    return result;
 };
 
 const getPerioderForKalendervisning = (uttaksplan: Periode[], erFarEllerMedmor: boolean, barn: Barn): Period[] => {
