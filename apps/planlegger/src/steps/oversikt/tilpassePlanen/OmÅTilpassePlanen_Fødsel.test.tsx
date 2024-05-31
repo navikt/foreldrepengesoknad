@@ -99,7 +99,7 @@ describe('<OmÅTilpassePlanen>', () => {
         expect(screen.queryByText('De første seks ukene')).not.toBeInTheDocument();
         expect(screen.queryByText('To uker rundt fødsel')).not.toBeInTheDocument();
     });
-    it.skip('skal vise info for far og far fødsel hvor kun far1 har rett', async () => {
+    it('skal vise info for far og far fødsel hvor kun far1 har rett', async () => {
         render(<FødselFarOgFarKunFar1HarRett />);
 
         expect(await screen.findByText('Om å tilpasse planen')).toBeInTheDocument();
