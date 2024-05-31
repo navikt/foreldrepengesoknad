@@ -28,7 +28,9 @@ describe('<OversiktSteg - adopsjon>', () => {
 
         expect(screen.getByText('100 % i 46 uker').closest('button')?.getAttribute('aria-checked')).toBe('true');
         expect(screen.getByText('80 % i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
-        expect((screen.getByRole('option', { name: '16 uker til far' }) as HTMLOptionElement).selected).toBe(true);
+        expect(
+            (screen.getByRole('option', { name: 'Fellesperioden: 16 uker til far' }) as HTMLOptionElement).selected,
+        ).toBe(true);
 
         expect(screen.getByText('Olga')).toBeInTheDocument();
         expect(screen.getByText('Espen')).toBeInTheDocument();
@@ -140,7 +142,9 @@ describe('<OversiktSteg - adopsjon>', () => {
 
         expect(screen.getByText('100 % i 46 uker').closest('button')?.getAttribute('aria-checked')).toBe('true');
         expect(screen.getByText('80 % i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
-        expect((screen.getByRole('option', { name: '16 uker til medmor' }) as HTMLOptionElement).selected).toBe(true);
+        expect(
+            (screen.getByRole('option', { name: 'Fellesperioden: 16 uker til medmor' }) as HTMLOptionElement).selected,
+        ).toBe(true);
 
         expect(screen.getByText('Olga')).toBeInTheDocument();
         expect(screen.getByText('Helga')).toBeInTheDocument();
@@ -298,9 +302,10 @@ describe('<OversiktSteg - adopsjon>', () => {
 
         expect(screen.getByText('100 % i 46 uker').closest('button')?.getAttribute('aria-checked')).toBe('true');
         expect(screen.getByText('80 % i 56 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
-        expect((screen.getAllByRole('option', { name: '16 uker til Anders' })[0] as HTMLOptionElement).selected).toBe(
-            true,
-        );
+        expect(
+            (screen.getAllByRole('option', { name: 'Fellesperioden: 16 uker til Anders' })[0] as HTMLOptionElement)
+                .selected,
+        ).toBe(true);
 
         expect(screen.getByText('Espen')).toBeInTheDocument();
         expect(screen.getByText('Anders')).toBeInTheDocument();

@@ -18,7 +18,7 @@ describe('<AppContainer>', () => {
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Start'));
 
-        expect(screen.getByText('Hvem planlegger')).toBeInTheDocument();
+        expect(screen.getByText('Hvem planlegger?')).toBeInTheDocument();
         expect(screen.getByText('Steg 1 av 3')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Mor og far'));
         const morNavn = utils.getByLabelText('Hva heter mor? (valgfritt)');
@@ -85,7 +85,7 @@ describe('<AppContainer>', () => {
         expect(screen.getByText('Steg 2 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
-        expect(screen.getByText('Hvem planlegger')).toBeInTheDocument();
+        expect(screen.getByText('Hvem planlegger?')).toBeInTheDocument();
         expect(screen.getByText('Steg 1 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 

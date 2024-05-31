@@ -8,11 +8,11 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { formatError } from 'utils/customErrorFormatter';
-import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { BodyShort, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
+import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired } from '@navikt/fp-validation';
 
 import usePlanleggerNavigator from '../../appData/usePlanleggerNavigator';

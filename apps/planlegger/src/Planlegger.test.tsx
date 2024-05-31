@@ -16,7 +16,7 @@ describe('<Planlegger>', () => {
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Start'));
 
-        expect(screen.getByText('Hvem planlegger')).toBeInTheDocument();
+        expect(screen.getByText('Hvem planlegger?')).toBeInTheDocument();
         expect(screen.getByText('Steg 1 av 3')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Mor og far'));
         const morNavn = utils.getByLabelText('Hva heter mor? (valgfritt)');
@@ -56,7 +56,7 @@ describe('<Planlegger>', () => {
         expect(screen.getByText('Steg 2 av 4')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
-        expect(screen.getByText('Hvem planlegger')).toBeInTheDocument();
+        expect(screen.getByText('Hvem planlegger?')).toBeInTheDocument();
         expect(screen.getByText('Steg 1 av 4')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
@@ -69,7 +69,7 @@ describe('<Planlegger>', () => {
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Start'));
 
-        expect(screen.getByText('Hvem planlegger')).toBeInTheDocument();
+        expect(screen.getByText('Hvem planlegger?')).toBeInTheDocument();
         expect(screen.getByText('Steg 1 av 3')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Mor og far'));
         const morNavn = utils.getByLabelText('Hva heter mor? (valgfritt)');
@@ -99,7 +99,7 @@ describe('<Planlegger>', () => {
         expect(screen.getByText('Steg 2 av 3')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
-        expect(screen.getByText('Hvem planlegger')).toBeInTheDocument();
+        expect(screen.getByText('Hvem planlegger?')).toBeInTheDocument();
         expect(screen.getByText('Steg 1 av 3')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
@@ -112,7 +112,7 @@ describe('<Planlegger>', () => {
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Start'));
 
-        expect(screen.getByText('Hvem planlegger')).toBeInTheDocument();
+        expect(screen.getByText('Hvem planlegger?')).toBeInTheDocument();
         expect(screen.getByText('Steg 1 av 3')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Far og far'));
         const morNavn = utils.getAllByLabelText('Hva heter far? (valgfritt)')[0];
@@ -169,7 +169,7 @@ describe('<Planlegger>', () => {
         expect(screen.getByText('Steg 2 av 6')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
-        expect(screen.getByText('Hvem planlegger')).toBeInTheDocument();
+        expect(screen.getByText('Hvem planlegger?')).toBeInTheDocument();
         expect(screen.getByText('Steg 1 av 6')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
