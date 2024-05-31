@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
@@ -10,10 +10,14 @@ import styles from './oversiktLabels.module.css';
 
 interface Props {
     søkerTekst: string;
+    startdato: string;
+    sluttdato: string;
     isBluePanel?: boolean;
 }
 
-const AntallUkerFpLabel: FunctionComponent<Props> = ({ søkerTekst, isBluePanel = false }) => {
+const AntallUkerFpLabel: FunctionComponent<Props> = ({ søkerTekst, startdato, sluttdato, isBluePanel = false }) => {
+    const intl = useIntl();
+
     return (
         <CalendarIconLabel iconType={isBluePanel ? 'blue' : 'green'}>
             <BodyShort>
@@ -29,6 +33,18 @@ const AntallUkerFpLabel: FunctionComponent<Props> = ({ søkerTekst, isBluePanel 
                     id="OversiktSteg.UkerForeldrepengerSlutter"
                     values={{
                         hvem: capitalizeFirstLetter(søkerTekst),
+                        startdato: intl.formatDate(startdato, {
+                            day: '2-digit',
+                            month: 'long',
+                            weekday: 'long',
+                            year: 'numeric',
+                        }),
+                        sluttdato: intl.formatDate(sluttdato, {
+                            day: '2-digit',
+                            month: 'long',
+                            weekday: 'long',
+                            year: 'numeric',
+                        }),
                     }}
                 />
             </div>
