@@ -63,9 +63,18 @@ const CalendarLabels: FunctionComponent<Props> = ({
         <VStack gap="1">
             {skalViseAntallUkerLabels && (
                 <HStack gap="2">
-                    <AntallUkerFpLabel søkerTekst={søker1Tekst} isBluePanel />
+                    <AntallUkerFpLabel
+                        søkerTekst={søker1Tekst}
+                        startdato={startdatoPeriode1}
+                        sluttdato={sluttdatoPeriode1}
+                        isBluePanel
+                    />
                     {søker2Tekst && hvemHarRett === 'beggeHarRett' && startdatoPeriode2 && sluttdatoPeriode2 && (
-                        <AntallUkerFpLabel søkerTekst={søker2Tekst} />
+                        <AntallUkerFpLabel
+                            søkerTekst={søker2Tekst}
+                            startdato={startdatoPeriode2}
+                            sluttdato={sluttdatoPeriode2}
+                        />
                     )}
                     <FamiliehendelseLabel barnet={barnet} />
                 </HStack>
@@ -77,12 +86,16 @@ const CalendarLabels: FunctionComponent<Props> = ({
                         valgtStønadskonto={valgtStønadskonto}
                         tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
                         tekstPart2={farOgFarAdopsjonDerKunSøker1HarRett ? søker2Tekst : søker1Tekst}
+                        startdato={startdatoPeriode1}
+                        sluttdato={sluttdatoPeriode1}
                         isBluePanel
                     />
                     <AktivitetskravLabel
                         valgtStønadskonto={valgtStønadskonto}
                         tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
                         tekstPart2={farOgFarAdopsjonDerKunSøker1HarRett ? søker2Tekst : søker1Tekst}
+                        startdato={startdatoPeriode2}
+                        sluttdato={sluttdatoPeriode2}
                     />
                     <FamiliehendelseLabel barnet={barnet} />
                 </HStack>
