@@ -15,13 +15,13 @@ import { finnSøker1Tekst, finnSøker2Tekst, getFornavnPåSøker1, getFornavnPå
 import { formatError } from 'utils/customErrorFormatter';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
-import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import FordelingsdetaljerPanel from './FordelingsdetaljerPanel';

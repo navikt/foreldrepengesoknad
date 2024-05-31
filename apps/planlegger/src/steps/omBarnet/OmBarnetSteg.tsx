@@ -11,13 +11,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { erAlenesøker as erAlene, erFarOgFar } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
-import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import GreenRadioGroup from '../../components/formWrappers/GreenRadioGroup';
