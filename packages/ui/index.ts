@@ -26,3 +26,7 @@ export { default as ProgressStepper } from './src/step/progressStepper/ProgressS
 export type { ProgressStep } from './src/step/progressStepper/ProgressStepper';
 export { default as Calendar } from './src/calendar/Calendar';
 export { default as CalendarLabel } from './src/calendar/label/CalendarLabel';
+export { default as Page } from './src/page/Page';
+export { default as FrontPage } from './src/page/FrontPage';
+export { default as GreenHeading } from './src/boxes/GreenHeading';
+export { default as IconCircleWrapper } from './src/iconCircle/IconCircleWrapper';

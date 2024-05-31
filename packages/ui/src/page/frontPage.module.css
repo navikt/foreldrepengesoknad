@@ -1,0 +1,13 @@
+.button {
+    width: 100px;
+}
+
+.languageToggle {
+    width: 327px;
+}
+
+@media (max-width: 768px) {
+    .button {
+        width: 100%;
+    }
+}
