@@ -190,7 +190,7 @@
     "OversiktSteg.Infoboks.FarOgFar.HvisDetErStebarnsadopsjon": "If only the one who is adopting the child as a step-parent is to receive parental benefits, you will be entitled to 40 weeks instead of 46 weeks at 100% and 56 weeks at 80% parental benefits.",
     "OversiktSteg.Infoboks.Utkast": "This is a draft",
     "OversiktSteg.UkerForeldrepenger": "{hvem}",
-    "OversiktSteg.UkerForeldrepengerSlutter": "{hvem}, {uker} weeks, ending {dato}",
+    "OversiktSteg.UkerForeldrepengerSlutter": "{hvem},",
     "OversiktSteg.PeriodeSrOnly": "{hvem}, starts {startdato}, ends {sluttdato} ",
     "OversiktSteg.ForeldrepengerSrOnly": "Parental benefit starts {startdato}, ends {sluttdato} ",
     "OversiktSteg.UkerUtenAktivitetskrav": "{hvem}, weeks without requirements for {hvemPart2}",
