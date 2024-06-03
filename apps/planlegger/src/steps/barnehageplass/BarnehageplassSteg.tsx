@@ -4,11 +4,11 @@ import useStepData from 'appData/useStepData';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FormattedMessage } from 'react-intl';
 import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
-import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { Heading, VStack } from '@navikt/ds-react';
 
 import { StepButtons } from '@navikt/fp-ui';
+import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
 
 import AleneforsørgerBarnehageplass from './situasjon/AleneforsørgerBarnehageplass';

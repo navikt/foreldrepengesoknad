@@ -13,7 +13,7 @@ describe('<HvemPlanleggerSteg>', () => {
 
         const utils = render(<Default gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Hvem planlegger')).toBeInTheDocument();
+        expect(await screen.findByText('Hvem planlegger?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Mor og far'));
 
@@ -41,7 +41,7 @@ describe('<HvemPlanleggerSteg>', () => {
 
         const utils = render(<Default gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Hvem planlegger')).toBeInTheDocument();
+        expect(await screen.findByText('Hvem planlegger?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Mor og medmor'));
 
@@ -69,7 +69,7 @@ describe('<HvemPlanleggerSteg>', () => {
 
         const utils = render(<Default gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Hvem planlegger')).toBeInTheDocument();
+        expect(await screen.findByText('Hvem planlegger?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Far og far'));
 
@@ -97,7 +97,7 @@ describe('<HvemPlanleggerSteg>', () => {
 
         const utils = render(<Default gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Hvem planlegger')).toBeInTheDocument();
+        expect(await screen.findByText('Hvem planlegger?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Bare mor, aleneomsorg'));
 
@@ -121,7 +121,7 @@ describe('<HvemPlanleggerSteg>', () => {
 
         const utils = render(<Default gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Hvem planlegger')).toBeInTheDocument();
+        expect(await screen.findByText('Hvem planlegger?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Bare far, aleneomsorg'));
 

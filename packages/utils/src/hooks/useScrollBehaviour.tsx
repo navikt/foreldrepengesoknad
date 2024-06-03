@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const useScrollBehaviour = () => {
+export const useScrollBehaviour = () => {
     const ref = useRef<HTMLDivElement>(null);
     const [scrollCounter, increaseScrollCounter] = useState(0);
 

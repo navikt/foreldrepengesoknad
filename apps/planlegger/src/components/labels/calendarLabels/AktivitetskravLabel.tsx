@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { getAntallUkerAktivitetsfriKvote, getAntallUkerForeldrepenger } from 'utils/stønadskontoerUtils';
 
 import { BodyShort } from '@navikt/ds-react';
@@ -13,6 +13,8 @@ import styles from './oversiktLabels.module.css';
 interface Props {
     utenAktivitetskrav?: boolean;
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
+    startdato: string;
+    sluttdato: string;
     tekstPart1: string;
     tekstPart2: string;
     isBluePanel?: boolean;
@@ -25,8 +27,12 @@ const AktivitetskravLabel: FunctionComponent<Props> = ({
     tekstPart2,
     isBluePanel = false,
     valgtStønadskonto,
+    startdato,
+    sluttdato,
     visUkerAktivitetskrav = true,
 }) => {
+    const intl = useIntl();
+
     return (
         <CalendarIconLabel iconType={isBluePanel ? 'blue' : 'green'}>
             <BodyShort>
@@ -65,6 +71,18 @@ const AktivitetskravLabel: FunctionComponent<Props> = ({
                     id="OversiktSteg.PeriodeSrOnly"
                     values={{
                         hvem: capitalizeFirstLetter(tekstPart1),
+                        startdato: intl.formatDate(startdato, {
+                            day: '2-digit',
+                            month: 'long',
+                            weekday: 'long',
+                            year: 'numeric',
+                        }),
+                        sluttdato: intl.formatDate(sluttdato, {
+                            day: '2-digit',
+                            month: 'long',
+                            weekday: 'long',
+                            year: 'numeric',
+                        }),
                     }}
                 />
             </div>

@@ -10,11 +10,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Situasjon } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
-import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import AnnetInfoboks from './info/AnnetInfoboks';

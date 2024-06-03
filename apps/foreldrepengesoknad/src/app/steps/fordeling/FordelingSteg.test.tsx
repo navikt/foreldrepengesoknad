@@ -1138,6 +1138,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far med delt uttak der barnet er født prematurt', async () => {
+        MockDate.set(new Date('2024-02-25'));
         render(
             <FarMedmorSøkerDeltUttakEttBarnFødtPrematurt
                 gåTilNesteSide={gåTilNesteSide}
@@ -1172,9 +1173,11 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
             }),
         ).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+        MockDate.reset();
     });
 
     it('skal ikke kunne begynne uttaket før fødselsdato', async () => {
+        MockDate.set(new Date('2024-02-25'));
         const utils = render(
             <FarMedmorSøkerDeltUttakEttBarnFødtPrematurt
                 gåTilNesteSide={gåTilNesteSide}
@@ -1188,6 +1191,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
         fireEvent.blur(oppstart);
         await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.02.2024.')).toHaveLength(2);
+        MockDate.reset();
     });
 });
 
@@ -1196,6 +1200,7 @@ describe('Fordeling - FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode', () => 
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far søker etter mor og mor har tatt ut deler av fellesperiode og hans kvote', async () => {
+        MockDate.set(new Date('2024-02-25'));
         render(
             <FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode
                 gåTilNesteSide={gåTilNesteSide}
@@ -1225,6 +1230,7 @@ describe('Fordeling - FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode', () => 
         expect(screen.getByText('Da barnet ble født')).toBeInTheDocument();
         expect(screen.getByText('Første dag etter Hanne, 13. august 2024')).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+        MockDate.reset();
     });
 });
 describe('Fordeling - MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80', () => {
