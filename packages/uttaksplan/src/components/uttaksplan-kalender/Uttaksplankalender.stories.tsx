@@ -877,3 +877,55 @@ export const TreSammenhengendePerioderSlåttSammen: Story = {
         navnAnnenPart: 'Hans',
     },
 };
+
+export const MorOppgirSamtidigUttakMedFar: Story = {
+    args: {
+        uttaksplan: [
+            {
+                type: Periodetype.Uttak,
+                id: '1',
+                forelder: Forelder.mor,
+                konto: StønadskontoType.Mødrekvote,
+                samtidigUttakProsent: '50',
+                tidsperiode: {
+                    fom: new Date('2024-05-21'),
+                    tom: new Date('2024-05-27'),
+                },
+            },
+        ],
+        barn: {
+            type: BarnType.ADOPTERT_STEBARN,
+            fødselsdatoer: ['2024-05-21'],
+            adopsjonsdato: '2024-05-21',
+            antallBarn: 1,
+        },
+        erFarEllerMedmor: false,
+        navnAnnenPart: 'Hans',
+    },
+};
+
+export const FarOppgirSamtidigUttakMedMor: Story = {
+    args: {
+        uttaksplan: [
+            {
+                type: Periodetype.Uttak,
+                id: '1',
+                forelder: Forelder.farMedmor,
+                konto: StønadskontoType.Fedrekvote,
+                samtidigUttakProsent: '70',
+                tidsperiode: {
+                    fom: new Date('2025-05-21'),
+                    tom: new Date('2025-05-27'),
+                },
+            },
+        ],
+        barn: {
+            type: BarnType.ADOPTERT_STEBARN,
+            fødselsdatoer: ['2025-05-21'],
+            adopsjonsdato: '2025-05-21',
+            antallBarn: 1,
+        },
+        erFarEllerMedmor: true,
+        navnAnnenPart: 'Hanne',
+    },
+};

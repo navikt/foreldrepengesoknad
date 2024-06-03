@@ -29,10 +29,14 @@ export const getUttaksperiodeFarge = (
     konto: StønadskontoType,
     forelder: Forelder | undefined,
     erFarEllerMedmor: boolean,
+    samtidigUttakProsent: string | undefined,
     harMidlertidigOmsorg?: boolean,
 ): PeriodeColor => {
     if (harMidlertidigOmsorg) {
         return erFarEllerMedmor ? PeriodeColor.GREEN : PeriodeColor.BLUE;
+    }
+    if (samtidigUttakProsent && parseInt(samtidigUttakProsent) > 0) {
+        return erFarEllerMedmor ? PeriodeColor.LIGHTBLUEGREEN : PeriodeColor.LIGHTGREENBLUE;
     }
 
     if (forelder === undefined) {

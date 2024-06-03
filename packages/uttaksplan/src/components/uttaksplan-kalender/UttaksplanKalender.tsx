@@ -126,7 +126,8 @@ const getKalenderFargeForUttaksperiode = (
     if (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin) {
         return PeriodeColor.NONE;
     }
-    return getUttaksperiodeFarge(periode.konto, periode.forelder, erFarEllerMedmor);
+    const samtidigUttaksprosent = isUttaksperiode(periode) ? periode.samtidigUttakProsent : undefined;
+    return getUttaksperiodeFarge(periode.konto, periode.forelder, erFarEllerMedmor, samtidigUttaksprosent);
 };
 
 const getKalenderFargeForPeriodeUtenUttak = (periode: PeriodeUtenUttak, barn: Barn): PeriodeColor => {
