@@ -98,9 +98,9 @@ describe('<OversiktSteg - fødsel>', () => {
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
-        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
         expect(within(april).getByTestId('day:11;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(april).getByTestId('day:12;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:12;dayColor:NONE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(april).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(0);
 
         const mai = screen.getByTestId('year:2024;month:4');
@@ -132,9 +132,9 @@ describe('<OversiktSteg - fødsel>', () => {
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
-        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
         expect(within(april).getByTestId('day:11;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(april).getByTestId('day:12;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:12;dayColor:NONE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(april).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(0);
 
         const mai = screen.getByTestId('year:2024;month:4');
@@ -228,9 +228,9 @@ describe('<OversiktSteg - fødsel>', () => {
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
-        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
         expect(within(april).getByTestId('day:11;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(april).getByTestId('day:12;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:12;dayColor:NONE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(april).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(0);
 
         const mai = screen.getByTestId('year:2024;month:4');
@@ -262,9 +262,9 @@ describe('<OversiktSteg - fødsel>', () => {
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
-        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
         expect(within(april).getByTestId('day:11;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        expect(within(april).getByTestId('day:12;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:12;dayColor:NONE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(april).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(0);
 
         const mai = screen.getByTestId('year:2024;month:4');
@@ -322,7 +322,7 @@ describe('<OversiktSteg - fødsel>', () => {
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
-        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
         expect(within(april).getByTestId('day:11;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(april).getByTestId('day:12;dayColor:BLUE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(13);
@@ -345,7 +345,7 @@ describe('<OversiktSteg - fødsel>', () => {
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
-        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
         expect(within(april).getByTestId('day:11;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(april).getByTestId('day:12;dayColor:BLUE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(13);
@@ -369,7 +369,7 @@ describe('<OversiktSteg - fødsel>', () => {
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
-        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
         expect(within(april).getByTestId('day:11;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(april).getByTestId('day:12;dayColor:BLUE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(13);
@@ -393,7 +393,7 @@ describe('<OversiktSteg - fødsel>', () => {
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
-        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:BETWEEN_DAY')).toBeInTheDocument();
+        expect(within(april).getByTestId('day:10;dayColor:NONE;dayType:LAST_DAY')).toBeInTheDocument();
         expect(within(april).getByTestId('day:11;dayColor:PINK;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(april).getByTestId('day:12;dayColor:BLUE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(april).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(13);

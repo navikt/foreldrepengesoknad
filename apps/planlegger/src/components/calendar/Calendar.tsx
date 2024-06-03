@@ -40,20 +40,24 @@ const findDayColor = (year: number, month: number, day: number, periods: Period[
 };
 
 const isFirstDay = (date: Dayjs, day: number, periods: Period[]) => {
+    const pinkDay = periods.find((p) => p.color === DayColor.PINK);
     return (
         date.isoWeekday() === 6 ||
         date.isoWeekday() === 1 ||
         day === 1 ||
-        periods.some((period) => date.isSame(period.fom, 'day'))
+        periods.some((period) => date.isSame(period.fom, 'day')) ||
+        (pinkDay && dayjs(pinkDay.fom).isSame(date.subtract(1, 'day'), 'day'))
     );
 };
 
 const isLastDay = (date: Dayjs, day: number, periods: Period[]) => {
+    const pinkDay = periods.find((p) => p.color === DayColor.PINK);
     return (
         date.isoWeekday() === 7 ||
         date.isoWeekday() === 5 ||
         day === date.daysInMonth() ||
-        periods.some((period) => date.isSame(period.tom, 'day'))
+        periods.some((period) => date.isSame(period.tom, 'day')) ||
+        (pinkDay && dayjs(pinkDay.fom).isSame(date.add(1, 'day'), 'day'))
     );
 };
 
