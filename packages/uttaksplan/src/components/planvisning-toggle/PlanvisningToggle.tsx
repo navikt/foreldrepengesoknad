@@ -1,10 +1,10 @@
 import { BulletListIcon, CalendarIcon } from '@navikt/aksel-icons';
 import { Dispatch, FunctionComponent, SetStateAction } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { ToggleGroup } from '@navikt/ds-react';
 
-import { bemUtils, intlUtils } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-common';
 
 import './planvisning-toggle.css';
 
@@ -15,7 +15,6 @@ interface Props {
 }
 
 const PlanvisningToggle: FunctionComponent<Props> = ({ setVisningsmodus }) => {
-    const intl = useIntl();
     const bem = bemUtils('planvisning-toggle');
     return (
         <ToggleGroup
@@ -26,11 +25,11 @@ const PlanvisningToggle: FunctionComponent<Props> = ({ setVisningsmodus }) => {
         >
             <ToggleGroup.Item value="liste">
                 <BulletListIcon aria-hidden />
-                {intlUtils(intl, 'liste')}
+                <FormattedMessage id="liste" />
             </ToggleGroup.Item>
             <ToggleGroup.Item value="kalender">
                 <CalendarIcon aria-hidden />
-                {intlUtils(intl, 'kalender')}
+                <FormattedMessage id="kalender" />
             </ToggleGroup.Item>
         </ToggleGroup>
     );
