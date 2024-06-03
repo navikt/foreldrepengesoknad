@@ -31,9 +31,10 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { PeriodeColor } from '@navikt/fp-constants';
-import { ISOStringToDate, dateToISOString } from '@navikt/fp-formik';
+import { ISOStringToDate } from '@navikt/fp-formik';
 import { Calendar, Period } from '@navikt/fp-ui';
 
+import { formatDateIso } from '../../../../utils';
 import { getIndexOfSistePeriodeFørDato } from './../../components/periodeliste/Periodeliste';
 import { getForelderFarge, getUttaksperiodeFarge } from './../../utils/styleUtils';
 import UttaksplanLegend from './UttaksplanLegend';
@@ -53,7 +54,7 @@ const getIndexOfFamiliehendelse = (uttaksplan: Periode[], familiehendelsesdato: 
     if (indexAvPeriodeUtenForeldrepengerFørFødsel !== -1) {
         return indexAvPeriodeUtenForeldrepengerFørFødsel;
     }
-    return getIndexOfSistePeriodeFørDato(uttaksplan, ISOStringToDate(familiehendelsesdato)) || 0;
+    return getIndexOfSistePeriodeFørDato(uttaksplan, familiehendelsesdato) || 0;
 };
 
 const slåSammenPeriods = (periods: Period[]) => {
@@ -90,9 +91,9 @@ const getPerioderForKalendervisning = (uttaksplan: Periode[], erFarEllerMedmor: 
     );
     const periods = perioderForVisning.map((p) => ({
         fom: dayjs(p.tidsperiode.fom).isSame(dayjs(familiehendelsesdato), 'd')
-            ? dateToISOString(Uttaksdagen(p.tidsperiode.fom).neste())
-            : dateToISOString(p.tidsperiode.fom),
-        tom: dateToISOString(p.tidsperiode.tom),
+            ? formatDateIso(Uttaksdagen(p.tidsperiode.fom).neste())
+            : formatDateIso(p.tidsperiode.fom),
+        tom: formatDateIso(p.tidsperiode.tom),
         color: getKalenderFargeForPeriodeType(p, erFarEllerMedmor, uttaksplan, barn),
     }));
 
