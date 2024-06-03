@@ -8,7 +8,6 @@ import {
     UtsettelseÅrsakType,
     capitalizeFirstLetter,
     getNavnGenitivEierform,
-    intlUtils,
     isAdoptertBarn,
     isFødtBarn,
 } from '@navikt/fp-common';
@@ -17,7 +16,7 @@ import { CalendarLabel } from '@navikt/fp-ui';
 
 const getUtsettelseLabel = (unikeUtsettelseÅrsaker: UtsettelseÅrsakType[], intl: IntlShape): ReactNode => {
     if (unikeUtsettelseÅrsaker.length === 1 && unikeUtsettelseÅrsaker[0] !== UtsettelseÅrsakType.Fri) {
-        const årsakTekst = intlUtils(intl, `kalender.utsettelse.${unikeUtsettelseÅrsaker[0]}`);
+        const årsakTekst = intl.formatMessage({ id: `kalender.utsettelse.${unikeUtsettelseÅrsaker[0]}` });
         return <FormattedMessage id="kalender.utsettelse" values={{ årsak: årsakTekst }} />;
     }
 

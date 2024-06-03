@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { Uttaksdagen, bemUtils, formaterDato, getToTetteReglerGjelder, intlUtils } from '@navikt/fp-common';
+import { Uttaksdagen, bemUtils, formaterDato, getToTetteReglerGjelder } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
@@ -19,7 +19,6 @@ const InfoOmNesteBarn: React.FunctionComponent<Props> = ({ minsterettUkerToTette
     const intl = useIntl();
     const bem = bemUtils('infoOmNesteBarn');
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const startStønadsperiodeNyttBarn =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
@@ -27,7 +26,7 @@ const InfoOmNesteBarn: React.FunctionComponent<Props> = ({ minsterettUkerToTette
         barnFraNesteSak !== undefined ? barnFraNesteSak.familiehendelsesdato : undefined;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erToTette = getToTetteReglerGjelder(familiehendelsesdato, familiehendelsedatoNesteBarn);
-    const minsterettToTetteAntallUkerTekst = [minsterettUkerToTette, intlUtils(intl, 'uker')].join(' ');
+    const minsterettToTetteAntallUkerTekst = [minsterettUkerToTette, intl.formatMessage({ id: 'uker' })].join(' ');
     const sisteUttaksdagDetteBarnet =
         startStønadsperiodeNyttBarn !== undefined ? Uttaksdagen(startStønadsperiodeNyttBarn).forrige() : undefined;
 
