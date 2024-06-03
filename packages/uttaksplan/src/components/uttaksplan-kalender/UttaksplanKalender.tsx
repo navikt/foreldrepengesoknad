@@ -62,12 +62,8 @@ const slåSammenPeriods = (periods: Period[]) => {
     }
 
     return periods.reduce((res, period, index) => {
-        if (index === 0) {
-            res.push(period);
-            return res;
-        }
-
         if (
+            index !== 0 &&
             period.color === res[res.length - 1].color &&
             dayjs(Uttaksdagen(ISOStringToDate(res[res.length - 1].tom)!).neste()).isSame(dayjs(period.fom), 'day')
         ) {
@@ -204,12 +200,14 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
     const utsettelser = uttaksplan.filter((p) => isUtsettelsesperiode(p)) as Utsettelsesperiode[];
     const unikeUtsettelseÅrsaker = [...new Set(utsettelser.map((u) => u.årsak))];
     const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const harAvslåttePerioderSomIkkeGirTapteDager =
-        uttaksplan.filter(
-            (p) =>
-                isAvslåttPeriode(p) &&
-                (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsesdato)),
-        ).length > 0;
+    const harAvslåttePerioderSomIkkeGirTapteDager = uttaksplan.some(
+        (p) => isAvslåttPeriode(p) && (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsesdato)),
+    );
+    const inkludererHelg = getInneholderKalenderHelgedager(periods);
+    if (inkludererHelg) {
+        unikePeriodColors.push(PeriodeColor.GRAY);
+    }
+
     const pdfOptions = {
         filename: 'Min foreldrepengeplan.pdf',
         resolution: Resolution.HIGH,
@@ -218,10 +216,6 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
         },
     } as Options;
     const { toPDF, targetRef } = usePDF(pdfOptions);
-    const inkludererHelg = getInneholderKalenderHelgedager(periods);
-    if (inkludererHelg) {
-        unikePeriodColors.push(PeriodeColor.GRAY);
-    }
 
     return (
         <>
