@@ -34,10 +34,10 @@ import { PeriodeColor } from '@navikt/fp-constants';
 import { ISOStringToDate } from '@navikt/fp-formik';
 import { Calendar, Period } from '@navikt/fp-ui';
 
-import { formatDateIso } from '../../../../utils';
-import { getIndexOfSistePeriodeFørDato } from './../../components/periodeliste/Periodeliste';
-import { getForelderFarge, getUttaksperiodeFarge } from './../../utils/styleUtils';
-import UttaksplanLegend from './UttaksplanLegend';
+import { formatDateIso } from '../../utils';
+import { getIndexOfSistePeriodeFørDato } from '../../uttaksplan/src/components/periodeliste/Periodeliste';
+import { getForelderFarge, getUttaksperiodeFarge } from '../../uttaksplan/src/utils/styleUtils';
+import UttaksplanLegend from '../uttaksplan-legend/UttaksplanLegend';
 import './uttaksplanKalender.css';
 
 export interface UttaksplanKalenderProps {

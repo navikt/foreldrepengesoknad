@@ -1,0 +1,15 @@
+{
+    "extends": "tsconfig/vite.json",
+    "compilerOptions": {
+        "baseUrl": "src",
+        "jsx": "react-jsx",
+        "paths": {
+            "stories/*": ["./storybook/stories/*"],
+            "app/*": ["./app/*"]
+        },
+        "rootDir": "src",
+        "types": ["vite/client", "vitest/globals"]
+    },
+    "include": ["src/**/*", "src/@types", "src/storybook", "index.ts"],
+    "exclude": ["node_modules"]
+}
