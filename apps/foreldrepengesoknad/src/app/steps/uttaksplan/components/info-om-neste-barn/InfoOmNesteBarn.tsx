@@ -30,18 +30,26 @@ const InfoOmNesteBarn: React.FunctionComponent<Props> = ({ minsterettUkerToTette
     const minsterettToTetteAntallUkerTekst = [minsterettUkerToTette, intlUtils(intl, 'uker')].join(' ');
     const sisteUttaksdagDetteBarnet =
         startStønadsperiodeNyttBarn !== undefined ? Uttaksdagen(startStønadsperiodeNyttBarn).forrige() : undefined;
-    if (erToTette) {
-        return (
-            <Box padding="4" background="surface-alt-3-subtle" className={bem.block}>
-                <HStack justify="space-between" align="start">
-                    <VStack gap="2" style={{ width: '85%' }}>
-                        <Heading size="xsmall">
+
+    return (
+        <Box padding="4" background="surface-alt-3-subtle" className={bem.block}>
+            <HStack justify="space-between" align="start">
+                <VStack gap="2" style={{ width: '85%' }}>
+                    <Heading size="xsmall">
+                        {erToTette ? (
                             <FormattedMessage
                                 id="infoOmSøknaden.toTette.finnesBarnMedNesteSak.tittel"
                                 values={{ antallUkerToTette: minsterettUkerToTette }}
                             />
-                        </Heading>
-                        <BodyShort>
+                        ) : (
+                            <FormattedMessage
+                                id="infoOmSøknaden.ikkeToTette.finnesBarnMedNesteSak.tittel"
+                                values={{ sisteUttaksdagDetteBarnet: formaterDato(sisteUttaksdagDetteBarnet) }}
+                            />
+                        )}
+                    </Heading>
+                    <BodyShort>
+                        {erToTette ? (
                             <FormattedMessage
                                 id="infoOmSøknaden.toTette.finnesBarnMedNesteSak"
                                 values={{
@@ -49,26 +57,7 @@ const InfoOmNesteBarn: React.FunctionComponent<Props> = ({ minsterettUkerToTette
                                     minsterettAntallUker: <strong>{minsterettToTetteAntallUkerTekst}</strong>,
                                 }}
                             />
-                        </BodyShort>
-                    </VStack>
-                    <div className={bem.element('ikon')}>
-                        <BabyWrappedIcon height={24} width={24} color="#005B82" />
-                    </div>
-                </HStack>
-            </Box>
-        );
-    } else {
-        return (
-            <Box padding="4" background="surface-alt-3-subtle" className={bem.block}>
-                <HStack justify="space-between" align="start">
-                    <VStack gap="2" style={{ width: '85%' }}>
-                        <Heading size="xsmall">
-                            <FormattedMessage
-                                id="infoOmSøknaden.ikkeToTette.finnesBarnMedNesteSak.tittel"
-                                values={{ sisteUttaksdagDetteBarnet: formaterDato(sisteUttaksdagDetteBarnet) }}
-                            />
-                        </Heading>
-                        <BodyShort>
+                        ) : (
                             <FormattedMessage
                                 id="infoOmSøknaden.ikkeToTette.finnesBarnMedNesteSak"
                                 values={{
@@ -76,15 +65,15 @@ const InfoOmNesteBarn: React.FunctionComponent<Props> = ({ minsterettUkerToTette
                                     sisteUttaksdagDetteBarnet: formaterDato(sisteUttaksdagDetteBarnet),
                                 }}
                             />
-                        </BodyShort>
-                    </VStack>
-                    <div className={bem.element('ikon')}>
-                        <BabyWrappedIcon height={24} width={24} color="#005B82" />
-                    </div>
-                </HStack>
-            </Box>
-        );
-    }
+                        )}
+                    </BodyShort>
+                </VStack>
+                <div className={bem.element('ikon')}>
+                    <BabyWrappedIcon height={24} width={24} color="#005B82" />
+                </div>
+            </HStack>
+        </Box>
+    );
 };
 
 export default InfoOmNesteBarn;
