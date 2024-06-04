@@ -7,7 +7,6 @@ import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 import { Alert, Button } from '@navikt/ds-react';
 
 import { Forelder, PeriodeColor, PeriodeInfoType, Periodetype } from '@navikt/fp-constants';
-import { ISOStringToDate } from '@navikt/fp-formik';
 import {
     Barn,
     InfoPeriode,
@@ -65,7 +64,7 @@ const slåSammenPeriods = (periods: Period[]) => {
         if (
             index !== 0 &&
             period.color === res[res.length - 1].color &&
-            dayjs(Uttaksdagen(ISOStringToDate(res[res.length - 1].tom)!).neste()).isSame(dayjs(period.fom), 'day')
+            dayjs(Uttaksdagen(new Date(res[res.length - 1].tom)).neste()).isSame(dayjs(period.fom), 'day')
         ) {
             res[res.length - 1].tom = period.tom;
             return res;
