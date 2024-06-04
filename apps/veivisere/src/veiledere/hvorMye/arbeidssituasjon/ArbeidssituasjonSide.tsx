@@ -14,7 +14,7 @@ import { links } from '@navikt/fp-constants';
 import { Checkbox, Form, TextField } from '@navikt/fp-form-hooks';
 import { GreenPanel, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
-import { isRequired, isValidNumber } from '@navikt/fp-validation';
+import { isValidNumber } from '@navikt/fp-validation';
 
 import HarIkkeRettTilFpInfobox from '../HarIkkeRettTilFpInfobox';
 import HøyInntektInfobox from '../HøyInntektInfobox';
@@ -82,7 +82,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
     const gjennomsnittslønn = finnGjennomsnittslønn(formValues);
     const antattÅrslønn = gjennomsnittslønn ? parseFloat(gjennomsnittslønn) * 12 : undefined;
 
-    const { ref, scrollToBottom } = useScrollBehaviour();
+    const { ref } = useScrollBehaviour();
 
     return (
         <VeilederPage ref={ref} label={intl.formatMessage({ id: 'Tittel' })}>
@@ -180,8 +180,6 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                                 label={capitalizeFirstLetter(
                                                     forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
                                                 )}
-                                                onChange={scrollToBottom}
-                                                validate={[isRequired]}
                                                 className={styles.widthTextInput}
                                             />
                                             <TextField
@@ -189,15 +187,11 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                                 label={capitalizeFirstLetter(
                                                     forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
                                                 )}
-                                                onChange={scrollToBottom}
-                                                validate={[isRequired]}
                                                 className={styles.widthTextInput}
                                             />
                                             <TextField
                                                 name="lønnMåned3"
                                                 label={capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
-                                                onChange={scrollToBottom}
-                                                validate={[isRequired]}
                                                 className={styles.widthTextInput}
                                             />
                                         </VStack>
