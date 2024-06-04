@@ -2085,9 +2085,6 @@ importers:
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
-      '@navikt/fp-utils':
-        specifier: workspace:*
-        version: 'link:'
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
