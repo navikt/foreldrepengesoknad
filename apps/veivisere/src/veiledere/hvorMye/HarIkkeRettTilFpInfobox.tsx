@@ -9,10 +9,9 @@ import { formatCurrencyWithKr } from '@navikt/fp-utils';
 interface Props {
     minÅrslønn: number;
     antattÅrslønn: number;
-    isGray?: boolean;
 }
 
-const HarIkkeRettTilFpInfobox: React.FunctionComponent<Props> = ({ minÅrslønn, antattÅrslønn, isGray = false }) => {
+const HarIkkeRettTilFpInfobox: React.FunctionComponent<Props> = ({ minÅrslønn, antattÅrslønn }) => {
     return (
         <Infobox
             header={
@@ -21,7 +20,6 @@ const HarIkkeRettTilFpInfobox: React.FunctionComponent<Props> = ({ minÅrslønn,
                     values={{ minÅrslønn: formatCurrencyWithKr(minÅrslønn) }}
                 />
             }
-            isGray={isGray}
         >
             <VStack gap="4">
                 <BodyShort>
