@@ -1,16 +1,4 @@
-export enum StønadskontoType {
-    Mødrekvote = 'MØDREKVOTE',
-    Fedrekvote = 'FEDREKVOTE',
-    Fellesperiode = 'FELLESPERIODE',
-    Foreldrepenger = 'FORELDREPENGER',
-    ForeldrepengerFørFødsel = 'FORELDREPENGER_FØR_FØDSEL',
-    AktivitetsfriKvote = 'AKTIVITETSFRI_KVOTE',
-}
-
-export enum MinsterettType {
-    farRundtFødsel = 'farRundtFødsel',
-    toTette = 'toTette',
-}
+import { MinsterettType, StønadskontoType } from '@navikt/fp-constants';
 
 export type TilgjengeligeMinsterettskontoer = {
     [MinsterettType.farRundtFødsel]: number;

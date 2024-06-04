@@ -20,6 +20,7 @@
         "@navikt/fp-metrics": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
+        "@navikt/fp-uttaksplan-kalender": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@navikt/sif-common-question-config": "^0.0.7",
         "@types/react": "^18.2.73",

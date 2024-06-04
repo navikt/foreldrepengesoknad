@@ -4,7 +4,8 @@ import { FunctionComponent } from 'react';
 import { BodyShort, Link } from '@navikt/ds-react';
 
 import { Block } from '@navikt/fp-common';
-import { Attachment, InnsendingsType } from '@navikt/fp-types';
+import { InnsendingsType } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
 
 interface Props {
     vedlegg: Attachment[];

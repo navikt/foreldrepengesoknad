@@ -18,8 +18,8 @@ import {
     isUtsettelseMorInnlagt,
     isUttakAvFedrekvoteMorForSyk,
 } from '@navikt/fp-common';
-import { Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, InnsendingsType } from '@navikt/fp-types';
+import { InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
 
 import { VedleggDataType } from 'app/types/VedleggDataType';
 

@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 
-import { InnsendingsType } from '@navikt/fp-types';
+import { InnsendingsType } from '@navikt/fp-constants';
 
 import {
     getAleneOmOmsorgVedlegg,

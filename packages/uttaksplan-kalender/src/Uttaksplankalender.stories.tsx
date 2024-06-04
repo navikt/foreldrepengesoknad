@@ -5,12 +5,12 @@ import {
     BarnType,
     Forelder,
     OppholdÅrsakType,
-    Periode,
     PeriodeInfoType,
     Periodetype,
     StønadskontoType,
     UtsettelseÅrsakType,
-} from '@navikt/fp-common';
+} from '@navikt/fp-constants';
+import { Periode } from '@navikt/fp-types';
 
 import UttaksplanKalender from './UttaksplanKalender';
 

@@ -2,8 +2,8 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 
 import { AnnenForelder, Block, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, AttachmentMetadataType } from '@navikt/fp-types';
+import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
 
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 

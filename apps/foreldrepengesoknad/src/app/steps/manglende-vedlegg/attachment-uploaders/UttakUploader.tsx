@@ -8,10 +8,9 @@ import { BodyLong, Label, VStack } from '@navikt/ds-react';
 
 import { getSaveAttachment } from '@navikt/fp-api';
 import { NavnPåForeldre, Periode, Situasjon, addMetadata, bemUtils, lagSendSenereDokument } from '@navikt/fp-common';
-import { AttachmentType } from '@navikt/fp-constants';
+import { AttachmentMetadataType, AttachmentType } from '@navikt/fp-constants';
 import { dateToISOString } from '@navikt/fp-formik';
 import { Attachment } from '@navikt/fp-types';
-import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
 import { FileUploader } from '@navikt/fp-ui';
 
 import Environment from 'app/Environment';

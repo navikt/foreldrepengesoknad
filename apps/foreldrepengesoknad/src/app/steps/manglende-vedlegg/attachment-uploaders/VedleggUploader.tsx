@@ -6,9 +6,8 @@ import { BodyLong, Label, VStack } from '@navikt/ds-react';
 
 import { getSaveAttachment } from '@navikt/fp-api';
 import { addMetadata, lagSendSenereDokument } from '@navikt/fp-common';
-import { AttachmentType } from '@navikt/fp-constants';
-import { Attachment, InnsendingsType } from '@navikt/fp-types';
-import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
+import { AttachmentMetadataType, AttachmentType, InnsendingsType } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 
 import Environment from 'app/Environment';

@@ -6,39 +6,38 @@ import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
 import { Alert, Button } from '@navikt/ds-react';
 
+import { Forelder, PeriodeColor, PeriodeInfoType, Periodetype } from '@navikt/fp-constants';
+import { ISOStringToDate } from '@navikt/fp-formik';
 import {
     Barn,
-    Forelder,
     InfoPeriode,
     Overføringsperiode,
     Periode,
-    PeriodeInfoType,
     PeriodeUtenUttak,
-    Periodetype,
     Utsettelsesperiode,
-    Uttaksdagen,
     Uttaksperiode,
-    bemUtils,
-    getAnnenForelderSamtidigUttakPeriode,
     getFamiliehendelsedato,
     isAvslåttPeriode,
-    isAvslåttPeriodeFørsteSeksUkerMor,
     isForeldrepengerFørFødselUttaksperiode,
     isFødtBarn,
     isInfoPeriode,
     isUfødtBarn,
     isUtsettelsesperiode,
     isUttaksperiode,
-} from '@navikt/fp-common';
-import { PeriodeColor } from '@navikt/fp-constants';
-import { ISOStringToDate } from '@navikt/fp-formik';
+} from '@navikt/fp-types';
 import { Calendar, Period } from '@navikt/fp-ui';
+import {
+    Uttaksdagen,
+    formatDateIso,
+    getAnnenForelderSamtidigUttakPeriode,
+    getForelderFarge,
+    getIndexOfSistePeriodeFørDato,
+    getUttaksperiodeFarge,
+    isAvslåttPeriodeFørsteSeksUkerMor,
+} from '@navikt/fp-utils';
 
-import { formatDateIso } from '../../utils';
-import { getIndexOfSistePeriodeFørDato } from '../../uttaksplan/src/components/periodeliste/Periodeliste';
-import { getForelderFarge, getUttaksperiodeFarge } from '../../uttaksplan/src/utils/styleUtils';
-import UttaksplanLegend from '../uttaksplan-legend/UttaksplanLegend';
-import './uttaksplanKalender.css';
+import UttaksplanLegend from './UttaksplanLegend';
+import styles from './uttaksplanKalender.module.css';
 
 export interface UttaksplanKalenderProps {
     uttaksplan: Periode[];
@@ -195,7 +194,6 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
     barn,
     navnAnnenPart,
 }) => {
-    const bem = bemUtils('uttaksplanKalender');
     const periods = getPerioderForKalendervisning(uttaksplan, erFarEllerMedmor, barn);
     const unikePeriodColors = [...new Set(periods.map((period) => period.color))];
     const utsettelser = uttaksplan.filter((p) => isUtsettelsesperiode(p)) as Utsettelsesperiode[];
@@ -226,7 +224,7 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
                 </Alert>
             )}
             <div ref={targetRef}>
-                <div className={bem.element('legend')} style={{ display: 'flex', flexWrap: 'wrap' }} id="legend">
+                <div className={styles.legend} style={{ display: 'flex', flexWrap: 'wrap' }} id="legend">
                     <UttaksplanLegend
                         uniqueColors={unikePeriodColors}
                         barn={barn}
@@ -237,12 +235,7 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
                 </div>
                 <Calendar periods={periods} />
             </div>
-            <Button
-                className={bem.element('button')}
-                variant="tertiary"
-                icon={<DownloadIcon />}
-                onClick={() => toPDF()}
-            >
+            <Button className={styles.button} variant="tertiary" icon={<DownloadIcon />} onClick={() => toPDF()}>
                 <FormattedMessage id="kalender.lastNed" />
             </Button>
         </>

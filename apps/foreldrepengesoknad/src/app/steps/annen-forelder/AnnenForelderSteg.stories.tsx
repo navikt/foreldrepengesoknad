@@ -3,8 +3,9 @@ import { StoryFn } from '@storybook/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
+import { SivilstandType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { SivilstandType, Søker, SøkerBarn, SøkersituasjonFp } from '@navikt/fp-types';
+import { Søker, SøkerBarn, SøkersituasjonFp } from '@navikt/fp-types';
 
 import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';

@@ -28,7 +28,8 @@ import {
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { Arbeidsforhold, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { Arbeidsforhold, Periode as PeriodeType, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender';
 
 import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
 import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
@@ -37,7 +38,6 @@ import Planlegger from './components/planlegger/Planlegger';
 import PlanvisningToggle from './components/planvisning-toggle/PlanvisningToggle';
 import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttaksplanModal';
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
-import UttaksplanKalender from './components/uttaksplan-kalender/UttaksplanKalender';
 import { getHarAktivitetskravIPeriodeUtenUttak } from './utils/uttaksplanUtils';
 import { validerUttaksplan } from './validering/validerUttaksplan';
 import VeilederInfo from './validering/veilederInfo/VeilederInfo';
@@ -362,7 +362,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             {visningsmodus === 'kalender' && (
                 <Block padBottom="xxl">
                     <UttaksplanKalender
-                        uttaksplan={uttaksplan}
+                        uttaksplan={uttaksplan as PeriodeType[]}
                         erFarEllerMedmor={erFarEllerMedmor}
                         barn={barn}
                         navnAnnenPart={navnAnnenPart}

@@ -15,7 +15,8 @@ export { default as useDocumentTitle } from './src/hooks/useDocumentTitle';
 export { default as useBeforeUnload } from './src/hooks/useBeforeUnload';
 export { default as bemUtils } from './src/bemUtils';
 export { getFloatFromString } from './src/numberUtils';
-export { capitalizeFirstLetter } from './src/stringUtils';
+export { capitalizeFirstLetter, getNavnGenitivEierform } from './src/stringUtils';
+export { getOffentligeFridager } from './src/fridagerUtils';
 export {
     getBokmålLocale,
     getLocaleForApi,
@@ -50,4 +51,11 @@ export {
     enMånedSiden,
     niMånederFremITid,
     isISODateString,
+    dateIsSameOrAfter,
+    dateIsSameOrBefore,
+    formaterDatoUtenDag,
 } from './src/dateUtils';
+
+export * from './src/uttak/Uttaksdagen';
+export * from './src/uttak/Tidsperioden';
+export * from './src/uttak/uttakUtils';

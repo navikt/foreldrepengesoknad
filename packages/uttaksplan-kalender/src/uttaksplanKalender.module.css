@@ -1,15 +1,15 @@
-.uttaksplanKalender__button {
+.button {
     margin-top: 2rem;
 }
 
 @media (max-width: 768px) {
-    .uttaksplanKalender__legend {
+    .legend {
         padding-bottom: 0.5rem;
     }
 }
 
 @media print {
-    .uttaksplanKalender__button {
+    .button {
         display: none;
     }
 }

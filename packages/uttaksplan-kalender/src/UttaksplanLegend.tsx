@@ -3,16 +3,10 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import {
-    Barn,
-    UtsettelseÅrsakType,
-    capitalizeFirstLetter,
-    getNavnGenitivEierform,
-    isAdoptertBarn,
-    isFødtBarn,
-} from '@navikt/fp-common';
-import { PeriodeColor } from '@navikt/fp-constants';
+import { PeriodeColor, UtsettelseÅrsakType } from '@navikt/fp-constants';
+import { Barn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { CalendarLabel } from '@navikt/fp-ui';
+import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 const getUtsettelseLabel = (unikeUtsettelseÅrsaker: UtsettelseÅrsakType[], intl: IntlShape): ReactNode => {
     if (unikeUtsettelseÅrsaker.length === 1 && unikeUtsettelseÅrsaker[0] !== UtsettelseÅrsakType.Fri) {

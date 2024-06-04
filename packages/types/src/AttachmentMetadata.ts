@@ -1,9 +1,4 @@
-export enum AttachmentMetadataType {
-    BARN = 'BARN',
-    OPPTJENING = 'OPPTJENING',
-    TILRETTELEGGING = 'TILRETTELEGGING',
-    UTTAK = 'UTTAK',
-}
+import { AttachmentMetadataType } from '@navikt/fp-constants';
 
 interface Tidsperiode {
     fom: string;

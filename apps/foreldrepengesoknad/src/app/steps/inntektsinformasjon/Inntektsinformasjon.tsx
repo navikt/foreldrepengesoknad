@@ -12,8 +12,8 @@ import {
     intlUtils,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
-import { Skjemanummer } from '@navikt/fp-constants';
-import { Arbeidsforhold, Attachment, AttachmentMetadataType } from '@navikt/fp-types';
+import { AttachmentMetadataType, Skjemanummer } from '@navikt/fp-constants';
+import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 

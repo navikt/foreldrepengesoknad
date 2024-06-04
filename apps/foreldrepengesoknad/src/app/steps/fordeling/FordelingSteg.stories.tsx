@@ -6,14 +6,9 @@ import { MemoryRouter } from 'react-router-dom';
 import AxiosMock from 'storybook/utils/AxiosMock';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
+import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
-import {
-    Arbeidsforhold,
-    StønadskontoType,
-    Søker,
-    SøkersituasjonFp,
-    TilgjengeligeStønadskontoerForDekningsgrad,
-} from '@navikt/fp-types';
+import { Arbeidsforhold, Søker, SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import Environment from 'app/Environment';
 import { FpApiDataContext } from 'app/api/context/FpApiDataContext';
