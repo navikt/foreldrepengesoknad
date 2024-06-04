@@ -6,7 +6,12 @@ import { oppsummeringMessages } from '@navikt/fp-oppsummering';
 import { LocaleNo } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
-import { getLocaleFromSessionStorage, setLocaleInSessionStorage, shouldChangeBrowser } from '@navikt/fp-utils';
+import {
+    getLocaleFromSessionStorage,
+    setLocaleInSessionStorage,
+    shouldChangeBrowser,
+    utilsMessages,
+} from '@navikt/fp-utils';
 
 import Svangerskapspengesøknad from './Svangerskapspengesøknad';
 import { svpApi } from './SvangerskapspengesøknadRoutes';
@@ -14,7 +19,20 @@ import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
 import ByttBrowserModal from './pages/byttBrowserModal/ByttBrowserModal';
 
-const allNbMessages = { ...nbMessages, ...uiMessages.nb, ...utenlandsoppholdMessages.nb, ...oppsummeringMessages.nb };
+const allNbMessages = {
+    ...nbMessages,
+    ...uiMessages.nb,
+    ...utenlandsoppholdMessages.nb,
+    ...oppsummeringMessages.nb,
+    ...utilsMessages.nb,
+};
+const allNnMessages = {
+    ...nnMessages,
+    ...uiMessages.nn,
+    ...utenlandsoppholdMessages.nn,
+    ...oppsummeringMessages.nn,
+    ...utilsMessages.nn,
+};
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -29,7 +47,7 @@ const localeFromSessionStorage = getLocaleFromSessionStorage<LocaleNo>();
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: allNbMessages,
-    nn: { ...nnMessages, ...uiMessages.nn, ...utenlandsoppholdMessages.nn, ...oppsummeringMessages.nn },
+    nn: allNnMessages,
 };
 
 dayjs.locale(localeFromSessionStorage);

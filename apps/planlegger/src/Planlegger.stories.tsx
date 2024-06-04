@@ -4,8 +4,9 @@ import MockAdapter from 'axios-mock-adapter';
 import { StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
+import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { StønadskontoType, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 
 import { PlanleggerDataFetcher, planleggerApi } from './Planlegger';

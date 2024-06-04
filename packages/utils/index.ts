@@ -1,3 +1,13 @@
+import enMessages from './intl/messages/en_US.json';
+import nbMessages from './intl/messages/nb_NO.json';
+import nnMessages from './intl/messages/nn_NO.json';
+
+export const utilsMessages = {
+    nb: nbMessages,
+    nn: nnMessages,
+    en: enMessages,
+};
+
 export {
     filteredListEØSCountries,
     createCountryOptions,

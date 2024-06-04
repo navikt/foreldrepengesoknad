@@ -10,8 +10,9 @@ import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 
+import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { StønadskontoType, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import OppsummeringSteg from './OppsummeringSteg';
 

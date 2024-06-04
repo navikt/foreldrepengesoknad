@@ -1,4 +1,5 @@
-import { Attachment, AttachmentMetadataType } from '@navikt/fp-types';
+import { AttachmentMetadataType } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
 
 import { ArbeidsforholdDTO } from './Arbeidsforhold';
 

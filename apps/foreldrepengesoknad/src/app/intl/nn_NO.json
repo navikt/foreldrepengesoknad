@@ -709,8 +709,6 @@
     "vedlegg.feilmelding.opplasting.feilet": "{filename} - Ops noko gjekk gale prøv igjen",
     "vedlegg.feilmelding.ugyldig.type": "{filename} - Vedlegg er ikkje av gyldig type",
     "vedlegg.feilmelding.ugyldig.størrelse": "{filename} - er for stor. Maksimal tillatt filstørrelse er {maxStørrelse}MB.",
-    "tidsperiode": "Frå {fom} til {tom}",
-    "tidsperiode.kort": "{fom} - {tom}",
     "uttaksplan.slettPlan.tittel": "Slett plan",
     "uttaksplan.slettPlan.modal.tittel": "Slett planen din",
     "uttaksplan.slettPlan.innhold1.førstegangssøknad": "Du må legge inn alle periodar du ønsker foreldrepengar for. Perioder du ikkje legger inn anser vi at du ikkje ønsker foreldrepengar for, selv om du har søkt om de tidligere.",

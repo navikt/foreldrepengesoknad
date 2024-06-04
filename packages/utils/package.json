@@ -3,6 +3,7 @@
     "main": "index.ts",
     "types": "index.ts",
     "scripts": {
+        "test": "vitest run",
         "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}",
         "lint:tsc": "tsc --noEmit",
         "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color",
@@ -21,10 +22,17 @@
         "react-intl": "^6.6.4"
     },
     "devDependencies": {
+        "@formatjs/cli-lib": "6.3.6",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@testing-library/jest-dom": "^6.4.2",
+        "@testing-library/react": "^14.2.1",
         "@types/react": "^18.2.73",
+        "@vitejs/plugin-react": "^4.2.1",
+        "fast-glob": "^3.3.2",
         "tsconfig": "workspace:*",
-        "typescript": "^5.4.3"
+        "typescript": "^5.4.3",
+        "vite": "^5.1.6",
+        "vite-plugin-checker": "^0.6.4",
+        "vitest": "^1.4.0"
     }
 }
