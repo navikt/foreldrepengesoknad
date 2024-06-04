@@ -7,7 +7,6 @@ import { Periode, isValidTidsperiode } from '@navikt/fp-common';
 
 import Permisjonsperiode from '../../types/Permisjonsperiode';
 import { mapPerioderToPermisjonsperiode } from '../../utils/permisjonsperiodeUtils';
-import PeriodeListeItemFamiliehendelse from '../periode-liste-item/PeriodeListeItemFamiliehendelse';
 import PeriodeListeItem from './../periode-liste-item/PeriodeListeItem';
 
 interface Props {
@@ -28,20 +27,22 @@ const PeriodeListe: FunctionComponent<Props> = ({ perioder, familiehendelsedato 
 
     return (
         <div>
-            {permisjonsperioder.map((p, index) => {
-                return (
-                    <Accordion>
-                        {indexOfFørstePeriodeEtterFødsel === index ? (
-                            <PeriodeListeItemFamiliehendelse
-                                permisjonsperiode={p}
-                                familiehendelsedato={familiehendelsedato}
-                                erFamiliehendelse={true}
-                            />
-                        ) : null}
-                        <PeriodeListeItem permisjonsperiode={p} familiehendelsedato={familiehendelsedato} />
-                    </Accordion>
-                );
-            })}
+            <Accordion>
+                {permisjonsperioder.map((p, index) => {
+                    return (
+                        <>
+                            {indexOfFørstePeriodeEtterFødsel === index ? (
+                                <PeriodeListeItem
+                                    permisjonsperiode={p}
+                                    familiehendelsedato={familiehendelsedato}
+                                    erFamiliehendelse={true}
+                                />
+                            ) : null}
+                            <PeriodeListeItem permisjonsperiode={p} familiehendelsedato={familiehendelsedato} />
+                        </>
+                    );
+                })}
+            </Accordion>
         </div>
     );
 };

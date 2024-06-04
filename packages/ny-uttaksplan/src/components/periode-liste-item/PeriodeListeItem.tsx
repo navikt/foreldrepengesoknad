@@ -19,31 +19,27 @@ const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode, familie
     const bem = bemUtils('periode-liste-item');
 
     return (
-        <Accordion>
-            <Accordion.Item>
-                <Accordion.Header className={bem.element('header')}>
-                    <PeriodeListeHeader
-                        permisjonsperiode={permisjonsperiode}
-                        familiehendelsedato={familiehendelsedato}
-                        erFamiliehendelse={erFamiliehendelse}
+        <Accordion.Item>
+            <Accordion.Header className={bem.element('header')}>
+                <PeriodeListeHeader
+                    permisjonsperiode={permisjonsperiode}
+                    familiehendelsedato={familiehendelsedato}
+                    erFamiliehendelse={erFamiliehendelse}
+                />
+            </Accordion.Header>
+            <Accordion.Content>
+                {erFamiliehendelse ? (
+                    <PeriodeListeContent
+                        periode={permisjonsperiode.perioder[0]}
+                        erFamiliehendelse={!!erFamiliehendelse}
                     />
-                </Accordion.Header>
-                {/* <Hide asChild above="md">
-                    <Accordion.Header className={bem.element('header')}>
-                        <PeriodeListeHeaderMobil
-                            permisjonsperiode={permisjonsperiode}
-                            familiehendelsedato={familiehendelsedato}
-                            erFamiliehendelse={erFamiliehendelse}
-                        />
-                    </Accordion.Header>
-                </Hide> */}
-                <Accordion.Content>
-                    {permisjonsperiode.perioder.map((p) => {
+                ) : (
+                    permisjonsperiode.perioder.map((p) => {
                         return <PeriodeListeContent periode={p} erFamiliehendelse={!!erFamiliehendelse} />;
-                    })}
-                </Accordion.Content>
-            </Accordion.Item>
-        </Accordion>
+                    })
+                )}
+            </Accordion.Content>
+        </Accordion.Item>
     );
 };
 
