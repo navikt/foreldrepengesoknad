@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 
+import { Accordion } from '@navikt/ds-react';
+
 import { Periode, isValidTidsperiode } from '@navikt/fp-common';
 
 import Permisjonsperiode from '../../types/Permisjonsperiode';
@@ -28,7 +30,7 @@ const PeriodeListe: FunctionComponent<Props> = ({ perioder, familiehendelsedato 
         <div>
             {permisjonsperioder.map((p, index) => {
                 return (
-                    <>
+                    <Accordion>
                         {indexOfFørstePeriodeEtterFødsel === index ? (
                             <PeriodeListeItemFamiliehendelse
                                 permisjonsperiode={p}
@@ -37,7 +39,7 @@ const PeriodeListe: FunctionComponent<Props> = ({ perioder, familiehendelsedato 
                             />
                         ) : null}
                         <PeriodeListeItem permisjonsperiode={p} familiehendelsedato={familiehendelsedato} />
-                    </>
+                    </Accordion>
                 );
             })}
         </div>

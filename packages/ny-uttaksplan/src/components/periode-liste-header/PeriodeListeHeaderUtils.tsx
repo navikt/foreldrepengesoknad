@@ -113,7 +113,7 @@ export const getTekst = ({
     }
 
     if (erUtsettelse) {
-        return 'Du er innlagt på sykehus';
+        return 'Du er innlagt';
     }
 
     if (erHull) {

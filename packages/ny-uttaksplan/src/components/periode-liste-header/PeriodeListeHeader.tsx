@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 
-import { BodyShort, Heading } from '@navikt/ds-react';
+import { BodyShort, Heading, Hide, Show } from '@navikt/ds-react';
 
 import { Forelder, Tidsperioden, bemUtils, formatDateShortMonth, getVarighetString } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/fp-formik';
@@ -17,6 +17,35 @@ interface Props {
     familiehendelsedato: string;
     erFamiliehendelse?: boolean;
 }
+
+const renderPeriode = (permisjonsperiode: Permisjonsperiode, erFamiliehendelse: boolean | undefined) => {
+    if (erFamiliehendelse) {
+        return (
+            <div>
+                <Heading size="xsmall" as="p">
+                    {formatDateShortMonth(permisjonsperiode.tidsperiode.fom)}
+                </Heading>
+            </div>
+        );
+    }
+
+    return (
+        <div>
+            <Heading size="xsmall" as="p">
+                {formatDateShortMonth(permisjonsperiode.tidsperiode.fom)} -{' '}
+                {formatDateShortMonth(permisjonsperiode.tidsperiode.tom)}
+            </Heading>
+        </div>
+    );
+};
+
+const renderVarighet = (erFamiliehendelse: boolean | undefined, antallDager: number, intl: IntlShape) => {
+    if (erFamiliehendelse) {
+        return null;
+    }
+
+    return <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>;
+};
 
 const PeriodeListeHeader: FunctionComponent<Props> = ({
     permisjonsperiode,
@@ -42,16 +71,14 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({
     return (
         <div className={bem.block}>
             <div className={bem.element('dato')}>
-                <Heading size="xsmall" as="p">
-                    {formatDateShortMonth(permisjonsperiode.tidsperiode.fom)} -{' '}
-                    {formatDateShortMonth(permisjonsperiode.tidsperiode.tom)}
-                </Heading>
+                {renderPeriode(permisjonsperiode, erFamiliehendelse)}
+                <Hide above="md">
+                    <BodyShort>
+                        {getTekst({ erPeriodeUtenUttak, erSamtidigUttak, erHull, erUtsettelse, erFamiliehendelse })}
+                    </BodyShort>
+                </Hide>
             </div>
-            {erFamiliehendelse !== true ? (
-                <div className={bem.element('uker')}>
-                    <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>
-                </div>
-            ) : null}
+            {renderVarighet(erFamiliehendelse, antallDager, intl)}
             <div
                 className={classNames(
                     bem.element('hendelse'),
@@ -67,9 +94,11 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({
                 )}
             >
                 <BodyShort className={classNames(bem.element('hendelse-wrapper'))}>
-                    <div>
-                        {getTekst({ erPeriodeUtenUttak, erSamtidigUttak, erHull, erUtsettelse, erFamiliehendelse })}
-                    </div>
+                    <Show above="md">
+                        <BodyShort>
+                            {getTekst({ erPeriodeUtenUttak, erSamtidigUttak, erHull, erUtsettelse, erFamiliehendelse })}
+                        </BodyShort>
+                    </Show>
                     {getIkon({
                         bem,
                         erMor,

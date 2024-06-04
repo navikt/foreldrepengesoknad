@@ -88,3 +88,23 @@
 .periode-liste-header--farge-bg-red {
     background-color: var(--a-red-50);
 }
+
+@media (max-width: 767px) {
+    .periode-liste-header__dato {
+        min-width: 60%;
+    }
+
+    .periode-liste-header__uker {
+        min-width: 20%;
+    }
+
+    .periode-liste-header__hendelse {
+        padding: 1rem;
+        border-radius: 2rem;
+        min-width: 0%;
+    }
+
+    .periode-liste-header__hendelse-wrapper {
+        display: flex;
+    }
+}
