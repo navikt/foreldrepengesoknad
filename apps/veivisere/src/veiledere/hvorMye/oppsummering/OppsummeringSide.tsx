@@ -1,9 +1,11 @@
-import { ChatElipsisIcon, InformationIcon } from '@navikt/aksel-icons';
+import { ArrowLeftIcon, ChatElipsisIcon, InformationIcon } from '@navikt/aksel-icons';
+import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
+import useVeilederNavigator from 'appData/useVeilederNavigator';
 import VeilederPage from 'components/Page/VeilederPage';
 import { FormattedMessage, useIntl } from 'react-intl';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
-import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
+import { Button, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
 import { Dekningsgrad } from '@navikt/fp-types';
 import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
@@ -22,15 +24,15 @@ const engangsstønad = 92648;
 export const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260;
 
 interface Props {
-    arbeidssituasjon: Arbeidssituasjon;
+    arbeidssituasjon?: Arbeidssituasjon;
 }
 
 const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon }) => {
     const intl = useIntl();
-
+    const { goToRoute } = useVeilederNavigator(ContextRoutes.HVOR_MYE);
     const { ref } = useScrollBehaviour();
 
-    const gjennomsnittslønn = parseFloat(notEmpty(finnGjennomsnittslønn(arbeidssituasjon)));
+    const gjennomsnittslønn = parseFloat(notEmpty(finnGjennomsnittslønn(notEmpty(arbeidssituasjon))));
     const grunnbeløpetGanger6 = GRUNNBELØPET * 6;
 
     const harIkkeRettTilFp = gjennomsnittslønn * 12 < minÅrslønn;
@@ -101,6 +103,13 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon }) 
                     </ExpansionCard.Header>
                     <ExpansionCard.Content>todo</ExpansionCard.Content>
                 </ExpansionCard>
+                <Button
+                    variant="secondary"
+                    onClick={() => goToRoute(HvorMyeRoutes.ARBEIDSSITUASJON)}
+                    icon={<ArrowLeftIcon aria-hidden height={24} width={24} />}
+                >
+                    <FormattedMessage id="OppsummeringSide.Tilbake" />
+                </Button>
             </VStack>
         </VeilederPage>
     );

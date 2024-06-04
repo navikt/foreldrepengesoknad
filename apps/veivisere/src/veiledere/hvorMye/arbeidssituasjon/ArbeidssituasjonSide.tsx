@@ -1,4 +1,5 @@
 import { InformationIcon, PaperplaneIcon } from '@navikt/aksel-icons';
+import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
 import useVeilederNavigator from 'appData/useVeilederNavigator';
 import VeilederPage from 'components/Page/VeilederPage';
 import dayjs from 'dayjs';
@@ -63,7 +64,7 @@ interface Props {
 
 const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setArbeidssituasjon }) => {
     const intl = useIntl();
-    const navigator = useVeilederNavigator();
+    const { goToRoute } = useVeilederNavigator(ContextRoutes.HVOR_MYE);
 
     const formMethods = useForm<Arbeidssituasjon>({
         defaultValues: arbeidssituasjon,
@@ -71,7 +72,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
 
     const onSubmit = (formValues: Arbeidssituasjon) => {
         setArbeidssituasjon(formValues);
-        navigator.goToNextDefaultStep();
+        goToRoute(HvorMyeRoutes.OPPSUMMERING);
     };
 
     const formValues = formMethods.watch();

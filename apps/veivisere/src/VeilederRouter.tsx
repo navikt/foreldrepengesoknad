@@ -1,4 +1,4 @@
-import { FpEllerEsRoutes, HvaSkjerNårRoutes, HvorMyeRoutes } from 'appData/routes';
+import { ContextRoutes } from 'appData/routes';
 import { FunctionComponent } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
@@ -18,15 +18,15 @@ const VeilederRouter: FunctionComponent<Props> = ({ locale, changeLocale }) => {
     return (
         <Routes>
             <Route
-                path={HvorMyeRoutes.HVOR_MYE + '/*'}
+                path={ContextRoutes.HVOR_MYE + '/*'}
                 element={<HvorMyeRouter locale={locale} changeLocale={changeLocale} />}
             />
             <Route
-                path={HvaSkjerNårRoutes.HVA_SKJER + '/*'}
+                path={ContextRoutes.HVA_SKJER + '/*'}
                 element={<HvaSkjerNårRouter locale={locale} changeLocale={changeLocale} />}
             />
             <Route
-                path={FpEllerEsRoutes.FP_ELLER_ES + '/*'}
+                path={ContextRoutes.FP_ELLER_ES + '/*'}
                 element={<FpEllerEsRouter locale={locale} changeLocale={changeLocale} />}
             />
             <Route path="*" element={<div>Veiledere</div>} />

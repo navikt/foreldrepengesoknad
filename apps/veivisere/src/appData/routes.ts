@@ -1,20 +1,19 @@
-export enum HvorMyeRoutes {
+export enum ContextRoutes {
     HVOR_MYE = '/hvor-mye',
-    OM_HVOR_MYE = '/om',
+    HVA_SKJER = '/hva-skjer',
+    FP_ELLER_ES = '/fp-eller-es',
+}
+
+export enum HvorMyeRoutes {
+    OM = '/om',
     ARBEIDSSITUASJON = '/arbeidssituasjon',
     OPPSUMMERING = '/oppsummering',
 }
 
 export enum HvaSkjerNårRoutes {
-    HVA_SKJER = '/hva-skjer',
-    OM_HVA_SKJER = '/om',
+    OM = '/om',
 }
 
 export enum FpEllerEsRoutes {
-    FP_ELLER_ES = '/fp-eller-es',
-    OM_FP_ELLER_ES = '/om',
+    OM = '/om',
 }
-
-export const PATH_ORDER = [HvorMyeRoutes.OM_HVOR_MYE, HvorMyeRoutes.ARBEIDSSITUASJON];
-
-export const REQUIRED_APP_STEPS_HVOR_MYE = [HvorMyeRoutes.OM_HVOR_MYE, HvorMyeRoutes.ARBEIDSSITUASJON];

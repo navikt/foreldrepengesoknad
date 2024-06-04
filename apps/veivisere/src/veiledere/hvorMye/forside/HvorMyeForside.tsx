@@ -1,3 +1,4 @@
+import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
 import useVeilederNavigator from 'appData/useVeilederNavigator';
 import { useIntl } from 'react-intl';
 
@@ -11,7 +12,7 @@ interface Props {
 
 const HvorMyeForside: React.FunctionComponent<Props> = ({ locale, changeLocale }) => {
     const intl = useIntl();
-    const navigator = useVeilederNavigator();
+    const { goToRoute } = useVeilederNavigator(ContextRoutes.HVOR_MYE);
     return (
         <FrontPage
             changeLocale={changeLocale}
@@ -19,7 +20,7 @@ const HvorMyeForside: React.FunctionComponent<Props> = ({ locale, changeLocale }
             titleLabel={intl.formatMessage({ id: 'HvorMyeForside.Title' })}
             minutesLabel={intl.formatMessage({ id: 'HvorMyeForside.Minutes' })}
             innholdLabel={intl.formatMessage({ id: 'HvorMyeForside.Innhold' })}
-            goToNextDefaultStep={navigator.goToNextDefaultStep}
+            goToNextDefaultStep={() => goToRoute(HvorMyeRoutes.ARBEIDSSITUASJON)}
         />
     );
 };

@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Action } from 'appData/HvorMyeDataContext';
-import { FpEllerEsRoutes, HvaSkjerNårRoutes, HvorMyeRoutes } from 'appData/routes';
+import { ContextRoutes, FpEllerEsRoutes, HvaSkjerNårRoutes, HvorMyeRoutes } from 'appData/routes';
 import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -15,7 +14,6 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<{
-    gåTilNesteSide: (action: Action) => void;
     brukStønadskontoMock?: boolean;
 }>;
 
@@ -24,7 +22,7 @@ export const HvorMyeVeileder: Story = {
         initAmplitude();
         return (
             <StrictMode>
-                <MemoryRouter initialEntries={[HvorMyeRoutes.HVOR_MYE + HvorMyeRoutes.OM_HVOR_MYE]}>
+                <MemoryRouter initialEntries={[ContextRoutes.HVOR_MYE + HvorMyeRoutes.OM]}>
                     <AppContainer />
                 </MemoryRouter>
             </StrictMode>
@@ -37,7 +35,7 @@ export const HvaSkjerNårVeileder: Story = {
         initAmplitude();
         return (
             <StrictMode>
-                <MemoryRouter initialEntries={[HvaSkjerNårRoutes.HVA_SKJER + HvaSkjerNårRoutes.OM_HVA_SKJER]}>
+                <MemoryRouter initialEntries={[ContextRoutes.HVA_SKJER + HvaSkjerNårRoutes.OM]}>
                     <AppContainer />
                 </MemoryRouter>
             </StrictMode>
@@ -50,7 +48,7 @@ export const FpEllerEsVeileder: Story = {
         initAmplitude();
         return (
             <StrictMode>
-                <MemoryRouter initialEntries={[FpEllerEsRoutes.FP_ELLER_ES + FpEllerEsRoutes.OM_FP_ELLER_ES]}>
+                <MemoryRouter initialEntries={[ContextRoutes.FP_ELLER_ES + FpEllerEsRoutes.OM]}>
                     <AppContainer />
                 </MemoryRouter>
             </StrictMode>

@@ -16,7 +16,7 @@ const FpEllerEsRouter: FunctionComponent<Props> = ({ locale, changeLocale }) => 
     return (
         <Routes>
             <Route
-                path={FpEllerEsRoutes.OM_FP_ELLER_ES}
+                path={FpEllerEsRoutes.OM}
                 element={<FpEllerEsForside locale={locale} changeLocale={changeLocale} />}
             />
         </Routes>

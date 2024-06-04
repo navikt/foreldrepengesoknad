@@ -1,11 +1,12 @@
-import { HvorMyeRoutes } from 'appData/routes';
+import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
 import { FunctionComponent, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import ArbeidssituasjonSide, { Arbeidssituasjon } from './arbeidssituasjon/ArbeidssituasjonSide';
 import HvorMyeForside from './forside/HvorMyeForside';
+import OppsummeringSide from './oppsummering/OppsummeringSide';
 
 interface Props {
     locale: LocaleAll;
@@ -17,10 +18,7 @@ const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale }) => {
     const [arbeidssituasjon, setArbeidssituasjon] = useState<Arbeidssituasjon>();
     return (
         <Routes>
-            <Route
-                path={HvorMyeRoutes.OM_HVOR_MYE}
-                element={<HvorMyeForside locale={locale} changeLocale={changeLocale} />}
-            />
+            <Route path={HvorMyeRoutes.OM} element={<HvorMyeForside locale={locale} changeLocale={changeLocale} />} />
             <Route
                 path={HvorMyeRoutes.ARBEIDSSITUASJON}
                 element={
@@ -30,6 +28,11 @@ const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale }) => {
                     />
                 }
             />
+            <Route
+                path={HvorMyeRoutes.OPPSUMMERING}
+                element={<OppsummeringSide arbeidssituasjon={arbeidssituasjon} />}
+            />
+            <Route path="*" element={<Navigate to={ContextRoutes.HVOR_MYE + HvorMyeRoutes.OM} />} />
         </Routes>
     );
 };

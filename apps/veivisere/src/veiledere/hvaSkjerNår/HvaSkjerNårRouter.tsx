@@ -16,7 +16,7 @@ const HvaSkjerNårRouter: FunctionComponent<Props> = ({ locale, changeLocale }) 
     return (
         <Routes>
             <Route
-                path={HvaSkjerNårRoutes.OM_HVA_SKJER}
+                path={HvaSkjerNårRoutes.OM}
                 element={<HvaSkjerNårForside locale={locale} changeLocale={changeLocale} />}
             />
         </Routes>
