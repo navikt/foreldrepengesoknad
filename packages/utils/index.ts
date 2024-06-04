@@ -16,6 +16,7 @@ export { default as useBeforeUnload } from './src/hooks/useBeforeUnload';
 export { default as bemUtils } from './src/bemUtils';
 export { getFloatFromString } from './src/numberUtils';
 export { capitalizeFirstLetter } from './src/stringUtils';
+export { formatCurrencyWithKr } from './src/currencyUtils';
 export {
     getBokmålLocale,
     getLocaleForApi,

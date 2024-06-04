@@ -29,4 +29,6 @@ export { default as CalendarLabel } from './src/calendar/label/CalendarLabel';
 export { default as Page } from './src/page/Page';
 export { default as FrontPage } from './src/page/FrontPage';
 export { default as GreenHeading } from './src/boxes/GreenHeading';
+export { default as GreenPanel } from './src/boxes/GreenPanel';
+export { default as Infobox } from './src/boxes/Infobox';
 export { default as IconCircleWrapper } from './src/iconCircle/IconCircleWrapper';

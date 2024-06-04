@@ -16,6 +16,7 @@ export type { Søker, SøkerBarn, SøkerAnnenForelder } from './src/Søker';
 export type { Arbeidsforhold } from './src/Arbeidsforhold';
 export type { Søkerinfo } from './src/Søkerinfo';
 export type { DatepickerDateRange } from './src/DatepickerDateRange';
+export { Dekningsgrad } from './src/Dekningsgrad';
 export { StønadskontoType } from './src/TilgjengeligeStønadskontoer';
 export type {
     TilgjengeligeStønadskontoer,

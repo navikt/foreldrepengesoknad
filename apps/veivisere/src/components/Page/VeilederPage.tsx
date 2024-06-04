@@ -1,8 +1,9 @@
+import { CalendarIcon } from '@navikt/aksel-icons';
 import { forwardRef } from 'react';
 
-import { Heading } from '@navikt/ds-react';
+import { HStack, Heading } from '@navikt/ds-react';
 
-import { GreenHeading, Page } from '@navikt/fp-ui';
+import { GreenHeading, IconCircleWrapper, Page } from '@navikt/fp-ui';
 
 interface Props {
     label: string;
@@ -14,7 +15,12 @@ const VeilederPage = forwardRef<HTMLDivElement, Props>(({ label, children }, ref
         <Page
             header={
                 <GreenHeading>
-                    <Heading size="large">{label}</Heading>
+                    <HStack gap="5" align="center">
+                        <IconCircleWrapper color="darkGreen" size="xl">
+                            <CalendarIcon height={28} width={28} fontSize="1.5rem" aria-hidden />
+                        </IconCircleWrapper>
+                        <Heading size="large">{label}</Heading>
+                    </HStack>
                 </GreenHeading>
             }
         >

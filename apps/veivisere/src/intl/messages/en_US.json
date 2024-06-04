@@ -4,5 +4,11 @@
     "HvorMyeForside.Innhold": "",
     "LanguageToggle.Bokmål": "Bokmål - Norwegian",
     "LanguageToggle.Nynorsk": "Nynorsk - Norwegian",
-    "LanguageToggle.Engelsk": "English"
+    "LanguageToggle.Engelsk": "English",
+    "ArbeidssituasjonSide.Arbeidssituasjon": "",
+    "ArbeidssituasjonSide.VelgAlternativ": "",
+    "ArbeidssituasjonSide.ArbeidEllerFrilans": "",
+    "ArbeidssituasjonSide.UtbetalingNav": "",
+    "ArbeidssituasjonSide.SelvstendigNæringsdrivende": "",
+    "ArbeidssituasjonSide.GirRett": ""
 }

@@ -4,5 +4,11 @@
     "HvorMyeForside.Innhold": "Denne veiviseren er for deg som ønsker å vite omtrent hvor mye foreldrepenger du kan få fra NAV.",
     "LanguageToggle.Bokmål": "Bokmål - norsk",
     "LanguageToggle.Nynorsk": "Nynorsk - norsk",
-    "LanguageToggle.Engelsk": "English"
+    "LanguageToggle.Engelsk": "English",
+    "ArbeidssituasjonSide.Arbeidssituasjon": "Hva er din nåværende arbeidssituasjon?",
+    "ArbeidssituasjonSide.VelgAlternativ": "Du kan velge flere alternativer",
+    "ArbeidssituasjonSide.ArbeidEllerFrilans": "Arbeidstaker eller frilanser",
+    "ArbeidssituasjonSide.UtbetalingNav": "Jeg får utbetaling fra NAV",
+    "ArbeidssituasjonSide.SelvstendigNæringsdrivende": "Selvstendig næringsdrivende",
+    "ArbeidssituasjonSide.GirRett": "Hvilke utbetalinger gir rett til foreldrepenger?"
 }

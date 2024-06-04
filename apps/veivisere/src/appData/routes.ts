@@ -2,6 +2,7 @@ export enum HvorMyeRoutes {
     HVOR_MYE = '/hvor-mye',
     OM_HVOR_MYE = '/om',
     ARBEIDSSITUASJON = '/arbeidssituasjon',
+    OPPSUMMERING = '/oppsummering',
 }
 
 export enum HvaSkjerNårRoutes {
