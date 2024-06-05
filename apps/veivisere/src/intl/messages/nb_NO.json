@@ -50,5 +50,10 @@
     "HarIkkeRettTilFpInfobox.AntattLønn": "Utifra det du har oppgitt antar vi at du har en <b>årslønn på {antattÅrslønn} kroner i året</b>. For å ha rett til foreldrepenger må du tjene minst <b>{minÅrslønn} kr i året</b>.",
     "HarIkkeRettTilFpInfobox.Lenke1": "Man kan ha rett engangsstønad i stedet. Du kan bruke ",
     "HarIkkeRettTilFpInfobox.Lenke2": "NAVs veiviser for engangsstønad eller foreldrepenger",
-    "HarIkkeRettTilFpInfobox.Lenke3": " for å lære mer."
+    "HarIkkeRettTilFpInfobox.Lenke3": " for å lære mer.",
+    "HvorMyeForside.UsikkerFp": "Usikker på om du har rett til foreldrepenger?",
+    "HvorMyeForside.PrøvVeiviser": "Prøv vår veiviser “Foreldrepenger eller engangsstønad?”.",
+    "AndreVeivisereLinkPanel.AndreVeivisere": "Andre veivisere:",
+    "ArbeidssituasjonSide.FpEllerEs": "Foreldrepenger eller engangsstønad?",
+    "ArbeidssituasjonSide.HvaSkjer": "Hva skjer når?"
 }

@@ -16,8 +16,9 @@ import { GreenPanel, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isValidNumber } from '@navikt/fp-validation';
 
-import HarIkkeRettTilFpInfobox from '../HarIkkeRettTilFpInfobox';
-import HøyInntektInfobox from '../HøyInntektInfobox';
+import FpEllerEsOgHvaSkjerNåLinkPanel from '../felles/FpEllerEsOgHvaSkjerNåLinkPanel';
+import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
+import HøyInntektInfobox from '../felles/HøyInntektInfobox';
 import styles from './arbeidssituasjonSide.module.css';
 
 export type Arbeidssituasjon = {
@@ -85,152 +86,160 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
     const { ref } = useScrollBehaviour();
 
     return (
-        <VeilederPage ref={ref} label={intl.formatMessage({ id: 'Tittel' })}>
-            <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
-                <VStack gap="10" style={{ flex: 1 }}>
-                    <VStack gap="2">
-                        <GreenPanel isDarkGreen={!isCheckboxValgt(formValues)} shouldFadeIn>
-                            <Label>
-                                <FormattedMessage id="ArbeidssituasjonSide.Arbeidssituasjon" />
-                            </Label>
-                            <BodyShort>
-                                <FormattedMessage id="ArbeidssituasjonSide.VelgAlternativ" />
-                            </BodyShort>
-                            <Checkbox
-                                name="erArbeidstakerEllerFrilanser"
-                                label={<FormattedMessage id="ArbeidssituasjonSide.ArbeidEllerFrilans" />}
-                            />
-                            <Checkbox
-                                name="harUtbetalingFraNav"
-                                label={<FormattedMessage id="ArbeidssituasjonSide.UtbetalingNav" />}
-                            />
-                            <Checkbox
-                                name="erSelvstendigNæringsdrivende"
-                                label={<FormattedMessage id="ArbeidssituasjonSide.SelvstendigNæringsdrivende" />}
-                            />
-                        </GreenPanel>
-                        <ReadMore header={<FormattedMessage id="ArbeidssituasjonSide.Forskjellen" />}>todo</ReadMore>
-                    </VStack>
-                    {formValues.erSelvstendigNæringsdrivende && (
-                        <Infobox
-                            isGray
-                            icon={
-                                <InformationIcon
-                                    height={24}
-                                    width={24}
-                                    color="#020C1CAD"
-                                    fontSize="1.5rem"
-                                    aria-hidden
+        <>
+            <VeilederPage ref={ref} label={intl.formatMessage({ id: 'Tittel' })}>
+                <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
+                    <VStack gap="10" style={{ flex: 1 }}>
+                        <VStack gap="2">
+                            <GreenPanel isDarkGreen={!isCheckboxValgt(formValues)} shouldFadeIn>
+                                <Label>
+                                    <FormattedMessage id="ArbeidssituasjonSide.Arbeidssituasjon" />
+                                </Label>
+                                <BodyShort>
+                                    <FormattedMessage id="ArbeidssituasjonSide.VelgAlternativ" />
+                                </BodyShort>
+                                <Checkbox
+                                    name="erArbeidstakerEllerFrilanser"
+                                    label={<FormattedMessage id="ArbeidssituasjonSide.ArbeidEllerFrilans" />}
                                 />
-                            }
-                        >
-                            <VStack gap="6">
-                                <BodyShort>
-                                    <FormattedMessage id="ArbeidssituasjonSide.SNKanIkkeBruke" />
-                                </BodyShort>
-                                <BodyShort>
-                                    <FormattedMessage id="ArbeidssituasjonSide.LesOm" />
-                                    <Link
-                                        inlineText
-                                        href={links.næringsdrivendeInfoBoks}
-                                        className="lenke"
-                                        rel="noreferrer"
-                                        target="_blank"
-                                    >
-                                        <FormattedMessage id="ArbeidssituasjonSide.Lenke" />
-                                    </Link>
-                                </BodyShort>
-                            </VStack>
-                        </Infobox>
-                    )}
-                    {!formValues.erSelvstendigNæringsdrivende &&
-                        (formValues.erArbeidstakerEllerFrilanser || formValues.harUtbetalingFraNav) && (
-                            <VStack gap="2">
-                                <GreenPanel isDarkGreen={gjennomsnittslønn === undefined} shouldFadeIn>
-                                    <VStack gap="6">
-                                        {formValues.erArbeidstakerEllerFrilanser && !formValues.harUtbetalingFraNav && (
-                                            <div>
-                                                <Label>
-                                                    <FormattedMessage id="ArbeidssituasjonSide.TreSisteMåneder" />
-                                                </Label>
-                                                <BodyShort>
-                                                    <FormattedMessage id="ArbeidssituasjonSide.LønnFørSkatt" />
-                                                </BodyShort>
-                                            </div>
-                                        )}
-                                        {formValues.harUtbetalingFraNav && !formValues.erArbeidstakerEllerFrilanser && (
-                                            <Label>
-                                                <FormattedMessage id="ArbeidssituasjonSide.UtbetaltTreSiste" />
-                                            </Label>
-                                        )}
-                                        {formValues.erArbeidstakerEllerFrilanser && formValues.harUtbetalingFraNav && (
-                                            <div>
-                                                <Label>
-                                                    <FormattedMessage id="ArbeidssituasjonSide.UtbetaltTreSiste" />
-                                                </Label>
-                                                <BodyShort>
-                                                    <FormattedMessage id="ArbeidssituasjonSide.LønnOgUtbetaling" />
-                                                </BodyShort>
-                                            </div>
-                                        )}
-
-                                        <VStack gap="4">
-                                            <TextField
-                                                name="lønnMåned1"
-                                                label={capitalizeFirstLetter(
-                                                    forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
-                                                )}
-                                                className={styles.widthTextInput}
-                                            />
-                                            <TextField
-                                                name="lønnMåned2"
-                                                label={capitalizeFirstLetter(
-                                                    forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
-                                                )}
-                                                className={styles.widthTextInput}
-                                            />
-                                            <TextField
-                                                name="lønnMåned3"
-                                                label={capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
-                                                className={styles.widthTextInput}
-                                            />
-                                        </VStack>
-                                        <div>
-                                            <Label>
-                                                <FormattedMessage id="ArbeidssituasjonSide.Gjennomsnitt" />
-                                            </Label>
-                                            <Heading size="large">
-                                                {gjennomsnittslønn || '-'}
-                                                <FormattedMessage id="ArbeidssituasjonSide.Kr" />
-                                            </Heading>
-                                        </div>
-                                    </VStack>
-                                </GreenPanel>
-                                <ReadMore header={<FormattedMessage id="ArbeidssituasjonSide.GirRett" />}>
-                                    todo
-                                </ReadMore>
-                            </VStack>
+                                <Checkbox
+                                    name="harUtbetalingFraNav"
+                                    label={<FormattedMessage id="ArbeidssituasjonSide.UtbetalingNav" />}
+                                />
+                                <Checkbox
+                                    name="erSelvstendigNæringsdrivende"
+                                    label={<FormattedMessage id="ArbeidssituasjonSide.SelvstendigNæringsdrivende" />}
+                                />
+                            </GreenPanel>
+                            <ReadMore header={<FormattedMessage id="ArbeidssituasjonSide.Forskjellen" />}>
+                                todo
+                            </ReadMore>
+                        </VStack>
+                        {formValues.erSelvstendigNæringsdrivende && (
+                            <Infobox
+                                isGray
+                                icon={
+                                    <InformationIcon
+                                        height={24}
+                                        width={24}
+                                        color="#020C1CAD"
+                                        fontSize="1.5rem"
+                                        aria-hidden
+                                    />
+                                }
+                            >
+                                <VStack gap="6">
+                                    <BodyShort>
+                                        <FormattedMessage id="ArbeidssituasjonSide.SNKanIkkeBruke" />
+                                    </BodyShort>
+                                    <BodyShort>
+                                        <FormattedMessage id="ArbeidssituasjonSide.LesOm" />
+                                        <Link
+                                            inlineText
+                                            href={links.næringsdrivendeInfoBoks}
+                                            className="lenke"
+                                            rel="noreferrer"
+                                            target="_blank"
+                                        >
+                                            <FormattedMessage id="ArbeidssituasjonSide.Lenke" />
+                                        </Link>
+                                    </BodyShort>
+                                </VStack>
+                            </Infobox>
                         )}
-                    {formValues.erArbeidstakerEllerFrilanser && antattÅrslønn && antattÅrslønn < minÅrslønn && (
-                        <HarIkkeRettTilFpInfobox antattÅrslønn={antattÅrslønn} minÅrslønn={minÅrslønn} />
-                    )}
-                    {formValues.erArbeidstakerEllerFrilanser && antattÅrslønn && antattÅrslønn > maxÅrslønn && (
-                        <HøyInntektInfobox maxÅrslønnDekket={maxÅrslønn} />
-                    )}
-                    <Spacer />
-                    {gjennomsnittslønn && (
-                        <Button
-                            icon={<PaperplaneIcon aria-hidden />}
-                            iconPosition="right"
-                            type="submit"
-                            style={{ flex: 1 }}
-                        >
-                            <FormattedMessage id="ArbeidssituasjonSide.SeResultatet" />
-                        </Button>
-                    )}
-                </VStack>
-            </Form>
-        </VeilederPage>
+                        {!formValues.erSelvstendigNæringsdrivende &&
+                            (formValues.erArbeidstakerEllerFrilanser || formValues.harUtbetalingFraNav) && (
+                                <VStack gap="2">
+                                    <GreenPanel isDarkGreen={gjennomsnittslønn === undefined} shouldFadeIn>
+                                        <VStack gap="6">
+                                            {formValues.erArbeidstakerEllerFrilanser &&
+                                                !formValues.harUtbetalingFraNav && (
+                                                    <div>
+                                                        <Label>
+                                                            <FormattedMessage id="ArbeidssituasjonSide.TreSisteMåneder" />
+                                                        </Label>
+                                                        <BodyShort>
+                                                            <FormattedMessage id="ArbeidssituasjonSide.LønnFørSkatt" />
+                                                        </BodyShort>
+                                                    </div>
+                                                )}
+                                            {formValues.harUtbetalingFraNav &&
+                                                !formValues.erArbeidstakerEllerFrilanser && (
+                                                    <Label>
+                                                        <FormattedMessage id="ArbeidssituasjonSide.UtbetaltTreSiste" />
+                                                    </Label>
+                                                )}
+                                            {formValues.erArbeidstakerEllerFrilanser &&
+                                                formValues.harUtbetalingFraNav && (
+                                                    <div>
+                                                        <Label>
+                                                            <FormattedMessage id="ArbeidssituasjonSide.UtbetaltTreSiste" />
+                                                        </Label>
+                                                        <BodyShort>
+                                                            <FormattedMessage id="ArbeidssituasjonSide.LønnOgUtbetaling" />
+                                                        </BodyShort>
+                                                    </div>
+                                                )}
+
+                                            <VStack gap="4">
+                                                <TextField
+                                                    name="lønnMåned1"
+                                                    label={capitalizeFirstLetter(
+                                                        forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
+                                                    )}
+                                                    className={styles.widthTextInput}
+                                                />
+                                                <TextField
+                                                    name="lønnMåned2"
+                                                    label={capitalizeFirstLetter(
+                                                        forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
+                                                    )}
+                                                    className={styles.widthTextInput}
+                                                />
+                                                <TextField
+                                                    name="lønnMåned3"
+                                                    label={capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
+                                                    className={styles.widthTextInput}
+                                                />
+                                            </VStack>
+                                            <div>
+                                                <Label>
+                                                    <FormattedMessage id="ArbeidssituasjonSide.Gjennomsnitt" />
+                                                </Label>
+                                                <Heading size="large">
+                                                    {gjennomsnittslønn || '-'}
+                                                    <FormattedMessage id="ArbeidssituasjonSide.Kr" />
+                                                </Heading>
+                                            </div>
+                                        </VStack>
+                                    </GreenPanel>
+                                    <ReadMore header={<FormattedMessage id="ArbeidssituasjonSide.GirRett" />}>
+                                        todo
+                                    </ReadMore>
+                                </VStack>
+                            )}
+                        {formValues.erArbeidstakerEllerFrilanser && antattÅrslønn && antattÅrslønn < minÅrslønn && (
+                            <HarIkkeRettTilFpInfobox antattÅrslønn={antattÅrslønn} minÅrslønn={minÅrslønn} />
+                        )}
+                        {formValues.erArbeidstakerEllerFrilanser && antattÅrslønn && antattÅrslønn > maxÅrslønn && (
+                            <HøyInntektInfobox maxÅrslønnDekket={maxÅrslønn} />
+                        )}
+                        <Spacer />
+                        {gjennomsnittslønn && (
+                            <Button
+                                icon={<PaperplaneIcon aria-hidden />}
+                                iconPosition="right"
+                                type="submit"
+                                style={{ flex: 1 }}
+                            >
+                                <FormattedMessage id="ArbeidssituasjonSide.SeResultatet" />
+                            </Button>
+                        )}
+                    </VStack>
+                </Form>
+            </VeilederPage>
+            {gjennomsnittslønn && <FpEllerEsOgHvaSkjerNåLinkPanel />}
+        </>
     );
 };
 

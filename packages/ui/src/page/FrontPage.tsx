@@ -32,6 +32,7 @@ const FrontPage: React.FunctionComponent<Props> = ({
     goToNextDefaultStep,
 }) => (
     <Page
+        useLargerBorderRadius
         header={
             <>
                 <Show below="md">

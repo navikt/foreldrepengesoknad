@@ -1,4 +1,4 @@
-name: Bygg og deploy Foreldrepengerplanlegger
+name: Bygg og deploy Foreldrepengeveivisere
 on:
   workflow_dispatch:
   push:
