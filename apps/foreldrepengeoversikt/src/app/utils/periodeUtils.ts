@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { isEqual } from 'lodash';
 import { IntlShape } from 'react-intl';
 
+import { StønadskontoType } from '@navikt/fp-constants';
 import { formatDateIso } from '@navikt/fp-utils';
 
 import { Forelder } from 'app/types/Forelder';
@@ -10,7 +11,6 @@ import { OppholdÅrsakType } from 'app/types/OppholdÅrsakType';
 import { Periode } from 'app/types/Periode';
 import { PeriodeResultat } from 'app/types/PeriodeResultat';
 import { PeriodeResultatÅrsak } from 'app/types/PeriodeResultatÅrsak';
-import { StønadskontoType } from 'app/types/StønadskontoType';
 import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
 
 import { Uttaksdagen } from './Uttaksdagen';
@@ -277,8 +277,6 @@ const finnTekstForStønadskontoType = (intl: IntlShape, konto: StønadskontoType
             return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.MØDREKVOTE' });
         case StønadskontoType.AktivitetsfriKvote:
             return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE' });
-        case StønadskontoType.Flerbarnsdager:
-            return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.FLERBARNSDAGER' });
     }
 };
 
