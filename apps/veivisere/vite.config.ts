@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
             }),
             checker({ typescript: true }),
         ],
-        base: mode === 'development' ? '' : '/foreldrepenger/planlegger',
+        base: mode === 'development' ? '' : '/foreldrepenger/veivisere',
         build: {
             sourcemap: true,
         },

@@ -40,7 +40,7 @@ const AppContainer = () => {
 
     useBeforeUnload(() => {
         logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'planlegger',
+            app: 'veivisere',
             team: 'foreldrepenger',
             pageKey: 'page-unload',
         });
@@ -54,7 +54,7 @@ const AppContainer = () => {
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary appName="Foreldrepengeplanlegger" customErrorPage={<div>error</div>}>
+            <ErrorBoundary appName="Foreldrepengeveivisere" customErrorPage={<div>error</div>}>
                 <Veileder locale={locale} changeLocale={changeLocale} />
             </ErrorBoundary>
         </IntlProvider>

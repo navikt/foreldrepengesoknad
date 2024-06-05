@@ -7,7 +7,12 @@ import { links } from '@navikt/fp-constants';
 
 import ContentWrapper from '../contentWrapper/ContentWrapper';
 
-export type AppName = 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger' | 'Foreldrepengeplanlegger';
+export type AppName =
+    | 'Foreldrepenger'
+    | 'Engangsstønad'
+    | 'Svangerskapspenger'
+    | 'Foreldrepengeplanlegger'
+    | 'Foreldrepengeveivisere';
 
 export interface Props {
     appName: AppName;
