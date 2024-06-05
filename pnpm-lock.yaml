@@ -2349,9 +2349,6 @@ importers:
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
-      '@navikt/fp-formik':
-        specifier: workspace:*
-        version: link:../fp-formik
       '@navikt/fp-metrics':
         specifier: workspace:*
         version: link:../metrics
