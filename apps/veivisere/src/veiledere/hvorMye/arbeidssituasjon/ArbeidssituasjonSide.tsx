@@ -1,7 +1,6 @@
 import { InformationIcon, PaperplaneIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
 import useVeilederNavigator from 'appData/useVeilederNavigator';
-import VeilederPage from 'components/Page/VeilederPage';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
@@ -16,6 +15,7 @@ import { GreenPanel, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isValidNumber } from '@navikt/fp-validation';
 
+import VeilederPage from '../../felles/Page/VeilederPage';
 import FpEllerEsOgHvaSkjerNåLinkPanel from '../felles/FpEllerEsOgHvaSkjerNåLinkPanel';
 import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
 import HøyInntektInfobox from '../felles/HøyInntektInfobox';

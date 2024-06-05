@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import VeilederPage from './VeilederPage';
 
 const meta = {
-    title: 'components/VeilederPage',
+    title: 'VeilederPage',
     component: VeilederPage,
 } satisfies Meta<typeof VeilederPage>;
 export default meta;

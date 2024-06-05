@@ -1,7 +1,6 @@
 import { ArrowLeftIcon, ChatElipsisIcon, InformationIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
 import useVeilederNavigator from 'appData/useVeilederNavigator';
-import VeilederPage from 'components/Page/VeilederPage';
 import { FormattedMessage, useIntl } from 'react-intl';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
@@ -11,6 +10,7 @@ import { Dekningsgrad } from '@navikt/fp-types';
 import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
+import VeilederPage from '../../felles/Page/VeilederPage';
 import { Arbeidssituasjon, finnGjennomsnittslønn } from '../arbeidssituasjon/ArbeidssituasjonSide';
 import FpEllerEsOgHvaSkjerNåLinkPanel from '../felles/FpEllerEsOgHvaSkjerNåLinkPanel';
 import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
