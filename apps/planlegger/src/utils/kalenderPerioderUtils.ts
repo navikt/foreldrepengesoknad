@@ -13,7 +13,7 @@ import { erBarnetAdoptert } from './barnetUtils';
 import { HvemHarRett, utledHvemSomHarRett } from './hvemHarRettUtils';
 import { finnUttaksdata } from './uttakUtils';
 
-const finnPerioderForKunEnHarRett = (familiehendelsedato: string, sluttdatoPeriode1: string): Period[] => {
+const finnPerioderForKunFarHarRett = (familiehendelsedato: string, sluttdatoPeriode1: string): Period[] => {
     return [
         {
             fom: familiehendelsedato,
@@ -123,7 +123,7 @@ export const lagKalenderPerioder = (
         erFarOgFarFødsel(hvemPlanlegger, hvemHarRett, erAdoptert) ||
         erFarAlenesøkerOgHarRett(hvemPlanlegger, hvemHarRett)
     ) {
-        return finnPerioderForKunEnHarRett(familiehendelsedato, sluttdatoPeriode1);
+        return finnPerioderForKunFarHarRett(familiehendelsedato, sluttdatoPeriode1);
     }
 
     if (hvemHarRett === 'beggeHarRett' && harPeriode2) {
