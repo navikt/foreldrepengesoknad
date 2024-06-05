@@ -25,10 +25,11 @@
         "husky": "9.0.11",
         "lint-staged": "15.2.2",
         "shelljs": "0.8.5",
-        "turbo": "^1.13.0"
+        "turbo": "^2.0.1"
     },
     "lint-staged": {
         "apps/**/*.{ts,tsx,js,jsx, css}": "prettier --write",
         "packages/**/*.{ts,tsx,js,jsx, css}": "prettier --write"
-    }
+    },
+    "packageManager": "pnpm@9.1.4"
 }
