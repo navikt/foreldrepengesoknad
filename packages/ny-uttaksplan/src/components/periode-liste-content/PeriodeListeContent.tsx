@@ -17,10 +17,10 @@ const renderContent = (periode: Periode, erFamiliehendelse: boolean) => {
     }
 
     if (isUttaksperiode(periode)) {
-        return `${periode.konto} - ${formatDate(periode.tidsperiode.fom)} - ${formatDate(periode.tidsperiode.fom)}`;
+        return `${periode.konto} - ${formatDate(periode.tidsperiode.fom)} - ${formatDate(periode.tidsperiode.tom)}`;
     }
 
-    return `${periode.type} - ${formatDate(periode.tidsperiode.fom)} - ${formatDate(periode.tidsperiode.fom)}`;
+    return `${periode.type} - ${formatDate(periode.tidsperiode.fom)} - ${formatDate(periode.tidsperiode.tom)}`;
 };
 
 const PeriodeListeContent: FunctionComponent<Props> = ({ periode, erFamiliehendelse }) => {
