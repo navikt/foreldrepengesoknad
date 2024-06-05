@@ -11,6 +11,7 @@ export const uiMessages = {
 export { default as ContentWrapper } from './src/contentWrapper/ContentWrapper';
 export { default as ErrorBoundary } from './src/error/ErrorBoundary';
 export { default as ErrorSummaryFp } from './src/error/ErrorSummaryFp';
+export { default as SimpleErrorPage } from './src/error/SimpleErrorPage';
 export type { ErrorSummaryError } from './src/error/ErrorSummaryFp';
 export { default as ErrorPage } from './src/error/ErrorPage';
 export { default as FileUploader } from './src/fileUploader/FileUploader';

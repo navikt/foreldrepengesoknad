@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll } from '@navikt/fp-types';
-import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
+import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
 import { useBeforeUnload } from '@navikt/fp-utils';
 
 import Veileder from './Veileder';
@@ -54,7 +54,7 @@ const AppContainer = () => {
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary appName="Foreldrepengeveivisere" customErrorPage={<div>error</div>}>
+            <ErrorBoundary appName="Foreldrepengeveivisere" customErrorPage={<SimpleErrorPage />}>
                 <Veileder locale={locale} changeLocale={changeLocale} />
             </ErrorBoundary>
         </IntlProvider>
