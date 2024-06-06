@@ -8,9 +8,33 @@ import { Barn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { CalendarLabel } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
+const getUtsettelseÅrsakTekst = (årsak: UtsettelseÅrsakType, intl: IntlShape) => {
+    if (årsak === UtsettelseÅrsakType.Arbeid) {
+        return intl.formatMessage({ id: `kalender.utsettelse.ARBEID` });
+    }
+    if (årsak === UtsettelseÅrsakType.InstitusjonBarnet) {
+        return intl.formatMessage({ id: `kalender.utsettelse.INSTITUSJONSOPPHOLD_BARNET` });
+    }
+    if (årsak === UtsettelseÅrsakType.InstitusjonSøker) {
+        return intl.formatMessage({ id: `kalender.utsettelse.INSTITUSJONSOPPHOLD_SØKER` });
+    }
+    if (årsak === UtsettelseÅrsakType.Ferie) {
+        return intl.formatMessage({ id: `kalender.utsettelse.LOVBESTEMT_FERIE` });
+    }
+    if (årsak === UtsettelseÅrsakType.Sykdom) {
+        return intl.formatMessage({ id: `kalender.utsettelse.SYKDOM` });
+    }
+    if (årsak === UtsettelseÅrsakType.HvØvelse) {
+        return intl.formatMessage({ id: `kalender.utsettelse.HV_OVELSE` });
+    }
+    if (årsak === UtsettelseÅrsakType.NavTiltak) {
+        return intl.formatMessage({ id: `kalender.utsettelse.NAV_TILTAK` });
+    }
+};
+
 const getUtsettelseLabel = (unikeUtsettelseÅrsaker: UtsettelseÅrsakType[], intl: IntlShape): ReactNode => {
     if (unikeUtsettelseÅrsaker.length === 1 && unikeUtsettelseÅrsaker[0] !== UtsettelseÅrsakType.Fri) {
-        const årsakTekst = intl.formatMessage({ id: `kalender.utsettelse.${unikeUtsettelseÅrsaker[0]}` });
+        const årsakTekst = getUtsettelseÅrsakTekst(unikeUtsettelseÅrsaker[0], intl);
         return <FormattedMessage id="kalender.utsettelse" values={{ årsak: årsakTekst }} />;
     }
 

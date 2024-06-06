@@ -23,7 +23,7 @@ describe('<Calendar>', () => {
 
     it('skal vise korrekt antall dager med grønn markering', async () => {
         render(<Default />);
-        expect(await screen.findAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(85);
+        expect(await screen.findAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(85);
     });
 
     it('skal vise korrekt familiehendelse den 21 februar', async () => {

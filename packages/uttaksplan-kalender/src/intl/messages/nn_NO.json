@@ -19,8 +19,5 @@
     "kalender.utsettelse.SYKDOM": "fordi du er sjuk",
     "kalender.utsettelse.HV_OVELSE": "pga. øving eller teneste i Heimevernet",
     "kalender.utsettelse.NAV_TILTAK": "pga. NAV tiltak som utgjer 100% arbeid",
-    "kalender.lastNed": "Last ned kalender som PDF",
-    "uttaksplan.familiehendelsesdato.født": "{antallBarn, plural, one{Barnet} other {Barna}} er født {dato}",
-    "uttaksplan.familiehendelsesdato.termin": "Termin {dato}",
-    "uttaksplan.familiehendelsesdato.adopsjon": "{antallBarn, plural, one{Barnet} other {Barna}} er adoptert {dato}"
+    "kalender.lastNed": "Last ned kalender som PDF"
 }

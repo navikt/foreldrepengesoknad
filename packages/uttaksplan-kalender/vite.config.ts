@@ -1,32 +1,22 @@
 /// <reference types="vitest" />
 import react from '@vitejs/plugin-react';
-import path from 'path';
 import { defineConfig } from 'vite';
-import checker from 'vite-plugin-checker';
+import Checker from 'vite-plugin-checker';
 
+// https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [
-        react({
-            include: '**/*.{jsx,tsx}',
-        }),
-        checker({ typescript: true }),
-    ],
-    resolve: {
-        alias: {
-            app: path.resolve(__dirname, './src'),
-        },
-    },
-    build: {
-        sourcemap: true,
-    },
+    plugins: [react(), Checker({ typescript: true })],
     test: {
         globals: true,
         environment: 'jsdom',
         setupFiles: './vitest/setupTests.ts',
+        deps: {
+            inline: ['@navikt/ds-react'],
+        },
         coverage: {
             include: ['src/**/*'],
             exclude: [],
         },
-        maxConcurrency: 10,
+        testTimeout: 10000,
     },
 });
