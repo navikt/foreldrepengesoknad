@@ -29,7 +29,7 @@ import { useMedia } from '@navikt/fp-utils/src/hooks/useMedia';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
 
-import styles from './oversiktSteg.module.css';
+import styles from './planenDeresSteg.module.css';
 import OmÅTilpassePlanen from './tilpassePlanen/OmÅTilpassePlanen';
 import UforutsetteEndringer from './uforutsetteEndringer/UforutsetteEndringer';
 
@@ -50,7 +50,7 @@ interface Props {
     stønadskontoer: TilgjengeligeStønadskontoer;
 }
 
-const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
+const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
@@ -125,7 +125,7 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         <form>
             <PlanleggerStepPage steps={stepConfig}>
                 <VStack gap="10">
-                    <Heading size="large" spacing level="2">
+                    <Heading size="medium" spacing level="2">
                         <FormattedMessage id="OversiktSteg.Tittel" values={{ erAleneforsørger }} />
                     </Heading>
                     <Infobox
@@ -239,4 +239,4 @@ const OversiktSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     );
 };
 
-export default OversiktSteg;
+export default PlanenDeresSteg;

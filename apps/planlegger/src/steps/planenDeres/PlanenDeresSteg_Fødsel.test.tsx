@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import * as stories from './OversiktSteg_Fødsel.stories';
+import * as stories from './PlanenDeresSteg_Fødsel.stories';
 
 const {
     MorOgFarBeggeHarRett,
@@ -21,7 +21,7 @@ const {
     BarnetErFødtDagenEtterTermindato,
 } = composeStories(stories);
 
-describe('<OversiktSteg - fødsel>', () => {
+describe('<PlanenDeresSteg - fødsel>', () => {
     it('skal vise korrekt data for fødsel - mor og far - begge har rett', async () => {
         render(<MorOgFarBeggeHarRett />);
 

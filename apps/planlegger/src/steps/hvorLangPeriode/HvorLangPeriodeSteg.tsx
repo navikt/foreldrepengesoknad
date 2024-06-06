@@ -54,9 +54,11 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
         const beggeHarRett = arbeidssituasjon.status === Arbeidsstatus.JOBBER && !!arbeidssituasjon.jobberAnnenPart;
         const nextRoute =
-            beggeHarRett && !(erFarOgFar && barnet.erFødsel) ? PlanleggerRoutes.FORDELING : PlanleggerRoutes.OVERSIKT;
+            beggeHarRett && !(erFarOgFar && barnet.erFødsel)
+                ? PlanleggerRoutes.FORDELING
+                : PlanleggerRoutes.PLANEN_DERES;
 
-        if (nextRoute === PlanleggerRoutes.OVERSIKT) {
+        if (nextRoute === PlanleggerRoutes.PLANEN_DERES) {
             oppdaterFordeling(undefined);
         }
 

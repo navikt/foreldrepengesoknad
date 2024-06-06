@@ -42,27 +42,15 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
         >
             <BodyShort>
                 {erFødsel && (
-                    <>
-                        {antallBarn !== '1' ? (
-                            <FormattedMessage
-                                id="FordelingsdetaljerPanel.Infoboks.HvisBarnetFlereBarn"
-                                values={{
-                                    erFødt,
-                                    dato: dato,
-                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                                }}
-                            />
-                        ) : (
-                            <FormattedMessage
-                                id="FordelingsdetaljerPanel.Infoboks.HvisBarnet"
-                                values={{
-                                    erFødt,
-                                    dato: dato,
-                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                                }}
-                            />
-                        )}
-                    </>
+                    <FormattedMessage
+                        id="FordelingsdetaljerPanel.Infoboks.HvisBarnet"
+                        values={{
+                            erFødt,
+                            dato: dato,
+                            erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
+                            erFlereBarn: antallBarn !== '1',
+                        }}
+                    />
                 )}
                 {!erFødsel && (
                     <FormattedMessage

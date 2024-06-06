@@ -36,11 +36,13 @@ const erUttaksdag = (dato: string): boolean => {
  * @param dato
  */
 const getUttaksdagFraOgMedDato = (dato: string): string => {
+    const d = dayjs(dato).toDate();
+    const newDate = dato ? new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12) : dato;
     switch (getUkedag(dato)) {
         case 6:
-            return dayjs.utc(dato).add(48, 'hours').format(ISO_DATE_FORMAT);
+            return dayjs.utc(newDate).add(48, 'hours').format(ISO_DATE_FORMAT);
         case 7:
-            return dayjs.utc(dato).add(24, 'hours').format(ISO_DATE_FORMAT);
+            return dayjs.utc(newDate).add(24, 'hours').format(ISO_DATE_FORMAT);
         default:
             return dato;
     }
