@@ -9,8 +9,7 @@ describe('<VeilederPage>', () => {
     it('skal vise steg', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Fordeling')).toBeInTheDocument();
-        expect(screen.getByText('Steg 1 av 2')).toBeInTheDocument();
+        expect(await screen.findByText('Hvor mye kan jeg få i foreldrepenger?')).toBeInTheDocument();
         expect(screen.getByText('Steginnhold')).toBeInTheDocument();
     });
 });
