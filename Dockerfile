@@ -26,8 +26,8 @@ RUN apk fix \
     && rm -rf /var/cache/apk/*
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
-RUN npm install -g pnpm \
-    && pnpm install -g pnpm turbo \
+RUN npm install -g pnpm@9.1.4 \
+    && pnpm install -g pnpm turbo@2.0.1 \
     && npm uninstall -g pnpm
 COPY --from=prepare /usr/src/app ./
 RUN pnpm install --frozen-lockfile
