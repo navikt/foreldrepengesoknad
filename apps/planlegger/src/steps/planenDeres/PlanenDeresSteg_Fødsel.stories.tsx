@@ -14,7 +14,7 @@ import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import OversiktSteg from './OversiktSteg';
+import PlanenDeresSteg from './PlanenDeresSteg';
 
 const MINSTERETTER = {
     farRundtFødsel: 10,
@@ -28,7 +28,7 @@ type StoryArgs = {
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
     gåTilNesteSide: (action: Action) => void;
-} & ComponentProps<typeof OversiktSteg>;
+} & ComponentProps<typeof PlanenDeresSteg>;
 
 type Story = StoryObj<StoryArgs>;
 
@@ -43,7 +43,7 @@ const customRenderer = ({
 }: StoryArgs) => {
     initAmplitude();
     return (
-        <MemoryRouter initialEntries={[PlanleggerRoutes.OVERSIKT]}>
+        <MemoryRouter initialEntries={[PlanleggerRoutes.PLANEN_DERES]}>
             <PlanleggerDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
@@ -54,15 +54,15 @@ const customRenderer = ({
                     [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                 }}
             >
-                <OversiktSteg stønadskontoer={stønadskontoer} />
+                <PlanenDeresSteg stønadskontoer={stønadskontoer} />
             </PlanleggerDataContext>
         </MemoryRouter>
     );
 };
 
 const meta = {
-    title: 'steg/OversiktSteg/Fødsel',
-    component: OversiktSteg,
+    title: 'steg/PlanenDeresSteg/Fødsel',
+    component: PlanenDeresSteg,
     render: customRenderer,
 } satisfies Meta<StoryArgs>;
 export default meta;

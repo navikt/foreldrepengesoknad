@@ -16,5 +16,6 @@
     },
     "devDependencies": {
         "@vercel/ncc": "0.38.1"
-    }
+    },
+    "packageManager": "pnpm@9.1.4"
 }

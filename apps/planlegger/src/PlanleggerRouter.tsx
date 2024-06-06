@@ -8,7 +8,7 @@ import HvorLangPeriodeSteg from 'steps/hvorLangPeriode/HvorLangPeriodeSteg';
 import OmBarnetSteg from 'steps/omBarnet/OmBarnetSteg';
 import OmPlanleggerenSteg from 'steps/omPlanleggeren/OmPlanleggerenSteg';
 import OppsummeringSteg from 'steps/oppsummering/OppsummeringSteg';
-import OversiktSteg from 'steps/oversikt/OversiktSteg';
+import PlanenDeresSteg from 'steps/planenDeres/PlanenDeresSteg';
 
 import { Loader } from '@navikt/ds-react';
 
@@ -52,8 +52,8 @@ const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stø
                 element={stønadskontoer ? <FordelingSteg stønadskontoer={stønadskontoer} /> : <Loader />}
             />
             <Route
-                path={PlanleggerRoutes.OVERSIKT}
-                element={stønadskontoer ? <OversiktSteg stønadskontoer={stønadskontoer} /> : <Loader />}
+                path={PlanleggerRoutes.PLANEN_DERES}
+                element={stønadskontoer ? <PlanenDeresSteg stønadskontoer={stønadskontoer} /> : <Loader />}
             />
             <Route
                 path={PlanleggerRoutes.OPPSUMMERING}

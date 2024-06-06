@@ -7,7 +7,7 @@
         "@typescript-eslint/parser": "^7.4.0",
         "eslint": "^8.57.0",
         "eslint-config-prettier": "^9.1.0",
-        "eslint-config-turbo": "^1.13.0",
+        "eslint-config-turbo": "^2.0.1",
         "eslint-plugin-import": "^2.29.1",
         "eslint-plugin-jest-dom": "^5.2.0",
         "eslint-plugin-react": "^7.34.1",
@@ -16,5 +16,6 @@
     },
     "peerDependencies": {
         "typescript": "^5.0.2"
-    }
+    },
+    "packageManager": "pnpm@9.1.4"
 }

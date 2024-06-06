@@ -7,5 +7,6 @@
     },
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*"
-    }
+    },
+    "packageManager": "pnpm@9.1.4"
 }

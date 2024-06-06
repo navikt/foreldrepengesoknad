@@ -1,7 +1,7 @@
 import { composeStories } from '@storybook/react';
 import { render, screen, within } from '@testing-library/react';
 
-import * as stories from './OversiktSteg_Adopsjon.stories';
+import * as stories from './PlanenDeresSteg_Adopsjon.stories';
 
 const {
     MorOgFarBeggeHarRett,
@@ -20,7 +20,7 @@ const {
     MorOgMedmorKunMorHarRettOmsorgsovertakelseIHelgen,
 } = composeStories(stories);
 
-describe('<OversiktSteg - adopsjon>', () => {
+describe('<PlanenDeresSteg - adopsjon>', () => {
     it('skal vise korrekt data for adopsjon - mor og far - begge har rett', async () => {
         render(<MorOgFarBeggeHarRett />);
 

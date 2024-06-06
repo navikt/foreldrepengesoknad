@@ -6,7 +6,7 @@ export enum PlanleggerRoutes {
     ARBEIDSSITUASJON = '/arbeidssituasjon',
     HVOR_LANG_PERIODE = '/hvor-lenge',
     FORDELING = '/fordeling',
-    OVERSIKT = '/oversikt',
+    PLANEN_DERES = '/planen-deres',
     OPPSUMMERING = '/oppsummering',
 }
 
@@ -18,7 +18,7 @@ export const PATH_ORDER = [
     PlanleggerRoutes.ARBEIDSSITUASJON,
     PlanleggerRoutes.HVOR_LANG_PERIODE,
     PlanleggerRoutes.FORDELING,
-    PlanleggerRoutes.OVERSIKT,
+    PlanleggerRoutes.PLANEN_DERES,
     PlanleggerRoutes.OPPSUMMERING,
 ];
 
