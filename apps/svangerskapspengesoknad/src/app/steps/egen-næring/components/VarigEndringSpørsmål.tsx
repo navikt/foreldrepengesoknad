@@ -16,7 +16,7 @@ import {
     isBeforeTodayOrToday,
     isRequired,
     isValidDate,
-    isValidNumber,
+    isValidNumberForm,
 } from '@navikt/fp-validation';
 
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
@@ -94,7 +94,7 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({ egenNæringFom, egen
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.varigEndringInntekt.påkrevd' })),
                             hasMaxLength(intl.formatMessage({ id: 'valideringsfeil.varigEndringInntekt.forLang' }), 9),
-                            isValidNumber(
+                            isValidNumberForm(
                                 intl.formatMessage({ id: 'valideringsfeil.varigEndringInntekt.ugyldigFormat' }),
                             ),
                             hasMinValue(
