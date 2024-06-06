@@ -149,6 +149,7 @@ const getStønadskontoParams = (
         termindato: getTermindatoSomSkalBrukes(barn, saksgrunnlagsTermindato),
         omsorgsovertakelseDato: isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn) ? barn.adopsjonsdato : undefined,
         morHarUføretrygd: getErMorUfør(annenForelder, søkerErFarEllerMedmor),
+        familieHendelseDatoNesteSak: førsteUttaksdagNesteBarnsSak,
     };
 };
 
