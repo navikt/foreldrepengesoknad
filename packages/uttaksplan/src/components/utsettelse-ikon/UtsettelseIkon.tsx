@@ -1,8 +1,8 @@
 import { useIntl } from 'react-intl';
 
 import { Forelder, UtsettelseÅrsakType, intlUtils } from '@navikt/fp-common';
+import { getUtsettelseFarge } from '@navikt/fp-utils';
 
-import { getUtsettelseFarge } from '../../utils/styleUtils';
 import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
 

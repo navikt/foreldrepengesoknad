@@ -2231,6 +2231,9 @@ importers:
       '@navikt/fp-ui':
         specifier: workspace:*
         version: link:../ui
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../utils
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../utils-test

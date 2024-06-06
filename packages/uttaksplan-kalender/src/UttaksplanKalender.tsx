@@ -112,17 +112,18 @@ const getKalenderFargeForUttaksperiode = (
     const annenForelderSamtidigUttaksperiode = isUttaksperiode(periode)
         ? getAnnenForelderSamtidigUttakPeriode(periode, uttaksplan)
         : undefined;
-    if (annenForelderSamtidigUttaksperiode) {
+    const samtidigUttaksprosent = isUttaksperiode(periode) ? periode.samtidigUttakProsent : undefined;
+    if (annenForelderSamtidigUttaksperiode || (samtidigUttaksprosent && parseInt(samtidigUttaksprosent) > 0)) {
         return erFarEllerMedmor ? PeriodeColor.LIGHTBLUEGREEN : PeriodeColor.LIGHTGREENBLUE;
     }
-    if (!annenForelderSamtidigUttaksperiode && isUttaksperiode(periode) && periode.gradert) {
+    if (!annenForelderSamtidigUttaksperiode && !samtidigUttaksprosent && isUttaksperiode(periode) && periode.gradert) {
         return erFarEllerMedmor ? PeriodeColor.GREENSTRIPED : PeriodeColor.BLUESTRIPED;
     }
     if (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin) {
         return PeriodeColor.NONE;
     }
-    const samtidigUttaksprosent = isUttaksperiode(periode) ? periode.samtidigUttakProsent : undefined;
-    return getUttaksperiodeFarge(periode.konto, periode.forelder, erFarEllerMedmor, samtidigUttaksprosent);
+
+    return getUttaksperiodeFarge(periode.konto, periode.forelder, erFarEllerMedmor);
 };
 
 const getKalenderFargeForPeriodeUtenUttak = (periode: PeriodeUtenUttak, barn: Barn): PeriodeColor => {
