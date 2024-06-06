@@ -121,7 +121,7 @@ describe('useStepData', () => {
         );
     });
 
-    it('skal vise stegene hvor-lenge, fordeling og oversikt når begge foreldre har rett', async () => {
+    it('skal vise stegene hvor-lenge, fordeling og planen-deres når begge foreldre har rett', async () => {
         const barnet = {
             antallBarn: '1',
             erBarnetFødt: true,
@@ -166,7 +166,7 @@ describe('useStepData', () => {
                     isSelected: false,
                 },
                 {
-                    id: '/oversikt',
+                    id: '/planen-deres',
                     isSelected: false,
                 },
                 {
@@ -218,7 +218,7 @@ describe('useStepData', () => {
                     isSelected: false,
                 },
                 {
-                    id: '/oversikt',
+                    id: '/planen-deres',
                     isSelected: false,
                 },
                 {
@@ -269,7 +269,7 @@ describe('useStepData', () => {
                     isSelected: false,
                 },
                 {
-                    id: '/oversikt',
+                    id: '/planen-deres',
                     isSelected: false,
                 },
                 {
@@ -321,7 +321,7 @@ describe('useStepData', () => {
                     isSelected: false,
                 },
                 {
-                    id: '/oversikt',
+                    id: '/planen-deres',
                     isSelected: false,
                 },
                 {
@@ -332,7 +332,7 @@ describe('useStepData', () => {
         );
     });
 
-    it('skal ikke vise stegene hvor-lenge og oversikt når ingen har rett', async () => {
+    it('skal ikke vise stegene hvor-lenge og planen-deres når ingen har rett', async () => {
         const barnet = {
             antallBarn: '1',
             erBarnetFødt: true,

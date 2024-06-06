@@ -53,6 +53,6 @@ describe('<FordelingSteg>', () => {
         });
 
         expect(navigateMock).toHaveBeenCalledTimes(1);
-        expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.OVERSIKT));
+        expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.PLANEN_DERES));
     });
 });
