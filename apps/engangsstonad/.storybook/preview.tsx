@@ -12,14 +12,6 @@ import enMessages from '../src/intl/messages/en_US.json';
 import nbMessages from '../src/intl/messages/nb_NO.json';
 import nnMessages from '../src/intl/messages/nn_NO.json';
 
-const scriptTag = document.createElement('script');
-scriptTag.type = 'text/json';
-scriptTag.id = 'nav:appSettings';
-scriptTag.innerHTML = JSON.stringify({
-    REST_API_URL: '',
-});
-document.head.appendChild(scriptTag);
-
 const withIntlProvider = getIntlDecorator({
     nb: { ...nbMessages, ...uiMessages.nb, ...utenlandsoppholdMessages.nb, ...oppsummeringMessages.nb },
     nn: { ...nnMessages, ...uiMessages.nn, ...utenlandsoppholdMessages.nn, ...oppsummeringMessages.nn },

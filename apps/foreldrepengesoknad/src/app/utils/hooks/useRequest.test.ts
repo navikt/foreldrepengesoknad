@@ -1,7 +1,9 @@
-import MockAdapter from 'axios-mock-adapter';
-import { useGetRequest } from './useRequest';
-import getAxiosInstance from 'app/api/apiInterceptor';
 import { renderHook, waitFor } from '@testing-library/react';
+import MockAdapter from 'axios-mock-adapter';
+
+import { getAxiosInstance } from '@navikt/fp-api';
+
+import { useGetRequest } from './useRequest';
 
 const apiMock = new MockAdapter(getAxiosInstance());
 
@@ -10,7 +12,7 @@ describe('useGetRequest', () => {
         const data = {
             test: true,
         };
-        const url = '/storage/kvittering/foreldrepenger';
+        const url = '/rest/storage/kvittering/foreldrepenger';
         apiMock.onGet(url).replyOnce(200, data);
 
         const { result } = renderHook(() => useGetRequest(url));
@@ -33,7 +35,7 @@ describe('useGetRequest', () => {
         const options = {
             isSuspended: true,
         };
-        const url = '/storage/kvittering/foreldrepenger';
+        const url = '/rest/storage/kvittering/foreldrepenger';
         apiMock.onGet(url).replyOnce(200, data);
 
         const { result } = renderHook(() => useGetRequest(url, options));

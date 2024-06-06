@@ -1,6 +1,6 @@
-import { Dokument } from 'app/types/Dokument';
-import Environment from 'app/Environment';
 import dayjs from 'dayjs';
+
+import { Dokument } from 'app/types/Dokument';
 
 export const grupperDokumenterPåTidspunkt = (dokumenter: Dokument[]): Record<string, Dokument[]> => {
     const gruppert: Record<string, Dokument[]> = {};
@@ -21,5 +21,5 @@ export const grupperDokumenterPåTidspunkt = (dokumenter: Dokument[]): Record<st
 export const lagUrl = (dokument: Dokument): string => {
     return dokument.url
         ? dokument.url
-        : `${Environment.REST_API_URL}/dokument/hent-dokument/${dokument.journalpostId}/${dokument.dokumentId}`;
+        : `/rest/dokument/hent-dokument/${dokument.journalpostId}/${dokument.dokumentId}`;
 };

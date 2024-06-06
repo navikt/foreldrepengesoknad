@@ -1,18 +1,20 @@
-import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import { getAxiosInstance } from '@navikt/fp-api';
 import { Skjemanummer } from '@navikt/fp-constants';
+
+import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { Dokument } from 'app/types/Dokument';
 import EttersendingDto from 'app/types/EttersendingDTO';
+import { MellomlagredeYtelser } from 'app/types/MellomlagredeYtelser';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import { RequestStatus } from 'app/types/RequestStatus';
 import { SakOppslagDTO } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
-import getAxiosInstance from './apiInterceptor';
-import { usePostRequest, useGetRequest } from './useRequest';
-import { MellomlagredeYtelser } from 'app/types/MellomlagredeYtelser';
+
+import { useGetRequest, usePostRequest } from './useRequest';
 
 const useSøkerinfo = () => {
-    const { data, error } = useGetRequest<SøkerinfoDTO>('/sokerinfo', { config: { withCredentials: true } });
+    const { data, error } = useGetRequest<SøkerinfoDTO>('/rest/sokerinfo', { config: { withCredentials: true } });
 
     return {
         søkerinfoData: data,
@@ -21,7 +23,7 @@ const useSøkerinfo = () => {
 };
 
 const useGetSaker = (sakerSuspended: boolean) => {
-    const { data, error } = useGetRequest<SakOppslagDTO>('/innsyn/v2/saker', {
+    const { data, error } = useGetRequest<SakOppslagDTO>('/rest/innsyn/v2/saker', {
         config: { withCredentials: true },
         isSuspended: sakerSuspended,
     });
@@ -33,7 +35,7 @@ const useGetSaker = (sakerSuspended: boolean) => {
 };
 
 const useGetOversiktOverMellomlagredeYtelser = () => {
-    const { data, error } = useGetRequest<MellomlagredeYtelser>('/storage/aktive', {
+    const { data, error } = useGetRequest<MellomlagredeYtelser>('/rest/storage/aktive', {
         config: { withCredentials: true },
         isSuspended: true,
     });
@@ -55,7 +57,7 @@ const useGetAnnenPartsVedtak = (
         barnFødselsnummer: barnFnr,
         familiehendelse: familiehendelsesdato,
     };
-    const { data, error, requestStatus } = usePostRequest<AnnenPartVedtakDTO>('/innsyn/v2/annenPartVedtak', body, {
+    const { data, error, requestStatus } = usePostRequest<AnnenPartVedtakDTO>('/rest/innsyn/v2/annenPartVedtak', body, {
         config: {
             withCredentials: true,
         },
@@ -77,7 +79,7 @@ const useGetAnnenPartsVedtak = (
 };
 
 const useGetDokumenter = (saksnr: string) => {
-    const { data, error, requestStatus } = useGetRequest<Dokument[]>('/dokument/alle', {
+    const { data, error, requestStatus } = useGetRequest<Dokument[]>('/rest/dokument/alle', {
         config: { withCredentials: true, params: { saksnummer: saksnr } },
     });
 
@@ -89,7 +91,7 @@ const useGetDokumenter = (saksnr: string) => {
 };
 
 const useGetTidslinjeHendelser = (saksnr: string) => {
-    const { data, error } = useGetRequest<Tidslinjehendelse[]>('/innsyn/tidslinje', {
+    const { data, error } = useGetRequest<Tidslinjehendelse[]>('/rest/innsyn/tidslinje', {
         config: { withCredentials: true, params: { saksnummer: saksnr } },
     });
 
@@ -100,7 +102,7 @@ const useGetTidslinjeHendelser = (saksnr: string) => {
 };
 
 const useGetMinidialog = () => {
-    const { data, error } = useGetRequest<MinidialogInnslag[]>('/minidialog', {
+    const { data, error } = useGetRequest<MinidialogInnslag[]>('/rest/minidialog', {
         config: { withCredentials: true },
     });
 
@@ -111,7 +113,7 @@ const useGetMinidialog = () => {
 };
 
 const useGetManglendeVedlegg = (saksnr: string) => {
-    const { data, error } = useGetRequest<Skjemanummer[]>('/historikk/vedlegg', {
+    const { data, error } = useGetRequest<Skjemanummer[]>('/rest/historikk/vedlegg', {
         config: { withCredentials: true, params: { saksnummer: saksnr } },
     });
 
@@ -122,14 +124,14 @@ const useGetManglendeVedlegg = (saksnr: string) => {
 };
 
 const sendEttersending = (ettersending: EttersendingDto, fnr?: string) => {
-    return getAxiosInstance(fnr).post('/soknad/ettersend', ettersending, {
+    return getAxiosInstance(fnr).post('/rest/soknad/ettersend', ettersending, {
         timeout: 30 * 1000,
         withCredentials: true,
     });
 };
 
 const useErSakOppdatert = () => {
-    const { data, error } = useGetRequest<boolean>('/innsyn/v2/saker/oppdatert', {
+    const { data, error } = useGetRequest<boolean>('/rest/innsyn/v2/saker/oppdatert', {
         config: { withCredentials: true },
     });
 

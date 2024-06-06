@@ -21,3 +21,4 @@ akseptansetest/20*/
 index-decorated.html
 *.bak
 mellomlagretdata.json
+.npmrc

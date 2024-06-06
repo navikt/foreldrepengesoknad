@@ -1,15 +1,16 @@
-import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import Environment from 'app/Environment';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
-const apiBaseUrl = Environment.REST_API_URL;
+export const AxiosInstance = axios.create({ withCredentials: true });
 
-export const AxiosInstance = axios.create({ baseURL: apiBaseUrl });
+export const setAxiosLocale = (nextLocale: string) => {
+    AxiosInstance.defaults.headers.common['Accept-Language'] = nextLocale;
+};
 
 const getAxiosInstance = (fnr?: string) => {
-    AxiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+    AxiosInstance.interceptors.request.use((config) => {
         config.timeout = 60 * 1000;
 
-        if (process.env.NODE_ENV !== 'development' && fnr) {
+        if (fnr) {
             config.headers!.fnr = fnr;
         }
         return config;

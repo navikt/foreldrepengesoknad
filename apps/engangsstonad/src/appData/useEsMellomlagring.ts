@@ -36,7 +36,7 @@ const useEsMellomlagring = (esApi: AxiosInstance, locale: LocaleAll, setVelkomme
 
                     await postData<EsDataMapAndMetaData, Kvittering>(
                         esApi,
-                        '/storage/engangsstonad',
+                        '/rest/storage/engangsstonad',
                         {
                             version: VERSJON_MELLOMLAGRING,
                             locale,
@@ -46,7 +46,7 @@ const useEsMellomlagring = (esApi: AxiosInstance, locale: LocaleAll, setVelkomme
                     );
                 } else {
                     // Ved avbryt så set ein Path = undefined og må så rydda opp i data her
-                    await deleteData(esApi, '/storage/engangsstonad', FEIL_VED_INNSENDING);
+                    await deleteData(esApi, '/rest/storage/engangsstonad', FEIL_VED_INNSENDING);
 
                     setVelkommen(false);
                     resetState();

@@ -5,11 +5,22 @@ metadata:
   namespace: teamforeldrepenger
   labels:
     team: teamforeldrepenger
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "16M"
 spec:
   accessPolicy:
     outbound:
       external:
         - host: {{dekoratoren}}
+  {{#if autentisering}}
+  tokenx:
+    enabled: true
+  idporten:
+    enabled: true
+    sidecar:
+      enabled: true
+      autoLogin: true
+  {{/if}}
   image: {{image}}
   port: 8080
   replicas:
@@ -17,10 +28,10 @@ spec:
       max: 2
       disableAutoScaling: true
   liveness:
-      path: /health/isAlive
+      path: /internal/health/isAlive
       initialDelay: 10
   readiness:
-      path: /health/isReady
+      path: /internal/health/isReady
       initialDelay: 10
   prometheus:
       enabled: false
@@ -47,3 +58,5 @@ spec:
   {{/each}}
    - name: APP_VERSION
      value: {{image}}
+   - name: NODE_ENV
+     value: 'production'

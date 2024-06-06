@@ -21,7 +21,6 @@ import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
 
-import Environment from 'app/Environment';
 import Api from 'app/api/api';
 import ScrollToTop from 'app/components/scroll-to-top/ScrollToTop';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
@@ -184,7 +183,7 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
                         attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                         skjemanummer={type}
                         existingAttachments={vedlegg}
-                        saveAttachment={getSaveAttachment(Environment.REST_API_URL, mapYtelse(sak!.ytelse))}
+                        saveAttachment={getSaveAttachment(mapYtelse(sak!.ytelse))}
                         skjemanummerTextMap={
                             sak
                                 ? getRelevanteSkjemanummer(sak).reduce(

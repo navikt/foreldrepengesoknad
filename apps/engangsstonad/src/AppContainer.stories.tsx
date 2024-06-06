@@ -4,12 +4,11 @@ import { Path } from 'appData/paths';
 import { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
 import MockAdapter from 'axios-mock-adapter';
 
-import { attachmentApi } from '@navikt/fp-api';
+import { getAxiosInstance } from '@navikt/fp-api';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søker } from '@navikt/fp-types';
 
 import AppContainer from './AppContainer';
-import { esApi } from './EngangsstønadRoutes';
 
 const kvittering = {
     mottattDato: '2019-02-19T13:40:45.115',
@@ -30,41 +29,42 @@ const Template: StoryFn<{ søker: Søker; mellomlagretData?: EsDataMapAndMetaDat
 }) => {
     initAmplitude();
 
-    const apiMock = new MockAdapter(esApi);
-    apiMock.onGet('/personinfo').reply(() => {
+    const axiosInstance = getAxiosInstance();
+
+    const apiMock = new MockAdapter(axiosInstance);
+    apiMock.onGet('/rest/personinfo').reply(() => {
         if (doLogging) {
             console.log('network request: get /personinfo');
         }
         return [200, søker];
     });
-    apiMock.onGet('/storage/engangsstonad').reply(() => {
+    apiMock.onGet('/rest/storage/engangsstonad').reply(() => {
         if (doLogging) {
             console.log('network request: get /storage/engangstonad');
         }
         return [200, mellomlagretData];
     });
-    apiMock.onPost('/soknad/engangsstonad').reply(() => {
+    apiMock.onPost('/rest/soknad/engangsstonad').reply(() => {
         if (doLogging) {
             console.log('network request: post /soknad/engangsstonad');
         }
         return [200, kvittering];
     });
-    apiMock.onPost('/storage/engangsstonad').reply(() => {
+    apiMock.onPost('/rest/storage/engangsstonad').reply(() => {
         if (doLogging) {
             console.log('network request: post /storage/engangstonad');
         }
         return [200];
     });
-    apiMock.onDelete('/storage/engangsstonad').reply(() => {
+    apiMock.onDelete('/rest/storage/engangsstonad').reply(() => {
         if (doLogging) {
             console.log('network request: delete /storage/engangstonad');
         }
         return [200];
     });
 
-    const attachmentApiMock = new MockAdapter(attachmentApi);
-    attachmentApiMock.onPost('/storage/engangsstonad/vedlegg').reply(200); //story
-    attachmentApiMock.onPost('http://localhost:8888/rest/storage/engangsstonad/vedlegg').reply(200); //test
+    apiMock.onPost('/rest/storage/engangsstonad/vedlegg').reply(200); //story
+    apiMock.onPost('/rest/storage/engangsstonad/vedlegg').reply(200); //test
 
     return <AppContainer />;
 };

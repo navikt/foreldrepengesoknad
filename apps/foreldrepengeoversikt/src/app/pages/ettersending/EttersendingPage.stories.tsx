@@ -4,7 +4,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import '@navikt/ds-css';
 
-import { attachmentApi } from '@navikt/fp-api';
+import { getAxiosInstance } from '@navikt/fp-api';
 
 import OversiktRoutes from 'app/routes/routes';
 import { Ytelse } from 'app/types/Ytelse';
@@ -17,9 +17,9 @@ export default {
 };
 
 const Template: StoryFn<{ skalFeileOpplasting: boolean }> = ({ skalFeileOpplasting }) => {
-    const apiMock = new MockAdapter(attachmentApi);
+    const apiMock = new MockAdapter(getAxiosInstance());
     if (!skalFeileOpplasting) {
-        apiMock.onPost('test/storage/engangsstonad/vedlegg').reply(200);
+        apiMock.onPost('test/rest/storage/engangsstonad/vedlegg').reply(200);
     }
 
     return (

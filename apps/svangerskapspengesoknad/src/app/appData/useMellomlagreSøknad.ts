@@ -39,7 +39,7 @@ const useMellomlagreSøknad = (
 
                     await postData<SvpDataMapAndMetaData, Kvittering>(
                         svpApi,
-                        '/storage/svangerskapspenger',
+                        '/rest/storage/svangerskapspenger',
                         {
                             version: VERSJON_MELLOMLAGRING,
                             locale,
@@ -53,7 +53,7 @@ const useMellomlagreSøknad = (
                     navigate('/');
 
                     // Ved avbryt så set ein Path = undefined og må så rydda opp i data her
-                    await deleteData(svpApi, '/storage/svangerskapspenger', FEIL_VED_INNSENDING);
+                    await deleteData(svpApi, '/rest/storage/svangerskapspenger', FEIL_VED_INNSENDING);
                 }
 
                 if (promiseRef.current) {

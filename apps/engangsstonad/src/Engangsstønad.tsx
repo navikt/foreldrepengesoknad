@@ -19,13 +19,13 @@ const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale
     const intl = useIntl();
     useDocumentTitle(intl.formatMessage({ id: 'Søknad.Pagetitle' }));
 
-    const { data: søker, error: errorHentSøker } = useRequest<Søker>(esApi, '/personinfo');
+    const { data: søker, error: errorHentSøker } = useRequest<Søker>(esApi, '/rest/personinfo');
 
     const {
         data: mellomlagretData,
         loading: loadingMellomlagretData,
         error: errorMellomlagretData,
-    } = useRequest<EsDataMapAndMetaData>(esApi, '/storage/engangsstonad');
+    } = useRequest<EsDataMapAndMetaData>(esApi, '/rest/storage/engangsstonad');
 
     if (errorHentSøker || errorMellomlagretData) {
         return <ApiErrorHandler error={notEmpty(errorHentSøker || errorMellomlagretData)} />;
