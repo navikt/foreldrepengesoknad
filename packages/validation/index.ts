@@ -8,12 +8,13 @@ export {
     hasLegalChars,
 } from './src/form/generalFormValidation';
 export {
-    isValidNumber,
+    isValidNumberForm,
     isValidDecimal,
     isValidInteger,
     hasMaxValue,
     hasMinValue,
 } from './src/form/numberFormValidation';
+export { isValidNumber } from './src/other/numberValidation';
 export {
     erI22SvangerskapsukeEllerSenere,
     isAfterOrSameAsSixMonthsAgo,

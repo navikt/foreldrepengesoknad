@@ -1,13 +1,13 @@
+import { isValidNumber } from '../other/numberValidation';
 import { FormValidationResult, isEmpty } from './generalFormValidation';
 
-const numberRegex = /^\d+([,.]\d+)?$/;
 const integerRegex = /^\s*\d+\s*$/;
 const decimalRegex = /^\d+(.\d{1,2})?$/;
 
-export const isValidNumber =
+export const isValidNumberForm =
     (i18nText: string) =>
     (text: string | number): FormValidationResult =>
-        isEmpty(text) || numberRegex.test(text.toString()) ? null : i18nText;
+        isEmpty(text) || isValidNumber(text) ? null : i18nText;
 
 export const isValidInteger =
     (i18nText: string) =>

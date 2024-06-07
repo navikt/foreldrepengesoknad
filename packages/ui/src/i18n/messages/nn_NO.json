@@ -46,5 +46,9 @@
     "AvsluttModal.ContinueLater": "Fortsett seinare",
     "AvsluttModal.CompleteLater": "Søknaden er lagra, og du kan fullføra den seinare, eller velgja å sletta den. Søknaden blir lagra i 24 timar.",
     "AvsluttModal.Ok": "OK",
-    "AvsluttModal.Delete": "Slett søknaden"
+    "AvsluttModal.Delete": "Slett søknaden",
+    "FrontPage.Start": "Start",
+    "SimpleErrorPage.ErrorHeader": "Beklager, det ser ut til at noko har feila grunna ein teknisk feil hjå NAV",
+    "SimpleErrorPage.ErrorBody": "Du kan prøve å planlegge på nytt, og dersom du fortsatt får ein feil kan du vente litt og komme tilbake seinare.",
+    "SimpleErrorPage.TryAgain": "Planlegg på nytt"
 }
