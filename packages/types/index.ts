@@ -14,7 +14,7 @@ export type { Arbeidsforhold } from './src/Arbeidsforhold';
 export type { Søkerinfo } from './src/Søkerinfo';
 export type { TidsperiodeDate } from './src/TidsperiodeDate';
 export type { DatepickerDateRange } from './src/DatepickerDateRange';
-export { isFødtBarn, isUfødtBarn, isAdoptertBarn, getFamiliehendelsedato } from './src/Barn';
+export { isFødtBarn, isUfødtBarn, isAdoptertBarn } from './src/Barn';
 export {
     isAvslåttPeriode,
     isForeldrepengerFørFødselUttaksperiode,

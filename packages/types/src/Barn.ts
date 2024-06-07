@@ -84,14 +84,3 @@ export const harFødselsdato = (barn: Barn): barn is IkkeUtfyltTypeBarn | FødtB
 };
 
 export default Barn;
-
-export const getFamiliehendelsedato = (barn: Barn): string => {
-    if (isFødtBarn(barn) || isIkkeUtfyltTypeBarn(barn)) {
-        return barn.fødselsdatoer[0];
-    }
-    if (isUfødtBarn(barn)) {
-        return barn.termindato;
-    }
-
-    return barn.adopsjonsdato;
-};

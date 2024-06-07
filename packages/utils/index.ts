@@ -27,6 +27,7 @@ export { default as bemUtils } from './src/bemUtils';
 export { getFloatFromString } from './src/numberUtils';
 export { capitalizeFirstLetter, getNavnGenitivEierform } from './src/stringUtils';
 export { getOffentligeFridager } from './src/fridagerUtils';
+export { getFamiliehendelsedato } from './src/barnUtils';
 export {
     getBokmålLocale,
     getLocaleForApi,

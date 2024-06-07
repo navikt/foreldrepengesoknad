@@ -25,7 +25,6 @@ import {
     UttakAnnenPartInfoPeriode,
     Uttaksperiode,
     isAnnenPartInfoPeriode,
-    isAvslåttPeriode,
     isHull,
     isOverføringsperiode,
     isPeriodeUtenUttak,
@@ -46,7 +45,7 @@ import intlUtils from './intlUtils';
 import { getFloatFromString } from './numberUtils';
 import { capitalizeFirstLetter } from './stringUtils';
 import { getStønadskontoNavn, getUttakAnnenPartStønadskontoNavn } from './stønadskontoerUtils';
-import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor, slutterTidsperiodeInnen6UkerEtterFødsel } from './wlbUtils';
+import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from './wlbUtils';
 
 export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
     return {
@@ -530,13 +529,4 @@ export const getIsValidStateForPerioder = (previousState: PeriodeValidState[], p
         return [...previousState, { id: periode.id, isValid }];
     }
     return previousState;
-};
-
-export const isAvslåttPeriodeFørsteSeksUkerMor = (periode: Periode, familiehendelsesdato: string): boolean => {
-    return (
-        isAvslåttPeriode(periode) &&
-        periode.forelder === 'mor' &&
-        dayjs(periode.tidsperiode.fom).isSameOrAfter(dayjs(familiehendelsesdato), 'day') &&
-        slutterTidsperiodeInnen6UkerEtterFødsel(periode.tidsperiode, new Date(familiehendelsesdato))
-    );
 };
