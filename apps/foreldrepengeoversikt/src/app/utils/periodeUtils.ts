@@ -3,7 +3,8 @@ import { isEqual } from 'lodash';
 import { IntlShape } from 'react-intl';
 
 import { StønadskontoType } from '@navikt/fp-constants';
-import { formatDateIso } from '@navikt/fp-utils';
+import { TidsperiodeDate } from '@navikt/fp-types';
+import { formatDateIso, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import { Forelder } from 'app/types/Forelder';
 import { MorsAktivitet } from 'app/types/MorsAktivitet';
@@ -16,14 +17,9 @@ import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
 import { Uttaksdagen } from './Uttaksdagen';
 import { ISOStringToDate } from './dateUtils';
 import { guid } from './guid';
-import { NavnPåForeldre, getNavnGenitivEierform } from './personUtils';
+import { NavnPåForeldre } from './personUtils';
 import { capitalizeFirstLetter } from './stringUtils';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from './tidsperiodeUtils';
-
-export interface TidsperiodeDate {
-    fom: Date;
-    tom: Date;
-}
 
 export const Periodene = (perioder: Periode[]) => ({
     sort: () => [...perioder].sort(sorterPerioder),

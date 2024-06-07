@@ -1,13 +1,10 @@
 import dayjs from 'dayjs';
 
+import { TidsperiodeDate } from '@navikt/fp-types';
+
 import { Periode } from 'app/types/Periode';
 
 import { ISOStringToDate } from './dateUtils';
-
-export interface TidsperiodeDate {
-    fom: Date;
-    tom: Date;
-}
 
 export function isValidTidsperiode(tidsperiode: TidsperiodeDate): boolean {
     return (
