@@ -30,6 +30,7 @@ const getUtsettelseÅrsakTekst = (årsak: UtsettelseÅrsakType, intl: IntlShape)
     if (årsak === UtsettelseÅrsakType.NavTiltak) {
         return intl.formatMessage({ id: `kalender.utsettelse.NAV_TILTAK` });
     }
+    return '';
 };
 
 const getUtsettelseLabel = (unikeUtsettelseÅrsaker: UtsettelseÅrsakType[], intl: IntlShape): ReactNode => {
