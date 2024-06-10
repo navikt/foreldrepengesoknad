@@ -30,5 +30,6 @@
     "lint-staged": {
         "apps/**/*.{ts,tsx,js,jsx, css}": "prettier --write",
         "packages/**/*.{ts,tsx,js,jsx, css}": "prettier --write"
-    }
+    },
+    "packageManager": "pnpm@9.1.4"
 }
