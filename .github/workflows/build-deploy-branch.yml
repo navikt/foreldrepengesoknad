@@ -16,6 +16,7 @@ on:
           - foreldrepengesoknad
           - svangerskapspengesoknad
           - planlegger
+          - veivisere
 
 jobs:
   build-app:

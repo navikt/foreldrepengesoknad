@@ -22,6 +22,7 @@ export {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from './src/Periode';
+export { Dekningsgrad } from './src/Dekningsgrad';
 export type {
     TilgjengeligeStønadskontoer,
     TilgjengeligeStønadskontoerForDekningsgrad,

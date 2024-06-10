@@ -23,6 +23,7 @@ on:
           - engangsstonad
           - svangerskapspengesoknad
           - planlegger
+          - veivisere
 
 jobs:
   deploy:
