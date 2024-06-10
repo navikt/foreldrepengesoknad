@@ -1,6 +1,6 @@
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
 import { mapFilTilVedlegg, isAttachmentWithError, lagSendSenereDokumentNårIngenAndreFinnes } from './vedleggUtils';
-import { Attachment, InnsendingsType } from '@navikt/fp-types';
+import { Attachment } from '@navikt/fp-types';
 
 describe('vedleggUtils', () => {
     it('skal mappe fil til vedlegg', () => {
