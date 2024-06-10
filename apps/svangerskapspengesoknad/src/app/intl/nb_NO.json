@@ -59,7 +59,7 @@
     "inntektsinformasjon.arbeidsforhold.organisasjonsnummer": "Org nr: {organisasjonsnummer}",
     "inntektsinformasjon.arbeidsforhold.stillingsprosent": "{stillingsprosent} PROSENT",
     "inntektsinformasjon.arbeidsforhold.periode": "{fom} - {tom}",
-    "inntektsinformasjon.infoOmFørstegangstjeneste.tittel": "Er du i førstegangstjeneste?",
+    "inntektsinformasjon.infoOmFørstegangstjeneste.tittel": "Informasjon til deg som er i førstegangstjenesten",
     "inntektsinformasjon.infoOmFørstegangstjeneste.content.del1": "Hvis du er i førstegangstjenesten i forsvaret eller sivilforsvaret, og ønsker å søke om svangerskapspenger må du dessverre søke på papir.",
     "inntektsinformasjon.infoOmFørstegangstjeneste.content.del2": "Du fyller ut <a>papirsøknad for svangerskapspenger</a> og sender den i posten sammen med <b>skjemaet fra Arbeidstilsynet</b>.",
     "inntektsinformasjon.infoTilFiskere.tittel": "Informasjon til deg som er fisker",
