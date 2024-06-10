@@ -1,0 +1,1 @@
+import{R as c,r as s}from"./index-DVXBtNgz.js";let u=0;function d(t){const[e,a]=s.useState(t),r=t||e;return s.useEffect(()=>{e==null&&(u+=1,a(`aksel-id-${u}`))},[e]),r}const n=c.useId;function o(t){var e;return n!==void 0?n().replace(/(:)/g,""):(e=d(t))!==null&&e!==void 0?e:""}export{o as u};

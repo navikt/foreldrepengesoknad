@@ -1,0 +1,22 @@
+import{j as o}from"./jsx-runtime-_e34SzbC.js";import{P as s}from"./usePlanleggerNavigator-Cc6QDZDj.js";import{P as a,M as l,p as d,B as c}from"./Planlegger-DDoIFMD8.js";import{r as g}from"./index-DVXBtNgz.js";import{i as k}from"./Arbeidssituasjon-rAW6RSqH.js";import{S as r}from"./uttakUtils-Bfxqkahw.js";import{n as u,u as t,e as M,a as F}from"./nn_NO-x87SvEoH.js";import{I as f,E as S}from"./infobox.module-COlA9bH3.js";import"./routes-Cp-2uEwO.js";import"./dayjs.min-Dkhc0ShP.js";import"./HvemPlanleggerUtils-CHTffTZd.js";import"./barnetUtils-Dtg6gkcN.js";import"./dateUtils--_TJ2jyJ.js";import"./index-Cbx7Fas8.js";import"./ErrorPage-CRXsn-QT.js";import"./index-Bomzi5Jd.js";import"./tslib.es6-pJfR_DrR.js";import"./amplitude.esm-BThBy0fb.js";import"./Box-DGewKQma.js";import"./clsx-B-dksMZM.js";import"./css-CqApuV4H.js";import"./VStack-DzX3uTsq.js";import"./useId-DbilmxAP.js";import"./Label-DFEFJLqZ.js";import"./Button-DG980N3E.js";import"./useId-BuMKUBu9.js";import"./hvemHarRettUtils-DP-A7Fyr.js";import"./ArbeidssituasjonSteg-DxLfe6Uh.js";import"./GreenRadioGroup-dZQly406.js";import"./StepButtonsHookForm-D9EJb97s.js";import"./Select-Dt8IwbBp.js";import"./ChevronDown-CcwFV5Ek.js";import"./Calendar-DfqO_VWn.js";import"./links-B0sJFGJm.js";import"./Responsive-CUg94mp6.js";import"./ArrowLeft-CBeUisJv.js";import"./ArrowRight-BQL9b638.js";import"./GreenPanel-h__UB972.js";import"./PlanleggerStepPage-CG-Vt2ZG.js";import"./GreenHeading-B5QLwpFd.js";import"./PlanleggerPage-BF_Tk5Tl.js";import"./useScrollBehaviour-WVMBWXos.js";import"./Infobox-4DkbJ68c.js";import"./IconCircleWrapper-C8foAhsL.js";import"./Checkmark-BZX4qwFf.js";import"./Spacer-CmfZYR-2.js";import"./FordelingSteg-DmaCJcxD.js";import"./Dekningsgrad-Bg_cIyqc.js";import"./HvemPlanleggerSteg-CFx-pHzE.js";import"./HvorLangPeriodeSteg-CYcJJtXJ.js";import"./PersonGroup-DiEFwi66.js";import"./OmBarnetSteg-B5rPfwq6.js";import"./TasklistStart-06HzpnvP.js";import"./OmPlanleggerenSteg-CKipkSsG.js";import"./LanguageToggle-D9wy30FU.js";import"./OppsummeringSteg-BMkRMeTV.js";import"./ExpansionCard-_FY0jhnH.js";import"./Calendar-vEapWlHS.js";import"./isoWeek-BYZtqGCG.js";import"./kalenderPerioderUtils-9-7Eb4xW.js";import"./CalendarIconLabel-D3VA8mep.js";import"./FamiliehendelseLabel-DWk2u28k.js";import"./PlanenDeresSteg-BI7Uyk4U.js";import"./OmÅTilpassePlanen-DPoipxP_.js";import"./BabyWrapped-Dn1_Bla9.js";import"./PersonPregnant-Barn0uDD.js";import"./UforutsetteEndringer-DDxf0ia_.js";import"./Information-DnqWs4L0.js";import"./extends-CF3RwP-h.js";import"./index-Dcs0RV0A.js";const x={100:{kontoer:[{konto:r.Mødrekvote,dager:75},{konto:r.Fedrekvote,dager:75},{konto:r.Fellesperiode,dager:80},{konto:r.ForeldrepengerFørFødsel,dager:15}],minsteretter:{farRundtFødsel:0,toTette:0}},80:{kontoer:[{konto:r.Mødrekvote,dager:95},{konto:r.Fedrekvote,dager:95},{konto:r.Fellesperiode,dager:90},{konto:r.ForeldrepengerFørFødsel,dager:15}],minsteretter:{farRundtFødsel:0,toTette:0}}},E={...F,...t.nb},P={nb:E,nn:{...u,...t.nn},en:{...M,...t.en}},Tr={title:"PlanleggerDataFetcher",component:a},e={render:m=>(k(),m.brukStønadskontoMock&&new l(d).onPost("/konto").reply(()=>[200,x]),o.jsx(g.StrictMode,{children:o.jsx(f,{locale:"nb",messagesGroupedByLocale:P,children:o.jsx(S,{appName:"Foreldrepengeplanlegger",retryCallback:()=>{},children:o.jsx(c,{children:o.jsx(s,{initialState:{},children:o.jsx(a,{locale:"nb",changeLocale:()=>{}})})})})})}))};var n,i,p;e.parameters={...e.parameters,docs:{...(n=e.parameters)==null?void 0:n.docs,source:{originalSource:`{
+  render: args => {
+    initAmplitude();
+    if (args.brukStønadskontoMock) {
+      const apiMock = new MockAdapter(planleggerApi);
+      apiMock.onPost('/konto').reply(() => {
+        return [200, kontoer];
+      });
+    }
+    return <StrictMode>
+                <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
+                    <ErrorBoundary appName="Foreldrepengeplanlegger" retryCallback={() => undefined}>
+                        <BrowserRouter>
+                            <PlanleggerDataContext initialState={{}}>
+                                <PlanleggerDataFetcher locale="nb" changeLocale={() => undefined} />
+                            </PlanleggerDataContext>
+                        </BrowserRouter>
+                    </ErrorBoundary>
+                </IntlProvider>
+            </StrictMode>;
+  }
+}`,...(p=(i=e.parameters)==null?void 0:i.docs)==null?void 0:p.source}}};const Ur=["Default"];export{e as Default,Ur as __namedExportsOrder,Tr as default};
