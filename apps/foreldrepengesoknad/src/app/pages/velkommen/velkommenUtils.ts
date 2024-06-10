@@ -13,6 +13,7 @@ import {
 } from '@navikt/fp-common';
 import { Familiehendelse } from '@navikt/fp-common/src/common/types/Familiehendelse';
 import { SøkerBarn } from '@navikt/fp-types';
+import { isISODateString } from '@navikt/fp-utils';
 
 import { ValgtBarn, ValgtBarnType } from 'app/types/ValgtBarn';
 import {
@@ -65,13 +66,24 @@ export const getErDatoInnenEnDagFraAnnenDato = (
     );
 };
 
-const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: SøkerBarn[]): ValgtBarn => {
-    const barnFnrFraSaken = sak.barn !== undefined ? sak.barn.map((b) => b.fnr).flat() : [];
-    const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse.fødselsdato);
+const getPDLBarnForSakMedUfødtBarn = (sak: Sak, registrerteBarn: SøkerBarn[]): SøkerBarn[] => {
+    const termindato = sak.familiehendelse.termindato;
+    if (isISODateString(termindato)) {
+        const terminMinus17Uker = dayjs(termindato).subtract(17, 'week');
+        const terminPlus6Uker = dayjs(termindato).add(6, 'week');
+        return registrerteBarn.filter((barn) =>
+            dayjs(barn.fødselsdato).isBetween(terminMinus17Uker, terminPlus6Uker, 'day', '[]'),
+        );
+    }
+    return [];
+};
 
+const getPDLBarnForSakMedFødteBarn = (sak: Sak, registrerteBarn: SøkerBarn[]): SøkerBarn[] => {
+    const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse.fødselsdato);
+    const barnFnrFraSaken = sak.barn !== undefined ? sak.barn.map((b) => b.fnr).flat() : [];
     const pdlBarnMedSammeFnr = registrerteBarn.filter((b) => barnFnrFraSaken.includes(b.fnr));
 
-    //Noen saken sendes uten barn, derfor må sjekke PDL mot fødselsdato også
+    //Noen saker sendes uten barn, derfor må sjekke PDL mot fødselsdato også
     const pdlBarnMedSammeFødselsdato =
         fødselsdatoFraSak !== undefined
             ? registrerteBarn.filter(
@@ -80,7 +92,20 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: SøkerBarn[]): Valgt
                       !pdlBarnMedSammeFnr.find((pdlBarn) => pdlBarn.fnr === barn.fnr),
               )
             : [];
-    const pdlBarn = pdlBarnMedSammeFnr.concat(pdlBarnMedSammeFødselsdato);
+
+    return pdlBarnMedSammeFnr.concat(pdlBarnMedSammeFødselsdato);
+};
+
+const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: SøkerBarn[]): ValgtBarn => {
+    let pdlBarn;
+    if (sak.barn || sak.familiehendelse.fødselsdato) {
+        pdlBarn = getPDLBarnForSakMedFødteBarn(sak, registrerteBarn);
+    }
+
+    //Noen termin-saker får ikke fødsel på barnet registrert, må sjekke PDL mot termindato også
+    if (sak.familiehendelse.termindato && !sak.familiehendelse.fødselsdato && !sak.barn) {
+        pdlBarn = getPDLBarnForSakMedUfødtBarn(sak, registrerteBarn);
+    }
 
     const familiehendelseDato = ISOStringToDate(
         getRelevantFamiliehendelseDato(
@@ -90,6 +115,7 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: SøkerBarn[]): Valgt
         ),
     );
     const barnType = getSelectableBarnType(sak.gjelderAdopsjon, sak.familiehendelse);
+    const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse.fødselsdato);
 
     let fødselsdatoer;
     if (pdlBarn && pdlBarn.length > 0) {
