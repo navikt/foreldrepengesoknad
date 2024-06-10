@@ -27,7 +27,7 @@ RUN apk fix \
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 RUN npm install -g pnpm@9.1.4 \
-    && pnpm install -g pnpm turbo@2.0.1 \
+    && pnpm install -g pnpm \
     && npm uninstall -g pnpm
 COPY --from=prepare /usr/src/app ./
 RUN pnpm install --frozen-lockfile
@@ -37,7 +37,7 @@ COPY . .
 # BUILD SERVER
 #########################################
 FROM --platform=${BUILDPLATFORM} builder as server-build
-RUN cd ./server && turbo build
+RUN cd ./server && pnpm exec turbo build
 
 #########################################
 # Client
@@ -45,7 +45,7 @@ RUN cd ./server && turbo build
 FROM --platform=${BUILDPLATFORM} builder as client
 ARG APP="foreldrepengesoknad"
 
-RUN cd ./apps/${APP} && turbo test \
+RUN cd ./apps/${APP} && pnpm exec turbo test \
     && mv /usr/src/app/apps/${APP}/dist /public
 
 #########################################
