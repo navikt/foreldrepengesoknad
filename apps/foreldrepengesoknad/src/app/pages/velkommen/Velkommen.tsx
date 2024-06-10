@@ -124,7 +124,12 @@ const Velkommen: React.FunctionComponent<Props> = ({
             ) as Søknad;
             oppdaterSøknadIState(søknad, eksisterendeSak);
         } else if (nySøknadPåAlleredeSøktBarn) {
-            const søknad = opprettSøknadFraValgteBarnMedSak(valgteBarn, intl, søkerInfo.søker.barn) as Søknad;
+            const søknad = opprettSøknadFraValgteBarnMedSak(
+                valgteBarn,
+                intl,
+                søkerInfo.søker.barn,
+                søkerInfo.søker.fnr,
+            ) as Søknad;
             oppdaterSøknadIState(søknad);
         } else if (nySøknadPåValgteRegistrerteBarn) {
             const søknad = opprettSøknadFraValgteBarn(valgteBarn) as Søknad;
