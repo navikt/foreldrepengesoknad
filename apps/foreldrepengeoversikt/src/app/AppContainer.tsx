@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 
 import { IntlProvider, uiMessages } from '@navikt/fp-ui';
+import { utilsMessages } from '@navikt/fp-utils';
 
 import Foreldrepengeoversikt from './Foreldrepengeoversikt';
 import ByttBrowserModal from './components/bytt-browser-modal/ByttBrowserModal';
@@ -11,7 +12,7 @@ import nbMessages from './intl/nb_NO.json';
 
 const queryClient = new QueryClient();
 
-const allNbMessages = { ...nbMessages, ...uiMessages.nb };
+const allNbMessages = { ...nbMessages, ...uiMessages.nb, ...utilsMessages.nb };
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace

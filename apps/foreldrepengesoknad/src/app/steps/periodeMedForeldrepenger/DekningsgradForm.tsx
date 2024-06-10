@@ -19,9 +19,9 @@ import {
     isAdoptertBarn,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
-import { links } from '@navikt/fp-constants';
+import { StønadskontoType, links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { StønadskontoType, SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';

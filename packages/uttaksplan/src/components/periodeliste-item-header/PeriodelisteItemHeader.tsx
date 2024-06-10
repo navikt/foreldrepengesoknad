@@ -87,7 +87,7 @@ export const getPeriodeIkon = (
                 />
             );
         case Periodetype.Utsettelse:
-            return <UtsettelseIkon årsak={periode.årsak} />;
+            return <UtsettelseIkon årsak={periode.årsak} forelder={periode.forelder} />;
         case Periodetype.Opphold:
             return (
                 <StønadskontoIkon
@@ -99,7 +99,7 @@ export const getPeriodeIkon = (
             );
         case Periodetype.Info:
             if (isUtsettelseAnnenPart(periode)) {
-                return <UtsettelseIkon årsak={periode.årsak} />;
+                return <UtsettelseIkon årsak={periode.årsak} forelder={periode.forelder} />;
             } else {
                 if (
                     periode.infotype === PeriodeInfoType.avslåttPeriode &&

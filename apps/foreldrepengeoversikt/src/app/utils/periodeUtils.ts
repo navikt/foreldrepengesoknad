@@ -2,7 +2,9 @@ import dayjs from 'dayjs';
 import { isEqual } from 'lodash';
 import { IntlShape } from 'react-intl';
 
-import { formatDateIso } from '@navikt/fp-utils';
+import { StønadskontoType } from '@navikt/fp-constants';
+import { TidsperiodeDate } from '@navikt/fp-types';
+import { formatDateIso, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import { Forelder } from 'app/types/Forelder';
 import { MorsAktivitet } from 'app/types/MorsAktivitet';
@@ -10,20 +12,14 @@ import { OppholdÅrsakType } from 'app/types/OppholdÅrsakType';
 import { Periode } from 'app/types/Periode';
 import { PeriodeResultat } from 'app/types/PeriodeResultat';
 import { PeriodeResultatÅrsak } from 'app/types/PeriodeResultatÅrsak';
-import { StønadskontoType } from 'app/types/StønadskontoType';
 import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
 
 import { Uttaksdagen } from './Uttaksdagen';
 import { ISOStringToDate } from './dateUtils';
 import { guid } from './guid';
-import { NavnPåForeldre, getNavnGenitivEierform } from './personUtils';
+import { NavnPåForeldre } from './personUtils';
 import { capitalizeFirstLetter } from './stringUtils';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from './tidsperiodeUtils';
-
-export interface TidsperiodeDate {
-    fom: Date;
-    tom: Date;
-}
 
 export const Periodene = (perioder: Periode[]) => ({
     sort: () => [...perioder].sort(sorterPerioder),
@@ -277,8 +273,6 @@ const finnTekstForStønadskontoType = (intl: IntlShape, konto: StønadskontoType
             return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.MØDREKVOTE' });
         case StønadskontoType.AktivitetsfriKvote:
             return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE' });
-        case StønadskontoType.Flerbarnsdager:
-            return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.FLERBARNSDAGER' });
     }
 };
 

@@ -5,9 +5,9 @@ import { MemoryRouter } from 'react-router-dom';
 import AxiosMock from 'storybook/utils/AxiosMock';
 
 import { AnnenForelder, Barn, BarnType, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
+import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import {
-    StønadskontoType,
     SøkersituasjonFp,
     TilgjengeligeStønadskontoer,
     TilgjengeligeStønadskontoerForDekningsgrad,

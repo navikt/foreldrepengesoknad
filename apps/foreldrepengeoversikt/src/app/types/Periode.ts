@@ -1,9 +1,10 @@
+import { StønadskontoType } from '@navikt/fp-constants';
+
 import { Gradering } from './Gradering';
 import { MorsAktivitet } from './MorsAktivitet';
 import { OppholdÅrsakType } from './OppholdÅrsakType';
 import { OverføringÅrsakType } from './OverføringÅrsakType';
 import { PeriodeResultat } from './PeriodeResultat';
-import { StønadskontoType } from './StønadskontoType';
 import { UtsettelseÅrsakType } from './UtsettelseÅrsakType';
 
 export interface Periode {

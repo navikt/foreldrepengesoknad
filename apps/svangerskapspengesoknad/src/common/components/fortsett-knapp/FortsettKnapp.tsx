@@ -1,7 +1,9 @@
-import { useIntl } from 'react-intl';
-import './fortsettKnapp.less';
-import { Button } from '@navikt/ds-react';
 import getMessage from 'common/util/i18nUtils';
+import { useIntl } from 'react-intl';
+
+import { Button } from '@navikt/ds-react';
+
+import './fortsettKnapp.less';
 
 interface FortsettKnappProps {
     location?: string;

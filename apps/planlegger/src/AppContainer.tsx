@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
-import { useBeforeUnload } from '@navikt/fp-utils';
+import { useBeforeUnload, utilsMessages } from '@navikt/fp-utils';
 
 import PlanleggerDataInit from './Planlegger';
 import Environment from './appData/Environment';
@@ -14,7 +14,7 @@ import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
 
-const allNbMessages = { ...nbMessages, ...uiMessages.nb };
+const allNbMessages = { ...nbMessages, ...uiMessages.nb, ...utilsMessages.nb };
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace

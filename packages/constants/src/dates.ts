@@ -7,6 +7,7 @@ export const DDMMYYYY_DATE_FORMAT = 'DD.MM.YYYY';
 export const DDMMMMYYY_DATE_FORMAT = 'DD. MMMM YYYY';
 export const TIME_FORMAT = 'HH:mm';
 export const WEEKDAY_DDMMMMYYYY_DATE_FORMAT = 'dddd DD. MMMM YYYY';
+export const DAY_MONTHNAME_YEAR_FORMAT = 'D. MMMM YYYY';
 
 // TODO Er dette greie datoar eller bør ein velga noko anna?
 export const TIDENES_MORGEN = dayjs('1000-01-01').toDate();

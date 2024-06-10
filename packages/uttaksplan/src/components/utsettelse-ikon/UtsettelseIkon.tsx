@@ -1,16 +1,17 @@
-import { intlUtils, UtsettelseÅrsakType } from '@navikt/fp-common';
-
 import { useIntl } from 'react-intl';
+
+import { Forelder, UtsettelseÅrsakType, intlUtils } from '@navikt/fp-common';
+import { getUtsettelseFarge } from '@navikt/fp-utils';
+
 import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
-import { getUtsettelseFarge } from '../../utils/styleUtils';
 
 export interface Props {
     årsak: UtsettelseÅrsakType;
-    gradert?: boolean;
+    forelder: Forelder;
 }
 
-const getIkonForKonto = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
+const getIkonForÅrsak = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
     switch (årsak) {
         case UtsettelseÅrsakType.Ferie:
             return UttaksplanIkonKeys.ferie;
@@ -26,13 +27,13 @@ const getIkonForKonto = (årsak: UtsettelseÅrsakType): UttaksplanIkonKeys => {
     }
 };
 
-const UtsettelseIkon: React.FunctionComponent<Props> = ({ årsak, gradert }) => {
+const UtsettelseIkon: React.FunctionComponent<Props> = ({ årsak, forelder }) => {
     const intl = useIntl();
 
     return (
-        <IconBox color={getUtsettelseFarge()} stripes={gradert}>
+        <IconBox color={getUtsettelseFarge(forelder)}>
             <UttaksplanIkon
-                ikon={getIkonForKonto(årsak)}
+                ikon={getIkonForÅrsak(årsak)}
                 title={intlUtils(intl, `uttaksplan.utsettelsesårsak.${årsak || 'ukjent'}`)}
             />
         </IconBox>

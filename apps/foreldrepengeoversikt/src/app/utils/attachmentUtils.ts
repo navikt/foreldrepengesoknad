@@ -1,7 +1,7 @@
 import Bytes from 'bytes';
 
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment, InnsendingsType } from '@navikt/fp-types';
+import { AttachmentType, InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
 
 import { guid } from './guid';
 

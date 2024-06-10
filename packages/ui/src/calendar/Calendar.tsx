@@ -5,7 +5,9 @@ import { FunctionComponent } from 'react';
 
 import { HGrid } from '@navikt/ds-react';
 
-import Day, { DayColor, DayType } from './Day';
+import { PeriodeColor } from '@navikt/fp-constants';
+
+import Day, { DayType } from './Day';
 import Month from './Month';
 import styles from './calendar.module.css';
 
@@ -15,7 +17,7 @@ dayjs.extend(isBetween);
 export type Period = {
     fom: string;
     tom: string;
-    color: DayColor;
+    color: PeriodeColor;
 };
 
 const findDayColor = (year: number, month: number, day: number, periods: Period[]) => {
@@ -25,37 +27,41 @@ const findDayColor = (year: number, month: number, day: number, periods: Period[
     const tomLastPeriod = periods[periods.length - 1].tom;
 
     if (date.isBefore(fomFirstPeriod, 'day') || date.isAfter(tomLastPeriod, 'day')) {
-        return DayColor.NONE;
+        return PeriodeColor.NONE;
     }
 
     const period = periods.find((period) => date.isBetween(period.fom, period.tom, 'day', '[]'));
 
-    if (period?.color === DayColor.PINK) {
-        return DayColor.PINK;
+    if (period?.color === PeriodeColor.PINK) {
+        return PeriodeColor.PINK;
     }
 
     if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
-        return DayColor.GRAY;
+        return PeriodeColor.GRAY;
     }
 
-    return period?.color || DayColor.NONE;
+    return period?.color || PeriodeColor.NONE;
 };
 
 const isFirstDay = (date: Dayjs, day: number, periods: Period[]) => {
+    const pinkPeriod = periods.find((p) => p.color === PeriodeColor.PINK);
     return (
         date.isoWeekday() === 6 ||
         date.isoWeekday() === 1 ||
         day === 1 ||
-        periods.some((period) => date.isSame(period.fom, 'day'))
+        periods.some((period) => date.isSame(period.fom, 'day')) ||
+        (pinkPeriod && dayjs(pinkPeriod.fom).isSame(date.subtract(1, 'day'), 'day'))
     );
 };
 
 const isLastDay = (date: Dayjs, day: number, periods: Period[]) => {
+    const pinkPeriod = periods.find((p) => p.color === PeriodeColor.PINK);
     return (
         date.isoWeekday() === 7 ||
         date.isoWeekday() === 5 ||
         day === date.daysInMonth() ||
-        periods.some((period) => date.isSame(period.tom, 'day'))
+        periods.some((period) => date.isSame(period.tom, 'day')) ||
+        (pinkPeriod && dayjs(pinkPeriod.fom).isSame(date.add(1, 'day'), 'day'))
     );
 };
 
@@ -124,7 +130,7 @@ const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }
                         <Day
                             key={monthData.year + monthData.month + day}
                             day={day + 1}
-                            dayColor={findDayColor(monthData.year, monthData.month, day + 1, periods)}
+                            periodeColor={findDayColor(monthData.year, monthData.month, day + 1, periods)}
                             dayType={findDayType(monthData.year, monthData.month, day + 1, periods)}
                         />
                     ))}

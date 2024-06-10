@@ -1,3 +1,4 @@
+import { uttaksplanMessages } from '@navikt/uttaksplan';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
@@ -6,6 +7,7 @@ import { oppsummeringMessages } from '@navikt/fp-oppsummering';
 import { LocaleNo } from '@navikt/fp-types';
 import { IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
+import { utilsMessages } from '@navikt/fp-utils';
 
 import ByttBrowserModal from 'app/pages/byttBrowserModal/ByttBrowserModal';
 
@@ -26,6 +28,8 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...uiMessages.nb,
         ...utenlandsoppholdMessages.nb,
         ...oppsummeringMessages.nb,
+        ...uttaksplanMessages.nb,
+        ...utilsMessages.nb,
     },
     nn: {
         ...nnMessages,
@@ -33,6 +37,8 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...uiMessages.nn,
         ...utenlandsoppholdMessages.nn,
         ...oppsummeringMessages.nn,
+        ...uttaksplanMessages.nn,
+        ...utilsMessages.nn,
     },
 };
 

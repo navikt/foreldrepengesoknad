@@ -1,7 +1,6 @@
 import { FunctionComponent } from 'react';
 
-import { Skjemanummer } from '@navikt/fp-constants';
-import { InnsendingsType } from '@navikt/fp-types';
+import { InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
 
 import { getAndreInntekterVedlegg } from 'app/steps/manglende-vedlegg/util';
 import { VedleggDataType } from 'app/types/VedleggDataType';

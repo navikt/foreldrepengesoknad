@@ -98,7 +98,7 @@ const PeriodeListeItem: React.FunctionComponent<Props> = ({
                             forelder={forelder}
                         />
                     )}
-                    {visUtsettelsesIkon && <UtsettelseIkon årsak={periode.utsettelseÅrsak!} />}
+                    {visUtsettelsesIkon && <UtsettelseIkon årsak={periode.utsettelseÅrsak!} forelder={forelder} />}
                     {visAvslåttIkon && <ExclamationmarkTriangleIcon />}
                     <div className={bem.element('innhold-tekst-periodetittel')}>
                         <Heading size="small" level="4">

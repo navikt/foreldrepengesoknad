@@ -53,10 +53,10 @@ import getStønadskontoParams, {
 } from 'app/api/getStønadskontoParams';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import InfoOmSøknaden from 'app/components/info-eksisterende-sak/InfoOmSøknaden';
 import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
+import InfoOmNesteBarn from 'app/steps/uttaksplan/components/info-om-neste-barn/InfoOmNesteBarn';
 import { RequestStatus } from 'app/types/RequestState';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
@@ -184,7 +184,8 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         (barnFnr !== undefined || familiehendelsesdato !== undefined)
             ? false
             : true;
-
+    const startStønadsperiodeNyttBarn =
+        barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const debouncedState = useDebounce(useContextComplete(), 3000);
     const initialRender = useRef(true);
     useEffect(() => {
@@ -637,8 +638,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     };
     const antallUkerIUttaksplan = getAntallUker(valgteStønadskontoer!);
 
-    const kontoer = valgteStønadskontoer?.kontoer;
-
     return (
         <UttaksplanFormComponents.FormikWrapper
             initialValues={getUttaksplanFormInitialValues(
@@ -660,15 +659,9 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                         onContinueLater={navigator.fortsettSøknadSenere}
                         steps={stepConfig}
                     >
-                        <Block padBottom="l">
-                            <InfoOmSøknaden
-                                eksisterendeSak={eksisterendeSak}
-                                erIUttaksplanenSteg={true}
-                                tilgjengeligeStønadskontoer={kontoer!}
-                                minsterettUkerToTette={minsterettUkerToTette}
-                                søker={søkerInfo.søker}
-                            />
-                        </Block>
+                        {startStønadsperiodeNyttBarn && (
+                            <InfoOmNesteBarn minsterettUkerToTette={minsterettUkerToTette} />
+                        )}
                         <Uttaksplan
                             foreldreSituasjon={foreldreSituasjon}
                             forelderVedAleneomsorg={forelderVedAleneomsorg}

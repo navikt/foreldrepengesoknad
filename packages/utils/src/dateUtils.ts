@@ -13,6 +13,7 @@ import {
     TIME_FORMAT,
     WEEKDAY_DDMMMMYYYY_DATE_FORMAT,
 } from '@navikt/fp-constants';
+import { DAY_MONTHNAME_YEAR_FORMAT } from '@navikt/fp-constants/src/dates';
 
 dayjs.extend(isBetween);
 dayjs.extend(isSameOrBefore);
@@ -28,6 +29,7 @@ export const formatDateIso = (date: DateTypes): string => dayjs(date).format(ISO
 export const formatDateExtended = (date: DateTypes): string => dayjs(date).format(DDMMMMYYY_DATE_FORMAT);
 export const formatTime = (date: DateTypes): string => dayjs(date).format(TIME_FORMAT);
 export const formatDateMedUkedag = (date: Date | string) => dayjs(date).format(WEEKDAY_DDMMMMYYYY_DATE_FORMAT);
+export const formaterDatoUtenDag = (dato: string | Date): string => dayjs(dato).format(DAY_MONTHNAME_YEAR_FORMAT);
 
 /** --- Finn dato relativt til gitt dato --- */
 export const dagenFør = (dato: DateTypes): Dayjs => dayjs(dato).startOf('day');
@@ -87,4 +89,17 @@ export const erMyndig = (fødselsdato: DateTypes): boolean => {
     const now = dayjs.utc();
     const momentDate = dayjs.utc(fødselsdato);
     return now.diff(momentDate, 'years') >= 18;
+};
+
+export const dateIsSameOrBefore = (date: Date | undefined, otherDate: Date | undefined): boolean => {
+    if (date && otherDate) {
+        return dayjs(date).isSameOrBefore(otherDate, 'day');
+    }
+    return false;
+};
+export const dateIsSameOrAfter = (date: Date | undefined, otherDate: Date | undefined): boolean => {
+    if (date && otherDate) {
+        return dayjs(date).isSameOrAfter(otherDate, 'day');
+    }
+    return false;
 };

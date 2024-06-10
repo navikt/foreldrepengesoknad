@@ -1,11 +1,12 @@
 import classnames from 'classnames';
+
 import { bemUtils } from '@navikt/fp-common';
-import { UttaksplanColor } from '../../types/UttaksplanColor';
+import { PeriodeColor } from '@navikt/fp-constants';
 
 import './iconBox.less';
 
 export interface Props {
-    color: UttaksplanColor;
+    color: PeriodeColor;
     stripes?: boolean;
     children?: React.ReactNode;
 }

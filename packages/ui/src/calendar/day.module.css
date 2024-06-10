@@ -12,47 +12,226 @@
     letter-spacing: 0.06px;
 }
 
-@media (max-width: 630px) {
-    .days {
-        height: 15px;
-        padding: 2px 0px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 2px 0 2px 0;
-        font-size: 10px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: 13px;
-        letter-spacing: 0.06px;
-    }
+.blueDay {
+    background-color: var(--a-blue-300) !important;
+    print-color-adjust: exact;
 }
 
-.blueDay {
-    background-color: var(--a-blue-300);
+.lightblueDay {
+    background-color: var(--a-data-surface-1-subtle) !important;
+    border-top: 2px solid var(--a-blue-300);
+    border-bottom: 2px solid var(--a-blue-300);
+    print-color-adjust: exact;
+}
+
+.lightblueDay.firstDay {
+    border-left: 2px solid var(--a-blue-300);
+}
+
+.lightblueDay.lastDay {
+    border-right: 2px solid var(--a-blue-300);
+}
+
+.lightblueDay.firstAndLastDay {
+    border-left: 2px solid var(--a-blue-300);
+    border-right: 2px solid var(--a-blue-300);
+}
+
+.lightgreenDay {
+    background-color: var(--a-green-100) !important;
+    border-top: 2px solid var(--a-green-300);
+    border-bottom: 2px solid var(--a-green-300);
+    print-color-adjust: exact;
+}
+
+.lightgreenDay.firstDay {
+    border-left: 2px solid var(--a-green-300);
+}
+
+.lightgreenDay.lastDay {
+    border-right: 2px solid var(--a-green-300);
+}
+
+.lightgreenDay.firstAndLastDay {
+    border-left: 2px solid var(--a-green-300);
+    border-right: 2px solid var(--a-green-300);
 }
 
 .greenDay {
-    background-color: var(--a-green-100);
-    border-top: 1px solid var(--a-green-300);
-    border-bottom: 1px solid var(--a-green-300);
+    background-color: var(--a-green-300) !important;
+    print-color-adjust: exact;
 }
 
-.greenDay.firstDay {
-    border-left: 1px solid var(--a-green-300);
+.greenStripedDay {
+    background: linear-gradient(
+        45deg,
+        var(--a-green-200) 0%,
+        var(--a-green-200) 15%,
+        white 15%,
+        white 30%,
+        var(--a-green-200) 30%,
+        var(--a-green-200) 45%,
+        white 45%,
+        white 60%,
+        var(--a-green-200) 60%,
+        var(--a-green-200) 75%,
+        white 75%,
+        white 90%,
+        var(--a-green-200) 90%
+    ) !important;
+    border-top: 2px solid var(--a-green-300);
+    border-bottom: 2px solid var(--a-green-300);
+    print-color-adjust: exact;
 }
 
-.greenDay.lastDay {
-    border-right: 1px solid var(--a-green-300);
+.greenStripedDay.firstDay {
+    border-left: 2px solid var(--a-green-300);
 }
 
-.greenDay.firstAndLastDay {
-    border-left: 1px solid var(--a-green-300);
-    border-right: 1px solid var(--a-green-300);
+.greenStripedDay.lastDay {
+    border-right: 2px solid var(--a-green-300);
+}
+
+.greenStripedDay.firstAndLastDay {
+    border-left: 2px solid var(--a-green-300);
+    border-right: 2px solid var(--a-green-300);
+}
+
+.blueStripedDay {
+    background: linear-gradient(
+        45deg,
+        var(--a-blue-200) 0%,
+        var(--a-blue-200) 15%,
+        white 15%,
+        white 30%,
+        var(--a-blue-200) 30%,
+        var(--a-blue-200) 45%,
+        white 45%,
+        white 60%,
+        var(--a-blue-200) 60%,
+        var(--a-blue-200) 75%,
+        white 75%,
+        white 90%,
+        var(--a-blue-200) 90%
+    ) !important;
+    border-top: 2px solid var(--a-blue-300);
+    border-bottom: 2px solid var(--a-blue-300);
+    print-color-adjust: exact;
+}
+
+.blueStripedDay.firstDay {
+    border-left: 2px solid var(--a-blue-300);
+}
+
+.blueStripedDay.lastDay {
+    border-right: 2px solid var(--a-blue-300);
+}
+
+.blueStripedDay.firstAndLastDay {
+    border-left: 2px solid var(--a-blue-300);
+    border-right: 2px solid var(--a-blue-300);
 }
 
 .grayDay {
-    background-color: var(--a-gray-200);
+    background-color: var(--a-gray-200) !important;
+    print-color-adjust: exact;
+}
+
+.blackDay {
+    background-color: var(--a-gray-800) !important;
+    color: white;
+    print-color-adjust: exact;
+}
+
+.blueOutlineDay {
+    border-top: 2px solid var(--a-blue-300);
+    border-bottom: 2px solid var(--a-blue-300);
+    print-color-adjust: exact;
+}
+
+.blueOutlineDay.firstDay {
+    border-left: 2px solid var(--a-blue-300);
+}
+
+.blueOutlineDay.lastDay {
+    border-right: 2px solid var(--a-blue-300);
+}
+
+.blueOutlineDay.firstAndLastDay {
+    border-left: 2px solid var(--a-blue-300);
+    border-right: 2px solid var(--a-blue-300);
+}
+
+.greenOutlineDay {
+    border-top: 2px solid var(--a-green-300);
+    border-bottom: 2px solid var(--a-green-300);
+    print-color-adjust: exact;
+}
+
+.greenOutlineDay.firstDay {
+    border-left: 2px solid var(--a-green-300);
+}
+
+.greenOutlineDay.lastDay {
+    border-right: 2px solid var(--a-green-300);
+}
+
+.greenOutlineDay.firstAndLastDay {
+    border-left: 2px solid var(--a-green-300);
+    border-right: 2px solid var(--a-green-300);
+}
+
+.lightgreenBlueDay {
+    background: linear-gradient(
+        to top,
+        var(--a-blue-300),
+        var(--a-blue-300) 50%,
+        var(--a-green-100) 50%,
+        var(--a-green-100) 75%,
+        var(--a-green-100) 100%
+    ) !important;
+    border-top: 2px solid var(--a-blue-300);
+    border-bottom: 2px solid var(--a-blue-300);
+    print-color-adjust: exact;
+}
+
+.lightgreenBlueDay.firstDay {
+    border-left: 2px solid var(--a-blue-300);
+}
+
+.lightgreenBlueDay.lastDay {
+    border-right: 2px solid var(--a-blue-300);
+}
+
+.lightgreenBlueDay.firstAndLastDay {
+    border-left: 2px solid var(--a-blue-300);
+    border-right: 2px solid var(--a-blue-300);
+}
+
+.lightblueGreenDay {
+    background: linear-gradient(
+        to top,
+        var(--a-green-300),
+        var(--a-green-300) 50%,
+        var(--a-data-surface-1-subtle) 50%,
+        var(--a-data-surface-1-subtle) 100%
+    ) !important;
+    border-top: 2px solid var(--a-green-300);
+    border-bottom: 2px solid var(--a-green-300);
+    print-color-adjust: exact;
+}
+
+.lightblueGreenDay.firstDay {
+    border-left: 2px solid var(--a-green-300);
+}
+
+.lightblueGreenDay.lastDay {
+    border-right: 2px solid var(--a-green-300);
+}
+
+.lightblueGreenDay.firstAndLastDay {
+    border-left: 2px solid var(--a-green-300);
+    border-right: 2px solid var(--a-green-300);
 }
 
 .none {
@@ -72,6 +251,7 @@
     background-repeat: no-repeat;
     padding: 0 2px 2px 2px;
     margin-left: 1px;
+    print-color-adjust: exact;
 }
 
 .firstDay {
@@ -86,4 +266,20 @@
 
 .firstAndLastDay {
     border-radius: 1rem;
+}
+
+@media (max-width: 630px) {
+    .days {
+        height: 15px;
+        padding: 2px 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 2px 0 2px 0;
+        font-size: 10px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 13px;
+        letter-spacing: 0.06px;
+    }
 }

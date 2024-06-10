@@ -2,8 +2,8 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 
 import { Barn, Block, andreAugust2022ReglerGjelder, isFarEllerMedmor, isUfødtBarn } from '@navikt/fp-common';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Arbeidsforhold, Attachment, AttachmentMetadataType, Søkerrolle } from '@navikt/fp-types';
+import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Arbeidsforhold, Attachment, Søkerrolle } from '@navikt/fp-types';
 
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 
