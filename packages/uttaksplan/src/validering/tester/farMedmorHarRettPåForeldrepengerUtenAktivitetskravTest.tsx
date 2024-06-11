@@ -1,10 +1,11 @@
 import { IntlShape } from 'react-intl';
 
 import {
+    StønadskontoType,
     Søknadsinfo,
     andreAugust2022ReglerGjelder,
     getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB,
-    getBareFarHarRettKontoUtenAktivitetskravUker,
+    getVarighetString,
 } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 
@@ -25,15 +26,19 @@ export const farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest: RegelTest 
             passerer: true,
         };
     }
-    const kontoUtenAktivitetskravUker = getBareFarHarRettKontoUtenAktivitetskravUker(
-        grunnlag.antallBarn,
-        grunnlag.morErUfør,
-        grunnlag.familiehendelsesdato,
-        grunnlag.dekningsgrad,
-        !grunnlag.morHarRett,
+    // const kontoUtenAktivitetskravUker = getBareFarHarRettKontoUtenAktivitetskravUker(
+    //     grunnlag.antallBarn,
+    //     grunnlag.morErUfør,
+    //     grunnlag.familiehendelsesdato,
+    //     grunnlag.dekningsgrad,
+    //     !grunnlag.morHarRett,
+    // );
+
+    const kontoUtenAktivitetskrav = grunnlag.stønadskontoer.kontoer.find(
+        (k) => k.konto === StønadskontoType.AktivitetsfriKvote,
     );
 
-    const testPasserer = kontoUtenAktivitetskravUker === 0;
+    const testPasserer = !kontoUtenAktivitetskrav || kontoUtenAktivitetskrav.dager === 0;
     const renderAsHtml = true;
     const link = (_intl: IntlShape) => (msg: any) => (
         <a href={links.aktivitetsfriUttakInfo} className="lenke" rel="noreferrer" target="_blank">
@@ -48,7 +53,8 @@ export const farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest: RegelTest 
                 intlKey: 'uttaksplan.validering.info.rettTilAktivitetsfriUttak.etterWLB',
                 renderAsHtml: renderAsHtml,
                 values: {
-                    antallUker: kontoUtenAktivitetskravUker,
+                    antallUkerOgDager: (intl: IntlShape) =>
+                        kontoUtenAktivitetskrav ? getVarighetString(kontoUtenAktivitetskrav.dager, intl) : '',
                     a: link,
                 },
             },
@@ -67,7 +73,8 @@ export const farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest: RegelTest 
                 intlKey: 'uttaksplan.validering.info.rettTilAktivitetsfriUttak.førWLB',
                 renderAsHtml: renderAsHtml,
                 values: {
-                    antallUker: kontoUtenAktivitetskravUker,
+                    antallUkerOgDager: (intl: IntlShape) =>
+                        kontoUtenAktivitetskrav ? getVarighetString(kontoUtenAktivitetskrav.dager, intl) : '',
                     antallUkerÅTaUtDagerUtenAktivitet: antallUkerPåÅTaUtDager,
                     a: link,
                 },
