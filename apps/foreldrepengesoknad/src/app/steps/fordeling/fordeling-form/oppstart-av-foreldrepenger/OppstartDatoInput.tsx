@@ -12,7 +12,7 @@ import { isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { OppstartValg } from 'app/context/types/Fordeling';
 import { getDatoForAleneomsorg, getErAleneOmOmsorg } from 'app/utils/annenForelderUtils';
-import { getFamiliehendelsedato, getFamiliehendelsedatoDate, getTermindato } from 'app/utils/barnUtils';
+import { getFamiliehendelsedato, getFamiliehendelsedatoDate, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 
 import { validateOppstartsdato } from '../fordelingFormUtils';
 
@@ -44,14 +44,16 @@ const getDatoAvgrensninger = (
     const erFarEllerMedmor = søkersituasjon.rolle !== 'mor';
     const erMorFødsel = !erFarEllerMedmor && erFødsel;
     const termindato = getTermindato(barn);
+    const fødselsdato = getFødselsdato(barn);
     const termindatoDate = ISOStringToDate(termindato);
+    const fødselsdatoDate = ISOStringToDate(fødselsdato);
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsesdatoDate = getFamiliehendelsedatoDate(barn);
     if (erAdopsjon) {
         return uttaksplanDatoavgrensninger.startdatoPermisjonAdopsjon(familiehendelsesdato);
     }
     if (erMorFødsel) {
-        return uttaksplanDatoavgrensninger.startdatoFørTermin(familiehendelsesdatoDate, termindatoDate);
+        return uttaksplanDatoavgrensninger.startdatoPermisjonMor(fødselsdatoDate, termindatoDate);
     }
     if (erFarEllerMedmor && erAleneOmOmsorg && datoForAleneomsorg) {
         return uttaksplanDatoavgrensninger.startdatoPermisjonAleneomsorgFarMedmor(
