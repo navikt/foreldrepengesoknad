@@ -4,23 +4,34 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
 import {
+    AnnenForelder,
     Barn,
     Block,
     ISOStringToDate,
+    SivilstandType,
     getErSøkerFarEllerMedmor,
+    getKjønnFromFnrString,
     getNavnPåForeldre,
     isAdoptertBarn,
     isAnnenForelderOppgitt,
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
+import { links } from '@navikt/fp-constants';
 import {
     BoIUtlandetOppsummeringspunkt,
     HendelseType,
     OppsummeringPanel,
     SøkerOppsummeringspunkt,
 } from '@navikt/fp-oppsummering';
-import { Søkerinfo, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
+import {
+    Søker,
+    Søkerinfo,
+    Søkerrolle,
+    Utenlandsopphold,
+    UtenlandsoppholdSenere,
+    UtenlandsoppholdTidligere,
+} from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { formatDateIso } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -85,6 +96,33 @@ const tempMappingTidligere = (utenlandsopphold?: TidligereOpphold): Utenlandsopp
     };
 };
 
+const skalViseInfoOmFarskapsportal = (
+    søker: Søker,
+    rolle: Søkerrolle,
+    annenForelder: AnnenForelder,
+    barnetErIkkeFødt?: boolean,
+) => {
+    const annenForelderErOppgitt = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
+
+    const annenForelderHarRett =
+        annenForelderErOppgitt && annenForelderErOppgitt.harRettPåForeldrepengerINorge === true;
+    const annenForelderFnr = annenForelderErOppgitt ? annenForelderErOppgitt.fnr : undefined;
+    const annenForelderErFarEllerUtenlandsk =
+        (annenForelderFnr !== undefined && getKjønnFromFnrString(annenForelderFnr) === 'M') ||
+        (annenForelderErOppgitt && !!annenForelderErOppgitt.utenlandskFnr);
+    const annenForelderHarRettErBesvart =
+        annenForelderErOppgitt && annenForelderErOppgitt.harRettPåForeldrepengerINorge !== undefined;
+    const søkerErIkkeGift = søker.sivilstand === undefined || søker.sivilstand.type !== SivilstandType.GIFT;
+    const erAleneOmOmsorg = annenForelderErOppgitt && annenForelderErOppgitt.erAleneOmOmsorg;
+    return (
+        ((rolle === 'far' && annenForelderHarRettErBesvart) ||
+            (rolle === 'mor' && annenForelderErFarEllerUtenlandsk && annenForelderHarRett) ||
+            (rolle === 'far' && erAleneOmOmsorg)) &&
+        barnetErIkkeFødt &&
+        søkerErIkkeGift
+    );
+};
+
 export interface Props {
     søkerInfo: Søkerinfo;
     erEndringssøknad: boolean;
@@ -108,6 +146,7 @@ const Oppsummering: FunctionComponent<Props> = ({
 
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
+
     const søkerData = useContextGetData(ContextDataType.SØKER_DATA);
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
@@ -136,7 +175,13 @@ const Oppsummering: FunctionComponent<Props> = ({
           )
         : '';
 
+    const søker = søkerInfo.søker;
+    const rolle = søkersituasjon.rolle;
+
     const datoOgHendelsetype = getDatoOgHendelsetype(barn);
+    const barnetErIkkeFødt = isUfødtBarn(barn);
+
+    const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(søker, rolle, annenForelder, barnetErIkkeFødt);
 
     return (
         <ContentWrapper>
@@ -211,6 +256,29 @@ const Oppsummering: FunctionComponent<Props> = ({
                                 <FormattedMessage id="oppsummering.manglerDokumentasjon.content" />
                             </BodyLong>
                         </VStack>
+                    </Alert>
+                </Block>
+                <Block visible={visInfoboksOmFarskapsportal} margin="xl">
+                    <Alert variant="info">
+                        <Heading size="small" level="3">
+                            <FormattedMessage
+                                id="oppsummering.tekstOmFarskapsportal.overskrift"
+                                values={{ hvem: søkersituasjon.rolle }}
+                            />
+                        </Heading>
+
+                        <FormattedMessage
+                            id="oppsummering.tekstOmFarskapsportal.far"
+                            values={{
+                                hvem: søkersituasjon.rolle,
+                                a: (msg: any) => (
+                                    <a href={links.farskapsportal} className="lenke" rel="noreferrer" target="_blank">
+                                        {msg}
+                                    </a>
+                                ),
+                                antallBarn: barn.antallBarn,
+                            }}
+                        />
                     </Alert>
                 </Block>
             </OppsummeringPanel>
