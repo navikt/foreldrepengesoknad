@@ -1,5 +1,4 @@
 import GreenPanel from 'components/boxes/GreenPanel';
-// import Calendar from 'components/calendar/Calendar';
 import CalendarLabels from 'components/labels/CalendarLabels';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
