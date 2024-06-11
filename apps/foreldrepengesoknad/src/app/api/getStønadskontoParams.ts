@@ -79,11 +79,12 @@ const finnRettighetstype = (
     morHarRett: boolean,
     morErAleneOmOmsorg: boolean,
     farHarAleneomsorg: boolean,
+    annenForelderHarRettIEØS: boolean,
 ) => {
     if (morErAleneOmOmsorg || farHarAleneomsorg) {
         return 'ALENEOMSORG';
     }
-    if (farHarRett && morHarRett) {
+    if ((farHarRett && morHarRett) || annenForelderHarRettIEØS) {
         return 'BEGGE_RETT';
     }
     return 'BARE_SØKER_RETT';
@@ -135,13 +136,14 @@ const getStønadskontoParams = (
 
     const erFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-
+    const annenForelderHarRettIEØS = isAnnenForelderOppgitt(annenForelder) && annenForelder.harRettPåForeldrepengerIEØS;
     return {
         rettighetstype: finnRettighetstype(
             getFarHarRettINorge(erFarMedmor, annenForelder),
             getMorHarRettINorge(erFarMedmor, annenForelder),
             morErAleneOmOmsorg || false,
             farMedmorErAleneOmOmsorg || false,
+            annenForelderHarRettIEØS || false,
         ),
         brukerrolle: søkerErFarEllerMedmor ? 'FAR' : 'MOR',
         antallBarn: saksgrunnlagsAntallBarn.toString(),
