@@ -49,12 +49,12 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:24;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:25;dayColor:GREEN;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:25;dayColor:LIGHTGREEN;dayType:FIRST_DAY')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(18);
-        expect(within(juli).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(5);
+        expect(within(juli).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(5);
 
         const februar2025 = screen.getByTestId('year:2025;month:1');
-        expect(within(februar2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(18);
+        expect(within(februar2025).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(18);
     });
 
     it('skal vise korrekt data for fødsel - mor og far - kun mor har rett', async () => {
@@ -109,13 +109,13 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const september = screen.getByTestId('year:2024;month:8');
         expect(within(september).getByTestId('day:4;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(september).getByTestId('day:5;dayColor:GREEN;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(september).getByTestId('day:5;dayColor:LIGHTGREEN;dayType:FIRST_DAY')).toBeInTheDocument();
         expect(within(september).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(3);
-        expect(within(september).queryAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(18);
+        expect(within(september).queryAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(18);
 
         const feb2025 = screen.getByTestId('year:2025;month:1');
-        expect(within(feb2025).getByTestId('day:26;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(feb2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(18);
+        expect(within(feb2025).getByTestId('day:26;dayColor:LIGHTGREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(feb2025).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(18);
     });
 
     it('skal vise korrekt data for fødsel - mor og far - kun far har rett', async () => {
@@ -143,13 +143,13 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:17;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:18;dayColor:GREEN;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:18;dayColor:LIGHTGREEN;dayType:FIRST_DAY')).toBeInTheDocument();
         expect(within(juli).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(13);
-        expect(within(juli).queryAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(10);
+        expect(within(juli).queryAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(10);
 
         const feb2025 = screen.getByTestId('year:2025;month:1');
-        expect(within(feb2025).getByTestId('day:26;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(feb2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(18);
+        expect(within(feb2025).getByTestId('day:26;dayColor:LIGHTGREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(feb2025).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(18);
     });
 
     it('skal vise korrekt data for fødsel - mor og medmor - begge har rett', async () => {
@@ -179,12 +179,12 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:24;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:25;dayColor:GREEN;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:25;dayColor:LIGHTGREEN;dayType:FIRST_DAY')).toBeInTheDocument();
         expect(within(juli).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(18);
-        expect(within(juli).queryAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(5);
+        expect(within(juli).queryAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(5);
 
         const feb2025 = screen.getByTestId('year:2025;month:1');
-        expect(within(feb2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(18);
+        expect(within(feb2025).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(18);
     });
 
     it('skal vise korrekt data for fødsel - mor og medmor - kun mor har rett', async () => {
@@ -239,13 +239,13 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const september = screen.getByTestId('year:2024;month:8');
         expect(within(september).getByTestId('day:4;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(september).getByTestId('day:5;dayColor:GREEN;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(september).getByTestId('day:5;dayColor:LIGHTGREEN;dayType:FIRST_DAY')).toBeInTheDocument();
         expect(within(september).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(3);
-        expect(within(september).queryAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(18);
+        expect(within(september).queryAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(18);
 
         const feb2025 = screen.getByTestId('year:2025;month:1');
-        expect(within(feb2025).getByTestId('day:26;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(feb2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(18);
+        expect(within(feb2025).getByTestId('day:26;dayColor:LIGHTGREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(feb2025).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(18);
     });
 
     it('skal vise korrekt data for fødsel - mor og medmor - kun medmor har rett', async () => {
@@ -273,13 +273,13 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:17;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:18;dayColor:GREEN;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:18;dayColor:LIGHTGREEN;dayType:FIRST_DAY')).toBeInTheDocument();
         expect(within(juli).queryAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(13);
-        expect(within(juli).queryAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(10);
+        expect(within(juli).queryAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(10);
 
         const feb2025 = screen.getByTestId('year:2025;month:1');
-        expect(within(feb2025).getByTestId('day:26;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(feb2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(18);
+        expect(within(feb2025).getByTestId('day:26;dayColor:LIGHTGREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(feb2025).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(18);
     });
 
     it('skal vise korrekt data for fødsel - mor søker og har rett', async () => {
@@ -430,13 +430,13 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const juli = screen.getByTestId('year:2024;month:6');
         expect(within(juli).getByTestId('day:25;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(juli).getByTestId('day:26;dayColor:GREEN;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
+        expect(within(juli).getByTestId('day:26;dayColor:LIGHTGREEN;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
         expect(within(juli).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(19);
-        expect(within(juli).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(4);
+        expect(within(juli).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(4);
 
         const feb2025 = screen.getByTestId('year:2025;month:1');
-        expect(within(feb2025).getByTestId('day:27;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(feb2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(19);
+        expect(within(feb2025).getByTestId('day:27;dayColor:LIGHTGREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(feb2025).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(19);
     });
 
     it('skal endre dekningsgrad til 80%', async () => {
@@ -469,13 +469,13 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const august = screen.getByTestId('year:2024;month:7');
         expect(within(august).getByTestId('day:21;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(august).getByTestId('day:22;dayColor:GREEN;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(august).getByTestId('day:22;dayColor:LIGHTGREEN;dayType:FIRST_DAY')).toBeInTheDocument();
         expect(within(august).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(15);
-        expect(within(august).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(7);
+        expect(within(august).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(7);
 
         const mai2025 = screen.getByTestId('year:2025;month:4');
-        expect(within(mai2025).getByTestId('day:7;dayColor:GREEN;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(mai2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(5);
+        expect(within(mai2025).getByTestId('day:7;dayColor:LIGHTGREEN;dayType:LAST_DAY')).toBeInTheDocument();
+        expect(within(mai2025).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(5);
     });
 
     it('skal endre fordeling av fellesperiode sånn at de får 8 uker hver', async () => {
@@ -506,11 +506,11 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         const september = screen.getByTestId('year:2024;month:8');
         expect(within(september).getByTestId('day:18;dayColor:BLUE;dayType:LAST_DAY')).toBeInTheDocument();
-        expect(within(september).getByTestId('day:19;dayColor:GREEN;dayType:FIRST_DAY')).toBeInTheDocument();
+        expect(within(september).getByTestId('day:19;dayColor:LIGHTGREEN;dayType:FIRST_DAY')).toBeInTheDocument();
         expect(within(september).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(13);
-        expect(within(september).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(8);
+        expect(within(september).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(8);
 
         const feb2025 = screen.getByTestId('year:2025;month:1');
-        expect(within(feb2025).getAllByTestId('dayColor:GREEN', { exact: false })).toHaveLength(18);
+        expect(within(feb2025).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(18);
     });
 });
