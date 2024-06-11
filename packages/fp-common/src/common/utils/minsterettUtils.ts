@@ -2,38 +2,6 @@ import uttaksConstants from '../constants/constants';
 import { Dekningsgrad } from '../types';
 import { andreAugust2022ReglerGjelder } from './dateUtils';
 
-export const getBareFarHarRettKontoUtenAktivitetskravUker = (
-    antallBarn: number,
-    morErUfør: boolean,
-    familiehendelsesdato: Date,
-    dekningsgrad: Dekningsgrad,
-    bareFarHarRett: boolean,
-): number => {
-    if (!bareFarHarRett) {
-        return 0;
-    }
-
-    if (andreAugust2022ReglerGjelder(familiehendelsesdato) && antallBarn === 1 && !morErUfør) {
-        return 8;
-    }
-    let morUførUker = 0;
-    let flerbarnsukerSomDelAvMinsterett = 0;
-
-    if (morErUfør) {
-        morUførUker = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? 15 : 19;
-    }
-
-    if (andreAugust2022ReglerGjelder(familiehendelsesdato)) {
-        if (antallBarn === 2) {
-            flerbarnsukerSomDelAvMinsterett = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? 17 : 21;
-        } else if (antallBarn > 2) {
-            flerbarnsukerSomDelAvMinsterett = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? 46 : 56;
-        }
-    }
-
-    return flerbarnsukerSomDelAvMinsterett + morUførUker;
-};
-
 export const getBareFarHarRettFlerbarnsdagerUker = (
     antallBarn: number,
     familiehendelsesdato: Date,

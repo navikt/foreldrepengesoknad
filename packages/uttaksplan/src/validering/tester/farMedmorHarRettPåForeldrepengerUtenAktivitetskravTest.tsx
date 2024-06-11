@@ -26,13 +26,6 @@ export const farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest: RegelTest 
             passerer: true,
         };
     }
-    // const kontoUtenAktivitetskravUker = getBareFarHarRettKontoUtenAktivitetskravUker(
-    //     grunnlag.antallBarn,
-    //     grunnlag.morErUfør,
-    //     grunnlag.familiehendelsesdato,
-    //     grunnlag.dekningsgrad,
-    //     !grunnlag.morHarRett,
-    // );
 
     const kontoUtenAktivitetskrav = grunnlag.stønadskontoer.kontoer.find(
         (k) => k.konto === StønadskontoType.AktivitetsfriKvote,
