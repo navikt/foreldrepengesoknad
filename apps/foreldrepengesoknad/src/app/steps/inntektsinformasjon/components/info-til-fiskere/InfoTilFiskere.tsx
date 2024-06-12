@@ -7,9 +7,9 @@ import { links } from '@navikt/fp-constants';
 
 const InfoTilFiskere = () => {
     return (
-        <ExpansionCard aria-label="Info til fiskere">
+        <ExpansionCard aria-label="Informasjon til deg som er fisker" size="small">
             <ExpansionCard.Header>
-                <ExpansionCard.Title as="h3">
+                <ExpansionCard.Title as="h3" size="small">
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.tittel" />
                 </ExpansionCard.Title>
                 <ExpansionCard.Description>
