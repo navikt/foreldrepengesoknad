@@ -12,14 +12,15 @@ import * as stories from './Oppsummering.stories';
 
 const {
     Default,
-    MedAnnenForelder,
-    FarMedUførMor,
+    MorMedAnnenForelderUgift,
+    FarMedUførMorUgift,
     FarMedMorSomHarRettIEØS,
     FarMedMorSomHarRettINorge,
-    MedAdoptertBarn,
-    MedUtenlandsopphold,
-    MedArbeidsforholdOgAndreInntekter,
-    MedAleneOmsorg,
+    MorMedAdoptertBarn,
+    MorMedUtenlandsopphold,
+    MorMedArbeidsforholdOgAndreInntekter,
+    MorMedAleneOmsorg,
+    FarMedAleneOmsorg,
     ErEndringssøknad,
 } = composeStories(stories);
 
@@ -29,7 +30,7 @@ describe('<Oppsummering>', () => {
 
         render(<Default sendSøknad={sendSøknad} />);
 
-        expect(await screen.findByText('TALENTFULL MYGG')).toBeInTheDocument();
+        expect(await screen.findByText('MOR MYGG')).toBeInTheDocument();
         expect(screen.queryByText('Du må bekrefte at du har oppgitt riktige opplysninger')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Send søknaden'));
@@ -49,7 +50,7 @@ describe('<Oppsummering>', () => {
         expect(sendSøknad).toHaveBeenCalledTimes(1);
     });
 
-    it('skal vise informasjon om barnet men har ikke info om andre foreldre eller arbeidsforhold', async () => {
+    it('skal vise informasjon om barnet, men har ikke info om andre foreldre eller arbeidsforhold', async () => {
         render(<Default />);
 
         expect(await screen.findByText('Søknaden gjelder')).toBeInTheDocument();
@@ -66,18 +67,19 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
     });
 
-    it('skal vise informasjon om den andre forelderen', async () => {
-        render(<MedAnnenForelder />);
+    it('skal vise informasjon om farskapserklæring', async () => {
+        render(<MorMedAnnenForelderUgift />);
 
         await userEvent.click(await screen.findByText('Den andre forelderen'));
 
         expect(screen.getByText('Den andre forelderen heter')).toBeInTheDocument();
         expect(screen.getByText('Espen Utvikler')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer eller D-nummer')).toBeInTheDocument();
-        expect(screen.getByText('1212121313')).toBeInTheDocument();
+        expect(screen.getByText('08099017784')).toBeInTheDocument();
         expect(screen.getByText('Vi har')).toBeInTheDocument();
         expect(screen.getByText('Felles omsorg')).toBeInTheDocument();
         expect(screen.getByText('Har Espen rett til foreldrepenger i Norge?')).toBeInTheDocument();
+        expect(screen.getByText('Har du og far erklært farskap?')).toBeInTheDocument();
         expect(
             screen.queryByText('Har Espen oppholdt seg fast i et annet EØS-land enn Norge ett år før barnet ble født?'),
         ).not.toBeInTheDocument();
@@ -90,23 +92,42 @@ describe('<Oppsummering>', () => {
         expect(screen.queryByText('Mottar Espen uføretrygd?')).not.toBeInTheDocument();
     });
     it('Skal vise riktig informasjon om aleneomsorg', async () => {
-        render(<MedAleneOmsorg />);
+        render(<MorMedAleneOmsorg />);
 
         await userEvent.click(await screen.findByText('Den andre forelderen'));
 
         expect(screen.getByText('Den andre forelderen heter')).toBeInTheDocument();
         expect(screen.getByText('Ingen Omsorg')).toBeInTheDocument();
         expect(screen.getByText('Fødselsnummer eller D-nummer')).toBeInTheDocument();
-        expect(screen.getByText('1212121313')).toBeInTheDocument();
+        expect(screen.getByText('08099017784')).toBeInTheDocument();
         expect(screen.getByText('Jeg har')).toBeInTheDocument();
         expect(screen.getByText('Aleneomsorg')).toBeInTheDocument();
         expect(screen.queryByText('Har Ingen rett til foreldrepenger i Norge')).not.toBeInTheDocument();
         expect(
             screen.queryByText('Har Ingen arbeidet eller mottatt pengestøtte i et EØS-land ', { exact: false }),
         ).not.toBeInTheDocument();
+        expect(screen.queryByText('Har du og far erklært farskap?')).not.toBeInTheDocument();
+    });
+    it('Skal vise riktig informasjon om aleneomsorg og info om farskapserklæring', async () => {
+        render(<FarMedAleneOmsorg />);
+
+        await userEvent.click(await screen.findByText('Den andre forelderen'));
+
+        expect(screen.getByText('Den andre forelderen heter')).toBeInTheDocument();
+        expect(screen.getByText('Ingen Omsorg')).toBeInTheDocument();
+        expect(screen.getByText('Fødselsnummer eller D-nummer')).toBeInTheDocument();
+        expect(screen.getByText('02520489226')).toBeInTheDocument();
+        expect(screen.getByText('Jeg har')).toBeInTheDocument();
+        expect(screen.getByText('Aleneomsorg')).toBeInTheDocument();
+        expect(screen.queryByText('Har Ingen rett til foreldrepenger i Norge')).not.toBeInTheDocument();
+        expect(screen.getByText('Har du og mor erklært farskap?')).toBeInTheDocument();
+
+        expect(
+            screen.queryByText('Har Ingen arbeidet eller mottatt pengestøtte i et EØS-land ', { exact: false }),
+        ).not.toBeInTheDocument();
     });
     it('skal vise informasjon om at mor er ufør', async () => {
-        render(<FarMedUførMor />);
+        render(<FarMedUførMorUgift />);
 
         await userEvent.click(await screen.findByText('Den andre forelderen'));
 
@@ -115,7 +136,7 @@ describe('<Oppsummering>', () => {
     });
 
     it('skal vise informasjon om adoptert barn', async () => {
-        render(<MedAdoptertBarn />);
+        render(<MorMedAdoptertBarn />);
 
         await userEvent.click(await screen.findByText('Barnet'));
 
@@ -130,7 +151,7 @@ describe('<Oppsummering>', () => {
     });
 
     it('skal vise informasjon om utenlandsopphold', async () => {
-        render(<MedUtenlandsopphold />);
+        render(<MorMedUtenlandsopphold />);
 
         await userEvent.click(await screen.findByText('Bo i utlandet'));
 
@@ -150,7 +171,7 @@ describe('<Oppsummering>', () => {
     });
 
     it('skal vise informasjon om arbeidsforhold og andre inntekter', async () => {
-        render(<MedArbeidsforholdOgAndreInntekter />);
+        render(<MorMedArbeidsforholdOgAndreInntekter />);
 
         await userEvent.click(await screen.findByText('Arbeidsforhold og andre inntektskilder'));
 
@@ -171,7 +192,7 @@ describe('<Oppsummering>', () => {
         expect(screen.getAllByText('Ja')).toHaveLength(1);
     });
     it('skal vise informasjon om uttaksplan', async () => {
-        render(<FarMedUførMor />);
+        render(<FarMedUførMorUgift />);
 
         await userEvent.click(await screen.findByText('Din plan'));
 
@@ -195,6 +216,7 @@ describe('<Oppsummering>', () => {
             ),
         ).toBeInTheDocument();
         expect(screen.queryByText('Mottar Anne uføretrygd')).not.toBeInTheDocument();
+        expect(screen.queryByText('Har du og mor erklært farskap?')).not.toBeInTheDocument();
     });
     it('Skal vise informasjon om at mor har hatt opphold men ikke rett til foreldrepenger i EØS', async () => {
         render(<FarMedMorSomHarRettIEØS />);
@@ -227,7 +249,7 @@ describe('<Oppsummering>', () => {
         expect(screen.queryByText('Mottar Frida uføretrygd')).not.toBeInTheDocument();
     });
 
-    it('skal går til inntektsinformasjon når førstegangssøknad og en går til forrige steg', async () => {
+    it('skal gå til inntektsinformasjon når førstegangssøknad og en går til forrige steg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -246,7 +268,7 @@ describe('<Oppsummering>', () => {
         });
     });
 
-    it('skal går til uttaksplan når endringssøknad og en går til forrige steg', async () => {
+    it('skal gå til uttaksplan når endringssøknad og en går til forrige steg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 

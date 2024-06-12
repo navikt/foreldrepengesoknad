@@ -52,6 +52,7 @@ interface Props {
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelderType;
     barn?: Barn;
+    sivilstand?: SivilstandType;
     mellomlagreSøknadOgNaviger?: () => Promise<void>;
     gåTilNesteSide: (action: Action) => void;
     avbrytSøknad: () => void;
@@ -103,6 +104,7 @@ AnnenForelderFraOppgittBarn.args = {
         fnr: ['21091981146'],
     },
     søker,
+    sivilstand: SivilstandType.UGIFT,
 };
 
 export const SkalOppgiPersonalia = Template.bind({});
