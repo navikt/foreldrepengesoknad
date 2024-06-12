@@ -1,9 +1,3 @@
-.dokument-avsender {
-    padding: 0.5rem;
-    display: flex;
-    justify-content: flex-end;
-}
-
 .dokument-avsender__text {
     align-self: center;
     background-color: var(--a-gray-50);
