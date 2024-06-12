@@ -179,6 +179,9 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
                             name="harJobbetSomFrilans"
                             label={intl.formatMessage({ id: 'inntektsinformasjon.harDuJobbetSomFrilans' })}
                             validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.frilans.påkrevd' }))]}
+                            description={intl.formatMessage({
+                                id: 'inntektsinformasjon.beskrivelse',
+                            })}
                         >
                             <Radio value={true}>
                                 <FormattedMessage id="ja" />
@@ -200,6 +203,9 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
                                     intl.formatMessage({ id: 'valideringsfeil.hattInntektSomNæringsdrivende.påkrevd' }),
                                 ),
                             ]}
+                            description={intl.formatMessage({
+                                id: 'inntektsinformasjon.beskrivelse',
+                            })}
                         >
                             <Radio value={true}>
                                 <FormattedMessage id="ja" />
@@ -217,6 +223,9 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'valideringsfeil.hattArbeidIUtlandet.påkrevd' })),
                             ]}
+                            description={intl.formatMessage({
+                                id: 'inntektsinformasjon.beskrivelse',
+                            })}
                         >
                             <Radio value={true}>
                                 <FormattedMessage id="ja" />
