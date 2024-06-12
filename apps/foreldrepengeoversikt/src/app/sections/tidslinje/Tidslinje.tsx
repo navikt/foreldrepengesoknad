@@ -114,7 +114,10 @@ const Tidslinje: React.FunctionComponent<Params> = ({
                 const visKlokkeslett =
                     hendelse.tidslinjeHendelseType !== TidslinjehendelseType.FAMILIEHENDELSE &&
                     dayjs(hendelse.opprettet).isSameOrBefore(dayjs());
-
+                const erSisteHendelsenIHeleTidslinjen =
+                    alleSorterteHendelser.findIndex((h) => h === hendelse) === alleSorterteHendelser.length - 1;
+                const erSistePåForsidenMenIkkeSisteIHeleTidslinjen =
+                    !visHeleTidslinjen && index === hendelserForVisning.length - 1 && !erSisteHendelsenIHeleTidslinjen;
                 return (
                     <TidslinjeHendelse
                         date={hendelse.opprettet}
@@ -134,6 +137,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({
                         tidligstBehandlingsDato={hendelse.tidligstBehandlingsDato}
                         finnesHendelserFørAktivtSteg={!!finnesHendelserFørAktivtSteg}
                         visHeleTidslinjen={visHeleTidslinjen}
+                        erSistePåForsidenMenIkkeSisteIHeleTidslinjen={erSistePåForsidenMenIkkeSisteIHeleTidslinjen}
                     >
                         <ul style={{ listStyle: 'none', padding: '0' }}>
                             {hendelse.tidslinjeHendelseType === TidslinjehendelseType.VENT_DOKUMENTASJON &&

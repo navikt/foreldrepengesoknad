@@ -41,6 +41,17 @@
     background-color: var(--a-deepblue-100);
 }
 
+.tidslinje-hendelse--siste_hendelse_på_forsiden:after {
+    content: '';
+    width: 0px;
+    height: 17%;
+    position: absolute;
+    bottom: 1;
+    left: 1rem;
+    z-index: 0;
+    border: 1px solid var(--a-deepblue-300);
+}
+
 .tidslinje-hendelse:before {
     content: '';
     width: 0;
