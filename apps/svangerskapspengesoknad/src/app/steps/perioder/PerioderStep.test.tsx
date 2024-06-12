@@ -179,7 +179,7 @@ describe('<Perioder>', () => {
         expect(screen.getAllByText('Til:')[1]).toBeInTheDocument();
         await user.click(screen.getAllByText('Frem til tre uker før termin')[1]);
 
-        const nyPeriode = '01.01.2024 - 27.01.2024';
+        const nyPeriode = '01.01.2024 - 27.01.2024 3 uker 6 dager';
         expect(screen.getByText(nyPeriode)).toBeInTheDocument();
 
         expect(screen.getAllByText('Du skal jobbe fra:')[0]).toBeInTheDocument();
@@ -195,12 +195,12 @@ describe('<Perioder>', () => {
         await user.type(førsteTildatoInput, dayjs('2024-01-27').format('DD.MM.YYYY'));
         await user.tab();
 
-        const førstePeriode = '30.10.2023 - 27.01.2024';
+        const førstePeriode = '30.10.2023 - 27.01.2024 12 uker 6 dager';
         expect(screen.getByText(førstePeriode)).toBeInTheDocument();
 
         await user.click(screen.getByText('Neste steg'));
 
-        expect(screen.getAllByText('Perioden overlapper med perioden ' + nyPeriode + '.')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Perioden overlapper med perioden 01.01.2024 - 27.01.2024.')[0]).toBeInTheDocument();
     });
     it('stillingsprosenten skal valideres mot samlet stillingsprosent (30%) på skjæringstidspunktet', async () => {
         render(<FlereStillinger />);
