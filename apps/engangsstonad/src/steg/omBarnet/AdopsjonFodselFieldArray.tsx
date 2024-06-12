@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -19,6 +19,29 @@ interface Props {
     antallBarnDropDown?: string;
     adopsjonsdato?: string;
 }
+
+const getIntlKey = (index: number, intl: IntlShape) => {
+    switch (index) {
+        case 0:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.1' });
+        case 1:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.2' });
+        case 2:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.3' });
+        case 3:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.4' });
+        case 4:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.5' });
+        case 5:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.6' });
+        case 6:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.7' });
+        case 7:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.8' });
+        default:
+            return intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.9' });
+    }
+};
 
 const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
     adopsjonsdato,
@@ -62,7 +85,7 @@ const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
                         fields.length === 1
                             ? intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fødselsdato' })
                             : // @ts-ignore Bør ikkje bruka dynamiske tekstId'ar
-                              intl.formatMessage({ id: `AdopsjonFodselFieldArray.Spørsmål.Fødselsdato.${index + 1}` })
+                              getIntlKey(index, intl)
                     }
                     validate={[
                         isRequired(intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fodselsdato.DuMåOppgi' })),
