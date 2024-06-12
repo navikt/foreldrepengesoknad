@@ -25,7 +25,7 @@
 
 .tidslinje-hendelse__ikon_active svg {
     color: var(--a-deepblue-300);
-    background-color: var(--a-deepblue-200);
+    background-color: var(--a-deepblue-100);
 }
 
 .tidslinje-hendelse__ikon_completed svg {
@@ -63,11 +63,11 @@
 }
 
 .tidslinje-hendelse--active::before {
-    border: 1px solid red;
+    border: 1px solid var(--a-deepblue-300);
 }
 
 .tidslinje-hendelse--complete:before {
-    border: 1px solid blueviolet;
+    border: 1px solid var(--a-deepblue-300);
 }
 
 .tidslinje-hendelse--incomplete:before {
