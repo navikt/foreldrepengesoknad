@@ -361,6 +361,7 @@
     "bedriftsbanner.detail": "Om ditt arbeidsforhold i",
     "bedriftsbanner.detail.frilans": "Om ditt arbeid som",
     "bedriftsbanner.tittel.frilansarbeid": "Frilansar",
+    "PerioderStep.tidsperiode": "{ukeAntall, select, 0 {} 1 {{ukeAntall} veke} other {{ukeAntall} veker}} {dagAntall, select, 0 {} 1 {{dagAntall} dag} other {{dagAntall} dagar}}",
     "ny.periode": "Ny periode",
     "sesjonUtløpt.tittel": "Du er no logga ut.",
     "SkjemaSteg.MinstEttDokument": "Du må lasta opp minst eitt dokument",

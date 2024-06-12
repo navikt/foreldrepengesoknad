@@ -362,6 +362,7 @@
     "bedriftsbanner.detail.frilans": "Om ditt arbeid som",
     "bedriftsbanner.tittel.frilansarbeid": "Frilanser",
     "ny.periode": "Ny periode",
+    "PerioderStep.tidsperiode": "{ukeAntall, select, 0 {} 1 {{ukeAntall} uke} other {{ukeAntall} uker}} {dagAntall, select, 0 {} 1 {{dagAntall} dag} other {{dagAntall} dager}}",
     "sesjonUtløpt.tittel": "Du er nå logget ut.",
     "SkjemaSteg.MinstEttDokument": "Du må laste opp minst ett dokument",
     "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige tegn i feltet \"{feltNavn}\"."
