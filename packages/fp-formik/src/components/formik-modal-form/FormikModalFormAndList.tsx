@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import React from 'react';
 import { FastField, Field, FieldProps } from 'formik';
-import { FormError, TypedFormInputValidationProps, UseFastFieldProps } from '../../types';
-import { TypedFormikFormContext } from '../typed-formik-form/TypedFormikForm';
+import { FormError, TypedFormInputValidationProps, UseFastFieldProps } from './../../types';
+import { TypedFormikFormContext } from './../typed-formik-form/TypedFormikForm';
 import ModalFormAndList, { ModalFormAndListProps } from './modal-form-and-list/ModalFormAndList';
 import './formikModalForm.scss';
 

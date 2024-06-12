@@ -1,8 +1,8 @@
 import React from 'react';
 import { FastField, Field, FieldProps } from 'formik';
-import { TestProps, TypedFormInputValidationProps, UseFastFieldProps } from '../../types';
-import { getErrorPropForFormikInput } from '../../utils/typedFormErrorUtils';
-import { TypedFormikFormContext } from '../typed-formik-form/TypedFormikForm';
+import { TestProps, TypedFormInputValidationProps, UseFastFieldProps } from './../../types';
+import { getErrorPropForFormikInput } from './../../utils/typedFormErrorUtils';
+import { TypedFormikFormContext } from './../typed-formik-form/TypedFormikForm';
 import { Select, SelectProps } from '@navikt/ds-react';
 
 interface OwnProps<FieldName> extends Omit<SelectProps, 'name'> {

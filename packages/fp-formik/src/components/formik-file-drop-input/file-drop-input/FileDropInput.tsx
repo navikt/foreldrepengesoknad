@@ -2,9 +2,9 @@ import { BodyShort } from '@navikt/ds-react';
 import React, { useMemo } from 'react';
 import { Accept, FileRejection, useDropzone } from 'react-dropzone';
 import { UploadIcon } from '@navikt/aksel-icons';
-import { FormError } from '../../../types';
-import bemUtils from '../../../utils/bemUtils';
-import SkjemagruppeQuestion from '../../helpers/skjemagruppe-question/SkjemagruppeQuestion';
+import { FormError } from './../../../types';
+import bemUtils from './../../../utils/bemUtils';
+import SkjemagruppeQuestion from './../../helpers/skjemagruppe-question/SkjemagruppeQuestion';
 import './fileDropInput.scss';
 
 interface Props {

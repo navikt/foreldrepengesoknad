@@ -1,9 +1,9 @@
 import { Button, Modal, Panel } from '@navikt/ds-react';
 import React from 'react';
 import classNames from 'classnames';
-import bemUtils from '../../../utils/bemUtils';
-import SkjemagruppeQuestion from '../../helpers/skjemagruppe-question/SkjemagruppeQuestion';
-import { FormikModalFormWidths, ModalFormAndInfoLabels } from '../types';
+import bemUtils from './../../../utils/bemUtils';
+import SkjemagruppeQuestion from './../../helpers/skjemagruppe-question/SkjemagruppeQuestion';
+import { FormikModalFormWidths, ModalFormAndInfoLabels } from './../types';
 import './modalFormAndInfo.scss';
 
 type ModalFormRenderer<DataType> = (props: {

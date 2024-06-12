@@ -2,9 +2,9 @@ import { TextFieldProps } from '@navikt/ds-react';
 import React from 'react';
 import { Accept, FileRejection } from 'react-dropzone';
 import { ArrayHelpers, Field, FieldArray, FieldProps } from 'formik';
-import { FormError, TypedFormInputValidationProps } from '../../types';
-import { getErrorPropForFormikInput } from '../../utils/typedFormErrorUtils';
-import { TypedFormikFormContext } from '../typed-formik-form/TypedFormikForm';
+import { FormError, TypedFormInputValidationProps } from './../../types';
+import { getErrorPropForFormikInput } from './../../utils/typedFormErrorUtils';
+import { TypedFormikFormContext } from './../typed-formik-form/TypedFormikForm';
 import FileDropInput from './file-drop-input/FileDropInput';
 
 interface OwnProps<FieldName> {

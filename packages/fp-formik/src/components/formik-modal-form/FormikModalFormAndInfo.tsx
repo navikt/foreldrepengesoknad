@@ -1,7 +1,7 @@
 import React from 'react';
 import { FastField, Field, FieldProps } from 'formik';
-import { FormError, TypedFormInputValidationProps, UseFastFieldProps } from '../../types';
-import { TypedFormikFormContext } from '../typed-formik-form/TypedFormikForm';
+import { FormError, TypedFormInputValidationProps, UseFastFieldProps } from './../../types';
+import { TypedFormikFormContext } from './../typed-formik-form/TypedFormikForm';
 import ModalFormAndInfo, { ModalFormAndInfoProps } from './modal-form-and-info/ModalFormAndInfo';
 
 export interface FormikModalFormAndInfoProps<FieldName, InfoType, ErrorType>

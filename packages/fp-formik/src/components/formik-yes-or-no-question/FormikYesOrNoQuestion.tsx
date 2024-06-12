@@ -1,5 +1,5 @@
-import { TestProps, TypedFormInputValidationProps, YesOrNo } from '../../types';
-import FormikRadioGroup, { FormikRadioGroupProps } from '../formik-radio-group/FormikRadioGroup';
+import { TestProps, TypedFormInputValidationProps, YesOrNo } from './../../types';
+import FormikRadioGroup, { FormikRadioGroupProps } from './../formik-radio-group/FormikRadioGroup';
 
 export interface FormikYesOrNoQuestionProps<FieldName, ErrorType>
     extends TestProps,

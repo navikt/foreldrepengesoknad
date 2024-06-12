@@ -3,9 +3,9 @@ import { DatePickerProps } from '@navikt/ds-react';
 import React from 'react';
 import { DayOfWeek } from 'react-day-picker';
 import { FastField, Field, FieldProps } from 'formik';
-import { DateRange, FormError, TestProps, TypedFormInputValidationProps, UseFastFieldProps } from '../../types';
-import { getErrorPropForFormikInput } from '../../utils/typedFormErrorUtils';
-import { TypedFormikFormContext } from '../typed-formik-form/TypedFormikForm';
+import { DateRange, FormError, TestProps, TypedFormInputValidationProps, UseFastFieldProps } from './../../types';
+import { getErrorPropForFormikInput } from './../../utils/typedFormErrorUtils';
+import { TypedFormikFormContext } from './../typed-formik-form/TypedFormikForm';
 import DateInputAndPicker from './date-input-and-picker/DateInputAndPicker';
 import { ISODateString } from './dateFormatUtils';
 

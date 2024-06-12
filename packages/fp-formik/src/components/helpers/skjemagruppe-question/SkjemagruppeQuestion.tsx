@@ -1,6 +1,6 @@
 import { Fieldset, FieldsetProps } from '@navikt/ds-react';
 import React, { forwardRef } from 'react';
-import { TestProps } from '../../../types';
+import { TestProps } from './../../../types';
 
 const SkjemagruppeQuestion = forwardRef(function SkjemagruppeQuestion(
     props: FieldsetProps & TestProps,
