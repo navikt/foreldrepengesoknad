@@ -110,7 +110,7 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
                         <VStack gap="1">
                             <HorizontalLine />
                             <HStack justify="space-between" align="center">
-                                <Tag variant="info" className={bem.element('tag')}>
+                                <Tag variant="info-moderate" className={bem.element('tag')}>
                                     {getPeriodeInfoTekst(
                                         index,
                                         sisteDagForSvangerskapspenger,
