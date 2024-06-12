@@ -132,6 +132,9 @@ importers:
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test
+      '@storybook/addon-actions':
+        specifier: ^8.1.6
+        version: 8.1.6
       '@storybook/addon-essentials':
         specifier: ^8.1.6
         version: 8.1.6(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.3.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -367,6 +370,9 @@ importers:
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test
+      '@storybook/addon-actions':
+        specifier: ^8.1.6
+        version: 8.1.6
       '@storybook/addon-essentials':
         specifier: ^8.1.6
         version: 8.1.6(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -683,6 +689,9 @@ importers:
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test
+      '@storybook/addon-actions':
+        specifier: ^8.1.6
+        version: 8.1.6
       '@storybook/addon-essentials':
         specifier: ^8.1.6
         version: 8.1.6(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -915,6 +924,9 @@ importers:
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test
+      '@storybook/addon-actions':
+        specifier: ^8.1.6
+        version: 8.1.6
       '@storybook/addon-essentials':
         specifier: ^8.1.6
         version: 8.1.6(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.3.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1135,6 +1147,9 @@ importers:
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test
+      '@storybook/addon-actions':
+        specifier: ^8.1.6
+        version: 8.1.6
       '@storybook/addon-essentials':
         specifier: ^8.1.6
         version: 8.1.6(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1364,6 +1379,9 @@ importers:
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test
+      '@storybook/addon-actions':
+        specifier: ^8.1.6
+        version: 8.1.6
       '@storybook/addon-essentials':
         specifier: ^8.1.6
         version: 8.1.6(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.3.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1494,7 +1512,7 @@ importers:
         version: 2.29.1(@typescript-eslint/parser@7.6.0(eslint@8.57.0)(typescript@5.4.5))(eslint@8.57.0)
       eslint-plugin-jest-dom:
         specifier: ^5.2.0
-        version: 5.2.0(@testing-library/dom@10.1.0)(eslint@8.57.0)
+        version: 5.2.0(@testing-library/dom@9.3.4)(eslint@8.57.0)
       eslint-plugin-react:
         specifier: ^7.34.1
         version: 7.34.1(eslint@8.57.0)
@@ -10219,34 +10237,6 @@ packages:
       terser:
         optional: true
 
-  vite@5.2.13:
-    resolution: {integrity: sha512-SSq1noJfY9pR3I1TUENL3rQYDQCFqgD+lM6fTRAM8Nv6Lsg5hDLaXkjETVeBt+7vZBCMoibD+6IWnT2mJ+Zb/A==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^18.0.0 || >=20.0.0
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-
   vitest@1.4.0:
     resolution: {integrity: sha512-gujzn0g7fmwf83/WzrDTnncZt2UiXP41mHuFYFrdwaLRVQ6JYQEiME2IfEjU3vcFL3VKa75XhI3lFgn+hfVsQw==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -13978,7 +13968,7 @@ snapshots:
       node-fetch: 2.7.0
       picomatch: 2.3.1
       pkg-dir: 5.0.0
-      prettier-fallback: prettier@3.2.5
+      prettier-fallback: prettier@3.3.2
       pretty-hrtime: 1.0.3
       resolve-from: 5.0.0
       semver: 7.6.2
@@ -17018,13 +17008,13 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-jest-dom@5.2.0(@testing-library/dom@10.1.0)(eslint@8.57.0):
+  eslint-plugin-jest-dom@5.2.0(@testing-library/dom@9.3.4)(eslint@8.57.0):
     dependencies:
       '@babel/runtime': 7.24.7
       eslint: 8.57.0
       requireindex: 1.2.0
     optionalDependencies:
-      '@testing-library/dom': 10.1.0
+      '@testing-library/dom': 9.3.4
 
   eslint-plugin-react-hooks@4.6.0(eslint@8.57.0):
     dependencies:
@@ -18537,7 +18527,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 20.14.2
+      '@types/node': 20.12.2
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -21279,7 +21269,7 @@ snapshots:
       debug: 4.3.5
       pathe: 1.1.2
       picocolors: 1.0.1
-      vite: 5.2.13
+      vite: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.72.0)(terser@5.31.1)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -21442,15 +21432,6 @@ snapshots:
       sass: 1.77.5
       terser: 5.31.1
 
-  vite@5.2.13:
-    dependencies:
-      esbuild: 0.20.2
-      postcss: 8.4.38
-      rollup: 4.18.0
-    optionalDependencies:
-      fsevents: 2.3.3
-    optional: true
-
   vitest@1.4.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1):
     dependencies:
       '@vitest/expect': 1.4.0
@@ -21606,7 +21587,7 @@ snapshots:
       strip-literal: 2.1.0
       tinybench: 2.8.0
       tinypool: 0.8.4
-      vite: 5.2.13
+      vite: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.72.0)(terser@5.31.1)
       vite-node: 1.6.0
       why-is-node-running: 2.2.2
     transitivePeerDependencies:

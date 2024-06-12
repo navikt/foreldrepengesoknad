@@ -85,6 +85,7 @@
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
+        "@storybook/addon-actions": "^8.1.6",
         "@storybook/addon-essentials": "^8.1.6",
         "@storybook/cli": "^8.1.6",
         "@storybook/react": "^8.1.6",
