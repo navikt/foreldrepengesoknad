@@ -9,7 +9,7 @@ ARG SERVER="server"
 #########################################
 FROM --platform=${BUILDPLATFORM} ${NODE_IMG} as prepare
 WORKDIR /usr/src/app
-COPY ["package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", "./"]
+COPY ["package.json", ".npmrc", "pnpm-lock.yaml", "pnpm-workspace.yaml", "./"]
 COPY packages packages
 COPY apps apps
 ARG SERVER
