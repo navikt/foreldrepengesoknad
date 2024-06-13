@@ -10,6 +10,10 @@ export const configureReverseProxyApi = (server: Express) => {
 
     console.log('Server app config inneholder: ', serverConfig.app);
 
+    server.use((req, _res, next) => {
+        console.log(`Req: ${req.url}`);
+        next();
+    });
     server.use(
         `${serverConfig.app.publicPath}/rest`,
         createProxyMiddleware({
