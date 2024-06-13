@@ -1,1 +1,0 @@
-var e=(E=>(E.Mødrekvote="MØDREKVOTE",E.Fedrekvote="FEDREKVOTE",E.Fellesperiode="FELLESPERIODE",E.Foreldrepenger="FORELDREPENGER",E.ForeldrepengerFørFødsel="FORELDREPENGER_FØR_FØDSEL",E.AktivitetsfriKvote="AKTIVITETSFRI_KVOTE",E))(e||{});export{e as S};
