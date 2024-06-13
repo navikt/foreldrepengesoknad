@@ -13,12 +13,6 @@ setupActuators(server);
 // Logging i json format
 server.use(logger.morganMiddleware);
 
-server.get(['/oauth2/login'], async (_req, res) => {
-    res.status(502).send({
-        message: 'Wonderwall must handle /oauth2/login',
-    });
-});
-
 server.use(validerInnkommendeIdportenToken);
 
 configureReverseProxyApi(server);
