@@ -45,5 +45,3 @@ export function addProxyHandler(server: Express, { ingoingUrl, outgoingUrl, scop
         }),
     );
 }
-
-export function
