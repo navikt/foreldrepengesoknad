@@ -1,10 +1,12 @@
-import { Periode, TilgjengeligStønadskonto } from '@navikt/fp-common';
 import { Uttaksstatus } from 'utils/uttaksstatus';
+
+import { Periode } from '@navikt/fp-common';
+import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 interface ModifyPeriodeParams {
     getUttaksstatusFunc: () => Uttaksstatus;
     uttaksplan: Periode[];
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoer[];
     familiehendelsesdato: Date;
     erFlerbarnssøknad: boolean;
     erEndringsøknadUtenEkisterendeSak: boolean;

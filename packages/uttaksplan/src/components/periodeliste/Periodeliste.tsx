@@ -23,8 +23,8 @@ import {
 import { getAnnenForelderSamtidigUttakPeriode } from '@navikt/fp-common/src/common/utils/periodeUtils';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { formatDateIso } from '@navikt/fp-utils';
 
-import { formatDateIso } from '../../../../utils';
 import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
 import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
 import PeriodelisteItem from './../periodeliste-item/PeriodelisteItem';
