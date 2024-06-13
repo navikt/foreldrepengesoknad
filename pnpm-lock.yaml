@@ -983,7 +983,10 @@ importers:
         version: 3.3.2
       mustache-loader:
         specifier: ^1.4.3
-        version: 1.4.3(hogan.js@3.0.2)(webpack@5.92.0)
+        version: 1.4.3(hogan.js@3.0.2)(webpack@5.92.0(esbuild@0.20.2))
+      storybook:
+        specifier: 8.1.6
+        version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -1445,6 +1448,9 @@ importers:
       mustache-loader:
         specifier: ^1.4.3
         version: 1.4.3(hogan.js@3.0.2)(webpack@5.92.0)
+      storybook:
+        specifier: 8.1.6
+        version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -1622,6 +1628,9 @@ importers:
       storybook:
         specifier: 8.1.6
         version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      storybook-react-intl:
+        specifier: ^3.0.1
+        version: 3.0.1(react-intl@6.6.4(react@18.2.0)(typescript@5.4.5))
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -2034,6 +2043,9 @@ importers:
       storybook:
         specifier: 8.1.6
         version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      storybook-react-intl:
+        specifier: ^3.0.1
+        version: 3.0.1(react-intl@6.6.4(react@18.2.0)(typescript@5.4.5))
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -2231,6 +2243,9 @@ importers:
       storybook:
         specifier: 8.1.6
         version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      storybook-react-intl:
+        specifier: ^3.0.1
+        version: 3.0.1(react-intl@6.6.4(react@18.2.0)(typescript@5.4.5))
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -2343,6 +2358,9 @@ importers:
       storybook:
         specifier: 8.1.6
         version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      storybook-react-intl:
+        specifier: ^3.0.1
+        version: 3.0.1(react-intl@6.6.4(react@18.2.0)(typescript@5.4.5))
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -2604,6 +2622,9 @@ importers:
       storybook:
         specifier: 8.1.6
         version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      storybook-react-intl:
+        specifier: ^3.0.1
+        version: 3.0.1(react-intl@6.6.4(react@18.2.0)(typescript@5.4.5))
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -2704,6 +2725,9 @@ importers:
       storybook:
         specifier: 8.1.6
         version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      storybook-react-intl:
+        specifier: ^3.0.1
+        version: 3.0.1(react-intl@6.6.4(react@18.2.0)(typescript@5.4.5))
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
