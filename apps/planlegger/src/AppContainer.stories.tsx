@@ -3,12 +3,12 @@ import { Action } from 'appData/PlanleggerDataContext';
 import MockAdapter from 'axios-mock-adapter';
 import { StrictMode } from 'react';
 
+import { getAxiosInstance } from '@navikt/fp-api';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import AppContainer from './AppContainer';
-import { planleggerApi } from './Planlegger';
 
 const kontoer = {
     '100': {
@@ -76,7 +76,7 @@ export const Default: Story = {
     render: (args) => {
         initAmplitude();
         if (args.brukStønadskontoMock) {
-            const apiMock = new MockAdapter(planleggerApi);
+            const apiMock = new MockAdapter(getAxiosInstance());
             apiMock.onPost('/rest/konto').reply(() => {
                 return [200, kontoer];
             });

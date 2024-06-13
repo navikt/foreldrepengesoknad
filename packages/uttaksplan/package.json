@@ -24,7 +24,6 @@
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@navikt/fp-uttaksplan-kalender": "workspace:*",
-        "@navikt/sif-common-question-config": "^0.0.7",
         "@types/react": "^18.2.73",
         "classnames": "^2.5.1",
         "dayjs": "^1.11.10",

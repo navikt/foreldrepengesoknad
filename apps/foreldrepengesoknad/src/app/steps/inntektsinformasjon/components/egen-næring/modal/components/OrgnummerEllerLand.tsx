@@ -1,7 +1,9 @@
-import { Block, hasValue, intlUtils } from '@navikt/fp-common';
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
+
+import { Block, hasValue, intlUtils } from '@navikt/fp-common';
+import { QuestionVisibility } from '@navikt/fp-formik';
+
 import { EgenNæringModalFormComponents, EgenNæringModalFormField } from '../egenNæringModalFormConfig';
 import { validateEgenNæringOrgnr } from '../validation/egenNæringValidation';
 

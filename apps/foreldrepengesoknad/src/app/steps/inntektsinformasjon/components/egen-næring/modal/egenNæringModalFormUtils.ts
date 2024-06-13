@@ -1,4 +1,3 @@
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import dayjs from 'dayjs';
 
 import {
@@ -7,7 +6,7 @@ import {
     convertYesOrNoOrUndefinedToBoolean,
     hasValue,
 } from '@navikt/fp-common';
-import { YesOrNo, dateToISOString } from '@navikt/fp-formik';
+import { QuestionVisibility, YesOrNo, dateToISOString } from '@navikt/fp-formik';
 
 import { EndringAvNæringsinntektInformasjon, Næring } from 'app/context/types/Næring';
 import { date4YearsAgo } from 'app/utils/dateUtils';

@@ -1,11 +1,10 @@
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Button } from '@navikt/ds-react';
 
 import { Block, intlUtils } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/fp-formik';
+import { QuestionVisibility, YesOrNo } from '@navikt/fp-formik';
 
 import { Næring } from 'app/context/types/Næring';
 
