@@ -8,7 +8,7 @@ export const configureReverseProxyApi = (server: Express) => {
         throw new Error('Påkrevd miljøvariable URL ikke satt mot API');
     }
     server.use(
-        `${process.env.PUBLIC_PATH}/rest`,
+        '/rest',
         createProxyMiddleware({
             target: serverConfig.proxy.apiUrl,
             changeOrigin: true,

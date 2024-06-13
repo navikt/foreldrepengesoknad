@@ -63,11 +63,9 @@ const stream = {
     write: (message: any) => stdoutLogger.http(message),
 };
 
-const skip = () => process.env.NODE_ENV === 'production';
-
 const vanligFormat = ':method :url :status :res[content-length] - :response-time ms';
 
-const morganMiddleware = morgan(vanligFormat, { stream, skip });
+const morganMiddleware = morgan(vanligFormat, { stream });
 
 export default {
     debug,
