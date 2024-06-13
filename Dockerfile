@@ -40,15 +40,16 @@ COPY . .
 #########################################
 FROM --platform=${BUILDPLATFORM} builder as server-build
 ARG SERVER
-RUN cd ./${SERVER} && pnpm exec turbo test
+WORKDIR /usr/src/app/${SERVER}
+RUN pnpm exec turbo test
 
 #########################################
 # Client
 #########################################
 FROM --platform=${BUILDPLATFORM} builder as client
 ARG APP
-RUN cd ./apps/${APP} && pnpm exec turbo test \
-    && mv /usr/src/app/apps/${APP}/dist /public
+WORKDIR /usr/src/app/apps/${APP}
+RUN pnpm exec turbo test && mv /usr/src/app/apps/${APP}/dist /public
 
 #########################################
 # Server

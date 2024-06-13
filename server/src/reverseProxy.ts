@@ -3,6 +3,7 @@ import { Express, NextFunction, Request, Response } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
 import { serverConfig } from '@navikt/fp-server-utils';
+import server from './server';
 
 type ProxyOptions = {
     ingoingUrl: string;
@@ -25,6 +26,10 @@ export function addProxyHandler(server: Express, { ingoingUrl, outgoingUrl, scop
     server.use(
         ingoingUrl,
         async (request: Request, response: Response, next: NextFunction) => {
+            if (request.url === '/rest/konto') {
+                next();
+            }
+
             const token = getToken(request);
             if (!token) {
                 return response.status(401).send();
@@ -45,3 +50,5 @@ export function addProxyHandler(server: Express, { ingoingUrl, outgoingUrl, scop
         }),
     );
 }
+
+export function
