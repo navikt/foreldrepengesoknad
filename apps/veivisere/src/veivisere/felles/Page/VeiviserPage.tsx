@@ -12,7 +12,7 @@ interface Props {
     icon?: ReactElement;
 }
 
-const VeilederPage = forwardRef<HTMLDivElement, Props>(({ label, description, children, icon }, ref) => (
+const VeiviserPage = forwardRef<HTMLDivElement, Props>(({ label, description, children, icon }, ref) => (
     <>
         <Page
             header={
@@ -41,4 +41,4 @@ const VeilederPage = forwardRef<HTMLDivElement, Props>(({ label, description, ch
     </>
 ));
 
-export default VeilederPage;
+export default VeiviserPage;

@@ -1,6 +1,6 @@
 import { BabyWrappedIcon, WalletIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
-import useVeilederNavigator from 'appData/useVeilederNavigator';
+import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -18,7 +18,7 @@ interface Props {
 
 const HvorMyeForside: React.FunctionComponent<Props> = ({ locale, changeLocale }) => {
     const intl = useIntl();
-    const { goToRoute } = useVeilederNavigator(ContextRoutes.HVOR_MYE);
+    const { goToRoute } = useVeiviserNavigator(ContextRoutes.HVOR_MYE);
     return (
         <>
             <FrontPage

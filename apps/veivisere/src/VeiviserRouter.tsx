@@ -4,9 +4,9 @@ import { Route, Routes } from 'react-router-dom';
 
 import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
-import FpEllerEsRouter from './veiledere/fpEllerEs/FpEllerEsRouter';
-import HvaSkjerNårRouter from './veiledere/hvaSkjerNår/HvaSkjerNårRouter';
-import HvorMyeRouter from './veiledere/hvorMye/HvorMyeRouter';
+import FpEllerEsRouter from './veivisere/fpEllerEs/FpEllerEsRouter';
+import HvaSkjerNårRouter from './veivisere/hvaSkjerNår/HvaSkjerNårRouter';
+import HvorMyeRouter from './veivisere/hvorMye/HvorMyeRouter';
 
 interface Props {
     locale: LocaleAll;
@@ -14,7 +14,7 @@ interface Props {
     stønadskontoer?: TilgjengeligeStønadskontoer;
 }
 
-const VeilederRouter: FunctionComponent<Props> = ({ locale, changeLocale }) => {
+const VeiviserRouter: FunctionComponent<Props> = ({ locale, changeLocale }) => {
     return (
         <Routes>
             <Route
@@ -29,9 +29,9 @@ const VeilederRouter: FunctionComponent<Props> = ({ locale, changeLocale }) => {
                 path={ContextRoutes.FP_ELLER_ES + '/*'}
                 element={<FpEllerEsRouter locale={locale} changeLocale={changeLocale} />}
             />
-            <Route path="*" element={<div>Veiledere</div>} />
+            <Route path="*" element={<div>Veivisere</div>} />
         </Routes>
     );
 };
 
-export default VeilederRouter;
+export default VeiviserRouter;

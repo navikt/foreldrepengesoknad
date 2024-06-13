@@ -1,14 +1,14 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import VeilederPage from './VeilederPage';
+import VeiviserPage from './VeiviserPage';
 
 const meta = {
-    title: 'VeilederPage',
-    component: VeilederPage,
-} satisfies Meta<typeof VeilederPage>;
+    title: 'VeiviserPage',
+    component: VeiviserPage,
+} satisfies Meta<typeof VeiviserPage>;
 export default meta;
 
-type Story = StoryObj<typeof VeilederPage>;
+type Story = StoryObj<typeof VeiviserPage>;
 
 export const Default: Story = {
     args: {

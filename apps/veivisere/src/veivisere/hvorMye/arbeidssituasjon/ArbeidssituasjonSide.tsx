@@ -1,6 +1,6 @@
 import { InformationIcon, PaperplaneIcon, WalletIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
-import useVeilederNavigator from 'appData/useVeilederNavigator';
+import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
@@ -15,7 +15,7 @@ import { GreenPanel, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isValidNumber } from '@navikt/fp-validation';
 
-import VeilederPage from '../../felles/Page/VeilederPage';
+import VeiviserPage from '../../felles/Page/VeiviserPage';
 import FpEllerEsOgHvaSkjerNåLinkPanel from '../felles/FpEllerEsOgHvaSkjerNåLinkPanel';
 import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
 import HøyInntektInfobox from '../felles/HøyInntektInfobox';
@@ -65,7 +65,7 @@ interface Props {
 
 const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setArbeidssituasjon }) => {
     const intl = useIntl();
-    const { goToRoute } = useVeilederNavigator(ContextRoutes.HVOR_MYE);
+    const { goToRoute } = useVeiviserNavigator(ContextRoutes.HVOR_MYE);
 
     const formMethods = useForm<Arbeidssituasjon>({
         defaultValues: arbeidssituasjon,
@@ -87,7 +87,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
 
     return (
         <>
-            <VeilederPage
+            <VeiviserPage
                 ref={ref}
                 label={intl.formatMessage({ id: 'Tittel' })}
                 icon={<WalletIcon height={28} width={28} fontSize="1.5rem" aria-hidden />}
@@ -241,7 +241,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                         )}
                     </VStack>
                 </Form>
-            </VeilederPage>
+            </VeiviserPage>
             {gjennomsnittslønn && <FpEllerEsOgHvaSkjerNåLinkPanel />}
         </>
     );
