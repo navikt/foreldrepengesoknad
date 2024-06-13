@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
-const useVeilederNavigator = (contextRoute: ContextRoutes) => {
+const useVeiviserNavigator = (contextRoute: ContextRoutes) => {
     const navigate = useNavigate();
 
     const goToRoute = useCallback(
@@ -12,7 +12,7 @@ const useVeilederNavigator = (contextRoute: ContextRoutes) => {
             const newPath = contextRoute + path;
 
             logAmplitudeEvent('sidevisning', {
-                app: 'veiledere',
+                app: 'veivisere',
                 team: 'foreldrepenger',
                 pageKey: newPath,
             });
@@ -25,4 +25,4 @@ const useVeilederNavigator = (contextRoute: ContextRoutes) => {
     return { goToRoute };
 };
 
-export default useVeilederNavigator;
+export default useVeiviserNavigator;

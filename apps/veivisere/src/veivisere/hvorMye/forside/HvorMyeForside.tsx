@@ -1,6 +1,6 @@
-import { BabyWrappedIcon } from '@navikt/aksel-icons';
+import { BabyWrappedIcon, WalletIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
-import useVeilederNavigator from 'appData/useVeilederNavigator';
+import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -18,7 +18,7 @@ interface Props {
 
 const HvorMyeForside: React.FunctionComponent<Props> = ({ locale, changeLocale }) => {
     const intl = useIntl();
-    const { goToRoute } = useVeilederNavigator(ContextRoutes.HVOR_MYE);
+    const { goToRoute } = useVeiviserNavigator(ContextRoutes.HVOR_MYE);
     return (
         <>
             <FrontPage
@@ -28,6 +28,7 @@ const HvorMyeForside: React.FunctionComponent<Props> = ({ locale, changeLocale }
                 minutesLabel={intl.formatMessage({ id: 'HvorMyeForside.Minutes' })}
                 innholdLabel={intl.formatMessage({ id: 'HvorMyeForside.Innhold' })}
                 goToNextDefaultStep={() => goToRoute(HvorMyeRoutes.ARBEIDSSITUASJON)}
+                icon={<WalletIcon height={28} width={28} fontSize="1.5rem" aria-hidden />}
             />
             <AndreVeivisereLinkPanel
                 links={[

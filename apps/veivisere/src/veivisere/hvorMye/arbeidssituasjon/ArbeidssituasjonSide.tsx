@@ -1,6 +1,6 @@
-import { InformationIcon, PaperplaneIcon } from '@navikt/aksel-icons';
+import { InformationIcon, PaperplaneIcon, WalletIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
-import useVeilederNavigator from 'appData/useVeilederNavigator';
+import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
@@ -15,7 +15,7 @@ import { GreenPanel, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isValidNumber } from '@navikt/fp-validation';
 
-import VeilederPage from '../../felles/Page/VeilederPage';
+import VeiviserPage from '../../felles/Page/VeiviserPage';
 import FpEllerEsOgHvaSkjerNåLinkPanel from '../felles/FpEllerEsOgHvaSkjerNåLinkPanel';
 import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
 import HøyInntektInfobox from '../felles/HøyInntektInfobox';
@@ -65,7 +65,7 @@ interface Props {
 
 const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setArbeidssituasjon }) => {
     const intl = useIntl();
-    const { goToRoute } = useVeilederNavigator(ContextRoutes.HVOR_MYE);
+    const { goToRoute } = useVeiviserNavigator(ContextRoutes.HVOR_MYE);
 
     const formMethods = useForm<Arbeidssituasjon>({
         defaultValues: arbeidssituasjon,
@@ -87,7 +87,11 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
 
     return (
         <>
-            <VeilederPage ref={ref} label={intl.formatMessage({ id: 'Tittel' })}>
+            <VeiviserPage
+                ref={ref}
+                label={intl.formatMessage({ id: 'Tittel' })}
+                icon={<WalletIcon height={28} width={28} fontSize="1.5rem" aria-hidden />}
+            >
                 <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                     <VStack gap="10" style={{ flex: 1 }}>
                         <VStack gap="2">
@@ -95,7 +99,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                 <Label>
                                     <FormattedMessage id="ArbeidssituasjonSide.Arbeidssituasjon" />
                                 </Label>
-                                <BodyShort>
+                                <BodyShort className={styles.description}>
                                     <FormattedMessage id="ArbeidssituasjonSide.VelgAlternativ" />
                                 </BodyShort>
                                 <Checkbox
@@ -158,7 +162,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                                         <Label>
                                                             <FormattedMessage id="ArbeidssituasjonSide.TreSisteMåneder" />
                                                         </Label>
-                                                        <BodyShort>
+                                                        <BodyShort className={styles.description}>
                                                             <FormattedMessage id="ArbeidssituasjonSide.LønnFørSkatt" />
                                                         </BodyShort>
                                                     </div>
@@ -175,7 +179,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                                         <Label>
                                                             <FormattedMessage id="ArbeidssituasjonSide.UtbetaltTreSiste" />
                                                         </Label>
-                                                        <BodyShort>
+                                                        <BodyShort className={styles.description}>
                                                             <FormattedMessage id="ArbeidssituasjonSide.LønnOgUtbetaling" />
                                                         </BodyShort>
                                                     </div>
@@ -219,10 +223,10 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                 </VStack>
                             )}
                         {formValues.erArbeidstakerEllerFrilanser && antattÅrslønn && antattÅrslønn < minÅrslønn && (
-                            <HarIkkeRettTilFpInfobox antattÅrslønn={antattÅrslønn} minÅrslønn={minÅrslønn} />
+                            <HarIkkeRettTilFpInfobox antattÅrslønn={antattÅrslønn} minÅrslønn={minÅrslønn} showKrIcon />
                         )}
                         {formValues.erArbeidstakerEllerFrilanser && antattÅrslønn && antattÅrslønn > maxÅrslønn && (
-                            <HøyInntektInfobox maxÅrslønnDekket={maxÅrslønn} />
+                            <HøyInntektInfobox maxÅrslønnDekket={maxÅrslønn} showKrIcon />
                         )}
                         <Spacer />
                         {gjennomsnittslønn && (
@@ -237,7 +241,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                         )}
                     </VStack>
                 </Form>
-            </VeilederPage>
+            </VeiviserPage>
             {gjennomsnittslønn && <FpEllerEsOgHvaSkjerNåLinkPanel />}
         </>
     );

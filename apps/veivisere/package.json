@@ -1,7 +1,7 @@
 {
-    "name": "veiledere",
+    "name": "veivisere",
     "version": "1.0.0",
-    "description": "NAV Foreldrepengeveiledere",
+    "description": "NAV Foreldrepengeveivisere",
     "main": "./src/app/bootstrap.tsx",
     "type": "module",
     "author": "NAV",

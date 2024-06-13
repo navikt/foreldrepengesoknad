@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Heading, VStack } from '@navikt/ds-react';
+import { Accordion, BodyShort, Heading, VStack } from '@navikt/ds-react';
 
 import {
     BoIUtlandetOppsummeringspunkt,
@@ -89,96 +89,101 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                 }}
                 onContinueLater={navigator.fortsettSøknadSenere}
             >
-                <SøkerOppsummeringspunkt søker={søkerInfo.søker} />
-                <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omBarnet' })}>
-                    <VStack gap="2">
-                        <BodyShort>{`Termindato: ${formatDate(barn.termindato)}`}</BodyShort>
-                        {barn.erBarnetFødt && barn.fødselsdato && (
-                            <BodyShort>{`Fødselsdato: ${
-                                barn.fødselsdato ? formatDate(barn.fødselsdato) : undefined
-                            }`}</BodyShort>
-                        )}
-                    </VStack>
-                </OppsummeringPanel.Punkt>
-                <BoIUtlandetOppsummeringspunkt
-                    familiehendelseDato={barn.erBarnetFødt && barn.fødselsdato ? barn.fødselsdato : barn.termindato}
-                    hendelseType={barn.erBarnetFødt ? HendelseType.FØDSEL : HendelseType.TERMIN}
-                    utenlandsopphold={utenlandsopphold}
-                    tidligereUtenlandsopphold={utenlandsoppholdTidligere}
-                    senereUtenlandsopphold={utenlandsoppholdSenere}
-                />
-                <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omArbeidsforhold' })}>
-                    <VStack gap="2">
-                        {aktiveArbeidsforhold.length > 0 && (
-                            <ArbeidsforholdInformasjon visManglerInfo={false} arbeidsforhold={aktiveArbeidsforhold} />
-                        )}
-                        {inntektsinformasjon.harJobbetSomFrilans && frilans && (
-                            <FrilansVisning frilans={frilans}></FrilansVisning>
-                        )}
-                        {inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende && egenNæring && (
-                            <EgenNæringVisning næring={egenNæring}></EgenNæringVisning>
-                        )}
-                        {inntektsinformasjon.harHattArbeidIUtlandet &&
-                            arbeidIUtlandet &&
-                            arbeidIUtlandet.arbeidIUtlandet.map((arbeid) => (
-                                <ArbeidIUtlandetVisning
-                                    key={`${arbeid.fom}${arbeid.tom}${arbeid.arbeidsgiverNavn}`}
-                                    arbeidIUtlandet={arbeid}
-                                ></ArbeidIUtlandetVisning>
-                            ))}
-                        {(!inntektsinformasjon.harJobbetSomFrilans ||
-                            !inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende ||
-                            !inntektsinformasjon.harHattArbeidIUtlandet) && (
-                            <BodyShort>{getTekstOmManglendeArbeidsforhold(inntektsinformasjon, intl)}</BodyShort>
-                        )}
-                    </VStack>
-                </OppsummeringPanel.Punkt>
-                <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.skjema' })}>
-                    <VedleggOppsummering tilrettelegging={tilrettelegginger} />
-                </OppsummeringPanel.Punkt>
-                <OppsummeringPanel.Punkt
-                    tittel={intl.formatMessage({ id: 'oppsummering.periodeMedSvangerskapspenger' })}
-                >
-                    <VStack gap="2">
-                        {tilretteleggingMedFrilans && (
-                            <VStack gap="2">
-                                <div>
-                                    <BodyShort className={bem.element('label')}>
-                                        Risikofaktorer i jobben din som frilanser:
-                                    </BodyShort>
-                                    <BodyShort>{tilretteleggingMedFrilans.risikofaktorer}</BodyShort>
-                                </div>
-                                <div>
-                                    <BodyShort className={bem.element('label')}>
-                                        Tilretteleggingstiltak i jobben din som frilanser:
-                                    </BodyShort>
-                                    <BodyShort>{tilretteleggingMedFrilans.tilretteleggingstiltak}</BodyShort>
-                                </div>
-                            </VStack>
-                        )}
-                        {tilretteleggingMedSN && (
-                            <VStack gap="2">
-                                <div>
-                                    <BodyShort
-                                        className={bem.element('label')}
-                                    >{`Risikofaktorer i ${tilretteleggingMedSN.arbeidsforhold.navn}`}</BodyShort>
-                                    <BodyShort>{tilretteleggingMedSN.risikofaktorer}</BodyShort>
-                                </div>
-                                <div>
-                                    <BodyShort className={bem.element('label')}>
-                                        {`Tilretteleggingstiltak i ${tilretteleggingMedSN.arbeidsforhold.navn}`}
-                                    </BodyShort>
-                                    <BodyShort>{tilretteleggingMedSN.tilretteleggingstiltak}</BodyShort>
-                                </div>
-                            </VStack>
-                        )}
-                        <PeriodeOppsummering
-                            perioder={allePerioderMedFomOgTom}
-                            sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger}
-                            barn={barn}
-                        />
-                    </VStack>
-                </OppsummeringPanel.Punkt>
+                <Accordion indent={false}>
+                    <SøkerOppsummeringspunkt søker={søkerInfo.søker} />
+                    <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omBarnet' })}>
+                        <VStack gap="2">
+                            <BodyShort>{`Termindato: ${formatDate(barn.termindato)}`}</BodyShort>
+                            {barn.erBarnetFødt && barn.fødselsdato && (
+                                <BodyShort>{`Fødselsdato: ${
+                                    barn.fødselsdato ? formatDate(barn.fødselsdato) : undefined
+                                }`}</BodyShort>
+                            )}
+                        </VStack>
+                    </OppsummeringPanel.Punkt>
+                    <BoIUtlandetOppsummeringspunkt
+                        familiehendelseDato={barn.erBarnetFødt && barn.fødselsdato ? barn.fødselsdato : barn.termindato}
+                        hendelseType={barn.erBarnetFødt ? HendelseType.FØDSEL : HendelseType.TERMIN}
+                        utenlandsopphold={utenlandsopphold}
+                        tidligereUtenlandsopphold={utenlandsoppholdTidligere}
+                        senereUtenlandsopphold={utenlandsoppholdSenere}
+                    />
+                    <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omArbeidsforhold' })}>
+                        <VStack gap="2">
+                            {aktiveArbeidsforhold.length > 0 && (
+                                <ArbeidsforholdInformasjon
+                                    visManglerInfo={false}
+                                    arbeidsforhold={aktiveArbeidsforhold}
+                                />
+                            )}
+                            {inntektsinformasjon.harJobbetSomFrilans && frilans && (
+                                <FrilansVisning frilans={frilans}></FrilansVisning>
+                            )}
+                            {inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende && egenNæring && (
+                                <EgenNæringVisning næring={egenNæring}></EgenNæringVisning>
+                            )}
+                            {inntektsinformasjon.harHattArbeidIUtlandet &&
+                                arbeidIUtlandet &&
+                                arbeidIUtlandet.arbeidIUtlandet.map((arbeid) => (
+                                    <ArbeidIUtlandetVisning
+                                        key={`${arbeid.fom}${arbeid.tom}${arbeid.arbeidsgiverNavn}`}
+                                        arbeidIUtlandet={arbeid}
+                                    ></ArbeidIUtlandetVisning>
+                                ))}
+                            {(!inntektsinformasjon.harJobbetSomFrilans ||
+                                !inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende ||
+                                !inntektsinformasjon.harHattArbeidIUtlandet) && (
+                                <BodyShort>{getTekstOmManglendeArbeidsforhold(inntektsinformasjon, intl)}</BodyShort>
+                            )}
+                        </VStack>
+                    </OppsummeringPanel.Punkt>
+                    <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.skjema' })}>
+                        <VedleggOppsummering tilrettelegging={tilrettelegginger} />
+                    </OppsummeringPanel.Punkt>
+                    <OppsummeringPanel.Punkt
+                        tittel={intl.formatMessage({ id: 'oppsummering.periodeMedSvangerskapspenger' })}
+                    >
+                        <VStack gap="2">
+                            {tilretteleggingMedFrilans && (
+                                <VStack gap="2">
+                                    <div>
+                                        <BodyShort className={bem.element('label')}>
+                                            Risikofaktorer i jobben din som frilanser:
+                                        </BodyShort>
+                                        <BodyShort>{tilretteleggingMedFrilans.risikofaktorer}</BodyShort>
+                                    </div>
+                                    <div>
+                                        <BodyShort className={bem.element('label')}>
+                                            Tilretteleggingstiltak i jobben din som frilanser:
+                                        </BodyShort>
+                                        <BodyShort>{tilretteleggingMedFrilans.tilretteleggingstiltak}</BodyShort>
+                                    </div>
+                                </VStack>
+                            )}
+                            {tilretteleggingMedSN && (
+                                <VStack gap="2">
+                                    <div>
+                                        <BodyShort
+                                            className={bem.element('label')}
+                                        >{`Risikofaktorer i ${tilretteleggingMedSN.arbeidsforhold.navn}`}</BodyShort>
+                                        <BodyShort>{tilretteleggingMedSN.risikofaktorer}</BodyShort>
+                                    </div>
+                                    <div>
+                                        <BodyShort className={bem.element('label')}>
+                                            {`Tilretteleggingstiltak i ${tilretteleggingMedSN.arbeidsforhold.navn}`}
+                                        </BodyShort>
+                                        <BodyShort>{tilretteleggingMedSN.tilretteleggingstiltak}</BodyShort>
+                                    </div>
+                                </VStack>
+                            )}
+                            <PeriodeOppsummering
+                                perioder={allePerioderMedFomOgTom}
+                                sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger}
+                                barn={barn}
+                            />
+                        </VStack>
+                    </OppsummeringPanel.Punkt>
+                </Accordion>
             </OppsummeringPanel>
         </ContentWrapper>
     );

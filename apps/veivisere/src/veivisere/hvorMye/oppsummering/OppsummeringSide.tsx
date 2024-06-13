@@ -1,6 +1,6 @@
-import { ArrowLeftIcon, ChatElipsisIcon, InformationIcon } from '@navikt/aksel-icons';
+import { ArrowLeftIcon, ChatElipsisIcon, CheckmarkIcon, InformationIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
-import useVeilederNavigator from 'appData/useVeilederNavigator';
+import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import { FormattedMessage, useIntl } from 'react-intl';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
@@ -10,7 +10,7 @@ import { Dekningsgrad } from '@navikt/fp-types';
 import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import VeilederPage from '../../felles/Page/VeilederPage';
+import VeiviserPage from '../../felles/Page/VeiviserPage';
 import { Arbeidssituasjon, finnGjennomsnittslønn } from '../arbeidssituasjon/ArbeidssituasjonSide';
 import FpEllerEsOgHvaSkjerNåLinkPanel from '../felles/FpEllerEsOgHvaSkjerNåLinkPanel';
 import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
@@ -30,7 +30,7 @@ interface Props {
 
 const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon }) => {
     const intl = useIntl();
-    const { goToRoute } = useVeilederNavigator(ContextRoutes.HVOR_MYE);
+    const { goToRoute } = useVeiviserNavigator(ContextRoutes.HVOR_MYE);
     const { ref } = useScrollBehaviour();
 
     const gjennomsnittslønn = parseFloat(notEmpty(finnGjennomsnittslønn(notEmpty(arbeidssituasjon))));
@@ -40,7 +40,12 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon }) 
 
     return (
         <>
-            <VeilederPage ref={ref} label={intl.formatMessage({ id: 'Tittel' })}>
+            <VeiviserPage
+                ref={ref}
+                label={intl.formatMessage({ id: 'OppsummeringSide.Oppsummering' })}
+                description={intl.formatMessage({ id: 'Tittel' })}
+                icon={<CheckmarkIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+            >
                 <VStack gap="5">
                     {gjennomsnittslønn * 12 > grunnbeløpetGanger6 && (
                         <HøyInntektInfobox maxÅrslønnDekket={grunnbeløpetGanger6} isGray />
@@ -113,7 +118,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon }) 
                         <FormattedMessage id="OppsummeringSide.Tilbake" />
                     </Button>
                 </VStack>
-            </VeilederPage>
+            </VeiviserPage>
             <FpEllerEsOgHvaSkjerNåLinkPanel />
         </>
     );
