@@ -70,7 +70,7 @@
         "winston": "^3.13.0"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "6.3.6",
+        "@formatjs/cli-lib": "6.4.2",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@storybook/addon-actions": "^8.1.6",
@@ -109,11 +109,11 @@
         "path": "^0.12.7",
         "prettier": "^3.2.5",
         "pretty-quick": "^3.1.3",
-        "storybook": "8.1.6",
+        "storybook": "8.1.8",
         "storybook-addon-mock": "5.0.0",
         "tsconfig": "workspace:*",
         "typescript": "^5.4.3",
-        "vite": "^5.1.6",
+        "vite": "^5.2.13",
         "vite-plugin-checker": "^0.6.4",
         "vitest": "^1.4.0",
         "wait-on": "^7.2.0"

@@ -36,7 +36,7 @@
         "typescript": "^5.4.3"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "6.3.6",
+        "@formatjs/cli-lib": "6.4.2",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-types": "workspace:*",
@@ -55,9 +55,9 @@
         "lodash.throttle": "^4.1.1",
         "mockdate": "^3.0.5",
         "path": "^0.12.7",
-        "storybook": "8.1.6",
+        "storybook": "8.1.8",
         "tsconfig": "workspace:*",
-        "vite": "^5.1.6",
+        "vite": "^5.2.13",
         "vite-plugin-checker": "^0.6.4",
         "vitest": "^1.4.0"
     },
