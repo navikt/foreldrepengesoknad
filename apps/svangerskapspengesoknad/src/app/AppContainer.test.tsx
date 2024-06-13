@@ -11,11 +11,7 @@ const { VisAppKvinneMedArbeid } = composeStories(stories);
 
 describe('<AppContainer>', () => {
     it('skal gå raskeste vei gjennom applikasjonen og så tilbake', async () => {
-        const utils = render(
-            <div id="app">
-                <VisAppKvinneMedArbeid doLogging={false} />
-            </div>,
-        );
+        const utils = render(<VisAppKvinneMedArbeid doLogging={false} />);
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja, jeg har forstått mine plikter.'));

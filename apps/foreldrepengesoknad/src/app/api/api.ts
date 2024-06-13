@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios';
 
+import { getAxiosInstance } from '@navikt/fp-api';
 import { BarnFraNesteSak, Dekningsgrad, EksisterendeSak, Periode } from '@navikt/fp-common';
 import { Attachment, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 
@@ -10,7 +11,6 @@ import { Kvittering } from 'app/types/Kvittering';
 import { SakerOppslag } from 'app/types/SakerOppslag';
 import { useGetRequest } from 'app/utils/hooks/useRequest';
 
-import getAxiosInstance from './apiInterceptor';
 import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
 import { storageParser } from './storageParser';
 
@@ -32,11 +32,11 @@ export interface TilgjengeligeStønadskontoerParams {
     familieHendelseDatoNesteSak: string | undefined;
 }
 
-const sendSøknadUrl = '/soknad';
-const sendEndringssøknadUrl = '/soknad/endre';
+const sendSøknadUrl = '/rest/soknad';
+const sendEndringssøknadUrl = '/rest/soknad/endre';
 
 const useSøkerinfo = () => {
-    const { data, error } = useGetRequest<Søkerinfo>('/sokerinfo', { config: { withCredentials: true } });
+    const { data, error } = useGetRequest<Søkerinfo>('/rest/sokerinfo', { config: { withCredentials: true } });
 
     return {
         søkerinfoData: data,
@@ -45,7 +45,7 @@ const useSøkerinfo = () => {
 };
 
 const useGetSaker = () => {
-    const { data, error } = useGetRequest<SakerOppslag>('/innsyn/v2/saker', {
+    const { data, error } = useGetRequest<SakerOppslag>('/rest/innsyn/v2/saker', {
         config: { withCredentials: true },
     });
 
@@ -72,7 +72,7 @@ export interface FpMellomlagretData {
 }
 
 const useStoredAppState = () => {
-    const { data, error, requestStatus } = useGetRequest<FpMellomlagretData>('/storage/foreldrepenger', {
+    const { data, error, requestStatus } = useGetRequest<FpMellomlagretData>('/rest/storage/foreldrepenger', {
         config: { transformResponse: storageParser, withCredentials: true },
     });
 
@@ -84,11 +84,13 @@ const useStoredAppState = () => {
 };
 
 const storeAppState = (dataSomSkalMellomlagres: FpMellomlagretData, fnr: string) => {
-    return getAxiosInstance(fnr).post('/storage/foreldrepenger', dataSomSkalMellomlagres, { withCredentials: true });
+    return getAxiosInstance(fnr).post('/rest/storage/foreldrepenger', dataSomSkalMellomlagres, {
+        withCredentials: true,
+    });
 };
 
 const getStorageKvittering = (fnr: string): Promise<AxiosResponse<Kvittering>> => {
-    return getAxiosInstance(fnr).get('/storage/kvittering/foreldrepenger', {
+    return getAxiosInstance(fnr).get('/rest/storage/kvittering/foreldrepenger', {
         withCredentials: true,
         timeout: 15 * 1000,
     });
@@ -108,7 +110,7 @@ const sendSøknad = (søknad: SøknadForInnsending | EndringssøknadForInnsendin
 };
 
 const deleteMellomlagretSøknad = (fnr: string, signal?: AbortSignal) => {
-    return getAxiosInstance(fnr).delete('/storage/foreldrepenger', { withCredentials: true, signal });
+    return getAxiosInstance(fnr).delete('/rest/storage/foreldrepenger', { withCredentials: true, signal });
 };
 
 const deleteMellomlagredeVedlegg = (fnr: string, vedlegg: Attachment[], signal: AbortSignal) => {
@@ -119,7 +121,7 @@ const deleteMellomlagredeVedlegg = (fnr: string, vedlegg: Attachment[], signal: 
 
         return result;
     }, []);
-    return getAxiosInstance(fnr).delete('/storage/foreldrepenger/vedlegg', {
+    return getAxiosInstance(fnr).delete('/rest/storage/foreldrepenger/vedlegg', {
         withCredentials: true,
         data: attachmentUUIDs,
         signal,

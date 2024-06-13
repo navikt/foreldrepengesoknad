@@ -3,10 +3,10 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { Loader } from '@navikt/ds-react';
 
-import { ApiAccessError, ApiGeneralError, createApi } from '@navikt/fp-api';
+import { ApiAccessError, ApiGeneralError, getAxiosInstance } from '@navikt/fp-api';
 import { Kvittering, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
-import { redirect, redirectToLogin } from '@navikt/fp-utils';
+import { redirect } from '@navikt/fp-utils';
 
 import Environment from './appData/Environment';
 import { ContextDataType } from './appData/SvpDataContext';
@@ -35,13 +35,9 @@ export const Spinner: React.FunctionComponent = () => (
     </div>
 );
 
-export const svpApi = createApi(Environment.REST_API_URL);
+export const svpApi = getAxiosInstance();
 
 export const ApiErrorHandler: React.FunctionComponent<{ error: ApiAccessError | ApiGeneralError }> = ({ error }) => {
-    if (error instanceof ApiAccessError) {
-        redirectToLogin(Environment.LOGIN_URL);
-        return <Spinner />;
-    }
     return (
         <ErrorPage appName="Svangerskapspenger" errorMessage={error.message} retryCallback={() => location.reload()} />
     );

@@ -23,7 +23,7 @@ const useAvbrytSøknad = (svpApi: AxiosInstance, setHarGodkjentVilkår: (harGodk
         setHarGodkjentVilkår(false);
 
         try {
-            await deleteData(svpApi, '/storage/svangerskapspenger', 'Feil ved sletting av mellomlagret data');
+            await deleteData(svpApi, '/rest/storage/svangerskapspenger', 'Feil ved sletting av mellomlagret data');
         } catch (error) {
             // Vi bryr oss ikke om feil her. Logges bare i backend
         }

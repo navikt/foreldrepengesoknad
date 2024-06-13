@@ -15,14 +15,6 @@ import '../src/styles/global.css';
 
 dayjs.locale('nb');
 
-const scriptTag = document.createElement('script');
-scriptTag.type = 'text/json';
-scriptTag.id = 'nav:appSettings';
-scriptTag.innerHTML = JSON.stringify({
-    REST_API_URL: 'https://foreldrepengesoknad-api.nav.no/rest',
-});
-document.head.appendChild(scriptTag);
-
 const withIntlProvider = getIntlDecorator({
     nb: { ...nbMessages, ...uiMessages.nb },
     nn: { ...nnMessages, ...uiMessages.nn },

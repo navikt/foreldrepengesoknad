@@ -6,13 +6,12 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
-import { createApi, usePostRequest } from '@navikt/fp-api';
+import { getAxiosInstance, usePostRequest } from '@navikt/fp-api';
 import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import PlanleggerRouter from './PlanleggerRouter';
-import Environment from './appData/Environment';
 
-export const planleggerApi = createApi(Environment.REST_API_URL);
+export const planleggerApi = getAxiosInstance();
 
 const finnBrukerRolle = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
     return harMorRett(hvemHarRett, hvemPlanlegger) ? 'MOR' : 'FAR';
@@ -62,12 +61,7 @@ export const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, change
         [hvemHarRett],
     );
 
-    const requestData = usePostRequest<TilgjengeligeStønadskontoer>(
-        planleggerApi,
-        Environment.REST_API_URL + '/konto',
-        params,
-        options,
-    );
+    const requestData = usePostRequest<TilgjengeligeStønadskontoer>(planleggerApi, '/rest/konto', params, options);
 
     if (requestData.error) {
         return <ErrorPage />;

@@ -1,14 +1,16 @@
 import { render, screen } from '@testing-library/react';
-import Api, { FpMellomlagretData } from './api/api';
-import Foreldrepengesøknad from './Foreldrepengesøknad';
-import { allCommonMessages } from '@navikt/fp-common';
 import MockAdapter from 'axios-mock-adapter';
-import { AxiosInstance } from './api/apiInterceptor';
-import { IntlProvider } from '@navikt/fp-ui';
-import nbMessages from './intl/nb_NO.json';
-import { RequestStatus } from './types/RequestState';
+
+import { getAxiosInstance } from '@navikt/fp-api';
+import { allCommonMessages } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { SøkerBarn, Søkerinfo } from '@navikt/fp-types';
+import { IntlProvider } from '@navikt/fp-ui';
+
+import Foreldrepengesøknad from './Foreldrepengesøknad';
+import Api, { FpMellomlagretData } from './api/api';
+import nbMessages from './intl/nb_NO.json';
+import { RequestStatus } from './types/RequestState';
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: { ...nbMessages, ...allCommonMessages.nb },
@@ -76,8 +78,8 @@ describe('<Foreldrepengesøknad>', () => {
         vi.spyOn(Api, 'useStoredAppState').mockImplementation(() => storageData);
         vi.spyOn(Api, 'useGetSaker').mockImplementation(() => sakerData);
 
-        const apiMock = new MockAdapter(AxiosInstance);
-        apiMock.onPost('/storage/foreldrepenger').reply(200, {});
+        const apiMock = new MockAdapter(getAxiosInstance());
+        apiMock.onPost('/rest/storage/foreldrepenger').reply(200, {});
 
         render(
             <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>

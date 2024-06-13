@@ -1,12 +1,15 @@
 {
     "app": "svangerskapspengesoknad",
     "dekoratoren": "www.nav.no",
-    "ingresses": ["https://svangerskapspengesoknad.nav.no"],
+    "autentisering": true,
+    "ingresses": [
+        "https://svangerskapspengesoknad.nav.no"
+    ],
     "env": {
-        "APPRES_CMS_URL": "https://www.nav.no/dekoratoren",
-        "REST_API_URL": "https://foreldrepengesoknad-api.nav.no/rest",
-        "LOGIN_URL": "https://login.nav.no/oauth2/login",
+        "FORELDREPENGER_API_URL": "https://foreldrepengesoknad-api.nav.no/rest",
+        "FORELDREPENGER_API_SCOPE": "prod-gcp:teamforeldrepenger:foreldrepengesoknad-api",
         "LOG_VALIDATION": false,
-        "INNSYN": "https://foreldrepenger.nav.no"
+        "INNSYN": "https://foreldrepenger.nav.no",
+        "ENV": "prod"
     }
 }

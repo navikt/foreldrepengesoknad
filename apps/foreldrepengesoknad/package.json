@@ -115,6 +115,7 @@
         "dotenv": "^16.4.5",
         "eslint": "^8.57.0",
         "fs-extra": "^11.2.0",
+        "http-proxy-middleware": "3.0.0",
         "less": "^4.2.0",
         "mockdate": "^3.0.5",
         "multer": "1.4.5-lts.1",

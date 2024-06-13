@@ -7,7 +7,6 @@ import { Loader } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import Environment from './Environment';
 import Api from './api/api';
 import ScrollToTop from './components/scroll-to-top/ScrollToTop';
 import { useGetBackgroundColor } from './hooks/useBackgroundColor';
@@ -32,8 +31,8 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
     const oppdatertQuery = useQuery<boolean>({
         queryKey: ['oppdatert'],
         queryFn: async () =>
-            await fetch(`${Environment.REST_API_URL}/innsyn/v2/saker/oppdatert`, { credentials: 'include' }).then(
-                (response) => response.json(),
+            await fetch(`/rest/innsyn/v2/saker/oppdatert`, { credentials: 'include' }).then((response) =>
+                response.json(),
             ),
         refetchInterval: (data) => {
             if (data) {
@@ -47,9 +46,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
     const minidialogQuery = useQuery<MinidialogInnslag[]>({
         queryKey: ['minidialog'],
         queryFn: async () =>
-            await fetch(`${Environment.REST_API_URL}/minidialog`, { credentials: 'include' }).then((response) =>
-                response.json(),
-            ),
+            await fetch(`/rest/minidialog`, { credentials: 'include' }).then((response) => response.json()),
     });
 
     const sakerSuspended = getSakerSuspended(oppdatertQuery);

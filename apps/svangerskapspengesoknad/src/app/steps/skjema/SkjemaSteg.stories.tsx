@@ -3,7 +3,7 @@ import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 import { MemoryRouter } from 'react-router-dom';
 
-import { attachmentApi } from '@navikt/fp-api';
+import { getAxiosInstance } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 
@@ -106,10 +106,10 @@ const Template: StoryFn<TilretteleggingStepStoryProps> = ({
     tilrettelegging,
 }) => {
     initAmplitude();
-    const apiMock = new MockAdapter(attachmentApi);
+    const apiMock = new MockAdapter(getAxiosInstance());
     if (!skalFeileOpplasting) {
-        apiMock.onPost('/rest-api/storage/svangerskapspenger/vedlegg').reply(200); //story
-        apiMock.onPost('http://localhost:8888/rest/storage/svangerskapspenger/vedlegg').reply(200); //test
+        apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(200); //story
+        apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(200); //test
     }
     return (
         <MemoryRouter initialEntries={[SøknadRoutes.SKJEMA]}>
