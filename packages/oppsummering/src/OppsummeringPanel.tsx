@@ -1,7 +1,7 @@
 import { ReactElement, useState } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { Accordion, ConfirmationPanel, VStack } from '@navikt/ds-react';
+import { ConfirmationPanel, VStack } from '@navikt/ds-react';
 
 import { useAbortSignal } from '@navikt/fp-api';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
@@ -65,7 +65,7 @@ const OppsummeringPanel = <TYPE extends string>({
     return (
         <Step onCancel={cancelApplication} onContinueLater={onContinueLater} steps={stepConfig}>
             <VStack gap="10">
-                <Accordion indent={false}>{children}</Accordion>
+                {children}
                 <ConfirmationPanel
                     label={getSamtykkeTekst(intl, appName, ekstraSamtykketekst)}
                     onChange={() => setChecked((state) => !state)}

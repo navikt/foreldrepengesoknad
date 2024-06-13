@@ -1,7 +1,7 @@
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
+import { Accordion, Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
 import {
     AnnenForelder,
@@ -114,10 +114,10 @@ const skalViseInfoOmFarskapsportal = (
         annenForelderErOppgitt && annenForelderErOppgitt.harRettPåForeldrepengerINorge !== undefined;
     const søkerErIkkeGift = søker.sivilstand === undefined || søker.sivilstand.type !== SivilstandType.GIFT;
     const erAleneOmOmsorg = annenForelderErOppgitt && annenForelderErOppgitt.erAleneOmOmsorg;
+
     return (
-        ((rolle === 'far' && annenForelderHarRettErBesvart) ||
-            (rolle === 'mor' && annenForelderErFarEllerUtenlandsk && annenForelderHarRett) ||
-            (rolle === 'far' && erAleneOmOmsorg)) &&
+        ((rolle === 'far' && (erAleneOmOmsorg || annenForelderHarRettErBesvart)) ||
+            (rolle === 'mor' && annenForelderErFarEllerUtenlandsk && annenForelderHarRett)) &&
         barnetErIkkeFødt &&
         søkerErIkkeGift
     );
@@ -197,55 +197,64 @@ const Oppsummering: FunctionComponent<Props> = ({
                 onContinueLater={navigator.fortsettSøknadSenere}
                 ekstraSamtykketekst={ekstraSamtykketekst}
             >
-                <SøkerOppsummeringspunkt søker={søkerInfo.søker} />
-                <OppsummeringPanel.Punkt tittel="Barnet" hide={erEndringssøknad}>
-                    <BarnOppsummering barn={barn} familiehendelsesdato={familiehendelsesdato!} />
-                </OppsummeringPanel.Punkt>
-                <OppsummeringPanel.Punkt tittel="Den andre forelderen" hide={erEndringssøknad}>
-                    <AnnenForelderOppsummering annenForelder={annenForelder} søkerrolle={søkersituasjon.rolle} />
-                </OppsummeringPanel.Punkt>
-                <BoIUtlandetOppsummeringspunkt
-                    familiehendelseDato={datoOgHendelsetype[0]}
-                    hendelseType={datoOgHendelsetype[1]}
-                    utenlandsopphold={erEndringssøknad ? ({} as any) : tempMappingOpphold(notEmpty(utenlandsopphold))}
-                    tidligereUtenlandsopphold={tempMappingTidligere(tidligereUtenlandsopphold)}
-                    senereUtenlandsopphold={tempMappingSenere(senereUtenlandsopphold)}
-                    hide={erEndringssøknad}
-                />
-                <OppsummeringPanel.Punkt tittel="Arbeidsforhold og andre inntektskilder" hide={erEndringssøknad}>
-                    <ArbeidsforholdOgAndreInntekterOppsummering
-                        arbeidsforhold={søkerInfo.arbeidsforhold}
-                        barn={barn}
-                        søkersituasjon={søkersituasjon}
-                        søkerData={søkerData}
+                <Accordion indent={false}>
+                    <SøkerOppsummeringspunkt søker={søkerInfo.søker} />
+                    <OppsummeringPanel.Punkt tittel="Barnet" hide={erEndringssøknad}>
+                        <BarnOppsummering barn={barn} familiehendelsesdato={familiehendelsesdato!} />
+                    </OppsummeringPanel.Punkt>
+                    <OppsummeringPanel.Punkt tittel="Den andre forelderen" hide={erEndringssøknad}>
+                        <AnnenForelderOppsummering annenForelder={annenForelder} søkerrolle={søkersituasjon.rolle} />
+                    </OppsummeringPanel.Punkt>
+                    <BoIUtlandetOppsummeringspunkt
+                        familiehendelseDato={datoOgHendelsetype[0]}
+                        hendelseType={datoOgHendelsetype[1]}
+                        utenlandsopphold={
+                            erEndringssøknad ? ({} as any) : tempMappingOpphold(notEmpty(utenlandsopphold))
+                        }
+                        tidligereUtenlandsopphold={tempMappingTidligere(tidligereUtenlandsopphold)}
+                        senereUtenlandsopphold={tempMappingSenere(senereUtenlandsopphold)}
+                        hide={erEndringssøknad}
                     />
-                </OppsummeringPanel.Punkt>
-                <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.uttak' })}>
-                    <UttaksplanOppsummering
-                        perioder={uttaksplan}
-                        navnPåForeldre={navnPåForeldre}
-                        annenForelder={annenForelder}
-                        erFarEllerMedmor={søkerErFarEllerMedmor}
-                        registrerteArbeidsforhold={søkerInfo.arbeidsforhold}
-                        dekningsgrad={periodeMedForeldrepenger.dekningsgrad}
-                        antallUkerUttaksplan={uttaksplanMetadata.antallUkerIUttaksplan!}
-                        eksisterendeUttaksplan={eksisterendeSak ? eksisterendeSak.uttaksplan : undefined}
-                        familiehendelsesdato={familiehendelsesdato!}
-                        termindato={termindato}
-                        situasjon={søkersituasjon.situasjon}
-                        erAleneOmOmsorg={erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false}
-                        antallBarn={barn.antallBarn}
-                        ønskerJustertUttakVedFødsel={uttaksplanMetadata.ønskerJustertUttakVedFødsel}
-                    />
-                </OppsummeringPanel.Punkt>
-                <OppsummeringPanel.Punkt
-                    hide={vedlegg === undefined || inneholderIkkeVedlegg}
-                    tittel={intl.formatMessage({
-                        id: manglerDokumentasjon ? 'oppsummering.manglerDokumentasjon' : 'oppsummering.dokumentasjon',
-                    })}
-                >
-                    <DokumentasjonOppsummering vedlegg={vedlegg!} setManglerDokumentasjon={setManglerDokumentasjon} />
-                </OppsummeringPanel.Punkt>
+                    <OppsummeringPanel.Punkt tittel="Arbeidsforhold og andre inntektskilder" hide={erEndringssøknad}>
+                        <ArbeidsforholdOgAndreInntekterOppsummering
+                            arbeidsforhold={søkerInfo.arbeidsforhold}
+                            barn={barn}
+                            søkersituasjon={søkersituasjon}
+                            søkerData={søkerData}
+                        />
+                    </OppsummeringPanel.Punkt>
+                    <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.uttak' })}>
+                        <UttaksplanOppsummering
+                            perioder={uttaksplan}
+                            navnPåForeldre={navnPåForeldre}
+                            annenForelder={annenForelder}
+                            erFarEllerMedmor={søkerErFarEllerMedmor}
+                            registrerteArbeidsforhold={søkerInfo.arbeidsforhold}
+                            dekningsgrad={periodeMedForeldrepenger.dekningsgrad}
+                            antallUkerUttaksplan={uttaksplanMetadata.antallUkerIUttaksplan!}
+                            eksisterendeUttaksplan={eksisterendeSak ? eksisterendeSak.uttaksplan : undefined}
+                            familiehendelsesdato={familiehendelsesdato!}
+                            termindato={termindato}
+                            situasjon={søkersituasjon.situasjon}
+                            erAleneOmOmsorg={erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false}
+                            antallBarn={barn.antallBarn}
+                            ønskerJustertUttakVedFødsel={uttaksplanMetadata.ønskerJustertUttakVedFødsel}
+                        />
+                    </OppsummeringPanel.Punkt>
+                    <OppsummeringPanel.Punkt
+                        hide={vedlegg === undefined || inneholderIkkeVedlegg}
+                        tittel={intl.formatMessage({
+                            id: manglerDokumentasjon
+                                ? 'oppsummering.manglerDokumentasjon'
+                                : 'oppsummering.dokumentasjon',
+                        })}
+                    >
+                        <DokumentasjonOppsummering
+                            vedlegg={vedlegg!}
+                            setManglerDokumentasjon={setManglerDokumentasjon}
+                        />
+                    </OppsummeringPanel.Punkt>
+                </Accordion>
                 <Block visible={manglerDokumentasjon} margin="xl">
                     <Alert variant="info">
                         <VStack gap="2">
