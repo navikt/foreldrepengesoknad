@@ -20,6 +20,7 @@ interface Props {
     minutesLabel: string;
     innholdLabel: string;
     goToNextDefaultStep: () => void;
+    icon?: ReactElement;
 }
 
 const FrontPage: React.FunctionComponent<Props> = ({
@@ -30,6 +31,7 @@ const FrontPage: React.FunctionComponent<Props> = ({
     minutesLabel,
     innholdLabel,
     goToNextDefaultStep,
+    icon,
 }) => (
     <Page
         useLargerBorderRadius
@@ -42,7 +44,8 @@ const FrontPage: React.FunctionComponent<Props> = ({
                                 <LanguageToggle locale={locale} changeLocale={changeLocale} />
                             </div>
                             <IconCircleWrapper color="darkGreen" size="xl">
-                                <CalendarIcon height={28} width={28} fontSize="1.5rem" aria-hidden />
+                                {icon}
+                                {!icon && <CalendarIcon height={28} width={28} fontSize="1.5rem" aria-hidden />}
                             </IconCircleWrapper>
                             <VStack gap="1" align="center">
                                 <Heading size="large">{titleLabel}</Heading>
@@ -58,7 +61,8 @@ const FrontPage: React.FunctionComponent<Props> = ({
                     <GreenHeading>
                         <VStack gap="4">
                             <IconCircleWrapper color="darkGreen" size="xl">
-                                <CalendarIcon height={35} width={35} fontSize="1.5rem" aria-hidden />
+                                {icon}
+                                {!icon && <CalendarIcon height={35} width={35} fontSize="1.5rem" aria-hidden />}
                             </IconCircleWrapper>
                             <VStack gap="1">
                                 <Heading size="large">{titleLabel}</Heading>
