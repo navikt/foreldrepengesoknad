@@ -3,12 +3,6 @@
     "compilerOptions": {
         "baseUrl": "src",
         "jsx": "react-jsx",
-        "paths": {
-            "utils-test/*": ["./utils-test/*"],
-            "uttaksplan/*": ["./uttaksplan/*"],
-            "stories/*": ["./storybook/stories/*"],
-            "app/*": ["./app/*"]
-        },
         "rootDir": "src",
         "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals"]
     },
