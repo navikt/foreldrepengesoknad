@@ -1,3 +1,7 @@
 .widthTextInput {
     width: 300px;
 }
+
+.description {
+    color: var(--ac-form-description, var(--__ac-form-description, var(--a-text-subtle)));
+}

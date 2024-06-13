@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, ChatElipsisIcon, InformationIcon } from '@navikt/aksel-icons';
+import { ArrowLeftIcon, ChatElipsisIcon, CheckmarkIcon, InformationIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
 import useVeilederNavigator from 'appData/useVeilederNavigator';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -40,7 +40,12 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon }) 
 
     return (
         <>
-            <VeilederPage ref={ref} label={intl.formatMessage({ id: 'Tittel' })}>
+            <VeilederPage
+                ref={ref}
+                label={intl.formatMessage({ id: 'OppsummeringSide.Oppsummering' })}
+                description={intl.formatMessage({ id: 'Tittel' })}
+                icon={<CheckmarkIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+            >
                 <VStack gap="5">
                     {gjennomsnittslønn * 12 > grunnbeløpetGanger6 && (
                         <HøyInntektInfobox maxÅrslønnDekket={grunnbeløpetGanger6} isGray />
