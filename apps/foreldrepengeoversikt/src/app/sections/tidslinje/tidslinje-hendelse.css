@@ -44,7 +44,7 @@
 .tidslinje-hendelse--siste_hendelse_på_forsiden:after {
     content: '';
     width: 0px;
-    height: 17%;
+    height: 89%;
     position: absolute;
     bottom: 1;
     left: 1rem;
