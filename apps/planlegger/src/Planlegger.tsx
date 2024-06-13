@@ -10,6 +10,7 @@ import { getAxiosInstance, usePostRequest } from '@navikt/fp-api';
 import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import PlanleggerRouter from './PlanleggerRouter';
+import Environment from './appData/Environment';
 
 export const planleggerApi = getAxiosInstance();
 
@@ -61,7 +62,12 @@ export const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, change
         [hvemHarRett],
     );
 
-    const requestData = usePostRequest<TilgjengeligeStønadskontoer>(planleggerApi, '/rest/konto', params, options);
+    const requestData = usePostRequest<TilgjengeligeStønadskontoer>(
+        planleggerApi,
+        `${Environment.PUBLIC_PATH}/rest/konto`,
+        params,
+        options,
+    );
 
     if (requestData.error) {
         return <ErrorPage />;
