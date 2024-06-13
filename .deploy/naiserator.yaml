@@ -7,6 +7,7 @@ metadata:
     team: teamforeldrepenger
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "16M"
+    config.linkerd.io/proxy-outbound-connect-timeout: "2s"
 spec:
   accessPolicy:
     outbound:
