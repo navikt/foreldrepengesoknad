@@ -222,12 +222,20 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                     </ReadMore>
                                 </VStack>
                             )}
-                        {formValues.erArbeidstakerEllerFrilanser && antattÅrslønn && antattÅrslønn < minÅrslønn && (
-                            <HarIkkeRettTilFpInfobox antattÅrslønn={antattÅrslønn} minÅrslønn={minÅrslønn} showKrIcon />
-                        )}
-                        {formValues.erArbeidstakerEllerFrilanser && antattÅrslønn && antattÅrslønn > maxÅrslønn && (
-                            <HøyInntektInfobox maxÅrslønnDekket={maxÅrslønn} showKrIcon />
-                        )}
+                        {formValues.erArbeidstakerEllerFrilanser &&
+                            antattÅrslønn !== undefined &&
+                            antattÅrslønn < minÅrslønn && (
+                                <HarIkkeRettTilFpInfobox
+                                    antattÅrslønn={antattÅrslønn}
+                                    minÅrslønn={minÅrslønn}
+                                    showKrIcon
+                                />
+                            )}
+                        {formValues.erArbeidstakerEllerFrilanser &&
+                            antattÅrslønn !== undefined &&
+                            antattÅrslønn > maxÅrslønn && (
+                                <HøyInntektInfobox maxÅrslønnDekket={maxÅrslønn} showKrIcon />
+                            )}
                         <Spacer />
                         {gjennomsnittslønn && (
                             <Button
