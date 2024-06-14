@@ -31,7 +31,7 @@ export function addProxyHandler(server: Express, { ingoingUrl, outgoingUrl, scop
             }
             const obo = await requestTokenxOboToken(token, scope);
             if (obo.ok) {
-                request.headers['Authorization'] = `Bearer ${obo.token}`;
+                request.headers['obo-token'] = obo.token;
                 return next();
             } else {
                 console.log('OBO-exchange failed', obo.error);
@@ -42,6 +42,18 @@ export function addProxyHandler(server: Express, { ingoingUrl, outgoingUrl, scop
             target: outgoingUrl,
             changeOrigin: true,
             logger: console,
+            on: {
+                proxyReq: (proxyRequest, request) => {
+                    const obo = request.headers['obo-token'];
+                    if (obo) {
+                        proxyRequest.removeHeader('obo-token');
+                        proxyRequest.removeHeader('cookie');
+                        proxyRequest.setHeader('Authorization', `Bearer ${obo}`);
+                    } else {
+                        console.log(`Access token var not present in session for scope ${scope}`);
+                    }
+                },
+            },
         }),
     );
 }
