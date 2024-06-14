@@ -1,5 +1,5 @@
 import { Tidsperiode, TidsperiodeMedValgfriSluttdato } from './../types/Tidsperiode';
-import { isISODateString } from '@navikt/fp-utils';
+import { getFamiliehendelsedato, isISODateString } from '@navikt/fp-utils';
 import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
@@ -10,6 +10,7 @@ import { TidsperiodeDate, Utsettelsesperiode } from '../types';
 import uttaksConstants from '../constants/constants';
 import { SkjemaelementFeil, hasValue } from './validationUtils';
 import intlUtils from './intlUtils';
+import { Barn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 
 dayjs.extend(utc);
 dayjs.extend(isSameOrAfter);
@@ -48,6 +49,18 @@ export const doesTidsperiodeMedValgfriSluttdatoContainDate = (
     }
 
     return dayjs(date).isBetween(tidsperiode.fom, tidsperiode.tom, 'day', '[]');
+};
+
+export const førsteJuli2024ReglerGjelder = (barn: Barn): boolean => {
+    const førsteJuli2024 = '2024-07-01';
+    if (dayjs().isBefore(dayjs('2024-07-01'), 'day')) {
+        return false;
+    }
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    if ((isFødtBarn(barn) || isAdoptertBarn(barn)) && dayjs(familiehendelsesdato).isBefore(førsteJuli2024, 'day')) {
+        return false;
+    }
+    return true;
 };
 
 export const andreAugust2022ReglerGjelder = (familiehendelsesdato: string | Date): boolean => {

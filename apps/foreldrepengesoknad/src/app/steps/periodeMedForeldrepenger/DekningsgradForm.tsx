@@ -12,6 +12,7 @@ import {
     Uttaksdagen,
     bemUtils,
     capitalizeFirstLetter,
+    førsteJuli2024ReglerGjelder,
     getAntallUker,
     getAntallUkerFraStønadskontoer,
     getFlerbarnsuker,
@@ -86,6 +87,20 @@ type Props = {
     stønadskonto80: TilgjengeligeStønadskontoerForDekningsgrad;
 };
 
+const getDekningsgradReadMoreTekst = (barn: Barn) => {
+    if (førsteJuli2024ReglerGjelder(barn)) {
+        return <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.etterFørsteJuli2024" />;
+    }
+    return <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.førFørsteJuli2024" />;
+};
+
+const getDekningsgradInformasjonDeltUttak = (barn: Barn) => {
+    if (førsteJuli2024ReglerGjelder(barn)) {
+        return <FormattedMessage id="uttaksplaninfo.dekningsgrad.beskrivelse.etterFørsteJuli2024" />;
+    }
+    return <FormattedMessage id="uttaksplaninfo.dekningsgrad.beskrivelse.førFørsteJuli2024" />;
+};
+
 const DekningsgradForm: React.FunctionComponent<Props> = ({
     goToPreviousDefaultStep,
     goToNextDefaultStep,
@@ -140,7 +155,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                         name="dekningsgrad"
                         description={
                             erDeltUttak ? (
-                                <FormattedMessage id="uttaksplaninfo.dekningsgrad.beskrivelse" />
+                                getDekningsgradInformasjonDeltUttak(barn)
                             ) : (
                                 <FormattedMessage id="uttaksplaninfo.dekningsgrad.beskrivelse.alene" />
                             )
@@ -199,15 +214,15 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                     <ReadMore
                         header={
                             erDeltUttak ? (
-                                <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad.header" />
+                                <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.header" />
                             ) : (
-                                <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad.header.alene" />
+                                <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.header.alene" />
                             )
                         }
                     >
-                        <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad" />
+                        {getDekningsgradReadMoreTekst(barn)}
                         <Link href={links.opphold} target="_blank">
-                            <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad.link" />
+                            <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.link" />
                             <ExternalLinkIcon title="a11y-title" fontSize="1.5rem" />
                         </Link>
                     </ReadMore>

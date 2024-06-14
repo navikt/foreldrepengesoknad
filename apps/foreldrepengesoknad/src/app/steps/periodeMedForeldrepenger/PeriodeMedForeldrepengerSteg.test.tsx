@@ -21,12 +21,18 @@ const {
     FarEllerMedmorSøkerOgMorHarLagetUttaksplan,
     FarMedMorMedTermin1Juli2024,
     MorMedTermin1Juli2024OgFarsSøknad,
+    MorFødselBeggeHarRettFødselFør1Juli2024,
+    FarEllerMedmorFødselBeggeHarRettTerminFør1Juli2024,
+    MorBeggeHarRettAdopsjonEtter1Juli2024,
+    FarEllerMedmorAleneomsorgTermin1Juli2024,
 } = composeStories(stories);
 
 describe('<PeriodeMedForeldrepengerSteg>', () => {
+    const gåTilNesteSide = vi.fn();
+    const mellomlagreSøknadOgNaviger = vi.fn();
     it('skal søke som far eller medmor og ha aleneomsorg', async () => {
-        const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknadOgNaviger = vi.fn();
+        // const gåTilNesteSide = vi.fn();
+        // const mellomlagreSøknadOgNaviger = vi.fn();
 
         render(
             <FarEllerMedmorAleneomsorgFødsel
@@ -436,6 +442,179 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 'Hvis barnet deres blir født etter 1. juli, vil dere få en lengre periode hvis dere velger 80 prosent foreldrepenger',
             ),
         ).not.toBeInTheDocument();
+        MockDate.reset();
+    });
+
+    it('Skal vise info om forskjell på 80% og 100% dekningsgrad for barn født før 1.juli 2024, hvis dato er før 1. juli 2024', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        MockDate.set(new Date('2024-06-30'));
+        render(
+            <MorFødselBeggeHarRettFødselFør1Juli2024
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir høyere ved å velge 100% foreldrepenger.',
+            ),
+        ).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
+        expect(
+            await screen.findByText(
+                'Den totale utbetalingen fra NAV blir høyere dersom man velger 100% i stedet for 80%. Likevel kan det være andre grunner som påvirker hva som lønner seg,',
+                { exact: false },
+            ),
+        ).toBeInTheDocument();
+
+        MockDate.reset();
+    });
+    it('Skal vise info om forskjell på 80% og 100% dekningsgrad for barn født før 1.juli 2024, hvis dato er etter 1. juli 2024', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        MockDate.set(new Date('2024-07-01'));
+        render(
+            <MorFødselBeggeHarRettFødselFør1Juli2024
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir høyere ved å velge 100% foreldrepenger.',
+            ),
+        ).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
+        expect(
+            await screen.findByText(
+                'Den totale utbetalingen fra NAV blir høyere dersom man velger 100% i stedet for 80%. Likevel kan det være andre grunner som påvirker hva som lønner seg,',
+                { exact: false },
+            ),
+        ).toBeInTheDocument();
+
+        MockDate.reset();
+    });
+    it('Skal vise info om at det er lite forskjell på 80% og 100% dekningsgrad for barn med termin før 1.juli 2024, hvis dato er etter 1. juli 2024', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        MockDate.set(new Date('2024-07-01'));
+        render(
+            <FarEllerMedmorFødselBeggeHarRettTerminFør1Juli2024
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir omtrent lik om man velger 100 % eller 80 %.',
+            ),
+        ).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
+        expect(
+            await screen.findByText(
+                'Den totale utbetalingen blir omtrent lik om man velger 100 % eller 80 %. Likevel kan det være andre grunner som påvirker hva som lønner seg,',
+                { exact: false },
+            ),
+        ).toBeInTheDocument();
+
+        MockDate.reset();
+    });
+    it('Skal vise info om forskjell på 80% og 100% dekningsgrad for barn med adopsjonsdato etter 1.juli 2024, hvis dato er før 1. juli 2024', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        MockDate.set(new Date('2024-06-30'));
+        render(
+            <MorBeggeHarRettAdopsjonEtter1Juli2024
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir høyere ved å velge 100% foreldrepenger.',
+            ),
+        ).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
+        expect(
+            await screen.findByText(
+                'Den totale utbetalingen fra NAV blir høyere dersom man velger 100% i stedet for 80%. Likevel kan det være andre grunner som påvirker hva som lønner seg,',
+                { exact: false },
+            ),
+        ).toBeInTheDocument();
+
+        MockDate.reset();
+    });
+    it('Skal vise info om at det er lite forskjell på 80% og 100% dekningsgrad for barn med adopsjonsdato etter 1.juli 2024, hvis dato er etter 1. juli 2024.', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        MockDate.set(new Date('2024-07-01'));
+        render(
+            <MorBeggeHarRettAdopsjonEtter1Juli2024
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir omtrent lik om man velger 100 % eller 80 %.',
+                {
+                    exact: false,
+                },
+            ),
+        ).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
+        expect(
+            await screen.findByText(
+                'Den totale utbetalingen blir omtrent lik om man velger 100 % eller 80 %. Likevel kan det være andre grunner som påvirker hva som lønner seg, hvis man for eksempel må ha ulønnet permisjon i en periode.',
+            ),
+        ).toBeInTheDocument();
+
+        MockDate.reset();
+    });
+    it('Skal vise info om forskjell på 80% og 100% dekningsgrad for aleneomsorg med barn med termin etter 1.juli 2024, hvis dato er før 1. juli 2024.', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+        MockDate.set(new Date('2024-06-30'));
+        render(
+            <FarEllerMedmorAleneomsorgTermin1Juli2024
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Dette valget kan ikke endres senere.')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Hva lønner seg for meg?'));
+        expect(
+            await screen.findByText(
+                'Den totale utbetalingen fra NAV blir høyere dersom man velger 100% i stedet for 80%. Likevel kan det være andre grunner som påvirker hva som lønner seg, hvis man for eksempel må ha ulønnet permisjon i en periode.',
+            ),
+        ).toBeInTheDocument();
+
+        MockDate.reset();
+    });
+    it('Skal vise info om  at det er lite forskjell på 80% og 100% dekningsgrad for aleneomsorg med barn med termin etter 1.juli 2024, hvis dato er etter 1. juli 2024.', async () => {
+        MockDate.set(new Date('2024-07-01'));
+        render(
+            <FarEllerMedmorAleneomsorgTermin1Juli2024
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Dette valget kan ikke endres senere.')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Hva lønner seg for meg?'));
+        expect(
+            await screen.findByText(
+                'Den totale utbetalingen blir omtrent lik om man velger 100 % eller 80 %. Likevel kan det være andre grunner som påvirker hva som lønner seg, hvis man for eksempel må ha ulønnet permisjon i en periode.',
+            ),
+        ).toBeInTheDocument();
+
         MockDate.reset();
     });
 });
