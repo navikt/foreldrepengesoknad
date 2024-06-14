@@ -103,20 +103,15 @@ const skalViseInfoOmFarskapsportal = (
     barnetErIkkeFødt?: boolean,
 ): boolean => {
     const erAnnenForelderOppgitt = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
-    if (!erAnnenForelderOppgitt) {
-        return false;
-    }
-
-    const harAnnenForelderRett = erAnnenForelderOppgitt.harRettPåForeldrepengerINorge;
-    const harRettErBesvartForAnnenForelder = harAnnenForelderRett !== undefined;
+    const harAnnenForelderRett = !!erAnnenForelderOppgitt?.harRettPåForeldrepengerINorge;
     const erAnnenForelderFar =
-        !!erAnnenForelderOppgitt.fnr && getKjønnFromFnrString(erAnnenForelderOppgitt.fnr) === 'M';
-    const harAnnenForelderUtenlandskFnr = !!erAnnenForelderOppgitt.utenlandskFnr;
+        !!erAnnenForelderOppgitt?.fnr && getKjønnFromFnrString(erAnnenForelderOppgitt.fnr) === 'M';
+    const harAnnenForelderUtenlandskFnr = !!erAnnenForelderOppgitt?.utenlandskFnr;
     const erSøkerIkkeGift = søker.sivilstand?.type !== SivilstandType.GIFT;
 
     return (
-        ((rolle === 'far' && (erAnnenForelderOppgitt.erAleneOmOmsorg || harRettErBesvartForAnnenForelder)) ||
-            (rolle === 'mor' && erAnnenForelderFar && !harAnnenForelderUtenlandskFnr && !!harAnnenForelderRett)) &&
+        (rolle === 'far' ||
+            (rolle === 'mor' && erAnnenForelderFar && harAnnenForelderRett && !harAnnenForelderUtenlandskFnr)) &&
         !!barnetErIkkeFødt &&
         erSøkerIkkeGift
     );
