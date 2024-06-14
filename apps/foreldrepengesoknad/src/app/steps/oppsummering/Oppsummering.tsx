@@ -101,25 +101,24 @@ const skalViseInfoOmFarskapsportal = (
     rolle: Søkerrolle,
     annenForelder: AnnenForelder,
     barnetErIkkeFødt?: boolean,
-) => {
-    const annenForelderErOppgitt = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
+): boolean => {
+    const erAnnenForelderOppgitt = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
+    if (!erAnnenForelderOppgitt) {
+        return false;
+    }
 
-    const annenForelderHarRett =
-        annenForelderErOppgitt && annenForelderErOppgitt.harRettPåForeldrepengerINorge === true;
-    const annenForelderFnr = annenForelderErOppgitt ? annenForelderErOppgitt.fnr : undefined;
-    const annenForelderErFarEllerUtenlandsk =
-        (annenForelderFnr !== undefined && getKjønnFromFnrString(annenForelderFnr) === 'M') ||
-        (annenForelderErOppgitt && !!annenForelderErOppgitt.utenlandskFnr);
-    const annenForelderHarRettErBesvart =
-        annenForelderErOppgitt && annenForelderErOppgitt.harRettPåForeldrepengerINorge !== undefined;
-    const søkerErIkkeGift = søker.sivilstand === undefined || søker.sivilstand.type !== SivilstandType.GIFT;
-    const erAleneOmOmsorg = annenForelderErOppgitt && annenForelderErOppgitt.erAleneOmOmsorg;
+    const harAnnenForelderRett = erAnnenForelderOppgitt.harRettPåForeldrepengerINorge;
+    const harRettErBesvartForAnnenForelder = harAnnenForelderRett !== undefined;
+    const erAnnenForelderFar =
+        !!erAnnenForelderOppgitt.fnr && getKjønnFromFnrString(erAnnenForelderOppgitt.fnr) === 'M';
+    const harAnnenForelderUtenlandskFnr = !!erAnnenForelderOppgitt.utenlandskFnr;
+    const erSøkerIkkeGift = søker.sivilstand?.type !== SivilstandType.GIFT;
 
     return (
-        ((rolle === 'far' && (erAleneOmOmsorg || annenForelderHarRettErBesvart)) ||
-            (rolle === 'mor' && annenForelderErFarEllerUtenlandsk && annenForelderHarRett)) &&
-        barnetErIkkeFødt &&
-        søkerErIkkeGift
+        ((rolle === 'far' && (erAnnenForelderOppgitt.erAleneOmOmsorg || harRettErBesvartForAnnenForelder)) ||
+            (rolle === 'mor' && erAnnenForelderFar && !harAnnenForelderUtenlandskFnr && !!harAnnenForelderRett)) &&
+        !!barnetErIkkeFødt &&
+        erSøkerIkkeGift
     );
 };
 
