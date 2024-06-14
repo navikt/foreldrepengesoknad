@@ -8,23 +8,6 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "16M"
 spec:
-  accessPolicy:
-    outbound:
-      rules:
-        - application: foreldrepengesoknad-api
-      external:
-        {{#each externalHosts as |url|}}
-        - host: {{url}}
-        {{/each}}
-  {{#if autentisering}}
-  tokenx:
-    enabled: true
-  idporten:
-    enabled: true
-    sidecar:
-      enabled: true
-      autoLogin: true
-  {{/if}}
   image: {{image}}
   port: 8080
   replicas:
@@ -48,6 +31,23 @@ spec:
   {{#each ingresses as |url|}}
     - {{url}}
   {{/each}}
+  {{#if autentisering}}
+  tokenx:
+    enabled: true
+  idporten:
+    enabled: true
+    sidecar:
+      enabled: true
+      autoLogin: true
+  {{/if}}
+  accessPolicy:
+    outbound:
+      rules:
+        - application: foreldrepengesoknad-api
+      external:
+        {{#each external as |url|}}
+        - host: {{url}}
+        {{/each}}
   resources:
     limits:
       cpu: 500m
