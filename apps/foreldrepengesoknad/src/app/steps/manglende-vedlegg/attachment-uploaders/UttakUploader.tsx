@@ -13,7 +13,6 @@ import { dateToISOString } from '@navikt/fp-formik';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 
-import Environment from 'app/Environment';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
@@ -109,7 +108,7 @@ const UttakUploader: FunctionComponent<Props> = ({
 
                     return updateAttachments(attachmentsMedMetadata);
                 }}
-                saveAttachment={getSaveAttachment(Environment.REST_API_URL, 'foreldrepenger')}
+                saveAttachment={getSaveAttachment('foreldrepenger')}
             />
         </VStack>
     );

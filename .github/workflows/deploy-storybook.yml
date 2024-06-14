@@ -1,21 +1,20 @@
-name: "Deploy storybook"
+name: 'Deploy storybook'
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ['master']
     paths-ignore:
-      - 'server_for_redirect/**'
       - '.github/workflows/build-redirect.yml'
-      - '.deploy/planlegger_redirect.yaml'
       - 'server/**'
+      - 'server-uinnlogget/**'
       - '.github/workflows/build-server.yml'
 
 jobs:
   deploy-storybook:
-   permissions:
-     contents: write
-     pages: write
-   uses: navikt/fp-gha-workflows/.github/workflows/deploy-storybook.yml@main
-   with:
-     package-manager: pnpm
-   secrets: inherit
+    permissions:
+      contents: write
+      pages: write
+    uses: navikt/fp-gha-workflows/.github/workflows/deploy-storybook.yml@main
+    with:
+      package-manager: pnpm
+    secrets: inherit

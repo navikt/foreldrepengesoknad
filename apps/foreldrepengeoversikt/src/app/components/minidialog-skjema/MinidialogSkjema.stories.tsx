@@ -1,12 +1,15 @@
-import { StoryFn } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import MockAdapter from 'axios-mock-adapter';
-import { attachmentApi } from '@navikt/fp-api';
-import { Ytelse } from 'app/types/Ytelse';
-import MinidialogSkjema from './MinidialogSkjema';
+import { StoryFn } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import MockAdapter from 'axios-mock-adapter';
 
 import '@navikt/ds-css';
+
+import { getAxiosInstance } from '@navikt/fp-api';
+
+import { Ytelse } from 'app/types/Ytelse';
+
+import MinidialogSkjema from './MinidialogSkjema';
 
 const queryClient = new QueryClient();
 
@@ -16,9 +19,9 @@ export default {
 };
 
 const Template: StoryFn<{ skalFeileOpplasting: boolean; send: () => void }> = ({ skalFeileOpplasting, send }) => {
-    const apiMock = new MockAdapter(attachmentApi);
+    const apiMock = new MockAdapter(getAxiosInstance());
     if (!skalFeileOpplasting) {
-        apiMock.onPost('test/storage/foreldrepenger/vedlegg').reply(200);
+        apiMock.onPost('test/rest/storage/foreldrepenger/vedlegg').reply(200);
     }
 
     return (

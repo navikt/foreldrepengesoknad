@@ -5,7 +5,7 @@ on:
     paths:
       - 'apps/veivisere/**'
       - 'packages/**'
-      - 'server/**'
+      - 'server-uinnlogget/**'
       - '.deploy/veivisere/**'
       - '.deploy/naiserator.yaml'
       - '.github/workflows/build-veivisere.yml'

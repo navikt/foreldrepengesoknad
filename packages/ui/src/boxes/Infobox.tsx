@@ -35,7 +35,7 @@ const Infoboks: React.FC<Props> = ({
                         {header}
                     </Heading>
                 )}
-                {useHorizontalDivider && <HorizontalLine isBlack />}
+                {useHorizontalDivider && <HorizontalLine isBlue />}
                 {children}
             </VStack>
             {icon && (

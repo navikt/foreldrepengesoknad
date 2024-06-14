@@ -1,7 +1,7 @@
 {
-    "name": "veiledere",
+    "name": "veivisere",
     "version": "1.0.0",
-    "description": "NAV Foreldrepengeveiledere",
+    "description": "NAV Foreldrepengeveivisere",
     "main": "./src/app/bootstrap.tsx",
     "type": "module",
     "author": "NAV",
@@ -74,6 +74,7 @@
         "axios-mock-adapter": "1.22.0",
         "fast-glob": "^3.3.2",
         "mustache-loader": "^1.4.3",
+        "storybook": "8.1.6",
         "tsconfig": "workspace:*",
         "typescript": "^5.4.3",
         "vite": "^5.1.6",

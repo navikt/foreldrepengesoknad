@@ -22,13 +22,13 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
     const intl = useIntl();
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
 
-    const { data: søkerinfoData, error: søkerinfoError } = useRequest<Søkerinfo>(svpApi, '/sokerinfo');
+    const { data: søkerinfoData, error: søkerinfoError } = useRequest<Søkerinfo>(svpApi, '/rest/sokerinfo');
 
     const {
         data: mellomlagretData,
         loading: loadingMellomlagretData,
         error: errorMellomlagretData,
-    } = useRequest<SvpDataMapAndMetaData>(svpApi, '/storage/svangerskapspenger');
+    } = useRequest<SvpDataMapAndMetaData>(svpApi, '/rest/storage/svangerskapspenger');
 
     if (søkerinfoError || errorMellomlagretData) {
         return <ApiErrorHandler error={notEmpty(søkerinfoError || errorMellomlagretData)} />;

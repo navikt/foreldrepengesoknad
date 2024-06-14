@@ -39,6 +39,7 @@
     "OppsummeringSide.HvaErEr": "Hva er engangsstønad?",
     "OppsummeringSide.EsSkalBidra": "Engangsstønad er ment å bidra til å dekke noen av utgiftene i forbindelse med å få barn. Stønaden er en engangssum på {engangsstønad} kroner.",
     "OppsummeringSide.Tilbake": "Tilbake til spørsmålene",
+    "OppsummeringSide.Oppsummering": "Oppsummering",
     "HøyInntektInfobox.DelvisDekning": "Du får dekket opptil {maxÅrslønn} kr av din inntekt",
     "HøyInntektInfobox.OppgittHøyereInntekt": "Du har oppgitt en inntekt høyere enn dette, men dette dekkes ikke av NAV.",
     "HøyInntektInfobox.HøyereLenke1": "{maxÅrslønn} kr er seks ganger ",

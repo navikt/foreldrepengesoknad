@@ -1,7 +1,5 @@
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/fp-formik';
+import { QuestionVisibility, YesOrNo } from '@navikt/fp-formik';
 
 import { UttaksplanFormData, UttaksplanFormField } from './UttaksplanFormConfig';
 

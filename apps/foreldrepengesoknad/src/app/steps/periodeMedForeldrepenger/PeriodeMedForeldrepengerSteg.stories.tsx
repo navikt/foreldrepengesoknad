@@ -13,7 +13,6 @@ import {
     TilgjengeligeStønadskontoerForDekningsgrad,
 } from '@navikt/fp-types';
 
-import Environment from 'app/Environment';
 import { FpApiDataContext } from 'app/api/context/FpApiDataContext';
 import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
@@ -21,8 +20,8 @@ import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 
 import PeriodeMedForeldrepengerSteg from './PeriodeMedForeldrepengerSteg';
 
-const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
-const STØNADSKONTO_URL = `${Environment.REST_API_URL}/konto`;
+const UTTAKSPLAN_ANNEN_URL = '/rest/innsyn/v2/annenPartVedtak';
+const STØNADSKONTO_URL = `/rest/konto`;
 
 const promiseAction =
     () =>

@@ -3,7 +3,7 @@ import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 import { MemoryRouter } from 'react-router-dom';
 
-import { attachmentApi } from '@navikt/fp-api';
+import { getAxiosInstance } from '@navikt/fp-api';
 import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Situasjon, Søkerinfo } from '@navikt/fp-types';
@@ -108,8 +108,8 @@ const Template: StoryFn<Props> = ({
 }) => {
     initAmplitude();
 
-    const apiMock = new MockAdapter(attachmentApi);
-    apiMock.onPost('/storage/foreldrepenger/vedlegg').reply(200); //story
+    const apiMock = new MockAdapter(getAxiosInstance());
+    apiMock.onPost('/rest/storage/foreldrepenger/vedlegg').reply(200); //story
     apiMock.onPost('http://localhost:8888/rest/storage/foreldrepenger/vedlegg').reply(200); //test
 
     return (

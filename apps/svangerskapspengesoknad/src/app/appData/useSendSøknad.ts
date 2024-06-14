@@ -5,7 +5,6 @@ import { useCallback, useMemo, useState } from 'react';
 import { ApiAccessError, ApiGeneralError, deleteData, isApiError, postData } from '@navikt/fp-api';
 import { Kvittering, LocaleNo } from '@navikt/fp-types';
 
-import Environment from './Environment';
 import { useContextGetAnyData } from './SvpDataContext';
 import { getSøknadForInnsending } from './getSøknadForInnsending';
 
@@ -26,7 +25,7 @@ const useSendSøknad = (svpApi: AxiosInstance, setKvittering: (kvittering: Kvitt
             try {
                 kvittering = await postData<typeof søknadForInnsending, Kvittering>(
                     svpApi,
-                    `${Environment.REST_API_URL}/soknad`,
+                    `/rest/soknad`,
                     søknadForInnsending,
                     FEIL_VED_INNSENDING,
                     true,
@@ -45,7 +44,7 @@ const useSendSøknad = (svpApi: AxiosInstance, setKvittering: (kvittering: Kvitt
 
             if (kvittering) {
                 try {
-                    await deleteData(svpApi, '/storage/svangerskapspenger', FEIL_VED_INNSENDING, abortSignal);
+                    await deleteData(svpApi, '/rest/storage/svangerskapspenger', FEIL_VED_INNSENDING, abortSignal);
                 } catch (error) {
                     // Vi bryr oss ikke om feil her. Logges bare i backend
                 }

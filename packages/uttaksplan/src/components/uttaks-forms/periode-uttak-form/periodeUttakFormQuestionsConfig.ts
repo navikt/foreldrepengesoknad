@@ -1,4 +1,3 @@
-import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
 import dayjs from 'dayjs';
 
 import {
@@ -15,7 +14,7 @@ import {
     hasValue,
     isValidTidsperiode,
 } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/fp-formik';
+import { QuestionConfig, Questions, YesOrNo } from '@navikt/fp-formik';
 
 import hvemSkalTaUttakSkalBesvares from '../../../utils/uttaksskjema/hvemSkalTaUttakSkalBesvares';
 import getUttakSkjemaregler, {

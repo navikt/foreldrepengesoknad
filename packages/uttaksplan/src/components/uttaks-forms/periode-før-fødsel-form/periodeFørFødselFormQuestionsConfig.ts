@@ -1,5 +1,6 @@
 import { hasValue, isValidTidsperiode } from '@navikt/fp-common';
-import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
+import { QuestionConfig, Questions } from '@navikt/fp-formik';
+
 import { PeriodeFørFødselFormData, PeriodeFørFødselFormField } from './periodeFørFødselFormConfig';
 
 const PeriodeFørFødselFormConfig: QuestionConfig<PeriodeFørFødselFormData, PeriodeFørFødselFormField> = {

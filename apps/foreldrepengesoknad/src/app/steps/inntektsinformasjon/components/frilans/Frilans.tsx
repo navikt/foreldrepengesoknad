@@ -1,9 +1,8 @@
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
 import { Block, date20YearsAgo, dateToday, intlUtils } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/fp-formik';
+import { QuestionVisibility, YesOrNo } from '@navikt/fp-formik';
 
 import {
     InntektsinformasjonFormComponents,

@@ -5,7 +5,7 @@ on:
     paths:
       - 'apps/planlegger/**'
       - 'packages/**'
-      - 'server/**'
+      - 'server-uinnlogget/**'
       - '.deploy/planlegger/**'
       - '.deploy/naiserator.yaml'
       - '.github/workflows/build-planlegger.yml'

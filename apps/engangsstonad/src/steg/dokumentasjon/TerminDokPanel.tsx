@@ -1,4 +1,3 @@
-import Environment from 'appData/Environment';
 import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
@@ -74,7 +73,7 @@ const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAtt
                     skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
                     existingAttachments={attachments}
                     updateAttachments={updateAttachments}
-                    saveAttachment={getSaveAttachment(Environment.REST_API_URL, 'engangsstonad')}
+                    saveAttachment={getSaveAttachment('engangsstonad')}
                 />
             </VStack>
         </>

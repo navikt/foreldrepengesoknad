@@ -3,12 +3,11 @@ import MockAdapter from 'axios-mock-adapter';
 
 import '@navikt/ds-css';
 
-import { attachmentApi } from '@navikt/fp-api';
+import { getAxiosInstance } from '@navikt/fp-api';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søker, Søkerinfo } from '@navikt/fp-types';
 
 import AppContainer from './AppContainer';
-import { svpApi } from './SvangerskapspengesøknadRoutes';
 import { SvpDataMapAndMetaData } from './appData/useMellomlagreSøknad';
 
 const søkerinfo = {
@@ -85,15 +84,15 @@ const Template: StoryFn<{ søkerinfo: Søkerinfo; mellomlagretData?: SvpDataMapA
     doLogging = true,
 }) => {
     initAmplitude();
-    const apiMock = new MockAdapter(svpApi);
-    apiMock.onGet('/sokerinfo').reply(() => {
+    const apiMock = new MockAdapter(getAxiosInstance());
+    apiMock.onGet('/rest/sokerinfo').reply(() => {
         if (doLogging) {
             console.log('network request: get /sokerinfo');
         }
         return [200, søkerinfo];
     });
 
-    apiMock.onGet('/storage/svangerskapspenger').reply(() => {
+    apiMock.onGet('/rest/storage/svangerskapspenger').reply(() => {
         if (doLogging) {
             console.log('network request: get /storage/svangerskapspenger');
         }
@@ -107,35 +106,34 @@ const Template: StoryFn<{ søkerinfo: Søkerinfo; mellomlagretData?: SvpDataMapA
         return [200, {}];
     });
 
-    apiMock.onPost('/storage/svangerskapspenger/vedlegg').reply(() => {
+    apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(() => {
         if (doLogging) {
             console.log('network request: post /storage/svangerskapspenger/vedlegg');
         }
         return [200];
     });
-    apiMock.onPost('/storage/svangerskapspenger').reply(() => {
+    apiMock.onPost('/rest/storage/svangerskapspenger').reply(() => {
         if (doLogging) {
             console.log('network request: post /storage/svangerskapspenger');
         }
         return [200];
     });
 
-    apiMock.onDelete('/storage/svangerskapspenger').reply(() => {
+    apiMock.onDelete('/rest/storage/svangerskapspenger').reply(() => {
         if (doLogging) {
             console.log('network request: delete /storage/svangerskapspenger');
         }
         return [200];
     });
 
-    const attachmentApiMock = new MockAdapter(attachmentApi);
     //story
-    attachmentApiMock.onPost('/rest-api/storage/svangerskapspenger/vedlegg').reply(() => {
+    apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(() => {
         if (doLogging) {
             console.log('network request: post /storage/svangerskapspenger/vedlegg');
         }
         return [200];
     });
-    attachmentApiMock.onPost('http://localhost:8888/rest/storage/svangerskapspenger/vedlegg').reply(200, {}); //test
+    apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(200, {}); //test
 
     return <AppContainer />;
 };

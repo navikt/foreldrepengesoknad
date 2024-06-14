@@ -1,7 +1,6 @@
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 
-import Environment from 'app/Environment';
 import { RequestStatus } from 'app/types/RequestState';
 import { usePostRequest } from 'app/utils/hooks/useRequest';
 
@@ -26,9 +25,9 @@ const hashCode = (string: string) => {
 };
 
 const TYPE_URL_MAP = {
-    [FpApiDataType.ANNEN_PART_VEDTAK]: `/innsyn/v2/annenPartVedtak`,
-    [FpApiDataType.NESTE_SAK_ANNEN_PART_VEDTAK]: `/innsyn/v2/annenPartVedtak`,
-    [FpApiDataType.STØNADSKONTOER]: `${Environment.REST_API_URL}/konto`,
+    [FpApiDataType.ANNEN_PART_VEDTAK]: `/rest/innsyn/v2/annenPartVedtak`,
+    [FpApiDataType.NESTE_SAK_ANNEN_PART_VEDTAK]: `/rest/innsyn/v2/annenPartVedtak`,
+    [FpApiDataType.STØNADSKONTOER]: `/rest/konto`,
 };
 
 export const useApiPostData = <DATA_TYPE extends FpApiDataType, PARAMS extends object>(

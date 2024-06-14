@@ -44,13 +44,16 @@
     },
     "globalEnv": [
         "APPRES_CMS_URL",
-        "REST_API_URL",
-        "LOGIN_URL",
+        "FORELDREPENGER_API_URL",
+        "FORELDREPENGER_API_SCOPE",
         "FEATURE_VIS_FEILSIDE",
         "FEATURE_VIS_ALERTSTRIPE",
         "APP_VERSION",
         "LOG_VALIDATION",
+        "INNSYN",
         "NODE_ENV",
-        "PUBLIC_PATH"
+        "ENV",
+        "PUBLIC_PATH",
+        "PORT"
     ]
 }

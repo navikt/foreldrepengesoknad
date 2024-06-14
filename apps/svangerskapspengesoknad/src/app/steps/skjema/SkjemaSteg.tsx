@@ -11,7 +11,6 @@ import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
 import { FileUploader, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import Environment from 'app/appData/Environment';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
@@ -143,7 +142,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({
                             skjemanummer={Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING}
                             existingAttachments={defaultValues?.vedlegg}
                             updateAttachments={updateAttachments}
-                            saveAttachment={getSaveAttachment(Environment.REST_API_URL, 'svangerskapspenger')}
+                            saveAttachment={getSaveAttachment('svangerskapspenger')}
                         />
                     </VStack>
                     <StepButtonsHookForm
