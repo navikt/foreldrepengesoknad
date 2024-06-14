@@ -8,6 +8,7 @@
         "nav.no"
     ],
     "env": {
+        "INNSYN": "https://foreldrepenger.nav.no",
         "LOG_VALIDATION": false,
         "ENV": "prod"
     }

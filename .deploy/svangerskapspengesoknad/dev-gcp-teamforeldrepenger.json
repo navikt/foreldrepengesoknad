@@ -8,6 +8,7 @@
         "dekoratoren.ekstern.dev.nav.no"
     ],
     "env": {
+        "INNSYN": "https://foreldrepenger.intern.dev.nav.no",
         "LOG_VALIDATION": false,
         "ENV": "dev"
     }

@@ -64,8 +64,6 @@ spec:
      value: "http://foreldrepengesoknad-api/rest"
    - name: FORELDREPENGER_API_SCOPE
      value: "{{env.ENV}}-gcp:teamforeldrepenger:foreldrepengesoknad-api"
-   - name: INNSYN
-     value: http://foreldrepengeoversikt
    - name: APP_VERSION
      value: {{image}}
    - name: NODE_ENV
