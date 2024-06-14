@@ -13,7 +13,9 @@ spec:
       rules:
         - application: foreldrepengesoknad-api
       external:
-        - host: {{dekoratoren}}
+        {{#each externalHosts as |host|}}
+        - host: {{host}}
+        {{/each}}
   {{#if autentisering}}
   tokenx:
     enabled: true
