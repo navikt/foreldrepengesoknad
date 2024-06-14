@@ -1,14 +1,13 @@
 {
     "app": "engangsstonad",
-    "dekoratoren": "www.nav.no",
     "autentisering": true,
     "ingresses": [
         "https://engangsstonad.nav.no"
     ],
+    "external": [
+        "nav.no"
+    ],
     "env": {
-        "FORELDREPENGER_API_URL": "https://foreldrepengesoknad-api.nav.no/rest",
-        "FORELDREPENGER_API_SCOPE": "prod-gcp:teamforeldrepenger:foreldrepengesoknad-api",
-        "INNSYN": "https://foreldrepenger.nav.no",
         "ENV": "prod"
     }
 }

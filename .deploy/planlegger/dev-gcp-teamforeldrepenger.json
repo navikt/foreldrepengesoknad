@@ -5,12 +5,9 @@
         "https://www.intern.dev.nav.no/foreldrepenger/planlegger"
     ],
     "external": [
-        "intern.dev.nav.no",
         "dekoratoren.ekstern.dev.nav.no"
     ],
     "env": {
-        "FORELDREPENGER_API_URL": "http://foreldrepengesoknad-api/rest",
-        "INNSYN": "https://foreldrepenger.intern.dev.nav.no",
         "PUBLIC_PATH": "/foreldrepenger/planlegger",
         "ENV": "dev"
     }

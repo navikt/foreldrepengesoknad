@@ -7,11 +7,10 @@ import { configureReverseProxyApi } from './reverseProxy';
 export const server = express();
 
 setupServerDefaults(server);
+setupActuators(server);
 
 // Logging i json format
 server.use(logger.morganMiddleware);
-
-setupActuators(server);
 
 configureReverseProxyApi(server);
 
