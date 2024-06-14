@@ -21,7 +21,7 @@ jobs:
     permissions:
       packages: write
       id-token: write
-    uses: navikt/fp-gha-workflows/.github/workflows/build-docker-bake.yml@install-auth-token
+    uses: navikt/fp-gha-workflows/.github/workflows/build-docker-bake.yml@main
     with:
       runs-on: 'ubuntu-latest-4-cores' # default: ubuntu-latest
       push-image: ${{ github.ref_name == 'master' }} # default: false
