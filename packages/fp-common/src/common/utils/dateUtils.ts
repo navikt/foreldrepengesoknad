@@ -53,7 +53,7 @@ export const doesTidsperiodeMedValgfriSluttdatoContainDate = (
 
 export const førsteJuli2024ReglerGjelder = (barn: Barn): boolean => {
     const førsteJuli2024 = '2024-07-01';
-    if (dayjs().isBefore(dayjs('2024-07-01'), 'day')) {
+    if (dayjs().isBefore(dayjs(førsteJuli2024), 'day')) {
         return false;
     }
     const familiehendelsesdato = getFamiliehendelsedato(barn);
