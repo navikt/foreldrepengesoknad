@@ -4,7 +4,7 @@
     "ingresses": [
         "https://www.ekstern.dev.nav.no/foreldrepenger/planlegger"
     ],
-    "externalHosts": [
+    "external": [
         "ekstern.dev.nav.no",
         "dekoratoren.ekstern.dev.nav.no"
     ],

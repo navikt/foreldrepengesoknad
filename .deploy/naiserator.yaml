@@ -31,6 +31,13 @@ spec:
   {{#each ingresses as |url|}}
     - {{url}}
   {{/each}}
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 200m
+      memory: 256Mi
   {{#if autentisering}}
   tokenx:
     enabled: true
@@ -45,16 +52,9 @@ spec:
       rules:
         - application: foreldrepengesoknad-api
       external:
-        {{#each external as |url|}}
+      {{#each external as |url|}}
         - host: {{url}}
-        {{/each}}
-  resources:
-    limits:
-      cpu: 500m
-      memory: 512Mi
-    requests:
-      cpu: 200m
-      memory: 256Mi
+      {{/each}}
   env:
   {{#each env}}
    - name: {{@key}}
