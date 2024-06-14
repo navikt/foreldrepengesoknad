@@ -2,10 +2,10 @@
     "app": "planlegger",
     "autentisering": false,
     "ingresses": [
-        "https://www.dev.nav.no/foreldrepenger/planlegger"
+        "https://www.intern.dev.nav.no/foreldrepenger/planlegger"
     ],
     "external": [
-        "dev.nav.no",
+        "intern.dev.nav.no",
         "dekoratoren.ekstern.dev.nav.no"
     ],
     "env": {
