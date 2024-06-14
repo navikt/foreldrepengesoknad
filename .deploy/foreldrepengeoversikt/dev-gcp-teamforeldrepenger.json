@@ -1,13 +1,13 @@
 {
     "app": "foreldrepengeoversikt",
-    "dekoratoren": "dekoratoren.ekstern.dev.nav.no",
     "autentisering": true,
     "ingresses": [
         "https://foreldrepenger.intern.dev.nav.no"
     ],
+    "external": [
+        "dekoratoren.ekstern.dev.nav.no"
+    ],
     "env": {
-        "FORELDREPENGER_API_URL": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest",
-        "FORELDREPENGER_API_SCOPE": "dev-gcp:teamforeldrepenger:foreldrepengesoknad-api",
         "ENV": "dev"
     }
 }

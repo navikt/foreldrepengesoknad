@@ -8,21 +8,6 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "16M"
 spec:
-  accessPolicy:
-    outbound:
-      rules:
-        - application: foreldrepengesoknad-api
-      external:
-        - host: {{dekoratoren}}
-  {{#if autentisering}}
-  tokenx:
-    enabled: true
-  idporten:
-    enabled: true
-    sidecar:
-      enabled: true
-      autoLogin: true
-  {{/if}}
   image: {{image}}
   port: 8080
   replicas:
@@ -53,11 +38,32 @@ spec:
     requests:
       cpu: 200m
       memory: 256Mi
+  {{#if autentisering}}
+  tokenx:
+    enabled: true
+  idporten:
+    enabled: true
+    sidecar:
+      enabled: true
+      autoLogin: true
+  {{/if}}
+  accessPolicy:
+    outbound:
+      rules:
+        - application: foreldrepengesoknad-api
+      external:
+      {{#each external as |url|}}
+        - host: {{url}}
+      {{/each}}
   env:
   {{#each env}}
    - name: {{@key}}
      value: "{{this}}"
   {{/each}}
+   - name: FORELDREPENGER_API_URL
+     value: "http://foreldrepengesoknad-api/rest"
+   - name: FORELDREPENGER_API_SCOPE
+     value: "{{env.ENV}}-gcp:teamforeldrepenger:foreldrepengesoknad-api"
    - name: APP_VERSION
      value: {{image}}
    - name: NODE_ENV

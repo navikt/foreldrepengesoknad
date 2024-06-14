@@ -1,14 +1,13 @@
 {
     "app": "planlegger",
-    "dekoratoren": "dekoratoren.ekstern.dev.nav.no",
     "autentisering": false,
     "ingresses": [
-        "https://www.ekstern.dev.nav.no/foreldrepenger/planlegger"
+        "https://www.intern.dev.nav.no/foreldrepenger/planlegger"
+    ],
+    "external": [
+        "dekoratoren.ekstern.dev.nav.no"
     ],
     "env": {
-        "FORELDREPENGER_API_URL": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest",
-        "FORELDREPENGER_API_SCOPE": "dev-gcp:teamforeldrepenger:foreldrepengesoknad-api",
-        "INNSYN": "https://foreldrepenger.intern.dev.nav.no",
         "PUBLIC_PATH": "/foreldrepenger/planlegger",
         "ENV": "dev"
     }

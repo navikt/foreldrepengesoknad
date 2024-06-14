@@ -1,15 +1,15 @@
 {
     "app": "svangerskapspengesoknad",
-    "dekoratoren": "dekoratoren.ekstern.dev.nav.no",
     "autentisering": true,
     "ingresses": [
         "https://svangerskapspengesoknad.intern.dev.nav.no"
     ],
+    "external": [
+        "dekoratoren.ekstern.dev.nav.no"
+    ],
     "env": {
-        "FORELDREPENGER_API_URL": "https://foreldrepengesoknad-api.intern.dev.nav.no/rest",
-        "FORELDREPENGER_API_SCOPE": "dev-gcp:teamforeldrepenger:foreldrepengesoknad-api",
-        "LOG_VALIDATION": false,
         "INNSYN": "https://foreldrepenger.intern.dev.nav.no",
+        "LOG_VALIDATION": false,
         "ENV": "dev"
     }
 }
