@@ -11,6 +11,15 @@ import nbMessages from '../src/app/intl/nb_NO.json';
 import nnMessages from '../src/app/intl/nn_NO.json';
 import '../src/app/styles/app.css';
 
+const scriptTag = document.createElement('script');
+scriptTag.type = 'text/json';
+scriptTag.id = 'nav:appSettings';
+scriptTag.innerHTML = JSON.stringify({
+    LOG_VALIDATION: 'test',
+    INNSYN: 'test',
+});
+document.head.appendChild(scriptTag);
+
 const withIntlProvider = getIntlDecorator({
     nb: { ...nbMessages, ...uiMessages.nb, ...utenlandsoppholdMessages.nb, ...oppsummeringMessages.nb },
     nn: { ...nnMessages, ...uiMessages.nn, ...utenlandsoppholdMessages.nn, ...oppsummeringMessages.nn },

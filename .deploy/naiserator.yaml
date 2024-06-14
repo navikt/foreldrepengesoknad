@@ -10,6 +10,8 @@ metadata:
 spec:
   accessPolicy:
     outbound:
+      rules:
+        - application: foreldrepengesoknad-api
       external:
         - host: {{dekoratoren}}
   {{#if autentisering}}
