@@ -17,7 +17,7 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { dateToISOString } from '@navikt/fp-formik';
-import { SøkerBarn } from '@navikt/fp-types';
+import { SøkerBarn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { isISODateString } from '@navikt/fp-utils';
 
 import { Alder } from 'app/types/Alder';
@@ -131,6 +131,19 @@ export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolea
         dayjs(familiehendelsesdato).isSameOrAfter(andreAugust2022, 'day') &&
         dayjs(new Date()).isSameOrAfter(andreAugust2022, 'day')
     );
+};
+
+export const førsteJuli2024ReglerGjelder = (barn: Barn): boolean => {
+    const førsteJuli2024 = '2024-07-01';
+
+    if (dayjs().isBefore(dayjs(førsteJuli2024), 'day')) {
+        return false;
+    }
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    if ((isFødtBarn(barn) || isAdoptertBarn(barn)) && dayjs(familiehendelsesdato).isBefore(førsteJuli2024, 'day')) {
+        return false;
+    }
+    return true;
 };
 
 export const getEndringstidspunkt = (
