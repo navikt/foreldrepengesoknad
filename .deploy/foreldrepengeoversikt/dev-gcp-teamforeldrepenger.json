@@ -4,9 +4,6 @@
     "ingresses": [
         "https://foreldrepenger.intern.dev.nav.no"
     ],
-    "external": [
-        "dekoratoren.ekstern.dev.nav.no"
-    ],
     "env": {
         "ENV": "dev"
     }

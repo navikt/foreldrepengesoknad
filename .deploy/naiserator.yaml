@@ -51,10 +51,8 @@ spec:
     outbound:
       rules:
         - application: foreldrepengesoknad-api
-      external:
-      {{#each external as |url|}}
-        - host: {{url}}
-      {{/each}}
+        - application: nav-dekoratoren
+          namespace: personbruker
   env:
   {{#each env}}
    - name: {{@key}}

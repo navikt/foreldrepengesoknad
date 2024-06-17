@@ -32,7 +32,9 @@ async function injectDecorator(filePath: string) {
     return injectDecoratorServerSide({
         env: config.app.env,
         filePath,
-        serviceDiscovery: false,
-        params: { simple: true },
+        params: {
+            simple: true,
+            enforceLogin: false,
+        },
     });
 }

@@ -4,9 +4,6 @@
     "ingresses": [
         "https://www.nav.no/foreldrepenger/planlegger"
     ],
-    "external": [
-        "nav.no"
-    ],
     "env": {
         "PUBLIC_PATH": "/foreldrepenger/planlegger",
         "ENV": "prod"

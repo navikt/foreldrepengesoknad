@@ -4,9 +4,6 @@
     "ingresses": [
         "https://www.intern.dev.nav.no/foreldrepenger/veivisere"
     ],
-    "external": [
-        "dekoratoren.ekstern.dev.nav.no"
-    ],
     "env": {
         "PUBLIC_PATH": "/foreldrepenger/veivisere",
         "ENV": "dev"
