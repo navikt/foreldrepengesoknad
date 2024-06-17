@@ -1,11 +1,10 @@
 {
     "app": "foreldrepengesoknad",
     "autentisering": true,
-    "ingresses": [
-        "https://foreldrepengesoknad.nav.no"
-    ],
+    "ingresses": ["https://foreldrepengesoknad.nav.no"],
     "env": {
         "INNSYN": "https://foreldrepenger.nav.no",
-        "ENV": "prod"
+        "ENV": "prod",
+        "FEATURE_TEST_1JULI2024_REGLER": "off"
     }
 }

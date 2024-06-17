@@ -22,6 +22,7 @@ const extractDecoratorFragments = (html) => {
             APP_VERSION: `${process.env.APP_VERSION}`,
             INNSYN: `${process.env.INNSYN}`,
             PUBLIC_PATH: `${process.env.PUBLIC_PATH}`,
+            FEATURE_TEST_1JULI2024_REGLER: `${process.env.FEATURE_TEST_1JULI2024_REGLER}`,
         }),
     };
 };

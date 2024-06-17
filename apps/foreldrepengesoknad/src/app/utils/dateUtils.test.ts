@@ -1,7 +1,10 @@
+import dayjs from 'dayjs';
 import MockDate from 'mockdate';
 import getIntlMock from 'utils-test/intl-test-helper';
 
 import {
+    Barn,
+    BarnType,
     ISOStringToDate,
     Periode,
     PeriodeHull,
@@ -30,6 +33,7 @@ import {
     dateIsSameOrAfter,
     dateIsSameOrBefore,
     findEldsteDato,
+    førsteJuli2024ReglerGjelder,
     getAlderFraDato,
     getEldsteDato,
     getEldsteRegistrerteBarn,
@@ -38,6 +42,7 @@ import {
     isDateABeforeDateB,
     sorterDatoEtterEldst,
 } from './dateUtils';
+import fns from './toggleUtils';
 
 describe('dateUtils', () => {
     const intl = getIntlMock();
@@ -1064,5 +1069,62 @@ describe('sorterDatoEtterEldst', () => {
         expect(result[0]).toEqual('2021-11-19');
         expect(result[1]).toEqual('2021-11-20');
         expect(result[2]).toEqual('2021-11-21');
+    });
+});
+
+describe('1 juli 2024 regler', () => {
+    const barnTermin18Juni2024 = {
+        type: BarnType.UFØDT,
+        termindato: '2024-06-18',
+    } as Barn;
+    it('skal returnere at 1 juli 2024 regler gjelder i dev den 18. juni 2024 for barn med termin 18. juni 2024', () => {
+        MockDate.set(new Date('2024-06-18'));
+        fns.isFeatureEnabled = vitest.fn(() => true);
+        //Sjekk at dagens dato er riktig satt
+        expect(førsteJuli2024ReglerGjelder(barnTermin18Juni2024)).toEqual(true);
+        MockDate.reset();
+    });
+    it('skal returnere at 1 juli 2024 regler ikke gjelder i dev den 17. juni 2024 for barn med termin 18. juni 2024', () => {
+        MockDate.set(new Date('2024-06-17'));
+        const dateToday = dayjs();
+        expect(dateToday).toEqual(dayjs('2024-06-17'));
+        fns.isFeatureEnabled = vitest.fn(() => true);
+        //Sjekk at dagens dato er riktig satt
+        expect(førsteJuli2024ReglerGjelder(barnTermin18Juni2024)).toEqual(false);
+        MockDate.reset();
+    });
+    const barnTermin01Juli2024 = {
+        type: BarnType.UFØDT,
+        termindato: '2024-07-01',
+    } as Barn;
+    it('skal returnere at 1 juli 2024 regler gjelder i prod 1. juli 2024 for barn med termin 1. juli 2024', () => {
+        MockDate.set(new Date('2024-07-01'));
+        fns.isFeatureEnabled = vitest.fn(() => false);
+        const dateToday = dayjs();
+        expect(dateToday).toEqual(dayjs('2024-07-01'));
+        expect(førsteJuli2024ReglerGjelder(barnTermin01Juli2024)).toEqual(true);
+        MockDate.reset();
+    });
+    it('skal returnere at 1 juli 2024 regler ikke gjelder i prod 30. juni 2024  for barn med termin 1. juli 2024', () => {
+        MockDate.set(new Date('2024-06-30'));
+        fns.isFeatureEnabled = vitest.fn(() => false);
+        const dateToday = dayjs();
+        expect(dateToday).toEqual(dayjs('2024-06-30'));
+        expect(førsteJuli2024ReglerGjelder(barnTermin01Juli2024)).toEqual(false);
+        MockDate.reset();
+    });
+    it('skal returnere at 1 juli 2024 ikke regler ikke gjelder i prod 01. juli 2024 for barn født før 1 juli 2024', () => {
+        const fødtBarn = {
+            type: BarnType.FØDT,
+            antallBarn: 1,
+            fødselsdatoer: ['2024-06-30'],
+            termindato: '2024-07-01',
+        } as Barn;
+        MockDate.set(new Date('2024-07-01'));
+        const dateToday = dayjs();
+        expect(dateToday).toEqual(dayjs('2024-07-01'));
+        fns.isFeatureEnabled = vitest.fn(() => false);
+        expect(førsteJuli2024ReglerGjelder(fødtBarn)).toEqual(false);
+        MockDate.reset();
     });
 });

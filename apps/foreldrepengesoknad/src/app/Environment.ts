@@ -9,6 +9,7 @@ const Environment = () => {
         INNSYN: appSettings.INNSYN,
         [FeatureToggle.visFeilside]: appSettings[FeatureToggle.visFeilside],
         [FeatureToggle.visAlertstripe]: appSettings[FeatureToggle.visAlertstripe],
+        [FeatureToggle.test1Juli2024Regler]: appSettings[FeatureToggle.test1Juli2024Regler],
     };
 };
 
