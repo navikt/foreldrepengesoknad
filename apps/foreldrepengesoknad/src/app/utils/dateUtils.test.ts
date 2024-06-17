@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import MockDate from 'mockdate';
 import getIntlMock from 'utils-test/intl-test-helper';
 
@@ -1085,6 +1086,8 @@ describe('1 juli 2024 regler', () => {
     });
     it('skal returnere at 1 juli 2024 regler ikke gjelder i dev den 17. juni 2024 for barn med termin 18. juni 2024', () => {
         MockDate.set(new Date('2024-06-17'));
+        const dateToday = dayjs();
+        expect(dateToday).toEqual(dayjs('2024-06-17'));
         fns.isFeatureEnabled = vitest.fn(() => true);
         //Sjekk at dagens dato er riktig satt
         expect(førsteJuli2024ReglerGjelder(barnTermin18Juni2024)).toEqual(false);
@@ -1097,14 +1100,16 @@ describe('1 juli 2024 regler', () => {
     it('skal returnere at 1 juli 2024 regler gjelder i prod 1. juli 2024 for barn med termin 1. juli 2024', () => {
         MockDate.set(new Date('2024-07-01'));
         fns.isFeatureEnabled = vitest.fn(() => false);
-        //Sjekk at dagens dato er riktig satt
+        const dateToday = dayjs();
+        expect(dateToday).toEqual(dayjs('2024-07-01'));
         expect(førsteJuli2024ReglerGjelder(barnTermin01Juli2024)).toEqual(true);
         MockDate.reset();
     });
     it('skal returnere at 1 juli 2024 regler ikke gjelder i prod 30. juni 2024  for barn med termin 1. juli 2024', () => {
         MockDate.set(new Date('2024-06-30'));
         fns.isFeatureEnabled = vitest.fn(() => false);
-        //Sjekk at dagens dato er riktig satt
+        const dateToday = dayjs();
+        expect(dateToday).toEqual(dayjs('2024-06-30'));
         expect(førsteJuli2024ReglerGjelder(barnTermin01Juli2024)).toEqual(false);
         MockDate.reset();
     });
@@ -1116,8 +1121,9 @@ describe('1 juli 2024 regler', () => {
             termindato: '2024-07-01',
         } as Barn;
         MockDate.set(new Date('2024-07-01'));
+        const dateToday = dayjs();
+        expect(dateToday).toEqual(dayjs('2024-07-01'));
         fns.isFeatureEnabled = vitest.fn(() => false);
-        //Sjekk at dagens dato er riktig satt
         expect(førsteJuli2024ReglerGjelder(fødtBarn)).toEqual(false);
         MockDate.reset();
     });

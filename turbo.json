@@ -49,6 +49,7 @@
         "FEATURE_VIS_FEILSIDE",
         "FEATURE_VIS_ALERTSTRIPE",
         "APP_VERSION",
+		"FEATURE_TEST_1JULI2024_REGLER",
         "LOG_VALIDATION",
         "INNSYN",
         "NODE_ENV",
