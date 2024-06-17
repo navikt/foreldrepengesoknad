@@ -63,9 +63,9 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
 
     const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
     const [avventerVedlegg, setAvventerVedlegg] = useState(false);
-    const [brukerØnskerÅUttaleSeg, settBrukerØnskerÅUttaleSeg] = useState<boolean>();
-    const [tilbakemelding, settTilbakemelding] = useState<string>();
-    const [tilbakemeldingValideringsfeil, settTilbakemeldingValideringsfeil] = useState<string>();
+    const [brukerØnskerÅUttaleSeg, setBrukerØnskerÅUttaleSeg] = useState<boolean>();
+    const [tilbakemelding, setTilbakemelding] = useState<string>();
+    const [tilbakemeldingValideringsfeil, setTilbakemeldingValideringsfeil] = useState<string>();
 
     const [fetchCounter, setFetchCounter] = useState(0);
     const [allowedToFetch, setAllowedToFetch] = useState(true);
@@ -82,7 +82,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
             return await fetch(`/rest/minidialog`, { credentials: 'include' }).then((response) => response.json());
         },
         refetchInterval: (data) => {
-            if (!data || (data && data.find((innslag) => innslag.dialogId === minidialog?.dialogId))) {
+            if (!data || data?.find((innslag) => innslag.dialogId === minidialog?.dialogId)) {
                 return 1000;
             }
 
@@ -106,7 +106,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
             : undefined;
 
         if (feilmelding) {
-            settTilbakemeldingValideringsfeil(feilmelding);
+            setTilbakemeldingValideringsfeil(feilmelding);
         } else if (brukerØnskerÅUttaleSeg !== undefined) {
             const submitData = mapMinidialogInputTilDTO(
                 minidialog.saksnr,
@@ -155,7 +155,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                 </VStack>
                 <RadioGroup
                     legend={intl.formatMessage({ id: 'miniDialog.tilbakekreving.radioPanelGruppe.legend' })}
-                    onChange={settBrukerØnskerÅUttaleSeg}
+                    onChange={setBrukerØnskerÅUttaleSeg}
                 >
                     <Radio value={true}>Ja</Radio>
                     <Radio value={false}>Nei</Radio>
@@ -165,7 +165,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                         <div>
                             <Textarea
                                 label={intl.formatMessage({ id: 'minidialog.tilbakekreving.tilbakekreving.label' })}
-                                onChange={(e) => settTilbakemelding(e.target.value)}
+                                onChange={(e) => setTilbakemelding(e.target.value)}
                                 error={tilbakemeldingValideringsfeil}
                             />
                         </div>
