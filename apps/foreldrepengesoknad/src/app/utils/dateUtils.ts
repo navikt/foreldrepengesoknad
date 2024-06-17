@@ -20,10 +20,12 @@ import { dateToISOString } from '@navikt/fp-formik';
 import { SøkerBarn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { isISODateString } from '@navikt/fp-utils';
 
+import FeatureToggle from 'app/FeatureToggle';
 import { Alder } from 'app/types/Alder';
 
 import { getIsDeltUttak } from './annenForelderUtils';
 import { getFamiliehendelsedato } from './barnUtils';
+import fn from './toggleUtils';
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
@@ -134,7 +136,10 @@ export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolea
 };
 
 export const førsteJuli2024ReglerGjelder = (barn: Barn): boolean => {
-    const førsteJuli2024 = '2024-07-01';
+    let førsteJuli2024 = '2024-07-01';
+    if (fn.isFeatureEnabled(FeatureToggle.test1Juli2024Regler)) {
+        førsteJuli2024 = '2024-06-18';
+    }
 
     if (dayjs().isBefore(dayjs(førsteJuli2024), 'day')) {
         return false;
