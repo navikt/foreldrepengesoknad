@@ -103,12 +103,11 @@ export const gyldigePerioderForVisning = (periode: Periode, erPlanVedtatt: boole
     if (!erPlanVedtatt) {
         return true;
     }
-    if (periode.resultat && periode.resultat.innvilget) return true;
+    if (periode?.resultat?.innvilget) return true;
 
     if (
-        periode.resultat &&
-        periode.resultat.årsak !== PeriodeResultatÅrsak.AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER &&
-        periode.resultat.trekkerDager === true
+        periode.resultat?.årsak !== PeriodeResultatÅrsak.AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER &&
+        periode.resultat?.trekkerDager === true
     ) {
         return true;
     }
@@ -399,7 +398,7 @@ export const getPeriodeTittel = (
     return '';
 };
 
-const periodeErInnvilget = (periode: Periode): boolean => periode.resultat !== undefined && periode.resultat.innvilget;
+const periodeErInnvilget = (periode: Periode): boolean => !!periode.resultat?.innvilget;
 
 interface SplittetDatoType {
     dato: Date;

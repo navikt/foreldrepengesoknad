@@ -17,11 +17,7 @@ import { SakOppslag } from './types/SakOppslag';
 import { mapSakerDTOToSaker } from './utils/sakerUtils';
 
 const getSakerSuspended = (oppdatertQuery: UseQueryResult<boolean, unknown>) => {
-    if (oppdatertQuery.isLoading) {
-        return true;
-    }
-
-    return oppdatertQuery.data ? false : true;
+    return oppdatertQuery.isLoading || !oppdatertQuery.data;
 };
 
 const Foreldrepengeoversikt: React.FunctionComponent = () => {

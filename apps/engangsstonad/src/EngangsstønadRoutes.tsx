@@ -44,15 +44,15 @@ interface Props {
 const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChangeLocale, søker, mellomlagretData }) => {
     const navigate = useNavigate();
 
-    const [erVelkommen, setVelkommen] = useState(false);
+    const [erVelkommen, setErVelkommen] = useState(false);
     const [kvittering, setKvittering] = useState<Kvittering>();
 
     const { sendSøknad, errorSendSøknad } = useEsSendSøknad(esApi, locale, setKvittering);
-    const mellomlagreOgNaviger = useEsMellomlagring(esApi, locale, setVelkommen);
+    const mellomlagreOgNaviger = useEsMellomlagring(esApi, locale, setErVelkommen);
 
     useEffect(() => {
-        if (mellomlagretData && mellomlagretData[ContextDataType.CURRENT_PATH]) {
-            setVelkommen(true);
+        if (mellomlagretData?.[ContextDataType.CURRENT_PATH]) {
+            setErVelkommen(true);
             if (mellomlagretData.locale) {
                 onChangeLocale(mellomlagretData.locale);
             }
@@ -86,7 +86,7 @@ const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChange
                     <Velkommen
                         locale={locale}
                         onChangeLocale={onChangeLocale}
-                        startSøknad={setVelkommen}
+                        startSøknad={setErVelkommen}
                         erVelkommen={erVelkommen}
                         mellomlagreOgNaviger={mellomlagreOgNaviger}
                     />

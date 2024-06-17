@@ -4,9 +4,6 @@
     "ingresses": [
         "https://foreldrepenger.nav.no"
     ],
-    "external": [
-        "nav.no"
-    ],
     "env": {
         "ENV": "prod"
     }

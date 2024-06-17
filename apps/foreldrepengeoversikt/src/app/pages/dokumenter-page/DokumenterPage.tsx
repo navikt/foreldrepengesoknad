@@ -1,4 +1,3 @@
-// import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Link, useParams } from 'react-router-dom';
 
@@ -17,23 +16,7 @@ import { RequestStatus } from 'app/types/RequestStatus';
 import { grupperDokumenterPåTidspunkt } from 'app/utils/dokumenterUtils';
 import { guid } from 'app/utils/guid';
 
-// import { DokumentType } from '../../types/DokumentType';
 import './dokumenter-page.css';
-
-// const computeBordersToBeShown = (
-//     dokumenterGruppertPåTidspunkt: Record<string, DokumentType[]>,
-//     showBottomBorder: boolean[],
-// ) => {
-//     Object.entries(dokumenterGruppertPåTidspunkt).map((dokument, index) => {
-//         showBottomBorder[index] = true;
-
-//         const dokumenter = dokument[1];
-
-//         if (dokumenter.length > 1 && index !== 0) {
-//             showBottomBorder[index - 1] = false;
-//         }
-//     });
-// };
 
 const DokumenterPage: React.FunctionComponent = () => {
     const bem = bemUtils('dokumenter-page');
@@ -46,7 +29,6 @@ const DokumenterPage: React.FunctionComponent = () => {
     const lastOppDokTittel = intl.formatMessage({ id: 'lastOppDokumenter' });
     useDocumentTitle(`${title} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`);
     const { dokumenterData, dokumenterError, dokumenterStatus } = Api.useGetDokumenter(params.saksnummer!);
-    // const [showBottomBorder, setShowBottomBorder] = useState([]);
 
     if (!dokumenterData && dokumenterStatus !== RequestStatus.FINISHED) {
         return <Loader size="large" aria-label="Henter dokumenter" />;

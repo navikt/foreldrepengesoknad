@@ -4,9 +4,6 @@
     "ingresses": [
         "https://svangerskapspengesoknad.intern.dev.nav.no"
     ],
-    "external": [
-        "dekoratoren.ekstern.dev.nav.no"
-    ],
     "env": {
         "INNSYN": "https://foreldrepenger.intern.dev.nav.no",
         "LOG_VALIDATION": false,
