@@ -4,9 +4,6 @@
     "ingresses": [
         "https://foreldrepengesoknad.nav.no"
     ],
-    "external": [
-        "nav.no"
-    ],
     "env": {
         "INNSYN": "https://foreldrepenger.nav.no",
         "ENV": "prod"
