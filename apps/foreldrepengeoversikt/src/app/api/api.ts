@@ -64,7 +64,7 @@ const useGetAnnenPartsVedtak = (
         isSuspended,
     });
 
-    if (error && error.message.includes('Ugyldig ident')) {
+    if (error?.message?.includes('Ugyldig ident')) {
         return {
             annenPartsVedtakData: undefined,
             annenPartsVedtakError: undefined,

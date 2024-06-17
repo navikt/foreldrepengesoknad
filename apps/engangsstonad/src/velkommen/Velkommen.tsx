@@ -38,7 +38,7 @@ const Velkommen: FunctionComponent<Props> = ({
     const navigator = useEsNavigator(mellomlagreOgNaviger);
 
     const [isError, setIsError] = useState(false);
-    const [isChecked, setChecked] = useState(erVelkommen);
+    const [isChecked, setIsChecked] = useState(erVelkommen);
 
     const bekreft = () => {
         if (!isChecked) {
@@ -129,7 +129,7 @@ const Velkommen: FunctionComponent<Props> = ({
                 </ExpansionCard>
                 <ConfirmationPanel
                     label={intl.formatMessage({ id: 'Velkommen.Samtykke' })}
-                    onChange={() => setChecked((state) => !state)}
+                    onChange={() => setIsChecked((state) => !state)}
                     checked={isChecked}
                     error={
                         isError &&
