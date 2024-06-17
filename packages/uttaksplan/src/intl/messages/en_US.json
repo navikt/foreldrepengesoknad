@@ -20,6 +20,8 @@
     "kalender.utsettelse.HV_OVELSE": "due to exercises or service in the Home Guard",
     "kalender.utsettelse.NAV_TILTAK": "due to NAV measures that constitute 100% work",
     "kalender.lastNed": "Download the calendar as PDF",
+    "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} on {dato}",
+    "kalender.skjermleser.periode": "{periodeNavn} from the {fraDato} until the {tilDato}",
     "uttaksplan.familiehendelsesdato.født": "{antallBarn, plural, one{Barnet} other {Barna}} er født {dato}",
     "uttaksplan.familiehendelsesdato.termin": "Termin {dato}",
     "uttaksplan.familiehendelsesdato.adopsjon": "{antallBarn, plural, one{Barnet} other {Barna}} er adoptert {dato}"

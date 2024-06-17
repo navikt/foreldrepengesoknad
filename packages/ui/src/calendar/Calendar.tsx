@@ -113,12 +113,14 @@ interface Props {
 
 const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }) => {
     const months = findMonths(periods[0].fom, periods[periods.length - 1].tom);
-
     return (
         <>
             {periods.some((period) => period.srText) && (
                 <div className={styles.srOnly}>
-                    {periods.filter((periode) => periode.srText).map((period) => period.srText)}
+                    {periods
+                        .filter((periode) => periode.srText)
+                        .map((period) => period.srText)
+                        .toString()}
                 </div>
             )}
             <HGrid

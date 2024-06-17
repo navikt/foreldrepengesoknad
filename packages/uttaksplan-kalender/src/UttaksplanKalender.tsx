@@ -1,12 +1,12 @@
 import { DownloadIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
 import { Alert, Button } from '@navikt/ds-react';
 
-import { Forelder, PeriodeColor, PeriodeInfoType, Periodetype } from '@navikt/fp-constants';
+import { Forelder, PeriodeColor, PeriodeInfoType, Periodetype, UtsettelseÅrsakType } from '@navikt/fp-constants';
 import {
     Barn,
     InfoPeriode,
@@ -37,6 +37,10 @@ import {
 
 import UttaksplanLegend from './UttaksplanLegend';
 import styles from './uttaksplanKalender.module.css';
+import {
+    getKalenderSkjermlesertekstForPeriode,
+    getSkjermlesertekstForFamiliehendelse,
+} from './uttaksplanKalenderUtils';
 
 export interface UttaksplanKalenderProps {
     uttaksplan: Periode[];
@@ -75,7 +79,14 @@ const slåSammenPeriods = (periods: Period[]) => {
     }, [] as Period[]);
 };
 
-const getPerioderForKalendervisning = (uttaksplan: Periode[], erFarEllerMedmor: boolean, barn: Barn): Period[] => {
+const getPerioderForKalendervisning = (
+    uttaksplan: Periode[],
+    erFarEllerMedmor: boolean,
+    barn: Barn,
+    navnAnnenPart: string,
+    unikeUtsettelseÅrsaker: UtsettelseÅrsakType[],
+    intl: IntlShape,
+): Period[] => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const perioderForVisning = uttaksplan.filter(
         (p) =>
@@ -87,19 +98,32 @@ const getPerioderForKalendervisning = (uttaksplan: Periode[], erFarEllerMedmor: 
             p.tidsperiode.fom !== undefined &&
             p.tidsperiode.tom !== undefined,
     );
-    const periods = perioderForVisning.map((p) => ({
-        fom: dayjs(p.tidsperiode.fom).isSame(dayjs(familiehendelsesdato), 'd')
-            ? formatDateIso(Uttaksdagen(p.tidsperiode.fom).neste())
-            : formatDateIso(p.tidsperiode.fom),
-        tom: formatDateIso(p.tidsperiode.tom),
-        color: getKalenderFargeForPeriodeType(p, erFarEllerMedmor, uttaksplan, barn),
-    }));
+    const periods = perioderForVisning.map((p) => {
+        const color = getKalenderFargeForPeriodeType(p, erFarEllerMedmor, uttaksplan, barn);
+        return {
+            fom: dayjs(p.tidsperiode.fom).isSame(dayjs(familiehendelsesdato), 'd')
+                ? formatDateIso(Uttaksdagen(p.tidsperiode.fom).neste())
+                : formatDateIso(p.tidsperiode.fom),
+            tom: formatDateIso(p.tidsperiode.tom),
+            color,
+            srText: getKalenderSkjermlesertekstForPeriode(
+                p.tidsperiode,
+                color,
+                barn,
+                navnAnnenPart,
+                unikeUtsettelseÅrsaker,
+                erFarEllerMedmor,
+                intl,
+            ),
+        };
+    });
 
     const indexOfFamiliehendelse = getIndexOfFamiliehendelse(uttaksplan, familiehendelsesdato);
     periods.splice(indexOfFamiliehendelse, 0, {
         fom: familiehendelsesdato,
         tom: familiehendelsesdato,
         color: PeriodeColor.PINK,
+        srText: getSkjermlesertekstForFamiliehendelse(barn, intl),
     });
     return slåSammenPeriods(periods);
 };
@@ -194,10 +218,18 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
     barn,
     navnAnnenPart,
 }) => {
-    const periods = getPerioderForKalendervisning(uttaksplan, erFarEllerMedmor, barn);
-    const unikePeriodColors = [...new Set(periods.map((period) => period.color))];
+    const intl = useIntl();
     const utsettelser = uttaksplan.filter((p) => isUtsettelsesperiode(p)) as Utsettelsesperiode[];
     const unikeUtsettelseÅrsaker = [...new Set(utsettelser.map((u) => u.årsak))];
+    const periods = getPerioderForKalendervisning(
+        uttaksplan,
+        erFarEllerMedmor,
+        barn,
+        navnAnnenPart,
+        unikeUtsettelseÅrsaker,
+        intl,
+    );
+    const unikePeriodColors = [...new Set(periods.map((period) => period.color))];
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const harAvslåttePerioderSomIkkeGirTapteDager = uttaksplan.some(
         (p) => isAvslåttPeriode(p) && (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsesdato)),

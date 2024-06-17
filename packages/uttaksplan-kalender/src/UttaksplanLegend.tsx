@@ -1,58 +1,13 @@
 import { FunctionComponent, ReactNode } from 'react';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
 import { PeriodeColor, UtsettelseÅrsakType } from '@navikt/fp-constants';
-import { Barn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
+import { Barn } from '@navikt/fp-types';
 import { CalendarLabel } from '@navikt/fp-ui';
-import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
-const getUtsettelseÅrsakTekst = (årsak: UtsettelseÅrsakType, intl: IntlShape) => {
-    if (årsak === UtsettelseÅrsakType.Arbeid) {
-        return intl.formatMessage({ id: `kalender.utsettelse.ARBEID` });
-    }
-    if (årsak === UtsettelseÅrsakType.InstitusjonBarnet) {
-        return intl.formatMessage({ id: `kalender.utsettelse.INSTITUSJONSOPPHOLD_BARNET` });
-    }
-    if (årsak === UtsettelseÅrsakType.InstitusjonSøker) {
-        return intl.formatMessage({ id: `kalender.utsettelse.INSTITUSJONSOPPHOLD_SØKER` });
-    }
-    if (årsak === UtsettelseÅrsakType.Ferie) {
-        return intl.formatMessage({ id: `kalender.utsettelse.LOVBESTEMT_FERIE` });
-    }
-    if (årsak === UtsettelseÅrsakType.Sykdom) {
-        return intl.formatMessage({ id: `kalender.utsettelse.SYKDOM` });
-    }
-    if (årsak === UtsettelseÅrsakType.HvØvelse) {
-        return intl.formatMessage({ id: `kalender.utsettelse.HV_OVELSE` });
-    }
-    if (årsak === UtsettelseÅrsakType.NavTiltak) {
-        return intl.formatMessage({ id: `kalender.utsettelse.NAV_TILTAK` });
-    }
-    return '';
-};
-
-const getUtsettelseLabel = (unikeUtsettelseÅrsaker: UtsettelseÅrsakType[], intl: IntlShape): ReactNode => {
-    if (unikeUtsettelseÅrsaker.length === 1 && unikeUtsettelseÅrsaker[0] !== UtsettelseÅrsakType.Fri) {
-        const årsakTekst = getUtsettelseÅrsakTekst(unikeUtsettelseÅrsaker[0], intl);
-        return <FormattedMessage id="kalender.utsettelse" values={{ årsak: årsakTekst }} />;
-    }
-
-    return <FormattedMessage id="kalender.dinUtsettelse" />;
-};
-
-export const getFamiliehendelseLabel = (barn: Barn): ReactNode => {
-    if (!isAdoptertBarn(barn)) {
-        if (isFødtBarn(barn)) {
-            return <FormattedMessage id="kalender.fødsel" />;
-        }
-
-        return <FormattedMessage id="kalender.termin" />;
-    }
-
-    return <FormattedMessage id="kalender.adopsjon" />;
-};
+import { getFamiliehendelseKalendarLabel, getKalenderPeriodenavn } from './uttaksplanKalenderUtils';
 
 const getCalendarLabel = (
     color: PeriodeColor,
@@ -64,53 +19,24 @@ const getCalendarLabel = (
 ): ReactNode => {
     switch (color) {
         case PeriodeColor.PINK:
-            return getFamiliehendelseLabel(barn);
+            return <BodyShort>{getFamiliehendelseKalendarLabel(barn, intl)}</BodyShort>;
         case PeriodeColor.BLUE:
         case PeriodeColor.GREEN:
-            return <FormattedMessage id="kalender.dinPeriode" />;
         case PeriodeColor.BLUESTRIPED:
         case PeriodeColor.GREENSTRIPED:
-            return <FormattedMessage id="kalender.dinPeriode.gradert" />;
         case PeriodeColor.LIGHTBLUE:
         case PeriodeColor.LIGHTGREEN:
-            return (
-                <FormattedMessage
-                    id="kalender.annenPartPeriode"
-                    values={{
-                        navnAnnenPart: getNavnGenitivEierform(capitalizeFirstLetter(navnAnnenPart), intl.locale),
-                    }}
-                />
-            );
         case PeriodeColor.LIGHTBLUEGREEN:
         case PeriodeColor.LIGHTGREENBLUE:
-            return (
-                <FormattedMessage
-                    id="kalender.samtidigUttak"
-                    values={{ navnAnnenPart: capitalizeFirstLetter(navnAnnenPart) }}
-                />
-            );
         case PeriodeColor.GREENOUTLINE:
-            return erFarEllerMedmor ? (
-                getUtsettelseLabel(unikeUtsettelseÅrsaker, intl)
-            ) : (
-                <FormattedMessage
-                    id="kalender.utsettelseAnnenPart"
-                    values={{ navnAnnenPart: capitalizeFirstLetter(navnAnnenPart) }}
-                />
-            );
         case PeriodeColor.BLUEOUTLINE:
-            return erFarEllerMedmor ? (
-                <FormattedMessage
-                    id="kalender.utsettelseAnnenPart"
-                    values={{ navnAnnenPart: capitalizeFirstLetter(navnAnnenPart) }}
-                />
-            ) : (
-                getUtsettelseLabel(unikeUtsettelseÅrsaker, intl)
-            );
         case PeriodeColor.ORANGE:
-            return <FormattedMessage id="kalender.tapteDager" />;
         case PeriodeColor.GRAY:
-            return <FormattedMessage id="kalender.helg" />;
+            return (
+                <BodyShort>
+                    {getKalenderPeriodenavn(color, barn, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl)}
+                </BodyShort>
+            );
         default:
             return null;
     }
