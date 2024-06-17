@@ -116,7 +116,11 @@ const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }
 
     return (
         <>
-            <div className={styles.srOnly}>{periods.map((period) => period.srText)}</div>
+            {periods.some((period) => period.srText) && (
+                <div className={styles.srOnly}>
+                    {periods.filter((periode) => periode.srText).map((period) => period.srText)}
+                </div>
+            )}
             <HGrid
                 gap={{ xs: '1', sm: '4', md: '8' }}
                 className={useSmallerWidth ? styles.gridColumnsSmall : styles.gridColumnsWide}
