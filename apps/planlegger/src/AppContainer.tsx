@@ -1,11 +1,10 @@
-import ErrorPage from 'components/error/ErrorPage';
 import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll } from '@navikt/fp-types';
-import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
+import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
 import { useBeforeUnload, utilsMessages } from '@navikt/fp-utils';
 
 import PlanleggerDataInit from './Planlegger';
@@ -56,7 +55,7 @@ const AppContainer = () => {
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary appName="Foreldrepengeplanlegger" customErrorPage={<ErrorPage />}>
+            <ErrorBoundary appName="Foreldrepengeplanlegger" customErrorPage={<SimpleErrorPage />}>
                 <BrowserRouter basename={Environment.PUBLIC_PATH}>
                     <PlanleggerDataInit locale={locale} changeLocale={changeLocale} />
                 </BrowserRouter>

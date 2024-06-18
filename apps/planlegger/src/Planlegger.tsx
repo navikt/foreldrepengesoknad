@@ -1,5 +1,4 @@
 import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
-import ErrorPage from 'components/error/ErrorPage';
 import { FunctionComponent, useMemo } from 'react';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
@@ -8,6 +7,7 @@ import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettU
 
 import { getAxiosInstance, usePostRequest } from '@navikt/fp-api';
 import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { SimpleErrorPage } from '@navikt/fp-ui';
 
 import PlanleggerRouter from './PlanleggerRouter';
 import Environment from './appData/Environment';
@@ -70,7 +70,7 @@ export const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, change
     );
 
     if (requestData.error) {
-        return <ErrorPage />;
+        return <SimpleErrorPage />;
     }
 
     return <PlanleggerRouter locale={locale} changeLocale={changeLocale} stønadskontoer={requestData.data} />;

@@ -7,7 +7,7 @@ import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { BodyShort, Button, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad } from '@navikt/fp-types';
+import { Dekningsgrad, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -28,9 +28,10 @@ export const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260
 
 interface Props {
     arbeidssituasjon: Arbeidssituasjon;
+    stønadskontoer: TilgjengeligeStønadskontoer;
 }
 
-const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon }) => {
+const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, stønadskontoer }) => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator(ContextRoutes.HVOR_MYE);
     const { ref } = useScrollBehaviour();
@@ -79,10 +80,12 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon }) 
                             <Utbetalingspanel
                                 dekningsgrad={Dekningsgrad.HUNDRE_PROSENT}
                                 gjennomsnittslønn={gjennomsnittslønn}
+                                stønadskontoer={stønadskontoer}
                             />
                             <Utbetalingspanel
                                 dekningsgrad={Dekningsgrad.ÅTTI_PROSENT}
                                 gjennomsnittslønn={gjennomsnittslønn}
+                                stønadskontoer={stønadskontoer}
                             />
                             <Infobox
                                 header={<FormattedMessage id="OppsummeringSide.UtbetaltSomVanlig" />}

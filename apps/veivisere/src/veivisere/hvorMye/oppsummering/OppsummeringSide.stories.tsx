@@ -2,10 +2,63 @@ import { Meta, StoryObj } from '@storybook/react';
 import { HvorMyeRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 
+import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import { Arbeidssituasjon } from '../arbeidssituasjon/ArbeidssituasjonSide';
 import OppsummeringSide from './OppsummeringSide';
+
+const STØNADSKONTOER = {
+    '100': {
+        kontoer: [
+            {
+                konto: StønadskontoType.Mødrekvote,
+                dager: 75,
+            },
+            {
+                konto: StønadskontoType.Fedrekvote,
+                dager: 75,
+            },
+            {
+                konto: StønadskontoType.Fellesperiode,
+                dager: 80,
+            },
+            {
+                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                dager: 15,
+            },
+        ],
+        minsteretter: {
+            farRundtFødsel: 0,
+            toTette: 0,
+        },
+    },
+    '80': {
+        kontoer: [
+            {
+                konto: StønadskontoType.Mødrekvote,
+                dager: 95,
+            },
+            {
+                konto: StønadskontoType.Fedrekvote,
+                dager: 95,
+            },
+            {
+                konto: StønadskontoType.Fellesperiode,
+                dager: 90,
+            },
+            {
+                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                dager: 15,
+            },
+        ],
+        minsteretter: {
+            farRundtFødsel: 0,
+            toTette: 0,
+        },
+    },
+} as TilgjengeligeStønadskontoer;
 
 interface StoryArgs {
     arbeidssituasjon: Arbeidssituasjon;
@@ -15,7 +68,7 @@ const customRenderer = ({ arbeidssituasjon }: StoryArgs) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[HvorMyeRoutes.OPPSUMMERING]}>
-            <OppsummeringSide arbeidssituasjon={arbeidssituasjon} />
+            <OppsummeringSide arbeidssituasjon={arbeidssituasjon} stønadskontoer={STØNADSKONTOER} />
         </MemoryRouter>
     );
 };

@@ -13,6 +13,15 @@ import nbMessages from '../src/intl/messages/nb_NO.json';
 import nnMessages from '../src/intl/messages/nn_NO.json';
 import '../src/styles/global.css';
 
+const scriptTag = document.createElement('script');
+scriptTag.type = 'text/json';
+scriptTag.id = 'nav:appSettings';
+scriptTag.innerHTML = JSON.stringify({
+    APPRES_CMS_URL: '',
+    PUBLIC_PATH: 'https://foreldrepengesoknad-api.nav.no',
+});
+document.head.appendChild(scriptTag);
+
 dayjs.locale('nb');
 
 const withIntlProvider = getIntlDecorator({
