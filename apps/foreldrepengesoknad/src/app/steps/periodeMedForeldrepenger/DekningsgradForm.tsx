@@ -87,7 +87,10 @@ type Props = {
     stønadskonto80: TilgjengeligeStønadskontoerForDekningsgrad;
 };
 
-const getDekningsgradReadMoreTekst = (barn: Barn) => {
+const getDekningsgradReadMoreTekst = (erDeltUttak: boolean, barn: Barn) => {
+    if (!erDeltUttak) {
+        return <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.alene" />;
+    }
     if (førsteJuli2024ReglerGjelder(barn)) {
         return <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.etterFørsteJuli2024" />;
     }
@@ -220,7 +223,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                             )
                         }
                     >
-                        {getDekningsgradReadMoreTekst(barn)}
+                        {getDekningsgradReadMoreTekst(erDeltUttak, barn)}
                         <Link href={links.opphold} target="_blank">
                             <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.link" />
                             <ExternalLinkIcon title="a11y-title" fontSize="1.5rem" />
