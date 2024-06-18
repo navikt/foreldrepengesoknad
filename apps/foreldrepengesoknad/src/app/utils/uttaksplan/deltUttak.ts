@@ -242,7 +242,10 @@ const deltUttakFødselMor = (
             forelder: Forelder.mor,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
             skalIkkeHaUttakFørTermin: true,
-            tidsperiode: {} as any,
+            tidsperiode: {
+                fom: Uttaksdagen(currentTomDate).trekkFra(15),
+                tom: Uttaksdagen(currentTomDate).forrige(),
+            },
             vedlegg: [],
         };
         perioder.push(periodeFørFødsel);

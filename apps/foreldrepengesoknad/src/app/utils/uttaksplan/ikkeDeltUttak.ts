@@ -232,7 +232,10 @@ const ikkeDeltUttakFødselMor = (
             forelder: Forelder.mor,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
             skalIkkeHaUttakFørTermin: true,
-            tidsperiode: {} as any,
+            tidsperiode: {
+                fom: Uttaksdagen(førsteUttaksdag).trekkFra(15),
+                tom: Uttaksdagen(førsteUttaksdag).forrige(),
+            },
             vedlegg: [],
         };
 
