@@ -37,10 +37,7 @@ import {
 
 import UttaksplanLegend from './UttaksplanLegend';
 import styles from './uttaksplanKalender.module.css';
-import {
-    getKalenderSkjermlesertekstForPeriode,
-    getSkjermlesertekstForFamiliehendelse,
-} from './uttaksplanKalenderUtils';
+import { getKalenderSkjermlesertekstForPeriode } from './uttaksplanKalenderUtils';
 
 export interface UttaksplanKalenderProps {
     uttaksplan: Periode[];
@@ -106,15 +103,6 @@ const getPerioderForKalendervisning = (
                 : formatDateIso(p.tidsperiode.fom),
             tom: formatDateIso(p.tidsperiode.tom),
             color,
-            srText: getKalenderSkjermlesertekstForPeriode(
-                p,
-                color,
-                barn,
-                navnAnnenPart,
-                unikeUtsettelseÅrsaker,
-                erFarEllerMedmor,
-                intl,
-            ),
         };
     });
 
@@ -123,9 +111,19 @@ const getPerioderForKalendervisning = (
         fom: familiehendelsesdato,
         tom: familiehendelsesdato,
         color: PeriodeColor.PINK,
-        srText: getSkjermlesertekstForFamiliehendelse(barn, intl),
     });
-    return slåSammenPeriods(periods);
+    const perioderSlåttSammen = slåSammenPeriods(periods);
+    return perioderSlåttSammen.map((p) => ({
+        ...p,
+        srText: getKalenderSkjermlesertekstForPeriode(
+            p,
+            barn,
+            navnAnnenPart,
+            unikeUtsettelseÅrsaker,
+            erFarEllerMedmor,
+            intl,
+        ),
+    }));
 };
 
 const getKalenderFargeForUttaksperiode = (

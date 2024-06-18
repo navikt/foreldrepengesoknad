@@ -1,7 +1,8 @@
 import { IntlShape } from 'react-intl';
 
-import { PeriodeColor, Periodetype, UtsettelseÅrsakType } from '@navikt/fp-constants';
-import { Barn, Periode, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
+import { PeriodeColor, UtsettelseÅrsakType } from '@navikt/fp-constants';
+import { Barn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
+import { Period } from '@navikt/fp-ui';
 import {
     capitalizeFirstLetter,
     formaterDatoUtenDag,
@@ -52,7 +53,7 @@ export const getFamiliehendelseKalendarLabel = (barn: Barn, intl: IntlShape): st
     return intl.formatMessage({ id: 'kalender.adopsjon' });
 };
 
-export const getSkjermlesertekstForFamiliehendelse = (barn: Barn, intl: IntlShape): string => {
+const getSkjermlesertekstForFamiliehendelse = (barn: Barn, intl: IntlShape): string => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const familiehendelsenavn = getFamiliehendelseKalendarLabel(barn, intl);
     return intl.formatMessage(
@@ -63,15 +64,12 @@ export const getSkjermlesertekstForFamiliehendelse = (barn: Barn, intl: IntlShap
 
 export const getKalenderPeriodenavn = (
     color: PeriodeColor,
-    barn: Barn,
     navnAnnenPart: string,
     unikeUtsettelseÅrsaker: UtsettelseÅrsakType[],
     erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): string => {
     switch (color) {
-        case PeriodeColor.PINK:
-            return getSkjermlesertekstForFamiliehendelse(barn, intl);
         case PeriodeColor.BLUE:
         case PeriodeColor.GREEN:
             return intl.formatMessage({ id: 'kalender.dinPeriode' });
@@ -115,20 +113,21 @@ export const getKalenderPeriodenavn = (
 };
 
 export const getKalenderSkjermlesertekstForPeriode = (
-    periode: Periode,
-    color: PeriodeColor,
+    period: Period,
     barn: Barn,
     navnAnnenPart: string,
     unikeUtsettelseÅrsaker: UtsettelseÅrsakType[],
     erFarEllerMedmor: boolean,
     intl: IntlShape,
 ): string | undefined => {
-    if (periode.type === Periodetype.PeriodeUtenUttak) {
+    if ([PeriodeColor.NONE, PeriodeColor.GRAY].includes(period.color)) {
         return undefined;
     }
+    if (period.color === PeriodeColor.PINK) {
+        return getSkjermlesertekstForFamiliehendelse(barn, intl);
+    }
     const periodeNavn = getKalenderPeriodenavn(
-        color,
-        barn,
+        period.color,
         navnAnnenPart,
         unikeUtsettelseÅrsaker,
         erFarEllerMedmor,
@@ -138,8 +137,8 @@ export const getKalenderSkjermlesertekstForPeriode = (
         { id: 'kalender.skjermleser.periode' },
         {
             periodeNavn,
-            fraDato: formaterDatoUtenDag(periode.tidsperiode.fom),
-            tilDato: formaterDatoUtenDag(periode.tidsperiode.tom),
+            fraDato: formaterDatoUtenDag(period.fom),
+            tilDato: formaterDatoUtenDag(period.tom),
         },
     );
 };

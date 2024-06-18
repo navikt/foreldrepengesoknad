@@ -34,7 +34,7 @@ const getCalendarLabel = (
         case PeriodeColor.GRAY:
             return (
                 <BodyShort>
-                    {getKalenderPeriodenavn(color, barn, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl)}
+                    {getKalenderPeriodenavn(color, navnAnnenPart, unikeUtsettelseÅrsaker, erFarEllerMedmor, intl)}
                 </BodyShort>
             );
         default:
