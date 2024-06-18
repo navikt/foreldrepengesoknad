@@ -28,10 +28,12 @@ const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale }) => {
                     />
                 }
             />
-            <Route
-                path={HvorMyeRoutes.OPPSUMMERING}
-                element={<OppsummeringSide arbeidssituasjon={arbeidssituasjon} />}
-            />
+            {arbeidssituasjon && (
+                <Route
+                    path={HvorMyeRoutes.OPPSUMMERING}
+                    element={<OppsummeringSide arbeidssituasjon={arbeidssituasjon} />}
+                />
+            )}
             <Route path="*" element={<Navigate to={ContextRoutes.HVOR_MYE + HvorMyeRoutes.OM} />} />
         </Routes>
     );

@@ -8,7 +8,7 @@ import { Arbeidssituasjon } from '../arbeidssituasjon/ArbeidssituasjonSide';
 import OppsummeringSide from './OppsummeringSide';
 
 interface StoryArgs {
-    arbeidssituasjon?: Arbeidssituasjon;
+    arbeidssituasjon: Arbeidssituasjon;
 }
 
 const customRenderer = ({ arbeidssituasjon }: StoryArgs) => {

@@ -43,22 +43,22 @@ const Utbetalingspanel: React.FunctionComponent<Props> = ({ dekningsgrad, gjenno
         >
             <VStack gap="4">
                 <div>
-                    <BodyShort>
+                    <BodyShort size="small">
                         <FormattedMessage id="OppsummeringSide.MånedligFørSkatt" />
                     </BodyShort>
-                    <Heading size="large">{formatCurrencyWithKr(monthlyPayment)}</Heading>
+                    <Heading size="medium">{formatCurrencyWithKr(monthlyPayment)}</Heading>
                 </div>
                 <div>
-                    <BodyShort>
+                    <BodyShort size="small">
                         <FormattedMessage id="OppsummeringSide.DagligFørSkatt" />
                     </BodyShort>
-                    <Heading size="large">{formatCurrencyWithKr(dailyPayment)}</Heading>
+                    <Heading size="medium">{formatCurrencyWithKr(dailyPayment)}</Heading>
                 </div>
                 <div>
-                    <BodyShort>
+                    <BodyShort size="small">
                         <FormattedMessage id="OppsummeringSide.Totalt" values={{ erDekningsgrad100 }} />
                     </BodyShort>
-                    <Heading size="large">{formatCurrencyWithKr(totalt)}</Heading>
+                    <Heading size="medium">{formatCurrencyWithKr(totalt)}</Heading>
                     <ReadMore
                         header={
                             <FormattedMessage id="OppsummeringSide.HvorforAntallUker" values={{ erDekningsgrad100 }} />
