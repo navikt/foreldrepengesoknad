@@ -11,7 +11,7 @@ import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import VeiviserPage from '../../felles/Page/VeiviserPage';
-import { Arbeidssituasjon, finnGjennomsnittslønn } from '../arbeidssituasjon/ArbeidssituasjonSide';
+import { Arbeidssituasjon, finnGjennomsnittsMånedslønn } from '../arbeidssituasjon/ArbeidssituasjonSide';
 import FpEllerEsOgHvaSkjerNåLinkPanel from '../felles/FpEllerEsOgHvaSkjerNåLinkPanel';
 import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
 import HøyInntektInfobox from '../felles/HøyInntektInfobox';
@@ -33,7 +33,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon }) 
     const { goToRoute } = useVeiviserNavigator(ContextRoutes.HVOR_MYE);
     const { ref } = useScrollBehaviour();
 
-    const gjennomsnittslønn = parseFloat(notEmpty(finnGjennomsnittslønn(notEmpty(arbeidssituasjon))));
+    const gjennomsnittslønn = parseFloat(notEmpty(finnGjennomsnittsMånedslønn(notEmpty(arbeidssituasjon))));
     const grunnbeløpetGanger6 = GRUNNBELØPET * 6;
 
     const harIkkeRettTilFp = gjennomsnittslønn * 12 < minÅrslønn;
