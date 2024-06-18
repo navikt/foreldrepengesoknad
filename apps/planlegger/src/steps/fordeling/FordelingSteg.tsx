@@ -2,8 +2,6 @@ import { SectorChartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import GreenPanel from 'components/boxes/GreenPanel';
-import Infobox from 'components/boxes/Infobox';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
@@ -21,6 +19,7 @@ import { BodyShort, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { GreenPanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 

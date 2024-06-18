@@ -1,11 +1,12 @@
 import { PersonPregnantIcon } from '@navikt/aksel-icons';
-import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
+
+import { IconCircleWrapper } from '@navikt/fp-ui';
 
 interface Props {
     barnet: OmBarnet;

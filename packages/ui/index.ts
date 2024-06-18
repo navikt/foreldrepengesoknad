@@ -21,6 +21,7 @@ export { default as ScanDocumentInfo } from './src/scanDocumentInfo/ScanDocument
 export { default as HorizontalLine } from './src/horizontalLine/HorizontalLine';
 export { default as Umyndig } from './src/umyndig/Umyndig';
 export { default as LanguageToggle } from './src/languageToggle/LanguageToggle';
+export { default as LanguageToggleNew } from './src/languageToggleNew/LanguageToggle';
 export { default as IntlProvider } from './src/i18n/IntlProvider';
 export { default as Step } from './src/step/pageStep/Step';
 export { default as ProgressStepper } from './src/step/progressStepper/ProgressStepper';

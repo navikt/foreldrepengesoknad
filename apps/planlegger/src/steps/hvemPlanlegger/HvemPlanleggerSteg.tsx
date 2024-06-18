@@ -1,6 +1,5 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import useStepData from 'appData/useStepData';
-import GreenPanel from 'components/boxes/GreenPanel';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
@@ -12,6 +11,7 @@ import { formatError } from 'utils/customErrorFormatter';
 import { BodyShort, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
+import { GreenPanel } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired } from '@navikt/fp-validation';
 

@@ -1,6 +1,4 @@
 import { ChatElipsisIcon } from '@navikt/aksel-icons';
-import GreenPanel from 'components/boxes/GreenPanel';
-import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
@@ -28,6 +26,7 @@ import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-rea
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { GreenPanel, IconCircleWrapper } from '@navikt/fp-ui';
 
 const onToggleExpansionCard = (open: boolean) => {
     if (open) {

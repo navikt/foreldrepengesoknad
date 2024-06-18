@@ -1,5 +1,4 @@
 import { BabyWrappedIcon, InformationIcon } from '@navikt/aksel-icons';
-import Infobox from 'components/boxes/Infobox';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -9,6 +8,7 @@ import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUti
 import { BodyLong, Link, VStack } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT, links } from '@navikt/fp-constants';
+import { Infobox } from '@navikt/fp-ui';
 
 export const barnehagestartDato = (barnet: OmBarnet) => {
     const erFødt = erBarnetFødt(barnet);
