@@ -3,10 +3,10 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import Infoboks from './Infobox';
+import { Infobox } from '@navikt/fp-ui';
 
 const ShareDataInfobox: React.FunctionComponent = () => (
-    <Infoboks
+    <Infobox
         header={<FormattedMessage id="OmPlanleggerenSteg.TaVarePåHeader" />}
         isGray
         icon={<BookmarkIcon aria-hidden height={24} width={24} />}
@@ -14,7 +14,7 @@ const ShareDataInfobox: React.FunctionComponent = () => (
         <BodyShort>
             <FormattedMessage id="OmPlanleggerenSteg.TaVarePå" />
         </BodyShort>
-    </Infoboks>
+    </Infobox>
 );
 
 export default ShareDataInfobox;

@@ -1,8 +1,9 @@
 import { InformationIcon } from '@navikt/aksel-icons';
-import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage } from 'react-intl';
 
 import { ExpansionCard, HStack } from '@navikt/ds-react';
+
+import { IconCircleWrapper } from '@navikt/fp-ui';
 
 interface Props {
     text: string;

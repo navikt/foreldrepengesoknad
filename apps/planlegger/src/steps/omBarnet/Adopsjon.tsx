@@ -1,6 +1,4 @@
 import { TasklistStartIcon } from '@navikt/aksel-icons';
-import GreenPanel from 'components/boxes/GreenPanel';
-import Infobox from 'components/boxes/Infobox';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -11,8 +9,15 @@ import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 import { BodyLong, VStack } from '@navikt/ds-react';
 
 import { Datepicker } from '@navikt/fp-form-hooks';
-import { isAfterOrSameAsSixMonthsAgo, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
-import { isAfterOrSame, isBeforeOrSame } from '@navikt/fp-validation/src/form/dateFormValidation';
+import { GreenPanel, Infobox } from '@navikt/fp-ui';
+import {
+    isAfterOrSame,
+    isAfterOrSameAsSixMonthsAgo,
+    isBeforeOrSame,
+    isBeforeTodayOrToday,
+    isRequired,
+    isValidDate,
+} from '@navikt/fp-validation';
 
 type Props = {
     hvemPlanlegger: HvemPlanlegger;

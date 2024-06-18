@@ -1,13 +1,10 @@
 import { CalendarIcon, ClockIcon } from '@navikt/aksel-icons';
-import GreenHeading from 'components/boxes/GreenHeading';
-import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
-import LanguageToggle from 'components/language/LanguageToggle';
-import PlanleggerPage from 'components/page/PlanleggerPage';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { LocaleAll } from '@navikt/fp-types';
+import { GreenHeading, IconCircleWrapper, LanguageToggleNew, Page } from '@navikt/fp-ui';
 
 import styles from './planleggerForside.module.css';
 
@@ -18,14 +15,14 @@ interface Props {
 }
 
 const PlanleggerForside: React.FunctionComponent<Props> = ({ locale, changeLocale, children }) => (
-    <PlanleggerPage
+    <Page
         header={
             <>
                 <Show below="md">
                     <GreenHeading isDarkGreen>
                         <VStack gap="4" align="center">
                             <div className={styles.languageToggle}>
-                                <LanguageToggle locale={locale} changeLocale={changeLocale} />
+                                <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
                             </div>
                             <IconCircleWrapper color="darkGreen" size="xl">
                                 <CalendarIcon height={28} width={28} fontSize="1.5rem" aria-hidden />
@@ -68,7 +65,7 @@ const PlanleggerForside: React.FunctionComponent<Props> = ({ locale, changeLocal
         }
     >
         {children}
-    </PlanleggerPage>
+    </Page>
 );
 
 export default PlanleggerForside;

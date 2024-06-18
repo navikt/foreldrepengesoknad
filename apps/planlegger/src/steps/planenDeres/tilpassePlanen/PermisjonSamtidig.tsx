@@ -1,8 +1,9 @@
 import { PersonGroupIcon } from '@navikt/aksel-icons';
-import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
+
+import { IconCircleWrapper } from '@navikt/fp-ui';
 
 interface Props {
     erAdopsjon?: boolean;

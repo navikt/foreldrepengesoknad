@@ -1,5 +1,4 @@
 import { PersonGroupIcon } from '@navikt/aksel-icons';
-import Infobox from 'components/boxes/Infobox';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
@@ -9,6 +8,7 @@ import { erMorDelAvSøknaden, finnSøker1Tekst, finnSøker2Tekst } from 'utils/H
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { Infobox } from '@navikt/fp-ui';
 
 interface Props {
     hvemPlanlegger: HvemPlanlegger;

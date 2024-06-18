@@ -1,5 +1,4 @@
 import { BabyWrappedIcon } from '@navikt/aksel-icons';
-import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
@@ -7,6 +6,8 @@ import { erMorDelAvSøknaden, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
+
+import { IconCircleWrapper } from '@navikt/fp-ui';
 
 interface Props {
     hvemPlanlegger: HvemPlanlegger;

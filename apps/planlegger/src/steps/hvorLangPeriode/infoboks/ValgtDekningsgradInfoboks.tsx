@@ -1,5 +1,4 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import Infobox from 'components/boxes/Infobox';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
@@ -16,6 +15,7 @@ import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { Infobox } from '@navikt/fp-ui';
 
 interface Props {
     barnet: OmBarnet;

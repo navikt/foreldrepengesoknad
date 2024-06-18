@@ -3,8 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { formatError } from 'utils/customErrorFormatter';
 
 import { RadioGroup } from '@navikt/fp-form-hooks';
-
-import GreenPanel from '../boxes/GreenPanel';
+import { GreenPanel } from '@navikt/fp-ui';
 
 type Props = {
     shouldFadeIn?: boolean;

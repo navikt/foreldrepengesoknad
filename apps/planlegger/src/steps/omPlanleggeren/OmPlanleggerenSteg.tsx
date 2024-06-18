@@ -1,13 +1,12 @@
 import { ArrowRightIcon, CalendarIcon, QuestionmarkIcon } from '@navikt/aksel-icons';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
-import LanguageToggle from 'components/language/LanguageToggle';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { LocaleAll } from '@navikt/fp-types';
+import { IconCircleWrapper, LanguageToggleNew } from '@navikt/fp-ui';
 
 import PlanleggerForside from './PlanleggerForside';
 import styles from './omPlanleggerenSteg.module.css';
@@ -63,7 +62,7 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
                 <Show above="md" asChild>
                     <HStack justify="center">
                         <div className={styles.languageToggle}>
-                            <LanguageToggle locale={locale} changeLocale={changeLocale} />
+                            <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
                         </div>
                     </HStack>
                 </Show>
