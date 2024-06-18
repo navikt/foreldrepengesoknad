@@ -43,11 +43,15 @@ export const getSortableBarnDato = (
     return omsorgsovertagelse!;
 };
 
-const getSelectableBarnType = (gjelderAdopsjon: boolean, familiehendelse: Familiehendelse): ValgtBarnType => {
+const getSelectableBarnType = (
+    gjelderAdopsjon: boolean,
+    familiehendelse: Familiehendelse,
+    pdlBarn: SøkerBarn[] | undefined,
+): ValgtBarnType => {
     if (gjelderAdopsjon) {
         return ValgtBarnType.ADOPTERT;
     }
-    if (familiehendelse.fødselsdato !== undefined) {
+    if (familiehendelse.fødselsdato !== undefined || (pdlBarn && pdlBarn.length > 0)) {
         return ValgtBarnType.FØDT;
     }
     return ValgtBarnType.UFØDT;
@@ -114,7 +118,7 @@ const getSelectableBarnFraSak = (sak: Sak, registrerteBarn: SøkerBarn[]): Valgt
             sak.familiehendelse.omsorgsovertakelse,
         ),
     );
-    const barnType = getSelectableBarnType(sak.gjelderAdopsjon, sak.familiehendelse);
+    const barnType = getSelectableBarnType(sak.gjelderAdopsjon, sak.familiehendelse, pdlBarn);
     const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse.fødselsdato);
 
     let fødselsdatoer;
