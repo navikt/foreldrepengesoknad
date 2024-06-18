@@ -42,7 +42,7 @@ const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale }) => {
         STØNADSKONTO_PARAMS,
         STØNADSKONTO_OPTIONS,
     );
-
+    console.log(`${Environment.PUBLIC_PATH}/rest/konto`);
     if (requestData.error) {
         return <SimpleErrorPage />;
     }
