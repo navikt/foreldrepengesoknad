@@ -1,14 +1,14 @@
 import FeatureToggle from '../FeatureToggle';
-import { isFeatureEnabled } from './toggleUtils';
+import fns from './toggleUtils';
 
 describe('<isFeatureEnabled>', () => {
     it('skal ha feature toggle som er på', () => {
-        const erTogglePå = isFeatureEnabled(FeatureToggle.visFeilside);
+        const erTogglePå = fns.isFeatureEnabled(FeatureToggle.visFeilside);
         expect(erTogglePå).toBe(true);
     });
 
     it('skal ha feature toggle som er av', () => {
-        const erTogglePå = isFeatureEnabled(FeatureToggle.visAlertstripe);
+        const erTogglePå = fns.isFeatureEnabled(FeatureToggle.visAlertstripe);
         expect(erTogglePå).toBe(false);
     });
 });

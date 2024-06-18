@@ -13,7 +13,6 @@ import {
     TilgjengeligeStønadskontoerForDekningsgrad,
 } from '@navikt/fp-types';
 
-import Environment from 'app/Environment';
 import { FpApiDataContext } from 'app/api/context/FpApiDataContext';
 import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
@@ -21,8 +20,8 @@ import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 
 import PeriodeMedForeldrepengerSteg from './PeriodeMedForeldrepengerSteg';
 
-const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
-const STØNADSKONTO_URL = `${Environment.REST_API_URL}/konto`;
+const UTTAKSPLAN_ANNEN_URL = '/rest/innsyn/v2/annenPartVedtak';
+const STØNADSKONTO_URL = `/rest/konto`;
 
 const promiseAction =
     () =>
@@ -186,6 +185,24 @@ FarEllerMedmorAleneomsorgFødsel.args = {
     stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
 };
 
+export const FarEllerMedmorAleneomsorgTermin1Juli2024 = Template.bind({});
+FarEllerMedmorAleneomsorgTermin1Juli2024.args = {
+    erAleneOmOmsorg: true,
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'far',
+    },
+    barnet: {
+        type: BarnType.UFØDT,
+        antallBarn: 1,
+        termindato: '2024-07-01',
+    },
+    annenForelder: {
+        kanIkkeOppgis: true,
+    },
+    stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
+};
+
 export const FarEllerMedmorFødselBeggeHarRett = Template.bind({});
 FarEllerMedmorFødselBeggeHarRett.args = {
     søkersituasjon: {
@@ -200,7 +217,81 @@ FarEllerMedmorFødselBeggeHarRett.args = {
     annenForelder: {
         etternavn: 'Pettersen',
         fornavn: 'Helga',
-        fnr: '02068629902',
+        fnr: '02458945678',
+        utenlandskFnr: false,
+        kanIkkeOppgis: false,
+        harRettPåForeldrepengerINorge: true,
+        erInformertOmSøknaden: true,
+        erAleneOmOmsorg: false,
+    },
+    stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
+};
+
+export const MorFødselBeggeHarRettFødselFør1Juli2024 = Template.bind({});
+MorFødselBeggeHarRettFødselFør1Juli2024.args = {
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'mor',
+    },
+    barnet: {
+        type: BarnType.FØDT,
+        antallBarn: 1,
+        fødselsdatoer: ['2024-06-30'],
+        termindato: '2024-06-30',
+    },
+    annenForelder: {
+        etternavn: 'Pettersen',
+        fornavn: 'Hans',
+        fnr: '02458945678',
+        utenlandskFnr: false,
+        kanIkkeOppgis: false,
+        harRettPåForeldrepengerINorge: true,
+        erInformertOmSøknaden: true,
+        erAleneOmOmsorg: false,
+    },
+    stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
+};
+
+export const FarEllerMedmorFødselBeggeHarRettTerminFør1Juli2024 = Template.bind({});
+FarEllerMedmorFødselBeggeHarRettTerminFør1Juli2024.args = {
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'far',
+    },
+    barnet: {
+        type: BarnType.UFØDT,
+        antallBarn: 1,
+        termindato: '2024-06-30',
+    },
+    annenForelder: {
+        etternavn: 'Pettersen',
+        fornavn: 'Helga',
+        fnr: '02458945678',
+        utenlandskFnr: false,
+        kanIkkeOppgis: false,
+        harRettPåForeldrepengerINorge: true,
+        erInformertOmSøknaden: true,
+        erAleneOmOmsorg: false,
+    },
+    stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
+};
+
+export const MorBeggeHarRettAdopsjonEtter1Juli2024 = Template.bind({});
+MorBeggeHarRettAdopsjonEtter1Juli2024.args = {
+    søkersituasjon: {
+        situasjon: 'adopsjon',
+        rolle: 'mor',
+    },
+    barnet: {
+        type: BarnType.ADOPTERT_STEBARN,
+        antallBarn: 1,
+        adopsjonsdato: '2024-07-01',
+        fødselsdatoer: ['2024-07-01'],
+    },
+    annenForelder: {
+        etternavn: 'Pettersen',
+        fornavn: 'Helga',
+        fnr: '02458945678',
         utenlandskFnr: false,
         kanIkkeOppgis: false,
         harRettPåForeldrepengerINorge: true,

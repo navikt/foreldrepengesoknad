@@ -1,7 +1,5 @@
-import { QuestionConfig, Questions } from '@navikt/sif-common-question-config/lib';
-
 import { hasValue } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/fp-formik';
+import { QuestionConfig, Questions, YesOrNo } from '@navikt/fp-formik';
 
 import { InntektsinformasjonFormData, InntektsinformasjonFormField } from './inntektsinformasjonFormConfig';
 

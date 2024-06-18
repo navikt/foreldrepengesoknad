@@ -1,6 +1,6 @@
 import React from 'react';
-import { filteredListEØSCountries, getAlpha3Code, getCountries } from '../../utils/countryUtils';
-import { TestProps } from '../../types';
+import { filteredListEØSCountries, getAlpha3Code, getCountries } from './../../utils/countryUtils';
+import { TestProps } from './../../types';
 import { Select, SelectProps } from '@navikt/ds-react';
 
 interface Props extends TestProps, Omit<SelectProps, 'onChange' | 'children'> {

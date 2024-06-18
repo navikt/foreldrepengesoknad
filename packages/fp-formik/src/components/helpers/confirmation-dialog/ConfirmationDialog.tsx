@@ -1,6 +1,6 @@
 import { BodyLong, Button, Modal, ModalProps } from '@navikt/ds-react';
 import React from 'react';
-import ButtonRow from '../button-row/ButtonRow';
+import ButtonRow from './../button-row/ButtonRow';
 import './confirmationDialog.scss';
 
 export interface Props extends Omit<ModalProps, 'onClose'> {

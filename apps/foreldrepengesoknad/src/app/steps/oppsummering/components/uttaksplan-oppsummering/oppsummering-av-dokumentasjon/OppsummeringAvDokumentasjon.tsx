@@ -39,7 +39,7 @@ const OppsummeringAvDokumentasjon: React.FunctionComponent<Props> = (props) => {
                 <div>{renderListOfAttachmentPreviewLinks()}</div>
             ) : (
                 <div>
-                    <Tag variant="warning">
+                    <Tag variant="warning-moderate">
                         {intl.formatMessage({ id: 'oppsummering.andreInntekter.dokumentasjon.mangler' })}
                     </Tag>
                 </div>

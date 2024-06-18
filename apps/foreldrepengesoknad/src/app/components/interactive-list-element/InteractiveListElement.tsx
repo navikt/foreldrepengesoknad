@@ -1,8 +1,10 @@
 import { FunctionComponent } from 'react';
-import { bemUtils } from '@navikt/fp-common';
-import Pencil from './Pencil';
+
 import { BodyShort, Tag } from '@navikt/ds-react';
 
+import { bemUtils } from '@navikt/fp-common';
+
+import Pencil from './Pencil';
 import './interactiveListElement.less';
 
 interface Props {
@@ -43,7 +45,7 @@ const InteractiveListElement: FunctionComponent<Props> = ({
             </div>
             <BodyShort className={bem.element('text')}>{text}</BodyShort>
             <div className={bem.element('bottom')}>
-                {missingDocumentation && <Tag variant="warning">Mangler dokumentasjon</Tag>}
+                {missingDocumentation && <Tag variant="warning-moderate">Mangler dokumentasjon</Tag>}
                 <button
                     className={bem.element('deleteButton')}
                     onClick={onDelete}

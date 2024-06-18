@@ -1,7 +1,8 @@
-import { Periodetype } from 'types/Periode';
-import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 import MockDate from 'mockdate';
-import { StønadskontoType } from '@navikt/fp-common';
+
+import { Periodetype, StønadskontoType } from '@navikt/fp-common';
+
+import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
 
 describe('uttakRundtFødselÅrsakSpørsmålSkalBesvares - når WLB gjelder', () => {
     beforeAll(() => {

@@ -1,11 +1,11 @@
 import { TextFieldProps } from '@navikt/ds-react';
 import React from 'react';
 import { Field, FieldProps } from 'formik';
-import { TestProps, TypedFormInputValidationProps } from '../../types';
-import { getErrorPropForFormikInput } from '../../utils/typedFormErrorUtils';
-import FormikTextField from '../formik-text-field/FormikTextField';
-import { TextFieldWidths } from '../formik-text-field/FormikTextFieldUtils';
-import { TypedFormikFormContext } from '../typed-formik-form/TypedFormikForm';
+import { TestProps, TypedFormInputValidationProps } from './../../types';
+import { getErrorPropForFormikInput } from './../../utils/typedFormErrorUtils';
+import FormikTextField from './../formik-text-field/FormikTextField';
+import { TextFieldWidths } from './../formik-text-field/FormikTextFieldUtils';
+import { TypedFormikFormContext } from './../typed-formik-form/TypedFormikForm';
 
 interface OwnProps<FieldName> extends Omit<TextFieldProps, 'name' | 'children' | 'width'> {
     name: FieldName;

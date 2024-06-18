@@ -1,12 +1,11 @@
-import { Period } from 'components/calendar/Calendar';
-import { DayColor } from 'components/calendar/Day';
 import dayjs from 'dayjs';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { ISO_DATE_FORMAT, PeriodeColor } from '@navikt/fp-constants';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { Period } from '@navikt/fp-ui';
 
 import { erMorDelAvSøknaden } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert } from './barnetUtils';
@@ -18,12 +17,12 @@ const finnPerioderForKunFarHarRett = (familiehendelsedato: string, sluttdatoPeri
         {
             fom: familiehendelsedato,
             tom: familiehendelsedato,
-            color: DayColor.PINK,
+            color: PeriodeColor.PINK,
         },
         {
             fom: dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT),
             tom: sluttdatoPeriode1,
-            color: DayColor.BLUE,
+            color: PeriodeColor.BLUE,
         },
     ];
 };
@@ -42,26 +41,26 @@ const finnPerioderForBeggeHarRettEllerKunMorHarRett = (
         perioder.push({
             fom: startdatoPeriode1,
             tom: dayjs(familiehendelsedato).subtract(1, 'day').format(ISO_DATE_FORMAT),
-            color: DayColor.BLUE,
+            color: PeriodeColor.BLUE,
         });
     }
 
     perioder.push({
         fom: familiehendelsedato,
         tom: familiehendelsedato,
-        color: DayColor.PINK,
+        color: PeriodeColor.PINK,
     });
     perioder.push({
         fom: dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT),
         tom: sluttdatoPeriode1,
-        color: DayColor.BLUE,
+        color: PeriodeColor.BLUE,
     });
 
     if (startdatoPeriode2 && sluttdatoPeriode2) {
         perioder.push({
             fom: startdatoPeriode2,
             tom: sluttdatoPeriode2,
-            color: DayColor.GREEN,
+            color: PeriodeColor.LIGHTGREEN,
         });
     }
 
@@ -79,17 +78,17 @@ const finnPerioderOppdeltIAktivitetskrav = (
         {
             fom: familiehendelsedato,
             tom: familiehendelsedato,
-            color: DayColor.PINK,
+            color: PeriodeColor.PINK,
         },
         {
             fom: startdatoPeriode1,
             tom: sluttdatoPeriode1,
-            color: DayColor.BLUE,
+            color: PeriodeColor.BLUE,
         },
         {
             fom: startdatoPeriode2,
             tom: sluttdatoPeriode2,
-            color: DayColor.GREEN,
+            color: PeriodeColor.LIGHTGREEN,
         },
     ];
 };

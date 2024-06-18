@@ -1,4 +1,5 @@
 packages:
-    - 'apps/*'
-    - 'packages/*'
-    - 'server'
+  - 'apps/*'
+  - 'packages/*'
+  - 'server'
+  - 'server-uinnlogget'

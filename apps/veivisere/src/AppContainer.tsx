@@ -7,7 +7,7 @@ import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
 import { useBeforeUnload, utilsMessages } from '@navikt/fp-utils';
 
-import Veileder from './Veileder';
+import Veiviser from './Veiviser';
 import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
@@ -55,7 +55,7 @@ const AppContainer = () => {
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <ErrorBoundary appName="Foreldrepengeveivisere" customErrorPage={<SimpleErrorPage />}>
-                <Veileder locale={locale} changeLocale={changeLocale} />
+                <Veiviser locale={locale} changeLocale={changeLocale} />
             </ErrorBoundary>
         </IntlProvider>
     );

@@ -28,36 +28,60 @@ const defaultPermisjonsperiodeAvgrensning = (familiehendelsesdato: Date): Datepi
     };
 };
 
-const getSisteDatoForForeldrepengeOppstart = (termindato: Date | undefined, familiehendelsesdato: Date) => {
-    if (!termindato || dayjs(familiehendelsesdato).isSameOrBefore(dayjs(termindato), 'd')) {
-        return familiehendelsesdato;
-    }
-    return termindato;
+const getSisteDatoForOppstartMor = (familiehendelsesdato: Date): Date => {
+    return Uttaksdagen(familiehendelsesdato).denneEllerNeste();
 };
 
-const startdatoFørTermin = (familiehendelsesdato: Date, termindato: Date | undefined): DatepickerLimitationsString => {
-    const datoÅRegneFra = getSisteDatoForForeldrepengeOppstart(termindato, familiehendelsesdato);
+const startDatoMorUfødtBarn = (termindato: Date) => {
+    const sisteOppstartsdato = getSisteDatoForOppstartMor(termindato);
+    const førsteOppstartsdato = dayjs(sisteOppstartsdato)
+        .subtract(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL, 'week')
+        .toDate();
+    return {
+        ...konverterMinOgMaxDatoerTilString(førsteOppstartsdato, sisteOppstartsdato),
+        weekendsNotSelectable: true,
+    };
+};
+
+const startDatoMorFødtBarn = (termindato: Date | undefined, fødselsdato: Date) => {
+    const sisteOppstartsdato = getSisteDatoForOppstartMor(fødselsdato);
     const termindatoMinus12Uker =
         termindato !== undefined
-            ? dayjs(termindato).subtract(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5 - 1, 'days')
+            ? dayjs(Uttaksdagen(termindato).denneEllerNeste())
+                  .subtract(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL, 'weeks')
+                  .toDate()
             : undefined;
     const erFødselsdatoFørTermindatoMinus12Uker =
-        termindato !== undefined ? dayjs(familiehendelsesdato).isBefore(termindatoMinus12Uker, 'd') : false;
+        termindato !== undefined ? dayjs(fødselsdato).isBefore(dayjs(termindatoMinus12Uker), 'd') : false;
 
     if (erFødselsdatoFørTermindatoMinus12Uker) {
-        const maksDato = Uttaksdagen(dayjs(datoÅRegneFra).toDate()).denneEllerNeste();
-        const minDato = Uttaksdagen(familiehendelsesdato).denneEllerForrige();
         return {
-            ...konverterMinOgMaxDatoerTilString(minDato, maksDato),
+            ...konverterMinOgMaxDatoerTilString(sisteOppstartsdato, sisteOppstartsdato),
             weekendsNotSelectable: true,
         };
     } else {
-        const maksDato = Uttaksdagen(dayjs(datoÅRegneFra).toDate()).denneEllerNeste();
-        const minDato = Uttaksdagen(maksDato).trekkFra(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5);
+        const tidligstOppstartsdato =
+            termindatoMinus12Uker ||
+            dayjs(Uttaksdagen(fødselsdato).denneEllerNeste())
+                .subtract(uttaksConstants.MAKS_ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL, 'weeks')
+                .toDate();
         return {
-            ...konverterMinOgMaxDatoerTilString(minDato, maksDato),
+            ...konverterMinOgMaxDatoerTilString(tidligstOppstartsdato, sisteOppstartsdato),
             weekendsNotSelectable: true,
         };
+    }
+};
+
+export const startdatoPermisjonMor = (
+    fødselsdato: Date | undefined,
+    termindato: Date | undefined,
+): DatepickerLimitationsString => {
+    if (!fødselsdato && termindato) {
+        return startDatoMorUfødtBarn(termindato);
+    } else if (fødselsdato) {
+        return startDatoMorFødtBarn(termindato, fødselsdato);
+    } else {
+        throw new Error('Mangler fødselsdato eller termindato på barnet.');
     }
 };
 
@@ -120,7 +144,7 @@ const startdatoPermisjonFarMedmor = (
 };
 
 export const uttaksplanDatoavgrensninger = {
-    startdatoFørTermin,
+    startdatoPermisjonMor,
     morsSisteUttaksdag,
     startdatoPermisjonFarMedmor,
     startdatoPermisjonAdopsjon,

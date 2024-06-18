@@ -17,7 +17,7 @@ type Story = StoryObj<{
     brukStønadskontoMock?: boolean;
 }>;
 
-export const HvorMyeVeileder: Story = {
+export const HvorMyeVeiviser: Story = {
     render: () => {
         initAmplitude();
         return (
@@ -30,7 +30,7 @@ export const HvorMyeVeileder: Story = {
     },
 };
 
-export const HvaSkjerNårVeileder: Story = {
+export const HvaSkjerNårVeiviser: Story = {
     render: () => {
         initAmplitude();
         return (
@@ -43,7 +43,7 @@ export const HvaSkjerNårVeileder: Story = {
     },
 };
 
-export const FpEllerEsVeileder: Story = {
+export const FpEllerEsVeiviser: Story = {
     render: () => {
         initAmplitude();
         return (

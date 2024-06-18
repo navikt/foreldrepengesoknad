@@ -17,7 +17,7 @@ describe('annenForelderUtils', () => {
     it('skal returnere false når søker er mor', () => {
         const annenForelder = {
             kanIkkeOppgis: false,
-            erUfør: true,
+            erMorUfør: true,
         } as AnnenForelder;
         const erFarEllerMedmor = false;
 
@@ -29,7 +29,7 @@ describe('annenForelderUtils', () => {
     it('skal returnere false når søker er far eller medmor men mor er arbeidsdyktig', () => {
         const annenForelder = {
             kanIkkeOppgis: false,
-            erUfør: false,
+            erMorUfør: false,
         } as AnnenForelder;
         const erFarEllerMedmor = true;
 

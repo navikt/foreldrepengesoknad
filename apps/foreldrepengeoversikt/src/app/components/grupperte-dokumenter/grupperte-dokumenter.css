@@ -3,10 +3,6 @@
     margin-top: -1rem;
 }
 
-.grupperte-dokumenter__header {
-    border-bottom: 2px solid var(--a-gray-300);
-}
-
 .grupperte-dokumenter__header-content {
     display: flex;
 }
@@ -19,5 +15,5 @@
 .grupperte-dokumenter__content {
     border-bottom: none;
     margin-left: 3rem;
-    padding-right: 0;
+    padding: 1rem 0 0 0;
 }

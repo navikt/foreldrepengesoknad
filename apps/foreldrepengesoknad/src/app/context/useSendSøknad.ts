@@ -15,7 +15,6 @@ import {
 } from 'app/api/apiUtils';
 import { Kvittering } from 'app/types/Kvittering';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { redirectToLogin } from 'app/utils/redirectToLogin';
 
 import { ContextDataType, useContextGetAnyData } from './FpDataContext';
 
@@ -63,10 +62,6 @@ const useSendSøknad = (
             //TODO (TOR) Håndter dette utanfor denne hook'en (På same måte i alle appane)
 
             if (isAxiosError(error)) {
-                if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-                    redirectToLogin();
-                }
-
                 sendErrorMessageToSentry(error);
 
                 if (

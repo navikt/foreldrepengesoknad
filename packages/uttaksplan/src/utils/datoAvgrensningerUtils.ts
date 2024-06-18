@@ -10,8 +10,8 @@ import {
     isValidTidsperiode,
     uttaksplanDatoavgrensninger,
 } from '@navikt/fp-common';
+import { DatepickerLimitationsString, dateToISOString } from '@navikt/fp-formik';
 
-import { DatepickerLimitationsString, dateToISOString } from '../../../fp-formik/src';
 import { getFørsteMuligeUttaksdag, getSisteMuligeUttaksdag } from './uttaksdatoerUtils';
 
 export interface DatoAvgrensninger {

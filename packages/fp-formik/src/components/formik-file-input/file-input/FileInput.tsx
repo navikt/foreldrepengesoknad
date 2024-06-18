@@ -1,6 +1,6 @@
 import React from 'react';
-import { FormError } from '../../../types';
-import SkjemagruppeQuestion from '../../helpers/skjemagruppe-question/SkjemagruppeQuestion';
+import { FormError } from './../../../types';
+import SkjemagruppeQuestion from './../../helpers/skjemagruppe-question/SkjemagruppeQuestion';
 import UploadSvg from './UploadSvg';
 import './fileInput.scss';
 

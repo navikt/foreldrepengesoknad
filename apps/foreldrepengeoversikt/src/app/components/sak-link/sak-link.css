@@ -3,6 +3,7 @@
     padding: 2.5rem 1rem;
     border: none;
     border-radius: 0.5rem;
+    box-shadow: var(--a-shadow-small);
 }
 
 .sak-link__content {

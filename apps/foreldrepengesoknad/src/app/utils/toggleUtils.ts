@@ -1,9 +1,15 @@
-import FeatureToggle from '../FeatureToggle';
 import Environment from '../Environment';
+import FeatureToggle from '../FeatureToggle';
 
-export const isFeatureEnabled = (feature: FeatureToggle): boolean => {
+const isFeatureEnabled = (feature: FeatureToggle): boolean => {
     if (Environment[feature] && Environment[feature].toLowerCase() === 'on') {
         return true;
     }
     return false;
 };
+
+const module = {
+    isFeatureEnabled,
+};
+
+export default module;

@@ -6,7 +6,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { MemoryRouter } from 'react-router-dom';
 import { OmBarnet } from 'types/OmBarnet';
 
-import { attachmentApi } from '@navikt/fp-api';
+import { getAxiosInstance } from '@navikt/fp-api';
 import { initAmplitude } from '@navikt/fp-metrics';
 
 import DokumentasjonSteg from './DokumentasjonSteg';
@@ -39,9 +39,9 @@ const Template: StoryFn<{
 }) => {
     initAmplitude();
 
-    const apiMock = new MockAdapter(attachmentApi);
+    const apiMock = new MockAdapter(getAxiosInstance());
     if (!skalFeileOpplasting) {
-        apiMock.onPost('/storage/engangsstonad/vedlegg').reply(200); //story
+        apiMock.onPost('/rest/storage/engangsstonad/vedlegg').reply(200); //story
         apiMock.onPost('http://localhost:8888/rest/storage/engangsstonad/vedlegg').reply(200); //test
     }
 

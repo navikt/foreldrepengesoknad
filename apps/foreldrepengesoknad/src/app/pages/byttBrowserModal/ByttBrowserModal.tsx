@@ -1,6 +1,8 @@
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Button, Heading, Modal, BodyShort } from '@navikt/ds-react';
+
+import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
+
 import { intlUtils } from '@navikt/fp-common';
 
 export interface Props {
@@ -8,7 +10,7 @@ export interface Props {
 }
 
 export const ByttBrowserModal: FunctionComponent<Props> = ({ skalEndreNettleser }) => {
-    const [isOpen, toggleIsOpen] = useState(skalEndreNettleser);
+    const [isOpen, setIsOpen] = useState(skalEndreNettleser);
     const intl = useIntl();
     return (
         <Modal aria-label={intlUtils(intl, 'sesjonUtløpt.tittel')} open={isOpen} onClose={() => undefined}>
@@ -21,7 +23,7 @@ export const ByttBrowserModal: FunctionComponent<Props> = ({ skalEndreNettleser 
                 </BodyShort>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={() => toggleIsOpen(false)}>
+                <Button variant="primary" onClick={() => setIsOpen(false)}>
                     <FormattedMessage id="ok" />
                 </Button>
             </Modal.Footer>

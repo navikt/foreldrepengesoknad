@@ -18,6 +18,7 @@ export type Period = {
     fom: string;
     tom: string;
     color: PeriodeColor;
+    srText?: string;
 };
 
 const findDayColor = (year: number, month: number, day: number, periods: Period[]) => {
@@ -112,31 +113,42 @@ interface Props {
 
 const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }) => {
     const months = findMonths(periods[0].fom, periods[periods.length - 1].tom);
-
     return (
-        <HGrid
-            gap={{ xs: '1', sm: '4', md: '8' }}
-            className={useSmallerWidth ? styles.gridColumnsSmall : styles.gridColumnsWide}
-        >
-            {months.map((monthData, index) => (
-                <Month
-                    key={monthData.year + '-' + monthData.month}
-                    year={monthData.year}
-                    month={monthData.month}
-                    showYear={index > 0 && months[index - 1].year !== monthData.year}
-                    headerLevel={useSmallerWidth ? '5' : '4'}
-                >
-                    {[...Array(dayjs().year(monthData.year).month(monthData.month).daysInMonth()).keys()].map((day) => (
-                        <Day
-                            key={monthData.year + monthData.month + day}
-                            day={day + 1}
-                            periodeColor={findDayColor(monthData.year, monthData.month, day + 1, periods)}
-                            dayType={findDayType(monthData.year, monthData.month, day + 1, periods)}
-                        />
-                    ))}
-                </Month>
-            ))}
-        </HGrid>
+        <>
+            {periods.some((period) => period.srText) && (
+                <div className={styles.srOnly}>
+                    {periods
+                        .filter((periode) => periode.srText)
+                        .map((period) => period.srText)
+                        .toString()}
+                </div>
+            )}
+            <HGrid
+                gap={{ xs: '1', sm: '4', md: '8' }}
+                className={useSmallerWidth ? styles.gridColumnsSmall : styles.gridColumnsWide}
+            >
+                {months.map((monthData, index) => (
+                    <Month
+                        key={monthData.year + '-' + monthData.month}
+                        year={monthData.year}
+                        month={monthData.month}
+                        showYear={index > 0 && months[index - 1].year !== monthData.year}
+                        headerLevel={useSmallerWidth ? '5' : '4'}
+                    >
+                        {[...Array(dayjs().year(monthData.year).month(monthData.month).daysInMonth()).keys()].map(
+                            (day) => (
+                                <Day
+                                    key={monthData.year + monthData.month + day}
+                                    day={day + 1}
+                                    periodeColor={findDayColor(monthData.year, monthData.month, day + 1, periods)}
+                                    dayType={findDayType(monthData.year, monthData.month, day + 1, periods)}
+                                />
+                            ),
+                        )}
+                    </Month>
+                ))}
+            </HGrid>
+        </>
     );
 };
 

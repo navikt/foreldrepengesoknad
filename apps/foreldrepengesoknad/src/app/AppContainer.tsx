@@ -2,6 +2,7 @@ import { uttaksplanMessages } from '@navikt/uttaksplan';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
+import { setAxiosLocale } from '@navikt/fp-api';
 import { allCommonMessages, getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
 import { oppsummeringMessages } from '@navikt/fp-oppsummering';
 import { LocaleNo } from '@navikt/fp-types';
@@ -12,7 +13,6 @@ import { utilsMessages } from '@navikt/fp-utils';
 import ByttBrowserModal from 'app/pages/byttBrowserModal/ByttBrowserModal';
 
 import Foreldrepengesøknad from './Foreldrepengesøknad';
-import { setAxiosLocale } from './api/apiInterceptor';
 import { FpApiDataContext } from './api/context/FpApiDataContext';
 import ErrorBoundary from './errorBoundary/ErrorBoundary';
 import nbMessages from './intl/nb_NO.json';

@@ -84,7 +84,7 @@ const useEsSendSøknad = (
             try {
                 kvittering = await postData<typeof søknad, Kvittering>(
                     esApi,
-                    '/soknad/engangsstonad',
+                    '/rest/soknad/engangsstonad',
                     søknad,
                     FEIL_VED_INNSENDING,
                     true,
@@ -100,7 +100,7 @@ const useEsSendSøknad = (
 
             if (kvittering) {
                 try {
-                    await deleteData(esApi, '/storage/engangsstonad', FEIL_VED_INNSENDING, abortSignal);
+                    await deleteData(esApi, '/rest/storage/engangsstonad', FEIL_VED_INNSENDING, abortSignal);
                 } catch (error) {
                     // Vi bryr oss ikke om feil her. Logges bare i backend
                 }

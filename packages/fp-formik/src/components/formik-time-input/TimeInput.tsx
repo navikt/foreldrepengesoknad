@@ -1,10 +1,10 @@
 import { TextField } from '@navikt/ds-react';
 import React, { RefObject, useState } from 'react';
 import classNames from 'classnames';
-import { InputTime, TestProps } from '../../types';
-import bemUtils from '../../utils/bemUtils';
-import { getNumberFromNumberInputValue } from '../../utils/numberInputUtils';
-import { hasValue } from '../../validation/validationUtils';
+import { InputTime, TestProps } from './../../types';
+import bemUtils from './../../utils/bemUtils';
+import { getNumberFromNumberInputValue } from './../../utils/numberInputUtils';
+import { hasValue } from './../../validation/validationUtils';
 import './timeInput.scss';
 
 const MAX_HOURS = 23;

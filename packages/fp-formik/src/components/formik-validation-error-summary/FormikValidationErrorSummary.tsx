@@ -1,8 +1,8 @@
 import React, { RefObject } from 'react';
 import { useFormikContext } from 'formik';
-import { getAllFieldsWithErrors, getErrorForField } from '../../utils/typedFormErrorUtils';
-import ValidationSummary, { ValidationSummaryError } from '../helpers/ValidationSummary';
-import { TypedFormikFormContext } from '../typed-formik-form/TypedFormikForm';
+import { getAllFieldsWithErrors, getErrorForField } from './../../utils/typedFormErrorUtils';
+import ValidationSummary, { ValidationSummaryError } from './../helpers/ValidationSummary';
+import { TypedFormikFormContext } from './../typed-formik-form/TypedFormikForm';
 
 interface Props {
     heading?: string;

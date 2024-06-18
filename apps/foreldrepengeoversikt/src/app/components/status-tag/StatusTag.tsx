@@ -1,4 +1,5 @@
 import { Tag } from '@navikt/ds-react';
+
 import { BehandlingTilstand } from 'app/types/BehandlingTilstand';
 import { Sak } from 'app/types/Sak';
 
@@ -12,7 +13,7 @@ const StatusTag: React.FunctionComponent<Props> = ({ sak, className }) => {
         if (!sak.sakAvsluttet) {
             if (sak.åpenBehandling.tilstand === BehandlingTilstand.UNDER_BEHANDLING) {
                 return (
-                    <Tag className={className} variant="warning" size="xsmall">
+                    <Tag className={className} variant="warning-moderate" size="xsmall">
                         Under behandling
                     </Tag>
                 );
@@ -20,7 +21,7 @@ const StatusTag: React.FunctionComponent<Props> = ({ sak, className }) => {
 
             if (sak.åpenBehandling.tilstand === BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING) {
                 return (
-                    <Tag className={className} variant="warning" size="xsmall">
+                    <Tag className={className} variant="warning-moderate" size="xsmall">
                         Venter på inntektsmelding fra arbeidsgiver
                     </Tag>
                 );
@@ -28,7 +29,7 @@ const StatusTag: React.FunctionComponent<Props> = ({ sak, className }) => {
 
             if (sak.åpenBehandling.tilstand === BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON) {
                 return (
-                    <Tag className={className} variant="warning" size="xsmall">
+                    <Tag className={className} variant="warning-moderate" size="xsmall">
                         Du må sende dokumentasjon
                     </Tag>
                 );
@@ -36,7 +37,7 @@ const StatusTag: React.FunctionComponent<Props> = ({ sak, className }) => {
 
             if (sak.åpenBehandling.tilstand === BehandlingTilstand.TIDLIG_SØKNAD) {
                 return (
-                    <Tag className={className} variant="warning" size="xsmall">
+                    <Tag className={className} variant="warning-moderate" size="xsmall">
                         Søknaden vil bli behandlet senere
                     </Tag>
                 );
@@ -44,7 +45,7 @@ const StatusTag: React.FunctionComponent<Props> = ({ sak, className }) => {
 
             if (sak.åpenBehandling.tilstand === BehandlingTilstand.VENTER_PÅ_MELDEKORT) {
                 return (
-                    <Tag className={className} variant="warning" size="xsmall">
+                    <Tag className={className} variant="warning-moderate" size="xsmall">
                         Du må sende meldekort
                     </Tag>
                 );
@@ -54,14 +55,14 @@ const StatusTag: React.FunctionComponent<Props> = ({ sak, className }) => {
 
     if (sak.sakAvsluttet) {
         return (
-            <Tag className={className} variant="success" size="xsmall">
+            <Tag className={className} variant="success-moderate" size="xsmall">
                 Avsluttet
             </Tag>
         );
     }
 
     return (
-        <Tag className={className} variant="success" size="xsmall">
+        <Tag className={className} variant="success-moderate" size="xsmall">
             Aktiv
         </Tag>
     );

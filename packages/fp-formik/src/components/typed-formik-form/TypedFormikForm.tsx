@@ -2,10 +2,16 @@ import { Button } from '@navikt/ds-react';
 import React, { createContext, useEffect, useRef, useState } from 'react';
 import { Back, Next } from '@navikt/ds-icons';
 import { FieldInputProps, FormikProps, useFormikContext } from 'formik';
-import { CancelButtonTypes, CustomFormErrorHandler, ErrorTypeChecker, FieldErrorHandler, FormError } from '../../types';
-import { getErrorForField, isValidationErrorsVisible } from '../../utils/typedFormErrorUtils';
-import FormikValidationErrorSummary from '../formik-validation-error-summary/FormikValidationErrorSummary';
-import ButtonRow from '../helpers/button-row/ButtonRow';
+import {
+    CancelButtonTypes,
+    CustomFormErrorHandler,
+    ErrorTypeChecker,
+    FieldErrorHandler,
+    FormError,
+} from './../../types';
+import { getErrorForField, isValidationErrorsVisible } from './../../utils/typedFormErrorUtils';
+import FormikValidationErrorSummary from './../formik-validation-error-summary/FormikValidationErrorSummary';
+import ButtonRow from './../helpers/button-row/ButtonRow';
 export interface TypedFormikFormProps<FormValues, ErrorType> {
     children: React.ReactNode;
     className?: string;

@@ -20,6 +20,8 @@
     "kalender.utsettelse.HV_OVELSE": "pga. øvelse eller tjeneste i Heimevernet",
     "kalender.utsettelse.NAV_TILTAK": "pga. NAV tiltak som utgjør 100% arbeid",
     "kalender.lastNed": "Last ned kalender som PDF",
+    "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} den {dato}",
+    "kalender.skjermleser.periode": "{periodeNavn} fra den {fraDato} til den {tilDato}",
     "uttaksplan.familiehendelsesdato.født": "{antallBarn, plural, one{Barnet} other {Barna}} er født {dato}",
     "uttaksplan.familiehendelsesdato.termin": "Termin {dato}",
     "uttaksplan.familiehendelsesdato.adopsjon": "{antallBarn, plural, one{Barnet} other {Barna}} er adoptert {dato}"

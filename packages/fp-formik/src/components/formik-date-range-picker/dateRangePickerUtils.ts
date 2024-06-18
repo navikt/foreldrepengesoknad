@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import minMax from 'dayjs/plugin/minMax';
-import { DateRange } from '../../types';
-import { DatepickerLimitations } from '../formik-datepicker/FormikDatepicker';
+import { DateRange } from './../../types';
+import { DatepickerLimitations } from './../formik-datepicker/FormikDatepicker';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(minMax);

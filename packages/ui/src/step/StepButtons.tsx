@@ -27,7 +27,12 @@ const StepButtons: FunctionComponent<Props> = ({
 }) => {
     return (
         <HStack gap="2">
-            <Button type="button" variant="secondary" onClick={goToPreviousStep} style={{ flex: 1 }}>
+            <Button
+                type="button"
+                variant="secondary"
+                onClick={goToPreviousStep}
+                style={{ flex: 1, maxWidth: isSendButton ? 'fit-content' : undefined }}
+            >
                 {useSimplifiedTexts ? (
                     <FormattedMessage id="StepButtons.ForrigeSimple" />
                 ) : (

@@ -1,11 +1,9 @@
-import axios from 'axios';
 import { Attachment } from '@navikt/fp-types';
 
-export const attachmentApi = axios.create();
+import getAxiosInstance from './apiInterceptor';
 
 const getSaveAttachment =
-    (restApiUrl: string, type: 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad') =>
-    (attachment: Attachment) => {
+    (type: 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad') => (attachment: Attachment) => {
         const config = {
             withCredentials: true,
             timeout: 45 * 1000,
@@ -17,9 +15,7 @@ const getSaveAttachment =
         const formData = new FormData();
         formData.append('id', attachment.id);
         formData.append('vedlegg', attachment.file, attachment.filename);
-
-        const url = `${restApiUrl}/storage/${type}/vedlegg`;
-        return attachmentApi.post(url, formData, config);
+        return getAxiosInstance().post(`/rest/storage/${type}/vedlegg`, formData, config);
     };
 
 export default getSaveAttachment;

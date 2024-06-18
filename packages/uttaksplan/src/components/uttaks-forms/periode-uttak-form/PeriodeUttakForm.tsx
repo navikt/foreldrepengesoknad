@@ -1,4 +1,3 @@
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
 import { FormattedMessage, IntlShape } from 'react-intl';
 
@@ -36,6 +35,7 @@ import {
     isValidTidsperiode,
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
 } from '@navikt/fp-common';
+import { QuestionVisibility } from '@navikt/fp-formik';
 import { Stønadskonto } from '@navikt/fp-types';
 
 import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
