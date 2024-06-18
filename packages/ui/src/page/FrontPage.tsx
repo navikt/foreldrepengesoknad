@@ -34,7 +34,6 @@ const FrontPage: React.FunctionComponent<Props> = ({
     icon,
 }) => (
     <Page
-        useLargerBorderRadius
         header={
             <>
                 <Show below="md">

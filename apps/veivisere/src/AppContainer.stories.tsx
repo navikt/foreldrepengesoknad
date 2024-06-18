@@ -1,11 +1,66 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ContextRoutes, FpEllerEsRoutes, HvaSkjerNårRoutes, HvorMyeRoutes } from 'appData/routes';
+import MockAdapter from 'axios-mock-adapter';
 import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
+import { getAxiosInstance } from '@navikt/fp-api';
+import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import AppContainer from './AppContainer';
+
+const kontoer = {
+    '100': {
+        kontoer: [
+            {
+                konto: StønadskontoType.Mødrekvote,
+                dager: 75,
+            },
+            {
+                konto: StønadskontoType.Fedrekvote,
+                dager: 75,
+            },
+            {
+                konto: StønadskontoType.Fellesperiode,
+                dager: 80,
+            },
+            {
+                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                dager: 15,
+            },
+        ],
+        minsteretter: {
+            farRundtFødsel: 0,
+            toTette: 0,
+        },
+    },
+    '80': {
+        kontoer: [
+            {
+                konto: StønadskontoType.Mødrekvote,
+                dager: 95,
+            },
+            {
+                konto: StønadskontoType.Fedrekvote,
+                dager: 95,
+            },
+            {
+                konto: StønadskontoType.Fellesperiode,
+                dager: 90,
+            },
+            {
+                konto: StønadskontoType.ForeldrepengerFørFødsel,
+                dager: 15,
+            },
+        ],
+        minsteretter: {
+            farRundtFødsel: 0,
+            toTette: 0,
+        },
+    },
+} as TilgjengeligeStønadskontoer;
 
 const meta = {
     title: 'AppContainer',
@@ -18,8 +73,16 @@ type Story = StoryObj<{
 }>;
 
 export const HvorMyeVeiviser: Story = {
-    render: () => {
+    render: (args) => {
         initAmplitude();
+
+        if (args.brukStønadskontoMock) {
+            const apiMock = new MockAdapter(getAxiosInstance());
+            apiMock.onPost('/rest/konto').reply(() => {
+                return [200, kontoer];
+            });
+        }
+
         return (
             <StrictMode>
                 <MemoryRouter initialEntries={[ContextRoutes.HVOR_MYE + HvorMyeRoutes.OM]}>
@@ -31,8 +94,16 @@ export const HvorMyeVeiviser: Story = {
 };
 
 export const HvaSkjerNårVeiviser: Story = {
-    render: () => {
+    render: (args) => {
         initAmplitude();
+
+        if (args.brukStønadskontoMock) {
+            const apiMock = new MockAdapter(getAxiosInstance());
+            apiMock.onPost('/rest/konto').reply(() => {
+                return [200, kontoer];
+            });
+        }
+
         return (
             <StrictMode>
                 <MemoryRouter initialEntries={[ContextRoutes.HVA_SKJER + HvaSkjerNårRoutes.OM]}>
@@ -44,8 +115,16 @@ export const HvaSkjerNårVeiviser: Story = {
 };
 
 export const FpEllerEsVeiviser: Story = {
-    render: () => {
+    render: (args) => {
         initAmplitude();
+
+        if (args.brukStønadskontoMock) {
+            const apiMock = new MockAdapter(getAxiosInstance());
+            apiMock.onPost('/rest/konto').reply(() => {
+                return [200, kontoer];
+            });
+        }
+
         return (
             <StrictMode>
                 <MemoryRouter initialEntries={[ContextRoutes.FP_ELLER_ES + FpEllerEsRoutes.OM]}>

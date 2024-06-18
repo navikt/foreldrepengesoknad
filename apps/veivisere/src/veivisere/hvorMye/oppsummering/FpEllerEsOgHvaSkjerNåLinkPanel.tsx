@@ -5,7 +5,7 @@ import { HStack, Heading } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 
-import AndreVeivisereLinkPanel from './AndreVeivisereLinkPanel';
+import AndreVeivisereLinkPanel from '../felles/AndreVeivisereLinkPanel';
 
 const FpEllerEsOgHvaSkjerNåLinkPanel: React.FunctionComponent = () => {
     return (

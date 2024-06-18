@@ -21,6 +21,5 @@ export const HarAvrundedeNedreHjørner: Story = {
     args: {
         header: <div>Dette er header</div>,
         children: <div>Dette er children</div>,
-        useLargerBorderRadius: true,
     },
 };

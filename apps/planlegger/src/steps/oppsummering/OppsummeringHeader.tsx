@@ -12,7 +12,6 @@ interface Props {
 
 const OppsummeringHeader: React.FunctionComponent<Props> = ({ children }) => (
     <PlanleggerStep
-        useLargerBorderRadius
         header={
             <>
                 <Show below="md">

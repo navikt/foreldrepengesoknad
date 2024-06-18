@@ -3,21 +3,50 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad } from '@navikt/fp-types';
+import { StønadskontoType } from '@navikt/fp-constants';
+import {
+    Dekningsgrad,
+    TilgjengeligeStønadskontoer,
+    TilgjengeligeStønadskontoerForDekningsgrad,
+} from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
 //FIXME Hent frå tjeneste
 export const GRUNNBELØPET = 118620;
 
+const getDagerForKonto = (
+    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+    stønadskontoType: StønadskontoType,
+) => {
+    const konto = stønadskontoer.kontoer.find((k) => k.konto === stønadskontoType);
+    return konto ? konto.dager / 5 : 0;
+};
+
+const finnAntallUker = (valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad) => {
+    const totaltAntallUkerFellesperiode = getDagerForKonto(valgtStønadskonto, StønadskontoType.Fellesperiode);
+    const antallUkerForeldrepengerFørFødsel = getDagerForKonto(
+        valgtStønadskonto,
+        StønadskontoType.ForeldrepengerFørFødsel,
+    );
+    const antallUkerMødrekvote = getDagerForKonto(valgtStønadskonto, StønadskontoType.Mødrekvote);
+    const antallUkerFedrekvote = getDagerForKonto(valgtStønadskonto, StønadskontoType.Fedrekvote);
+    return (
+        totaltAntallUkerFellesperiode + antallUkerForeldrepengerFørFødsel + antallUkerMødrekvote + antallUkerFedrekvote
+    );
+};
+
 export const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260;
 
 interface Props {
     dekningsgrad: Dekningsgrad;
     gjennomsnittslønn: number;
+    stønadskontoer: TilgjengeligeStønadskontoer;
 }
 
-const Utbetalingspanel: React.FunctionComponent<Props> = ({ dekningsgrad, gjennomsnittslønn }) => {
+const Utbetalingspanel: React.FunctionComponent<Props> = ({ dekningsgrad, gjennomsnittslønn, stønadskontoer }) => {
+    const antallUkerMedUttak = finnAntallUker(stønadskontoer[dekningsgrad]);
+
     const erDekningsgrad100 = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT;
 
     const annualMax = 6 * GRUNNBELØPET;
@@ -32,33 +61,32 @@ const Utbetalingspanel: React.FunctionComponent<Props> = ({ dekningsgrad, gjenno
     return (
         <Infobox
             header={
-                erDekningsgrad100 ? (
-                    <FormattedMessage id="OppsummeringSide.GjennomsnittligUtbetaling100" />
-                ) : (
-                    <FormattedMessage id="OppsummeringSide.GjennomsnittligUtbetaling80" />
-                )
+                <FormattedMessage
+                    id="OppsummeringSide.GjennomsnittligUtbetaling"
+                    values={{ erDekningsgrad100, antallUker: antallUkerMedUttak }}
+                />
             }
             icon={<BankNoteIcon aria-hidden />}
             useHorizontalDivider
         >
             <VStack gap="4">
                 <div>
-                    <BodyShort>
+                    <BodyShort size="small">
                         <FormattedMessage id="OppsummeringSide.MånedligFørSkatt" />
                     </BodyShort>
-                    <Heading size="large">{formatCurrencyWithKr(monthlyPayment)}</Heading>
+                    <Heading size="medium">{formatCurrencyWithKr(monthlyPayment)}</Heading>
                 </div>
                 <div>
-                    <BodyShort>
+                    <BodyShort size="small">
                         <FormattedMessage id="OppsummeringSide.DagligFørSkatt" />
                     </BodyShort>
-                    <Heading size="large">{formatCurrencyWithKr(dailyPayment)}</Heading>
+                    <Heading size="medium">{formatCurrencyWithKr(dailyPayment)}</Heading>
                 </div>
                 <div>
-                    <BodyShort>
+                    <BodyShort size="small">
                         <FormattedMessage id="OppsummeringSide.Totalt" values={{ erDekningsgrad100 }} />
                     </BodyShort>
-                    <Heading size="large">{formatCurrencyWithKr(totalt)}</Heading>
+                    <Heading size="medium">{formatCurrencyWithKr(totalt)}</Heading>
                     <ReadMore
                         header={
                             <FormattedMessage id="OppsummeringSide.HvorforAntallUker" values={{ erDekningsgrad100 }} />
