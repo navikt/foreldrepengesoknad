@@ -574,6 +574,9 @@ importers:
       '@navikt/fp-utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@navikt/fp-uttaksplan-kalender':
+        specifier: workspace:*
+        version: link:../../packages/uttaksplan-kalender
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../../packages/validation

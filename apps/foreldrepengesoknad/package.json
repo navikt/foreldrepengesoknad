@@ -39,6 +39,7 @@
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utenlandsopphold": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
+        "@navikt/fp-uttaksplan-kalender": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
         "@navikt/uttaksplan": "workspace:*",
         "@sentry/browser": "^7.109.0",

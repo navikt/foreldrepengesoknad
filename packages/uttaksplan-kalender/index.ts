@@ -4,7 +4,7 @@ import nnMessages from './src/intl/messages/nn_NO.json';
 
 export { default as UttaksplanKalender } from './src/UttaksplanKalender';
 
-export const uttaksplanMessages = {
+export const uttaksplanKalenderMessages = {
     nb: nbMessages,
     nn: nnMessages,
     en: enMessages,
