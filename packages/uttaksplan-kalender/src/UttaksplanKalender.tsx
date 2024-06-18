@@ -107,7 +107,7 @@ const getPerioderForKalendervisning = (
             tom: formatDateIso(p.tidsperiode.tom),
             color,
             srText: getKalenderSkjermlesertekstForPeriode(
-                p.tidsperiode,
+                p,
                 color,
                 barn,
                 navnAnnenPart,

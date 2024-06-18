@@ -1,7 +1,7 @@
 import { IntlShape } from 'react-intl';
 
-import { PeriodeColor, UtsettelseÅrsakType } from '@navikt/fp-constants';
-import { Barn, TidsperiodeDate, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
+import { PeriodeColor, Periodetype, UtsettelseÅrsakType } from '@navikt/fp-constants';
+import { Barn, Periode, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import {
     capitalizeFirstLetter,
     formaterDatoUtenDag,
@@ -115,14 +115,17 @@ export const getKalenderPeriodenavn = (
 };
 
 export const getKalenderSkjermlesertekstForPeriode = (
-    tidsperiode: TidsperiodeDate,
+    periode: Periode,
     color: PeriodeColor,
     barn: Barn,
     navnAnnenPart: string,
     unikeUtsettelseÅrsaker: UtsettelseÅrsakType[],
     erFarEllerMedmor: boolean,
     intl: IntlShape,
-) => {
+): string | undefined => {
+    if (periode.type === Periodetype.PeriodeUtenUttak) {
+        return undefined;
+    }
     const periodeNavn = getKalenderPeriodenavn(
         color,
         barn,
@@ -133,6 +136,10 @@ export const getKalenderSkjermlesertekstForPeriode = (
     );
     return intl.formatMessage(
         { id: 'kalender.skjermleser.periode' },
-        { periodeNavn, fraDato: formaterDatoUtenDag(tidsperiode.fom), tilDato: formaterDatoUtenDag(tidsperiode.tom) },
+        {
+            periodeNavn,
+            fraDato: formaterDatoUtenDag(periode.tidsperiode.fom),
+            tilDato: formaterDatoUtenDag(periode.tidsperiode.tom),
+        },
     );
 };
