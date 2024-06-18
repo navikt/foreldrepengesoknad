@@ -16,7 +16,6 @@ import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 import { isValidNumber } from '@navikt/fp-validation';
 
 import VeiviserPage from '../../felles/Page/VeiviserPage';
-import FpEllerEsOgHvaSkjerNåLinkPanel from '../felles/FpEllerEsOgHvaSkjerNåLinkPanel';
 import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
 import HøyInntektInfobox from '../felles/HøyInntektInfobox';
 import styles from './arbeidssituasjonSide.module.css';
@@ -280,7 +279,6 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                     </VStack>
                 </Form>
             </VeiviserPage>
-            {gjennomsnittslønnPerMåned && <FpEllerEsOgHvaSkjerNåLinkPanel />}
         </>
     );
 };

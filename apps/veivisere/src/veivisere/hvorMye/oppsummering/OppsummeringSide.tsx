@@ -12,9 +12,9 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import VeiviserPage from '../../felles/Page/VeiviserPage';
 import { Arbeidssituasjon, finnGjennomsnittsMånedslønn } from '../arbeidssituasjon/ArbeidssituasjonSide';
-import FpEllerEsOgHvaSkjerNåLinkPanel from '../felles/FpEllerEsOgHvaSkjerNåLinkPanel';
 import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
 import HøyInntektInfobox from '../felles/HøyInntektInfobox';
+import FpEllerEsOgHvaSkjerNåLinkPanel from './FpEllerEsOgHvaSkjerNåLinkPanel';
 import Utbetalingspanel from './Utbetalingspanel';
 
 //FIXME Hent frå tjeneste

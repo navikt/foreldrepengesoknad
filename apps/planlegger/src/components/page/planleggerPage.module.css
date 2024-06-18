@@ -7,6 +7,7 @@
     max-width: 704px;
     margin: 0 auto;
     background-color: var(--a-surface-default);
+    border-radius: 0.5rem 0.5rem 0 0;
 }
 
 .content {
@@ -14,9 +15,6 @@
     margin: 0 auto;
     padding: 2rem;
     background-color: var(--a-surface-default);
-}
-
-.contentBorder {
     border-radius: 0 0 0.5rem 0.5rem;
 }
 

@@ -42,7 +42,7 @@
     "OppsummeringSide.EsSkalBidra": "A one-time grant is meant to help cover some of the expenses associated with having a child. The grant is a lump sum of {engangsstønad} kroner.",
     "OppsummeringSide.Tilbake": "Back to the questions",
     "OppsummeringSide.Oppsummering": "Summary",
-    "HøyInntektInfobox.DelvisDekning": "You are covered up to {maxÅrslønn} kr of your income",
+    "HøyInntektInfobox.DelvisDekning": "You are covered up to {maxÅrslønn} of your income",
     "HøyInntektInfobox.OppgittHøyereInntekt": "You have reported an income higher than this, but this is not covered by NAV.",
     "HøyInntektInfobox.HøyereLenke1": "{maxÅrslønn} kr is six times ",
     "HøyInntektInfobox.HøyereLenke2": "the basic amount in the National Insurance Scheme.",

@@ -47,7 +47,7 @@
     "OppsummeringSide.EsSkalBidra": "Eingongsstønad er meint å bidra til å dekkje nokre av utgiftene i samband med å få barn. Stønaden er ein eingongssum på {engangsstønad} kroner.",
     "OppsummeringSide.Tilbake": "Tilbake til spørsmåla",
     "OppsummeringSide.Oppsummering": "Oppsummering",
-    "HøyInntektInfobox.DelvisDekning": "Du får dekt opptil {maxÅrslønn} kr av inntekta di",
+    "HøyInntektInfobox.DelvisDekning": "Du får dekt opptil {maxÅrslønn} av inntekta di",
     "HøyInntektInfobox.OppgittHøyereInntekt": "Du har oppgjeve ei inntekt høgare enn dette, men dette vert ikkje dekt av NAV.",
     "HøyInntektInfobox.HøyereLenke1": "{maxÅrslønn} kr er seks gonger ",
     "HøyInntektInfobox.HøyereLenke2": "grunnbeløpet i folketrygda.",
