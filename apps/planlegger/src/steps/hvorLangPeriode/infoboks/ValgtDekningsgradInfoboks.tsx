@@ -67,6 +67,8 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
             ? uttaksdata100.sluttdatoPeriode2
             : uttaksdata80.sluttdatoPeriode2;
 
+    const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdopsjon;
+
     return (
         <Infobox
             header={
@@ -118,7 +120,7 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                     />
                 )}
             </BodyShort>
-            {(hvemHarRett === 'kunSøker2HarRett' ||
+            {((hvemHarRett === 'kunSøker2HarRett' && !erFarOgFarFødsel) ||
                 (hvemHarRett === 'kunSøker1HarRett' && hvemPlanlegger.type === Situasjon.FAR_OG_FAR && erAdopsjon)) && (
                 <VStack gap="2">
                     <BodyShort>

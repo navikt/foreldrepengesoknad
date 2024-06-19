@@ -1,6 +1,7 @@
 import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
 import { FunctionComponent, useMemo } from 'react';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
@@ -18,11 +19,17 @@ const finnBrukerRolle = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRet
     return harMorRett(hvemHarRett, hvemPlanlegger) ? 'MOR' : 'FAR';
 };
 
-const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
+const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett, omBarnet: OmBarnet) => {
     if (hvemPlanlegger.type === Situasjon.MOR || hvemPlanlegger.type === Situasjon.FAR) {
         return 'ALENEOMSORG';
     }
-    return hvemHarRett === 'beggeHarRett' ? 'BEGGE_RETT' : 'BARE_SØKER_RETT';
+    if (
+        hvemHarRett === 'beggeHarRett' ||
+        (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(omBarnet))
+    ) {
+        return 'BEGGE_RETT';
+    }
+    return 'BARE_SØKER_RETT';
 };
 
 interface Props {
@@ -39,7 +46,10 @@ export const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, change
 
     const params = useMemo(
         () => ({
-            rettighetstype: hvemPlanlegger && hvemHarRett ? finnRettighetstype(hvemPlanlegger, hvemHarRett) : undefined,
+            rettighetstype:
+                hvemPlanlegger && hvemHarRett && omBarnet
+                    ? finnRettighetstype(hvemPlanlegger, hvemHarRett, omBarnet)
+                    : undefined,
             brukerrolle: hvemPlanlegger && hvemHarRett ? finnBrukerRolle(hvemPlanlegger, hvemHarRett) : undefined,
             antallBarn: omBarnet?.antallBarn,
             fødselsdato: omBarnet && erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined,
