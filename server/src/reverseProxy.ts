@@ -5,26 +5,13 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import { serverConfig } from '@navikt/fp-server-utils';
 
 const oboHeader = 'obo-token';
-const apiUrl = (): string => {
-    if (!serverConfig.proxy.apiUrl) {
-        throw new Error('Påkrevd miljøvariable FORELDREPENGER_API_URL ikke satt mot API');
-    }
-    return serverConfig.proxy.apiUrl!;
-};
-
-const apiScope = (): string => {
-    if (!serverConfig.proxy.apiScope) {
-        throw new Error('Påkrevd miljøvariable FORELDREPENGER_API_SCOPE ikke satt mot API');
-    }
-    return serverConfig.proxy.apiScope!;
-};
 
 export const veksleTokenTilTokenX = async (request: Request, response: Response, next: NextFunction) => {
     const token = getToken(request);
     if (!token) {
         return response.status(401).send();
     }
-    const obo = await requestTokenxOboToken(token, apiScope());
+    const obo = await requestTokenxOboToken(token, serverConfig.proxy.apiScope!);
     if (obo.ok) {
         request.headers[oboHeader] = obo.token;
         return next();
@@ -35,7 +22,7 @@ export const veksleTokenTilTokenX = async (request: Request, response: Response,
 };
 
 export const proxyRequestTilApi = createProxyMiddleware({
-    target: apiUrl(),
+    target: serverConfig.proxy.apiUrl!,
     changeOrigin: true,
     logger: console,
     on: {
@@ -46,7 +33,7 @@ export const proxyRequestTilApi = createProxyMiddleware({
                 proxyRequest.removeHeader('cookie');
                 proxyRequest.setHeader('Authorization', `Bearer ${obo}`);
             } else {
-                console.log(`Access token var not present in session for scope ${apiScope()}`);
+                console.log(`Access token var not present in session for scope ${serverConfig.proxy.apiScope}`);
             }
         },
     },
