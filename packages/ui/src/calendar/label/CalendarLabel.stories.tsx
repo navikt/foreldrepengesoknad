@@ -88,9 +88,9 @@ export const LightBlueGreenLabel: Story = {
     },
 };
 
-export const OrangeLabel: Story = {
+export const BlackLabel: Story = {
     args: {
-        iconType: PeriodeColor.ORANGE,
-        children: <div>orange</div>,
+        iconType: PeriodeColor.BLACK,
+        children: <div>black</div>,
     },
 };
