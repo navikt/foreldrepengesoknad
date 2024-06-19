@@ -5,7 +5,7 @@ import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import { erAlenesøker, erMorDelAvSøknaden, finnSøker1Tekst, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker, erMorDelAvSøknaden, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerAktivitetsfriKvote, getAntallUkerForeldrepenger } from 'utils/stønadskontoerUtils';
@@ -128,8 +128,8 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                                 uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
                                 uker2: antallUker,
                                 b: (msg: any) => <b>{msg}</b>,
-                                hvem: finnSøker2Tekst(intl, hvemPlanlegger),
-                                hvemPart1: finnSøker1Tekst(intl, hvemPlanlegger),
+                                hvem: getFornavnPåSøker2(hvemPlanlegger, intl),
+                                hvemPart1: getFornavnPåSøker1(hvemPlanlegger, intl),
                             }}
                         />
                     </BodyShort>
@@ -151,8 +151,8 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                                     </Link>
                                 ),
                                 b: (msg: any) => <b>{msg}</b>,
-                                hvem: finnSøker2Tekst(intl, hvemPlanlegger),
-                                hvemPart1: finnSøker1Tekst(intl, hvemPlanlegger),
+                                hvem: getFornavnPåSøker2(hvemPlanlegger, intl),
+                                hvemPart1: getFornavnPåSøker1(hvemPlanlegger, intl),
                             }}
                         />
                     </BodyShort>
