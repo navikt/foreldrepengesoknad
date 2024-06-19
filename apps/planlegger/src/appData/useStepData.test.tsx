@@ -48,6 +48,22 @@ describe('useStepData', () => {
                     isSelected: false,
                 },
                 {
+                    id: '/arbeidssituasjon',
+                    isSelected: false,
+                },
+                {
+                    id: '/hvor-lenge',
+                    isSelected: false,
+                },
+                {
+                    id: '/fordeling',
+                    isSelected: false,
+                },
+                {
+                    id: '/planen-deres',
+                    isSelected: false,
+                },
+                {
                     id: '/oppsummering',
                     isSelected: false,
                 },
@@ -83,6 +99,18 @@ describe('useStepData', () => {
                     isSelected: false,
                 },
                 {
+                    id: '/hvor-lenge',
+                    isSelected: false,
+                },
+                {
+                    id: '/fordeling',
+                    isSelected: false,
+                },
+                {
+                    id: '/planen-deres',
+                    isSelected: false,
+                },
+                {
                     id: '/oppsummering',
                     isSelected: true,
                 },
@@ -111,6 +139,18 @@ describe('useStepData', () => {
                 },
                 {
                     id: '/om-barnet',
+                    isSelected: false,
+                },
+                {
+                    id: '/hvor-lenge',
+                    isSelected: false,
+                },
+                {
+                    id: '/fordeling',
+                    isSelected: false,
+                },
+                {
+                    id: '/planen-deres',
                     isSelected: false,
                 },
                 {

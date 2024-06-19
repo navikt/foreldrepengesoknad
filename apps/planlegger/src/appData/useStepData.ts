@@ -13,13 +13,8 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './PlanleggerDataContext';
 
-const isAfterStep = (previousStepPath: PlanleggerRoutes, currentStepPath: PlanleggerRoutes): boolean => {
-    return PATH_ORDER.indexOf(currentStepPath) > PATH_ORDER.indexOf(previousStepPath);
-};
-
 const showFordelingStep = (
     path: PlanleggerRoutes,
-    currentPath: PlanleggerRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ) => {
     if (path === PlanleggerRoutes.FORDELING) {
@@ -29,43 +24,35 @@ const showFordelingStep = (
 
         const erFarOgFar = hvemPlanlegger?.type === Situasjon.FAR_OG_FAR;
         const beggeHarRett = arbeidssituasjon?.status === Arbeidsstatus.JOBBER && !!arbeidssituasjon?.jobberAnnenPart;
-        const skalVise = beggeHarRett && !(erFarOgFar && barnet?.erFødsel);
+        const skalVise =
+            hvemPlanlegger && erFlereSøkere(hvemPlanlegger) && beggeHarRett && !(erFarOgFar && barnet?.erFødsel);
 
-        const erValgtOgEtterSteg =
-            hvemPlanlegger &&
-            erFlereSøkere(hvemPlanlegger) &&
-            skalVise &&
-            isAfterStep(PlanleggerRoutes.HVOR_LANG_PERIODE, currentPath);
-        return erValgtOgEtterSteg || !!getData(ContextDataType.FORDELING);
+        return !arbeidssituasjon || skalVise;
     }
     return false;
 };
 
 const showHvorLangPeriodeEllerOversiktStep = (
     path: PlanleggerRoutes,
-    currentPath: PlanleggerRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ) => {
     if (path === PlanleggerRoutes.HVOR_LANG_PERIODE || path === PlanleggerRoutes.PLANEN_DERES) {
         const arbeidssituasjon = getData(ContextDataType.ARBEIDSSITUASJON);
         const skalVise = arbeidssituasjon?.status === Arbeidsstatus.JOBBER || arbeidssituasjon?.jobberAnnenPart;
-        const erValgtOgEtterSteg = skalVise && isAfterStep(PlanleggerRoutes.ARBEIDSSITUASJON, currentPath);
-        return erValgtOgEtterSteg || !!getData(ContextDataType.HVOR_LANG_PERIODE);
+        return !arbeidssituasjon || skalVise;
     }
     return false;
 };
 
 const showArbeidssituasjonStep = (
     path: PlanleggerRoutes,
-    currentPath: PlanleggerRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ) => {
     if (path === PlanleggerRoutes.ARBEIDSSITUASJON) {
         const omBarnet = getData(ContextDataType.OM_BARNET);
         const skalVise =
             omBarnet && !(erBarnetFødt(omBarnet) && dayjs(omBarnet.fødselsdato).isBefore(DATE_3_YEARS_AGO));
-        const erValgtOgEtterSteg = skalVise && isAfterStep(PlanleggerRoutes.OM_BARNET, currentPath);
-        return erValgtOgEtterSteg || !!getData(ContextDataType.ARBEIDSSITUASJON);
+        return !omBarnet || skalVise;
     }
     return false;
 };
@@ -83,13 +70,13 @@ const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
         () =>
             PATH_ORDER.flatMap((path) =>
                 REQUIRED_APP_STEPS.includes(path) ||
-                showArbeidssituasjonStep(path, currentPath, getStateData) ||
-                showFordelingStep(path, currentPath, getStateData) ||
-                showHvorLangPeriodeEllerOversiktStep(path, currentPath, getStateData)
+                showArbeidssituasjonStep(path, getStateData) ||
+                showFordelingStep(path, getStateData) ||
+                showHvorLangPeriodeEllerOversiktStep(path, getStateData)
                     ? [path]
                     : [],
             ),
-        [currentPath, getStateData],
+        [getStateData],
     );
 
     return appPathList.map((p) => ({
