@@ -4,14 +4,19 @@ import path from 'node:path';
 
 import config from './config.js';
 
-export const setupStaticRoutes = async (app: Express) => {
-    app.use(express.static('./public', { index: false }));
+export const setupStaticRoutes = async (server: Express) => {
+    const html = await renderedHtml();
+    server.use(express.static('./public', { index: false }));
+    server.use(`${config.app.publicPath}/assets`, express.static(path.resolve(path.resolve('public'), 'assets')));
+    server.get(/^\/(?!.*dist).*$/, async (_request, response) => {
+        return response.send(html);
+    });
+};
 
+const renderedHtml = async () => {
     // When deployed, the built frontend is copied into the public directory. If running BFF locally the index.html will not exist.
-    const spaFilePath = path.resolve('./public', 'index.html');
-
-    const html = await injectDecorator(spaFilePath);
-
+    const singlePageAppFilePath = path.resolve('./public', 'index.html');
+    const html = await injectDecorator(singlePageAppFilePath);
     const renderedHtml = html.replaceAll(
         '{{{APP_SETTINGS}}}',
         JSON.stringify({
@@ -21,11 +26,7 @@ export const setupStaticRoutes = async (app: Express) => {
             PUBLIC_PATH: `${config.app.publicPath}`,
         }),
     );
-
-    app.use(`${config.app.publicPath}/assets`, express.static(path.resolve(path.resolve('public'), 'assets')));
-    app.get(/^\/(?!.*dist).*$/, async (_request, response) => {
-        return response.send(renderedHtml);
-    });
+    return renderedHtml;
 };
 
 async function injectDecorator(filePath: string) {
@@ -34,7 +35,6 @@ async function injectDecorator(filePath: string) {
         filePath,
         params: {
             simple: true,
-            enforceLogin: false,
         },
     });
 }
