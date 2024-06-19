@@ -207,7 +207,6 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             }
                             hvemPlanlegger={hvemPlanlegger}
                             barnet={barnet}
-                            valgtStønadskonto={valgtStønadskonto}
                             hvemHarRett={hvemHarRett}
                         />
                         <div className={styles.calendar}>

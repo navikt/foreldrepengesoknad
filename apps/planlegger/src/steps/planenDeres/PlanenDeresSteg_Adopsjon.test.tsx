@@ -84,8 +84,8 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Espen, uker uten krav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Espen, uker med krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Espens uker uten krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Espens uker med krav til Olga')).toBeInTheDocument();
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -114,8 +114,8 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Espen, uker uten krav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Espen, uker med krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Espens uker uten krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Espens uker med krav til Olga')).toBeInTheDocument();
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');

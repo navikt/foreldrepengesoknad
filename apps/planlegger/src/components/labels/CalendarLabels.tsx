@@ -9,8 +9,6 @@ import { Uttaksdata } from 'utils/uttakUtils';
 
 import { HStack, VStack } from '@navikt/ds-react';
 
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-
 import AktivitetskravLabel from './calendarLabels/AktivitetskravLabel';
 import AntallUkerFpLabel from './calendarLabels/AntallUkerFpLabel';
 import FamiliehendelseLabel from './calendarLabels/FamiliehendelseLabel';
@@ -21,16 +19,9 @@ interface Props {
     uttaksdata: Uttaksdata;
     hvemPlanlegger: HvemPlanlegger;
     hvemHarRett: HvemHarRett;
-    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
 }
 
-const CalendarLabels: FunctionComponent<Props> = ({
-    barnet,
-    uttaksdata,
-    hvemPlanlegger,
-    hvemHarRett,
-    valgtStønadskonto,
-}) => {
+const CalendarLabels: FunctionComponent<Props> = ({ barnet, uttaksdata, hvemPlanlegger, hvemHarRett }) => {
     const intl = useIntl();
 
     const erAdoptert = erBarnetAdoptert(barnet);
@@ -83,7 +74,6 @@ const CalendarLabels: FunctionComponent<Props> = ({
                 <HStack gap="2">
                     <AktivitetskravLabel
                         utenAktivitetskrav
-                        valgtStønadskonto={valgtStønadskonto}
                         tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
                         tekstPart2={farOgFarAdopsjonDerKunSøker1HarRett ? søker2Tekst : søker1Tekst}
                         startdato={startdatoPeriode1}
@@ -91,7 +81,6 @@ const CalendarLabels: FunctionComponent<Props> = ({
                         isBluePanel
                     />
                     <AktivitetskravLabel
-                        valgtStønadskonto={valgtStønadskonto}
                         tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
                         tekstPart2={farOgFarAdopsjonDerKunSøker1HarRett ? søker2Tekst : søker1Tekst}
                         startdato={startdatoPeriode2}
