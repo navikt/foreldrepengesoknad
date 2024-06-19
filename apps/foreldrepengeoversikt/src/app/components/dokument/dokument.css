@@ -10,18 +10,22 @@
     margin-right: 0.5rem;
 }
 
-.dokument__link-icon {
-    max-width: 32rem;
+.dokument__contentWrapper {
+    display: grid;
+    grid-template-columns: 2fr 1fr 0.25fr;
+    align-items: center;
 }
 
-.dokument__content-top {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-}
+@media (max-width: 767px) {
+    .dokument__content-top {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
 
-.dokument__content-bottom {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
+    .dokument__content-bottom {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
 }
