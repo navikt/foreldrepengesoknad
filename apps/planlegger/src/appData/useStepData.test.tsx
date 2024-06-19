@@ -71,7 +71,7 @@ describe('useStepData', () => {
         );
     });
 
-    it('skal vise arbeidssituasjon-steg når barnet er oppgitt og fødselsdato er etter tre år siden', async () => {
+    it('skal vise arbeidssituasjon-steg når barnet er oppgitt og fødselsdato er yngre enn tre år siden', async () => {
         const barnet = {
             antallBarn: '1',
             erBarnetFødt: true,
@@ -139,18 +139,6 @@ describe('useStepData', () => {
                 },
                 {
                     id: '/om-barnet',
-                    isSelected: false,
-                },
-                {
-                    id: '/hvor-lenge',
-                    isSelected: false,
-                },
-                {
-                    id: '/fordeling',
-                    isSelected: false,
-                },
-                {
-                    id: '/planen-deres',
                     isSelected: false,
                 },
                 {
