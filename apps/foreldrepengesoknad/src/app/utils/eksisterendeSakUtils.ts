@@ -310,7 +310,7 @@ const getSøkerrolleFromSaksgrunnlag = (
 };
 
 const getFødselsdatoer = (valgteBarn: ValgtBarn | undefined, sak: Saksgrunnlag): string[] => {
-    if (valgteBarn && valgteBarn.fødselsdatoer) {
+    if (valgteBarn?.fødselsdatoer) {
         return sorterDatoEtterEldst(valgteBarn.fødselsdatoer);
     } else if (sak.fødselsdato) {
         return Array(sak.antallBarn).fill(sak.fødselsdato!);
@@ -353,6 +353,12 @@ const getBarnFromSaksgrunnlag = (
     }
 };
 
+const finnFornavn = (annenPart: SøkerAnnenForelder, intl: IntlShape) => {
+    return annenPart.fornavn !== undefined && annenPart.fornavn !== ''
+        ? annenPart.fornavn
+        : intl.formatMessage({ id: 'annen.forelder' });
+};
+
 const getAnnenForelderFromSaksgrunnlag = (
     situasjon: Situasjon,
     grunnlag: Saksgrunnlag,
@@ -365,10 +371,7 @@ const getAnnenForelderFromSaksgrunnlag = (
         case 'adopsjon':
             if (erFarEllerMedmor) {
                 return {
-                    fornavn:
-                        annenPart.fornavn !== undefined && annenPart.fornavn !== ''
-                            ? annenPart.fornavn
-                            : intlUtils(intl, 'annen.forelder'),
+                    fornavn: finnFornavn(annenPart, intl),
                     etternavn: annenPart.etternavn,
                     erMorUfør: grunnlag.morErUfør,
                     harRettPåForeldrepengerINorge:
@@ -376,16 +379,11 @@ const getAnnenForelderFromSaksgrunnlag = (
                     fnr: annenPart.fnr,
                     kanIkkeOppgis: false,
                     harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
-                    erAleneOmOmsorg:
-                        (erFarEllerMedmor && grunnlag.farMedmorErAleneOmOmsorg) ||
-                        (!erFarEllerMedmor && grunnlag.morErAleneOmOmsorg),
+                    erAleneOmOmsorg: grunnlag.farMedmorErAleneOmOmsorg,
                 };
             }
             return {
-                fornavn:
-                    annenPart.fornavn !== undefined && annenPart.fornavn !== ''
-                        ? annenPart.fornavn
-                        : intlUtils(intl, 'annen.forelder'),
+                fornavn: finnFornavn(annenPart, intl),
                 etternavn: annenPart.etternavn,
                 harRettPåForeldrepengerINorge:
                     !!grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,

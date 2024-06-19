@@ -1,7 +1,9 @@
 import React from 'react';
-import { filteredListEØSCountries, getAlpha3Code, getCountries } from './../../utils/countryUtils';
-import { TestProps } from './../../types';
+
 import { Select, SelectProps } from '@navikt/ds-react';
+
+import { TestProps } from './../../types';
+import { filteredListEØSCountries, getAlpha3Code, getCountries } from './../../utils/countryUtils';
 
 interface Props extends TestProps, Omit<SelectProps, 'onChange' | 'children'> {
     label: React.ReactNode;
@@ -66,7 +68,7 @@ class CountrySelect extends React.Component<Props> {
         if (!this.countryOptionsCache || locale !== this.countryOptionsCache.locale) {
             this.updateCache(locale);
         }
-        return this.countryOptionsCache && this.countryOptionsCache.options ? this.countryOptionsCache.options : [];
+        return this.countryOptionsCache?.options ? this.countryOptionsCache.options : [];
     }
 
     render() {

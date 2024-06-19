@@ -1,7 +1,9 @@
-import { Button } from '@navikt/ds-react';
-import React, { createContext, useEffect, useRef, useState } from 'react';
-import { Back, Next } from '@navikt/ds-icons';
 import { FieldInputProps, FormikProps, useFormikContext } from 'formik';
+import React, { createContext, useEffect, useRef, useState } from 'react';
+
+import { Back, Next } from '@navikt/ds-icons';
+import { Button } from '@navikt/ds-react';
+
 import {
     CancelButtonTypes,
     CustomFormErrorHandler,
@@ -12,6 +14,7 @@ import {
 import { getErrorForField, isValidationErrorsVisible } from './../../utils/typedFormErrorUtils';
 import FormikValidationErrorSummary from './../formik-validation-error-summary/FormikValidationErrorSummary';
 import ButtonRow from './../helpers/button-row/ButtonRow';
+
 export interface TypedFormikFormProps<FormValues, ErrorType> {
     children: React.ReactNode;
     className?: string;
@@ -103,14 +106,12 @@ function TypedFormikForm<FormValues, ErrorType>({
                     setFormSubmitCout(submitCount);
                 } else {
                     setStatus({ showErrors: true });
-                    if (summaryRef && summaryRef.current) {
+                    if (summaryRef?.current) {
                         summaryRef.current.focus();
                     }
                 }
-            } else {
-                if (showErrors) {
-                    setStatus({ showErrors: false });
-                }
+            } else if (showErrors) {
+                setStatus({ showErrors: false });
             }
         }
     }, [submitCount, showErrors, setStatus, formSubmitCount, isSubmitting, isValid]);
@@ -157,7 +158,7 @@ function TypedFormikForm<FormValues, ErrorType>({
                 return undefined;
             },
             onAfterFieldValueSet: () => {
-                if (runDelayedFormValidation && formik.status && formik.status.showErrors) {
+                if (runDelayedFormValidation && formik.status?.showErrors) {
                     setTimeout(() => {
                         formik.validateForm();
                     });

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useIntl } from 'react-intl';
-import intlHelper from '../../utils/intlUtils';
 
+import intlHelper from '../../utils/intlUtils';
 import './page.less';
 
 export interface PageProps {
