@@ -13,7 +13,7 @@ export const setupStaticRoutes = async (server: Express) => {
     });
 };
 
-const renderedHtml = async () => {
+async function renderedHtml() {
     // When deployed, the built frontend is copied into the public directory. If running BFF locally the index.html will not exist.
     const singlePageAppFilePath = path.resolve('./public', 'index.html');
     const html = await injectDecorator(singlePageAppFilePath);
@@ -27,7 +27,7 @@ const renderedHtml = async () => {
         }),
     );
     return renderedHtml;
-};
+}
 
 async function injectDecorator(filePath: string) {
     return injectDecoratorServerSide({
