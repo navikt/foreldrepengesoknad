@@ -43,7 +43,7 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Lengde og fordeling')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Dere valgte 100 % foreldrepenger i 49 uker og fordeler fellesperioden med 5 uker til mor og 11 uker til far.',
+                'Dere valgte 100 % foreldrepenger i 49 uker og fordeler fellesperioden med 5 uker til Klara og 11 uker til Espen.',
             ),
         ).toBeInTheDocument();
     });
@@ -69,7 +69,7 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Lengde og fordeling')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Dere valgte 100 % foreldrepenger i 46 uker og fordeler fellesperioden med 5 uker til mor og 11 uker til medmor.',
+                'Dere valgte 100 % foreldrepenger i 46 uker og fordeler fellesperioden med 5 uker til Klara og 11 uker til Esther.',
             ),
         ).toBeInTheDocument();
     });

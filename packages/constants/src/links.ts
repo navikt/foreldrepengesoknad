@@ -5,6 +5,8 @@ export const links = {
     kontaktOss: 'https://www.nav.no/person/kontakt-oss/nb/tilbakemeldinger/feil-og-mangler',
     dittNav: 'https://tjenester.nav.no/dittnav/oversikt',
     foreldrepenger: 'https://foreldrepenger.nav.no',
+    foreldrepengerFarOgFar: 'https://www.nav.no/foreldrepenger#far-far',
+    foreldrepengerOpptjening: 'https://www.nav.no/foreldrepenger#opptjening',
     nav: 'https://www.nav.no',
     papirsøknad: 'https://www.nav.no/soknader/nb/person/familie/foreldrepenger-og-engangsstonad',
     papirsøknadSvp: 'https://www.nav.no/start/soknad-svangerskapspenger?stegvalg=1',

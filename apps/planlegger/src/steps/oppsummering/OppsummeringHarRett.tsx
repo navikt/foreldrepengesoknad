@@ -8,8 +8,6 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import {
     erAlenesøker,
-    finnSøker1Tekst,
-    finnSøker2Tekst,
     getFornavnPåSøker1,
     getFornavnPåSøker2,
     getNavnGenitivEierform,
@@ -85,8 +83,8 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                 values={{
                                     prosent: hvorLangPeriode.dekningsgrad,
                                     antallUker: getAntallUker(valgtStønadskonto),
-                                    hvem: finnSøker1Tekst(intl, hvemPlanlegger),
-                                    hvem2: finnSøker2Tekst(intl, hvemPlanlegger),
+                                    hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
+                                    hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
                                     uker: antallUkerFellesperiodeSøker1,
                                     uker2: antallUkerFellesperiodeSøker2,
                                 }}

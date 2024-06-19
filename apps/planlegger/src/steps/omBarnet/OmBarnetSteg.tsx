@@ -118,7 +118,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                         id="OmBarnetSteg.Fødsel.Infoboks.LesMer"
                                         values={{
                                             a: (msg: any) => (
-                                                <Link href={links.foreldrepenger} target="_blank" inlineText>
+                                                <Link href={links.foreldrepengerFarOgFar} target="_blank" inlineText>
                                                     {msg}
                                                 </Link>
                                             ),
