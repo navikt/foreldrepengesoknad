@@ -153,7 +153,7 @@ const getKalenderFargeForPeriodeUtenUttak = (periode: PeriodeUtenUttak, barn: Ba
     const erFødsel = isFødtBarn(barn) || isUfødtBarn(barn);
     const treUkerFørFamhendelse = dayjs(familiehendelsesdato).subtract(3, 'weeks');
     if (erFødsel && dayjs(periode.tidsperiode.tom).isBetween(familiehendelsesdato, treUkerFørFamhendelse, 'd')) {
-        return PeriodeColor.ORANGE;
+        return PeriodeColor.BLACK;
     }
     return PeriodeColor.NONE;
 };
@@ -167,7 +167,7 @@ const getKalenderFargeForInfoperiode = (periode: InfoPeriode, erFarEllerMedmor: 
             return getForelderFarge(periode.forelder, erFarEllerMedmor);
         case PeriodeInfoType.avslåttPeriode:
             return !erFarEllerMedmor && isAvslåttPeriodeFørsteSeksUkerMor(periode, familiehendelsesdato)
-                ? PeriodeColor.ORANGE
+                ? PeriodeColor.BLACK
                 : PeriodeColor.NONE;
         default:
             return PeriodeColor.NONE;
@@ -186,7 +186,7 @@ const getKalenderFargeForPeriodeType = (
         case Periodetype.PeriodeUtenUttak:
             return getKalenderFargeForPeriodeUtenUttak(periode, barn);
         case Periodetype.Hull:
-            return PeriodeColor.ORANGE;
+            return PeriodeColor.BLACK;
         case Periodetype.Overføring:
         case Periodetype.Uttak:
             return getKalenderFargeForUttaksperiode(periode, uttaksplan, erFarEllerMedmor);

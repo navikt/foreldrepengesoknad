@@ -30,7 +30,7 @@ const getCalendarLabel = (
         case PeriodeColor.LIGHTGREENBLUE:
         case PeriodeColor.GREENOUTLINE:
         case PeriodeColor.BLUEOUTLINE:
-        case PeriodeColor.ORANGE:
+        case PeriodeColor.BLACK:
         case PeriodeColor.GRAY:
             return (
                 <BodyShort>

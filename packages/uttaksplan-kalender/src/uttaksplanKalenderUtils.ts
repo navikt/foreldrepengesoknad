@@ -103,7 +103,7 @@ export const getKalenderPeriodenavn = (
                       { navnAnnenPart: capitalizeFirstLetter(navnAnnenPart) },
                   )
                 : getUtsettelseLabel(unikeUtsettelseÅrsaker, intl);
-        case PeriodeColor.ORANGE:
+        case PeriodeColor.BLACK:
             return intl.formatMessage({ id: 'kalender.tapteDager' });
         case PeriodeColor.GRAY:
             return intl.formatMessage({ id: 'kalender.helg' });
