@@ -56,7 +56,7 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
                     id="Arbeidssituasjon.Ingen.Infoboks.NoenUtbetalinger"
                     values={{
                         a: (msg: any) => (
-                            <Link inlineText href={links.foreldrepenger} target="_blank">
+                            <Link inlineText href={links.foreldrepengerOpptjening} target="_blank">
                                 {msg}
                             </Link>
                         ),
