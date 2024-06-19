@@ -585,14 +585,14 @@ export const getOverlappendePeriodeTittel = (
 export const erAnnenPartsPrematurePeriode = (annenPartsPeriode: Periode, termindato: string | undefined): boolean => {
     return (
         !!termindato &&
-        !(annenPartsPeriode.resultat !== undefined && annenPartsPeriode.resultat.innvilget) &&
+        !annenPartsPeriode.resultat?.innvilget &&
         dayjs(annenPartsPeriode.tom).isBefore(dayjs(termindato), 'd') &&
         annenPartsPeriode.kontoType !== StønadskontoType.Fedrekvote
     );
 };
 
 export const skalAnnenPartsPeriodeVises = (annenPartsPeriode: Periode, termindato: string | undefined): boolean => {
-    if (annenPartsPeriode.resultat !== undefined && annenPartsPeriode.resultat.innvilget) {
+    if (annenPartsPeriode.resultat?.innvilget) {
         return true;
     }
     return erAnnenPartsPrematurePeriode(annenPartsPeriode, termindato);

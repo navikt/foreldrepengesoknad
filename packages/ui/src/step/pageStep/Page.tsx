@@ -28,7 +28,7 @@ const Page: React.FunctionComponent<PageProps> = ({
 
     return (
         <div role="main" aria-label={ariaLabelToUse} id={id}>
-            {topContentRenderer && topContentRenderer()}
+            {topContentRenderer?.()}
             <div className={`page ${className}`}>{children}</div>
         </div>
     );

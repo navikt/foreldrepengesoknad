@@ -72,7 +72,7 @@ export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[] | un
     return {
         fornavn: alleBarn
             ?.filter((b) => b.fornavn !== undefined && b.fornavn.trim() !== '')
-            .map((b) => [b.fornavn, b.mellomnavn !== undefined ? b.mellomnavn : ''].join(' ')),
+            .map((b) => [b.fornavn, b.mellomnavn ?? ''].join(' ')),
         fødselsdatoer,
         alleBarnaLever: !!alleBarn?.every((barn) => getLeverPerson(barn)),
     };
