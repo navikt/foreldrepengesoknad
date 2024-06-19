@@ -66,7 +66,6 @@ const useSendSøknad = (
 
                 if (
                     error.response?.status === 400 &&
-                    error.response?.data?.messages &&
                     error.response?.data?.messages?.includes(
                         'Vedleggslisten kan ikke inneholde flere enn 40 opplastede vedlegg',
                     )

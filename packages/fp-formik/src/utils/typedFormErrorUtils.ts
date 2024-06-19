@@ -1,4 +1,5 @@
 import { FieldInputProps, FormikErrors, FormikProps, getIn, isObject } from 'formik';
+
 import { TypedFormikFormContextType } from './../components/typed-formik-form/TypedFormikForm';
 import { ErrorTypeChecker, FormError } from './../types';
 
@@ -48,7 +49,7 @@ export const getAllFieldsWithErrors = (allErrors: any, errorObjectChecker?: Erro
         };
         if (errors) {
             if (
-                (parentKey && isObject(errors) && errorObjectChecker && errorObjectChecker(errors)) ||
+                (parentKey && isObject(errors) && errorObjectChecker?.(errors)) ||
                 (parentKey && typeof errors === 'string')
             ) {
                 keys.push(parentKey);
@@ -62,7 +63,7 @@ export const getAllFieldsWithErrors = (allErrors: any, errorObjectChecker?: Erro
                     });
                 } else {
                     if (isObject(error)) {
-                        if (errorObjectChecker && errorObjectChecker(error)) {
+                        if (errorObjectChecker?.(error)) {
                             keys.push(createFieldKey(key));
                             return;
                         }
