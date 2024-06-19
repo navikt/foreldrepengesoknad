@@ -84,15 +84,14 @@ const getStepConfig = (
         steps.push(createStep(SøknadRoutes.ARBEID_I_UTLANDET, intl, currentPath));
     }
 
-    const harKunEtArbeid =
-        barn && barn.termindato
-            ? søkerHarKunEtAktivtArbeid(
-                  barn.termindato,
-                  arbeidsforhold,
-                  inntektsinformasjon?.harJobbetSomFrilans || false,
-                  inntektsinformasjon?.harJobbetSomSelvstendigNæringsdrivende || false,
-              )
-            : true;
+    const harKunEtArbeid = barn?.termindato
+        ? søkerHarKunEtAktivtArbeid(
+              barn.termindato,
+              arbeidsforhold,
+              inntektsinformasjon?.harJobbetSomFrilans || false,
+              inntektsinformasjon?.harJobbetSomSelvstendigNæringsdrivende || false,
+          )
+        : true;
 
     if (!harKunEtArbeid) {
         steps.push(createStep(SøknadRoutes.VELG_ARBEID, intl, currentPath));

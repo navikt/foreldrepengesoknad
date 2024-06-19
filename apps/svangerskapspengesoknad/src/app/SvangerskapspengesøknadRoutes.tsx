@@ -213,7 +213,7 @@ const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({
     const avbrytSøknad = useAvbrytSøknad(svpApi, setHarGodkjentVilkår);
 
     useEffect(() => {
-        if (mellomlagretData && mellomlagretData[ContextDataType.APP_ROUTE]) {
+        if (mellomlagretData?.[ContextDataType.APP_ROUTE]) {
             setHarGodkjentVilkår(true);
             if (mellomlagretData.locale) {
                 onChangeLocale(mellomlagretData.locale);

@@ -241,7 +241,7 @@ export const getStønadskontoForelderNavn = (
     if (erFarEllerMedmor === true && erAleneOmOmsorg === false) {
         if (konto === StønadskontoType.Foreldrepenger) {
             if (
-                (periodeResultat && periodeResultat.trekkerMinsterett) ||
+                periodeResultat?.trekkerMinsterett ||
                 (!periodeResultat && morsAktivitet === MorsAktivitet.IkkeOppgitt)
             ) {
                 return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE_BFHR' });
@@ -501,9 +501,7 @@ export const filtrerAnnenPartsUttakNårIkkeSamtidigUttak = (
             return true;
         }
         const beholdUttaksSomOverlapperAnnenPartsPeriode =
-            overlappendeSøkersPeriode &&
-            overlappendeSøkersPeriode.resultat &&
-            overlappendeSøkersPeriode.resultat.innvilget &&
+            overlappendeSøkersPeriode?.resultat?.innvilget &&
             isUttaksperiode(overlappendeSøkersPeriode) &&
             isUttaksperiode(periode)
                 ? periode.samtidigUttak !== undefined || overlappendeSøkersPeriode.samtidigUttak !== undefined
@@ -518,12 +516,9 @@ export const leggTilVisningsInfo = (annenPartsPerioder: Periode[], søkerensPeri
         const overlappendeSøkersPeriode = søkerensPerioder.find((p) => {
             return Tidsperioden(getTidsperiode(p)).overlapper(getTidsperiode(periode));
         });
-        const erInnvilgetSamtidigUttak =
-            overlappendeSøkersPeriode &&
-            overlappendeSøkersPeriode.resultat &&
-            overlappendeSøkersPeriode.resultat.innvilget
-                ? periode.samtidigUttak !== undefined || overlappendeSøkersPeriode.samtidigUttak !== undefined
-                : false;
+        const erInnvilgetSamtidigUttak = overlappendeSøkersPeriode?.resultat?.innvilget
+            ? periode.samtidigUttak !== undefined || overlappendeSøkersPeriode.samtidigUttak !== undefined
+            : false;
         if (erInnvilgetSamtidigUttak) {
             return {
                 ...periode,
@@ -531,9 +526,7 @@ export const leggTilVisningsInfo = (annenPartsPerioder: Periode[], søkerensPeri
             };
         }
         const overlapperMedSøkerensPeriodeSomTrekkerDager =
-            overlappendeSøkersPeriode &&
-            overlappendeSøkersPeriode.resultat &&
-            (overlappendeSøkersPeriode.resultat.innvilget || overlappendeSøkersPeriode.resultat.trekkerDager);
+            overlappendeSøkersPeriode?.resultat?.innvilget || overlappendeSøkersPeriode?.resultat?.trekkerDager;
 
         if (overlapperMedSøkerensPeriodeSomTrekkerDager) {
             return {

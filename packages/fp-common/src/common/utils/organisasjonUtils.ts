@@ -7,7 +7,7 @@ export const er9Tall = (orgnr: string): boolean => {
 };
 
 export const starterPå8Eller9 = (orgnr: string): boolean => {
-    return orgnr.charAt(0) === '8' || orgnr.charAt(0) === '9';
+    return orgnr.startsWith('8') || orgnr.startsWith('9');
 };
 
 export const erGyldigNorskOrgnummer = (orgnr: string): boolean => {

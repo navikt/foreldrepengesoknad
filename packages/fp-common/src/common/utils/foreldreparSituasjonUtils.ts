@@ -16,18 +16,16 @@ export const getForeldreparSituasjon = (
             return ForeldreparSituasjon.farOgMor;
         }
         return søkerKjønn === 'M' ? ForeldreparSituasjon.farOgFar : ForeldreparSituasjon.morOgMedmor;
-    } else {
-        if (søkerKjønn === 'K') {
-            if (morErAleneOmOmsorg) {
-                return ForeldreparSituasjon.aleneomsorg;
-            }
-            if (farMedmorErAleneOmOmsorg) {
-                return ForeldreparSituasjon.aleneomsorgMedmor;
-            }
-            return rolle === 'mor' ? ForeldreparSituasjon.bareMor : ForeldreparSituasjon.bareMedmor;
-        } else {
-            return farMedmorErAleneOmOmsorg ? ForeldreparSituasjon.aleneomsorg : ForeldreparSituasjon.bareFar;
+    } else if (søkerKjønn === 'K') {
+        if (morErAleneOmOmsorg) {
+            return ForeldreparSituasjon.aleneomsorg;
         }
+        if (farMedmorErAleneOmOmsorg) {
+            return ForeldreparSituasjon.aleneomsorgMedmor;
+        }
+        return rolle === 'mor' ? ForeldreparSituasjon.bareMor : ForeldreparSituasjon.bareMedmor;
+    } else {
+        return farMedmorErAleneOmOmsorg ? ForeldreparSituasjon.aleneomsorg : ForeldreparSituasjon.bareFar;
     }
 };
 

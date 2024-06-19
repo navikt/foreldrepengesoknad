@@ -36,7 +36,7 @@ export function sorterPersonEtterEldstOgNavn(p1: Person, p2: Person) {
 export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak): Date | undefined => {
     if (sak.gjeldendeVedtak && sak.gjeldendeVedtak.perioder.length > 0) {
         return ISOStringToDate(sak.gjeldendeVedtak.perioder[0].fom)!;
-    } else if (sak.åpenBehandling && sak.åpenBehandling.søknadsperioder) {
+    } else if (sak.åpenBehandling?.søknadsperioder) {
         return ISOStringToDate(sak.åpenBehandling?.søknadsperioder[0].fom);
     }
     return undefined;
@@ -208,12 +208,12 @@ export const getNavnAnnenForelder = (
     søkerinfo: SøkerinfoDTO,
     sak: Foreldrepengesak | EngangsstønadSak | SvangerskapspengeSak | undefined,
 ) => {
-    const fødselsdatoFraSak = sak && sak.familiehendelse ? sak.familiehendelse.fødselsdato : undefined;
+    const fødselsdatoFraSak = sak?.familiehendelse ? sak.familiehendelse.fødselsdato : undefined;
     const barn =
         søkerinfo.søker.barn && fødselsdatoFraSak
             ? søkerinfo.søker.barn.find((b) => dayjs(b.fødselsdato).isSame(fødselsdatoFraSak, 'd'))
             : undefined;
-    const annenForelderNavn = barn && barn.annenForelder ? barn.annenForelder.fornavn : undefined;
+    const annenForelderNavn = barn?.annenForelder ? barn.annenForelder.fornavn : undefined;
     return annenForelderNavn !== undefined && annenForelderNavn.trim() !== '' ? annenForelderNavn : 'Annen forelder';
 };
 

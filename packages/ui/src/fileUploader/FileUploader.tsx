@@ -74,6 +74,15 @@ const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAtta
 
 const EMPTY_ATTACHMENT_LIST = [] as Attachment[];
 
+const updateOrReplaceAttachment = (
+    setAttachments: React.Dispatch<React.SetStateAction<Attachment[]>>,
+    pendingAttachment: Attachment,
+) => {
+    setAttachments((currentAttachments) =>
+        currentAttachments.map((a) => (a.filename === pendingAttachment.filename ? pendingAttachment : a)),
+    );
+};
+
 export interface Props {
     updateAttachments: (attachments: Attachment[], hasPendingUploads: boolean) => void;
     attachmentType: AttachmentType;
@@ -107,11 +116,7 @@ const FileUploader: React.FunctionComponent<Props> = ({
             const uploadAttachments = async (allPendingAttachments: Attachment[]) => {
                 for (const pendingAttachment of allPendingAttachments) {
                     await uploadAttachment(pendingAttachment, saveAttachment);
-                    setAttachments((currentAttachments) =>
-                        currentAttachments.map((a) =>
-                            a.filename === pendingAttachment.filename ? pendingAttachment : a,
-                        ),
-                    );
+                    updateOrReplaceAttachment(setAttachments, pendingAttachment);
                 }
             };
 

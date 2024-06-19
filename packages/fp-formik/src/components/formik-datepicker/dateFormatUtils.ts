@@ -32,7 +32,7 @@ const ALLOWED_INPUT_FORMATS = [
 ];
 
 const stringToUTCDate = (dateString: string | undefined, format: string): Date | undefined => {
-    if (dateString !== undefined && dateString.trim && dateString.trim().length === 10) {
+    if (dateString.trim?.()?.length === 10) {
         const d = dayjs(dateString, format).utc(true);
         return d.isValid() ? d.toDate() : undefined;
     }

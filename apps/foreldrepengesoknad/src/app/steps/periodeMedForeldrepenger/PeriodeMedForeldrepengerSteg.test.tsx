@@ -30,9 +30,6 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
     const gåTilNesteSide = vi.fn();
     const mellomlagreSøknadOgNaviger = vi.fn();
     it('skal søke som far eller medmor og ha aleneomsorg', async () => {
-        // const gåTilNesteSide = vi.fn();
-        // const mellomlagreSøknadOgNaviger = vi.fn();
-
         render(
             <FarEllerMedmorAleneomsorgFødsel
                 gåTilNesteSide={gåTilNesteSide}

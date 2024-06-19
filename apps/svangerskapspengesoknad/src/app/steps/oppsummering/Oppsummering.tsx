@@ -123,8 +123,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                                 <EgenNæringVisning næring={egenNæring}></EgenNæringVisning>
                             )}
                             {inntektsinformasjon.harHattArbeidIUtlandet &&
-                                arbeidIUtlandet &&
-                                arbeidIUtlandet.arbeidIUtlandet.map((arbeid) => (
+                                arbeidIUtlandet?.arbeidIUtlandet?.map((arbeid) => (
                                     <ArbeidIUtlandetVisning
                                         key={`${arbeid.fom}${arbeid.tom}${arbeid.arbeidsgiverNavn}`}
                                         arbeidIUtlandet={arbeid}

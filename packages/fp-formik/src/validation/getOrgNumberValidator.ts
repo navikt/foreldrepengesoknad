@@ -35,7 +35,7 @@ const isValidOrgNumber = (value: any): boolean => {
         typeof value === 'string' &&
         value.length === 9 &&
         /^[0-9]*$/.test(value) &&
-        (value.charAt(0) === '8' || value.charAt(0) === '9')
+        (value.startsWith('8') || value.startsWith('9'))
     ) {
         return getMod11(value) === parseInt(value.charAt(8), 10);
     }
