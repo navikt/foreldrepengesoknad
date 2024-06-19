@@ -96,11 +96,11 @@ describe('<Planlegger>', () => {
         await userEvent.click(screen.getByText('Tilbake til spørsmålene'));
 
         expect(screen.getByText('Barnet')).toBeInTheDocument();
-        expect(screen.getByText('Steg 2 av 7')).toBeInTheDocument();
+        expect(screen.getByText('Steg 2 av 3')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
         expect(screen.getByText('Hvem planlegger?')).toBeInTheDocument();
-        expect(screen.getByText('Steg 1 av 7')).toBeInTheDocument();
+        expect(screen.getByText('Steg 1 av 3')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
         expect(screen.getByText('Planleggeren består av to deler:')).toBeInTheDocument();
@@ -113,7 +113,7 @@ describe('<Planlegger>', () => {
         await userEvent.click(screen.getByText('Start'));
 
         expect(screen.getByText('Hvem planlegger?')).toBeInTheDocument();
-        expect(screen.getByText('Steg 1 av 3')).toBeInTheDocument();
+        expect(screen.getByText('Steg 1 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Far og far'));
         const morNavn = utils.getAllByLabelText('Hva heter far? (valgfritt)')[0];
         await userEvent.type(morNavn, 'Anders');
@@ -122,7 +122,7 @@ describe('<Planlegger>', () => {
         await userEvent.click(screen.getByText('Neste'));
 
         expect(screen.getByText('Barnet')).toBeInTheDocument();
-        expect(screen.getByText('Steg 2 av 3')).toBeInTheDocument();
+        expect(screen.getByText('Steg 2 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Fødsel'));
         await userEvent.click(screen.getByText('Ett'));
         await userEvent.click(screen.getByText('Ja'));
@@ -135,7 +135,7 @@ describe('<Planlegger>', () => {
         await userEvent.click(screen.getByText('Neste'));
 
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
-        expect(screen.getByText('Steg 3 av 4')).toBeInTheDocument();
+        expect(screen.getByText('Steg 3 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
         await userEvent.click(screen.getAllByText('Ja')[1]);
         await userEvent.click(screen.getByText('Neste'));
