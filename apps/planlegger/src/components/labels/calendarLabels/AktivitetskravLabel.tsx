@@ -1,18 +1,15 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getAntallUkerAktivitetsfriKvote, getAntallUkerForeldrepenger } from 'utils/stønadskontoerUtils';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { capitalizeFirstLetter } from '@navikt/fp-utils';
+import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import CalendarIconLabel from './CalendarIconLabel';
 import styles from './oversiktLabels.module.css';
 
 interface Props {
     utenAktivitetskrav?: boolean;
-    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
     startdato: string;
     sluttdato: string;
     tekstPart1: string;
@@ -26,7 +23,6 @@ const AktivitetskravLabel: FunctionComponent<Props> = ({
     tekstPart1,
     tekstPart2,
     isBluePanel = false,
-    valgtStønadskonto,
     startdato,
     sluttdato,
     visUkerAktivitetskrav = true,
@@ -42,8 +38,7 @@ const AktivitetskravLabel: FunctionComponent<Props> = ({
                             <FormattedMessage
                                 id="OversiktSteg.UkerUtenAktivitetskrav"
                                 values={{
-                                    hvem: capitalizeFirstLetter(tekstPart1),
-                                    uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
+                                    hvem: getNavnGenitivEierform(capitalizeFirstLetter(tekstPart1), intl.locale),
                                     hvemPart2: capitalizeFirstLetter(tekstPart2),
                                 }}
                             />
@@ -52,8 +47,7 @@ const AktivitetskravLabel: FunctionComponent<Props> = ({
                             <FormattedMessage
                                 id="OversiktSteg.UkerMedAktivitetskrav"
                                 values={{
-                                    hvem: capitalizeFirstLetter(tekstPart1),
-                                    uker: getAntallUkerForeldrepenger(valgtStønadskonto),
+                                    hvem: getNavnGenitivEierform(capitalizeFirstLetter(tekstPart1), intl.locale),
                                     hvemPart2: capitalizeFirstLetter(tekstPart2),
                                 }}
                             />

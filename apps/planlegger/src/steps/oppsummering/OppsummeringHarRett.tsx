@@ -228,7 +228,6 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                     uttaksdata={uttaksdata}
                     hvemPlanlegger={hvemPlanlegger}
                     barnet={barnet}
-                    valgtStønadskonto={valgtStønadskonto}
                     hvemHarRett={hvemHarRett}
                 />
                 <Calendar periods={uttaksperioder} useSmallerWidth />
