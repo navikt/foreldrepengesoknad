@@ -5,13 +5,15 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import { serverConfig } from '@navikt/fp-server-utils';
 
 const oboHeader = 'obo-token';
+const apiScope = serverConfig.proxy.apiScope!;
+const apiUrl = serverConfig.proxy.apiUrl!;
 
 export const veksleTokenTilTokenX = async (request: Request, response: Response, next: NextFunction) => {
     const token = getToken(request);
     if (!token) {
         return response.status(401).send();
     }
-    const obo = await requestTokenxOboToken(token, serverConfig.proxy.apiScope!);
+    const obo = await requestTokenxOboToken(token, apiScope);
     if (obo.ok) {
         request.headers[oboHeader] = obo.token;
         return next();
@@ -22,7 +24,7 @@ export const veksleTokenTilTokenX = async (request: Request, response: Response,
 };
 
 export const proxyRequestTilApi = createProxyMiddleware({
-    target: serverConfig.proxy.apiUrl!,
+    target: apiUrl,
     changeOrigin: true,
     logger: console,
     on: {
@@ -33,7 +35,7 @@ export const proxyRequestTilApi = createProxyMiddleware({
                 proxyRequest.removeHeader('cookie');
                 proxyRequest.setHeader('Authorization', `Bearer ${obo}`);
             } else {
-                console.log(`Access token var not present in session for scope ${serverConfig.proxy.apiScope}`);
+                console.log(`Access token var not present in session for scope ${apiScope}`);
             }
         },
     },
