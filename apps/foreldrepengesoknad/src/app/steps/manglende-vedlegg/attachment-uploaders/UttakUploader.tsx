@@ -11,7 +11,7 @@ import { AttachmentMetadataType, AttachmentType } from '@navikt/fp-constants';
 import { dateToISOString } from '@navikt/fp-formik';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
-import PeriodelisteItemHeader from '@navikt/fp-uttaksplan';
+import { PeriodelisteItemHeader } from '@navikt/fp-uttaksplan';
 
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 
