@@ -24,7 +24,7 @@ import Fordeling from 'app/context/types/Fordeling';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { getDatoForAleneomsorg, getErAleneOmOmsorg, getIsDeltUttak } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedatoDate, getTermindato } from 'app/utils/barnUtils';
-import { getAntallUkerFellesperiodeTilSøker, getOppstartsdatoFromFordelingValg } from 'app/utils/fordelingUtils';
+import { getAntallDagerFellesperiodeTilSøker, getOppstartsdatoFromFordelingValg } from 'app/utils/fordelingUtils';
 import { deltUttak } from 'app/utils/uttaksplan/deltUttak';
 import { ikkeDeltUttak } from 'app/utils/uttaksplan/ikkeDeltUttak';
 
@@ -65,9 +65,9 @@ const getSøkerensUttaksplanForslag = (
     const bareFarMedmorHarRett = getKunFarHarRett(erFarEllerMedmor, annenForelder, søkerErAleneOmOmsorg);
     const morHarRett = !erFarEllerMedmor || !bareFarMedmorHarRett;
 
-    const fellesperiodeUkerTilSøker = getAntallUkerFellesperiodeTilSøker(antallUkerFellesperiode, fordeling);
-    const fellesperiodeUkerMor = erFarEllerMedmor ? undefined : fellesperiodeUkerTilSøker;
-    const antallUkerFellesperiodeFarMedmor = erFarEllerMedmor ? fellesperiodeUkerTilSøker : undefined;
+    const fellesperiodeDagerTilSøker = getAntallDagerFellesperiodeTilSøker(antallUkerFellesperiode, fordeling);
+    const fellesperiodeDagerMor = erFarEllerMedmor ? undefined : fellesperiodeDagerTilSøker;
+    const antallUkerFellesperiodeFarMedmor = erFarEllerMedmor ? fellesperiodeDagerTilSøker : undefined;
     const farSinFørsteUttaksdag = erFarEllerMedmor ? startdatoPermisjon : undefined;
     const annenForelderErUfør = isAnnenForelderOppgitt(annenForelder) && annenForelder.erMorUfør;
     const annenForelderHarRettPåForeldrepengerIEØS =
@@ -87,7 +87,7 @@ const getSøkerensUttaksplanForslag = (
             erFarEllerMedmor,
             tilgjengeligeStønadskontoer: valgtStønadskonto.kontoer,
             startdatoPermisjon,
-            fellesperiodeUkerMor,
+            fellesperiodeDagerMor,
             harAnnenForelderSøktFP,
             antallUkerFellesperiodeFarMedmor,
             morSinSisteUttaksdag,
