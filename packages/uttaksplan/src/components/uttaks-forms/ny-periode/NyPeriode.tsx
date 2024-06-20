@@ -124,7 +124,6 @@ const NyPeriode: FunctionComponent<Props> = ({
             situasjon={situasjon}
             utsettelserIPlan={utsettelserIPlan}
             setPerioderErGyldige={setPerioderErGyldige}
-            isOpen={true}
         />
     );
 };

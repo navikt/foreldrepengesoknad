@@ -151,7 +151,6 @@ const renderPeriodeListeInnhold = (
                     situasjon={situasjon}
                     utsettelserIPlan={utsettelserIPlan}
                     setPerioderErGyldige={setPerioderErGyldige}
-                    isOpen={isOpen}
                 />
             );
         case Periodetype.Hull:
