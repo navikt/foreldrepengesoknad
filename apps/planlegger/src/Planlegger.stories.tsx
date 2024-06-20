@@ -67,6 +67,29 @@ const kontoer = {
     },
 } as TilgjengeligeStønadskontoer;
 
+const satser = {
+    engangstønad: [
+        {
+            fom: '01.01.2023',
+            verdi: 92648,
+        },
+        {
+            fom: '01.01.2021',
+            verdi: 90300,
+        },
+    ],
+    grunnbeløp: [
+        {
+            fom: '01.05.2024',
+            verdi: 124028,
+        },
+        {
+            fom: '01.05.2023',
+            verdi: 118620,
+        },
+    ],
+};
+
 const allNbMessages = { ...nbMessages, ...uiMessages.nb };
 
 const MESSAGES_GROUPED_BY_LOCALE = {
@@ -83,7 +106,7 @@ export default meta;
 
 type Story = StoryObj<{
     gåTilNesteSide: (action: Action) => void;
-    brukStønadskontoMock?: boolean;
+    brukMocks?: boolean;
 }>;
 
 export const Default: Story = {
@@ -92,9 +115,12 @@ export const Default: Story = {
 
         const axiosInstance = getAxiosInstance();
         const apiMock = new MockAdapter(axiosInstance);
-        if (args.brukStønadskontoMock) {
+        if (args.brukMocks) {
             apiMock.onPost('/rest/konto').reply(() => {
                 return [200, kontoer];
+            });
+            apiMock.onGet('/rest/satser').reply(() => {
+                return [200, satser];
             });
         } else {
             apiMock.onPost('/rest/konto').reply(async (config) => {

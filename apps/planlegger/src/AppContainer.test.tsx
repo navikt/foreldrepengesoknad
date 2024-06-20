@@ -13,7 +13,7 @@ const { Default } = composeStories(stories);
 
 describe('<AppContainer>', () => {
     it('skal gå gjennom applikasjonen og så tilbake', async () => {
-        const utils = render(<Default brukStønadskontoMock />);
+        const utils = render(<Default brukMocks />);
 
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Start'));

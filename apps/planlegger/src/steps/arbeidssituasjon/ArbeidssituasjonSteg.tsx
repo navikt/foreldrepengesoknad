@@ -4,16 +4,20 @@ import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
+import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Situasjon } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+import { finnGrunnbeløp } from 'utils/satserUtils';
 
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { Satser } from '@navikt/fp-types';
+import { formatCurrencyWithKr } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -21,7 +25,11 @@ import AnnetInfoboks from './info/AnnetInfoboks';
 import JobberInfoboks from './info/JobberInfoboks';
 import UførInfoboks from './info/UførInfoboks';
 
-const ArbeidssituasjonSteg: FunctionComponent = () => {
+interface Props {
+    satser: Satser;
+}
+
+const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser }) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator();
     const stepConfig = useStepData();
@@ -63,6 +71,8 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
+    const minsteInntekt = formatCurrencyWithKr(finnGrunnbeløp(satser, dayjs()) / 2);
+
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig}>
             <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
@@ -73,13 +83,21 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                         </Heading>
                         {(erAlenesøker || erFarOgFar) && (
                             <GreenRadioGroup
-                                label={<FormattedMessage id="Arbeidssituasjon.Forelder" values={{ fornavnSøker1 }} />}
+                                label={
+                                    <FormattedMessage
+                                        id="Arbeidssituasjon.Forelder"
+                                        values={{ fornavnSøker1, minsteInntekt }}
+                                    />
+                                }
                                 name="status"
                                 validate={[
                                     isRequired(
-                                        intl.formatMessage({
-                                            id: 'Arbeidssituasjon.Forelder.Required',
-                                        }),
+                                        intl.formatMessage(
+                                            {
+                                                id: 'Arbeidssituasjon.Forelder.Required',
+                                            },
+                                            { minsteInntekt },
+                                        ),
                                     ),
                                 ]}
                                 onChange={scrollToBottom}
@@ -114,7 +132,12 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                 onChange={scrollToBottom}
                             >
                                 <Radio value={Arbeidsstatus.JOBBER}>
-                                    <FormattedMessage id="ArbeidssituasjonSteg.Jobber" />
+                                    <FormattedMessage
+                                        id="ArbeidssituasjonSteg.Jobber"
+                                        values={{
+                                            minsteInntekt,
+                                        }}
+                                    />
                                 </Radio>
                                 <Radio value={Arbeidsstatus.UFØR}>
                                     <FormattedMessage id="ArbeidssituasjonSteg.Ufør" />
@@ -135,6 +158,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                 erAlenesøker={erAlenesøker}
                                 fornavn={fornavnSøker1}
                                 erFarOgFar={erFarOgFar}
+                                satser={satser}
                             />
                         )}
                         {!erAlenesøker && status && (
@@ -144,14 +168,20 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                     label={
                                         <FormattedMessage
                                             id="Arbeidssituasjon.AndreForelder"
-                                            values={{ navn: fornavnSøker2 }}
+                                            values={{
+                                                navn: fornavnSøker2,
+                                                minsteInntekt,
+                                            }}
                                         />
                                     }
                                     validate={[
                                         isRequired(
                                             intl.formatMessage(
                                                 { id: 'Arbeidssituasjon.AndreForelder.Required' },
-                                                { navn: fornavnSøker2 },
+                                                {
+                                                    navn: fornavnSøker2,
+                                                    minsteInntekt,
+                                                },
                                             ),
                                         ),
                                     ]}
@@ -175,6 +205,7 @@ const ArbeidssituasjonSteg: FunctionComponent = () => {
                                         fornavn={fornavnSøker2}
                                         erSøker2
                                         erFarOgFar={erFarOgFar}
+                                        satser={satser}
                                     />
                                 )}
                             </>
