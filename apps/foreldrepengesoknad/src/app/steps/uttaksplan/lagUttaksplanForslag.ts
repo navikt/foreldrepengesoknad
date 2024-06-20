@@ -1,8 +1,3 @@
-import {
-    finnOgSettInnHull,
-    getHarAktivitetskravIPeriodeUtenUttak,
-    leggTilAnnenPartsPerioderISøkerenesUttaksplan,
-} from '@navikt/uttaksplan';
 import dayjs from 'dayjs';
 
 import {
@@ -19,6 +14,11 @@ import {
 } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/fp-formik';
 import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import {
+    finnOgSettInnHull,
+    getHarAktivitetskravIPeriodeUtenUttak,
+    leggTilAnnenPartsPerioderISøkerenesUttaksplan,
+} from '@navikt/fp-uttaksplan';
 
 import Fordeling from 'app/context/types/Fordeling';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';

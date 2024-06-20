@@ -20,3 +20,4 @@ export {
 } from './utils/uttaksdatoerUtils';
 export { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
 export { finnOgSettInnHull, settInnAnnenPartsUttak } from './builder/uttaksplanbuilderUtils';
+export { default as PeriodelisteItemHeader } from './components/periodeliste-item-header/PeriodelisteItemHeader';

@@ -1,11 +1,10 @@
+import { Uttaksdagen } from '@navikt/fp-common';
+import { ISOStringToDate, getNumberFromNumberInputValue } from '@navikt/fp-formik';
 import {
     getFørsteUttaksdagAnkomstdatoNorge,
     getFørsteUttaksdagDatoForAleneomsorg,
     getFørsteUttaksdagForeldrepengerFørFødsel,
-} from '@navikt/uttaksplan';
-
-import { Uttaksdagen } from '@navikt/fp-common';
-import { ISOStringToDate, getNumberFromNumberInputValue } from '@navikt/fp-formik';
+} from '@navikt/fp-uttaksplan';
 
 import Fordeling, { FellesperiodeFordelingValg, OppstartValg } from 'app/context/types/Fordeling';
 

@@ -1,4 +1,3 @@
-import { getBrukteDager } from '@navikt/uttaksplan/';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
@@ -35,6 +34,7 @@ import {
     TilgjengeligeStønadskontoerForDekningsgrad,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
+import { getBrukteDager } from '@navikt/fp-uttaksplan';
 
 import { DelInformasjon, FordelingEier, FordelingFargekode } from 'app/types/FordelingOversikt';
 import { getErAleneOmOmsorg } from 'app/utils/annenForelderUtils';

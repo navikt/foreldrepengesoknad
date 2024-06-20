@@ -1,10 +1,3 @@
-import {
-    Uttaksplan,
-    finnOgSettInnHull,
-    getHarAktivitetskravIPeriodeUtenUttak,
-    kreverUttaksplanVedlegg,
-    settInnAnnenPartsUttak,
-} from '@navikt/uttaksplan';
 import dayjs from 'dayjs';
 import { FormikValues } from 'formik';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -43,6 +36,13 @@ import {
 import { Skjemanummer } from '@navikt/fp-constants';
 import { YesOrNo, dateToISOString } from '@navikt/fp-formik';
 import { Søkerinfo } from '@navikt/fp-types';
+import {
+    Uttaksplan,
+    finnOgSettInnHull,
+    getHarAktivitetskravIPeriodeUtenUttak,
+    kreverUttaksplanVedlegg,
+    settInnAnnenPartsUttak,
+} from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';

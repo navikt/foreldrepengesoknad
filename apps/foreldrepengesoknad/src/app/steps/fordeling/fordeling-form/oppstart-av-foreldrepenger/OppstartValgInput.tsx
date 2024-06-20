@@ -1,4 +1,3 @@
-import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan';
 import dayjs from 'dayjs';
 import React from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
@@ -19,6 +18,7 @@ import { RadioGroup } from '@navikt/fp-form-hooks';
 import { ISOStringToDate } from '@navikt/fp-formik';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import { formatDateExtended } from '@navikt/fp-utils';
+import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-uttaksplan';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
