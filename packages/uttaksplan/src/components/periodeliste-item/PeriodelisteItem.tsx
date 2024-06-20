@@ -253,7 +253,6 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                 <Accordion.Item open={isOpen}>
                     <Accordion.Header onClick={() => toggleIsOpen(periode.id)} className={bem.element('header')}>
                         <PeriodelisteItemHeader
-                            egenPeriode={egenPeriode}
                             periode={periode}
                             navnPåForeldre={navnPåForeldre}
                             melding={melding}

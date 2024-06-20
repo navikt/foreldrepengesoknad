@@ -74,7 +74,6 @@ const UttakUploader: FunctionComponent<Props> = ({
                     return (
                         <div key={p.id} className={bem.block}>
                             <PeriodelisteItemHeader
-                                egenPeriode={true}
                                 periode={p}
                                 erAleneOmOmsorg={false}
                                 erFarEllerMedmor={true}
