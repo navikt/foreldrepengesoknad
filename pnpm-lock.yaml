@@ -574,15 +574,15 @@ importers:
       '@navikt/fp-utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@navikt/fp-uttaksplan':
+        specifier: workspace:*
+        version: link:../../packages/uttaksplan
       '@navikt/fp-uttaksplan-kalender':
         specifier: workspace:*
         version: link:../../packages/uttaksplan-kalender
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../../packages/validation
-      '@navikt/uttaksplan':
-        specifier: workspace:*
-        version: link:../../packages/uttaksplan
       '@sentry/browser':
         specifier: ^7.109.0
         version: 7.117.0

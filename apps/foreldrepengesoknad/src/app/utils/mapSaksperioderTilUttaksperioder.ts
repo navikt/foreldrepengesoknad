@@ -1,9 +1,3 @@
-import {
-    finnOgSettInnHull,
-    settInnAnnenPartsUttak,
-    splittPeriodePåDato,
-    splittUttaksperiodePåFamiliehendelsesdato,
-} from '@navikt/uttaksplan';
 import dayjs from 'dayjs';
 
 import {
@@ -40,6 +34,12 @@ import {
     sorterPerioder,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
+import {
+    finnOgSettInnHull,
+    settInnAnnenPartsUttak,
+    splittPeriodePåDato,
+    splittUttaksperiodePåFamiliehendelsesdato,
+} from '@navikt/fp-uttaksplan';
 
 import { getRelevantFamiliehendelseDato } from './dateUtils';
 import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';

@@ -1,4 +1,3 @@
-import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from '@navikt/uttaksplan';
 import dayjs from 'dayjs';
 
 import {
@@ -19,6 +18,7 @@ import {
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { Stønadskonto } from '@navikt/fp-types';
+import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from '@navikt/fp-uttaksplan';
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
     famDato: Date,
