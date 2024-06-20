@@ -167,7 +167,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                         </VStack>
                     </GreenPanel>
                 )}
-                {hvemHarRett === 'kunSøker2HarRett' && fornavnSøker2 && (
+                {hvemHarRett === 'kunSøker2HarRett' && !erFarOgFar && fornavnSøker2 && (
                     <GreenPanel>
                         <VStack gap="2">
                             <Heading level="4" size="small">

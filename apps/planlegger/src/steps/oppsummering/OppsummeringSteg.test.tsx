@@ -11,6 +11,7 @@ const {
     FarOgFarFødsel,
     FarOgFarAdopsjonKunFar1HarRett,
     HarIkkeRett,
+    OppsummeringFarOgFarKunFar2HarRett,
 } = composeStories(stories);
 
 describe('<OppsummeringSteg>', () => {
@@ -134,5 +135,35 @@ describe('<OppsummeringSteg>', () => {
 
         expect(screen.getByText('Lengde')).toBeInTheDocument();
         expect(screen.getByText('Du valgte 100 % foreldrepenger i 49 uker.')).toBeInTheDocument();
+    });
+
+    it('skal vise info for far og far, kun far 2 har rett', async () => {
+        render(<OppsummeringFarOgFarKunFar2HarRett />);
+
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+
+        expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
+
+        expect(screen.getByText('Barnet')).toBeInTheDocument();
+        expect(screen.getByText('Barnet har termin 24. okt. 2022.')).toBeInTheDocument();
+
+        expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Espen har ikke hatt opptjening 6 av de siste 10 månedene og tjent mer enn 59 310 kr det siste året.',
+            ),
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Hugo har hatt opptjening 6 av de siste 10 månedene og tjent mer enn 59 310 kr det siste året.',
+            ),
+        ).toBeInTheDocument();
+
+        expect(screen.getByText('Lengde')).toBeInTheDocument();
+        expect(screen.getByText('Dere valgte 100 % foreldrepenger i 49 uker.')).toBeInTheDocument();
+
+        expect(screen.getByText('Perioden med foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Dere valgte 100 % i 49 uker.')).toBeInTheDocument();
+        expect(screen.getByText('24. okt. 2022 – 08. sep. 2023')).toBeInTheDocument();
     });
 });
