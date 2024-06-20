@@ -22,8 +22,6 @@ scriptTag.type = 'text/json';
 scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
     APP_VERSION: 'test',
-    FEATURE_VIS_FEILSIDE: 'off',
-    FEATURE_VIS_ALERTSTRIPE: 'on',
 });
 document.head.appendChild(scriptTag);
 
