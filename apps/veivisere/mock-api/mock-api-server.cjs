@@ -1,9 +1,17 @@
+const path = require('path');
+const fs = require('fs');
+
 const express = require('express');
 const app = express();
 const router = express.Router();
 const morgan = require('morgan');
 
 require('dotenv').config();
+
+const getFilePath = function (filnavn) {
+    const directories = ['./mock-api/', filnavn];
+    return directories.join(path.sep);
+};
 
 app.disable('x-powered-by');
 
@@ -21,7 +29,7 @@ const allowCrossDomain = function (req, res, next) {
     next();
 };
 const delayAllResponses = function (millis) {
-    return function (req, res, next) {
+    return function (_req, _res, next) {
         setTimeout(next, millis);
     };
 };
@@ -53,5 +61,19 @@ router.post('/rest/konto', async (req, res) => {
         res.send(jsonResponse);
     } catch (err) {
         console.log(err);
+    }
+});
+
+router.get('/rest/satser', (_req, res) => {
+    const fileName = getFilePath('satser.json');
+    if (!fs.existsSync(fileName)) {
+        console.log('Ingen fil satser.json finnes');
+    } else {
+        try {
+            const data = JSON.parse(fs.readFileSync(fileName, 'utf8'));
+            res.send(data);
+        } catch (err) {
+            console.log(err);
+        }
     }
 });
