@@ -8,7 +8,7 @@ export interface Props {
 }
 
 export const ByttBrowserModal: FunctionComponent<Props> = ({ skalEndreNettleser }) => {
-    const [isOpen, toggleIsOpen] = useState(skalEndreNettleser);
+    const [isOpen, setIsOpen] = useState(skalEndreNettleser);
     const intl = useIntl();
     return (
         <Modal aria-label={intl.formatMessage({ id: 'sesjonUtløpt.tittel' })} open={isOpen} onClose={() => undefined}>
@@ -21,7 +21,7 @@ export const ByttBrowserModal: FunctionComponent<Props> = ({ skalEndreNettleser 
                 </BodyShort>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={() => toggleIsOpen(false)}>
+                <Button variant="primary" onClick={() => setIsOpen(false)}>
                     <FormattedMessage id="ok" />
                 </Button>
             </Modal.Footer>
