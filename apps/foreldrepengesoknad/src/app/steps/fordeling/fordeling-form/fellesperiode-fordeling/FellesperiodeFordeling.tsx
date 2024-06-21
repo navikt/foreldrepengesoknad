@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, BodyLong, HStack, Heading, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { TextField } from '@navikt/fp-form-hooks';
@@ -123,12 +123,12 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
             <FordelingValg dagerMedFellesperiode={dagerMedFellesperiode} />
             {valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE && (
                 <div className={bem.block}>
-                    <Heading size="small">
+                    <BodyShort className={bem.element('title')}>
                         <FormattedMessage
                             id="fordeling.antallUkerDager.spørsmål"
                             values={{ harHeleUkerTilFordeling }}
                         />
-                    </Heading>
+                    </BodyShort>
                     <BodyLong className={bem.element('description')}>
                         <FormattedMessage
                             id="fordeling.antallUkerDager.spørsmål.description"
