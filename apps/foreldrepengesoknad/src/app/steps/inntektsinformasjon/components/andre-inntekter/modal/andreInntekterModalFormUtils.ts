@@ -86,7 +86,7 @@ export const getInitialAndreInntekterFormValues = (
             ...initialAndreInntekterFormValues,
             fom: annenInntekt.tidsperiode.fom,
             tom: annenInntekt.tidsperiode.tom || '',
-            dokumentasjon: militærVedlegg ? militærVedlegg : [],
+            dokumentasjon: militærVedlegg ?? [],
             pågående: convertBooleanOrUndefinedToYesOrNo(annenInntekt.pågående),
             type: annenInntekt.type,
         };
@@ -96,7 +96,7 @@ export const getInitialAndreInntekterFormValues = (
         ...initialAndreInntekterFormValues,
         fom: annenInntekt.tidsperiode.fom,
         tom: annenInntekt.tidsperiode.tom || '',
-        dokumentasjon: etterlønnVedlegg ? etterlønnVedlegg : [],
+        dokumentasjon: etterlønnVedlegg ?? [],
         pågående: convertBooleanOrUndefinedToYesOrNo(annenInntekt.pågående),
         type: annenInntekt.type,
     };
