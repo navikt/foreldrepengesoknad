@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useIntl } from 'react-intl';
 
 import { AnnenForelder, StønadskontoType, UttaksperiodeBase, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { MorsAktivitet } from '@navikt/fp-constants';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
 import { getArbeidsformTekst } from '../OppsummeringUtils';
@@ -76,7 +77,9 @@ const Uttaksperiodedetaljer: React.FunctionComponent<Props> = ({
                     verdi={arbeidsformTekst}
                 />
             )}
-            {morsAktivitetIPerioden && <MorsAktivitetDetaljer morsAktivitet={morsAktivitetIPerioden} />}
+            {morsAktivitetIPerioden && morsAktivitetIPerioden !== MorsAktivitet.IkkeOppgitt && (
+                <MorsAktivitetDetaljer morsAktivitet={morsAktivitetIPerioden} />
+            )}
         </>
     );
 };

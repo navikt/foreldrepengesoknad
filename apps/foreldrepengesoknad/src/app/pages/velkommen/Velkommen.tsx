@@ -63,7 +63,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
     const oppdaterDataIState = useContextSaveAnyData();
     const { oppdaterSøknadIState } = useSetSøknadsdata();
 
-    const [isDinePersonopplysningerModalOpen, setDinePersonopplysningerModalOpen] = useState(false);
+    const [isDinePersonopplysningerModalOpen, setIsDinePersonopplysningerModalOpen] = useState(false);
 
     // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
     const selectableBarn = useMemo(
@@ -226,7 +226,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
                                     href="#"
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        setDinePersonopplysningerModalOpen(true);
+                                        setIsDinePersonopplysningerModalOpen(true);
                                     }}
                                 >
                                     <FormattedMessage id="velkommen.lesMerOmPersonopplysninger" />
@@ -235,7 +235,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
                         </HStack>
                         <DinePersonopplysningerModal
                             isOpen={isDinePersonopplysningerModalOpen}
-                            onRequestClose={() => setDinePersonopplysningerModalOpen(false)}
+                            onRequestClose={() => setIsDinePersonopplysningerModalOpen(false)}
                         />
                     </VStack>
                 </ContentWrapper>
