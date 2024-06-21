@@ -27,10 +27,9 @@ const FpApiDispatchContext = createContext<Dispatch | undefined>(undefined);
 interface OwnProps {
     children: ReactNode;
     initialState?: FpApiDataHashMap;
-    onDispatch?: (action: Action) => void;
 }
 
-export const FpApiDataContext: FunctionComponent<OwnProps> = ({ children }): JSX.Element => {
+export const FpApiDataContext: FunctionComponent<OwnProps> = ({ children, initialState }): JSX.Element => {
     const [state, dispatch] = useReducer((oldState: FpApiDataHashMap, action: Action) => {
         switch (action.type) {
             case 'update':
@@ -43,7 +42,7 @@ export const FpApiDataContext: FunctionComponent<OwnProps> = ({ children }): JSX
             default:
                 throw new Error();
         }
-    }, defaultInitialState);
+    }, initialState || defaultInitialState);
 
     return (
         <FpApiStateContext.Provider value={state}>
