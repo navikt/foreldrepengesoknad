@@ -17,26 +17,21 @@ const FørTermin: React.FunctionComponent<Props> = ({ barnet, hvemPlanlegger }) 
     const erAlenesøker = erAlene(hvemPlanlegger);
 
     return (
-        <>
-            <HStack gap="5" wrap={false}>
-                <div>
-                    <IconCircleWrapper color="lightBlue" size="medium">
-                        <PersonPregnantIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />
-                    </IconCircleWrapper>
-                </div>
-                <div>
-                    <Heading size="small">
-                        <FormattedMessage id="OmÅTilpassePlanen.FørTermin" />
-                    </Heading>
-                    <BodyLong>
-                        <FormattedMessage
-                            id="OmÅTilpassePlanen.FørTermin.Tekst"
-                            values={{ antallBarn, erAlenesøker }}
-                        />
-                    </BodyLong>
-                </div>
-            </HStack>
-        </>
+        <HStack gap="5" wrap={false}>
+            <div>
+                <IconCircleWrapper color="lightBlue" size="medium">
+                    <PersonPregnantIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />
+                </IconCircleWrapper>
+            </div>
+            <div>
+                <Heading size="small">
+                    <FormattedMessage id="OmÅTilpassePlanen.FørTermin" />
+                </Heading>
+                <BodyLong>
+                    <FormattedMessage id="OmÅTilpassePlanen.FørTermin.Tekst" values={{ antallBarn, erAlenesøker }} />
+                </BodyLong>
+            </div>
+        </HStack>
     );
 };
 export default FørTermin;
