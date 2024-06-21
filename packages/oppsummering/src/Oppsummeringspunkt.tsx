@@ -13,7 +13,7 @@ interface Props {
 }
 
 const Oppsummeringspunkt = ({ tittel, hide = false, children }: Props) => {
-    const [isOpen, toggleOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     if (hide) {
         return null;
@@ -23,7 +23,7 @@ const Oppsummeringspunkt = ({ tittel, hide = false, children }: Props) => {
         <Accordion.Item>
             <Accordion.Header
                 className={isOpen ? bemUtils('accordian_header').block : undefined}
-                onClick={() => toggleOpen((open) => !open)}
+                onClick={() => setIsOpen((open) => !open)}
             >
                 <Heading level="3" size="small">
                     {tittel}
