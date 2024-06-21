@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 
 export const useScrollBehaviour = () => {
     const ref = useRef<HTMLDivElement>(null);
-    const [scrollCounter, increaseScrollCounter] = useState(0);
+    const [scrollCounter, setScrollCounter] = useState(0);
 
-    const scrollToBottom = () => increaseScrollCounter(scrollCounter + 1);
+    const scrollToBottom = () => setScrollCounter(scrollCounter + 1);
 
     useEffect(() => {
         window.scrollTo(0, 0);
