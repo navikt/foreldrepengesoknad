@@ -19,7 +19,7 @@ export const getSirkel = (color: PeriodeColor) => {
         case PeriodeColor.GREENOUTLINE:
         case PeriodeColor.LIGHTGREEN:
             return <div className={styles.greenOutlineCircle} />;
-        case PeriodeColor.ORANGE:
+        case PeriodeColor.BLACK:
             return <div className={styles.blackCircle} />;
         case PeriodeColor.LIGHTBLUEGREEN:
             return <div className={styles.lightblueGreenCircle} />;
@@ -48,7 +48,7 @@ const PANEL_STYLE = {
     [PeriodeColor.GREENSTRIPED]: styles.greenPanel,
     [PeriodeColor.GRAY]: styles.grayPanel,
     [PeriodeColor.PINK]: styles.pinkPanel,
-    [PeriodeColor.ORANGE]: styles.grayPanel,
+    [PeriodeColor.BLACK]: styles.grayPanel,
     [PeriodeColor.GREENOUTLINE]: styles.greenOutlinePanel,
     [PeriodeColor.BLUEOUTLINE]: styles.blueOutlinePanel,
 };
@@ -69,7 +69,7 @@ const CalendarLabel: FunctionComponent<Props> = ({ children, iconType }) => {
             </div>
         );
     }
-    if (iconType === PeriodeColor.ORANGE) {
+    if (iconType === PeriodeColor.BLACK) {
         return (
             <div className={styles.grayPanel}>
                 <HStack gap="2" align="center">

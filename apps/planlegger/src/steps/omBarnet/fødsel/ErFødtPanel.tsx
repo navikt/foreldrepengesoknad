@@ -1,6 +1,4 @@
 import { TasklistStartIcon } from '@navikt/aksel-icons';
-import GreenPanel from 'components/boxes/GreenPanel';
-import Infobox from 'components/boxes/Infobox';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -18,6 +16,7 @@ import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { Datepicker } from '@navikt/fp-form-hooks';
+import { GreenPanel, Infobox } from '@navikt/fp-ui';
 import { erI22SvangerskapsukeEllerSenere, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 type Props = {

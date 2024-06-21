@@ -2,7 +2,6 @@ import { InformationIcon, PersonGroupIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import { default as Infobox } from 'components/boxes/Infobox';
 import CalendarLabels from 'components/labels/CalendarLabels';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
@@ -23,7 +22,7 @@ import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtil
 import { BodyLong, BodyShort, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
-import { Calendar, StepButtons } from '@navikt/fp-ui';
+import { Calendar, Infobox, StepButtons } from '@navikt/fp-ui';
 import { useMedia } from '@navikt/fp-utils/src/hooks/useMedia';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
@@ -208,7 +207,6 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             }
                             hvemPlanlegger={hvemPlanlegger}
                             barnet={barnet}
-                            valgtStønadskonto={valgtStønadskonto}
                             hvemHarRett={hvemHarRett}
                         />
                         <div className={styles.calendar}>

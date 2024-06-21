@@ -1,5 +1,4 @@
 import { ExclamationmarkIcon } from '@navikt/aksel-icons';
-import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
@@ -9,6 +8,7 @@ import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import HvisManBlirSyk from './HvisManBlirSyk';
 import HvisMorBlirSyk from './HvisMorBlirSyk';

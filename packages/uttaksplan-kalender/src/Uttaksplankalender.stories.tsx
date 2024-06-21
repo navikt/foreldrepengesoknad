@@ -114,9 +114,6 @@ const uttaksplanMor = [
         type: Periodetype.Uttak,
         arbeidsformer: [Arbeidsform.arbeidstaker],
         erArbeidstaker: false,
-        gradert: true,
-        orgnumre: ['896929119'],
-        stillingsprosent: '56',
         ønskerSamtidigUttak: true,
     },
     {
@@ -132,7 +129,7 @@ const uttaksplanMor = [
         overskrives: true,
         gradert: false,
         ønskerSamtidigUttak: true,
-        visPeriodeIPlan: true,
+        visPeriodeIPlan: false,
     },
     {
         type: Periodetype.Info,

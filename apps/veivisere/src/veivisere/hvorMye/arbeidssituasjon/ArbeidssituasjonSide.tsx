@@ -12,11 +12,10 @@ import { BodyShort, Button, Heading, Label, Link, ReadMore, Spacer, VStack } fro
 import { links } from '@navikt/fp-constants';
 import { Checkbox, Form, TextField } from '@navikt/fp-form-hooks';
 import { GreenPanel, Infobox } from '@navikt/fp-ui';
-import { capitalizeFirstLetter } from '@navikt/fp-utils';
+import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 import { isValidNumber } from '@navikt/fp-validation';
 
 import VeiviserPage from '../../felles/Page/VeiviserPage';
-import FpEllerEsOgHvaSkjerNåLinkPanel from '../felles/FpEllerEsOgHvaSkjerNåLinkPanel';
 import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
 import HøyInntektInfobox from '../felles/HøyInntektInfobox';
 import styles from './arbeidssituasjonSide.module.css';
@@ -47,7 +46,7 @@ const isNumber = (value?: string) => {
     return value && isValidNumber(value);
 };
 
-export const finnGjennomsnittslønn = (formValues: Arbeidssituasjon): string | undefined => {
+export const finnGjennomsnittsMånedslønn = (formValues: Arbeidssituasjon): string | undefined => {
     const { lønnMåned1, lønnMåned2, lønnMåned3 } = formValues;
 
     const m1 = isNumber(lønnMåned1) ? parseFloat(lønnMåned1) : 0;
@@ -80,8 +79,8 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
 
     const forrigeMåned = dayjs().subtract(1, 'month');
 
-    const gjennomsnittslønn = finnGjennomsnittslønn(formValues);
-    const antattÅrslønn = gjennomsnittslønn ? parseFloat(gjennomsnittslønn) * 12 : undefined;
+    const gjennomsnittslønnPerMåned = finnGjennomsnittsMånedslønn(formValues);
+    const antattÅrslønn = gjennomsnittslønnPerMåned ? parseFloat(gjennomsnittslønnPerMåned) * 12 : undefined;
 
     const { ref } = useScrollBehaviour();
 
@@ -154,7 +153,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                         {!formValues.erSelvstendigNæringsdrivende &&
                             (formValues.erArbeidstakerEllerFrilanser || formValues.harUtbetalingFraNav) && (
                                 <VStack gap="2">
-                                    <GreenPanel isDarkGreen={gjennomsnittslønn === undefined} shouldFadeIn>
+                                    <GreenPanel isDarkGreen={gjennomsnittslønnPerMåned === undefined} shouldFadeIn>
                                         <VStack gap="6">
                                             {formValues.erArbeidstakerEllerFrilanser &&
                                                 !formValues.harUtbetalingFraNav && (
@@ -211,14 +210,44 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                                     <FormattedMessage id="ArbeidssituasjonSide.Gjennomsnitt" />
                                                 </Label>
                                                 <Heading size="large">
-                                                    {gjennomsnittslønn || '-'}
-                                                    <FormattedMessage id="ArbeidssituasjonSide.Kr" />
+                                                    {gjennomsnittslønnPerMåned
+                                                        ? formatCurrencyWithKr(gjennomsnittslønnPerMåned)
+                                                        : '-'}
+                                                </Heading>
+                                            </div>
+                                            <div>
+                                                <Label>
+                                                    <FormattedMessage id="ArbeidssituasjonSide.GjennomsnittÅrslønn" />
+                                                </Label>
+                                                <Heading size="large">
+                                                    {gjennomsnittslønnPerMåned
+                                                        ? formatCurrencyWithKr(
+                                                              parseInt(gjennomsnittslønnPerMåned, 10) * 12,
+                                                          )
+                                                        : '-'}
                                                 </Heading>
                                             </div>
                                         </VStack>
                                     </GreenPanel>
                                     <ReadMore header={<FormattedMessage id="ArbeidssituasjonSide.GirRett" />}>
-                                        todo
+                                        <FormattedMessage id="ArbeidssituasjonSide.EnAvDisse" />
+                                        <ul>
+                                            <li>
+                                                <FormattedMessage id="ArbeidssituasjonSide.Sykepenger" />
+                                            </li>
+                                            <li>
+                                                <FormattedMessage id="ArbeidssituasjonSide.Foreldrepenger" />
+                                            </li>
+                                            <li>
+                                                <FormattedMessage id="ArbeidssituasjonSide.Arbeidsavklaring" />
+                                            </li>
+                                            <li>
+                                                <FormattedMessage id="ArbeidssituasjonSide.Dagpenger" />
+                                            </li>
+                                            <li>
+                                                <FormattedMessage id="ArbeidssituasjonSide.OmsorgOgPleie" />
+                                            </li>
+                                        </ul>
                                     </ReadMore>
                                 </VStack>
                             )}
@@ -237,7 +266,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                 <HøyInntektInfobox maxÅrslønnDekket={maxÅrslønn} showKrIcon />
                             )}
                         <Spacer />
-                        {gjennomsnittslønn && (
+                        {gjennomsnittslønnPerMåned && (
                             <Button
                                 icon={<PaperplaneIcon aria-hidden />}
                                 iconPosition="right"
@@ -250,7 +279,6 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                     </VStack>
                 </Form>
             </VeiviserPage>
-            {gjennomsnittslønn && <FpEllerEsOgHvaSkjerNåLinkPanel />}
         </>
     );
 };

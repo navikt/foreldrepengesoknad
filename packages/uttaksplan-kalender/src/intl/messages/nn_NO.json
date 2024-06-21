@@ -19,5 +19,7 @@
     "kalender.utsettelse.SYKDOM": "fordi du er sjuk",
     "kalender.utsettelse.HV_OVELSE": "pga. øving eller teneste i Heimevernet",
     "kalender.utsettelse.NAV_TILTAK": "pga. NAV tiltak som utgjer 100% arbeid",
-    "kalender.lastNed": "Last ned kalender som PDF"
+    "kalender.lastNed": "Last ned kalender som PDF",
+    "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} den {dato}",
+    "kalender.skjermleser.periode": "{periodeNavn} fra den {fraDato} til den {tilDato}"
 }

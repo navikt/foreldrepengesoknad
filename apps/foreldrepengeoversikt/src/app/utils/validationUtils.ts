@@ -16,7 +16,7 @@ export const getIllegalChars = (value: any): string => {
 };
 
 export const getIllegalCharsErrorMessage = (value: any, feltNavn: string, intl: IntlShape): string => {
-    const ugyldigeTegn = getIllegalChars(value).replace(/[\t]/g, 'Tabulatortegn');
+    const ugyldigeTegn = getIllegalChars(value).replace(/\t/g, 'Tabulatortegn');
     return intl.formatMessage(
         { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
         {

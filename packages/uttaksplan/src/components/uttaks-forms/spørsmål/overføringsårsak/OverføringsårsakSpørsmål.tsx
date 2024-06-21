@@ -9,8 +9,6 @@ import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode
 interface Props {
     navnAnnenForelder: string;
     erEndringssøknad: boolean;
-    valgtOverføringsårsak: OverføringÅrsakType | '';
-    isOpen: boolean;
 }
 
 const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({ navnAnnenForelder, erEndringssøknad }) => {
@@ -45,24 +43,22 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({ navnAnnenForel
     }
 
     return (
-        <>
-            <Block padBottom="l">
-                <PeriodeUttakFormComponents.RadioGroup
-                    name={PeriodeUttakFormField.overføringsårsak}
-                    legend={intlUtils(intl, 'uttaksplan.overføringsårsak', {
-                        navnAnnenForelder: getNavnGenitivEierform(navnAnnenForelder, intl.locale),
-                    })}
-                    radios={radios}
-                    validate={(value) => {
-                        if (!hasValue(value)) {
-                            return intlUtils(intl, 'uttaksplan.validering.overføringsårsak');
-                        }
+        <Block padBottom="l">
+            <PeriodeUttakFormComponents.RadioGroup
+                name={PeriodeUttakFormField.overføringsårsak}
+                legend={intlUtils(intl, 'uttaksplan.overføringsårsak', {
+                    navnAnnenForelder: getNavnGenitivEierform(navnAnnenForelder, intl.locale),
+                })}
+                radios={radios}
+                validate={(value) => {
+                    if (!hasValue(value)) {
+                        return intlUtils(intl, 'uttaksplan.validering.overføringsårsak');
+                    }
 
-                        return undefined;
-                    }}
-                />
-            </Block>
-        </>
+                    return undefined;
+                }}
+            />
+        </Block>
     );
 };
 

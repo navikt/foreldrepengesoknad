@@ -1,4 +1,3 @@
-import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from '@navikt/uttaksplan';
 import dayjs from 'dayjs';
 
 import {
@@ -21,6 +20,7 @@ import {
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { Stønadskonto } from '@navikt/fp-types/src/TilgjengeligeStønadskontoer';
+import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from '@navikt/fp-uttaksplan';
 
 const deltUttakAdopsjonSøktFørst = (
     famDato: Date,
@@ -242,7 +242,10 @@ const deltUttakFødselMor = (
             forelder: Forelder.mor,
             konto: StønadskontoType.ForeldrepengerFørFødsel,
             skalIkkeHaUttakFørTermin: true,
-            tidsperiode: {} as any,
+            tidsperiode: {
+                fom: Uttaksdagen(currentTomDate).trekkFra(15),
+                tom: Uttaksdagen(currentTomDate).forrige(),
+            },
             vedlegg: [],
         };
         perioder.push(periodeFørFødsel);

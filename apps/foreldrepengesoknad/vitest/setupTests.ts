@@ -18,8 +18,6 @@ vi.mock('./../src/app/Environment.ts', async () => {
     return {
         default: {
             APP_VERSION: 'dev',
-            FEATURE_VIS_FEILSIDE: 'on',
-            FEATURE_VIS_ALERTSTRIPE: 'off',
         },
     };
 });

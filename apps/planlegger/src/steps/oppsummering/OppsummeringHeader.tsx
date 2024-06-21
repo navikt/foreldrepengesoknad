@@ -1,18 +1,16 @@
 import { CheckmarkIcon } from '@navikt/aksel-icons';
-import GreenHeading from 'components/boxes/GreenHeading';
-import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
-import PlanleggerStep from 'components/page/PlanleggerPage';
 import { FormattedMessage } from 'react-intl';
 
 import { HStack, Heading, Show } from '@navikt/ds-react';
+
+import { GreenHeading, IconCircleWrapper, Page } from '@navikt/fp-ui';
 
 interface Props {
     children: React.ReactElement | React.ReactElement[];
 }
 
 const OppsummeringHeader: React.FunctionComponent<Props> = ({ children }) => (
-    <PlanleggerStep
-        useLargerBorderRadius
+    <Page
         header={
             <>
                 <Show below="md">
@@ -43,7 +41,7 @@ const OppsummeringHeader: React.FunctionComponent<Props> = ({ children }) => (
         }
     >
         {children}
-    </PlanleggerStep>
+    </Page>
 );
 
 export default OppsummeringHeader;

@@ -166,14 +166,12 @@ const getTidslinjeTittelForFamiliehendelse = (
             familiehendelse,
             intl,
         );
+    } else if (familiehendelse.omsorgsovertakelse) {
+        return 'Adopsjonsdato';
+    } else if (familiehendelse.fødselsdato) {
+        return 'Barnet ble født';
     } else {
-        if (familiehendelse.omsorgsovertakelse) {
-            return 'Adopsjonsdato';
-        } else if (familiehendelse.fødselsdato) {
-            return 'Barnet ble født';
-        } else {
-            return intl.formatMessage({ id: 'tidslinje.tittel.FAMILIEHENDELSE.termindato' });
-        }
+        return intl.formatMessage({ id: 'tidslinje.tittel.FAMILIEHENDELSE.termindato' });
     }
 };
 

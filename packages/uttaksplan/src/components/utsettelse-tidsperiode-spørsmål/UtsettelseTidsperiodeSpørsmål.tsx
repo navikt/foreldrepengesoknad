@@ -1,21 +1,23 @@
+import dayjs from 'dayjs';
+import { useIntl } from 'react-intl';
+
+import { Modal } from '@navikt/ds-react';
+
 import {
-    getTidsperiode,
-    getUkerOgDagerFromDager,
-    intlUtils,
-    isForeldrepengerFørFødselUttaksperiode,
     Periode,
     Situasjon,
     Tidsperiode,
     TidsperiodeDate,
     Tidsperioden,
     Utsettelsesperiode,
+    getTidsperiode,
+    getUkerOgDagerFromDager,
+    intlUtils,
+    isForeldrepengerFørFødselUttaksperiode,
 } from '@navikt/fp-common';
-import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
-import dayjs from 'dayjs';
 
-import { useIntl } from 'react-intl';
 import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperiode-form/TidsperiodeForm';
-import { Modal } from '@navikt/ds-react';
+import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
 
 interface Props {
     periode: Periode;
@@ -52,10 +54,7 @@ const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
     const erForeldrepengerFørFødsel = isForeldrepengerFørFødselUttaksperiode(periode);
     const initialMonth = erForeldrepengerFørFødsel ? familiehendelsesdato : undefined;
     const varighetIDager =
-        tidsperiode &&
-        tidsperiode.fom &&
-        tidsperiode.tom &&
-        dayjs(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
+        tidsperiode?.fom && tidsperiode?.tom && dayjs(tidsperiode.fom).isSameOrBefore(tidsperiode.tom, 'day')
             ? Tidsperioden({
                   fom: tidsperiode.fom,
                   tom: tidsperiode.tom,

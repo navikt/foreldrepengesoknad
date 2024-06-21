@@ -23,22 +23,20 @@ const UttakRundtFødselÅrsakSpørsmål: FunctionComponent<Props> = ({ fieldName
     ];
 
     return (
-        <>
-            <Block padBottom="l">
-                <PeriodeUttakFormComponents.RadioGroup
-                    legend={intlUtils(intl, 'uttaksplan.uttakrundtFødselÅrsak.spørsmål')}
-                    name={fieldName}
-                    radios={radios}
-                    validate={(value) => {
-                        if (!hasValue(value)) {
-                            return intlUtils(intl, 'uttaksplan.validering.uttakRundtFødselFarMedmorWLB');
-                        }
+        <Block padBottom="l">
+            <PeriodeUttakFormComponents.RadioGroup
+                legend={intlUtils(intl, 'uttaksplan.uttakrundtFødselÅrsak.spørsmål')}
+                name={fieldName}
+                radios={radios}
+                validate={(value) => {
+                    if (!hasValue(value)) {
+                        return intlUtils(intl, 'uttaksplan.validering.uttakRundtFødselFarMedmorWLB');
+                    }
 
-                        return undefined;
-                    }}
-                />
-            </Block>
-        </>
+                    return undefined;
+                }}
+            />
+        </Block>
     );
 };
 

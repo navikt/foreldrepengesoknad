@@ -185,24 +185,6 @@ FarEllerMedmorAleneomsorgFødsel.args = {
     stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
 };
 
-export const FarEllerMedmorAleneomsorgTermin1Juli2024 = Template.bind({});
-FarEllerMedmorAleneomsorgTermin1Juli2024.args = {
-    erAleneOmOmsorg: true,
-    søkersituasjon: {
-        situasjon: 'fødsel',
-        rolle: 'far',
-    },
-    barnet: {
-        type: BarnType.UFØDT,
-        antallBarn: 1,
-        termindato: '2024-07-01',
-    },
-    annenForelder: {
-        kanIkkeOppgis: true,
-    },
-    stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
-};
-
 export const FarEllerMedmorFødselBeggeHarRett = Template.bind({});
 FarEllerMedmorFødselBeggeHarRett.args = {
     søkersituasjon: {

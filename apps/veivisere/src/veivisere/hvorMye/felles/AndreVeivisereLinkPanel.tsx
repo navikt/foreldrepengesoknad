@@ -33,13 +33,7 @@ const AndreVeivisereLinkPanel: React.FunctionComponent<Props> = ({ links }) => {
                             rel="noreferrer"
                             className={styles.lenkepanel}
                         >
-                            <Box
-                                padding="4"
-                                background="surface-default"
-                                borderRadius="xlarge"
-                                shadow="medium"
-                                className={styles.panel}
-                            >
+                            <Box padding="4" background="surface-default" borderRadius="xlarge" shadow="small">
                                 {link.content}
                             </Box>
                         </Link>

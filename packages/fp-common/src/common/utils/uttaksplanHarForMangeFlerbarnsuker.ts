@@ -8,12 +8,10 @@ export const getFlerbarnsuker = (dekningsgrad: string, antallBarn: number): numb
         } else {
             return 21;
         }
+    } else if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT) {
+        return 46;
     } else {
-        if (dekningsgrad === Dekningsgrad.HUNDRE_PROSENT) {
-            return 46;
-        } else {
-            return 56;
-        }
+        return 56;
     }
 };
 

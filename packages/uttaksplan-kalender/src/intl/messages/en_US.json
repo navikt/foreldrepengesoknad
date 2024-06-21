@@ -19,5 +19,7 @@
     "kalender.utsettelse.SYKDOM": "because you are ill",
     "kalender.utsettelse.HV_OVELSE": "due to exercises or service in the Home Guard",
     "kalender.utsettelse.NAV_TILTAK": "due to NAV measures that constitute 100% work",
-    "kalender.lastNed": "Download the calendar as PDF"
+    "kalender.lastNed": "Download the calendar as PDF",
+    "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} on {dato}",
+    "kalender.skjermleser.periode": "{periodeNavn} from the {fraDato} until the {tilDato}"
 }

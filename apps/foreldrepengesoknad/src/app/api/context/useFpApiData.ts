@@ -59,7 +59,7 @@ export const useApiPostData = <DATA_TYPE extends FpApiDataType, PARAMS extends o
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
-    if (error && error.message.includes('Ugyldig ident')) {
+    if (error?.message?.includes('Ugyldig ident')) {
         return {
             data: undefined,
             requestStatus: RequestStatus.FINISHED,

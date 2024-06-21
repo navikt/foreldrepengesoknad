@@ -52,7 +52,7 @@ const isQuestionAnswered = <Payload, QuestionKeys, ErrorFormat>(
     payload: Payload,
 ): boolean => {
     const config = questions[question as any];
-    if (!config || !config.isAnswered) {
+    if (!config?.isAnswered) {
         return false;
     }
     return config.isAnswered(payload);
@@ -102,7 +102,7 @@ const validateQuestion = <Value, QuestionKeys, Payload, ErrorFormat = any>(
     payload: Payload,
 ): undefined | boolean | ErrorFormat | ErrorFormat[] => {
     const config = questions[question as any];
-    if (!config || !config.validate) {
+    if (!config.validate) {
         return undefined;
     }
     return config.validate(payload);

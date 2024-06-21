@@ -406,8 +406,6 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 <OverføringsårsakSpørsmål
                                     navnAnnenForelder={navnPåAnnenForelder}
                                     erEndringssøknad={erEndringssøknad}
-                                    valgtOverføringsårsak={values.overføringsårsak!}
-                                    isOpen={isOpen}
                                 />
                             </Block>
                             <Block

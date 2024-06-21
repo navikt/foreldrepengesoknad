@@ -30,9 +30,8 @@ const defaultInitialState = {} as ContextDataMap;
 
 export type Action = { type: 'update'; key: ContextDataType; data: any } | { type: 'reset' };
 type Dispatch = (action: Action) => void;
-type State = ContextDataMap;
 
-const EsStateContext = createContext<State>(defaultInitialState);
+const EsStateContext = createContext<ContextDataMap>(defaultInitialState);
 const EsDispatchContext = createContext<Dispatch | undefined>(undefined);
 
 interface OwnProps {
@@ -42,7 +41,7 @@ interface OwnProps {
 }
 
 export const EsDataContext: FunctionComponent<OwnProps> = ({ children, initialState, onDispatch }): JSX.Element => {
-    const [state, dispatch] = useReducer((oldState: State, action: Action) => {
+    const [state, dispatch] = useReducer((oldState: ContextDataMap, action: Action) => {
         switch (action.type) {
             case 'update':
                 return {

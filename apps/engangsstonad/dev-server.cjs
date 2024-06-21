@@ -1,10 +1,10 @@
 const { createProxyMiddleware, fixRequestBody } = require('http-proxy-middleware');
+const { injectDecoratorServerSide } = require('@navikt/nav-dekoratoren-moduler/ssr/index.js');
 const express = require('express');
 const server = express();
 server.use(express.json());
 const path = require('path');
 const mustacheExpress = require('mustache-express');
-const getDecorator = require('./decorator.cjs');
 const compression = require('compression');
 
 server.disable('x-powered-by');
@@ -26,16 +26,15 @@ server.use((req, res, next) => {
     next();
 });
 
-const renderApp = (decoratorFragments) =>
-    new Promise((resolve, reject) => {
-        server.render('index.html', decoratorFragments, (err, html) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(html);
-            }
-        });
+async function injectDecorator(filePath) {
+    return injectDecoratorServerSide({
+        env: 'dev',
+        filePath,
+        params: {
+            enforceLogin: false,
+        },
     });
+}
 
 const startServer = async (html) => {
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
@@ -53,8 +52,20 @@ const startServer = async (html) => {
         }),
     );
 
+    const indexHtmlPath = path.resolve(__dirname, 'index.html');
+
+    const htmlWithDecoratorInjected = await injectDecorator(indexHtmlPath);
+
+    const renderedHtml = htmlWithDecoratorInjected.replaceAll(
+        '{{{APP_SETTINGS}}}',
+        JSON.stringify({
+            INNSYN: `${process.env.INNSYN}`,
+            APP_VERSION: 'Lokal utvikling',
+        }),
+    );
+
     const fs = require('fs');
-    fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), html);
+    fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), renderedHtml);
     const vedleggMockStore = './dist/vedlegg';
 
     if (!fs.existsSync(vedleggMockStore)) {
@@ -88,11 +99,4 @@ const startServer = async (html) => {
     });
 };
 
-const logError = (errorMessage, details) => console.log(errorMessage, details);
-
-getDecorator()
-    .then(renderApp, (error) => {
-        logError('Failed to get decorator', error);
-        process.exit(1);
-    })
-    .then(startServer, (error) => logError('Failed to render app', error));
+startServer();

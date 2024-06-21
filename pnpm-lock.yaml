@@ -132,6 +132,9 @@ importers:
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test
+      '@navikt/nav-dekoratoren-moduler':
+        specifier: 2.1.6
+        version: 2.1.6(jsdom@24.0.0)(react@18.2.0)
       '@storybook/addon-actions':
         specifier: ^8.1.6
         version: 8.1.9
@@ -146,13 +149,13 @@ importers:
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@storybook/react-vite':
         specifier: 8.1.6
-        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.1.0
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -176,7 +179,7 @@ importers:
         version: 5.3.3
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.19(postcss@8.4.38)
@@ -203,7 +206,7 @@ importers:
         version: 1.4.5-lts.1
       mustache-loader:
         specifier: ^1.4.3
-        version: 1.4.3(hogan.js@3.0.2)(webpack@5.92.0(esbuild@0.20.2))
+        version: 1.4.3(hogan.js@3.0.2)(webpack@5.92.0)
       storybook:
         specifier: 8.1.6
         version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -218,7 +221,7 @@ importers:
         version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
@@ -376,6 +379,9 @@ importers:
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test
+      '@navikt/nav-dekoratoren-moduler':
+        specifier: 2.1.6
+        version: 2.1.6(jsdom@24.0.0)(react@18.2.0)
       '@storybook/addon-actions':
         specifier: ^8.1.6
         version: 8.1.9
@@ -390,13 +396,13 @@ importers:
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@storybook/react-vite':
         specifier: 8.1.6
-        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.1.0
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -444,7 +450,7 @@ importers:
         version: 4.4.10
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       ajv:
         specifier: ^8.12.0
         version: 8.16.0
@@ -466,6 +472,9 @@ importers:
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
+      http-proxy-middleware:
+        specifier: 3.0.0
+        version: 3.0.0
       less:
         specifier: ^4.2.0
         version: 4.2.0
@@ -501,7 +510,7 @@ importers:
         version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
@@ -571,12 +580,15 @@ importers:
       '@navikt/fp-utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@navikt/fp-uttaksplan':
+        specifier: workspace:*
+        version: link:../../packages/uttaksplan
+      '@navikt/fp-uttaksplan-kalender':
+        specifier: workspace:*
+        version: link:../../packages/uttaksplan-kalender
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../../packages/validation
-      '@navikt/uttaksplan':
-        specifier: workspace:*
-        version: link:../../packages/uttaksplan
       '@sentry/browser':
         specifier: ^7.109.0
         version: 7.117.0
@@ -695,6 +707,9 @@ importers:
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test
+      '@navikt/nav-dekoratoren-moduler':
+        specifier: 2.1.6
+        version: 2.1.6(jsdom@24.0.0)(react@18.2.0)
       '@storybook/addon-actions':
         specifier: ^8.1.6
         version: 8.1.9
@@ -709,13 +724,13 @@ importers:
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@storybook/react-vite':
         specifier: 8.1.6
-        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.1.0
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -766,7 +781,7 @@ importers:
         version: 4.4.10
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.19(postcss@8.4.38)
@@ -823,7 +838,7 @@ importers:
         version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
@@ -933,6 +948,9 @@ importers:
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test
+      '@navikt/nav-dekoratoren-moduler':
+        specifier: 2.1.6
+        version: 2.1.6(jsdom@24.0.0)(react@18.2.0)
       '@storybook/addon-actions':
         specifier: ^8.1.6
         version: 8.1.9
@@ -947,13 +965,13 @@ importers:
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@storybook/react-vite':
         specifier: 8.1.6
-        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.1.0
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -971,7 +989,7 @@ importers:
         version: 5.3.3
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.19(postcss@8.4.38)
@@ -981,6 +999,9 @@ importers:
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
+      http-proxy-middleware:
+        specifier: 3.0.0
+        version: 3.0.0
       mustache-loader:
         specifier: ^1.4.3
         version: 1.4.3(hogan.js@3.0.2)(webpack@5.92.0)
@@ -998,7 +1019,7 @@ importers:
         version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
@@ -1162,6 +1183,9 @@ importers:
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test
+      '@navikt/nav-dekoratoren-moduler':
+        specifier: 2.1.6
+        version: 2.1.6(jsdom@24.0.0)(react@18.2.0)
       '@storybook/addon-actions':
         specifier: ^8.1.6
         version: 8.1.9
@@ -1170,7 +1194,7 @@ importers:
         version: 8.1.9(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^8.1.6
-        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/cli':
         specifier: ^8.1.6
         version: 8.1.9(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1179,13 +1203,13 @@ importers:
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@storybook/react-vite':
         specifier: 8.1.6
-        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.1.0
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1227,7 +1251,7 @@ importers:
         version: 4.4.10
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       acorn:
         specifier: ^8.11.3
         version: 8.12.0
@@ -1287,7 +1311,7 @@ importers:
         version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
@@ -1411,13 +1435,13 @@ importers:
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@storybook/react-vite':
         specifier: 8.1.6
-        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.1.0
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1435,7 +1459,7 @@ importers:
         version: 5.3.3
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.19(postcss@8.4.38)
@@ -1445,6 +1469,9 @@ importers:
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
+      http-proxy-middleware:
+        specifier: 3.0.0
+        version: 3.0.0
       mustache-loader:
         specifier: ^1.4.3
         version: 1.4.3(hogan.js@3.0.2)(webpack@5.92.0)
@@ -1462,7 +1489,7 @@ importers:
         version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
@@ -1600,19 +1627,19 @@ importers:
         version: 8.1.9(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/addon-interactions':
         specifier: ^8.1.6
-        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/addon-links':
         specifier: ^8.1.6
         version: 8.1.9(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^8.1.6
-        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/react':
         specifier: ^8.1.6
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@9.3.4)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1621,7 +1648,7 @@ importers:
         version: 14.5.2(@testing-library/dom@9.3.4)
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -1642,7 +1669,7 @@ importers:
         version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
@@ -1745,19 +1772,19 @@ importers:
         version: 8.1.9(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/addon-interactions':
         specifier: ^8.1.6
-        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/addon-links':
         specifier: ^8.1.6
         version: 8.1.9(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^8.1.6
-        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/react':
         specifier: ^8.1.6
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1775,7 +1802,7 @@ importers:
         version: 5.0.4
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       copyfiles:
         specifier: ^2.4.1
         version: 2.4.1
@@ -1808,7 +1835,7 @@ importers:
         version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
@@ -1875,7 +1902,7 @@ importers:
         version: 9.0.8
       '@vitejs/plugin-react':
         specifier: 4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       copyfiles:
         specifier: 2.4.1
         version: 2.4.1
@@ -1929,7 +1956,7 @@ importers:
         version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: 0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
 
   packages/metrics:
     dependencies:
@@ -2012,19 +2039,19 @@ importers:
         version: 8.1.9(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/addon-interactions':
         specifier: ^8.1.6
-        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/addon-links':
         specifier: ^8.1.6
         version: 8.1.9(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^8.1.6
-        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/react':
         specifier: ^8.1.6
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2036,7 +2063,7 @@ importers:
         version: 18.2.73
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -2057,7 +2084,7 @@ importers:
         version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
@@ -2100,7 +2127,7 @@ importers:
         version: 2.29.1(@typescript-eslint/parser@7.13.0(eslint@8.57.0)(typescript@5.4.5))(eslint@8.57.0)
       eslint-plugin-prettier:
         specifier: 5.1.3
-        version: 5.1.3(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.2.5)
+        version: 5.1.3(@types/eslint@8.56.10)(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.2.5)
       eslint-plugin-react:
         specifier: 7.34.1
         version: 7.34.1(eslint@8.57.0)
@@ -2206,19 +2233,19 @@ importers:
         version: 8.1.9(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/addon-interactions':
         specifier: ^8.1.6
-        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/addon-links':
         specifier: ^8.1.6
         version: 8.1.9(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^8.1.6
-        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/react':
         specifier: ^8.1.6
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2236,7 +2263,7 @@ importers:
         version: 6.2.14
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -2257,7 +2284,7 @@ importers:
         version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
@@ -2327,19 +2354,19 @@ importers:
         version: 8.1.9(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/addon-interactions':
         specifier: ^8.1.6
-        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/addon-links':
         specifier: ^8.1.6
         version: 8.1.9(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^8.1.6
-        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/react':
         specifier: ^8.1.6
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2351,7 +2378,7 @@ importers:
         version: 18.2.73
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -2372,7 +2399,7 @@ importers:
         version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
@@ -2418,7 +2445,7 @@ importers:
         version: link:../eslint-config-custom
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2427,7 +2454,7 @@ importers:
         version: 18.2.73
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -2442,7 +2469,7 @@ importers:
         version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
@@ -2451,7 +2478,7 @@ importers:
     dependencies:
       '@storybook/react-vite':
         specifier: 8.1.6
-        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -2470,7 +2497,7 @@ importers:
         version: link:../eslint-config-custom
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2485,7 +2512,7 @@ importers:
         version: 18.2.23
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -2497,7 +2524,7 @@ importers:
         version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
@@ -2579,19 +2606,19 @@ importers:
         version: 8.1.9(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/addon-interactions':
         specifier: ^8.1.6
-        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/addon-links':
         specifier: ^8.1.6
         version: 8.1.9(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^8.1.6
-        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/react':
         specifier: ^8.1.6
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2606,7 +2633,7 @@ importers:
         version: 4.1.9
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -2633,7 +2660,7 @@ importers:
         version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
@@ -2697,19 +2724,25 @@ importers:
         version: 8.1.9(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/addon-interactions':
         specifier: ^8.1.6
-        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/addon-links':
         specifier: ^8.1.6
         version: 8.1.9(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^8.1.6
-        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/react':
         specifier: ^8.1.6
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
+      '@storybook/react-vite':
+        specifier: 8.1.6
+        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+      '@testing-library/dom':
+        specifier: ^10.1.0
+        version: 10.1.0
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2718,10 +2751,13 @@ importers:
         version: 4.3.0(prettier@3.2.5)
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
       storybook:
         specifier: 8.1.6
         version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2736,7 +2772,7 @@ importers:
         version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
@@ -2828,7 +2864,7 @@ importers:
         version: 2.29.1(@typescript-eslint/parser@7.13.0(eslint@8.57.0)(typescript@5.4.5))(eslint@8.57.0)
       eslint-plugin-prettier:
         specifier: 5.1.3
-        version: 5.1.3(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.2.5)
+        version: 5.1.3(@types/eslint@8.56.10)(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.2.5)
       eslint-plugin-react:
         specifier: 7.34.1
         version: 7.34.1(eslint@8.57.0)
@@ -2898,7 +2934,7 @@ importers:
         version: 2.29.1(@typescript-eslint/parser@7.13.0(eslint@8.57.0)(typescript@5.4.5))(eslint@8.57.0)
       eslint-plugin-prettier:
         specifier: 5.1.3
-        version: 5.1.3(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.2.5)
+        version: 5.1.3(@types/eslint@8.56.10)(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.2.5)
       eslint-plugin-react:
         specifier: 7.34.1
         version: 7.34.1(eslint@8.57.0)
@@ -4193,12 +4229,18 @@ packages:
     peerDependencies:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-react@6.3.3':
     resolution: {integrity: sha512-iOCX4zO/CB6yM5GxTBDd8yl/sFe7QP2aNMxgA2uqH6l4S+tX1T7CKnMyUhxWrYTgGYFbjAaEppj77q2Gjokvkg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/6.3.3/b432ae6ff3940ea88951a467923d96ff53b16b96}
     peerDependencies:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-tokens@6.10.1':
     resolution: {integrity: sha512-1asuPD+yxyo5h60AQKOFIPZ0STou7BAsSXIKD8SEhbHs/EV79OxR9DeLxdtv9uVjS8Rf94tfkf1BLwRjKtM3tA==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/6.10.1/edde2f97afeb90b5d2912d8c98ff6f56457b9e3b}
@@ -11880,7 +11922,7 @@ snapshots:
       '@types/yargs': 17.0.32
       chalk: 4.1.2
 
-  '@joshwooding/vite-plugin-react-docgen-typescript@0.3.1(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))':
+  '@joshwooding/vite-plugin-react-docgen-typescript@0.3.1(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
     dependencies:
       glob: 7.2.3
       glob-promise: 4.2.2(glob@7.2.3)
@@ -11939,8 +11981,9 @@ snapshots:
 
   '@navikt/ds-icons@3.4.3(@types/react@18.2.73)(react@18.2.0)':
     dependencies:
-      '@types/react': 18.2.73
       react: 18.2.0
+    optionalDependencies:
+      '@types/react': 18.2.73
 
   '@navikt/ds-react@6.3.3(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
@@ -11949,11 +11992,12 @@ snapshots:
       '@navikt/ds-tokens': 6.10.1
       '@radix-ui/react-tabs': 1.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@radix-ui/react-toggle-group': 1.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@types/react': 18.2.73
       clsx: 2.1.1
       date-fns: 3.6.0
       react: 18.2.0
       react-day-picker: 8.10.0(date-fns@3.6.0)(react@18.2.0)
+    optionalDependencies:
+      '@types/react': 18.2.73
     transitivePeerDependencies:
       - react-dom
 
@@ -12508,11 +12552,11 @@ snapshots:
     dependencies:
       '@storybook/global': 5.0.0
 
-  '@storybook/addon-interactions@8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5))':
+  '@storybook/addon-interactions@8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
     dependencies:
       '@storybook/global': 5.0.0
       '@storybook/instrumenter': 8.1.9
-      '@storybook/test': 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5))
+      '@storybook/test': 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/types': 8.1.9
       polished: 4.3.1
       ts-dedent: 2.2.0
@@ -12625,7 +12669,7 @@ snapshots:
       - prettier
       - supports-color
 
-  '@storybook/builder-vite@8.1.6(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))':
+  '@storybook/builder-vite@8.1.6(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
     dependencies:
       '@storybook/channels': 8.1.6
       '@storybook/client-logger': 8.1.6
@@ -12652,7 +12696,7 @@ snapshots:
       - prettier
       - supports-color
 
-  '@storybook/builder-vite@8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))':
+  '@storybook/builder-vite@8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
     dependencies:
       '@storybook/channels': 8.1.9
       '@storybook/client-logger': 8.1.9
@@ -13244,11 +13288,11 @@ snapshots:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
-  '@storybook/react-vite@8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))':
+  '@storybook/react-vite@8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
     dependencies:
-      '@joshwooding/vite-plugin-react-docgen-typescript': 0.3.1(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+      '@joshwooding/vite-plugin-react-docgen-typescript': 0.3.1(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@rollup/pluginutils': 5.1.0(rollup@4.18.0)
-      '@storybook/builder-vite': 8.1.6(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))
+      '@storybook/builder-vite': 8.1.6(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/node-logger': 8.1.6
       '@storybook/react': 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@storybook/types': 8.1.6
@@ -13375,14 +13419,14 @@ snapshots:
       - prettier
       - supports-color
 
-  '@storybook/test@8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5))':
+  '@storybook/test@8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
     dependencies:
       '@storybook/client-logger': 8.1.9
       '@storybook/core-events': 8.1.9
       '@storybook/instrumenter': 8.1.9
       '@storybook/preview-api': 8.1.9
       '@testing-library/dom': 9.3.4
-      '@testing-library/jest-dom': 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+      '@testing-library/jest-dom': 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
       '@testing-library/user-event': 14.5.2(@testing-library/dom@9.3.4)
       '@vitest/expect': 1.3.1
       '@vitest/spy': 1.6.0
@@ -13457,22 +13501,6 @@ snapshots:
       dom-accessibility-api: 0.5.16
       lz-string: 1.5.0
       pretty-format: 27.5.1
-
-  '@testing-library/jest-dom@6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
-    dependencies:
-      '@adobe/css-tools': 4.4.0
-      '@babel/runtime': 7.24.7
-      aria-query: 5.3.0
-      chalk: 3.0.0
-      css.escape: 1.5.1
-      dom-accessibility-api: 0.6.3
-      lodash: 4.17.21
-      redent: 3.0.0
-    optionalDependencies:
-      '@jest/globals': 29.7.0
-      '@types/jest': 29.5.12
-      jest: 29.7.0(@types/node@20.12.2)
-      vitest: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
 
   '@testing-library/jest-dom@6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)':
     dependencies:
@@ -13967,7 +13995,7 @@ snapshots:
 
   '@vercel/ncc@0.38.1': {}
 
-  '@vitejs/plugin-react@4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5))':
+  '@vitejs/plugin-react@4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
     dependencies:
       '@babel/core': 7.24.7
       '@babel/plugin-transform-react-jsx-self': 7.24.7(@babel/core@7.24.7)
@@ -15543,13 +15571,14 @@ snapshots:
     optionalDependencies:
       '@testing-library/dom': 10.1.0
 
-  eslint-plugin-prettier@5.1.3(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.2.5):
+  eslint-plugin-prettier@5.1.3(@types/eslint@8.56.10)(eslint-config-prettier@9.1.0(eslint@8.57.0))(eslint@8.57.0)(prettier@3.2.5):
     dependencies:
       eslint: 8.57.0
       prettier: 3.2.5
       prettier-linter-helpers: 1.0.0
       synckit: 0.8.8
     optionalDependencies:
+      '@types/eslint': 8.56.10
       eslint-config-prettier: 9.1.0(eslint@8.57.0)
 
   eslint-plugin-react-hooks@4.6.2(eslint@8.57.0):
@@ -17501,13 +17530,6 @@ snapshots:
       lru-cache: 5.1.1
       mustache: 4.2.0
 
-  mustache-loader@1.4.3(hogan.js@3.0.2)(webpack@5.92.0(esbuild@0.20.2)):
-    dependencies:
-      hogan.js: 3.0.2
-      html-minifier: 3.5.21
-      loader-utils: 1.4.2
-      webpack: 5.92.0(esbuild@0.20.2)
-
   mustache-loader@1.4.3(hogan.js@3.0.2)(webpack@5.92.0):
     dependencies:
       hogan.js: 3.0.2
@@ -19041,17 +19063,6 @@ snapshots:
       type-fest: 2.19.0
       unique-string: 3.0.0
 
-  terser-webpack-plugin@5.3.10(esbuild@0.20.2)(webpack@5.92.0(esbuild@0.20.2)):
-    dependencies:
-      '@jridgewell/trace-mapping': 0.3.25
-      jest-worker: 27.5.1
-      schema-utils: 3.3.0
-      serialize-javascript: 6.0.2
-      terser: 5.31.1
-      webpack: 5.92.0(esbuild@0.20.2)
-    optionalDependencies:
-      esbuild: 0.20.2
-
   terser-webpack-plugin@5.3.10(webpack@5.92.0):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
@@ -19419,7 +19430,7 @@ snapshots:
       - supports-color
       - terser
 
-  vite-plugin-checker@0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)):
+  vite-plugin-checker@0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)):
     dependencies:
       '@babel/code-frame': 7.24.7
       ansi-escapes: 4.3.2
@@ -19574,37 +19585,6 @@ snapshots:
       schema-utils: 3.3.0
       tapable: 2.2.1
       terser-webpack-plugin: 5.3.10(webpack@5.92.0)
-      watchpack: 2.4.1
-      webpack-sources: 3.2.3
-    transitivePeerDependencies:
-      - '@swc/core'
-      - esbuild
-      - uglify-js
-
-  webpack@5.92.0(esbuild@0.20.2):
-    dependencies:
-      '@types/eslint-scope': 3.7.7
-      '@types/estree': 1.0.5
-      '@webassemblyjs/ast': 1.12.1
-      '@webassemblyjs/wasm-edit': 1.12.1
-      '@webassemblyjs/wasm-parser': 1.12.1
-      acorn: 8.12.0
-      acorn-import-attributes: 1.9.5(acorn@8.12.0)
-      browserslist: 4.23.1
-      chrome-trace-event: 1.0.4
-      enhanced-resolve: 5.17.0
-      es-module-lexer: 1.5.3
-      eslint-scope: 5.1.1
-      events: 3.3.0
-      glob-to-regexp: 0.4.1
-      graceful-fs: 4.2.11
-      json-parse-even-better-errors: 2.3.1
-      loader-runner: 4.3.0
-      mime-types: 2.1.35
-      neo-async: 2.6.2
-      schema-utils: 3.3.0
-      tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(esbuild@0.20.2)(webpack@5.92.0(esbuild@0.20.2))
       watchpack: 2.4.1
       webpack-sources: 3.2.3
     transitivePeerDependencies:

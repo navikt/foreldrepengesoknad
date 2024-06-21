@@ -3,7 +3,6 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import Infobox from 'components/boxes/Infobox';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
@@ -17,6 +16,7 @@ import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-reac
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -118,7 +118,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                         id="OmBarnetSteg.Fødsel.Infoboks.LesMer"
                                         values={{
                                             a: (msg: any) => (
-                                                <Link href={links.foreldrepenger} target="_blank" inlineText>
+                                                <Link href={links.foreldrepengerFarOgFar} target="_blank" inlineText>
                                                     {msg}
                                                 </Link>
                                             ),

@@ -32,7 +32,6 @@ export default class RangeIcon extends Component<RangeIconProps> {
         return (
             <svg
                 focusable="false"
-                role="img"
                 aria-hidden="true"
                 width="24px"
                 height="24px"

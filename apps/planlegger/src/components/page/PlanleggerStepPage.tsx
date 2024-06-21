@@ -1,13 +1,10 @@
 import { PlanleggerRoutes } from 'appData/routes';
-import GreenHeading from 'components/boxes/GreenHeading';
 import { forwardRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Heading, VStack } from '@navikt/ds-react';
 
-import { ProgressStep, ProgressStepper } from '@navikt/fp-ui';
-
-import PlanleggerPage from './PlanleggerPage';
+import { GreenHeading, Page, ProgressStep, ProgressStepper } from '@navikt/fp-ui';
 
 interface Props {
     steps: Array<ProgressStep<PlanleggerRoutes>>;
@@ -16,7 +13,7 @@ interface Props {
 
 const PlanleggerStepPage = forwardRef<HTMLDivElement, Props>(({ steps, children }, ref) => (
     <>
-        <PlanleggerPage
+        <Page
             header={
                 <GreenHeading>
                     <VStack gap="4">
@@ -29,7 +26,7 @@ const PlanleggerStepPage = forwardRef<HTMLDivElement, Props>(({ steps, children 
             }
         >
             {children}
-        </PlanleggerPage>
+        </Page>
         <div ref={ref} />
     </>
 ));

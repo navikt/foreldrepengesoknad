@@ -236,11 +236,9 @@ export const getEndringstidspunkt = (
                 endringstidspunktOpprinneligPlan = fom;
             }
         });
-    } else {
+    } else if (søkerensUpdatedPlan.length > 0) {
         // Bruker har slettet opprinnelig plan, send med alt
-        if (søkerensUpdatedPlan.length > 0) {
-            return søkerensUpdatedPlan[0].tidsperiode.fom;
-        }
+        return søkerensUpdatedPlan[0].tidsperiode.fom;
     }
 
     return getOldestDate(endringstidspunktNyPlan, endringstidspunktOpprinneligPlan);

@@ -1,4 +1,3 @@
-import GreenPanel from 'components/boxes/GreenPanel';
 import CalendarLabels from 'components/labels/CalendarLabels';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -9,8 +8,6 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import {
     erAlenesøker,
-    finnSøker1Tekst,
-    finnSøker2Tekst,
     getFornavnPåSøker1,
     getFornavnPåSøker2,
     getNavnGenitivEierform,
@@ -23,7 +20,7 @@ import { finnUttaksdata } from 'utils/uttakUtils';
 import { BodyLong, BodyShort, Heading, VStack } from '@navikt/ds-react';
 
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { Calendar } from '@navikt/fp-ui';
+import { Calendar, GreenPanel } from '@navikt/fp-ui';
 
 interface Props {
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
@@ -86,8 +83,8 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                 values={{
                                     prosent: hvorLangPeriode.dekningsgrad,
                                     antallUker: getAntallUker(valgtStønadskonto),
-                                    hvem: finnSøker1Tekst(intl, hvemPlanlegger),
-                                    hvem2: finnSøker2Tekst(intl, hvemPlanlegger),
+                                    hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
+                                    hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
                                     uker: antallUkerFellesperiodeSøker1,
                                     uker2: antallUkerFellesperiodeSøker2,
                                 }}
@@ -170,7 +167,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                         </VStack>
                     </GreenPanel>
                 )}
-                {hvemHarRett === 'kunSøker2HarRett' && fornavnSøker2 && (
+                {hvemHarRett === 'kunSøker2HarRett' && !erFarOgFar && fornavnSøker2 && (
                     <GreenPanel>
                         <VStack gap="2">
                             <Heading level="4" size="small">
@@ -231,7 +228,6 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                     uttaksdata={uttaksdata}
                     hvemPlanlegger={hvemPlanlegger}
                     barnet={barnet}
-                    valgtStønadskonto={valgtStønadskonto}
                     hvemHarRett={hvemHarRett}
                 />
                 <Calendar periods={uttaksperioder} useSmallerWidth />

@@ -21,7 +21,7 @@ const er9Tall = (orgnr: string): boolean => {
 };
 
 const starterPå8Eller9 = (orgnr: string): boolean => {
-    return orgnr.charAt(0) === '8' || orgnr.charAt(0) === '9';
+    return orgnr.startsWith('8') || orgnr.startsWith('9');
 };
 
 export const erGyldigNorskOrgnummer = (orgnr: string): boolean => {
@@ -39,7 +39,7 @@ export const numberHasValue = (num: string): boolean => {
     return true;
 };
 
-const numberRegExp = RegExp(/^[-]?[0-9,.\s]*$/);
+const numberRegExp = RegExp(/^-?[0-9,.\s]*$/);
 
 export const trimNumberValue = (value: string): string => {
     return value.replace(/,/g, '.').replace(/\s/g, '').replace(/%/g, '');

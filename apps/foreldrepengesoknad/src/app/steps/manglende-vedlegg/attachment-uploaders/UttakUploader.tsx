@@ -1,4 +1,3 @@
-import PeriodelisteItemHeader from '@navikt/uttaksplan/src/components/periodeliste-item-header/PeriodelisteItemHeader';
 import dayjs from 'dayjs';
 import React, { FunctionComponent, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -12,6 +11,7 @@ import { AttachmentMetadataType, AttachmentType } from '@navikt/fp-constants';
 import { dateToISOString } from '@navikt/fp-formik';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
+import { PeriodelisteItemHeader } from '@navikt/fp-uttaksplan';
 
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 
@@ -74,7 +74,6 @@ const UttakUploader: FunctionComponent<Props> = ({
                     return (
                         <div key={p.id} className={bem.block}>
                             <PeriodelisteItemHeader
-                                egenPeriode={true}
                                 periode={p}
                                 erAleneOmOmsorg={false}
                                 erFarEllerMedmor={true}

@@ -1,5 +1,4 @@
 import { PencilWritingIcon } from '@navikt/aksel-icons';
-import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
@@ -11,6 +10,7 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { BodyLong, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import DeFørsteSeksUkene from './DeFørsteSeksUkene';
 import FørTermin from './FørTermin';

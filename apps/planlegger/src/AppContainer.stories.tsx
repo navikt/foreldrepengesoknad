@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Action } from 'appData/PlanleggerDataContext';
+import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { StrictMode } from 'react';
 
@@ -75,10 +76,23 @@ type Story = StoryObj<{
 export const Default: Story = {
     render: (args) => {
         initAmplitude();
+
+        const axiosInstance = getAxiosInstance();
+        const apiMock = new MockAdapter(axiosInstance);
         if (args.brukStønadskontoMock) {
-            const apiMock = new MockAdapter(getAxiosInstance());
             apiMock.onPost('/rest/konto').reply(() => {
                 return [200, kontoer];
+            });
+        } else {
+            apiMock.onPost('/rest/konto').reply(async (config) => {
+                const redirectResponse = await axios
+                    .create()
+                    .post('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', config.data, {
+                        withCredentials: config.withCredentials,
+                        headers: config.headers,
+                        timeout: config.timeout,
+                    });
+                return [200, redirectResponse.data];
             });
         }
 

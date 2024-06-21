@@ -8,9 +8,7 @@ export type TerminDokumentasjon = {
     terminbekreftelsedato: string;
 } & Vedlegg;
 
-export type AdopsjonDokumentasjon = Vedlegg;
-
-type Dokumentasjon = TerminDokumentasjon | AdopsjonDokumentasjon;
+type Dokumentasjon = TerminDokumentasjon | Vedlegg;
 
 export default Dokumentasjon;
 

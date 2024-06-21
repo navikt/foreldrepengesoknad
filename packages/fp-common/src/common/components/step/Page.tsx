@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useIntl } from 'react-intl';
-import intlHelper from '../../utils/intlUtils';
 
+import intlHelper from '../../utils/intlUtils';
 import './page.less';
 
 export interface PageProps {
@@ -30,7 +30,7 @@ const Page: React.FunctionComponent<PageProps> = ({
 
     return (
         <div role="main" aria-label={ariaLabelToUse} id={id}>
-            {topContentRenderer && topContentRenderer()}
+            {topContentRenderer?.()}
             <div className={`page ${className}`}>{children}</div>
         </div>
     );

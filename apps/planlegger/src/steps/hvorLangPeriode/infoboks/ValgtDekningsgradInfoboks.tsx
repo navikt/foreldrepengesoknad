@@ -1,12 +1,11 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import Infobox from 'components/boxes/Infobox';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import { erAlenesøker, erMorDelAvSøknaden, finnSøker1Tekst, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker, erMorDelAvSøknaden, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerAktivitetsfriKvote, getAntallUkerForeldrepenger } from 'utils/stønadskontoerUtils';
@@ -16,6 +15,7 @@ import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { Infobox } from '@navikt/fp-ui';
 
 interface Props {
     barnet: OmBarnet;
@@ -66,6 +66,8 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
         valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
             ? uttaksdata100.sluttdatoPeriode2
             : uttaksdata80.sluttdatoPeriode2;
+
+    const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdopsjon;
 
     return (
         <Infobox
@@ -118,7 +120,7 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                     />
                 )}
             </BodyShort>
-            {(hvemHarRett === 'kunSøker2HarRett' ||
+            {((hvemHarRett === 'kunSøker2HarRett' && !erFarOgFarFødsel) ||
                 (hvemHarRett === 'kunSøker1HarRett' && hvemPlanlegger.type === Situasjon.FAR_OG_FAR && erAdopsjon)) && (
                 <VStack gap="2">
                     <BodyShort>
@@ -128,8 +130,8 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                                 uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
                                 uker2: antallUker,
                                 b: (msg: any) => <b>{msg}</b>,
-                                hvem: finnSøker2Tekst(intl, hvemPlanlegger),
-                                hvemPart1: finnSøker1Tekst(intl, hvemPlanlegger),
+                                hvem: getFornavnPåSøker2(hvemPlanlegger, intl),
+                                hvemPart1: getFornavnPåSøker1(hvemPlanlegger, intl),
                             }}
                         />
                     </BodyShort>
@@ -151,8 +153,8 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                                     </Link>
                                 ),
                                 b: (msg: any) => <b>{msg}</b>,
-                                hvem: finnSøker2Tekst(intl, hvemPlanlegger),
-                                hvemPart1: finnSøker1Tekst(intl, hvemPlanlegger),
+                                hvem: getFornavnPåSøker2(hvemPlanlegger, intl),
+                                hvemPart1: getFornavnPåSøker1(hvemPlanlegger, intl),
                             }}
                         />
                     </BodyShort>

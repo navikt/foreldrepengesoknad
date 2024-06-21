@@ -37,7 +37,6 @@ import UttaksplanIkon from '../uttaksplan-ikon/UttaksplanIkon';
 import './periodelisteItemHeader.less';
 
 interface Props {
-    egenPeriode: boolean;
     periode: Periode;
     navnPåForeldre: NavnPåForeldre;
     melding: VeilederMessage | undefined;

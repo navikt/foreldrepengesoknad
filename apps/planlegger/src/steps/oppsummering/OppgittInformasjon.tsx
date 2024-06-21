@@ -1,6 +1,4 @@
 import { ChatElipsisIcon } from '@navikt/aksel-icons';
-import GreenPanel from 'components/boxes/GreenPanel';
-import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
@@ -8,14 +6,7 @@ import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
-import {
-    erAlenesøker as erAlene,
-    erFarOgFar,
-    finnSøker1Tekst,
-    finnSøker2Tekst,
-    getFornavnPåSøker1,
-    getFornavnPåSøker2,
-} from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker as erAlene, erFarOgFar, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import {
@@ -28,6 +19,7 @@ import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-rea
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { GreenPanel, IconCircleWrapper } from '@navikt/fp-ui';
 
 const onToggleExpansionCard = (open: boolean) => {
     if (open) {
@@ -275,8 +267,8 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                                 uker: erAdoptert ? antallUkerAdopsjon : antallUker,
                                                 fellesuker: antallUkerFellesperiodeSøker1,
                                                 fellesuker2: antallUkerFellesperiodeSøker2,
-                                                hvem: finnSøker1Tekst(intl, hvemPlanlegger),
-                                                hvem2: finnSøker2Tekst(intl, hvemPlanlegger),
+                                                hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
+                                                hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
                                                 kunEnPartSkalHa: hvemHarRett !== 'beggeHarRett',
                                             }}
                                         />

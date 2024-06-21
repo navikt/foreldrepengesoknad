@@ -65,11 +65,8 @@ const useSendSøknad = (
                 sendErrorMessageToSentry(error);
 
                 if (
-                    error.response &&
-                    error.response.status === 400 &&
-                    error.response.data &&
-                    error.response.data.messages &&
-                    error.response.data.messages.includes(
+                    error.response?.status === 400 &&
+                    error.response?.data?.messages?.includes(
                         'Vedleggslisten kan ikke inneholde flere enn 40 opplastede vedlegg',
                     )
                 ) {

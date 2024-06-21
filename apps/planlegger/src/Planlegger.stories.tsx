@@ -1,15 +1,17 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
+import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
+import { getAxiosInstance } from '@navikt/fp-api';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 
-import { PlanleggerDataFetcher, planleggerApi } from './Planlegger';
+import { PlanleggerDataFetcher } from './Planlegger';
 import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
@@ -87,10 +89,23 @@ type Story = StoryObj<{
 export const Default: Story = {
     render: (args) => {
         initAmplitude();
+
+        const axiosInstance = getAxiosInstance();
+        const apiMock = new MockAdapter(axiosInstance);
         if (args.brukStønadskontoMock) {
-            const apiMock = new MockAdapter(planleggerApi);
             apiMock.onPost('/rest/konto').reply(() => {
                 return [200, kontoer];
+            });
+        } else {
+            apiMock.onPost('/rest/konto').reply(async (config) => {
+                const redirectResponse = await axios
+                    .create()
+                    .post('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', config.data, {
+                        withCredentials: config.withCredentials,
+                        headers: config.headers,
+                        timeout: config.timeout,
+                    });
+                return [200, redirectResponse.data];
             });
         }
 

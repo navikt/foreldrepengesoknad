@@ -1,10 +1,11 @@
 import { StethoscopeIcon } from '@navikt/aksel-icons';
-import IconCircleWrapper from 'components/iconCircle/IconCircleWrapper';
 import { FormattedMessage } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
+
+import { IconCircleWrapper } from '@navikt/fp-ui';
 
 interface Props {
     arbeidssituasjon: Arbeidssituasjon;

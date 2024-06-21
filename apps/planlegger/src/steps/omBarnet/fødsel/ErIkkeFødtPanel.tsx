@@ -1,6 +1,4 @@
 import { TasklistStartIcon } from '@navikt/aksel-icons';
-import GreenPanel from 'components/boxes/GreenPanel';
-import Infobox from 'components/boxes/Infobox';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
@@ -19,6 +17,7 @@ import { formatError } from 'utils/customErrorFormatter';
 import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { Datepicker } from '@navikt/fp-form-hooks';
+import { GreenPanel, Infobox } from '@navikt/fp-ui';
 import { isLessThanThreeWeeksAgo, isRequired, isValidDate } from '@navikt/fp-validation';
 
 const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months');

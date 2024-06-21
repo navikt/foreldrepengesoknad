@@ -274,10 +274,8 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
             setIsFirstTimeLoadingApp(false);
             if (isAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
                 navigate(currentRoute);
-            } else {
-                if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING) {
-                    navigate(SøknadRoutes.UTTAKSPLAN);
-                }
+            } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING) {
+                navigate(SøknadRoutes.UTTAKSPLAN);
             }
         }
     }, [

@@ -1,11 +1,11 @@
 import { CircleSlashIcon } from '@navikt/aksel-icons';
-import Infobox from 'components/boxes/Infobox';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Link } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { Infobox } from '@navikt/fp-ui';
 
 interface Props {
     erAlenesøker: boolean;
@@ -56,7 +56,7 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
                     id="Arbeidssituasjon.Ingen.Infoboks.NoenUtbetalinger"
                     values={{
                         a: (msg: any) => (
-                            <Link inlineText href={links.foreldrepenger} target="_blank">
+                            <Link inlineText href={links.foreldrepengerOpptjening} target="_blank">
                                 {msg}
                             </Link>
                         ),

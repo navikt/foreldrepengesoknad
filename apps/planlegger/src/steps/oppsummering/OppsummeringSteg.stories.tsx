@@ -360,6 +360,9 @@ export const OppsummeringFarOgFarKunFar2HarRett: Story = {
             termindato: '2022-10-24',
             antallBarn: '1',
         },
+        hvorLangPeriode: {
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        },
         arbeidssituasjon: {
             status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,

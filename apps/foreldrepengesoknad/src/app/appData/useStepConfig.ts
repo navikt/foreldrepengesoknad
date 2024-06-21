@@ -1,4 +1,3 @@
-import { kreverUttaksplanVedlegg } from '@navikt/uttaksplan';
 import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
@@ -14,6 +13,7 @@ import {
     isUfødtBarn,
 } from '@navikt/fp-common';
 import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
+import { kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from 'app/context/FpDataContext';

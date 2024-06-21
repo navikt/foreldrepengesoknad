@@ -1,5 +1,4 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import Infobox from 'components/boxes/Infobox';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
@@ -9,6 +8,8 @@ import { erBarnetFødt } from 'utils/barnetUtils';
 import { Uttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort } from '@navikt/ds-react';
+
+import { Infobox } from '@navikt/fp-ui';
 
 interface Props {
     barnet: OmBarnet;

@@ -1,20 +1,22 @@
 import { ArrowLeftIcon, ChatElipsisIcon, CheckmarkIcon, InformationIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
+import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
-import { Button, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad } from '@navikt/fp-types';
+import { Dekningsgrad, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
+import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import VeiviserPage from '../../felles/Page/VeiviserPage';
-import { Arbeidssituasjon, finnGjennomsnittslønn } from '../arbeidssituasjon/ArbeidssituasjonSide';
-import FpEllerEsOgHvaSkjerNåLinkPanel from '../felles/FpEllerEsOgHvaSkjerNåLinkPanel';
+import { Arbeidssituasjon, finnGjennomsnittsMånedslønn } from '../arbeidssituasjon/ArbeidssituasjonSide';
 import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
 import HøyInntektInfobox from '../felles/HøyInntektInfobox';
+import FpEllerEsOgHvaSkjerNåLinkPanel from './FpEllerEsOgHvaSkjerNåLinkPanel';
 import Utbetalingspanel from './Utbetalingspanel';
 
 //FIXME Hent frå tjeneste
@@ -25,18 +27,21 @@ const engangsstønad = 92648;
 export const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260;
 
 interface Props {
-    arbeidssituasjon?: Arbeidssituasjon;
+    arbeidssituasjon: Arbeidssituasjon;
+    stønadskontoer: TilgjengeligeStønadskontoer;
 }
 
-const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon }) => {
+const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, stønadskontoer }) => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator(ContextRoutes.HVOR_MYE);
     const { ref } = useScrollBehaviour();
 
-    const gjennomsnittslønn = parseFloat(notEmpty(finnGjennomsnittslønn(notEmpty(arbeidssituasjon))));
+    const gjennomsnittslønn = parseFloat(notEmpty(finnGjennomsnittsMånedslønn(notEmpty(arbeidssituasjon))));
     const grunnbeløpetGanger6 = GRUNNBELØPET * 6;
 
     const harIkkeRettTilFp = gjennomsnittslønn * 12 < minÅrslønn;
+
+    const forrigeMåned = dayjs().subtract(1, 'month');
 
     return (
         <>
@@ -75,10 +80,12 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon }) 
                             <Utbetalingspanel
                                 dekningsgrad={Dekningsgrad.HUNDRE_PROSENT}
                                 gjennomsnittslønn={gjennomsnittslønn}
+                                stønadskontoer={stønadskontoer}
                             />
                             <Utbetalingspanel
                                 dekningsgrad={Dekningsgrad.ÅTTI_PROSENT}
                                 gjennomsnittslønn={gjennomsnittslønn}
+                                stønadskontoer={stønadskontoer}
                             />
                             <Infobox
                                 header={<FormattedMessage id="OppsummeringSide.UtbetaltSomVanlig" />}
@@ -108,7 +115,41 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon }) 
                                 </ExpansionCard.Title>
                             </HStack>
                         </ExpansionCard.Header>
-                        <ExpansionCard.Content>todo</ExpansionCard.Content>
+                        <ExpansionCard.Content>
+                            {(arbeidssituasjon.erArbeidstakerEllerFrilanser ||
+                                arbeidssituasjon.harUtbetalingFraNav) && (
+                                <VStack gap="5">
+                                    <div>
+                                        <Heading size="small">
+                                            {capitalizeFirstLetter(
+                                                forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
+                                            )}
+                                        </Heading>
+                                        <BodyShort>
+                                            {formatCurrencyWithKr(parseInt(arbeidssituasjon.lønnMåned1, 10))}
+                                        </BodyShort>
+                                    </div>
+                                    <div>
+                                        <Heading size="small">
+                                            {capitalizeFirstLetter(
+                                                forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
+                                            )}
+                                        </Heading>
+                                        <BodyShort>
+                                            {formatCurrencyWithKr(parseInt(arbeidssituasjon.lønnMåned2, 10))}
+                                        </BodyShort>
+                                    </div>
+                                    <div>
+                                        <Heading size="small">
+                                            {capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
+                                        </Heading>
+                                        <BodyShort>
+                                            {formatCurrencyWithKr(parseInt(arbeidssituasjon.lønnMåned3, 10))}
+                                        </BodyShort>
+                                    </div>
+                                </VStack>
+                            )}
+                        </ExpansionCard.Content>
                     </ExpansionCard>
                     <Button
                         variant="secondary"

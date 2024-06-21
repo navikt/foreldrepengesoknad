@@ -12,7 +12,7 @@ interface Props {
 
 const getAvsender = (type: DokumentType) => {
     if (type === DokumentType.INNGÅENDE_DOKUMENT) {
-        return 'Du';
+        return 'Arbeidsgiver';
     }
 
     if (type === DokumentType.UTGÅENDE_DOKUMENT) {
