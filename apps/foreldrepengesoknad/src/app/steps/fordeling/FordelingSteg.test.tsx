@@ -662,7 +662,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         expect(screen.getAllByText('Du må oppgi dato når du vil starte dine foreldrepenger.')).toHaveLength(2);
         await userEvent.click(screen.getByText('Jeg vil velge'));
         await userEvent.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Du må oppgi antall uker du ønsker å ha av fellesperioden.')).toHaveLength(2);
+        expect(screen.getAllByText('Du må oppgi en lengde på fellesperioden din.')).toHaveLength(2);
     });
     it('skal ikke kunne skrive inn tekst for antall uker hun ønsker av fellesperioden', async () => {
         const utils = render(
@@ -678,7 +678,9 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         await userEvent.type(ukerInput, 'test');
         fireEvent.blur(ukerInput);
         await userEvent.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Antall uker du ønsker å ha av fellesperioden må være et heltall.')).toHaveLength(2);
+        expect(
+            screen.getAllByText('Antall uker du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
+        ).toHaveLength(2);
     });
     it('skal ikke kunne skrive inn desimaltall for antall uker hun ønsker av fellesperioden', async () => {
         const utils = render(
@@ -694,7 +696,9 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         await userEvent.type(ukerInput, '1,5');
         fireEvent.blur(ukerInput);
         await userEvent.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Antall uker du ønsker å ha av fellesperioden må være et heltall.')).toHaveLength(2);
+        expect(
+            screen.getAllByText('Antall uker du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
+        ).toHaveLength(2);
     });
     it('skal ikke kunne skrive inn for mange uker for antall uker hun øsker av fellesperioden', async () => {
         const utils = render(
@@ -710,7 +714,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         await userEvent.type(ukerInput, '21');
         fireEvent.blur(ukerInput);
         await userEvent.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Maksimalt antall uker med fellesperioden er 20.')).toHaveLength(2);
+        expect(screen.getAllByText('Fellesperioden kan være maksimalt 20 uker lang.')).toHaveLength(2);
     });
     it('skal ikke kunne skrive inn et negativt tall for antall uker hun ønsker av fellesperioden', async () => {
         const utils = render(
@@ -727,7 +731,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         fireEvent.blur(ukerInput);
         await userEvent.click(screen.getByText('Neste steg'));
         expect(
-            screen.getAllByText('Antall uker du ønsker å ha av fellesperioden kan ikke være mindre enn 0.'),
+            screen.getAllByText('Antall uker du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
         ).toHaveLength(2);
     });
     it('skal få figur over fordeling når hun velger gyldig antall uker hun ønsker av fellesperioden', async () => {
