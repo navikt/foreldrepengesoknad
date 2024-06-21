@@ -157,7 +157,7 @@ function erTidsperiodeUtenforTidsperiode(tidsperiode1: TidsperiodeDate, tidsperi
 function tidsperiodeToString(tidsperiode: TidsperiodeDate, intl: IntlShape) {
     const { fom, tom } = tidsperiode;
     if (fom && tom && dayjs(fom).isSame(tom, 'day')) {
-        return formaterDatoUtenDag(fom ? fom : tom);
+        return formaterDatoUtenDag(fom ?? tom);
     }
     return intl.formatMessage(
         { id: 'tidsperiode' },
@@ -171,7 +171,7 @@ function tidsperiodeToString(tidsperiode: TidsperiodeDate, intl: IntlShape) {
 function tidsperiodeToStringKort(tidsperiode: TidsperiodeDate, intl: IntlShape) {
     const { fom, tom } = tidsperiode;
     if (fom && tom && dayjs(fom).isSame(tom, 'day')) {
-        return formaterDatoUtenDag(fom ? fom : tom);
+        return formaterDatoUtenDag(fom ?? tom);
     }
     return intl.formatMessage(
         { id: 'tidsperiode.kort' },
