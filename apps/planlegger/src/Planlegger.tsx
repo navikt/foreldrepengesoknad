@@ -6,14 +6,22 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
-import { getAxiosInstance, usePostRequest } from '@navikt/fp-api';
-import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { Loader } from '@navikt/ds-react';
+
+import { getAxiosInstance, usePostRequest, useRequest } from '@navikt/fp-api';
+import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
 
 import PlanleggerRouter from './PlanleggerRouter';
 import Environment from './appData/Environment';
 
 export const planleggerApi = getAxiosInstance();
+
+const Spinner: React.FunctionComponent = () => (
+    <div style={{ textAlign: 'center', padding: '12rem 0' }}>
+        <Loader size="2xlarge" />
+    </div>
+);
 
 const finnBrukerRolle = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
     return harMorRett(hvemHarRett, hvemPlanlegger) ? 'MOR' : 'FAR';
@@ -75,11 +83,24 @@ export const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, change
         options,
     );
 
-    if (requestData.error) {
+    const satserData = useRequest<Satser>(planleggerApi, `${Environment.PUBLIC_PATH}/rest/satser`);
+
+    if (requestData.error || satserData.error) {
         return <SimpleErrorPage />;
     }
 
-    return <PlanleggerRouter locale={locale} changeLocale={changeLocale} stønadskontoer={requestData.data} />;
+    if (!satserData.data) {
+        return <Spinner />;
+    }
+
+    return (
+        <PlanleggerRouter
+            locale={locale}
+            changeLocale={changeLocale}
+            stønadskontoer={requestData.data}
+            satser={satserData.data}
+        />
+    );
 };
 
 const PlanleggerDataInit: FunctionComponent<Props> = ({ locale, changeLocale }) => {

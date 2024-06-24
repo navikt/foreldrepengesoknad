@@ -29,20 +29,23 @@ const Infoboks: React.FC<Props> = ({
         borderRadius="large"
     >
         <VStack gap="2">
-            <HStack wrap={false} gap="4" justify="space-between" align="center">
-                {header && (
-                    <Heading size="xsmall" level="3">
-                        {header}
-                    </Heading>
-                )}
-                {icon && (
-                    <IconCircleWrapper size="medium" color={isGray ? 'gray' : 'blue'}>
-                        {icon}
-                    </IconCircleWrapper>
-                )}
-            </HStack>
+            {(header || (!header && icon)) && (
+                <HStack wrap={false} gap="4" justify="space-between" align={header ? 'center' : 'start'}>
+                    {header && (
+                        <Heading size="xsmall" level="3">
+                            {header}
+                        </Heading>
+                    )}
+                    {!header && children}
+                    {icon && (
+                        <IconCircleWrapper size="medium" color={isGray ? 'gray' : 'blue'}>
+                            {icon}
+                        </IconCircleWrapper>
+                    )}
+                </HStack>
+            )}
             {header && useHorizontalDivider && <HorizontalLine isBlue />}
-            <div className={styles.leftCol}>{children}</div>
+            {(header || (!header && !icon)) && <div className={styles.leftCol}>{children}</div>}
         </VStack>
     </Box>
 );

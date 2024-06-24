@@ -1,19 +1,19 @@
 import { BankNoteIcon } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
 import { FormattedMessage } from 'react-intl';
+import { finnGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 
 import { StønadskontoType } from '@navikt/fp-constants';
 import {
     Dekningsgrad,
+    Satser,
     TilgjengeligeStønadskontoer,
     TilgjengeligeStønadskontoerForDekningsgrad,
 } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
-
-//FIXME Hent frå tjeneste
-export const GRUNNBELØPET = 118620;
 
 const getDagerForKonto = (
     stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
@@ -42,14 +42,21 @@ interface Props {
     dekningsgrad: Dekningsgrad;
     gjennomsnittslønn: number;
     stønadskontoer: TilgjengeligeStønadskontoer;
+    satser: Satser;
 }
 
-const Utbetalingspanel: React.FunctionComponent<Props> = ({ dekningsgrad, gjennomsnittslønn, stønadskontoer }) => {
+const Utbetalingspanel: React.FunctionComponent<Props> = ({
+    dekningsgrad,
+    gjennomsnittslønn,
+    stønadskontoer,
+    satser,
+}) => {
     const antallUkerMedUttak = finnAntallUker(stønadskontoer[dekningsgrad]);
 
     const erDekningsgrad100 = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT;
 
-    const annualMax = 6 * GRUNNBELØPET;
+    const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
+    const annualMax = 6 * grunnbeløpet;
     const monthlyMax = annualMax / 12;
 
     const decimal = (erDekningsgrad100 ? 100 : 80) / 100;

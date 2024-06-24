@@ -3,11 +3,12 @@ import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { finnEngangsstønad, finnGrunnbeløp } from 'utils/satserUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { BodyShort, Button, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { Dekningsgrad, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -19,25 +20,25 @@ import HøyInntektInfobox from '../felles/HøyInntektInfobox';
 import FpEllerEsOgHvaSkjerNåLinkPanel from './FpEllerEsOgHvaSkjerNåLinkPanel';
 import Utbetalingspanel from './Utbetalingspanel';
 
-//FIXME Hent frå tjeneste
-const GRUNNBELØPET = 118620;
-const minÅrslønn = 59310;
-const engangsstønad = 92648;
-
 export const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260;
 
 interface Props {
     arbeidssituasjon: Arbeidssituasjon;
     stønadskontoer: TilgjengeligeStønadskontoer;
+    satser: Satser;
 }
 
-const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, stønadskontoer }) => {
+const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, stønadskontoer, satser }) => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator(ContextRoutes.HVOR_MYE);
     const { ref } = useScrollBehaviour();
 
     const gjennomsnittslønn = parseFloat(notEmpty(finnGjennomsnittsMånedslønn(notEmpty(arbeidssituasjon))));
-    const grunnbeløpetGanger6 = GRUNNBELØPET * 6;
+    const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
+    const grunnbeløpetGanger6 = grunnbeløpet * 6;
+    const minÅrslønn = grunnbeløpet / 2;
+
+    const engangsstønad = finnEngangsstønad(satser, dayjs());
 
     const harIkkeRettTilFp = gjennomsnittslønn * 12 < minÅrslønn;
 
@@ -81,11 +82,13 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                 dekningsgrad={Dekningsgrad.HUNDRE_PROSENT}
                                 gjennomsnittslønn={gjennomsnittslønn}
                                 stønadskontoer={stønadskontoer}
+                                satser={satser}
                             />
                             <Utbetalingspanel
                                 dekningsgrad={Dekningsgrad.ÅTTI_PROSENT}
                                 gjennomsnittslønn={gjennomsnittslønn}
                                 stønadskontoer={stønadskontoer}
+                                satser={satser}
                             />
                             <Infobox
                                 header={<FormattedMessage id="OppsummeringSide.UtbetaltSomVanlig" />}

@@ -43,6 +43,29 @@ const kontoer = {
     },
 };
 
+const satser = {
+    engangstønad: [
+        {
+            fom: '01.01.2023',
+            verdi: 92648,
+        },
+        {
+            fom: '01.01.2021',
+            verdi: 90300,
+        },
+    ],
+    grunnbeløp: [
+        {
+            fom: '01.05.2024',
+            verdi: 124028,
+        },
+        {
+            fom: '01.05.2023',
+            verdi: 118620,
+        },
+    ],
+};
+
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
     fordeling: Fordeling;
@@ -74,7 +97,7 @@ const customRenderer = ({
                     [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                 }}
             >
-                <OppsummeringSteg stønadskontoer={stønadskontoer} />
+                <OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} />
             </PlanleggerDataContext>
         </MemoryRouter>
     );
