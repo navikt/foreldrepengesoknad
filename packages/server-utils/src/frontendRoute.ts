@@ -19,6 +19,8 @@ export const setupStaticRoutes = async (app: Express) => {
             APP_VERSION: `${config.app.version}`,
             INNSYN: `${config.app.innsyn}`,
             PUBLIC_PATH: `${config.app.publicPath}`,
+            TEST: `${config.app.publicPath}`,
+            FEATURE_TEST_1JULI2024_REGLER: `${config.app.test1Juli2024Regler}`,
         }),
     );
 
