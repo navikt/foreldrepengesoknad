@@ -120,6 +120,15 @@ export const Default: Story = {
                     });
                 return [200, redirectResponse.data];
             });
+            apiMock.onGet('/rest/satser').reply(async (config) => {
+                const redirectResponse = await axios
+                    .create()
+                    .get('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/satser', {
+                        headers: config.headers,
+                        timeout: config.timeout,
+                    });
+                return [200, redirectResponse.data];
+            });
         }
 
         return (
