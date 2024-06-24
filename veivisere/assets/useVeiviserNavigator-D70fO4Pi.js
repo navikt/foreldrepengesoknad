@@ -1,4 +1,4 @@
-import{r as o,$ as Q}from"./index-DVXBtNgz.js";import{n as O,c as X}from"./Infobox-BbbjZD7P.js";var ee=(e=>(e.HVOR_MYE="/hvor-mye",e.HVA_SKJER="/hva-skjer",e.FP_ELLER_ES="/fp-eller-es",e))(ee||{}),te=(e=>(e.OM="/om",e.ARBEIDSSITUASJON="/arbeidssituasjon",e.OPPSUMMERING="/oppsummering",e))(te||{}),ne=(e=>(e.OM="/om",e))(ne||{}),re=(e=>(e.OM="/om",e))(re||{});/**
+import{r as o,$ as Q}from"./index-DVXBtNgz.js";import{n as O,b as X}from"./Infobox-DVDZ5sGN.js";var ee=(e=>(e.HVOR_MYE="/hvor-mye",e.HVA_SKJER="/hva-skjer",e.FP_ELLER_ES="/fp-eller-es",e))(ee||{}),te=(e=>(e.OM="/om",e.ARBEIDSSITUASJON="/arbeidssituasjon",e.OPPSUMMERING="/oppsummering",e))(te||{}),ne=(e=>(e.OM="/om",e))(ne||{}),re=(e=>(e.OM="/om",e))(re||{});/**
  * @remix-run/router v1.16.1
  *
  * Copyright (c) Remix Software Inc.
