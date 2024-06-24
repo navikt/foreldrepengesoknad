@@ -1,8 +1,15 @@
 import express from 'express';
 
-import { errorHandling, logger, setupActuators, setupServerDefaults, setupStaticRoutes } from '@navikt/fp-server-utils';
+import {
+    errorHandling,
+    logger,
+    serverConfig,
+    setupActuators,
+    setupServerDefaults,
+    setupStaticRoutes,
+} from '@navikt/fp-server-utils';
 
-import { configureReverseProxyApi } from './reverseProxy.js';
+import { proxyRequestTilApi, veksleTokenTilTokenX as veksleTokenXOboToken } from './reverseProxy.js';
 import { validerInnkommendeIdportenToken } from './tokenValidation.js';
 
 export const server = express();
@@ -13,9 +20,9 @@ setupActuators(server);
 // Logging i json format
 server.use(logger.morganMiddleware);
 
+// Token validering, veksling og proxy
 server.use(validerInnkommendeIdportenToken);
-
-configureReverseProxyApi(server);
+server.use(`${serverConfig.app.publicPath}/rest`, veksleTokenXOboToken, proxyRequestTilApi);
 
 // Catch all route, må være sist
 setupStaticRoutes(server);

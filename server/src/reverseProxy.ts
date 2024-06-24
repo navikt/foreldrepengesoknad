@@ -1,59 +1,42 @@
 import { getToken, requestTokenxOboToken } from '@navikt/oasis';
-import { Express, NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
 import { serverConfig } from '@navikt/fp-server-utils';
 
-type ProxyOptions = {
-    ingoingUrl: string;
-    outgoingUrl: string;
-    scope: string;
-};
+const oboHeader = 'obo-token';
+const apiScope = serverConfig.proxy.apiScope!;
+const apiUrl = serverConfig.proxy.apiUrl!;
 
-export const configureReverseProxyApi = (app: Express) => {
-    if (!serverConfig.proxy.apiUrl || !serverConfig.proxy.apiScope) {
-        throw new Error('Påkrevd miljøvariable SCOPE og URL ikke satt mot API');
+export const veksleTokenTilTokenX = async (request: Request, response: Response, next: NextFunction) => {
+    const token = getToken(request);
+    if (!token) {
+        return response.status(401).send();
     }
-    return addProxyHandler(app, {
-        ingoingUrl: '/rest',
-        outgoingUrl: serverConfig.proxy.apiUrl,
-        scope: serverConfig.proxy.apiScope,
-    });
+    const obo = await requestTokenxOboToken(token, apiScope);
+    if (obo.ok) {
+        request.headers[oboHeader] = obo.token;
+        return next();
+    } else {
+        console.log('OBO-exchange failed', obo.error);
+        return response.status(403).send();
+    }
 };
 
-export function addProxyHandler(server: Express, { ingoingUrl, outgoingUrl, scope }: ProxyOptions) {
-    server.use(
-        ingoingUrl,
-        async (request: Request, response: Response, next: NextFunction) => {
-            const token = getToken(request);
-            if (!token) {
-                return response.status(401).send();
-            }
-            const obo = await requestTokenxOboToken(token, scope);
-            if (obo.ok) {
-                request.headers['obo-token'] = obo.token;
-                return next();
+export const proxyRequestTilApi = createProxyMiddleware({
+    target: apiUrl,
+    changeOrigin: true,
+    logger: console,
+    on: {
+        proxyReq: (proxyRequest, request) => {
+            const obo = request.headers[oboHeader];
+            if (obo) {
+                proxyRequest.removeHeader(oboHeader);
+                proxyRequest.removeHeader('cookie');
+                proxyRequest.setHeader('Authorization', `Bearer ${obo}`);
             } else {
-                console.log('OBO-exchange failed', obo.error);
-                return response.status(403).send();
+                console.log(`Access token var not present in session for scope ${apiScope}`);
             }
         },
-        createProxyMiddleware({
-            target: outgoingUrl,
-            changeOrigin: true,
-            logger: console,
-            on: {
-                proxyReq: (proxyRequest, request) => {
-                    const obo = request.headers['obo-token'];
-                    if (obo) {
-                        proxyRequest.removeHeader('obo-token');
-                        proxyRequest.removeHeader('cookie');
-                        proxyRequest.setHeader('Authorization', `Bearer ${obo}`);
-                    } else {
-                        console.log(`Access token var not present in session for scope ${scope}`);
-                    }
-                },
-            },
-        }),
-    );
-}
+    },
+});
