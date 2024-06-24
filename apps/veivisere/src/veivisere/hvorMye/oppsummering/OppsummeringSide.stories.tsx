@@ -143,3 +143,16 @@ export const ArbeidstakerMed1000Imåneden: Story = {
         },
     },
 };
+
+export const ArbeidstakerMed10000IMåneden: Story = {
+    args: {
+        arbeidssituasjon: {
+            erArbeidstakerEllerFrilanser: true,
+            erSelvstendigNæringsdrivende: false,
+            harUtbetalingFraNav: false,
+            lønnMåned1: '10000',
+            lønnMåned2: '10000',
+            lønnMåned3: '10000',
+        },
+    },
+};
