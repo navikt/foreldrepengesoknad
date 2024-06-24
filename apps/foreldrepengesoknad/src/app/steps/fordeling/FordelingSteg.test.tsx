@@ -1161,7 +1161,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
         expect(
             screen.getByText('kan brukes i perioden rundt fødsel, samtidig med Hanne.', { exact: false }),
         ).toBeInTheDocument();
-        expect(screen.queryByText('flerbarnsuker')).not.toBeInTheDocument();
+        expect(screen.queryByText('flerbarnsdager')).not.toBeInTheDocument();
 
         expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
         expect(

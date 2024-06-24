@@ -261,7 +261,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Perioden blir forlenget med 17 uker hvis dere velger 100% foreldrepenger eller 21 uker hvis dere velger 80% foreldrepenger.',
+                'Perioden blir forlenget med 17 uker uker hvis dere velger 100% foreldrepenger eller 21 uker uker hvis dere velger 80% foreldrepenger.',
             ),
         ).toBeInTheDocument();
 
@@ -305,7 +305,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Perioden blir forlenget med 46 uker hvis du velger 100% foreldrepenger eller 56 uker hvis du velger 80% foreldrepenger.',
+                'Perioden blir forlenget med 46 uker uker hvis du velger 100% foreldrepenger eller 56 uker uker hvis du velger 80% foreldrepenger.',
             ),
         ).toBeInTheDocument();
 
