@@ -86,7 +86,7 @@ function getUttaksdagFraOgMedDato(dato: Date): Date {
  */
 function leggUttaksdagerTilDato(dato: Date, uttaksdager: number): Date {
     if (erUttaksdag(dato) === false) {
-        throw new Error('leggUttaksdagerTilDato: Dato må være uttaksdag');
+        throw new Error(`leggUttaksdagerTilDato: Dato ${formatDate(dato)} må være uttaksdag`);
     }
     let nyDato = dato;
     let dagteller = 0;

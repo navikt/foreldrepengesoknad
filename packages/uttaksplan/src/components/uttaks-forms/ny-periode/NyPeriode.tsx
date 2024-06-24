@@ -12,16 +12,16 @@ import {
     PeriodeValidState,
     Periodetype,
     Situasjon,
-    TilgjengeligStønadskonto,
     Utsettelsesperiode,
 } from '@navikt/fp-common';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import PeriodeUtsettelseForm from '../periode-utsettelse-form/PeriodeUtsettelseForm';
 import PeriodeUttakForm from '../periode-uttak-form/PeriodeUttakForm';
 
 interface Props {
     familiehendelsesdato: Date;
-    stønadskontoer: TilgjengeligStønadskonto[];
+    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     setNyPeriodeFormIsVisible: Dispatch<SetStateAction<boolean>>;
@@ -88,7 +88,7 @@ const NyPeriode: FunctionComponent<Props> = ({
                 arbeidsforhold={arbeidsforhold}
                 familiehendelsesdato={familiehendelsesdato}
                 navnPåForeldre={navnPåForeldre}
-                stønadskontoer={stønadskontoer}
+                stønadskontoer={stønadskontoer.kontoer}
                 setNyPeriodeFormIsVisible={setNyPeriodeFormIsVisible}
                 isNyPeriode={true}
                 erFarEllerMedmor={erFarEllerMedmor}
@@ -124,7 +124,6 @@ const NyPeriode: FunctionComponent<Props> = ({
             situasjon={situasjon}
             utsettelserIPlan={utsettelserIPlan}
             setPerioderErGyldige={setPerioderErGyldige}
-            isOpen={true}
         />
     );
 };

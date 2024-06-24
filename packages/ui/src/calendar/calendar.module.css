@@ -1,0 +1,36 @@
+.gridColumnsWide {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.gridColumnsSmall {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 360px) {
+    .gridColumnsWide {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 450px) {
+    .gridColumnsSmall {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 300px) {
+    .gridColumnsSmall {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+.srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}

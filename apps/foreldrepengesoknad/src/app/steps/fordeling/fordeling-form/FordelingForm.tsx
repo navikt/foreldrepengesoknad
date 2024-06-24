@@ -2,13 +2,7 @@ import { useForm } from 'react-hook-form';
 
 import { VStack } from '@navikt/ds-react';
 
-import {
-    EksisterendeSak,
-    NavnPåForeldre,
-    TilgjengeligStønadskonto,
-    isAnnenForelderOppgitt,
-    isFarEllerMedmor,
-} from '@navikt/fp-common';
+import { NavnPåForeldre, isAnnenForelderOppgitt, isFarEllerMedmor } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { ISOStringToDate } from '@navikt/fp-formik';
 import { notEmpty } from '@navikt/fp-validation';
@@ -26,9 +20,6 @@ type Props = {
     navnPåForeldre: NavnPåForeldre;
     dagerMedFellesperiode: number;
     førsteDagEtterAnnenForelder: Date | undefined;
-    valgtStønadskonto: TilgjengeligStønadskonto[];
-    eksisterendeVedtakAnnenPart: EksisterendeSak | undefined;
-    ukerMedFellesperiode: number;
     goToPreviousDefaultStep: () => Promise<void>;
     goToNextDefaultStep: () => Promise<void>;
 };

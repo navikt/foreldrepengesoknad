@@ -18,7 +18,6 @@ interface Props {
     tidsperiodenErInnenforFørsteSeksUker: boolean;
     erMorUfør: boolean;
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
-    isOpen: boolean;
 }
 
 const getUtsettelseÅrsakOptions = (
@@ -157,21 +156,19 @@ const UtsettelseÅrsakSpørsmål: FunctionComponent<Props> = ({
     }
 
     return (
-        <>
-            <Block padBottom="l">
-                <PeriodeUtsettelseFormComponents.RadioGroup
-                    legend="Velg årsak for utsettelse"
-                    name={PeriodeUtsettelseFormField.årsak}
-                    radios={årsakOptions}
-                    validate={(value) => {
-                        if (value === '') {
-                            return 'Årsak må fylles ut';
-                        }
-                        return undefined;
-                    }}
-                />
-            </Block>
-        </>
+        <Block padBottom="l">
+            <PeriodeUtsettelseFormComponents.RadioGroup
+                legend="Velg årsak for utsettelse"
+                name={PeriodeUtsettelseFormField.årsak}
+                radios={årsakOptions}
+                validate={(value) => {
+                    if (value === '') {
+                        return 'Årsak må fylles ut';
+                    }
+                    return undefined;
+                }}
+            />
+        </Block>
     );
 };
 

@@ -1,9 +1,10 @@
 import classnames from 'classnames';
-import AriaText from '../aria-text/AriaText';
+
 import { guid } from '@navikt/fp-common';
 
-import './sirkelknapp.less';
 import preventDoubleTapZoom from '../../utils/preventDoubleTapZoom';
+import AriaText from '../aria-text/AriaText';
+import './sirkelknapp.less';
 
 export type Stil = 'hvit' | 'bla' | 'info';
 
@@ -46,7 +47,7 @@ const Sirkelknapp: React.FunctionComponent<SirkelknappProps> = ({
             onTouchStart={preventDoubleTapZoom}
             aria-labelledby={labelId}
             className={classnames(`sirkelknapp`, `sirkelknapp--${stil}`, `sirkelknapp--${size}`, {
-                'sirkelknapp--pressed': toggle && toggle.pressed,
+                'sirkelknapp--pressed': toggle?.pressed,
                 'sirkelknapp--disabled': disabled,
             })}
             disabled={disabled}

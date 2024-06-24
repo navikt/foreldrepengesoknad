@@ -1,8 +1,3 @@
-import {
-    finnOgSettInnHull,
-    getHarAktivitetskravIPeriodeUtenUttak,
-    leggTilAnnenPartsPerioderISøkerenesUttaksplan,
-} from '@navikt/uttaksplan';
 import dayjs from 'dayjs';
 
 import {
@@ -10,7 +5,6 @@ import {
     Barn,
     BarnFraNesteSak,
     Periode,
-    TilgjengeligStønadskonto,
     Uttaksdagen,
     getAntallUkerFellesperiode,
     getKunFarHarRett,
@@ -19,7 +13,12 @@ import {
     isFarEllerMedmor,
 } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/fp-formik';
-import { SøkersituasjonFp } from '@navikt/fp-types';
+import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import {
+    finnOgSettInnHull,
+    getHarAktivitetskravIPeriodeUtenUttak,
+    leggTilAnnenPartsPerioderISøkerenesUttaksplan,
+} from '@navikt/fp-uttaksplan';
 
 import Fordeling from 'app/context/types/Fordeling';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
@@ -32,7 +31,7 @@ import { ikkeDeltUttak } from 'app/utils/uttaksplan/ikkeDeltUttak';
 const getSøkerensUttaksplanForslag = (
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,
-    valgtStønadskonto: TilgjengeligStønadskonto[],
+    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
     annenForelder: AnnenForelder,
     annenPartsPerioder: Periode[] | undefined,
     fordeling: Fordeling,
@@ -86,7 +85,7 @@ const getSøkerensUttaksplanForslag = (
             situasjon,
             famDato: familiehendelsesdato,
             erFarEllerMedmor,
-            tilgjengeligeStønadskontoer: valgtStønadskonto,
+            tilgjengeligeStønadskontoer: valgtStønadskonto.kontoer,
             startdatoPermisjon,
             fellesperiodeUkerMor,
             harAnnenForelderSøktFP,
@@ -112,7 +111,7 @@ const getSøkerensUttaksplanForslag = (
             situasjon,
             familiehendelsesdato,
             erFarEllerMedmor,
-            valgtStønadskonto,
+            valgtStønadskonto.kontoer,
             startdatoPermisjon,
             annenForelderErUfør,
             bareFarMedmorHarRett,
@@ -183,7 +182,7 @@ const oppdaterPlanForslagMedAnnenPartsPerioder = (
 };
 
 export const lagUttaksplanForslag = (
-    valgtStønadskonto: TilgjengeligStønadskonto[],
+    valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
     annenPartsPerioder: Periode[] | undefined,
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,

@@ -10,10 +10,10 @@ import {
     Periode,
     Periodetype,
     Situasjon,
-    StønadskontoType,
-    TilgjengeligStønadskonto,
     Utsettelsesperiode,
 } from '@navikt/fp-common';
+import { StønadskontoType } from '@navikt/fp-constants';
+import { Stønadskonto } from '@navikt/fp-types';
 
 import PeriodeUttakForm from './PeriodeUttakForm';
 
@@ -47,7 +47,7 @@ interface Props {
     periode: Periode;
     erEndringssøknad: boolean;
     familiehendelsesdato: Date;
-    stønadskontoer: TilgjengeligStønadskonto[];
+    stønadskontoer: Stønadskonto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: Arbeidsforhold[];
@@ -231,7 +231,7 @@ NyPeriodeForBareFarHarRett.args = {
         fornavn: 'Vakker',
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: false,
-        erUfør: true,
+        erMorUfør: true,
     },
     antallBarn: 1,
     erDeltUttak: false,
@@ -250,7 +250,7 @@ NyPeriodeBFHRToBarnFørWLBMorIkkeUfør.args = {
         fornavn: 'Vakker',
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: false,
-        erUfør: false,
+        erMorUfør: false,
     },
     antallBarn: 2,
     erDeltUttak: false,
@@ -270,7 +270,7 @@ NyPeriodeBFHRToBarnEtterWLBMorIkkeUfør.args = {
         fornavn: 'Vakker',
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: false,
-        erUfør: false,
+        erMorUfør: false,
     },
     antallBarn: 2,
     erDeltUttak: false,
@@ -289,7 +289,7 @@ NyPeriodeForBareFarHarRettRundtFødsel.args = {
         fornavn: 'Vakker',
         harRettPåForeldrepengerINorge: false,
         harRettPåForeldrepengerIEØS: false,
-        erUfør: true,
+        erMorUfør: true,
     },
     antallBarn: 1,
     erDeltUttak: false,

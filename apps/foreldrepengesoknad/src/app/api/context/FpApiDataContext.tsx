@@ -1,38 +1,36 @@
+import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
+
+import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
-import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
-import { createContext, useReducer, FunctionComponent, ReactNode, useContext } from 'react';
 
 export enum FpApiDataType {
     ANNEN_PART_VEDTAK = 'ANNEN_PART_VEDTAK',
     NESTE_SAK_ANNEN_PART_VEDTAK = 'NESTE_SAK_ANNEN_PART_VEDTAK',
-    STØNADSKONTOER_100 = 'STØNADSKONTOER_100',
-    STØNADSKONTOER_80 = 'STØNADSKONTOER_80',
+    STØNADSKONTOER = 'STØNADSKONTOER',
 }
 
 export type FpApiDataHashMap = {
     [FpApiDataType.ANNEN_PART_VEDTAK]?: [number, AnnenPartVedtakDTO];
     [FpApiDataType.NESTE_SAK_ANNEN_PART_VEDTAK]?: [number, AnnenPartVedtakDTO];
-    [FpApiDataType.STØNADSKONTOER_100]?: [number, TilgjengeligeStønadskontoerDTO];
-    [FpApiDataType.STØNADSKONTOER_80]?: [number, TilgjengeligeStønadskontoerDTO];
+    [FpApiDataType.STØNADSKONTOER]?: [number, TilgjengeligeStønadskontoer];
 };
 
 const defaultInitialState = {} as FpApiDataHashMap;
 
 export type Action = { type: 'update'; key: FpApiDataType; hash: number; data: any } | { type: 'reset' };
 type Dispatch = (action: Action) => void;
-type State = FpApiDataHashMap;
 
-const FpApiStateContext = createContext<State>(defaultInitialState);
+const FpApiStateContext = createContext<FpApiDataHashMap>(defaultInitialState);
 const FpApiDispatchContext = createContext<Dispatch | undefined>(undefined);
 
 interface OwnProps {
     children: ReactNode;
     initialState?: FpApiDataHashMap;
-    onDispatch?: (action: Action) => void;
 }
 
-export const FpApiDataContext: FunctionComponent<OwnProps> = ({ children }): JSX.Element => {
-    const [state, dispatch] = useReducer((oldState: State, action: Action) => {
+export const FpApiDataContext: FunctionComponent<OwnProps> = ({ children, initialState }): JSX.Element => {
+    const [state, dispatch] = useReducer((oldState: FpApiDataHashMap, action: Action) => {
         switch (action.type) {
             case 'update':
                 return {
@@ -44,7 +42,7 @@ export const FpApiDataContext: FunctionComponent<OwnProps> = ({ children }): JSX
             default:
                 throw new Error();
         }
-    }, defaultInitialState);
+    }, initialState || defaultInitialState);
 
     return (
         <FpApiStateContext.Provider value={state}>

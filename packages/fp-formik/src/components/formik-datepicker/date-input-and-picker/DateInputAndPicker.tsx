@@ -3,16 +3,16 @@ import React, { useEffect } from 'react';
 
 import { DatePicker, DatePickerProps, useDatepicker } from '@navikt/ds-react';
 
-import { FormError } from '../../../types';
-import { DatepickerLimitations } from '../FormikDatepicker';
+import { FormError } from './../../../types';
+import { DatepickerLimitations } from './../FormikDatepicker';
 import {
     INVALID_DATE_VALUE,
     ISODateString,
     ISODateStringToUTCDate,
     InputDateStringToISODateString,
     dateToISODateString,
-} from '../dateFormatUtils';
-import datepickerUtils, { isISODateString } from '../datepickerUtils';
+} from './../dateFormatUtils';
+import datepickerUtils, { isISODateString } from './../datepickerUtils';
 
 type Props = Omit<DatePickerProps, 'onChange' | 'fromDate' | 'toDate'> &
     DatepickerLimitations & {

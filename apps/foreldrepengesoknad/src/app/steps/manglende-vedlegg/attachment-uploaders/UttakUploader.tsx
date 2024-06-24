@@ -1,4 +1,3 @@
-import PeriodelisteItemHeader from '@navikt/uttaksplan/src/components/periodeliste-item-header/PeriodelisteItemHeader';
 import dayjs from 'dayjs';
 import React, { FunctionComponent, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -8,13 +7,12 @@ import { BodyLong, Label, VStack } from '@navikt/ds-react';
 
 import { getSaveAttachment } from '@navikt/fp-api';
 import { NavnPåForeldre, Periode, Situasjon, addMetadata, bemUtils, lagSendSenereDokument } from '@navikt/fp-common';
-import { AttachmentType } from '@navikt/fp-constants';
+import { AttachmentMetadataType, AttachmentType } from '@navikt/fp-constants';
 import { dateToISOString } from '@navikt/fp-formik';
 import { Attachment } from '@navikt/fp-types';
-import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
 import { FileUploader } from '@navikt/fp-ui';
+import { PeriodelisteItemHeader } from '@navikt/fp-uttaksplan';
 
-import Environment from 'app/Environment';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
@@ -76,7 +74,6 @@ const UttakUploader: FunctionComponent<Props> = ({
                     return (
                         <div key={p.id} className={bem.block}>
                             <PeriodelisteItemHeader
-                                egenPeriode={true}
                                 periode={p}
                                 erAleneOmOmsorg={false}
                                 erFarEllerMedmor={true}
@@ -110,7 +107,7 @@ const UttakUploader: FunctionComponent<Props> = ({
 
                     return updateAttachments(attachmentsMedMetadata);
                 }}
-                saveAttachment={getSaveAttachment(Environment.REST_API_URL, 'foreldrepenger')}
+                saveAttachment={getSaveAttachment('foreldrepenger')}
             />
         </VStack>
     );

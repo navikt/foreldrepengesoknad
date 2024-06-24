@@ -11,6 +11,7 @@ export const uiMessages = {
 export { default as ContentWrapper } from './src/contentWrapper/ContentWrapper';
 export { default as ErrorBoundary } from './src/error/ErrorBoundary';
 export { default as ErrorSummaryFp } from './src/error/ErrorSummaryFp';
+export { default as SimpleErrorPage } from './src/error/SimpleErrorPage';
 export type { ErrorSummaryError } from './src/error/ErrorSummaryFp';
 export { default as ErrorPage } from './src/error/ErrorPage';
 export { default as FileUploader } from './src/fileUploader/FileUploader';
@@ -20,7 +21,17 @@ export { default as ScanDocumentInfo } from './src/scanDocumentInfo/ScanDocument
 export { default as HorizontalLine } from './src/horizontalLine/HorizontalLine';
 export { default as Umyndig } from './src/umyndig/Umyndig';
 export { default as LanguageToggle } from './src/languageToggle/LanguageToggle';
+export { default as LanguageToggleNew } from './src/languageToggleNew/LanguageToggle';
 export { default as IntlProvider } from './src/i18n/IntlProvider';
 export { default as Step } from './src/step/pageStep/Step';
 export { default as ProgressStepper } from './src/step/progressStepper/ProgressStepper';
+export { default as Calendar } from './src/calendar/Calendar';
+export { default as CalendarLabel } from './src/calendar/label/CalendarLabel';
 export type { ProgressStep } from './src/step/progressStepper/ProgressStepper';
+export type { Period } from './src/calendar/Calendar';
+export { default as Page } from './src/page/Page';
+export { default as FrontPage } from './src/page/FrontPage';
+export { default as GreenHeading } from './src/boxes/GreenHeading';
+export { default as GreenPanel } from './src/boxes/GreenPanel';
+export { default as Infobox } from './src/boxes/Infobox';
+export { default as IconCircleWrapper } from './src/iconCircle/IconCircleWrapper';

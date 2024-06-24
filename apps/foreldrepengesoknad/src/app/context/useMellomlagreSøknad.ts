@@ -7,7 +7,6 @@ import { notEmpty } from '@navikt/fp-validation';
 import Api from 'app/api/api';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import { MELLOMLAGRET_VERSJON } from 'app/utils/mellomlagringUtils';
-import { redirectToLogin } from 'app/utils/redirectToLogin';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
 
@@ -112,13 +111,8 @@ const useMellomlagreSøknad = (
             };
 
             lagre().catch((error) => {
-                if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-                    redirectToLogin();
-                } else {
-                    //Logg feil, men ikkje vis feilmelding til brukar
-                    sendErrorMessageToSentry(error);
-                }
-
+                //Logg feil, men ikkje vis feilmelding til brukar
+                sendErrorMessageToSentry(error);
                 if (promiseRef.current) {
                     promiseRef.current();
                 }

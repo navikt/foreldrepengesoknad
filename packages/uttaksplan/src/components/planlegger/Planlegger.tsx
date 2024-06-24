@@ -16,13 +16,13 @@ import {
     PeriodeValidState,
     Periodene,
     Situasjon,
-    TilgjengeligStønadskonto,
     Utsettelsesperiode,
     bemUtils,
     intlUtils,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
 import NyPeriode from '../uttaks-forms/ny-periode/NyPeriode';
@@ -33,7 +33,7 @@ interface Props {
     uttaksplan: Periode[];
     familiehendelsesdato: Date;
     handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
-    stønadskontoer: TilgjengeligStønadskonto[];
+    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: Arbeidsforhold[];

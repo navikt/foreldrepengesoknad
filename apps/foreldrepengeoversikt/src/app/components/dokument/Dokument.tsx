@@ -1,5 +1,5 @@
 import { FileContent } from '@navikt/ds-icons';
-import { BodyShort, Link } from '@navikt/ds-react';
+import { BodyShort, Hide, Link, Show } from '@navikt/ds-react';
 
 import { bemUtils, formatDateExtended } from '@navikt/fp-utils';
 
@@ -20,16 +20,34 @@ const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
 
     return (
         <div className={bem.block}>
-            <div className={bem.element('content')}>
-                <FileContent className={bem.element('ikon')} aria-hidden={true} />
-                <div className={bem.element('link-icon')}>
-                    <Link href={url} target="_blank">
-                        {tittel}
-                    </Link>
+            <Hide above="md">
+                <div className={bem.element('content-top')}>
+                    <FileContent className={bem.element('ikon')} height={24} width={24} aria-hidden={true} />
+                    <div className={bem.element('link-icon')}>
+                        <Link href={url} target="_blank">
+                            {tittel}
+                        </Link>
+                    </div>
                 </div>
-                <BodyShort>{formatDateExtended(mottatt)}</BodyShort>
-                <DokumentAvsender type={type} />
-            </div>
+                <div className={bem.element('content-bottom')}>
+                    <DokumentAvsender type={type} />
+                    <BodyShort>{formatDateExtended(mottatt)}</BodyShort>
+                </div>
+            </Hide>
+            <Show above="md">
+                <div className={bem.element('contentWrapper')}>
+                    <div style={{ display: 'flex' }}>
+                        <FileContent className={bem.element('ikon')} height={24} width={24} aria-hidden={true} />
+                        <div className={bem.element('link-icon')}>
+                            <Link href={url} target="_blank">
+                                {tittel}
+                            </Link>
+                        </div>
+                    </div>
+                    <BodyShort>{formatDateExtended(mottatt)}</BodyShort>
+                    <DokumentAvsender type={type} />
+                </div>
+            </Show>
         </div>
     );
 };

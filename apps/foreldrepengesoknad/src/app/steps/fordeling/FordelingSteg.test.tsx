@@ -1,6 +1,7 @@
 import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import MockDate from 'mockdate';
 
 import * as stories from './FordelingSteg.stories';
 
@@ -226,7 +227,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
-        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 29.06.2021.')).toHaveLength(2);
+        expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 02.07.2021.')).toHaveLength(2);
     });
     it('kan ikke angi for oppstartsdato på en helgedag', async () => {
         const utils = render(
@@ -1137,6 +1138,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far med delt uttak der barnet er født prematurt', async () => {
+        MockDate.set(new Date('2024-02-25'));
         render(
             <FarMedmorSøkerDeltUttakEttBarnFødtPrematurt
                 gåTilNesteSide={gåTilNesteSide}
@@ -1171,9 +1173,11 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
             }),
         ).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+        MockDate.reset();
     });
 
     it('skal ikke kunne begynne uttaket før fødselsdato', async () => {
+        MockDate.set(new Date('2024-02-25'));
         const utils = render(
             <FarMedmorSøkerDeltUttakEttBarnFødtPrematurt
                 gåTilNesteSide={gåTilNesteSide}
@@ -1187,6 +1191,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
         fireEvent.blur(oppstart);
         await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.02.2024.')).toHaveLength(2);
+        MockDate.reset();
     });
 });
 
@@ -1195,6 +1200,7 @@ describe('Fordeling - FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode', () => 
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far søker etter mor og mor har tatt ut deler av fellesperiode og hans kvote', async () => {
+        MockDate.set(new Date('2024-02-25'));
         render(
             <FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode
                 gåTilNesteSide={gåTilNesteSide}
@@ -1224,6 +1230,7 @@ describe('Fordeling - FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode', () => 
         expect(screen.getByText('Da barnet ble født')).toBeInTheDocument();
         expect(screen.getByText('Første dag etter Hanne, 13. august 2024')).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+        MockDate.reset();
     });
 });
 describe('Fordeling - MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80', () => {
@@ -1402,6 +1409,7 @@ describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far søker på fødsel, kun far har rett, mor er ikke ufør, ett barn', async () => {
+        MockDate.set(new Date('2024-02-21'));
         render(
             <BareFarHarRettOgMorErIkkeUførFødtBarn
                 gåTilNesteSide={gåTilNesteSide}
@@ -1425,8 +1433,10 @@ describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
         expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
         expect(screen.getByText('Da barnet ble født')).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+        MockDate.reset();
     });
     it('kan ikke starte tidligere enn 2 uker før fødsel', async () => {
+        MockDate.set(new Date('2024-02-21'));
         const utils = render(
             <BareFarHarRettOgMorErIkkeUførFødtBarn
                 gåTilNesteSide={gåTilNesteSide}
@@ -1442,6 +1452,7 @@ describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
         await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
         expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 08.01.2024.')).toHaveLength(2);
+        MockDate.reset();
     });
 });
 
@@ -1470,6 +1481,7 @@ describe('Fordeling - BareFarHarRettTvillingerFødtFør1Okt2021', () => {
         expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
     });
     it('kan ikke starte tidligere enn to uker før fødsel', async () => {
+        MockDate.set(new Date('2024-02-20'));
         const utils = render(
             <BareFarHarRettOgMorErIkkeUførFødtBarn
                 gåTilNesteSide={gåTilNesteSide}
@@ -1484,6 +1496,7 @@ describe('Fordeling - BareFarHarRettTvillingerFødtFør1Okt2021', () => {
         await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
         expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 08.01.2024.')).toHaveLength(2);
+        MockDate.reset();
     });
 });
 describe('Fordeling - BareFarHarRettAdopsjonMorErUfør', () => {

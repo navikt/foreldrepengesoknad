@@ -11,7 +11,7 @@ variable "CACHE_TAG" {
 }
 
 group "default" {
-  targets = ["foreldrepengesoknad", "engangsstonad", "svangerskapspengesoknad", "foreldrepengeoversikt"]
+  targets = ["foreldrepengesoknad", "engangsstonad", "svangerskapspengesoknad", "foreldrepengeoversikt", "planlegger", "veivisere"]
 }
 
 target "docker-metadata-action" {}
@@ -27,8 +27,10 @@ target "foreldrepengesoknad" {
     "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/foreldrepengesoknad/build-cache:master"
   ]
 
+
   args = {
-    APP = "foreldrepengesoknad"
+    APP = "foreldrepengesoknad",
+    SERVER="server"
   }
 }
 
@@ -43,8 +45,10 @@ target "svangerskapspengesoknad" {
     "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/svangerskapspengesoknad/build-cache:master"
   ]
 
+
   args = {
-    APP = "svangerskapspengesoknad"
+    APP = "svangerskapspengesoknad",
+    SERVER="server"
   }
 }
 
@@ -60,7 +64,8 @@ target "engangsstonad" {
   ]
 
   args = {
-    APP = "engangsstonad"
+    APP = "engangsstonad",
+    SERVER="server"
   }
 }
 
@@ -76,6 +81,41 @@ target "foreldrepengeoversikt" {
   ]
 
   args = {
-    APP = "foreldrepengeoversikt"
+    APP = "foreldrepengeoversikt",
+    SERVER="server"
+  }
+}
+
+target "planlegger" {
+  inherits = ["docker-metadata-action"]
+  //   tags     = ["ghcr.io/${GITHUB_REPOSITORY}/planlegger:${TAG}"]
+  dockerfile = "Dockerfile"
+
+  cache-to = ["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/planlegger/build-cache:${CACHE_TAG},mode=max"]
+  cache-from = [
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/planlegger/build-cache:${CACHE_TAG}",
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/planlegger/build-cache:master"
+  ]
+
+  args = {
+    APP = "planlegger",
+    SERVER="server-uinnlogget"
+  }
+}
+
+target "veivisere" {
+  inherits = ["docker-metadata-action"]
+  //   tags     = ["ghcr.io/${GITHUB_REPOSITORY}/veivisere:${TAG}"]
+  dockerfile = "Dockerfile"
+
+  cache-to = ["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/veivisere/build-cache:${CACHE_TAG},mode=max"]
+  cache-from = [
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/veivisere/build-cache:${CACHE_TAG}",
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/veivisere/build-cache:master"
+  ]
+
+  args = {
+    APP = "veivisere",
+    SERVER="server-uinnlogget"
   }
 }

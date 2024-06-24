@@ -1,0 +1,42 @@
+name: Bygg og deploy Foreldrepengeveivisere
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'apps/veivisere/**'
+      - 'packages/**'
+      - 'server-uinnlogget/**'
+      - '.deploy/veivisere/**'
+      - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-veivisere.yml'
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
+      - 'pnpm-lock.yaml'
+
+jobs:
+  build-app:
+    name: Build
+    permissions:
+      packages: write
+      id-token: write
+    uses: navikt/fp-gha-workflows/.github/workflows/build-docker-bake.yml@main
+    with:
+      runs-on: 'ubuntu-latest-4-cores' # default: ubuntu-latest
+      push-image: ${{ github.ref_name == 'master' }} # default: false
+      bake-target: 'veivisere'
+    secrets: inherit
+
+  deploy-dev:
+    name: Deploy dev
+    permissions:
+      id-token: write
+    if: github.ref_name == 'master'
+    needs: build-app
+    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
+    with:
+      gar: true
+      image: ${{ needs.build-app.outputs.build-version }}
+      cluster: dev-gcp
+      image_suffix: '/veivisere'
+      deploy_context: '/veivisere'
+    secrets: inherit

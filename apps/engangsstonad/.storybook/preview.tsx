@@ -16,7 +16,8 @@ const scriptTag = document.createElement('script');
 scriptTag.type = 'text/json';
 scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
-    REST_API_URL: '',
+    APP_VERSION: 'test',
+    INNSYN: 'test',
 });
 document.head.appendChild(scriptTag);
 

@@ -3,23 +3,25 @@ import {
     Periodetype,
     Situasjon,
     StønadskontoType,
-    StønadskontoUttak,
     TidsperiodeDate,
     Tidsperioden,
     convertYesOrNoOrUndefinedToBoolean,
 } from '@navikt/fp-common';
+import { Stønadskonto } from '@navikt/fp-types';
+
+import { PeriodeUttakFormData } from '../../components/uttaks-forms/periode-uttak-form/periodeUttakFormConfig';
 import { getUttaksdatoer } from '../uttaksdatoerUtils';
 import { aktivitetskravMorSkalBesvares } from './aktivitetskravMorSkalBesvares';
 import erMorForForSykSkalBesvares from './erMorForSykSkalBesvares';
 import { graderingSkalBesvares } from './graderingSkalBesvares';
 import { graderingSkalBesvaresPgaWLBUttakRundtFødsel } from './graderingSkalBesvaresPgaWLBUttakRundtFødsel';
-import samtidigUttakSkalBesvares from './samtidigUttakSkalBesvares';
-import { ønskerFlerbarnsdagerSkalBesvares } from './ønskerFlerbarnsdagerSkalBesvares';
-import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
-import kontoSkalBesvares from './kontoSkalBesvarer';
 import hvemSkalTaUttakSkalBesvares from './hvemSkalTaUttakSkalBesvares';
+import kontoSkalBesvares from './kontoSkalBesvarer';
 import overføringsårsakSkalBesvares from './overføringsårsakSkalBesvares';
-import { PeriodeUttakFormData } from '../../components/uttaks-forms/periode-uttak-form/periodeUttakFormConfig';
+import samtidigUttakSkalBesvares from './samtidigUttakSkalBesvares';
+import uttakRundtFødselÅrsakSpørsmålSkalBesvares from './uttakRundtFødselÅrsakSpørsmålSkalBesvares';
+import { ønskerFlerbarnsdagerSkalBesvares } from './ønskerFlerbarnsdagerSkalBesvares';
+
 export interface UttakSkjemaregler {
     aktivitetskravMorSkalBesvares: () => boolean;
     erMorForSykSkalBesvares: () => boolean;
@@ -44,7 +46,7 @@ export interface UttakSkjemaReglerProps {
     periodetype: Periodetype;
     termindato: Date | undefined;
     morHarRett: boolean;
-    stønadskontoer: StønadskontoUttak[];
+    stønadskontoer: Stønadskonto[];
     antallBarn: number;
 }
 

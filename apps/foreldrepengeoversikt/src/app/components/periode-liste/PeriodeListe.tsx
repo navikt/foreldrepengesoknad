@@ -40,8 +40,7 @@ const PeriodeListe: React.FunctionComponent<Props> = ({
                     periodeListe.map((periode) => {
                         const overlappendePeriodeAnnenPartForVisning =
                             !periode.gjelderAnnenPart &&
-                            periode.resultat &&
-                            periode.resultat.innvilget &&
+                            periode?.resultat?.innvilget &&
                             isUttaksperiode(periode) &&
                             annenPartsOverlappendePerioder
                                 ? annenPartsOverlappendePerioder.find((p) =>

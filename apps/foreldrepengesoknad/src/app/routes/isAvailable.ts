@@ -1,6 +1,7 @@
 import { Periode } from '@navikt/fp-common';
+import { uttaksplanInneholderPerioderUtenKonto } from '@navikt/fp-uttaksplan';
+
 import SøknadRoutes from './routes';
-import { uttaksplanInneholderPerioderUtenKonto } from '@navikt/uttaksplan';
 
 const isAvailable = (route: SøknadRoutes, harGodkjentVilkår: boolean, uttaksplan: Periode[] = []): boolean => {
     switch (route) {

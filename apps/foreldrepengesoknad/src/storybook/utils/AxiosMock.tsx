@@ -1,6 +1,7 @@
-import { FunctionComponent, useEffect } from 'react';
 import MockAdapter from 'axios-mock-adapter';
-import getAxiosInstance from '../../app/api/apiInterceptor';
+import { FunctionComponent, useEffect } from 'react';
+
+import { getAxiosInstance } from '@navikt/fp-api';
 
 interface Props {
     children: any;

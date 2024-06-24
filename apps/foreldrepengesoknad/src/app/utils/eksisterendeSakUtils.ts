@@ -24,6 +24,7 @@ import {
     Tidsperioden,
     UttakArbeidType,
     convertTidsperiodeToTidsperiodeDate,
+    getKjønnFromFnrString,
     guid,
     intlUtils,
     isAdoptertBarn,
@@ -309,7 +310,7 @@ const getSøkerrolleFromSaksgrunnlag = (
 };
 
 const getFødselsdatoer = (valgteBarn: ValgtBarn | undefined, sak: Saksgrunnlag): string[] => {
-    if (valgteBarn && valgteBarn.fødselsdatoer) {
+    if (valgteBarn?.fødselsdatoer) {
         return sorterDatoEtterEldst(valgteBarn.fødselsdatoer);
     } else if (sak.fødselsdato) {
         return Array(sak.antallBarn).fill(sak.fødselsdato!);
@@ -352,6 +353,12 @@ const getBarnFromSaksgrunnlag = (
     }
 };
 
+const finnFornavn = (annenPart: SøkerAnnenForelder, intl: IntlShape) => {
+    return annenPart.fornavn !== undefined && annenPart.fornavn !== ''
+        ? annenPart.fornavn
+        : intl.formatMessage({ id: 'annen.forelder' });
+};
+
 const getAnnenForelderFromSaksgrunnlag = (
     situasjon: Situasjon,
     grunnlag: Saksgrunnlag,
@@ -364,10 +371,7 @@ const getAnnenForelderFromSaksgrunnlag = (
         case 'adopsjon':
             if (erFarEllerMedmor) {
                 return {
-                    fornavn:
-                        annenPart.fornavn !== undefined && annenPart.fornavn !== ''
-                            ? annenPart.fornavn
-                            : intlUtils(intl, 'annen.forelder'),
+                    fornavn: finnFornavn(annenPart, intl),
                     etternavn: annenPart.etternavn,
                     erMorUfør: grunnlag.morErUfør,
                     harRettPåForeldrepengerINorge:
@@ -375,19 +379,18 @@ const getAnnenForelderFromSaksgrunnlag = (
                     fnr: annenPart.fnr,
                     kanIkkeOppgis: false,
                     harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
+                    erAleneOmOmsorg: grunnlag.farMedmorErAleneOmOmsorg,
                 };
             }
             return {
-                fornavn:
-                    annenPart.fornavn !== undefined && annenPart.fornavn !== ''
-                        ? annenPart.fornavn
-                        : intlUtils(intl, 'annen.forelder'),
+                fornavn: finnFornavn(annenPart, intl),
                 etternavn: annenPart.etternavn,
                 harRettPåForeldrepengerINorge:
                     !!grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
                 fnr: annenPart.fnr,
                 kanIkkeOppgis: false,
                 harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
+                erAleneOmOmsorg: grunnlag.farMedmorErAleneOmOmsorg || grunnlag.morErAleneOmOmsorg,
             };
         default:
             return undefined;
@@ -476,6 +479,17 @@ const getAnnenForelderFromValgteBarn = (valgteBarn: ValgtBarn): AnnenForelder | 
     };
 };
 
+const getRolleFarEllerMedmorFraFnr = (fnr: string): Søkerrolle => {
+    const kjønn = getKjønnFromFnrString(fnr);
+    if (kjønn === 'K') {
+        return 'medmor';
+    } else if (kjønn === 'M') {
+        return 'far';
+    } else {
+        throw new Error('Kan ikke utlede kjønn fra fødselsnummer.');
+    }
+};
+
 export const opprettSøknadFraValgteBarn = (valgteBarn: ValgtBarn): Partial<Søknad> | undefined => {
     const barn = getBarnFromValgteBarn(valgteBarn);
     const annenForelder = getAnnenForelderFromValgteBarn(valgteBarn);
@@ -507,7 +521,8 @@ export const opprettAnnenForelderFraEksisterendeSak = (
             : !!grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
         harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
         kanIkkeOppgis: false,
-        erUfør: grunnlag.søkerErFarEllerMedmor ? grunnlag.morErUfør : undefined,
+        erMorUfør: grunnlag.søkerErFarEllerMedmor ? grunnlag.morErUfør : undefined,
+        erAleneOmOmsorg: grunnlag.farMedmorErAleneOmOmsorg || grunnlag.morErAleneOmOmsorg,
     };
     const annenForelderFraSak = finnAnnenForelderForSaken(
         barn,
@@ -525,6 +540,7 @@ export const opprettSøknadFraValgteBarnMedSak = (
     valgteBarn: ValgtBarn,
     intl: IntlShape,
     registrerteBarn: SøkerBarn[],
+    søkerFnr: string,
 ): Partial<Søknad> | undefined => {
     const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, undefined);
     const { grunnlag } = eksisterendeSak!;
@@ -542,12 +558,14 @@ export const opprettSøknadFraValgteBarnMedSak = (
         barn,
         annenForelder,
         erEndringssøknad: false,
+        dekningsgrad: grunnlag.dekningsgrad,
     };
 
     if (valgteBarn.sak !== undefined) {
+        const rolle = valgteBarn.sak.sakTilhørerMor ? 'mor' : getRolleFarEllerMedmorFraFnr(søkerFnr);
         const søkersituasjon = {
             situasjon: valgteBarn.sak.gjelderAdopsjon ? 'adopsjon' : 'fødsel',
-            rolle: valgteBarn.sak.sakTilhørerMor ? undefined : 'far',
+            rolle,
         } as Søkersituasjon;
         søknad.søkersituasjon = søkersituasjon;
     }

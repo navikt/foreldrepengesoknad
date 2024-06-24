@@ -1,6 +1,6 @@
 import MockDate from 'mockdate';
 
-import { Periodetype, StønadskontoType, StønadskontoUttak } from '@navikt/fp-common';
+import { Periodetype, StønadskontoType } from '@navikt/fp-constants';
 
 import kontoSkalBesvares from './kontoSkalBesvarer';
 
@@ -17,7 +17,7 @@ describe('kontoSkalBesvares - når WLB gjelder', () => {
         const result = kontoSkalBesvares(
             Periodetype.Uttak,
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
-            [{ konto: StønadskontoType.Fedrekvote, dager: 50 }] as StønadskontoUttak[], //stønadskontoer
+            [{ konto: StønadskontoType.Fedrekvote, dager: 50 }], //stønadskontoer
             new Date('2022-08-10T00:00:00.000Z'), //familiehendelsesdato
             true, //erFarEllerMedmor
         );
@@ -27,7 +27,7 @@ describe('kontoSkalBesvares - når WLB gjelder', () => {
         const result = kontoSkalBesvares(
             Periodetype.Uttak,
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
-            [{ konto: StønadskontoType.Fedrekvote, dager: 50 }] as StønadskontoUttak[], //stønadskontoer
+            [{ konto: StønadskontoType.Fedrekvote, dager: 50 }], //stønadskontoer
             new Date('2022-08-08T00:00:00.000Z'), //familiehendelsesdato
             true, //erFarEllerMedmor
         );

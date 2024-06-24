@@ -1,5 +1,6 @@
 import { CSSProperties, FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
+
 import { TextField as DsTextField } from '@navikt/ds-react';
 
 import { getError, getValidationRules } from './formUtils';

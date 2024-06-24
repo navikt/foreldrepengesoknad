@@ -1,4 +1,4 @@
-import { InputTime } from '../types';
+import { InputTime } from './../types';
 import { ValidationFunction } from './types';
 import { getNumberFromStringInput, hasValue } from './validationUtils';
 

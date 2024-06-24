@@ -31,7 +31,7 @@ interface Props {
 const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
     initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost('/storage/foreldrepenger').reply(200, undefined);
+        apiMock.onPost('/rest/storage/foreldrepenger').reply(200, undefined);
     };
     return (
         <MemoryRouter initialEntries={[SøknadRoutes.UTENLANDSOPPHOLD]}>

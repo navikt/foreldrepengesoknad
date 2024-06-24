@@ -1,5 +1,5 @@
 {
-    "name": "@navikt/uttaksplan-ny",
+    "name": "@navikt/fp-uttaksplan-ny",
     "version": "1.0.0",
     "private": true,
     "license": "MIT",

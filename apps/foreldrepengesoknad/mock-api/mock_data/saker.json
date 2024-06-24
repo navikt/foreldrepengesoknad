@@ -33,33 +33,31 @@
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2024-01-22",
-                        "tom": "2024-03-01",
-                        "resultat": {
-                            "innvilget": true,
-                            "trekkerMinsterett": false,
-                            "trekkerDager": false,
-                            "årsak": "ANNET"
-                        },
-                        "utsettelseÅrsak": "SØKER_SYKDOM",
-                        "flerbarnsdager": false
-                    },
-                    {
-                        "fom": "2024-03-04",
-                        "tom": "2024-05-03",
-                        "kontoType": "MØDREKVOTE",
+                        "fom": "2024-04-22",
+                        "tom": "2024-04-26",
+                        "kontoType": "FEDREKVOTE",
                         "resultat": {
                             "innvilget": true,
                             "trekkerMinsterett": true,
                             "trekkerDager": true,
                             "årsak": "ANNET"
                         },
+                        "gradering": {
+                            "arbeidstidprosent": 50,
+                            "aktivitet": {
+                                "type": "FRILANS",
+                                "arbeidsgiver": {
+                                    "id": "string",
+                                    "type": "PRIVAT"
+                                }
+                            }
+                        },
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2024-05-06",
-                        "tom": "2024-06-28",
-                        "kontoType": "FELLESPERIODE",
+                        "fom": "2024-04-22",
+                        "tom": "2024-04-26",
+                        " utsettelseÅrsak": "HV_ØVELSE",
                         "resultat": {
                             "innvilget": true,
                             "trekkerMinsterett": true,

@@ -2,6 +2,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
+import MockDate from 'mockdate';
 
 import { ContextDataType } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
@@ -25,6 +26,7 @@ describe('<ArbeidIUtlandet>', () => {
     });
 
     it('skal ikke vise feilmelding, alt er utfylt', async () => {
+        MockDate.set(new Date('2024-03-25'));
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
@@ -89,6 +91,7 @@ describe('<ArbeidIUtlandet>', () => {
         });
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
+        MockDate.reset();
     });
 
     it('skal vise feilmelding når dato er i feil format', async () => {

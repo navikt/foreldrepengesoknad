@@ -22,7 +22,7 @@ const getAnnenForelderUførMock = (
     return {
         fornavn: 'Mor',
         etternavn: 'Utvikler',
-        erUfør: urUførInput,
+        erMorUfør: urUførInput,
         erForSyk: erForSykInput,
         kanIkkeOppgis: false,
         datoForAleneomsorg: datoForAleneomsorgInput,

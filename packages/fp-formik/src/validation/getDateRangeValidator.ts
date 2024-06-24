@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import datepickerUtils from '../components/formik-datepicker/datepickerUtils';
+import datepickerUtils from './../components/formik-datepicker/datepickerUtils';
 import getDateValidator, { DateValidationOptions, DateValidationResult } from './getDateValidator';
 import { ValidationFunction } from './types';
 

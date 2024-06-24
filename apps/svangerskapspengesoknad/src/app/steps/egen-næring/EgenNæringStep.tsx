@@ -25,7 +25,7 @@ import {
     isBeforeTodayOrToday,
     isRequired,
     isValidDate,
-    isValidNumber,
+    isValidNumberForm,
     notEmpty,
 } from '@navikt/fp-validation';
 
@@ -329,7 +329,9 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringInntekt.påkrevd' })),
                             hasMaxLength(intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.forLang' }), 9),
-                            isValidNumber(intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.ugyldigFormat' })),
+                            isValidNumberForm(
+                                intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.ugyldigFormat' }),
+                            ),
                             hasMinValue(intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.mindreEnnNull' }), 0),
                         ]}
                     />

@@ -1,5 +1,5 @@
 import { IntlShape } from 'react-intl';
-import { CustomFormErrorHandler, FieldErrorHandler } from '../types';
+import { CustomFormErrorHandler, FieldErrorHandler } from './../types';
 import { isIntlErrorObject, ValidationError } from './types';
 
 const createFieldErrorIntlKey = (

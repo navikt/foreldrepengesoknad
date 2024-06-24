@@ -6,6 +6,8 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
 import {
+    AnnenForelder,
+    Barn,
     Periode,
     Perioden,
     hasValue,
@@ -15,10 +17,15 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { dateToISOString } from '@navikt/fp-formik';
-import { SøkerBarn } from '@navikt/fp-types';
+import { SøkerBarn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { isISODateString } from '@navikt/fp-utils';
 
+import FeatureToggle from 'app/FeatureToggle';
 import { Alder } from 'app/types/Alder';
+
+import { getIsDeltUttak } from './annenForelderUtils';
+import { getFamiliehendelsedato } from './barnUtils';
+import fn from './toggleUtils';
 
 dayjs.extend(utc);
 dayjs.extend(isBetween);
@@ -47,7 +54,7 @@ export const getEldsteRegistrerteBarn = (registrerteBarn: SøkerBarn[]): SøkerB
 };
 
 export const sorterDatoEtterEldst = (dato: Date[]): string[] => {
-    const d = [...dato].map((d) => dateToISOString(d)).sort((a, b) => (isDateABeforeDateB(a!, b!) ? -1 : 1));
+    const d = [...dato].map((d) => dateToISOString(d)).sort((a, b) => (isDateABeforeDateB(a, b) ? -1 : 1));
     return d;
 };
 
@@ -126,6 +133,22 @@ export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolea
         dayjs(familiehendelsesdato).isSameOrAfter(andreAugust2022, 'day') &&
         dayjs(new Date()).isSameOrAfter(andreAugust2022, 'day')
     );
+};
+
+export const førsteJuli2024ReglerGjelder = (barn: Barn): boolean => {
+    let førsteJuli2024 = '2024-07-01';
+    if (fn.isFeatureEnabled(FeatureToggle.test1Juli2024Regler)) {
+        førsteJuli2024 = '2024-06-18';
+    }
+
+    if (dayjs().isBefore(dayjs(førsteJuli2024), 'day')) {
+        return false;
+    }
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    if ((isFødtBarn(barn) || isAdoptertBarn(barn)) && dayjs(familiehendelsesdato).isBefore(førsteJuli2024, 'day')) {
+        return false;
+    }
+    return true;
 };
 
 export const getEndringstidspunkt = (
@@ -213,11 +236,9 @@ export const getEndringstidspunkt = (
                 endringstidspunktOpprinneligPlan = fom;
             }
         });
-    } else {
+    } else if (søkerensUpdatedPlan.length > 0) {
         // Bruker har slettet opprinnelig plan, send med alt
-        if (søkerensUpdatedPlan.length > 0) {
-            return søkerensUpdatedPlan[0].tidsperiode.fom;
-        }
+        return søkerensUpdatedPlan[0].tidsperiode.fom;
     }
 
     return getOldestDate(endringstidspunktNyPlan, endringstidspunktOpprinneligPlan);
@@ -242,4 +263,15 @@ const getOldestDate = (
     return dayjs(endringstidspunktNyPlan).isSameOrBefore(dayjs(endringstidspunktOpprinneligPlan))
         ? endringstidspunktNyPlan
         : endringstidspunktOpprinneligPlan;
+};
+
+export const getVis1Juli2024Info = (barn: Barn, annenForelder: AnnenForelder) => {
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
+    const erDeltUttak = getIsDeltUttak(annenForelder);
+    return (
+        dayjs(familiehendelsesdato).isSameOrAfter(dayjs('2024-07-01'), 'd') &&
+        dayjs().isBefore(dayjs('2024-07-01'), 'd') &&
+        erDeltUttak &&
+        barn.antallBarn === 1
+    );
 };

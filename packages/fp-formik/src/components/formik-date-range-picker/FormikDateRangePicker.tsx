@@ -2,10 +2,10 @@ import { DatePickerProps } from '@navikt/ds-react';
 /* eslint-disable no-console */
 import React from 'react';
 import { useFormikContext } from 'formik';
-import { TypedFormInputValidationProps, UseFastFieldProps } from '../../types';
-import { ISOStringToDate } from '../formik-datepicker/datepickerUtils';
-import FormikDatepicker, { DatePickerBaseProps, DatepickerLimitations } from '../formik-datepicker/FormikDatepicker';
-import FormikInputGroup from '../formik-input-group/FormikInputGroup';
+import { TypedFormInputValidationProps, UseFastFieldProps } from './../../types';
+import { ISOStringToDate } from './../formik-datepicker/datepickerUtils';
+import FormikDatepicker, { DatePickerBaseProps, DatepickerLimitations } from './../formik-datepicker/FormikDatepicker';
+import FormikInputGroup from './../formik-input-group/FormikInputGroup';
 import { getDateRangePickerLimitations } from './dateRangePickerUtils';
 import './dateRangePicker.scss';
 

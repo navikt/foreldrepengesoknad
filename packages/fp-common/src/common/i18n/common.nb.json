@@ -40,5 +40,7 @@
     "varighet.separator--full": " og ",
     "varighet.separator--normal": ", ",
     "varighet.uker": "{uker, plural, one {# uke} other {# uker}}",
-    "varighet.dager": "{dager, plural, one {# dag} other {# dager}}"
+    "varighet.dager": "{dager, plural, one {# dag} other {# dager}}",
+    "tidsperiode.kort": "{fom} - {tom}",
+    "tidsperiode": "Fra {fom} til {tom}"
 }

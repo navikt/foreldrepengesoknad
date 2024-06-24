@@ -8,31 +8,34 @@ import { BodyShort, Box, HStack, Heading, Link, Radio, ReadMore, VStack } from '
 import {
     Barn,
     Dekningsgrad,
-    StønadskontoType,
     Tidsperioden,
-    TilgjengeligStønadskonto,
     Uttaksdagen,
     bemUtils,
     capitalizeFirstLetter,
     getAntallUker,
+    getAntallUkerFraStønadskontoer,
     getFlerbarnsuker,
     getVarighetString,
     isAdoptertBarn,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
-import { links } from '@navikt/fp-constants';
+import { StønadskontoType, links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { SøkersituasjonFp } from '@navikt/fp-types';
+import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import PeriodeMedForeldrepenger from 'app/context/types/PeriodeMedForeldrepenger';
 import { getFødselsdato, getTermindato } from 'app/utils/barnUtils';
+import { førsteJuli2024ReglerGjelder } from 'app/utils/dateUtils';
 import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 
-import './dekningsgradForm.less';
+import './panelWithCircleIcon.less';
 
-const finnSisteDagMedForeldrepenger = (stønadskontoer: TilgjengeligStønadskonto[], barn: Barn): string | undefined => {
+const finnSisteDagMedForeldrepenger = (
+    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+    barn: Barn,
+): string | undefined => {
     const erAdopsjon = isAdoptertBarn(barn);
     const fødselsdato = getFødselsdato(barn);
     const termindato = getTermindato(barn);
@@ -44,7 +47,9 @@ const finnSisteDagMedForeldrepenger = (stønadskontoer: TilgjengeligStønadskont
     }
 
     const dagerSomSkalLeggesTil =
-        getAntallUker(stønadskontoer.filter((s) => s.konto !== StønadskontoType.ForeldrepengerFørFødsel)) * 5;
+        getAntallUkerFraStønadskontoer(
+            stønadskontoer.kontoer.filter((s) => s.konto !== StønadskontoType.ForeldrepengerFørFødsel),
+        ) * 5;
 
     const førsteDag = Uttaksdagen(dayjs(dato).toDate()).denneEllerNeste();
     const sisteDag = Uttaksdagen(førsteDag).leggTil(dagerSomSkalLeggesTil - 1);
@@ -78,8 +83,25 @@ type Props = {
     goToNextDefaultStep: () => Promise<void>;
     barn: Barn;
     søkersituasjon: SøkersituasjonFp;
-    stønadskonto100: TilgjengeligStønadskonto[];
-    stønadskonto80: TilgjengeligStønadskonto[];
+    stønadskonto100: TilgjengeligeStønadskontoerForDekningsgrad;
+    stønadskonto80: TilgjengeligeStønadskontoerForDekningsgrad;
+};
+
+const getDekningsgradReadMoreTekst = (erDeltUttak: boolean, barn: Barn) => {
+    if (!erDeltUttak) {
+        return <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.alene" />;
+    }
+    if (førsteJuli2024ReglerGjelder(barn)) {
+        return <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.etterFørsteJuli2024" />;
+    }
+    return <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.førFørsteJuli2024" />;
+};
+
+const getDekningsgradInformasjonDeltUttak = (barn: Barn) => {
+    if (førsteJuli2024ReglerGjelder(barn)) {
+        return <FormattedMessage id="uttaksplaninfo.dekningsgrad.beskrivelse.etterFørsteJuli2024" />;
+    }
+    return <FormattedMessage id="uttaksplaninfo.dekningsgrad.beskrivelse.førFørsteJuli2024" />;
 };
 
 const DekningsgradForm: React.FunctionComponent<Props> = ({
@@ -136,7 +158,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                         name="dekningsgrad"
                         description={
                             erDeltUttak ? (
-                                <FormattedMessage id="uttaksplaninfo.dekningsgrad.beskrivelse" />
+                                getDekningsgradInformasjonDeltUttak(barn)
                             ) : (
                                 <FormattedMessage id="uttaksplaninfo.dekningsgrad.beskrivelse.alene" />
                             )
@@ -195,15 +217,15 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                     <ReadMore
                         header={
                             erDeltUttak ? (
-                                <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad.header" />
+                                <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.header" />
                             ) : (
-                                <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad.header.alene" />
+                                <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.header.alene" />
                             )
                         }
                     >
-                        <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad" />
-                        <Link href={links.søknadsfrister} target="_blank">
-                            <FormattedMessage id="uttaksplaninfo.veileder.dekningsgrad.link" />
+                        {getDekningsgradReadMoreTekst(erDeltUttak, barn)}
+                        <Link href={links.opphold} target="_blank">
+                            <FormattedMessage id="uttaksplaninfo.dekningsgrad.readmore.link" />
                             <ExternalLinkIcon title="a11y-title" fontSize="1.5rem" />
                         </Link>
                     </ReadMore>

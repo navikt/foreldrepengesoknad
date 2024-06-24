@@ -1,4 +1,3 @@
-import Environment from 'appData/Environment';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, BodyShort, VStack } from '@navikt/ds-react';
@@ -32,7 +31,7 @@ const AdopsjonDokPanel: React.FunctionComponent<Props> = ({ attachments, updateA
                 skjemanummer={Skjemanummer.OMSORGSOVERTAKELSE}
                 existingAttachments={attachments}
                 updateAttachments={updateAttachments}
-                saveAttachment={getSaveAttachment(Environment.REST_API_URL, 'engangsstonad')}
+                saveAttachment={getSaveAttachment('engangsstonad')}
             />
         </VStack>
     );

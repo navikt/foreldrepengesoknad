@@ -74,6 +74,29 @@ const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAtta
 
 const EMPTY_ATTACHMENT_LIST = [] as Attachment[];
 
+const replaceAttachmentIfFound = (
+    setAttachments: React.Dispatch<React.SetStateAction<Attachment[]>>,
+    pendingAttachment: Attachment,
+) => {
+    setAttachments((currentAttachments) =>
+        currentAttachments.map((currentAttachement) =>
+            currentAttachement.filename === pendingAttachment.filename ? pendingAttachment : currentAttachement,
+        ),
+    );
+};
+
+const addOrReplaceAttachments = (
+    setAttachments: React.Dispatch<React.SetStateAction<Attachment[]>>,
+    allPendingAttachments: Attachment[],
+) => {
+    setAttachments((currentAttachments) => {
+        const otherAttachments = currentAttachments.filter(
+            (ca) => !allPendingAttachments.some((pa) => pa.filename === ca.filename),
+        );
+        return otherAttachments.concat(allPendingAttachments);
+    });
+};
+
 export interface Props {
     updateAttachments: (attachments: Attachment[], hasPendingUploads: boolean) => void;
     attachmentType: AttachmentType;
@@ -107,23 +130,14 @@ const FileUploader: React.FunctionComponent<Props> = ({
             const uploadAttachments = async (allPendingAttachments: Attachment[]) => {
                 for (const pendingAttachment of allPendingAttachments) {
                     await uploadAttachment(pendingAttachment, saveAttachment);
-                    setAttachments((currentAttachments) =>
-                        currentAttachments.map((a) =>
-                            a.filename === pendingAttachment.filename ? pendingAttachment : a,
-                        ),
-                    );
+                    replaceAttachmentIfFound(setAttachments, pendingAttachment);
                 }
             };
 
             const allPendingAttachments = files.map((file) =>
                 getPendingAttachmentFromFile(file, attachmentType, skjemanummer),
             );
-            setAttachments((currentAttachments) => {
-                const otherAttachments = currentAttachments.filter(
-                    (ca) => !allPendingAttachments.some((pa) => pa.filename === ca.filename),
-                );
-                return otherAttachments.concat(allPendingAttachments);
-            });
+            addOrReplaceAttachments(setAttachments, allPendingAttachments);
             uploadAttachments(allPendingAttachments);
         },
         [attachmentType, skjemanummer, saveAttachment],

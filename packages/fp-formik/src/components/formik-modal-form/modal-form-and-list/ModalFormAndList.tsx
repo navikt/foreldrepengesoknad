@@ -3,10 +3,10 @@ import { Alert, Button, Modal } from '@navikt/ds-react';
 import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { v4 as uuid } from 'uuid';
-import bemUtils from '../../../utils/bemUtils';
-import ConfirmationDialog from '../../helpers/confirmation-dialog/ConfirmationDialog';
-import SkjemagruppeQuestion from '../../helpers/skjemagruppe-question/SkjemagruppeQuestion';
-import { FormikModalFormWidths, ModalFormAndListLabels, ModalFormAndListListItemBase } from '../types';
+import bemUtils from './../../../utils/bemUtils';
+import ConfirmationDialog from './../../helpers/confirmation-dialog/ConfirmationDialog';
+import SkjemagruppeQuestion from './../../helpers/skjemagruppe-question/SkjemagruppeQuestion';
+import { FormikModalFormWidths, ModalFormAndListLabels, ModalFormAndListListItemBase } from './../types';
 import './modalFormAndList.scss';
 
 type ModalFormRenderer<ItemType> = (props: {

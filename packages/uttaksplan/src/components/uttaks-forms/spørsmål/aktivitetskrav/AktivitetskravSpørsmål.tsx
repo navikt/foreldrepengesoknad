@@ -30,25 +30,23 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({ fieldName, navnPå
     const intl = useIntl();
 
     return (
-        <>
-            <Block padBottom="l">
-                <FormComponents.Select
-                    name={fieldName}
-                    description="For at du skal kunne bruke fellesperioden må mor være i aktivitet"
-                    label={intlUtils(intl, 'uttaksplan.aktivitetskrav', { navnMor: navnPåForeldre.mor })}
-                    validate={(value: MorsAktivitet | '') => {
-                        if (!hasValue(value)) {
-                            return intlUtils(intl, 'uttaksplan.validering.aktivitetskrav');
-                        }
+        <Block padBottom="l">
+            <FormComponents.Select
+                name={fieldName}
+                description="For at du skal kunne bruke fellesperioden må mor være i aktivitet"
+                label={intlUtils(intl, 'uttaksplan.aktivitetskrav', { navnMor: navnPåForeldre.mor })}
+                validate={(value: MorsAktivitet | '') => {
+                    if (!hasValue(value)) {
+                        return intlUtils(intl, 'uttaksplan.validering.aktivitetskrav');
+                    }
 
-                        return undefined;
-                    }}
-                >
-                    <option value="" />
-                    {renderOptions(intl)}
-                </FormComponents.Select>
-            </Block>
-        </>
+                    return undefined;
+                }}
+            >
+                <option value="" />
+                {renderOptions(intl)}
+            </FormComponents.Select>
+        </Block>
     );
 };
 

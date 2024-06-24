@@ -8,10 +8,10 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { Loader } from '@navikt/ds-react';
 
-import { ApiAccessError, ApiGeneralError, createApi } from '@navikt/fp-api';
+import { ApiAccessError, ApiGeneralError, getAxiosInstance } from '@navikt/fp-api';
 import { Kvittering, LocaleAll, Søker } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
-import { redirect, redirectToLogin } from '@navikt/fp-utils';
+import { redirect } from '@navikt/fp-utils';
 
 import DokumentasjonSteg from './steg/dokumentasjon/DokumentasjonSteg';
 import OmBarnetSteg from './steg/omBarnet/OmBarnetSteg';
@@ -22,7 +22,7 @@ import SenereUtenlandsoppholdSteg from './steg/utenlandsoppholdSenere/SenereUten
 import TidligereUtenlandsoppholdSteg from './steg/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
 import Velkommen from './velkommen/Velkommen';
 
-export const esApi = createApi(Environment.REST_API_URL);
+export const esApi = getAxiosInstance();
 
 export const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -31,10 +31,6 @@ export const Spinner: React.FunctionComponent = () => (
 );
 
 export const ApiErrorHandler: React.FunctionComponent<{ error: ApiAccessError | ApiGeneralError }> = ({ error }) => {
-    if (error instanceof ApiAccessError) {
-        redirectToLogin(Environment.LOGIN_URL);
-        return <Spinner />;
-    }
     return <ErrorPage appName="Engangsstønad" errorMessage={error.message} retryCallback={() => location.reload()} />;
 };
 
@@ -48,15 +44,15 @@ interface Props {
 const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChangeLocale, søker, mellomlagretData }) => {
     const navigate = useNavigate();
 
-    const [erVelkommen, setVelkommen] = useState(false);
+    const [erVelkommen, setErVelkommen] = useState(false);
     const [kvittering, setKvittering] = useState<Kvittering>();
 
     const { sendSøknad, errorSendSøknad } = useEsSendSøknad(esApi, locale, setKvittering);
-    const mellomlagreOgNaviger = useEsMellomlagring(esApi, locale, setVelkommen);
+    const mellomlagreOgNaviger = useEsMellomlagring(esApi, locale, setErVelkommen);
 
     useEffect(() => {
-        if (mellomlagretData && mellomlagretData[ContextDataType.CURRENT_PATH]) {
-            setVelkommen(true);
+        if (mellomlagretData?.[ContextDataType.CURRENT_PATH]) {
+            setErVelkommen(true);
             if (mellomlagretData.locale) {
                 onChangeLocale(mellomlagretData.locale);
             }
@@ -90,7 +86,7 @@ const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChange
                     <Velkommen
                         locale={locale}
                         onChangeLocale={onChangeLocale}
-                        startSøknad={setVelkommen}
+                        startSøknad={setErVelkommen}
                         erVelkommen={erVelkommen}
                         mellomlagreOgNaviger={mellomlagreOgNaviger}
                     />

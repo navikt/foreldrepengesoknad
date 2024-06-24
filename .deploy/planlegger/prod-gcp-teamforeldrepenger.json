@@ -1,0 +1,11 @@
+{
+    "app": "planlegger",
+    "autentisering": false,
+    "ingresses": [
+        "https://www.nav.no/foreldrepenger/planlegger"
+    ],
+    "env": {
+        "PUBLIC_PATH": "/foreldrepenger/planlegger",
+        "ENV": "prod"
+    }
+}

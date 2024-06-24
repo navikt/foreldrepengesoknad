@@ -1,0 +1,32 @@
+.background {
+    background-color: var(--a-gray-100);
+    padding-bottom: 1rem;
+}
+
+.content {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+}
+
+.lenkepanel {
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+}
+
+.panel {
+    text-decoration: none;
+    width: 100%;
+    padding: 12px;
+}
+
+.button {
+    width: 200px;
+}
+
+@media (max-width: 768px) {
+    .button {
+        width: 100%;
+    }
+}

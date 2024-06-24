@@ -1,4 +1,3 @@
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from 'react';
 import { FormattedMessage, IntlShape } from 'react-intl';
 
@@ -19,7 +18,6 @@ import {
     Situasjon,
     StønadskontoType,
     TidsperiodeDate,
-    TilgjengeligStønadskonto,
     Utsettelsesperiode,
     andreAugust2022ReglerGjelder,
     bemUtils,
@@ -37,6 +35,8 @@ import {
     isValidTidsperiode,
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
 } from '@navikt/fp-common';
+import { QuestionVisibility } from '@navikt/fp-formik';
+import { Stønadskonto } from '@navikt/fp-types';
 
 import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from '../../uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
@@ -68,7 +68,7 @@ interface Props {
     periode: Periode;
     erEndringssøknad: boolean;
     familiehendelsesdato: Date;
-    stønadskontoer: TilgjengeligStønadskonto[];
+    stønadskontoer: Stønadskonto[];
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: Arbeidsforhold[];
@@ -406,8 +406,6 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 <OverføringsårsakSpørsmål
                                     navnAnnenForelder={navnPåAnnenForelder}
                                     erEndringssøknad={erEndringssøknad}
-                                    valgtOverføringsårsak={values.overføringsårsak!}
-                                    isOpen={isOpen}
                                 />
                             </Block>
                             <Block

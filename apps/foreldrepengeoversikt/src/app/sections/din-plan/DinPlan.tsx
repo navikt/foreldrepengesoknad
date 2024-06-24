@@ -48,10 +48,10 @@ const DinPlan: React.FunctionComponent<Props> = ({
         vedtattUttaksplan = slåSammenLikePerioder(sak.gjeldendeVedtak.perioder);
     }
 
-    if (sak.åpenBehandling && sak.åpenBehandling.søknadsperioder) {
+    if (sak.åpenBehandling?.søknadsperioder) {
         søktePerioder = slåSammenLikePerioder(sak.åpenBehandling.søknadsperioder);
     }
-    const erUttaksplanVedtatt = vedtattUttaksplan ? true : false;
+    const erUttaksplanVedtatt = !!vedtattUttaksplan;
     const annenPartsPerioderForVisning =
         annenPartsPerioder !== undefined
             ? getPerioderForVisning(

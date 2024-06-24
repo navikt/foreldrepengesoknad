@@ -1,6 +1,6 @@
 import MockDate from 'mockdate';
 
-import { Periodetype, StønadskontoType } from '@navikt/fp-common';
+import { Periodetype, StønadskontoType } from '@navikt/fp-constants';
 
 import { aktivitetskravMorSkalBesvares } from './aktivitetskravMorSkalBesvares';
 

@@ -10,15 +10,7 @@ import SøknadRoutes from 'app/routes/routes';
 
 import * as stories from './AnnenForelderSteg.stories';
 
-const {
-    AnnenForelderFraOppgittBarn,
-    SkalOppgiPersonalia,
-    ForFar,
-    MorUfødtBarn,
-    MedmorUfødtBarn,
-    FarUfødtBarn,
-    FarGiftUfødtBarn,
-} = composeStories(stories);
+const { AnnenForelderFraOppgittBarn, SkalOppgiPersonalia, ForFar, MorUfødtBarn } = composeStories(stories);
 
 describe('<AnnenForelderSteg>', () => {
     it('skal fylle ut at en har aleneomsorg for barnet', async () => {
@@ -472,28 +464,6 @@ describe('<AnnenForelderSteg>', () => {
         });
     });
 
-    it('skal vise infoboks om farskapsportal når mor søker på termin, annen forelder er far og har rett i Norge', async () => {
-        const screen = render(<MorUfødtBarn />);
-
-        expect(await screen.findByText('Den andre forelderen')).toBeInTheDocument();
-
-        const fornavnInput = screen.getByLabelText('Fornavnet til den andre forelderen');
-        await userEvent.type(fornavnInput, 'Espen');
-        const etternavnInput = screen.getByLabelText('Etternavnet til den andre forelderen');
-        await userEvent.type(etternavnInput, 'Utvikler');
-
-        const fødselsnrInput = screen.getByLabelText('Fødselsnummer eller D-nummer til den andre forelderen');
-        await userEvent.type(fødselsnrInput, '05057923524');
-
-        expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[0]);
-
-        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]);
-
-        expect(screen.getByText('Her kan far erklære farskap digitalt', { exact: false })).toBeInTheDocument();
-    });
-
     it('skal ikke vise infoboks om farskapsportal når mor søker på termin, annen forelder er en medmor og har rett i Norge', async () => {
         render(<MorUfødtBarn />);
 
@@ -515,110 +485,5 @@ describe('<AnnenForelderSteg>', () => {
         await userEvent.click(screen.getAllByText('Ja')[1]);
 
         expect(screen.queryByText('Her kan far erklære farskap digitalt', { exact: false })).not.toBeInTheDocument();
-    });
-
-    it('skal vise infoboks om farskapsportal når mor søker på termin, annen forelder har utenlandsk fnr og har rett i Norge', async () => {
-        render(<MorUfødtBarn />);
-
-        expect(await screen.findByText('Den andre forelderen')).toBeInTheDocument();
-
-        const fornavnInput = screen.getByLabelText('Fornavnet til den andre forelderen');
-        await userEvent.type(fornavnInput, 'Espen');
-        const etternavnInput = screen.getByLabelText('Etternavnet til den andre forelderen');
-        await userEvent.type(etternavnInput, 'Utvikler');
-
-        expect(screen.getByText('Fødselsnummer eller D-nummer til den andre forelderen')).toBeInTheDocument();
-
-        const fødselsnrInput = screen.getByLabelText('Fødselsnummer eller D-nummer til den andre forelderen');
-        await userEvent.type(fødselsnrInput, '0000000000000000');
-
-        await userEvent.click(screen.getByText('Fødselsnummeret er ikke fra Norge'));
-
-        const hvorBorSelect = screen.getByLabelText('Hvor bor den andre forelderen?');
-        await userEvent.selectOptions(hvorBorSelect, 'Oman');
-
-        expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[0]);
-
-        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]);
-
-        expect(screen.getByText('Her kan far erklære farskap digitalt', { exact: false })).toBeInTheDocument();
-    });
-
-    it('skal vise infoboks om farskapsportal når far søker på termin, ikke er gift og uansett om mor har rett til foreldrepenger', async () => {
-        render(<FarUfødtBarn />);
-
-        expect(await screen.findByText('Den andre forelderen')).toBeInTheDocument();
-
-        const fornavnInput = screen.getByLabelText('Fornavnet til den andre forelderen');
-        await userEvent.type(fornavnInput, 'Mor');
-        const etternavnInput = screen.getByLabelText('Etternavnet til den andre forelderen');
-        await userEvent.type(etternavnInput, 'Utvikler');
-
-        expect(screen.getByText('Fødselsnummer eller D-nummer til den andre forelderen')).toBeInTheDocument();
-
-        const fødselsnrInput = screen.getByLabelText('Fødselsnummer eller D-nummer til den andre forelderen');
-        await userEvent.type(fødselsnrInput, '05057923424');
-
-        expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[0]);
-
-        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[0]);
-
-        expect(screen.getByText('Her kan du erklære farskap digitalt', { exact: false })).toBeInTheDocument();
-
-        await userEvent.click(screen.getAllByText('Ja')[1]);
-
-        expect(screen.getByText('Her kan du erklære farskap digitalt', { exact: false })).toBeInTheDocument();
-    });
-
-    it('skal ikke vise infoboks om farskapsportal når medmor søker', async () => {
-        render(<MedmorUfødtBarn />);
-
-        expect(await screen.findByText('Den andre forelderen')).toBeInTheDocument();
-
-        const fornavnInput = screen.getByLabelText('Fornavnet til den andre forelderen');
-        await userEvent.type(fornavnInput, 'Mor');
-        const etternavnInput = screen.getByLabelText('Etternavnet til den andre forelderen');
-        await userEvent.type(etternavnInput, 'Utvikler');
-
-        const fødselsnrInput = screen.getByLabelText('Fødselsnummer eller D-nummer til den andre forelderen');
-        await userEvent.type(fødselsnrInput, '05057923424');
-
-        expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[0]);
-
-        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[0]);
-
-        expect(screen.queryByText('Her kan du erklære farskap digitalt', { exact: false })).not.toBeInTheDocument();
-
-        await userEvent.click(screen.getAllByText('Ja')[1]);
-
-        expect(screen.queryByText('Her kan du erklære farskap digitalt', { exact: false })).not.toBeInTheDocument();
-    });
-
-    it('skal ikke vise infoboks om farskapsportal når far er gift', async () => {
-        render(<FarGiftUfødtBarn />);
-
-        expect(await screen.findByText('Den andre forelderen')).toBeInTheDocument();
-
-        const fornavnInput = screen.getByLabelText('Fornavnet til den andre forelderen');
-        await userEvent.type(fornavnInput, 'Mor');
-        const etternavnInput = screen.getByLabelText('Etternavnet til den andre forelderen');
-        await userEvent.type(etternavnInput, 'Utvikler');
-
-        const fødselsnrInput = screen.getByLabelText('Fødselsnummer eller D-nummer til den andre forelderen');
-        await userEvent.type(fødselsnrInput, '05057923424');
-
-        expect(screen.getByText('Er dere sammen om omsorgen for barnet?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[0]);
-
-        expect(screen.getByText('Har den andre forelderen rett til foreldrepenger i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]);
-
-        expect(screen.queryByText('Her kan du erklære farskap digitalt', { exact: false })).not.toBeInTheDocument();
     });
 });

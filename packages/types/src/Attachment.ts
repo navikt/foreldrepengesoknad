@@ -1,10 +1,6 @@
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
 
 import { AttachmentMetadata } from './AttachmentMetadata';
-
-export enum InnsendingsType {
-    SEND_SENERE = 'SEND_SENERE',
-}
 
 export type Attachment = {
     dokumenterer?: AttachmentMetadata;

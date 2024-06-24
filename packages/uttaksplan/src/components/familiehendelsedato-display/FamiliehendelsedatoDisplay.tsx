@@ -1,17 +1,21 @@
-import { Barn, bemUtils, formaterDatoUtenDag, isAdoptertBarn, isFødtBarn } from '@navikt/fp-common';
 import { FunctionComponent, ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { BodyShort } from '@navikt/ds-react';
-import HjerteIkon from '../../assets/HjerteIkon';
 
+import { BodyShort } from '@navikt/ds-react';
+
+import { Barn, bemUtils, formaterDatoUtenDag, isAdoptertBarn, isFødtBarn } from '@navikt/fp-common';
+import { getFamiliehendelsedato } from '@navikt/fp-utils';
+
+import HjerteIkon from '../../assets/HjerteIkon';
 import './familiehendelsesdatoDisplay.less';
 
 interface Props {
-    familiehendelsedato: Date;
     barn: Barn;
 }
 
-const getTekst = (barn: Barn, familiehendelsedato: Date, antallBarn: number): ReactNode => {
+export const getFamiliehendelseTekst = (barn: Barn): ReactNode => {
+    const familiehendelsedato = getFamiliehendelsedato(barn);
+    const antallBarn = barn.antallBarn;
     if (!isAdoptertBarn(barn)) {
         if (isFødtBarn(barn)) {
             return (
@@ -38,7 +42,7 @@ const getTekst = (barn: Barn, familiehendelsedato: Date, antallBarn: number): Re
     );
 };
 
-const FamiliehendelsedatoDisplay: FunctionComponent<Props> = ({ familiehendelsedato, barn }) => {
+const FamiliehendelsedatoDisplay: FunctionComponent<Props> = ({ barn }) => {
     const bem = bemUtils('familiehendelsesdatoDisplay');
 
     return (
@@ -46,7 +50,7 @@ const FamiliehendelsedatoDisplay: FunctionComponent<Props> = ({ familiehendelsed
             <div className={bem.element('hjerte')}>
                 <HjerteIkon fylt={true} title="Hjerte" />
             </div>
-            <BodyShort>{getTekst(barn, familiehendelsedato, barn.antallBarn)}</BodyShort>
+            <BodyShort>{getFamiliehendelseTekst(barn)}</BodyShort>
         </div>
     );
 };

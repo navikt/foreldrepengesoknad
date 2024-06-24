@@ -5,55 +5,14 @@ import { Link } from 'react-router-dom';
 
 import { Alert, BodyLong, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import {
-    AnnenForelder,
-    Barn,
-    SivilstandType,
-    getKjønnFromFnrString,
-    isAnnenForelderOppgitt,
-    isFarEllerMedmor,
-    isUfødtBarn,
-} from '@navikt/fp-common';
-import { links } from '@navikt/fp-constants';
+import { AnnenForelder, Barn, isFarEllerMedmor } from '@navikt/fp-common';
 import { Datepicker, RadioGroup } from '@navikt/fp-form-hooks';
 import { Søker, Søkerrolle } from '@navikt/fp-types';
 import { isAfterOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 
-import { AnnenForelderErOppgitt, AnnenForelderFormData, erAnnenForelderOppgitt } from './AnnenForelderFormData';
-
-const skalViseInfoOmFarskapsportal = (
-    søker: Søker,
-    rolle: Søkerrolle,
-    formValues: AnnenForelderErOppgitt,
-    annenForelder?: AnnenForelder,
-    barnetErIkkeFødt?: boolean,
-) => {
-    const annenForelderHarRett = formValues.harRettPåForeldrepengerINorge === true;
-    const fnrFraAnnenForelder = annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.fnr : undefined;
-    const annenForelderFnr = fnrFraAnnenForelder || formValues.fnr;
-    const annenForelderErFarEllerUtenlandsk =
-        (annenForelderFnr !== undefined && getKjønnFromFnrString(annenForelderFnr) === 'M') || formValues.utenlandskFnr;
-    const annenForelderHarRettErBesvart = formValues.harRettPåForeldrepengerINorge !== undefined;
-    const søkerErIkkeGift = søker.sivilstand === undefined || søker.sivilstand.type !== SivilstandType.GIFT;
-    return (
-        ((rolle === 'far' && annenForelderHarRettErBesvart) ||
-            (rolle === 'mor' && annenForelderErFarEllerUtenlandsk && annenForelderHarRett)) &&
-        barnetErIkkeFødt &&
-        søkerErIkkeGift
-    );
-};
-
-const getTekstOmFarskapsportal = (rolle: Søkerrolle, barnetErIkkeFødt: boolean) => {
-    if (rolle === 'far' && barnetErIkkeFødt) {
-        return 'annenForelder.tekstOmFarskapsportal.far.del1';
-    }
-    if (rolle === 'mor' && barnetErIkkeFødt) {
-        return 'annenForelder.tekstOmFarskapsportal.mor.del1';
-    }
-    return '';
-};
+import { AnnenForelderFormData, erAnnenForelderOppgitt } from './AnnenForelderFormData';
 
 type Props = {
     søker: Søker;
@@ -62,28 +21,17 @@ type Props = {
     annenForelder?: AnnenForelder;
 };
 
-const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søker, rolle, barn, annenForelder }) => {
+const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn }) => {
     const intl = useIntl();
 
     const familiehendelsedato = getFamiliehendelsedato(barn);
 
     const formMethods = useFormContext<AnnenForelderFormData>();
 
-    const barnetErIkkeFødt = isUfødtBarn(barn);
-    const tekstOmFarskapsportalId = getTekstOmFarskapsportal(rolle, barnetErIkkeFødt);
-
     const formValues = formMethods.watch();
     if (!erAnnenForelderOppgitt(formValues)) {
         throw Error('Annen forelder skal alltid være oppgitt her');
     }
-
-    const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(
-        søker,
-        rolle,
-        formValues,
-        annenForelder,
-        barnetErIkkeFødt,
-    );
 
     return (
         <>
@@ -188,21 +136,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ søker, rol
                     </ReadMore>
                 </div>
             )}
-            {formValues.erAleneOmOmsorg === false && visInfoboksOmFarskapsportal && (
-                <Alert variant="info">
-                    <FormattedMessage
-                        id={tekstOmFarskapsportalId}
-                        values={{
-                            a: (msg: any) => (
-                                <a href={links.farskapsportal} className="lenke" rel="noreferrer" target="_blank">
-                                    {msg}
-                                </a>
-                            ),
-                        }}
-                    />
-                    <FormattedMessage id="annenForelder.tekstOmFarskapsportal.mor.far.del2" />
-                </Alert>
-            )}
+
             {formValues.erAleneOmOmsorg === false && formValues.harRettPåForeldrepengerINorge === false && (
                 <div>
                     <RadioGroup

@@ -1,17 +1,19 @@
-import { IntlShape } from 'react-intl';
 import { flatten, isArray, uniqBy } from 'lodash';
+import { IntlShape } from 'react-intl';
+
+import { guid } from '@navikt/fp-common';
+
 import {
-    UttaksplanRegelTestresultat,
-    RegelAvvik,
     Regel,
-    RegelTestresultatInfo,
-    RegelStatus,
-    RegelTestresultatInfoObject,
-    RegelAvvikInfo,
     RegelAlvorlighet,
+    RegelAvvik,
+    RegelAvvikInfo,
+    RegelStatus,
+    RegelTestresultatInfo,
+    RegelTestresultatInfoObject,
+    UttaksplanRegelTestresultat,
 } from './types/regelTypes';
 import { Validator } from './types/validatorTypes';
-import { guid } from '@navikt/fp-common';
 
 const getRegelIntlKey = (regel: Regel, intlRegelPrefix: string): string =>
     `${intlRegelPrefix}.${regel.alvorlighet}.${regel.key}`;
@@ -87,7 +89,7 @@ export const regelPasserer = (regel: Regel): RegelStatus => ({
 });
 
 export const getRegelAvvikForPeriode = (resultat: UttaksplanRegelTestresultat, periodeId: string): RegelAvvik[] => {
-    return resultat && resultat.avvikPerPeriode[periodeId] ? resultat.avvikPerPeriode[periodeId] : [];
+    return resultat?.avvikPerPeriode?.[periodeId] ? resultat.avvikPerPeriode[periodeId] : [];
 };
 
 export const getRegelAvvik = (resultat: RegelStatus[]): RegelAvvik[] => {

@@ -6,7 +6,7 @@ import { links } from '@navikt/fp-constants';
 
 const InfoOmFørstegangstjeneste = () => {
     return (
-        <ExpansionCard size="small" aria-label="Er du i førstegangstjeneste?">
+        <ExpansionCard size="small" aria-label="Informasjon til deg som er i førstegangstjenesten">
             <ExpansionCard.Header>
                 <ExpansionCard.Title size="small" as="h3">
                     <FormattedMessage id="inntektsinformasjon.infoOmFørstegangstjeneste.tittel" />

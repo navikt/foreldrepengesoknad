@@ -1,4 +1,3 @@
-import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/uttaksplan';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
@@ -8,6 +7,7 @@ import { BodyShort } from '@navikt/ds-react';
 import { Tidsperioden, Uttaksdagen, getValidTidsperiode, getVarighetString, isFødtBarn } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/fp-formik';
 import { bemUtils, isValidDate } from '@navikt/fp-utils';
+import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';

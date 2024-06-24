@@ -6,12 +6,10 @@ import { BodyLong, Label, VStack } from '@navikt/ds-react';
 
 import { getSaveAttachment } from '@navikt/fp-api';
 import { addMetadata, lagSendSenereDokument } from '@navikt/fp-common';
-import { AttachmentType } from '@navikt/fp-constants';
+import { AttachmentMetadataType, AttachmentType, InnsendingsType } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
-import { AttachmentMetadataType } from '@navikt/fp-types/src/AttachmentMetadata';
 import { FileUploader } from '@navikt/fp-ui';
 
-import Environment from 'app/Environment';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
@@ -60,7 +58,7 @@ const VedleggUploader: FunctionComponent<Props> = ({
             <FileUploader
                 attachmentType={attachmentType}
                 skjemanummer={skjemanummer}
-                existingAttachments={attachments}
+                existingAttachments={attachments.filter((a) => a.innsendingsType !== InnsendingsType.SEND_SENERE)}
                 updateAttachments={(attachments) => {
                     const attachmentsMedMetadata = attachments.map((a) =>
                         addMetadata(a, {
@@ -70,7 +68,7 @@ const VedleggUploader: FunctionComponent<Props> = ({
 
                     return updateAttachments(attachmentsMedMetadata);
                 }}
-                saveAttachment={getSaveAttachment(Environment.REST_API_URL, 'foreldrepenger')}
+                saveAttachment={getSaveAttachment('foreldrepenger')}
             />
         </VStack>
     );

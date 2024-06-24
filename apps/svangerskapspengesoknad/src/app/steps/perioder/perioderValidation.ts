@@ -51,7 +51,6 @@ export const validateStillingsprosentPåPerioder =
 
         if (
             opprinneligStillingsProsent > 0 &&
-            allePerioder &&
             allePerioder?.every(
                 (periode) =>
                     periode.stillingsprosent &&
@@ -67,7 +66,6 @@ export const validateStillingsprosentPåPerioder =
         }
         if (
             opprinneligStillingsProsent === 0 &&
-            allePerioder &&
             allePerioder?.every(
                 (periode) => periode.stillingsprosent && getFloatFromString(periode.stillingsprosent) === 100,
             )

@@ -13,7 +13,6 @@ import {
     PeriodeValidState,
     Periodetype,
     Situasjon,
-    TilgjengeligStønadskonto,
     Utsettelsesperiode,
     bemUtils,
     isAvslåttPeriode,
@@ -21,6 +20,7 @@ import {
     isInfoPeriode,
     isSlettbarAvslåttPeriode,
 } from '@navikt/fp-common';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import VeilederMeldinger from '../../validering/veilederInfo/VeilederMeldinger';
 import { VeilederMessage } from '../../validering/veilederInfo/types';
@@ -41,7 +41,7 @@ interface Props {
     toggleIsOpen: (id: string) => void;
     familiehendelsesdato: Date;
     handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
-    stønadskontoer: TilgjengeligStønadskonto[];
+    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     arbeidsforhold: Arbeidsforhold[];
@@ -68,7 +68,7 @@ const renderPeriodeListeInnhold = (
     periode: Periode,
     familiehendelsesdato: Date,
     handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void,
-    stønadskontoer: TilgjengeligStønadskonto[],
+    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     navnPåForeldre: NavnPåForeldre,
     annenForelder: AnnenForelder,
     toggleIsOpen: (id: string) => void,
@@ -112,7 +112,7 @@ const renderPeriodeListeInnhold = (
                     periode={periode}
                     familiehendelsesdato={familiehendelsesdato}
                     handleUpdatePeriode={handleUpdatePeriode}
-                    stønadskontoer={stønadskontoer}
+                    stønadskontoer={stønadskontoer.kontoer}
                     navnPåForeldre={navnPåForeldre}
                     annenForelder={annenForelder}
                     toggleIsOpen={toggleIsOpen}
@@ -151,7 +151,6 @@ const renderPeriodeListeInnhold = (
                     situasjon={situasjon}
                     utsettelserIPlan={utsettelserIPlan}
                     setPerioderErGyldige={setPerioderErGyldige}
-                    isOpen={isOpen}
                 />
             );
         case Periodetype.Hull:
@@ -253,7 +252,6 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
                 <Accordion.Item open={isOpen}>
                     <Accordion.Header onClick={() => toggleIsOpen(periode.id)} className={bem.element('header')}>
                         <PeriodelisteItemHeader
-                            egenPeriode={egenPeriode}
                             periode={periode}
                             navnPåForeldre={navnPåForeldre}
                             melding={melding}

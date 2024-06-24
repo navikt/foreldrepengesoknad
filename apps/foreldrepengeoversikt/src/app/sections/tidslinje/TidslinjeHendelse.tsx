@@ -23,6 +23,7 @@ interface Props {
     tidligstBehandlingsDato: Date | undefined;
     finnesHendelserFørAktivtSteg: boolean;
     visHeleTidslinjen: boolean;
+    erSistePåForsidenMenIkkeSisteIHeleTidslinjen: boolean;
 }
 
 const bem = bemUtils('tidslinje-hendelse');
@@ -85,6 +86,7 @@ const TidslinjeHendelse: React.FunctionComponent<Props> = ({
     tidligstBehandlingsDato,
     finnesHendelserFørAktivtSteg,
     visHeleTidslinjen,
+    erSistePåForsidenMenIkkeSisteIHeleTidslinjen,
 }) => {
     const tidTekst = visKlokkeslett ? formaterTid(date) : '';
     const dateTekst = getDateTekst(type, date, førsteUttaksdagISaken, tidligstBehandlingsDato);
@@ -100,6 +102,7 @@ const TidslinjeHendelse: React.FunctionComponent<Props> = ({
                             : ''
                     }`,
                 ),
+                bem.modifier(`${erSistePåForsidenMenIkkeSisteIHeleTidslinjen ? 'siste_hendelse_på_forsiden' : ''}`),
             )}
         >
             <div className={classNames(bem.element('ikon'), bem.element(getIkonClassElement(isActiveStep, date)))}>

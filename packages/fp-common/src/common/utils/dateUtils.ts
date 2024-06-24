@@ -83,7 +83,7 @@ export const formaterDatoKompakt = (dato: Date): string => {
 };
 
 export const formaterDato = (dato: string | Date | undefined, datoformat?: string): string => {
-    return dayjs(dato).format(datoformat || 'dddd D. MMMM YYYY');
+    return dayjs(dato).format(datoformat ?? 'dddd D. MMMM YYYY');
 };
 
 export const ISOStringToDate = (dateString: string | undefined): Date | undefined => {

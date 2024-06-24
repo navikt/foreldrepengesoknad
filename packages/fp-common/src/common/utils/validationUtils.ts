@@ -1,12 +1,14 @@
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
-import minMax from 'dayjs/plugin/minMax';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
-import intlUtils from './intlUtils';
-import { Kjønn } from './../../common';
+
 import { DateRange, YesOrNo, getNumberFromNumberInputValue } from '@navikt/fp-formik';
+
+import { Kjønn } from './../../common';
+import intlUtils from './intlUtils';
 
 dayjs.extend(isBetween);
 dayjs.extend(minMax);
@@ -174,10 +176,7 @@ export const dateRangesExceedsRange = (ranges: DateRange[], allowedRange: DateRa
 };
 
 export const sortDateRange = (d1: DateRange, d2: DateRange): number => {
-    if (dayjs(d1.from).isSameOrBefore(d2.from)) {
-        return -1;
-    }
-    return 1;
+    return sortOpenDateRange(d1, d2);
 };
 
 export const sortItemsByFom = (a: ItemWithFom, b: ItemWithFom) =>

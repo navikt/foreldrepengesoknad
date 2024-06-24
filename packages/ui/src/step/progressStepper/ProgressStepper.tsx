@@ -8,7 +8,7 @@ import './progressStepper.css';
 
 export type ProgressStep<TYPE> = {
     id: TYPE;
-    label: string;
+    label?: string;
     isSelected: boolean;
     completed?: boolean;
 };
@@ -16,9 +16,16 @@ export type ProgressStep<TYPE> = {
 export interface ProgressStepperProps<TYPE> {
     steps: Array<ProgressStep<TYPE>>;
     onStepSelect?: (step: ProgressStep<TYPE>) => void;
+    hideExpandableStepInfo?: boolean;
+    showGreenStatusBar?: boolean;
 }
 
-const ProgressStepper = <TYPE extends string>({ steps, onStepSelect }: ProgressStepperProps<TYPE>) => {
+const ProgressStepper = <TYPE extends string>({
+    steps,
+    onStepSelect,
+    hideExpandableStepInfo = false,
+    showGreenStatusBar = false,
+}: ProgressStepperProps<TYPE>) => {
     const intl = useIntl();
     const [allStepsVisible, setAllStepsVisible] = useState(false);
 
@@ -57,42 +64,56 @@ const ProgressStepper = <TYPE extends string>({ steps, onStepSelect }: ProgressS
 
     return (
         <div className="progressStepper">
-            <div className="progressStepper__heading">
-                <Heading
-                    tabIndex={-1}
-                    size="medium"
-                    level="2"
-                    className="progressStepper__heading__title"
-                    ref={headingRef}
-                >
-                    {step.label}
-                </Heading>
-            </div>
-            <div className="progressStepper__progressBarWrapper" role="presentation" aria-hidden={true}>
-                <div className="progressStepper__progressBar">
-                    <div className="progressStepper__progressBar__progress" style={{ width: `${progress}%` }} />
+            {step.label && (
+                <div className="progressStepper__heading">
+                    <Heading
+                        tabIndex={-1}
+                        size="medium"
+                        level="2"
+                        className="progressStepper__heading__title"
+                        ref={headingRef}
+                    >
+                        {step.label}
+                    </Heading>
                 </div>
+            )}
+            <div className="progressStepper__progressBarWrapper" role="presentation" aria-hidden={true}>
+                {showGreenStatusBar && (
+                    <div className="progressStepper__progressBar_green">
+                        <div
+                            className="progressStepper__progressBar__progress_green"
+                            style={{ width: `${progress}%` }}
+                        />
+                    </div>
+                )}
+                {!showGreenStatusBar && (
+                    <div className="progressStepper__progressBar">
+                        <div className="progressStepper__progressBar__progress" style={{ width: `${progress}%` }} />
+                    </div>
+                )}
             </div>
             <nav aria-label={intl.formatMessage({ id: 'ProgressStepper.NavigasjonAriaLabel' })}>
                 <div className="progressStepper__stepsInfo">
                     {currentStepInfo}
-                    <button
-                        type="button"
-                        className="navds-read-more__button navds-body-short"
-                        aria-controls={contentContainerID}
-                        aria-expanded={allStepsVisible}
-                        aria-label={allStepsVisible ? 'Skjul stegene' : 'Se alle steg'}
-                        onClick={() => {
-                            setAllStepsVisible(!allStepsVisible);
-                        }}
-                    >
-                        {allStepsVisible === false && (
-                            <ChevronDownIcon className="progressStepper__toggleAllStepsIcon" aria-hidden />
-                        )}
-                        {allStepsVisible && (
-                            <ChevronUpIcon className="progressStepper__toggleAllStepsIcon" aria-hidden />
-                        )}
-                    </button>
+                    {!hideExpandableStepInfo && (
+                        <button
+                            type="button"
+                            className="navds-read-more__button navds-body-short"
+                            aria-controls={contentContainerID}
+                            aria-expanded={allStepsVisible}
+                            aria-label={allStepsVisible ? 'Skjul stegene' : 'Se alle steg'}
+                            onClick={() => {
+                                setAllStepsVisible(!allStepsVisible);
+                            }}
+                        >
+                            {allStepsVisible === false && (
+                                <ChevronDownIcon className="progressStepper__toggleAllStepsIcon" aria-hidden />
+                            )}
+                            {allStepsVisible && (
+                                <ChevronUpIcon className="progressStepper__toggleAllStepsIcon" aria-hidden />
+                            )}
+                        </button>
+                    )}
                 </div>
                 <div id={contentContainerID} aria-hidden={allStepsVisible === false} aria-live="polite">
                     {allStepsVisible && (
@@ -110,7 +131,7 @@ const ProgressStepper = <TYPE extends string>({ steps, onStepSelect }: ProgressS
                                         completed={s.completed}
                                         interactive={onStepSelect !== undefined && s.completed === true}
                                     >
-                                        {s.label}
+                                        {s.label || ''}
                                     </Stepper.Step>
                                 ))}
                             </Stepper>

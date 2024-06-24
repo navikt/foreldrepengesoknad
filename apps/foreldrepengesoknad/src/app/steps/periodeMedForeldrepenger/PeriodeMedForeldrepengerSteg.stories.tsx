@@ -5,20 +5,23 @@ import { MemoryRouter } from 'react-router-dom';
 import AxiosMock from 'storybook/utils/AxiosMock';
 
 import { AnnenForelder, Barn, BarnType, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
+import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { SøkersituasjonFp } from '@navikt/fp-types';
+import {
+    SøkersituasjonFp,
+    TilgjengeligeStønadskontoer,
+    TilgjengeligeStønadskontoerForDekningsgrad,
+} from '@navikt/fp-types';
 
-import Environment from 'app/Environment';
 import { FpApiDataContext } from 'app/api/context/FpApiDataContext';
 import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
-import { TilgjengeligeStønadskontoerDTO } from 'app/types/TilgjengeligeStønadskontoerDTO';
 
 import PeriodeMedForeldrepengerSteg from './PeriodeMedForeldrepengerSteg';
 
-const UTTAKSPLAN_ANNEN_URL = '/innsyn/v2/annenPartVedtak';
-const STØNADSKONTO_URL = `${Environment.REST_API_URL}/konto`;
+const UTTAKSPLAN_ANNEN_URL = '/rest/innsyn/v2/annenPartVedtak';
+const STØNADSKONTO_URL = `/rest/konto`;
 
 const promiseAction =
     () =>
@@ -28,32 +31,54 @@ const promiseAction =
     };
 
 const STØNADSKONTO_100 = {
-    kontoer: {
-        MØDREKVOTE: 75,
-        FEDREKVOTE: 75,
-        FELLESPERIODE: 80,
-        FORELDREPENGER_FØR_FØDSEL: 15,
-    },
+    kontoer: [
+        {
+            konto: StønadskontoType.Mødrekvote,
+            dager: 75,
+        },
+        {
+            konto: StønadskontoType.Fedrekvote,
+            dager: 75,
+        },
+        {
+            konto: StønadskontoType.Fellesperiode,
+            dager: 80,
+        },
+        {
+            konto: StønadskontoType.ForeldrepengerFørFødsel,
+            dager: 15,
+        },
+    ],
     minsteretter: {
         farRundtFødsel: 0,
-        generellMinsterett: 0,
         toTette: 0,
     },
-};
+} as TilgjengeligeStønadskontoerForDekningsgrad;
 
 const STØNADSKONTO_80 = {
-    kontoer: {
-        MØDREKVOTE: 95,
-        FEDREKVOTE: 95,
-        FELLESPERIODE: 90,
-        FORELDREPENGER_FØR_FØDSEL: 15,
-    },
+    kontoer: [
+        {
+            konto: StønadskontoType.Mødrekvote,
+            dager: 95,
+        },
+        {
+            konto: StønadskontoType.Fedrekvote,
+            dager: 95,
+        },
+        {
+            konto: StønadskontoType.Fellesperiode,
+            dager: 90,
+        },
+        {
+            konto: StønadskontoType.ForeldrepengerFørFødsel,
+            dager: 15,
+        },
+    ],
     minsteretter: {
         farRundtFødsel: 0,
-        generellMinsterett: 0,
         toTette: 0,
     },
-};
+} as TilgjengeligeStønadskontoerForDekningsgrad;
 
 const uttaksperiode = {
     fom: '2022-12-07',
@@ -92,8 +117,7 @@ interface Props {
     søkersituasjon: SøkersituasjonFp;
     annenForelder: AnnenForelder;
     barnet: Barn;
-    stønadskonto100: TilgjengeligeStønadskontoerDTO;
-    stønadskonto80: TilgjengeligeStønadskontoerDTO;
+    stønadskonto: TilgjengeligeStønadskontoer;
     erAleneOmOmsorg?: boolean;
     annenPartVedtak?: AnnenPartVedtakDTO;
 }
@@ -105,15 +129,13 @@ const Template: StoryFn<Props> = ({
     søkersituasjon,
     annenForelder,
     barnet,
-    stønadskonto100,
-    stønadskonto80,
+    stønadskonto,
     annenPartVedtak,
 }) => {
     initAmplitude();
     const restMock = (apiMock: MockAdapter) => {
         apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, annenPartVedtak);
-        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskonto80);
-        apiMock.onGet(STØNADSKONTO_URL).replyOnce(200, stønadskonto100);
+        apiMock.onPost(STØNADSKONTO_URL).replyOnce(200, stønadskonto);
     };
     return (
         <MemoryRouter initialEntries={[SøknadRoutes.PERIODE_MED_FORELDREPENGER]}>
@@ -160,8 +182,7 @@ FarEllerMedmorAleneomsorgFødsel.args = {
     annenForelder: {
         kanIkkeOppgis: true,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
 };
 
 export const FarEllerMedmorFødselBeggeHarRett = Template.bind({});
@@ -178,15 +199,88 @@ FarEllerMedmorFødselBeggeHarRett.args = {
     annenForelder: {
         etternavn: 'Pettersen',
         fornavn: 'Helga',
-        fnr: '02068629902',
+        fnr: '02458945678',
         utenlandskFnr: false,
         kanIkkeOppgis: false,
         harRettPåForeldrepengerINorge: true,
         erInformertOmSøknaden: true,
         erAleneOmOmsorg: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
+};
+
+export const MorFødselBeggeHarRettFødselFør1Juli2024 = Template.bind({});
+MorFødselBeggeHarRettFødselFør1Juli2024.args = {
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'mor',
+    },
+    barnet: {
+        type: BarnType.FØDT,
+        antallBarn: 1,
+        fødselsdatoer: ['2024-06-30'],
+        termindato: '2024-06-30',
+    },
+    annenForelder: {
+        etternavn: 'Pettersen',
+        fornavn: 'Hans',
+        fnr: '02458945678',
+        utenlandskFnr: false,
+        kanIkkeOppgis: false,
+        harRettPåForeldrepengerINorge: true,
+        erInformertOmSøknaden: true,
+        erAleneOmOmsorg: false,
+    },
+    stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
+};
+
+export const FarEllerMedmorFødselBeggeHarRettTerminFør1Juli2024 = Template.bind({});
+FarEllerMedmorFødselBeggeHarRettTerminFør1Juli2024.args = {
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'far',
+    },
+    barnet: {
+        type: BarnType.UFØDT,
+        antallBarn: 1,
+        termindato: '2024-06-30',
+    },
+    annenForelder: {
+        etternavn: 'Pettersen',
+        fornavn: 'Helga',
+        fnr: '02458945678',
+        utenlandskFnr: false,
+        kanIkkeOppgis: false,
+        harRettPåForeldrepengerINorge: true,
+        erInformertOmSøknaden: true,
+        erAleneOmOmsorg: false,
+    },
+    stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
+};
+
+export const MorBeggeHarRettAdopsjonEtter1Juli2024 = Template.bind({});
+MorBeggeHarRettAdopsjonEtter1Juli2024.args = {
+    søkersituasjon: {
+        situasjon: 'adopsjon',
+        rolle: 'mor',
+    },
+    barnet: {
+        type: BarnType.ADOPTERT_STEBARN,
+        antallBarn: 1,
+        adopsjonsdato: '2024-07-01',
+        fødselsdatoer: ['2024-07-01'],
+    },
+    annenForelder: {
+        etternavn: 'Pettersen',
+        fornavn: 'Helga',
+        fnr: '02458945678',
+        utenlandskFnr: false,
+        kanIkkeOppgis: false,
+        harRettPåForeldrepengerINorge: true,
+        erInformertOmSøknaden: true,
+        erAleneOmOmsorg: false,
+    },
+    stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
 };
 
 export const FarEllerMedmorFødselOgMorHarIkkeRett = Template.bind({});
@@ -211,16 +305,24 @@ FarEllerMedmorFødselOgMorHarIkkeRett.args = {
         erInformertOmSøknaden: false,
         erAleneOmOmsorg: false,
     },
-    stønadskonto100: {
-        ...STØNADSKONTO_100,
-        kontoer: {
-            FORELDREPENGER: 200,
+    stønadskonto: {
+        '100': {
+            ...STØNADSKONTO_100,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 200,
+                },
+            ],
         },
-    },
-    stønadskonto80: {
-        ...STØNADSKONTO_80,
-        kontoer: {
-            FORELDREPENGER: 250,
+        '80': {
+            ...STØNADSKONTO_80,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 250,
+                },
+            ],
         },
     },
 };
@@ -242,18 +344,32 @@ MorSøkerAdopsjonMedAleneomsorg.args = {
     annenForelder: {
         kanIkkeOppgis: true,
     },
-    stønadskonto100: {
-        ...STØNADSKONTO_100,
-        kontoer: {
-            FORELDREPENGER: 230,
-            FORELDREPENGER_FØR_FØDSEL: 15,
+    stønadskonto: {
+        '100': {
+            ...STØNADSKONTO_100,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 230,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
-    },
-    stønadskonto80: {
-        ...STØNADSKONTO_80,
-        kontoer: {
-            FORELDREPENGER: 280,
-            FORELDREPENGER_FØR_FØDSEL: 15,
+        '80': {
+            ...STØNADSKONTO_80,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 280,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
     },
 };
@@ -279,18 +395,32 @@ MorSøkerAdopsjonMedDeltUttak.args = {
         kanIkkeOppgis: false,
         erAleneOmOmsorg: false,
     },
-    stønadskonto100: {
-        ...STØNADSKONTO_100,
-        kontoer: {
-            FORELDREPENGER: 230,
-            FORELDREPENGER_FØR_FØDSEL: 15,
+    stønadskonto: {
+        '100': {
+            ...STØNADSKONTO_100,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 230,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
-    },
-    stønadskonto80: {
-        ...STØNADSKONTO_80,
-        kontoer: {
-            FORELDREPENGER: 280,
-            FORELDREPENGER_FØR_FØDSEL: 15,
+        '80': {
+            ...STØNADSKONTO_80,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 280,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
     },
 };
@@ -316,18 +446,33 @@ FarSøkerAdopsjonMedDeltUttak.args = {
         kanIkkeOppgis: false,
         erAleneOmOmsorg: false,
     },
-    stønadskonto100: {
-        ...STØNADSKONTO_100,
-        kontoer: {
-            FORELDREPENGER: 230,
-            FORELDREPENGER_FØR_FØDSEL: 15,
+
+    stønadskonto: {
+        '100': {
+            ...STØNADSKONTO_100,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 230,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
-    },
-    stønadskonto80: {
-        ...STØNADSKONTO_80,
-        kontoer: {
-            FORELDREPENGER: 280,
-            FORELDREPENGER_FØR_FØDSEL: 15,
+        '80': {
+            ...STØNADSKONTO_80,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 280,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
     },
 };
@@ -354,18 +499,33 @@ MorSøkerAdopsjonDerFarHarRettIEOS.args = {
         kanIkkeOppgis: false,
         erAleneOmOmsorg: false,
     },
-    stønadskonto100: {
-        ...STØNADSKONTO_100,
-        kontoer: {
-            FORELDREPENGER: 230,
-            FORELDREPENGER_FØR_FØDSEL: 15,
+
+    stønadskonto: {
+        '100': {
+            ...STØNADSKONTO_100,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 230,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
-    },
-    stønadskonto80: {
-        ...STØNADSKONTO_80,
-        kontoer: {
-            FORELDREPENGER: 280,
-            FORELDREPENGER_FØR_FØDSEL: 15,
+        '80': {
+            ...STØNADSKONTO_80,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 280,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
     },
 };
@@ -394,18 +554,33 @@ MorSøkerFodselDerFarHarRettIEOS.args = {
         kanIkkeOppgis: false,
         erAleneOmOmsorg: false,
     },
-    stønadskonto100: {
-        ...STØNADSKONTO_100,
-        kontoer: {
-            FORELDREPENGER: 230,
-            FORELDREPENGER_FØR_FØDSEL: 15,
+
+    stønadskonto: {
+        '100': {
+            ...STØNADSKONTO_100,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 230,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
-    },
-    stønadskonto80: {
-        ...STØNADSKONTO_80,
-        kontoer: {
-            FORELDREPENGER: 280,
-            FORELDREPENGER_FØR_FØDSEL: 15,
+        '80': {
+            ...STØNADSKONTO_80,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 280,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
     },
 };
@@ -425,18 +600,33 @@ MorAleneomsorgFødsel.args = {
     annenForelder: {
         kanIkkeOppgis: true,
     },
-    stønadskonto100: {
-        ...STØNADSKONTO_100,
-        kontoer: {
-            FORELDREPENGER: 230,
-            FORELDREPENGER_FØR_FØDSEL: 15,
+
+    stønadskonto: {
+        '100': {
+            ...STØNADSKONTO_100,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 230,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
-    },
-    stønadskonto80: {
-        ...STØNADSKONTO_80,
-        kontoer: {
-            FORELDREPENGER: 280,
-            FORELDREPENGER_FØR_FØDSEL: 15,
+        '80': {
+            ...STØNADSKONTO_80,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 280,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
     },
 };
@@ -461,8 +651,7 @@ MorFødselDeltUttakPrematurFødsel.args = {
         kanIkkeOppgis: false,
         erAleneOmOmsorg: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
 };
 
 export const MorAleneomsorgPrematurFødsel = Template.bind({});
@@ -481,18 +670,33 @@ MorAleneomsorgPrematurFødsel.args = {
     annenForelder: {
         kanIkkeOppgis: true,
     },
-    stønadskonto100: {
-        ...STØNADSKONTO_100,
-        kontoer: {
-            FORELDREPENGER: 273,
-            FORELDREPENGER_FØR_FØDSEL: 15,
+
+    stønadskonto: {
+        '100': {
+            ...STØNADSKONTO_100,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 273,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
-    },
-    stønadskonto80: {
-        ...STØNADSKONTO_80,
-        kontoer: {
-            FORELDREPENGER: 323,
-            FORELDREPENGER_FØR_FØDSEL: 15,
+        '80': {
+            ...STØNADSKONTO_80,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 323,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
     },
 };
@@ -516,8 +720,7 @@ MorFødselDeltUttak.args = {
         kanIkkeOppgis: false,
         erAleneOmOmsorg: false,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
 };
 
 export const MorFødselMedTvillingFlerbarnsuker = Template.bind({});
@@ -539,24 +742,48 @@ MorFødselMedTvillingFlerbarnsuker.args = {
         kanIkkeOppgis: false,
         erAleneOmOmsorg: false,
     },
-    stønadskonto100: {
-        ...STØNADSKONTO_100,
-        kontoer: {
-            MØDREKVOTE: 75,
-            FEDREKVOTE: 75,
-            FELLESPERIODE: 165,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-            FLERBARNSDAGER: 85,
+    stønadskonto: {
+        '100': {
+            ...STØNADSKONTO_100,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Mødrekvote,
+                    dager: 75,
+                },
+                {
+                    konto: StønadskontoType.Fedrekvote,
+                    dager: 75,
+                },
+                {
+                    konto: StønadskontoType.Fellesperiode,
+                    dager: 165,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
-    },
-    stønadskonto80: {
-        ...STØNADSKONTO_80,
-        kontoer: {
-            MØDREKVOTE: 95,
-            FEDREKVOTE: 95,
-            FELLESPERIODE: 195,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-            FLERBARNSDAGER: 105,
+        '80': {
+            ...STØNADSKONTO_80,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Mødrekvote,
+                    dager: 95,
+                },
+                {
+                    konto: StønadskontoType.Fedrekvote,
+                    dager: 95,
+                },
+                {
+                    konto: StønadskontoType.Foreldrepenger,
+                    dager: 195,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
     },
 };
@@ -576,24 +803,49 @@ MorFødselAleneomsorgMedTrillingFlerbarnsuker.args = {
     annenForelder: {
         kanIkkeOppgis: true,
     },
-    stønadskonto100: {
-        ...STØNADSKONTO_100,
-        kontoer: {
-            MØDREKVOTE: 75,
-            FEDREKVOTE: 75,
-            FELLESPERIODE: 165,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-            FLERBARNSDAGER: 85,
+
+    stønadskonto: {
+        '100': {
+            ...STØNADSKONTO_100,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Mødrekvote,
+                    dager: 75,
+                },
+                {
+                    konto: StønadskontoType.Fedrekvote,
+                    dager: 75,
+                },
+                {
+                    konto: StønadskontoType.Fellesperiode,
+                    dager: 165,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
-    },
-    stønadskonto80: {
-        ...STØNADSKONTO_80,
-        kontoer: {
-            MØDREKVOTE: 95,
-            FEDREKVOTE: 95,
-            FELLESPERIODE: 195,
-            FORELDREPENGER_FØR_FØDSEL: 15,
-            FLERBARNSDAGER: 105,
+        '80': {
+            ...STØNADSKONTO_80,
+            kontoer: [
+                {
+                    konto: StønadskontoType.Mødrekvote,
+                    dager: 95,
+                },
+                {
+                    konto: StønadskontoType.Fedrekvote,
+                    dager: 95,
+                },
+                {
+                    konto: StønadskontoType.Fellesperiode,
+                    dager: 195,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
         },
     },
 };
@@ -621,6 +873,53 @@ FarEllerMedmorSøkerOgMorHarLagetUttaksplan.args = {
         perioder: [uttaksperiode],
         dekningsgrad: DekningsgradDTO.HUNDRE_PROSENT,
     },
-    stønadskonto100: STØNADSKONTO_100,
-    stønadskonto80: STØNADSKONTO_80,
+    stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
+};
+
+export const FarMedMorMedTermin1Juli2024 = Template.bind({});
+FarMedMorMedTermin1Juli2024.args = {
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'far',
+    },
+    barnet: {
+        type: BarnType.UFØDT,
+        termindato: '2024-07-01',
+        antallBarn: 1,
+    },
+    annenForelder: {
+        fornavn: 'Helga',
+        etternavn: 'Utvikler',
+        fnr: '12117212090',
+        harRettPåForeldrepengerINorge: true,
+        kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
+    },
+    stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
+};
+
+export const MorMedTermin1Juli2024OgFarsSøknad = Template.bind({});
+MorMedTermin1Juli2024OgFarsSøknad.args = {
+    søkersituasjon: {
+        situasjon: 'fødsel',
+        rolle: 'mor',
+    },
+    barnet: {
+        type: BarnType.UFØDT,
+        termindato: '2024-07-01',
+        antallBarn: 1,
+    },
+    annenForelder: {
+        fornavn: 'Espen',
+        etternavn: 'Utvikler',
+        fnr: '12117212090',
+        harRettPåForeldrepengerINorge: true,
+        kanIkkeOppgis: false,
+        erAleneOmOmsorg: false,
+    },
+    annenPartVedtak: {
+        perioder: [uttaksperiode],
+        dekningsgrad: DekningsgradDTO.ÅTTI_PROSENT,
+    },
+    stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
 };

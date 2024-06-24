@@ -1,8 +1,7 @@
 import dayjs from 'dayjs';
 
-import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
+import { AttachmentMetadataType, DATE_4_YEARS_AGO } from '@navikt/fp-constants';
 import {
-    AttachmentMetadataType,
     LocaleNo,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,

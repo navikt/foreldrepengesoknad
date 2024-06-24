@@ -1,5 +1,8 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+
+import { Heading } from '@navikt/ds-react';
+
 import {
     ForelderIkon,
     ForeldreparSituasjon,
@@ -8,9 +11,7 @@ import {
     Personkort,
     Situasjon,
     StønadskontoType,
-    StønadskontoUttak,
     Søkerrolle,
-    TilgjengeligStønadskonto,
     bemUtils,
     getSituasjonForelderSvg,
     getVarighetString,
@@ -18,20 +19,18 @@ import {
     intlUtils,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
-import Kontostatus from './konto-status/Kontostatus';
-import TilesList from './tilesList/TilesList';
-import './oversiktKvoter.less';
-import { Heading } from '@navikt/ds-react';
 import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
+import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+
 import { BrukteDager, getBrukteDager } from '../../utils/brukteDagerUtils';
 import { Uttaksstatus, getUttaksstatus } from '../../utils/uttaksstatus';
+import Kontostatus from './konto-status/Kontostatus';
+import './oversiktKvoter.less';
+import TilesList from './tilesList/TilesList';
 
 const bem = bemUtils('oversiktKvoter');
 
-const filtrerBortAnnenPartsKonto = (
-    uttakskontoer: StønadskontoUttak[],
-    erFarEllerMedmor: boolean,
-): StønadskontoUttak[] => {
+const filtrerBortAnnenPartsKonto = (uttakskontoer: Stønadskonto[], erFarEllerMedmor: boolean): Stønadskonto[] => {
     return erFarEllerMedmor
         ? uttakskontoer.filter((uttak) => uttak.konto !== StønadskontoType.Mødrekvote)
         : uttakskontoer.filter((uttak) => uttak.konto !== StønadskontoType.Fedrekvote);
@@ -136,7 +135,7 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
 };
 
 interface Props {
-    tilgjengeligeStønadskontoer: TilgjengeligStønadskonto[];
+    tilgjengeligeStønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad;
     uttaksplan: Periode[];
     erDeltUttak: boolean;
     foreldreparSituasjon: ForeldreparSituasjon;

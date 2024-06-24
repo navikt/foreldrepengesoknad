@@ -1,0 +1,5 @@
+{
+    "uttaksplan.familiehendelsesdato.født": "{antallBarn, plural, one{Barnet} other {Barna}} er født {dato}",
+    "uttaksplan.familiehendelsesdato.termin": "Termin {dato}",
+    "uttaksplan.familiehendelsesdato.adopsjon": "{antallBarn, plural, one{Barnet} other {Barna}} er adoptert {dato}"
+}

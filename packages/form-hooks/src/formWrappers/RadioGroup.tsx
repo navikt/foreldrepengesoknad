@@ -1,6 +1,8 @@
 import React, { FunctionComponent, ReactElement, ReactNode } from 'react';
-import { useFormContext, useController } from 'react-hook-form';
+import { useController, useFormContext } from 'react-hook-form';
+
 import { RadioGroup as DsRadioGroup } from '@navikt/ds-react';
+
 import { getError, getValidationRules } from './formUtils';
 
 interface Props {
@@ -10,9 +12,20 @@ interface Props {
     validate?: Array<(value: string | number | boolean) => any>;
     onChange?: (value: string | boolean | number) => void;
     children: ReactElement[];
+    className?: string;
+    customErrorFormatter?: (error: string | undefined) => ReactNode;
 }
 
-const RadioGroup: FunctionComponent<Props> = ({ label, description, name, validate = [], onChange, children }) => {
+const RadioGroup: FunctionComponent<Props> = ({
+    label,
+    description,
+    name,
+    validate = [],
+    onChange,
+    children,
+    className,
+    customErrorFormatter,
+}) => {
     const {
         formState: { errors },
     } = useFormContext();
@@ -29,13 +42,14 @@ const RadioGroup: FunctionComponent<Props> = ({ label, description, name, valida
             value={field.value !== undefined ? field.value : null}
             legend={label}
             description={description}
-            error={getError(errors, name)}
+            error={customErrorFormatter ? customErrorFormatter(getError(errors, name)) : getError(errors, name)}
             onChange={(value) => {
                 if (onChange) {
                     onChange(value);
                 }
                 field.onChange(value);
             }}
+            className={className}
         >
             {children.map((child, index) => {
                 //TODO Vurder å heller lage ein wrapper til children

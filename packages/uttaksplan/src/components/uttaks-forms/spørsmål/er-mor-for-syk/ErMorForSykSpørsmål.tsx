@@ -14,21 +14,19 @@ const ErMorForSykSpørsmål: FunctionComponent<Props> = ({ fieldName }) => {
     const intl = useIntl();
 
     return (
-        <>
-            <Block padBottom="l">
-                <PeriodeUttakFormComponents.YesOrNoQuestion
-                    name={fieldName}
-                    legend={intlUtils(intl, 'uttaksplan.erMorForSyk')}
-                    validate={(value: YesOrNo) => {
-                        if (value === YesOrNo.UNANSWERED) {
-                            return intlUtils(intl, 'uttaksplan.validering.erMorForSyk');
-                        }
+        <Block padBottom="l">
+            <PeriodeUttakFormComponents.YesOrNoQuestion
+                name={fieldName}
+                legend={intlUtils(intl, 'uttaksplan.erMorForSyk')}
+                validate={(value: YesOrNo) => {
+                    if (value === YesOrNo.UNANSWERED) {
+                        return intlUtils(intl, 'uttaksplan.validering.erMorForSyk');
+                    }
 
-                        return undefined;
-                    }}
-                />
-            </Block>
-        </>
+                    return undefined;
+                }}
+            />
+        </Block>
     );
 };
 

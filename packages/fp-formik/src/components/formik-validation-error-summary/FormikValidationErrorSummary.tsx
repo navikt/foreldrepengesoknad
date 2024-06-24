@@ -1,8 +1,9 @@
-import React, { RefObject } from 'react';
 import { useFormikContext } from 'formik';
-import { getAllFieldsWithErrors, getErrorForField } from '../../utils/typedFormErrorUtils';
-import ValidationSummary, { ValidationSummaryError } from '../helpers/ValidationSummary';
-import { TypedFormikFormContext } from '../typed-formik-form/TypedFormikForm';
+import React, { RefObject } from 'react';
+
+import { getAllFieldsWithErrors, getErrorForField } from './../../utils/typedFormErrorUtils';
+import ValidationSummary, { ValidationSummaryError } from './../helpers/ValidationSummary';
+import { TypedFormikFormContext } from './../typed-formik-form/TypedFormikForm';
 
 interface Props {
     heading?: string;
@@ -13,7 +14,7 @@ interface Props {
 const FormikValidationErrorSummary: React.FunctionComponent<Props> = ({ heading, summaryRef, wrapper }) => {
     const context = React.useContext(TypedFormikFormContext);
     const formik = useFormikContext();
-    if (formik && context && context.showErrors) {
+    if (formik && context?.showErrors) {
         const fieldsWithErrors =
             !formik.isValid && getAllFieldsWithErrors(formik.errors, context.isHandledErrorTypeChecker);
         const errors: ValidationSummaryError[] | undefined = fieldsWithErrors

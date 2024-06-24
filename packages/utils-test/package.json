@@ -9,7 +9,7 @@
         "prettier": "prettier --write src"
     },
     "dependencies": {
-        "@storybook/react-vite": "8.0.5",
+        "@storybook/react-vite": "8.1.6",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-hook-form": "7.51.2",
@@ -17,8 +17,8 @@
     },
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
-        "@testing-library/jest-dom": "^6.4.2",
-        "@testing-library/react": "^14.2.1",
+        "@testing-library/jest-dom": "^6.4.6",
+        "@testing-library/react": "^16.0.0",
         "@testing-library/user-event": "^14.5.2",
         "@types/react": "^18.2.73",
         "@types/react-dom": "^18.2.23",
@@ -28,5 +28,6 @@
         "vite": "^5.1.6",
         "vite-plugin-checker": "^0.6.4",
         "vitest": "^1.4.0"
-    }
+    },
+    "packageManager": "pnpm@9.1.4"
 }

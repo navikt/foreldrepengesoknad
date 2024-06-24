@@ -19,29 +19,27 @@ const IkkeKvinne: React.FunctionComponent = () => {
     });
 
     return (
-        <>
-            <div className={bem.block}>
-                <Heading level="1" size="xlarge" className={`${bem.element('tittel')}`}>
-                    <FormattedMessage id="søknad.pageheading" />
-                </Heading>
-                <VStack gap="10">
-                    <GuidePanel poster>
-                        <VStack gap="4">
-                            <Heading level="2" size="small">
-                                <FormattedMessage id="ikkeKvinne.tittel" />
-                            </Heading>
-                            <FormattedMessage id="ikkeKvinne.tekst" />
-                        </VStack>
-                    </GuidePanel>
+        <div className={bem.block}>
+            <Heading level="1" size="xlarge" className={`${bem.element('tittel')}`}>
+                <FormattedMessage id="søknad.pageheading" />
+            </Heading>
+            <VStack gap="10">
+                <GuidePanel poster>
+                    <VStack gap="4">
+                        <Heading level="2" size="small">
+                            <FormattedMessage id="ikkeKvinne.tittel" />
+                        </Heading>
+                        <FormattedMessage id="ikkeKvinne.tekst" />
+                    </VStack>
+                </GuidePanel>
 
-                    <div style={{ textAlign: 'center' }} className={bem.element('papirsøknadKnapp')}>
-                        <Button as="a" icon={<ArrowRightIcon aria-hidden />} iconPosition="right" href={links.nav}>
-                            <FormattedMessage id="ikkeKvinne.knappetekst" />
-                        </Button>
-                    </div>
-                </VStack>
-            </div>
-        </>
+                <div style={{ textAlign: 'center' }} className={bem.element('papirsøknadKnapp')}>
+                    <Button as="a" icon={<ArrowRightIcon aria-hidden />} iconPosition="right" href={links.nav}>
+                        <FormattedMessage id="ikkeKvinne.knappetekst" />
+                    </Button>
+                </div>
+            </VStack>
+        </div>
     );
 };
 

@@ -80,15 +80,21 @@ export const getPeriodeInfoTekst = (
     varierendePerioder?: PeriodeMedVariasjon[],
 ) => {
     if (
-        varierendePerioder &&
-        varierendePerioder[index]?.fom &&
+        varierendePerioder?.[index]?.fom &&
         (varierendePerioder[index].tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP || varierendePerioder[index].tom)
     ) {
+        const fomDato = varierendePerioder[index].fom;
         const tomDato =
             varierendePerioder[index].tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP
                 ? sisteDagForSvangerskapspenger
                 : dayjs(varierendePerioder[index].tom).format(ISO_DATE_FORMAT);
-        return `${formatDate(varierendePerioder[index].fom)} - ${formatDate(tomDato)}`;
+
+        const totaltAntallDager = dayjs(tomDato).diff(fomDato, 'days') + 1;
+
+        const ukeAntall = Math.floor(totaltAntallDager / 7);
+        const dagAntall = totaltAntallDager - ukeAntall * 7;
+
+        return `${formatDate(fomDato)} - ${formatDate(tomDato)} ${intl.formatMessage({ id: 'PerioderStep.tidsperiode' }, { ukeAntall, dagAntall })}`;
     }
     return intl.formatMessage({ id: 'ny.periode' });
 };

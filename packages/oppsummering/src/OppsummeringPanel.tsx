@@ -1,7 +1,7 @@
 import { ReactElement, useState } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { Accordion, ConfirmationPanel, VStack } from '@navikt/ds-react';
+import { ConfirmationPanel, VStack } from '@navikt/ds-react';
 
 import { useAbortSignal } from '@navikt/fp-api';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
@@ -49,15 +49,15 @@ const OppsummeringPanel = <TYPE extends string>({
     const intl = useIntl();
     const abortSignal = useAbortSignal();
 
-    const [isChecked, setChecked] = useState(false);
-    const [isSubmitting, setSubmitting] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [isError, setIsError] = useState(false);
 
     const send = () => {
         if (!isChecked) {
             setIsError(true);
         } else {
-            setSubmitting(true);
+            setIsSubmitting(true);
             sendSøknad(abortSignal);
         }
     };
@@ -65,10 +65,10 @@ const OppsummeringPanel = <TYPE extends string>({
     return (
         <Step onCancel={cancelApplication} onContinueLater={onContinueLater} steps={stepConfig}>
             <VStack gap="10">
-                <Accordion indent={false}>{children}</Accordion>
+                {children}
                 <ConfirmationPanel
                     label={getSamtykkeTekst(intl, appName, ekstraSamtykketekst)}
-                    onChange={() => setChecked((state) => !state)}
+                    onChange={() => setIsChecked((state) => !state)}
                     checked={isChecked}
                     error={
                         isError &&

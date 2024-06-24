@@ -1,4 +1,4 @@
-import { YesOrNo } from '../types';
+import { YesOrNo } from './../types';
 import { ValidationFunction } from './types';
 
 export enum ValidateYesOrNoError {

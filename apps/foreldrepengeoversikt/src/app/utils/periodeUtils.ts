@@ -2,7 +2,9 @@ import dayjs from 'dayjs';
 import { isEqual } from 'lodash';
 import { IntlShape } from 'react-intl';
 
-import { formatDateIso } from '@navikt/fp-utils';
+import { StønadskontoType } from '@navikt/fp-constants';
+import { TidsperiodeDate } from '@navikt/fp-types';
+import { formatDateIso, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import { Forelder } from 'app/types/Forelder';
 import { MorsAktivitet } from 'app/types/MorsAktivitet';
@@ -10,20 +12,14 @@ import { OppholdÅrsakType } from 'app/types/OppholdÅrsakType';
 import { Periode } from 'app/types/Periode';
 import { PeriodeResultat } from 'app/types/PeriodeResultat';
 import { PeriodeResultatÅrsak } from 'app/types/PeriodeResultatÅrsak';
-import { StønadskontoType } from 'app/types/StønadskontoType';
 import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
 
 import { Uttaksdagen } from './Uttaksdagen';
 import { ISOStringToDate } from './dateUtils';
 import { guid } from './guid';
-import { NavnPåForeldre, getNavnGenitivEierform } from './personUtils';
+import { NavnPåForeldre } from './personUtils';
 import { capitalizeFirstLetter } from './stringUtils';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from './tidsperiodeUtils';
-
-export interface TidsperiodeDate {
-    fom: Date;
-    tom: Date;
-}
 
 export const Periodene = (perioder: Periode[]) => ({
     sort: () => [...perioder].sort(sorterPerioder),
@@ -107,12 +103,11 @@ export const gyldigePerioderForVisning = (periode: Periode, erPlanVedtatt: boole
     if (!erPlanVedtatt) {
         return true;
     }
-    if (periode.resultat && periode.resultat.innvilget) return true;
+    if (periode?.resultat?.innvilget) return true;
 
     if (
-        periode.resultat &&
-        periode.resultat.årsak !== PeriodeResultatÅrsak.AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER &&
-        periode.resultat.trekkerDager === true
+        periode.resultat?.årsak !== PeriodeResultatÅrsak.AVSLAG_HULL_MELLOM_FORELDRENES_PERIODER &&
+        periode.resultat?.trekkerDager === true
     ) {
         return true;
     }
@@ -246,7 +241,7 @@ export const getStønadskontoForelderNavn = (
     if (erFarEllerMedmor === true && erAleneOmOmsorg === false) {
         if (konto === StønadskontoType.Foreldrepenger) {
             if (
-                (periodeResultat && periodeResultat.trekkerMinsterett) ||
+                periodeResultat?.trekkerMinsterett ||
                 (!periodeResultat && morsAktivitet === MorsAktivitet.IkkeOppgitt)
             ) {
                 return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE_BFHR' });
@@ -277,8 +272,6 @@ const finnTekstForStønadskontoType = (intl: IntlShape, konto: StønadskontoType
             return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.MØDREKVOTE' });
         case StønadskontoType.AktivitetsfriKvote:
             return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE' });
-        case StønadskontoType.Flerbarnsdager:
-            return intl.formatMessage({ id: 'uttaksplan.stønadskontotype.FLERBARNSDAGER' });
     }
 };
 
@@ -405,7 +398,7 @@ export const getPeriodeTittel = (
     return '';
 };
 
-const periodeErInnvilget = (periode: Periode): boolean => periode.resultat !== undefined && periode.resultat.innvilget;
+const periodeErInnvilget = (periode: Periode): boolean => !!periode.resultat?.innvilget;
 
 interface SplittetDatoType {
     dato: Date;
@@ -508,9 +501,7 @@ export const filtrerAnnenPartsUttakNårIkkeSamtidigUttak = (
             return true;
         }
         const beholdUttaksSomOverlapperAnnenPartsPeriode =
-            overlappendeSøkersPeriode &&
-            overlappendeSøkersPeriode.resultat &&
-            overlappendeSøkersPeriode.resultat.innvilget &&
+            overlappendeSøkersPeriode?.resultat?.innvilget &&
             isUttaksperiode(overlappendeSøkersPeriode) &&
             isUttaksperiode(periode)
                 ? periode.samtidigUttak !== undefined || overlappendeSøkersPeriode.samtidigUttak !== undefined
@@ -525,12 +516,9 @@ export const leggTilVisningsInfo = (annenPartsPerioder: Periode[], søkerensPeri
         const overlappendeSøkersPeriode = søkerensPerioder.find((p) => {
             return Tidsperioden(getTidsperiode(p)).overlapper(getTidsperiode(periode));
         });
-        const erInnvilgetSamtidigUttak =
-            overlappendeSøkersPeriode &&
-            overlappendeSøkersPeriode.resultat &&
-            overlappendeSøkersPeriode.resultat.innvilget
-                ? periode.samtidigUttak !== undefined || overlappendeSøkersPeriode.samtidigUttak !== undefined
-                : false;
+        const erInnvilgetSamtidigUttak = overlappendeSøkersPeriode?.resultat?.innvilget
+            ? periode.samtidigUttak !== undefined || overlappendeSøkersPeriode.samtidigUttak !== undefined
+            : false;
         if (erInnvilgetSamtidigUttak) {
             return {
                 ...periode,
@@ -538,9 +526,7 @@ export const leggTilVisningsInfo = (annenPartsPerioder: Periode[], søkerensPeri
             };
         }
         const overlapperMedSøkerensPeriodeSomTrekkerDager =
-            overlappendeSøkersPeriode &&
-            overlappendeSøkersPeriode.resultat &&
-            (overlappendeSøkersPeriode.resultat.innvilget || overlappendeSøkersPeriode.resultat.trekkerDager);
+            overlappendeSøkersPeriode?.resultat?.innvilget || overlappendeSøkersPeriode?.resultat?.trekkerDager;
 
         if (overlapperMedSøkerensPeriodeSomTrekkerDager) {
             return {
@@ -599,14 +585,14 @@ export const getOverlappendePeriodeTittel = (
 export const erAnnenPartsPrematurePeriode = (annenPartsPeriode: Periode, termindato: string | undefined): boolean => {
     return (
         !!termindato &&
-        !(annenPartsPeriode.resultat !== undefined && annenPartsPeriode.resultat.innvilget) &&
+        !annenPartsPeriode.resultat?.innvilget &&
         dayjs(annenPartsPeriode.tom).isBefore(dayjs(termindato), 'd') &&
         annenPartsPeriode.kontoType !== StønadskontoType.Fedrekvote
     );
 };
 
 export const skalAnnenPartsPeriodeVises = (annenPartsPeriode: Periode, termindato: string | undefined): boolean => {
-    if (annenPartsPeriode.resultat !== undefined && annenPartsPeriode.resultat.innvilget) {
+    if (annenPartsPeriode.resultat?.innvilget) {
         return true;
     }
     return erAnnenPartsPrematurePeriode(annenPartsPeriode, termindato);

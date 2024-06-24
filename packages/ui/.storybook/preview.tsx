@@ -1,4 +1,7 @@
 import { Preview } from '@storybook/react';
+import dayjs from 'dayjs';
+import 'dayjs/locale/nb.js';
+import 'dayjs/locale/nn.js';
 
 import '@navikt/ds-css';
 
@@ -7,6 +10,8 @@ import { getIntlDecorator } from '@navikt/fp-utils-test';
 import enMessages from '../src/i18n/messages/en_US.json';
 import nbMessages from '../src/i18n/messages/nb_NO.json';
 import nnMessages from '../src/i18n/messages/nn_NO.json';
+
+dayjs.locale('nb');
 
 const withIntlProvider = getIntlDecorator({
     nb: nbMessages,

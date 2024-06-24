@@ -4,7 +4,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import {
-    TilgjengeligStønadskonto,
     førsteOktober2021ReglerGjelder,
     getAntallUker,
     getFlerbarnsuker,
@@ -15,6 +14,7 @@ import {
     isUfødtBarn,
 } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/fp-formik';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
@@ -47,7 +47,7 @@ export const getFormattedMessage = (id: string, values?: any, link?: string): Re
 };
 
 interface Props {
-    kontoer: TilgjengeligStønadskonto[];
+    kontoer: TilgjengeligeStønadskontoerForDekningsgrad;
     navnFarMedmor: string;
     navnMor: string;
     deltUttak: boolean;

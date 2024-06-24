@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { TilgjengeligStønadskonto } from '@navikt/fp-common';
+import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { bemUtils, capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { FordelingEier, FordelingGrafInfo } from 'app/types/FordelingOversikt';
@@ -22,7 +22,7 @@ const getRowClass = (antallPerioder: number, periodeIndex: number) => {
 };
 
 interface Props {
-    kontoer: TilgjengeligStønadskonto[];
+    kontoer: TilgjengeligeStønadskontoerForDekningsgrad;
     erFarEllerMedmor: boolean;
     erAdopsjon: boolean;
     erBarnetFødt: boolean;

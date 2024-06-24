@@ -1,12 +1,10 @@
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
-
 import {
     convertBooleanOrUndefinedToYesOrNo,
     convertYesOrNoOrUndefinedToBoolean,
     lagSendSenereDokumentNårIngenAndreFinnes,
 } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { YesOrNo } from '@navikt/fp-formik';
+import { QuestionVisibility, YesOrNo } from '@navikt/fp-formik';
 import { Attachment } from '@navikt/fp-types';
 
 import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
@@ -88,7 +86,7 @@ export const getInitialAndreInntekterFormValues = (
             ...initialAndreInntekterFormValues,
             fom: annenInntekt.tidsperiode.fom,
             tom: annenInntekt.tidsperiode.tom || '',
-            dokumentasjon: militærVedlegg ? militærVedlegg : [],
+            dokumentasjon: militærVedlegg ?? [],
             pågående: convertBooleanOrUndefinedToYesOrNo(annenInntekt.pågående),
             type: annenInntekt.type,
         };
@@ -98,7 +96,7 @@ export const getInitialAndreInntekterFormValues = (
         ...initialAndreInntekterFormValues,
         fom: annenInntekt.tidsperiode.fom,
         tom: annenInntekt.tidsperiode.tom || '',
-        dokumentasjon: etterlønnVedlegg ? etterlønnVedlegg : [],
+        dokumentasjon: etterlønnVedlegg ?? [],
         pågående: convertBooleanOrUndefinedToYesOrNo(annenInntekt.pågående),
         type: annenInntekt.type,
     };

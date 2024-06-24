@@ -7,7 +7,7 @@ import { formatDate, isValidDate } from '@navikt/fp-utils';
 
 export const validateAntallUkerFellesperiode = (intl: IntlShape, dagerMedFellesperiode: number) => (value: string) => {
     const valueNumber = getNumberFromNumberInputValue(value)!;
-    const maxValueUker = dagerMedFellesperiode / 5;
+    const maxValueUker = Math.floor(dagerMedFellesperiode / 5);
 
     if (valueNumber === undefined || Math.round(valueNumber) !== valueNumber) {
         return intl.formatMessage({ id: 'fordeling.antallUker.ugyldigFormat' });

@@ -525,9 +525,9 @@ export const sendErrorMessageToSentry = (error: AxiosError<any>) => {
     };
 
     let errorString = errorCallId + errorTimestamp;
-    if (error.request && error.request.data && error.request.data.messages) {
+    if (error.request?.data?.messages) {
         errorString = errorString + hideNumbersAndTrim(error.request.data.messages);
-    } else if (error.response && error.response.data && error.response.data.messages) {
+    } else if (error.response?.data?.messages) {
         errorString = errorString + hideNumbersAndTrim(error.response.data.messages);
     }
     if (error.message) {
@@ -537,9 +537,9 @@ export const sendErrorMessageToSentry = (error: AxiosError<any>) => {
 };
 
 export const getErrorCallId = (error: AxiosError<any>): string => {
-    return error.response && error.response.data && error.response.data.uuid ? error.response.data.uuid : UKJENT_UUID;
+    return error.response?.data?.uuid ? error.response.data.uuid : UKJENT_UUID;
 };
 
 export const getErrorTimestamp = (error: AxiosError<any>): string => {
-    return error.response && error.response.data && error.response.data.timestamp ? error.response.data.timestamp : '';
+    return error.response?.data?.timestamp ? error.response.data.timestamp : '';
 };

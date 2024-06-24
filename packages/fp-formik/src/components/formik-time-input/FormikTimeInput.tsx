@@ -2,12 +2,12 @@ import { TextFieldProps } from '@navikt/ds-react';
 import React, { useRef } from 'react';
 import classNames from 'classnames';
 import { FastField, Field, FieldProps } from 'formik';
-import { InputTime, TestProps, TypedFormInputValidationProps, UseFastFieldProps } from '../../types';
-import bemUtils from '../../utils/bemUtils';
-import { focusFirstElement } from '../../utils/focusUtils';
-import { getErrorPropForFormikInput } from '../../utils/typedFormErrorUtils';
-import SkjemagruppeQuestion from '../helpers/skjemagruppe-question/SkjemagruppeQuestion';
-import { TypedFormikFormContext } from '../typed-formik-form/TypedFormikForm';
+import { InputTime, TestProps, TypedFormInputValidationProps, UseFastFieldProps } from './../../types';
+import bemUtils from './../../utils/bemUtils';
+import { focusFirstElement } from './../../utils/focusUtils';
+import { getErrorPropForFormikInput } from './../../utils/typedFormErrorUtils';
+import SkjemagruppeQuestion from './../helpers/skjemagruppe-question/SkjemagruppeQuestion';
+import { TypedFormikFormContext } from './../typed-formik-form/TypedFormikForm';
 import TimeInput, { TimeInputLabels, TimeInputLayoutProps, TimeInputRefProps } from './TimeInput';
 
 interface OwnProps<FieldName> extends Omit<TextFieldProps, 'name' | 'onChange'> {

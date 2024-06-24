@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+
 import { ApiAccessError, ApiGeneralError, isAxiosError } from './error';
 
 const UKJENT_UUID = 'ukjent uuid';
@@ -24,10 +25,7 @@ const deleteData = async <DATA>(
                 throw new ApiAccessError();
             }
 
-            const submitErrorCallId =
-                error.response && error.response.data && error.response.data.uuid
-                    ? error.response.data.uuid
-                    : UKJENT_UUID;
+            const submitErrorCallId = error.response?.data?.uuid ? error.response.data.uuid : UKJENT_UUID;
             const callIdForBruker =
                 submitErrorCallId !== UKJENT_UUID ? submitErrorCallId.slice(0, 8) : submitErrorCallId;
             throw new ApiGeneralError(errorMessage + callIdForBruker);

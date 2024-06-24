@@ -1,21 +1,31 @@
 .dokument {
     border-bottom: 2px solid var(--a-gray-300);
     padding-bottom: 1rem;
+    padding-left: 1rem;
     margin-bottom: 1rem;
 }
 
 .dokument__ikon {
     color: var(--a-surface-action);
-    margin: 0 0.875rem;
+    margin-right: 0.5rem;
 }
 
-.dokument__link-icon {
-    max-width: 32rem;
-}
-
-.dokument__content {
-    width: 100%;
+.dokument__contentWrapper {
     display: grid;
-    grid-template-columns: 0.5fr 8fr 7rem 7.5rem;
+    grid-template-columns: 2fr 1fr 0.25fr;
     align-items: center;
+}
+
+@media (max-width: 767px) {
+    .dokument__content-top {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .dokument__content-bottom {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
 }

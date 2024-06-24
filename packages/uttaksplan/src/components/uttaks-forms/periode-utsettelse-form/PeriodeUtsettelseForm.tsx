@@ -64,7 +64,6 @@ interface Props {
     situasjon: Situasjon;
     utsettelserIPlan: Utsettelsesperiode[];
     setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
-    isOpen: boolean;
 }
 
 const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
@@ -84,7 +83,6 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     situasjon,
     utsettelserIPlan,
     setPerioderErGyldige,
-    isOpen,
 }) => {
     const intl = useIntl();
     const [periodeIsValid, setPeriodeIsValid] = useState(true);
@@ -202,7 +200,6 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     }).erInnenforFørsteSeksUker(familiehendelsesdato)}
                                     erMorUfør={erMorUfør}
                                     søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
-                                    isOpen={isOpen}
                                 />
                             </Block>
                             <Block

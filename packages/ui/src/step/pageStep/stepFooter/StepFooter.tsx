@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import { Button } from '@navikt/ds-react';
@@ -13,27 +13,25 @@ interface Props {
     onAvbrytOgSlett?: () => void;
 }
 
-function StepFooter({ onAvbrytOgFortsettSenere, onAvbrytOgSlett }: Props) {
+const StepFooter: FunctionComponent<Props> = ({ onAvbrytOgFortsettSenere, onAvbrytOgSlett }: Props) => {
     const [avsluttIsOpen, setAvsluttIsOpen] = useState(false);
     const intl = useIntl();
 
     const bem = bemUtils('stepFooter');
     return (
-        <>
-            <div className={bem.block}>
-                <div className={bem.element('divider')} />
-                <AvsluttModal
-                    isOpen={avsluttIsOpen}
-                    setIsOpen={setAvsluttIsOpen}
-                    onAvbrytOgFortsettSenere={onAvbrytOgFortsettSenere}
-                    onAvbrytOgSlett={onAvbrytOgSlett}
-                />
-                <Button variant="tertiary" onClick={() => setAvsluttIsOpen(true)}>
-                    {intl.formatMessage({ id: 'StepFooter.Avslutt' })}
-                </Button>
-            </div>
-        </>
+        <div className={bem.block}>
+            <div className={bem.element('divider')} />
+            <AvsluttModal
+                isOpen={avsluttIsOpen}
+                setIsOpen={setAvsluttIsOpen}
+                onAvbrytOgFortsettSenere={onAvbrytOgFortsettSenere}
+                onAvbrytOgSlett={onAvbrytOgSlett}
+            />
+            <Button variant="tertiary" onClick={() => setAvsluttIsOpen(true)}>
+                {intl.formatMessage({ id: 'StepFooter.Avslutt' })}
+            </Button>
+        </div>
     );
-}
+};
 
 export default StepFooter;

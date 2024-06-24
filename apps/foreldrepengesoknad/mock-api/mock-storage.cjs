@@ -51,9 +51,17 @@ const getSokerInfo = function () {
 
 const getStønadskontoer = async function (req) {
     try {
-        const test = await fetch('https://foreldrepengesoknad-api.nav.no/rest/konto?' + new URLSearchParams(req.query));
+        const data = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', {
+            method: 'POST',
+            headers: {
+                accept: 'application/json, text/plain, */*',
+                'content-type': 'application/json',
+            },
+            credentials: 'omit',
+            body: JSON.stringify(req.body),
+        });
 
-        const jsonResponse = await test.json();
+        const jsonResponse = await data.json();
 
         return jsonResponse;
     } catch (err) {

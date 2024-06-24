@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
 import { AxiosError, AxiosRequestConfig } from 'axios';
-import getAxiosInstance from 'app/api/apiInterceptor';
-import { redirectToLogin } from './../../utils/redirectToLogin';
+import { useEffect, useState } from 'react';
+
+import { getAxiosInstance } from '@navikt/fp-api';
+
 import { RequestStatus } from 'app/types/RequestState';
 
 type Options = {
@@ -32,11 +33,8 @@ export const useGetRequest = <T>(url: string, options: Options = DEFAULT_OPTIONS
                     setRequestStatus(RequestStatus.FINISHED);
                 })
                 .catch((err) => {
-                    if (err.response && (err.response.status === 401 || err.response.status === 403)) {
-                        redirectToLogin();
-                    } else {
-                        setError(err);
-                    }
+                    setError(err);
+
                     setRequestStatus(RequestStatus.FINISHED);
                 });
         }
@@ -62,11 +60,8 @@ export const usePostRequest = <T>(url: string, body: any, options: Options = DEF
                     setRequestStatus(RequestStatus.FINISHED);
                 })
                 .catch((err) => {
-                    if (err.response && (err.response.status === 401 || err.response.status === 403)) {
-                        redirectToLogin();
-                    } else {
-                        setError(err);
-                    }
+                    setError(err);
+
                     setRequestStatus(RequestStatus.FINISHED);
                 });
         }

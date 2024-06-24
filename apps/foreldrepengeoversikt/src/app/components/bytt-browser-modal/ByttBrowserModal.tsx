@@ -6,7 +6,7 @@ import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 import { shouldChangeBrowser } from 'app/utils/browserUtils';
 
 const ByttBrowserModal: React.FunctionComponent = () => {
-    const [isOpen, toggleIsOpen] = useState(shouldChangeBrowser());
+    const [isOpen, setIsOpen] = useState(shouldChangeBrowser());
     const intl = useIntl();
 
     return (
@@ -22,7 +22,7 @@ const ByttBrowserModal: React.FunctionComponent = () => {
                 </BodyShort>
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={() => toggleIsOpen(false)}>
+                <Button onClick={() => setIsOpen(false)}>
                     <FormattedMessage id="ok" />
                 </Button>
             </Modal.Footer>

@@ -1,6 +1,8 @@
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 
+import { Accordion } from '@navikt/ds-react';
+
 import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -56,23 +58,25 @@ const Template: StoryFn<{
             ]}
             appName="Engangsstønad"
         >
-            <SøkerOppsummeringspunkt
-                søker={{
-                    fornavn: 'Henrikke',
-                    fnr: '01018823234',
-                    etternavn: 'Ibsen',
-                    kjønn: 'K',
-                    fødselsdato: '1988-01-01',
-                    barn: [],
-                }}
-            />
-            <BoIUtlandetOppsummeringspunkt
-                familiehendelseDato={notEmpty(fødselsdato || termindato)}
-                hendelseType={fødselsdato ? HendelseType.FØDSEL : HendelseType.TERMIN}
-                utenlandsopphold={utenlandsopphold}
-                senereUtenlandsopphold={senereUtenlandsopphold}
-                tidligereUtenlandsopphold={tidligereUtenlandsopphold}
-            />
+            <Accordion indent={false}>
+                <SøkerOppsummeringspunkt
+                    søker={{
+                        fornavn: 'Henrikke',
+                        fnr: '01018823234',
+                        etternavn: 'Ibsen',
+                        kjønn: 'K',
+                        fødselsdato: '1988-01-01',
+                        barn: [],
+                    }}
+                />
+                <BoIUtlandetOppsummeringspunkt
+                    familiehendelseDato={notEmpty(fødselsdato || termindato)}
+                    hendelseType={fødselsdato ? HendelseType.FØDSEL : HendelseType.TERMIN}
+                    utenlandsopphold={utenlandsopphold}
+                    senereUtenlandsopphold={senereUtenlandsopphold}
+                    tidligereUtenlandsopphold={tidligereUtenlandsopphold}
+                />
+            </Accordion>
         </OppsummeringPanel>
     );
 };

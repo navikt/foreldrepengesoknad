@@ -1,4 +1,3 @@
-import { QuestionVisibility } from '@navikt/sif-common-question-config/lib';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -7,7 +6,7 @@ import { Alert } from '@navikt/ds-react';
 
 import { Block, Periode, StønadskontoType, intlUtils, isOverføringsperiode, isUttaksperiode } from '@navikt/fp-common';
 import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
-import { YesOrNo } from '@navikt/fp-formik';
+import { QuestionVisibility, YesOrNo } from '@navikt/fp-formik';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
