@@ -1,4 +1,3 @@
-import { UttaksplanNy } from '@navikt/uttaksplan-ny';
 import dayjs from 'dayjs';
 import { FormikValues } from 'formik';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -44,6 +43,7 @@ import {
     kreverUttaksplanVedlegg,
     settInnAnnenPartsUttak,
 } from '@navikt/fp-uttaksplan';
+import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
