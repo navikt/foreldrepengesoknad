@@ -1,20 +1,28 @@
 import { CircleSlashIcon } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { finnGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Link } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { Satser } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
+import { formatCurrencyWithKr } from '@navikt/fp-utils';
+
+dayjs.extend(isSameOrAfter);
 
 interface Props {
     erAlenesøker: boolean;
     fornavn: string;
     erSøker2?: boolean;
     erFarOgFar: boolean;
+    satser: Satser;
 }
 
-const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSøker2 = false, erFarOgFar }) => {
+const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSøker2 = false, erFarOgFar, satser }) => {
     return (
         <Infobox
             header={
@@ -27,7 +35,10 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
             shouldFadeIn
         >
             <BodyShort>
-                <FormattedMessage id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett" />
+                <FormattedMessage
+                    id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett"
+                    values={{ minsteInntekt: formatCurrencyWithKr(finnGrunnbeløp(satser, dayjs()) / 2) }}
+                />
             </BodyShort>
             {!erSøker2 && !erFarOgFar && (
                 <BodyShort>

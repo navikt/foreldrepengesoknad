@@ -13,7 +13,7 @@ const { Default } = composeStories(stories);
 
 describe('<AppContainer>', () => {
     it('skal gå gjennom applikasjonen og så tilbake', async () => {
-        const utils = render(<Default brukStønadskontoMock />);
+        const utils = render(<Default brukMocks />);
 
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Start'));
@@ -43,7 +43,7 @@ describe('<AppContainer>', () => {
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(screen.getByText('Steg 3 av 7')).toBeInTheDocument();
         await userEvent.click(
-            screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 59 310 kr det siste året'),
+            screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 62 014 kr det siste året'),
         );
         await userEvent.click(screen.getByText('Ja'));
         await userEvent.click(screen.getByText('Neste'));

@@ -33,3 +33,15 @@ export const MedIkon: Story = {
         icon: <TasklistStartIcon height={28} width={28} color="#236B7D" aria-hidden />,
     },
 };
+export const UtenHeaderMedIkon: Story = {
+    args: {
+        children: <div>Dette er et barn</div>,
+        icon: <TasklistStartIcon height={28} width={28} color="#236B7D" aria-hidden />,
+    },
+};
+
+export const UtenHeaderUtenIkon: Story = {
+    args: {
+        children: <div>Dette er et barn</div>,
+    },
+};
