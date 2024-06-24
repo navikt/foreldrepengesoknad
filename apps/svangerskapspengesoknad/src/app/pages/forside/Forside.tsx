@@ -34,7 +34,7 @@ const Forside: React.FunctionComponent<Props> = ({
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
     const [isError, setIsError] = useState(false);
-    const [isChecked, setChecked] = useState(harGodkjentVilkår);
+    const [isChecked, setIsChecked] = useState(harGodkjentVilkår);
 
     const bekreft = () => {
         if (!isChecked) {
@@ -120,7 +120,7 @@ const Forside: React.FunctionComponent<Props> = ({
                     </Alert>
                     <ConfirmationPanel
                         label={intl.formatMessage({ id: 'forside.samtykke' })}
-                        onChange={() => setChecked((state) => !state)}
+                        onChange={() => setIsChecked((state) => !state)}
                         checked={isChecked}
                         error={
                             isError &&

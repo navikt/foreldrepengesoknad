@@ -49,15 +49,15 @@ const OppsummeringPanel = <TYPE extends string>({
     const intl = useIntl();
     const abortSignal = useAbortSignal();
 
-    const [isChecked, setChecked] = useState(false);
-    const [isSubmitting, setSubmitting] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [isError, setIsError] = useState(false);
 
     const send = () => {
         if (!isChecked) {
             setIsError(true);
         } else {
-            setSubmitting(true);
+            setIsSubmitting(true);
             sendSøknad(abortSignal);
         }
     };
@@ -68,7 +68,7 @@ const OppsummeringPanel = <TYPE extends string>({
                 {children}
                 <ConfirmationPanel
                     label={getSamtykkeTekst(intl, appName, ekstraSamtykketekst)}
-                    onChange={() => setChecked((state) => !state)}
+                    onChange={() => setIsChecked((state) => !state)}
                     checked={isChecked}
                     error={
                         isError &&
