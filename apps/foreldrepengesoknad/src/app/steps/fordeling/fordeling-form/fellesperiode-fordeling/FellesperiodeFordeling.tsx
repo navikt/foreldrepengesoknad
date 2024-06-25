@@ -17,7 +17,14 @@ import FellesperiodeValgVisning from './FellesperiodeValgVisning';
 import FordelingValg from './FordelingValg';
 import './fellesperiode-fordeling.css';
 
-const getAntallDagerFellesperiode = (
+const getInputErNullEllerHeltall = (input: number) => {
+    if (input) {
+        return input >= 0 && input % 1 === 0;
+    }
+    return true;
+};
+
+const getInputForAntallDagerFellesperiode = (
     antallDagerFellesperiode: number,
     valgtFordeling: FellesperiodeFordelingValg | undefined,
     antallUkerFellesperiodeTilSøker: string | undefined,
@@ -31,38 +38,38 @@ const getAntallDagerFellesperiode = (
     }
     const antallUker = getNumberFromNumberInputValue(antallUkerFellesperiodeTilSøker) || 0;
     const antallDager = getNumberFromNumberInputValue(antallDagerFellesperiodeTilSøker) || 0;
-    const antallUkerInputErHeltall = antallUker ? antallUker % 1 === 0 : true;
-    const antallDagerInputErHeltall = antallDager ? antallDager % 1 === 0 : true;
+    const antallUkerInputErGyldigTall = getInputErNullEllerHeltall(antallUker);
+    const antallDagerInputErGyldigTall = getInputErNullEllerHeltall(antallDager);
     const totallAntallDager = antallUker * 5 + antallDager;
-    if (
+
+    const kanViseValgtAntallDager =
         valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE &&
-        antallUkerInputErHeltall &&
-        antallDagerInputErHeltall &&
+        antallUkerInputErGyldigTall &&
+        antallDagerInputErGyldigTall &&
         totallAntallDager >= 0 &&
-        totallAntallDager <= antallDagerFellesperiode
-    ) {
-        return totallAntallDager;
-    }
-    return undefined;
+        totallAntallDager <= antallDagerFellesperiode;
+
+    return kanViseValgtAntallDager ? totallAntallDager : undefined;
 };
 
-export const getFordelingDager = (
+export const getFordelingDagerForVisning = (
     erFarEllerMedmor: boolean,
     antallDagerFellesperiode: number,
     valgtFordeling: FellesperiodeFordelingValg | undefined,
     antallUkerFellesperiodeTilSøker: string | undefined,
     antallDagerFellesperiodeTilSøker: string | undefined,
 ): FordelingDager[] | undefined => {
-    const dagerTilSøker = getAntallDagerFellesperiode(
+    const dagerTilSøker = getInputForAntallDagerFellesperiode(
         antallDagerFellesperiode,
         valgtFordeling,
         antallUkerFellesperiodeTilSøker,
         antallDagerFellesperiodeTilSøker,
     );
-    if (
+    const harIkkeValgtFordeling =
         !valgtFordeling ||
-        (valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE && (!dagerTilSøker || dagerTilSøker === 0))
-    ) {
+        (valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE && (!dagerTilSøker || dagerTilSøker === 0));
+
+    if (harIkkeValgtFordeling) {
         return [
             {
                 antallDager: antallDagerFellesperiode,
@@ -110,7 +117,7 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
     const antallUkerFellesperiodeTilSøker = watch('antallUkerFellesperiodeTilSøker');
     const antallDagerFellesperiodeTilSøker = watch('antallDagerFellesperiodeTilSøker');
     const navnAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
-    const fordelingsdager = getFordelingDager(
+    const fordelingsdagerForVisning = getFordelingDagerForVisning(
         erFarEllerMedmor,
         dagerMedFellesperiode,
         valgtFordeling,
@@ -178,9 +185,9 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
                     <FormattedMessage id="fordeling.fordelingsvalg.senere.info" />
                 </Alert>
             )}
-            {fordelingsdager && (
+            {fordelingsdagerForVisning && (
                 <FellesperiodeValgVisning
-                    fordelingsdager={fordelingsdager}
+                    fordelingsdager={fordelingsdagerForVisning}
                     dagerMedFellesperiode={dagerMedFellesperiode}
                     erFarEllerMedmor={erFarEllerMedmor}
                 />
