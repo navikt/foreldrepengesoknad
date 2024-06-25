@@ -22,7 +22,6 @@ export const setupStaticRoutes = async (app: Express) => {
         }),
     );
 
-    app.use(`${config.app.publicPath}/assets`, express.static(path.resolve(path.resolve('public'), 'assets')));
     app.get(/^\/(?!.*dist).*$/, async (_request, response) => {
         return response.send(renderedHtml);
     });
