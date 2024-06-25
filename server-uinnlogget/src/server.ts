@@ -1,6 +1,14 @@
 import express from 'express';
+import path from 'node:path';
 
-import { errorHandling, logger, setupActuators, setupServerDefaults, setupStaticRoutes } from '@navikt/fp-server-utils';
+import {
+    errorHandling,
+    logger,
+    serverConfig,
+    setupActuators,
+    setupServerDefaults,
+    setupStaticRoutes,
+} from '@navikt/fp-server-utils';
 
 import { configureReverseProxyApi } from './reverseProxy';
 
@@ -11,6 +19,10 @@ setupActuators(server);
 
 // Logging i json format
 server.use(logger.morganMiddleware);
+
+// Serve static assets
+server.use(express.static('./public', { index: false }));
+server.use(`${serverConfig.app.publicPath}/assets`, express.static(path.resolve(path.resolve('public'), 'assets')));
 
 configureReverseProxyApi(server);
 
