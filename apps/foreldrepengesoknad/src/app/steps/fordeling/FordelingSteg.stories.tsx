@@ -597,6 +597,58 @@ export const MorDeltUttakEttBarnPrematurFødsel: Story = {
     },
 };
 
+export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
+    args: {
+        søker: søkerInfoKvinne,
+        søkersituasjon: {
+            situasjon: 'fødsel',
+            rolle: 'mor',
+        },
+        barnet: {
+            type: BarnType.UFØDT,
+            antallBarn: 1,
+            termindato: '2024-08-21',
+        },
+        annenForelder: {
+            fornavn: 'Petter',
+            etternavn: 'Utvikler',
+            fnr: '1212121313',
+            harRettPåForeldrepengerINorge: true,
+            kanIkkeOppgis: false,
+        },
+        stønadskonto80: {
+            kontoer: [
+                {
+                    konto: StønadskontoType.Mødrekvote,
+                    dager: 95,
+                },
+                {
+                    konto: StønadskontoType.Fedrekvote,
+                    dager: 95,
+                },
+                {
+                    konto: StønadskontoType.Fellesperiode,
+                    dager: 101,
+                },
+                {
+                    konto: StønadskontoType.ForeldrepengerFørFødsel,
+                    dager: 15,
+                },
+            ],
+            minsteretter: {
+                farRundtFødsel: 10,
+                toTette: 0,
+            },
+            tillegg: {
+                prematur: 0,
+                flerbarn: 0,
+            },
+        },
+        stønadskonto100: undefined,
+        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+    },
+};
+
 export const MorDeltUttakEttBarnTermin: Story = {
     args: {
         søker: søkerInfoKvinne,
