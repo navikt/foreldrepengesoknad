@@ -111,6 +111,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
             const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(
                 valgtEksisterendeSak,
                 førsteUttaksdagNesteBarnsSak,
+                valgteBarn.fødselsdatoer,
             );
 
             nextRoute = SøknadRoutes.UTTAKSPLAN;
