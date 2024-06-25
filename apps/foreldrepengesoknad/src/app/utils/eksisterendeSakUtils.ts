@@ -447,6 +447,7 @@ const getBarnFromValgteBarn = (valgteBarn: ValgtBarn): Barn => {
             type: BarnType.FØDT,
             antallBarn: valgteBarn.antallBarn,
             fødselsdatoer: sorterDatoEtterEldst(valgteBarn.fødselsdatoer),
+            termindato: dateToISOString(valgteBarn.termindato),
             fnr:
                 valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0
                     ? valgteBarn.fnr.filter((fnr) => !!fnr)
