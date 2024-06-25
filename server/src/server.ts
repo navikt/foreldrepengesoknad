@@ -21,6 +21,7 @@ setupActuators(server);
 // Logging i json format
 server.use(logger.morganMiddleware);
 
+server.use(express.static('./public', { index: false }));
 server.use(`${serverConfig.app.publicPath}/assets`, express.static(path.resolve(path.resolve('public'), 'assets')));
 
 server.use(validerInnkommendeIdportenToken);
