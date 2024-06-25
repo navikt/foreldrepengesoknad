@@ -1006,7 +1006,7 @@
     "DekningsgradForm.InformasjonPrematuruker": "Perioden blir forlenget med like mange uker og dager som barnet er født før termin. For {soker} blir det {varighet}.",
     "DekningsgradForm.InformasjonToBarn": "{sokerStorBokstav} får lenger periode med foreldrepenger siden {soker} skal ha tvillinger",
     "DekningsgradForm.InformasjonFlereEnnToBarn": "{sokerStorBokstav} får lenger periode med foreldrepenger siden {soker} skal ha flere barn",
-    "DekningsgradForm.InformasjonFlerbarnUker": "Perioden blir forlenget med {uker100} uker hvis {soker} velger 100% foreldrepenger eller {uker80} uker hvis {soker} velger 80% foreldrepenger.",
+    "DekningsgradForm.InformasjonFlerbarnUker": "Perioden blir forlenget med {uker100} hvis {soker} velger 100% foreldrepenger eller {uker80} hvis {soker} velger 80% foreldrepenger.",
     "DekningsgradForm.MåOppgiDekningsgrad": "Du må oppgi hvor lang periode {soker} vil ha",
     "DekningsgradValgtAvAnnenPartPanel.Heading": "Dere har valgt {uker} med {dekningsgrad}% foreldrepenger",
     "DekningsgradValgtAvAnnenPartPanel.ValgtAvHennes": "Dette ble valgt av {navn} i søknaden hennes, og det kan ikke endres av deg.",
