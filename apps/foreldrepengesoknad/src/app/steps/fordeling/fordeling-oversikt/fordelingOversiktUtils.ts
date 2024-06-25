@@ -653,18 +653,19 @@ export const getFordelingFraKontoer = (
         erFarEllerMedmor,
         familiehendelsesdato,
     );
+    const erMor = !erFarEllerMedmor;
+    const erMorOgFarHarIkkeKunRettIEØS = erMor && !annenPartHarKunRettIEØS;
+    const erFarOgMorHarIkkeKunRettIEØS = erFarEllerMedmor && !annenPartHarKunRettIEØS;
     const annenPartNavn = erFarEllerMedmor ? navnMor : navnFarMedmor;
-    const skalViseMorsDel =
-        dagerMødrekvote > 0 && ((erFarEllerMedmor && !annenPartHarKunRettIEØS) || !erFarEllerMedmor);
-    const skalViseFarsDel =
-        dagerFedrekvote > 0 && (erFarEllerMedmor || (!erFarEllerMedmor && !annenPartHarKunRettIEØS));
+    const skalViseMorsDel = dagerMødrekvote > 0 && (erFarOgMorHarIkkeKunRettIEØS || erMor);
+    const skalViseFarsDel = dagerFedrekvote > 0 && (erFarEllerMedmor || erMorOgFarHarIkkeKunRettIEØS);
     const morTekst = getMorTekst(erFarEllerMedmor, navnMor, intl);
     const farTekst = getFarTekst(erFarEllerMedmor, navnFarMedmor, intl);
     const ekstraDagerPrematur = kontoer.tillegg?.prematur;
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erDeltUttak = getIsDeltUttak(annenForelder);
     if (skalViseMorsDel) {
-        const ekstraDagerPrematurMorsDel = erDeltUttak ? 0 : ekstraDagerPrematur;
+        const ekstraDagerPrematurSomSkalVisesIMorsDel = erDeltUttak ? 0 : ekstraDagerPrematur;
         const dagerMorsKvoteBruktAvFar = erFarEllerMedmor
             ? undefined
             : getAntallDagerSøkerensKvoteBruktAvAnnenPart(
@@ -680,7 +681,7 @@ export const getFordelingFraKontoer = (
             familiehendelsesdato,
             erAdopsjon,
             barn.antallBarn,
-            ekstraDagerPrematurMorsDel,
+            ekstraDagerPrematurSomSkalVisesIMorsDel,
             false,
             morTekst,
             intl,
@@ -733,7 +734,6 @@ export const getFordelingFraKontoer = (
         );
         fordelingsinformasjon.push(fordelingFar);
     }
-    const ekstraDagerGrunnetPrematurFødsel = kontoer.tillegg?.prematur;
 
     if (dagerForeldrepenger > 0) {
         const dagerUtenAktivitetskrav = getAntallUkerAktivitetsfriKvote(kontoer) * 5;
@@ -746,7 +746,7 @@ export const getFordelingFraKontoer = (
                   erAdopsjon,
                   familiehendelsesdato,
                   barn.antallBarn,
-                  ekstraDagerGrunnetPrematurFødsel,
+                  ekstraDagerPrematur,
                   morTekst,
                   intl,
               )
@@ -757,7 +757,7 @@ export const getFordelingFraKontoer = (
                   familiehendelsesdato,
                   erAdopsjon,
                   barn.antallBarn,
-                  ekstraDagerGrunnetPrematurFødsel,
+                  ekstraDagerPrematur,
                   true,
                   morTekst,
                   intl,
