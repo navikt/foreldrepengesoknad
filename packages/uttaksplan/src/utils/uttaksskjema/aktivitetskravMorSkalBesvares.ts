@@ -39,7 +39,7 @@ export const aktivitetskravMorSkalBesvares = (
     søkerErMor: boolean,
     erAleneOmOmsorg: boolean,
     annenForelderKanIkkeOppgis: boolean,
-    søkerHarMidlertidigOmsorg: boolean,
+    søkerHarMidlertidigOmsorg: boolean, //TODO: Denne brukes vel ikke lenger og kan fjernes?
     tidsperiode: TidsperiodeDate,
     familiehendelsesdato: Date,
     termindato: Date | undefined,
