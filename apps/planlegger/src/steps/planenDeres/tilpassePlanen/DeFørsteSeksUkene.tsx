@@ -20,32 +20,30 @@ const DeFørsteSeksUkene: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
     const kunMorHarRett = erMorDelAvSøknaden(hvemPlanlegger) && hvemHarRett === 'kunSøker1HarRett';
 
     return (
-        <>
-            <HStack gap="5" wrap={false}>
-                <div>
-                    <IconCircleWrapper color="lightBlue" size="medium">
-                        <BabyWrappedIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />
-                    </IconCircleWrapper>
-                </div>
-                <div>
-                    <Heading size="small">
-                        <FormattedMessage id="OmÅTilpassePlanen.DeFørsteSeksUkene" />
-                    </Heading>
-                    <BodyLong>
-                        {kunMorHarRett ? (
-                            <FormattedMessage id="OmÅTilpassePlanen.DeFørsteSeksUkene.TekstAlenemor" />
-                        ) : (
-                            <FormattedMessage
-                                id="OmÅTilpassePlanen.DeFørsteSeksUkene.Tekst"
-                                values={{
-                                    hvem: finnSøker2Tekst(intl, hvemPlanlegger),
-                                }}
-                            />
-                        )}
-                    </BodyLong>
-                </div>
-            </HStack>
-        </>
+        <HStack gap="5" wrap={false}>
+            <div>
+                <IconCircleWrapper color="lightBlue" size="medium">
+                    <BabyWrappedIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />
+                </IconCircleWrapper>
+            </div>
+            <div>
+                <Heading size="small">
+                    <FormattedMessage id="OmÅTilpassePlanen.DeFørsteSeksUkene" />
+                </Heading>
+                <BodyLong>
+                    {kunMorHarRett ? (
+                        <FormattedMessage id="OmÅTilpassePlanen.DeFørsteSeksUkene.TekstAlenemor" />
+                    ) : (
+                        <FormattedMessage
+                            id="OmÅTilpassePlanen.DeFørsteSeksUkene.Tekst"
+                            values={{
+                                hvem: finnSøker2Tekst(intl, hvemPlanlegger),
+                            }}
+                        />
+                    )}
+                </BodyLong>
+            </div>
+        </HStack>
     );
 };
 export default DeFørsteSeksUkene;

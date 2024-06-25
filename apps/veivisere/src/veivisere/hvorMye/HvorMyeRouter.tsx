@@ -6,7 +6,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { getAxiosInstance, usePostRequest } from '@navikt/fp-api';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
 
 import ArbeidssituasjonSide, { Arbeidssituasjon } from './arbeidssituasjon/ArbeidssituasjonSide';
@@ -31,9 +31,10 @@ const STØNADSKONTO_OPTIONS = {
 interface Props {
     locale: LocaleAll;
     changeLocale: (locale: LocaleAll) => void;
+    satser: Satser;
 }
 
-const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale }) => {
+const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale, satser }) => {
     const [arbeidssituasjon, setArbeidssituasjon] = useState<Arbeidssituasjon>();
 
     const requestData = usePostRequest<TilgjengeligeStønadskontoer>(
@@ -56,13 +57,20 @@ const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale }) => {
                     <ArbeidssituasjonSide
                         arbeidssituasjon={arbeidssituasjon}
                         setArbeidssituasjon={setArbeidssituasjon}
+                        satser={satser}
                     />
                 }
             />
             {arbeidssituasjon && requestData.data && (
                 <Route
                     path={HvorMyeRoutes.OPPSUMMERING}
-                    element={<OppsummeringSide arbeidssituasjon={arbeidssituasjon} stønadskontoer={requestData.data} />}
+                    element={
+                        <OppsummeringSide
+                            arbeidssituasjon={arbeidssituasjon}
+                            stønadskontoer={requestData.data}
+                            satser={satser}
+                        />
+                    }
                 />
             )}
             <Route path="*" element={<Navigate to={ContextRoutes.HVOR_MYE + HvorMyeRoutes.OM} />} />

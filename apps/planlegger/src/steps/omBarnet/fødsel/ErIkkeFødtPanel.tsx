@@ -109,111 +109,96 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                 </Infobox>
             )}
             {termindato !== undefined && dayjs(termindato).isAfter(DATO_3_MND_FRAM) && (
-                <>
-                    <Infobox
-                        header={
+                <Infobox
+                    header={
+                        <FormattedMessage
+                            id="ErIkkeFødtPanel.ForeldrepengerInfo"
+                            values={{
+                                erAlenesøker,
+                                dato: dayjs(datoSvangerskapsuke22).format('DD.MM.YY'),
+                            }}
+                        />
+                    }
+                    icon={<TasklistStartIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />}
+                    shouldFadeIn
+                >
+                    <BodyShort>
+                        <FormattedMessage
+                            id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke"
+                            values={{
+                                erAlenesøker,
+                            }}
+                        />
+                    </BodyShort>
+                    <BodyShort>
+                        <FormattedMessage
+                            id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.NAVanbefaler"
+                            values={{
+                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
+                            }}
+                        />
+                    </BodyShort>
+                    {erFarDelAvSøknaden(hvemPlanlegger) && !erFedre && (
+                        <BodyShort>
                             <FormattedMessage
-                                id="ErIkkeFødtPanel.ForeldrepengerInfo"
+                                id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
                                 values={{
-                                    erAlenesøker,
-                                    dato: dayjs(datoSvangerskapsuke22).format('DD.MM.YY'),
+                                    erFar,
+                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
                                 }}
                             />
+                        </BodyShort>
+                    )}
+                </Infobox>
+            )}
+            {termindato !== undefined &&
+                dayjs(termindato).isSameOrAfter(TODAY) &&
+                dayjs(termindato).isSameOrBefore(DATO_3_MND_FRAM) && (
+                    <Infobox
+                        header={
+                            <FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTerminInfo" values={{ erAlenesøker }} />
                         }
                         icon={
                             <TasklistStartIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />
                         }
                         shouldFadeIn
                     >
-                        <BodyShort>
-                            <FormattedMessage
-                                id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke"
-                                values={{
-                                    erAlenesøker,
-                                }}
-                            />
-                        </BodyShort>
-                        <BodyShort>
-                            <FormattedMessage
-                                id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.NAVanbefaler"
-                                values={{
-                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                                }}
-                            />
-                        </BodyShort>
-                        {erFarDelAvSøknaden(hvemPlanlegger) && !erFedre && (
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
-                                    values={{
-                                        erFar,
-                                        hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                    }}
-                                />
-                            </BodyShort>
+                        {!erFedre && (
+                            <>
+                                <BodyShort>
+                                    {hvemPlanlegger.type === Situasjon.MOR && (
+                                        <FormattedMessage
+                                            id="ErIkkeFødtPanel.UnderTreMndTilTermin"
+                                            values={{ erAlenesøker }}
+                                        />
+                                    )}
+                                </BodyShort>
+                                {!erAlenesøker && (
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="ErIkkeFødtPanel.UnderTreMndTilTermin"
+                                            values={{
+                                                erAlenesøker,
+                                                navn: getFornavnPåSøker1(hvemPlanlegger, intl),
+                                            }}
+                                        />
+                                    </BodyShort>
+                                )}
+                                {(!erAlenesøker || hvemPlanlegger.type === Situasjon.FAR) && (
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
+                                            values={{
+                                                erAlenesøker,
+                                                erFar,
+                                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                            }}
+                                        />
+                                    </BodyShort>
+                                )}
+                            </>
                         )}
                     </Infobox>
-                </>
-            )}
-            {termindato !== undefined &&
-                dayjs(termindato).isSameOrAfter(TODAY) &&
-                dayjs(termindato).isSameOrBefore(DATO_3_MND_FRAM) && (
-                    <>
-                        <Infobox
-                            header={
-                                <FormattedMessage
-                                    id="ErIkkeFødtPanel.UnderTreMndTilTerminInfo"
-                                    values={{ erAlenesøker }}
-                                />
-                            }
-                            icon={
-                                <TasklistStartIcon
-                                    height={24}
-                                    width={24}
-                                    color="#236B7D"
-                                    fontSize="1.5rem"
-                                    aria-hidden
-                                />
-                            }
-                            shouldFadeIn
-                        >
-                            {!erFedre && (
-                                <>
-                                    <BodyShort>
-                                        {hvemPlanlegger.type === Situasjon.MOR && (
-                                            <FormattedMessage
-                                                id="ErIkkeFødtPanel.UnderTreMndTilTermin"
-                                                values={{ erAlenesøker }}
-                                            />
-                                        )}
-                                    </BodyShort>
-                                    {!erAlenesøker && (
-                                        <BodyShort>
-                                            <FormattedMessage
-                                                id="ErIkkeFødtPanel.UnderTreMndTilTermin"
-                                                values={{
-                                                    erAlenesøker,
-                                                    navn: getFornavnPåSøker1(hvemPlanlegger, intl),
-                                                }}
-                                            />
-                                        </BodyShort>
-                                    )}
-                                    {(!erAlenesøker || hvemPlanlegger.type === Situasjon.FAR) && (
-                                        <BodyShort>
-                                            <FormattedMessage
-                                                id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
-                                                values={{
-                                                    erAlenesøker,
-                                                    erFar,
-                                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                                }}
-                                            />
-                                        </BodyShort>
-                                    )}
-                                </>
-                            )}
-                        </Infobox>
-                    </>
                 )}
         </VStack>
     );

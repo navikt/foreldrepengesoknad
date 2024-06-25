@@ -45,19 +45,17 @@ const CheckboxGroup: FunctionComponent<CheckboxPanelProps> = ({
     );
 
     return (
-        <>
-            <DsCheckboxGroup
-                name={name}
-                description={description}
-                value={field.value !== undefined ? field.value : []}
-                onChange={onChangeFn}
-                legend={label}
-                disabled={disabled}
-                error={getError(errors, name)}
-            >
-                {children}
-            </DsCheckboxGroup>
-        </>
+        <DsCheckboxGroup
+            name={name}
+            description={description}
+            value={field.value !== undefined ? field.value : []}
+            onChange={onChangeFn}
+            legend={label}
+            disabled={disabled}
+            error={getError(errors, name)}
+        >
+            {children}
+        </DsCheckboxGroup>
     );
 };
 

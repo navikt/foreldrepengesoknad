@@ -33,7 +33,7 @@ describe('<ArbeidssituasjonSteg>', () => {
         expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
 
         await userEvent.click(
-            screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 59 310 kr det siste året'),
+            screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 62 014 kr det siste året'),
         );
 
         expect(screen.getByText('Klara vil ha rett til foreldrepenger')).toBeInTheDocument();
@@ -64,7 +64,7 @@ describe('<ArbeidssituasjonSteg>', () => {
         expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
 
         await userEvent.click(
-            screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 59 310 kr det siste året'),
+            screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 62 014 kr det siste året'),
         );
 
         await userEvent.click(screen.getByText('Nei'));

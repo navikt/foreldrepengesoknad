@@ -12,15 +12,16 @@ import PlanenDeresSteg from 'steps/planenDeres/PlanenDeresSteg';
 
 import { Loader } from '@navikt/ds-react';
 
-import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 interface Props {
     locale: LocaleAll;
     changeLocale: (locale: LocaleAll) => void;
     stønadskontoer?: TilgjengeligeStønadskontoer;
+    satser: Satser;
 }
 
-const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stønadskontoer }) => {
+const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stønadskontoer, satser }) => {
     const navigate = useNavigate();
     const [isFirstLoad, setIsFirstLoad] = useState(true);
 
@@ -42,7 +43,7 @@ const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stø
             />
             <Route path={PlanleggerRoutes.HVEM_PLANLEGGER} element={<HvemPlanleggerSteg />} />
             <Route path={PlanleggerRoutes.OM_BARNET} element={<OmBarnetSteg />} />
-            <Route path={PlanleggerRoutes.ARBEIDSSITUASJON} element={<ArbeidssituasjonSteg />} />
+            <Route path={PlanleggerRoutes.ARBEIDSSITUASJON} element={<ArbeidssituasjonSteg satser={satser} />} />
             <Route
                 path={PlanleggerRoutes.HVOR_LANG_PERIODE}
                 element={stønadskontoer ? <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} /> : <Loader />}
@@ -57,7 +58,7 @@ const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stø
             />
             <Route
                 path={PlanleggerRoutes.OPPSUMMERING}
-                element={<OppsummeringSteg stønadskontoer={stønadskontoer} />}
+                element={<OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} />}
             />
             <Route path="*" element={<Navigate to={PlanleggerRoutes.OM_PLANLEGGEREN} />} />
         </Routes>

@@ -40,12 +40,10 @@ const MorsAktivitetDetaljer: React.FunctionComponent<Props> = ({ morsAktivitet }
     const intl = useIntl();
 
     return (
-        <>
-            <Feltoppsummering
-                feltnavn={intl.formatMessage({ id: 'oppsummering.morsAktivitet' })}
-                verdi={getMorsAktivitetTekst(intl, morsAktivitet)}
-            />
-        </>
+        <Feltoppsummering
+            feltnavn={intl.formatMessage({ id: 'oppsummering.morsAktivitet' })}
+            verdi={getMorsAktivitetTekst(intl, morsAktivitet)}
+        />
     );
 };
 

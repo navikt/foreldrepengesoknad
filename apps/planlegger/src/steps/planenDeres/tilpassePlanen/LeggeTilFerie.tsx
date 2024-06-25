@@ -19,33 +19,31 @@ const LeggeTilFerie: React.FunctionComponent<Props> = ({ hvemPlanlegger, arbeids
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const kunFarSøker2EllerMedmorHarRett = hvemHarRett === 'kunSøker2HarRett';
     return (
-        <>
-            <HStack gap="5" wrap={false}>
-                <div>
-                    <IconCircleWrapper color="lightBlue" size="medium">
-                        <ParasolBeachIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />
-                    </IconCircleWrapper>
-                </div>
-                <div>
-                    <Heading size="small">
-                        <FormattedMessage id="OmÅTilpassePlanen.LeggeTilFerie" />
-                    </Heading>
-                    <BodyLong>
-                        {kunFarSøker2EllerMedmorHarRett ? (
-                            <FormattedMessage
-                                id="OmÅTilpassePlanen.LeggeTilFerie.TekstFar"
-                                values={{ hvem: finnSøker2Tekst(intl, hvemPlanlegger) }}
-                            />
-                        ) : (
-                            <FormattedMessage
-                                id="OmÅTilpassePlanen.LeggeTilFerie.Tekst"
-                                values={{ hvem: finnSøker2Tekst(intl, hvemPlanlegger), erAlenesøker }}
-                            />
-                        )}
-                    </BodyLong>
-                </div>
-            </HStack>
-        </>
+        <HStack gap="5" wrap={false}>
+            <div>
+                <IconCircleWrapper color="lightBlue" size="medium">
+                    <ParasolBeachIcon height={22} width={22} fontSize="1.5rem" color="#0067C5" aria-hidden />
+                </IconCircleWrapper>
+            </div>
+            <div>
+                <Heading size="small">
+                    <FormattedMessage id="OmÅTilpassePlanen.LeggeTilFerie" />
+                </Heading>
+                <BodyLong>
+                    {kunFarSøker2EllerMedmorHarRett ? (
+                        <FormattedMessage
+                            id="OmÅTilpassePlanen.LeggeTilFerie.TekstFar"
+                            values={{ hvem: finnSøker2Tekst(intl, hvemPlanlegger) }}
+                        />
+                    ) : (
+                        <FormattedMessage
+                            id="OmÅTilpassePlanen.LeggeTilFerie.Tekst"
+                            values={{ hvem: finnSøker2Tekst(intl, hvemPlanlegger), erAlenesøker }}
+                        />
+                    )}
+                </BodyLong>
+            </div>
+        </HStack>
     );
 };
 export default LeggeTilFerie;

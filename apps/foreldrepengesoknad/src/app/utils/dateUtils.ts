@@ -54,7 +54,7 @@ export const getEldsteRegistrerteBarn = (registrerteBarn: SøkerBarn[]): SøkerB
 };
 
 export const sorterDatoEtterEldst = (dato: Date[]): string[] => {
-    const d = [...dato].map((d) => dateToISOString(d)).sort((a, b) => (isDateABeforeDateB(a!, b!) ? -1 : 1));
+    const d = [...dato].map((d) => dateToISOString(d)).sort((a, b) => (isDateABeforeDateB(a, b) ? -1 : 1));
     return d;
 };
 

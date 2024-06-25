@@ -70,31 +70,85 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
 
     return (
-        <>
-            <VStack gap="5">
-                {hvemHarRett === 'beggeHarRett' && !erFarOgFar && fornavnSøker2 && (
-                    <GreenPanel>
+        <VStack gap="5">
+            {hvemHarRett === 'beggeHarRett' && !erFarOgFar && fornavnSøker2 && (
+                <GreenPanel>
+                    <Heading level="4" size="small">
+                        <FormattedMessage id="OppsummeringSteg.Perioden" />
+                    </Heading>
+                    <BodyLong>
+                        <FormattedMessage
+                            id="OppsummeringSteg.DereValgte"
+                            values={{
+                                prosent: hvorLangPeriode.dekningsgrad,
+                                antallUker: getAntallUker(valgtStønadskonto),
+                                hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
+                                hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
+                                uker: antallUkerFellesperiodeSøker1,
+                                uker2: antallUkerFellesperiodeSøker2,
+                            }}
+                        />
+                    </BodyLong>
+                    <BodyLong>
+                        <FormattedMessage
+                            id="OppsummeringSteg.Periodene"
+                            values={{
+                                hvem: getNavnGenitivEierform(fornavnSøker1, intl.locale),
+                                fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
+                                    day: '2-digit',
+                                    month: 'short',
+                                    year: 'numeric',
+                                }),
+                                tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
+                                    day: '2-digit',
+                                    month: 'short',
+                                    year: 'numeric',
+                                }),
+                                b: (msg: any) => <b>{msg}</b>,
+                            }}
+                        />
+                    </BodyLong>
+                    <BodyLong>
+                        <FormattedMessage
+                            id="OppsummeringSteg.Periodene"
+                            values={{
+                                hvem: getNavnGenitivEierform(fornavnSøker2, intl.locale),
+                                fom: intl.formatDate(uttaksdata.startdatoPeriode2, {
+                                    day: '2-digit',
+                                    month: 'short',
+                                    year: 'numeric',
+                                }),
+                                tom: intl.formatDate(uttaksdata.sluttdatoPeriode2, {
+                                    day: '2-digit',
+                                    month: 'short',
+                                    year: 'numeric',
+                                }),
+                                b: (msg: any) => <b>{msg}</b>,
+                            }}
+                        />
+                    </BodyLong>
+                </GreenPanel>
+            )}
+            {(erAlenesøker(hvemPlanlegger) || erFarOgFar) && (
+                <GreenPanel>
+                    <VStack gap="2">
                         <Heading level="4" size="small">
                             <FormattedMessage id="OppsummeringSteg.Perioden" />
                         </Heading>
-                        <BodyLong>
+                        <BodyShort>
                             <FormattedMessage
-                                id="OppsummeringSteg.DereValgte"
+                                id="OppsummeringSteg.DereValgteFedreEllerAlene"
                                 values={{
                                     prosent: hvorLangPeriode.dekningsgrad,
+                                    erAlenesøker: erAlenesøker(hvemPlanlegger),
                                     antallUker: getAntallUker(valgtStønadskonto),
-                                    hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
-                                    hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
-                                    uker: antallUkerFellesperiodeSøker1,
-                                    uker2: antallUkerFellesperiodeSøker2,
                                 }}
                             />
-                        </BodyLong>
-                        <BodyLong>
+                        </BodyShort>
+                        <BodyShort>
                             <FormattedMessage
-                                id="OppsummeringSteg.Periodene"
+                                id="OppsummeringSteg.Periode"
                                 values={{
-                                    hvem: getNavnGenitivEierform(fornavnSøker1, intl.locale),
                                     fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
                                         day: '2-digit',
                                         month: 'short',
@@ -108,131 +162,75 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                     b: (msg: any) => <b>{msg}</b>,
                                 }}
                             />
-                        </BodyLong>
-                        <BodyLong>
-                            <FormattedMessage
-                                id="OppsummeringSteg.Periodene"
-                                values={{
-                                    hvem: getNavnGenitivEierform(fornavnSøker2, intl.locale),
-                                    fom: intl.formatDate(uttaksdata.startdatoPeriode2, {
-                                        day: '2-digit',
-                                        month: 'short',
-                                        year: 'numeric',
-                                    }),
-                                    tom: intl.formatDate(uttaksdata.sluttdatoPeriode2, {
-                                        day: '2-digit',
-                                        month: 'short',
-                                        year: 'numeric',
-                                    }),
-                                    b: (msg: any) => <b>{msg}</b>,
-                                }}
-                            />
-                        </BodyLong>
-                    </GreenPanel>
-                )}
-                {(erAlenesøker(hvemPlanlegger) || erFarOgFar) && (
-                    <GreenPanel>
-                        <VStack gap="2">
-                            <Heading level="4" size="small">
-                                <FormattedMessage id="OppsummeringSteg.Perioden" />
-                            </Heading>
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="OppsummeringSteg.DereValgteFedreEllerAlene"
-                                    values={{
-                                        prosent: hvorLangPeriode.dekningsgrad,
-                                        erAlenesøker: erAlenesøker(hvemPlanlegger),
-                                        antallUker: getAntallUker(valgtStønadskonto),
-                                    }}
-                                />
-                            </BodyShort>
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="OppsummeringSteg.Periode"
-                                    values={{
-                                        fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
-                                            day: '2-digit',
-                                            month: 'short',
-                                            year: 'numeric',
-                                        }),
-                                        tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
-                                            day: '2-digit',
-                                            month: 'short',
-                                            year: 'numeric',
-                                        }),
-                                        b: (msg: any) => <b>{msg}</b>,
-                                    }}
-                                />
-                            </BodyShort>
-                        </VStack>
-                    </GreenPanel>
-                )}
-                {hvemHarRett === 'kunSøker2HarRett' && !erFarOgFar && fornavnSøker2 && (
-                    <GreenPanel>
-                        <VStack gap="2">
-                            <Heading level="4" size="small">
-                                <FormattedMessage id="OppsummeringSteg.Perioden" />
-                            </Heading>
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="OppsummeringSteg.DereValgteAktivitetskrav"
-                                    values={{
-                                        uker1: antallUkerAktivitetsfriKvote,
-                                        uker2: antallUkerAktivitetskrav,
-                                        hvem: fornavnSøker1,
-                                        prosent: hvorLangPeriode.dekningsgrad,
-                                        antallUker: getAntallUker(valgtStønadskonto),
-                                    }}
-                                />
-                            </BodyShort>
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="OppsummeringSteg.UtenAktivitetskrav"
-                                    values={{
-                                        fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
-                                            day: '2-digit',
-                                            month: 'short',
-                                            year: 'numeric',
-                                        }),
-                                        tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
-                                            day: '2-digit',
-                                            month: 'short',
-                                            year: 'numeric',
-                                        }),
-                                        b: (msg: any) => <b>{msg}</b>,
-                                    }}
-                                />
-                            </BodyShort>{' '}
-                        </VStack>
+                        </BodyShort>
+                    </VStack>
+                </GreenPanel>
+            )}
+            {hvemHarRett === 'kunSøker2HarRett' && !erFarOgFar && fornavnSøker2 && (
+                <GreenPanel>
+                    <VStack gap="2">
+                        <Heading level="4" size="small">
+                            <FormattedMessage id="OppsummeringSteg.Perioden" />
+                        </Heading>
                         <BodyShort>
                             <FormattedMessage
-                                id="OppsummeringSteg.MedAktivitetskrav"
+                                id="OppsummeringSteg.DereValgteAktivitetskrav"
                                 values={{
-                                    fom: intl.formatDate(uttaksdata.startdatoPeriode2, {
-                                        day: '2-digit',
-                                        month: 'short',
-                                        year: 'numeric',
-                                    }),
-                                    tom: intl.formatDate(uttaksdata.sluttdatoPeriode2, {
-                                        day: '2-digit',
-                                        month: 'short',
-                                        year: 'numeric',
-                                    }),
-                                    b: (msg: any) => <b>{msg}</b>,
+                                    uker1: antallUkerAktivitetsfriKvote,
+                                    uker2: antallUkerAktivitetskrav,
+                                    hvem: fornavnSøker1,
+                                    prosent: hvorLangPeriode.dekningsgrad,
+                                    antallUker: getAntallUker(valgtStønadskonto),
                                 }}
                             />
                         </BodyShort>
-                    </GreenPanel>
-                )}
-                <CalendarLabels
-                    uttaksdata={uttaksdata}
-                    hvemPlanlegger={hvemPlanlegger}
-                    barnet={barnet}
-                    hvemHarRett={hvemHarRett}
-                />
-                <Calendar periods={uttaksperioder} useSmallerWidth />
-            </VStack>
-        </>
+                        <BodyShort>
+                            <FormattedMessage
+                                id="OppsummeringSteg.UtenAktivitetskrav"
+                                values={{
+                                    fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
+                                        day: '2-digit',
+                                        month: 'short',
+                                        year: 'numeric',
+                                    }),
+                                    tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
+                                        day: '2-digit',
+                                        month: 'short',
+                                        year: 'numeric',
+                                    }),
+                                    b: (msg: any) => <b>{msg}</b>,
+                                }}
+                            />
+                        </BodyShort>{' '}
+                    </VStack>
+                    <BodyShort>
+                        <FormattedMessage
+                            id="OppsummeringSteg.MedAktivitetskrav"
+                            values={{
+                                fom: intl.formatDate(uttaksdata.startdatoPeriode2, {
+                                    day: '2-digit',
+                                    month: 'short',
+                                    year: 'numeric',
+                                }),
+                                tom: intl.formatDate(uttaksdata.sluttdatoPeriode2, {
+                                    day: '2-digit',
+                                    month: 'short',
+                                    year: 'numeric',
+                                }),
+                                b: (msg: any) => <b>{msg}</b>,
+                            }}
+                        />
+                    </BodyShort>
+                </GreenPanel>
+            )}
+            <CalendarLabels
+                uttaksdata={uttaksdata}
+                hvemPlanlegger={hvemPlanlegger}
+                barnet={barnet}
+                hvemHarRett={hvemHarRett}
+            />
+            <Calendar periods={uttaksperioder} useSmallerWidth />
+        </VStack>
     );
 };
 export default OppsummeringHarRett;

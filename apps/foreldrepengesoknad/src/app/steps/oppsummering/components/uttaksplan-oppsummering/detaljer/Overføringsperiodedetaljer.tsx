@@ -26,12 +26,10 @@ const Overføringsperiodedetaljer: React.FunctionComponent<Props> = ({ periode, 
     const intl = useIntl();
     const navnAnnenForelder = getNavnPåAnnenForelder(navnPåForeldre, periode.konto, intl);
     return (
-        <>
-            <Feltoppsummering
-                feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.årsak' })}
-                verdi={getÅrsakTekst(intl, periode, { navnAnnenForelder })}
-            />
-        </>
+        <Feltoppsummering
+            feltnavn={intl.formatMessage({ id: 'oppsummering.uttak.årsak' })}
+            verdi={getÅrsakTekst(intl, periode, { navnAnnenForelder })}
+        />
     );
 };
 
