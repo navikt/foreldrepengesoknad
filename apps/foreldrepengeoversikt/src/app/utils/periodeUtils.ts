@@ -350,15 +350,6 @@ export const getPeriodeTittel = (
             erFarEllerMedmor,
             erAleneOmOmsorg,
         );
-        //TODO:
-        // const tittel = appendPeriodeNavnHvisUttakRundtFødselFarMedmor(
-        //     intl,
-        //     tittelMedNavn,
-        //     periode,
-        //     situasjon,
-        //     familiehendelsesdato,
-        //     termindato
-        // );
         const tittel = tittelMedNavn;
         if (
             (periode.gradering && isValidStillingsprosent(periode.gradering.arbeidstidprosent)) ||
@@ -394,7 +385,6 @@ export const getPeriodeTittel = (
         }
         return intl.formatMessage({ id: 'uttaksplan.utsettelsesårsak.ukjent' });
     }
-    //TODO getOppholdskontoNavn
     return '';
 };
 
