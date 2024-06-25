@@ -155,7 +155,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const morHarRett = getMorHarRettPåForeldrepengerINorgeEllerEØS(rolle, erFarEllerMedmor, annenForelder);
     const opprinneligPlan = eksisterendeSak?.uttaksplan;
     const harKomplettUttaksplan = eksisterendeSak ? eksisterendeSak.uttaksplan !== undefined : false;
-    const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg
+    const harMidlertidigOmsorg = false; //TODO søkerHarMidlertidigOmsorg - denne brukes vel ikke lenger og kan fjernes?
     const termindato = getTermindato(barn);
     const annenForelderFnr =
         isAnnenForelderOppgitt(annenForelder) && !!annenForelder.utenlandskFnr === false
