@@ -66,7 +66,6 @@ const FordelingForm: React.FunctionComponent<Props> = ({
     const onSubmit = (values: Fordeling) => {
         oppdaterFordeling(values);
 
-        //TODO Uttaksplanrefaktorering: trenger man dette?
         if (uttaksplanMetadata?.harUttaksplanBlittSlettet !== false) {
             oppdaterUttaksplanMetaData({
                 ...uttaksplanMetadata,
