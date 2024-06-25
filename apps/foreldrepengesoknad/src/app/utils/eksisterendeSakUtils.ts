@@ -235,7 +235,7 @@ export const mapSøkerensEksisterendeSakFromDTO = (
     const erAnnenPartsSak = false;
     const {
         dekningsgrad,
-        familiehendelse: { fødselsdato, termindato, omsorgsovertakelse, antallBarn },
+        familiehendelse: { fødselsdato: fødselsdatoFraFPSak, termindato, omsorgsovertakelse, antallBarn },
         harAnnenForelderTilsvarendeRettEØS,
         morUføretrygd,
         rettighetType,
@@ -246,10 +246,11 @@ export const mapSøkerensEksisterendeSakFromDTO = (
     const perioder = eksisterendeSak.gjeldendeVedtak ? eksisterendeSak.gjeldendeVedtak.perioder : [];
 
     const erFarEllerMedmor = !sakTilhørerMor;
-    const fødselsdatoValgtBarn =
+    const fødselsdatoFraValgtBarn =
         valgtBarnFødselsdatoer && valgtBarnFødselsdatoer.length > 0
             ? dateToISOString(valgtBarnFødselsdatoer[0])
             : undefined;
+    const fødselsdatoForSaken = fødselsdatoFraFPSak || fødselsdatoFraValgtBarn;
     const grunnlag: Saksgrunnlag = {
         dekningsgrad:
             dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
@@ -261,13 +262,13 @@ export const mapSøkerensEksisterendeSakFromDTO = (
         farMedmorHarRett: !sakTilhørerMor || rettighetType === RettighetType.BEGGE_RETT,
         søkerErFarEllerMedmor: erFarEllerMedmor,
         termindato,
-        fødselsdato: fødselsdato || fødselsdatoValgtBarn,
+        fødselsdato: fødselsdatoForSaken,
         omsorgsovertakelsesdato: omsorgsovertakelse,
         erDeltUttak: rettighetType === RettighetType.BEGGE_RETT,
-        erBarnetFødt: fødselsdato !== undefined,
-        familiehendelseDato: getRelevantFamiliehendelseDato(termindato, fødselsdato, omsorgsovertakelse),
-        familiehendelseType: getFamiliehendelseType(fødselsdato, termindato, omsorgsovertakelse),
-        ønskerJustertUttakVedFødsel: fødselsdato === undefined ? ønskerJustertUttakVedFødsel : undefined,
+        erBarnetFødt: fødselsdatoForSaken !== undefined,
+        familiehendelseDato: getRelevantFamiliehendelseDato(termindato, fødselsdatoForSaken, omsorgsovertakelse),
+        familiehendelseType: getFamiliehendelseType(fødselsdatoForSaken, termindato, omsorgsovertakelse),
+        ønskerJustertUttakVedFødsel: fødselsdatoForSaken === undefined ? ønskerJustertUttakVedFødsel : undefined,
         harAnnenForelderTilsvarendeRettEØS,
     };
 
