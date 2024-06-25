@@ -46,6 +46,8 @@ spec:
     sidecar:
       enabled: true
       autoLogin: true
+      autoLoginIgnorePaths:
+        - {{env.PUBLIC_PATH}}/assets/*
   {{/if}}
   accessPolicy:
     outbound:
