@@ -1,11 +1,13 @@
 import { BabyWrappedIcon, WalletIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
+import { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll } from '@navikt/fp-types';
 import { FrontPage } from '@navikt/fp-ui';
 
@@ -19,6 +21,15 @@ interface Props {
 const HvorMyeForside: React.FunctionComponent<Props> = ({ locale, changeLocale }) => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator(ContextRoutes.HVOR_MYE);
+
+    useEffect(() => {
+        logAmplitudeEvent('sidevisning', {
+            app: 'veivisere',
+            team: 'foreldrepenger',
+            pageKey: ContextRoutes.HVOR_MYE + HvorMyeRoutes.OM,
+        });
+    }, []);
+
     return (
         <>
             <FrontPage

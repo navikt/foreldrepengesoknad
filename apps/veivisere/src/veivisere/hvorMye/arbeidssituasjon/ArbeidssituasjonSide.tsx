@@ -5,12 +5,14 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { finnGrunnbeløp } from 'utils/satserUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { BodyShort, Button, Heading, Label, Link, ReadMore, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Checkbox, Form, TextField } from '@navikt/fp-form-hooks';
+import { Satser } from '@navikt/fp-types';
 import { GreenPanel, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 import { isValidNumber } from '@navikt/fp-validation';
@@ -28,11 +30,6 @@ export type Arbeidssituasjon = {
     lønnMåned2: string;
     lønnMåned3: string;
 };
-
-//FIXME Hent frå tjeneste
-const minÅrslønn = 59310;
-const GRUNNBELØPET = 118620;
-const maxÅrslønn = GRUNNBELØPET * 6;
 
 const isCheckboxValgt = (arbeidsituasjon?: Arbeidssituasjon) => {
     return (
@@ -60,9 +57,10 @@ export const finnGjennomsnittsMånedslønn = (formValues: Arbeidssituasjon): str
 interface Props {
     arbeidssituasjon?: Arbeidssituasjon;
     setArbeidssituasjon: (arbeidssituasjon: Arbeidssituasjon) => void;
+    satser: Satser;
 }
 
-const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setArbeidssituasjon }) => {
+const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setArbeidssituasjon, satser }) => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator(ContextRoutes.HVOR_MYE);
 
@@ -81,6 +79,10 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
 
     const gjennomsnittslønnPerMåned = finnGjennomsnittsMånedslønn(formValues);
     const antattÅrslønn = gjennomsnittslønnPerMåned ? parseFloat(gjennomsnittslønnPerMåned) * 12 : undefined;
+
+    const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
+    const minÅrslønn = grunnbeløpet / 2;
+    const maxÅrslønn = grunnbeløpet * 6;
 
     const { ref } = useScrollBehaviour();
 

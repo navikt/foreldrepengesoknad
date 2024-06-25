@@ -1,7 +1,7 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { ReactElement, forwardRef } from 'react';
 
-import { BodyShort, HStack, Heading, Show, VStack } from '@navikt/ds-react';
+import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { GreenHeading, IconCircleWrapper, Page } from '@navikt/fp-ui';
 
@@ -20,16 +20,11 @@ const VeiviserPage = forwardRef<HTMLDivElement, Props>(({ label, description, ch
                     <HStack gap="5" align="center" wrap={false}>
                         <IconCircleWrapper color="darkGreen" size="xl">
                             {icon}
-                            {!icon && <CalendarIcon height={28} width={28} fontSize="1.5rem" aria-hidden />}
+                            {!icon && <CalendarIcon height={40} width={40} fontSize="1.5rem" aria-hidden />}
                         </IconCircleWrapper>
-                        <VStack gap="2">
-                            <Show below="md">
-                                <Heading size="medium">{label}</Heading>
-                            </Show>
-                            <Show above="md">
-                                <Heading size="large">{label}</Heading>
-                            </Show>
-                            {description && <BodyShort size="large">{description}</BodyShort>}
+                        <VStack gap="1">
+                            <Heading size="xsmall">{label}</Heading>
+                            {description && <BodyShort size="medium">{description}</BodyShort>}
                         </VStack>
                     </HStack>
                 </GreenHeading>

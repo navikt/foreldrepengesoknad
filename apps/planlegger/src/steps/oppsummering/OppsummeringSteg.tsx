@@ -12,7 +12,7 @@ import { Alert, BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@n
 
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
-import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
@@ -26,9 +26,10 @@ import styles from './oppsummeringSteg.module.css';
 
 interface Props {
     stønadskontoer?: TilgjengeligeStønadskontoer;
+    satser: Satser;
 }
 
-const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
+const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser }) => {
     const navigator = usePlanleggerNavigator();
 
     useScrollBehaviour();
@@ -116,6 +117,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     arbeidssituasjon={arbeidssituasjon}
                                     hvorLangPeriode={hvorLangPeriode}
                                     fordeling={fordeling}
+                                    satser={satser}
                                 />
                                 {harRettTilForeldrepenger && (
                                     <OppsummeringHarRett

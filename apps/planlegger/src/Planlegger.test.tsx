@@ -11,7 +11,7 @@ const { Default } = composeStories(stories);
 
 describe('<Planlegger>', () => {
     it('skal gå rett til oppsummering når ingen av foreldrene har rett', async () => {
-        const utils = render(<Default brukStønadskontoMock />);
+        const utils = render(<Default brukMocks />);
 
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Start'));
@@ -64,7 +64,7 @@ describe('<Planlegger>', () => {
     });
 
     it('skal gå rett til oppsummering når barnet er født for mer enn tre år siden', async () => {
-        const utils = render(<Default brukStønadskontoMock />);
+        const utils = render(<Default brukMocks />);
 
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Start'));
@@ -107,7 +107,7 @@ describe('<Planlegger>', () => {
     });
 
     it('skal ikke vise fordelingssteget når far og far og barnet er født', async () => {
-        const utils = render(<Default brukStønadskontoMock />);
+        const utils = render(<Default brukMocks />);
 
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Start'));

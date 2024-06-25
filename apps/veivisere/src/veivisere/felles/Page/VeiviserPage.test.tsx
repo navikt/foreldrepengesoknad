@@ -9,7 +9,7 @@ describe('<VeiviserPage>', () => {
     it('skal vise steg', async () => {
         render(<Default />);
 
-        expect(await screen.findAllByText('Hvor mye kan jeg få i foreldrepenger?')).toHaveLength(2);
+        expect(await screen.findByText('Hvor mye kan jeg få i foreldrepenger?')).toBeInTheDocument();
         expect(screen.getByText('Steginnhold')).toBeInTheDocument();
     });
 });

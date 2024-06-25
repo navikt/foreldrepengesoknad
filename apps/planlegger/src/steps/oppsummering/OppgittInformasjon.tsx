@@ -1,4 +1,5 @@
 import { ChatElipsisIcon } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
@@ -9,6 +10,7 @@ import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { erAlenesøker as erAlene, erFarOgFar, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { finnGrunnbeløp } from 'utils/satserUtils';
 import {
     getAntallUker,
     getAntallUkerFellesperiode,
@@ -18,8 +20,9 @@ import {
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { GreenPanel, IconCircleWrapper } from '@navikt/fp-ui';
+import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
 const onToggleExpansionCard = (open: boolean) => {
     if (open) {
@@ -38,6 +41,7 @@ interface Props {
     arbeidssituasjon: Arbeidssituasjon;
     hvorLangPeriode: HvorLangPeriode;
     fordeling?: Fordeling;
+    satser: Satser;
 }
 
 const OppgittInformasjon: FunctionComponent<Props> = ({
@@ -47,6 +51,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     arbeidssituasjon,
     hvorLangPeriode,
     fordeling,
+    satser,
 }) => {
     const intl = useIntl();
 
@@ -89,6 +94,8 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
     const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdoptert;
+
+    const minsteInntekt = formatCurrencyWithKr(finnGrunnbeløp(satser, dayjs()) / 2);
 
     return (
         <VStack gap="10">
@@ -175,7 +182,6 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                 <Heading size="small" level="4">
                                     <FormattedMessage id="OppgittInformasjon.Arbeid.Tittel" />
                                 </Heading>
-
                                 {erAlenesøker && (
                                     <BodyLong>
                                         <FormattedMessage
@@ -183,6 +189,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             values={{
                                                 navn: fornavn1,
                                                 arbeidssituasjon: arbeidssituasjon.status,
+                                                minsteInntekt,
                                             }}
                                         />
                                     </BodyLong>
@@ -197,6 +204,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                                         navn: fornavn1,
                                                         navn2: fornavn2,
                                                         arbeidssituasjon: arbeidssituasjon.status,
+                                                        minsteInntekt,
                                                     }}
                                                 />
                                             </BodyLong>
@@ -209,6 +217,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                                         values={{
                                                             navn: denEneFaren ? denEneFaren : fornavn1,
                                                             arbeidssituasjon: arbeidssituasjon.status,
+                                                            minsteInntekt,
                                                         }}
                                                     />
                                                 </BodyLong>
@@ -218,6 +227,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                                         values={{
                                                             navn: denAndreFaren ? denAndreFaren : fornavn2,
                                                             arbeidssituasjon: arbeidssituasjon.jobberAnnenPart,
+                                                            minsteInntekt,
                                                         }}
                                                     />
                                                 </BodyLong>
@@ -231,6 +241,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                                         values={{
                                                             navn: fornavn1,
                                                             arbeidssituasjon: arbeidssituasjon.status,
+                                                            minsteInntekt,
                                                         }}
                                                     />
                                                 </BodyLong>
@@ -240,6 +251,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                                         values={{
                                                             navn: fornavn2,
                                                             arbeidssituasjon: arbeidssituasjon.jobberAnnenPart,
+                                                            minsteInntekt,
                                                         }}
                                                     />
                                                 </BodyLong>

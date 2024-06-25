@@ -1,14 +1,18 @@
-import { ArrowLeftIcon, ChatElipsisIcon, CheckmarkIcon, InformationIcon } from '@navikt/aksel-icons';
+import { ArrowLeftIcon, ChatElipsisIcon, CheckmarkIcon, InformationIcon, WalletIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
+import { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { finnEngangsstønad, finnGrunnbeløp } from 'utils/satserUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
-import { BodyShort, Button, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, ExpansionCard, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
-import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
+import { links } from '@navikt/fp-constants';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { Dekningsgrad, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { GreenPanel, IconCircleWrapper, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -19,29 +23,55 @@ import HøyInntektInfobox from '../felles/HøyInntektInfobox';
 import FpEllerEsOgHvaSkjerNåLinkPanel from './FpEllerEsOgHvaSkjerNåLinkPanel';
 import Utbetalingspanel from './Utbetalingspanel';
 
-//FIXME Hent frå tjeneste
-const GRUNNBELØPET = 118620;
-const minÅrslønn = 59310;
-const engangsstønad = 92648;
-
 export const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260;
+
+const finnHendelse = (
+    harIkkeRettTilFp: boolean,
+    erMellomMinÅrslønnOg1Komma5G: boolean,
+    ikkeRettTilÅFåDekketAlt: boolean,
+) => {
+    if (harIkkeRettTilFp) {
+        return 'UNDER_MIN_ÅRSLØNN';
+    }
+    if (erMellomMinÅrslønnOg1Komma5G) {
+        return 'MELLOM_MIN_ÅRSLØNN_OG_1.5_G';
+    }
+    return ikkeRettTilÅFåDekketAlt ? 'OVER G*6' : 'HAR_RETT';
+};
 
 interface Props {
     arbeidssituasjon: Arbeidssituasjon;
     stønadskontoer: TilgjengeligeStønadskontoer;
+    satser: Satser;
 }
 
-const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, stønadskontoer }) => {
+const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, stønadskontoer, satser }) => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator(ContextRoutes.HVOR_MYE);
     const { ref } = useScrollBehaviour();
 
-    const gjennomsnittslønn = parseFloat(notEmpty(finnGjennomsnittsMånedslønn(notEmpty(arbeidssituasjon))));
-    const grunnbeløpetGanger6 = GRUNNBELØPET * 6;
+    const gjennomsnittslønnPerMåned = parseFloat(notEmpty(finnGjennomsnittsMånedslønn(notEmpty(arbeidssituasjon))));
+    const årslønn = gjennomsnittslønnPerMåned * 12;
 
-    const harIkkeRettTilFp = gjennomsnittslønn * 12 < minÅrslønn;
+    const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
+    const grunnbeløpetGanger6 = grunnbeløpet * 6;
+    const minÅrslønn = grunnbeløpet / 2;
+
+    const engangsstønad = finnEngangsstønad(satser, dayjs());
+
+    const harIkkeRettTilFp = årslønn < minÅrslønn;
+    const erMellomMinÅrslønnOg1Komma5G = årslønn > minÅrslønn && årslønn < grunnbeløpet * 1.5;
 
     const forrigeMåned = dayjs().subtract(1, 'month');
+
+    useEffect(() => {
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: 'veivisere',
+            team: 'foreldrepenger',
+            hendelse: finnHendelse(harIkkeRettTilFp, erMellomMinÅrslønnOg1Komma5G, årslønn > grunnbeløpetGanger6),
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>
@@ -52,12 +82,12 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                 icon={<CheckmarkIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
             >
                 <VStack gap="5">
-                    {gjennomsnittslønn * 12 > grunnbeløpetGanger6 && (
+                    {årslønn > grunnbeløpetGanger6 && (
                         <HøyInntektInfobox maxÅrslønnDekket={grunnbeløpetGanger6} isGray />
                     )}
                     {harIkkeRettTilFp && (
                         <>
-                            <HarIkkeRettTilFpInfobox antattÅrslønn={gjennomsnittslønn * 12} minÅrslønn={minÅrslønn} />
+                            <HarIkkeRettTilFpInfobox antattÅrslønn={årslønn} minÅrslønn={minÅrslønn} />
                             <Infobox
                                 header={<FormattedMessage id="OppsummeringSide.HvaErEr" />}
                                 icon={
@@ -79,14 +109,52 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                         <>
                             <Utbetalingspanel
                                 dekningsgrad={Dekningsgrad.HUNDRE_PROSENT}
-                                gjennomsnittslønn={gjennomsnittslønn}
+                                gjennomsnittslønn={gjennomsnittslønnPerMåned}
                                 stønadskontoer={stønadskontoer}
+                                satser={satser}
                             />
                             <Utbetalingspanel
                                 dekningsgrad={Dekningsgrad.ÅTTI_PROSENT}
-                                gjennomsnittslønn={gjennomsnittslønn}
+                                gjennomsnittslønn={gjennomsnittslønnPerMåned}
                                 stønadskontoer={stønadskontoer}
+                                satser={satser}
                             />
+                            {erMellomMinÅrslønnOg1Komma5G && (
+                                <Infobox
+                                    header={<FormattedMessage id="OppsummeringSide.SammenlignFpOgEs" />}
+                                    icon={
+                                        <WalletIcon
+                                            height={24}
+                                            width={24}
+                                            color="#020C1CAD"
+                                            fontSize="1.5rem"
+                                            aria-hidden
+                                        />
+                                    }
+                                    isGray
+                                >
+                                    <VStack gap="4">
+                                        <BodyShort>
+                                            <FormattedMessage
+                                                id="OppsummeringSide.SammenlignFpOgEsInfoPart1"
+                                                values={{ engangsstønad: formatCurrencyWithKr(engangsstønad) }}
+                                            />
+                                        </BodyShort>
+                                        <BodyShort>
+                                            <FormattedMessage id="OppsummeringSide.SammenlignFpOgEsInfoPart2" />
+                                            <Link
+                                                href={links.veiviser}
+                                                className="lenke"
+                                                rel="noreferrer"
+                                                target="_blank"
+                                            >
+                                                <FormattedMessage id="OppsummeringSide.Veiviser" />
+                                            </Link>
+                                            <FormattedMessage id="OppsummeringSide.SammenlignFpOgEsInfoPart3" />
+                                        </BodyShort>
+                                    </VStack>
+                                </Infobox>
+                            )}
                             <Infobox
                                 header={<FormattedMessage id="OppsummeringSide.UtbetaltSomVanlig" />}
                                 icon={
@@ -100,7 +168,9 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                 }
                                 isGray
                             >
-                                <FormattedMessage id="OppsummeringSide.ArbeidsgiverFraNav" />
+                                <BodyShort>
+                                    <FormattedMessage id="OppsummeringSide.ArbeidsgiverFraNav" />
+                                </BodyShort>
                             </Infobox>
                         </>
                     )}
@@ -118,35 +188,52 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                         <ExpansionCard.Content>
                             {(arbeidssituasjon.erArbeidstakerEllerFrilanser ||
                                 arbeidssituasjon.harUtbetalingFraNav) && (
-                                <VStack gap="5">
-                                    <div>
-                                        <Heading size="small">
-                                            {capitalizeFirstLetter(
-                                                forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
+                                <VStack gap="10">
+                                    <GreenPanel>
+                                        <VStack gap="1">
+                                            <Heading size="small" level="4">
+                                                <FormattedMessage id="OppsummeringSide.NæverendeArbeidssitasjon" />
+                                            </Heading>
+                                            {arbeidssituasjon.erArbeidstakerEllerFrilanser && (
+                                                <FormattedMessage id="OppsummeringSide.ArbeidstakerEllerFrilanser" />
                                             )}
-                                        </Heading>
-                                        <BodyShort>
-                                            {formatCurrencyWithKr(parseInt(arbeidssituasjon.lønnMåned1, 10))}
-                                        </BodyShort>
-                                    </div>
-                                    <div>
-                                        <Heading size="small">
-                                            {capitalizeFirstLetter(
-                                                forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
+                                            {arbeidssituasjon.harUtbetalingFraNav && (
+                                                <FormattedMessage id="OppsummeringSide.UtbetalingFraNav" />
                                             )}
-                                        </Heading>
-                                        <BodyShort>
-                                            {formatCurrencyWithKr(parseInt(arbeidssituasjon.lønnMåned2, 10))}
-                                        </BodyShort>
-                                    </div>
-                                    <div>
-                                        <Heading size="small">
-                                            {capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
-                                        </Heading>
-                                        <BodyShort>
-                                            {formatCurrencyWithKr(parseInt(arbeidssituasjon.lønnMåned3, 10))}
-                                        </BodyShort>
-                                    </div>
+                                        </VStack>
+                                    </GreenPanel>
+                                    <GreenPanel>
+                                        <VStack gap="5">
+                                            <div>
+                                                <Heading size="small">
+                                                    {capitalizeFirstLetter(
+                                                        forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
+                                                    )}
+                                                </Heading>
+                                                <BodyShort>
+                                                    {formatCurrencyWithKr(parseInt(arbeidssituasjon.lønnMåned1, 10))}
+                                                </BodyShort>
+                                            </div>
+                                            <div>
+                                                <Heading size="small">
+                                                    {capitalizeFirstLetter(
+                                                        forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
+                                                    )}
+                                                </Heading>
+                                                <BodyShort>
+                                                    {formatCurrencyWithKr(parseInt(arbeidssituasjon.lønnMåned2, 10))}
+                                                </BodyShort>
+                                            </div>
+                                            <div>
+                                                <Heading size="small">
+                                                    {capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
+                                                </Heading>
+                                                <BodyShort>
+                                                    {formatCurrencyWithKr(parseInt(arbeidssituasjon.lønnMåned3, 10))}
+                                                </BodyShort>
+                                            </div>
+                                        </VStack>
+                                    </GreenPanel>
                                 </VStack>
                             )}
                         </ExpansionCard.Content>
