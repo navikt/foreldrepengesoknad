@@ -5,22 +5,20 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { LocaleAll } from '@navikt/fp-types';
+import { GreenHeading, IconCircleWrapper, LanguageToggleNew, Page } from '@navikt/fp-ui';
 
-import GreenHeading from '../boxes/GreenHeading';
-import IconCircleWrapper from '../iconCircle/IconCircleWrapper';
-import LanguageToggle from '../languageToggleNew/LanguageToggle';
-import Page from './Page';
 import styles from './frontPage.module.css';
 
 interface Props {
     locale: LocaleAll;
     changeLocale: (locale: LocaleAll) => void;
-    children?: ReactElement;
+    children?: ReactElement | ReactElement[];
     titleLabel: string;
     minutesLabel: string;
     innholdLabel: string;
     goToNextDefaultStep: () => void;
     icon?: ReactElement;
+    childrenBelowStartButton?: boolean;
 }
 
 const FrontPage: React.FunctionComponent<Props> = ({
@@ -32,6 +30,7 @@ const FrontPage: React.FunctionComponent<Props> = ({
     innholdLabel,
     goToNextDefaultStep,
     icon,
+    childrenBelowStartButton = false,
 }) => (
     <Page
         header={
@@ -40,7 +39,7 @@ const FrontPage: React.FunctionComponent<Props> = ({
                     <GreenHeading isDarkGreen>
                         <VStack gap="4" align="center">
                             <div className={styles.languageToggle}>
-                                <LanguageToggle locale={locale} changeLocale={changeLocale} />
+                                <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
                             </div>
                             <IconCircleWrapper color="darkGreen" size="xl">
                                 {icon}
@@ -78,8 +77,8 @@ const FrontPage: React.FunctionComponent<Props> = ({
     >
         <VStack gap={{ xs: '3', sm: '10' }}>
             <BodyShort size="large">{innholdLabel}</BodyShort>
-            <VStack gap={{ xs: '8', sm: '20' }}>
-                <VStack gap={{ xs: '2', sm: '5' }}>{children}</VStack>
+            <VStack gap={{ xs: childrenBelowStartButton ? '6' : '8', sm: childrenBelowStartButton ? '10' : '20' }}>
+                {!childrenBelowStartButton && <VStack gap={{ xs: '2', sm: '5' }}>{children}</VStack>}
                 <HStack justify="center">
                     <Button
                         onClick={goToNextDefaultStep}
@@ -91,11 +90,12 @@ const FrontPage: React.FunctionComponent<Props> = ({
                         <FormattedMessage id="FrontPage.Start" />
                     </Button>
                 </HStack>
+                {childrenBelowStartButton && <VStack gap={{ xs: '2', sm: '5' }}>{children}</VStack>}
             </VStack>
             <Show above="md" asChild>
                 <HStack justify="center">
                     <div className={styles.languageToggle}>
-                        <LanguageToggle locale={locale} changeLocale={changeLocale} />
+                        <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
                     </div>
                 </HStack>
             </Show>

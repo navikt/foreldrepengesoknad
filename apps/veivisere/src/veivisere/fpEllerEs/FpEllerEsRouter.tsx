@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import FpEllerEsForside from './forside/FpEllerEsForside';
+import SituasjonSide from './situasjon/SituasjonSide';
 
 interface Props {
     locale: LocaleAll;
@@ -19,6 +20,7 @@ const FpEllerEsRouter: FunctionComponent<Props> = ({ locale, changeLocale }) => 
                 path={FpEllerEsRoutes.OM}
                 element={<FpEllerEsForside locale={locale} changeLocale={changeLocale} />}
             />
+            <Route path={FpEllerEsRoutes.SITUASJON} element={<SituasjonSide />} />
         </Routes>
     );
 };

@@ -23,7 +23,7 @@ const VeiviserPage = forwardRef<HTMLDivElement, Props>(({ label, description, ch
                             {!icon && <CalendarIcon height={40} width={40} fontSize="1.5rem" aria-hidden />}
                         </IconCircleWrapper>
                         <VStack gap="1">
-                            <Heading size="xsmall">{label}</Heading>
+                            <Heading size={description ? 'xsmall' : 'medium'}>{label}</Heading>
                             {description && <BodyShort size="medium">{description}</BodyShort>}
                         </VStack>
                     </HStack>
