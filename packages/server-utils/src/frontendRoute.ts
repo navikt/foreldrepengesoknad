@@ -4,7 +4,7 @@ import path from 'node:path';
 
 import config from './config.js';
 
-export const setupStaticRoutes = async (app: Express) => {
+export const setupAndServeHtml = async (app: Express) => {
     // When deployed, the built frontend is copied into the public directory. If running BFF locally the index.html will not exist.
     const spaFilePath = path.resolve('./public', 'index.html');
 
