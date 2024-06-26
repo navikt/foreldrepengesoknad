@@ -11,7 +11,7 @@
         "build": "vite build",
         "dev-api": "node ./mock-api/mock-api-server.cjs",
         "dev": "node ./dev-server.cjs",
-        "test": "vitest run",
+        "test": "vitest run --no-file-parallelism",
         "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}",
         "lint:tsc": "tsc --noEmit",
         "prettier": "prettier --write src",

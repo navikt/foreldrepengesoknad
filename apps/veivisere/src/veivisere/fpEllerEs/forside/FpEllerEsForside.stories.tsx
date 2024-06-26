@@ -6,17 +6,13 @@ import { initAmplitude } from '@navikt/fp-metrics';
 
 import FpEllerEsForside from './FpEllerEsForside';
 
-interface StoryArgs {}
-
 const meta = {
     title: 'fpEllerEs/FpEllerEsForside',
     component: FpEllerEsForside,
-} satisfies Meta<typeof FpEllerEsForside & StoryArgs>;
+} satisfies Meta<typeof FpEllerEsForside>;
 export default meta;
 
-type Story = StoryObj<StoryArgs>;
-
-export const Default: Story = {
+export const Default: StoryObj = {
     render: () => {
         initAmplitude();
         return (
