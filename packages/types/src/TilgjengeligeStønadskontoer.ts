@@ -1,8 +1,13 @@
-import { MinsterettType, StønadskontoType } from '@navikt/fp-constants';
+import { KontoTilleggType, MinsterettType, StønadskontoType } from '@navikt/fp-constants';
 
 export type TilgjengeligeMinsterettskontoer = {
     [MinsterettType.farRundtFødsel]: number;
     [MinsterettType.toTette]: number;
+};
+
+export type TilgjengeligeKontoTillegg = {
+    [KontoTilleggType.prematur]: number;
+    [KontoTilleggType.flerbarn]: number;
 };
 
 export type Stønadskonto = {
@@ -13,6 +18,7 @@ export type Stønadskonto = {
 export type TilgjengeligeStønadskontoerForDekningsgrad = {
     kontoer: Stønadskonto[];
     minsteretter: TilgjengeligeMinsterettskontoer;
+    tillegg?: TilgjengeligeKontoTillegg;
 };
 
 export type TilgjengeligeStønadskontoer = {

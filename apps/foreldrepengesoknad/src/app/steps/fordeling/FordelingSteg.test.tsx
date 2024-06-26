@@ -16,6 +16,7 @@ const {
     FarMedmorAleneomsorgPrematurtFødtBarn,
     FarMedmorAleneomsorgAdopsjonFireBarn,
     MorDeltUttakEttBarnPrematurFødsel,
+    MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning,
     MorDeltUttakEttBarnTermin,
     MorDeltUttakTvillingerFødt,
     MorDeltUttakFarSøkteMorsKvoteOgFellesperiode,
@@ -662,7 +663,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         expect(screen.getAllByText('Du må oppgi dato når du vil starte dine foreldrepenger.')).toHaveLength(2);
         await userEvent.click(screen.getByText('Jeg vil velge'));
         await userEvent.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Du må oppgi antall uker du ønsker å ha av fellesperioden.')).toHaveLength(2);
+        expect(screen.getAllByText('Du må oppgi en lengde på fellesperioden din.')).toHaveLength(2);
     });
     it('skal ikke kunne skrive inn tekst for antall uker hun ønsker av fellesperioden', async () => {
         const utils = render(
@@ -678,7 +679,9 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         await userEvent.type(ukerInput, 'test');
         fireEvent.blur(ukerInput);
         await userEvent.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Antall uker du ønsker å ha av fellesperioden må være et heltall.')).toHaveLength(2);
+        expect(
+            screen.getAllByText('Antall uker du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
+        ).toHaveLength(2);
     });
     it('skal ikke kunne skrive inn desimaltall for antall uker hun ønsker av fellesperioden', async () => {
         const utils = render(
@@ -694,9 +697,11 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         await userEvent.type(ukerInput, '1,5');
         fireEvent.blur(ukerInput);
         await userEvent.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Antall uker du ønsker å ha av fellesperioden må være et heltall.')).toHaveLength(2);
+        expect(
+            screen.getAllByText('Antall uker du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
+        ).toHaveLength(2);
     });
-    it('skal ikke kunne skrive inn for mange uker for antall uker hun øsker av fellesperioden', async () => {
+    it('skal ikke kunne skrive inn for mange uker for antall uker hun ønsker av fellesperioden', async () => {
         const utils = render(
             <MorDeltUttakEttBarnPrematurFødsel
                 gåTilNesteSide={gåTilNesteSide}
@@ -710,7 +715,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         await userEvent.type(ukerInput, '21');
         fireEvent.blur(ukerInput);
         await userEvent.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Maksimalt antall uker med fellesperioden er 20.')).toHaveLength(2);
+        expect(screen.getAllByText('Fellesperioden kan være maksimalt 20 uker lang.')).toHaveLength(2);
     });
     it('skal ikke kunne skrive inn et negativt tall for antall uker hun ønsker av fellesperioden', async () => {
         const utils = render(
@@ -727,7 +732,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         fireEvent.blur(ukerInput);
         await userEvent.click(screen.getByText('Neste steg'));
         expect(
-            screen.getAllByText('Antall uker du ønsker å ha av fellesperioden kan ikke være mindre enn 0.'),
+            screen.getAllByText('Antall uker du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
         ).toHaveLength(2);
     });
     it('skal få figur over fordeling når hun velger gyldig antall uker hun ønsker av fellesperioden', async () => {
@@ -740,6 +745,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge'));
+        expect(screen.getByText('Velg hvor mange uker du ønsker av fellesperioden.')).toBeInTheDocument();
         const ukerInput = utils.getByLabelText('Hvor mange uker vil du ha?');
         await userEvent.type(ukerInput, '3');
         fireEvent.blur(ukerInput);
@@ -757,11 +763,173 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         expect(screen.getByText('Jeg vil velge')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Hopp over fordeling'));
         expect(
-            await screen.findByText(
+            screen.getByText(
                 'I planen din på neste steg vil ikke fellesperioden vises fordi du har valgt å fordele denne senere.',
                 { exact: false },
             ),
         ).toBeInTheDocument();
+    });
+});
+
+describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () => {
+    const gåTilNesteSide = vi.fn();
+    const mellomlagreSøknadOgNaviger = vi.fn();
+
+    it('skal vise input for dager med fellesperiode når bruker svarer at de vil velge fordeling av fellesperioden', async () => {
+        render(
+            <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Jeg vil velge'));
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
+        expect(screen.getByText('Hvor mange uker vil du ha?')).toBeInTheDocument();
+        expect(screen.getByText('Hvor mange dager vil du ha?')).toBeInTheDocument();
+    });
+    it('skal ikke kunne gå videre uten å oppgi antall uker eller dager av fellesperioden', async () => {
+        const utils = render(
+            <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Jeg vil velge'));
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getAllByText('Du må oppgi en lengde på fellesperioden din.')).toHaveLength(3);
+        const dagerInput = utils.getByLabelText('Hvor mange dager vil du ha?');
+        await userEvent.type(dagerInput, '1');
+    });
+    it('skal kunne gå videre uten å oppgi antall uker hvis man oppgir dager i fordelingen av fellesperioden', async () => {
+        const utils = render(
+            <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Jeg vil velge'));
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
+        const dagerInput = utils.getByLabelText('Hvor mange dager vil du ha?');
+        await userEvent.type(dagerInput, '1');
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(screen.queryByText('Du må oppgi en lengde på fellesperioden din.')).not.toBeInTheDocument();
+    });
+    it('skal kunne gå videre uten å oppgi antall dager hvis man oppgir uker i fordelingen av fellesperioden', async () => {
+        const utils = render(
+            <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Jeg vil velge'));
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
+        const ukerInput = utils.getByLabelText('Hvor mange uker vil du ha?');
+        await userEvent.type(ukerInput, '2');
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(screen.queryByText('Du må oppgi en lengde på fellesperioden din.')).not.toBeInTheDocument();
+    });
+    it('skal ikke kunne oppgi desimaltall som antall dager', async () => {
+        const utils = render(
+            <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Jeg vil velge'));
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
+        const dagerInput = utils.getByLabelText('Hvor mange dager vil du ha?');
+        await userEvent.type(dagerInput, '1,4');
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(
+            screen.getAllByText('Antall dager du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
+        ).toHaveLength(2);
+    });
+    it('skal ikke kunne oppgi tekst som antall dager', async () => {
+        const utils = render(
+            <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Jeg vil velge'));
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
+        const dagerInput = utils.getByLabelText('Hvor mange dager vil du ha?');
+        await userEvent.type(dagerInput, 'to');
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(
+            screen.getAllByText('Antall dager du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
+        ).toHaveLength(2);
+    });
+    it('skal ikke kunne oppgi negativt tall som antall dager', async () => {
+        const utils = render(
+            <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Jeg vil velge'));
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
+        const dagerInput = utils.getByLabelText('Hvor mange dager vil du ha?');
+        await userEvent.type(dagerInput, '-2');
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(
+            screen.getAllByText('Antall dager du ønsker å ha av fellesperioden må være et heltall større enn 0.'),
+        ).toHaveLength(2);
+    });
+    it('skal ikke kunne overskride antall dager  tilgjengelig', async () => {
+        const utils = render(
+            <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Jeg vil velge'));
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
+        const dagerInput = utils.getByLabelText('Hvor mange dager vil du ha?');
+        await userEvent.type(dagerInput, '102');
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getAllByText('Fellesperioden kan være maksimalt 20 uker og 1 dag lang.')).toHaveLength(2);
+    });
+    it('skal ikke kunne overskride antall uker og dager tilgjengelig', async () => {
+        const utils = render(
+            <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
+        expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
+        expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Jeg vil velge'));
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
+        const dagerInput = utils.getByLabelText('Hvor mange dager vil du ha?');
+        await userEvent.type(dagerInput, '92');
+        const ukerInput = utils.getByLabelText('Hvor mange uker vil du ha?');
+        await userEvent.type(ukerInput, '2');
+        await userEvent.click(screen.getByText('Neste steg'));
+        expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
+        expect(screen.getAllByText('Fellesperioden kan være maksimalt 20 uker og 1 dag lang.')).toHaveLength(3);
     });
 });
 
@@ -1157,7 +1325,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
         expect(
             screen.getByText('kan brukes i perioden rundt fødsel, samtidig med Hanne.', { exact: false }),
         ).toBeInTheDocument();
-        expect(screen.queryByText('flerbarnsuker')).not.toBeInTheDocument();
+        expect(screen.queryByText('flerbarnsdager')).not.toBeInTheDocument();
 
         expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
         expect(

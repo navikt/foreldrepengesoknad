@@ -1,5 +1,6 @@
 import { Uttaksdagen } from '@navikt/fp-common';
-import { ISOStringToDate, getNumberFromNumberInputValue } from '@navikt/fp-formik';
+import { ISOStringToDate } from '@navikt/fp-formik';
+import { getNumberFromNumberInputValue } from '@navikt/fp-utils';
 import {
     getFørsteUttaksdagAnkomstdatoNorge,
     getFørsteUttaksdagDatoForAleneomsorg,
@@ -16,15 +17,17 @@ export const getNesteUttaksdagEtterAnnenForelder = (sisteDagAnnenForelder: Date 
     return Uttaksdagen(sisteUttaksdagAnnenForelder).neste();
 };
 
-export const getAntallUkerFellesperiodeTilSøker = (
+export const getAntallDagerFellesperiodeTilSøker = (
     antallUkerFellesperiode: number,
     fordeling: Fordeling,
 ): number | undefined => {
     if (fordeling.fordelingValg === FellesperiodeFordelingValg.ALT) {
-        return antallUkerFellesperiode;
+        return antallUkerFellesperiode * 5;
     }
     if (fordeling.fordelingValg === FellesperiodeFordelingValg.VIL_VELGE) {
-        return getNumberFromNumberInputValue(fordeling.antallUkerFellesperiodeTilSøker);
+        const antallDager = getNumberFromNumberInputValue(fordeling.antallDagerFellesperiodeTilSøker) ?? 0;
+        const antallUker = getNumberFromNumberInputValue(fordeling.antallUkerFellesperiodeTilSøker) ?? 0;
+        return antallUker * 5 + antallDager;
     }
     return undefined;
 };

@@ -28,9 +28,15 @@ const FellesperiodeValgVisning: React.FunctionComponent<Props> = ({
         fordelingsdager.length > 0 && !fordelingsdager.every((f) => f.fargekode === FordelingFargekode.IKKE_TILDELT);
     return (
         <VStack gap="1" aria-hidden={true}>
+            <div className={bem.element('textTop')}>
+                <FormattedMessage
+                    id="fordeling.fellesperiodeVisning.sumUker"
+                    values={{ varighetString: varighetStringFellesperiode }}
+                />
+            </div>
+            <DelGraf fordelingsdager={fordelingsdager} sumDager={dagerMedFellesperiode} />
             {fordelingErValgt && (
                 <div
-                    className={bem.element('textTop')}
                     style={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -63,15 +69,6 @@ const FellesperiodeValgVisning: React.FunctionComponent<Props> = ({
                     })}
                 </div>
             )}
-            <DelGraf fordelingsdager={fordelingsdager} sumDager={dagerMedFellesperiode} />
-            <div className={bem.element('textBottom')}>
-                <div className={bem.element('textElement')}>
-                    <FormattedMessage
-                        id="fordeling.fellesperiodeVisning.sumUker"
-                        values={{ varighetString: varighetStringFellesperiode }}
-                    />
-                </div>
-            </div>
         </VStack>
     );
 };

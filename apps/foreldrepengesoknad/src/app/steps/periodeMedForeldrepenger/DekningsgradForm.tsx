@@ -8,13 +8,11 @@ import { BodyShort, Box, HStack, Heading, Link, Radio, ReadMore, VStack } from '
 import {
     Barn,
     Dekningsgrad,
-    Tidsperioden,
     Uttaksdagen,
     bemUtils,
     capitalizeFirstLetter,
     getAntallUker,
     getAntallUkerFraStønadskontoer,
-    getFlerbarnsuker,
     getVarighetString,
     isAdoptertBarn,
     isAnnenForelderOppgitt,
@@ -28,7 +26,6 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/cont
 import PeriodeMedForeldrepenger from 'app/context/types/PeriodeMedForeldrepenger';
 import { getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { førsteJuli2024ReglerGjelder } from 'app/utils/dateUtils';
-import { skalViseInfoOmPrematuruker } from 'app/utils/uttaksplanInfoUtils';
 
 import './panelWithCircleIcon.less';
 
@@ -118,7 +115,6 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
     const periodeMedForeldrepenger = useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const oppdaterPeriodeMedForeldrepenger = useContextSaveData(ContextDataType.PERIODE_MED_FORELDREPENGER);
-
     const formMethods = useForm<PeriodeMedForeldrepenger>({
         defaultValues: periodeMedForeldrepenger,
     });
@@ -134,15 +130,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
 
     const erAdopsjon = isAdoptertBarn(barn);
     const fødselsdato = getFødselsdato(barn);
-    const termindato = getTermindato(barn);
-    const visInfoOmPrematuruker = skalViseInfoOmPrematuruker(fødselsdato, termindato, søkersituasjon.situasjon);
-    const ekstraDagerGrunnetPrematurFødsel =
-        visInfoOmPrematuruker && fødselsdato && termindato
-            ? Tidsperioden({
-                  fom: dayjs(fødselsdato).toDate(),
-                  tom: dayjs(termindato).toDate(),
-              }).getAntallUttaksdager() - 1
-            : undefined;
+    const ekstraDagePrematur = stønadskonto100.tillegg?.prematur;
 
     const sisteDag100Prosent = finnSisteDagMedForeldrepenger(stønadskonto100, barn);
     const sisteDag80Prosent = finnSisteDagMedForeldrepenger(stønadskonto80, barn);
@@ -230,7 +218,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                         </Link>
                     </ReadMore>
                 </VStack>
-                {visInfoOmPrematuruker && !!ekstraDagerGrunnetPrematurFødsel && (
+                {!!ekstraDagePrematur && (
                     <Box padding="4" background="surface-alt-3-subtle">
                         <HStack justify="space-between" align="start">
                             <VStack gap="2" style={{ width: '85%' }}>
@@ -246,8 +234,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                                     <FormattedMessage
                                         id="DekningsgradForm.InformasjonPrematuruker"
                                         values={{
-                                            uker: Math.floor(ekstraDagerGrunnetPrematurFødsel / 5),
-                                            dager: ekstraDagerGrunnetPrematurFødsel % 5,
+                                            varighet: getVarighetString(ekstraDagePrematur, intl),
                                             soker: erDeltUttak
                                                 ? intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.dere' })
                                                 : intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.deg' }),
@@ -289,8 +276,8 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                                     <FormattedMessage
                                         id="DekningsgradForm.InformasjonFlerbarnUker"
                                         values={{
-                                            uker80: getFlerbarnsuker(Dekningsgrad.ÅTTI_PROSENT, barn.antallBarn),
-                                            uker100: getFlerbarnsuker(Dekningsgrad.HUNDRE_PROSENT, barn.antallBarn),
+                                            uker80: getVarighetString(stønadskonto80.tillegg?.flerbarn || 0, intl),
+                                            uker100: getVarighetString(stønadskonto100.tillegg?.flerbarn || 0, intl),
                                             soker: søkerAntallTekst,
                                         }}
                                     />

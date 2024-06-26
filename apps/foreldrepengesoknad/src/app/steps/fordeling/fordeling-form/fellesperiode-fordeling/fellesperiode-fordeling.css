@@ -1,5 +1,17 @@
+.fellesperiodeFordeling {
+    padding: 1rem 0rem 1rem 2rem;
+}
+
 .fellesperiodeFordeling__textInput {
     min-width: 100px;
-    width: 90%;
-    padding-bottom: 1rem;
+    padding: 1rem 0rem;
+    width: 40%;
+}
+
+.fellesperiodeFordeling__description {
+    color: var(--a-text-subtle);
+}
+
+.fellesperiodeFordeling__title {
+    font-weight: bold;
 }

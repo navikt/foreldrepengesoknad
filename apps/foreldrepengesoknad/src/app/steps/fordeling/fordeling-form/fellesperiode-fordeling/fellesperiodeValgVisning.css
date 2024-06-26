@@ -1,12 +1,5 @@
 .fellesperiodeValgVisning__textTop {
-    justify-content: center;
-}
-
-.fellesperiodeValgVisning__textBottom {
-    justify-content: center;
-    display: 'flex';
-    flex-direction: 'row';
-    padding-top: '0.5rem';
+    font-weight: bold;
 }
 
 .fellesperiodeValgVisning__textElement {
