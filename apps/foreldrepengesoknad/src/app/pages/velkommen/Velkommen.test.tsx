@@ -435,20 +435,20 @@ describe('<Velkommen>', () => {
     it('skal koble sak med PDL barn født innen Termin + 6 uker', async () => {
         render(<HarSakPåTerminSomSkalKoblesMedFødtPDLBarnFødtInnenTerminPlus6uker />);
         expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
-        expect(await screen.findByText('Hanne født 09. juli 2024')).toBeInTheDocument();
+        expect(await screen.findByText('Hanne født 09. august 2024')).toBeInTheDocument();
         expect(screen.getByText('Saksnummer 123456, saken er under behandling')).toBeInTheDocument();
         expect(screen.queryByText('Barn med termin 28. juni 2024')).not.toBeInTheDocument();
     });
     it('skal ikke koble sak med PDL barn født før Termin - 17uker', async () => {
         render(<HarSakPåTerminSomIkkeSkalKoblesMedPDLBarnFødtForTidlig />);
         expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
-        expect(screen.getByText('Hanne født 29. februar 2024')).to.toBeInTheDocument();
+        expect(screen.getByText('Hanne født 29. februar 2024')).toBeInTheDocument();
         expect(screen.getByText('Barn med termin 28. juni 2024')).toBeInTheDocument();
     });
     it('skal ikke koble sak med PDL barn født etter Termin+6uker', async () => {
         render(<HarSakPåTerminSomIkkeSkalKoblesMedMedPDLBarnFødtForSent />);
         expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
-        expect(await screen.queryByText('Hanne født 10. juli 2024')).not.toBeInTheDocument();
+        expect(screen.getByText('Hanne født 10. august 2024')).toBeInTheDocument();
         expect(screen.getByText('Barn med termin 28. juni 2024')).toBeInTheDocument();
     });
 });
