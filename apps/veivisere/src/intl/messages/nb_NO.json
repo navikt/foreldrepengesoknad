@@ -94,5 +94,8 @@
     "SituasjonSide.IkkeRett": "Du har oppgitt at du ikke er medlem av folketrygden, og har derfor ikke rett på foreldrepenger eller engangsstønad.",
     "SituasjonSide.MåTjeneMinst": "For å kunne ha rett på foreldrepenger må man tjene minst {minstelønn} i året",
     "SituasjonSide.OppgittLønnIkkeRett": "Du har oppgitt at du tjener omtrent {årslønn} i året før skatt, som er mindre enn {minstelønn} i året før skatt. Det ser derfor ut til at du ikke har rett til foreldrepenger. Du kan fortsatt ha rett på engangsstønad.",
-    "FpEllerEs.Tittel": "Foreldrepenger eller engangsstønad"
+    "SituasjonSide.JobbetMinst8av10": "For å kunne ha rett på foreldrepenger må man ha jobbet 6 av de 10 siste månedene.",
+    "SituasjonSide.JobbetMinst8av10Detaljer": "Du må ha jobbet 6 av de siste 10 månedene før du skal ut i permisjon for å ha rett til foreldrepenger. Du kan fortsatt ha rett på engangsstønad.",
+    "FpEllerEs.Tittel": "Foreldrepenger eller engangsstønad",
+    "FrontPage.Start": "Start"
 }

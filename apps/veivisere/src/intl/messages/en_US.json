@@ -94,5 +94,8 @@
     "SituasjonSide.IkkeRett": "You have stated that you are not a member of the national insurance, and are therefore not entitled to parental benefit or one-off benefit.",
     "SituasjonSide.MåTjeneMinst": "To be entitled to parental benefit, you must earn at least {minstelønn} a year",
     "SituasjonSide.OppgittLønnIkkeRett": "You have stated that you earn approximately {årslønn} in the year before tax, which is less than {minstelønn} in the year before tax. It therefore appears that you are not entitled to parental allowance. You may still be entitled to a one-off benefit.",
-    "FpEllerEs.Tittel": "Parental benefit or one-time grant?"
+    "SituasjonSide.JobbetMinst8av10": "To be entitled to parental benefit, you must have worked 6 out of the last 10 months.",
+    "SituasjonSide.JobbetMinst8av10Detaljer": "You must have worked 6 of the last 10 months before you go on leave to be entitled to parental benefit. You may still be entitled to a one-off benefit.",
+    "FpEllerEs.Tittel": "Parental benefit or one-time grant?",
+    "FrontPage.Start": "Start"
 }

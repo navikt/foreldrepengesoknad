@@ -47,7 +47,6 @@
     "AvsluttModal.CompleteLater": "The application is saved and you can complete it later, or choose to delete it. The application is saved for 24 hours.",
     "AvsluttModal.Ok": "OK",
     "AvsluttModal.Delete": "Delete application",
-    "FrontPage.Start": "Start",
     "SimpleErrorPage.ErrorHeader": "Sorry, it looks like something has gone wrong due to a technical error at NAV",
     "SimpleErrorPage.ErrorBody": "You can try planning again, and if you still get an error, you can wait a bit and come back later.",
     "SimpleErrorPage.TryAgain": "Try planning again"

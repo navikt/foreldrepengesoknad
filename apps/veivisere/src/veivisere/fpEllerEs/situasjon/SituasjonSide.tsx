@@ -1,4 +1,4 @@
-import { BabyWrappedIcon, EarthIcon, InformationIcon, PaperplaneIcon, WalletIcon } from '@navikt/aksel-icons';
+import { BabyWrappedIcon, EarthIcon, PaperplaneIcon, WalletIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
@@ -44,6 +44,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser }) => {
 
     const formMethods = useForm<FormValues>({
         defaultValues: {},
+        shouldUnregister: true,
     });
 
     const situasjon = formMethods.watch('situasjon');
@@ -51,6 +52,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser }) => {
     const harHattInntekt = formMethods.watch('harHattInntekt');
     const lønnPerMåned = formMethods.watch('lønnPerMåned');
     const borDuINorge = formMethods.watch('borDuINorge');
+    const harHattAndreInntekter = formMethods.watch('harHattAndreInntekter');
     const erDuMedlemAvFolketrygden = formMethods.watch('erDuMedlemAvFolketrygden');
 
     const onSubmit = () => {
@@ -103,7 +105,24 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser }) => {
                             <ReadMore header={<FormattedMessage id="SituasjonSide.HvaGirRett" />}>todo</ReadMore>
                         </VStack>
                     )}
-                    {erIArbeid && (
+                    {erIArbeid === false && (
+                        <VStack gap="4">
+                            <GreenRadioGroup
+                                label={<FormattedMessage id="SituasjonSide.HarDuHattAndeInntektskilder" />}
+                                name="harHattAndreInntekter"
+                                onChange={scrollToBottom}
+                            >
+                                <Radio value={true} autoFocus>
+                                    <FormattedMessage id="SituasjonSide.Ja" />
+                                </Radio>
+                                <Radio value={false}>
+                                    <FormattedMessage id="SituasjonSide.Nei" />
+                                </Radio>
+                            </GreenRadioGroup>
+                            <ReadMore header={<FormattedMessage id="SituasjonSide.HvaGirRett" />}>todo</ReadMore>
+                        </VStack>
+                    )}
+                    {(erIArbeid || harHattAndreInntekter) && (
                         <VStack gap="4">
                             <GreenRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.HarDuHattInntekt" />}
@@ -121,22 +140,16 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser }) => {
                         </VStack>
                     )}
                     {harHattInntekt === false && (
-                        <VStack gap="4">
-                            <GreenRadioGroup
-                                label={<FormattedMessage id="SituasjonSide.HarDuHattAndeInntektskilder" />}
-                                name="harHattAndreInntekter"
-                                onChange={scrollToBottom}
-                            >
-                                <Radio value={true} autoFocus>
-                                    <FormattedMessage id="SituasjonSide.Ja" />
-                                </Radio>
-                                <Radio value={false}>
-                                    <FormattedMessage id="SituasjonSide.Nei" />
-                                </Radio>
-                            </GreenRadioGroup>
-                            <ReadMore header={<FormattedMessage id="SituasjonSide.HvaGirRett" />}>todo</ReadMore>
-                        </VStack>
+                        <Infobox
+                            header={<FormattedMessage id="SituasjonSide.JobbetMinst8av10" />}
+                            icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                        >
+                            <BodyShort>
+                                <FormattedMessage id="SituasjonSide.JobbetMinst8av10Detaljer" />
+                            </BodyShort>
+                        </Infobox>
                     )}
+
                     {harHattInntekt && (
                         <VStack gap="4">
                             <GreenPanel isDarkGreen={lønnPerMåned === undefined} shouldFadeIn>
@@ -184,7 +197,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser }) => {
                             </BodyShort>
                         </Infobox>
                     )}
-                    {lønnPerMåned && (
+                    {(lønnPerMåned || harHattInntekt === false || harHattAndreInntekter === false) && (
                         <VStack gap="4">
                             <GreenRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.BorDuINorge" />}
