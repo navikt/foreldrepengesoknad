@@ -66,6 +66,7 @@ const FordelingForm: React.FunctionComponent<Props> = ({
     const onSubmit = (values: Fordeling) => {
         oppdaterFordeling(values);
 
+        //TODO Trenger man dette når den nye uttaksplanen kommer i bruk?
         if (uttaksplanMetadata?.harUttaksplanBlittSlettet !== false) {
             oppdaterUttaksplanMetaData({
                 ...uttaksplanMetadata,

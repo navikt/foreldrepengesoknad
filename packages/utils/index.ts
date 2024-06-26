@@ -24,7 +24,7 @@ export { redirect } from './src/loginUtils';
 export { default as useDocumentTitle } from './src/hooks/useDocumentTitle';
 export { default as useBeforeUnload } from './src/hooks/useBeforeUnload';
 export { default as bemUtils } from './src/bemUtils';
-export { getFloatFromString } from './src/numberUtils';
+export { getFloatFromString, getNumberFromNumberInputValue } from './src/numberUtils';
 export { capitalizeFirstLetter, getNavnGenitivEierform } from './src/stringUtils';
 export { getOffentligeFridager } from './src/fridagerUtils';
 export { getFamiliehendelsedato } from './src/barnUtils';
