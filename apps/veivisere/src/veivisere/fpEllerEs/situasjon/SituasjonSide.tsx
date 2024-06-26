@@ -15,8 +15,8 @@ import { Satser } from '@navikt/fp-types';
 import { GreenPanel, Infobox } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
+import VeiviserPage from '../../felles/VeiviserPage';
 import GreenRadioGroup from '../../felles/formWrappers/GreenRadioGroup';
-import VeiviserPage from '../../felles/page/VeiviserPage';
 
 enum Situasjon {
     MOR = 'mor',

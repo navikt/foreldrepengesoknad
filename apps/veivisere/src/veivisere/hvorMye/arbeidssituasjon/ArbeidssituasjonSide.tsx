@@ -17,7 +17,7 @@ import { GreenPanel, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 import { isValidNumber } from '@navikt/fp-validation';
 
-import VeiviserPage from '../../felles/page/VeiviserPage';
+import VeiviserPage from '../../felles/VeiviserPage';
 import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
 import HøyInntektInfobox from '../felles/HøyInntektInfobox';
 import styles from './arbeidssituasjonSide.module.css';
