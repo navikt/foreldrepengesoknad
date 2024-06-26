@@ -5,7 +5,7 @@
     "description": "NAV Foreldrepengesøknad",
     "scripts": {
         "build": "vite build",
-        "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}",
+        "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "lint:fix": "eslint --quiet --fix \"./src/**/*.{js,ts,tsx}\"",
         "lint:tsc": "tsc --noEmit",
         "prettier": "prettier --write src",

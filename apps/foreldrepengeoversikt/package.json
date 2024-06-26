@@ -7,7 +7,7 @@
     "scripts": {
         "build": "vite build",
         "test": "vitest run",
-        "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}",
+        "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "lint:tsc": "tsc --noEmit",
         "lint:fix": "eslint --quiet --fix './src/**/*.{js,ts,tsx}'",
         "prettier": "prettier --write src",
