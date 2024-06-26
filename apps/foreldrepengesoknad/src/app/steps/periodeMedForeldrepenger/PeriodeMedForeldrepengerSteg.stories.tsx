@@ -651,7 +651,10 @@ MorFødselDeltUttakPrematurFødsel.args = {
         kanIkkeOppgis: false,
         erAleneOmOmsorg: false,
     },
-    stønadskonto: { '100': STØNADSKONTO_100, '80': STØNADSKONTO_80 },
+    stønadskonto: {
+        '100': { ...STØNADSKONTO_100, tillegg: { prematur: 43, flerbarn: 0 } },
+        '80': { ...STØNADSKONTO_80, tillegg: { prematur: 43, flerbarn: 0 } },
+    },
 };
 
 export const MorAleneomsorgPrematurFødsel = Template.bind({});
@@ -684,6 +687,7 @@ MorAleneomsorgPrematurFødsel.args = {
                     dager: 15,
                 },
             ],
+            tillegg: { prematur: 43, flerbarn: 0 },
         },
         '80': {
             ...STØNADSKONTO_80,
@@ -697,6 +701,7 @@ MorAleneomsorgPrematurFødsel.args = {
                     dager: 15,
                 },
             ],
+            tillegg: { prematur: 43, flerbarn: 0 },
         },
     },
 };
@@ -763,6 +768,7 @@ MorFødselMedTvillingFlerbarnsuker.args = {
                     dager: 15,
                 },
             ],
+            tillegg: { prematur: 0, flerbarn: 85 },
         },
         '80': {
             ...STØNADSKONTO_80,
@@ -784,6 +790,7 @@ MorFødselMedTvillingFlerbarnsuker.args = {
                     dager: 15,
                 },
             ],
+            tillegg: { prematur: 0, flerbarn: 105 },
         },
     },
 };
@@ -825,6 +832,7 @@ MorFødselAleneomsorgMedTrillingFlerbarnsuker.args = {
                     dager: 15,
                 },
             ],
+            tillegg: { prematur: 0, flerbarn: 230 },
         },
         '80': {
             ...STØNADSKONTO_80,
@@ -846,6 +854,7 @@ MorFødselAleneomsorgMedTrillingFlerbarnsuker.args = {
                     dager: 15,
                 },
             ],
+            tillegg: { prematur: 0, flerbarn: 280 },
         },
     },
 };

@@ -7,8 +7,7 @@ import {
     isDateInTheFuture,
     validateTextInputField,
 } from '@navikt/fp-common';
-import { getNumberFromNumberInputValue } from '@navikt/fp-formik';
-import { isISODateString } from '@navikt/fp-utils';
+import { getNumberFromNumberInputValue, isISODateString } from '@navikt/fp-utils';
 
 import { SkjemaelementFeil } from 'app/types/SkjemaelementFeil';
 import { isDateABeforeDateB } from 'app/utils/dateUtils';

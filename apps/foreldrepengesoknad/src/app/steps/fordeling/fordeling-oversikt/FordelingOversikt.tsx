@@ -6,7 +6,6 @@ import { VStack } from '@navikt/ds-react';
 import {
     førsteOktober2021ReglerGjelder,
     getAntallUker,
-    getFlerbarnsuker,
     guid,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
@@ -65,7 +64,6 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
-    const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const { antallBarn } = barn;
     const erBarnetFødt = isFødtBarn(barn);
     const erIkkeFødtBarn = isUfødtBarn(barn);
@@ -76,13 +74,12 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
     const navnAnnenForelder = erFarEllerMedmor ? navnMor : navnFarMedmor;
     const morTekst = getMorTekst(erFarEllerMedmor, navnMor, intl);
     const farTekst = getFarTekst(erFarEllerMedmor, navnFarMedmor, intl);
-    const { dekningsgrad } = periodeMedForeldrepenger;
     const annenForelderHarKunRettIEØS = isAnnenForelderOppgitt(annenForelder)
         ? annenForelder.harRettPåForeldrepengerIEØS
         : false;
 
     const [currentUthevet, setCurrentUthevet] = useState<FordelingEier | undefined>(undefined);
-    const antallFlerbarnsdager = antallBarn > 1 ? getFlerbarnsuker(dekningsgrad, antallBarn) * 5 : undefined;
+    const antallFlerbarnsdager = kontoer.tillegg?.flerbarn;
     const sumDager = getAntallUker(kontoer) * 5;
     const visBeggeHarRettGraf = deltUttak && !annenForelderHarKunRettIEØS;
     const visFlerbarnsdagerInformasjon = deltUttak && !!antallFlerbarnsdager && antallFlerbarnsdager > 0;

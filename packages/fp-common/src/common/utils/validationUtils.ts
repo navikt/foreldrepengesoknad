@@ -5,10 +5,11 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
 
-import { DateRange, YesOrNo, getNumberFromNumberInputValue } from '@navikt/fp-formik';
+import { DateRange, YesOrNo } from '@navikt/fp-formik';
 
 import { Kjønn } from './../../common';
 import intlUtils from './intlUtils';
+import { getNumberFromNumberInputValue } from '@navikt/fp-utils';
 
 dayjs.extend(isBetween);
 dayjs.extend(minMax);
