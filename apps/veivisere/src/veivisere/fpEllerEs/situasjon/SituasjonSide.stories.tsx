@@ -29,17 +29,13 @@ const satser = {
     ],
 };
 
-interface StoryArgs {}
-
 const meta = {
     title: 'fpEllerEs/SituasjonSide',
     component: SituasjonSide,
-} satisfies Meta<typeof SituasjonSide & StoryArgs>;
+} satisfies Meta<typeof SituasjonSide>;
 export default meta;
 
-type Story = StoryObj<StoryArgs>;
-
-export const Default: Story = {
+export const Default: StoryObj = {
     render: () => {
         initAmplitude();
         return (
