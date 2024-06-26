@@ -5,7 +5,7 @@
     "types": "src/index.ts",
     "name": "@navikt/fp-formik",
     "scripts": {
-        "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}",
+        "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "lint:tsc": "tsc --noEmit"
     },
     "dependencies": {
