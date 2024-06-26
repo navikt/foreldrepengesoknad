@@ -1,7 +1,8 @@
 import { useIntl } from 'react-intl';
 
 import { LocaleAll } from '@navikt/fp-types';
-import { FrontPage } from '@navikt/fp-ui';
+
+import FrontPage from '../../felles/frontpage/FrontPage';
 
 interface Props {
     locale: LocaleAll;

@@ -27,7 +27,7 @@ const VeiviserRouter: FunctionComponent<Props> = ({ locale, changeLocale, satser
             />
             <Route
                 path={ContextRoutes.FP_ELLER_ES + '/*'}
-                element={<FpEllerEsRouter locale={locale} changeLocale={changeLocale} />}
+                element={<FpEllerEsRouter locale={locale} changeLocale={changeLocale} satser={satser} />}
             />
             <Route path="*" element={<div>Veivisere</div>} />
         </Routes>
