@@ -745,7 +745,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge'));
-        expect(await screen.findByText('Velg hvor mange uker du ønsker av fellesperioden.')).toBeInTheDocument();
+        expect(screen.getByText('Velg hvor mange uker du ønsker av fellesperioden.')).toBeInTheDocument();
         const ukerInput = utils.getByLabelText('Hvor mange uker vil du ha?');
         await userEvent.type(ukerInput, '3');
         fireEvent.blur(ukerInput);
@@ -763,7 +763,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         expect(screen.getByText('Jeg vil velge')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Hopp over fordeling'));
         expect(
-            await screen.findByText(
+            screen.getByText(
                 'I planen din på neste steg vil ikke fellesperioden vises fordi du har valgt å fordele denne senere.',
                 { exact: false },
             ),
@@ -785,9 +785,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge'));
-        expect(
-            await screen.findByText('Velg hvor mange uker og dager du ønsker av fellesperioden.'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
         expect(screen.getByText('Hvor mange uker vil du ha?')).toBeInTheDocument();
         expect(screen.getByText('Hvor mange dager vil du ha?')).toBeInTheDocument();
     });
@@ -801,9 +799,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge'));
-        expect(
-            await screen.findByText('Velg hvor mange uker og dager du ønsker av fellesperioden.'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
         expect(screen.getAllByText('Du må oppgi en lengde på fellesperioden din.')).toHaveLength(3);
@@ -820,9 +816,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge'));
-        expect(
-            await screen.findByText('Velg hvor mange uker og dager du ønsker av fellesperioden.'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
         const dagerInput = utils.getByLabelText('Hvor mange dager vil du ha?');
         await userEvent.type(dagerInput, '1');
         await userEvent.click(screen.getByText('Neste steg'));
@@ -838,9 +832,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge'));
-        expect(
-            await screen.findByText('Velg hvor mange uker og dager du ønsker av fellesperioden.'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
         const ukerInput = utils.getByLabelText('Hvor mange uker vil du ha?');
         await userEvent.type(ukerInput, '2');
         await userEvent.click(screen.getByText('Neste steg'));
@@ -856,9 +848,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge'));
-        expect(
-            await screen.findByText('Velg hvor mange uker og dager du ønsker av fellesperioden.'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
         const dagerInput = utils.getByLabelText('Hvor mange dager vil du ha?');
         await userEvent.type(dagerInput, '1,4');
         await userEvent.click(screen.getByText('Neste steg'));
@@ -877,9 +867,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge'));
-        expect(
-            await screen.findByText('Velg hvor mange uker og dager du ønsker av fellesperioden.'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
         const dagerInput = utils.getByLabelText('Hvor mange dager vil du ha?');
         await userEvent.type(dagerInput, 'to');
         await userEvent.click(screen.getByText('Neste steg'));
@@ -898,9 +886,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge'));
-        expect(
-            await screen.findByText('Velg hvor mange uker og dager du ønsker av fellesperioden.'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
         const dagerInput = utils.getByLabelText('Hvor mange dager vil du ha?');
         await userEvent.type(dagerInput, '-2');
         await userEvent.click(screen.getByText('Neste steg'));
@@ -919,9 +905,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge'));
-        expect(
-            await screen.findByText('Velg hvor mange uker og dager du ønsker av fellesperioden.'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
         const dagerInput = utils.getByLabelText('Hvor mange dager vil du ha?');
         await userEvent.type(dagerInput, '102');
         await userEvent.click(screen.getByText('Neste steg'));
@@ -938,9 +922,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
         expect(await screen.findByText('Fordeling av foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Hvordan vil du fordele fellesperioden?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg vil velge'));
-        expect(
-            await screen.findByText('Velg hvor mange uker og dager du ønsker av fellesperioden.'),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Velg hvor mange uker og dager du ønsker av fellesperioden.')).toBeInTheDocument();
         const dagerInput = utils.getByLabelText('Hvor mange dager vil du ha?');
         await userEvent.type(dagerInput, '92');
         const ukerInput = utils.getByLabelText('Hvor mange uker vil du ha?');

@@ -5,8 +5,7 @@ import { Alert, BodyLong, BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { TextField } from '@navikt/fp-form-hooks';
-import { getNumberFromNumberInputValue } from '@navikt/fp-formik';
-import { bemUtils } from '@navikt/fp-utils';
+import { bemUtils, getNumberFromNumberInputValue } from '@navikt/fp-utils';
 import { isValidInteger, isValidNumberForm } from '@navikt/fp-validation';
 
 import Fordeling, { FellesperiodeFordelingValg } from 'app/context/types/Fordeling';
