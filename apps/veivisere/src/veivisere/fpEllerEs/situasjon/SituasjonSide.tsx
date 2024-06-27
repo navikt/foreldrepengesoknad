@@ -1,5 +1,5 @@
 import { BabyWrappedIcon, EarthIcon, PaperplaneIcon, WalletIcon } from '@navikt/aksel-icons';
-import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
+import { ContextRoutes, FpEllerEsRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
@@ -18,13 +18,13 @@ import { formatCurrencyWithKr } from '@navikt/fp-utils';
 import VeiviserPage from '../../felles/VeiviserPage';
 import GreenRadioGroup from '../../felles/formWrappers/GreenRadioGroup';
 
-enum Situasjon {
+export enum Situasjon {
     MOR = 'mor',
     FAR = 'far',
     MEDMOR = 'medmor',
 }
 
-type FormValues = {
+export type FpEllerEsSituasjon = {
     situasjon: Situasjon;
     erIArbeid: boolean;
     harHattInntekt: boolean;
@@ -35,15 +35,17 @@ type FormValues = {
 };
 
 interface Props {
+    fpEllerEsSituasjon?: FpEllerEsSituasjon;
+    setFpEllerEsSituasjon: (data: FpEllerEsSituasjon) => void;
     satser: Satser;
 }
 
-const SituasjonSide: FunctionComponent<Props> = ({ satser }) => {
+const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjon }) => {
     const intl = useIntl();
-    const { goToRoute } = useVeiviserNavigator(ContextRoutes.HVOR_MYE);
+    const { goToRoute } = useVeiviserNavigator(ContextRoutes.FP_ELLER_ES);
 
-    const formMethods = useForm<FormValues>({
-        defaultValues: {},
+    const formMethods = useForm<FpEllerEsSituasjon>({
+        defaultValues: fpEllerEsSituasjon,
         shouldUnregister: true,
     });
 
@@ -55,9 +57,9 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser }) => {
     const harHattAndreInntekter = formMethods.watch('harHattAndreInntekter');
     const erDuMedlemAvFolketrygden = formMethods.watch('erDuMedlemAvFolketrygden');
 
-    const onSubmit = () => {
-        //setArbeidssituasjon(formValues);
-        goToRoute(HvorMyeRoutes.OPPSUMMERING);
+    const onSubmit = (formValues: FpEllerEsSituasjon) => {
+        setFpEllerEsSituasjon(formValues);
+        goToRoute(FpEllerEsRoutes.OPPSUMMERING);
     };
 
     const grunnbeløpet = finnGrunnbeløp(satser, dayjs());

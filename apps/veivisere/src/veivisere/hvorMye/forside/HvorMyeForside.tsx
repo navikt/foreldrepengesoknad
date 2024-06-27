@@ -10,8 +10,8 @@ import { links } from '@navikt/fp-constants';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll } from '@navikt/fp-types';
 
+import AndreVeivisereLinkPanel from '../../felles/andreVeivisere/AndreVeivisereLinkPanel';
 import FrontPage from '../../felles/frontpage/FrontPage';
-import AndreVeivisereLinkPanel from '../felles/AndreVeivisereLinkPanel';
 
 interface Props {
     locale: LocaleAll;

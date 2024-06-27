@@ -12,19 +12,11 @@ const satser = {
             fom: '01.01.2023',
             verdi: 92648,
         },
-        {
-            fom: '01.01.2021',
-            verdi: 90300,
-        },
     ],
     grunnbeløp: [
         {
             fom: '01.05.2024',
             verdi: 124028,
-        },
-        {
-            fom: '01.05.2023',
-            verdi: 118620,
         },
     ],
 };
@@ -40,7 +32,7 @@ export const Default: StoryObj = {
         initAmplitude();
         return (
             <MemoryRouter initialEntries={[FpEllerEsRoutes.SITUASJON]}>
-                <SituasjonSide satser={satser} />
+                <SituasjonSide satser={satser} setFpEllerEsSituasjon={() => undefined} />
             </MemoryRouter>
         );
     },

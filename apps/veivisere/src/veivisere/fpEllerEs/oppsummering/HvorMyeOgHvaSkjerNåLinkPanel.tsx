@@ -7,7 +7,7 @@ import { links } from '@navikt/fp-constants';
 
 import AndreVeivisereLinkPanel from '../../felles/andreVeivisere/AndreVeivisereLinkPanel';
 
-const FpEllerEsOgHvaSkjerNåLinkPanel: React.FunctionComponent = () => {
+const HvorMyeOgHvaSkjerNåLinkPanel: React.FunctionComponent = () => {
     return (
         <AndreVeivisereLinkPanel
             links={[
@@ -17,7 +17,7 @@ const FpEllerEsOgHvaSkjerNåLinkPanel: React.FunctionComponent = () => {
                         <HStack gap="5" align="center" wrap={false}>
                             <BabyWrappedIcon aria-hidden height={45} width={45} />
                             <Heading level="3" size="small">
-                                <FormattedMessage id="ArbeidssituasjonSide.FpEllerEs" />
+                                <FormattedMessage id="HvorMyeOgHvaSkjerNåLinkPanel.HvorMye" />
                             </Heading>
                         </HStack>
                     ),
@@ -28,7 +28,7 @@ const FpEllerEsOgHvaSkjerNåLinkPanel: React.FunctionComponent = () => {
                         <HStack gap="5" align="center" wrap={false}>
                             <MagnifyingGlassIcon aria-hidden height={45} width={45} />
                             <Heading level="3" size="small">
-                                <FormattedMessage id="ArbeidssituasjonSide.HvaSkjer" />
+                                <FormattedMessage id="HvorMyeOgHvaSkjerNåLinkPanel.HvaSkjer" />
                             </Heading>
                         </HStack>
                     ),
@@ -38,4 +38,4 @@ const FpEllerEsOgHvaSkjerNåLinkPanel: React.FunctionComponent = () => {
     );
 };
 
-export default FpEllerEsOgHvaSkjerNåLinkPanel;
+export default HvorMyeOgHvaSkjerNåLinkPanel;
