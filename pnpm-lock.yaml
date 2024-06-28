@@ -2003,6 +2003,12 @@ importers:
       '@navikt/fp-formik':
         specifier: workspace:*
         version: link:../fp-formik
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../types
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../utils
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../utils-test
@@ -4329,6 +4335,9 @@ packages:
     peerDependencies:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-react@6.3.3':
     resolution: {integrity: sha512-iOCX4zO/CB6yM5GxTBDd8yl/sFe7QP2aNMxgA2uqH6l4S+tX1T7CKnMyUhxWrYTgGYFbjAaEppj77q2Gjokvkg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/6.3.3/b432ae6ff3940ea88951a467923d96ff53b16b96}
@@ -12205,11 +12214,12 @@ snapshots:
       '@floating-ui/react-dom': 2.1.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@navikt/aksel-icons': 6.11.0
       '@navikt/ds-tokens': 6.11.0
-      '@types/react': 18.2.73
       clsx: 2.1.1
       date-fns: 3.6.0
       react: 18.2.0
       react-day-picker: 8.10.0(date-fns@3.6.0)(react@18.2.0)
+    optionalDependencies:
+      '@types/react': 18.2.73
     transitivePeerDependencies:
       - react-dom
 

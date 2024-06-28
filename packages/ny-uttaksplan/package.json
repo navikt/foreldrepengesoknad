@@ -20,6 +20,8 @@
         "@navikt/ds-react": "^6.6.0",
         "@navikt/fp-common": "workspace:*",
         "@navikt/fp-formik": "workspace:*",
+        "@navikt/fp-types": "workspace:*",
+        "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@types/react": "^18.2.73",
         "classnames": "^2.5.1",
