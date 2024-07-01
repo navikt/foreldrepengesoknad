@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
@@ -5,7 +6,7 @@ import { Loader } from '@navikt/ds-react';
 
 import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
 
-import Api from 'app/api/api';
+import Api, { hentTidslinjehendelser } from 'app/api/api';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import OversiktRoutes from 'app/routes/routes';
@@ -30,10 +31,10 @@ const TidslinjePage: React.FunctionComponent<Props> = ({ søkersBarn, saker }) =
     useSetSelectedRoute(OversiktRoutes.TIDSLINJEN);
     const params = useParams();
 
-    const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
+    const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelser(params.saksnummer!));
     const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
 
-    if (!tidslinjeHendelserData || !manglendeVedleggData) {
+    if (tidslinjeHendelserQuery.isPending || !manglendeVedleggData) {
         return <Loader size="large" aria-label="Henter status for din søknad" />;
     }
 
@@ -43,8 +44,7 @@ const TidslinjePage: React.FunctionComponent<Props> = ({ søkersBarn, saker }) =
                 saker={saker}
                 visHeleTidslinjen={true}
                 søkersBarn={søkersBarn}
-                tidslinjeHendelserData={tidslinjeHendelserData}
-                tidslinjeHendelserError={tidslinjeHendelserError}
+                tidslinjeHendelserQuery={tidslinjeHendelserQuery}
                 manglendeVedleggData={manglendeVedleggData}
                 manglendeVedleggError={manglendeVedleggError}
             />

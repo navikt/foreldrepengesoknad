@@ -84,16 +84,11 @@ const useGetAnnenPartsVedtak = (
     };
 };
 
-const useGetTidslinjeHendelser = (saksnr: string) => {
-    const { data, error } = useGetRequest<Tidslinjehendelse[]>('/rest/innsyn/tidslinje', {
-        config: { withCredentials: true, params: { saksnummer: saksnr } },
+export const hentTidslinjehendelser = (saksnummer: string) =>
+    queryOptions({
+        queryKey: ['TIDSLINJEHENDELSER', saksnummer],
+        queryFn: () => ky.get(`/rest/innsyn/tidslinje`, { searchParams: { saksnummer } }).json<Tidslinjehendelse[]>(),
     });
-
-    return {
-        tidslinjeHendelserData: data,
-        tidslinjeHendelserError: error,
-    };
-};
 
 const useGetManglendeVedlegg = (saksnr: string) => {
     const { data, error } = useGetRequest<Skjemanummer[]>('/rest/historikk/vedlegg', {
@@ -121,7 +116,6 @@ export const erSakOppdatertOptions = () =>
 
 const Api = {
     useGetAnnenPartsVedtak,
-    useGetTidslinjeHendelser,
     useGetManglendeVedlegg,
     useGetMellomlagretSøknad: useGetOversiktOverMellomlagredeYtelser,
     sendEttersending,

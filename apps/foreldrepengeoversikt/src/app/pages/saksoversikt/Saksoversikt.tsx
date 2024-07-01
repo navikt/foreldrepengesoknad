@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -7,7 +8,7 @@ import { Alert, VStack } from '@navikt/ds-react';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import Api from 'app/api/api';
+import Api, { hentTidslinjehendelser } from 'app/api/api';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import ContentSection from 'app/components/content-section/ContentSection';
 import EttersendDokumenter from 'app/components/ettersend-dokumenter/EttersendDokumenter';
@@ -61,7 +62,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, oppda
 
     const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
 
-    const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
+    const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelser(params.saksnummer!));
     const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
 
     const planErVedtatt = gjeldendeSak?.åpenBehandling === undefined;
@@ -95,7 +96,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, oppda
         navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
     }
 
-    const relevantNyTidslinjehendelse = getRelevantNyTidslinjehendelse(tidslinjeHendelserData);
+    const relevantNyTidslinjehendelse = getRelevantNyTidslinjehendelse(tidslinjeHendelserQuery.data);
     const nettoppSendtInnSøknad =
         redirectedFromSøknadsnummer === params.saksnummer || relevantNyTidslinjehendelse !== undefined;
     const visBekreftelsePåSendtSøknad = nettoppSendtInnSøknad && gjeldendeSak?.åpenBehandling !== undefined;
@@ -139,15 +140,14 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, oppda
             <VStack gap="1">
                 <ContentSection
                     heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
-                    showSkeleton={!tidslinjeHendelserData || !manglendeVedleggData}
+                    showSkeleton={tidslinjeHendelserQuery.isPending || !manglendeVedleggData}
                     skeletonProps={{ height: '250px', variant: 'rounded' }}
                     marginBottom="small"
                 >
                     <Tidslinje
                         saker={saker}
+                        tidslinjeHendelserQuery={tidslinjeHendelserQuery}
                         visHeleTidslinjen={false}
-                        tidslinjeHendelserError={tidslinjeHendelserError}
-                        tidslinjeHendelserData={tidslinjeHendelserData!}
                         manglendeVedleggData={manglendeVedleggData || EMPTY_ARRAY}
                         manglendeVedleggError={manglendeVedleggError}
                         søkersBarn={søkerinfo.søker.barn}
