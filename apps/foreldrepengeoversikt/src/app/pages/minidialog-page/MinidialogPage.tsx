@@ -19,7 +19,7 @@ import { getAlleYtelser } from 'app/utils/sakerUtils';
 
 interface Props {
     fnr: string;
-    minidialoger: MinidialogInnslag[] | undefined;
+    minidialoger: MinidialogInnslag[];
     saker: SakOppslag;
 }
 

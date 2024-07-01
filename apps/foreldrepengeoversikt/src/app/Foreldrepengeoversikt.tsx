@@ -40,7 +40,6 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
     const { storageData } = Api.useGetMellomlagretSøknad();
     const søkerInfoQuery = useQuery(søkerInfoOptions());
     const { sakerData, sakerError } = Api.useGetSaker(sakerSuspended);
-    const { minidialogError } = Api.useGetMinidialog();
 
     useEffect(() => {
         // TODO: Virker litt unaturlig. Kan vi kaste rett fra query kanskje? Hvordan håndtere dette best?
@@ -65,6 +64,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         return undefined;
     }, [sakerData]);
 
+    // TODO: ønsker vi egentlig å vente på alle queries før vi går videre?
     if (
         !søkerInfoQuery.data ||
         (!sakerData && !sakerSuspended) ||
@@ -94,8 +94,6 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
                 <ForeldrepengeoversiktRoutes
                     søkerinfo={søkerInfoQuery.data}
                     saker={saker || defaultSaker}
-                    minidialogerData={minidialogQuery.data}
-                    minidialogerError={minidialogError}
                     oppdatertData={oppdatertQuery.data === undefined ? true : oppdatertQuery.data}
                     storageData={storageData}
                 />

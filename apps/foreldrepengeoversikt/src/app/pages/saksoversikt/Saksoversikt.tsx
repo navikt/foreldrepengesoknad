@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -26,7 +25,6 @@ import OversiktRoutes from 'app/routes/routes';
 import DinPlan from 'app/sections/din-plan/DinPlan';
 import Oppgaver from 'app/sections/oppgaver/Oppgaver';
 import Tidslinje from 'app/sections/tidslinje/Tidslinje';
-import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import { RedirectSource } from 'app/types/RedirectSource';
 import { RequestStatus } from 'app/types/RequestStatus';
 import { SakOppslag } from 'app/types/SakOppslag';
@@ -38,22 +36,13 @@ import { getRelevantNyTidslinjehendelse } from 'app/utils/tidslinjeUtils';
 const EMPTY_ARRAY = [] as Skjemanummer[];
 
 interface Props {
-    minidialogerData: MinidialogInnslag[] | undefined;
-    minidialogerError: AxiosError | null;
     saker: SakOppslag;
     søkerinfo: SøkerinfoDTO;
     oppdatertData: any;
     isFirstRender: React.MutableRefObject<boolean>;
 }
 
-const Saksoversikt: React.FunctionComponent<Props> = ({
-    minidialogerData,
-    minidialogerError,
-    saker,
-    søkerinfo,
-    oppdatertData,
-    isFirstRender,
-}) => {
+const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, oppdatertData, isFirstRender }) => {
     const intl = useIntl();
     const params = useParams();
     const navigate = useNavigate();
@@ -135,10 +124,6 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
 
     const navnPåSøker = søkerinfo.søker.fornavn;
     const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, gjeldendeSak);
-    const aktiveMinidialogerForSaken =
-        minidialogerData && minidialogerData instanceof Array
-            ? minidialogerData.filter(({ saksnr }) => saksnr === gjeldendeSak.saksnummer)
-            : undefined;
 
     return (
         <VStack gap="4">
@@ -149,18 +134,8 @@ const Saksoversikt: React.FunctionComponent<Props> = ({
                     ytelse={gjeldendeSak.ytelse}
                 />
             )}
-            {((aktiveMinidialogerForSaken && aktiveMinidialogerForSaken.length > 0) || minidialogerError) && (
-                <ContentSection
-                    heading={intl.formatMessage({ id: 'saksoversikt.oppgaver' })}
-                    backgroundColor={'yellow'}
-                >
-                    <Oppgaver
-                        minidialogerData={aktiveMinidialogerForSaken}
-                        minidialogerError={minidialogerError}
-                        saksnummer={gjeldendeSak.saksnummer}
-                    />
-                </ContentSection>
-            )}
+
+            <Oppgaver saksnummer={gjeldendeSak.saksnummer} />
             <VStack gap="1">
                 <ContentSection
                     heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}

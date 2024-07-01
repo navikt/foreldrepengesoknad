@@ -1,9 +1,10 @@
-import { AxiosError } from 'axios';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { bemUtils } from '@navikt/fp-utils';
 
+import { minidialogOptions } from 'app/api/api';
 import Header from 'app/components/header/Header';
 import Snarveier from 'app/components/snarveier/Snarveier';
 import { default as SakComponent } from 'app/pages/Sak';
@@ -16,7 +17,6 @@ import Saksoversikt from 'app/pages/saksoversikt/Saksoversikt';
 import TidslinjePage from 'app/pages/tidslinje-page/TidslinjePage';
 import KontaktOss from 'app/sections/kontakt-oss/KontaktOss';
 import { MellomlagredeYtelser } from 'app/types/MellomlagredeYtelser';
-import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { getAlleYtelser, getAntallSaker, grupperSakerPåBarn } from 'app/utils/sakerUtils';
@@ -25,8 +25,6 @@ import OversiktRoutes from './routes';
 import './routes-wrapper.css';
 
 interface Props {
-    minidialogerData: MinidialogInnslag[] | undefined;
-    minidialogerError: AxiosError | null;
     saker: SakOppslag;
     søkerinfo: SøkerinfoDTO;
     oppdatertData: boolean;
@@ -36,8 +34,6 @@ interface Props {
 const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
     søkerinfo,
     saker,
-    minidialogerData,
-    minidialogerError,
     oppdatertData,
     storageData,
 }) => {
@@ -51,7 +47,6 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
             hasNavigated.current = true;
             const antallSaker = getAntallSaker(saker);
             const { foreldrepenger, engangsstønad, svangerskapspenger } = saker;
-
             if (antallSaker === 1) {
                 if (foreldrepenger.length === 1) {
                     navigate(`${OversiktRoutes.SAKSOVERSIKT}/${foreldrepenger[0].saksnummer}`);
@@ -68,10 +63,9 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
         }
     }, [navigate, saker]);
 
-    const oppgaverIds =
-        minidialogerData && minidialogerData instanceof Array
-            ? minidialogerData.map((oppgave) => oppgave.dialogId)
-            : [];
+    const minidialoger = useQuery(minidialogOptions()).data ?? [];
+    const oppgaverIds = minidialoger.map((oppgave) => oppgave.dialogId);
+
     const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn, saker);
     const alleYtelser = getAlleYtelser(saker);
     // Super spesifikt case for avslåtte papirsøknad for svangerskapspenger. Bør fjernes
@@ -104,8 +98,6 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                             index
                             element={
                                 <Saksoversikt
-                                    minidialogerData={minidialogerData}
-                                    minidialogerError={minidialogerError}
                                     saker={saker}
                                     søkerinfo={søkerinfo}
                                     oppdatertData={oppdatertData}
@@ -125,11 +117,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                         <Route
                             path={`${OversiktRoutes.OPPGAVER}/:oppgaveId`}
                             element={
-                                <MinidialogPage
-                                    minidialoger={minidialogerData}
-                                    saker={saker}
-                                    fnr={søkerinfo.søker.fnr}
-                                />
+                                <MinidialogPage minidialoger={minidialoger} saker={saker} fnr={søkerinfo.søker.fnr} />
                             }
                         />
                         <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />

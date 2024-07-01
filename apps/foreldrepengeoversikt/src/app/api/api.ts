@@ -107,17 +107,6 @@ const useGetTidslinjeHendelser = (saksnr: string) => {
     };
 };
 
-const useGetMinidialog = () => {
-    const { data, error } = useGetRequest<MinidialogInnslag[]>('/rest/minidialog', {
-        config: { withCredentials: true },
-    });
-
-    return {
-        minidialogData: data,
-        minidialogError: error,
-    };
-};
-
 const useGetManglendeVedlegg = (saksnr: string) => {
     const { data, error } = useGetRequest<Skjemanummer[]>('/rest/historikk/vedlegg', {
         config: { withCredentials: true, params: { saksnummer: saksnr } },
@@ -147,7 +136,6 @@ const Api = {
     useGetDokumenter,
     useGetAnnenPartsVedtak,
     useGetTidslinjeHendelser,
-    useGetMinidialog,
     useGetManglendeVedlegg,
     useGetMellomlagretSøknad: useGetOversiktOverMellomlagredeYtelser,
     sendEttersending,
