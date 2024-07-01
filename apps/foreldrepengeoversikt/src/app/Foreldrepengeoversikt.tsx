@@ -7,7 +7,7 @@ import { Loader } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import Api from './api/api';
+import Api, { erSakOppdatertOptions } from './api/api';
 import ScrollToTop from './components/scroll-to-top/ScrollToTop';
 import { useGetBackgroundColor } from './hooks/useBackgroundColor';
 import ForeldrepengeoversiktRoutes from './routes/ForeldrepengeoversiktRoutes';
@@ -24,12 +24,8 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
     const bem = bemUtils('app');
     const backgroundColor = useGetBackgroundColor();
 
-    const oppdatertQuery = useQuery<boolean>({
-        queryKey: ['oppdatert'],
-        queryFn: async () =>
-            await fetch(`/rest/innsyn/v2/saker/oppdatert`, { credentials: 'include' }).then((response) =>
-                response.json(),
-            ),
+    const oppdatertQuery = useQuery({
+        ...erSakOppdatertOptions(),
         refetchInterval: (query) => {
             if (query.state.data) {
                 return false;

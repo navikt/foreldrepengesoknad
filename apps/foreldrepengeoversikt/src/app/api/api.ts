@@ -1,3 +1,6 @@
+import { queryOptions } from '@tanstack/react-query';
+import ky from 'ky';
+
 import { getAxiosInstance } from '@navikt/fp-api';
 import { Skjemanummer } from '@navikt/fp-constants';
 
@@ -130,16 +133,11 @@ const sendEttersending = (ettersending: EttersendingDto, fnr?: string) => {
     });
 };
 
-const useErSakOppdatert = () => {
-    const { data, error } = useGetRequest<boolean>('/rest/innsyn/v2/saker/oppdatert', {
-        config: { withCredentials: true },
+export const erSakOppdatertOptions = () =>
+    queryOptions({
+        queryKey: ['SAK_OPPDATERT'],
+        queryFn: () => ky.get('/rest/innsyn/v2/saker/oppdatert').json<boolean>(),
     });
-
-    return {
-        oppdatertData: data,
-        oppdatertError: error,
-    };
-};
 
 const Api = {
     useSøkerinfo,
@@ -149,7 +147,6 @@ const Api = {
     useGetTidslinjeHendelser,
     useGetMinidialog,
     useGetManglendeVedlegg,
-    useErSakOppdatert,
     useGetMellomlagretSøknad: useGetOversiktOverMellomlagredeYtelser,
     sendEttersending,
 };
