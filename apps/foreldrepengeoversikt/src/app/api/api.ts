@@ -14,7 +14,7 @@ import { SakOppslagDTO } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 
-import { useGetRequest, usePostRequest } from './useRequest';
+import { usePostRequest } from './useRequest';
 
 export const søkerInfoOptions = () =>
     queryOptions({
@@ -40,17 +40,11 @@ export const hentDokumenterOptions = (saksnummer: string) =>
         queryFn: () => ky.get(`/rest/dokument/alle`, { searchParams: { saksnummer } }).json<Dokument[]>(),
     });
 
-const useGetOversiktOverMellomlagredeYtelser = () => {
-    const { data, error } = useGetRequest<MellomlagredeYtelser>('/rest/storage/aktive', {
-        config: { withCredentials: true },
-        isSuspended: true,
+export const hentMellomlagredeYtelser = () =>
+    queryOptions({
+        queryKey: ['MELLOMLAGREDE_YTELSER'],
+        queryFn: () => ky.get('/rest/storage/aktive').json<MellomlagredeYtelser>(),
     });
-
-    return {
-        storageData: data,
-        storageError: error,
-    };
-};
 
 const useGetAnnenPartsVedtak = (
     annenPartFnr: string | undefined,
@@ -111,7 +105,6 @@ export const erSakOppdatertOptions = () =>
 
 const Api = {
     useGetAnnenPartsVedtak,
-    useGetMellomlagretSøknad: useGetOversiktOverMellomlagredeYtelser,
     sendEttersending,
 };
 

@@ -16,7 +16,6 @@ import MinidialogPage from 'app/pages/minidialog-page/MinidialogPage';
 import Saksoversikt from 'app/pages/saksoversikt/Saksoversikt';
 import TidslinjePage from 'app/pages/tidslinje-page/TidslinjePage';
 import KontaktOss from 'app/sections/kontakt-oss/KontaktOss';
-import { MellomlagredeYtelser } from 'app/types/MellomlagredeYtelser';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { getAlleYtelser, getAntallSaker, grupperSakerPåBarn } from 'app/utils/sakerUtils';
@@ -28,15 +27,9 @@ interface Props {
     saker: SakOppslag;
     søkerinfo: SøkerinfoDTO;
     oppdatertData: boolean;
-    storageData?: MellomlagredeYtelser;
 }
 
-const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
-    søkerinfo,
-    saker,
-    oppdatertData,
-    storageData,
-}) => {
+const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinfo, saker, oppdatertData }) => {
     const bem = bemUtils('routesWrapper');
     const isFirstRender = useRef(true);
     const hasNavigated = useRef(false);
@@ -87,7 +80,6 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
                                 grupperteSaker={grupperteSaker}
                                 avslåttSvangerskapspengesak={avslåttSvangerskapspengesak}
                                 oppdatertData={oppdatertData}
-                                storageData={storageData}
                                 isFirstRender={isFirstRender}
                                 bankkonto={søkerinfo.søker.bankkonto}
                             />

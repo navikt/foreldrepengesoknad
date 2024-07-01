@@ -1,7 +1,9 @@
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Alert, Heading, VStack } from '@navikt/ds-react';
 
+import { hentMellomlagredeYtelser } from 'app/api/api';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import HarIkkeSaker from 'app/components/har-ikke-saker/HarIkkeSaker';
 import HarSaker from 'app/components/har-saker/HarSaker';
@@ -15,7 +17,6 @@ import { useSetSelectedSak } from 'app/hooks/useSelectedSak';
 import OversiktRoutes from 'app/routes/routes';
 import Bankkonto from 'app/types/Bankkonto';
 import { GruppertSak } from 'app/types/GruppertSak';
-import { MellomlagredeYtelser } from 'app/types/MellomlagredeYtelser';
 import { RedirectSource, UKNOWN_SAKSNUMMER } from 'app/types/RedirectSource';
 import { Sak } from 'app/types/Sak';
 import { SvangerskapspengeSak } from 'app/types/SvangerskapspengeSak';
@@ -27,7 +28,6 @@ interface Props {
     grupperteSaker: GruppertSak[];
     avslåttSvangerskapspengesak: SvangerskapspengeSak | undefined;
     oppdatertData: boolean;
-    storageData?: MellomlagredeYtelser;
     isFirstRender: React.MutableRefObject<boolean>;
     bankkonto: Bankkonto | undefined;
 }
@@ -37,12 +37,16 @@ const Forside: React.FunctionComponent<Props> = ({
     grupperteSaker,
     avslåttSvangerskapspengesak,
     oppdatertData,
-    storageData,
     isFirstRender,
     bankkonto,
 }) => {
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
     useSetSelectedSak(undefined);
+
+    const storageData = useQuery({
+        ...hentMellomlagredeYtelser(),
+        enabled: false, // TODO: Denne hadde isSuspended hardkodet til true, betyr det at kallet aldri egentlig ble brukt??
+    }).data;
 
     const params = useParams();
     useSetRedirectedFromSøknadsnummer(params.redirect, undefined, isFirstRender);

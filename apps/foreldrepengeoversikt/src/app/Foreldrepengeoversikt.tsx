@@ -7,7 +7,7 @@ import { Loader } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import Api, { erSakOppdatertOptions, hentSakerOptions, minidialogOptions, søkerInfoOptions } from './api/api';
+import { erSakOppdatertOptions, hentSakerOptions, minidialogOptions, søkerInfoOptions } from './api/api';
 import ScrollToTop from './components/scroll-to-top/ScrollToTop';
 import { useGetBackgroundColor } from './hooks/useBackgroundColor';
 import ForeldrepengeoversiktRoutes from './routes/ForeldrepengeoversiktRoutes';
@@ -32,7 +32,6 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
 
     const minidialogQuery = useQuery(minidialogOptions());
 
-    const { storageData } = Api.useGetMellomlagretSøknad();
     const søkerInfoQuery = useQuery(søkerInfoOptions());
 
     // TODO: har jeg tolket denne riktig? Slik jeg forstår det er formålet å ikke kjøre /saker endepunktet før spørringen om saker er oppdatert gir true.
@@ -84,7 +83,6 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
                     saker={sakerQuery.data || defaultSaker}
                     // TODO: trengs denne å sendes?
                     oppdatertData={oppdatertQuery.data === undefined ? true : oppdatertQuery.data}
-                    storageData={storageData}
                 />
             </BrowserRouter>
         </div>
