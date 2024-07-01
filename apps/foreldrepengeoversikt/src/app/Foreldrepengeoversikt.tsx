@@ -1,23 +1,19 @@
-import { UseQueryResult, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import classNames from 'classnames';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { Loader } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import Api, { erSakOppdatertOptions, minidialogOptions, søkerInfoOptions } from './api/api';
+import Api, { erSakOppdatertOptions, hentSakerOptions, minidialogOptions, søkerInfoOptions } from './api/api';
 import ScrollToTop from './components/scroll-to-top/ScrollToTop';
 import { useGetBackgroundColor } from './hooks/useBackgroundColor';
 import ForeldrepengeoversiktRoutes from './routes/ForeldrepengeoversiktRoutes';
 import './styles/app.css';
 import { SakOppslag } from './types/SakOppslag';
 import { mapSakerDTOToSaker } from './utils/sakerUtils';
-
-const getSakerSuspended = (oppdatertQuery: UseQueryResult<boolean, unknown>) => {
-    return oppdatertQuery.isLoading || !oppdatertQuery.data;
-};
 
 const Foreldrepengeoversikt: React.FunctionComponent = () => {
     const bem = bemUtils('app');
@@ -35,11 +31,17 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
     });
 
     const minidialogQuery = useQuery(minidialogOptions());
-    const sakerSuspended = getSakerSuspended(oppdatertQuery);
 
     const { storageData } = Api.useGetMellomlagretSøknad();
     const søkerInfoQuery = useQuery(søkerInfoOptions());
-    const { sakerData, sakerError } = Api.useGetSaker(sakerSuspended);
+
+    // TODO: har jeg tolket denne riktig? Slik jeg forstår det er formålet å ikke kjøre /saker endepunktet før spørringen om saker er oppdatert gir true.
+    // Om det er tilfellet passer dette perfekt for "enabled".
+    const sakerQuery = useQuery({
+        ...hentSakerOptions(),
+        enabled: oppdatertQuery.data,
+        select: mapSakerDTOToSaker,
+    });
 
     useEffect(() => {
         // TODO: Virker litt unaturlig. Kan vi kaste rett fra query kanskje? Hvordan håndtere dette best?
@@ -49,29 +51,15 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
             );
         }
 
-        if (sakerError) {
+        if (sakerQuery.error) {
             throw new Error(
                 'Vi opplever problemer med å hente informasjon om din sak. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.',
             );
         }
-    }, [søkerInfoQuery.error, sakerError]);
-
-    const saker = useMemo(() => {
-        if (sakerData) {
-            return mapSakerDTOToSaker(sakerData);
-        }
-
-        return undefined;
-    }, [sakerData]);
+    }, [søkerInfoQuery.error, sakerQuery.error]);
 
     // TODO: ønsker vi egentlig å vente på alle queries før vi går videre?
-    if (
-        !søkerInfoQuery.data ||
-        (!sakerData && !sakerSuspended) ||
-        (!saker && !sakerSuspended) ||
-        minidialogQuery.isPending ||
-        oppdatertQuery.isPending
-    ) {
+    if (!søkerInfoQuery.data || sakerQuery.isPending || minidialogQuery.isPending || oppdatertQuery.isPending) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <Loader type="XXL" />
@@ -93,7 +81,8 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
                 <ScrollToTop />
                 <ForeldrepengeoversiktRoutes
                     søkerinfo={søkerInfoQuery.data}
-                    saker={saker || defaultSaker}
+                    saker={sakerQuery.data || defaultSaker}
+                    // TODO: trengs denne å sendes?
                     oppdatertData={oppdatertQuery.data === undefined ? true : oppdatertQuery.data}
                     storageData={storageData}
                 />

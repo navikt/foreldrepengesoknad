@@ -28,17 +28,11 @@ export const minidialogOptions = () =>
         queryFn: () => ky.get(`/rest/minidialog`).json<MinidialogInnslag[]>(),
     });
 
-const useGetSaker = (sakerSuspended: boolean) => {
-    const { data, error } = useGetRequest<SakOppslagDTO>('/rest/innsyn/v2/saker', {
-        config: { withCredentials: true },
-        isSuspended: sakerSuspended,
+export const hentSakerOptions = () =>
+    queryOptions({
+        queryKey: ['SAKER'],
+        queryFn: () => ky.get(`/rest/innsyn/v2/saker`).json<SakOppslagDTO>(),
     });
-
-    return {
-        sakerData: data,
-        sakerError: error,
-    };
-};
 
 const useGetOversiktOverMellomlagredeYtelser = () => {
     const { data, error } = useGetRequest<MellomlagredeYtelser>('/rest/storage/aktive', {
@@ -132,7 +126,6 @@ export const erSakOppdatertOptions = () =>
     });
 
 const Api = {
-    useGetSaker,
     useGetDokumenter,
     useGetAnnenPartsVedtak,
     useGetTidslinjeHendelser,
