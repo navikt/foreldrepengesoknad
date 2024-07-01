@@ -5,10 +5,9 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { Alert, VStack } from '@navikt/ds-react';
 
-import { Skjemanummer } from '@navikt/fp-constants';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import Api, { hentTidslinjehendelser } from 'app/api/api';
+import Api, { hentManglendeVedlegg, hentTidslinjehendelser } from 'app/api/api';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import ContentSection from 'app/components/content-section/ContentSection';
 import EttersendDokumenter from 'app/components/ettersend-dokumenter/EttersendDokumenter';
@@ -33,8 +32,6 @@ import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
 import { getAlleYtelser, getFamiliehendelseDato, getNavnAnnenForelder } from 'app/utils/sakerUtils';
 import { getRelevantNyTidslinjehendelse } from 'app/utils/tidslinjeUtils';
-
-const EMPTY_ARRAY = [] as Skjemanummer[];
 
 interface Props {
     saker: SakOppslag;
@@ -63,7 +60,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, oppda
     const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
 
     const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelser(params.saksnummer!));
-    const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
+    const manglendeVedleggQuery = useQuery(hentManglendeVedlegg(params.saksnummer!));
 
     const planErVedtatt = gjeldendeSak?.åpenBehandling === undefined;
     let familiehendelsesdato = undefined;
@@ -140,16 +137,15 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, oppda
             <VStack gap="1">
                 <ContentSection
                     heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
-                    showSkeleton={tidslinjeHendelserQuery.isPending || !manglendeVedleggData}
+                    showSkeleton={tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending}
                     skeletonProps={{ height: '250px', variant: 'rounded' }}
                     marginBottom="small"
                 >
                     <Tidslinje
                         saker={saker}
                         tidslinjeHendelserQuery={tidslinjeHendelserQuery}
+                        manglendeVedleggQuery={manglendeVedleggQuery}
                         visHeleTidslinjen={false}
-                        manglendeVedleggData={manglendeVedleggData || EMPTY_ARRAY}
-                        manglendeVedleggError={manglendeVedleggError}
                         søkersBarn={søkerinfo.søker.barn}
                     />
                 </ContentSection>

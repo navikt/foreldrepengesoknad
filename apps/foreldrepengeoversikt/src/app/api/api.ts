@@ -90,16 +90,11 @@ export const hentTidslinjehendelser = (saksnummer: string) =>
         queryFn: () => ky.get(`/rest/innsyn/tidslinje`, { searchParams: { saksnummer } }).json<Tidslinjehendelse[]>(),
     });
 
-const useGetManglendeVedlegg = (saksnr: string) => {
-    const { data, error } = useGetRequest<Skjemanummer[]>('/rest/historikk/vedlegg', {
-        config: { withCredentials: true, params: { saksnummer: saksnr } },
+export const hentManglendeVedlegg = (saksnummer: string) =>
+    queryOptions({
+        queryKey: ['MANGLENDE_VEDLEGG', saksnummer],
+        queryFn: () => ky.get('/rest/historikk/vedlegg').json<Skjemanummer[]>(),
     });
-
-    return {
-        manglendeVedleggData: data,
-        manglendeVedleggError: error,
-    };
-};
 
 const sendEttersending = (ettersending: EttersendingDto, fnr?: string) => {
     return getAxiosInstance(fnr).post('/rest/soknad/ettersend', ettersending, {
@@ -116,7 +111,6 @@ export const erSakOppdatertOptions = () =>
 
 const Api = {
     useGetAnnenPartsVedtak,
-    useGetManglendeVedlegg,
     useGetMellomlagretSøknad: useGetOversiktOverMellomlagredeYtelser,
     sendEttersending,
 };
