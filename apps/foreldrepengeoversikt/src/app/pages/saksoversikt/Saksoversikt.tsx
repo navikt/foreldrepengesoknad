@@ -7,7 +7,7 @@ import { Alert, VStack } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import Api, { hentManglendeVedlegg, hentTidslinjehendelser } from 'app/api/api';
+import Api, { hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from 'app/api/api';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import ContentSection from 'app/components/content-section/ContentSection';
 import EttersendDokumenter from 'app/components/ettersend-dokumenter/EttersendDokumenter';
@@ -59,8 +59,8 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, oppda
 
     const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
 
-    const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelser(params.saksnummer!));
-    const manglendeVedleggQuery = useQuery(hentManglendeVedlegg(params.saksnummer!));
+    const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelserOptions(params.saksnummer!));
+    const manglendeVedleggQuery = useQuery(hentManglendeVedleggOptions(params.saksnummer!));
 
     const planErVedtatt = gjeldendeSak?.åpenBehandling === undefined;
     let familiehendelsesdato = undefined;

@@ -40,7 +40,13 @@ export const hentDokumenterOptions = (saksnummer: string) =>
         queryFn: () => ky.get(`/rest/dokument/alle`, { searchParams: { saksnummer } }).json<Dokument[]>(),
     });
 
-export const hentMellomlagredeYtelser = () =>
+export const hentMellomlagredeYtelserOptions = () =>
+    queryOptions({
+        queryKey: ['MELLOMLAGREDE_YTELSER'],
+        queryFn: () => ky.get('/rest/storage/aktive').json<MellomlagredeYtelser>(),
+    });
+
+export const hentAnnenPartsVedtakOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGREDE_YTELSER'],
         queryFn: () => ky.get('/rest/storage/aktive').json<MellomlagredeYtelser>(),
@@ -78,13 +84,13 @@ const useGetAnnenPartsVedtak = (
     };
 };
 
-export const hentTidslinjehendelser = (saksnummer: string) =>
+export const hentTidslinjehendelserOptions = (saksnummer: string) =>
     queryOptions({
         queryKey: ['TIDSLINJEHENDELSER', saksnummer],
         queryFn: () => ky.get(`/rest/innsyn/tidslinje`, { searchParams: { saksnummer } }).json<Tidslinjehendelse[]>(),
     });
 
-export const hentManglendeVedlegg = (saksnummer: string) =>
+export const hentManglendeVedleggOptions = (saksnummer: string) =>
     queryOptions({
         queryKey: ['MANGLENDE_VEDLEGG', saksnummer],
         queryFn: () => ky.get('/rest/historikk/vedlegg').json<Skjemanummer[]>(),

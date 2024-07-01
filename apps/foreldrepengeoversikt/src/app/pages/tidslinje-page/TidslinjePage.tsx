@@ -6,7 +6,7 @@ import { Loader } from '@navikt/ds-react';
 
 import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
 
-import { hentManglendeVedlegg, hentTidslinjehendelser } from 'app/api/api';
+import { hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from 'app/api/api';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import OversiktRoutes from 'app/routes/routes';
@@ -31,8 +31,8 @@ const TidslinjePage: React.FunctionComponent<Props> = ({ søkersBarn, saker }) =
     useSetSelectedRoute(OversiktRoutes.TIDSLINJEN);
     const params = useParams();
 
-    const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelser(params.saksnummer!));
-    const manglendeVedleggQuery = useQuery(hentManglendeVedlegg(params.saksnummer!));
+    const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelserOptions(params.saksnummer!));
+    const manglendeVedleggQuery = useQuery(hentManglendeVedleggOptions(params.saksnummer!));
 
     if (tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending) {
         return <Loader size="large" aria-label="Henter status for din søknad" />;

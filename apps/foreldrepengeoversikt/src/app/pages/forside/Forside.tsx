@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { Alert, Heading, VStack } from '@navikt/ds-react';
 
-import { hentMellomlagredeYtelser } from 'app/api/api';
+import { hentMellomlagredeYtelserOptions } from 'app/api/api';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import HarIkkeSaker from 'app/components/har-ikke-saker/HarIkkeSaker';
 import HarSaker from 'app/components/har-saker/HarSaker';
@@ -44,7 +44,7 @@ const Forside: React.FunctionComponent<Props> = ({
     useSetSelectedSak(undefined);
 
     const storageData = useQuery({
-        ...hentMellomlagredeYtelser(),
+        ...hentMellomlagredeYtelserOptions(),
         enabled: false, // TODO: Denne hadde isSuspended hardkodet til true, betyr det at kallet aldri egentlig ble brukt??
     }).data;
 
