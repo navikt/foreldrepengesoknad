@@ -81,7 +81,8 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
             setFetchCounter((prev) => prev + 1);
             return await fetch(`/rest/minidialog`, { credentials: 'include' }).then((response) => response.json());
         },
-        refetchInterval: (data) => {
+        refetchInterval: (query) => {
+            const data = query.state.data;
             if (!data || data?.find((innslag) => innslag.dialogId === minidialog?.dialogId)) {
                 return 1000;
             }

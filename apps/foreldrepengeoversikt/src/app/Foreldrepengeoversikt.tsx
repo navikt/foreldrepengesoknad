@@ -30,8 +30,8 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
             await fetch(`/rest/innsyn/v2/saker/oppdatert`, { credentials: 'include' }).then((response) =>
                 response.json(),
             ),
-        refetchInterval: (data) => {
-            if (data) {
+        refetchInterval: (query) => {
+            if (query.state.data) {
                 return false;
             }
 
