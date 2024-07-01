@@ -1,7 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
 import ky from 'ky';
 
-import { getAxiosInstance } from '@navikt/fp-api';
 import { Skjemanummer } from '@navikt/fp-constants';
 
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
@@ -68,11 +67,8 @@ export const hentManglendeVedleggOptions = (saksnummer: string) =>
         queryFn: () => ky.get('/rest/historikk/vedlegg').json<Skjemanummer[]>(),
     });
 
-const sendEttersending = (ettersending: EttersendingDto, fnr?: string) => {
-    return getAxiosInstance(fnr).post('/rest/soknad/ettersend', ettersending, {
-        timeout: 30 * 1000,
-        withCredentials: true,
-    });
+export const sendEttersending = (ettersending: EttersendingDto, fnr?: string) => {
+    return ky.post('/rest/soknad/ettersend', { json: ettersending, timeout: 30 * 1000, headers: { fnr } });
 };
 
 export const erSakOppdatertOptions = () =>
@@ -80,9 +76,3 @@ export const erSakOppdatertOptions = () =>
         queryKey: ['SAK_OPPDATERT'],
         queryFn: () => ky.get('/rest/innsyn/v2/saker/oppdatert').json<boolean>(),
     });
-
-const Api = {
-    sendEttersending,
-};
-
-export default Api;
