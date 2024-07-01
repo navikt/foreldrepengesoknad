@@ -34,6 +34,12 @@ export const hentSakerOptions = () =>
         queryFn: () => ky.get(`/rest/innsyn/v2/saker`).json<SakOppslagDTO>(),
     });
 
+export const hentDokumenterOptions = (saksnummer: string) =>
+    queryOptions({
+        queryKey: ['DOKUMENTER', saksnummer],
+        queryFn: () => ky.get(`/rest/dokument/alle`, { searchParams: { saksnummer } }).json<Dokument[]>(),
+    });
+
 const useGetOversiktOverMellomlagredeYtelser = () => {
     const { data, error } = useGetRequest<MellomlagredeYtelser>('/rest/storage/aktive', {
         config: { withCredentials: true },
@@ -78,18 +84,6 @@ const useGetAnnenPartsVedtak = (
     };
 };
 
-const useGetDokumenter = (saksnr: string) => {
-    const { data, error, requestStatus } = useGetRequest<Dokument[]>('/rest/dokument/alle', {
-        config: { withCredentials: true, params: { saksnummer: saksnr } },
-    });
-
-    return {
-        dokumenterData: data,
-        dokumenterError: error,
-        dokumenterStatus: requestStatus,
-    };
-};
-
 const useGetTidslinjeHendelser = (saksnr: string) => {
     const { data, error } = useGetRequest<Tidslinjehendelse[]>('/rest/innsyn/tidslinje', {
         config: { withCredentials: true, params: { saksnummer: saksnr } },
@@ -126,7 +120,6 @@ export const erSakOppdatertOptions = () =>
     });
 
 const Api = {
-    useGetDokumenter,
     useGetAnnenPartsVedtak,
     useGetTidslinjeHendelser,
     useGetManglendeVedlegg,
