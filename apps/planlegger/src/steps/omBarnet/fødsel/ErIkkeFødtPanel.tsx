@@ -20,7 +20,8 @@ import { Datepicker } from '@navikt/fp-form-hooks';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { isLessThanThreeWeeksAgo, isRequired, isValidDate } from '@navikt/fp-validation';
 
-const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months');
+const DATO_22_UKER_FRAM = dayjs().startOf('days').add(22, 'weeks');
+
 const TODAY = dayjs().startOf('days').toDate();
 const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
     if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
@@ -49,8 +50,9 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
     const termindato = formMethods.watch('termindato');
 
     const datoSvangerskapsuke22 =
-        termindato !== undefined ? dayjs(termindato).subtract(18, 'weeks').toDate() : undefined;
+        termindato !== undefined ? dayjs(termindato).subtract(18, 'weeks').subtract(3, 'days').toDate() : undefined;
 
+    console.log('svu22', datoSvangerskapsuke22);
     const erAlenesøker = erAlene(hvemPlanlegger);
     const erFar = erFarDelAvSøknaden(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);
@@ -108,7 +110,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                     )}
                 </Infobox>
             )}
-            {termindato !== undefined && dayjs(termindato).isAfter(DATO_3_MND_FRAM) && (
+            {termindato !== undefined && dayjs(termindato).isAfter(DATO_22_UKER_FRAM) && (
                 <Infobox
                     header={
                         <FormattedMessage
@@ -153,7 +155,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
             )}
             {termindato !== undefined &&
                 dayjs(termindato).isSameOrAfter(TODAY) &&
-                dayjs(termindato).isSameOrBefore(DATO_3_MND_FRAM) && (
+                dayjs(termindato).isSameOrBefore(DATO_22_UKER_FRAM) && (
                     <Infobox
                         header={
                             <FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTerminInfo" values={{ erAlenesøker }} />
