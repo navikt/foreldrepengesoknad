@@ -9,12 +9,9 @@ import { Dokument } from 'app/types/Dokument';
 import EttersendingDto from 'app/types/EttersendingDTO';
 import { MellomlagredeYtelser } from 'app/types/MellomlagredeYtelser';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
-import { RequestStatus } from 'app/types/RequestStatus';
 import { SakOppslagDTO } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
-
-import { usePostRequest } from './useRequest';
 
 export const søkerInfoOptions = () =>
     queryOptions({
@@ -46,43 +43,18 @@ export const hentMellomlagredeYtelserOptions = () =>
         queryFn: () => ky.get('/rest/storage/aktive').json<MellomlagredeYtelser>(),
     });
 
-export const hentAnnenPartsVedtakOptions = () =>
-    queryOptions({
-        queryKey: ['MELLOMLAGREDE_YTELSER'],
-        queryFn: () => ky.get('/rest/storage/aktive').json<MellomlagredeYtelser>(),
-    });
-
-const useGetAnnenPartsVedtak = (
-    annenPartFnr: string | undefined,
-    barnFnr: string | undefined,
-    familiehendelsesdato: string | undefined,
-    isSuspended: boolean,
-) => {
-    const body = {
-        annenPartFødselsnummer: annenPartFnr,
-        barnFødselsnummer: barnFnr,
-        familiehendelse: familiehendelsesdato,
-    };
-    const { data, error, requestStatus } = usePostRequest<AnnenPartVedtakDTO>('/rest/innsyn/v2/annenPartVedtak', body, {
-        config: {
-            withCredentials: true,
-        },
-        isSuspended,
-    });
-
-    if (error?.message?.includes('Ugyldig ident')) {
-        return {
-            annenPartsVedtakData: undefined,
-            annenPartsVedtakError: undefined,
-            annenPartsVedtakRequestStatus: RequestStatus.FINISHED,
-        };
-    }
-    return {
-        annenPartsVedtakData: data,
-        annenPartsVedtakError: error,
-        annenPartsVedtakRequestStatus: requestStatus,
-    };
+type AnnenPartsVedtakRequestBody = {
+    annenPartFødselsnummer?: string;
+    barnFødselsnummer?: string;
+    familiehendelse?: string;
 };
+
+// TODO: før så sjekket denne om error.message hadde "Ugyldig ident", og hvis så ga heller success med undefined istedenfor error. Why?
+export const hentAnnenPartsVedtakOptions = (body: AnnenPartsVedtakRequestBody) =>
+    queryOptions({
+        queryKey: ['ANNEN_PARTS_VEDTAK'],
+        queryFn: () => ky.post('/rest/innsyn/v2/annenPartVedtak', { json: body }).json<AnnenPartVedtakDTO>(),
+    });
 
 export const hentTidslinjehendelserOptions = (saksnummer: string) =>
     queryOptions({
@@ -110,7 +82,6 @@ export const erSakOppdatertOptions = () =>
     });
 
 const Api = {
-    useGetAnnenPartsVedtak,
     sendEttersending,
 };
 

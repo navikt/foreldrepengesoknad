@@ -7,7 +7,7 @@ import { Alert, VStack } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import Api, { hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from 'app/api/api';
+import { hentAnnenPartsVedtakOptions, hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from 'app/api/api';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import ContentSection from 'app/components/content-section/ContentSection';
 import EttersendDokumenter from 'app/components/ettersend-dokumenter/EttersendDokumenter';
@@ -26,7 +26,6 @@ import DinPlan from 'app/sections/din-plan/DinPlan';
 import Oppgaver from 'app/sections/oppgaver/Oppgaver';
 import Tidslinje from 'app/sections/tidslinje/Tidslinje';
 import { RedirectSource } from 'app/types/RedirectSource';
-import { RequestStatus } from 'app/types/RequestStatus';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
@@ -63,31 +62,36 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, oppda
     const manglendeVedleggQuery = useQuery(hentManglendeVedleggOptions(params.saksnummer!));
 
     const planErVedtatt = gjeldendeSak?.åpenBehandling === undefined;
-    let familiehendelsesdato = undefined;
-    let annenPartFnr = undefined;
-    let barnFnr = undefined;
+    let familiehendelse = undefined;
+    let annenPartFødselsnummer = undefined;
+    let barnFødselsnummer = undefined;
     let annenPartVedtakIsSuspended = true;
 
     if (gjeldendeSak?.ytelse === Ytelse.FORELDREPENGER) {
-        familiehendelsesdato = gjeldendeSak?.familiehendelse
+        familiehendelse = gjeldendeSak?.familiehendelse
             ? getFamiliehendelseDato(gjeldendeSak.familiehendelse)
             : undefined;
-        annenPartFnr = gjeldendeSak?.annenPart?.fnr;
+        annenPartFødselsnummer = gjeldendeSak?.annenPart?.fnr;
 
         const barnFraSak =
             gjeldendeSak?.barn && gjeldendeSak?.barn.length > 0
                 ? gjeldendeSak.barn.find((barn) => barn.fnr !== undefined)
                 : undefined;
-        barnFnr = barnFraSak ? barnFraSak.fnr : undefined;
+        barnFødselsnummer = barnFraSak ? barnFraSak.fnr : undefined;
         annenPartVedtakIsSuspended =
-            !planErVedtatt || annenPartFnr === undefined || annenPartFnr === '' || familiehendelsesdato === undefined;
+            !planErVedtatt ||
+            annenPartFødselsnummer === undefined ||
+            annenPartFødselsnummer === '' ||
+            familiehendelse === undefined;
     }
-    const { annenPartsVedtakData, annenPartsVedtakError, annenPartsVedtakRequestStatus } = Api.useGetAnnenPartsVedtak(
-        annenPartFnr,
-        barnFnr,
-        familiehendelsesdato,
-        annenPartVedtakIsSuspended,
-    );
+    const annenPartsVedtakQuery = useQuery({
+        ...hentAnnenPartsVedtakOptions({
+            annenPartFødselsnummer,
+            barnFødselsnummer,
+            familiehendelse,
+        }),
+        enabled: !annenPartVedtakIsSuspended,
+    });
 
     if (params.redirect === RedirectSource.REDIRECT_FROM_SØKNAD) {
         navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
@@ -162,11 +166,12 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, oppda
             {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
                 <ContentSection
                     heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
-                    showSkeleton={
-                        !annenPartVedtakIsSuspended &&
-                        annenPartsVedtakRequestStatus !== RequestStatus.FINISHED &&
-                        !annenPartsVedtakError
-                    }
+                    // showSkeleton={
+                    //     !annenPartVedtakIsSuspended &&
+                    //     annenPartsVedtakRequestStatus !== RequestStatus.FINISHED &&
+                    //     !annenPartsVedtakError
+                    // }
+                    showSkeleton={annenPartsVedtakQuery.isPending}
                     skeletonProps={{ height: '210px', variant: 'rounded' }}
                 >
                     <DinPlan
@@ -174,7 +179,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, oppda
                         visHelePlanen={false}
                         navnPåSøker={navnPåSøker}
                         navnAnnenForelder={navnAnnenForelder}
-                        annenPartsPerioder={annenPartsVedtakData?.perioder}
+                        annenPartsPerioder={annenPartsVedtakQuery.data?.perioder}
                         termindato={gjeldendeSak.familiehendelse.termindato}
                     />
                 </ContentSection>
