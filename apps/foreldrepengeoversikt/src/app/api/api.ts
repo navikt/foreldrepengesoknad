@@ -16,14 +16,17 @@ import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 
 import { useGetRequest, usePostRequest } from './useRequest';
 
-const useSøkerinfo = () => {
-    const { data, error } = useGetRequest<SøkerinfoDTO>('/rest/sokerinfo', { config: { withCredentials: true } });
+export const søkerInfoOptions = () =>
+    queryOptions({
+        queryKey: ['SØKER_INFO'],
+        queryFn: () => ky.get('/rest/sokerinfo').json<SøkerinfoDTO>(),
+    });
 
-    return {
-        søkerinfoData: data,
-        søkerinfoError: error,
-    };
-};
+export const minidialogOptions = () =>
+    queryOptions({
+        queryKey: ['MINIDIALOG'],
+        queryFn: () => ky.get(`/rest/minidialog`).json<MinidialogInnslag[]>(),
+    });
 
 const useGetSaker = (sakerSuspended: boolean) => {
     const { data, error } = useGetRequest<SakOppslagDTO>('/rest/innsyn/v2/saker', {
@@ -140,7 +143,6 @@ export const erSakOppdatertOptions = () =>
     });
 
 const Api = {
-    useSøkerinfo,
     useGetSaker,
     useGetDokumenter,
     useGetAnnenPartsVedtak,

@@ -7,12 +7,11 @@ import { Loader } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import Api, { erSakOppdatertOptions } from './api/api';
+import Api, { erSakOppdatertOptions, minidialogOptions, søkerInfoOptions } from './api/api';
 import ScrollToTop from './components/scroll-to-top/ScrollToTop';
 import { useGetBackgroundColor } from './hooks/useBackgroundColor';
 import ForeldrepengeoversiktRoutes from './routes/ForeldrepengeoversiktRoutes';
 import './styles/app.css';
-import { MinidialogInnslag } from './types/MinidialogInnslag';
 import { SakOppslag } from './types/SakOppslag';
 import { mapSakerDTOToSaker } from './utils/sakerUtils';
 
@@ -35,21 +34,17 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         },
     });
 
-    const minidialogQuery = useQuery<MinidialogInnslag[]>({
-        queryKey: ['minidialog'],
-        queryFn: async () =>
-            await fetch(`/rest/minidialog`, { credentials: 'include' }).then((response) => response.json()),
-    });
-
+    const minidialogQuery = useQuery(minidialogOptions());
     const sakerSuspended = getSakerSuspended(oppdatertQuery);
 
     const { storageData } = Api.useGetMellomlagretSøknad();
-    const { søkerinfoData, søkerinfoError } = Api.useSøkerinfo();
+    const søkerInfoQuery = useQuery(søkerInfoOptions());
     const { sakerData, sakerError } = Api.useGetSaker(sakerSuspended);
     const { minidialogError } = Api.useGetMinidialog();
 
     useEffect(() => {
-        if (søkerinfoError) {
+        // TODO: Virker litt unaturlig. Kan vi kaste rett fra query kanskje? Hvordan håndtere dette best?
+        if (søkerInfoQuery.error) {
             throw new Error(
                 'Vi klarte ikke å hente informasjon om deg. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.',
             );
@@ -60,7 +55,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
                 'Vi opplever problemer med å hente informasjon om din sak. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.',
             );
         }
-    }, [søkerinfoError, sakerError]);
+    }, [søkerInfoQuery.error, sakerError]);
 
     const saker = useMemo(() => {
         if (sakerData) {
@@ -71,11 +66,11 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
     }, [sakerData]);
 
     if (
-        !søkerinfoData ||
+        !søkerInfoQuery.data ||
         (!sakerData && !sakerSuspended) ||
         (!saker && !sakerSuspended) ||
-        minidialogQuery.isLoading ||
-        oppdatertQuery.isLoading
+        minidialogQuery.isPending ||
+        oppdatertQuery.isPending
     ) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -97,7 +92,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
             <BrowserRouter>
                 <ScrollToTop />
                 <ForeldrepengeoversiktRoutes
-                    søkerinfo={søkerinfoData}
+                    søkerinfo={søkerInfoQuery.data}
                     saker={saker || defaultSaker}
                     minidialogerData={minidialogQuery.data}
                     minidialogerError={minidialogError}
