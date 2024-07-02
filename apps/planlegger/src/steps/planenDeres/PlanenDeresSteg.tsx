@@ -31,7 +31,7 @@ import styles from './planenDeresSteg.module.css';
 import OmÅTilpassePlanen from './tilpassePlanen/OmÅTilpassePlanen';
 import UforutsetteEndringer from './uforutsetteEndringer/UforutsetteEndringer';
 
-const finnAntallUkerSøker1 = (
+const finnAntallDagerSøker1 = (
     dekningsgrad: Dekningsgrad,
     stønadskontoer: TilgjengeligeStønadskontoer,
     fordeling: Fordeling,
@@ -41,9 +41,9 @@ const finnAntallUkerSøker1 = (
             ? stønadskontoer[Dekningsgrad.HUNDRE_PROSENT]
             : stønadskontoer[Dekningsgrad.ÅTTI_PROSENT],
     );
-    return fordeling.antallUkerSøker1 > ukerOgDagerFellesperiode.uker
-        ? ukerOgDagerFellesperiode.uker
-        : fordeling.antallUkerSøker1;
+    return fordeling.antallDagerSøker1 > ukerOgDagerFellesperiode.totaltAntallDager
+        ? ukerOgDagerFellesperiode.totaltAntallDager
+        : fordeling.antallDagerSøker1;
 };
 
 interface Props {
@@ -79,7 +79,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         lagreHvorLangPeriode({ dekningsgrad });
         if (fordeling) {
             lagreFordeling({
-                antallUkerSøker1: finnAntallUkerSøker1(dekningsgrad, stønadskontoer, fordeling),
+                antallDagerSøker1: finnAntallDagerSøker1(dekningsgrad, stønadskontoer, fordeling),
             });
         }
     };
@@ -94,14 +94,14 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         hvemPlanlegger,
         stønadskonto100,
         barnet,
-        fordeling?.antallUkerSøker1,
+        fordeling?.antallDagerSøker1,
     );
     const uttaksdata80 = finnUttaksdata(
         hvemHarRett,
         hvemPlanlegger,
         stønadskonto80,
         barnet,
-        fordeling?.antallUkerSøker1,
+        fordeling?.antallDagerSøker1,
     );
 
     const antallUker100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
@@ -114,7 +114,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         barnet,
         hvemPlanlegger,
         arbeidssituasjon,
-        fordeling?.antallUkerSøker1,
+        fordeling?.antallDagerSøker1,
     );
 
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
@@ -177,18 +177,18 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         {hvemHarRett === 'beggeHarRett' &&
                             (!barnet.erFødsel || hvemPlanlegger.type !== Situasjon.FAR_OG_FAR) && (
                                 <Select
-                                    defaultValue={fordeling?.antallUkerSøker1}
+                                    defaultValue={fordeling?.antallDagerSøker1}
                                     label={''}
-                                    name="antallUkerSøker1"
+                                    name="antallDagerSøker1"
                                     onChange={(e) => {
-                                        lagreFordeling({ antallUkerSøker1: parseInt(e.target.value, 10) });
+                                        lagreFordeling({ antallDagerSøker1: parseInt(e.target.value, 10) });
                                     }}
                                 >
                                     {getFellesperiodefordelingSelectOptions(antallUkerOgDagerFellesperiode).map(
                                         (value) => (
                                             <option
-                                                key={value.antallUkerOgDagerSøker1.uker}
-                                                value={value.antallUkerOgDagerSøker1.uker}
+                                                key={value.antallUkerOgDagerSøker1.totaltAntallDager}
+                                                value={value.antallUkerOgDagerSøker1.totaltAntallDager}
                                             >
                                                 {finnFellesperiodeFordelingOptionTekst(
                                                     intl,

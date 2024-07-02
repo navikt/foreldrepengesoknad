@@ -11,12 +11,13 @@ import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from './barnetUtils';
 import { HvemHarRett } from './hvemHarRettUtils';
 import {
+    getAntallDagerFellesperiode,
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerFedrekvote,
-    getAntallUkerFellesperiode,
     getAntallUkerForeldrepenger,
     getAntallUkerForeldrepengerFørFødsel,
     getAntallUkerMødrekvote,
+    getUkerOgDager,
 } from './stønadskontoerUtils';
 
 dayjs.extend(isoWeek);
@@ -131,10 +132,13 @@ const finnDeltUttaksdata = (
     hvemPlanlegger: HvemPlanlegger,
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
     barnet: OmBarnet,
-    antallUkerFellesperiodeForSøker1: number = 0,
+    antallDagerFellesperiodeSøker1: number = 0,
 ): Uttaksdata => {
-    const totaltAntallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
-    const antallUkerFellesperiodeForSøker2 = totaltAntallUkerFellesperiode - antallUkerFellesperiodeForSøker1;
+    const totaltAntallDagerFellesperiode = getAntallDagerFellesperiode(valgtStønadskonto);
+    const antallUkerOgDagerFellesperiodeForSøker1 = getUkerOgDager(antallDagerFellesperiodeSøker1);
+    const antallUkerOgDagerFellesperiodeForSøker2 = getUkerOgDager(
+        totaltAntallDagerFellesperiode - antallDagerFellesperiodeSøker1,
+    );
 
     const antallUkerForeldrepengerFørFødsel = getAntallUkerForeldrepengerFørFødsel(valgtStønadskonto);
     const antallUkerMødrekvote = getAntallUkerMødrekvote(valgtStønadskonto);
@@ -152,7 +156,8 @@ const finnDeltUttaksdata = (
             ? getUttaksdagTilOgMedDato(
                   dayjs(startdatoPeriode1)
                       .add(antallUkerMødrekvote, 'weeks')
-                      .add(antallUkerFellesperiodeForSøker1, 'weeks')
+                      .add(antallUkerOgDagerFellesperiodeForSøker1.uker, 'weeks')
+                      .add(antallUkerOgDagerFellesperiodeForSøker1.dager, 'days')
                       .subtract(1, 'day')
                       .format(ISO_DATE_FORMAT),
               )
@@ -160,7 +165,8 @@ const finnDeltUttaksdata = (
                   dayjs(startdatoPeriode1)
                       .add(antallUkerForeldrepengerFørFødsel, 'weeks')
                       .add(antallUkerMødrekvote, 'weeks')
-                      .add(antallUkerFellesperiodeForSøker1, 'weeks')
+                      .add(antallUkerOgDagerFellesperiodeForSøker1.uker, 'weeks')
+                      .add(antallUkerOgDagerFellesperiodeForSøker1.dager, 'days')
                       .subtract(1, 'day')
                       .format(ISO_DATE_FORMAT),
               );
@@ -169,7 +175,8 @@ const finnDeltUttaksdata = (
 
     const sluttdatoPeriode2 = getUttaksdagTilOgMedDato(
         dayjs(startdatoPeriode2)
-            .add(antallUkerFellesperiodeForSøker2, 'weeks')
+            .add(antallUkerOgDagerFellesperiodeForSøker2.uker, 'weeks')
+            .add(antallUkerOgDagerFellesperiodeForSøker2.dager, 'days')
             .add(antallUkerFedrekvote, 'weeks')
             .subtract(1, 'day')
             .format(ISO_DATE_FORMAT),
@@ -284,10 +291,10 @@ export const finnUttaksdata = (
     hvemPlanlegger: HvemPlanlegger,
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
     barnet: OmBarnet,
-    antallUkerFellesperiodeSøker1?: number,
+    antallDagerFellesperiodeSøker1?: number,
 ): Uttaksdata => {
     return hvemHarRett === 'beggeHarRett' || (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(barnet))
-        ? finnDeltUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, antallUkerFellesperiodeSøker1)
+        ? finnDeltUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, antallDagerFellesperiodeSøker1)
         : finnEnsligUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, hvemHarRett);
 };
 
