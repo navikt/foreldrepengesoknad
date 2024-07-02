@@ -16,6 +16,7 @@ import {
     getAntallUkerOgDagerForeldrepengerFørFødsel,
     getUkerOgDager,
 } from 'utils/stønadskontoerUtils';
+import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
@@ -80,21 +81,26 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const denEneFaren = getTekstTilFar1();
     const denAndreFaren = getTekstTilFar2();
 
+    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const valgtStønadskonto = stønadskontoer[hvorLangPeriode.dekningsgrad];
-    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
-    const antallUkerOgDager = getAntallUkerOgDager(valgtStønadskonto);
-    const antallUkerOgDagerFørFødsel = getAntallUkerOgDagerForeldrepengerFørFødsel(valgtStønadskonto);
+
+    const uttaksdata = finnUttaksdata(
+        hvemHarRett,
+        hvemPlanlegger,
+        valgtStønadskonto,
+        barnet,
+        fordeling?.antallUkerSøker1,
+    );
+
+    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
+    const antallUker = finnAntallUkerMedForeldrepenger(uttaksdata);
 
     // const antallUkerAdopsjon = erAdoptert
     //     ? getAntallUker(valgtStønadskonto) - getAntallUkerForeldrepengerFørFødsel(valgtStønadskonto)
     //     : getAntallUker(valgtStønadskonto);
 
-    const antallUkerOgDagerFellesperiodeSøker1 = fordeling ? getUkerOgDager(fordeling.antallDagerSøker1) : undefined;
-    const antallUkerOgDagerFellesperiodeSøker2 = fordeling
-        ? getUkerOgDager(antallUkerOgDagerFellesperiode.totaltAntallDager - fordeling.antallDagerSøker1)
-        : undefined;
-
-    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
+    const antallUkerFellesperiodeSøker1 = fordeling ? fordeling.antallUkerSøker1 : '';
+    const antallUkerFellesperiodeSøker2 = fordeling ? antallUkerFellesperiode - fordeling.antallUkerSøker1 : '';
 
     const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdoptert;
 
@@ -114,6 +120,8 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                     </HStack>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
+                    <VStack gap="2">
+                        <GreenPanel>
                     <VStack gap="10">
                         <BluePanel>
                             <>
