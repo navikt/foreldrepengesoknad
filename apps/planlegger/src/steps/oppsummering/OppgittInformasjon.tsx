@@ -13,8 +13,9 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { finnGrunnbeløp } from 'utils/satserUtils';
 import {
     getAntallUker,
-    getAntallUkerFellesperiode,
     getAntallUkerForeldrepengerFørFødsel,
+    getAntallUkerOgDagerFellesperiode,
+    getUkerOgDager,
 } from 'utils/stønadskontoerUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -81,15 +82,17 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const denAndreFaren = getTekstTilFar2();
 
     const valgtStønadskonto = stønadskontoer[hvorLangPeriode.dekningsgrad];
-    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
+    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
     const antallUker = getAntallUker(valgtStønadskonto);
 
     const antallUkerAdopsjon = erAdoptert
         ? getAntallUker(valgtStønadskonto) - getAntallUkerForeldrepengerFørFødsel(valgtStønadskonto)
         : getAntallUker(valgtStønadskonto);
 
-    const antallUkerFellesperiodeSøker1 = fordeling ? fordeling.antallUkerSøker1 : '';
-    const antallUkerFellesperiodeSøker2 = fordeling ? antallUkerFellesperiode - fordeling.antallUkerSøker1 : '';
+    const antallUkerOgDagerFellesperiodeSøker1 = fordeling ? getUkerOgDager(fordeling.antallDagerSøker1) : undefined;
+    const antallUkerOgDagerFellesperiodeSøker2 = fordeling
+        ? getUkerOgDager(antallUkerOgDagerFellesperiode.totaltAntallDager - fordeling.antallDagerSøker1)
+        : undefined;
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
@@ -277,8 +280,10 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                                 erAlenesøker,
                                                 prosent: hvorLangPeriode.dekningsgrad,
                                                 uker: erAdoptert ? antallUkerAdopsjon : antallUker,
-                                                fellesuker: antallUkerFellesperiodeSøker1,
-                                                fellesuker2: antallUkerFellesperiodeSøker2,
+                                                fellesuker: antallUkerOgDagerFellesperiodeSøker1?.uker || '',
+                                                fellesdager: antallUkerOgDagerFellesperiodeSøker1?.dager || 0,
+                                                fellesuker2: antallUkerOgDagerFellesperiodeSøker2?.uker || '',
+                                                fellesdager2: antallUkerOgDagerFellesperiodeSøker2?.dager || 0,
                                                 hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
                                                 hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
                                                 kunEnPartSkalHa: hvemHarRett !== 'beggeHarRett',

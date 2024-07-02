@@ -37,7 +37,10 @@ describe('<FordelingSteg>', () => {
             screen.getByText('Du må svare på hvordan dere vil fordele fellesperioden før du går videre.'),
         ).toBeInTheDocument();
 
-        await userEvent.selectOptions(utils.getByLabelText('Hvordan vil dere fordele 16 uker med fellesperiode?'), '9');
+        await userEvent.selectOptions(
+            utils.getByLabelText('Hvordan vil dere fordele 16 uker med fellesperiode?'),
+            '45',
+        );
 
         expect(screen.getByText('Klara: 11. des. 2023 – 14. juni 2024')).toBeInTheDocument();
         expect(screen.getByText('Espen: 17. juni 2024 – 15. nov. 2024')).toBeInTheDocument();
@@ -46,7 +49,7 @@ describe('<FordelingSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                antallUkerSøker1: '9',
+                antallDagerSøker1: '45',
             },
             key: ContextDataType.FORDELING,
             type: 'update',

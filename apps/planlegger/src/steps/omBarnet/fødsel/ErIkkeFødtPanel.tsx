@@ -80,7 +80,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
             {termindato !== undefined && dayjs(termindato).isBefore(TODAY) && (
                 <Infobox
                     header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}
-                    icon={<TasklistStartIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />}
+                    icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
                     shouldFadeIn
                 >
                     <BodyShort>
@@ -119,7 +119,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                             }}
                         />
                     }
-                    icon={<TasklistStartIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />}
+                    icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
                     shouldFadeIn
                 >
                     <BodyShort>
@@ -159,7 +159,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                             <FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTerminInfo" values={{ erAlenesøker }} />
                         }
                         icon={
-                            <TasklistStartIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />
+                            <TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />
                         }
                         shouldFadeIn
                     >

@@ -14,7 +14,12 @@ import {
 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
-import { getAntallUker, getAntallUkerAktivitetsfriKvote, getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
+import {
+    getAntallUker,
+    getAntallUkerAktivitetsfriKvote,
+    getAntallUkerOgDagerFellesperiode,
+    getUkerOgDager,
+} from 'utils/stønadskontoerUtils';
 import { finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, Heading, VStack } from '@navikt/ds-react';
@@ -48,12 +53,14 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
         hvemPlanlegger,
         valgtStønadskonto,
         barnet,
-        fordeling?.antallUkerSøker1,
+        fordeling?.antallDagerSøker1,
     );
 
-    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
-    const antallUkerFellesperiodeSøker1 = fordeling ? fordeling.antallUkerSøker1 : '';
-    const antallUkerFellesperiodeSøker2 = fordeling ? antallUkerFellesperiode - fordeling.antallUkerSøker1 : '';
+    const antallDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto).totaltAntallDager;
+    const antallUkerOgDagerFellesperiodeSøker1 = fordeling ? getUkerOgDager(fordeling.antallDagerSøker1) : undefined;
+    const antallUkerOgDagerFellesperiodeSøker2 = fordeling
+        ? getUkerOgDager(antallDagerFellesperiode - fordeling.antallDagerSøker1)
+        : undefined;
     const antallUkerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
     const antallUkerAktivitetskrav = getAntallUker(valgtStønadskonto) - antallUkerAktivitetsfriKvote;
 
@@ -62,7 +69,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
         barnet,
         hvemPlanlegger,
         arbeidssituasjon,
-        fordeling?.antallUkerSøker1,
+        fordeling?.antallDagerSøker1,
     );
 
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
@@ -84,8 +91,10 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                 antallUker: getAntallUker(valgtStønadskonto),
                                 hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
                                 hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
-                                uker: antallUkerFellesperiodeSøker1,
-                                uker2: antallUkerFellesperiodeSøker2,
+                                uker: antallUkerOgDagerFellesperiodeSøker1?.uker,
+                                dager: antallUkerOgDagerFellesperiodeSøker1?.dager || 0,
+                                uker2: antallUkerOgDagerFellesperiodeSøker2?.uker,
+                                dager2: antallUkerOgDagerFellesperiodeSøker2?.dager || 0,
                             }}
                         />
                     </BodyLong>

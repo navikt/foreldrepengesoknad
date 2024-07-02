@@ -36,12 +36,19 @@ export const getFellesperiodefordelingSelectOptions = (
     const values = [];
     for (let i = 0; i <= antallUkerOgDagerFellesperiode.uker; i++) {
         const søker1SkalHaDager = antallUkerOgDagerFellesperiode.uker - i >= i;
+        const dagerSøker1 = søker1SkalHaDager ? antallUkerOgDagerFellesperiode.dager : 0;
+        const dagerSøker2 = !søker1SkalHaDager ? antallUkerOgDagerFellesperiode.dager : 0;
         values.push({
             antallUkerOgDagerSøker1: {
                 uker: antallUkerOgDagerFellesperiode.uker - i,
                 dager: søker1SkalHaDager ? antallUkerOgDagerFellesperiode.dager : 0,
+                totaltAntallDager: (antallUkerOgDagerFellesperiode.uker - i) * 5 + dagerSøker1,
             },
-            antallUkerOgDagerSøker2: { uker: i, dager: søker1SkalHaDager ? 0 : antallUkerOgDagerFellesperiode.dager },
+            antallUkerOgDagerSøker2: {
+                uker: i,
+                dager: søker1SkalHaDager ? 0 : antallUkerOgDagerFellesperiode.dager,
+                totaltAntallDager: i * 5 + dagerSøker2,
+            },
         });
     }
     return values;
@@ -122,7 +129,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         defaultValues: fordeling,
     });
 
-    const antallUkerSøker1 = formMethods.watch('antallUkerSøker1');
+    const antallDagerSøker1 = formMethods.watch('antallDagerSøker1');
 
     const lagre = (formValues: Fordeling) => {
         oppdaterFordeling(formValues);
@@ -134,8 +141,8 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
-    const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerSøker1);
-    const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerSøker1);
+    const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallDagerSøker1);
+    const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallDagerSøker1);
 
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
@@ -169,7 +176,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         </Infobox>
                         <BluePanel isDarkBlue={fordeling === undefined}>
                             <Select
-                                name="antallUkerSøker1"
+                                name="antallDagerSøker1"
                                 label={
                                     <FormattedMessage
                                         id="FordelingSteg.FordelingTittel"
@@ -188,8 +195,8 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             >
                                 {getFellesperiodefordelingSelectOptions(antallUkerOgDagerFellesperiode).map((value) => (
                                     <option
-                                        key={value.antallUkerOgDagerSøker1.uker}
-                                        value={value.antallUkerOgDagerSøker1.uker}
+                                        key={value.antallUkerOgDagerSøker1.totaltAntallDager}
+                                        value={value.antallUkerOgDagerSøker1.totaltAntallDager}
                                     >
                                         {finnFellesperiodeFordelingOptionTekst(
                                             intl,
@@ -202,9 +209,9 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 ))}
                             </Select>
                         </BluePanel>
-                        {antallUkerSøker1 !== undefined && (
+                        {antallDagerSøker1 !== undefined && (
                             <FordelingsdetaljerPanel
-                                key={antallUkerSøker1}
+                                key={antallDagerSøker1}
                                 barnet={barnet}
                                 hvemPlanlegger={hvemPlanlegger}
                                 fornavnSøker1={fornavnSøker1}

@@ -4,6 +4,7 @@ import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 export type UkerOgDager = {
     uker: number;
     dager: number;
+    totaltAntallDager: number;
 };
 
 export const getAntallUker = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number => {
@@ -18,6 +19,11 @@ const getUkerForKonto = (
     return konto ? konto.dager / 5 : 0;
 };
 
+export const getUkerOgDager = (totaltAntallDager: number) => {
+    const uker = Math.floor(totaltAntallDager / 5);
+    return { uker, dager: totaltAntallDager - uker * 5, totaltAntallDager: totaltAntallDager };
+};
+
 const getUkerOgDagerForKonto = (
     stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     stønadskontoType: StønadskontoType,
@@ -25,11 +31,10 @@ const getUkerOgDagerForKonto = (
     const konto = stønadskontoer.kontoer.find((k) => k.konto === stønadskontoType);
 
     if (konto) {
-        const uker = Math.floor(konto.dager / 5);
-        return { uker, dager: konto.dager - uker * 5 };
+        return getUkerOgDager(konto.dager);
     }
 
-    return { uker: 0, dager: 0 };
+    return { uker: 0, dager: 0, totaltAntallDager: 0 };
 };
 
 export const getAntallUkerForeldrepengerFørFødsel = (
@@ -42,15 +47,13 @@ export const getAntallUkerMødrekvote = (stønadskontoer: TilgjengeligeStønadsk
 export const getAntallUkerFedrekvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
     getUkerForKonto(stønadskontoer, StønadskontoType.Fedrekvote);
 
-export const getAntallUkerFellesperiode = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
-    getUkerForKonto(stønadskontoer, StønadskontoType.Fellesperiode);
+export const getAntallUkerAktivitetsfriKvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
+    getUkerForKonto(stønadskontoer, StønadskontoType.AktivitetsfriKvote);
 
 export const getAntallUkerOgDagerFellesperiode = (
     stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
 ): UkerOgDager => getUkerOgDagerForKonto(stønadskontoer, StønadskontoType.Fellesperiode);
 
-export const getAntallUkerForeldrepenger = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
-    getUkerForKonto(stønadskontoer, StønadskontoType.Foreldrepenger);
-
-export const getAntallUkerAktivitetsfriKvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
-    getUkerForKonto(stønadskontoer, StønadskontoType.AktivitetsfriKvote);
+export const getAntallUkerOgDagerForeldrepenger = (
+    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+): UkerOgDager => getUkerOgDagerForKonto(stønadskontoer, StønadskontoType.Foreldrepenger);

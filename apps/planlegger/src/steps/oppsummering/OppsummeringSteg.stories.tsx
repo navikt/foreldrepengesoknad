@@ -118,7 +118,7 @@ export const FlereForsørgereHundreProsentTermin: Story = {
             type: Situasjon.MOR_OG_FAR,
         },
         fordeling: {
-            antallUkerSøker1: 5,
+            antallDagerSøker1: 25,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -189,7 +189,7 @@ export const FarOgFarFødsel: Story = {
             type: Situasjon.FAR_OG_FAR,
         },
         fordeling: {
-            antallUkerSøker1: 5,
+            antallDagerSøker1: 25,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -213,7 +213,7 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
             type: Situasjon.FAR_OG_FAR,
         },
         fordeling: {
-            antallUkerSøker1: 5,
+            antallDagerSøker1: 25,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -239,7 +239,7 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
             type: Situasjon.MOR,
         },
         fordeling: {
-            antallUkerSøker1: 5,
+            antallDagerSøker1: 25,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
@@ -286,7 +286,7 @@ export const FlereForsørgereHundreProsentAdopsjon: Story = {
             type: Situasjon.MOR_OG_MEDMOR,
         },
         fordeling: {
-            antallUkerSøker1: 5,
+            antallDagerSøker1: 25,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
