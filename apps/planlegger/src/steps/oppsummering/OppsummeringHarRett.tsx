@@ -151,7 +151,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                 values={{
                                     prosent: hvorLangPeriode.dekningsgrad,
                                     erAlenesøker: erAlenesøker(hvemPlanlegger),
-                                    antallUker: getAntallUker(valgtStønadskonto),
+                                    antallUker: finnAntallUkerMedForeldrepenger(uttaksdata),
                                 }}
                             />
                         </BodyShort>
