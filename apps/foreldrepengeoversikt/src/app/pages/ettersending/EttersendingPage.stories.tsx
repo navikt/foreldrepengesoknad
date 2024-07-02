@@ -1,5 +1,6 @@
 import { StoryFn } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import '@navikt/ds-css';
@@ -16,9 +17,7 @@ export default {
 
 const queryClient = new QueryClient();
 
-const Template: StoryFn<{ skalFeileOpplasting: boolean }> = ({ skalFeileOpplasting }) => {
-    // TODO: Hvordan mocke fetch i dette caset? Testene kjører grønt anyways.
-
+const Template: StoryFn = () => {
     return (
         <div style={{ backgroundColor: 'white', padding: '50px' }}>
             <QueryClientProvider client={queryClient}>
@@ -55,11 +54,15 @@ const Template: StoryFn<{ skalFeileOpplasting: boolean }> = ({ skalFeileOpplasti
 };
 
 export const SkalIkkeFeileOpplasting = Template.bind({});
-SkalIkkeFeileOpplasting.args = {
-    skalFeileOpplasting: false,
+SkalIkkeFeileOpplasting.parameters = {
+    msw: {
+        handlers: [http.post('/rest/storage/engangsstonad/vedlegg', () => new HttpResponse(null, { status: 200 }))],
+    },
 };
 
 export const SkalFeileOpplasting = Template.bind({});
-SkalFeileOpplasting.args = {
-    skalFeileOpplasting: true,
+SkalFeileOpplasting.parameters = {
+    msw: {
+        handlers: [http.post('/rest/storage/engangsstonad/vedlegg', () => new HttpResponse(null, { status: 400 }))],
+    },
 };
