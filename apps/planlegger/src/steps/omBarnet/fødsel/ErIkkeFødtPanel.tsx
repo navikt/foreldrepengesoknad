@@ -52,10 +52,10 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
     const datoSvangerskapsuke22 =
         termindato !== undefined ? dayjs(termindato).subtract(18, 'weeks').subtract(3, 'days').toDate() : undefined;
 
-    console.log('svu22', datoSvangerskapsuke22);
     const erAlenesøker = erAlene(hvemPlanlegger);
-    const erFar = erFarDelAvSøknaden(hvemPlanlegger);
+    const erFarMedISøknaden = erFarDelAvSøknaden(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);
+    const erFar = hvemPlanlegger.type === Situasjon.FAR;
 
     return (
         <VStack gap="5">
@@ -102,7 +102,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                             <FormattedMessage
                                 id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
                                 values={{
-                                    erFar,
+                                    erFar: erFarMedISøknaden,
                                     hvem: finnSøker2Tekst(intl, hvemPlanlegger),
                                 }}
                             />
@@ -125,27 +125,31 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                     shouldFadeIn
                 >
                     <BodyShort>
-                        <FormattedMessage
-                            id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke"
-                            values={{
-                                erAlenesøker,
-                            }}
-                        />
+                        <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
                     </BodyShort>
                     <BodyShort>
-                        <FormattedMessage
-                            id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.NAVanbefaler"
-                            values={{
-                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                            }}
-                        />
+                        {!erFedre ? (
+                            <FormattedMessage
+                                id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                values={{
+                                    erMorDelAvSøknaden: true,
+                                }}
+                            />
+                        ) : (
+                            <FormattedMessage
+                                id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                values={{
+                                    erMorDelAvSøknaden: false,
+                                }}
+                            />
+                        )}
                     </BodyShort>
                     {erFarDelAvSøknaden(hvemPlanlegger) && !erFedre && (
                         <BodyShort>
                             <FormattedMessage
                                 id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
                                 values={{
-                                    erFar,
+                                    erFar: erFarMedISøknaden,
                                     hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
                                 }}
                             />
@@ -165,6 +169,25 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                         }
                         shouldFadeIn
                     >
+                        <BodyShort>
+                            <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
+
+                            {erFedre || erFar ? (
+                                <FormattedMessage
+                                    id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                    values={{
+                                        erMorDelAvSøknaden: false,
+                                    }}
+                                />
+                            ) : (
+                                <FormattedMessage
+                                    id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                    values={{
+                                        erMorDelAvSøknaden: true,
+                                    }}
+                                />
+                            )}
+                        </BodyShort>
                         {!erFedre && (
                             <>
                                 <BodyShort>
@@ -192,7 +215,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                                             id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
                                             values={{
                                                 erAlenesøker,
-                                                erFar,
+                                                erFar: erFarMedISøknaden,
                                                 hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
                                             }}
                                         />
