@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import classNames from 'classnames';
-import { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { Loader } from '@navikt/ds-react';
@@ -31,7 +30,6 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
     });
 
     const minidialogQuery = useQuery(minidialogOptions());
-
     const søkerInfoQuery = useQuery(søkerInfoOptions());
 
     // TODO: har jeg tolket denne riktig? Slik jeg forstår det er formålet å ikke kjøre /saker endepunktet før spørringen om saker er oppdatert gir true.
@@ -42,20 +40,13 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         select: mapSakerDTOToSaker,
     });
 
-    useEffect(() => {
-        // TODO: Virker litt unaturlig. Kan vi kaste rett fra query kanskje? Hvordan håndtere dette best?
-        if (søkerInfoQuery.error) {
-            throw new Error(
-                'Vi klarte ikke å hente informasjon om deg. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.',
-            );
-        }
+    // TODO: Føles litt unaturlig å kaste error istedenfor å rendre her. Er det fordi vi vil treffe ErrorBoundary for å logge til entry?
+    if (søkerInfoQuery.isError || sakerQuery.isError) {
+        throw new Error(
+            'Vi klarte ikke å hente informasjon om deg. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.',
+        );
+    }
 
-        if (sakerQuery.error) {
-            throw new Error(
-                'Vi opplever problemer med å hente informasjon om din sak. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.',
-            );
-        }
-    }, [søkerInfoQuery.error, sakerQuery.error]);
     // TODO: ønsker vi egentlig å vente på alle queries før vi går videre?
     if (!søkerInfoQuery.data || sakerQuery.isPending || minidialogQuery.isPending || oppdatertQuery.isPending) {
         return (
