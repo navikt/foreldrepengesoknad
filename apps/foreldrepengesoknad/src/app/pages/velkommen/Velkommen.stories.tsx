@@ -180,7 +180,7 @@ const sakUnderBehandlingTermin = getSak({
     gjelderAdopsjon: false,
     antallBarn: 1,
     sakErAvsluttet: sakErIkkeAvsluttet,
-    termindato: dato,
+    termindato: '2024-06-28',
     åpenbehandlingTilstand: BehandlingTilstand.UNDER_BEHANDLING,
 });
 const erEndringssøknadUnderBehandlingAdopsjon = getSak({
@@ -401,4 +401,60 @@ export const HarSakMedTrillingerEnErDød = Template.bind({});
 HarSakMedTrillingerEnErDød.args = {
     saker: [sakMedTrillinger],
     søker: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato, dødfødtBarn]),
+};
+
+export const HarSakPåTerminSomSkalKoblesMedFødtPDLBarnFødtInnenTerminMinus17uker = Template.bind({});
+HarSakPåTerminSomSkalKoblesMedFødtPDLBarnFødtInnenTerminMinus17uker.args = {
+    saker: [sakUnderBehandlingTermin],
+    søker: getSøkerinfoMedBarn([
+        {
+            fnr: '1',
+            fornavn: 'Hanne',
+            etternavn: 'Brokkoli',
+            fødselsdato: '2024-03-01',
+            kjønn: 'K',
+        },
+    ]),
+};
+
+export const HarSakPåTerminSomSkalKoblesMedFødtPDLBarnFødtInnenTerminPlus6uker = Template.bind({});
+HarSakPåTerminSomSkalKoblesMedFødtPDLBarnFødtInnenTerminPlus6uker.args = {
+    saker: [sakUnderBehandlingTermin],
+    søker: getSøkerinfoMedBarn([
+        {
+            fnr: '1',
+            fornavn: 'Hanne',
+            etternavn: 'Brokkoli',
+            fødselsdato: '2024-08-09',
+            kjønn: 'K',
+        },
+    ]),
+};
+
+export const HarSakPåTerminSomIkkeSkalKoblesMedPDLBarnFødtForTidlig = Template.bind({});
+HarSakPåTerminSomIkkeSkalKoblesMedPDLBarnFødtForTidlig.args = {
+    saker: [sakUnderBehandlingTermin],
+    søker: getSøkerinfoMedBarn([
+        {
+            fnr: '1',
+            fornavn: 'Hanne',
+            etternavn: 'Brokkoli',
+            fødselsdato: '2024-02-29',
+            kjønn: 'K',
+        },
+    ]),
+};
+
+export const HarSakPåTerminSomIkkeSkalKoblesMedMedPDLBarnFødtForSent = Template.bind({});
+HarSakPåTerminSomIkkeSkalKoblesMedMedPDLBarnFødtForSent.args = {
+    saker: [sakUnderBehandlingTermin],
+    søker: getSøkerinfoMedBarn([
+        {
+            fnr: '1',
+            fornavn: 'Hanne',
+            etternavn: 'Brokkoli',
+            fødselsdato: '2024-08-10',
+            kjønn: 'K',
+        },
+    ]),
 };

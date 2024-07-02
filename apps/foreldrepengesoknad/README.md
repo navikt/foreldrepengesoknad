@@ -1,8 +1,8 @@
 # Selvbetjeningsløsning for søknad om foreldrepenger.
 
-Kildekoden til frontend-appen for foreldrepengesøknad. 
+Kildekoden til frontend-appen for foreldrepengesøknad.
 
-# Komme i gang
+# Komme i gang:
 
 For å kjøre opp appen lokalt (med mock-API):
 
