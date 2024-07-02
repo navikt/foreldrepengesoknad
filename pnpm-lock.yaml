@@ -149,13 +149,13 @@ importers:
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@storybook/react-vite':
         specifier: 8.1.6
-        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.1.0
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -179,7 +179,7 @@ importers:
         version: 5.3.3
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 4.2.1(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.19(postcss@8.4.38)
@@ -209,7 +209,7 @@ importers:
         version: 1.4.3(hogan.js@3.0.2)(webpack@5.92.0)
       storybook:
         specifier: 8.1.6
-        version: 8.1.6(@babel/preset-env@7.24.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -218,13 +218,13 @@ importers:
         version: 5.4.5
       vite:
         specifier: ^5.1.6
-        version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
-        version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
 
   apps/foreldrepengeoversikt:
     dependencies:
@@ -405,7 +405,7 @@ importers:
         version: 10.1.0
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -484,6 +484,12 @@ importers:
       morgan:
         specifier: ^1.10.0
         version: 1.10.0
+      msw:
+        specifier: ^2.3.1
+        version: 2.3.1(typescript@5.4.5)
+      msw-storybook-addon:
+        specifier: ^2.0.2
+        version: 2.0.2(msw@2.3.1(typescript@5.4.5))
       multer:
         specifier: ^1.4.5-lts.1
         version: 1.4.5-lts.1
@@ -498,7 +504,7 @@ importers:
         version: 3.1.3(prettier@3.2.5)
       storybook:
         specifier: 8.1.6
-        version: 8.1.6(@babel/preset-env@7.24.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       storybook-addon-mock:
         specifier: 5.0.0
         version: 5.0.0(@babel/preset-env@7.24.7(@babel/core@7.24.7))(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -733,7 +739,7 @@ importers:
         version: 10.1.0
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -829,7 +835,7 @@ importers:
         version: 1.1291.1
       storybook:
         specifier: 8.1.6
-        version: 8.1.6(@babel/preset-env@7.24.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -968,13 +974,13 @@ importers:
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@storybook/react-vite':
         specifier: 8.1.6
-        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.1.0
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -992,7 +998,7 @@ importers:
         version: 5.3.3
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 4.2.1(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.19(postcss@8.4.38)
@@ -1010,7 +1016,7 @@ importers:
         version: 1.4.3(hogan.js@3.0.2)(webpack@5.92.0)
       storybook:
         specifier: 8.1.6
-        version: 8.1.6(@babel/preset-env@7.24.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -1019,13 +1025,13 @@ importers:
         version: 5.4.5
       vite:
         specifier: ^5.1.6
-        version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
-        version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
 
   apps/svangerskapspengesoknad:
     dependencies:
@@ -1197,7 +1203,7 @@ importers:
         version: 8.1.9(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^8.1.6
-        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/cli':
         specifier: ^8.1.6
         version: 8.1.9(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1206,13 +1212,13 @@ importers:
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@storybook/react-vite':
         specifier: 8.1.6
-        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.1.0
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1254,7 +1260,7 @@ importers:
         version: 4.4.10
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 4.2.1(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       acorn:
         specifier: ^8.11.3
         version: 8.12.0
@@ -1302,7 +1308,7 @@ importers:
         version: 18.3.1(react@18.2.0)
       storybook:
         specifier: 8.1.6
-        version: 8.1.6(@babel/preset-env@7.24.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -1311,13 +1317,13 @@ importers:
         version: 5.4.5
       vite:
         specifier: ^5.1.6
-        version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
-        version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
 
   apps/veivisere:
     dependencies:
@@ -1438,13 +1444,13 @@ importers:
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@storybook/react-vite':
         specifier: 8.1.6
-        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.1.0
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1462,7 +1468,7 @@ importers:
         version: 5.3.3
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 4.2.1(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.19(postcss@8.4.38)
@@ -1480,7 +1486,7 @@ importers:
         version: 1.4.3(hogan.js@3.0.2)(webpack@5.92.0)
       storybook:
         specifier: 8.1.6
-        version: 8.1.6(@babel/preset-env@7.24.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -1489,13 +1495,13 @@ importers:
         version: 5.4.5
       vite:
         specifier: ^5.1.6
-        version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
-        version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
 
   packages/api:
     dependencies:
@@ -1630,19 +1636,19 @@ importers:
         version: 8.1.9(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/addon-interactions':
         specifier: ^8.1.6
-        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/addon-links':
         specifier: ^8.1.6
         version: 8.1.9(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^8.1.6
-        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/react':
         specifier: ^8.1.6
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@9.3.4)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1651,13 +1657,13 @@ importers:
         version: 14.5.2(@testing-library/dom@9.3.4)
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 4.2.1(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
       storybook:
         specifier: 8.1.6
-        version: 8.1.6(@babel/preset-env@7.24.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       storybook-react-intl:
         specifier: ^3.0.1
         version: 3.0.1(react-intl@6.6.4(react@18.2.0)(typescript@5.4.5))
@@ -1669,13 +1675,13 @@ importers:
         version: 5.4.5
       vite:
         specifier: ^5.1.6
-        version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
-        version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
 
   packages/fp-common:
     dependencies:
@@ -1787,7 +1793,7 @@ importers:
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1829,7 +1835,7 @@ importers:
         version: 1.77.5
       storybook:
         specifier: 8.1.6
-        version: 8.1.6(@babel/preset-env@7.24.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       storybook-react-intl:
         specifier: ^3.0.1
         version: 3.0.1(react-intl@6.6.4(react@18.2.0)(typescript@5.4.5))
@@ -2042,19 +2048,19 @@ importers:
         version: 8.1.9(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/addon-interactions':
         specifier: ^8.1.6
-        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/addon-links':
         specifier: ^8.1.6
         version: 8.1.9(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^8.1.6
-        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/react':
         specifier: ^8.1.6
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2066,13 +2072,13 @@ importers:
         version: 18.2.73
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 4.2.1(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
       storybook:
         specifier: 8.1.6
-        version: 8.1.6(@babel/preset-env@7.24.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       storybook-react-intl:
         specifier: ^3.0.1
         version: 3.0.1(react-intl@6.6.4(react@18.2.0)(typescript@5.4.5))
@@ -2084,13 +2090,13 @@ importers:
         version: 5.4.5
       vite:
         specifier: ^5.1.6
-        version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
-        version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
 
   packages/server-utils:
     dependencies:
@@ -2236,19 +2242,19 @@ importers:
         version: 8.1.9(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/addon-interactions':
         specifier: ^8.1.6
-        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/addon-links':
         specifier: ^8.1.6
         version: 8.1.9(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^8.1.6
-        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/react':
         specifier: ^8.1.6
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2266,13 +2272,13 @@ importers:
         version: 6.2.14
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 4.2.1(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
       storybook:
         specifier: 8.1.6
-        version: 8.1.6(@babel/preset-env@7.24.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       storybook-react-intl:
         specifier: ^3.0.1
         version: 3.0.1(react-intl@6.6.4(react@18.2.0)(typescript@5.4.5))
@@ -2284,13 +2290,13 @@ importers:
         version: 5.4.5
       vite:
         specifier: ^5.1.6
-        version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
-        version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
 
   packages/utenlandsopphold:
     dependencies:
@@ -2357,19 +2363,19 @@ importers:
         version: 8.1.9(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/addon-interactions':
         specifier: ^8.1.6
-        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/addon-links':
         specifier: ^8.1.6
         version: 8.1.9(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^8.1.6
-        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/react':
         specifier: ^8.1.6
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2381,13 +2387,13 @@ importers:
         version: 18.2.73
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 4.2.1(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
       storybook:
         specifier: 8.1.6
-        version: 8.1.6(@babel/preset-env@7.24.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       storybook-react-intl:
         specifier: ^3.0.1
         version: 3.0.1(react-intl@6.6.4(react@18.2.0)(typescript@5.4.5))
@@ -2399,13 +2405,13 @@ importers:
         version: 5.4.5
       vite:
         specifier: ^5.1.6
-        version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
-        version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
 
   packages/utils:
     dependencies:
@@ -2448,7 +2454,7 @@ importers:
         version: link:../eslint-config-custom
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2457,7 +2463,7 @@ importers:
         version: 18.2.73
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 4.2.1(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -2469,19 +2475,19 @@ importers:
         version: 5.4.5
       vite:
         specifier: ^5.1.6
-        version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
-        version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
 
   packages/utils-test:
     dependencies:
       '@storybook/react-vite':
         specifier: 8.1.6
-        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -2500,7 +2506,7 @@ importers:
         version: link:../eslint-config-custom
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2515,7 +2521,7 @@ importers:
         version: 18.2.23
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 4.2.1(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -2524,13 +2530,13 @@ importers:
         version: 5.4.5
       vite:
         specifier: ^5.1.6
-        version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
-        version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
 
   packages/uttaksplan:
     dependencies:
@@ -2609,19 +2615,19 @@ importers:
         version: 8.1.9(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/addon-interactions':
         specifier: ^8.1.6
-        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/addon-links':
         specifier: ^8.1.6
         version: 8.1.9(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^8.1.6
-        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/react':
         specifier: ^8.1.6
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2636,7 +2642,7 @@ importers:
         version: 4.1.9
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 4.2.1(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -2651,7 +2657,7 @@ importers:
         version: 0.12.7
       storybook:
         specifier: 8.1.6
-        version: 8.1.6(@babel/preset-env@7.24.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       storybook-react-intl:
         specifier: ^3.0.1
         version: 3.0.1(react-intl@6.6.4(react@18.2.0)(typescript@5.4.5))
@@ -2660,13 +2666,13 @@ importers:
         version: link:../tsconfig
       vite:
         specifier: ^5.1.6
-        version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
-        version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
 
   packages/uttaksplan-kalender:
     dependencies:
@@ -2727,25 +2733,25 @@ importers:
         version: 8.1.9(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@storybook/addon-interactions':
         specifier: ^8.1.6
-        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/addon-links':
         specifier: ^8.1.6
         version: 8.1.9(react@18.2.0)
       '@storybook/builder-vite':
         specifier: ^8.1.6
-        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@storybook/react':
         specifier: ^8.1.6
         version: 8.1.9(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
       '@storybook/react-vite':
         specifier: 8.1.6
-        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.1.0
       '@testing-library/jest-dom':
         specifier: ^6.4.6
-        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
+        version: 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2754,7 +2760,7 @@ importers:
         version: 4.3.0(prettier@3.2.5)
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 4.2.1(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -2763,7 +2769,7 @@ importers:
         version: 18.2.0(react@18.2.0)
       storybook:
         specifier: 8.1.6
-        version: 8.1.6(@babel/preset-env@7.24.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       storybook-react-intl:
         specifier: ^3.0.1
         version: 3.0.1(react-intl@6.6.4(react@18.2.0)(typescript@5.4.5))
@@ -2772,13 +2778,13 @@ importers:
         version: link:../tsconfig
       vite:
         specifier: ^5.1.6
-        version: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
       vite-plugin-checker:
         specifier: ^0.6.4
-        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+        version: 0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       vitest:
         specifier: ^1.4.0
-        version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+        version: 1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
 
   packages/validation:
     dependencies:
@@ -3649,6 +3655,12 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
+  '@bundled-es-modules/cookie@2.0.0':
+    resolution: {integrity: sha512-Or6YHg/kamKHpxULAdSqhGqnWFneIXu1NKvvfBBzKGwpVsYuFIQ5aBPHDnnoR3ghW1nvSkALd+EF9iMtY7Vjxw==}
+
+  '@bundled-es-modules/statuses@1.0.1':
+    resolution: {integrity: sha512-yn7BklA5acgcBr+7w064fGV+SGIFySjCKpqjcWgBAIfrAkY+4GQTJJHQMeT3V/sgz23VTEVV8TtOmkvJAhFVfg==}
+
   '@colors/colors@1.5.0':
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
     engines: {node: '>=0.1.90'}
@@ -4095,6 +4107,22 @@ packages:
     resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
     deprecated: Use @eslint/object-schema instead
 
+  '@inquirer/confirm@3.1.12':
+    resolution: {integrity: sha512-s5Sod79QsBBi5Qm7zxCq9DcAD0i7WRcjd/LzsiIAWqWZKW4+OJTGrCgVSLGIHTulwbZgdxM4AAxpCXe86hv4/Q==}
+    engines: {node: '>=18'}
+
+  '@inquirer/core@9.0.0':
+    resolution: {integrity: sha512-y3q+fkCTGmvwk9Wf6yZlI3QGlLXbEm5M7Y7Eh8abaUbv+ffvmw2aB4FxSUrWaoaozwvEJSG60raHbCaUorXEzA==}
+    engines: {node: '>=18'}
+
+  '@inquirer/figures@1.0.3':
+    resolution: {integrity: sha512-ErXXzENMH5pJt5/ssXV0DfWUZqly8nGzf0UcBV9xTnP+KyffE2mqyxIMBrZ8ijQck2nU0TQm40EQB53YreyWHw==}
+    engines: {node: '>=18'}
+
+  '@inquirer/type@1.4.0':
+    resolution: {integrity: sha512-AjOqykVyjdJQvtfkNDGUyMYGF8xN50VUxftCQWsOyIo4DFRLr6VQhW0VItGI1JIyQGCGgIpKa7hMMwNhZb4OIw==}
+    engines: {node: '>=18'}
+
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
@@ -4209,6 +4237,14 @@ packages:
       '@types/react': '>=16'
       react: '>=16'
 
+  '@mswjs/cookies@1.1.1':
+    resolution: {integrity: sha512-W68qOHEjx1iD+4VjQudlx26CPIoxmIAtK4ZCexU0/UJBG6jYhcuyzKJx+Iw8uhBIGd9eba64XgWVgo20it1qwA==}
+    engines: {node: '>=18'}
+
+  '@mswjs/interceptors@0.29.1':
+    resolution: {integrity: sha512-3rDakgJZ77+RiQUuSK69t1F0m8BQKA8Vh5DCS5V0DWvNY67zob2JhhQrhCO0AKLGINTRSFd1tBaHcJTkhefoSw==}
+    engines: {node: '>=18'}
+
   '@navikt/aksel-icons@6.3.3':
     resolution: {integrity: sha512-DRWDvqJCPc1kYTjJwzv6sw5Bxf6DfHortkYDUtFSriwvXRaL1DM1/LxPtpu+fkMlCIBBioGps8CHZzRpg7Q8UQ==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/6.3.3/251b544c7aea1904c7d11341fbc999e6b7e6e3e1}
 
@@ -4275,6 +4311,15 @@ packages:
   '@nodelib/fs.walk@1.2.8':
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
+
+  '@open-draft/deferred-promise@2.2.0':
+    resolution: {integrity: sha512-CecwLWx3rhxVQF6V4bAgPS5t+So2sTbPgAzafKkVizyi7tlwpcFpdFqq+wqF2OwNBmqFuu6tOyouTuxgpMfzmA==}
+
+  '@open-draft/logger@0.3.0':
+    resolution: {integrity: sha512-X2g45fzhxH238HKO4xbSr7+wBS8Fvw6ixhTDuvLd5mqh6bJJCFAPwU9mPDxbcrRtfxv4u5IHCEH77BmxvXmmxQ==}
+
+  '@open-draft/until@2.1.0':
+    resolution: {integrity: sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==}
 
   '@opentelemetry/api@1.9.0':
     resolution: {integrity: sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==}
@@ -5095,6 +5140,9 @@ packages:
   '@types/cookie-parser@1.4.7':
     resolution: {integrity: sha512-Fvuyi354Z+uayxzIGCwYTayFKocfV7TuDYZClCdIP9ckhvAu/ixDtCB6qx2TT0FKjPLf1f3P/J1rgf6lPs64mw==}
 
+  '@types/cookie@0.6.0':
+    resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
+
   '@types/cross-spawn@6.0.6':
     resolution: {integrity: sha512-fXRhhUkG4H3TQk5dBhQ7m/JDdSNHKwR2BBia62lhwEIq9xGiQKLxd6LymNhn47SjXhsUEPmxi+PKw2OkW4LLjA==}
 
@@ -5218,6 +5266,9 @@ packages:
   '@types/morgan@1.9.9':
     resolution: {integrity: sha512-iRYSDKVaC6FkGSpEVVIvrRGw0DfJMiQzIn3qr2G5B3C//AWkulhXgaBd7tS9/J79GWSYMTHGs7PfI5b3Y8m+RQ==}
 
+  '@types/mute-stream@0.0.4':
+    resolution: {integrity: sha512-CPM9nzrCPPJHQNA9keH9CVkVI+WR5kMa+7XEs5jcGQ0VoAGnLv242w8lIVgwAEfmE4oufJRaTc9PNLQl0ioAow==}
+
   '@types/node@17.0.45':
     resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
 
@@ -5226,6 +5277,9 @@ packages:
 
   '@types/node@20.12.2':
     resolution: {integrity: sha512-zQ0NYO87hyN6Xrclcqp7f8ZbXNbRfoGWNcMvHTPQp9UUrwI0mI7XBz+cu7/W6/VClYo2g63B0cjull/srU7LgQ==}
+
+  '@types/node@20.14.9':
+    resolution: {integrity: sha512-06OCtnTXtWOZBJlRApleWndH4JsRVs1pDCc8dLSQp+7PpUpX3ePdHyeNSFTeSe7FtKyQkrlPvHwJOW3SLd8Oyg==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -5293,6 +5347,9 @@ packages:
   '@types/stack-utils@2.0.3':
     resolution: {integrity: sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==}
 
+  '@types/statuses@2.0.5':
+    resolution: {integrity: sha512-jmIUGWrAiwu3dZpxntxieC+1n/5c3mjrImkmOSQ2NC5uP6cYO4aAZDdSmRcI5C1oiTmqlZGHC+/NmJrKogbP5A==}
+
   '@types/tough-cookie@4.0.5':
     resolution: {integrity: sha512-/Ad8+nIOV7Rl++6f1BdKxFSMgmoqEoYbHRpPcx3JEfv8VRsQe9Z4mCXeJBzxs7mbHY/XOZZuXlRNfhpVPbs6ZA==}
 
@@ -5307,6 +5364,9 @@ packages:
 
   '@types/uuid@9.0.8':
     resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
+
+  '@types/wrap-ansi@3.0.0':
+    resolution: {integrity: sha512-ltIpx+kM7g/MLRZfkbL7EsCEjfzCcScLpkg37eXEtx5kmrAKBkTJwd1GIAjDSL8wTpM6Hzn5YO4pSb91BEwu1g==}
 
   '@types/yargs-parser@21.0.3':
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
@@ -6060,6 +6120,10 @@ packages:
     resolution: {integrity: sha512-nPdaFdQ0h/GEigbPClz11D0v/ZJEwxmeVZGeMo3Z5StPtUTkA9o1lD6QwoirYiSDzbcwn2XcjwmCp68W1IS4TA==}
     engines: {node: '>=18'}
 
+  cli-width@4.1.0:
+    resolution: {integrity: sha512-ouuZd4/dm2Sw5Gmqy6bGyNNNe1qt9RpmxveLSO7KcgsTnU7RXfsw+/bukWGo1abgBiMAic068rclZsO4IWmmxQ==}
+    engines: {node: '>= 12'}
+
   cliui@7.0.4:
     resolution: {integrity: sha512-OcRE68cOsVMXp1Yvonl/fzkQOyjLSu/8bhPDfQt0e0/Eb283TKP20Fs2MqoPsr9SwA595rRCA+QMzYc9nBP+JQ==}
 
@@ -6188,6 +6252,10 @@ packages:
 
   cookie@0.4.1:
     resolution: {integrity: sha512-ZwrFkGJxUR3EIoXtO+yVE69Eb7KlixbaeAWfBQB9vVsNn/o+Yw69gBWSSDK825hQNdN+wF8zELf3dFNl/kxkUA==}
+    engines: {node: '>= 0.6'}
+
+  cookie@0.5.0:
+    resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
     engines: {node: '>= 0.6'}
 
   cookie@0.6.0:
@@ -7306,6 +7374,10 @@ packages:
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
 
+  graphql@16.9.0:
+    resolution: {integrity: sha512-GGTKBX4SD7Wdb8mqeDLni2oaRGYQWjWHGKPQ24ZMnUtKfcsVoiv4uX8+LJr1K6U5VW2Lu1BwJnj7uiori0YtRw==}
+    engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
+
   gunzip-maybe@1.4.2:
     resolution: {integrity: sha512-4haO1M4mLO91PW57BMsDFf75UmwoRX0GkdD+Faw+Lr+r/OZrOCS0pIBwOL1xCKQqnQzbNFGgK2V2CpBUPeFNTw==}
     hasBin: true
@@ -7372,6 +7444,9 @@ packages:
   he@1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
+
+  headers-polyfill@4.0.3:
+    resolution: {integrity: sha512-IScLbePpkvO846sIwOtOTDjutRMWdXdJmXdMvk6gCBHxFO8d+QKOQedyZSxFTTFYRSmlgSTDtXqqq4pcenBXLQ==}
 
   highlight.js@10.7.3:
     resolution: {integrity: sha512-tzcUFauisWKNHaRkN4Wjl/ZA07gENAjFl3J/c480dprkGTg5EQstgaNFqBfUqCq54kZRIEcreTsAgF/m2quD7A==}
@@ -7674,6 +7749,9 @@ packages:
   is-negative-zero@2.0.3:
     resolution: {integrity: sha512-5KoIu2Ngpyek75jXodFvnafB6DJgr3u8uuK0LEZJjrU19DrMD3EVERaR8sjz8CCGgpZvxPl9SuE1GMVPFHx1mw==}
     engines: {node: '>= 0.4'}
+
+  is-node-process@1.2.0:
+    resolution: {integrity: sha512-Vg4o6/fqPxIjtxgUH5QLJhwZ7gW5diGCVlXpuUfELC62CuxM1iHcRe51f2W1FDy04Ai4KJkagKjx3XaqyfRKXw==}
 
   is-number-object@1.0.7:
     resolution: {integrity: sha512-k1U0IRzLMo7ZlYIfzRu23Oh6MiIFasgpb9X76eqfFZAqwH44UI4KTBvBYIZ1dSL9ZzChTB9ShHfLkR4pdW5krQ==}
@@ -8409,6 +8487,21 @@ packages:
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
+  msw-storybook-addon@2.0.2:
+    resolution: {integrity: sha512-sdw++X+AoUbaG2ku493ViVqCA/LfqnybXsKXyPUrF3ZS/x8BqGBnkBLmT/0SHCC5zIO3Vfm5zlclAxnhqOOikQ==}
+    peerDependencies:
+      msw: ^2.0.0
+
+  msw@2.3.1:
+    resolution: {integrity: sha512-ocgvBCLn/5l3jpl1lssIb3cniuACJLoOfZu01e3n5dbJrpA5PeeWn28jCLgQDNt6d7QT8tF2fYRzm9JoEHtiig==}
+    engines: {node: '>=18'}
+    hasBin: true
+    peerDependencies:
+      typescript: '>= 4.7.x'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   multer@1.4.5-lts.1:
     resolution: {integrity: sha512-ywPWvcDMeH+z9gQq5qYHCCy+ethsk4goepZ45GLD63fOu0YcNecQxi64nDs3qluZB+murG3/D4dJ7+dGctcCQQ==}
     engines: {node: '>= 6.0.0'}
@@ -8431,6 +8524,10 @@ packages:
   mustache@4.2.0:
     resolution: {integrity: sha512-71ippSywq5Yb7/tVYyGbkBggbU8H3u5Rz56fH60jGFgr8uHwxs+aSKeqmluIVzM0m0kB7xQjKS6qPfd0b2ZoqQ==}
     hasBin: true
+
+  mute-stream@1.0.0:
+    resolution: {integrity: sha512-avsJQhyd+680gKXyG/sQc0nXaC6rBkPOfyHYcFb9+hdkqQkR9bdnkJ0AMZhke0oesPqIO+mFFJ+IdBc7mst4IA==}
+    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
 
   nanoid@3.3.7:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
@@ -8643,6 +8740,9 @@ packages:
   ora@5.4.1:
     resolution: {integrity: sha512-5b6Y85tPxZZ7QytO+BQzysW31HJku27cRIlkbAXaNx+BdcVi+LlRFmVXzeF6a7JCwJpyw5c4b+YSVImQIrBpuQ==}
     engines: {node: '>=10'}
+
+  outvariant@1.4.2:
+    resolution: {integrity: sha512-Ou3dJ6bA/UJ5GVHxah4LnqDwZRwAmWxrG3wtrHrbGnP4RnLCtA64A4F+ae7Y8ww660JaddSoArUR5HjipWSHAQ==}
 
   p-limit@2.3.0:
     resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
@@ -9643,6 +9743,9 @@ packages:
     resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}
     engines: {node: '>=10.0.0'}
 
+  strict-event-emitter@0.5.1:
+    resolution: {integrity: sha512-vMgjE/GGEPEFnhFub6pa4FmJBRBVOLpIII2hvCZ8Kzb7K0hlHo7mQv6xYrBvCL2LtAIBwFUK8wvuJgTVSQ5MFQ==}
+
   string-argv@0.3.2:
     resolution: {integrity: sha512-aqD2Q0144Z+/RqG52NeHEkZauTAUWJO8c6yTftGJKO3Tja5tUgIfmIl6kExvhtxSDP7fXB6DvzkfMpCd/F3G+Q==}
     engines: {node: '>=0.6.19'}
@@ -10005,6 +10108,10 @@ packages:
   type-fest@2.19.0:
     resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
     engines: {node: '>=12.20'}
+
+  type-fest@4.20.1:
+    resolution: {integrity: sha512-R6wDsVsoS9xYOpy8vgeBlqpdOyzJ12HNfQhC/aAKWM3YoCV9TtunJzh/QpkMgeDhkoynDcw5f1y+qF9yc/HHyg==}
+    engines: {node: '>=16'}
 
   type-is@1.6.18:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==}
@@ -10405,6 +10512,10 @@ packages:
   wordwrap@1.0.0:
     resolution: {integrity: sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q==}
 
+  wrap-ansi@6.2.0:
+    resolution: {integrity: sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==}
+    engines: {node: '>=8'}
+
   wrap-ansi@7.0.0:
     resolution: {integrity: sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==}
     engines: {node: '>=10'}
@@ -10487,6 +10598,10 @@ packages:
   yocto-queue@1.0.0:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
+
+  yoctocolors-cjs@2.1.1:
+    resolution: {integrity: sha512-c6T13b6qYcJZvck7QbEFXrFX/Mu2KOjvAGiKHmYMUg96jxNpfP6i+psGW72BOPxOIDUJrORG+Kyu7quMX9CQBQ==}
+    engines: {node: '>=18'}
 
 snapshots:
 
@@ -11383,6 +11498,14 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
+  '@bundled-es-modules/cookie@2.0.0':
+    dependencies:
+      cookie: 0.5.0
+
+  '@bundled-es-modules/statuses@1.0.1':
+    dependencies:
+      statuses: 2.0.1
+
   '@colors/colors@1.5.0':
     optional: true
 
@@ -11736,6 +11859,33 @@ snapshots:
 
   '@humanwhocodes/object-schema@2.0.3': {}
 
+  '@inquirer/confirm@3.1.12':
+    dependencies:
+      '@inquirer/core': 9.0.0
+      '@inquirer/type': 1.4.0
+
+  '@inquirer/core@9.0.0':
+    dependencies:
+      '@inquirer/figures': 1.0.3
+      '@inquirer/type': 1.4.0
+      '@types/mute-stream': 0.0.4
+      '@types/node': 20.14.9
+      '@types/wrap-ansi': 3.0.0
+      ansi-escapes: 4.3.2
+      cli-spinners: 2.9.2
+      cli-width: 4.1.0
+      mute-stream: 1.0.0
+      signal-exit: 4.1.0
+      strip-ansi: 6.0.1
+      wrap-ansi: 6.2.0
+      yoctocolors-cjs: 2.1.1
+
+  '@inquirer/figures@1.0.3': {}
+
+  '@inquirer/type@1.4.0':
+    dependencies:
+      mute-stream: 1.0.0
+
   '@isaacs/cliui@8.0.2':
     dependencies:
       string-width: 5.1.2
@@ -11927,6 +12077,16 @@ snapshots:
     optionalDependencies:
       typescript: 5.4.5
 
+  '@joshwooding/vite-plugin-react-docgen-typescript@0.3.1(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
+    dependencies:
+      glob: 7.2.3
+      glob-promise: 4.2.2(glob@7.2.3)
+      magic-string: 0.27.0
+      react-docgen-typescript: 2.2.2(typescript@5.4.5)
+      vite: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+    optionalDependencies:
+      typescript: 5.4.5
+
   '@jridgewell/gen-mapping@0.3.5':
     dependencies:
       '@jridgewell/set-array': 1.2.1
@@ -11954,6 +12114,17 @@ snapshots:
       '@types/mdx': 2.0.13
       '@types/react': 18.2.73
       react: 18.2.0
+
+  '@mswjs/cookies@1.1.1': {}
+
+  '@mswjs/interceptors@0.29.1':
+    dependencies:
+      '@open-draft/deferred-promise': 2.2.0
+      '@open-draft/logger': 0.3.0
+      '@open-draft/until': 2.1.0
+      is-node-process: 1.2.0
+      outvariant: 1.4.2
+      strict-event-emitter: 0.5.1
 
   '@navikt/aksel-icons@6.3.3': {}
 
@@ -12031,6 +12202,15 @@ snapshots:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
+
+  '@open-draft/deferred-promise@2.2.0': {}
+
+  '@open-draft/logger@0.3.0':
+    dependencies:
+      is-node-process: 1.2.0
+      outvariant: 1.4.2
+
+  '@open-draft/until@2.1.0': {}
 
   '@opentelemetry/api@1.9.0': {}
 
@@ -12562,6 +12742,21 @@ snapshots:
       - jest
       - vitest
 
+  '@storybook/addon-interactions@8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
+    dependencies:
+      '@storybook/global': 5.0.0
+      '@storybook/instrumenter': 8.1.9
+      '@storybook/test': 8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+      '@storybook/types': 8.1.9
+      polished: 4.3.1
+      ts-dedent: 2.2.0
+    transitivePeerDependencies:
+      - '@jest/globals'
+      - '@types/bun'
+      - '@types/jest'
+      - jest
+      - vitest
+
   '@storybook/addon-links@8.1.9(react@18.2.0)':
     dependencies:
       '@storybook/csf': 0.1.8
@@ -12691,6 +12886,33 @@ snapshots:
       - prettier
       - supports-color
 
+  '@storybook/builder-vite@8.1.6(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
+    dependencies:
+      '@storybook/channels': 8.1.6
+      '@storybook/client-logger': 8.1.6
+      '@storybook/core-common': 8.1.6(prettier@3.2.5)
+      '@storybook/core-events': 8.1.6
+      '@storybook/csf-plugin': 8.1.6
+      '@storybook/node-logger': 8.1.6
+      '@storybook/preview': 8.1.6
+      '@storybook/preview-api': 8.1.6
+      '@storybook/types': 8.1.6
+      '@types/find-cache-dir': 3.2.1
+      browser-assert: 1.2.1
+      es-module-lexer: 1.5.3
+      express: 4.19.2
+      find-cache-dir: 3.3.2
+      fs-extra: 11.2.0
+      magic-string: 0.30.10
+      ts-dedent: 2.2.0
+      vite: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+    optionalDependencies:
+      typescript: 5.4.5
+    transitivePeerDependencies:
+      - encoding
+      - prettier
+      - supports-color
+
   '@storybook/builder-vite@8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
     dependencies:
       '@storybook/channels': 8.1.9
@@ -12718,6 +12940,33 @@ snapshots:
       - prettier
       - supports-color
 
+  '@storybook/builder-vite@8.1.9(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
+    dependencies:
+      '@storybook/channels': 8.1.9
+      '@storybook/client-logger': 8.1.9
+      '@storybook/core-common': 8.1.9(prettier@3.2.5)
+      '@storybook/core-events': 8.1.9
+      '@storybook/csf-plugin': 8.1.9
+      '@storybook/node-logger': 8.1.9
+      '@storybook/preview': 8.1.9
+      '@storybook/preview-api': 8.1.9
+      '@storybook/types': 8.1.9
+      '@types/find-cache-dir': 3.2.1
+      browser-assert: 1.2.1
+      es-module-lexer: 1.5.3
+      express: 4.19.2
+      find-cache-dir: 3.3.2
+      fs-extra: 11.2.0
+      magic-string: 0.30.10
+      ts-dedent: 2.2.0
+      vite: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+    optionalDependencies:
+      typescript: 5.4.5
+    transitivePeerDependencies:
+      - encoding
+      - prettier
+      - supports-color
+
   '@storybook/channels@8.1.6':
     dependencies:
       '@storybook/client-logger': 8.1.6
@@ -12734,7 +12983,7 @@ snapshots:
       telejson: 7.2.0
       tiny-invariant: 1.3.3
 
-  '@storybook/cli@8.1.6(@babel/preset-env@7.24.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+  '@storybook/cli@8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@babel/core': 7.24.7
       '@babel/types': 7.24.7
@@ -12761,7 +13010,7 @@ snapshots:
       get-npm-tarball-url: 2.1.0
       giget: 1.2.3
       globby: 14.0.1
-      jscodeshift: 0.15.2(@babel/preset-env@7.24.7)
+      jscodeshift: 0.15.2(@babel/preset-env@7.24.7(@babel/core@7.24.7))
       leven: 3.1.0
       ora: 5.4.1
       prettier: 3.2.5
@@ -12808,7 +13057,7 @@ snapshots:
       get-npm-tarball-url: 2.1.0
       giget: 1.2.3
       globby: 14.0.1
-      jscodeshift: 0.15.2(@babel/preset-env@7.24.7)
+      jscodeshift: 0.15.2(@babel/preset-env@7.24.7(@babel/core@7.24.7))
       leven: 3.1.0
       ora: 5.4.1
       prettier: 3.2.5
@@ -12848,7 +13097,7 @@ snapshots:
       '@types/cross-spawn': 6.0.6
       cross-spawn: 7.0.3
       globby: 14.0.1
-      jscodeshift: 0.15.2(@babel/preset-env@7.24.7)
+      jscodeshift: 0.15.2(@babel/preset-env@7.24.7(@babel/core@7.24.7))
       lodash: 4.17.21
       prettier: 3.2.5
       recast: 0.23.9
@@ -12868,7 +13117,7 @@ snapshots:
       '@types/cross-spawn': 6.0.6
       cross-spawn: 7.0.3
       globby: 14.0.1
-      jscodeshift: 0.15.2(@babel/preset-env@7.24.7)
+      jscodeshift: 0.15.2(@babel/preset-env@7.24.7(@babel/core@7.24.7))
       lodash: 4.17.21
       prettier: 3.2.5
       recast: 0.23.9
@@ -13308,6 +13557,31 @@ snapshots:
       - typescript
       - vite-plugin-glimmerx
 
+  '@storybook/react-vite@8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rollup@4.18.0)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
+    dependencies:
+      '@joshwooding/vite-plugin-react-docgen-typescript': 0.3.1(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+      '@rollup/pluginutils': 5.1.0(rollup@4.18.0)
+      '@storybook/builder-vite': 8.1.6(prettier@3.2.5)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+      '@storybook/node-logger': 8.1.6
+      '@storybook/react': 8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)
+      '@storybook/types': 8.1.6
+      find-up: 5.0.0
+      magic-string: 0.30.10
+      react: 18.2.0
+      react-docgen: 7.0.3
+      react-dom: 18.2.0(react@18.2.0)
+      resolve: 1.22.8
+      tsconfig-paths: 4.2.0
+      vite: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+    transitivePeerDependencies:
+      - '@preact/preset-vite'
+      - encoding
+      - prettier
+      - rollup
+      - supports-color
+      - typescript
+      - vite-plugin-glimmerx
+
   '@storybook/react@8.1.6(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.5)':
     dependencies:
       '@storybook/client-logger': 8.1.6
@@ -13421,7 +13695,26 @@ snapshots:
       '@storybook/instrumenter': 8.1.9
       '@storybook/preview-api': 8.1.9
       '@testing-library/dom': 9.3.4
-      '@testing-library/jest-dom': 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)
+      '@testing-library/jest-dom': 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
+      '@testing-library/user-event': 14.5.2(@testing-library/dom@9.3.4)
+      '@vitest/expect': 1.3.1
+      '@vitest/spy': 1.6.0
+      util: 0.12.5
+    transitivePeerDependencies:
+      - '@jest/globals'
+      - '@types/bun'
+      - '@types/jest'
+      - jest
+      - vitest
+
+  '@storybook/test@8.1.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
+    dependencies:
+      '@storybook/client-logger': 8.1.9
+      '@storybook/core-events': 8.1.9
+      '@storybook/instrumenter': 8.1.9
+      '@storybook/preview-api': 8.1.9
+      '@testing-library/dom': 9.3.4
+      '@testing-library/jest-dom': 6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
       '@testing-library/user-event': 14.5.2(@testing-library/dom@9.3.4)
       '@vitest/expect': 1.3.1
       '@vitest/spy': 1.6.0
@@ -13494,7 +13787,7 @@ snapshots:
       lz-string: 1.5.0
       pretty-format: 27.5.1
 
-  '@testing-library/jest-dom@6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)':
+  '@testing-library/jest-dom@6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.12.2))(vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
     dependencies:
       '@adobe/css-tools': 4.4.0
       '@babel/runtime': 7.24.7
@@ -13509,6 +13802,38 @@ snapshots:
       '@types/jest': 29.5.12
       jest: 29.7.0(@types/node@20.12.2)
       vitest: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+
+  '@testing-library/jest-dom@6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@20.14.9))(vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
+    dependencies:
+      '@adobe/css-tools': 4.4.0
+      '@babel/runtime': 7.24.7
+      aria-query: 5.3.0
+      chalk: 3.0.0
+      css.escape: 1.5.1
+      dom-accessibility-api: 0.6.3
+      lodash: 4.17.21
+      redent: 3.0.0
+    optionalDependencies:
+      '@jest/globals': 29.7.0
+      '@types/jest': 29.5.12
+      jest: 29.7.0(@types/node@20.14.9)
+      vitest: 1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+
+  '@testing-library/jest-dom@6.4.6(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0)(vitest@1.6.0)':
+    dependencies:
+      '@adobe/css-tools': 4.4.0
+      '@babel/runtime': 7.24.7
+      aria-query: 5.3.0
+      chalk: 3.0.0
+      css.escape: 1.5.1
+      dom-accessibility-api: 0.6.3
+      lodash: 4.17.21
+      redent: 3.0.0
+    optionalDependencies:
+      '@jest/globals': 29.7.0
+      '@types/jest': 29.5.12
+      jest: 29.7.0
+      vitest: 1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
 
   '@testing-library/react@16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
@@ -13589,6 +13914,8 @@ snapshots:
   '@types/cookie-parser@1.4.7':
     dependencies:
       '@types/express': 4.17.21
+
+  '@types/cookie@0.6.0': {}
 
   '@types/cross-spawn@6.0.6':
     dependencies:
@@ -13725,6 +14052,10 @@ snapshots:
     dependencies:
       '@types/node': 20.12.2
 
+  '@types/mute-stream@0.0.4':
+    dependencies:
+      '@types/node': 20.12.2
+
   '@types/node@17.0.45': {}
 
   '@types/node@18.19.34':
@@ -13732,6 +14063,10 @@ snapshots:
       undici-types: 5.26.5
 
   '@types/node@20.12.2':
+    dependencies:
+      undici-types: 5.26.5
+
+  '@types/node@20.14.9':
     dependencies:
       undici-types: 5.26.5
 
@@ -13813,6 +14148,8 @@ snapshots:
 
   '@types/stack-utils@2.0.3': {}
 
+  '@types/statuses@2.0.5': {}
+
   '@types/tough-cookie@4.0.5': {}
 
   '@types/triple-beam@1.3.5': {}
@@ -13822,6 +14159,8 @@ snapshots:
   '@types/unist@3.0.2': {}
 
   '@types/uuid@9.0.8': {}
+
+  '@types/wrap-ansi@3.0.0': {}
 
   '@types/yargs-parser@21.0.3': {}
 
@@ -13995,6 +14334,17 @@ snapshots:
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.2
       vite: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+    transitivePeerDependencies:
+      - supports-color
+
+  '@vitejs/plugin-react@4.2.1(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))':
+    dependencies:
+      '@babel/core': 7.24.7
+      '@babel/plugin-transform-react-jsx-self': 7.24.7(@babel/core@7.24.7)
+      '@babel/plugin-transform-react-jsx-source': 7.24.7(@babel/core@7.24.7)
+      '@types/babel__core': 7.20.5
+      react-refresh: 0.14.2
+      vite: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -14744,6 +15094,8 @@ snapshots:
       slice-ansi: 5.0.0
       string-width: 7.1.0
 
+  cli-width@4.1.0: {}
+
   cliui@7.0.4:
     dependencies:
       string-width: 4.2.3
@@ -14867,6 +15219,8 @@ snapshots:
 
   cookie@0.4.1: {}
 
+  cookie@0.5.0: {}
+
   cookie@0.6.0: {}
 
   copy-anything@2.0.6:
@@ -14909,6 +15263,22 @@ snapshots:
       - babel-plugin-macros
       - supports-color
       - ts-node
+
+  create-jest@29.7.0(@types/node@20.14.9):
+    dependencies:
+      '@jest/types': 29.6.3
+      chalk: 4.1.2
+      exit: 0.1.2
+      graceful-fs: 4.2.11
+      jest-config: 29.7.0(@types/node@20.14.9)
+      jest-util: 29.7.0
+      prompts: 2.4.2
+    transitivePeerDependencies:
+      - '@types/node'
+      - babel-plugin-macros
+      - supports-color
+      - ts-node
+    optional: true
 
   cross-env@7.0.3:
     dependencies:
@@ -16182,6 +16552,8 @@ snapshots:
 
   graphemer@1.4.0: {}
 
+  graphql@16.9.0: {}
+
   gunzip-maybe@1.4.2:
     dependencies:
       browserify-zlib: 0.1.4
@@ -16252,6 +16624,8 @@ snapshots:
       space-separated-tokens: 1.1.5
 
   he@1.2.0: {}
+
+  headers-polyfill@4.0.3: {}
 
   highlight.js@10.7.3: {}
 
@@ -16553,6 +16927,8 @@ snapshots:
 
   is-negative-zero@2.0.3: {}
 
+  is-node-process@1.2.0: {}
+
   is-number-object@1.0.7:
     dependencies:
       has-tostringtag: 1.0.2
@@ -16750,6 +17126,26 @@ snapshots:
       - supports-color
       - ts-node
 
+  jest-cli@29.7.0(@types/node@20.14.9):
+    dependencies:
+      '@jest/core': 29.7.0
+      '@jest/test-result': 29.7.0
+      '@jest/types': 29.6.3
+      chalk: 4.1.2
+      create-jest: 29.7.0(@types/node@20.14.9)
+      exit: 0.1.2
+      import-local: 3.1.0
+      jest-config: 29.7.0(@types/node@20.14.9)
+      jest-util: 29.7.0
+      jest-validate: 29.7.0
+      yargs: 17.7.2
+    transitivePeerDependencies:
+      - '@types/node'
+      - babel-plugin-macros
+      - supports-color
+      - ts-node
+    optional: true
+
   jest-config@29.7.0(@types/node@20.12.2):
     dependencies:
       '@babel/core': 7.24.7
@@ -16779,6 +17175,37 @@ snapshots:
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
+
+  jest-config@29.7.0(@types/node@20.14.9):
+    dependencies:
+      '@babel/core': 7.24.7
+      '@jest/test-sequencer': 29.7.0
+      '@jest/types': 29.6.3
+      babel-jest: 29.7.0(@babel/core@7.24.7)
+      chalk: 4.1.2
+      ci-info: 3.9.0
+      deepmerge: 4.3.1
+      glob: 7.2.3
+      graceful-fs: 4.2.11
+      jest-circus: 29.7.0
+      jest-environment-node: 29.7.0
+      jest-get-type: 29.6.3
+      jest-regex-util: 29.6.3
+      jest-resolve: 29.7.0
+      jest-runner: 29.7.0
+      jest-util: 29.7.0
+      jest-validate: 29.7.0
+      micromatch: 4.0.7
+      parse-json: 5.2.0
+      pretty-format: 29.7.0
+      slash: 3.0.0
+      strip-json-comments: 3.1.1
+    optionalDependencies:
+      '@types/node': 20.14.9
+    transitivePeerDependencies:
+      - babel-plugin-macros
+      - supports-color
+    optional: true
 
   jest-diff@29.7.0:
     dependencies:
@@ -17001,6 +17428,19 @@ snapshots:
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
+  jest@29.7.0:
+    dependencies:
+      '@jest/core': 29.7.0
+      '@jest/types': 29.6.3
+      import-local: 3.1.0
+      jest-cli: 29.7.0(@types/node@20.14.9)
+    transitivePeerDependencies:
+      - '@types/node'
+      - babel-plugin-macros
+      - supports-color
+      - ts-node
+    optional: true
+
   jest@29.7.0(@types/node@20.12.2):
     dependencies:
       '@jest/core': 29.7.0
@@ -17012,6 +17452,19 @@ snapshots:
       - babel-plugin-macros
       - supports-color
       - ts-node
+
+  jest@29.7.0(@types/node@20.14.9):
+    dependencies:
+      '@jest/core': 29.7.0
+      '@jest/types': 29.6.3
+      import-local: 3.1.0
+      jest-cli: 29.7.0(@types/node@20.14.9)
+    transitivePeerDependencies:
+      - '@types/node'
+      - babel-plugin-macros
+      - supports-color
+      - ts-node
+    optional: true
 
   joi@17.13.1:
     dependencies:
@@ -17045,7 +17498,7 @@ snapshots:
 
   jsbn@0.1.1: {}
 
-  jscodeshift@0.15.2(@babel/preset-env@7.24.7):
+  jscodeshift@0.15.2(@babel/preset-env@7.24.7(@babel/core@7.24.7)):
     dependencies:
       '@babel/core': 7.24.7
       '@babel/parser': 7.24.7
@@ -17500,6 +17953,33 @@ snapshots:
 
   ms@2.1.3: {}
 
+  msw-storybook-addon@2.0.2(msw@2.3.1(typescript@5.4.5)):
+    dependencies:
+      is-node-process: 1.2.0
+      msw: 2.3.1(typescript@5.4.5)
+
+  msw@2.3.1(typescript@5.4.5):
+    dependencies:
+      '@bundled-es-modules/cookie': 2.0.0
+      '@bundled-es-modules/statuses': 1.0.1
+      '@inquirer/confirm': 3.1.12
+      '@mswjs/cookies': 1.1.1
+      '@mswjs/interceptors': 0.29.1
+      '@open-draft/until': 2.1.0
+      '@types/cookie': 0.6.0
+      '@types/statuses': 2.0.5
+      chalk: 4.1.2
+      graphql: 16.9.0
+      headers-polyfill: 4.0.3
+      is-node-process: 1.2.0
+      outvariant: 1.4.2
+      path-to-regexp: 6.2.2
+      strict-event-emitter: 0.5.1
+      type-fest: 4.20.1
+      yargs: 17.7.2
+    optionalDependencies:
+      typescript: 5.4.5
+
   multer@1.4.5-lts.1:
     dependencies:
       append-field: 1.0.0
@@ -17532,6 +18012,8 @@ snapshots:
       webpack: 5.92.0
 
   mustache@4.2.0: {}
+
+  mute-stream@1.0.0: {}
 
   nanoid@3.3.7: {}
 
@@ -17761,6 +18243,8 @@ snapshots:
       log-symbols: 4.1.0
       strip-ansi: 6.0.1
       wcwidth: 1.0.1
+
+  outvariant@1.4.2: {}
 
   p-limit@2.3.0:
     dependencies:
@@ -18826,7 +19310,7 @@ snapshots:
       path-to-regexp: 6.2.2
       polished: 4.3.1
       prop-types: 15.8.1
-      storybook: 8.1.6(@babel/preset-env@7.24.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      storybook: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       whatwg-fetch: 3.6.20
     optionalDependencies:
       react: 18.2.0
@@ -18848,9 +19332,9 @@ snapshots:
       react-intl: 6.6.4(react@18.2.0)(typescript@5.4.5)
       storybook-i18n: 3.0.1
 
-  storybook@8.1.6(@babel/preset-env@7.24.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+  storybook@8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
-      '@storybook/cli': 8.1.6(@babel/preset-env@7.24.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@storybook/cli': 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
     transitivePeerDependencies:
       - '@babel/preset-env'
       - bufferutil
@@ -18863,6 +19347,8 @@ snapshots:
   stream-shift@1.0.3: {}
 
   streamsearch@1.1.0: {}
+
+  strict-event-emitter@0.5.1: {}
 
   string-argv@0.3.2: {}
 
@@ -19219,6 +19705,8 @@ snapshots:
 
   type-fest@2.19.0: {}
 
+  type-fest@4.20.1: {}
+
   type-is@1.6.18:
     dependencies:
       media-typer: 0.3.0
@@ -19420,6 +19908,23 @@ snapshots:
       - supports-color
       - terser
 
+  vite-node@1.6.0(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1):
+    dependencies:
+      cac: 6.7.14
+      debug: 4.3.5
+      pathe: 1.1.2
+      picocolors: 1.0.1
+      vite: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+    transitivePeerDependencies:
+      - '@types/node'
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
   vite-plugin-checker@0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)):
     dependencies:
       '@babel/code-frame': 7.24.7
@@ -19443,6 +19948,29 @@ snapshots:
       optionator: 0.9.4
       typescript: 5.4.5
 
+  vite-plugin-checker@0.6.4(eslint@8.57.0)(optionator@0.9.4)(typescript@5.4.5)(vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)):
+    dependencies:
+      '@babel/code-frame': 7.24.7
+      ansi-escapes: 4.3.2
+      chalk: 4.1.2
+      chokidar: 3.6.0
+      commander: 8.3.0
+      fast-glob: 3.3.2
+      fs-extra: 11.2.0
+      npm-run-path: 4.0.1
+      semver: 7.6.2
+      strip-ansi: 6.0.1
+      tiny-invariant: 1.3.3
+      vite: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+      vscode-languageclient: 7.0.0
+      vscode-languageserver: 7.0.0
+      vscode-languageserver-textdocument: 1.0.11
+      vscode-uri: 3.0.8
+    optionalDependencies:
+      eslint: 8.57.0
+      optionator: 0.9.4
+      typescript: 5.4.5
+
   vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1):
     dependencies:
       esbuild: 0.19.12
@@ -19450,6 +19978,18 @@ snapshots:
       rollup: 4.18.0
     optionalDependencies:
       '@types/node': 20.12.2
+      fsevents: 2.3.3
+      less: 4.2.0
+      sass: 1.77.5
+      terser: 5.31.1
+
+  vite@5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1):
+    dependencies:
+      esbuild: 0.19.12
+      postcss: 8.4.38
+      rollup: 4.18.0
+    optionalDependencies:
+      '@types/node': 20.14.9
       fsevents: 2.3.3
       less: 4.2.0
       sass: 1.77.5
@@ -19479,6 +20019,40 @@ snapshots:
       why-is-node-running: 2.2.2
     optionalDependencies:
       '@types/node': 20.12.2
+      jsdom: 24.0.0
+    transitivePeerDependencies:
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
+  vitest@1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1):
+    dependencies:
+      '@vitest/expect': 1.6.0
+      '@vitest/runner': 1.6.0
+      '@vitest/snapshot': 1.6.0
+      '@vitest/spy': 1.6.0
+      '@vitest/utils': 1.6.0
+      acorn-walk: 8.3.3
+      chai: 4.4.1
+      debug: 4.3.5
+      execa: 8.0.1
+      local-pkg: 0.5.0
+      magic-string: 0.30.10
+      pathe: 1.1.2
+      picocolors: 1.0.1
+      std-env: 3.7.0
+      strip-literal: 2.1.0
+      tinybench: 2.8.0
+      tinypool: 0.8.4
+      vite: 5.1.6(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+      vite-node: 1.6.0(@types/node@20.14.9)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+      why-is-node-running: 2.2.2
+    optionalDependencies:
+      '@types/node': 20.14.9
       jsdom: 24.0.0
     transitivePeerDependencies:
       - less
@@ -19675,6 +20249,12 @@ snapshots:
 
   wordwrap@1.0.0: {}
 
+  wrap-ansi@6.2.0:
+    dependencies:
+      ansi-styles: 4.3.0
+      string-width: 4.2.3
+      strip-ansi: 6.0.1
+
   wrap-ansi@7.0.0:
     dependencies:
       ansi-styles: 4.3.0
@@ -19749,3 +20329,5 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   yocto-queue@1.0.0: {}
+
+  yoctocolors-cjs@2.1.1: {}
