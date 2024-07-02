@@ -13,7 +13,7 @@ import { BodyShort, Button, Heading, Label, Link, ReadMore, Spacer, VStack } fro
 import { links } from '@navikt/fp-constants';
 import { Checkbox, Form, TextField } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
-import { GreenPanel, Infobox } from '@navikt/fp-ui';
+import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 import { isValidNumber } from '@navikt/fp-validation';
 
@@ -95,7 +95,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
             <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="2">
-                        <GreenPanel isDarkGreen={!isCheckboxValgt(formValues)} shouldFadeIn>
+                        <BluePanel isDarkBlue={!isCheckboxValgt(formValues)} shouldFadeIn>
                             <Label>
                                 <FormattedMessage id="ArbeidssituasjonSide.Arbeidssituasjon" />
                             </Label>
@@ -114,7 +114,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                 name="erSelvstendigNæringsdrivende"
                                 label={<FormattedMessage id="ArbeidssituasjonSide.SelvstendigNæringsdrivende" />}
                             />
-                        </GreenPanel>
+                        </BluePanel>
                         <ReadMore header={<FormattedMessage id="ArbeidssituasjonSide.Forskjellen" />}>todo</ReadMore>
                     </VStack>
                     {formValues.erSelvstendigNæringsdrivende && (
@@ -152,7 +152,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                     {!formValues.erSelvstendigNæringsdrivende &&
                         (formValues.erArbeidstakerEllerFrilanser || formValues.harUtbetalingFraNav) && (
                             <VStack gap="2">
-                                <GreenPanel isDarkGreen={gjennomsnittslønnPerMåned === undefined} shouldFadeIn>
+                                <BluePanel isDarkBlue={gjennomsnittslønnPerMåned === undefined} shouldFadeIn>
                                     <VStack gap="6">
                                         {formValues.erArbeidstakerEllerFrilanser && !formValues.harUtbetalingFraNav && (
                                             <div>
@@ -222,7 +222,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                             </Heading>
                                         </div>
                                     </VStack>
-                                </GreenPanel>
+                                </BluePanel>
                                 <ReadMore header={<FormattedMessage id="ArbeidssituasjonSide.GirRett" />}>
                                     <FormattedMessage id="ArbeidssituasjonSide.EnAvDisse" />
                                     <ul>

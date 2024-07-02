@@ -11,7 +11,7 @@ const retryCallback = async () => {
 
 const SimpleErrorPage: React.FunctionComponent = () => (
     <ContentWrapper>
-        <Box background="surface-alt-2-subtle" borderRadius="large" padding="6">
+        <Box background="surface-alt-3-subtle" borderRadius="large" padding="6">
             <VStack gap="16">
                 <VStack gap="6">
                     <LaptopTriangleIcon aria-hidden height={44} width={44} />

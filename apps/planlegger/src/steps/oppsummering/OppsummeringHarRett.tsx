@@ -20,7 +20,7 @@ import { finnUttaksdata } from 'utils/uttakUtils';
 import { BodyLong, BodyShort, Heading, VStack } from '@navikt/ds-react';
 
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { Calendar, GreenPanel } from '@navikt/fp-ui';
+import { BluePanel, Calendar } from '@navikt/fp-ui';
 
 interface Props {
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
@@ -72,7 +72,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
     return (
         <VStack gap="5">
             {hvemHarRett === 'beggeHarRett' && !erFarOgFar && fornavnSøker2 && (
-                <GreenPanel>
+                <BluePanel>
                     <Heading level="4" size="small">
                         <FormattedMessage id="OppsummeringSteg.Perioden" />
                     </Heading>
@@ -127,10 +127,10 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             }}
                         />
                     </BodyLong>
-                </GreenPanel>
+                </BluePanel>
             )}
             {(erAlenesøker(hvemPlanlegger) || erFarOgFar) && (
-                <GreenPanel>
+                <BluePanel>
                     <VStack gap="2">
                         <Heading level="4" size="small">
                             <FormattedMessage id="OppsummeringSteg.Perioden" />
@@ -164,10 +164,10 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             />
                         </BodyShort>
                     </VStack>
-                </GreenPanel>
+                </BluePanel>
             )}
             {hvemHarRett === 'kunSøker2HarRett' && !erFarOgFar && fornavnSøker2 && (
-                <GreenPanel>
+                <BluePanel>
                     <VStack gap="2">
                         <Heading level="4" size="small">
                             <FormattedMessage id="OppsummeringSteg.Perioden" />
@@ -221,7 +221,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             }}
                         />
                     </BodyShort>
-                </GreenPanel>
+                </BluePanel>
             )}
             <CalendarLabels
                 uttaksdata={uttaksdata}

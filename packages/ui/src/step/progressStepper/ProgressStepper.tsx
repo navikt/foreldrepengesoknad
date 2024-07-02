@@ -17,14 +17,14 @@ export interface ProgressStepperProps<TYPE> {
     steps: Array<ProgressStep<TYPE>>;
     onStepSelect?: (step: ProgressStep<TYPE>) => void;
     hideExpandableStepInfo?: boolean;
-    showGreenStatusBar?: boolean;
+    showBlueStatusBar?: boolean;
 }
 
 const ProgressStepper = <TYPE extends string>({
     steps,
     onStepSelect,
     hideExpandableStepInfo = false,
-    showGreenStatusBar = false,
+    showBlueStatusBar = false,
 }: ProgressStepperProps<TYPE>) => {
     const intl = useIntl();
     const [allStepsVisible, setAllStepsVisible] = useState(false);
@@ -78,15 +78,15 @@ const ProgressStepper = <TYPE extends string>({
                 </div>
             )}
             <div className="progressStepper__progressBarWrapper" role="presentation" aria-hidden={true}>
-                {showGreenStatusBar && (
-                    <div className="progressStepper__progressBar_green">
+                {showBlueStatusBar && (
+                    <div className="progressStepper__progressBar_blue">
                         <div
-                            className="progressStepper__progressBar__progress_green"
+                            className="progressStepper__progressBar__progress_blue"
                             style={{ width: `${progress}%` }}
                         />
                     </div>
                 )}
-                {!showGreenStatusBar && (
+                {!showBlueStatusBar && (
                     <div className="progressStepper__progressBar">
                         <div className="progressStepper__progressBar__progress" style={{ width: `${progress}%` }} />
                     </div>

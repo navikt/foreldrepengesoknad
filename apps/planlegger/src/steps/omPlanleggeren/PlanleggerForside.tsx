@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { LocaleAll } from '@navikt/fp-types';
-import { GreenHeading, IconCircleWrapper, LanguageToggleNew, Page } from '@navikt/fp-ui';
+import { BlueHeading, IconCircleWrapper, LanguageToggleNew, Page } from '@navikt/fp-ui';
 
 import styles from './planleggerForside.module.css';
 
@@ -21,14 +21,14 @@ const PlanleggerForside: React.FunctionComponent<Props> = ({ locale, changeLocal
         header={
             <>
                 <Show below="md">
-                    <GreenHeading isDarkGreen>
+                    <BlueHeading>
                         <VStack gap="4" align="center">
                             {TOGGLE && (
                                 <div className={styles.languageToggle}>
                                     <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
                                 </div>
                             )}
-                            <IconCircleWrapper color="darkGreen" size="xl">
+                            <IconCircleWrapper color="darkBlue" size="xl">
                                 <CalendarIcon height={28} width={28} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
                             <VStack gap="1" align="center">
@@ -43,12 +43,12 @@ const PlanleggerForside: React.FunctionComponent<Props> = ({ locale, changeLocal
                                 </HStack>
                             </VStack>
                         </VStack>
-                    </GreenHeading>
+                    </BlueHeading>
                 </Show>
                 <Show above="md">
-                    <GreenHeading>
+                    <BlueHeading>
                         <VStack gap="4">
-                            <IconCircleWrapper color="darkGreen" size="xl">
+                            <IconCircleWrapper color="darkBlue" size="xl">
                                 <CalendarIcon height={35} width={35} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
                             <VStack gap="1">
@@ -63,7 +63,7 @@ const PlanleggerForside: React.FunctionComponent<Props> = ({ locale, changeLocal
                                 </HStack>
                             </VStack>
                         </VStack>
-                    </GreenHeading>
+                    </BlueHeading>
                 </Show>
             </>
         }

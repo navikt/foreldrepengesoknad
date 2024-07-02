@@ -17,7 +17,7 @@ import { formatError } from 'utils/customErrorFormatter';
 import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { Datepicker } from '@navikt/fp-form-hooks';
-import { GreenPanel, Infobox } from '@navikt/fp-ui';
+import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { isLessThanThreeWeeksAgo, isRequired, isValidDate } from '@navikt/fp-validation';
 
 const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months');
@@ -57,7 +57,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
 
     return (
         <VStack gap="5">
-            <GreenPanel isDarkGreen={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
+            <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
                 <Datepicker
                     label={<FormattedMessage id="ErIkkeFødtPanel.Termin" />}
                     name="termindato"
@@ -76,7 +76,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                     customErrorFormatter={formatError}
                     onChange={scrollToBottom}
                 />
-            </GreenPanel>
+            </BluePanel>
             {termindato !== undefined && dayjs(termindato).isBefore(TODAY) && (
                 <Infobox
                     header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}

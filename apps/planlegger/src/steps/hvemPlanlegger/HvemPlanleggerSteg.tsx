@@ -1,6 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import useStepData from 'appData/useStepData';
-import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
+import BlueRadioGroup from 'components/formWrappers/BlueRadioGroup';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
@@ -11,7 +11,7 @@ import { formatError } from 'utils/customErrorFormatter';
 import { BodyShort, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
-import { GreenPanel } from '@navikt/fp-ui';
+import { BluePanel } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired } from '@navikt/fp-validation';
 
@@ -54,7 +54,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                         <BodyShort>
                             <FormattedMessage id="HarValgfrieFelt" />
                         </BodyShort>
-                        <GreenRadioGroup
+                        <BlueRadioGroup
                             name="type"
                             label={intl.formatMessage({
                                 id: 'HvemPlanleggerSteg.HvemPlanlegger',
@@ -83,9 +83,9 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                             <Radio value={Situasjon.FAR}>
                                 <FormattedMessage id="HvemPlanleggerSteg.BareFar" />
                             </Radio>
-                        </GreenRadioGroup>
+                        </BlueRadioGroup>
                         {type && (
-                            <GreenPanel isDarkGreen={erHvemPlanleggerIkkeOppgittFraFør} shouldFadeIn>
+                            <BluePanel isDarkBlue={erHvemPlanleggerIkkeOppgittFraFør} shouldFadeIn>
                                 <VStack gap="10">
                                     {erMorDelAvSøknadenGittType(type) && (
                                         <TextField
@@ -116,7 +116,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                                         />
                                     )}
                                 </VStack>
-                            </GreenPanel>
+                            </BluePanel>
                         )}
                     </VStack>
                     <Spacer />
