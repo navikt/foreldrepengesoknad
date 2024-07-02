@@ -81,7 +81,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         expect(screen.getByText('Hvor lang periode med foreldrepenger vil dere ha?')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir høyere ved å velge 100% foreldrepenger.',
+                'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir omtrent lik om man velger 100 % eller 80 %.',
             ),
         ).toBeInTheDocument();
 
