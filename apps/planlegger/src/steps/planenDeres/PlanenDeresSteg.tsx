@@ -16,7 +16,7 @@ import { Situasjon } from 'types/HvemPlanlegger';
 import { erAlenesøker, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
-import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
+import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
@@ -36,12 +36,14 @@ const finnAntallUkerSøker1 = (
     stønadskontoer: TilgjengeligeStønadskontoer,
     fordeling: Fordeling,
 ) => {
-    const ukerFellesperiode = getAntallUkerFellesperiode(
+    const ukerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(
         dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
             ? stønadskontoer[Dekningsgrad.HUNDRE_PROSENT]
             : stønadskontoer[Dekningsgrad.ÅTTI_PROSENT],
     );
-    return fordeling.antallUkerSøker1 > ukerFellesperiode ? ukerFellesperiode : fordeling.antallUkerSøker1;
+    return fordeling.antallUkerSøker1 > ukerOgDagerFellesperiode.uker
+        ? ukerOgDagerFellesperiode.uker
+        : fordeling.antallUkerSøker1;
 };
 
 interface Props {
@@ -70,7 +72,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const valgtStønadskonto =
         hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
 
-    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
+    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
 
     const oppdaterPeriodeOgFordeling = (value: string) => {
         const dekningsgrad = value as Dekningsgrad;
@@ -182,18 +184,23 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         lagreFordeling({ antallUkerSøker1: parseInt(e.target.value, 10) });
                                     }}
                                 >
-                                    {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (
-                                        <option key={value.antallUkerSøker1} value={value.antallUkerSøker1}>
-                                            {finnFellesperiodeFordelingOptionTekst(
-                                                intl,
-                                                value,
-                                                hvemPlanlegger,
-                                                fornavnSøker1,
-                                                fornavnSøker2,
-                                                erOversiktSteg,
-                                            )}
-                                        </option>
-                                    ))}
+                                    {getFellesperiodefordelingSelectOptions(antallUkerOgDagerFellesperiode).map(
+                                        (value) => (
+                                            <option
+                                                key={value.antallUkerOgDagerSøker1.uker}
+                                                value={value.antallUkerOgDagerSøker1.uker}
+                                            >
+                                                {finnFellesperiodeFordelingOptionTekst(
+                                                    intl,
+                                                    value,
+                                                    hvemPlanlegger,
+                                                    fornavnSøker1,
+                                                    fornavnSøker2,
+                                                    erOversiktSteg,
+                                                )}
+                                            </option>
+                                        ),
+                                    )}
                                 </Select>
                             )}
                     </VStack>
