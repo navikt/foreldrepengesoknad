@@ -10,7 +10,9 @@ import nbMessages from '../src/app/intl/nb_NO.json';
 import '../src/app/styles/app.css';
 
 // Initialize MSW
-initialize();
+initialize({
+    onUnhandledRequest: 'bypass',
+});
 
 const withIntlProvider = getIntlDecorator({
     nb: { ...nbMessages, ...uiMessages.nb },
