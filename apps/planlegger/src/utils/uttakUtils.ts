@@ -11,12 +11,12 @@ import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from './barnetUtils';
 import { HvemHarRett } from './hvemHarRettUtils';
 import {
-    getAntallDagerFellesperiode,
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerFedrekvote,
-    getAntallUkerForeldrepenger,
     getAntallUkerForeldrepengerFørFødsel,
     getAntallUkerMødrekvote,
+    getAntallUkerOgDagerFellesperiode,
+    getAntallUkerOgDagerForeldrepenger,
     getUkerOgDager,
 } from './stønadskontoerUtils';
 
@@ -134,7 +134,7 @@ const finnDeltUttaksdata = (
     barnet: OmBarnet,
     antallDagerFellesperiodeSøker1: number = 0,
 ): Uttaksdata => {
-    const totaltAntallDagerFellesperiode = getAntallDagerFellesperiode(valgtStønadskonto);
+    const totaltAntallDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto).totaltAntallDager;
     const antallUkerOgDagerFellesperiodeForSøker1 = getUkerOgDager(antallDagerFellesperiodeSøker1);
     const antallUkerOgDagerFellesperiodeForSøker2 = getUkerOgDager(
         totaltAntallDagerFellesperiode - antallDagerFellesperiodeSøker1,
@@ -211,7 +211,7 @@ const finnEnsligUttaksdata = (
 
     if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
         const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
-        const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
+        const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskonto);
         const sluttAktivitetsfri = dayjs(familiehendelsedato)
             .add(aktivitetsfriUker, 'weeks')
             .add(erBarnetAdoptert(barnet) ? 0 : 6, 'weeks')
@@ -229,14 +229,17 @@ const finnEnsligUttaksdata = (
                 dayjs(sluttAktivitetsfri).add(1, 'day').format(ISO_DATE_FORMAT),
             ),
             sluttdatoPeriode2: getUttaksdagTilOgMedDato(
-                dayjs(sluttAktivitetsfri).add(aktivitetskravUker, 'weeks').format(ISO_DATE_FORMAT),
+                dayjs(sluttAktivitetsfri)
+                    .add(aktivitetskravUkerOgDager.uker, 'weeks')
+                    .add(aktivitetskravUkerOgDager.dager, 'days')
+                    .format(ISO_DATE_FORMAT),
             ),
         };
     }
 
     if (hvemHarRett === 'kunSøker2HarRett' && (erFarSøker2(hvemPlanlegger) || erMedmorDelAvSøknaden(hvemPlanlegger))) {
         const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
-        const aktivitetskravUker = getAntallUkerForeldrepenger(valgtStønadskonto);
+        const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskonto);
         const sluttAktivitetsfri = dayjs(familiehendelsedato)
             .add(aktivitetsfriUker, 'weeks')
             .add(erBarnetAdoptert(barnet) ? 0 : 6, 'weeks')
@@ -254,12 +257,15 @@ const finnEnsligUttaksdata = (
                 dayjs(sluttAktivitetsfri).add(1, 'day').format(ISO_DATE_FORMAT),
             ),
             sluttdatoPeriode2: getUttaksdagTilOgMedDato(
-                dayjs(sluttAktivitetsfri).add(aktivitetskravUker, 'weeks').format(ISO_DATE_FORMAT),
+                dayjs(sluttAktivitetsfri)
+                    .add(aktivitetskravUkerOgDager.uker, 'weeks')
+                    .add(aktivitetskravUkerOgDager.dager, 'days')
+                    .format(ISO_DATE_FORMAT),
             ),
         };
     }
 
-    const ukerForeldrepenger = getAntallUkerForeldrepenger(valgtStønadskonto);
+    const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskonto);
     const ukerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
     const antallUkerForeldrepengerFørFødsel = getAntallUkerForeldrepengerFørFødsel(valgtStønadskonto);
 
@@ -270,7 +276,8 @@ const finnEnsligUttaksdata = (
 
     const sluttdatoSøker = getUttaksdagTilOgMedDato(
         dayjs(startdatoSøker)
-            .add(ukerForeldrepenger, 'weeks')
+            .add(aktivitetskravUkerOgDager.uker, 'weeks')
+            .add(aktivitetskravUkerOgDager.dager, 'days')
             .add(ukerAktivitetsfriKvote, 'weeks')
             .add(antallUkerForeldrepengerFørFødsel, 'weeks')
             .subtract(1, 'day')

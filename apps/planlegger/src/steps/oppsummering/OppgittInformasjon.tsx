@@ -12,9 +12,9 @@ import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { finnGrunnbeløp } from 'utils/satserUtils';
 import {
-    getAntallDagerFellesperiode,
     getAntallUker,
     getAntallUkerForeldrepengerFørFødsel,
+    getAntallUkerOgDagerFellesperiode,
     getUkerOgDager,
 } from 'utils/stønadskontoerUtils';
 
@@ -82,7 +82,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const denAndreFaren = getTekstTilFar2();
 
     const valgtStønadskonto = stønadskontoer[hvorLangPeriode.dekningsgrad];
-    const antallDagerFellesperiode = getAntallDagerFellesperiode(valgtStønadskonto);
+    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
     const antallUker = getAntallUker(valgtStønadskonto);
 
     const antallUkerAdopsjon = erAdoptert
@@ -91,7 +91,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
 
     const antallUkerOgDagerFellesperiodeSøker1 = fordeling ? getUkerOgDager(fordeling.antallDagerSøker1) : undefined;
     const antallUkerOgDagerFellesperiodeSøker2 = fordeling
-        ? getUkerOgDager(antallDagerFellesperiode - fordeling.antallDagerSøker1)
+        ? getUkerOgDager(antallUkerOgDagerFellesperiode.totaltAntallDager - fordeling.antallDagerSøker1)
         : undefined;
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
