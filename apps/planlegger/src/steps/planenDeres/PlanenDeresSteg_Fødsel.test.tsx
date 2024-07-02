@@ -483,7 +483,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
-        await userEvent.selectOptions(utils.getByDisplayValue('Fellesperioden: 16 uker til far'), '8');
+        await userEvent.selectOptions(utils.getByDisplayValue('Fellesperioden: 16 uker til far'), '40');
 
         expect(
             (screen.getByRole('option', { name: 'Fellesperioden: 8 til mor, 8 til far' }) as HTMLOptionElement)
