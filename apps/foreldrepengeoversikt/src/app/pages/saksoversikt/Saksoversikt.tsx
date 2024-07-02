@@ -7,7 +7,12 @@ import { Alert, VStack } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import { hentAnnenPartsVedtakOptions, hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from 'app/api/api';
+import {
+    erSakOppdatertOptions,
+    hentAnnenPartsVedtakOptions,
+    hentManglendeVedleggOptions,
+    hentTidslinjehendelserOptions,
+} from 'app/api/api';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import ContentSection from 'app/components/content-section/ContentSection';
 import EttersendDokumenter from 'app/components/ettersend-dokumenter/EttersendDokumenter';
@@ -35,11 +40,10 @@ import { getRelevantNyTidslinjehendelse } from 'app/utils/tidslinjeUtils';
 interface Props {
     saker: SakOppslag;
     søkerinfo: SøkerinfoDTO;
-    oppdatertData: any;
     isFirstRender: React.MutableRefObject<boolean>;
 }
 
-const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, oppdatertData, isFirstRender }) => {
+const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, isFirstRender }) => {
     const intl = useIntl();
     const params = useParams();
     const navigate = useNavigate();
@@ -60,6 +64,8 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, oppda
 
     const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelserOptions(params.saksnummer!));
     const manglendeVedleggQuery = useQuery(hentManglendeVedleggOptions(params.saksnummer!));
+    const harIkkeOppdatertSakQuery = useQuery(erSakOppdatertOptions());
+    const harIkkeOppdatertSak = harIkkeOppdatertSakQuery.isSuccess && !harIkkeOppdatertSakQuery.data;
 
     const planErVedtatt = gjeldendeSak?.åpenBehandling === undefined;
     let familiehendelse = undefined;
@@ -101,7 +107,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, oppda
     const nettoppSendtInnSøknad =
         redirectedFromSøknadsnummer === params.saksnummer || relevantNyTidslinjehendelse !== undefined;
     const visBekreftelsePåSendtSøknad = nettoppSendtInnSøknad && gjeldendeSak?.åpenBehandling !== undefined;
-    if (!oppdatertData) {
+    if (harIkkeOppdatertSak) {
         return (
             <VStack gap="2">
                 {nettoppSendtInnSøknad && (
@@ -166,11 +172,6 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, oppda
             {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
                 <ContentSection
                     heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
-                    // showSkeleton={
-                    //     !annenPartVedtakIsSuspended &&
-                    //     annenPartsVedtakRequestStatus !== RequestStatus.FINISHED &&
-                    //     !annenPartsVedtakError
-                    // }
                     showSkeleton={annenPartsVedtakQuery.isPending}
                     skeletonProps={{ height: '210px', variant: 'rounded' }}
                 >

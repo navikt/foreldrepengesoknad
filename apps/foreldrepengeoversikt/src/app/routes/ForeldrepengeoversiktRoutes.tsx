@@ -26,10 +26,9 @@ import './routes-wrapper.css';
 interface Props {
     saker: SakOppslag;
     søkerinfo: SøkerinfoDTO;
-    oppdatertData: boolean;
 }
 
-const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinfo, saker, oppdatertData }) => {
+const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinfo, saker }) => {
     const bem = bemUtils('routesWrapper');
     const isFirstRender = useRef(true);
     const hasNavigated = useRef(false);
@@ -79,7 +78,6 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
                                 alleYtelser={alleYtelser}
                                 grupperteSaker={grupperteSaker}
                                 avslåttSvangerskapspengesak={avslåttSvangerskapspengesak}
-                                oppdatertData={oppdatertData}
                                 isFirstRender={isFirstRender}
                                 bankkonto={søkerinfo.søker.bankkonto}
                             />
@@ -88,14 +86,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
                     <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer/:redirect?`} element={<SakComponent />}>
                         <Route
                             index
-                            element={
-                                <Saksoversikt
-                                    saker={saker}
-                                    søkerinfo={søkerinfo}
-                                    oppdatertData={oppdatertData}
-                                    isFirstRender={isFirstRender}
-                                />
-                            }
+                            element={<Saksoversikt saker={saker} søkerinfo={søkerinfo} isFirstRender={isFirstRender} />}
                         />
                         <Route
                             path={OversiktRoutes.DIN_PLAN}

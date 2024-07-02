@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { Alert, Heading, VStack } from '@navikt/ds-react';
 
-import { hentMellomlagredeYtelserOptions } from 'app/api/api';
+import { erSakOppdatertOptions, hentMellomlagredeYtelserOptions } from 'app/api/api';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import HarIkkeSaker from 'app/components/har-ikke-saker/HarIkkeSaker';
 import HarSaker from 'app/components/har-saker/HarSaker';
@@ -27,7 +27,6 @@ interface Props {
     alleYtelser: Sak[];
     grupperteSaker: GruppertSak[];
     avslåttSvangerskapspengesak: SvangerskapspengeSak | undefined;
-    oppdatertData: boolean;
     isFirstRender: React.MutableRefObject<boolean>;
     bankkonto: Bankkonto | undefined;
 }
@@ -36,7 +35,6 @@ const Forside: React.FunctionComponent<Props> = ({
     alleYtelser,
     grupperteSaker,
     avslåttSvangerskapspengesak,
-    oppdatertData,
     isFirstRender,
     bankkonto,
 }) => {
@@ -47,6 +45,9 @@ const Forside: React.FunctionComponent<Props> = ({
         ...hentMellomlagredeYtelserOptions(),
         enabled: false, // TODO: Denne hadde isSuspended hardkodet til true, betyr det at kallet aldri egentlig ble brukt??
     }).data;
+
+    const harIkkeOppdatertSakQuery = useQuery(erSakOppdatertOptions());
+    const harIkkeOppdatertSak = harIkkeOppdatertSakQuery.isSuccess && !harIkkeOppdatertSakQuery.data;
 
     const params = useParams();
     useSetRedirectedFromSøknadsnummer(params.redirect, undefined, isFirstRender);
@@ -65,7 +66,7 @@ const Forside: React.FunctionComponent<Props> = ({
                         ytelse={undefined}
                     />
                 )}
-                {!oppdatertData && (
+                {harIkkeOppdatertSak && (
                     <Alert variant="warning">
                         Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du
                         kan vente litt og komme tilbake senere for å se alle detaljene i saken din.
@@ -87,7 +88,7 @@ const Forside: React.FunctionComponent<Props> = ({
             {alleYtelser.length > 0 ? (
                 <HarSaker grupperteSaker={grupperteSaker} />
             ) : (
-                <HarIkkeSaker oppdatertData={oppdatertData} />
+                <HarIkkeSaker harIkkeOppdatertSak={harIkkeOppdatertSak} />
             )}
             {avslåttSvangerskapspengesak && <SakLink sak={avslåttSvangerskapspengesak} />}
         </VStack>

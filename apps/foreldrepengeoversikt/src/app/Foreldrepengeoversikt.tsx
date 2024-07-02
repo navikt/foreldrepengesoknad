@@ -56,7 +56,6 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
             );
         }
     }, [søkerInfoQuery.error, sakerQuery.error]);
-
     // TODO: ønsker vi egentlig å vente på alle queries før vi går videre?
     if (!søkerInfoQuery.data || sakerQuery.isPending || minidialogQuery.isPending || oppdatertQuery.isPending) {
         return (
@@ -78,12 +77,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         >
             <BrowserRouter>
                 <ScrollToTop />
-                <ForeldrepengeoversiktRoutes
-                    søkerinfo={søkerInfoQuery.data}
-                    saker={sakerQuery.data || defaultSaker}
-                    // TODO: trengs denne å sendes?
-                    oppdatertData={oppdatertQuery.data === undefined ? true : oppdatertQuery.data}
-                />
+                <ForeldrepengeoversiktRoutes søkerinfo={søkerInfoQuery.data} saker={sakerQuery.data || defaultSaker} />
             </BrowserRouter>
         </div>
     );
