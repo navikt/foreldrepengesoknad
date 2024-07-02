@@ -104,7 +104,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                     <PersonGroupIcon
                                         height={24}
                                         width={24}
-                                        color="#236B7D"
+                                        color="#7F8900"
                                         fontSize="1.5rem"
                                         aria-hidden
                                     />

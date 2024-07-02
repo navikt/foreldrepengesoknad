@@ -91,7 +91,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser })
                                             <FormattedMessage id="OppsummeringSteg.Infoboks.IngenHarRett" />
                                         )
                                     }
-                                    icon={<TasklistStartIcon height={24} width={24} color="#236B7D" aria-hidden />}
+                                    icon={<TasklistStartIcon height={24} width={24} color="#7F8900" aria-hidden />}
                                 >
                                     <BodyShort>
                                         <FormattedMessage
