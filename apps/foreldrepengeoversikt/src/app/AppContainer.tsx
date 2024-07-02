@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 
@@ -33,6 +34,7 @@ const AppContainer: FunctionComponent = () => {
     return (
         <ErrorBoundary>
             <QueryClientProvider client={queryClient}>
+                <ReactQueryDevtools />
                 <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
                     <ByttBrowserModal />
                     <Foreldrepengeoversikt />

@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios';
+import { UseQueryResult } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 import { Link as LinkInternal, useParams } from 'react-router-dom';
@@ -34,20 +34,17 @@ interface Params {
     saker: SakOppslag;
     visHeleTidslinjen: boolean;
     søkersBarn: SøkerinfoDTOBarn[] | undefined;
-    tidslinjeHendelserError: AxiosError<any, any> | null;
-    manglendeVedleggError: AxiosError<any, any> | null;
-    tidslinjeHendelserData: Tidslinjehendelse[];
-    manglendeVedleggData: Skjemanummer[];
+    manglendeVedleggQuery: UseQueryResult<Skjemanummer[], Error>;
+
+    tidslinjeHendelserQuery: UseQueryResult<Tidslinjehendelse[], Error>;
 }
 
 const Tidslinje: React.FunctionComponent<Params> = ({
     saker,
     visHeleTidslinjen,
     søkersBarn,
-    tidslinjeHendelserData,
-    tidslinjeHendelserError,
-    manglendeVedleggData,
-    manglendeVedleggError,
+    tidslinjeHendelserQuery,
+    manglendeVedleggQuery,
 }) => {
     const params = useParams();
     const intl = useIntl();
@@ -55,7 +52,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({
 
     const bem = bemUtils('tidslinje-hendelse');
     const alleSaker = getAlleYtelser(saker);
-    const sak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!;
+    const sak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!; // TODO: burde ikke bruke ! her
     const førsteUttaksdagISaken =
         sak.ytelse === Ytelse.FORELDREPENGER ? getFørsteUttaksdagIForeldrepengesaken(sak) : undefined;
 
@@ -67,7 +64,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({
             sak.gjeldendeVedtak.perioder.every((p) => p.resultat !== undefined && p.resultat.innvilget === false));
     const erInnvilgetForeldrepengesøknad =
         sak.ytelse === Ytelse.FORELDREPENGER && sak.åpenBehandling === undefined && !!sak.gjeldendeVedtak;
-    if (tidslinjeHendelserError || manglendeVedleggError || sak === undefined) {
+    if (tidslinjeHendelserQuery.isError || manglendeVedleggQuery.isError || sak === undefined) {
         return (
             <NoeGikkGalt>
                 Vi klarer ikke å vise informasjon om hva som skjer i saken din akkurat nå. Feilen er hos oss, ikke hos
@@ -76,7 +73,10 @@ const Tidslinje: React.FunctionComponent<Params> = ({
         );
     }
 
-    if (!tidslinjeHendelserData || !manglendeVedleggData) {
+    const tidslinjeHendelserData = tidslinjeHendelserQuery.data ?? [];
+    const manglendeVedleggData = manglendeVedleggQuery.data ?? [];
+
+    if (tidslinjeHendelserData.length === 0 || manglendeVedleggData.length === 0) {
         return null;
     }
 

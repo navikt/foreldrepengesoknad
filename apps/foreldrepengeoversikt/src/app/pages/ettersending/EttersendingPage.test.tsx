@@ -1,6 +1,7 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
+
 import * as stories from './EttersendingPage.stories';
 
 const { SkalIkkeFeileOpplasting } = composeStories(stories);
@@ -8,7 +9,6 @@ const { SkalIkkeFeileOpplasting } = composeStories(stories);
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
     return {
-        // @ts-ignore
         ...actual,
         useParams: () => ({ saksnummer: '1' }),
     };

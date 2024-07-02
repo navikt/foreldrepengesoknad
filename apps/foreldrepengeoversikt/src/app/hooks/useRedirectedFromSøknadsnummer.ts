@@ -1,7 +1,8 @@
-import { redirectedFromSøknadsnummerAtom } from 'app/atoms/redirectedFromSøknadsnummerAtom';
-import { RedirectSource, UKNOWN_SAKSNUMMER } from 'app/types/RedirectSource';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { MutableRefObject, useEffect } from 'react';
+
+import { redirectedFromSøknadsnummerAtom } from 'app/atoms/redirectedFromSøknadsnummerAtom';
+import { RedirectSource, UKNOWN_SAKSNUMMER } from 'app/types/RedirectSource';
 
 export const useGetRedirectedFromSøknadsnummer = () => {
     const søknadsnummer = useAtomValue(redirectedFromSøknadsnummerAtom);

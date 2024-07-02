@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
@@ -5,7 +6,7 @@ import { Loader } from '@navikt/ds-react';
 
 import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
 
-import Api from 'app/api/api';
+import { hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from 'app/api/api';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import OversiktRoutes from 'app/routes/routes';
@@ -30,10 +31,10 @@ const TidslinjePage: React.FunctionComponent<Props> = ({ søkersBarn, saker }) =
     useSetSelectedRoute(OversiktRoutes.TIDSLINJEN);
     const params = useParams();
 
-    const { tidslinjeHendelserData, tidslinjeHendelserError } = Api.useGetTidslinjeHendelser(params.saksnummer!);
-    const { manglendeVedleggData, manglendeVedleggError } = Api.useGetManglendeVedlegg(params.saksnummer!);
+    const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelserOptions(params.saksnummer!));
+    const manglendeVedleggQuery = useQuery(hentManglendeVedleggOptions(params.saksnummer!));
 
-    if (!tidslinjeHendelserData || !manglendeVedleggData) {
+    if (tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending) {
         return <Loader size="large" aria-label="Henter status for din søknad" />;
     }
 
@@ -43,10 +44,8 @@ const TidslinjePage: React.FunctionComponent<Props> = ({ søkersBarn, saker }) =
                 saker={saker}
                 visHeleTidslinjen={true}
                 søkersBarn={søkersBarn}
-                tidslinjeHendelserData={tidslinjeHendelserData}
-                tidslinjeHendelserError={tidslinjeHendelserError}
-                manglendeVedleggData={manglendeVedleggData}
-                manglendeVedleggError={manglendeVedleggError}
+                tidslinjeHendelserQuery={tidslinjeHendelserQuery}
+                manglendeVedleggQuery={manglendeVedleggQuery}
             />
         </div>
     );

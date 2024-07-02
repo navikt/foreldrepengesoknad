@@ -1,16 +1,16 @@
+import { useQuery } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 
 import { Loader } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import Api from 'app/api/api';
+import { hentAnnenPartsVedtakOptions } from 'app/api/api';
 import ContentSection from 'app/components/content-section/ContentSection';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 import OversiktRoutes from 'app/routes/routes';
 import DinPlan from 'app/sections/din-plan/DinPlan';
-import { RequestStatus } from 'app/types/RequestStatus';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
 import { getFamiliehendelseDato, getNavnAnnenForelder } from 'app/utils/sakerUtils';
@@ -26,33 +26,35 @@ const DinPlanPage: React.FunctionComponent<Props> = ({ navnPåSøker, søkerinfo
     const intl = useIntl();
     useDocumentTitle(`${intl.formatMessage({ id: 'dinPlan' })} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`);
     const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, sak);
-    const planErVedtatt = sak?.åpenBehandling === undefined;
-    let familiehendelsesdato = undefined;
-    let annenPartFnr = undefined;
-    let barnFnr = undefined;
-    let annenPartVedtakIsSuspended = true;
 
+    const planErVedtatt = sak?.åpenBehandling === undefined;
+    let familiehendelse = undefined;
+    let annenPartFødselsnummer = undefined;
+    let barnFødselsnummer = undefined;
+    let annenPartVedtakIsSuspended = true;
+    // TODO: lik som i saksoversikt. Refactor
     if (sak && sak.ytelse === Ytelse.FORELDREPENGER) {
-        familiehendelsesdato = getFamiliehendelseDato(sak.familiehendelse);
-        annenPartFnr = sak.annenPart?.fnr;
+        familiehendelse = getFamiliehendelseDato(sak.familiehendelse);
+        annenPartFødselsnummer = sak.annenPart?.fnr;
         const barnFraSak =
             sak.barn && sak.barn.length > 0 ? sak.barn.find((barn) => barn.fnr !== undefined) : undefined;
-        barnFnr = barnFraSak ? barnFraSak.fnr : undefined;
+        barnFødselsnummer = barnFraSak ? barnFraSak.fnr : undefined;
         annenPartVedtakIsSuspended =
-            !planErVedtatt || annenPartFnr === undefined || annenPartFnr === '' || familiehendelsesdato === undefined;
+            !planErVedtatt ||
+            annenPartFødselsnummer === undefined ||
+            annenPartFødselsnummer === '' ||
+            familiehendelse === undefined;
     }
-    const { annenPartsVedtakData, annenPartsVedtakError, annenPartsVedtakRequestStatus } = Api.useGetAnnenPartsVedtak(
-        annenPartFnr,
-        barnFnr,
-        familiehendelsesdato,
-        annenPartVedtakIsSuspended,
-    );
+    const annenPartsVedtakQuery = useQuery({
+        ...hentAnnenPartsVedtakOptions({
+            annenPartFødselsnummer,
+            barnFødselsnummer,
+            familiehendelse,
+        }),
+        enabled: !annenPartVedtakIsSuspended,
+    });
 
-    if (
-        !annenPartVedtakIsSuspended &&
-        annenPartsVedtakRequestStatus !== RequestStatus.FINISHED &&
-        !annenPartsVedtakError
-    ) {
+    if (annenPartsVedtakQuery.isPending) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <Loader type="XXL" />
@@ -67,7 +69,7 @@ const DinPlanPage: React.FunctionComponent<Props> = ({ navnPåSøker, søkerinfo
                     visHelePlanen={true}
                     navnPåSøker={navnPåSøker}
                     navnAnnenForelder={navnAnnenForelder}
-                    annenPartsPerioder={annenPartsVedtakData?.perioder}
+                    annenPartsPerioder={annenPartsVedtakQuery.data?.perioder}
                     termindato={sak.familiehendelse.termindato}
                 ></DinPlan>
             </ContentSection>
