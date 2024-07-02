@@ -88,7 +88,7 @@ const Forside: React.FunctionComponent<Props> = ({
             {alleYtelser.length > 0 ? (
                 <HarSaker grupperteSaker={grupperteSaker} />
             ) : (
-                <HarIkkeSaker harIkkeOppdatertSak={harIkkeOppdatertSak} />
+                <HarIkkeSaker harOppdatertSak={!harIkkeOppdatertSak} />
             )}
             {avslåttSvangerskapspengesak && <SakLink sak={avslåttSvangerskapspengesak} />}
         </VStack>

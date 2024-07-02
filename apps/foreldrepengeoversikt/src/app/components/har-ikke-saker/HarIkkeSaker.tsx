@@ -11,16 +11,16 @@ import ContentSection from '../content-section/ContentSection';
 import './har-ikke-saker.css';
 
 interface Props {
-    harIkkeOppdatertSak: boolean;
+    harOppdatertSak: boolean;
 }
 
-const HarIkkeSaker: FunctionComponent<Props> = ({ harIkkeOppdatertSak }) => {
+const HarIkkeSaker: FunctionComponent<Props> = ({ harOppdatertSak }) => {
     const bem = bemUtils('har-ikke-saker');
     useSetBackgroundColor('blue');
 
     return (
         <>
-            {harIkkeOppdatertSak && (
+            {harOppdatertSak && (
                 <Alert variant="info" className={bem.element('ingen-søknad')}>
                     Vi finner ingen søknader fra deg. Hvis du har sendt en søknad i posten kan det ta to uker før
                     søknaden registreres i NAVs systemer.
