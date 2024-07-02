@@ -2,7 +2,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
+import BlueRadioGroup from 'components/formWrappers/BlueRadioGroup';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
@@ -82,7 +82,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser }) => {
                             <FormattedMessage id="ArbeidssituasjonSteg.Tittel" />
                         </Heading>
                         {(erAlenesøker || erFarOgFar) && (
-                            <GreenRadioGroup
+                            <BlueRadioGroup
                                 label={
                                     <FormattedMessage
                                         id="Arbeidssituasjon.Forelder"
@@ -108,10 +108,10 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser }) => {
                                 <Radio value={Arbeidsstatus.INGEN}>
                                     <FormattedMessage id="DefaultMessage.Nei" />
                                 </Radio>
-                            </GreenRadioGroup>
+                            </BlueRadioGroup>
                         )}
                         {!erAlenesøker && !erFarOgFar && (
-                            <GreenRadioGroup
+                            <BlueRadioGroup
                                 label={
                                     <FormattedMessage
                                         id="ArbeidssituasjonSteg.HvaGjelder"
@@ -145,7 +145,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser }) => {
                                 <Radio value={Arbeidsstatus.INGEN}>
                                     <FormattedMessage id="ArbeidssituasjonSteg.Ingen" />
                                 </Radio>
-                            </GreenRadioGroup>
+                            </BlueRadioGroup>
                         )}
                         {status === Arbeidsstatus.JOBBER && (
                             <JobberInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker1} />
@@ -163,7 +163,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser }) => {
                         )}
                         {!erAlenesøker && status && (
                             <>
-                                <GreenRadioGroup
+                                <BlueRadioGroup
                                     name="jobberAnnenPart"
                                     label={
                                         <FormattedMessage
@@ -195,7 +195,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser }) => {
                                     <Radio value={false}>
                                         <FormattedMessage id="DefaultMessage.Nei" />
                                     </Radio>
-                                </GreenRadioGroup>
+                                </BlueRadioGroup>
                                 {jobberSøker2 === true && fornavnSøker2 && (
                                     <JobberInfoboks erAlenesøker={erAlenesøker} fornavn={fornavnSøker2} />
                                 )}

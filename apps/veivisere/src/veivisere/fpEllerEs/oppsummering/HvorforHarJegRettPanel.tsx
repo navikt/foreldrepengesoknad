@@ -19,7 +19,7 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
         <ExpansionCard aria-label="" size="small">
             <ExpansionCard.Header>
                 <HStack gap="6" align="center" wrap={false}>
-                    <IconCircleWrapper size="medium" color="green">
+                    <IconCircleWrapper size="medium" color="lightBlue">
                         <QuestionmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                     </IconCircleWrapper>
                     <ExpansionCard.Title size="small">

@@ -33,7 +33,7 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
                             <FormattedMessage id="OmPlanleggerenSteg.Underoverskrift" />
                         </Heading>
                         <HStack gap="4" align="center" wrap={false}>
-                            <IconCircleWrapper color="green" size="medium">
+                            <IconCircleWrapper color="lightBlue" size="medium">
                                 <QuestionmarkIcon width="24" height="25" aria-hidden />
                             </IconCircleWrapper>
                             <BodyShort>
@@ -41,7 +41,7 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
                             </BodyShort>
                         </HStack>
                         <HStack gap="4" align="center" wrap={false}>
-                            <IconCircleWrapper color="green" size="medium">
+                            <IconCircleWrapper color="lightBlue" size="medium">
                                 <CalendarIcon width="24" height="25" aria-hidden />
                             </IconCircleWrapper>
                             <BodyShort>
