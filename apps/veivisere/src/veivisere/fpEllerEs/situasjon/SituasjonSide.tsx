@@ -12,11 +12,11 @@ import { BodyShort, Button, Heading, Label, Radio, ReadMore, Spacer, VStack } fr
 
 import { Form, TextField } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
-import { GreenPanel, Infobox } from '@navikt/fp-ui';
+import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
 import VeiviserPage from '../../felles/VeiviserPage';
-import GreenRadioGroup from '../../felles/formWrappers/GreenRadioGroup';
+import BlueRadioGroup from '../../felles/formWrappers/BlueRadioGroup';
 
 export enum Situasjon {
     MOR = 'mor',
@@ -75,7 +75,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
         >
             <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
-                    <GreenRadioGroup
+                    <BlueRadioGroup
                         label={<FormattedMessage id="SituasjonSide.HvemErDu" />}
                         name="situasjon"
                         onChange={scrollToBottom}
@@ -89,10 +89,10 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                         <Radio value={Situasjon.MEDMOR}>
                             <FormattedMessage id="SituasjonSide.Medmor" />
                         </Radio>
-                    </GreenRadioGroup>
+                    </BlueRadioGroup>
                     {situasjon && (
                         <VStack gap="4">
-                            <GreenRadioGroup
+                            <BlueRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.ArbeidEllerNav" />}
                                 name="erIArbeid"
                                 onChange={scrollToBottom}
@@ -103,13 +103,13 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                 <Radio value={false}>
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
-                            </GreenRadioGroup>
+                            </BlueRadioGroup>
                             <ReadMore header={<FormattedMessage id="SituasjonSide.HvaGirRett" />}>todo</ReadMore>
                         </VStack>
                     )}
                     {erIArbeid === false && (
                         <VStack gap="4">
-                            <GreenRadioGroup
+                            <BlueRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.HarDuHattAndeInntektskilder" />}
                                 name="harHattAndreInntekter"
                                 onChange={scrollToBottom}
@@ -120,13 +120,13 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                 <Radio value={false}>
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
-                            </GreenRadioGroup>
+                            </BlueRadioGroup>
                             <ReadMore header={<FormattedMessage id="SituasjonSide.HvaGirRett" />}>todo</ReadMore>
                         </VStack>
                     )}
                     {(erIArbeid || harHattAndreInntekter) && (
                         <VStack gap="4">
-                            <GreenRadioGroup
+                            <BlueRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.HarDuHattInntekt" />}
                                 name="harHattInntekt"
                                 onChange={scrollToBottom}
@@ -137,7 +137,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                 <Radio value={false}>
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
-                            </GreenRadioGroup>
+                            </BlueRadioGroup>
                             <ReadMore header={<FormattedMessage id="SituasjonSide.Hvorfor6AvSiste10" />}>todo</ReadMore>
                         </VStack>
                     )}
@@ -154,7 +154,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
 
                     {harHattInntekt && (
                         <VStack gap="4">
-                            <GreenPanel isDarkGreen={lønnPerMåned === undefined} shouldFadeIn>
+                            <BluePanel isDarkBlue={lønnPerMåned === undefined} shouldFadeIn>
                                 <VStack gap="2">
                                     <TextField
                                         name="lønnPerMåned"
@@ -174,7 +174,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                         </Heading>
                                     </VStack>
                                 </VStack>
-                            </GreenPanel>
+                            </BluePanel>
                             <ReadMore header={<FormattedMessage id="SituasjonSide.HvorMyeMåHaTjent" />}>todo</ReadMore>
                         </VStack>
                     )}
@@ -201,7 +201,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                     )}
                     {(lønnPerMåned || harHattInntekt === false || harHattAndreInntekter === false) && (
                         <VStack gap="4">
-                            <GreenRadioGroup
+                            <BlueRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.BorDuINorge" />}
                                 name="borDuINorge"
                                 onChange={scrollToBottom}
@@ -212,13 +212,13 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                 <Radio value={false}>
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
-                            </GreenRadioGroup>
+                            </BlueRadioGroup>
                             <ReadMore header={<FormattedMessage id="SituasjonSide.HvorforBoINorge" />}>todo</ReadMore>
                         </VStack>
                     )}
                     {borDuINorge === false && (
                         <VStack gap="4">
-                            <GreenRadioGroup
+                            <BlueRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.ErDuMedlemAvFolketrygden" />}
                                 name="erDuMedlemAvFolketrygden"
                                 onChange={scrollToBottom}
@@ -229,7 +229,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                 <Radio value={false}>
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
-                            </GreenRadioGroup>
+                            </BlueRadioGroup>
                             <ReadMore header={<FormattedMessage id="SituasjonSide.HvaVilDetSiMedlemFolketrygden" />}>
                                 todo
                             </ReadMore>

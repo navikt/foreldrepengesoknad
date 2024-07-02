@@ -2,7 +2,7 @@ import { FunctionComponent, ReactNode } from 'react';
 
 import styles from './iconCircleWrapper.module.css';
 
-type CircleColor = 'darkGreen' | 'mediumGreen' | 'green' | 'gray' | 'blue' | 'lightBlue';
+type CircleColor = 'darkGreen' | 'mediumGreen' | 'green' | 'gray' | 'blue' | 'lightBlue' | 'darkBlue';
 type CircleSize = 'medium' | 'large' | 'xl';
 
 const getColor = (color: CircleColor): string => {
@@ -17,6 +17,9 @@ const getColor = (color: CircleColor): string => {
     }
     if (color === 'lightBlue') {
         return styles.lightBlue;
+    }
+    if (color === 'darkBlue') {
+        return styles.darkBlue;
     }
     return color === 'mediumGreen' ? styles.mediumGreen : styles.darkGreen;
 };

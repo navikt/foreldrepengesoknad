@@ -9,7 +9,7 @@ import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 import { BodyLong, VStack } from '@navikt/ds-react';
 
 import { Datepicker } from '@navikt/fp-form-hooks';
-import { GreenPanel, Infobox } from '@navikt/fp-ui';
+import { BluePanel, Infobox } from '@navikt/fp-ui';
 import {
     isAfterOrSame,
     isAfterOrSameAsSixMonthsAgo,
@@ -45,7 +45,7 @@ const Adopsjon: React.FunctionComponent<Props> = ({
 
     return (
         <>
-            <GreenPanel isDarkGreen={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
+            <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
                 <VStack gap="8">
                     <Datepicker
                         label={<FormattedMessage id="Adopsjon.Overtakelsesdato" values={{ erAlenesøker, flereBarn }} />}
@@ -89,7 +89,7 @@ const Adopsjon: React.FunctionComponent<Props> = ({
                         ]}
                     />
                 </VStack>
-            </GreenPanel>
+            </BluePanel>
             {overtakelsesdato && (
                 <Infobox
                     header={

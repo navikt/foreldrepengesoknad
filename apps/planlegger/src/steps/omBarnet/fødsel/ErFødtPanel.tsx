@@ -16,7 +16,7 @@ import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { Datepicker } from '@navikt/fp-form-hooks';
-import { GreenPanel, Infobox } from '@navikt/fp-ui';
+import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { erI22SvangerskapsukeEllerSenere, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 type Props = {
@@ -42,7 +42,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
 
     return (
         <VStack gap="5">
-            <GreenPanel isDarkGreen={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
+            <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
                 <VStack gap="8">
                     <Datepicker
                         label={<FormattedMessage id="ErFødtPanel.Fødselsdato" values={{ antallBarn }} />}
@@ -79,7 +79,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                         onChange={scrollToBottom}
                     />
                 </VStack>
-            </GreenPanel>
+            </BluePanel>
             {erFødselsdato !== undefined && dayjs(erFødselsdato).isAfter(DATE_3_YEARS_AGO) && (
                 <Infobox
                     header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}

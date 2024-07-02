@@ -21,7 +21,7 @@ import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-rea
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
-import { GreenPanel, IconCircleWrapper } from '@navikt/fp-ui';
+import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
 const onToggleExpansionCard = (open: boolean) => {
@@ -102,7 +102,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
             <ExpansionCard aria-label="" onToggle={onToggleExpansionCard} size="small">
                 <ExpansionCard.Header>
                     <HStack gap="6" align="center" wrap={false}>
-                        <IconCircleWrapper size="medium" color="green">
+                        <IconCircleWrapper size="medium" color="lightBlue">
                             <ChatElipsisIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
                         <ExpansionCard.Title size="small">
@@ -112,7 +112,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
                     <VStack gap="10">
-                        <GreenPanel>
+                        <BluePanel>
                             <>
                                 <Heading size="small" level="4">
                                     <FormattedMessage id="OppgittInformasjon.Barnet.Tittel" values={{ antallBarn }} />
@@ -176,8 +176,8 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                     </BodyLong>
                                 )}
                             </>
-                        </GreenPanel>
-                        <GreenPanel>
+                        </BluePanel>
+                        <BluePanel>
                             <>
                                 <Heading size="small" level="4">
                                     <FormattedMessage id="OppgittInformasjon.Arbeid.Tittel" />
@@ -260,8 +260,8 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                     </>
                                 )}
                             </>
-                        </GreenPanel>
-                        <GreenPanel>
+                        </BluePanel>
+                        <BluePanel>
                             <Heading size="small" level="4">
                                 <FormattedMessage
                                     id="OppgittInformasjon.LengdeOgFordeling"
@@ -297,7 +297,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                     )}
                                 </BodyLong>
                             </VStack>
-                        </GreenPanel>
+                        </BluePanel>
                     </VStack>
                 </ExpansionCard.Content>
             </ExpansionCard>

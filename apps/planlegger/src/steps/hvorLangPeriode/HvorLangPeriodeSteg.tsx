@@ -3,7 +3,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
+import BlueRadioGroup from 'components/formWrappers/BlueRadioGroup';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
@@ -149,7 +149,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 </BodyShort>
                             </Infobox>
                         )}
-                        <GreenRadioGroup
+                        <BlueRadioGroup
                             label={
                                 <FormattedMessage id="HvorLangPeriodeSteg.HvorLangPeriode" values={{ deSomHarRett }} />
                             }
@@ -172,7 +172,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             <Radio value={Dekningsgrad.ÅTTI_PROSENT}>
                                 <FormattedMessage id="HvorLangPeriodeSteg.80" values={{ uker80: antallUker80 }} />
                             </Radio>
-                        </GreenRadioGroup>
+                        </BlueRadioGroup>
                         {valgtStønadskonto && (
                             <ValgtDekningsgradInfoboks
                                 key={valgtDekningsgrad}

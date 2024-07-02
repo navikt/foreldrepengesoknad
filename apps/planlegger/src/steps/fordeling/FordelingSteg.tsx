@@ -19,7 +19,7 @@ import { BodyShort, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
-import { GreenPanel, Infobox } from '@navikt/fp-ui';
+import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
@@ -146,7 +146,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 <FormattedMessage id="FordelingSteg.Infoboks.HvordanFordeleTekst" />
                             </BodyShort>
                         </Infobox>
-                        <GreenPanel isDarkGreen={fordeling === undefined}>
+                        <BluePanel isDarkBlue={fordeling === undefined}>
                             <Select
                                 name="antallUkerSøker1"
                                 label={
@@ -174,7 +174,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     </option>
                                 ))}
                             </Select>
-                        </GreenPanel>
+                        </BluePanel>
                         {antallUkerSøker1 !== undefined && (
                             <FordelingsdetaljerPanel
                                 key={antallUkerSøker1}

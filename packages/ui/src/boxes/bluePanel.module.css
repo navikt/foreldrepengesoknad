@@ -1,0 +1,25 @@
+.box {
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.animation {
+    animation: fade-in 1s;
+}
+
+.darkBlue {
+    background-color: var(--a-deepblue-100);
+}
+
+.blue {
+    background-color: var(--a-deepblue-50);
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 100;
+    }
+}

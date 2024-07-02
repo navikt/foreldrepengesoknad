@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { HStack, Heading, Show } from '@navikt/ds-react';
 
-import { GreenHeading, IconCircleWrapper, Page } from '@navikt/fp-ui';
+import { BlueHeading, IconCircleWrapper, Page } from '@navikt/fp-ui';
 
 interface Props {
     children: React.ReactElement | React.ReactElement[];
@@ -14,28 +14,28 @@ const OppsummeringHeader: React.FunctionComponent<Props> = ({ children }) => (
         header={
             <>
                 <Show below="md">
-                    <GreenHeading isDarkGreen>
+                    <BlueHeading isDarkBlue>
                         <HStack gap="4" align="center">
-                            <IconCircleWrapper color="darkGreen" size="large">
+                            <IconCircleWrapper color="darkBlue" size="large">
                                 <CheckmarkIcon height={34} width={34} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
                             <Heading size="medium">
                                 <FormattedMessage id="OppsummeringHeader.Tittel" />
                             </Heading>
                         </HStack>
-                    </GreenHeading>
+                    </BlueHeading>
                 </Show>
                 <Show above="md">
-                    <GreenHeading>
+                    <BlueHeading>
                         <HStack gap="4" align="center">
-                            <IconCircleWrapper color="darkGreen" size="xl">
+                            <IconCircleWrapper color="darkBlue" size="xl">
                                 <CheckmarkIcon height={40} width={40} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
                             <Heading size="medium">
                                 <FormattedMessage id="OppsummeringHeader.Tittel" />
                             </Heading>
                         </HStack>
-                    </GreenHeading>
+                    </BlueHeading>
                 </Show>
             </>
         }
