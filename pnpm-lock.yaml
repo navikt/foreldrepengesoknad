@@ -206,7 +206,7 @@ importers:
         version: 1.4.5-lts.1
       mustache-loader:
         specifier: ^1.4.3
-        version: 1.4.3(hogan.js@3.0.2)(webpack@5.92.0)
+        version: 1.4.3(hogan.js@3.0.2)(webpack@5.92.0(esbuild@0.20.2))
       storybook:
         specifier: 8.1.6
         version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -240,18 +240,12 @@ importers:
       '@navikt/ds-css':
         specifier: ^6.3.3
         version: 6.3.3
-      '@navikt/ds-datepicker':
-        specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@6.3.3)(@navikt/ds-react@6.3.3(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(classnames@2.5.1)(date-fns@3.6.0)(dayjs@1.11.10)(react-day-picker@8.10.0(date-fns@3.6.0)(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(uuid@9.0.1)
       '@navikt/ds-icons':
         specifier: ^3.4.3
         version: 3.4.3(@types/react@18.2.73)(react@18.2.0)
       '@navikt/ds-react':
         specifier: ^6.3.3
         version: 6.3.3(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@navikt/fnrvalidator':
-        specifier: ^1.3.0
-        version: 1.3.0
       '@navikt/fp-api':
         specifier: workspace:*
         version: link:../../packages/api
@@ -276,31 +270,16 @@ importers:
       amplitude-js:
         specifier: ^8.21.9
         version: 8.21.9
-      axios:
-        specifier: ^1.6.8
-        version: 1.7.2
-      babel-runtime:
-        specifier: ^6.26.0
-        version: 6.26.0
       bytes:
         specifier: ^3.1.2
         version: 3.1.2
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
-      compression:
-        specifier: ^1.7.4
-        version: 1.7.4
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10
       detect-browser:
-        specifier: ^5.3.0
-        version: 5.3.0
-      express:
-        specifier: ^4.19.2
-        version: 4.19.2
-      history:
         specifier: ^5.3.0
         version: 5.3.0
       intl:
@@ -309,69 +288,24 @@ importers:
       jotai:
         specifier: ^2.7.2
         version: 2.8.3(@types/react@18.2.73)(react@18.2.0)
-      jsdom:
-        specifier: ^24.0.0
-        version: 24.0.0
       ky:
         specifier: ^1.4.0
         version: 1.4.0
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
-      lodash.throttle:
-        specifier: ^4.1.1
-        version: 4.1.1
-      mustache-express:
-        specifier: ^1.3.2
-        version: 1.3.2
-      promise:
-        specifier: ^8.3.0
-        version: 8.3.0
-      prop-types:
-        specifier: ^15.8.1
-        version: 15.8.1
       react:
         specifier: ^18.2.0
         version: 18.2.0
-      react-collapse:
-        specifier: ^5.1.1
-        version: 5.1.1(react@18.2.0)
-      react-day-picker:
-        specifier: ^8.10.0
-        version: 8.10.0(date-fns@3.6.0)(react@18.2.0)
-      react-document-title:
-        specifier: ^2.0.3
-        version: 2.0.3(react@18.2.0)
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
       react-intl:
         specifier: ^6.6.4
         version: 6.6.4(react@18.2.0)(typescript@5.4.5)
-      react-modal:
-        specifier: ^3.16.1
-        version: 3.16.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      react-motion:
-        specifier: ^0.5.2
-        version: 0.5.2(react@18.2.0)
-      react-responsive:
-        specifier: ^9.0.2
-        version: 9.0.2(react@18.2.0)
       react-router-dom:
         specifier: ^6.22.3
         version: 6.23.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      react-transition-group:
-        specifier: ^4.4.5
-        version: 4.4.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      request:
-        specifier: ^2.88.2
-        version: 2.88.2
-      url-search-params-polyfill:
-        specifier: ^8.2.5
-        version: 8.2.5
-      winston:
-        specifier: ^3.13.0
-        version: 3.13.0
     devDependencies:
       '@formatjs/cli-lib':
         specifier: 6.3.6
@@ -412,9 +346,6 @@ importers:
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.1.0)
-      '@trivago/prettier-plugin-sort-imports':
-        specifier: ^4.3.0
-        version: 4.3.0(prettier@3.2.5)
       '@types/amplitude-js':
         specifier: ^8.16.5
         version: 8.16.5
@@ -433,36 +364,21 @@ importers:
       '@types/react':
         specifier: ^18.2.73
         version: 18.2.73
-      '@types/react-collapse':
-        specifier: ^5.0.4
-        version: 5.0.4
-      '@types/react-document-title':
-        specifier: ^2.0.9
-        version: 2.0.9
       '@types/react-dom':
         specifier: ^18.2.23
         version: 18.2.23
-      '@types/react-responsive':
-        specifier: ^8.0.8
-        version: 8.0.8
       '@types/react-router-dom':
         specifier: ^5.3.3
         version: 5.3.3
-      '@types/react-transition-group':
-        specifier: ^4.4.10
-        version: 4.4.10
       '@vitejs/plugin-react':
         specifier: ^4.2.1
         version: 4.2.1(vite@5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1))
-      ajv:
-        specifier: ^8.12.0
-        version: 8.16.0
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.19(postcss@8.4.38)
-      axios-mock-adapter:
-        specifier: ^1.22.0
-        version: 1.22.0(axios@1.7.2)
+      compression:
+        specifier: ^1.7.4
+        version: 1.7.4
       cross-env:
         specifier: 7.0.3
         version: 7.0.3
@@ -472,15 +388,18 @@ importers:
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
+      express:
+        specifier: ^4.19.2
+        version: 4.19.2
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
       http-proxy-middleware:
         specifier: 3.0.0
         version: 3.0.0
-      less:
-        specifier: ^4.2.0
-        version: 4.2.0
+      jsdom:
+        specifier: ^24.0.0
+        version: 24.0.0
       morgan:
         specifier: ^1.10.0
         version: 1.10.0
@@ -493,21 +412,15 @@ importers:
       multer:
         specifier: ^1.4.5-lts.1
         version: 1.4.5-lts.1
-      path:
-        specifier: ^0.12.7
-        version: 0.12.7
+      mustache-express:
+        specifier: ^1.3.2
+        version: 1.3.2
       prettier:
         specifier: ^3.2.5
         version: 3.2.5
-      pretty-quick:
-        specifier: ^3.1.3
-        version: 3.1.3(prettier@3.2.5)
       storybook:
         specifier: 8.1.6
         version: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      storybook-addon-mock:
-        specifier: 5.0.0
-        version: 5.0.0(@babel/preset-env@7.24.7(@babel/core@7.24.7))(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -523,9 +436,6 @@ importers:
       vitest:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
-      wait-on:
-        specifier: ^7.2.0
-        version: 7.2.0
 
   apps/foreldrepengesoknad:
     dependencies:
@@ -4081,12 +3991,6 @@ packages:
       ts-jest:
         optional: true
 
-  '@hapi/hoek@9.3.0':
-    resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
-
-  '@hapi/topo@5.1.0':
-    resolution: {integrity: sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==}
-
   '@hookform/error-message@2.0.1':
     resolution: {integrity: sha512-U410sAr92xgxT1idlu9WWOVjndxLdgPUHEB8Schr27C9eh7/xUnITWpCMF93s+lGiG++D4JnbSnrb5A21AdSNg==}
     peerDependencies:
@@ -4716,15 +4620,6 @@ packages:
     resolution: {integrity: sha512-KkcLY8643SGBiDyPvMQOubBkwVX5IPknMHInc7jYC8pDVncGp7C65Wi506bCNPpKCWspUd/0VDNWOOen51/qKA==}
     engines: {node: '>=8'}
 
-  '@sideway/address@4.1.5':
-    resolution: {integrity: sha512-IqO/DUQHUkPeixNQ8n0JA6102hT9CmaljNTPmQ1u8MEhBo/R4Q8eKLN/vGZxuebwOroDB4cbpjheD4+/sKFK4Q==}
-
-  '@sideway/formula@3.0.1':
-    resolution: {integrity: sha512-/poHZJJVjx3L+zVD6g9KgHfYnb443oi7wLu/XKojDviHy6HOEOA6z1Trk5aR1dGcmPenJEgb2sK2I80LeS3MIg==}
-
-  '@sideway/pinpoint@2.0.0':
-    resolution: {integrity: sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==}
-
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
 
@@ -5314,9 +5209,6 @@ packages:
   '@types/react-modal@3.16.3':
     resolution: {integrity: sha512-xXuGavyEGaFQDgBv4UVm8/ZsG+qxeQ7f77yNrW3n+1J6XAstUy5rYHeIHPh1KzsGc6IkCIdu6lQ2xWzu1jBTLg==}
 
-  '@types/react-responsive@8.0.8':
-    resolution: {integrity: sha512-HDUZtoeFRHrShCGaND23HmXAB9evOOTjkghd2wAasLkuorYYitm5A1XLeKkhXKZppcMBxqB/8V4Snl6hRUTA8g==}
-
   '@types/react-router-dom@5.3.3':
     resolution: {integrity: sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==}
 
@@ -5881,9 +5773,6 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0
 
-  babel-runtime@6.26.0:
-    resolution: {integrity: sha512-ITKNuq2wKlW1fJg9sSW52eepoYgZBggvOAHC0u/CYu/qxQ9EVzThCgR69BnSXLHjy2f7SY5zaQ4yt7H9ZVxY2g==}
-
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
@@ -6271,10 +6160,6 @@ packages:
 
   core-js-compat@3.37.1:
     resolution: {integrity: sha512-9TNiImhKvQqSUkOvk/mMRZzOANTiEVC7WaBNhHcKM7x+/5E1l5NvsysR19zuDQScE8k+kfQXWRN3AtS/eOSHpg==}
-
-  core-js@2.6.12:
-    resolution: {integrity: sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==}
-    deprecated: core-js@<3.23.3 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Some versions have web compatibility issues. Please, upgrade your dependencies to the actual version of core-js.
 
   core-js@3.37.1:
     resolution: {integrity: sha512-Xn6qmxrQZyB0FFY8E3bgRXei3lWDJHhvI+u0q9TKIYM49G8pAr0FgnnrFRAmsbptZL1yxRADVXn+x5AGsbBfyw==}
@@ -8035,9 +7920,6 @@ packages:
       node-notifier:
         optional: true
 
-  joi@17.13.1:
-    resolution: {integrity: sha512-vaBlIKCyo4FCUtCm7Eu4QZd/q02bWcxfUO6YSXAZOWF6gzcLBeba8kwotUdYJjDLW8Cz8RywsSOqiNJZW0mNvg==}
-
   jose@4.15.5:
     resolution: {integrity: sha512-jc7BFxgKPKi94uOvEmzlSWFFe2+vASyXaKUpdQKatWAESU2MWjDfFf0fdfc83CDKcA5QecabZeNLyfhe3yKNkg==}
 
@@ -8456,10 +8338,6 @@ packages:
 
   mlly@1.7.1:
     resolution: {integrity: sha512-rrVRZRELyQzrIUAVMHxP97kv+G786pHmOKzuFII8zDYahFBS7qnHh2AlYSl1GAHhaMPCz6/oHjVMcfFYgFYHgA==}
-
-  mock-xmlhttprequest@8.3.0:
-    resolution: {integrity: sha512-yjNaP8HskE7GhO0D12kB35+OvCnNAh2fJnD1/mC5Y3WW8WcozJnC23w+8UoU+dmVR4x1KpAB8PPtybY9wI16Ew==}
-    engines: {node: '>=16.0.0'}
 
   mockdate@3.0.5:
     resolution: {integrity: sha512-iniQP4rj1FhBdBYS/+eQv7j1tadJ9lJtdzgOpvsOHng/GbcDh2Fhdeq+ZRldrPYdXvCyfFUmFeEwEGXZB5I/AQ==}
@@ -9335,9 +9213,6 @@ packages:
   regenerate@1.4.2:
     resolution: {integrity: sha512-zrceR/XhGYU/d/opr2EKO7aRHUeiBI8qjtfHqADTwZd6Szfy16la6kqD0MIUs5z5hx6AaKa+PixpPrR289+I0A==}
 
-  regenerator-runtime@0.11.1:
-    resolution: {integrity: sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==}
-
   regenerator-runtime@0.13.11:
     resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
 
@@ -9469,9 +9344,6 @@ packages:
 
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
-
-  rxjs@7.8.1:
-    resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
 
   safe-array-concat@1.1.2:
     resolution: {integrity: sha512-vj6RsCsWBCf19jIeHEfkRMw8DPiBb+DMXklQ/1SGDHOMlHdPUkZXFQ2YdplS23zESTijAcurb1aSgJA3AgMu1Q==}
@@ -9712,17 +9584,6 @@ packages:
 
   store2@2.14.3:
     resolution: {integrity: sha512-4QcZ+yx7nzEFiV4BMLnr/pRa5HYzNITX2ri0Zh6sT9EyQHbBHacC6YigllUPU9X3D0f/22QCgfokpKs52YRrUg==}
-
-  storybook-addon-mock@5.0.0:
-    resolution: {integrity: sha512-AGhfdAsksusJgh/VNcaGbXe1gJIVx8RKuPYMCkmCRyeMAEZggrWcU7nIADZWUJuD477mKUkaBP7I54p+3527Xg==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
 
   storybook-i18n@3.0.1:
     resolution: {integrity: sha512-euCfw6ABqq8jSZ4fCaAIsNwk1FBIrSIr4kMP900bjUgO/mGgzZzXmrYmZaXs51mx9A2p87xo0OktPPZUuKYCTQ==}
@@ -10228,9 +10089,6 @@ packages:
   url-parse@1.5.10:
     resolution: {integrity: sha512-WypcfiRhfeUP9vvF0j6rw0J3hrWrw6iZv3+22h6iRMJ/8z1Tj6XfLP4DsUix5MhMPnXpiHDoKyoZ/bdCkwBCiQ==}
 
-  url-search-params-polyfill@8.2.5:
-    resolution: {integrity: sha512-FOEojW4XReTmtZOB7xqSHmJZhrNTmClhBriwLTmle4iA7bwuCo6ldSfbtsFSb8bTf3E0a3XpfonAdaur9vqq8A==}
-
   use-callback-ref@1.3.2:
     resolution: {integrity: sha512-elOQwe6Q8gqZgDA8mrh44qRTQqpIHDcZ3hXTLjBe1i4ph8XpNJnO+aQf3NaG+lriLopI4HMx9VjQLfPQ6vhnoA==}
     engines: {node: '>=10'}
@@ -10408,11 +10266,6 @@ packages:
     resolution: {integrity: sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA==}
     engines: {node: '>=18'}
 
-  wait-on@7.2.0:
-    resolution: {integrity: sha512-wCQcHkRazgjG5XoAq9jbTMLpNIjoSlZslrJ2+N9MxDsGEv1HnFoVjOCexL0ESva7Y9cu350j+DWADdk54s4AFQ==}
-    engines: {node: '>=12.0.0'}
-    hasBin: true
-
   walker@1.0.8:
     resolution: {integrity: sha512-ts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ==}
 
@@ -10453,9 +10306,6 @@ packages:
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
     engines: {node: '>=18'}
-
-  whatwg-fetch@3.6.20:
-    resolution: {integrity: sha512-EqhiFU6daOA8kpjOWTL0olhVOF3i7OrFzSYiGsEMB8GcXS+RrzauAERX65xMeNWVqxA6HXH2m69Z9LaKKdisfg==}
 
   whatwg-mimetype@4.0.0:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
@@ -11835,12 +11685,6 @@ snapshots:
       tslib: 2.6.3
       typescript: 5.4.5
 
-  '@hapi/hoek@9.3.0': {}
-
-  '@hapi/topo@5.1.0':
-    dependencies:
-      '@hapi/hoek': 9.3.0
-
   '@hookform/error-message@2.0.1(react-dom@18.2.0(react@18.2.0))(react-hook-form@7.51.2(react@18.2.0))(react@18.2.0)':
     dependencies:
       react: 18.2.0
@@ -12617,14 +12461,6 @@ snapshots:
   '@sentry/utils@7.117.0':
     dependencies:
       '@sentry/types': 7.117.0
-
-  '@sideway/address@4.1.5':
-    dependencies:
-      '@hapi/hoek': 9.3.0
-
-  '@sideway/formula@3.0.1': {}
-
-  '@sideway/pinpoint@2.0.0': {}
 
   '@sinclair/typebox@0.27.8': {}
 
@@ -13833,7 +13669,7 @@ snapshots:
       '@jest/globals': 29.7.0
       '@types/jest': 29.5.12
       jest: 29.7.0
-      vitest: 1.6.0(@types/node@20.14.9)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+      vitest: 1.6.0
 
   '@testing-library/react@16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
@@ -14100,10 +13936,6 @@ snapshots:
       '@types/react': 18.2.73
 
   '@types/react-modal@3.16.3':
-    dependencies:
-      '@types/react': 18.2.73
-
-  '@types/react-responsive@8.0.8':
     dependencies:
       '@types/react': 18.2.73
 
@@ -14843,11 +14675,6 @@ snapshots:
       babel-plugin-jest-hoist: 29.6.3
       babel-preset-current-node-syntax: 1.0.1(@babel/core@7.24.7)
 
-  babel-runtime@6.26.0:
-    dependencies:
-      core-js: 2.6.12
-      regenerator-runtime: 0.11.1
-
   balanced-match@1.0.2: {}
 
   base64-arraybuffer@1.0.2: {}
@@ -15241,13 +15068,27 @@ snapshots:
     dependencies:
       browserslist: 4.23.1
 
-  core-js@2.6.12: {}
-
   core-js@3.37.1: {}
 
   core-util-is@1.0.2: {}
 
   core-util-is@1.0.3: {}
+
+  create-jest@29.7.0:
+    dependencies:
+      '@jest/types': 29.6.3
+      chalk: 4.1.2
+      exit: 0.1.2
+      graceful-fs: 4.2.11
+      jest-config: 29.7.0(@types/node@20.14.9)
+      jest-util: 29.7.0
+      prompts: 2.4.2
+    transitivePeerDependencies:
+      - '@types/node'
+      - babel-plugin-macros
+      - supports-color
+      - ts-node
+    optional: true
 
   create-jest@29.7.0(@types/node@20.12.2):
     dependencies:
@@ -17107,6 +16948,26 @@ snapshots:
       - babel-plugin-macros
       - supports-color
 
+  jest-cli@29.7.0:
+    dependencies:
+      '@jest/core': 29.7.0
+      '@jest/test-result': 29.7.0
+      '@jest/types': 29.6.3
+      chalk: 4.1.2
+      create-jest: 29.7.0
+      exit: 0.1.2
+      import-local: 3.1.0
+      jest-config: 29.7.0(@types/node@20.14.9)
+      jest-util: 29.7.0
+      jest-validate: 29.7.0
+      yargs: 17.7.2
+    transitivePeerDependencies:
+      - '@types/node'
+      - babel-plugin-macros
+      - supports-color
+      - ts-node
+    optional: true
+
   jest-cli@29.7.0(@types/node@20.12.2):
     dependencies:
       '@jest/core': 29.7.0
@@ -17433,7 +17294,7 @@ snapshots:
       '@jest/core': 29.7.0
       '@jest/types': 29.6.3
       import-local: 3.1.0
-      jest-cli: 29.7.0(@types/node@20.14.9)
+      jest-cli: 29.7.0
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -17465,14 +17326,6 @@ snapshots:
       - supports-color
       - ts-node
     optional: true
-
-  joi@17.13.1:
-    dependencies:
-      '@hapi/hoek': 9.3.0
-      '@hapi/topo': 5.1.0
-      '@sideway/address': 4.1.5
-      '@sideway/formula': 3.0.1
-      '@sideway/pinpoint': 2.0.0
 
   jose@4.15.5: {}
 
@@ -17925,8 +17778,6 @@ snapshots:
       pkg-types: 1.1.1
       ufo: 1.5.3
 
-  mock-xmlhttprequest@8.3.0: {}
-
   mockdate@3.0.5: {}
 
   moment-timezone@0.5.45:
@@ -18003,6 +17854,13 @@ snapshots:
       async: 3.2.5
       lru-cache: 5.1.1
       mustache: 4.2.0
+
+  mustache-loader@1.4.3(hogan.js@3.0.2)(webpack@5.92.0(esbuild@0.20.2)):
+    dependencies:
+      hogan.js: 3.0.2
+      html-minifier: 3.5.21
+      loader-utils: 1.4.2
+      webpack: 5.92.0(esbuild@0.20.2)
 
   mustache-loader@1.4.3(hogan.js@3.0.2)(webpack@5.92.0):
     dependencies:
@@ -18867,8 +18725,6 @@ snapshots:
 
   regenerate@1.4.2: {}
 
-  regenerator-runtime@0.11.1: {}
-
   regenerator-runtime@0.13.11:
     optional: true
 
@@ -19041,10 +18897,6 @@ snapshots:
   run-parallel@1.2.0:
     dependencies:
       queue-microtask: 1.2.3
-
-  rxjs@7.8.1:
-    dependencies:
-      tslib: 2.6.3
 
   safe-array-concat@1.1.2:
     dependencies:
@@ -19297,34 +19149,6 @@ snapshots:
 
   store2@2.14.3: {}
 
-  storybook-addon-mock@5.0.0(@babel/preset-env@7.24.7(@babel/core@7.24.7))(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
-    dependencies:
-      '@storybook/blocks': 8.1.9(@types/react-dom@18.2.23)(@types/react@18.2.73)(prettier@3.2.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@storybook/channels': 8.1.9
-      '@storybook/components': 8.1.9(@types/react-dom@18.2.23)(@types/react@18.2.73)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@storybook/core-events': 8.1.9
-      '@storybook/manager-api': 8.1.9(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@storybook/preview-api': 8.1.9
-      '@storybook/theming': 8.1.9(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      mock-xmlhttprequest: 8.3.0
-      path-to-regexp: 6.2.2
-      polished: 4.3.1
-      prop-types: 15.8.1
-      storybook: 8.1.6(@babel/preset-env@7.24.7(@babel/core@7.24.7))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      whatwg-fetch: 3.6.20
-    optionalDependencies:
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    transitivePeerDependencies:
-      - '@babel/preset-env'
-      - '@types/react'
-      - '@types/react-dom'
-      - bufferutil
-      - encoding
-      - prettier
-      - supports-color
-      - utf-8-validate
-
   storybook-i18n@3.0.1: {}
 
   storybook-react-intl@3.0.1(react-intl@6.6.4(react@18.2.0)(typescript@5.4.5)):
@@ -19542,6 +19366,17 @@ snapshots:
       temp-dir: 3.0.0
       type-fest: 2.19.0
       unique-string: 3.0.0
+
+  terser-webpack-plugin@5.3.10(esbuild@0.20.2)(webpack@5.92.0(esbuild@0.20.2)):
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.25
+      jest-worker: 27.5.1
+      schema-utils: 3.3.0
+      serialize-javascript: 6.0.2
+      terser: 5.31.1
+      webpack: 5.92.0(esbuild@0.20.2)
+    optionalDependencies:
+      esbuild: 0.20.2
 
   terser-webpack-plugin@5.3.10(webpack@5.92.0):
     dependencies:
@@ -19831,8 +19666,6 @@ snapshots:
       querystringify: 2.2.0
       requires-port: 1.0.0
 
-  url-search-params-polyfill@8.2.5: {}
-
   use-callback-ref@1.3.2(@types/react@18.2.73)(react@18.2.0):
     dependencies:
       react: 18.2.0
@@ -19890,6 +19723,24 @@ snapshots:
       assert-plus: 1.0.0
       core-util-is: 1.0.2
       extsprintf: 1.3.0
+
+  vite-node@1.6.0:
+    dependencies:
+      cac: 6.7.14
+      debug: 4.3.5
+      pathe: 1.1.2
+      picocolors: 1.0.1
+      vite: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+    transitivePeerDependencies:
+      - '@types/node'
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    optional: true
 
   vite-node@1.6.0(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1):
     dependencies:
@@ -19995,6 +19846,38 @@ snapshots:
       sass: 1.77.5
       terser: 5.31.1
 
+  vitest@1.6.0:
+    dependencies:
+      '@vitest/expect': 1.6.0
+      '@vitest/runner': 1.6.0
+      '@vitest/snapshot': 1.6.0
+      '@vitest/spy': 1.6.0
+      '@vitest/utils': 1.6.0
+      acorn-walk: 8.3.3
+      chai: 4.4.1
+      debug: 4.3.5
+      execa: 8.0.1
+      local-pkg: 0.5.0
+      magic-string: 0.30.10
+      pathe: 1.1.2
+      picocolors: 1.0.1
+      std-env: 3.7.0
+      strip-literal: 2.1.0
+      tinybench: 2.8.0
+      tinypool: 0.8.4
+      vite: 5.1.6(@types/node@20.12.2)(less@4.2.0)(sass@1.77.5)(terser@5.31.1)
+      vite-node: 1.6.0
+      why-is-node-running: 2.2.2
+    transitivePeerDependencies:
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    optional: true
+
   vitest@1.6.0(@types/node@20.12.2)(jsdom@24.0.0)(less@4.2.0)(sass@1.77.5)(terser@5.31.1):
     dependencies:
       '@vitest/expect': 1.6.0
@@ -20090,16 +19973,6 @@ snapshots:
     dependencies:
       xml-name-validator: 5.0.0
 
-  wait-on@7.2.0:
-    dependencies:
-      axios: 1.7.2
-      joi: 17.13.1
-      lodash: 4.17.21
-      minimist: 1.2.8
-      rxjs: 7.8.1
-    transitivePeerDependencies:
-      - debug
-
   walker@1.0.8:
     dependencies:
       makeerror: 1.0.12
@@ -20156,11 +20029,40 @@ snapshots:
       - esbuild
       - uglify-js
 
+  webpack@5.92.0(esbuild@0.20.2):
+    dependencies:
+      '@types/eslint-scope': 3.7.7
+      '@types/estree': 1.0.5
+      '@webassemblyjs/ast': 1.12.1
+      '@webassemblyjs/wasm-edit': 1.12.1
+      '@webassemblyjs/wasm-parser': 1.12.1
+      acorn: 8.12.0
+      acorn-import-attributes: 1.9.5(acorn@8.12.0)
+      browserslist: 4.23.1
+      chrome-trace-event: 1.0.4
+      enhanced-resolve: 5.17.0
+      es-module-lexer: 1.5.3
+      eslint-scope: 5.1.1
+      events: 3.3.0
+      glob-to-regexp: 0.4.1
+      graceful-fs: 4.2.11
+      json-parse-even-better-errors: 2.3.1
+      loader-runner: 4.3.0
+      mime-types: 2.1.35
+      neo-async: 2.6.2
+      schema-utils: 3.3.0
+      tapable: 2.2.1
+      terser-webpack-plugin: 5.3.10(esbuild@0.20.2)(webpack@5.92.0(esbuild@0.20.2))
+      watchpack: 2.4.1
+      webpack-sources: 3.2.3
+    transitivePeerDependencies:
+      - '@swc/core'
+      - esbuild
+      - uglify-js
+
   whatwg-encoding@3.1.1:
     dependencies:
       iconv-lite: 0.6.3
-
-  whatwg-fetch@3.6.20: {}
 
   whatwg-mimetype@4.0.0: {}
 
