@@ -31,7 +31,7 @@ const DEFAULT_STØNADSKONTO = {
         kontoer: [
             { konto: StønadskontoType.Mødrekvote, dager: 95 },
             { konto: StønadskontoType.Fedrekvote, dager: 95 },
-            { konto: StønadskontoType.Fellesperiode, dager: 90 },
+            { konto: StønadskontoType.Fellesperiode, dager: 101 },
             { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
         ],
         minsteretter: {
@@ -44,6 +44,7 @@ const DEFAULT_STØNADSKONTO = {
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
     omBarnet: OmBarnet;
+    dekningsgrad?: Dekningsgrad;
     gåTilNesteSide: (action: Action) => void;
 } & ComponentProps<typeof FordelingSteg>;
 
@@ -54,6 +55,7 @@ const customRenderer = ({
     omBarnet,
     stønadskontoer = DEFAULT_STØNADSKONTO,
     gåTilNesteSide = action('button-click'),
+    dekningsgrad = Dekningsgrad.HUNDRE_PROSENT,
 }: StoryArgs) => {
     initAmplitude();
     return (
@@ -66,7 +68,7 @@ const customRenderer = ({
                         jobberAnnenPart: true,
                     },
                     [ContextDataType.OM_BARNET]: omBarnet,
-                    [ContextDataType.HVOR_LANG_PERIODE]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
+                    [ContextDataType.HVOR_LANG_PERIODE]: { dekningsgrad },
                 }}
                 onDispatch={gåTilNesteSide}
             >
@@ -96,6 +98,23 @@ export const FlereForsørgereEttBarn: Story = {
             termindato: '2024-01-01',
             antallBarn: '1',
         },
+    },
+};
+
+export const FlereForsørgereEttBarn80ProsentDekningsgrad: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMor: 'Klara Utvikler',
+            type: Situasjon.MOR_OG_FAR,
+        },
+        omBarnet: {
+            erBarnetFødt: false,
+            erFødsel: true,
+            termindato: '2024-01-01',
+            antallBarn: '1',
+        },
+        dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
     },
 };
 
