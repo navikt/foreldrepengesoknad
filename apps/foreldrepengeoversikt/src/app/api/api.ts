@@ -51,7 +51,7 @@ type AnnenPartsVedtakRequestBody = {
 // TODO: før så sjekket denne om error.message hadde "Ugyldig ident", og hvis så ga heller success med undefined istedenfor error. Why?
 export const hentAnnenPartsVedtakOptions = (body: AnnenPartsVedtakRequestBody) =>
     queryOptions({
-        queryKey: ['ANNEN_PARTS_VEDTAK'],
+        queryKey: ['ANNEN_PARTS_VEDTAK', body],
         queryFn: () => ky.post('/rest/innsyn/v2/annenPartVedtak', { json: body }).json<AnnenPartVedtakDTO>(),
     });
 
