@@ -33,7 +33,7 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, minidialoger, sak
     useSetSelectedRoute(OversiktRoutes.OPPGAVER);
     const alleSaker = getAlleYtelser(saker);
     const sak = alleSaker.find((s) => s.saksnummer === params.saksnummer);
-    const minidialog = minidialoger ? minidialoger.find((d) => d.saksnr === params.saksnummer) : undefined;
+    const minidialog = minidialoger.find((d) => d.saksnr === params.saksnummer);
     useSetBackgroundColor('blue');
 
     const { mutate, isPending, isError, isSuccess } = useMutation({
@@ -43,18 +43,6 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, minidialoger, sak
 
     const sendEttersendelse = (ettersendelse: EttersendingDto) => {
         mutate({ ettersendelse, fnr });
-        //
-        // Api.sendEttersending(ettersendelse, fnr)
-        //     .then(() => {
-        //         setIsSendingEttersendelse(false);
-        //         setEttersendelseErSendt(true);
-        //     })
-        //     .catch((_error) => {
-        //         setIsSendingEttersendelse(false);
-        //         setEttersendelseError(
-        //             'Vi klarte ikke å sende inn informasjonen din. Prøv igjen senere og hvis problemet vedvarer kontakt brukerstøtte.',
-        //         );
-        //     });
     };
 
     if (!minidialog || !sak) {
