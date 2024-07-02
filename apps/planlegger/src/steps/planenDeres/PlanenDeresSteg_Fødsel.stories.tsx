@@ -336,3 +336,34 @@ export const BarnetErFødtDagenEtterTermindato: Story = {
         },
     },
 };
+
+export const StønadsperiodeMedEkstraDagerForDekningsgrad80: Story = {
+    args: {
+        ...MorOgFarBeggeHarRett.args,
+        fordeling: undefined,
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: true,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: [
+                    { konto: StønadskontoType.Mødrekvote, dager: 95 },
+                    { konto: StønadskontoType.Fedrekvote, dager: 95 },
+                    { konto: StønadskontoType.Fellesperiode, dager: 101 },
+                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                ],
+                minsteretter: MINSTERETTER,
+            },
+            '100': {
+                kontoer: [
+                    { konto: StønadskontoType.Mødrekvote, dager: 75 },
+                    { konto: StønadskontoType.Fedrekvote, dager: 75 },
+                    { konto: StønadskontoType.Fellesperiode, dager: 80 },
+                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                ],
+                minsteretter: MINSTERETTER,
+            },
+        },
+    },
+};
