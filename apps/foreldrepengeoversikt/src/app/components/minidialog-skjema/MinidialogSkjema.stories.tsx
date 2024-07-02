@@ -17,11 +17,6 @@ export default {
 };
 
 const Template: StoryFn<{ send: () => void }> = ({ send }) => {
-    // const apiMock = new MockAdapter(getAxiosInstance());
-    // if (!skalFeileOpplasting) {
-    //     apiMock.onPost('test/rest/storage/foreldrepenger/vedlegg').reply(200);
-    // }
-
     return (
         <QueryClientProvider client={queryClient}>
             <div style={{ backgroundColor: 'white', padding: '50px' }}>
