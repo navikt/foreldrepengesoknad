@@ -132,8 +132,11 @@ const finnDeltUttaksdata = (
     hvemPlanlegger: HvemPlanlegger,
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
     barnet: OmBarnet,
-    antallDagerFellesperiodeSøker1: number = 0,
+    tempAantallDagerFellesperiodeSøker1: number = 0,
 ): Uttaksdata => {
+    //TODO Fjern denne når ein får lagra number i context
+    const antallDagerFellesperiodeSøker1 = parseInt(tempAantallDagerFellesperiodeSøker1.toString(), 10);
+
     const totaltAntallDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto).totaltAntallDager;
     const antallUkerOgDagerFellesperiodeForSøker1 = getUkerOgDager(antallDagerFellesperiodeSøker1);
     const antallUkerOgDagerFellesperiodeForSøker2 = getUkerOgDager(
