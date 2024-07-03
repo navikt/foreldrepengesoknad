@@ -16,7 +16,6 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
 import {
     getAntallUker,
-    getAntallUkerAktivitetsfriKvote,
     getAntallUkerOgDager,
     getAntallUkerOgDagerAktivitetsfriKvote,
     getAntallUkerOgDagerFellesperiode,

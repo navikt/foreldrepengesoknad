@@ -8,11 +8,7 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { erAlenesøker, erMorDelAvSøknaden, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import {
-    getAntallUkerAktivitetsfriKvote,
-    getAntallUkerOgDagerAktivitetsfriKvote,
-    getAntallUkerOgDagerForeldrepenger,
-} from 'utils/stønadskontoerUtils';
+import { getAntallUkerOgDagerAktivitetsfriKvote, getAntallUkerOgDagerForeldrepenger } from 'utils/stønadskontoerUtils';
 import { UttakUkerOgDager, Uttaksdata, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
