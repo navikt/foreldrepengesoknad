@@ -81,10 +81,9 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, barnet);
 
-    const antallUkerOgDager100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
-    const antallUkerOgDager80 = finnAntallUkerMedForeldrepenger(uttaksdata80);
-    const antallUkerOgDager =
-        valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? antallUkerOgDager100 : antallUkerOgDager80;
+    const antallUker100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
+    const antallUker80 = finnAntallUkerMedForeldrepenger(uttaksdata80);
+    const antallUker = valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? antallUker100 : antallUker80;
 
     const kunEnAvSøkereneHarRett = hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett';
 
@@ -110,10 +109,8 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst"
                                     values={{
                                         kunEnPartSkalHa: erAlenesøker || hvemHarRett === 'ingenHarRett',
-                                        uker100: antallUkerOgDager100.uker,
-                                        dager100: antallUkerOgDager100.dager,
-                                        uker80: antallUkerOgDager80.uker,
-                                        dager80: antallUkerOgDager80.dager,
+                                        uker100: antallUker100,
+                                        uker80: antallUker80,
                                     }}
                                 />
                             </BodyShort>
@@ -170,16 +167,10 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             onChange={scrollToBottom}
                         >
                             <Radio value={Dekningsgrad.HUNDRE_PROSENT} autoFocus>
-                                <FormattedMessage
-                                    id="HvorLangPeriodeSteg.100"
-                                    values={{ uker100: antallUkerOgDager100.uker }}
-                                />
+                                <FormattedMessage id="HvorLangPeriodeSteg.100" values={{ uker100: antallUker100 }} />
                             </Radio>
                             <Radio value={Dekningsgrad.ÅTTI_PROSENT}>
-                                <FormattedMessage
-                                    id="HvorLangPeriodeSteg.80"
-                                    values={{ uker80: antallUkerOgDager80.uker }}
-                                />
+                                <FormattedMessage id="HvorLangPeriodeSteg.80" values={{ uker80: antallUker80 }} />
                             </Radio>
                         </BlueRadioGroup>
                         {valgtStønadskonto && (
@@ -192,7 +183,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 uttaksdata100={uttaksdata100}
                                 uttaksdata80={uttaksdata80}
                                 valgtDekningsgrad={valgtDekningsgrad}
-                                antallUker={antallUkerOgDager}
+                                antallUker={antallUker}
                             />
                         )}
                     </VStack>

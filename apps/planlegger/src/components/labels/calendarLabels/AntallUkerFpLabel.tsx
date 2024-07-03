@@ -1,5 +1,6 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { weeksBetween } from 'utils/uttakUtils';
 
 import { BodyShort } from '@navikt/ds-react';
 
@@ -33,8 +34,7 @@ const AntallUkerFpLabel: FunctionComponent<Props> = ({ søkerTekst, startdato, s
                     id="OversiktSteg.UkerForeldrepengerSlutter"
                     values={{
                         hvem: capitalizeFirstLetter(søkerTekst),
-                        //FIXME
-                        //uker: weeksBetween(startdato, sluttdato),
+                        uker: weeksBetween(startdato, sluttdato),
                         dato: intl.formatDate(sluttdato, {
                             day: '2-digit',
                             month: 'long',
