@@ -166,12 +166,16 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 <FormattedMessage
                                     id="OversiktSteg.100"
                                     values={{
-                                        uker: antallUker100,
+                                        uker: antallUker100.uker,
+                                        dager: antallUker100.dager,
                                     }}
                                 />
                             </ToggleGroup.Item>
                             <ToggleGroup.Item value={Dekningsgrad.ÅTTI_PROSENT}>
-                                <FormattedMessage id="OversiktSteg.80" values={{ uker: antallUker80 }} />
+                                <FormattedMessage
+                                    id="OversiktSteg.80"
+                                    values={{ uker: antallUker80.uker, dager: antallUker80.dager }}
+                                />
                             </ToggleGroup.Item>
                         </ToggleGroup>
                         {hvemHarRett === 'beggeHarRett' &&

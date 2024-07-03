@@ -5,16 +5,16 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { treUkerSiden } from '@navikt/fp-utils';
+import { Uttaksdagen, treUkerSiden } from '@navikt/fp-utils';
 
 import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from './barnetUtils';
 import { HvemHarRett } from './hvemHarRettUtils';
 import {
-    getAntallUkerAktivitetsfriKvote,
-    getAntallUkerFedrekvote,
-    getAntallUkerForeldrepengerFørFødsel,
-    getAntallUkerMødrekvote,
+    getAntallDagerAktivitetsfriKvote,
+    getAntallDagerFedrekvote,
+    getAntallDagerForeldrepengerFørFødsel,
+    getAntallDagerMødrekvote,
     getAntallUkerOgDagerFellesperiode,
     getAntallUkerOgDagerForeldrepenger,
     getUkerOgDager,
@@ -140,9 +140,9 @@ const finnDeltUttaksdata = (
         totaltAntallDagerFellesperiode - antallDagerFellesperiodeSøker1,
     );
 
-    const antallUkerForeldrepengerFørFødsel = getAntallUkerForeldrepengerFørFødsel(valgtStønadskonto);
-    const antallUkerMødrekvote = getAntallUkerMødrekvote(valgtStønadskonto);
-    const antallUkerFedrekvote = getAntallUkerFedrekvote(valgtStønadskonto);
+    const antallDagerForeldrepengerFørFødsel = getAntallDagerForeldrepengerFørFødsel(valgtStønadskonto);
+    const antallDagerMødrekvote = getAntallDagerMødrekvote(valgtStønadskonto);
+    const antallDagerFedrekvote = getAntallDagerFedrekvote(valgtStønadskonto);
 
     const familiehendelsedato = getFamiliehendelsedato(barnet);
 
@@ -153,40 +153,27 @@ const finnDeltUttaksdata = (
 
     const sluttdatoPeriode1 =
         hvemPlanlegger.type === Situasjon.FAR_OG_FAR
-            ? getUttaksdagTilOgMedDato(
-                  dayjs(startdatoPeriode1)
-                      .add(antallUkerMødrekvote, 'weeks')
-                      .add(antallUkerOgDagerFellesperiodeForSøker1.uker, 'weeks')
-                      .add(antallUkerOgDagerFellesperiodeForSøker1.dager, 'days')
-                      .subtract(1, 'day')
-                      .format(ISO_DATE_FORMAT),
+            ? Uttaksdagen(dayjs(startdatoPeriode1).toDate()).leggTil(
+                  antallDagerMødrekvote + antallUkerOgDagerFellesperiodeForSøker1.totaltAntallDager - 1,
               )
-            : getUttaksdagTilOgMedDato(
-                  dayjs(startdatoPeriode1)
-                      .add(antallUkerForeldrepengerFørFødsel, 'weeks')
-                      .add(antallUkerMødrekvote, 'weeks')
-                      .add(antallUkerOgDagerFellesperiodeForSøker1.uker, 'weeks')
-                      .add(antallUkerOgDagerFellesperiodeForSøker1.dager, 'days')
-                      .subtract(1, 'day')
-                      .format(ISO_DATE_FORMAT),
+            : Uttaksdagen(dayjs(startdatoPeriode1).toDate()).leggTil(
+                  antallDagerForeldrepengerFørFødsel +
+                      antallDagerMødrekvote +
+                      antallUkerOgDagerFellesperiodeForSøker1.totaltAntallDager -
+                      1,
               );
 
     const startdatoPeriode2 = getUttaksdagFraOgMedDato(dayjs(sluttdatoPeriode1).add(1, 'day').format(ISO_DATE_FORMAT));
 
-    const sluttdatoPeriode2 = getUttaksdagTilOgMedDato(
-        dayjs(startdatoPeriode2)
-            .add(antallUkerOgDagerFellesperiodeForSøker2.uker, 'weeks')
-            .add(antallUkerOgDagerFellesperiodeForSøker2.dager, 'days')
-            .add(antallUkerFedrekvote, 'weeks')
-            .subtract(1, 'day')
-            .format(ISO_DATE_FORMAT),
+    const sluttdatoPeriode2 = Uttaksdagen(dayjs(startdatoPeriode2).toDate()).leggTil(
+        antallUkerOgDagerFellesperiodeForSøker2.totaltAntallDager + antallDagerFedrekvote - 1,
     );
 
     if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(barnet)) {
         return {
             familiehendelsedato,
-            startdatoPeriode1: startdatoPeriode1,
-            sluttdatoPeriode1: sluttdatoPeriode2,
+            startdatoPeriode1,
+            sluttdatoPeriode1: dayjs(sluttdatoPeriode2).format(ISO_DATE_FORMAT),
             startdatoPeriode2: undefined,
             sluttdatoPeriode2: undefined,
         };
@@ -196,8 +183,8 @@ const finnDeltUttaksdata = (
         familiehendelsedato,
         startdatoPeriode1,
         startdatoPeriode2,
-        sluttdatoPeriode1,
-        sluttdatoPeriode2,
+        sluttdatoPeriode1: dayjs(sluttdatoPeriode1).format(ISO_DATE_FORMAT),
+        sluttdatoPeriode2: dayjs(sluttdatoPeriode2).format(ISO_DATE_FORMAT),
     };
 };
 
@@ -210,12 +197,11 @@ const finnEnsligUttaksdata = (
     const familiehendelsedato = getFamiliehendelsedato(barnet);
 
     if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
-        const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
+        const aktivitetsfriDager = getAntallDagerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskonto);
-        const sluttAktivitetsfri = dayjs(familiehendelsedato)
-            .add(aktivitetsfriUker, 'weeks')
-            .add(erBarnetAdoptert(barnet) ? 0 : 6, 'weeks')
-            .subtract(1, 'day');
+        const sluttAktivitetsfri = Uttaksdagen(dayjs(familiehendelsedato).toDate()).leggTil(
+            aktivitetsfriDager + (erBarnetAdoptert(barnet) ? 0 : 6 * 5) - 1,
+        );
 
         const startdatoSøker1 = erBarnetAdoptert(barnet)
             ? dayjs(familiehendelsedato).add(1, 'day')
@@ -224,26 +210,22 @@ const finnEnsligUttaksdata = (
         return {
             familiehendelsedato,
             startdatoPeriode1: getUttaksdagFraOgMedDato(startdatoSøker1.format(ISO_DATE_FORMAT)),
-            sluttdatoPeriode1: getUttaksdagTilOgMedDato(sluttAktivitetsfri.format(ISO_DATE_FORMAT)),
+            sluttdatoPeriode1: getUttaksdagTilOgMedDato(dayjs(sluttAktivitetsfri).format(ISO_DATE_FORMAT)),
             startdatoPeriode2: getUttaksdagFraOgMedDato(
                 dayjs(sluttAktivitetsfri).add(1, 'day').format(ISO_DATE_FORMAT),
             ),
-            sluttdatoPeriode2: getUttaksdagTilOgMedDato(
-                dayjs(sluttAktivitetsfri)
-                    .add(aktivitetskravUkerOgDager.uker, 'weeks')
-                    .add(aktivitetskravUkerOgDager.dager, 'days')
-                    .format(ISO_DATE_FORMAT),
-            ),
+            sluttdatoPeriode2: dayjs(
+                Uttaksdagen(sluttAktivitetsfri).leggTil(aktivitetskravUkerOgDager.totaltAntallDager),
+            ).format(ISO_DATE_FORMAT),
         };
     }
 
     if (hvemHarRett === 'kunSøker2HarRett' && (erFarSøker2(hvemPlanlegger) || erMedmorDelAvSøknaden(hvemPlanlegger))) {
-        const aktivitetsfriUker = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
+        const aktivitetsfriDager = getAntallDagerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskonto);
-        const sluttAktivitetsfri = dayjs(familiehendelsedato)
-            .add(aktivitetsfriUker, 'weeks')
-            .add(erBarnetAdoptert(barnet) ? 0 : 6, 'weeks')
-            .subtract(1, 'day');
+        const sluttAktivitetsfri = Uttaksdagen(dayjs(familiehendelsedato).toDate()).leggTil(
+            aktivitetsfriDager + (erBarnetAdoptert(barnet) ? 0 : 6 * 5) - 1,
+        );
 
         const startdatoSøker1 = erBarnetAdoptert(barnet)
             ? dayjs(familiehendelsedato).add(1, 'day')
@@ -252,42 +234,33 @@ const finnEnsligUttaksdata = (
         return {
             familiehendelsedato,
             startdatoPeriode1: getUttaksdagFraOgMedDato(startdatoSøker1.format(ISO_DATE_FORMAT)),
-            sluttdatoPeriode1: getUttaksdagTilOgMedDato(sluttAktivitetsfri.format(ISO_DATE_FORMAT)),
+            sluttdatoPeriode1: getUttaksdagTilOgMedDato(dayjs(sluttAktivitetsfri).format(ISO_DATE_FORMAT)),
             startdatoPeriode2: getUttaksdagFraOgMedDato(
                 dayjs(sluttAktivitetsfri).add(1, 'day').format(ISO_DATE_FORMAT),
             ),
-            sluttdatoPeriode2: getUttaksdagTilOgMedDato(
-                dayjs(sluttAktivitetsfri)
-                    .add(aktivitetskravUkerOgDager.uker, 'weeks')
-                    .add(aktivitetskravUkerOgDager.dager, 'days')
-                    .format(ISO_DATE_FORMAT),
-            ),
+            sluttdatoPeriode2: dayjs(
+                Uttaksdagen(sluttAktivitetsfri).leggTil(aktivitetskravUkerOgDager.totaltAntallDager),
+            ).format(ISO_DATE_FORMAT),
         };
     }
 
     const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskonto);
-    const ukerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
-    const antallUkerForeldrepengerFørFødsel = getAntallUkerForeldrepengerFørFødsel(valgtStønadskonto);
+    const dagerAktivitetsfriKvote = getAntallDagerAktivitetsfriKvote(valgtStønadskonto);
+    const antallDagerForeldrepengerFørFødsel = getAntallDagerForeldrepengerFørFødsel(valgtStønadskonto);
 
     const startdatoSøker =
         erBarnetAdoptert(barnet) || hvemPlanlegger.type === Situasjon.FAR
             ? getUttaksdagFraOgMedDato(familiehendelsedato)
             : getFørsteUttaksdagForeldrepengerFørFødsel(barnet);
 
-    const sluttdatoSøker = getUttaksdagTilOgMedDato(
-        dayjs(startdatoSøker)
-            .add(aktivitetskravUkerOgDager.uker, 'weeks')
-            .add(aktivitetskravUkerOgDager.dager, 'days')
-            .add(ukerAktivitetsfriKvote, 'weeks')
-            .add(antallUkerForeldrepengerFørFødsel, 'weeks')
-            .subtract(1, 'day')
-            .format(ISO_DATE_FORMAT),
+    const sluttdatoSøker = Uttaksdagen(dayjs(startdatoSøker).toDate()).leggTil(
+        aktivitetskravUkerOgDager.totaltAntallDager + dagerAktivitetsfriKvote + antallDagerForeldrepengerFørFødsel - 1,
     );
 
     return {
         familiehendelsedato,
         startdatoPeriode1: startdatoSøker,
-        sluttdatoPeriode1: sluttdatoSøker,
+        sluttdatoPeriode1: dayjs(sluttdatoSøker).format(ISO_DATE_FORMAT),
         startdatoPeriode2: undefined,
         sluttdatoPeriode2: undefined,
     };
@@ -305,20 +278,52 @@ export const finnUttaksdata = (
         : finnEnsligUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, hvemHarRett);
 };
 
-export const weeksBetween = (date1: string, date2: string): number => {
-    const d1 = dayjs(date1).toDate();
-    const d2 = dayjs(date2).toDate();
-
-    const oneWeek = 7 * 24 * 60 * 60 * 1000; // milliseconds in one week
-    const diffInMilliseconds = Math.abs(d1.getTime() - d2.getTime());
-    return Math.round(diffInMilliseconds / oneWeek);
+export type UttakUkerOgDager = {
+    uker: number;
+    dager: number;
 };
 
-export const finnAntallUkerMedForeldrepenger = (uttaksdata: Uttaksdata) => {
-    const { startdatoPeriode1, sluttdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2 } = uttaksdata;
-    let antallUker = weeksBetween(sluttdatoPeriode1, startdatoPeriode1);
-    if (startdatoPeriode2 && sluttdatoPeriode2) {
-        antallUker += weeksBetween(sluttdatoPeriode2, startdatoPeriode2);
+//Funksjon henta fra https://stackoverflow.com/questions/3464268/find-day-difference-between-two-dates-excluding-weekend-days
+const calcBusinessDays = (startDate: Date, endDate: Date) => {
+    const oneDay = 1000 * 60 * 60 * 24;
+    //@ts-ignore
+    const d1Days = parseInt(startDate.getTime() / oneDay) - 1;
+    //@ts-ignore
+    const d2Days = parseInt(endDate.getTime() / oneDay);
+    let days = d2Days - d1Days;
+    const weeks = (d2Days - d1Days) / 7;
+    const day1 = startDate.getDay();
+    const day2 = endDate.getDay();
+    if (day1 == 0) {
+        days--;
+    } else if (day1 == 6) {
+        days -= 2;
     }
-    return antallUker;
+    if (day2 == 0) {
+        days -= 2;
+    } else if (day2 == 6) {
+        days--;
+    }
+    //@ts-ignore
+    days -= parseInt(weeks, 10) * 2;
+    return days;
+};
+
+export const findDaysAndWeeksBetween = (startDate: string, endDate: string): UttakUkerOgDager => {
+    const totalDays = calcBusinessDays(dayjs(startDate).toDate(), dayjs(endDate).toDate());
+    const weeks = Math.floor(totalDays / 5);
+    return { uker: weeks, dager: totalDays - weeks * 5 };
+};
+
+export const finnAntallUkerMedForeldrepenger = (uttaksdata: Uttaksdata): UttakUkerOgDager => {
+    const { startdatoPeriode1, sluttdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2 } = uttaksdata;
+    const antallUkerOgDager = findDaysAndWeeksBetween(startdatoPeriode1, sluttdatoPeriode1);
+    if (startdatoPeriode2 && sluttdatoPeriode2) {
+        const ukerOgDagerPeriode2 = findDaysAndWeeksBetween(startdatoPeriode2, sluttdatoPeriode2);
+        return {
+            uker: antallUkerOgDager.uker + ukerOgDagerPeriode2.uker,
+            dager: antallUkerOgDager.dager + ukerOgDagerPeriode2.dager,
+        };
+    }
+    return antallUkerOgDager;
 };
