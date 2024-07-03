@@ -153,7 +153,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser })
                     </Heading>
                     <Link
                         inlineText
-                        href={links.veiviser}
+                        href={links.hvorMye}
                         target="_blank"
                         rel="noreferrer"
                         className={styles.lenkepanel}
