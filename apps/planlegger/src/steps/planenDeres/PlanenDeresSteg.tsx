@@ -89,20 +89,8 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
         (hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett');
 
-    const uttaksdata100 = finnUttaksdata(
-        hvemHarRett,
-        hvemPlanlegger,
-        stønadskonto100,
-        barnet,
-        fordeling?.antallDagerSøker1,
-    );
-    const uttaksdata80 = finnUttaksdata(
-        hvemHarRett,
-        hvemPlanlegger,
-        stønadskonto80,
-        barnet,
-        fordeling?.antallDagerSøker1,
-    );
+    const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
+    const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, barnet);
 
     const antallUker100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
     const antallUker80 = finnAntallUkerMedForeldrepenger(uttaksdata80);
@@ -166,12 +154,16 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 <FormattedMessage
                                     id="OversiktSteg.100"
                                     values={{
-                                        uker: antallUker100,
+                                        uker: antallUker100.uker,
+                                        dager: antallUker100.dager,
                                     }}
                                 />
                             </ToggleGroup.Item>
                             <ToggleGroup.Item value={Dekningsgrad.ÅTTI_PROSENT}>
-                                <FormattedMessage id="OversiktSteg.80" values={{ uker: antallUker80 }} />
+                                <FormattedMessage
+                                    id="OversiktSteg.80"
+                                    values={{ uker: antallUker80.uker, dager: antallUker80.dager }}
+                                />
                             </ToggleGroup.Item>
                         </ToggleGroup>
                         {hvemHarRett === 'beggeHarRett' &&

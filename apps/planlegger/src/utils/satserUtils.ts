@@ -6,8 +6,16 @@ import { notEmpty } from '@navikt/fp-validation';
 
 dayjs.extend(isSameOrAfter);
 
-export const finnGrunnbeløp = (satser: Satser, dato: string | Dayjs) =>
-    notEmpty(satser.grunnbeløp.find((grunnbeløpData) => dayjs(dato).isSameOrAfter(grunnbeløpData.fom))).verdi;
+export const finnGrunnbeløp = (satser: Satser, dato: string | Dayjs) => {
+    const { grunnbeløp } = satser;
+    const aktueltGrunnbeløp = grunnbeløp.find((grunnbeløpData) => dayjs(dato).isSameOrAfter(grunnbeløpData.fom));
+    return notEmpty(aktueltGrunnbeløp).verdi;
+};
 
-export const finnEngangsstønad = (satser: Satser, dato: string | Dayjs) =>
-    notEmpty(satser.engangstønad.find((engangsstønadData) => dayjs(dato).isSameOrAfter(engangsstønadData.fom))).verdi;
+export const finnEngangsstønad = (satser: Satser, dato: string | Dayjs) => {
+    const { engangstønad } = satser;
+    const aktuellEngangsstønad = engangstønad.find((engangsstønadData) =>
+        dayjs(dato).isSameOrAfter(engangsstønadData.fom),
+    );
+    return notEmpty(aktuellEngangsstønad).verdi;
+};
