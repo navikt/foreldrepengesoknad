@@ -88,7 +88,8 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             id="OppsummeringSteg.DereValgte"
                             values={{
                                 prosent: hvorLangPeriode.dekningsgrad,
-                                antallUker: getAntallUker(valgtStønadskonto),
+                                antallUker: getAntallUkerOgDager(valgtStønadskonto).uker,
+                                antallDager: getAntallUkerOgDager(valgtStønadskonto).dager,
                                 hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
                                 hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
                                 uker: antallUkerOgDagerFellesperiodeSøker1?.uker,
