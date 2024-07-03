@@ -11,6 +11,7 @@ import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from './barnetUtils';
 import { HvemHarRett } from './hvemHarRettUtils';
 import {
+    UkerOgDager,
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerFedrekvote,
     getAntallUkerForeldrepengerFørFødsel,
@@ -305,20 +306,47 @@ export const finnUttaksdata = (
         : finnEnsligUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, hvemHarRett);
 };
 
-export const weeksBetween = (date1: string, date2: string): number => {
+export type UttakUkerOgDager = {
+    uker: number;
+    dager: number;
+};
+
+export const weeksAndDaysBetween = (date1: string, date2: string): UttakUkerOgDager => {
     const d1 = dayjs(date1).toDate();
     const d2 = dayjs(date2).toDate();
 
     const oneWeek = 7 * 24 * 60 * 60 * 1000; // milliseconds in one week
     const diffInMilliseconds = Math.abs(d1.getTime() - d2.getTime());
-    return Math.round(diffInMilliseconds / oneWeek);
+    const weeks = diffInMilliseconds / oneWeek;
+    return { uker: Math.floor(weeks), dager: weeks };
 };
 
-export const finnAntallUkerMedForeldrepenger = (uttaksdata: Uttaksdata) => {
+const findDaysAndWeeksBetween = (eDate: string, sDate: string): UttakUkerOgDager => {
+    const startDate = dayjs(sDate);
+    const endDate = dayjs(eDate);
+
+    // const oneDay = 1000 * 60 * 60 * 24;
+
+    // const start = Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+    // const end = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+
+    const daysDifference = startDate.diff(endDate, 'days');
+
+    // const numberOfDays = Math.abs((start - end) / oneDay);
+    const weeks = Math.floor(daysDifference / 7);
+
+    return { uker: weeks, dager: daysDifference - weeks * 7 };
+};
+
+export const finnAntallUkerMedForeldrepenger = (uttaksdata: Uttaksdata): UttakUkerOgDager => {
     const { startdatoPeriode1, sluttdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2 } = uttaksdata;
-    let antallUker = weeksBetween(sluttdatoPeriode1, startdatoPeriode1);
+    const antallUkerOgDager = findDaysAndWeeksBetween(sluttdatoPeriode1, startdatoPeriode1);
     if (startdatoPeriode2 && sluttdatoPeriode2) {
-        antallUker += weeksBetween(sluttdatoPeriode2, startdatoPeriode2);
+        const ukerOgDagerPeriode2 = findDaysAndWeeksBetween(sluttdatoPeriode2, startdatoPeriode2);
+        return {
+            uker: antallUkerOgDager.uker + ukerOgDagerPeriode2.uker,
+            dager: antallUkerOgDager.dager + ukerOgDagerPeriode2.dager,
+        };
     }
-    return antallUker;
+    return antallUkerOgDager;
 };

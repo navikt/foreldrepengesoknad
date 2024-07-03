@@ -9,7 +9,7 @@ import { erAlenesøker, erMorDelAvSøknaden, getFornavnPåSøker1, getFornavnPå
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerAktivitetsfriKvote, getAntallUkerOgDagerForeldrepenger } from 'utils/stønadskontoerUtils';
-import { Uttaksdata, finnUttaksdata } from 'utils/uttakUtils';
+import { UttakUkerOgDager, Uttaksdata, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
@@ -25,7 +25,7 @@ interface Props {
     uttaksdata100: Uttaksdata;
     uttaksdata80: Uttaksdata;
     valgtDekningsgrad: Dekningsgrad;
-    antallUker: number;
+    antallUker: UttakUkerOgDager;
 }
 
 const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
@@ -128,7 +128,7 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                             id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker"
                             values={{
                                 uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
-                                uker2: antallUker,
+                                uker2: antallUker.uker,
                                 b: (msg: any) => <b>{msg}</b>,
                                 hvem: getFornavnPåSøker2(hvemPlanlegger, intl),
                                 hvemPart1: getFornavnPåSøker1(hvemPlanlegger, intl),
@@ -141,7 +141,7 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                             values={{
                                 uker: getAntallUkerOgDagerForeldrepenger(valgtStønadskonto).uker,
                                 dager: getAntallUkerOgDagerForeldrepenger(valgtStønadskonto).dager,
-                                uker2: antallUker,
+                                uker2: antallUker.uker,
                                 a: (msg: any) => (
                                     <Link
                                         inlineText

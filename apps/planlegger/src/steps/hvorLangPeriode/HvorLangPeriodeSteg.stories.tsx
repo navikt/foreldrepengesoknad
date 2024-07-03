@@ -80,7 +80,7 @@ export const FlereForsørgereEttBarnKunMorHarRett: Story = {
                 kontoer: [
                     { konto: StønadskontoType.Mødrekvote, dager: 95 },
                     { konto: StønadskontoType.Fedrekvote, dager: 95 },
-                    { konto: StønadskontoType.Fellesperiode, dager: 90 },
+                    { konto: StønadskontoType.Fellesperiode, dager: 101 },
                     { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
                 ],
                 minsteretter: MINSTERETTER,
