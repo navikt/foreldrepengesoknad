@@ -37,7 +37,7 @@ describe('<HvorLangPeriodeSteg>', () => {
 
         await userEvent.click(screen.getByText('80 % utbetaling over 61 uker + 1 dag'));
 
-        expect(screen.getByText('Siste dag med foreldrepenger kan bli fredag 24. januar 2025')).toBeInTheDocument();
+        expect(screen.getByText('Siste dag med foreldrepenger kan bli mandag 10. februar 2025')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste'));
 
