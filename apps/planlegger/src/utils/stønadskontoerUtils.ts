@@ -1,6 +1,8 @@
 import { StønadskontoType } from '@navikt/fp-constants';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
+import { UttakUkerOgDager } from './uttakUtils';
+
 export type UkerOgDager = {
     uker: number;
     dager: number;
@@ -9,6 +11,19 @@ export type UkerOgDager = {
 
 export const getAntallUker = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number => {
     return Object.values(stønadskontoer.kontoer).reduce((sum: number, konto) => sum + konto.dager / 5, 0);
+};
+
+export const getAntallUkerOgDager = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): UttakUkerOgDager => {
+    return Object.values(stønadskontoer.kontoer).reduce(
+        (sum: UttakUkerOgDager, konto) => {
+            const ukerOgDager = getUkerOgDager(konto.dager);
+            return {
+                uker: sum.uker + ukerOgDager.uker,
+                dager: sum.dager + ukerOgDager.dager,
+            };
+        },
+        { uker: 0, dager: 0 },
+    );
 };
 
 const getUkerForKonto = (
@@ -32,7 +47,7 @@ export const getUkerOgDager = (totaltAntallDager: number) => {
     return { uker, dager: totaltAntallDager - uker * 5, totaltAntallDager: totaltAntallDager };
 };
 
-const getUkerOgDagerForKonto = (
+export const getUkerOgDagerForKonto = (
     stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     stønadskontoType: StønadskontoType,
 ): UkerOgDager => {
@@ -67,6 +82,10 @@ export const getAntallDagerFedrekvote = (stønadskontoer: TilgjengeligeStønadsk
 
 export const getAntallUkerAktivitetsfriKvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
     getUkerForKonto(stønadskontoer, StønadskontoType.AktivitetsfriKvote);
+
+export const getAntallUkerOgDagerAktivitetsfriKvote = (
+    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+): UkerOgDager => getUkerOgDagerForKonto(stønadskontoer, StønadskontoType.AktivitetsfriKvote);
 
 export const getAntallDagerAktivitetsfriKvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
     getDagerForKonto(stønadskontoer, StønadskontoType.AktivitetsfriKvote);

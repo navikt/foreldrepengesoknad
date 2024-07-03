@@ -17,6 +17,8 @@ import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
 import {
     getAntallUker,
     getAntallUkerAktivitetsfriKvote,
+    getAntallUkerOgDager,
+    getAntallUkerOgDagerAktivitetsfriKvote,
     getAntallUkerOgDagerFellesperiode,
     getUkerOgDager,
 } from 'utils/stønadskontoerUtils';
@@ -61,8 +63,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
     const antallUkerOgDagerFellesperiodeSøker2 = fordeling
         ? getUkerOgDager(antallDagerFellesperiode - fordeling.antallDagerSøker1)
         : undefined;
-    const antallUkerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
-    const antallUkerAktivitetskrav = getAntallUker(valgtStønadskonto) - antallUkerAktivitetsfriKvote;
+    const antallUkerOgDagerAktivitetsfriKvote = getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskonto);
 
     const uttaksperioder = lagKalenderPerioder(
         valgtStønadskonto,
@@ -185,8 +186,14 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             <FormattedMessage
                                 id="OppsummeringSteg.DereValgteAktivitetskrav"
                                 values={{
-                                    uker1: antallUkerAktivitetsfriKvote,
-                                    uker2: antallUkerAktivitetskrav,
+                                    uker1: antallUkerOgDagerAktivitetsfriKvote.uker,
+                                    dager1: antallUkerOgDagerAktivitetsfriKvote.dager,
+                                    uker2:
+                                        getAntallUkerOgDager(valgtStønadskonto).uker -
+                                        antallUkerOgDagerAktivitetsfriKvote.uker,
+                                    dager2:
+                                        getAntallUkerOgDager(valgtStønadskonto).dager -
+                                        antallUkerOgDagerAktivitetsfriKvote.dager,
                                     hvem: fornavnSøker1,
                                     prosent: hvorLangPeriode.dekningsgrad,
                                     antallUker: getAntallUker(valgtStønadskonto),

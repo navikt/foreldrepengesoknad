@@ -8,7 +8,11 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { erAlenesøker, erMorDelAvSøknaden, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { getAntallUkerAktivitetsfriKvote, getAntallUkerOgDagerForeldrepenger } from 'utils/stønadskontoerUtils';
+import {
+    getAntallUkerAktivitetsfriKvote,
+    getAntallUkerOgDagerAktivitetsfriKvote,
+    getAntallUkerOgDagerForeldrepenger,
+} from 'utils/stønadskontoerUtils';
 import { UttakUkerOgDager, Uttaksdata, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
@@ -127,8 +131,10 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker"
                             values={{
-                                uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
+                                uker: getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskonto).uker,
+                                dager: getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskonto).dager,
                                 uker2: antallUkerOgDager.uker,
+                                dager2: antallUkerOgDager.dager,
                                 b: (msg: any) => <b>{msg}</b>,
                                 hvem: getFornavnPåSøker2(hvemPlanlegger, intl),
                                 hvemPart1: getFornavnPåSøker1(hvemPlanlegger, intl),
@@ -142,6 +148,7 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                                 uker: getAntallUkerOgDagerForeldrepenger(valgtStønadskonto).uker,
                                 dager: getAntallUkerOgDagerForeldrepenger(valgtStønadskonto).dager,
                                 uker2: antallUkerOgDager.uker,
+                                dager2: antallUkerOgDager.dager,
                                 a: (msg: any) => (
                                     <Link
                                         inlineText
