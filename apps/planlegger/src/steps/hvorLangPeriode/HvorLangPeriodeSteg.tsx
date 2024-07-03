@@ -195,7 +195,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 uttaksdata100={uttaksdata100}
                                 uttaksdata80={uttaksdata80}
                                 valgtDekningsgrad={valgtDekningsgrad}
-                                antallUker={antallUkerOgDager}
+                                antallUkerOgDager={antallUkerOgDager}
                             />
                         )}
                     </VStack>

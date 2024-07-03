@@ -309,7 +309,7 @@ const calcBusinessDays = (startDate: Date, endDate: Date) => {
     return days;
 };
 
-const findDaysAndWeeksBetween = (startDate: string, endDate: string): UttakUkerOgDager => {
+export const findDaysAndWeeksBetween = (startDate: string, endDate: string): UttakUkerOgDager => {
     const totalDays = calcBusinessDays(dayjs(startDate).toDate(), dayjs(endDate).toDate());
     const weeks = Math.floor(totalDays / 5);
     return { uker: weeks, dager: totalDays - weeks * 5 };
