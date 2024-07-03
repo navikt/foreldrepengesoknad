@@ -196,7 +196,8 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                         antallUkerOgDagerAktivitetsfriKvote.dager,
                                     hvem: fornavnSøker1,
                                     prosent: hvorLangPeriode.dekningsgrad,
-                                    antallUker: getAntallUker(valgtStønadskonto),
+                                    antallUker: getAntallUkerOgDager(valgtStønadskonto).uker,
+                                    dager: getAntallUkerOgDager(valgtStønadskonto).dager,
                                 }}
                             />
                         </BodyShort>
