@@ -129,7 +129,9 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         defaultValues: fordeling,
     });
 
-    const antallDagerSøker1 = formMethods.watch('antallDagerSøker1');
+    // TODO FIX string => number
+    const antallDagerSøker1Temp = formMethods.watch('antallDagerSøker1');
+    const antallDagerSøker1 = antallDagerSøker1Temp ? parseInt(antallDagerSøker1Temp.toString(), 10) : undefined;
 
     const lagre = (formValues: Fordeling) => {
         oppdaterFordeling(formValues);
