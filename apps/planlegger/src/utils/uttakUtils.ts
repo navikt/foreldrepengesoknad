@@ -283,60 +283,47 @@ export type UttakUkerOgDager = {
     dager: number;
 };
 
-// export const weeksAndDaysBetween = (date1: string, date2: string): UttakUkerOgDager => {
-//     const d1 = dayjs(date1).toDate();
-//     const d2 = dayjs(date2).toDate();
-
-//     const oneWeek = 7 * 24 * 60 * 60 * 1000; // milliseconds in one week
-//     const diffInMilliseconds = Math.abs(d1.getTime() - d2.getTime());
-//     const weeks = diffInMilliseconds / oneWeek;
-//     return { uker: Math.floor(weeks), dager: weeks };
-// };
-
-// const findDaysAndWeeksBetween = (eDate: string, sDate: string): UttakUkerOgDager => {
-//     const startDate = dayjs(sDate);
-//     const endDate = dayjs(eDate);
-
-//     // const oneDay = 1000 * 60 * 60 * 24;
-
-//     // const start = Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
-//     // const end = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-
-//     const daysDifference = startDate.diff(endDate, 'days');
-
-//     // const numberOfDays = Math.abs((start - end) / oneDay);
-//     const weeks = Math.floor(daysDifference / 7);
-
-//     return { uker: weeks, dager: daysDifference - weeks * 7 };
-// };
-
-// export const finnAntallUkerMedForeldrepenger = (uttaksdata: Uttaksdata): UttakUkerOgDager => {
-//     const { startdatoPeriode1, sluttdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2 } = uttaksdata;
-//     const antallUkerOgDager = findDaysAndWeeksBetween(sluttdatoPeriode1, startdatoPeriode1);
-//     if (startdatoPeriode2 && sluttdatoPeriode2) {
-//         const ukerOgDagerPeriode2 = findDaysAndWeeksBetween(sluttdatoPeriode2, startdatoPeriode2);
-//         return {
-//             uker: antallUkerOgDager.uker + ukerOgDagerPeriode2.uker,
-//             dager: antallUkerOgDager.dager + ukerOgDagerPeriode2.dager,
-//         };
-//     }
-//     return antallUkerOgDager;
-// };
-
-export const weeksBetween = (date1: string, date2: string): number => {
-    const d1 = dayjs(date1).toDate();
-    const d2 = dayjs(date2).toDate();
-
-    const oneWeek = 7 * 24 * 60 * 60 * 1000; // milliseconds in one week
-    const diffInMilliseconds = Math.abs(d1.getTime() - d2.getTime());
-    return Math.round(diffInMilliseconds / oneWeek);
+//Funksjon henta fra https://stackoverflow.com/questions/3464268/find-day-difference-between-two-dates-excluding-weekend-days
+const calcBusinessDays = (startDate: Date, endDate: Date) => {
+    const oneDay = 1000 * 60 * 60 * 24;
+    //@ts-ignore
+    const d1Days = parseInt(startDate.getTime() / oneDay) - 1;
+    //@ts-ignore
+    const d2Days = parseInt(endDate.getTime() / oneDay);
+    let days = d2Days - d1Days;
+    const weeks = (d2Days - d1Days) / 7;
+    const day1 = startDate.getDay();
+    const day2 = endDate.getDay();
+    if (day1 == 0) {
+        days--;
+    } else if (day1 == 6) {
+        days -= 2;
+    }
+    if (day2 == 0) {
+        days -= 2;
+    } else if (day2 == 6) {
+        days--;
+    }
+    //@ts-ignore
+    days -= parseInt(weeks, 10) * 2;
+    return days;
 };
 
-export const finnAntallUkerMedForeldrepenger = (uttaksdata: Uttaksdata) => {
+const findDaysAndWeeksBetween = (startDate: string, endDate: string): UttakUkerOgDager => {
+    const totalDays = calcBusinessDays(dayjs(startDate).toDate(), dayjs(endDate).toDate());
+    const weeks = Math.floor(totalDays / 5);
+    return { uker: weeks, dager: totalDays - weeks * 5 };
+};
+
+export const finnAntallUkerMedForeldrepenger = (uttaksdata: Uttaksdata): UttakUkerOgDager => {
     const { startdatoPeriode1, sluttdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2 } = uttaksdata;
-    let antallUker = weeksBetween(sluttdatoPeriode1, startdatoPeriode1);
+    const antallUkerOgDager = findDaysAndWeeksBetween(startdatoPeriode1, sluttdatoPeriode1);
     if (startdatoPeriode2 && sluttdatoPeriode2) {
-        antallUker += weeksBetween(sluttdatoPeriode2, startdatoPeriode2);
+        const ukerOgDagerPeriode2 = findDaysAndWeeksBetween(startdatoPeriode2, sluttdatoPeriode2);
+        return {
+            uker: antallUkerOgDager.uker + ukerOgDagerPeriode2.uker,
+            dager: antallUkerOgDager.dager + ukerOgDagerPeriode2.dager,
+        };
     }
-    return antallUker;
+    return antallUkerOgDager;
 };
