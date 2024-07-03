@@ -203,7 +203,7 @@ const finnEnsligUttaksdata = (
         const aktivitetsfriDager = getAntallDagerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskonto);
         const sluttAktivitetsfri = Uttaksdagen(dayjs(familiehendelsedato).toDate()).leggTil(
-            aktivitetsfriDager + (erBarnetAdoptert(barnet) ? 0 : 6 * 5),
+            aktivitetsfriDager + (erBarnetAdoptert(barnet) ? 0 : 6 * 5 - 1),
         );
 
         const startdatoSøker1 = erBarnetAdoptert(barnet)
@@ -227,7 +227,7 @@ const finnEnsligUttaksdata = (
         const aktivitetsfriDager = getAntallDagerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskonto);
         const sluttAktivitetsfri = Uttaksdagen(dayjs(familiehendelsedato).toDate()).leggTil(
-            aktivitetsfriDager + (erBarnetAdoptert(barnet) ? 0 : 6 * 5),
+            aktivitetsfriDager + (erBarnetAdoptert(barnet) ? 0 : 6 * 5 - 1),
         );
 
         const startdatoSøker1 = erBarnetAdoptert(barnet)
