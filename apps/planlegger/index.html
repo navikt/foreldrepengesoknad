@@ -8,6 +8,19 @@
         <meta property="og:description" content="Svar på noen spørsmål og se hvordan din permisjon kan se ut" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script charset="UTF-8">
+            try {
+                window['adrum-start-time'] = new Date().getTime();
+                (function (config) {
+                    if (window.location.href.indexOf('https://www.nav.no/foreldrepenger/planlegger') > -1) {
+                        config.adrumExtUrlHttps = 'https://jsagent.nav.no';
+                        config.beaconUrlHttps = 'https://eumgw.nav.no';
+                        config.appKey = 'EUM-AAB-AXA';
+                        config.xd = { enable: false };
+                    }
+                })(window['adrum-config'] || (window['adrum-config'] = {}));
+            } catch {}
+        </script>
         <script src="https://jsagent.nav.no/adrum/adrum.js"></script>
         <script type="text/json" id="nav:appSettings">
             {{{APP_SETTINGS}}}
