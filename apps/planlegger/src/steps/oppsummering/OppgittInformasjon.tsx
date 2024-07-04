@@ -272,8 +272,15 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                                 uker: antallUkerOgDager.uker,
                                                 dager: antallUkerOgDager.dager,
                                                 fellesuker: antallUkerOgDagerFellesperiodeSøker1?.uker || '',
+                                                uker: erAdoptert
+                                                    ? antallUkerOgDager.uker - antallUkerOgDagerFørFødsel.uker
+                                                    : antallUkerOgDager.uker,
+                                                dager: erAdoptert
+                                                    ? antallUkerOgDager.dager - antallUkerOgDagerFørFødsel.dager
+                                                    : antallUkerOgDager.dager,
+                                                fellesuker: antallUkerOgDagerFellesperiodeSøker1?.uker || 0,
                                                 fellesdager: antallUkerOgDagerFellesperiodeSøker1?.dager || 0,
-                                                fellesuker2: antallUkerOgDagerFellesperiodeSøker2?.uker || '',
+                                                fellesuker2: antallUkerOgDagerFellesperiodeSøker2?.uker || 0,
                                                 fellesdager2: antallUkerOgDagerFellesperiodeSøker2?.dager || 0,
                                                 hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
                                                 hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
