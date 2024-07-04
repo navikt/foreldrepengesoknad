@@ -15,7 +15,6 @@ import {
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
 import {
-    getAntallUker,
     getAntallUkerOgDager,
     getAntallUkerOgDagerAktivitetsfriKvote,
     getAntallUkerOgDagerFellesperiode,
@@ -92,9 +91,9 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                 antallDager: getAntallUkerOgDager(valgtStønadskonto).dager,
                                 hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
                                 hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
-                                uker: antallUkerOgDagerFellesperiodeSøker1?.uker,
+                                uker: antallUkerOgDagerFellesperiodeSøker1?.uker || 0,
                                 dager: antallUkerOgDagerFellesperiodeSøker1?.dager || 0,
-                                uker2: antallUkerOgDagerFellesperiodeSøker2?.uker,
+                                uker2: antallUkerOgDagerFellesperiodeSøker2?.uker || 0,
                                 dager2: antallUkerOgDagerFellesperiodeSøker2?.dager || 0,
                             }}
                         />
@@ -151,7 +150,8 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                 values={{
                                     prosent: hvorLangPeriode.dekningsgrad,
                                     erAlenesøker: erAlenesøker(hvemPlanlegger),
-                                    antallUker: getAntallUker(valgtStønadskonto),
+                                    antallUker: getAntallUkerOgDager(valgtStønadskonto).uker,
+                                    antallDager: getAntallUkerOgDager(valgtStønadskonto).dager,
                                 }}
                             />
                         </BodyShort>
