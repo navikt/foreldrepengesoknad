@@ -14,10 +14,12 @@ import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
-import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
+import { DATE_3_YEARS_AGO, ISO_DATE_REGEX } from '@navikt/fp-constants/src/dates';
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { erI22SvangerskapsukeEllerSenere, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
+
+const erDatoGyldig = (date: string) => ISO_DATE_REGEX.test(date);
 
 type Props = {
     hvemPlanlegger: HvemPlanlegger;
@@ -80,7 +82,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                     />
                 </VStack>
             </BluePanel>
-            {fødselsdato !== undefined && dayjs(fødselsdato).isAfter(DATE_3_YEARS_AGO) && (
+            {fødselsdato !== undefined && erDatoGyldig(fødselsdato) && dayjs(fødselsdato).isAfter(DATE_3_YEARS_AGO) && (
                 <Infobox
                     header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}
                     icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
@@ -111,25 +113,30 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                     )}
                 </Infobox>
             )}
-            {fødselsdato !== undefined && dayjs(fødselsdato).isBefore(DATE_3_YEARS_AGO) && (
-                <Infobox
-                    header={
-                        <FormattedMessage
-                            id="ErFødtPanel.Født.InfoboksTittel.EldreEnnTreÅr"
-                            values={{ erAlenesøker, antallBarn }}
-                        />
-                    }
-                    icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" />}
-                    shouldFadeIn
-                >
-                    <BodyShort>
-                        <FormattedMessage id="ErFødtPanel.Født.InfoboksTekst.EldreEnnTreÅr" values={{ antallBarn }} />
-                    </BodyShort>
-                    <BodyShort>
-                        <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" values={{ erFar }} />
-                    </BodyShort>
-                </Infobox>
-            )}
+            {fødselsdato !== undefined &&
+                erDatoGyldig(fødselsdato) &&
+                dayjs(fødselsdato).isBefore(DATE_3_YEARS_AGO) && (
+                    <Infobox
+                        header={
+                            <FormattedMessage
+                                id="ErFødtPanel.Født.InfoboksTittel.EldreEnnTreÅr"
+                                values={{ erAlenesøker, antallBarn }}
+                            />
+                        }
+                        icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" />}
+                        shouldFadeIn
+                    >
+                        <BodyShort>
+                            <FormattedMessage
+                                id="ErFødtPanel.Født.InfoboksTekst.EldreEnnTreÅr"
+                                values={{ antallBarn }}
+                            />
+                        </BodyShort>
+                        <BodyShort>
+                            <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" values={{ erFar }} />
+                        </BodyShort>
+                    </Infobox>
+                )}
         </VStack>
     );
 };
