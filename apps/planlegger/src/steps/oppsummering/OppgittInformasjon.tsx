@@ -80,8 +80,6 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
 
     const antallUkerOgDager = getAntallUkerOgDager(valgtStønadskonto);
-    const antallUkerOgDagerFørFødsel = getAntallUkerOgDagerForeldrepengerFørFødsel(valgtStønadskonto);
-
 
     const antallUkerOgDagerFellesperiodeSøker1 = fordeling ? getUkerOgDager(fordeling.antallDagerSøker1) : undefined;
     const antallUkerOgDagerFellesperiodeSøker2 = fordeling
@@ -271,8 +269,8 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             values={{
                                                 erAlenesøker,
                                                 prosent: hvorLangPeriode.dekningsgrad,
-                                                uker: getAntallUkerOgDager(valgtStønadskonto).uker,
-                                                dager: getAntallUkerOgDager(valgtStønadskonto).dager,
+                                                uker: antallUkerOgDager.uker,
+                                                dager: antallUkerOgDager.dager,
                                                 fellesuker: antallUkerOgDagerFellesperiodeSøker1?.uker || '',
                                                 fellesdager: antallUkerOgDagerFellesperiodeSøker1?.dager || 0,
                                                 fellesuker2: antallUkerOgDagerFellesperiodeSøker2?.uker || '',
