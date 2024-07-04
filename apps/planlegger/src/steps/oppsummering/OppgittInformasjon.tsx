@@ -85,10 +85,6 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const antallUkerOgDager = getAntallUkerOgDager(valgtStønadskonto);
     const antallUkerOgDagerFørFødsel = getAntallUkerOgDagerForeldrepengerFørFødsel(valgtStønadskonto);
 
-    // const antallUkerAdopsjon = erAdoptert
-    //     ? getAntallUker(valgtStønadskonto) - getAntallUkerForeldrepengerFørFødsel(valgtStønadskonto)
-    //     : getAntallUker(valgtStønadskonto);
-
     const antallUkerOgDagerFellesperiodeSøker1 = fordeling ? getUkerOgDager(fordeling.antallDagerSøker1) : undefined;
     const antallUkerOgDagerFellesperiodeSøker2 = fordeling
         ? getUkerOgDager(antallUkerOgDagerFellesperiode.totaltAntallDager - fordeling.antallDagerSøker1)
