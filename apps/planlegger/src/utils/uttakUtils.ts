@@ -286,30 +286,16 @@ export type UttakUkerOgDager = {
     dager: number;
 };
 
-//Funksjon henta fra https://stackoverflow.com/questions/3464268/find-day-difference-between-two-dates-excluding-weekend-days
+//Funksjon henta fra https://stackoverflow.com/questions/37069186/calculate-working-days-between-two-dates-in-javascript-excepts-holidays
 const calcBusinessDays = (startDate: Date, endDate: Date) => {
-    const oneDay = 1000 * 60 * 60 * 24;
-    //@ts-ignore
-    const d1Days = parseInt(startDate.getTime() / oneDay) - 1;
-    //@ts-ignore
-    const d2Days = parseInt(endDate.getTime() / oneDay);
-    let days = d2Days - d1Days;
-    const weeks = (d2Days - d1Days) / 7;
-    const day1 = startDate.getDay();
-    const day2 = endDate.getDay();
-    if (day1 == 0) {
-        days--;
-    } else if (day1 == 6) {
-        days -= 2;
+    let count = 0;
+    const curDate = new Date(startDate.getTime());
+    while (curDate <= endDate) {
+        const dayOfWeek = curDate.getDay();
+        if (dayOfWeek !== 0 && dayOfWeek !== 6) count++;
+        curDate.setDate(curDate.getDate() + 1);
     }
-    if (day2 == 0) {
-        days -= 2;
-    } else if (day2 == 6) {
-        days--;
-    }
-    //@ts-ignore
-    days -= parseInt(weeks, 10) * 2;
-    return days;
+    return count;
 };
 
 export const findDaysAndWeeksBetween = (startDate: string, endDate: string): UttakUkerOgDager => {

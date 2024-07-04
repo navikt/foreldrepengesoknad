@@ -91,9 +91,9 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                 antallDager: getAntallUkerOgDager(valgtStønadskonto).dager,
                                 hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
                                 hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
-                                uker: antallUkerOgDagerFellesperiodeSøker1?.uker,
+                                uker: antallUkerOgDagerFellesperiodeSøker1?.uker || 0,
                                 dager: antallUkerOgDagerFellesperiodeSøker1?.dager || 0,
-                                uker2: antallUkerOgDagerFellesperiodeSøker2?.uker,
+                                uker2: antallUkerOgDagerFellesperiodeSøker2?.uker || 0,
                                 dager2: antallUkerOgDagerFellesperiodeSøker2?.dager || 0,
                             }}
                         />
