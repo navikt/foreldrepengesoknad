@@ -147,7 +147,7 @@
     "OppsummeringSteg.InformasjonPlanleggerErUnderUtvikling": "Planleggeren er under utvikling og vil få mer funksjonalitet snart! Dersom man ønsker å planlegge mer i detalj og flytte og endre på perioder, kan man bruke <a>søknaden om foreldrepenger</a>.",
     "OppsummeringSteg.Perioden": "Perioden med foreldrepenger",
     "OppsummeringSteg.DereValgte": "Dere valgte {prosent} % i {antallUker} uker{antallDager, select, 0 {} 1 { + {antallDager} dag } other { + {antallDager} dager }} og fordeler fellesperioden med {uker} uker {dager, select, 0 {} 1 {+ {dager} dag } other {+ {dager} dager }}til {hvem} og {uker2} uker{dager2, select, 0 {} 1 { + {dager2} dag} other { + {dager2} dager}} til {hvem2}.",
-    "OppsummeringSteg.DereValgteFedreEllerAlene": "{erAlenesøker, select, true {Du} other {Dere}} valgte {prosent} % i {antallUker} uker {antallDager, select, 0 {} 1 {og {antallDager} dag} other {og {antallDager} dager}}.",
+    "OppsummeringSteg.DereValgteFedreEllerAlene": "{erAlenesøker, select, true {Du} other {Dere}} valgte {prosent} % i {antallUker} uker{antallDager, select, 0 {} 1 { og {antallDager} dag} other { og {antallDager} dager}}.",
     "OppsummeringSteg.DereValgteAktivitetskrav": "Dere valgte {prosent} % i {antallUker} uker {dager, select, 0 {} 1 {og {dager} dag } other {og {dager} dager }}, hvor {uker1} uker {dager1, select, 0 {} 1 {og {dager1} dag } other {og {dager1} dager }} er uten aktivitetskrav til {hvem} og {uker2} uker {dager2, select, 0 {} 1 {og {dager2} dag } other {og {dagerS2} dager }} er med aktivitetskrav.",
     "OppsummeringSteg.Periodene": "<b>{hvem} periode:</b> {fom} – {tom}",
     "OppsummeringSteg.Periode": "<b>Periode:</b> {fom} – {tom}",
