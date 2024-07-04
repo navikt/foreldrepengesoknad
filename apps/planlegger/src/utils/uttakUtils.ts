@@ -318,7 +318,7 @@ export const findDaysAndWeeksBetween = (startDate: string, endDate: string): Utt
     return { uker: weeks, dager: totalDays - weeks * 5 };
 };
 
-export const finnAntallUkerMedForeldrepenger = (uttaksdata: Uttaksdata): UttakUkerOgDager => {
+export const finnAntallUkerOgDagerMedForeldrepenger = (uttaksdata: Uttaksdata): UttakUkerOgDager => {
     const { startdatoPeriode1, sluttdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2 } = uttaksdata;
     const antallUkerOgDager = findDaysAndWeeksBetween(startdatoPeriode1, sluttdatoPeriode1);
     if (startdatoPeriode2 && sluttdatoPeriode2) {

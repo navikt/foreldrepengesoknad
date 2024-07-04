@@ -14,7 +14,7 @@ import { Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { erAlenesøker as erAlene, getTekstForDeSomHarRett } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
+import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
@@ -81,8 +81,8 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, barnet);
 
-    const antallUkerOgDager100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
-    const antallUkerOgDager80 = finnAntallUkerMedForeldrepenger(uttaksdata80);
+    const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata100);
+    const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata80);
     const antallUkerOgDager =
         valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? antallUkerOgDager100 : antallUkerOgDager80;
 

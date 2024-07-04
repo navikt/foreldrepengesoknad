@@ -144,7 +144,6 @@
     "OppsummeringSteg.Infoboks.BasertPåSvarene": "Based on the answers {erAleneforsørger, select, true {your answers indicate you do not have} other {your answers indicate none of you have}} the right to parental benefits.",
     "OppsummeringSteg.Infoboks.Engangsstønad": "You may be entitled to a lump-sum grant, which is a one-time payment. You can find out in ",
     "OppsummeringSteg.Infoboks.Engangsstønad.Link": "the guide “Parental benefits or lump-sum grant”.",
-    "OppsummeringSteg.InformasjonPlanleggerErUnderUtviklingIkkeRett": "The planner is under development and will soon have more functionality!",
     "OppsummeringSteg.InformasjonPlanleggerErUnderUtvikling": "The planner is under development and will soon have more functionality! If you wish to plan more in detail and move and change periods, you can use <a>the application for parental benefits</a>.",
     "OppsummeringSteg.Perioden": "Parental benefit period",
     "OppsummeringSteg.DereValgte": "You chose {prosent} % over {antallUker} weeks with the distribution of the joint period with {uker} weeks {dager, select, 0 {} other {and {dager} days }}for {hvem} and {uker2} weeks {dager, select, 0 {} other {and {dager} days }}for {hvem2}.",
