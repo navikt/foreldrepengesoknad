@@ -68,6 +68,10 @@ export const getAntallDagerForeldrepengerFørFødsel = (
     stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
 ): number => getDagerForKonto(stønadskontoer, StønadskontoType.ForeldrepengerFørFødsel);
 
+export const getAntallUkerOgDagerForeldrepengerFørFødsel = (
+    stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
+): UkerOgDager => getUkerOgDagerForKonto(stønadskontoer, StønadskontoType.ForeldrepengerFørFødsel);
+
 export const getAntallUkerMødrekvote = (stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad): number =>
     getUkerForKonto(stønadskontoer, StønadskontoType.Mødrekvote);
 

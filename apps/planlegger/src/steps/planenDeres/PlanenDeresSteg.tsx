@@ -17,7 +17,7 @@ import { erAlenesøker, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
-import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
+import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
@@ -92,8 +92,8 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, barnet);
 
-    const antallUker100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
-    const antallUker80 = finnAntallUkerMedForeldrepenger(uttaksdata80);
+    const antallUker100 = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata100);
+    const antallUker80 = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata80);
 
     const erAleneforsørger = erAlenesøker(hvemPlanlegger);
 

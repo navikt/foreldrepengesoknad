@@ -13,7 +13,9 @@ import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 import {
     getAntallUker,
     getAntallUkerForeldrepengerFørFødsel,
+    getAntallUkerOgDager,
     getAntallUkerOgDagerFellesperiode,
+    getAntallUkerOgDagerForeldrepengerFørFødsel,
     getUkerOgDager,
 } from 'utils/stønadskontoerUtils';
 
@@ -82,11 +84,12 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
 
     const valgtStønadskonto = stønadskontoer[hvorLangPeriode.dekningsgrad];
     const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
-    const antallUker = getAntallUker(valgtStønadskonto);
+    const antallUkerOgDager = getAntallUkerOgDager(valgtStønadskonto);
+    const antallUkerOgDagerFørFødsel = getAntallUkerOgDagerForeldrepengerFørFødsel(valgtStønadskonto);
 
-    const antallUkerAdopsjon = erAdoptert
-        ? getAntallUker(valgtStønadskonto) - getAntallUkerForeldrepengerFørFødsel(valgtStønadskonto)
-        : getAntallUker(valgtStønadskonto);
+    // const antallUkerAdopsjon = erAdoptert
+    //     ? getAntallUker(valgtStønadskonto) - getAntallUkerForeldrepengerFørFødsel(valgtStønadskonto)
+    //     : getAntallUker(valgtStønadskonto);
 
     const antallUkerOgDagerFellesperiodeSøker1 = fordeling ? getUkerOgDager(fordeling.antallDagerSøker1) : undefined;
     const antallUkerOgDagerFellesperiodeSøker2 = fordeling
@@ -278,7 +281,12 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             values={{
                                                 erAlenesøker,
                                                 prosent: hvorLangPeriode.dekningsgrad,
-                                                uker: erAdoptert ? antallUkerAdopsjon : antallUker,
+                                                uker: erAdoptert
+                                                    ? antallUkerOgDager.uker - antallUkerOgDagerFørFødsel.uker
+                                                    : antallUkerOgDager.uker,
+                                                dager: erAdoptert
+                                                    ? antallUkerOgDager.dager - antallUkerOgDagerFørFødsel.dager
+                                                    : antallUkerOgDager.dager,
                                                 fellesuker: antallUkerOgDagerFellesperiodeSøker1?.uker || '',
                                                 fellesdager: antallUkerOgDagerFellesperiodeSøker1?.dager || 0,
                                                 fellesuker2: antallUkerOgDagerFellesperiodeSøker2?.uker || '',
@@ -295,7 +303,12 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             values={{
                                                 erAlenesøker,
                                                 prosent: hvorLangPeriode.dekningsgrad,
-                                                uker: erAdoptert ? antallUkerAdopsjon : antallUker,
+                                                uker: erAdoptert
+                                                    ? antallUkerOgDager.uker - antallUkerOgDagerFørFødsel.uker
+                                                    : antallUkerOgDager.uker,
+                                                dager: erAdoptert
+                                                    ? antallUkerOgDager.dager - antallUkerOgDagerFørFødsel.dager
+                                                    : antallUkerOgDager.dager,
                                             }}
                                         />
                                     )}

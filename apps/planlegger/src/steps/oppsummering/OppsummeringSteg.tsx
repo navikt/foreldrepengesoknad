@@ -57,11 +57,9 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser })
             <OppsummeringHeader>
                 <VStack gap="10">
                     <VStack gap="5">
-                        <Alert variant="info">
-                            <BodyShort>
-                                {!harRettTilForeldrepenger ? (
-                                    <FormattedMessage id="OppsummeringSteg.InformasjonPlanleggerErUnderUtviklingIkkeRett" />
-                                ) : (
+                        {harRettTilForeldrepenger && (
+                            <Alert variant="info">
+                                <BodyShort>
                                     <FormattedMessage
                                         id="OppsummeringSteg.InformasjonPlanleggerErUnderUtvikling"
                                         values={{
@@ -78,9 +76,9 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser })
                                             ),
                                         }}
                                     />
-                                )}
-                            </BodyShort>
-                        </Alert>
+                                </BodyShort>
+                            </Alert>
+                        )}
                         {!harRettTilForeldrepenger && (
                             <VStack gap="5">
                                 <Infobox

@@ -144,7 +144,6 @@
     "OppsummeringSteg.Infoboks.BasertPåSvarene": "Basert på svarene {erAleneforsørger, select, true {dine indikerer du ikkje har} other {dykkar indikerer at ingen av dykk har}} rett på foreldrepengar.",
     "OppsummeringSteg.Infoboks.Engangsstønad": "Ein kan ha rett til eingongsstønad, som er ein eingongsutbetaling. Dette kan ein finne ut i ",
     "OppsummeringSteg.Infoboks.Engangsstønad.Link": "vegvisaren “Foreldrepenger eller engangsstønad”.",
-    "OppsummeringSteg.InformasjonPlanleggerErUnderUtviklingIkkeRett": "Planleggjaren er under utvikling og vil snart få meir funksjonalitet!",
     "OppsummeringSteg.InformasjonPlanleggerErUnderUtvikling": "Planleggjaren er under utvikling og vil snart få meir funksjonalitet! Om ein ønskjer å planlegge meir i detalj og flytte og endre på periodar, kan ein bruke <a>søknaden om foreldrepengar</a>.",
     "OppsummeringSteg.Perioden": "Perioden med foreldrepengar",
     "OppsummeringSteg.DereValgte": "De valde {prosent} % i {antallUker} veker og fordelar fellesperioden med {uker} veker {dager, select, 0 {} other {og {dager} dagar }}til {hvem} og {uker2} veker {dager, select, 0 {} other {og {dager} dagar }}til {hvem2}.",
