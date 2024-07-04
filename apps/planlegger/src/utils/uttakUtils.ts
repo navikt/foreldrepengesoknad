@@ -287,29 +287,31 @@ export type UttakUkerOgDager = {
 };
 
 //Funksjon henta fra https://stackoverflow.com/questions/3464268/find-day-difference-between-two-dates-excluding-weekend-days
-const calcBusinessDays = (startDate: Date, endDate: Date) => {
-    const oneDay = 1000 * 60 * 60 * 24;
-    //@ts-ignore
-    const d1Days = parseInt(startDate.getTime() / oneDay) - 1;
-    //@ts-ignore
-    const d2Days = parseInt(endDate.getTime() / oneDay);
-    let days = d2Days - d1Days;
-    const weeks = (d2Days - d1Days) / 7;
-    const day1 = startDate.getDay();
-    const day2 = endDate.getDay();
-    if (day1 == 0) {
-        days--;
-    } else if (day1 == 6) {
-        days -= 2;
+const calcBusinessDays = (dateFrom: Date, dateTo: Date) => {
+    var dateDiff;
+    if (dateTo < dateFrom) return -1; // error code if dates transposed
+    var dateFromDayOrig = dateFrom.getDay(); // day of week
+    var dateToDayOrig = dateTo.getDay();
+    var dateFromDay = dateFromDayOrig == 0 ? 7 : dateFromDayOrig; // change Sunday from 0 to 7
+    var dateToDay = dateToDayOrig == 0 ? 7 : dateToDayOrig;
+    dateFromDay = dateFromDay > 5 ? 5 : dateFromDay; // only count weekdays
+    dateToDay = dateToDay > 5 ? 5 : dateToDay;
+
+    // calculate differnece in weeks (1000mS * 60sec * 60min * 24hrs * 7 days = 604800000)
+    var weekDifference = Math.floor((dateTo.getTime() - dateFrom.getTime()) / 604800000);
+
+    if (dateFromDay <= dateToDay) {
+        dateDiff = weekDifference * 5 + (dateToDay - dateFromDay);
+    } else {
+        dateDiff = (weekDifference + 1) * 5 - (dateFromDay - dateToDay);
     }
-    if (day2 == 0) {
-        days -= 2;
-    } else if (day2 == 6) {
-        days--;
+
+    // fix: remove one day if it's saturday or sunday
+    if (dateFromDayOrig >= 6 || dateFromDayOrig == 0) {
+        dateDiff--;
     }
-    //@ts-ignore
-    days -= parseInt(weeks, 10) * 2;
-    return days;
+
+    return dateDiff + 1;
 };
 
 export const findDaysAndWeeksBetween = (startDate: string, endDate: string): UttakUkerOgDager => {
