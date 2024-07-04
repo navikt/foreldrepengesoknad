@@ -288,17 +288,19 @@ export type UttakUkerOgDager = {
 
 //Funksjon henta fra https://stackoverflow.com/questions/3464268/find-day-difference-between-two-dates-excluding-weekend-days
 const calcBusinessDays = (dateFrom: Date, dateTo: Date) => {
-    var dateDiff;
-    if (dateTo < dateFrom) return -1; // error code if dates transposed
-    var dateFromDayOrig = dateFrom.getDay(); // day of week
-    var dateToDayOrig = dateTo.getDay();
-    var dateFromDay = dateFromDayOrig == 0 ? 7 : dateFromDayOrig; // change Sunday from 0 to 7
-    var dateToDay = dateToDayOrig == 0 ? 7 : dateToDayOrig;
+    let dateDiff;
+    if (dateTo < dateFrom) {
+        return -1; // error code if dates transposed
+    }
+    const dateFromDayOrig = dateFrom.getDay(); // day of week
+    const dateToDayOrig = dateTo.getDay();
+    let dateFromDay = dateFromDayOrig == 0 ? 7 : dateFromDayOrig; // change Sunday from 0 to 7
+    let dateToDay = dateToDayOrig == 0 ? 7 : dateToDayOrig;
     dateFromDay = dateFromDay > 5 ? 5 : dateFromDay; // only count weekdays
     dateToDay = dateToDay > 5 ? 5 : dateToDay;
 
     // calculate differnece in weeks (1000mS * 60sec * 60min * 24hrs * 7 days = 604800000)
-    var weekDifference = Math.floor((dateTo.getTime() - dateFrom.getTime()) / 604800000);
+    const weekDifference = Math.floor((dateTo.getTime() - dateFrom.getTime()) / 604800000);
 
     if (dateFromDay <= dateToDay) {
         dateDiff = weekDifference * 5 + (dateToDay - dateFromDay);
