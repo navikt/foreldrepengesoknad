@@ -146,7 +146,7 @@
     "OppsummeringSteg.InformasjonPlanleggerErUnderUtvikling": "The planner is under development and will soon have more functionality! If you wish to plan more in detail and move and change periods, you can use <a>the application for parental benefits</a>.",
     "OppsummeringSteg.Perioden": "Parental benefit period",
     "OppsummeringSteg.DereValgte": "You chose {prosent} % over {antallUker} weeks with the distribution of the joint period with {uker} weeks {dager, select, 0 {} other {and {dager} days }}for {hvem} and {uker2} weeks {dager, select, 0 {} other {and {dager} days }}for {hvem2}.",
-    "OppsummeringSteg.DereValgteFedreEllerAlene": "You chose {prosent} % for {antallUker} weeks.",
+    "OppsummeringSteg.DereValgteFedreEllerAlene": "You chose {prosent} % for {antallUker} weeks{antallDager, select, 0 {} 1 { + {antallDager} day } other { + {antallDager} days }}.",
     "OppsummeringSteg.DereValgteAktivitetskrav": "You chose {prosent} % for {antallUker} weeks, where {uker1} weeks are without activity requirements for {hvem} and {uker2} weeks is with activity requirements.",
     "OppsummeringSteg.Periodene": "<b>{hvem} period:</b> {fom} – {tom}",
     "OppsummeringSteg.Periode": "<b>Periode:</b> {fom} – {tom}",

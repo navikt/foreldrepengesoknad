@@ -146,7 +146,7 @@
     "OppsummeringSteg.InformasjonPlanleggerErUnderUtvikling": "Planleggjaren er under utvikling og vil snart få meir funksjonalitet! Om ein ønskjer å planlegge meir i detalj og flytte og endre på periodar, kan ein bruke <a>søknaden om foreldrepengar</a>.",
     "OppsummeringSteg.Perioden": "Perioden med foreldrepengar",
     "OppsummeringSteg.DereValgte": "De valde {prosent} % i {antallUker} veker og fordelar fellesperioden med {uker} veker {dager, select, 0 {} other {og {dager} dagar }}til {hvem} og {uker2} veker {dager, select, 0 {} other {og {dager} dagar }}til {hvem2}.",
-    "OppsummeringSteg.DereValgteFedreEllerAlene": "{erAlenesøker, select, true {Du} other {De}} valde {prosent} % i {antallUker} veker.",
+    "OppsummeringSteg.DereValgteFedreEllerAlene": "{erAlenesøker, select, true {Du} other {De}} valde {prosent} % i {antallUker} veker{antallDager, select, 0 {} 1 { + {antallDager} dag } other { + {antallDager} dager }}.",
     "OppsummeringSteg.DereValgteAktivitetskrav": "De valde {prosent} % i {antallUker} veker, der {uker1} veker er utan aktivitetskrav til {hvem} og {uker2} veker er med aktivitetskrav.",
     "OppsummeringSteg.Periodene": "<b>{hvem} periode:</b> {fom} – {tom}",
     "OppsummeringSteg.Periode": "<b>Periode:</b> {fom} – {tom}",

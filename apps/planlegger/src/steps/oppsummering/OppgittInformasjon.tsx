@@ -4,19 +4,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
-import { HvemPlanlegger } from 'types/HvemPlanlegger';
+import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { erAlenesøker as erAlene, erFarOgFar, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
-import {
-    getAntallUkerOgDager,
-    getAntallUkerOgDagerFellesperiode,
-    getAntallUkerOgDagerForeldrepengerFørFødsel,
-    getUkerOgDager,
-} from 'utils/stønadskontoerUtils';
-import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
+import { getAntallUkerOgDager, getAntallUkerOgDagerFellesperiode, getUkerOgDager } from 'utils/stønadskontoerUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
@@ -83,41 +77,14 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const valgtStønadskonto = stønadskontoer[hvorLangPeriode.dekningsgrad];
-
-<<<<<<< Updated upstream
-    const uttaksdata = finnUttaksdata(
-        hvemHarRett,
-        hvemPlanlegger,
-        valgtStønadskonto,
-        barnet,
-        fordeling?.antallUkerSøker1,
-    );
-
-    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
-    const antallUker = finnAntallUkerMedForeldrepenger(uttaksdata);
-=======
     const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
-    const antallUker = getAntallUker(valgtStønadskonto);
-    console.log('antallUker', antallUker);
->>>>>>> Stashed changes
 
-    // const antallUkerAdopsjon = erAdoptert
-    //     ? getAntallUker(valgtStønadskonto) - getAntallUkerForeldrepengerFørFødsel(valgtStønadskonto)
-    //     : getAntallUker(valgtStønadskonto);
-
-<<<<<<< Updated upstream
-    const antallUkerFellesperiodeSøker1 = fordeling ? fordeling.antallUkerSøker1 : '';
-    const antallUkerFellesperiodeSøker2 = fordeling ? antallUkerFellesperiode - fordeling.antallUkerSøker1 : '';
-
-    const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdoptert;
-=======
     const antallUkerOgDagerFellesperiodeSøker1 = fordeling ? getUkerOgDager(fordeling.antallDagerSøker1) : undefined;
     const antallUkerOgDagerFellesperiodeSøker2 = fordeling
         ? getUkerOgDager(antallUkerOgDagerFellesperiode.totaltAntallDager - fordeling.antallDagerSøker1)
         : undefined;
 
-    const erFarOgFarFødsel = erFedre && !erAdoptert;
->>>>>>> Stashed changes
+    const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdoptert;
 
     const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2);
 
@@ -136,9 +103,6 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
                     <VStack gap="2">
-<<<<<<< Updated upstream
-                        <GreenPanel>
-                    <VStack gap="10">
                         <BluePanel>
                             <>
                                 <Heading size="small" level="4">
@@ -303,12 +267,8 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             values={{
                                                 erAlenesøker,
                                                 prosent: hvorLangPeriode.dekningsgrad,
-                                                uker: erAdoptert
-                                                    ? antallUkerOgDager.uker - antallUkerOgDagerFørFødsel.uker
-                                                    : antallUkerOgDager.uker,
-                                                dager: erAdoptert
-                                                    ? antallUkerOgDager.dager - antallUkerOgDagerFørFødsel.dager
-                                                    : antallUkerOgDager.dager,
+                                                uker: getAntallUkerOgDager(valgtStønadskonto).uker,
+                                                dager: getAntallUkerOgDager(valgtStønadskonto).dager,
                                                 fellesuker: antallUkerOgDagerFellesperiodeSøker1?.uker || '',
                                                 fellesdager: antallUkerOgDagerFellesperiodeSøker1?.dager || 0,
                                                 fellesuker2: antallUkerOgDagerFellesperiodeSøker2?.uker || '',
@@ -325,12 +285,8 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             values={{
                                                 erAlenesøker,
                                                 prosent: hvorLangPeriode.dekningsgrad,
-                                                uker: erAdoptert
-                                                    ? antallUkerOgDager.uker - antallUkerOgDagerFørFødsel.uker
-                                                    : antallUkerOgDager.uker,
-                                                dager: erAdoptert
-                                                    ? antallUkerOgDager.dager - antallUkerOgDagerFørFødsel.dager
-                                                    : antallUkerOgDager.dager,
+                                                uker: getAntallUkerOgDager(valgtStønadskonto).uker,
+                                                dager: getAntallUkerOgDager(valgtStønadskonto).dager,
                                             }}
                                         />
                                     )}

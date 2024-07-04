@@ -15,7 +15,6 @@ import {
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
 import {
-    getAntallUker,
     getAntallUkerOgDager,
     getAntallUkerOgDagerAktivitetsfriKvote,
     getAntallUkerOgDagerFellesperiode,
@@ -151,7 +150,8 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                 values={{
                                     prosent: hvorLangPeriode.dekningsgrad,
                                     erAlenesøker: erAlenesøker(hvemPlanlegger),
-                                    antallUker: finnAntallUkerMedForeldrepenger(uttaksdata),
+                                    antallUker: getAntallUkerOgDager(valgtStønadskonto).uker,
+                                    antallDager: getAntallUkerOgDager(valgtStønadskonto).dager,
                                 }}
                             />
                         </BodyShort>
