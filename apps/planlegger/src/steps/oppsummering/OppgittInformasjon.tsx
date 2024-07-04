@@ -11,8 +11,6 @@ import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 import {
-    getAntallUker,
-    getAntallUkerForeldrepengerFørFødsel,
     getAntallUkerOgDager,
     getAntallUkerOgDagerFellesperiode,
     getAntallUkerOgDagerForeldrepengerFørFødsel,
