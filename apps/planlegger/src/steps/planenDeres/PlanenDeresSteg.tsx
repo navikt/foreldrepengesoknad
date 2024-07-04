@@ -122,7 +122,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         icon={<InformationIcon height={24} width={24} fontSize="1-5rem" aria-hidden />}
                     >
                         <BodyLong>
-                            <FormattedMessage id="OversiktSteg.Infoboks.Utkast.Tekst" values={{ erAleneforsørger }} />
+                            <FormattedMessage id="OversiktSteg.Infoboks.Utkast.Tekst" />
                         </BodyLong>
                     </Infobox>
                     {farOgFarKunEnPartHarRett && barnet.erFødsel && (

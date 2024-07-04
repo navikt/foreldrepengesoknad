@@ -5,11 +5,15 @@ import { BodyShort, Box, Button, Heading, VStack } from '@navikt/ds-react';
 
 import ContentWrapper from '../contentWrapper/ContentWrapper';
 
-const retryCallback = async () => {
+const defaultRetryCallback = async () => {
     window.location.href = window.location.origin;
 };
 
-const SimpleErrorPage: React.FunctionComponent = () => (
+interface Props {
+    retryCallback?: () => void;
+}
+
+const SimpleErrorPage: React.FunctionComponent<Props> = ({ retryCallback }) => (
     <ContentWrapper>
         <Box background="surface-alt-3-subtle" borderRadius="large" padding="6">
             <VStack gap="16">
@@ -24,7 +28,7 @@ const SimpleErrorPage: React.FunctionComponent = () => (
                         </BodyShort>
                     </VStack>
                 </VStack>
-                <Button onClick={retryCallback}>
+                <Button onClick={retryCallback || defaultRetryCallback}>
                     <FormattedMessage id="SimpleErrorPage.TryAgain" />
                 </Button>
             </VStack>

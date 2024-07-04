@@ -1,5 +1,4 @@
 import { ChatElipsisIcon } from '@navikt/aksel-icons';
-import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
@@ -10,7 +9,7 @@ import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { erAlenesøker as erAlene, erFarOgFar, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { finnGrunnbeløp } from 'utils/satserUtils';
+import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 import {
     getAntallUker,
     getAntallUkerForeldrepengerFørFødsel,
@@ -98,7 +97,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
 
     const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdoptert;
 
-    const minsteInntekt = formatCurrencyWithKr(finnGrunnbeløp(satser, dayjs()) / 2);
+    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2);
 
     return (
         <VStack gap="10">

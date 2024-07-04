@@ -109,7 +109,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 <FormattedMessage
                                     id="HvorLangPeriodeSteg.Infoboks.HvorLangPeriodeTekst"
                                     values={{
-                                        kunEnPartSkalHa: erAlenesøker || hvemHarRett === 'ingenHarRett',
+                                        beggeHarRett: hvemHarRett === 'beggeHarRett',
                                         uker100: antallUkerOgDager100.uker,
                                         dager100: antallUkerOgDager100.dager,
                                         uker80: antallUkerOgDager80.uker,

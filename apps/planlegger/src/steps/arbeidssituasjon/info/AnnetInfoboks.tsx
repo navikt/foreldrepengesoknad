@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { finnGrunnbeløp } from 'utils/satserUtils';
+import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Link } from '@navikt/ds-react';
 
@@ -37,7 +37,7 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
             <BodyShort>
                 <FormattedMessage
                     id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett"
-                    values={{ minsteInntekt: formatCurrencyWithKr(finnGrunnbeløp(satser, dayjs()) / 2) }}
+                    values={{ minsteInntekt: formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2) }}
                 />
             </BodyShort>
             {!erSøker2 && !erFarOgFar && (

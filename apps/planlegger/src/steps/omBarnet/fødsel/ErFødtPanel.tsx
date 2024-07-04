@@ -35,7 +35,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnet>();
-    const erFødselsdato = formMethods.watch('fødselsdato');
+    const fødselsdato = formMethods.watch('fødselsdato');
 
     const erAlenesøker = erAlene(hvemPlanlegger);
     const erFar = hvemPlanlegger.type !== Situasjon.MOR;
@@ -80,7 +80,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                     />
                 </VStack>
             </BluePanel>
-            {erFødselsdato !== undefined && dayjs(erFødselsdato).isAfter(DATE_3_YEARS_AGO) && (
+            {fødselsdato !== undefined && dayjs(fødselsdato).isAfter(DATE_3_YEARS_AGO) && (
                 <Infobox
                     header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}
                     icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
@@ -111,7 +111,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                     )}
                 </Infobox>
             )}
-            {erFødselsdato !== undefined && dayjs(erFødselsdato).isBefore(DATE_3_YEARS_AGO) && (
+            {fødselsdato !== undefined && dayjs(fødselsdato).isBefore(DATE_3_YEARS_AGO) && (
                 <Infobox
                     header={
                         <FormattedMessage
