@@ -84,8 +84,8 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Espens uker uten krav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Espens uker med krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -114,8 +114,8 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Espens uker uten krav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Espens uker med krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -198,8 +198,8 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Helgas uker uten krav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Helgas uker med krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -228,8 +228,8 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Helgas uker uten krav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Helgas uker med krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -337,8 +337,8 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Espens uker uten krav til Anders')).toBeInTheDocument();
-        expect(screen.getByText('Espens uker med krav til Anders')).toBeInTheDocument();
+        expect(screen.getByText('Uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -367,8 +367,8 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(screen.getByText('80 % i 48 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText("Anders' uker uten krav til Espen")).toBeInTheDocument();
-        expect(screen.getByText("Anders' uker med krav til Espen")).toBeInTheDocument();
+        expect(screen.getByText('Uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Omsorgsovertakelse')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');

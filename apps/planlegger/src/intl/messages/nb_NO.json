@@ -185,8 +185,6 @@
     "OversiktSteg.UkerForeldrepengerSlutter": "{hvem}, {uker} uker {dager, select, 0 {} 1 {+ {dager} dag} other {+ {dager} dager}}, slutter {dato}",
     "OversiktSteg.PeriodeSrOnly": "{hvem}, starter {startdato}, slutter {sluttdato} ",
     "OversiktSteg.ForeldrepengerSrOnly": "Foreldrepenger starter {startdato}, slutter {sluttdato} ",
-    "OversiktSteg.UkerUtenAktivitetskrav": "{hvem} uker uten krav til {hvemPart2}",
-    "OversiktSteg.UkerMedAktivitetskrav": "{hvem} uker med krav til {hvemPart2}",
     "OversiktSteg.UtenAktivitetskrav": "Uten aktivitetskrav",
     "OversiktSteg.MedAktivitetskrav": "Med aktivitetskrav",
     "FamiliehendelseLabel.Termindato": "Termin",

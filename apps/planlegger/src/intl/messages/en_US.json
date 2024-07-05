@@ -185,8 +185,6 @@
     "OversiktSteg.UkerForeldrepengerSlutter": "{hvem}, {uker} weeks {dager, select, 0 {} 1 {+ {dager} day} other {+ {dager} days}}, ending {dato}",
     "OversiktSteg.PeriodeSrOnly": "{hvem}, starts {startdato}, ends {sluttdato} ",
     "OversiktSteg.ForeldrepengerSrOnly": "Parental benefit starts {startdato}, ends {sluttdato} ",
-    "OversiktSteg.UkerUtenAktivitetskrav": "{hvem} weeks without requirements for {hvemPart2}",
-    "OversiktSteg.UkerMedAktivitetskrav": "{hvem} weeks with requirements for {hvemPart2}",
     "OversiktSteg.UtenAktivitetskrav": "Without requirements",
     "OversiktSteg.MedAktivitetskrav": "With requirements",
     "FamiliehendelseLabel.Termindato": "Due date",
