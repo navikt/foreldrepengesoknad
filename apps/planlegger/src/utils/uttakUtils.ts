@@ -202,7 +202,8 @@ const finnEnsligUttaksdata = (
     if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
         const aktivitetsfriDager = getAntallDagerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskonto);
-        const sluttAktivitetsfri = Uttaksdagen(dayjs(familiehendelsedato).toDate()).leggTil(
+        const førsteUttaksdagEtterFamiliehendelsedato = dayjs(getUttaksdagFraOgMedDato(familiehendelsedato)).toDate();
+        const sluttAktivitetsfri = Uttaksdagen(førsteUttaksdagEtterFamiliehendelsedato).leggTil(
             aktivitetsfriDager + (erBarnetAdoptert(barnet) ? 0 : 6 * 5 - 1),
         );
 
@@ -226,7 +227,8 @@ const finnEnsligUttaksdata = (
     if (hvemHarRett === 'kunSøker2HarRett' && (erFarSøker2(hvemPlanlegger) || erMedmorDelAvSøknaden(hvemPlanlegger))) {
         const aktivitetsfriDager = getAntallDagerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskonto);
-        const sluttAktivitetsfri = Uttaksdagen(dayjs(familiehendelsedato).toDate()).leggTil(
+        const førsteUttaksdagEtterFamiliehendelsedato = dayjs(getUttaksdagFraOgMedDato(familiehendelsedato)).toDate();
+        const sluttAktivitetsfri = Uttaksdagen(førsteUttaksdagEtterFamiliehendelsedato).leggTil(
             aktivitetsfriDager + (erBarnetAdoptert(barnet) ? 0 : 6 * 5 - 1),
         );
 
