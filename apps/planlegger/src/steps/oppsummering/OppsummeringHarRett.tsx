@@ -20,7 +20,7 @@ import {
     getAntallUkerOgDagerFellesperiode,
     getUkerOgDager,
 } from 'utils/stønadskontoerUtils';
-import { finnUttaksdata } from 'utils/uttakUtils';
+import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, Heading, VStack } from '@navikt/ds-react';
 
@@ -71,6 +71,8 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
         fordeling?.antallDagerSøker1,
     );
 
+    const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata);
+
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
@@ -87,8 +89,8 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             id="OppsummeringSteg.DereValgte"
                             values={{
                                 prosent: hvorLangPeriode.dekningsgrad,
-                                antallUker: getAntallUkerOgDager(valgtStønadskonto).uker,
-                                antallDager: getAntallUkerOgDager(valgtStønadskonto).dager,
+                                antallUker: ukerOgDagerMedForeldrepenger.uker,
+                                antallDager: ukerOgDagerMedForeldrepenger.dager,
                                 hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
                                 hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
                                 uker: antallUkerOgDagerFellesperiodeSøker1?.uker || 0,
@@ -150,8 +152,8 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                 values={{
                                     prosent: hvorLangPeriode.dekningsgrad,
                                     erAlenesøker: erAlenesøker(hvemPlanlegger),
-                                    antallUker: getAntallUkerOgDager(valgtStønadskonto).uker,
-                                    antallDager: getAntallUkerOgDager(valgtStønadskonto).dager,
+                                    antallUker: ukerOgDagerMedForeldrepenger.uker,
+                                    antallDager: ukerOgDagerMedForeldrepenger.dager,
                                 }}
                             />
                         </BodyShort>

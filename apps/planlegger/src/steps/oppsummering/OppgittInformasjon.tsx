@@ -10,7 +10,8 @@ import { erAlenesøker as erAlene, erFarOgFar, getFornavnPåSøker1, getFornavnP
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
-import { getAntallUkerOgDager, getAntallUkerOgDagerFellesperiode, getUkerOgDager } from 'utils/stønadskontoerUtils';
+import { getAntallUkerOgDagerFellesperiode, getUkerOgDager } from 'utils/stønadskontoerUtils';
+import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
@@ -77,9 +78,18 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const valgtStønadskonto = stønadskontoer[hvorLangPeriode.dekningsgrad];
-    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
 
-    const antallUkerOgDager = getAntallUkerOgDager(valgtStønadskonto);
+    const uttaksdata = finnUttaksdata(
+        hvemHarRett,
+        hvemPlanlegger,
+        valgtStønadskonto,
+        barnet,
+        fordeling?.antallDagerSøker1,
+    );
+
+    const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata);
+
+    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
 
     const antallUkerOgDagerFellesperiodeSøker1 = fordeling ? getUkerOgDager(fordeling.antallDagerSøker1) : undefined;
     const antallUkerOgDagerFellesperiodeSøker2 = fordeling
@@ -269,11 +279,11 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             values={{
                                                 erAlenesøker,
                                                 prosent: hvorLangPeriode.dekningsgrad,
-                                                uker: antallUkerOgDager.uker,
-                                                dager: antallUkerOgDager.dager,
-                                                fellesuker: antallUkerOgDagerFellesperiodeSøker1?.uker || '',
+                                                uker: ukerOgDagerMedForeldrepenger.uker,
+                                                dager: ukerOgDagerMedForeldrepenger.dager,
+                                                fellesuker: antallUkerOgDagerFellesperiodeSøker1?.uker || 0,
                                                 fellesdager: antallUkerOgDagerFellesperiodeSøker1?.dager || 0,
-                                                fellesuker2: antallUkerOgDagerFellesperiodeSøker2?.uker || '',
+                                                fellesuker2: antallUkerOgDagerFellesperiodeSøker2?.uker || 0,
                                                 fellesdager2: antallUkerOgDagerFellesperiodeSøker2?.dager || 0,
                                                 hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
                                                 hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
@@ -287,8 +297,8 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             values={{
                                                 erAlenesøker,
                                                 prosent: hvorLangPeriode.dekningsgrad,
-                                                uker: getAntallUkerOgDager(valgtStønadskonto).uker,
-                                                dager: getAntallUkerOgDager(valgtStønadskonto).dager,
+                                                uker: ukerOgDagerMedForeldrepenger.uker,
+                                                dager: ukerOgDagerMedForeldrepenger.dager,
                                             }}
                                         />
                                     )}
