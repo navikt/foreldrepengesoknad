@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import CalendarIconLabel from './CalendarIconLabel';
 import styles from './oversiktLabels.module.css';
@@ -21,7 +21,6 @@ interface Props {
 const AktivitetskravLabel: FunctionComponent<Props> = ({
     utenAktivitetskrav = false,
     tekstPart1,
-    tekstPart2,
     isBluePanel = false,
     startdato,
     sluttdato,
@@ -34,24 +33,8 @@ const AktivitetskravLabel: FunctionComponent<Props> = ({
             <BodyShort>
                 {visUkerAktivitetskrav ? (
                     <>
-                        {utenAktivitetskrav && (
-                            <FormattedMessage
-                                id="OversiktSteg.UkerUtenAktivitetskrav"
-                                values={{
-                                    hvem: getNavnGenitivEierform(capitalizeFirstLetter(tekstPart1), intl.locale),
-                                    hvemPart2: capitalizeFirstLetter(tekstPart2),
-                                }}
-                            />
-                        )}
-                        {!utenAktivitetskrav && (
-                            <FormattedMessage
-                                id="OversiktSteg.UkerMedAktivitetskrav"
-                                values={{
-                                    hvem: getNavnGenitivEierform(capitalizeFirstLetter(tekstPart1), intl.locale),
-                                    hvemPart2: capitalizeFirstLetter(tekstPart2),
-                                }}
-                            />
-                        )}
+                        {utenAktivitetskrav && <FormattedMessage id="OversiktSteg.UtenAktivitetskrav" />}
+                        {!utenAktivitetskrav && <FormattedMessage id="OversiktSteg.MedAktivitetskrav" />}
                     </>
                 ) : (
                     <>
