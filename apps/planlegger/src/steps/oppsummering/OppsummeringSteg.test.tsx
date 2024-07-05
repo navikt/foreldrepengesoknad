@@ -80,7 +80,7 @@ describe('<OppsummeringSteg>', () => {
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
         expect(screen.getByText('Perioden med foreldrepenger')).toBeInTheDocument();
-        expect(screen.getByText('Dere valgte 100 % i 49 uker.')).toBeInTheDocument();
+        expect(screen.getByText('Dere valgte 100 % i 46 uker.')).toBeInTheDocument();
         expect(screen.getByText(/Periode:/)).toBeInTheDocument();
         expect(screen.getByText(/24. okt. 2022 – 08. sep. 2023/)).toBeInTheDocument();
     });
@@ -157,10 +157,10 @@ describe('<OppsummeringSteg>', () => {
         ).toBeInTheDocument();
 
         expect(screen.getByText('Lengde')).toBeInTheDocument();
-        expect(screen.getByText('Dere valgte 100 % foreldrepenger i 49 uker.')).toBeInTheDocument();
+        expect(screen.getByText('Dere valgte 100 % foreldrepenger i 46 uker.')).toBeInTheDocument();
 
         expect(screen.getByText('Perioden med foreldrepenger')).toBeInTheDocument();
-        expect(screen.getByText('Dere valgte 100 % i 49 uker.')).toBeInTheDocument();
+        expect(screen.getByText('Dere valgte 100 % i 46 uker.')).toBeInTheDocument();
         expect(screen.getByText('24. okt. 2022 – 08. sep. 2023')).toBeInTheDocument();
     });
 });
