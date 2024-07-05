@@ -92,8 +92,8 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, barnet);
 
-    const antallUker100 = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata100);
-    const antallUker80 = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata80);
+    const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata100);
+    const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata80);
 
     const erAleneforsørger = erAlenesøker(hvemPlanlegger);
 
@@ -154,15 +154,15 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 <FormattedMessage
                                     id="OversiktSteg.100"
                                     values={{
-                                        uker: antallUker100.uker,
-                                        dager: antallUker100.dager,
+                                        uker: antallUkerOgDager100.uker,
+                                        dager: antallUkerOgDager100.dager,
                                     }}
                                 />
                             </ToggleGroup.Item>
                             <ToggleGroup.Item value={Dekningsgrad.ÅTTI_PROSENT}>
                                 <FormattedMessage
                                     id="OversiktSteg.80"
-                                    values={{ uker: antallUker80.uker, dager: antallUker80.dager }}
+                                    values={{ uker: antallUkerOgDager80.uker, dager: antallUkerOgDager80.dager }}
                                 />
                             </ToggleGroup.Item>
                         </ToggleGroup>
