@@ -10,7 +10,6 @@ import { erAlenesøker as erAlene, erFarOgFar, getFornavnPåSøker1, getFornavnP
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
-import { getAntallUkerOgDager, getAntallUkerOgDagerFellesperiode, getUkerOgDager } from 'utils/stønadskontoerUtils';
 import {
     getAntallUkerOgDagerFellesperiode,
     getAntallUkerOgDagerForeldrepengerFørFødsel,
@@ -96,7 +95,6 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
 
     const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
 
-    const antallUkerOgDager = getAntallUkerOgDager(valgtStønadskonto);
     const antallUkerOgDagerFørFødsel = getAntallUkerOgDagerForeldrepengerFørFødsel(valgtStønadskonto);
 
     const antallUkerOgDagerFellesperiodeSøker1 = fordeling ? getUkerOgDager(fordeling.antallDagerSøker1) : undefined;
@@ -287,15 +285,6 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             values={{
                                                 erAlenesøker,
                                                 prosent: hvorLangPeriode.dekningsgrad,
-                                                uker: antallUkerOgDager.uker,
-                                                dager: antallUkerOgDager.dager,
-                                                fellesuker: antallUkerOgDagerFellesperiodeSøker1?.uker || '',
-                                                uker: erAdoptert
-                                                    ? antallUkerOgDager.uker - antallUkerOgDagerFørFødsel.uker
-                                                    : antallUkerOgDager.uker,
-                                                dager: erAdoptert
-                                                    ? antallUkerOgDager.dager - antallUkerOgDagerFørFødsel.dager
-                                                    : antallUkerOgDager.dager,
                                                 uker: ukerOgDagerMedForeldrepenger.uker,
                                                 dager: ukerOgDagerMedForeldrepenger.dager,
                                                 fellesuker: antallUkerOgDagerFellesperiodeSøker1?.uker || 0,
