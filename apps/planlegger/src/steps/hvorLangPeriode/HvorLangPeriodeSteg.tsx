@@ -13,6 +13,7 @@ import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { erAlenesøker as erAlene, getTekstForDeSomHarRett } from 'utils/HvemPlanleggerUtils';
+import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
@@ -48,6 +49,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const formMethods = useForm<HvorLangPeriode>({ defaultValues: periode });
 
     const erAlenesøker = erAlene(hvemPlanlegger);
+    const erAdopsjon = erBarnetAdoptert(barnet);
 
     const onSubmit = (formValues: HvorLangPeriode) => {
         oppdaterPeriode(formValues);
@@ -124,7 +126,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 arbeidssituasjon={arbeidssituasjon}
                             />
                         )}
-                        {kunEnAvSøkereneHarRett && hvemPlanlegger.type === Situasjon.FAR_OG_FAR && (
+                        {kunEnAvSøkereneHarRett && hvemPlanlegger.type === Situasjon.FAR_OG_FAR && erAdopsjon && (
                             <Infobox
                                 header={<FormattedMessage id="HvorLangPeriodeSteg.Infoboks.KunEnAvFedreneHarRett" />}
                                 isGray
