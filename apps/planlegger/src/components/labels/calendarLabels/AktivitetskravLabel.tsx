@@ -14,7 +14,6 @@ interface Props {
     sluttdato: string;
     tekstPart1: string;
     isBluePanel?: boolean;
-    visUkerAktivitetskrav?: boolean;
 }
 
 const AktivitetskravLabel: FunctionComponent<Props> = ({
@@ -23,24 +22,17 @@ const AktivitetskravLabel: FunctionComponent<Props> = ({
     isBluePanel = false,
     startdato,
     sluttdato,
-    visUkerAktivitetskrav = true,
 }) => {
     const intl = useIntl();
 
     return (
         <CalendarIconLabel iconType={isBluePanel ? 'blue' : 'green'}>
             <BodyShort>
-                {visUkerAktivitetskrav ? (
-                    <>
-                        {utenAktivitetskrav && <FormattedMessage id="OversiktSteg.UtenAktivitetskrav" />}
-                        {!utenAktivitetskrav && <FormattedMessage id="OversiktSteg.MedAktivitetskrav" />}
-                    </>
-                ) : (
-                    <>
-                        {utenAktivitetskrav && <FormattedMessage id="OversiktSteg.UtenAktivitetskrav" />}
-                        {!utenAktivitetskrav && <FormattedMessage id="OversiktSteg.MedAktivitetskrav" />}
-                    </>
-                )}
+                {' '}
+                <>
+                    {utenAktivitetskrav && <FormattedMessage id="OversiktSteg.UtenAktivitetskrav" />}
+                    {!utenAktivitetskrav && <FormattedMessage id="OversiktSteg.MedAktivitetskrav" />}
+                </>
             </BodyShort>
             <div className={styles.srOnly}>
                 <FormattedMessage
