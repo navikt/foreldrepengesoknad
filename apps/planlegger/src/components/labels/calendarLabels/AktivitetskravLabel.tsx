@@ -13,7 +13,6 @@ interface Props {
     startdato: string;
     sluttdato: string;
     tekstPart1: string;
-    tekstPart2: string;
     isBluePanel?: boolean;
     visUkerAktivitetskrav?: boolean;
 }
