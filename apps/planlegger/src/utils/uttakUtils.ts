@@ -151,7 +151,7 @@ const finnDeltUttaksdata = (
 
     const startdatoPeriode1 =
         erBarnetAdoptert(barnet) || hvemPlanlegger.type === Situasjon.FAR_OG_FAR
-            ? getUttaksdagFraOgMedDato(familiehendelsedato)
+            ? getUttaksdagFraOgMedDato(getUttaksdagFraOgMedDato(familiehendelsedato))
             : getFørsteUttaksdagForeldrepengerFørFødsel(barnet);
 
     const sluttdatoPeriode1 =
@@ -202,8 +202,7 @@ const finnEnsligUttaksdata = (
     if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
         const aktivitetsfriDager = getAntallDagerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskonto);
-        const førsteUttaksdagEtterFamiliehendelsedato = dayjs(getUttaksdagFraOgMedDato(familiehendelsedato)).toDate();
-        const sluttAktivitetsfri = Uttaksdagen(førsteUttaksdagEtterFamiliehendelsedato).leggTil(
+        const sluttAktivitetsfri = Uttaksdagen(dayjs(getUttaksdagTilOgMedDato(familiehendelsedato)).toDate()).leggTil(
             aktivitetsfriDager + (erBarnetAdoptert(barnet) ? 0 : 6 * 5 - 1),
         );
 
@@ -227,8 +226,7 @@ const finnEnsligUttaksdata = (
     if (hvemHarRett === 'kunSøker2HarRett' && (erFarSøker2(hvemPlanlegger) || erMedmorDelAvSøknaden(hvemPlanlegger))) {
         const aktivitetsfriDager = getAntallDagerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskonto);
-        const førsteUttaksdagEtterFamiliehendelsedato = dayjs(getUttaksdagFraOgMedDato(familiehendelsedato)).toDate();
-        const sluttAktivitetsfri = Uttaksdagen(førsteUttaksdagEtterFamiliehendelsedato).leggTil(
+        const sluttAktivitetsfri = Uttaksdagen(dayjs(getUttaksdagTilOgMedDato(familiehendelsedato)).toDate()).leggTil(
             aktivitetsfriDager + (erBarnetAdoptert(barnet) ? 0 : 6 * 5 - 1),
         );
 
@@ -239,7 +237,7 @@ const finnEnsligUttaksdata = (
         return {
             familiehendelsedato,
             startdatoPeriode1: getUttaksdagFraOgMedDato(startdatoSøker1.format(ISO_DATE_FORMAT)),
-            sluttdatoPeriode1: getUttaksdagTilOgMedDato(dayjs(sluttAktivitetsfri).format(ISO_DATE_FORMAT)),
+            sluttdatoPeriode1: dayjs(sluttAktivitetsfri).format(ISO_DATE_FORMAT),
             startdatoPeriode2: getUttaksdagFraOgMedDato(
                 dayjs(sluttAktivitetsfri).add(1, 'day').format(ISO_DATE_FORMAT),
             ),
