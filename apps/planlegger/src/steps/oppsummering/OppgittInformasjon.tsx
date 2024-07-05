@@ -10,11 +10,7 @@ import { erAlenesøker as erAlene, erFarOgFar, getFornavnPåSøker1, getFornavnP
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
-import {
-    getAntallUkerOgDagerFellesperiode,
-    getAntallUkerOgDagerForeldrepengerFørFødsel,
-    getUkerOgDager,
-} from 'utils/stønadskontoerUtils';
+import { getAntallUkerOgDagerFellesperiode, getUkerOgDager } from 'utils/stønadskontoerUtils';
 import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -94,8 +90,6 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata);
 
     const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
-
-    const antallUkerOgDagerFørFødsel = getAntallUkerOgDagerForeldrepengerFørFødsel(valgtStønadskonto);
 
     const antallUkerOgDagerFellesperiodeSøker1 = fordeling ? getUkerOgDager(fordeling.antallDagerSøker1) : undefined;
     const antallUkerOgDagerFellesperiodeSøker2 = fordeling
