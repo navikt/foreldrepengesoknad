@@ -1,3 +1,3 @@
 export type Fordeling = {
-    antallDagerSøker1: number;
+    antallUkerSøker1: number;
 };

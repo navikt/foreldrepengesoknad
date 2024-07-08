@@ -1,6 +1,7 @@
-import { backgroundColorAtom } from 'app/atoms/backgroundColorAtom';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useEffect } from 'react';
+
+import { backgroundColorAtom } from 'app/atoms/backgroundColorAtom';
 
 export const useGetBackgroundColor = () => {
     const backgroundColor = useAtomValue(backgroundColorAtom);

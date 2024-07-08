@@ -1,4 +1,4 @@
-import groupBy from 'lodash/groupBy';
+import { groupBy } from 'lodash';
 import { IntlShape } from 'react-intl';
 
 import { intlHasKey } from '@navikt/fp-common/src/common/utils/intlUtils';

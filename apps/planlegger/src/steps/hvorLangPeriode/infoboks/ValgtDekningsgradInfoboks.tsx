@@ -8,8 +8,8 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { erAlenesøker, erMorDelAvSøknaden, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { getAntallUkerOgDagerAktivitetsfriKvote, getAntallUkerOgDagerForeldrepenger } from 'utils/stønadskontoerUtils';
-import { UttakUkerOgDager, Uttaksdata, finnUttaksdata } from 'utils/uttakUtils';
+import { getAntallUkerAktivitetsfriKvote, getAntallUkerForeldrepenger } from 'utils/stønadskontoerUtils';
+import { Uttaksdata, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
@@ -25,7 +25,7 @@ interface Props {
     uttaksdata100: Uttaksdata;
     uttaksdata80: Uttaksdata;
     valgtDekningsgrad: Dekningsgrad;
-    antallUkerOgDager: UttakUkerOgDager;
+    antallUker: number;
 }
 
 const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
@@ -36,7 +36,7 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
     uttaksdata100,
     uttaksdata80,
     valgtDekningsgrad,
-    antallUkerOgDager,
+    antallUker,
 }) => {
     const intl = useIntl();
 
@@ -127,10 +127,8 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.FørsteUker"
                             values={{
-                                uker: getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskonto).uker,
-                                dager: getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskonto).dager,
-                                uker2: antallUkerOgDager.uker,
-                                dager2: antallUkerOgDager.dager,
+                                uker: getAntallUkerAktivitetsfriKvote(valgtStønadskonto),
+                                uker2: antallUker,
                                 b: (msg: any) => <b>{msg}</b>,
                                 hvem: getFornavnPåSøker2(hvemPlanlegger, intl),
                                 hvemPart1: getFornavnPåSøker1(hvemPlanlegger, intl),
@@ -141,10 +139,8 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
                         <FormattedMessage
                             id="HvorLangPeriodeSteg.Infoboks.SisteDagTekstFar.AndreUker"
                             values={{
-                                uker: getAntallUkerOgDagerForeldrepenger(valgtStønadskonto).uker,
-                                dager: getAntallUkerOgDagerForeldrepenger(valgtStønadskonto).dager,
-                                uker2: antallUkerOgDager.uker,
-                                dager2: antallUkerOgDager.dager,
+                                uker: getAntallUkerForeldrepenger(valgtStønadskonto),
+                                uker2: antallUker,
                                 a: (msg: any) => (
                                     <Link
                                         inlineText

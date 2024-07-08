@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -6,7 +6,7 @@ import { Heading, VStack } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import Api from 'app/api/api';
+import { sendEttersending } from 'app/api/api';
 import ContentSection from 'app/components/content-section/ContentSection';
 import MinidialogSkjema from 'app/components/minidialog-skjema/MinidialogSkjema';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
@@ -19,7 +19,7 @@ import { getAlleYtelser } from 'app/utils/sakerUtils';
 
 interface Props {
     fnr: string;
-    minidialoger: MinidialogInnslag[] | undefined;
+    minidialoger: MinidialogInnslag[];
     saker: SakOppslag;
 }
 
@@ -33,25 +33,16 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, minidialoger, sak
     useSetSelectedRoute(OversiktRoutes.OPPGAVER);
     const alleSaker = getAlleYtelser(saker);
     const sak = alleSaker.find((s) => s.saksnummer === params.saksnummer);
-    const minidialog = minidialoger ? minidialoger.find((d) => d.saksnr === params.saksnummer) : undefined;
-    const [isSendingEttersendelse, setIsSendingEttersendelse] = useState(false);
-    const [ettersendelseErSendt, setEttersendelseErSendt] = useState(false);
-    const [ettersendelseError, setEttersendelseError] = useState<string | undefined>(undefined);
+    const minidialog = minidialoger.find((d) => d.saksnr === params.saksnummer);
     useSetBackgroundColor('blue');
 
+    const { mutate, isPending, isError, isSuccess } = useMutation({
+        mutationFn: ({ ettersendelse, fnr }: { ettersendelse: EttersendingDto; fnr: string }) =>
+            sendEttersending(ettersendelse, fnr),
+    });
+
     const sendEttersendelse = (ettersendelse: EttersendingDto) => {
-        setIsSendingEttersendelse(true);
-        Api.sendEttersending(ettersendelse, fnr)
-            .then(() => {
-                setIsSendingEttersendelse(false);
-                setEttersendelseErSendt(true);
-            })
-            .catch((_error) => {
-                setIsSendingEttersendelse(false);
-                setEttersendelseError(
-                    'Vi klarte ikke å sende inn informasjonen din. Prøv igjen senere og hvis problemet vedvarer kontakt brukerstøtte.',
-                );
-            });
+        mutate({ ettersendelse, fnr });
     };
 
     if (!minidialog || !sak) {
@@ -71,9 +62,13 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, minidialoger, sak
                     sakstype={sakstype!}
                     minidialog={minidialog}
                     onSubmit={sendEttersendelse}
-                    isSendingEttersendelse={isSendingEttersendelse}
-                    ettersendelseErSendt={ettersendelseErSendt}
-                    ettersendelseError={ettersendelseError}
+                    isSendingEttersendelse={isPending}
+                    ettersendelseErSendt={isSuccess}
+                    ettersendelseError={
+                        isError
+                            ? 'Vi klarte ikke å sende inn informasjonen din. Prøv igjen senere og hvis problemet vedvarer kontakt brukerstøtte.'
+                            : undefined
+                    }
                 />
             </VStack>
         </ContentSection>

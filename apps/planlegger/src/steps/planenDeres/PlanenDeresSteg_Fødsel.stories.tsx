@@ -81,7 +81,7 @@ export const MorOgFarBeggeHarRett: Story = {
             antallBarn: '1',
         },
         fordeling: {
-            antallDagerSøker1: 0,
+            antallUkerSøker1: 0,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,

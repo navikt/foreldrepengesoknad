@@ -1,4 +1,5 @@
 import { ChatElipsisIcon } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
@@ -9,9 +10,12 @@ import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { erAlenesøker as erAlene, erFarOgFar, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { finnSisteGrunnbeløp } from 'utils/satserUtils';
-import { getAntallUkerOgDagerFellesperiode, getUkerOgDager } from 'utils/stønadskontoerUtils';
-import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
+import { finnGrunnbeløp } from 'utils/satserUtils';
+import {
+    getAntallUker,
+    getAntallUkerFellesperiode,
+    getAntallUkerForeldrepengerFørFødsel,
+} from 'utils/stønadskontoerUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
@@ -76,29 +80,22 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const denEneFaren = getTekstTilFar1();
     const denAndreFaren = getTekstTilFar2();
 
-    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const valgtStønadskonto = stønadskontoer[hvorLangPeriode.dekningsgrad];
+    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
+    const antallUker = getAntallUker(valgtStønadskonto);
 
-    const uttaksdata = finnUttaksdata(
-        hvemHarRett,
-        hvemPlanlegger,
-        valgtStønadskonto,
-        barnet,
-        fordeling?.antallDagerSøker1,
-    );
+    const antallUkerAdopsjon = erAdoptert
+        ? getAntallUker(valgtStønadskonto) - getAntallUkerForeldrepengerFørFødsel(valgtStønadskonto)
+        : getAntallUker(valgtStønadskonto);
 
-    const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata);
+    const antallUkerFellesperiodeSøker1 = fordeling ? fordeling.antallUkerSøker1 : '';
+    const antallUkerFellesperiodeSøker2 = fordeling ? antallUkerFellesperiode - fordeling.antallUkerSøker1 : '';
 
-    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
-
-    const antallUkerOgDagerFellesperiodeSøker1 = fordeling ? getUkerOgDager(fordeling.antallDagerSøker1) : undefined;
-    const antallUkerOgDagerFellesperiodeSøker2 = fordeling
-        ? getUkerOgDager(antallUkerOgDagerFellesperiode.totaltAntallDager - fordeling.antallDagerSøker1)
-        : undefined;
+    const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
     const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdoptert;
 
-    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2);
+    const minsteInntekt = formatCurrencyWithKr(finnGrunnbeløp(satser, dayjs()) / 2);
 
     return (
         <VStack gap="10">
@@ -114,7 +111,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                     </HStack>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
-                    <VStack gap="2">
+                    <VStack gap="10">
                         <BluePanel>
                             <>
                                 <Heading size="small" level="4">
@@ -279,12 +276,9 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             values={{
                                                 erAlenesøker,
                                                 prosent: hvorLangPeriode.dekningsgrad,
-                                                uker: ukerOgDagerMedForeldrepenger.uker,
-                                                dager: ukerOgDagerMedForeldrepenger.dager,
-                                                fellesuker: antallUkerOgDagerFellesperiodeSøker1?.uker || 0,
-                                                fellesdager: antallUkerOgDagerFellesperiodeSøker1?.dager || 0,
-                                                fellesuker2: antallUkerOgDagerFellesperiodeSøker2?.uker || 0,
-                                                fellesdager2: antallUkerOgDagerFellesperiodeSøker2?.dager || 0,
+                                                uker: erAdoptert ? antallUkerAdopsjon : antallUker,
+                                                fellesuker: antallUkerFellesperiodeSøker1,
+                                                fellesuker2: antallUkerFellesperiodeSøker2,
                                                 hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
                                                 hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
                                                 kunEnPartSkalHa: hvemHarRett !== 'beggeHarRett',
@@ -297,8 +291,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             values={{
                                                 erAlenesøker,
                                                 prosent: hvorLangPeriode.dekningsgrad,
-                                                uker: ukerOgDagerMedForeldrepenger.uker,
-                                                dager: ukerOgDagerMedForeldrepenger.dager,
+                                                uker: erAdoptert ? antallUkerAdopsjon : antallUker,
                                             }}
                                         />
                                     )}

@@ -118,7 +118,7 @@ export const FlereForsørgereHundreProsentTermin: Story = {
             type: Situasjon.MOR_OG_FAR,
         },
         fordeling: {
-            antallDagerSøker1: 25,
+            antallUkerSøker1: 5,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -189,7 +189,7 @@ export const FarOgFarFødsel: Story = {
             type: Situasjon.FAR_OG_FAR,
         },
         fordeling: {
-            antallDagerSøker1: 25,
+            antallUkerSøker1: 5,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -213,7 +213,7 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
             type: Situasjon.FAR_OG_FAR,
         },
         fordeling: {
-            antallDagerSøker1: 25,
+            antallUkerSøker1: 5,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -239,7 +239,7 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
             type: Situasjon.MOR,
         },
         fordeling: {
-            antallDagerSøker1: 25,
+            antallUkerSøker1: 5,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
@@ -286,7 +286,7 @@ export const FlereForsørgereHundreProsentAdopsjon: Story = {
             type: Situasjon.MOR_OG_MEDMOR,
         },
         fordeling: {
-            antallDagerSøker1: 25,
+            antallUkerSøker1: 5,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -336,8 +336,8 @@ export const KunMorHarRett: Story = {
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: true,
-            termindato: '2024-07-1',
-            fødselsdato: '2024-07-1',
+            termindato: '2024-07-10',
+            fødselsdato: '2024-07-10',
             antallBarn: '1',
         },
         hvorLangPeriode: {
@@ -346,48 +346,6 @@ export const KunMorHarRett: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
-        },
-        stønadskontoer: {
-            '100': {
-                kontoer: [
-                    {
-                        konto: StønadskontoType.Foreldrepenger,
-                        dager: 230,
-                    },
-                    {
-                        konto: StønadskontoType.ForeldrepengerFørFødsel,
-                        dager: 15,
-                    },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
-                tillegg: {
-                    flerbarn: 0,
-                    prematur: 0,
-                },
-            },
-            '80': {
-                kontoer: [
-                    {
-                        konto: StønadskontoType.Foreldrepenger,
-                        dager: 291,
-                    },
-                    {
-                        konto: StønadskontoType.ForeldrepengerFørFødsel,
-                        dager: 15,
-                    },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
-                tillegg: {
-                    flerbarn: 0,
-                    prematur: 0,
-                },
-            },
         },
     },
 };
@@ -409,48 +367,6 @@ export const AleneforsørgerMorErUfør: Story = {
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.UFØR,
-        },
-        stønadskontoer: {
-            '100': {
-                kontoer: [
-                    {
-                        konto: StønadskontoType.Foreldrepenger,
-                        dager: 230,
-                    },
-                    {
-                        konto: StønadskontoType.ForeldrepengerFørFødsel,
-                        dager: 15,
-                    },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
-                tillegg: {
-                    flerbarn: 0,
-                    prematur: 0,
-                },
-            },
-            '80': {
-                kontoer: [
-                    {
-                        konto: StønadskontoType.Foreldrepenger,
-                        dager: 291,
-                    },
-                    {
-                        konto: StønadskontoType.ForeldrepengerFørFødsel,
-                        dager: 15,
-                    },
-                ],
-                minsteretter: {
-                    farRundtFødsel: 0,
-                    toTette: 0,
-                },
-                tillegg: {
-                    flerbarn: 0,
-                    prematur: 0,
-                },
-            },
         },
     },
 };

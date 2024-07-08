@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import isString from 'lodash/isString';
+import { isString } from 'lodash';
 import { IntlShape } from 'react-intl';
 
 import { erUttaksdag, getVarighetString } from '@navikt/fp-common';

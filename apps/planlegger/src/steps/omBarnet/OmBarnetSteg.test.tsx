@@ -28,7 +28,9 @@ describe('<OmBarnetSteg>', () => {
         await userEvent.type(termindato, dayjs().format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(termindato);
 
-        expect(screen.getByText('Du kan nå søke om foreldrepenger')).toBeInTheDocument();
+        expect(
+            screen.getByText('Siden det er under 3 måneder til termin kan du søke om foreldrepenger hos NAV'),
+        ).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste'));
 

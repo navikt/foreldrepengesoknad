@@ -1,3 +1,4 @@
+import { useMutation } from '@tanstack/react-query';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Link, useParams } from 'react-router-dom';
@@ -21,7 +22,7 @@ import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
 
-import Api from 'app/api/api';
+import { sendEttersending } from 'app/api/api';
 import ScrollToTop from 'app/components/scroll-to-top/ScrollToTop';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import OversiktRoutes from 'app/routes/routes';
@@ -104,10 +105,6 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
 
     const bem = bemUtils('ettersending-page');
 
-    const [isEttersending, setIsEttersending] = useState(false);
-    const [ettersendingDone, setEttersendingDone] = useState(false);
-    const [ettersendingError, setEttersendingError] = useState<string | undefined>(undefined);
-
     const [type, setType] = useState<Skjemanummer | typeof DEFAULT_OPTION>(DEFAULT_OPTION);
     const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
     const [avventerVedlegg, setAvventerVedlegg] = useState(false);
@@ -120,37 +117,32 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
         setAvventerVedlegg(hasPendingUploads);
     };
 
+    const { mutate, isPending, isError, isSuccess } = useMutation({
+        mutationFn: (valuesToSend: EttersendingDto) => sendEttersending(valuesToSend),
+    });
+
     const onSubmit = (e: FormEvent<any>) => {
         e.preventDefault();
 
-        setIsEttersending(true);
-
-        const valuesToSend: EttersendingDto = {
+        mutate({
             saksnummer: sak!.saksnummer,
             type: sak!.ytelse,
             vedlegg,
-        };
-
-        Api.sendEttersending(valuesToSend)
-            .then(() => {
-                setIsEttersending(false);
-                setEttersendingDone(true);
-            })
-            .catch((_error) => {
-                setIsEttersending(false);
-                setEttersendingError(
-                    'Vi klarte ikke å sende inn dokumentasjonen din. Prøv igjen senere og hvis problemet vedvarer kontakt brukerstøtte.',
-                );
-            });
+        });
     };
 
-    if (ettersendingDone || ettersendingError) {
+    if (isSuccess || isError) {
         return (
             <>
                 <ScrollToTop />
                 <VStack gap="2">
-                    {ettersendingDone && <Alert variant="success">Dokumentene er sendt</Alert>}
-                    {ettersendingError && <Alert variant="error">{ettersendingError}</Alert>}
+                    {isSuccess && <Alert variant="success">Dokumentene er sendt</Alert>}
+                    {isError && (
+                        <Alert variant="error">
+                            Vi klarte ikke å sende inn dokumentasjonen din. Prøv igjen senere og hvis problemet vedvarer
+                            kontakt brukerstøtte.
+                        </Alert>
+                    )}
                     <Link to={`/sak/${sak!.saksnummer}`}>
                         <FormattedMessage id="miniDialog.kvittering.gåTilbakeTilSaken" />
                     </Link>
@@ -202,8 +194,8 @@ const EttersendingPage: React.FunctionComponent<Props> = ({ saker }) => {
                         <Button
                             type="submit"
                             icon={<Add aria-hidden={true} />}
-                            loading={isEttersending || avventerVedlegg}
-                            disabled={isEttersending || avventerVedlegg}
+                            loading={isPending || avventerVedlegg}
+                            disabled={isPending || avventerVedlegg}
                         >
                             Legg ved sak
                         </Button>

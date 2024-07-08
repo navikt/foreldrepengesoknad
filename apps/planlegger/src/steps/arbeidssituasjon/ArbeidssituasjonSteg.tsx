@@ -4,13 +4,14 @@ import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import BlueRadioGroup from 'components/formWrappers/BlueRadioGroup';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
+import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Situasjon } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
-import { finnSisteGrunnbeløp } from 'utils/satserUtils';
+import { finnGrunnbeløp } from 'utils/satserUtils';
 
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
@@ -70,7 +71,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser }) => {
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
-    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2);
+    const minsteInntekt = formatCurrencyWithKr(finnGrunnbeløp(satser, dayjs()) / 2);
 
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig}>

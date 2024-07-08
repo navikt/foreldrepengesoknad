@@ -1,4 +1,4 @@
-import groupBy from 'lodash/groupBy';
+import { groupBy } from 'lodash';
 
 import { Søknadsinfo } from '@navikt/fp-common';
 

@@ -37,7 +37,7 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Både Klara og Espen har jobbet 6 av de siste 10 månedene og har tjent mer enn 62 014 kr det siste året.',
+                'Både Klara og Espen har hatt opptjening 6 av de siste 10 månedene og har tjent mer enn 62 014 kr det siste året.',
             ),
         ).toBeInTheDocument();
 
@@ -49,7 +49,7 @@ describe('<OppsummeringSteg>', () => {
         ).toBeInTheDocument();
     });
 
-    it.skip('skal vise info der det er flere forsørgere og begge har rett til foreldrepenger - adopsjon', async () => {
+    it('skal vise info der det er flere forsørgere og begge har rett til foreldrepenger - adopsjon', async () => {
         render(<FlereForsørgereHundreProsentAdopsjon />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
@@ -63,7 +63,7 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Både Klara og Esther har jobbet 6 av de siste 10 månedene og har tjent mer enn 62 014 kr det siste året.',
+                'Både Klara og Esther har hatt opptjening 6 av de siste 10 månedene og har tjent mer enn 62 014 kr det siste året.',
             ),
         ).toBeInTheDocument();
 
@@ -80,13 +80,12 @@ describe('<OppsummeringSteg>', () => {
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
         expect(screen.getByText('Perioden med foreldrepenger')).toBeInTheDocument();
-        expect(screen.getByText('Dere valgte 100 % i 46 uker.')).toBeInTheDocument();
+        expect(screen.getByText('Dere valgte 100 % i 49 uker.')).toBeInTheDocument();
         expect(screen.getByText(/Periode:/)).toBeInTheDocument();
         expect(screen.getByText(/24. okt. 2022 – 08. sep. 2023/)).toBeInTheDocument();
     });
 
-    // TODO Denne testen må vera feil
-    it.skip('skal vise perioder for begge fedrene ved adopsjon far og far', async () => {
+    it('skal vise perioder for begge fedrene ved adopsjon far og far', async () => {
         render(<FarOgFarAdopsjonKunFar1HarRett />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
@@ -107,11 +106,13 @@ describe('<OppsummeringSteg>', () => {
 
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(
-            screen.getByText('Klara har jobbet 6 av de siste 10 månedene og tjent mer enn 62 014 kr det siste året.'),
+            screen.getByText(
+                'Klara har hatt opptjening 6 av de siste 10 månedene og tjent mer enn 62 014 kr det siste året.',
+            ),
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Espen har ikke jobbet 6 av de siste 10 månedene og tjent mer enn 62 014 kr det siste året.',
+                'Espen har ikke hatt opptjening 6 av de siste 10 månedene og tjent mer enn 62 014 kr det siste året.',
             ),
         ).toBeInTheDocument();
 
@@ -149,18 +150,20 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Espen har ikke jobbet 6 av de siste 10 månedene og tjent mer enn 62 014 kr det siste året.',
+                'Espen har ikke hatt opptjening 6 av de siste 10 månedene og tjent mer enn 62 014 kr det siste året.',
             ),
         ).toBeInTheDocument();
         expect(
-            screen.getByText('Hugo har jobbet 6 av de siste 10 månedene og tjent mer enn 62 014 kr det siste året.'),
+            screen.getByText(
+                'Hugo har hatt opptjening 6 av de siste 10 månedene og tjent mer enn 62 014 kr det siste året.',
+            ),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Lengde')).toBeInTheDocument();
-        expect(screen.getByText('Dere valgte 100 % foreldrepenger i 46 uker.')).toBeInTheDocument();
+        expect(screen.getByText('Dere valgte 100 % foreldrepenger i 49 uker.')).toBeInTheDocument();
 
         expect(screen.getByText('Perioden med foreldrepenger')).toBeInTheDocument();
-        expect(screen.getByText('Dere valgte 100 % i 46 uker.')).toBeInTheDocument();
+        expect(screen.getByText('Dere valgte 100 % i 49 uker.')).toBeInTheDocument();
         expect(screen.getByText('24. okt. 2022 – 08. sep. 2023')).toBeInTheDocument();
     });
 });

@@ -131,7 +131,6 @@ export const FlereForsørgereToBarn: Story = {
             termindato: '2024-01-01',
             antallBarn: '2',
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     },
 };
 
@@ -148,6 +147,5 @@ export const FarOgFar: Story = {
             antallBarn: '2',
             overtakelsesdato: '2024-01-01',
         },
-        dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
     },
 };

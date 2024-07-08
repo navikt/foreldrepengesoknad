@@ -1,7 +1,9 @@
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Alert, Heading, VStack } from '@navikt/ds-react';
 
+import { erSakOppdatertOptions, hentMellomlagredeYtelserOptions } from 'app/api/api';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import HarIkkeSaker from 'app/components/har-ikke-saker/HarIkkeSaker';
 import HarSaker from 'app/components/har-saker/HarSaker';
@@ -15,7 +17,6 @@ import { useSetSelectedSak } from 'app/hooks/useSelectedSak';
 import OversiktRoutes from 'app/routes/routes';
 import Bankkonto from 'app/types/Bankkonto';
 import { GruppertSak } from 'app/types/GruppertSak';
-import { MellomlagredeYtelser } from 'app/types/MellomlagredeYtelser';
 import { RedirectSource, UKNOWN_SAKSNUMMER } from 'app/types/RedirectSource';
 import { Sak } from 'app/types/Sak';
 import { SvangerskapspengeSak } from 'app/types/SvangerskapspengeSak';
@@ -26,8 +27,6 @@ interface Props {
     alleYtelser: Sak[];
     grupperteSaker: GruppertSak[];
     avslåttSvangerskapspengesak: SvangerskapspengeSak | undefined;
-    oppdatertData: boolean;
-    storageData?: MellomlagredeYtelser;
     isFirstRender: React.MutableRefObject<boolean>;
     bankkonto: Bankkonto | undefined;
 }
@@ -36,13 +35,19 @@ const Forside: React.FunctionComponent<Props> = ({
     alleYtelser,
     grupperteSaker,
     avslåttSvangerskapspengesak,
-    oppdatertData,
-    storageData,
     isFirstRender,
     bankkonto,
 }) => {
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
     useSetSelectedSak(undefined);
+
+    const storageData = useQuery({
+        ...hentMellomlagredeYtelserOptions(),
+        enabled: false, // TODO: Denne hadde isSuspended hardkodet til true, betyr det at kallet aldri egentlig ble brukt??
+    }).data;
+
+    const harIkkeOppdatertSakQuery = useQuery(erSakOppdatertOptions());
+    const harIkkeOppdatertSak = harIkkeOppdatertSakQuery.isSuccess && !harIkkeOppdatertSakQuery.data;
 
     const params = useParams();
     useSetRedirectedFromSøknadsnummer(params.redirect, undefined, isFirstRender);
@@ -61,7 +66,7 @@ const Forside: React.FunctionComponent<Props> = ({
                         ytelse={undefined}
                     />
                 )}
-                {!oppdatertData && (
+                {harIkkeOppdatertSak && (
                     <Alert variant="warning">
                         Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du
                         kan vente litt og komme tilbake senere for å se alle detaljene i saken din.
@@ -83,7 +88,7 @@ const Forside: React.FunctionComponent<Props> = ({
             {alleYtelser.length > 0 ? (
                 <HarSaker grupperteSaker={grupperteSaker} />
             ) : (
-                <HarIkkeSaker oppdatertData={oppdatertData} />
+                <HarIkkeSaker harOppdatertSak={!harIkkeOppdatertSak} />
             )}
             {avslåttSvangerskapspengesak && <SakLink sak={avslåttSvangerskapspengesak} />}
         </VStack>
