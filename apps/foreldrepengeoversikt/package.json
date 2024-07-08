@@ -97,7 +97,7 @@
   "packageManager": "pnpm@9.1.4",
   "msw": {
     "workerDirectory": [
-      "public"
+      "mock-service-worker"
     ]
   }
 }
