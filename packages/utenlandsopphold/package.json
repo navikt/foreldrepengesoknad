@@ -13,9 +13,9 @@
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^6.3.3",
-        "@navikt/ds-css": "^6.3.3",
-        "@navikt/ds-react": "6.3.3",
+        "@navikt/aksel-icons": "^6.13.0",
+        "@navikt/ds-css": "^6.13.0",
+        "@navikt/ds-react": "6.13.0",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
         "@navikt/fp-types": "workspace:*",
