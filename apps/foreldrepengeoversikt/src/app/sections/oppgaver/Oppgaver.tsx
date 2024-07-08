@@ -31,10 +31,6 @@ const Oppgaver: React.FunctionComponent<Props> = ({ saksnummer }) => {
     if ((aktiveMinidialogerForSaken ?? []).length === 0) {
         return null;
     }
-    // TODO: såvidt jeg kan forstå ville denne aldri trigge, siden fra utsiden ble ikke komponenten vist hvis ingen saker
-    // if (aktiveMinidialogerForSaken.isPending) {
-    //     return <Loader size="large" aria-label="Henter status for dine oppgaver" />;
-    // }
 
     return (
         <VStack gap="2">

@@ -32,8 +32,6 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
     const minidialogQuery = useQuery(minidialogOptions());
     const søkerInfoQuery = useQuery(søkerInfoOptions());
 
-    // TODO: har jeg tolket denne riktig? Slik jeg forstår det er formålet å ikke kjøre /saker endepunktet før spørringen om saker er oppdatert gir true.
-    // Om det er tilfellet passer dette perfekt for "enabled".
     const sakerQuery = useQuery({
         ...hentSakerOptions(),
         enabled: oppdatertQuery.data,

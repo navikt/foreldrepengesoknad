@@ -48,11 +48,22 @@ type AnnenPartsVedtakRequestBody = {
     familiehendelse?: string;
 };
 
-// TODO: før så sjekket denne om error.message hadde "Ugyldig ident", og hvis så ga heller success med undefined istedenfor error. Why?
 export const hentAnnenPartsVedtakOptions = (body: AnnenPartsVedtakRequestBody) =>
     queryOptions({
         queryKey: ['ANNEN_PARTS_VEDTAK', body],
-        queryFn: () => ky.post('/rest/innsyn/v2/annenPartVedtak', { json: body }).json<AnnenPartVedtakDTO>(),
+        queryFn: () => {
+            try {
+                return ky.post('/rest/innsyn/v2/annenPartVedtak', { json: body }).json<AnnenPartVedtakDTO>();
+            } catch (error: any) {
+                // NOTE: inkluderer denne sjekken fordi den fantes før Tanstack refactor. Revurder om den behøves?
+                if (error.name === 'HTTPError') {
+                    if (error?.message?.includes('Ugyldig ident')) {
+                        return undefined;
+                    }
+                }
+                throw error;
+            }
+        },
     });
 
 export const hentTidslinjehendelserOptions = (saksnummer: string) =>

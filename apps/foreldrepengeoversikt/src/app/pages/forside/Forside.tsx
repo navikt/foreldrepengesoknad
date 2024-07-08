@@ -43,7 +43,7 @@ const Forside: React.FunctionComponent<Props> = ({
 
     const storageData = useQuery({
         ...hentMellomlagredeYtelserOptions(),
-        enabled: false, // TODO: Denne hadde isSuspended hardkodet til true, betyr det at kallet aldri egentlig ble brukt??
+        enabled: false, // TODO: Denne hadde isSuspended hardkodet til true, så denne ble aldri brukt før Tanstack refactor
     }).data;
 
     const harIkkeOppdatertSakQuery = useQuery(erSakOppdatertOptions());
