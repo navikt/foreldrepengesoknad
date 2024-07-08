@@ -1,4 +1,4 @@
-import{j as O}from"./VStack-WHXoK350.js";import{a as Re}from"./chunk-MZXVCX43-CM0pFb8Z.js";import{M as Oe,P as ce,C as s}from"./usePlanleggerNavigator-BUJeCoY_.js";import{P as fe}from"./routes-Cp-2uEwO.js";import{A as o,i as Ee}from"./Arbeidssituasjon-Bijxu_EQ.js";import{D as Pe}from"./Dekningsgrad-Bg_cIyqc.js";import{S as n}from"./HvemPlanleggerUtils-D1xsqW5u.js";import{S as e}from"./uttakUtils-Dlteggxe.js";import"./Label-DMHnewTW.js";import{P as le}from"./PlanenDeresSteg-CpBgBODL.js";import"./index-DVXBtNgz.js";import"./v4-CQkTLCs1.js";import"./barnetUtils-Dtg6gkcN.js";import"./Infobox-ClLisdhQ.js";import"./index-Dcs0RV0A.js";import"./tslib.es6-CMwweBXX.js";import"./kalenderPerioderUtils-CF_LUjv-.js";import"./hvemHarRettUtils-BOooQ_AO.js";import"./CalendarIconLabel-DdIu2HNU.js";import"./FamiliehendelseLabel-ALrUKE5Y.js";import"./PlanleggerStepPage-BUxaMC47.js";import"./FordelingSteg-Cv22-LnK.js";import"./StepButtonsHookForm-CVvicH7s.js";import"./Calendar-BZZfWk4Z.js";import"./index-Cbx7Fas8.js";import"./Responsive-Cdi-4PuO.js";import"./ArrowLeft-Dtu47hhV.js";import"./useScrollBehaviour-BRwzlaSf.js";import"./validation-4HO0J-zV.js";import"./Spacer-CmfZYR-2.js";import"./OmÅTilpassePlanen-DosPaqr3.js";import"./BabyWrapped-BuBGhlxi.js";import"./PersonPregnant-CPShOP20.js";import"./PersonGroup-Cfb_4mVh.js";import"./ExpansionCard-Dhk0FTRw.js";import"./UforutsetteEndringer-y9UDXiaX.js";import"./Information-CMXdOA2t.js";import"./extends-CF3RwP-h.js";const R={farRundtFødsel:0,toTette:0},xe=({gåTilNesteSide:ke=Re("button-click"),hvemPlanlegger:me,fordeling:pe,hvorLangPeriode:Fe,omBarnet:ue,arbeidssituasjon:ve,stønadskontoer:Me})=>(Ee(),O.jsx(Oe,{initialEntries:[fe.PLANEN_DERES],children:O.jsx(ce,{onDispatch:ke,initialState:{[s.FORDELING]:pe,[s.HVOR_LANG_PERIODE]:Fe,[s.HVEM_PLANLEGGER]:me,[s.OM_BARNET]:ue,[s.ARBEIDSSITUASJON]:ve},children:O.jsx(le,{stønadskontoer:Me})})})),ir={title:"steg/PlanenDeresSteg/Adopsjon",component:le,render:xe},r={args:{hvemPlanlegger:{navnPåMor:"Olga Utvikler",navnPåFar:"Espen Utvikler",type:n.MOR_OG_FAR},omBarnet:{erFødsel:!1,overtakelsesdato:"2024-04-11",fødselsdato:"2020-04-11",antallBarn:"1"},fordeling:{antallDagerSøker1:0},hvorLangPeriode:{dekningsgrad:Pe.HUNDRE_PROSENT},arbeidssituasjon:{status:o.JOBBER,jobberAnnenPart:!0},stønadskontoer:{100:{kontoer:[{konto:e.Mødrekvote,dager:75},{konto:e.Fedrekvote,dager:75},{konto:e.Fellesperiode,dager:80}],minsteretter:R},80:{kontoer:[{konto:e.Mødrekvote,dager:95},{konto:e.Fedrekvote,dager:95},{konto:e.Fellesperiode,dager:90}],minsteretter:R}}}},t={args:{...r.args,fordeling:void 0,arbeidssituasjon:{status:o.JOBBER,jobberAnnenPart:!1},stønadskontoer:{100:{kontoer:[{konto:e.Foreldrepenger,dager:230}],minsteretter:R},80:{kontoer:[{konto:e.Foreldrepenger,dager:280}],minsteretter:R}}}},d={args:{...r.args,fordeling:void 0,arbeidssituasjon:{status:o.UFØR,jobberAnnenPart:!0},stønadskontoer:{100:{kontoer:[{konto:e.Foreldrepenger,dager:125},{konto:e.AktivitetsfriKvote,dager:75}],minsteretter:{farRundtFødsel:0,toTette:0}},80:{kontoer:[{konto:e.Foreldrepenger,dager:155},{konto:e.AktivitetsfriKvote,dager:95}],minsteretter:{farRundtFødsel:0,toTette:0}}}}},g={args:{...r.args,fordeling:void 0,arbeidssituasjon:{status:o.UFØR,jobberAnnenPart:!0},stønadskontoer:{100:{kontoer:[{konto:e.Foreldrepenger,dager:160},{konto:e.AktivitetsfriKvote,dager:40}],minsteretter:{farRundtFødsel:0,toTette:0}},80:{kontoer:[{konto:e.Foreldrepenger,dager:210},{konto:e.AktivitetsfriKvote,dager:40}],minsteretter:{farRundtFødsel:0,toTette:0}}}}},i={args:{...r.args,hvemPlanlegger:{navnPåMor:"Olga Utvikler",navnPåMedmor:"Helga Utvikler",type:n.MOR_OG_MEDMOR}}},l={args:{...t.args,hvemPlanlegger:{navnPåMor:"Olga Utvikler",navnPåMedmor:"Helga Utvikler",type:n.MOR_OG_MEDMOR}}},k={args:{...d.args,hvemPlanlegger:{navnPåMor:"Olga Utvikler",navnPåMedmor:"Helga Utvikler",type:n.MOR_OG_MEDMOR}}},m={args:{...g.args,hvemPlanlegger:{navnPåMor:"Olga Utvikler",navnPåMedmor:"Helga Utvikler",type:n.MOR_OG_MEDMOR}}};var c;const p={args:{...r.args,hvemPlanlegger:{navnPåMor:"Olga Utvikler",type:n.MOR},fordeling:void 0,arbeidssituasjon:{status:o.JOBBER,jobberAnnenPart:void 0},stønadskontoer:(c=t.args)==null?void 0:c.stønadskontoer}};var f;const F={args:{...r.args,hvemPlanlegger:{navnPåFar:"Espen Utvikler",type:n.FAR},fordeling:void 0,arbeidssituasjon:{status:o.JOBBER,jobberAnnenPart:void 0},stønadskontoer:(f=t.args)==null?void 0:f.stønadskontoer}},a={args:{...r.args,hvemPlanlegger:{navnPåFar:"Espen Utvikler",navnPåMedfar:"Anders Utvikler",type:n.FAR_OG_FAR}}},u={args:{...a.args,fordeling:void 0,arbeidssituasjon:{status:o.JOBBER,jobberAnnenPart:!1},stønadskontoer:{80:{kontoer:[{konto:e.Foreldrepenger,dager:210},{konto:e.AktivitetsfriKvote,dager:40}],minsteretter:{farRundtFødsel:0,toTette:0}},100:{kontoer:[{konto:e.Foreldrepenger,dager:160},{konto:e.AktivitetsfriKvote,dager:40}],minsteretter:{farRundtFødsel:0,toTette:0}}}}},v={args:{...a.args,fordeling:void 0,arbeidssituasjon:{status:o.UFØR,jobberAnnenPart:!0},stønadskontoer:{80:{kontoer:[{konto:e.Foreldrepenger,dager:145},{konto:e.AktivitetsfriKvote,dager:95}],minsteretter:{farRundtFødsel:0,toTette:0}},100:{kontoer:[{konto:e.Foreldrepenger,dager:125},{konto:e.AktivitetsfriKvote,dager:75}],minsteretter:{farRundtFødsel:0,toTette:0}}}}},M={args:{...t.args,hvemPlanlegger:{navnPåMor:"Olga Utvikler",navnPåMedmor:"Helga Utvikler",type:n.MOR_OG_MEDMOR},omBarnet:{erFødsel:!1,overtakelsesdato:"2024-05-12",fødselsdato:"2020-04-11",antallBarn:"1"}}};var E,P,x;r.parameters={...r.parameters,docs:{...(E=r.parameters)==null?void 0:E.docs,source:{originalSource:`{
+import{j as O}from"./VStack-WHXoK350.js";import{a as Re}from"./chunk-MZXVCX43-CM0pFb8Z.js";import{M as Oe,P as ce,C as s}from"./usePlanleggerNavigator-BUJeCoY_.js";import{P as fe}from"./routes-Cp-2uEwO.js";import{A as o,i as Ee}from"./Arbeidssituasjon-Bijxu_EQ.js";import{D as Pe}from"./Dekningsgrad-Bg_cIyqc.js";import{S as n}from"./HvemPlanleggerUtils-D1xsqW5u.js";import{S as e}from"./uttakUtils-Dlteggxe.js";import"./Label-DMHnewTW.js";import{P as le}from"./PlanenDeresSteg-CpBgBODL.js";import"./index-DVXBtNgz.js";import"./v4-CQkTLCs1.js";import"./barnetUtils-Dtg6gkcN.js";import"./Infobox-ClLisdhQ.js";import"./index-Dcs0RV0A.js";import"./tslib.es6-CMwweBXX.js";import"./kalenderPerioderUtils-CF_LUjv-.js";import"./hvemHarRettUtils-BOooQ_AO.js";import"./CalendarIconLabel-DdIu2HNU.js";import"./FamiliehendelseLabel-ALrUKE5Y.js";import"./PlanleggerStepPage-BUxaMC47.js";import"./FordelingSteg-Cv22-LnK.js";import"./StepButtonsHookForm-CVvicH7s.js";import"./Calendar-BZZfWk4Z.js";import"./index-Cbx7Fas8.js";import"./Responsive-Cdi-4PuO.js";import"./ArrowLeft-Dtu47hhV.js";import"./useScrollBehaviour-BRwzlaSf.js";import"./validation-4HO0J-zV.js";import"./Spacer-CmfZYR-2.js";import"./OmÅTilpassePlanen-DosPaqr3.js";import"./BabyWrapped-BuBGhlxi.js";import"./PersonPregnant-CPShOP20.js";import"./PersonGroup-Cfb_4mVh.js";import"./ExpansionCard-Dhk0FTRw.js";import"./UforutsetteEndringer-y9UDXiaX.js";import"./Information-CMXdOA2t.js";import"./extends-CF3RwP-h.js";const R={farRundtFødsel:0,toTette:0},xe=({gåTilNesteSide:ke=Re("button-click"),hvemPlanlegger:me,fordeling:pe,hvorLangPeriode:Fe,omBarnet:ue,arbeidssituasjon:ve,stønadskontoer:Me})=>(Ee(),O.jsx(Oe,{initialEntries:[fe.PLANEN_DERES],children:O.jsx(ce,{onDispatch:ke,initialState:{[s.FORDELING]:pe,[s.HVOR_LANG_PERIODE]:Fe,[s.HVEM_PLANLEGGER]:me,[s.OM_BARNET]:ue,[s.ARBEIDSSITUASJON]:ve},children:O.jsx(le,{stønadskontoer:Me})})})),ir={title:"steg/PlanenDeresSteg/Adopsjon",component:le,render:xe},r={args:{hvemPlanlegger:{navnPåMor:"Olga Utvikler",navnPåFar:"Espen Utvikler",type:n.MOR_OG_FAR},omBarnet:{erFødsel:!1,overtakelsesdato:"2024-07-08",fødselsdato:"2020-04-11",antallBarn:"1"},fordeling:{antallDagerSøker1:0},hvorLangPeriode:{dekningsgrad:Pe.HUNDRE_PROSENT},arbeidssituasjon:{status:o.JOBBER,jobberAnnenPart:!0},stønadskontoer:{100:{kontoer:[{konto:e.Mødrekvote,dager:75},{konto:e.Fedrekvote,dager:75},{konto:e.Fellesperiode,dager:80}],minsteretter:R},80:{kontoer:[{konto:e.Mødrekvote,dager:95},{konto:e.Fedrekvote,dager:95},{konto:e.Fellesperiode,dager:101}],minsteretter:R}}}},t={args:{...r.args,fordeling:void 0,arbeidssituasjon:{status:o.JOBBER,jobberAnnenPart:!1},stønadskontoer:{100:{kontoer:[{konto:e.Foreldrepenger,dager:230}],minsteretter:R},80:{kontoer:[{konto:e.Foreldrepenger,dager:291}],minsteretter:R}}}},d={args:{...r.args,fordeling:void 0,arbeidssituasjon:{status:o.UFØR,jobberAnnenPart:!0},stønadskontoer:{100:{kontoer:[{konto:e.Foreldrepenger,dager:125},{konto:e.AktivitetsfriKvote,dager:75}],minsteretter:{farRundtFødsel:0,toTette:0}},80:{kontoer:[{konto:e.Foreldrepenger,dager:166},{konto:e.AktivitetsfriKvote,dager:95}],minsteretter:{farRundtFødsel:0,toTette:0}}}}},g={args:{...r.args,fordeling:void 0,arbeidssituasjon:{status:o.UFØR,jobberAnnenPart:!0},stønadskontoer:{100:{kontoer:[{konto:e.Foreldrepenger,dager:150},{konto:e.AktivitetsfriKvote,dager:50}],minsteretter:{farRundtFødsel:0,toTette:0}},80:{kontoer:[{konto:e.Foreldrepenger,dager:211},{konto:e.AktivitetsfriKvote,dager:50}],minsteretter:{farRundtFødsel:0,toTette:0}}}}},i={args:{...r.args,hvemPlanlegger:{navnPåMor:"Olga Utvikler",navnPåMedmor:"Helga Utvikler",type:n.MOR_OG_MEDMOR}}},l={args:{...t.args,hvemPlanlegger:{navnPåMor:"Olga Utvikler",navnPåMedmor:"Helga Utvikler",type:n.MOR_OG_MEDMOR}}},k={args:{...d.args,hvemPlanlegger:{navnPåMor:"Olga Utvikler",navnPåMedmor:"Helga Utvikler",type:n.MOR_OG_MEDMOR}}},m={args:{...g.args,hvemPlanlegger:{navnPåMor:"Olga Utvikler",navnPåMedmor:"Helga Utvikler",type:n.MOR_OG_MEDMOR}}};var c;const p={args:{...r.args,hvemPlanlegger:{navnPåMor:"Olga Utvikler",type:n.MOR},fordeling:void 0,arbeidssituasjon:{status:o.JOBBER,jobberAnnenPart:void 0},stønadskontoer:(c=t.args)==null?void 0:c.stønadskontoer}};var f;const F={args:{...r.args,hvemPlanlegger:{navnPåFar:"Espen Utvikler",type:n.FAR},fordeling:void 0,arbeidssituasjon:{status:o.JOBBER,jobberAnnenPart:void 0},stønadskontoer:(f=t.args)==null?void 0:f.stønadskontoer}},a={args:{...r.args,hvemPlanlegger:{navnPåFar:"Espen Utvikler",navnPåMedfar:"Anders Utvikler",type:n.FAR_OG_FAR}}},u={args:{...a.args,fordeling:void 0,arbeidssituasjon:{status:o.JOBBER,jobberAnnenPart:!1},stønadskontoer:{80:{kontoer:[{konto:e.Foreldrepenger,dager:211},{konto:e.AktivitetsfriKvote,dager:50}],minsteretter:{farRundtFødsel:0,toTette:0}},100:{kontoer:[{konto:e.Foreldrepenger,dager:150},{konto:e.AktivitetsfriKvote,dager:50}],minsteretter:{farRundtFødsel:0,toTette:0}}}}},v={args:{...a.args,fordeling:void 0,arbeidssituasjon:{status:o.UFØR,jobberAnnenPart:!0},stønadskontoer:{80:{kontoer:[{konto:e.Foreldrepenger,dager:211},{konto:e.AktivitetsfriKvote,dager:50}],minsteretter:{farRundtFødsel:0,toTette:0}},100:{kontoer:[{konto:e.Foreldrepenger,dager:150},{konto:e.AktivitetsfriKvote,dager:50}],minsteretter:{farRundtFødsel:0,toTette:0}}}}},M={args:{...t.args,hvemPlanlegger:{navnPåMor:"Olga Utvikler",navnPåMedmor:"Helga Utvikler",type:n.MOR_OG_MEDMOR},omBarnet:{erFødsel:!1,overtakelsesdato:"2024-07-07",fødselsdato:"2020-04-11",antallBarn:"1"}}};var E,P,x;r.parameters={...r.parameters,docs:{...(E=r.parameters)==null?void 0:E.docs,source:{originalSource:`{
   args: {
     hvemPlanlegger: {
       navnPåMor: 'Olga Utvikler',
@@ -7,7 +7,7 @@ import{j as O}from"./VStack-WHXoK350.js";import{a as Re}from"./chunk-MZXVCX43-CM
     },
     omBarnet: {
       erFødsel: false,
-      overtakelsesdato: '2024-04-11',
+      overtakelsesdato: '2024-07-08',
       fødselsdato: '2020-04-11',
       antallBarn: '1'
     },
@@ -44,7 +44,7 @@ import{j as O}from"./VStack-WHXoK350.js";import{a as Re}from"./chunk-MZXVCX43-CM
           dager: 95
         }, {
           konto: StønadskontoType.Fellesperiode,
-          dager: 90
+          dager: 101
         }],
         minsteretter: MINSTERETTER
       }
@@ -69,7 +69,7 @@ import{j as O}from"./VStack-WHXoK350.js";import{a as Re}from"./chunk-MZXVCX43-CM
       '80': {
         kontoer: [{
           konto: StønadskontoType.Foreldrepenger,
-          dager: 280
+          dager: 291
         }],
         minsteretter: MINSTERETTER
       }
@@ -100,7 +100,7 @@ import{j as O}from"./VStack-WHXoK350.js";import{a as Re}from"./chunk-MZXVCX43-CM
       '80': {
         kontoer: [{
           konto: StønadskontoType.Foreldrepenger,
-          dager: 155
+          dager: 166
         }, {
           konto: StønadskontoType.AktivitetsfriKvote,
           dager: 95
@@ -124,10 +124,10 @@ import{j as O}from"./VStack-WHXoK350.js";import{a as Re}from"./chunk-MZXVCX43-CM
       '100': {
         kontoer: [{
           konto: StønadskontoType.Foreldrepenger,
-          dager: 160
+          dager: 150
         }, {
           konto: StønadskontoType.AktivitetsfriKvote,
-          dager: 40
+          dager: 50
         }],
         minsteretter: {
           farRundtFødsel: 0,
@@ -137,10 +137,10 @@ import{j as O}from"./VStack-WHXoK350.js";import{a as Re}from"./chunk-MZXVCX43-CM
       '80': {
         kontoer: [{
           konto: StønadskontoType.Foreldrepenger,
-          dager: 210
+          dager: 211
         }, {
           konto: StønadskontoType.AktivitetsfriKvote,
-          dager: 40
+          dager: 50
         }],
         minsteretter: {
           farRundtFødsel: 0,
@@ -234,10 +234,10 @@ import{j as O}from"./VStack-WHXoK350.js";import{a as Re}from"./chunk-MZXVCX43-CM
       '80': {
         kontoer: [{
           konto: StønadskontoType.Foreldrepenger,
-          dager: 210
+          dager: 211
         }, {
           konto: StønadskontoType.AktivitetsfriKvote,
-          dager: 40
+          dager: 50
         }],
         minsteretter: {
           farRundtFødsel: 0,
@@ -247,10 +247,10 @@ import{j as O}from"./VStack-WHXoK350.js";import{a as Re}from"./chunk-MZXVCX43-CM
       '100': {
         kontoer: [{
           konto: StønadskontoType.Foreldrepenger,
-          dager: 160
+          dager: 150
         }, {
           konto: StønadskontoType.AktivitetsfriKvote,
-          dager: 40
+          dager: 50
         }],
         minsteretter: {
           farRundtFødsel: 0,
@@ -271,10 +271,10 @@ import{j as O}from"./VStack-WHXoK350.js";import{a as Re}from"./chunk-MZXVCX43-CM
       '80': {
         kontoer: [{
           konto: StønadskontoType.Foreldrepenger,
-          dager: 145
+          dager: 211
         }, {
           konto: StønadskontoType.AktivitetsfriKvote,
-          dager: 95
+          dager: 50
         }],
         minsteretter: {
           farRundtFødsel: 0,
@@ -284,10 +284,10 @@ import{j as O}from"./VStack-WHXoK350.js";import{a as Re}from"./chunk-MZXVCX43-CM
       '100': {
         kontoer: [{
           konto: StønadskontoType.Foreldrepenger,
-          dager: 125
+          dager: 150
         }, {
           konto: StønadskontoType.AktivitetsfriKvote,
-          dager: 75
+          dager: 50
         }],
         minsteretter: {
           farRundtFødsel: 0,
@@ -306,7 +306,7 @@ import{j as O}from"./VStack-WHXoK350.js";import{a as Re}from"./chunk-MZXVCX43-CM
     },
     omBarnet: {
       erFødsel: false,
-      overtakelsesdato: '2024-05-12',
+      overtakelsesdato: '2024-07-07',
       fødselsdato: '2020-04-11',
       antallBarn: '1'
     }
