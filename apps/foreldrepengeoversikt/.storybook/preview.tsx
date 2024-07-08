@@ -12,6 +12,9 @@ import '../src/app/styles/app.css';
 // Initialize MSW
 initialize({
     onUnhandledRequest: 'bypass',
+    serviceWorker: {
+        url: './mockServiceWorker.js',
+    },
 });
 
 const withIntlProvider = getIntlDecorator({
