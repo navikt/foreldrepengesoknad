@@ -11,8 +11,9 @@ import * as stories from './HvorLangPeriodeSteg.stories';
 const {
     FlereForsørgereEttBarnKunMorHarRett,
     FarOgFarBeggeHarRett,
-    FlereForsørgereFarOgFarKunFar1HarRettAdopsjon,
     FlereForsørgereFarOgFarKunFar1HarRettFødsel,
+    FlereForsørgereKunFarHarRett,
+    FlereForsørgereFarOgFarKunFar1HarRettAdopsjon,
 } = composeStories(stories);
 
 vi.mock('react-router-dom', async () => {
@@ -38,11 +39,14 @@ describe('<HvorLangPeriodeSteg>', () => {
 
         await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));
 
-        expect(screen.getByText('Siste dag med foreldrepenger kan bli fredag 15. november 2024')).toBeInTheDocument();
+        expect(screen.getByText('Siste dag med foreldrepenger kan bli tirsdag 20. mai 2025')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('80 % utbetaling over 61 uker + 1 dag'));
 
-        expect(screen.getByText('Siste dag med foreldrepenger kan bli mandag 10. februar 2025')).toBeInTheDocument();
+        expect(screen.getByText('Siste dag med foreldrepenger kan bli onsdag 13. august 2025')).toBeInTheDocument();
+
+        expect(screen.queryByText('Når bare far skal ha foreldrepenger')).not.toBeInTheDocument();
+        expect(screen.queryByText('Når bare én av fedrene skal ha foreldrepenger')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste'));
 
@@ -71,6 +75,9 @@ describe('<HvorLangPeriodeSteg>', () => {
 
         await userEvent.click(screen.getByText('100 % utbetaling over 46 uker'));
 
+        expect(screen.queryByText('Når bare far skal ha foreldrepenger')).not.toBeInTheDocument();
+        expect(screen.queryByText('Når bare én av fedrene skal ha foreldrepenger')).not.toBeInTheDocument();
+
         await userEvent.click(screen.getByText('Neste'));
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
@@ -90,6 +97,7 @@ describe('<HvorLangPeriodeSteg>', () => {
         expect(navigateMock).toHaveBeenCalledTimes(1);
         expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.PLANEN_DERES));
     });
+
     it('skal vise informasjon om at bare én av fedrene har rett når det er adopsjon', async () => {
         const navigateMock = vi.fn();
         useNavigateMock.mockReturnValue(navigateMock);
@@ -154,5 +162,19 @@ describe('<HvorLangPeriodeSteg>', () => {
 
         expect(navigateMock).toHaveBeenCalledTimes(1);
         expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.PLANEN_DERES));
+    });
+
+    it('skal vise infoboks når kun far skal ha foreldrepenger', async () => {
+        render(<FlereForsørgereKunFarHarRett />);
+        expect(await screen.findByText('Hvor lenge')).toBeInTheDocument();
+        expect(screen.getByText('Når bare far skal ha foreldrepenger')).toBeInTheDocument();
+        expect(screen.queryByText('Når bare én av fedrene skal ha foreldrepenger')).not.toBeInTheDocument();
+    });
+
+    it('skal vise infoboks når kun en av fedrene skal ha foreldrepenger', async () => {
+        render(<FlereForsørgereFarOgFarKunFar1HarRettAdopsjon />);
+        expect(await screen.findByText('Hvor lenge')).toBeInTheDocument();
+        expect(screen.getByText('Når bare én av fedrene skal ha foreldrepenger')).toBeInTheDocument();
+        expect(screen.queryByText('Når bare far skal ha foreldrepenger')).not.toBeInTheDocument();
     });
 });
