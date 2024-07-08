@@ -17,6 +17,7 @@ import { Søker } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { DokumentasjonOppsummering } from './DokumentasjonOppsummering';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
 
 const getDatoOgHendelsetype = (barn: OmBarnet): [string, HendelseType] => {
@@ -66,6 +67,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ søker, sendSøknad,
                 onContinueLater={navigator.fortsettSøknadSenere}
             >
                 <SøkerOppsummeringspunkt søker={søker} />
+                <OmBarnetOppsummering omBarnet={omBarnet} dokumentasjon={dokumentasjon} />
                 <BoIUtlandetOppsummeringspunkt
                     familiehendelseDato={barnData[0]}
                     hendelseType={barnData[1]}
@@ -73,11 +75,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ søker, sendSøknad,
                     tidligereUtenlandsopphold={tidligereUtenlandsopphold}
                     senereUtenlandsopphold={senereUtenlandsopphold}
                 />
-                <Accordion indent={false}>
-                    <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'OppsummeringSteg.OmBarnet' })}>
-                        <OmBarnetOppsummering omBarnet={omBarnet} dokumentasjon={dokumentasjon} />
-                    </OppsummeringPanel.Punkt>
-                </Accordion>
+                <DokumentasjonOppsummering dokumentasjon={dokumentasjon} />
             </OppsummeringPanel>
         </ContentWrapper>
     );

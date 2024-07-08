@@ -1,8 +1,9 @@
+import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 
-import { BodyLong, BodyShort, HStack, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, FormSummary, HStack, VStack } from '@navikt/ds-react';
 
 import { AttachmentList } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';
@@ -10,10 +11,9 @@ import { notEmpty } from '@navikt/fp-validation';
 
 interface Props {
     omBarnet: OmBarnet;
-    dokumentasjon?: Dokumentasjon;
 }
 
-const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokumentasjon }) => {
+const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet }) => {
     const intl = useIntl();
 
     const harAdoptert = erAdopsjon(omBarnet);
@@ -37,70 +37,88 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet, dokume
     }
 
     return (
-        <VStack gap="4">
-            <HStack gap="2">
-                <BodyShort>
-                    <FormattedMessage id={'OmBarnetOppsummering.SoknadenGjelder'} />
-                </BodyShort>
-                <BodyShort>{antallBarnSummaryText}</BodyShort>
-            </HStack>
-            {harAdoptert && (
-                <>
-                    <HStack gap="2">
-                        <BodyShort>
-                            <FormattedMessage id={'OmBarnetOppsummering.MedAdopsjonsdato'} />
-                        </BodyShort>
-                        <BodyShort>{formatDate(omBarnet.adopsjonsdato)}</BodyShort>
-                    </HStack>
-                    <HStack gap="2">
-                        <BodyShort>
-                            {omBarnet.fødselsdatoer.length > 1
-                                ? intl.formatMessage({ id: 'OmBarnetOppsummering.MedFødselsdatoer' })
-                                : intl.formatMessage({ id: 'OmBarnetOppsummering.MedFødselsdato' })}
-                        </BodyShort>
-                        <BodyLong>
-                            {omBarnet.fødselsdatoer
-                                .map((_, index) => {
-                                    return formatDate(omBarnet.fødselsdatoer[index].dato);
-                                })
-                                .join(', ')}
-                        </BodyLong>
-                    </HStack>
-                    <BodyShort style={{ fontWeight: 'bold' }}>
-                        <FormattedMessage id={'OmBarnetOppsummering.VedlagtOmsorgsovertakelseBekreftelse'} />
-                    </BodyShort>
-                    <AttachmentList attachments={notEmpty(dokumentasjon).vedlegg} />
-                </>
-            )}
-            {harFødt && (
-                <HStack gap="2">
-                    <BodyShort>
-                        <FormattedMessage id={'OmBarnetOppsummering.MedFødselsdato'} />
-                    </BodyShort>
-                    <BodyShort>{formatDate(omBarnet.fødselsdato)}</BodyShort>
-                </HStack>
-            )}
-            {harTermin && dokumentasjon && erTerminDokumentasjon(dokumentasjon) && (
-                <>
-                    <HStack gap="2">
-                        <BodyShort>
+        <FormSummary>
+            <FormSummary.Header>
+                <FormSummary.Heading level="2">
+                    {intl.formatMessage({ id: 'OppsummeringSteg.OmBarnet' })}
+                </FormSummary.Heading>
+            </FormSummary.Header>
+            <FormSummary.Answers>
+                <FormSummary.Answer>
+                    <FormSummary.Label>
+                        <FormattedMessage id={'OmBarnetOppsummering.SoknadenGjelder'} />
+                    </FormSummary.Label>
+                    <FormSummary.Value>{antallBarnSummaryText}</FormSummary.Value>
+                </FormSummary.Answer>
+                {harFødt && (
+                    <FormSummary.Answer>
+                        <FormSummary.Label>
+                            <FormattedMessage id={'OmBarnetOppsummering.MedFødselsdato'} />
+                        </FormSummary.Label>
+                        <FormSummary.Value>{formatDate(omBarnet.fødselsdato)}</FormSummary.Value>
+                    </FormSummary.Answer>
+                )}
+                {harTermin && (
+                    <FormSummary.Answer>
+                        <FormSummary.Label>
                             <FormattedMessage id={'OmBarnetOppsummering.MedTermindato'} />
-                        </BodyShort>
-                        <BodyShort>{formatDate(omBarnet.termindato)}</BodyShort>
-                    </HStack>
-                    <HStack gap="2">
-                        <BodyShort>
-                            <FormattedMessage id={'OmBarnetOppsummering.SomErDatert'} />
-                        </BodyShort>
-                        <BodyShort>{formatDate(dokumentasjon.terminbekreftelsedato)}</BodyShort>
-                    </HStack>
-                    <BodyShort style={{ fontWeight: 'bold' }}>
-                        <FormattedMessage id={'OmBarnetOppsummering.VedlagtTerminbekreftelse'} />
-                    </BodyShort>
-                    <AttachmentList attachments={dokumentasjon.vedlegg} />
-                </>
-            )}
-        </VStack>
+                        </FormSummary.Label>
+                        <FormSummary.Value>{formatDate(omBarnet.termindato)}</FormSummary.Value>
+                    </FormSummary.Answer>
+                )}
+                {harAdoptert && (
+                    <>
+                        <FormSummary.Answer>
+                            <FormSummary.Label>
+                                <FormattedMessage id={'OmBarnetOppsummering.MedAdopsjonsdato'} />
+                            </FormSummary.Label>
+                            <FormSummary.Value>{formatDate(omBarnet.adopsjonsdato)}</FormSummary.Value>
+                        </FormSummary.Answer>
+
+                        <FormSummary.Answer>
+                            <FormSummary.Label>
+                                <FormattedMessage
+                                    id={
+                                        omBarnet.fødselsdatoer.length > 1
+                                            ? 'OmBarnetOppsummering.MedFødselsdatoer'
+                                            : 'OmBarnetOppsummering.MedFødselsdato'
+                                    }
+                                />
+                            </FormSummary.Label>
+                            <FormSummary.Value>
+                                {omBarnet.fødselsdatoer
+                                    .map((_, index) => {
+                                        return formatDate(omBarnet.fødselsdatoer[index].dato);
+                                    })
+                                    .join(', ')}
+                            </FormSummary.Value>
+                        </FormSummary.Answer>
+
+                        {/*TODO: dette vedlegget */}
+                        {/*<BodyShort style={{ fontWeight: 'bold' }}>*/}
+                        {/*    <FormattedMessage id={'OmBarnetOppsummering.VedlagtOmsorgsovertakelseBekreftelse'} />*/}
+                        {/*</BodyShort>*/}
+                        {/*<AttachmentList attachments={notEmpty(dokumentasjon).vedlegg} />*/}
+                    </>
+                )}
+            </FormSummary.Answers>
+
+            {/*TODO: dette vedlegget*/}
+            {/*{dokumentasjon && erTerminDokumentasjon(dokumentasjon) && (*/}
+            {/*    <>*/}
+            {/*        <HStack gap="2">*/}
+            {/*            <BodyShort>*/}
+            {/*                <FormattedMessage id={'OmBarnetOppsummering.SomErDatert'} />*/}
+            {/*            </BodyShort>*/}
+            {/*            <BodyShort>{formatDate(dokumentasjon.terminbekreftelsedato)}</BodyShort>*/}
+            {/*        </HStack>*/}
+            {/*        <BodyShort style={{ fontWeight: 'bold' }}>*/}
+            {/*            <FormattedMessage id={'OmBarnetOppsummering.VedlagtTerminbekreftelse'} />*/}
+            {/*        </BodyShort>*/}
+            {/*        <AttachmentList attachments={dokumentasjon.vedlegg} />*/}
+            {/*    </>*/}
+            {/*)}*/}
+        </FormSummary>
     );
 };
 export default OmBarnetOppsummering;

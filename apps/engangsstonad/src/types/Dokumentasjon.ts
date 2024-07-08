@@ -1,6 +1,6 @@
 import { Attachment } from '@navikt/fp-types';
 
-type Vedlegg = {
+export type Vedlegg = {
     vedlegg: Attachment[];
 };
 

@@ -98,16 +98,18 @@ const BoIUtlandetOppsummeringspunkt: React.FunctionComponent<Props> = ({
                 </FormSummary.Answer>
             </FormSummary.Answers>
 
-            <FormSummary.Answers>
-                <FormSummary.Answer>
-                    <FormSummary.Label>Hvilke land har du bodd i de siste 12?</FormSummary.Label>
-                    <FormSummary.Value>
-                        <LandOppsummering
-                            utenlandsoppholdListe={notEmpty(tidligereUtenlandsopphold).utenlandsoppholdSiste12Mnd}
-                        />
-                    </FormSummary.Value>
-                </FormSummary.Answer>
-            </FormSummary.Answers>
+            {tidligereUtenlandsopphold && (
+                <FormSummary.Answers>
+                    <FormSummary.Answer>
+                        <FormSummary.Label>Hvilke land har du bodd i de siste 12?</FormSummary.Label>
+                        <FormSummary.Value>
+                            <LandOppsummering
+                                utenlandsoppholdListe={notEmpty(tidligereUtenlandsopphold.utenlandsoppholdSiste12Mnd)}
+                            />
+                        </FormSummary.Value>
+                    </FormSummary.Answer>
+                </FormSummary.Answers>
+            )}
 
             <FormSummary.Answers>
                 <FormSummary.Answer>
@@ -120,16 +122,18 @@ const BoIUtlandetOppsummeringspunkt: React.FunctionComponent<Props> = ({
                     </FormSummary.Value>
                 </FormSummary.Answer>
             </FormSummary.Answers>
-            <FormSummary.Answers>
-                <FormSummary.Answer>
-                    <FormSummary.Label>Hvilke land skal du bo i de neste 12 månede?</FormSummary.Label>
-                    <FormSummary.Value>
-                        <LandOppsummering
-                            utenlandsoppholdListe={notEmpty(senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd)}
-                        />
-                    </FormSummary.Value>
-                </FormSummary.Answer>
-            </FormSummary.Answers>
+            {senereUtenlandsopphold && (
+                <FormSummary.Answers>
+                    <FormSummary.Answer>
+                        <FormSummary.Label>Hvilke land skal du bo i de neste 12 månede?</FormSummary.Label>
+                        <FormSummary.Value>
+                            <LandOppsummering
+                                utenlandsoppholdListe={notEmpty(senereUtenlandsopphold.utenlandsoppholdNeste12Mnd)}
+                            />
+                        </FormSummary.Value>
+                    </FormSummary.Answer>
+                </FormSummary.Answers>
+            )}
         </FormSummary>
     );
 };
