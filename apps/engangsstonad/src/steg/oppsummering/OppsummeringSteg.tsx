@@ -5,7 +5,7 @@ import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 
-import { Accordion, Heading } from '@navikt/ds-react';
+import { Accordion, FormSummary, Heading } from '@navikt/ds-react';
 
 import {
     BoIUtlandetOppsummeringspunkt,
@@ -65,18 +65,18 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ søker, sendSøknad,
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 onContinueLater={navigator.fortsettSøknadSenere}
             >
+                <SøkerOppsummeringspunkt søker={søker} />
+                <BoIUtlandetOppsummeringspunkt
+                    familiehendelseDato={barnData[0]}
+                    hendelseType={barnData[1]}
+                    utenlandsopphold={utenlandsopphold}
+                    tidligereUtenlandsopphold={tidligereUtenlandsopphold}
+                    senereUtenlandsopphold={senereUtenlandsopphold}
+                />
                 <Accordion indent={false}>
-                    <SøkerOppsummeringspunkt søker={søker} />
                     <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'OppsummeringSteg.OmBarnet' })}>
                         <OmBarnetOppsummering omBarnet={omBarnet} dokumentasjon={dokumentasjon} />
                     </OppsummeringPanel.Punkt>
-                    <BoIUtlandetOppsummeringspunkt
-                        familiehendelseDato={barnData[0]}
-                        hendelseType={barnData[1]}
-                        utenlandsopphold={utenlandsopphold}
-                        tidligereUtenlandsopphold={tidligereUtenlandsopphold}
-                        senereUtenlandsopphold={senereUtenlandsopphold}
-                    />
                 </Accordion>
             </OppsummeringPanel>
         </ContentWrapper>
