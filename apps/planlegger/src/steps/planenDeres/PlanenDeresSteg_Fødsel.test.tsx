@@ -93,8 +93,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.getByText('80 % i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Espens uker uten krav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Espens uker med krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -127,8 +127,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.getByText('80 % i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Espens uker uten krav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Espens uker med krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -223,8 +223,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.getByText('80 % i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Helgas uker uten krav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Helgas uker med krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -257,8 +257,8 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(screen.getByText('80 % i 50 uker').closest('button')?.getAttribute('aria-checked')).toBe('false');
         expect(screen.queryByRole('option')).not.toBeInTheDocument();
 
-        expect(screen.getByText('Helgas uker uten krav til Olga')).toBeInTheDocument();
-        expect(screen.getByText('Helgas uker med krav til Olga')).toBeInTheDocument();
+        expect(screen.getByText('Uten aktivitetskrav')).toBeInTheDocument();
+        expect(screen.getByText('Med aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
 
         const april = screen.getByTestId('year:2024;month:3');
@@ -483,7 +483,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();
 
-        await userEvent.selectOptions(utils.getByDisplayValue('Fellesperioden: 16 uker til far'), '8');
+        await userEvent.selectOptions(utils.getByDisplayValue('Fellesperioden: 16 uker til far'), '40');
 
         expect(
             (screen.getByRole('option', { name: 'Fellesperioden: 8 til mor, 8 til far' }) as HTMLOptionElement)

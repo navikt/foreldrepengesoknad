@@ -55,7 +55,10 @@ const AppContainer = () => {
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary appName="Foreldrepengeplanlegger" customErrorPage={<SimpleErrorPage />}>
+            <ErrorBoundary
+                appName="Foreldrepengeplanlegger"
+                customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
+            >
                 <BrowserRouter basename={Environment.PUBLIC_PATH}>
                     <PlanleggerDataInit locale={locale} changeLocale={changeLocale} />
                 </BrowserRouter>

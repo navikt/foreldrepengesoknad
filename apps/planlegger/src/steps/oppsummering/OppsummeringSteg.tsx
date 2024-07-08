@@ -57,11 +57,9 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser })
             <OppsummeringHeader>
                 <VStack gap="10">
                     <VStack gap="5">
-                        <Alert variant="info">
-                            <BodyShort>
-                                {!harRettTilForeldrepenger ? (
-                                    <FormattedMessage id="OppsummeringSteg.InformasjonPlanleggerErUnderUtviklingIkkeRett" />
-                                ) : (
+                        {harRettTilForeldrepenger && (
+                            <Alert variant="info">
+                                <BodyShort>
                                     <FormattedMessage
                                         id="OppsummeringSteg.InformasjonPlanleggerErUnderUtvikling"
                                         values={{
@@ -78,9 +76,9 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser })
                                             ),
                                         }}
                                     />
-                                )}
-                            </BodyShort>
-                        </Alert>
+                                </BodyShort>
+                            </Alert>
+                        )}
                         {!harRettTilForeldrepenger && (
                             <VStack gap="5">
                                 <Infobox
@@ -91,7 +89,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser })
                                             <FormattedMessage id="OppsummeringSteg.Infoboks.IngenHarRett" />
                                         )
                                     }
-                                    icon={<TasklistStartIcon height={24} width={24} color="#236B7D" aria-hidden />}
+                                    icon={<TasklistStartIcon height={24} width={24} color="#7F8900" aria-hidden />}
                                 >
                                     <BodyShort>
                                         <FormattedMessage
@@ -153,7 +151,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser })
                     </Heading>
                     <Link
                         inlineText
-                        href={links.veiviser}
+                        href={links.hvorMye}
                         target="_blank"
                         rel="noreferrer"
                         className={styles.lenkepanel}

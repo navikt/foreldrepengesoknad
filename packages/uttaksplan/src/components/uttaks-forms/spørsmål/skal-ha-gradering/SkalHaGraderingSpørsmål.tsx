@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { uniqBy } from 'lodash';
+import uniqBy from 'lodash/uniqBy';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import { IntlShape } from 'react-intl';
 
 import { StønadskontoType } from '@navikt/fp-constants';

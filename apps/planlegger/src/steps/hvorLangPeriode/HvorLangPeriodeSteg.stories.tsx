@@ -80,7 +80,7 @@ export const FlereForsørgereEttBarnKunMorHarRett: Story = {
                 kontoer: [
                     { konto: StønadskontoType.Mødrekvote, dager: 95 },
                     { konto: StønadskontoType.Fedrekvote, dager: 95 },
-                    { konto: StønadskontoType.Fellesperiode, dager: 90 },
+                    { konto: StønadskontoType.Fellesperiode, dager: 101 },
                     { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
                 ],
                 minsteretter: MINSTERETTER,
@@ -214,6 +214,42 @@ export const FlereForsørgereFarOgFarKunFar1HarRettAdopsjon: Story = {
             fødselsdato: '2024-01-01',
             erFødsel: false,
             overtakelsesdato: '2024-01-01',
+            antallBarn: '1',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: false,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 250 }],
+                minsteretter: {
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+            '100': {
+                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 200 }],
+                minsteretter: {
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+        },
+    },
+};
+
+export const FlereForsørgereFarOgFarKunFar1HarRettFødsel: Story = {
+    args: {
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMedfar: 'Hugo Utvikler',
+            type: Situasjon.FAR_OG_FAR,
+        },
+        omBarnet: {
+            erBarnetFødt: true,
+            fødselsdato: '2024-01-01',
+            erFødsel: true,
             antallBarn: '1',
         },
         arbeidssituasjon: {

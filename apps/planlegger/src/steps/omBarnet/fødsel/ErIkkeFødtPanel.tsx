@@ -20,7 +20,8 @@ import { Datepicker } from '@navikt/fp-form-hooks';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { isLessThanThreeWeeksAgo, isRequired, isValidDate } from '@navikt/fp-validation';
 
-const DATO_3_MND_FRAM = dayjs().startOf('days').add(3, 'months');
+const DATO_22_UKER_FRAM = dayjs().startOf('days').add(22, 'weeks');
+
 const TODAY = dayjs().startOf('days').toDate();
 const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): string | undefined => {
     if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
@@ -49,11 +50,12 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
     const termindato = formMethods.watch('termindato');
 
     const datoSvangerskapsuke22 =
-        termindato !== undefined ? dayjs(termindato).subtract(18, 'weeks').toDate() : undefined;
+        termindato !== undefined ? dayjs(termindato).subtract(18, 'weeks').subtract(3, 'days').toDate() : undefined;
 
     const erAlenesøker = erAlene(hvemPlanlegger);
-    const erFar = erFarDelAvSøknaden(hvemPlanlegger);
+    const erFarMedISøknaden = erFarDelAvSøknaden(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);
+    const erFar = hvemPlanlegger.type === Situasjon.FAR;
 
     return (
         <VStack gap="5">
@@ -80,7 +82,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
             {termindato !== undefined && dayjs(termindato).isBefore(TODAY) && (
                 <Infobox
                     header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}
-                    icon={<TasklistStartIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />}
+                    icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
                     shouldFadeIn
                 >
                     <BodyShort>
@@ -100,7 +102,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                             <FormattedMessage
                                 id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
                                 values={{
-                                    erFar,
+                                    erFar: erFarMedISøknaden,
                                     hvem: finnSøker2Tekst(intl, hvemPlanlegger),
                                 }}
                             />
@@ -108,7 +110,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                     )}
                 </Infobox>
             )}
-            {termindato !== undefined && dayjs(termindato).isAfter(DATO_3_MND_FRAM) && (
+            {termindato !== undefined && dayjs(termindato).isAfter(DATO_22_UKER_FRAM) && (
                 <Infobox
                     header={
                         <FormattedMessage
@@ -119,31 +121,35 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                             }}
                         />
                     }
-                    icon={<TasklistStartIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />}
+                    icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
                     shouldFadeIn
                 >
                     <BodyShort>
-                        <FormattedMessage
-                            id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke"
-                            values={{
-                                erAlenesøker,
-                            }}
-                        />
+                        <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
                     </BodyShort>
                     <BodyShort>
-                        <FormattedMessage
-                            id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.NAVanbefaler"
-                            values={{
-                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                            }}
-                        />
+                        {!erFedre ? (
+                            <FormattedMessage
+                                id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                values={{
+                                    erMorDelAvSøknaden: true,
+                                }}
+                            />
+                        ) : (
+                            <FormattedMessage
+                                id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                values={{
+                                    erMorDelAvSøknaden: false,
+                                }}
+                            />
+                        )}
                     </BodyShort>
                     {erFarDelAvSøknaden(hvemPlanlegger) && !erFedre && (
                         <BodyShort>
                             <FormattedMessage
                                 id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
                                 values={{
-                                    erFar,
+                                    erFar: erFarMedISøknaden,
                                     hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
                                 }}
                             />
@@ -153,16 +159,35 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
             )}
             {termindato !== undefined &&
                 dayjs(termindato).isSameOrAfter(TODAY) &&
-                dayjs(termindato).isSameOrBefore(DATO_3_MND_FRAM) && (
+                dayjs(termindato).isSameOrBefore(DATO_22_UKER_FRAM) && (
                     <Infobox
                         header={
                             <FormattedMessage id="ErIkkeFødtPanel.UnderTreMndTilTerminInfo" values={{ erAlenesøker }} />
                         }
                         icon={
-                            <TasklistStartIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />
+                            <TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />
                         }
                         shouldFadeIn
                     >
+                        <BodyShort>
+                            <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
+
+                            {erFedre || erFar ? (
+                                <FormattedMessage
+                                    id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                    values={{
+                                        erMorDelAvSøknaden: false,
+                                    }}
+                                />
+                            ) : (
+                                <FormattedMessage
+                                    id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                    values={{
+                                        erMorDelAvSøknaden: true,
+                                    }}
+                                />
+                            )}
+                        </BodyShort>
                         {!erFedre && (
                             <>
                                 <BodyShort>
@@ -190,7 +215,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                                             id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
                                             values={{
                                                 erAlenesøker,
-                                                erFar,
+                                                erFar: erFarMedISøknaden,
                                                 hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
                                             }}
                                         />

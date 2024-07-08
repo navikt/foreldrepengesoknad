@@ -86,7 +86,7 @@ export const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, change
     const satserData = useRequest<Satser>(planleggerApi, `${Environment.PUBLIC_PATH}/rest/satser`);
 
     if (requestData.error || satserData.error) {
-        return <SimpleErrorPage />;
+        return <SimpleErrorPage retryCallback={() => location.reload()} />;
     }
 
     if (!satserData.data) {
