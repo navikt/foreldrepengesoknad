@@ -28,7 +28,6 @@ const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
     };
 
     const goToNextStep = (path: Path) => {
-        console.log('ny path', path);
         oppdaterPath(path);
         return mellomlagreOgNaviger();
     };
@@ -36,7 +35,6 @@ const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
     const goToNextDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) + 1;
         const nextPath = stepConfig[index]?.id;
-        console.log(nextPath);
         oppdaterPath(nextPath);
         return mellomlagreOgNaviger();
     };
