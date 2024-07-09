@@ -10,28 +10,26 @@ interface Props {
     omBarnet: OmBarnet;
 }
 
+function omBarnetOppsummeringIntlId(omBarnet: OmBarnet) {
+    const harAdoptert = erAdopsjon(omBarnet);
+
+    if (omBarnet.antallBarn === 1) {
+        return 'OmBarnetOppsummering.EttBarn';
+    } else if (omBarnet.antallBarn === 2 && !harAdoptert) {
+        return 'OmBarnetOppsummering.Tvillinger';
+    } else if (omBarnet.antallBarn === 2 && harAdoptert) {
+        return 'OmBarnetOppsummering.ToBarn';
+    } else {
+        return 'OmBarnetOppsummering.FlereBarn';
+    }
+}
+
 const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet }) => {
     const intl = useIntl();
 
     const harAdoptert = erAdopsjon(omBarnet);
     const harTermin = erBarnetIkkeFødt(omBarnet);
     const harFødt = erBarnetFødt(omBarnet);
-
-    let antallBarnSummaryText;
-    if (omBarnet.antallBarn === 1) {
-        antallBarnSummaryText = intl.formatMessage({ id: 'OmBarnetOppsummering.EttBarn' });
-    } else if (omBarnet.antallBarn === 2 && !harAdoptert) {
-        antallBarnSummaryText = intl.formatMessage({ id: 'OmBarnetOppsummering.Tvillinger' });
-    } else if (omBarnet.antallBarn === 2 && harAdoptert) {
-        antallBarnSummaryText = intl.formatMessage({ id: 'OmBarnetOppsummering.ToBarn' });
-    } else {
-        antallBarnSummaryText = intl.formatMessage(
-            { id: 'OmBarnetOppsummering.FlereBarn' },
-            {
-                antall: omBarnet.antallBarn,
-            },
-        );
-    }
 
     return (
         <FormSummary>
@@ -45,7 +43,9 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet }) => {
                     <FormSummary.Label>
                         <FormattedMessage id={'OmBarnetOppsummering.SoknadenGjelder'} />
                     </FormSummary.Label>
-                    <FormSummary.Value>{antallBarnSummaryText}</FormSummary.Value>
+                    <FormSummary.Value>
+                        <FormattedMessage id={omBarnetOppsummeringIntlId(omBarnet)} />
+                    </FormSummary.Value>
                 </FormSummary.Answer>
                 {harFødt && (
                     <FormSummary.Answer>
