@@ -14,5 +14,6 @@
     "LandOppsummering.IDag": "today",
     "LandOppsummering.HarBodd": "You have lived in {country} during the previous 12 months",
     "LandOppsummering.SkalBo": "You will be living in {country} during the next 12 months",
-    "DegOppsummeringspunkt.OmDeg": "You"
+    "DegOppsummeringspunkt.tittel": "You",
+    "DegOppsummeringspunkt.info": "Name and national identity number"
 }

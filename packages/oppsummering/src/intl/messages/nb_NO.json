@@ -14,5 +14,6 @@
     "LandOppsummering.IDag": "i dag",
     "LandOppsummering.HarBodd": "Du har bodd i {country} i løpet av de forrige 12 månedene",
     "LandOppsummering.SkalBo": "Du skal bo i {country} i løpet av de neste 12 månedene",
-    "DegOppsummeringspunkt.OmDeg": "Deg"
+    "DegOppsummeringspunkt.tittel": "Deg",
+    "DegOppsummeringspunkt.info": "Navn og fødselsnummer"
 }
