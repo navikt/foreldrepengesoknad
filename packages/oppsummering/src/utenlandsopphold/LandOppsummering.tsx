@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import * as countries from 'i18n-iso-countries';
+import React from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
 import { FormSummary } from '@navikt/ds-react';
@@ -27,14 +28,15 @@ const LandOppsummering: React.FunctionComponent<Props> = ({ utenlandsoppholdList
     return (
         <FormSummary.Answers>
             {utenlandsoppholdListe.sort(sortOpphold).map((opphold) => (
-                <>
+                <React.Fragment key={opphold.landkode}>
                     <FormSummary.Answer>
                         <FormSummary.Label>{countries.getName(opphold.landkode, 'nb')}</FormSummary.Label>
                         <FormSummary.Value>
-                            {formaterDato(opphold.fom, intl)} - {formaterDato(opphold.tom, intl)}
+                            {/*TODO intl*/}
+                            Fra {formaterDato(opphold.fom, intl)} til {formaterDato(opphold.tom, intl)}
                         </FormSummary.Value>
                     </FormSummary.Answer>
-                </>
+                </React.Fragment>
             ))}
         </FormSummary.Answers>
     );
