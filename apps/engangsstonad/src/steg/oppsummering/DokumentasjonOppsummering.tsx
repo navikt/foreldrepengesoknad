@@ -47,6 +47,7 @@ function AdopsjonDokumentasjon({ dokumentasjon }: { dokumentasjon: Vedlegg }) {
                 <FormattedMessage id="DokumentasjonOppsummering.adopsjonsdokumenter" />
             </FormSummary.Label>
             <FormSummary.Answer>
+                {/*TODO: klikke på lenke*/}
                 <VStack gap="2">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
             </FormSummary.Answer>
         </FormSummary.Answer>

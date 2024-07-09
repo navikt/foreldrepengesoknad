@@ -29,6 +29,7 @@ const BoIUtlandetOppsummeringspunkt = ({
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="BoIUtlandetOppsummeringspunkt.tittel" />
                 </FormSummary.Heading>
+                {/*TODO: bruk intl for endre svar*/}
                 <FormSummary.EditLink onClick={onVilEndreSvar} />
             </FormSummary.Header>
             <FormSummary.Answers>
