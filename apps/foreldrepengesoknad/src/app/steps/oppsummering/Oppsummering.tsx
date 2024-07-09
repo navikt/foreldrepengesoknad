@@ -5,41 +5,26 @@ import { Accordion, Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
 import {
     AnnenForelder,
-    Barn,
     Block,
     ISOStringToDate,
     SivilstandType,
     getErSøkerFarEllerMedmor,
     getKjønnFromFnrString,
     getNavnPåForeldre,
-    isAdoptertBarn,
     isAnnenForelderOppgitt,
-    isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
-import {
-    BoIUtlandetOppsummeringspunkt,
-    HendelseType,
-    OppsummeringPanel,
-    SøkerOppsummeringspunkt,
-} from '@navikt/fp-oppsummering';
-import {
-    Søker,
-    Søkerinfo,
-    Søkerrolle,
-    Utenlandsopphold,
-    UtenlandsoppholdSenere,
-    UtenlandsoppholdTidligere,
-} from '@navikt/fp-types';
+import { BoIUtlandetOppsummeringspunkt, OppsummeringPanel, SøkerOppsummeringspunkt } from '@navikt/fp-oppsummering';
+import { Søker, Søkerinfo, Søkerrolle } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
-import { formatDateIso } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
+import { Utenlandsopphold as OldUtenlandsOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
+import SøknadRoutes from 'app/routes/routes';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 
 import { søknadInneholderIngenVedlegg } from '../manglende-vedlegg/util';
@@ -49,52 +34,14 @@ import BarnOppsummering from './components/barn-oppsummering/BarnOppsummering';
 import DokumentasjonOppsummering from './components/dokumentasjon-oppsummering/DokumentasjonOppsummering';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
 
-const getDatoOgHendelsetype = (barn: Barn): [string, HendelseType] => {
-    if (isFødtBarn(barn)) {
-        return [formatDateIso(barn.fødselsdatoer[0]), HendelseType.FØDSEL];
-    }
-    if (isAdoptertBarn(barn)) {
-        return [formatDateIso(barn.adopsjonsdato), HendelseType.ADOPSJON];
-    }
-    if (isUfødtBarn(barn)) {
-        return [formatDateIso(barn.termindato), HendelseType.TERMIN];
-    }
-    throw new Error('Informasjon om barn er feil!');
-};
-
 // TODO (TOR) Bruk same typar i dei forskjellige appane
-const tempMappingOpphold = (utenlandsopphold: Opphold): Utenlandsopphold => ({
-    harBoddUtenforNorgeSiste12Mnd: !utenlandsopphold.iNorgeSiste12Mnd,
-    skalBoUtenforNorgeNeste12Mnd: !utenlandsopphold.iNorgeNeste12Mnd,
-});
-// TODO (TOR) Bruk same typar i dei forskjellige appane
-const tempMappingSenere = (utenlandsopphold?: SenereOpphold): UtenlandsoppholdSenere | undefined => {
-    if (!utenlandsopphold) {
-        return undefined;
-    }
-
-    return {
-        utenlandsoppholdNeste12Mnd: utenlandsopphold.senereOpphold.map((o) => ({
-            fom: o.tidsperiode.fom,
-            tom: o.tidsperiode.tom,
-            landkode: o.land,
-        })),
-    };
-};
-// TODO (TOR) Bruk same typar i dei forskjellige appane
-const tempMappingTidligere = (utenlandsopphold?: TidligereOpphold): UtenlandsoppholdTidligere | undefined => {
-    if (!utenlandsopphold) {
-        return undefined;
-    }
-
-    return {
-        utenlandsoppholdSiste12Mnd: utenlandsopphold.tidligereOpphold.map((o) => ({
-            fom: o.tidsperiode.fom,
-            tom: o.tidsperiode.tom,
-            landkode: o.land,
-        })),
-    };
-};
+function tempMappingUtenlandsopphold(utenlandsopphold: OldUtenlandsOpphold[]) {
+    return utenlandsopphold.map((o) => ({
+        fom: o.tidsperiode.fom,
+        tom: o.tidsperiode.tom,
+        landkode: o.land,
+    }));
+}
 
 const skalViseInfoOmFarskapsportal = (
     søker: Søker,
@@ -146,7 +93,6 @@ const Oppsummering: FunctionComponent<Props> = ({
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
     const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
-    const utenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD);
     const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
@@ -172,7 +118,6 @@ const Oppsummering: FunctionComponent<Props> = ({
     const søker = søkerInfo.søker;
     const rolle = søkersituasjon.rolle;
 
-    const datoOgHendelsetype = getDatoOgHendelsetype(barn);
     const barnetErIkkeFødt = isUfødtBarn(barn);
 
     const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(søker, rolle, annenForelder, barnetErIkkeFødt);
@@ -199,16 +144,17 @@ const Oppsummering: FunctionComponent<Props> = ({
                     <OppsummeringPanel.Punkt tittel="Den andre forelderen" hide={erEndringssøknad}>
                         <AnnenForelderOppsummering annenForelder={annenForelder} søkerrolle={søkersituasjon.rolle} />
                     </OppsummeringPanel.Punkt>
-                    <BoIUtlandetOppsummeringspunkt
-                        familiehendelseDato={datoOgHendelsetype[0]}
-                        hendelseType={datoOgHendelsetype[1]}
-                        utenlandsopphold={
-                            erEndringssøknad ? ({} as any) : tempMappingOpphold(notEmpty(utenlandsopphold))
-                        }
-                        tidligereUtenlandsopphold={tempMappingTidligere(tidligereUtenlandsopphold)}
-                        senereUtenlandsopphold={tempMappingSenere(senereUtenlandsopphold)}
-                        hide={erEndringssøknad}
-                    />
+                    {erEndringssøknad && (
+                        <BoIUtlandetOppsummeringspunkt
+                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
+                            tidligereUtenlandsopphold={tempMappingUtenlandsopphold(
+                                tidligereUtenlandsopphold?.tidligereOpphold ?? [],
+                            )}
+                            senereUtenlandsopphold={tempMappingUtenlandsopphold(
+                                senereUtenlandsopphold?.senereOpphold ?? [],
+                            )}
+                        />
+                    )}
                     <OppsummeringPanel.Punkt tittel="Arbeidsforhold og andre inntektskilder" hide={erEndringssøknad}>
                         <ArbeidsforholdOgAndreInntekterOppsummering
                             arbeidsforhold={søkerInfo.arbeidsforhold}

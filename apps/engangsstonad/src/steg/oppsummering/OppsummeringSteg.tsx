@@ -45,12 +45,9 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ søker, sendSøknad,
     const navigator = useEsNavigator(mellomlagreOgNaviger);
 
     const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
     const dokumentasjon = useContextGetData(ContextDataType.DOKUMENTASJON);
     const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
-
-    const barnData = getDatoOgHendelsetype(omBarnet);
 
     return (
         <ContentWrapper>
@@ -72,11 +69,8 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ søker, sendSøknad,
                 />
                 <BoIUtlandetOppsummeringspunkt
                     onVilEndreSvar={() => navigator.goToNextStep(Path.UTENLANDSOPPHOLD)}
-                    familiehendelseDato={barnData[0]}
-                    hendelseType={barnData[1]}
-                    utenlandsopphold={utenlandsopphold}
-                    tidligereUtenlandsopphold={tidligereUtenlandsopphold}
-                    senereUtenlandsopphold={senereUtenlandsopphold}
+                    tidligereUtenlandsopphold={tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd ?? []}
+                    senereUtenlandsopphold={senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd ?? []}
                 />
                 <DokumentasjonOppsummering dokumentasjon={dokumentasjon} onVilEndreSvar={navigator.goToNextStep} />
             </OppsummeringPanel>

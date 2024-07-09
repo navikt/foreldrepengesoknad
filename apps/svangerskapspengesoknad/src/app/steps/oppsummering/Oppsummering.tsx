@@ -3,18 +3,14 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Accordion, BodyShort, Heading, VStack } from '@navikt/ds-react';
 
-import {
-    BoIUtlandetOppsummeringspunkt,
-    HendelseType,
-    OppsummeringPanel,
-    SøkerOppsummeringspunkt,
-} from '@navikt/fp-oppsummering';
+import { BoIUtlandetOppsummeringspunkt, OppsummeringPanel, SøkerOppsummeringspunkt } from '@navikt/fp-oppsummering';
 import { Søkerinfo } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { bemUtils, formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
@@ -54,7 +50,6 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     const arbeidIUtlandet = useContextGetData(ContextDataType.ARBEID_I_UTLANDET);
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const utenlandsopphold = notEmpty(useContextGetData(ContextDataType.UTENLANDSOPPHOLD));
     const utenlandsoppholdSenere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const utenlandsoppholdTidligere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
 
@@ -102,11 +97,9 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                         </VStack>
                     </OppsummeringPanel.Punkt>
                     <BoIUtlandetOppsummeringspunkt
-                        familiehendelseDato={barn.erBarnetFødt && barn.fødselsdato ? barn.fødselsdato : barn.termindato}
-                        hendelseType={barn.erBarnetFødt ? HendelseType.FØDSEL : HendelseType.TERMIN}
-                        utenlandsopphold={utenlandsopphold}
-                        tidligereUtenlandsopphold={utenlandsoppholdTidligere}
-                        senereUtenlandsopphold={utenlandsoppholdSenere}
+                        onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
+                        tidligereUtenlandsopphold={utenlandsoppholdTidligere?.utenlandsoppholdSiste12Mnd ?? []}
+                        senereUtenlandsopphold={utenlandsoppholdSenere?.utenlandsoppholdNeste12Mnd ?? []}
                     />
                     <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omArbeidsforhold' })}>
                         <VStack gap="2">

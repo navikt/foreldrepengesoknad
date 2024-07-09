@@ -1,53 +1,10 @@
-import dayjs from 'dayjs';
-import { FormattedMessage, IntlShape, PrimitiveType } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import {
-    Utenlandsopphold,
-    UtenlandsoppholdPeriode,
-    UtenlandsoppholdSenere,
-    UtenlandsoppholdTidligere,
-} from '@navikt/fp-types';
-import { notEmpty } from '@navikt/fp-validation';
+import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
 import LandOppsummering from './LandOppsummering';
-
-const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {
-    return dayjs(dato).isBetween(dayjs(fom), dayjs(tom), 'day', '[]');
-};
-
-const finnDatotekst = (
-    intl: IntlShape,
-    hendelseType: HendelseType,
-    values: Record<string, PrimitiveType>,
-): string | undefined => {
-    if (hendelseType === HendelseType.TERMIN) {
-        return intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Text.OgKommerPåFødselstidspunktet' }, values);
-    }
-    if (hendelseType === HendelseType.FØDSEL) {
-        return intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.VarPåFødselstidspunktet' }, values);
-    }
-    if (hendelseType === HendelseType.ADOPSJON) {
-        return intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.VarPåOmsorgsovertakelsepunktet' }, values);
-    }
-    throw new Error('Function not implemented.');
-};
-
-const erFamiliehendelsedatoIEnUtenlandsoppholdPeriode = (
-    familiehendelsedato: string,
-    utenlandsoppholdSiste12Mnd: UtenlandsoppholdPeriode[] = [],
-    utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[] = [],
-) => {
-    return (
-        utenlandsoppholdSiste12Mnd.some((tidligereOpphold) =>
-            erDatoITidsperiode(familiehendelsedato, tidligereOpphold.fom, tidligereOpphold.tom),
-        ) ||
-        utenlandsoppholdNeste12Mnd.some((senereOpphold) =>
-            erDatoITidsperiode(familiehendelsedato, senereOpphold.fom, senereOpphold.tom),
-        )
-    );
-};
 
 export enum HendelseType {
     ADOPSJON = 'ADOPSJON',
@@ -56,27 +13,16 @@ export enum HendelseType {
 }
 
 interface Props {
-    familiehendelseDato: string;
-    hendelseType: HendelseType;
-    utenlandsopphold: Utenlandsopphold;
-    tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
-    senereUtenlandsopphold?: UtenlandsoppholdSenere;
+    tidligereUtenlandsopphold: UtenlandsoppholdPeriode[];
+    senereUtenlandsopphold: UtenlandsoppholdPeriode[];
     onVilEndreSvar: () => void;
 }
 
 const BoIUtlandetOppsummeringspunkt = ({
-    familiehendelseDato,
-    hendelseType,
-    utenlandsopphold,
     onVilEndreSvar,
     tidligereUtenlandsopphold,
     senereUtenlandsopphold,
 }: Props) => {
-    // TODO: trengs begge?
-    const harBoddUtenforNorge =
-        utenlandsopphold.harBoddUtenforNorgeSiste12Mnd &&
-        (tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd ?? []).length > 0;
-
     return (
         <FormSummary>
             <FormSummary.Header>
@@ -93,7 +39,7 @@ const BoIUtlandetOppsummeringspunkt = ({
                     <FormSummary.Value>
                         <FormattedMessage
                             id={
-                                utenlandsopphold.harBoddUtenforNorgeSiste12Mnd
+                                tidligereUtenlandsopphold.length > 0
                                     ? 'BoIUtlandetOppsummeringspunkt.HarBoddSisteTolv.utlandet'
                                     : 'BoIUtlandetOppsummeringspunkt.HarBoddSisteTolv.iNorge'
                             }
@@ -102,19 +48,17 @@ const BoIUtlandetOppsummeringspunkt = ({
                 </FormSummary.Answer>
             </FormSummary.Answers>
 
-            {harBoddUtenforNorge && (
+            {tidligereUtenlandsopphold.length > 0 && (
                 <FormSummary.Answers>
                     <FormSummary.Answer>
                         <FormSummary.Label>
                             <FormattedMessage
                                 id="BoIUtlandetOppsummeringspunkt.HarBoddSisteTolv.land.label"
-                                values={{ antall: tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd.length ?? 1 }}
+                                values={{ antall: tidligereUtenlandsopphold.length }}
                             />
                         </FormSummary.Label>
                         <FormSummary.Value>
-                            <LandOppsummering
-                                utenlandsoppholdListe={notEmpty(tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd)}
-                            />
+                            <LandOppsummering utenlandsoppholdListe={tidligereUtenlandsopphold} />
                         </FormSummary.Value>
                     </FormSummary.Answer>
                 </FormSummary.Answers>
@@ -128,7 +72,7 @@ const BoIUtlandetOppsummeringspunkt = ({
                     <FormSummary.Value>
                         <FormattedMessage
                             id={
-                                utenlandsopphold.skalBoUtenforNorgeNeste12Mnd
+                                senereUtenlandsopphold.length > 0
                                     ? 'BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.utlandet'
                                     : 'BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.iNorge'
                             }
@@ -136,19 +80,17 @@ const BoIUtlandetOppsummeringspunkt = ({
                     </FormSummary.Value>
                 </FormSummary.Answer>
             </FormSummary.Answers>
-            {utenlandsopphold.skalBoUtenforNorgeNeste12Mnd && (
+            {senereUtenlandsopphold.length > 0 && (
                 <FormSummary.Answers>
                     <FormSummary.Answer>
                         <FormSummary.Label>
                             <FormattedMessage
                                 id="BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.land.label"
-                                values={{ antall: senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd?.length ?? 1 }}
+                                values={{ antall: senereUtenlandsopphold.length }}
                             />
                         </FormSummary.Label>
                         <FormSummary.Value>
-                            <LandOppsummering
-                                utenlandsoppholdListe={notEmpty(senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd)}
-                            />
+                            <LandOppsummering utenlandsoppholdListe={senereUtenlandsopphold} />
                         </FormSummary.Value>
                     </FormSummary.Answer>
                 </FormSummary.Answers>

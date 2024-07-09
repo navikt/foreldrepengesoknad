@@ -3,12 +3,11 @@ import { StoryFn } from '@storybook/react';
 
 import { Accordion } from '@navikt/ds-react';
 
-import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
-import { notEmpty } from '@navikt/fp-validation';
+import { UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 
 import OppsummeringPanel from './OppsummeringPanel';
 import SøkerOppsummeringspunkt from './søker/SøkerOppsummeringspunkt';
-import BoIUtlandetOppsummeringspunkt, { HendelseType } from './utenlandsopphold/BoIUtlandetOppsummeringspunkt';
+import BoIUtlandetOppsummeringspunkt from './utenlandsopphold/BoIUtlandetOppsummeringspunkt';
 
 const promiseAction =
     () =>
@@ -27,21 +26,15 @@ const Template: StoryFn<{
     cancelApplication: () => void;
     onContinueLater: () => void;
     goToPreviousStep: () => void;
-    utenlandsopphold: Utenlandsopphold;
     tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
     senereUtenlandsopphold?: UtenlandsoppholdSenere;
-    fødselsdato?: string;
-    termindato?: string;
 }> = ({
     sendSøknad = promiseAction(),
     cancelApplication = action('button-click'),
     onContinueLater = action('button-click'),
     goToPreviousStep = action('button-click'),
-    utenlandsopphold,
     tidligereUtenlandsopphold,
     senereUtenlandsopphold,
-    fødselsdato,
-    termindato,
 }) => {
     return (
         <OppsummeringPanel
@@ -70,11 +63,9 @@ const Template: StoryFn<{
                     }}
                 />
                 <BoIUtlandetOppsummeringspunkt
-                    familiehendelseDato={notEmpty(fødselsdato || termindato)}
-                    hendelseType={fødselsdato ? HendelseType.FØDSEL : HendelseType.TERMIN}
-                    utenlandsopphold={utenlandsopphold}
-                    senereUtenlandsopphold={senereUtenlandsopphold}
-                    tidligereUtenlandsopphold={tidligereUtenlandsopphold}
+                    onVilEndreSvar={() => {}}
+                    senereUtenlandsopphold={senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd ?? []}
+                    tidligereUtenlandsopphold={tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd ?? []}
                 />
             </Accordion>
         </OppsummeringPanel>
@@ -83,18 +74,13 @@ const Template: StoryFn<{
 
 export const HarBoddIUtlandetOgFødt = Template.bind({});
 HarBoddIUtlandetOgFødt.args = {
-    utenlandsopphold: { harBoddUtenforNorgeSiste12Mnd: true, skalBoUtenforNorgeNeste12Mnd: true },
     senereUtenlandsopphold: {
         utenlandsoppholdNeste12Mnd: [{ fom: '2022-10-10', tom: '2023-05-05', landkode: 'SE' }],
     },
     tidligereUtenlandsopphold: {
         utenlandsoppholdSiste12Mnd: [{ fom: '2023-06-06', tom: '2023-10-10', landkode: 'DE' }],
     },
-    fødselsdato: '2023-01-01',
 };
 
 export const HarIkkeBoddIUtlandetOgIkkeFødt = Template.bind({});
-HarIkkeBoddIUtlandetOgIkkeFødt.args = {
-    utenlandsopphold: { harBoddUtenforNorgeSiste12Mnd: false, skalBoUtenforNorgeNeste12Mnd: false },
-    termindato: '2023-01-01',
-};
+HarIkkeBoddIUtlandetOgIkkeFødt.args = {};
