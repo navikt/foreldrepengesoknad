@@ -2,13 +2,11 @@ import { ContextDataType, useContextGetData } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 
 import { Heading } from '@navikt/ds-react';
 
-import { BoIUtlandetOppsummeringspunkt, HendelseType, OppsummeringPanel } from '@navikt/fp-oppsummering';
+import { BoIUtlandetOppsummeringspunkt, OppsummeringPanel } from '@navikt/fp-oppsummering';
 import { Søker } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -16,26 +14,13 @@ import { notEmpty } from '@navikt/fp-validation';
 import { DokumentasjonOppsummering } from './DokumentasjonOppsummering';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
 
-const getDatoOgHendelsetype = (barn: OmBarnet): [string, HendelseType] => {
-    if (erBarnetFødt(barn)) {
-        return [barn.fødselsdato, HendelseType.FØDSEL];
-    }
-    if (erAdopsjon(barn)) {
-        return [barn.adopsjonsdato, HendelseType.ADOPSJON];
-    }
-    if (erBarnetIkkeFødt(barn)) {
-        return [barn.termindato, HendelseType.TERMIN];
-    }
-    throw new Error('Informasjon om barn er feil!');
-};
-
 export interface Props {
     søker: Søker;
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
     mellomlagreOgNaviger: () => Promise<void>;
 }
 
-const OppsummeringSteg: React.FunctionComponent<Props> = ({ søker, sendSøknad, mellomlagreOgNaviger }) => {
+const OppsummeringSteg = ({ sendSøknad, mellomlagreOgNaviger }: Props) => {
     const stepConfig = useStepConfig();
     const navigator = useEsNavigator(mellomlagreOgNaviger);
 
