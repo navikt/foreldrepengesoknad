@@ -6,7 +6,6 @@ import { Accordion } from '@navikt/ds-react';
 import { UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 
 import OppsummeringPanel from './OppsummeringPanel';
-import SøkerOppsummeringspunkt from './søker/SøkerOppsummeringspunkt';
 import BoIUtlandetOppsummeringspunkt from './utenlandsopphold/BoIUtlandetOppsummeringspunkt';
 
 const promiseAction =
@@ -52,16 +51,6 @@ const Template: StoryFn<{
             appName="Engangsstønad"
         >
             <Accordion indent={false}>
-                <SøkerOppsummeringspunkt
-                    søker={{
-                        fornavn: 'Henrikke',
-                        fnr: '01018823234',
-                        etternavn: 'Ibsen',
-                        kjønn: 'K',
-                        fødselsdato: '1988-01-01',
-                        barn: [],
-                    }}
-                />
                 <BoIUtlandetOppsummeringspunkt
                     onVilEndreSvar={() => {}}
                     senereUtenlandsopphold={senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd ?? []}

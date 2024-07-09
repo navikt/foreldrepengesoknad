@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Accordion, BodyShort, Heading, VStack } from '@navikt/ds-react';
 
-import { BoIUtlandetOppsummeringspunkt, OppsummeringPanel, SøkerOppsummeringspunkt } from '@navikt/fp-oppsummering';
+import { BoIUtlandetOppsummeringspunkt, OppsummeringPanel } from '@navikt/fp-oppsummering';
 import { Søkerinfo } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { bemUtils, formatDate } from '@navikt/fp-utils';
@@ -85,7 +85,6 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                 onContinueLater={navigator.fortsettSøknadSenere}
             >
                 <Accordion indent={false}>
-                    <SøkerOppsummeringspunkt søker={søkerInfo.søker} />
                     <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omBarnet' })}>
                         <VStack gap="2">
                             <BodyShort>{`Termindato: ${formatDate(barn.termindato)}`}</BodyShort>

@@ -15,7 +15,7 @@ import {
     isUfødtBarn,
 } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
-import { BoIUtlandetOppsummeringspunkt, OppsummeringPanel, SøkerOppsummeringspunkt } from '@navikt/fp-oppsummering';
+import { BoIUtlandetOppsummeringspunkt, OppsummeringPanel } from '@navikt/fp-oppsummering';
 import { Søker, Søkerinfo, Søkerrolle } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -137,7 +137,6 @@ const Oppsummering: FunctionComponent<Props> = ({
                 ekstraSamtykketekst={ekstraSamtykketekst}
             >
                 <Accordion indent={false}>
-                    <SøkerOppsummeringspunkt søker={søkerInfo.søker} />
                     <OppsummeringPanel.Punkt tittel="Barnet" hide={erEndringssøknad}>
                         <BarnOppsummering barn={barn} familiehendelsesdato={familiehendelsesdato!} />
                     </OppsummeringPanel.Punkt>

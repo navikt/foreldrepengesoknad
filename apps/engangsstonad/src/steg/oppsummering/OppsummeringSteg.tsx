@@ -8,12 +8,7 @@ import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/Om
 
 import { Heading } from '@navikt/ds-react';
 
-import {
-    BoIUtlandetOppsummeringspunkt,
-    HendelseType,
-    OppsummeringPanel,
-    SøkerOppsummeringspunkt,
-} from '@navikt/fp-oppsummering';
+import { BoIUtlandetOppsummeringspunkt, HendelseType, OppsummeringPanel } from '@navikt/fp-oppsummering';
 import { Søker } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -62,7 +57,6 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ søker, sendSøknad,
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 onContinueLater={navigator.fortsettSøknadSenere}
             >
-                <SøkerOppsummeringspunkt søker={søker} />
                 <OmBarnetOppsummering
                     omBarnet={omBarnet}
                     onVilEndreSvar={() => navigator.goToNextStep(Path.OM_BARNET)}
