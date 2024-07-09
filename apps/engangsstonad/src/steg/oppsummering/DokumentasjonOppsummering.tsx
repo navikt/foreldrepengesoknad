@@ -1,11 +1,10 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Dokumentasjon, { TerminDokumentasjon, Vedlegg, erTerminDokumentasjon } from 'types/Dokumentasjon';
 
 import { FormSummary, VStack } from '@navikt/ds-react';
 
-export function DokumentasjonOppsummering({ dokumentasjon }: { dokumentasjon: Dokumentasjon }) {
-    if (!dokumentasjon) {
+export function DokumentasjonOppsummering({ dokumentasjon }: { dokumentasjon?: Dokumentasjon }) {
+    if (!dokumentasjon || dokumentasjon.vedlegg.length === 0) {
         return null;
     }
 

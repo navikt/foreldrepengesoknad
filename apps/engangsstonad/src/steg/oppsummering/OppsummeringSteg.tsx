@@ -2,10 +2,10 @@ import { ContextDataType, useContextGetData } from 'appData/EsDataContext';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
 import React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 
-import { Accordion, FormSummary, Heading } from '@navikt/ds-react';
+import { Heading } from '@navikt/ds-react';
 
 import {
     BoIUtlandetOppsummeringspunkt,
@@ -40,8 +40,6 @@ export interface Props {
 }
 
 const OppsummeringSteg: React.FunctionComponent<Props> = ({ søker, sendSøknad, mellomlagreOgNaviger }) => {
-    const intl = useIntl();
-
     const stepConfig = useStepConfig();
     const navigator = useEsNavigator(mellomlagreOgNaviger);
 
@@ -67,7 +65,7 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ søker, sendSøknad,
                 onContinueLater={navigator.fortsettSøknadSenere}
             >
                 <SøkerOppsummeringspunkt søker={søker} />
-                <OmBarnetOppsummering omBarnet={omBarnet} dokumentasjon={dokumentasjon} />
+                <OmBarnetOppsummering omBarnet={omBarnet} />
                 <BoIUtlandetOppsummeringspunkt
                     familiehendelseDato={barnData[0]}
                     hendelseType={barnData[1]}
