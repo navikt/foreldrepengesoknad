@@ -35,7 +35,7 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet }) => {
         <FormSummary>
             <FormSummary.Header>
                 <FormSummary.Heading level="2">
-                    {intl.formatMessage({ id: 'OppsummeringSteg.OmBarnet' })}
+                    {intl.formatMessage({ id: 'OmBarnetOppsummering.tittel' })}
                 </FormSummary.Heading>
             </FormSummary.Header>
             <FormSummary.Answers>
@@ -50,7 +50,7 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet }) => {
                 {harFødt && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
-                            <FormattedMessage id={'OmBarnetOppsummering.MedFødselsdato'} />
+                            <FormattedMessage id={'OmBarnetOppsummering.MedFødselsdato'} values={{ antall: 1 }} />
                         </FormSummary.Label>
                         <FormSummary.Value>{formatDate(omBarnet.fødselsdato)}</FormSummary.Value>
                     </FormSummary.Answer>
@@ -75,11 +75,8 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet }) => {
                         <FormSummary.Answer>
                             <FormSummary.Label>
                                 <FormattedMessage
-                                    id={
-                                        omBarnet.fødselsdatoer.length > 1
-                                            ? 'OmBarnetOppsummering.MedFødselsdatoer'
-                                            : 'OmBarnetOppsummering.MedFødselsdato'
-                                    }
+                                    id="OmBarnetOppsummering.MedFødselsdato"
+                                    values={{ antall: omBarnet.fødselsdatoer.length }}
                                 />
                             </FormSummary.Label>
                             <FormSummary.Value>

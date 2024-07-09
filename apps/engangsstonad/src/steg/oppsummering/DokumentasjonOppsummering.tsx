@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import Dokumentasjon, { TerminDokumentasjon, Vedlegg, erTerminDokumentasjon } from 'types/Dokumentasjon';
 
 import { FormSummary, VStack } from '@navikt/ds-react';
@@ -11,7 +12,9 @@ export function DokumentasjonOppsummering({ dokumentasjon }: { dokumentasjon: Do
     return (
         <FormSummary>
             <FormSummary.Header>
-                <FormSummary.Heading level="2">Dokumentasjon</FormSummary.Heading>
+                <FormSummary.Heading level="2">
+                    <FormattedMessage id="DokumentasjonOppsummering.tittel" />
+                </FormSummary.Heading>
             </FormSummary.Header>
             <FormSummary.Answers>
                 {erTerminDokumentasjon(dokumentasjon) ? (
@@ -27,7 +30,9 @@ export function DokumentasjonOppsummering({ dokumentasjon }: { dokumentasjon: Do
 function AdopsjonDokumentasjon({ dokumentasjon }: { dokumentasjon: Vedlegg }) {
     return (
         <FormSummary.Answer>
-            <FormSummary.Label>Adopsjonspapirrrrrrer</FormSummary.Label>
+            <FormSummary.Label>
+                <FormattedMessage id="DokumentasjonOppsummering.adopsjonsdokumenter" />
+            </FormSummary.Label>
             <FormSummary.Answer>
                 <VStack gap="2">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
             </FormSummary.Answer>
@@ -39,11 +44,15 @@ function TerminDokumentasjonSummary({ dokumentasjon }: { dokumentasjon: TerminDo
     return (
         <>
             <FormSummary.Answer>
-                <FormSummary.Label>Når fikk du terminbekreftelse?</FormSummary.Label>
+                <FormSummary.Label>
+                    <FormattedMessage id="DokumentasjonOppsummering.Terminbekreftelse" />
+                </FormSummary.Label>
                 <FormSummary.Answer>{dokumentasjon.terminbekreftelsedato}</FormSummary.Answer>
             </FormSummary.Answer>
             <FormSummary.Answer>
-                <FormSummary.Label>Terminbekreftelse</FormSummary.Label>
+                <FormSummary.Label>
+                    <FormattedMessage id="DokumentasjonOppsummering.TerminbekreftelseDokument" />
+                </FormSummary.Label>
                 <FormSummary.Answer>
                     <VStack gap="2">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
                 </FormSummary.Answer>
