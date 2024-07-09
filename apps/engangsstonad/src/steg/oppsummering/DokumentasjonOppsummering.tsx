@@ -11,10 +11,7 @@ export function DokumentasjonOppsummering({ dokumentasjon }: { dokumentasjon: Do
     return (
         <FormSummary>
             <FormSummary.Header>
-                <FormSummary.Heading level="2">
-                    {/*<FormattedMessage values={ {id: "OmBarnetOppsummering.VedlagtTerminbekreftelse"}} />*/}
-                    Dokumentasjon
-                </FormSummary.Heading>
+                <FormSummary.Heading level="2">Dokumentasjon</FormSummary.Heading>
             </FormSummary.Header>
             <FormSummary.Answers>
                 {erTerminDokumentasjon(dokumentasjon) ? (

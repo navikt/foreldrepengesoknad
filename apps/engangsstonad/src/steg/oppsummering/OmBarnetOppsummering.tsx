@@ -86,38 +86,12 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet }) => {
                                 />
                             </FormSummary.Label>
                             <FormSummary.Value>
-                                {omBarnet.fødselsdatoer
-                                    .map((_, index) => {
-                                        return formatDate(omBarnet.fødselsdatoer[index].dato);
-                                    })
-                                    .join(', ')}
+                                {omBarnet.fødselsdatoer.map(({ dato }) => formatDate(dato)).join(', ')}
                             </FormSummary.Value>
                         </FormSummary.Answer>
-
-                        {/*TODO: dette vedlegget */}
-                        {/*<BodyShort style={{ fontWeight: 'bold' }}>*/}
-                        {/*    <FormattedMessage id={'OmBarnetOppsummering.VedlagtOmsorgsovertakelseBekreftelse'} />*/}
-                        {/*</BodyShort>*/}
-                        {/*<AttachmentList attachments={notEmpty(dokumentasjon).vedlegg} />*/}
                     </>
                 )}
             </FormSummary.Answers>
-
-            {/*TODO: dette vedlegget*/}
-            {/*{dokumentasjon && erTerminDokumentasjon(dokumentasjon) && (*/}
-            {/*    <>*/}
-            {/*        <HStack gap="2">*/}
-            {/*            <BodyShort>*/}
-            {/*                <FormattedMessage id={'OmBarnetOppsummering.SomErDatert'} />*/}
-            {/*            </BodyShort>*/}
-            {/*            <BodyShort>{formatDate(dokumentasjon.terminbekreftelsedato)}</BodyShort>*/}
-            {/*        </HStack>*/}
-            {/*        <BodyShort style={{ fontWeight: 'bold' }}>*/}
-            {/*            <FormattedMessage id={'OmBarnetOppsummering.VedlagtTerminbekreftelse'} />*/}
-            {/*        </BodyShort>*/}
-            {/*        <AttachmentList attachments={dokumentasjon.vedlegg} />*/}
-            {/*    </>*/}
-            {/*)}*/}
         </FormSummary>
     );
 };
