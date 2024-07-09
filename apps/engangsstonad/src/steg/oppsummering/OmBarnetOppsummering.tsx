@@ -1,13 +1,10 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 
-import { BodyLong, BodyShort, FormSummary, HStack, VStack } from '@navikt/ds-react';
+import { FormSummary } from '@navikt/ds-react';
 
-import { AttachmentList } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
 
 interface Props {
     omBarnet: OmBarnet;
