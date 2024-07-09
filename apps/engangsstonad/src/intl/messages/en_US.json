@@ -102,7 +102,7 @@
     "OmBarnetOppsummering.FlereBarn": "multiple children",
     "OmBarnetOppsummering.Tvillinger": "twins",
     "OmBarnetOppsummering.MedAdopsjonsdato": "Date of adoption",
-    "OmBarnetOppsummering.MedFødselsdato": "{antall, plural, one {Date of birth} other {Date of birth}}",
+    "OmBarnetOppsummering.MedFødselsdato": "{antall, plural, one {Date of birth} other {Dates of birth}}",
     "OmBarnetOppsummering.MedTermindato": "Expected date of delivery",
     "OmBarnetOppsummering.SoknadenGjelder": "The application applies to",
     "DokumentasjonOppsummering.tittel": "Documentation",

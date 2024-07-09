@@ -61,21 +61,17 @@ interface Props {
     utenlandsopphold: Utenlandsopphold;
     tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
     senereUtenlandsopphold?: UtenlandsoppholdSenere;
-    hide?: boolean;
+    onVilEndreSvar: () => void;
 }
 
 const BoIUtlandetOppsummeringspunkt = ({
     familiehendelseDato,
     hendelseType,
     utenlandsopphold,
+    onVilEndreSvar,
     tidligereUtenlandsopphold,
     senereUtenlandsopphold,
-    hide = false,
 }: Props) => {
-    if (hide) {
-        return null;
-    }
-
     // TODO: trengs begge?
     const harBoddUtenforNorge =
         utenlandsopphold.harBoddUtenforNorgeSiste12Mnd &&
@@ -87,6 +83,7 @@ const BoIUtlandetOppsummeringspunkt = ({
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="BoIUtlandetOppsummeringspunkt.tittel" />
                 </FormSummary.Heading>
+                <FormSummary.EditLink onClick={onVilEndreSvar} />
             </FormSummary.Header>
             <FormSummary.Answers>
                 <FormSummary.Answer>

@@ -1,4 +1,5 @@
 import { ContextDataType, useContextGetData } from 'appData/EsDataContext';
+import { Path } from 'appData/paths';
 import useEsNavigator from 'appData/useEsNavigator';
 import useStepConfig from 'appData/useStepConfig';
 import React from 'react';
@@ -65,15 +66,19 @@ const OppsummeringSteg: React.FunctionComponent<Props> = ({ søker, sendSøknad,
                 onContinueLater={navigator.fortsettSøknadSenere}
             >
                 <SøkerOppsummeringspunkt søker={søker} />
-                <OmBarnetOppsummering omBarnet={omBarnet} />
+                <OmBarnetOppsummering
+                    omBarnet={omBarnet}
+                    onVilEndreSvar={() => navigator.goToNextStep(Path.OM_BARNET)}
+                />
                 <BoIUtlandetOppsummeringspunkt
+                    onVilEndreSvar={() => navigator.goToNextStep(Path.UTENLANDSOPPHOLD)}
                     familiehendelseDato={barnData[0]}
                     hendelseType={barnData[1]}
                     utenlandsopphold={utenlandsopphold}
                     tidligereUtenlandsopphold={tidligereUtenlandsopphold}
                     senereUtenlandsopphold={senereUtenlandsopphold}
                 />
-                <DokumentasjonOppsummering dokumentasjon={dokumentasjon} />
+                <DokumentasjonOppsummering dokumentasjon={dokumentasjon} onVilEndreSvar={navigator.goToNextStep} />
             </OppsummeringPanel>
         </ContentWrapper>
     );

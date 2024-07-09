@@ -1,9 +1,16 @@
+import { Path } from 'appData/paths';
 import { FormattedMessage } from 'react-intl';
 import Dokumentasjon, { TerminDokumentasjon, Vedlegg, erTerminDokumentasjon } from 'types/Dokumentasjon';
 
 import { FormSummary, VStack } from '@navikt/ds-react';
 
-export function DokumentasjonOppsummering({ dokumentasjon }: { dokumentasjon?: Dokumentasjon }) {
+export function DokumentasjonOppsummering({
+    dokumentasjon,
+    onVilEndreSvar,
+}: {
+    dokumentasjon?: Dokumentasjon;
+    onVilEndreSvar: (path: Path) => Promise<void>;
+}) {
     if (!dokumentasjon || dokumentasjon.vedlegg.length === 0) {
         return null;
     }
@@ -14,6 +21,13 @@ export function DokumentasjonOppsummering({ dokumentasjon }: { dokumentasjon?: D
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="DokumentasjonOppsummering.tittel" />
                 </FormSummary.Heading>
+                <FormSummary.EditLink
+                    onClick={() =>
+                        onVilEndreSvar(
+                            erTerminDokumentasjon(dokumentasjon) ? Path.TERMINBEKREFTELSE : Path.ADOPSJONSBEKREFTELSE,
+                        )
+                    }
+                />
             </FormSummary.Header>
             <FormSummary.Answers>
                 {erTerminDokumentasjon(dokumentasjon) ? (

@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 
@@ -8,6 +7,7 @@ import { formatDate } from '@navikt/fp-utils';
 
 interface Props {
     omBarnet: OmBarnet;
+    onVilEndreSvar: () => void;
 }
 
 function omBarnetOppsummeringIntlId(omBarnet: OmBarnet) {
@@ -24,7 +24,7 @@ function omBarnetOppsummeringIntlId(omBarnet: OmBarnet) {
     }
 }
 
-const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet }) => {
+const OmBarnetOppsummering = ({ omBarnet, onVilEndreSvar }: Props) => {
     const harAdoptert = erAdopsjon(omBarnet);
     const harTermin = erBarnetIkkeFødt(omBarnet);
     const harFødt = erBarnetFødt(omBarnet);
@@ -35,6 +35,7 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet }) => {
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="OmBarnetOppsummering.tittel" />
                 </FormSummary.Heading>
+                <FormSummary.EditLink onClick={onVilEndreSvar} />
             </FormSummary.Header>
             <FormSummary.Answers>
                 <FormSummary.Answer>
