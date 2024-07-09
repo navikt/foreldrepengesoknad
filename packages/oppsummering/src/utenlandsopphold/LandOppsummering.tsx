@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import * as countries from 'i18n-iso-countries';
 import React from 'react';
-import { IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { FormSummary } from '@navikt/ds-react';
 
@@ -32,8 +32,10 @@ const LandOppsummering: React.FunctionComponent<Props> = ({ utenlandsoppholdList
                     <FormSummary.Answer>
                         <FormSummary.Label>{countries.getName(opphold.landkode, 'nb')}</FormSummary.Label>
                         <FormSummary.Value>
-                            {/*TODO intl*/}
-                            Fra {formaterDato(opphold.fom, intl)} til {formaterDato(opphold.tom, intl)}
+                            <FormattedMessage
+                                id="LandOppsummering.periode"
+                                values={{ fra: formaterDato(opphold.fom, intl), til: formaterDato(opphold.tom, intl) }}
+                            />
                         </FormSummary.Value>
                     </FormSummary.Answer>
                 </React.Fragment>

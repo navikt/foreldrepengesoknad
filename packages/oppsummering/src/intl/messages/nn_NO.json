@@ -17,6 +17,7 @@
     "BoIUtlandetOppsummeringspunkt.VarPåFødselstidspunktet": "På fødselstidspunktet budde du i {country}",
     "BoIUtlandetOppsummeringspunkt.VarPåOmsorgsovertakelsepunktet": "Ved omsorgsovertakelse budde du i {country}",
     "LandOppsummering.IDag": "i dag",
+    "LandOppsummering.periode": "Frå {fra} til {til}",
     "DegOppsummeringspunkt.tittel": "Deg",
     "DegOppsummeringspunkt.info": "Namn og fødselsnummer"
 }

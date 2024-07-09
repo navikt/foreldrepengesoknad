@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 
 import { FormSummary } from '@navikt/ds-react';
@@ -25,8 +25,6 @@ function omBarnetOppsummeringIntlId(omBarnet: OmBarnet) {
 }
 
 const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet }) => {
-    const intl = useIntl();
-
     const harAdoptert = erAdopsjon(omBarnet);
     const harTermin = erBarnetIkkeFødt(omBarnet);
     const harFødt = erBarnetFødt(omBarnet);
@@ -35,7 +33,7 @@ const OmBarnetOppsummering: React.FunctionComponent<Props> = ({ omBarnet }) => {
         <FormSummary>
             <FormSummary.Header>
                 <FormSummary.Heading level="2">
-                    {intl.formatMessage({ id: 'OmBarnetOppsummering.tittel' })}
+                    <FormattedMessage id="OmBarnetOppsummering.tittel" />
                 </FormSummary.Heading>
             </FormSummary.Header>
             <FormSummary.Answers>

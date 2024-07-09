@@ -17,6 +17,7 @@
     "BoIUtlandetOppsummeringspunkt.VarPåFødselstidspunktet": "At the time of birth you lived in {country}",
     "BoIUtlandetOppsummeringspunkt.VarPåOmsorgsovertakelsepunktet": "At the date of taking over care you lived in {country}",
     "LandOppsummering.IDag": "today",
+    "LandOppsummering.periode": "From {fra} to {til}",
     "DegOppsummeringspunkt.tittel": "You",
     "DegOppsummeringspunkt.info": "Name and national identity number"
 }
