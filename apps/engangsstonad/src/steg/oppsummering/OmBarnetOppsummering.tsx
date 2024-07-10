@@ -10,17 +10,17 @@ interface Props {
     onVilEndreSvar: () => void;
 }
 
-function omBarnetOppsummeringIntlId(omBarnet: OmBarnet) {
+function AntallBarnFormattedText({ omBarnet }: { omBarnet: OmBarnet }) {
     const harAdoptert = erAdopsjon(omBarnet);
 
     if (omBarnet.antallBarn === 1) {
-        return 'OmBarnetOppsummering.EttBarn';
+        return <FormattedMessage id={'OmBarnetOppsummering.EttBarn'} />;
     } else if (omBarnet.antallBarn === 2 && !harAdoptert) {
-        return 'OmBarnetOppsummering.Tvillinger';
+        return <FormattedMessage id={'OmBarnetOppsummering.Tvillinger'} />;
     } else if (omBarnet.antallBarn === 2 && harAdoptert) {
-        return 'OmBarnetOppsummering.ToBarn';
+        return <FormattedMessage id={'OmBarnetOppsummering.ToBarn'} />;
     } else {
-        return 'OmBarnetOppsummering.FlereBarn';
+        return <FormattedMessage id={'OmBarnetOppsummering.FlereBarn'} />;
     }
 }
 
@@ -43,7 +43,7 @@ const OmBarnetOppsummering = ({ omBarnet, onVilEndreSvar }: Props) => {
                         <FormattedMessage id={'OmBarnetOppsummering.SoknadenGjelder'} />
                     </FormSummary.Label>
                     <FormSummary.Value>
-                        <FormattedMessage id={omBarnetOppsummeringIntlId(omBarnet)} />
+                        <AntallBarnFormattedText omBarnet={omBarnet} />
                     </FormSummary.Value>
                 </FormSummary.Answer>
                 {harFødt && (
