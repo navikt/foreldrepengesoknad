@@ -30,7 +30,6 @@ const LandOppsummering: React.FunctionComponent<Props> = ({ utenlandsoppholdList
             {utenlandsoppholdListe.sort(sortOpphold).map((opphold) => (
                 <React.Fragment key={opphold.landkode}>
                     <FormSummary.Answer>
-                        {/*TODO: sjekk om jeg kan gi lang til noe annet*/}
                         <FormSummary.Label>{countries.getName(opphold.landkode, 'nb')}</FormSummary.Label>
                         <FormSummary.Value>
                             <FormattedMessage
