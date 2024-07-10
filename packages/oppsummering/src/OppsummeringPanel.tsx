@@ -65,7 +65,7 @@ const OppsummeringPanel = <TYPE extends string>({
     return (
         <Step onCancel={cancelApplication} onContinueLater={onContinueLater} steps={stepConfig}>
             <VStack gap="10">
-                {children}
+                <VStack gap="3">{children}</VStack>
                 <ConfirmationPanel
                     label={getSamtykkeTekst(intl, appName, ekstraSamtykketekst)}
                     onChange={() => setIsChecked((state) => !state)}

@@ -125,11 +125,7 @@ const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChange
                     <Route
                         path={Path.OPPSUMMERING}
                         element={
-                            <OppsummeringSteg
-                                søker={søker}
-                                sendSøknad={sendSøknad}
-                                mellomlagreOgNaviger={mellomlagreOgNaviger}
-                            />
+                            <OppsummeringSteg sendSøknad={sendSøknad} mellomlagreOgNaviger={mellomlagreOgNaviger} />
                         }
                     />
                 </>
