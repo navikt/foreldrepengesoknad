@@ -4,6 +4,8 @@ import Dokumentasjon, { TerminDokumentasjon, Vedlegg, erTerminDokumentasjon } fr
 
 import { FormSummary, VStack } from '@navikt/ds-react';
 
+import { formatDate } from '@navikt/fp-utils';
+
 export function DokumentasjonOppsummering({
     dokumentasjon,
     onVilEndreSvar,
@@ -61,7 +63,7 @@ function TerminDokumentasjonSummary({ dokumentasjon }: { dokumentasjon: TerminDo
                 <FormSummary.Label>
                     <FormattedMessage id="DokumentasjonOppsummering.Terminbekreftelse" />
                 </FormSummary.Label>
-                <FormSummary.Answer>{dokumentasjon.terminbekreftelsedato}</FormSummary.Answer>
+                <FormSummary.Answer>{formatDate(dokumentasjon.terminbekreftelsedato)}</FormSummary.Answer>
             </FormSummary.Answer>
             <FormSummary.Answer>
                 <FormSummary.Label>
