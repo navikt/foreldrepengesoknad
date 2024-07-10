@@ -12,12 +12,7 @@
     "BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.iNorge": "Jeg skal bo i Norge",
     "BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.utlandet": "Jeg skal bo helt eller delvis i utlandet",
     "BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.land.label": "{antall, plural, one {Hvilket} other {Hvilke}} land skal du bo i de neste 12 månedene?",
-
-    "BoIUtlandetOppsummeringspunkt.Text.OgKommerPåFødselstidspunktet": "På fødselstidspunktet kommer du til å bo i {country}",
-    "BoIUtlandetOppsummeringspunkt.VarPåFødselstidspunktet": "På fødselstidspunktet bodde du i {country}",
-    "BoIUtlandetOppsummeringspunkt.VarPåOmsorgsovertakelsepunktet": "Ved omsorgsovertakelse bodde du i {country}",
     "LandOppsummering.IDag": "i dag",
     "LandOppsummering.periode": "Fra {fra} til {til}",
-    "DegOppsummeringspunkt.tittel": "Deg",
-    "DegOppsummeringspunkt.info": "Navn og fødselsnummer"
+    "EndreSvar": "Endre svar"
 }

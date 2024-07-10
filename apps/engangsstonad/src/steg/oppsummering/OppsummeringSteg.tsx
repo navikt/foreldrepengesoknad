@@ -7,7 +7,6 @@ import { FormattedMessage } from 'react-intl';
 import { Heading } from '@navikt/ds-react';
 
 import { BoIUtlandetOppsummeringspunkt, OppsummeringPanel } from '@navikt/fp-oppsummering';
-import { Søker } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -15,7 +14,6 @@ import { DokumentasjonOppsummering } from './DokumentasjonOppsummering';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
 
 export interface Props {
-    søker: Søker;
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
     mellomlagreOgNaviger: () => Promise<void>;
 }

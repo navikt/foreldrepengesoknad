@@ -29,8 +29,9 @@ const BoIUtlandetOppsummeringspunkt = ({
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="BoIUtlandetOppsummeringspunkt.tittel" />
                 </FormSummary.Heading>
-                {/*TODO: bruk intl for endre svar*/}
-                <FormSummary.EditLink onClick={onVilEndreSvar} />
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id={'EndreSvar'} />
+                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 <FormSummary.Answer>
@@ -38,13 +39,11 @@ const BoIUtlandetOppsummeringspunkt = ({
                         <FormattedMessage id="BoIUtlandetOppsummeringspunkt.HarBoddSisteTolv.tittel" />
                     </FormSummary.Label>
                     <FormSummary.Value>
-                        <FormattedMessage
-                            id={
-                                tidligereUtenlandsopphold.length > 0
-                                    ? 'BoIUtlandetOppsummeringspunkt.HarBoddSisteTolv.utlandet'
-                                    : 'BoIUtlandetOppsummeringspunkt.HarBoddSisteTolv.iNorge'
-                            }
-                        />
+                        {tidligereUtenlandsopphold.length > 0 ? (
+                            <FormattedMessage id="BoIUtlandetOppsummeringspunkt.HarBoddSisteTolv.utlandet" />
+                        ) : (
+                            <FormattedMessage id="BoIUtlandetOppsummeringspunkt.HarBoddSisteTolv.iNorge" />
+                        )}
                     </FormSummary.Value>
                 </FormSummary.Answer>
             </FormSummary.Answers>
@@ -71,13 +70,11 @@ const BoIUtlandetOppsummeringspunkt = ({
                         <FormattedMessage id="BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.tittel" />
                     </FormSummary.Label>
                     <FormSummary.Value>
-                        <FormattedMessage
-                            id={
-                                senereUtenlandsopphold.length > 0
-                                    ? 'BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.utlandet'
-                                    : 'BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.iNorge'
-                            }
-                        />
+                        {senereUtenlandsopphold.length > 0 ? (
+                            <FormattedMessage id="BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.utlandet" />
+                        ) : (
+                            <FormattedMessage id="BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.iNorge" />
+                        )}
                     </FormSummary.Value>
                 </FormSummary.Answer>
             </FormSummary.Answers>

@@ -12,11 +12,7 @@
     "BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.iNorge": "I will live in Norway",
     "BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.utlandet": "I will live abroad either fully or partially",
     "BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.land.label": "{antall, plural, one {Which country} other {Which countries}} will you live in during the next 12 månedene?",
-    "BoIUtlandetOppsummeringspunkt.Text.OgKommerPåFødselstidspunktet": "At the time of birth you will live in {country}",
-    "BoIUtlandetOppsummeringspunkt.VarPåFødselstidspunktet": "At the time of birth you lived in {country}",
-    "BoIUtlandetOppsummeringspunkt.VarPåOmsorgsovertakelsepunktet": "At the date of taking over care you lived in {country}",
     "LandOppsummering.IDag": "today",
     "LandOppsummering.periode": "From {fra} to {til}",
-    "DegOppsummeringspunkt.tittel": "You",
-    "DegOppsummeringspunkt.info": "Name and national identity number"
+    "EndreSvar": "Edit"
 }
