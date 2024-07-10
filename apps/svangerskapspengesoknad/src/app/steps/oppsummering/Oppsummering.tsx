@@ -95,11 +95,13 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                             )}
                         </VStack>
                     </OppsummeringPanel.Punkt>
-                    <BoIUtlandetOppsummeringspunkt
-                        onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
-                        tidligereUtenlandsopphold={utenlandsoppholdTidligere?.utenlandsoppholdSiste12Mnd ?? []}
-                        senereUtenlandsopphold={utenlandsoppholdSenere?.utenlandsoppholdNeste12Mnd ?? []}
-                    />
+                    <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'steps.label.utenlandsopphold' })}>
+                        <BoIUtlandetOppsummeringspunkt
+                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
+                            tidligereUtenlandsopphold={utenlandsoppholdTidligere?.utenlandsoppholdSiste12Mnd ?? []}
+                            senereUtenlandsopphold={utenlandsoppholdSenere?.utenlandsoppholdNeste12Mnd ?? []}
+                        />
+                    </OppsummeringPanel.Punkt>
                     <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omArbeidsforhold' })}>
                         <VStack gap="2">
                             {aktiveArbeidsforhold.length > 0 && (

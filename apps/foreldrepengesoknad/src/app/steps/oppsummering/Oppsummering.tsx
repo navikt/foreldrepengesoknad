@@ -143,17 +143,19 @@ const Oppsummering: FunctionComponent<Props> = ({
                     <OppsummeringPanel.Punkt tittel="Den andre forelderen" hide={erEndringssøknad}>
                         <AnnenForelderOppsummering annenForelder={annenForelder} søkerrolle={søkersituasjon.rolle} />
                     </OppsummeringPanel.Punkt>
-                    {erEndringssøknad && (
-                        <BoIUtlandetOppsummeringspunkt
-                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
-                            tidligereUtenlandsopphold={tempMappingUtenlandsopphold(
-                                tidligereUtenlandsopphold?.tidligereOpphold ?? [],
-                            )}
-                            senereUtenlandsopphold={tempMappingUtenlandsopphold(
-                                senereUtenlandsopphold?.senereOpphold ?? [],
-                            )}
-                        />
-                    )}
+                    <OppsummeringPanel.Punkt tittel="Bo i utlandet" hide={erEndringssøknad}>
+                        {!erEndringssøknad && (
+                            <BoIUtlandetOppsummeringspunkt
+                                onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
+                                tidligereUtenlandsopphold={tempMappingUtenlandsopphold(
+                                    tidligereUtenlandsopphold?.tidligereOpphold ?? [],
+                                )}
+                                senereUtenlandsopphold={tempMappingUtenlandsopphold(
+                                    senereUtenlandsopphold?.senereOpphold ?? [],
+                                )}
+                            />
+                        )}
+                    </OppsummeringPanel.Punkt>
                     <OppsummeringPanel.Punkt tittel="Arbeidsforhold og andre inntektskilder" hide={erEndringssøknad}>
                         <ArbeidsforholdOgAndreInntekterOppsummering
                             arbeidsforhold={søkerInfo.arbeidsforhold}
