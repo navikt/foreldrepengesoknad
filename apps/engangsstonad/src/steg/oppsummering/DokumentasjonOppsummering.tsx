@@ -29,7 +29,9 @@ export function DokumentasjonOppsummering({
                             erTerminDokumentasjon(dokumentasjon) ? Path.TERMINBEKREFTELSE : Path.ADOPSJONSBEKREFTELSE,
                         )
                     }
-                />
+                >
+                    <FormattedMessage id="Oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 {erTerminDokumentasjon(dokumentasjon) ? (

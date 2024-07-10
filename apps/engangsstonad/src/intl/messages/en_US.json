@@ -96,6 +96,7 @@
     "AdopsjonDokPanel.Vedlegg.Adopsjon": "Confirmation of adoption",
     "AdopsjonDokPanel.Veilederpanel.Text": "You must attach confirmation of the date you took over care of the child, and adoption permit if you have received this.",
     "AdopsjonDokPanel.Dok.Storrelse": "The file cannot be larger than 16MB and must be in one of the folloving formats: pdf, png or jpg.",
+    "Oppsummering.EndreSvar": "Edit",
     "OmBarnetOppsummering.tittel": "The Child",
     "OmBarnetOppsummering.EttBarn": "one child",
     "OmBarnetOppsummering.ToBarn": "two children",

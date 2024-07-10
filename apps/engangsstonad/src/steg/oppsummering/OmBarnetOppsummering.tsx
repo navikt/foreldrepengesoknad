@@ -35,7 +35,9 @@ const OmBarnetOppsummering = ({ omBarnet, onVilEndreSvar }: Props) => {
                 <FormSummary.Heading level="2">
                     <FormattedMessage id="OmBarnetOppsummering.tittel" />
                 </FormSummary.Heading>
-                <FormSummary.EditLink onClick={onVilEndreSvar} />
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="Oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
                 <FormSummary.Answer>
