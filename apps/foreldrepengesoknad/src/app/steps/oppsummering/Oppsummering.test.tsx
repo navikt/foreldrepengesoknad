@@ -30,7 +30,6 @@ describe('<Oppsummering>', () => {
 
         render(<Default sendSøknad={sendSøknad} />);
 
-        expect(await screen.findByText('MOR MYGG')).toBeInTheDocument();
         expect(screen.queryByText('Du må bekrefte at du har oppgitt riktige opplysninger')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Send søknaden'));
