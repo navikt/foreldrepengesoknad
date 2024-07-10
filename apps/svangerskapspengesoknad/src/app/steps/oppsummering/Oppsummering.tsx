@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Accordion, BodyShort, Heading, VStack } from '@navikt/ds-react';
+import { Accordion, BodyShort, FormSummary, Heading, VStack } from '@navikt/ds-react';
 
 import { BoIUtlandetOppsummeringspunkt, OppsummeringPanel } from '@navikt/fp-oppsummering';
 import { Søkerinfo } from '@navikt/fp-types';
@@ -84,24 +84,39 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                 }}
                 onContinueLater={navigator.fortsettSøknadSenere}
             >
+                <FormSummary>
+                    <FormSummary.Header>
+                        <FormSummary.Heading level="2">
+                            <FormattedMessage id="oppsummering.omBarnet" />
+                        </FormSummary.Heading>
+                        <FormSummary.EditLink onClick={() => navigator.goToNextStep(SøknadRoutes.BARNET)}>
+                            <FormattedMessage id="oppsummering.EndreSvar" />
+                        </FormSummary.EditLink>
+                    </FormSummary.Header>
+                    <FormSummary.Answers>
+                        <FormSummary.Answer>
+                            <FormSummary.Label>
+                                <FormattedMessage id="barnet.termindato" />
+                            </FormSummary.Label>
+                            <FormSummary.Value>{formatDate(barn.termindato)}</FormSummary.Value>
+                        </FormSummary.Answer>
+                        {barn.erBarnetFødt && barn.fødselsdato && (
+                            <FormSummary.Answer>
+                                <FormSummary.Label>
+                                    <FormattedMessage id="barnet.fødselsdato" />
+                                </FormSummary.Label>
+                                <FormSummary.Value>{formatDate(barn.fødselsdato)}</FormSummary.Value>
+                            </FormSummary.Answer>
+                        )}
+                    </FormSummary.Answers>
+                </FormSummary>
+                <BoIUtlandetOppsummeringspunkt
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
+                    tidligereUtenlandsopphold={utenlandsoppholdTidligere?.utenlandsoppholdSiste12Mnd ?? []}
+                    senereUtenlandsopphold={utenlandsoppholdSenere?.utenlandsoppholdNeste12Mnd ?? []}
+                />
+
                 <Accordion indent={false}>
-                    <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omBarnet' })}>
-                        <VStack gap="2">
-                            <BodyShort>{`Termindato: ${formatDate(barn.termindato)}`}</BodyShort>
-                            {barn.erBarnetFødt && barn.fødselsdato && (
-                                <BodyShort>{`Fødselsdato: ${
-                                    barn.fødselsdato ? formatDate(barn.fødselsdato) : undefined
-                                }`}</BodyShort>
-                            )}
-                        </VStack>
-                    </OppsummeringPanel.Punkt>
-                    <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'steps.label.utenlandsopphold' })}>
-                        <BoIUtlandetOppsummeringspunkt
-                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
-                            tidligereUtenlandsopphold={utenlandsoppholdTidligere?.utenlandsoppholdSiste12Mnd ?? []}
-                            senereUtenlandsopphold={utenlandsoppholdSenere?.utenlandsoppholdNeste12Mnd ?? []}
-                        />
-                    </OppsummeringPanel.Punkt>
                     <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omArbeidsforhold' })}>
                         <VStack gap="2">
                             {aktiveArbeidsforhold.length > 0 && (
