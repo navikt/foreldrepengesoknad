@@ -28,17 +28,15 @@ const LandOppsummering: React.FunctionComponent<Props> = ({ utenlandsoppholdList
     return (
         <FormSummary.Answers>
             {utenlandsoppholdListe.sort(sortOpphold).map((opphold) => (
-                <React.Fragment key={opphold.landkode}>
-                    <FormSummary.Answer>
-                        <FormSummary.Label>{countries.getName(opphold.landkode, 'nb')}</FormSummary.Label>
-                        <FormSummary.Value>
-                            <FormattedMessage
-                                id="LandOppsummering.periode"
-                                values={{ fra: formaterDato(opphold.fom, intl), til: formaterDato(opphold.tom, intl) }}
-                            />
-                        </FormSummary.Value>
-                    </FormSummary.Answer>
-                </React.Fragment>
+                <FormSummary.Answer key={opphold.landkode}>
+                    <FormSummary.Label>{countries.getName(opphold.landkode, 'nb')}</FormSummary.Label>
+                    <FormSummary.Value>
+                        <FormattedMessage
+                            id="LandOppsummering.periode"
+                            values={{ fra: formaterDato(opphold.fom, intl), til: formaterDato(opphold.tom, intl) }}
+                        />
+                    </FormSummary.Value>
+                </FormSummary.Answer>
             ))}
         </FormSummary.Answers>
     );

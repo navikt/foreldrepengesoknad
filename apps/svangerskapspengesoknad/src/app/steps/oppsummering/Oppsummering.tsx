@@ -13,6 +13,12 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appD
 import SøknadRoutes from 'app/appData/routes';
 import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
+import {
+    ArbeidsforholdOppsummering,
+    FrilansSummary,
+    JobbetIUtlandetSummary,
+    SelvstendigNæringsdrivendeSummary,
+} from 'app/steps/oppsummering/ArbeidsforholdOppsummering';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
@@ -115,7 +121,13 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                     tidligereUtenlandsopphold={utenlandsoppholdTidligere?.utenlandsoppholdSiste12Mnd ?? []}
                     senereUtenlandsopphold={utenlandsoppholdSenere?.utenlandsoppholdNeste12Mnd ?? []}
                 />
-
+                <ArbeidsforholdOppsummering
+                    arbeidsforhold={aktiveArbeidsforhold}
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.INNTEKTSINFORMASJON)}
+                />
+                <FrilansSummary onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.FRILANS)} />
+                <SelvstendigNæringsdrivendeSummary onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.NÆRING)} />
+                <JobbetIUtlandetSummary onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ARBEID_I_UTLANDET)} />
                 <Accordion indent={false}>
                     <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omArbeidsforhold' })}>
                         <VStack gap="2">
@@ -125,18 +137,16 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                                     arbeidsforhold={aktiveArbeidsforhold}
                                 />
                             )}
-                            {inntektsinformasjon.harJobbetSomFrilans && frilans && (
-                                <FrilansVisning frilans={frilans}></FrilansVisning>
-                            )}
+                            {inntektsinformasjon.harJobbetSomFrilans && frilans && <FrilansVisning frilans={frilans} />}
                             {inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende && egenNæring && (
-                                <EgenNæringVisning næring={egenNæring}></EgenNæringVisning>
+                                <EgenNæringVisning næring={egenNæring} />
                             )}
                             {inntektsinformasjon.harHattArbeidIUtlandet &&
                                 arbeidIUtlandet?.arbeidIUtlandet?.map((arbeid) => (
                                     <ArbeidIUtlandetVisning
                                         key={`${arbeid.fom}${arbeid.tom}${arbeid.arbeidsgiverNavn}`}
                                         arbeidIUtlandet={arbeid}
-                                    ></ArbeidIUtlandetVisning>
+                                    />
                                 ))}
                             {(!inntektsinformasjon.harJobbetSomFrilans ||
                                 !inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende ||

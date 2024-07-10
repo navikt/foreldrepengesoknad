@@ -87,7 +87,7 @@
     "inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.apneLabel": "Korleis vert sjølvstendig næringsdrivande definert?",
     "inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.infoboks.del1": "Når du er å rekna som næringsdrivande er ikkje klart definert i lova. Hobby er skattefritt, medan næring er skattepliktig verksemd.",
     "inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.infoboks.del2": "Du kan finna ut om du er sjølvstendig næringsdrivande i vegvisaren til <a>skatteetaten</a>. Der kan du og finne meir informasjon om kva det tyder å vere sjølvstendig næringsdrivande.",
-    "inntektsinformasjon.annenInntekt": "Har du jobba i utlandet dei siste 4 vekene?",
+    "inntektsinformasjon.hattArbeidIUtlandet": "Har du jobba i utlandet dei siste 4 vekene?",
     "inntektsinformasjon.alert.ingenArbeidsforhold.tittel": "<b>Du kan dessverre ikkje gå vidare i søknaden</b>",
     "inntektsinformasjon.alert.ingenArbeidsforhold": "Det ser dessverre ikkje ut som om du kan søke om svangerskapspengar. Det er ingen arbeidsforhold registrert på deg. Du jobbar heller ikkje som frilans eller sjølvstendig næringsdrivande. For oss verkar det difor ikkje som at du har nokon jobb som kan skade det ufødde barnet. Dersom du meiner at noko av informasjonen over ikkje stemmer, må du kontakte din arbeidsgivar og be dei oppdatere med riktig informasjon i Arbeidsgivar- og arbeidstakarregisteret. Når dette har blitt gjort, vil det bli mogleg for deg å søke. Dersom du er usikker på om du har rett til å søke om svangerskapspengar, kan du lese meir <a>om svangerskapspengar</a> eller ",
     "inntektsinformasjon.alert.ingenArbeidsforhold.forsettelse": "<a>tak kontakt med oss.</a>",
