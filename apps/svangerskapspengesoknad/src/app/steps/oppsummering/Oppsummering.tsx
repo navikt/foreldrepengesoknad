@@ -19,6 +19,7 @@ import {
     JobbetIUtlandetSummary,
     SelvstendigNæringsdrivendeSummary,
 } from 'app/steps/oppsummering/ArbeidsforholdOppsummering';
+import { DokumentasjonOppsummering } from 'app/steps/oppsummering/DokumentasjonOppsummering';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
@@ -128,6 +129,10 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                 <FrilansSummary onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.FRILANS)} />
                 <SelvstendigNæringsdrivendeSummary onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.NÆRING)} />
                 <JobbetIUtlandetSummary onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ARBEID_I_UTLANDET)} />
+                <DokumentasjonOppsummering
+                    tilrettelegginger={tilrettelegginger}
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.TILRETTELEGGING)}
+                />
                 <Accordion indent={false}>
                     <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omArbeidsforhold' })}>
                         <VStack gap="2">
