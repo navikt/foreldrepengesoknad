@@ -20,18 +20,14 @@ import {
     SelvstendigNæringsdrivendeSummary,
 } from 'app/steps/oppsummering/ArbeidsforholdOppsummering';
 import { DokumentasjonOppsummering } from 'app/steps/oppsummering/DokumentasjonOppsummering';
+import { PerioderOppsummering } from 'app/steps/oppsummering/PerioderOppsummering';
 import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
-import { getAktiveArbeidsforhold, getTekstOmManglendeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
+import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
 import { mapTilretteleggingTilPerioder } from 'app/utils/tilretteleggingUtils';
 
-import ArbeidsforholdInformasjon from '../inntektsinformasjon/components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
-import ArbeidIUtlandetVisning from './arbeid-i-utlandet-visning/ArbeidIUtlandetVisning';
-import EgenNæringVisning from './egen-næring-visning/EgenNæringVisning';
-import FrilansVisning from './frilans-visning/FrilansVisning';
 import './oppsummering.css';
 import PeriodeOppsummering from './periode-oppsummering/PeriodeOppsummering';
-import VedleggOppsummering from './vedlegg-oppsummering/VedleggOppsummering';
 
 type Props = {
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
@@ -51,10 +47,6 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, søkerInfo.arbeidsforhold);
     const bem = bemUtils('oppsummering');
 
-    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
-    const frilans = useContextGetData(ContextDataType.FRILANS);
-    const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
-    const arbeidIUtlandet = useContextGetData(ContextDataType.ARBEID_I_UTLANDET);
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const utenlandsoppholdSenere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
@@ -74,6 +66,8 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     const tilretteleggingMedSN = tilrettelegginger.find(
         (t) => t.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG,
     );
+
+    console.log('mapped', allePerioderMedFomOgTom);
 
     return (
         <ContentWrapper>
@@ -133,36 +127,8 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                     tilrettelegginger={tilrettelegginger}
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.TILRETTELEGGING)}
                 />
+                <PerioderOppsummering onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.PERIODER)} />
                 <Accordion indent={false}>
-                    <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.omArbeidsforhold' })}>
-                        <VStack gap="2">
-                            {aktiveArbeidsforhold.length > 0 && (
-                                <ArbeidsforholdInformasjon
-                                    visManglerInfo={false}
-                                    arbeidsforhold={aktiveArbeidsforhold}
-                                />
-                            )}
-                            {inntektsinformasjon.harJobbetSomFrilans && frilans && <FrilansVisning frilans={frilans} />}
-                            {inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende && egenNæring && (
-                                <EgenNæringVisning næring={egenNæring} />
-                            )}
-                            {inntektsinformasjon.harHattArbeidIUtlandet &&
-                                arbeidIUtlandet?.arbeidIUtlandet?.map((arbeid) => (
-                                    <ArbeidIUtlandetVisning
-                                        key={`${arbeid.fom}${arbeid.tom}${arbeid.arbeidsgiverNavn}`}
-                                        arbeidIUtlandet={arbeid}
-                                    />
-                                ))}
-                            {(!inntektsinformasjon.harJobbetSomFrilans ||
-                                !inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende ||
-                                !inntektsinformasjon.harHattArbeidIUtlandet) && (
-                                <BodyShort>{getTekstOmManglendeArbeidsforhold(inntektsinformasjon, intl)}</BodyShort>
-                            )}
-                        </VStack>
-                    </OppsummeringPanel.Punkt>
-                    <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.skjema' })}>
-                        <VedleggOppsummering tilrettelegging={tilrettelegginger} />
-                    </OppsummeringPanel.Punkt>
                     <OppsummeringPanel.Punkt
                         tittel={intl.formatMessage({ id: 'oppsummering.periodeMedSvangerskapspenger' })}
                     >
