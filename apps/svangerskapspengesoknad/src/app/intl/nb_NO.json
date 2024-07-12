@@ -344,7 +344,7 @@
     "oppsummering.dokumentasjon.selvstendig": "Bekreftelse for krav til svangerskapspenger til selvstendig næringsdrivende",
     "oppsummering.dokumentasjon.frilanser": "Bekreftelse for krav til svangerskapspenger til frilans",
     "oppsummering.skjema": "Skjema",
-    "oppsummering.periodeMedSvangerskapspenger": "Periode med svangerskapspenger",
+    "oppsummering.periode.tittel": "Periode med svangerskapspenger",
     "oppsummering.periode.fraTil": "Fra {fraDato} til {tilDato}",
     "oppsummering.periode.fremTilTreUkerFørTermin": "Fra {fraDato} frem til tre uker før termin",
     "oppsummering.periode.fremTilTreUkerFørTermin1": "tre uker før termin",

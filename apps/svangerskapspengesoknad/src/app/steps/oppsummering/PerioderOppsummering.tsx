@@ -16,7 +16,7 @@ export function PerioderOppsummering({ onVilEndreSvar }: { onVilEndreSvar: () =>
         <FormSummary>
             <FormSummary.Header>
                 <FormSummary.Heading level="2">
-                    <FormattedMessage id="oppsummering.periodeMedSvangerskapspenger" />
+                    <FormattedMessage id="oppsummering.periode.tittel" />
                 </FormSummary.Heading>
                 <FormSummary.EditLink onClick={onVilEndreSvar}>
                     <FormattedMessage id="oppsummering.EndreSvar" />
@@ -73,7 +73,9 @@ function FrilansSummary() {
 
     return (
         <FormSummary.Answer>
-            <FormSummary.Label>asdsa</FormSummary.Label>
+            <FormSummary.Label>
+                <FormattedMessage id="steps.label.frilans" />
+            </FormSummary.Label>
             <FormSummary.Value>
                 <FormSummary.Answers>
                     <FormSummary.Answer>
@@ -123,7 +125,9 @@ function SelvstendigNæringsdrivendeSummary() {
 
     return (
         <FormSummary.Answer>
-            <FormSummary.Label>SELVSTENIGYO</FormSummary.Label>
+            <FormSummary.Label>
+                <FormattedMessage id="steps.label.næring" />
+            </FormSummary.Label>
             <FormSummary.Value>
                 <FormSummary.Answers>
                     <FormSummary.Answer>
@@ -162,20 +166,31 @@ function SelvstendigNæringsdrivendeSummary() {
 }
 
 function KunEnPeriode({ periode }: { periode: TilretteleggingPeriode }) {
-    // TODO: genrelle tekster
     return (
         <>
             <FormSummary.Answer>
                 <FormSummary.Label>
-                    <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.label.frilanser" />
+                    <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.label.en" />
                 </FormSummary.Label>
-                <FormSummary.Value>{periode.type}</FormSummary.Value>
+                <FormSummary.Value>
+                    <StillingProsentTekst
+                        stillingsprosent={periode.stillingsprosent}
+                        tilretteleggingstype={periode.type}
+                    />
+                </FormSummary.Value>
             </FormSummary.Answer>
             <FormSummary.Answer>
                 <FormSummary.Label>
-                    <FormattedMessage id="tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen" />
+                    {periode.type === Tilretteleggingstype.INGEN && (
+                        <FormattedMessage id="tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen" />
+                    )}
+                    {periode.type === Tilretteleggingstype.DELVIS && (
+                        <FormattedMessage id="tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis" />
+                    )}
                 </FormSummary.Label>
-                <FormSummary.Value>{formatDate(periode.fom)}</FormSummary.Value>
+                <FormSummary.Value>
+                    <SvpDatoTekst1 periode={periode} />
+                </FormSummary.Value>
             </FormSummary.Answer>
         </>
     );
@@ -184,7 +199,9 @@ function KunEnPeriode({ periode }: { periode: TilretteleggingPeriode }) {
 function FlerePerioder({ perioder }: { perioder: TilretteleggingPeriode[] }) {
     return (
         <FormSummary.Answer>
-            <FormSummary.Label>PERIODER MED SVSDAÅP</FormSummary.Label>
+            <FormSummary.Label>
+                <FormattedMessage id="oppsummering.periode.tittel" />
+            </FormSummary.Label>
             <FormSummary.Value>
                 <List>
                     {perioder.map((periode) => (
@@ -201,18 +218,6 @@ function FlerePerioder({ perioder }: { perioder: TilretteleggingPeriode[] }) {
         </FormSummary.Answer>
     );
 }
-//
-// function SvpTomDate({tomType, tom}:{tomType: TilOgMedDatoType, tom?: string }) {
-//     if (tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP) {
-//         return <FormattedMessage id="oppsummering.periode.fremTilTreUkerFørTermin1" />
-//     }
-//     if (tom) {
-//         return formatDate(tom)
-//     }
-//
-//     // NOTE: Dette skal ikke være mulig.
-//     return "";
-// }
 
 function SvpDatoTekst1({ periode }: { periode: TilretteleggingPeriode }) {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -257,7 +262,6 @@ function StillingProsentTekst({
     stillingsprosent: number;
     tilretteleggingstype: Tilretteleggingstype;
 }) {
-    console.log(tilretteleggingstype);
     if (tilretteleggingstype === Tilretteleggingstype.HEL) {
         return <FormattedMessage id="oppsummering.periode.tilbakeIFullJobb" />;
     }

@@ -67,8 +67,6 @@ const Oppsummering: React.FunctionComponent<Props> = ({
         (t) => t.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG,
     );
 
-    console.log('mapped', allePerioderMedFomOgTom);
-
     return (
         <ContentWrapper>
             <Heading size="large">
