@@ -173,7 +173,14 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             isGray
                         >
                             <BodyShort>
-                                <FormattedMessage id="FordelingSteg.Infoboks.HvordanFordeleTekst" />
+                                <FormattedMessage
+                                    id="FordelingSteg.Infoboks.HvordanFordeleTekst"
+                                    values={{
+                                        uker: antallUkerOgDagerFellesperiode.uker,
+                                        dager: antallUkerOgDagerFellesperiode.dager,
+                                        prosent: dekningsgrad,
+                                    }}
+                                />
                             </BodyShort>
                         </Infobox>
                         <BluePanel isDarkBlue={fordeling === undefined}>
