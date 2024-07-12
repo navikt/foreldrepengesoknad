@@ -75,7 +75,7 @@ export const hentTidslinjehendelserOptions = (saksnummer: string) =>
 export const hentManglendeVedleggOptions = (saksnummer: string) =>
     queryOptions({
         queryKey: ['MANGLENDE_VEDLEGG', saksnummer],
-        queryFn: () => ky.get('/rest/historikk/vedlegg').json<Skjemanummer[]>(),
+        queryFn: () => ky.get('/rest/historikk/vedlegg', { searchParams: { saksnummer } }).json<Skjemanummer[]>(),
     });
 
 export const sendEttersending = (ettersending: EttersendingDto, fnr?: string) => {
