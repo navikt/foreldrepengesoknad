@@ -63,14 +63,15 @@ export const hentAnnenPartsVedtakOptions = (body: AnnenPartsVedtakRequestBody) =
                     },
                     body: JSON.stringify(body),
                 });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
 
-                return JSON.parse(await response.json()) as AnnenPartVedtakDTO;
+                return (await response.json()) as AnnenPartVedtakDTO;
             } catch (error: any) {
                 // NOTE: inkluderer denne sjekken fordi den fantes før Tanstack refactor. Revurder om den behøves?
-                if (error.name === 'HTTPError') {
-                    if (error?.message?.includes('Ugyldig ident')) {
-                        return undefined;
-                    }
+                if (error?.message?.includes('Ugyldig ident')) {
+                    return undefined;
                 }
                 throw error;
             }
@@ -103,7 +104,7 @@ export const sendEttersending = async (ettersending: EttersendingDto, fnr?: stri
         body: JSON.stringify(ettersending),
     });
 
-    return JSON.parse(await response.json()) as unknown;
+    return (await response.json()) as unknown;
 };
 
 export const erSakOppdatertOptions = () =>
