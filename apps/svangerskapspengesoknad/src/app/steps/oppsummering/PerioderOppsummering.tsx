@@ -46,7 +46,7 @@ function VirksomhetSummary() {
             <FormSummary.Label>{tilrettelegging.arbeidsforhold.navn}</FormSummary.Label>
             <FormSummary.Value>
                 <FormSummary.Answers>
-                    {perioder.length === 0 ? (
+                    {perioder.length === 1 ? (
                         <KunEnPeriode periode={perioder[0]} />
                     ) : (
                         <FlerePerioder perioder={perioder} />
