@@ -189,7 +189,7 @@ function KunEnPeriode({ periode }: { periode: TilretteleggingPeriode }) {
                     )}
                 </FormSummary.Label>
                 <FormSummary.Value>
-                    <SvpDatoTekst1 periode={periode} />
+                    <SvpPeriodeDatoTekst periode={periode} />
                 </FormSummary.Value>
             </FormSummary.Answer>
         </>
@@ -206,7 +206,7 @@ function FlerePerioder({ perioder }: { perioder: TilretteleggingPeriode[] }) {
                 <List>
                     {perioder.map((periode) => (
                         <List.Item key={periode.fom}>
-                            <SvpDatoTekst1 periode={periode} />:{' '}
+                            <SvpPeriodeDatoTekst periode={periode} />:{' '}
                             <StillingProsentTekst
                                 stillingsprosent={periode.stillingsprosent}
                                 tilretteleggingstype={periode.type}
@@ -219,7 +219,7 @@ function FlerePerioder({ perioder }: { perioder: TilretteleggingPeriode[] }) {
     );
 }
 
-function SvpDatoTekst1({ periode }: { periode: TilretteleggingPeriode }) {
+function SvpPeriodeDatoTekst({ periode }: { periode: TilretteleggingPeriode }) {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const kanHaSvpFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
