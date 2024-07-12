@@ -89,8 +89,21 @@ export const hentManglendeVedleggOptions = (saksnummer: string) =>
         queryFn: () => ky.get('/rest/historikk/vedlegg', { searchParams: { saksnummer } }).json<Skjemanummer[]>(),
     });
 
-export const sendEttersending = (ettersending: EttersendingDto, fnr?: string) => {
-    return ky.post('/rest/soknad/ettersend', { json: ettersending, timeout: 30 * 1000, headers: { fnr } });
+export const sendEttersending = async (ettersending: EttersendingDto, fnr?: string) => {
+    // Det funker ikke å bruke ky.post() her.
+    // Det virker som at siden måten Adrum wrapper alle requests på, gjør at det skjer noe funny-business på et eller annet punkt som fjerner content-type...
+    // Undersøke videre senere, gjør det slik for nå for å rette feil.
+    const response = await fetch(`/rest/soknad/ettersend`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            fnr: fnr ?? '',
+        },
+        signal: AbortSignal.timeout(30 * 1000),
+        body: JSON.stringify(ettersending),
+    });
+
+    return JSON.parse(await response.json()) as unknown;
 };
 
 export const erSakOppdatertOptions = () =>
