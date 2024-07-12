@@ -1,12 +1,13 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { FormSummary } from '@navikt/ds-react';
+import { FormSummary, Radio } from '@navikt/ds-react';
 
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { formatDate, getCountryName } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/appData/SvpDataContext';
+import { Næringstype } from 'app/types/EgenNæring';
 
 export function ArbeidsforholdOppsummering({
     arbeidsforhold,
@@ -21,7 +22,7 @@ export function ArbeidsforholdOppsummering({
         <FormSummary>
             <FormSummary.Header>
                 <FormSummary.Heading level="2">
-                    <FormattedMessage id="oppsummering.omArbeidsforhold" />
+                    <FormattedMessage id="steps.label.arbeid" />
                 </FormSummary.Heading>
                 <FormSummary.EditLink onClick={onVilEndreSvar}>
                     <FormattedMessage id="oppsummering.EndreSvar" />
@@ -30,7 +31,7 @@ export function ArbeidsforholdOppsummering({
             <FormSummary.Answers>
                 <FormSummary.Answer>
                     <FormSummary.Label>
-                        <FormattedMessage id="steps.label.arbeid" />
+                        <FormattedMessage id="oppsummering.omArbeidsforhold" />
                     </FormSummary.Label>
                     <FormSummary.Value>
                         <FormSummary.Answers>
@@ -122,8 +123,22 @@ export function SelvstendigNæringsdrivendeSummary({ onVilEndreSvar }: { onVilEn
                     <FormSummary.Label>
                         <FormattedMessage id="egenNæring.næringstype" />
                     </FormSummary.Label>
-                    <FormSummary.Value>{egenNæring.næringstype}</FormSummary.Value>
-                    {/*TODO: intl*/}
+                    <FormSummary.Value>
+                        {(() => {
+                            switch (egenNæring?.næringstype) {
+                                case Næringstype.FISKER:
+                                    return <FormattedMessage id="egenNæring.næringstype.fiske" />;
+                                case Næringstype.DAGMAMMA:
+                                    return <FormattedMessage id="egenNæring.næringstype.dagmamma" />;
+                                case Næringstype.JORDBRUK:
+                                    return <FormattedMessage id="egenNæring.næringstype.jordbrukSkogbruk" />;
+                                case Næringstype.ANNET:
+                                    return <FormattedMessage id="egenNæring.næringstype.annen" />;
+                                default:
+                                    return null;
+                            }
+                        })()}
+                    </FormSummary.Value>
                 </FormSummary.Answer>
 
                 {egenNæring.navnPåNæringen && (
@@ -263,7 +278,12 @@ export function JobbetIUtlandetSummary({ onVilEndreSvar }: { onVilEndreSvar: () 
             </FormSummary.Header>
             <FormSummary.Answers>
                 <FormSummary.Answer>
-                    <FormSummary.Label>Arbeidsgivere</FormSummary.Label>
+                    <FormSummary.Label>
+                        <FormattedMessage
+                            id="oppsummering.arbeidIUtlandet.tittel"
+                            values={{ antall: arbeidIUtlandet.arbeidIUtlandet.length }}
+                        />{' '}
+                    </FormSummary.Label>
                     <FormSummary.Value>
                         <FormSummary.Answers>
                             {arbeidIUtlandet.arbeidIUtlandet.map((arbeid) => (

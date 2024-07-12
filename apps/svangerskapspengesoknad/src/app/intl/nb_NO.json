@@ -339,6 +339,7 @@
     "oppsummering.EndreSvar": "Endre svar",
     "oppsummering.omBarnet": "Barnet",
     "oppsummering.omArbeidsforhold": "Arbeidsforhold",
+    "oppsummering.arbeidIUtlandet.tittel": "{antall, plural, one {Arbeidsgiver} other {Arbeidsgivere}}",
     "oppsummering.dokumentasjon.tittel": "Dokumentasjon",
     "oppsummering.dokumentasjon.virksomhet": "Skjema for tilrettelegging i svangerskapet for {arbeidsforholdNavn}",
     "oppsummering.dokumentasjon.selvstendig": "Bekreftelse for krav til svangerskapspenger til selvstendig næringsdrivende",
