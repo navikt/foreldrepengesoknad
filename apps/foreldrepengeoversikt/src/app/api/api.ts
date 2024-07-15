@@ -98,7 +98,7 @@ export const sendEttersending = async (ettersending: EttersendingDto, fnr?: stri
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            fnr: fnr ?? '',
+            ...(fnr !== undefined && { fnr: fnr }),
         },
         signal: AbortSignal.timeout(30 * 1000),
         body: JSON.stringify(ettersending),
