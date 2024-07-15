@@ -14,6 +14,7 @@
     "start-express": "node ./server.cjs",
     "dev-api": "node ./mock-api/mock-api-server.cjs",
     "dev": "node ./dev-server.cjs",
+    "dev-vite": "vite",
     "preview": "vite preview",
     "build-storybook": "storybook build -o .storybook-static-build",
     "storybook": "storybook dev --quiet -p 9001"
