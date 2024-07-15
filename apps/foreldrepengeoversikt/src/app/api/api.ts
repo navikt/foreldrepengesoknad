@@ -104,6 +104,10 @@ export const sendEttersending = async (ettersending: EttersendingDto, fnr?: stri
         body: JSON.stringify(ettersending),
     });
 
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     return (await response.json()) as unknown;
 };
 
