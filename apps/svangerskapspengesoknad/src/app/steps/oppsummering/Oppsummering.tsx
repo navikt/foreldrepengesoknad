@@ -103,9 +103,9 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                 <JobbetIUtlandetSummary onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ARBEID_I_UTLANDET)} />
                 <DokumentasjonOppsummering
                     tilrettelegginger={tilrettelegginger}
-                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.TILRETTELEGGING)}
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.SKJEMA)}
                 />
-                <PerioderOppsummering onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.PERIODER)} />
+                <PerioderOppsummering onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.TILRETTELEGGING)} />
             </OppsummeringPanel>
         </ContentWrapper>
     );
