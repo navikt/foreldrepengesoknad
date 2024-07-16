@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <script type="module">
+        import RefreshRuntime from 'http://localhost:8080/@react-refresh'
+        RefreshRuntime.injectIntoGlobalHook(window)
+        window.$RefreshReg$ = () => {}
+        window.$RefreshSig$ = () => (type) => type
+        window.__vite_plugin_react_preamble_installed__ = true
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>[DEVMODE]</title>
+    <style>
+        #dev-mode {
+            position: absolute;
+            left: 40%;
+            top: 30px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        #explain-why-no-dev-server {
+            visibility: hidden;
+            position: absolute;
+            left: 100px;
+            top: 100px;
+            font-size: 20px;
+        }
+
+        #explain-why-no-dev-server:has(~ #root:empty) {
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+<span class="navds-tag navds-tag--success" id="dev-mode"><a href="/vite-off">Skru av DEVMODE</a></span>
+<div id="explain-why-no-dev-server">
+    Det ser ikke ut som du har en lokal frontend kjørende.<br />
+    Vær obs på at frontend er nødt til å kjøre på <code>http://localhost:8080</code><br />
+    eller <a href="/vite-off">skru av DEVMODE</a>
+</div>
+<div id="app" role="main"></div>
+<div id="modalContent"></div>
+<script type="module" src="http://localhost:8080/@vite/client"></script>
+<script type="module" src="http://localhost:8080/src/app/bootstrap.tsx"></script>
+</body>
+</html>
