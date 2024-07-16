@@ -22,8 +22,6 @@ import { DokumentasjonOppsummering } from 'app/steps/oppsummering/DokumentasjonO
 import { PerioderOppsummering } from 'app/steps/oppsummering/PerioderOppsummering';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 
-import './oppsummering.css';
-
 type Props = {
     sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
