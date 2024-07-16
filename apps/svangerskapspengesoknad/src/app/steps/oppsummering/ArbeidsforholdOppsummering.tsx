@@ -74,11 +74,11 @@ export function ArbeidsforholdOppsummering({
     );
 }
 
-function JaNeiTekst({ ja }: { ja: boolean }) {
+function JaNeiTekst({ ja }: { readonly ja: boolean }) {
     return ja ? <FormattedMessage id="ja" /> : <FormattedMessage id="nei" />;
 }
 
-function ArbeidsforholdFormSummaryValue({ arbeidsforhold }: { arbeidsforhold: Arbeidsforhold }) {
+function ArbeidsforholdFormSummaryValue({ arbeidsforhold }: { readonly arbeidsforhold: Arbeidsforhold }) {
     const intl = useIntl();
     return (
         <FormSummary.Answer>
@@ -101,7 +101,7 @@ function ArbeidsforholdFormSummaryValue({ arbeidsforhold }: { arbeidsforhold: Ar
     );
 }
 
-export function SelvstendigNæringsdrivendeSummary({ onVilEndreSvar }: { onVilEndreSvar: () => void }) {
+export function SelvstendigNæringsdrivendeSummary({ onVilEndreSvar }: { readonly onVilEndreSvar: () => void }) {
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
 
     if (!egenNæring) {
@@ -222,7 +222,7 @@ export function SelvstendigNæringsdrivendeSummary({ onVilEndreSvar }: { onVilEn
     );
 }
 
-export function FrilansSummary({ onVilEndreSvar }: { onVilEndreSvar: () => void }) {
+export function FrilansSummary({ onVilEndreSvar }: { readonly onVilEndreSvar: () => void }) {
     const frilans = useContextGetData(ContextDataType.FRILANS);
 
     if (!frilans) {
@@ -259,7 +259,7 @@ export function FrilansSummary({ onVilEndreSvar }: { onVilEndreSvar: () => void 
     );
 }
 
-export function JobbetIUtlandetSummary({ onVilEndreSvar }: { onVilEndreSvar: () => void }) {
+export function JobbetIUtlandetSummary({ onVilEndreSvar }: { readonly onVilEndreSvar: () => void }) {
     const arbeidIUtlandet = useContextGetData(ContextDataType.ARBEID_I_UTLANDET);
     const intl = useIntl();
     if (!arbeidIUtlandet) {

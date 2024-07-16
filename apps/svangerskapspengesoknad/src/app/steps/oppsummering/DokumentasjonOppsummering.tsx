@@ -8,8 +8,8 @@ export function DokumentasjonOppsummering({
     tilrettelegginger,
     onVilEndreSvar,
 }: {
-    tilrettelegginger: Tilrettelegging[];
-    onVilEndreSvar: () => Promise<void>;
+    readonly tilrettelegginger: Tilrettelegging[];
+    readonly onVilEndreSvar: () => Promise<void>;
 }) {
     return (
         <FormSummary>
@@ -43,7 +43,7 @@ export function DokumentasjonOppsummering({
     );
 }
 
-function DokumentasjonLabel({ tilrettelegging }: { tilrettelegging: Tilrettelegging }) {
+function DokumentasjonLabel({ tilrettelegging }: { readonly tilrettelegging: Tilrettelegging }) {
     switch (tilrettelegging.arbeidsforhold.type) {
         case Arbeidsforholdstype.FRILANSER:
             return <FormattedMessage id="oppsummering.dokumentasjon.frilanser" />;
