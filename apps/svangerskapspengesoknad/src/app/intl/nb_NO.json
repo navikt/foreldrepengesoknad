@@ -348,7 +348,6 @@
     "oppsummering.periode.tittel": "Periode med svangerskapspenger",
     "oppsummering.periode.fraTil": "Fra {fraDato} til {tilDato}",
     "oppsummering.periode.fremTilTreUkerFørTermin": "Fra {fraDato} frem til tre uker før termin",
-    "oppsummering.periode.fremTilTreUkerFørTermin1": "tre uker før termin",
     "oppsummering.periode.fremTilFødsel": "Fra {fraDato} frem til fødselsdato",
     "oppsummering.periode.stillingsprosent": "Du skal jobbe {stillingsprosent} % ",
     "oppsummering.periode.ikkeJobbe": "Du skal ikke jobbe",
