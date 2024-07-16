@@ -144,7 +144,6 @@ function SelvstendigNæringsdrivendeSummary() {
                     </FormSummary.Answer>
                     <FormSummary.Answer>
                         <FormSummary.Label>
-                            {/*TODO: intl*/}
                             <FormattedMessage
                                 id="tilrettelegging.tilrettelagtArbeidFom.label.flere"
                                 values={{ navnArbeidsgiver: tilretteleggingMedSN.arbeidsforhold.navn }}
