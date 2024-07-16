@@ -172,7 +172,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, isFir
             {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
                 <ContentSection
                     heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
-                    showSkeleton={annenPartsVedtakQuery.isPending}
+                    showSkeleton={!annenPartVedtakIsSuspended && annenPartsVedtakQuery.isPending}
                     skeletonProps={{ height: '210px', variant: 'rounded' }}
                 >
                     <DinPlan

@@ -76,7 +76,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({
     const tidslinjeHendelserData = tidslinjeHendelserQuery.data ?? [];
     const manglendeVedleggData = manglendeVedleggQuery.data ?? [];
 
-    if (tidslinjeHendelserData.length === 0 || manglendeVedleggData.length === 0) {
+    if (tidslinjeHendelserData.length === 0) {
         return null;
     }
 
