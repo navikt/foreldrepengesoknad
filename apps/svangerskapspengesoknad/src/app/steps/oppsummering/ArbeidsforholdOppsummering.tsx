@@ -1,6 +1,6 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { FormSummary, Radio } from '@navikt/ds-react';
+import { FormSummary } from '@navikt/ds-react';
 
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { formatDate, getCountryName } from '@navikt/fp-utils';
@@ -13,8 +13,8 @@ export function ArbeidsforholdOppsummering({
     arbeidsforhold,
     onVilEndreSvar,
 }: {
-    arbeidsforhold: Arbeidsforhold[];
-    onVilEndreSvar: () => void;
+    readonly arbeidsforhold: Arbeidsforhold[];
+    readonly onVilEndreSvar: () => void;
 }) {
     const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
 
