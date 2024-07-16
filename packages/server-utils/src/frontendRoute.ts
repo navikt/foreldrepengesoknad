@@ -59,7 +59,6 @@ function addLocalViteServerHandlerWithDecorator(app: Express) {
         const localViteServerIsEnabled = request.cookies['use-local-vite-server'] === 'true';
         if (localViteServerIsEnabled) {
             const html = await injectDecorator(viteDevelopmentServerPath);
-            // response.setHeader("Content-Security-Policy", csp);
 
             return response.send(html);
         }
