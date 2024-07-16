@@ -54,7 +54,7 @@ const DinPlanPage: React.FunctionComponent<Props> = ({ navnPåSøker, søkerinfo
         enabled: !annenPartVedtakIsSuspended,
     });
 
-    if (annenPartsVedtakQuery.isPending) {
+    if (!annenPartVedtakIsSuspended && annenPartsVedtakQuery.isPending) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <Loader type="XXL" />
