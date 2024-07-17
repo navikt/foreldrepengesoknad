@@ -1,8 +1,8 @@
 import { useIntl } from 'react-intl';
 
-import { Heading, VStack } from '@navikt/ds-react';
+import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
+import { bemUtils, capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { GruppertSak } from 'app/types/GruppertSak';
@@ -25,7 +25,7 @@ const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker }) => {
     return (
         <>
             {grupperteSaker.map((gruppering) => {
-                const tittel = getSakTittel(
+                const { tittel, undertittel } = getSakTittel(
                     gruppering.barn?.fornavn,
                     gruppering.barn?.fødselsdatoer,
                     ISOStringToDate(gruppering.familiehendelsedato)!,
@@ -36,9 +36,12 @@ const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker }) => {
                 );
                 return (
                     <div className={bem.block} key={gruppering.familiehendelsedato}>
-                        <Heading size="small" level="2" className={bem.element('tittel')}>
-                            {tittel}
-                        </Heading>
+                        <HStack className={bem.element('tittel')} gap="2" align="baseline">
+                            <Heading size="small" level="2">
+                                {tittel}
+                            </Heading>
+                            <BodyShort>{capitalizeFirstLetter(undertittel)}</BodyShort>
+                        </HStack>
                         <VStack gap="2">
                             {gruppering.saker.map((sak) => {
                                 return <SakLink key={guid()} sak={sak} />;

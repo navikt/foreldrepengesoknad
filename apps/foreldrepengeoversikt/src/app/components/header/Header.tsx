@@ -132,7 +132,9 @@ const renderHeaderContent = (
                     <div className={bem.element('text-with-bar')}>
                         <BodyShort>{`SAKSNR ${sak?.saksnummer}`}</BodyShort>
                         <hr className={classNames(bem.element('divider'))}></hr>
-                        <BodyShort className={bem.element('divider-text')}>{barnTittel}</BodyShort>
+                        <BodyShort className={bem.element('divider-text')}>
+                            {barnTittel.tittel} {barnTittel.undertittel}
+                        </BodyShort>
                     </div>
                 </div>
             </div>
