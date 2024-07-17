@@ -23,7 +23,7 @@ const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
                 <HGrid columns={'max-content 1fr'} gap="4">
                     <DokumentLenke dokument={dokument} />
                 </HGrid>
-                <HStack gap="4" align="center">
+                <HStack gap="4" align="center" justify="space-between">
                     <DokumentAvsender dokumentType={type} />
                     <Detail textColor="subtle">{formatDateExtended(mottatt)}</Detail>
                 </HStack>
