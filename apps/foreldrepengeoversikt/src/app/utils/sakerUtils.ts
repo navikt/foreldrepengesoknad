@@ -255,36 +255,46 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
     antallBarn: number,
     intl: IntlShape,
     type: Situasjon,
-): string => {
+): { tittel: string; undertittel: string } => {
     const barnTekst = getTekstForAntallBarn(antallBarn, intl);
     if ((antallBarn === 0 && fødselsdatoer === undefined) || type === 'termin') {
-        return intl.formatMessage(
-            { id: 'barnHeader.terminBarn' },
-            {
-                barnTekst,
-                termindato: formatDate(familiehendelsedato),
-            },
-        );
+        return {
+            tittel: intl.formatMessage(
+                { id: 'barnHeader.terminBarn' },
+                {
+                    barnTekst,
+                    termindato: formatDate(familiehendelsedato),
+                },
+            ),
+            undertittel: '',
+        };
     }
 
     if (type === 'adopsjon') {
-        return intl.formatMessage(
-            { id: 'barnHeader.adoptertBarn' },
-            {
-                adopsjonsdato: formatDate(familiehendelsedato),
-            },
-        );
+        return {
+            tittel: intl.formatMessage(
+                { id: 'barnHeader.adoptertBarn' },
+                {
+                    adopsjonsdato: formatDate(familiehendelsedato),
+                },
+            ),
+            undertittel: '',
+        };
     } else {
         const fødselsdatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
-        return fødselsdatoer !== undefined && fødselsdatoer.length > 0
-            ? intl.formatMessage(
-                  { id: 'barnHeader.fødtBarn' },
-                  {
-                      barnTekst,
-                      fødselsdatoTekst,
-                  },
-              )
-            : '';
+        if (fødselsdatoer !== undefined && fødselsdatoer.length > 0) {
+            return {
+                tittel: intl.formatMessage(
+                    { id: 'barnHeader.fødtBarn' },
+                    {
+                        barnTekst,
+                        fødselsdatoTekst,
+                    },
+                ),
+                undertittel: '',
+            };
+        }
+        return { tittel: '', undertittel: '' };
     }
 };
 
@@ -309,7 +319,7 @@ export const getSakTittel = (
     antallBarn: number,
     intl: IntlShape,
     type: Situasjon,
-): string => {
+): { tittel: string; undertittel: string } => {
     if (fornavn === undefined || fornavn.length === 0 || !alleBarnaLever) {
         return getTittelBarnNårNavnSkalIkkeVises(familiehendelsesdato, fødselsdatoer, antallBarn, intl, type);
     }
@@ -317,10 +327,10 @@ export const getSakTittel = (
 
     if (type === 'fødsel') {
         const fødtDatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
-        return `${navn} født ${fødtDatoTekst}`;
+        return { tittel: navn, undertittel: `født ${fødtDatoTekst}` };
     }
     if (type === 'adopsjon') {
-        return `${navn} adoptert ${formatDate(familiehendelsesdato)}`;
+        return { tittel: navn, undertittel: `adoptert ${formatDate(familiehendelsesdato)}` };
     }
-    return '';
+    return { tittel: '', undertittel: '' };
 };

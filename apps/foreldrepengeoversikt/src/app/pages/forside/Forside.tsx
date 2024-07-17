@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Alert, Heading, VStack } from '@navikt/ds-react';
+import { Alert, VStack } from '@navikt/ds-react';
 
-import { erSakOppdatertOptions, hentMellomlagredeYtelserOptions } from 'app/api/api';
+import { erSakOppdatertOptions } from 'app/api/api';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import HarIkkeSaker from 'app/components/har-ikke-saker/HarIkkeSaker';
 import HarSaker from 'app/components/har-saker/HarSaker';
@@ -41,11 +41,6 @@ const Forside: React.FunctionComponent<Props> = ({
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
     useSetSelectedSak(undefined);
 
-    const storageData = useQuery({
-        ...hentMellomlagredeYtelserOptions(),
-        enabled: false, // TODO: Denne hadde isSuspended hardkodet til true, så denne ble aldri brukt før Tanstack refactor
-    }).data;
-
     const harIkkeOppdatertSakQuery = useQuery(erSakOppdatertOptions());
     const harIkkeOppdatertSak = harIkkeOppdatertSakQuery.isSuccess && !harIkkeOppdatertSakQuery.data;
 
@@ -58,7 +53,7 @@ const Forside: React.FunctionComponent<Props> = ({
     const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
     return (
         <VStack gap="10">
-            <div>
+            <>
                 {redirectedFromSøknadsnummer === UKNOWN_SAKSNUMMER && (
                     <BekreftelseSendtSøknad
                         relevantNyTidslinjehendelse={undefined}
@@ -72,19 +67,7 @@ const Forside: React.FunctionComponent<Props> = ({
                         kan vente litt og komme tilbake senere for å se alle detaljene i saken din.
                     </Alert>
                 )}
-            </div>
-            <div>
-                {storageData?.engangsstonad && (
-                    <Heading level="1" size="large">
-                        Dette er en mellomlagret søknad av type: Engangsstønad
-                    </Heading>
-                )}
-                {storageData?.foreldrepenger && (
-                    <Heading level="1" size="large">
-                        Dette er en mellomlagret søknad av type: Foreldrepenger
-                    </Heading>
-                )}
-            </div>
+            </>
             {alleYtelser.length > 0 ? (
                 <HarSaker grupperteSaker={grupperteSaker} />
             ) : (
