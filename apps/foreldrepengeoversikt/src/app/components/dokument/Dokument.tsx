@@ -1,5 +1,5 @@
 import { FileContent } from '@navikt/ds-icons';
-import { Detail, Hide, Link, Show, Tag } from '@navikt/ds-react';
+import { Detail, HGrid, HStack, Hide, Link, Show, Tag } from '@navikt/ds-react';
 
 import { bemUtils, formatDateExtended } from '@navikt/fp-utils';
 
@@ -19,12 +19,14 @@ const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
 
     return (
         <div className={bem.block}>
-            <Hide above="md">
-                <DokumentLenke dokument={dokument} />
-                <div className={bem.element('content-bottom')}>
+            <Hide above="md" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <HGrid columns={'max-content 1fr'} gap="4">
+                    <DokumentLenke dokument={dokument} />
+                </HGrid>
+                <HStack gap="4" align="center">
                     <DokumentAvsender dokumentType={type} />
                     <Detail textColor="subtle">{formatDateExtended(mottatt)}</Detail>
-                </div>
+                </HStack>
             </Hide>
             <Show above="md">
                 <div className={bem.element('contentWrapper')}>
@@ -42,7 +44,7 @@ function DokumentLenke({ dokument }: { dokument: DokumentType }) {
 
     return (
         <>
-            <FileContent style={{ color: 'var(--a-surface-action)' }} height={24} width={24} aria-hidden={true} />
+            <FileContent style={{ color: 'var(--a-text-action)' }} height={24} width={24} aria-hidden={true} />
             <Link
                 href={url}
                 target="_blank"
@@ -58,7 +60,7 @@ function DokumentAvsender({ dokumentType }: { dokumentType: DokumentTypeEnum }) 
     const text = dokumentType === DokumentTypeEnum.INNGÅENDE_DOKUMENT ? 'Arbeidsgiver' : 'NAV';
 
     return (
-        <Tag style={{ width: 'max-content', justifySelf: 'flex-end' }} variant="neutral">
+        <Tag size="small" style={{ width: 'max-content', justifySelf: 'flex-end' }} variant="neutral">
             {text}
         </Tag>
     );
