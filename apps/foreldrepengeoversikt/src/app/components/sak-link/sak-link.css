@@ -7,13 +7,13 @@
 
 .sak-link > .navds-link-panel__content {
     width: 100%;
-}
-
-.sak-link__content {
-    margin-top: var(--a-spacing-1);
+    align-items: center;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: var(--a-spacing-2);
-}
 
+    & .navds-tag {
+        height: fit-content;
+    }
+}
