@@ -5,27 +5,9 @@
     margin-bottom: 1rem;
 }
 
-.dokument__ikon {
-    color: var(--a-surface-action);
-    margin-right: 0.5rem;
-}
-
 .dokument__contentWrapper {
     display: grid;
-    grid-template-columns: 2fr 1fr 0.25fr;
+    grid-template-columns: max-content 2fr max-content 112px;
     align-items: center;
-}
-
-@media (max-width: 767px) {
-    .dokument__content-top {
-        display: flex;
-        align-items: center;
-        margin-bottom: 1rem;
-    }
-
-    .dokument__content-bottom {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-    }
+    gap: var(--a-spacing-8);
 }
