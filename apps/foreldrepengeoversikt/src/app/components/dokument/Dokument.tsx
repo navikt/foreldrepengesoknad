@@ -39,7 +39,7 @@ const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
     );
 };
 
-function DokumentLenke({ dokument }: { dokument: DokumentType }) {
+function DokumentLenke({ dokument }: { readonly dokument: DokumentType }) {
     const url = lagUrl(dokument);
 
     return (
@@ -56,7 +56,7 @@ function DokumentLenke({ dokument }: { dokument: DokumentType }) {
     );
 }
 
-function DokumentAvsender({ dokumentType }: { dokumentType: DokumentTypeEnum }) {
+function DokumentAvsender({ dokumentType }: { readonly dokumentType: DokumentTypeEnum }) {
     const text = dokumentType === DokumentTypeEnum.INNGÅENDE_DOKUMENT ? 'Arbeidsgiver' : 'NAV';
 
     return (
