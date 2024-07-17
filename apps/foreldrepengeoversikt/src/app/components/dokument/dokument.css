@@ -12,8 +12,9 @@
 
 .dokument__contentWrapper {
     display: grid;
-    grid-template-columns: 2fr 1fr 0.25fr;
+    grid-template-columns: max-content 2fr max-content 112px;
     align-items: center;
+    gap: var(--a-spacing-8);
 }
 
 @media (max-width: 767px) {
