@@ -21,7 +21,7 @@ const HarIkkeSaker: FunctionComponent<Props> = ({ harOppdatertSak }) => {
     return (
         <>
             {harOppdatertSak && (
-                <Alert variant="info" className={bem.element('ingen-søknad')}>
+                <Alert variant="info">
                     Vi finner ingen søknader fra deg. Hvis du har sendt en søknad i posten kan det ta to uker før
                     søknaden registreres i NAVs systemer.
                 </Alert>

@@ -8,6 +8,7 @@ export interface EngangsstønadSakDTO {
     gjelderAdopsjon: boolean;
     familiehendelse: Familiehendelse;
     åpenBehandling?: ÅpenBehandlingFP;
+    oppdatertTidspunkt: string;
 }
 
 export interface EngangsstønadSak extends EngangsstønadSakDTO {

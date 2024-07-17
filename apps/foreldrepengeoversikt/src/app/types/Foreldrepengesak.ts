@@ -25,6 +25,7 @@ export interface ForeldrepengesakDTO {
     barn: PersonFnrDTO[];
     dekningsgrad: Dekningsgrad;
     åpenBehandling?: ÅpenBehandlingFP;
+    oppdatertTidspunkt: string;
 }
 
 export interface Foreldrepengesak extends ForeldrepengesakDTO {

@@ -1,6 +1,7 @@
 {
     "foreldrepenger": [
         {
+            "oppdatertTidspunkt": "2024-02-28T21:19:08.911",
             "saksnummer": "352011079",
             "sakAvsluttet": false,
             "kanSøkeOmEndring": true,
@@ -78,6 +79,7 @@
             "dekningsgrad": "HUNDRE"
         },
         {
+            "oppdatertTidspunkt": "2024-02-28T21:19:08.911",
             "saksnummer": "352011080",
             "sakAvsluttet": false,
             "sisteSøknadMottattDato": "2023-01-31",
