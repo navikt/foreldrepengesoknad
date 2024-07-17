@@ -5,7 +5,7 @@
 .har-saker__tittel {
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: var(--a-spacing-2);
 }
 
 .har-saker__undertittel {

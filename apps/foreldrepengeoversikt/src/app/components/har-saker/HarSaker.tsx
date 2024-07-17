@@ -1,6 +1,3 @@
-import EtBarn from 'assets/EtBarn';
-import ToBarn from 'assets/ToBarn';
-import TreBarn from 'assets/TreBarn';
 import { useIntl } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
@@ -20,18 +17,6 @@ interface Props {
     grupperteSaker: GruppertSak[];
 }
 
-const getIkonForAntallBarn = (antallBarn: number) => {
-    switch (antallBarn) {
-        case 0:
-        case 1:
-            return <EtBarn />;
-        case 2:
-            return <ToBarn />;
-        default:
-            return <TreBarn />;
-    }
-};
-
 const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker }) => {
     const bem = bemUtils('har-saker');
     const intl = useIntl();
@@ -49,13 +34,11 @@ const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker }) => {
                     intl,
                     gruppering.type,
                 );
+                console.log(gruppering);
                 return (
                     <div className={bem.block} key={gruppering.familiehendelsedato}>
                         <Heading size="small" level="2" className={bem.element('tittel')}>
-                            {getIkonForAntallBarn(gruppering.antallBarn)}
-                            <div>
-                                <div>{tittel}</div>
-                            </div>
+                            {tittel}
                         </Heading>
                         {gruppering.saker.map((sak) => {
                             return <SakLink key={guid()} sak={sak} />;

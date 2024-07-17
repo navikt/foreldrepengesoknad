@@ -37,6 +37,7 @@ const Template: StoryFn = () => {
                                                     fødselsdato: '2020-01-01',
                                                     antallBarn: 1,
                                                 },
+                                                oppdatertTidspunkt: '2024-02-28T21:19:08.911',
                                             },
                                         ],
                                         foreldrepenger: [],
