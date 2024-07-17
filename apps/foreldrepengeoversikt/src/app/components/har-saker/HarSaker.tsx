@@ -1,6 +1,6 @@
 import { useIntl } from 'react-intl';
 
-import { Heading } from '@navikt/ds-react';
+import { Heading, VStack } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
@@ -34,15 +34,16 @@ const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker }) => {
                     intl,
                     gruppering.type,
                 );
-                console.log(gruppering);
                 return (
                     <div className={bem.block} key={gruppering.familiehendelsedato}>
                         <Heading size="small" level="2" className={bem.element('tittel')}>
                             {tittel}
                         </Heading>
-                        {gruppering.saker.map((sak) => {
-                            return <SakLink key={guid()} sak={sak} />;
-                        })}
+                        <VStack gap="2">
+                            {gruppering.saker.map((sak) => {
+                                return <SakLink key={guid()} sak={sak} />;
+                            })}
+                        </VStack>
                     </div>
                 );
             })}
