@@ -1,9 +1,8 @@
 import { BabyWrappedIcon, PersonPregnantIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
-import TåteflaskeBaby from 'assets/TåteflaskeBaby';
-import classNames from 'classnames';
 import { ReactNode } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
+import { useParams } from 'react-router-dom';
 
 import { BodyShort, Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
@@ -56,23 +55,6 @@ const renderHeaderContent = (
                     <Heading size="large">Hele prosessen</Heading>
                     <div className={bem.element('text-with-bar')}>
                         <BodyShort>{`SAKSNR ${sak?.saksnummer}`}</BodyShort>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    if (selectedRoute === OversiktRoutes.DOKUMENTER) {
-        return (
-            <div className={bem.element('content')}>
-                <div>
-                    <Heading size="large">Dokumenter</Heading>
-                    <div className={bem.element('text-with-bar')}>
-                        <BodyShort>{`SAKSNR ${sak?.saksnummer}`}</BodyShort>
-                        <div className={bem.element('divider')}>|</div>
-                        <BodyShort className={bem.element('divider-text')}>
-                            Liste over dokumenter som tilhører saken
-                        </BodyShort>
                     </div>
                 </div>
             </div>
@@ -180,6 +162,38 @@ function BabyIkon({ ytelse }: { ytelse: Ytelse }) {
                 </div>
             </Show>
         </>
+    );
+}
+
+export function DokumenterHeader() {
+    const { saksnummer } = useParams();
+
+    const heading = (
+        <Heading level="1" size="large">
+            Dokumenter
+        </Heading>
+    );
+    const saksnr = <Detail>SAKSNR {saksnummer}</Detail>;
+
+    return (
+        <HeaderWrapper>
+            <Show above="md">
+                <VStack gap="3">
+                    {heading}
+                    <HStack gap="3" align="center">
+                        {saksnr}
+                        <BlueDot />
+                        <Detail textColor="subtle">Dokumenter som du, arbeidsgiver og NAV har sendt</Detail>
+                    </HStack>
+                </VStack>
+            </Show>
+            <Show below="md">
+                <VStack gap="1">
+                    {heading}
+                    {saksnr}
+                </VStack>
+            </Show>
+        </HeaderWrapper>
     );
 }
 
