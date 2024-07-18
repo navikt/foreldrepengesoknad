@@ -7,7 +7,12 @@ import { Alert, VStack } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import { erSakOppdatertOptions, hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from 'app/api/api';
+import {
+    erSakOppdatertOptions,
+    hentDokumenterOptions,
+    hentManglendeVedleggOptions,
+    hentTidslinjehendelserOptions,
+} from 'app/api/api';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import ContentSection from 'app/components/content-section/ContentSection';
 import EttersendDokumenter from 'app/components/ettersend-dokumenter/EttersendDokumenter';
@@ -44,6 +49,9 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, isFir
     const intl = useIntl();
     const params = useParams<{ saksnummer: string; redirect?: string }>();
     const navigate = useNavigate();
+
+    // Gjør denne dataen klar i cachen slik at bruker slipper loader senere.
+    useQuery(hentDokumenterOptions(params.saksnummer!));
 
     useSetRedirectedFromSøknadsnummer(params.redirect, params.saksnummer, isFirstRender);
     useSetBackgroundColor('blue');
