@@ -6,7 +6,7 @@ import { Loader } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import { erSakOppdatertOptions, hentSakerOptions, minidialogOptions, søkerInfoOptions } from './api/api';
+import { erSakOppdatertOptions, hentSakerOptions, søkerInfoOptions } from './api/api';
 import ScrollToTop from './components/scroll-to-top/ScrollToTop';
 import { useGetBackgroundColor } from './hooks/useBackgroundColor';
 import ForeldrepengeoversiktRoutes from './routes/ForeldrepengeoversiktRoutes';
@@ -29,7 +29,6 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         },
     });
 
-    const minidialogQuery = useQuery(minidialogOptions());
     const søkerInfoQuery = useQuery(søkerInfoOptions());
 
     const sakerQuery = useQuery({
@@ -38,15 +37,13 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         select: mapSakerDTOToSaker,
     });
 
-    // TODO: Føles litt unaturlig å kaste error istedenfor å rendre her. Er det fordi vi vil treffe ErrorBoundary for å logge til entry?
     if (søkerInfoQuery.isError || sakerQuery.isError) {
         throw new Error(
             'Vi klarte ikke å hente informasjon om deg. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.',
         );
     }
 
-    // TODO: ønsker vi egentlig å vente på alle queries før vi går videre?
-    if (!søkerInfoQuery.data || sakerQuery.isPending || minidialogQuery.isPending || oppdatertQuery.isPending) {
+    if (!søkerInfoQuery.data || sakerQuery.isPending) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <Loader type="XXL" />
@@ -66,7 +63,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         >
             <BrowserRouter>
                 <ScrollToTop />
-                <ForeldrepengeoversiktRoutes søkerinfo={søkerInfoQuery.data} saker={sakerQuery.data || defaultSaker} />
+                <ForeldrepengeoversiktRoutes søkerinfo={søkerInfoQuery.data} saker={sakerQuery.data ?? defaultSaker} />
             </BrowserRouter>
         </div>
     );

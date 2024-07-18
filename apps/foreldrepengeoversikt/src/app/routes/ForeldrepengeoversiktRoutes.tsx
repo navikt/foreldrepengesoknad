@@ -1,10 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import { minidialogOptions } from 'app/api/api';
 import Header from 'app/components/header/Header';
 import Snarveier from 'app/components/snarveier/Snarveier';
 import { default as SakComponent } from 'app/pages/Sak';
@@ -55,9 +53,6 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
         }
     }, [navigate, saker]);
 
-    const minidialoger = useQuery(minidialogOptions()).data ?? [];
-    const oppgaverIds = minidialoger.map((oppgave) => oppgave.dialogId);
-
     const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn, saker);
     const alleYtelser = getAlleYtelser(saker);
     // Super spesifikt case for avslåtte papirsøknad for svangerskapspenger. Bør fjernes
@@ -68,7 +63,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
 
     return (
         <>
-            <Header grupperteSaker={grupperteSaker} oppgaverIds={oppgaverIds} />
+            <Header grupperteSaker={grupperteSaker} oppgaverIds={[]} />
             <div className={bem.block}>
                 <Routes>
                     <Route
@@ -99,9 +94,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
                         />
                         <Route
                             path={`${OversiktRoutes.OPPGAVER}/:oppgaveId`}
-                            element={
-                                <MinidialogPage minidialoger={minidialoger} saker={saker} fnr={søkerinfo.søker.fnr} />
-                            }
+                            element={<MinidialogPage saker={saker} fnr={søkerinfo.søker.fnr} />}
                         />
                         <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />
                     </Route>

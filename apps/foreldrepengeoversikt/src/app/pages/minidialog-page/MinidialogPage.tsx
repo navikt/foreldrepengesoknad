@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -6,24 +6,25 @@ import { Heading, VStack } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import { sendEttersending } from 'app/api/api';
+import { minidialogOptions, sendEttersending } from 'app/api/api';
 import ContentSection from 'app/components/content-section/ContentSection';
 import MinidialogSkjema from 'app/components/minidialog-skjema/MinidialogSkjema';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import OversiktRoutes from 'app/routes/routes';
 import EttersendingDto from 'app/types/EttersendingDTO';
-import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { getAlleYtelser } from 'app/utils/sakerUtils';
 
 interface Props {
     fnr: string;
-    minidialoger: MinidialogInnslag[];
     saker: SakOppslag;
 }
 
-const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, minidialoger, saker }) => {
+const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, saker }) => {
+    const minidialoger = useQuery(minidialogOptions()).data ?? [];
+    // const oppgaverIds = minidialoger.map((oppgave) => oppgave.dialogId);
+
     const params = useParams();
     const navigate = useNavigate();
     const intl = useIntl();
