@@ -17,7 +17,13 @@ import { BarnGruppering } from 'app/types/BarnGruppering';
 import { GruppertSak } from 'app/types/GruppertSak';
 import { Sak } from 'app/types/Sak';
 import { Ytelse } from 'app/types/Ytelse';
-import { getFamiliehendelseDato, getSakTittel, mapSakerDTOToSaker, utledFamiliesituasjon } from 'app/utils/sakerUtils';
+import {
+    getFamiliehendelseDato,
+    getSakTittel,
+    grupperSakerPåBarn,
+    mapSakerDTOToSaker,
+    utledFamiliesituasjon,
+} from 'app/utils/sakerUtils';
 
 import Breadcrumb from '../breadcrumb/Breadcrumb';
 import StatusTag from '../status-tag/StatusTag';
@@ -89,57 +95,6 @@ const renderHeaderContent = (
             </div>
         );
     }
-
-    if (selectedRoute === OversiktRoutes.SAKSOVERSIKT && sak) {
-        if (!sak.familiehendelse) {
-            return (
-                <div className={bem.element('content')}>
-                    <div className={bem.element('baby-ikonBox')}>
-                        <TåteflaskeBaby aria-hidden={true} />
-                    </div>
-                    <div className={bem.element('title-with-status-saksnr')}>
-                        <Heading size="large">{getSaksoversiktHeading(sak.ytelse)}</Heading>
-
-                        <StatusTag sak={sak} className={bem.element('tag')} />
-
-                        <div className={bem.element('text-with-bar')}>
-                            <BodyShort>{`SAKSNR ${sak?.saksnummer}`}</BodyShort>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
-
-        const situasjon = utledFamiliesituasjon(sak.familiehendelse, sak.gjelderAdopsjon);
-        const barnTittel = getSakTittel({
-            barngruppering: barn,
-            familiehendelsedato: getFamiliehendelseDato(sak.familiehendelse),
-            intl,
-            antallBarn: sak.ytelse === Ytelse.FORELDREPENGER ? sak.familiehendelse.antallBarn : 0,
-            situasjon,
-        });
-
-        return (
-            <div className={bem.element('content')}>
-                <div className={bem.element('baby-ikonBox')}>
-                    <TåteflaskeBaby aria-hidden={true} />
-                </div>
-                <div className={bem.element('content-detaljer')}>
-                    <div className={bem.element('title-with-status-saksnr')}>
-                        <Heading size="large">{getSaksoversiktHeading(sak.ytelse)}</Heading>
-                        <StatusTag sak={sak} className={bem.element('tag')} />
-                    </div>
-                    <div className={bem.element('text-with-bar')}>
-                        <BodyShort>{`SAKSNR ${sak?.saksnummer}`}</BodyShort>
-                        <hr className={classNames(bem.element('divider'))}></hr>
-                        <BodyShort className={bem.element('divider-text')}>
-                            {barnTittel.tittel} {barnTittel.undertittel}
-                        </BodyShort>
-                    </div>
-                </div>
-            </div>
-        );
-    }
 };
 
 interface Props {
@@ -183,7 +138,7 @@ export function ForsideHeader() {
     return (
         <HeaderWrapper>
             <HGrid columns="max-content 1fr" gap="6" align="center">
-                <BabyIkon />
+                <BabyIkon ytelse={Ytelse.FORELDREPENGER} />
                 <Heading level="1" size="large">
                     Oversikt over foreldrepengesaker
                 </Heading>
@@ -230,27 +185,37 @@ function BabyIkon({ ytelse }: { ytelse: Ytelse }) {
 
 export function DinSakHeader({ sak }: { sak: Sak }) {
     const bem = bemUtils('header');
+    const intl = useIntl();
 
-    const søkerInfoQuery = useQuery(søkerInfoOptions());
-    const sakerQuery = useQuery({
+    const søkerinfo = useQuery(søkerInfoOptions()).data;
+    const saker = useQuery({
         ...hentSakerOptions(),
         select: mapSakerDTOToSaker,
-    });
+    }).data;
 
-    // const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn, saker);
-    //
-    // const barnTittel = getSakTittel({
-    //     barngruppering: barn,
-    //     familiehendelsedato: getFamiliehendelseDato(sak.familiehendelse),
-    //     intl,
-    //     antallBarn: sak.ytelse === Ytelse.FORELDREPENGER ? sak.familiehendelse.antallBarn : 0,
-    //     situasjon,
-    // });
+    // TODO: utleding av info her er litt kronglete, kan det gjøres bedre? Også vise noe når vi ikke har familiehendelse?
+    if (!søkerinfo || !saker || !sak.familiehendelse) {
+        return null;
+    }
+
+    const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn, saker);
+    const sakIGrupperteSaker = sak
+        ? grupperteSaker.find((gruppe) => gruppe.saker.map((s) => s.saksnummer).includes(sak.saksnummer))
+        : undefined;
+
+    const situasjon = utledFamiliesituasjon(sak.familiehendelse, sak.gjelderAdopsjon);
+    const barnTittel = getSakTittel({
+        barngruppering: sakIGrupperteSaker?.barn,
+        familiehendelsedato: getFamiliehendelseDato(sak.familiehendelse),
+        intl,
+        antallBarn: sak.ytelse === Ytelse.FORELDREPENGER ? sak.familiehendelse.antallBarn : 0,
+        situasjon,
+    });
 
     return (
         <HeaderWrapper>
             <HGrid columns="max-content 1fr" gap="6" align="start">
-                <BabyIkon />
+                <BabyIkon ytelse={sak.ytelse} />
                 <VStack>
                     <HStack gap="6" align="center">
                         <Heading level="1" size="large">
@@ -265,8 +230,7 @@ export function DinSakHeader({ sak }: { sak: Sak }) {
                             <Detail>SAKSNR {sak.saksnummer}</Detail>
                             <BlueDot />
                             <Detail textColor="subtle">
-                                Barn født med TODO
-                                {/*{barnTittel.tittel} {barnTittel.undertittel}*/}
+                                {barnTittel.tittel} {barnTittel.undertittel}
                             </Detail>
                         </HStack>
                     </Show>
@@ -278,8 +242,7 @@ export function DinSakHeader({ sak }: { sak: Sak }) {
                                 <Detail>SAKSNR {sak.saksnummer}</Detail>
                             </HStack>
                             <Detail textColor="subtle">
-                                Barn født med TODO
-                                {/*{barnTittel.tittel} {barnTittel.undertittel}*/}
+                                {barnTittel.tittel} {barnTittel.undertittel}
                             </Detail>
                         </VStack>
                     </Show>
