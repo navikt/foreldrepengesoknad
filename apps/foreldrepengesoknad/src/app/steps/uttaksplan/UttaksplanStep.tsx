@@ -261,8 +261,8 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const nesteBarnsSakAnnenPartRequestIsSuspended =
         !annenForelderFnrNesteSak ||
         (førsteBarnFraNesteSakFnr === undefined && familieHendelseDatoNesteSak === undefined) ||
-        (eksisterendeSakAnnenPartRequestIsSuspended &&
-            eksisterendeSakAnnenPartRequestStatus === RequestStatus.FINISHED);
+        (!eksisterendeSakAnnenPartRequestIsSuspended &&
+            eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED);
 
     const {
         data: nesteSakAnnenPartData,
