@@ -94,9 +94,7 @@ interface Props {
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
-    return (erFarEllerMedmor && forelder === Forelder.farMedmor) || (!erFarEllerMedmor && forelder === Forelder.mor)
-        ? false
-        : true;
+    return !((erFarEllerMedmor && forelder === Forelder.farMedmor) || (!erFarEllerMedmor && forelder === Forelder.mor));
 };
 
 const erUttakAvAnnenForeldersKvote = (konto: StønadskontoType | '', søkerErFarEllerMedmor: boolean): boolean => {

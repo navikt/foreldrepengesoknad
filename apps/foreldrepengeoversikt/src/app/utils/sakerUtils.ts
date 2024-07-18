@@ -311,26 +311,41 @@ export const getNavnPåBarna = (fornavn: string[]): string => {
     }
 };
 
-export const getSakTittel = (
-    fornavn: string[] | undefined,
-    fødselsdatoer: Date[] | undefined,
-    familiehendelsesdato: Date,
-    alleBarnaLever: boolean,
-    antallBarn: number,
-    intl: IntlShape,
-    type: Situasjon,
-): { tittel: string; undertittel: string } => {
-    if (fornavn === undefined || fornavn.length === 0 || !alleBarnaLever) {
-        return getTittelBarnNårNavnSkalIkkeVises(familiehendelsesdato, fødselsdatoer, antallBarn, intl, type);
+type SakTittelArguments = {
+    barngruppering?: BarnGruppering;
+    familiehendelsedato: string;
+    antallBarn: number;
+    intl: IntlShape;
+    situasjon: Situasjon;
+};
+export const getSakTittel = (sakTittelArguments: SakTittelArguments): { tittel: string; undertittel: string } => {
+    const { barngruppering, familiehendelsedato, antallBarn, intl, situasjon } = sakTittelArguments;
+    const fornavn = barngruppering?.fornavn;
+    const fødselsdatoer = barngruppering?.fødselsdatoer;
+    const familiehendelsesdatoIsoString = ISOStringToDate(familiehendelsedato);
+
+    // Burde ikke skje, men håndter explicit istedenfor "!-assertion"
+    if (!familiehendelsesdatoIsoString) {
+        return { tittel: '', undertittel: '' };
+    }
+
+    if (fornavn === undefined || fornavn.length === 0 || !barngruppering?.alleBarnaLever) {
+        return getTittelBarnNårNavnSkalIkkeVises(
+            familiehendelsesdatoIsoString,
+            fødselsdatoer,
+            antallBarn,
+            intl,
+            situasjon,
+        );
     }
     const navn = getNavnPåBarna(fornavn);
 
-    if (type === 'fødsel') {
+    if (situasjon === 'fødsel') {
         const fødtDatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
         return { tittel: navn, undertittel: `født ${fødtDatoTekst}` };
     }
-    if (type === 'adopsjon') {
-        return { tittel: navn, undertittel: `adoptert ${formatDate(familiehendelsesdato)}` };
+    if (situasjon === 'adopsjon') {
+        return { tittel: navn, undertittel: `adoptert ${formatDate(familiehendelsesdatoIsoString)}` };
     }
     return { tittel: '', undertittel: '' };
 };

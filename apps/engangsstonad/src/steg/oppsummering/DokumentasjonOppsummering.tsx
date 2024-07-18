@@ -10,8 +10,8 @@ export function DokumentasjonOppsummering({
     dokumentasjon,
     onVilEndreSvar,
 }: {
-    dokumentasjon?: Dokumentasjon;
-    onVilEndreSvar: (path: Path) => Promise<void>;
+    readonly dokumentasjon?: Dokumentasjon;
+    readonly onVilEndreSvar: (path: Path) => Promise<void>;
 }) {
     if (!dokumentasjon || dokumentasjon.vedlegg.length === 0) {
         return null;
@@ -44,7 +44,7 @@ export function DokumentasjonOppsummering({
     );
 }
 
-function AdopsjonDokumentasjon({ dokumentasjon }: { dokumentasjon: Vedlegg }) {
+function AdopsjonDokumentasjon({ dokumentasjon }: { readonly dokumentasjon: Vedlegg }) {
     return (
         <FormSummary.Answer>
             <FormSummary.Label>
@@ -58,7 +58,7 @@ function AdopsjonDokumentasjon({ dokumentasjon }: { dokumentasjon: Vedlegg }) {
     );
 }
 
-function TerminDokumentasjonSummary({ dokumentasjon }: { dokumentasjon: TerminDokumentasjon }) {
+function TerminDokumentasjonSummary({ dokumentasjon }: { readonly dokumentasjon: TerminDokumentasjon }) {
     return (
         <>
             <FormSummary.Answer>

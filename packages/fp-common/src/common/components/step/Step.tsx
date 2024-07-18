@@ -50,15 +50,7 @@ const Step: React.FunctionComponent<StepProps> = ({
             className={bem.block}
             title={title}
             ariaLabel={pageAriaLabel}
-            topContentRenderer={() => (
-                <>
-                    {bannerTitle && (
-                        <>
-                            <StepBanner text={bannerTitle} />
-                        </>
-                    )}
-                </>
-            )}
+            topContentRenderer={() => <>{bannerTitle && <StepBanner text={bannerTitle} />}</>}
         >
             {infoMessage !== undefined && <div className={bem.element('infoMessage')}>{infoMessage}</div>}
             {showStepIndicator && (

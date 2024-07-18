@@ -6,7 +6,6 @@ import { bemUtils, capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { GruppertSak } from 'app/types/GruppertSak';
-import { ISOStringToDate } from 'app/utils/dateUtils';
 import { guid } from 'app/utils/guid';
 import { getSakTittel } from 'app/utils/sakerUtils';
 
@@ -25,15 +24,13 @@ const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker }) => {
     return (
         <>
             {grupperteSaker.map((gruppering) => {
-                const { tittel, undertittel } = getSakTittel(
-                    gruppering.barn?.fornavn,
-                    gruppering.barn?.fødselsdatoer,
-                    ISOStringToDate(gruppering.familiehendelsedato)!,
-                    !!gruppering.barn?.alleBarnaLever,
-                    gruppering.antallBarn,
+                const { tittel, undertittel } = getSakTittel({
+                    barngruppering: gruppering.barn,
+                    familiehendelsedato: gruppering.familiehendelsedato,
                     intl,
-                    gruppering.type,
-                );
+                    antallBarn: gruppering.antallBarn,
+                    situasjon: gruppering.type,
+                });
                 return (
                     <div className={bem.block} key={gruppering.familiehendelsedato}>
                         <HStack className={bem.element('tittel')} gap="2" align="baseline">
