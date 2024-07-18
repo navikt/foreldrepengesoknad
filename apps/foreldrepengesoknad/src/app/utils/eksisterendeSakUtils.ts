@@ -515,10 +515,10 @@ export const opprettAnnenForelderFraEksisterendeSak = (
     const mockAnnenForelder = {
         fornavn: intlUtils(intl, 'annen.forelder'),
         etternavn: '',
-        fnr: fnrAnnenForelderFraSak ? fnrAnnenForelderFraSak : '',
+        fnr: fnrAnnenForelderFraSak ?? '',
         harRettPåForeldrepengerINorge: grunnlag.søkerErFarEllerMedmor
-            ? !!grunnlag.morHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS
-            : !!grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
+            ? grunnlag.morHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS
+            : grunnlag.farMedmorHarRett && !grunnlag.harAnnenForelderTilsvarendeRettEØS,
         harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
         kanIkkeOppgis: false,
         erMorUfør: grunnlag.søkerErFarEllerMedmor ? grunnlag.morErUfør : undefined,

@@ -419,7 +419,7 @@ const mapAnnenPartInfoPeriodeFromSaksperiode = (
         tidsperiode: tidsperiodeDate,
         forelder: getForelderForPeriode(saksperiode, erFarEllerMedmor),
         overskrives: true,
-        gradert: saksperiode.gradering !== undefined ? true : false,
+        gradert: saksperiode.gradering !== undefined,
         ønskerSamtidigUttak: samtidigUttakProsent !== undefined,
         samtidigUttakProsent: samtidigUttakProsent,
         stillingsprosent:
