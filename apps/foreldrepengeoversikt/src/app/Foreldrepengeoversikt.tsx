@@ -6,7 +6,7 @@ import { Loader } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import { erSakOppdatertOptions, hentSakerOptions, søkerInfoOptions } from './api/api';
+import { erSakOppdatertOptions, hentSakerOptions, minidialogOptions, søkerInfoOptions } from './api/api';
 import ScrollToTop from './components/scroll-to-top/ScrollToTop';
 import { useGetBackgroundColor } from './hooks/useBackgroundColor';
 import ForeldrepengeoversiktRoutes from './routes/ForeldrepengeoversiktRoutes';
@@ -17,6 +17,9 @@ import { mapSakerDTOToSaker } from './utils/sakerUtils';
 const Foreldrepengeoversikt: React.FunctionComponent = () => {
     const bem = bemUtils('app');
     const backgroundColor = useGetBackgroundColor();
+
+    // Denne trenger vi ikke før senere. Men vi putter den i cache så tidlig som mulig.
+    useQuery(minidialogOptions());
 
     const oppdatertQuery = useQuery({
         ...erSakOppdatertOptions(),
