@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { useRef } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { bemUtils } from '@navikt/fp-utils';
 
@@ -16,7 +16,7 @@ import TidslinjePage from 'app/pages/tidslinje-page/TidslinjePage';
 import KontaktOss from 'app/sections/kontakt-oss/KontaktOss';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import { getAlleYtelser, getAntallSaker, grupperSakerPåBarn } from 'app/utils/sakerUtils';
+import { grupperSakerPåBarn } from 'app/utils/sakerUtils';
 
 import OversiktRoutes from './routes';
 import './routes-wrapper.css';
@@ -29,37 +29,30 @@ interface Props {
 const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinfo, saker }) => {
     const bem = bemUtils('routesWrapper');
     const isFirstRender = useRef(true);
-    const hasNavigated = useRef(false);
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        if (!hasNavigated.current) {
-            hasNavigated.current = true;
-            const antallSaker = getAntallSaker(saker);
-            const { foreldrepenger, engangsstønad, svangerskapspenger } = saker;
-            if (antallSaker === 1) {
-                if (foreldrepenger.length === 1) {
-                    navigate(`${OversiktRoutes.SAKSOVERSIKT}/${foreldrepenger[0].saksnummer}`);
-                }
-
-                if (engangsstønad.length === 1) {
-                    navigate(`${OversiktRoutes.SAKSOVERSIKT}/${engangsstønad[0].saksnummer}`);
-                }
-
-                if (svangerskapspenger.length === 1) {
-                    navigate(`${OversiktRoutes.SAKSOVERSIKT}/${svangerskapspenger[0].saksnummer}`);
-                }
-            }
-        }
-    }, [navigate, saker]);
+    // TODO: reimplement redirect for 1 sak
+    // useEffect(() => {
+    //     if (!hasNavigated.current) {
+    //         hasNavigated.current = true;
+    //         const antallSaker = getAntallSaker(saker);
+    //         const { foreldrepenger, engangsstønad, svangerskapspenger } = saker;
+    //         if (antallSaker === 1) {
+    //             if (foreldrepenger.length === 1) {
+    //                 navigate(`${OversiktRoutes.SAKSOVERSIKT}/${foreldrepenger[0].saksnummer}`);
+    //             }
+    //
+    //             if (engangsstønad.length === 1) {
+    //                 navigate(`${OversiktRoutes.SAKSOVERSIKT}/${engangsstønad[0].saksnummer}`);
+    //             }
+    //
+    //             if (svangerskapspenger.length === 1) {
+    //                 navigate(`${OversiktRoutes.SAKSOVERSIKT}/${svangerskapspenger[0].saksnummer}`);
+    //             }
+    //         }
+    //     }
+    // }, [navigate, saker]);
 
     const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn, saker);
-    const alleYtelser = getAlleYtelser(saker);
-    // Super spesifikt case for avslåtte papirsøknad for svangerskapspenger. Bør fjernes
-    const avslåttSvangerskapspengesak =
-        grupperteSaker.length === 0 && alleYtelser.length === 1 && saker.svangerskapspenger.length === 1
-            ? saker.svangerskapspenger[0]
-            : undefined;
 
     return (
         <>
@@ -67,16 +60,8 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
             <div className={bem.block}>
                 <Routes>
                     <Route
-                        path={`${OversiktRoutes.HOVEDSIDE}${'/:redirect?'}`}
-                        element={
-                            <Forside
-                                alleYtelser={alleYtelser}
-                                grupperteSaker={grupperteSaker}
-                                avslåttSvangerskapspengesak={avslåttSvangerskapspengesak}
-                                isFirstRender={isFirstRender}
-                                bankkonto={søkerinfo.søker.bankkonto}
-                            />
-                        }
+                        path={`${OversiktRoutes.HOVEDSIDE}/:redirect?`}
+                        element={<Forside saker={saker} isFirstRender={isFirstRender} søkerinfo={søkerinfo} />}
                     />
                     <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer/:redirect?`} element={<SakComponent />}>
                         <Route
