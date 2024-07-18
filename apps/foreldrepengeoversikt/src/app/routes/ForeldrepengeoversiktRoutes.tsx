@@ -1,5 +1,5 @@
-import { ReactNode, useRef } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { ReactNode, useEffect, useRef } from 'react';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { bemUtils } from '@navikt/fp-utils';
 
@@ -15,6 +15,7 @@ import TidslinjePage from 'app/pages/tidslinje-page/TidslinjePage';
 import KontaktOss from 'app/sections/kontakt-oss/KontaktOss';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
+import { getAntallSaker } from 'app/utils/sakerUtils';
 
 import OversiktRoutes from './routes';
 import './routes-wrapper.css';
@@ -26,28 +27,29 @@ interface Props {
 
 const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinfo, saker }) => {
     const isFirstRender = useRef(true);
+    const hasNavigated = useRef(false);
+    const navigate = useNavigate();
 
-    // TODO: reimplement redirect for 1 sak
-    // useEffect(() => {
-    //     if (!hasNavigated.current) {
-    //         hasNavigated.current = true;
-    //         const antallSaker = getAntallSaker(saker);
-    //         const { foreldrepenger, engangsstønad, svangerskapspenger } = saker;
-    //         if (antallSaker === 1) {
-    //             if (foreldrepenger.length === 1) {
-    //                 navigate(`${OversiktRoutes.SAKSOVERSIKT}/${foreldrepenger[0].saksnummer}`);
-    //             }
-    //
-    //             if (engangsstønad.length === 1) {
-    //                 navigate(`${OversiktRoutes.SAKSOVERSIKT}/${engangsstønad[0].saksnummer}`);
-    //             }
-    //
-    //             if (svangerskapspenger.length === 1) {
-    //                 navigate(`${OversiktRoutes.SAKSOVERSIKT}/${svangerskapspenger[0].saksnummer}`);
-    //             }
-    //         }
-    //     }
-    // }, [navigate, saker]);
+    useEffect(() => {
+        if (!hasNavigated.current) {
+            hasNavigated.current = true;
+            const antallSaker = getAntallSaker(saker);
+            const { foreldrepenger, engangsstønad, svangerskapspenger } = saker;
+            if (antallSaker === 1) {
+                if (foreldrepenger.length === 1) {
+                    navigate(`${OversiktRoutes.SAKSOVERSIKT}/${foreldrepenger[0].saksnummer}`);
+                }
+
+                if (engangsstønad.length === 1) {
+                    navigate(`${OversiktRoutes.SAKSOVERSIKT}/${engangsstønad[0].saksnummer}`);
+                }
+
+                if (svangerskapspenger.length === 1) {
+                    navigate(`${OversiktRoutes.SAKSOVERSIKT}/${svangerskapspenger[0].saksnummer}`);
+                }
+            }
+        }
+    }, [navigate, saker]);
 
     return (
         <>
