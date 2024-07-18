@@ -179,7 +179,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const barnFnr = !isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0 ? barn.fnr[0] : undefined;
 
     const eksisterendeSakAnnenPartRequestIsSuspended =
-        søkerErAleneOmOmsorg || !!annenForelderFnr || (barnFnr === undefined && familiehendelsesdato === undefined);
+        søkerErAleneOmOmsorg || !annenForelderFnr || (barnFnr === undefined && familiehendelsesdato === undefined);
 
     const startStønadsperiodeNyttBarn =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
