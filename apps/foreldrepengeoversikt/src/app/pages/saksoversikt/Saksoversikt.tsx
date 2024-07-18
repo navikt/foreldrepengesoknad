@@ -7,18 +7,14 @@ import { Alert, VStack } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import {
-    erSakOppdatertOptions,
-    hentAnnenPartsVedtakOptions,
-    hentManglendeVedleggOptions,
-    hentTidslinjehendelserOptions,
-} from 'app/api/api';
+import { erSakOppdatertOptions, hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from 'app/api/api';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import ContentSection from 'app/components/content-section/ContentSection';
 import EttersendDokumenter from 'app/components/ettersend-dokumenter/EttersendDokumenter';
 import { getSaksoversiktHeading } from 'app/components/header/Header';
 import SeDokumenter from 'app/components/se-dokumenter/SeDokumenter';
 import SeHeleProsessen from 'app/components/se-hele-prosessen/SeHeleProsessen';
+import { useAnnenPartsVedtak } from 'app/hooks/useAnnenPartsVedtak';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import {
     useGetRedirectedFromSøknadsnummer,
@@ -34,7 +30,7 @@ import { RedirectSource } from 'app/types/RedirectSource';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
-import { getAlleYtelser, getFamiliehendelseDato, getNavnAnnenForelder } from 'app/utils/sakerUtils';
+import { getAlleYtelser, getNavnAnnenForelder } from 'app/utils/sakerUtils';
 import { getRelevantNyTidslinjehendelse } from 'app/utils/tidslinjeUtils';
 
 interface Props {
@@ -67,37 +63,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, isFir
     const harIkkeOppdatertSakQuery = useQuery(erSakOppdatertOptions());
     const harIkkeOppdatertSak = harIkkeOppdatertSakQuery.isSuccess && !harIkkeOppdatertSakQuery.data;
 
-    const planErVedtatt = gjeldendeSak?.åpenBehandling === undefined;
-    let familiehendelse = undefined;
-    let annenPartFødselsnummer = undefined;
-    let barnFødselsnummer = undefined;
-    let annenPartVedtakIsSuspended = true;
-
-    if (gjeldendeSak?.ytelse === Ytelse.FORELDREPENGER) {
-        familiehendelse = gjeldendeSak?.familiehendelse
-            ? getFamiliehendelseDato(gjeldendeSak.familiehendelse)
-            : undefined;
-        annenPartFødselsnummer = gjeldendeSak?.annenPart?.fnr;
-
-        const barnFraSak =
-            gjeldendeSak?.barn && gjeldendeSak?.barn.length > 0
-                ? gjeldendeSak.barn.find((barn) => barn.fnr !== undefined)
-                : undefined;
-        barnFødselsnummer = barnFraSak ? barnFraSak.fnr : undefined;
-        annenPartVedtakIsSuspended =
-            !planErVedtatt ||
-            annenPartFødselsnummer === undefined ||
-            annenPartFødselsnummer === '' ||
-            familiehendelse === undefined;
-    }
-    const annenPartsVedtakQuery = useQuery({
-        ...hentAnnenPartsVedtakOptions({
-            annenPartFødselsnummer,
-            barnFødselsnummer,
-            familiehendelse,
-        }),
-        enabled: !annenPartVedtakIsSuspended,
-    });
+    const annenPartsVedtakQuery = useAnnenPartsVedtak(gjeldendeSak);
 
     if (params.redirect === RedirectSource.REDIRECT_FROM_SØKNAD) {
         navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
@@ -172,7 +138,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, isFir
             {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
                 <ContentSection
                     heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
-                    showSkeleton={!annenPartVedtakIsSuspended && annenPartsVedtakQuery.isPending}
+                    showSkeleton={annenPartsVedtakQuery.isLoading} // Fordi annenPartsVedtakQuery kan være et disabled query må man bruke isLoading heller enn isPending: https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading
                     skeletonProps={{ height: '210px', variant: 'rounded' }}
                 >
                     <DinPlan
