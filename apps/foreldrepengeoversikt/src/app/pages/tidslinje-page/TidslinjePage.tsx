@@ -2,26 +2,34 @@ import { useQuery } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { Loader } from '@navikt/ds-react';
+import { Heading, Loader } from '@navikt/ds-react';
 
 import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
 
 import { hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from 'app/api/api';
+import { DinSakHeader } from 'app/components/header/Header';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
+import { PageRouteLayout } from 'app/routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from 'app/routes/routes';
 import Tidslinje from 'app/sections/tidslinje/Tidslinje';
+import { Sak } from 'app/types/Sak';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
+import { getAlleYtelser } from 'app/utils/sakerUtils';
 
 import './tidslinje-page.css';
 
-interface Props {
+type OuterProps = {
     søkersBarn: SøkerinfoDTOBarn[] | undefined;
     saker: SakOppslag;
-}
+};
+type InnerProps = {
+    søkersBarn: SøkerinfoDTOBarn[] | undefined;
+    sak: Sak;
+};
 
-const TidslinjePage: React.FunctionComponent<Props> = ({ søkersBarn, saker }) => {
+const TidslinjePageInner: React.FunctionComponent<InnerProps> = ({ søkersBarn, sak }) => {
     const bem = bemUtils('tidslinje-page');
     const intl = useIntl();
     useDocumentTitle(
@@ -40,8 +48,11 @@ const TidslinjePage: React.FunctionComponent<Props> = ({ søkersBarn, saker }) =
 
     return (
         <div className={bem.element('div')}>
+            <Heading spacing level="2" size="medium">
+                Dette skjer i saken
+            </Heading>
             <Tidslinje
-                saker={saker}
+                sak={sak}
                 visHeleTidslinjen={true}
                 søkersBarn={søkersBarn}
                 tidslinjeHendelserQuery={tidslinjeHendelserQuery}
@@ -50,5 +61,16 @@ const TidslinjePage: React.FunctionComponent<Props> = ({ søkersBarn, saker }) =
         </div>
     );
 };
+
+function TidslinjePage({ saker, søkersBarn }: OuterProps) {
+    const params = useParams();
+    const sak = getAlleYtelser(saker).find((sak) => sak.saksnummer === params.saksnummer)!; // TODO: burde ikke bruke ! her
+    console.log(sak);
+    return (
+        <PageRouteLayout header={<DinSakHeader sak={sak} />}>
+            <TidslinjePageInner sak={sak} søkersBarn={søkersBarn} />
+        </PageRouteLayout>
+    );
+}
 
 export default TidslinjePage;

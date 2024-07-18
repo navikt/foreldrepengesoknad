@@ -120,7 +120,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, isFir
                         marginBottom="small"
                     >
                         <Tidslinje
-                            saker={saker}
+                            sak={gjeldendeSak}
                             tidslinjeHendelserQuery={tidslinjeHendelserQuery}
                             manglendeVedleggQuery={manglendeVedleggQuery}
                             visHeleTidslinjen={false}

@@ -1,19 +1,15 @@
 import { BabyWrappedIcon, PersonPregnantIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import { ReactNode } from 'react';
-import { IntlShape, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { BodyShort, Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
+import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
 import { hentSakerOptions, søkerInfoOptions } from 'app/api/api';
 import { useGetSelectedRoute } from 'app/hooks/useSelectedRoute';
-import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
-import OversiktRoutes from 'app/routes/routes';
-import { BarnGruppering } from 'app/types/BarnGruppering';
-import { GruppertSak } from 'app/types/GruppertSak';
 import { Sak } from 'app/types/Sak';
 import { Ytelse } from 'app/types/Ytelse';
 import {
@@ -38,71 +34,6 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
     }
 
     return 'Din sak';
-};
-
-const renderHeaderContent = (
-    selectedRoute: OversiktRoutes,
-    sak: Sak | undefined,
-    barn: BarnGruppering | undefined,
-    intl: IntlShape,
-) => {
-    const bem = bemUtils('header');
-
-    if (selectedRoute === OversiktRoutes.TIDSLINJEN) {
-        return (
-            <div className={bem.element('content-fixed')}>
-                <div>
-                    <Heading size="large">Hele prosessen</Heading>
-                    <div className={bem.element('text-with-bar')}>
-                        <BodyShort>{`SAKSNR ${sak?.saksnummer}`}</BodyShort>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    if (selectedRoute === OversiktRoutes.ETTERSEND) {
-        return (
-            <div className={bem.element('content')}>
-                <div>
-                    <Heading size="large">Last opp dokumenter</Heading>
-                    <div className={bem.element('text-with-bar')}>
-                        <BodyShort>{`SAKSNR ${sak?.saksnummer}`}</BodyShort>
-                        <div className={bem.element('divider')}>|</div>
-                        <BodyShort className={bem.element('divider-text')}>
-                            Ettersend dokumenter som tilhører saken
-                        </BodyShort>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-};
-
-interface Props {
-    grupperteSaker: GruppertSak[];
-    oppgaverIds: string[];
-}
-
-const Header: React.FunctionComponent<Props> = ({ grupperteSaker, oppgaverIds }) => {
-    const bem = bemUtils('header');
-    const intl = useIntl();
-    const selectedRoute = useGetSelectedRoute();
-    const sak = useGetSelectedSak();
-    const sakIGrupperteSaker = sak
-        ? grupperteSaker.find((gruppe) => gruppe.saker.map((s) => s.saksnummer).includes(sak.saksnummer))
-        : undefined;
-    const barnGrupperingForSak = sakIGrupperteSaker?.barn;
-    const path = location.pathname;
-    const currentOppgaveId = oppgaverIds.find((id) => path.includes(id));
-    return (
-        <div className={bem.block}>
-            <Breadcrumb selectedRoute={selectedRoute} oppgaveId={currentOppgaveId} />
-            <div className={bem.element('wrapper')}>
-                {renderHeaderContent(selectedRoute, sak, barnGrupperingForSak, intl)}
-            </div>
-        </div>
-    );
 };
 
 function HeaderWrapper({ children }: { children: ReactNode }) {
@@ -295,5 +226,3 @@ export function DinSakHeader({ sak }: { sak: Sak }) {
 function BlueDot() {
     return <div style={{ height: '4px', width: '4px', borderRadius: '50%', background: 'var(--a-deepblue-300)' }} />;
 }
-
-export default Header;
