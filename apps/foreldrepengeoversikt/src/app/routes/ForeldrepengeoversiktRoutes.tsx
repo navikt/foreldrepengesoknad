@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { ReactNode, useRef } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { bemUtils } from '@navikt/fp-utils';
@@ -56,40 +56,49 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
 
     return (
         <>
-            <Header grupperteSaker={grupperteSaker} oppgaverIds={[]} />
-            <div className={bem.block}>
-                <Routes>
+            {/*<Header grupperteSaker={grupperteSaker} oppgaverIds={[]} />*/}
+            <Routes>
+                <Route
+                    path={`${OversiktRoutes.HOVEDSIDE}/:redirect?`}
+                    element={<Forside saker={saker} isFirstRender={isFirstRender} søkerinfo={søkerinfo} />}
+                />
+                <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer/:redirect?`} element={<SakComponent />}>
                     <Route
-                        path={`${OversiktRoutes.HOVEDSIDE}/:redirect?`}
-                        element={<Forside saker={saker} isFirstRender={isFirstRender} søkerinfo={søkerinfo} />}
+                        index
+                        element={<Saksoversikt saker={saker} søkerinfo={søkerinfo} isFirstRender={isFirstRender} />}
                     />
-                    <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer/:redirect?`} element={<SakComponent />}>
-                        <Route
-                            index
-                            element={<Saksoversikt saker={saker} søkerinfo={søkerinfo} isFirstRender={isFirstRender} />}
-                        />
-                        <Route
-                            path={OversiktRoutes.DIN_PLAN}
-                            element={<DinPlanPage navnPåSøker={søkerinfo.søker.fornavn} søkerinfo={søkerinfo} />}
-                        />
-                        <Route path={OversiktRoutes.DOKUMENTER} element={<DokumenterPage />} />
-                        <Route
-                            path={OversiktRoutes.TIDSLINJEN}
-                            element={<TidslinjePage saker={saker} søkersBarn={søkerinfo.søker.barn} />}
-                        />
-                        <Route
-                            path={`${OversiktRoutes.OPPGAVER}/:oppgaveId`}
-                            element={<MinidialogPage saker={saker} fnr={søkerinfo.søker.fnr} />}
-                        />
-                        <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />
-                    </Route>
-                    <Route path="*" element={<Navigate to={OversiktRoutes.HOVEDSIDE} />} />
-                </Routes>
-            </div>
+                    <Route
+                        path={OversiktRoutes.DIN_PLAN}
+                        element={<DinPlanPage navnPåSøker={søkerinfo.søker.fornavn} søkerinfo={søkerinfo} />}
+                    />
+                    <Route path={OversiktRoutes.DOKUMENTER} element={<DokumenterPage />} />
+                    <Route
+                        path={OversiktRoutes.TIDSLINJEN}
+                        element={<TidslinjePage saker={saker} søkersBarn={søkerinfo.søker.barn} />}
+                    />
+                    <Route
+                        path={`${OversiktRoutes.OPPGAVER}/:oppgaveId`}
+                        element={<MinidialogPage saker={saker} fnr={søkerinfo.søker.fnr} />}
+                    />
+                    <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />
+                </Route>
+                <Route path="*" element={<Navigate to={OversiktRoutes.HOVEDSIDE} />} />
+            </Routes>
             <Snarveier />
             <KontaktOss />
         </>
     );
 };
+
+export function PageRouteLayout({ header, children }: { header: ReactNode; children: ReactNode }) {
+    const bem = bemUtils('routesWrapper');
+
+    return (
+        <>
+            {header}
+            <div className={bem.block}>{children}</div>
+        </>
+    );
+}
 
 export default ForeldrepengeoversiktRoutes;

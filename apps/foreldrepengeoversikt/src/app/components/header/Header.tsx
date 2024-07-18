@@ -1,8 +1,10 @@
+import { BabyWrappedIcon } from '@navikt/aksel-icons';
 import TåteflaskeBaby from 'assets/TåteflaskeBaby';
 import classNames from 'classnames';
+import { ReactNode } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { BodyShort, Heading } from '@navikt/ds-react';
+import { BodyShort, HGrid, Heading, Show } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
@@ -177,5 +179,55 @@ const Header: React.FunctionComponent<Props> = ({ grupperteSaker, oppgaverIds })
         </div>
     );
 };
+
+function HeaderWrapper({ children }: { children: ReactNode }) {
+    const bem = bemUtils('header');
+    const selectedRoute = useGetSelectedRoute();
+    // TODO: oppgaveid
+    return (
+        <div className={bem.block}>
+            <Breadcrumb selectedRoute={selectedRoute} oppgaveId={undefined} />
+            <div className={bem.element('wrapper')}>{children}</div>
+        </div>
+    );
+}
+export function ForsideHeader() {
+    return (
+        <HeaderWrapper>
+            <HGrid columns="max-content 1fr" gap="6" align="center">
+                <Show above="md">
+                    <BabyWrappedIcon fontSize={44} style={{ color: 'var(--a-lightblue-800)' }} />
+                </Show>
+                <Show below="md">
+                    <BabyWrappedIcon fontSize={22} style={{ color: 'var(--a-lightblue-800)' }} />
+                </Show>
+                <Heading level="1" size="large">
+                    Oversikt over foreldrepengesaker
+                </Heading>
+            </HGrid>
+        </HeaderWrapper>
+    );
+}
+export function DinSakHeader() {}
+
+export function PageHeader() {
+    const bem = bemUtils('header');
+
+    return (
+        <div className={bem.block}>
+            {/*<Breadcrumb selectedRoute={selectedRoute} oppgaveId={currentOppgaveId} />*/}
+            <div className={bem.element('wrapper')}>
+                <div className={bem.element('content-fixed')}>
+                    <div>
+                        <Heading size="large">Hele prosessen</Heading>
+                        <div className={bem.element('text-with-bar')}>
+                            <BodyShort>{`SAKSNR 123`}</BodyShort>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 export default Header;

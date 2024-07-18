@@ -7,6 +7,7 @@ import { erSakOppdatertOptions } from 'app/api/api';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import HarIkkeSaker from 'app/components/har-ikke-saker/HarIkkeSaker';
 import HarSaker from 'app/components/har-saker/HarSaker';
+import { ForsideHeader } from 'app/components/header/Header';
 import SakLink from 'app/components/sak-link/SakLink';
 import {
     useGetRedirectedFromSøknadsnummer,
@@ -14,6 +15,7 @@ import {
 } from 'app/hooks/useRedirectedFromSøknadsnummer';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import { useSetSelectedSak } from 'app/hooks/useSelectedSak';
+import { PageRouteLayout } from 'app/routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from 'app/routes/routes';
 import { RedirectSource, UKNOWN_SAKSNUMMER } from 'app/types/RedirectSource';
 import { SakOppslag } from 'app/types/SakOppslag';
@@ -53,8 +55,8 @@ const Forside: React.FunctionComponent<Props> = ({ saker, isFirstRender, søkeri
             : undefined;
 
     return (
-        <VStack gap="10">
-            <>
+        <PageRouteLayout header={<ForsideHeader />}>
+            <VStack gap="10">
                 {redirectedFromSøknadsnummer === UKNOWN_SAKSNUMMER && (
                     <BekreftelseSendtSøknad
                         relevantNyTidslinjehendelse={undefined}
@@ -68,14 +70,14 @@ const Forside: React.FunctionComponent<Props> = ({ saker, isFirstRender, søkeri
                         kan vente litt og komme tilbake senere for å se alle detaljene i saken din.
                     </Alert>
                 )}
-            </>
-            {alleYtelser.length > 0 ? (
-                <HarSaker grupperteSaker={grupperteSaker} />
-            ) : (
-                <HarIkkeSaker harOppdatertSak={!harIkkeOppdatertSak} />
-            )}
-            {avslåttSvangerskapspengesak && <SakLink sak={avslåttSvangerskapspengesak} />}
-        </VStack>
+                {alleYtelser.length > 0 ? (
+                    <HarSaker grupperteSaker={grupperteSaker} />
+                ) : (
+                    <HarIkkeSaker harOppdatertSak={!harIkkeOppdatertSak} />
+                )}
+                {avslåttSvangerskapspengesak && <SakLink sak={avslåttSvangerskapspengesak} />}
+            </VStack>
+        </PageRouteLayout>
     );
 };
 
