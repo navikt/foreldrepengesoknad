@@ -153,9 +153,9 @@ function erTidsperiodeUtenforTidsperiode(tidsperiode1: TidsperiodeDate, tidsperi
 }
 
 function tidsperiodeToString(tidsperiode: TidsperiodeDate, intl: IntlShape) {
-    const { fom, tom } = tidsperiode; // TODO: ifølge TS så er verken fom eller tom optional, forenkle?
+    const { fom, tom } = tidsperiode;
     if (fom && tom && dayjs(fom).isSame(tom, 'day')) {
-        return formaterDatoUtenDag(fom || tom);
+        return formaterDatoUtenDag(fom);
     }
     return intl.formatMessage(
         { id: 'tidsperiode' },
@@ -169,7 +169,7 @@ function tidsperiodeToString(tidsperiode: TidsperiodeDate, intl: IntlShape) {
 function tidsperiodeToStringKort(tidsperiode: TidsperiodeDate, intl: IntlShape) {
     const { fom, tom } = tidsperiode;
     if (fom && tom && dayjs(fom).isSame(tom, 'day')) {
-        return formaterDatoUtenDag(fom || tom);
+        return formaterDatoUtenDag(fom);
     }
     return intl.formatMessage(
         { id: 'tidsperiode.kort' },
