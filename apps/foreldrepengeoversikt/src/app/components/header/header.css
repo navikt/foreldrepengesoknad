@@ -53,9 +53,7 @@
 }
 
 .header__tag {
-    margin-top: 0.5rem;
-    margin-left: 1.5rem;
-    margin-bottom: 0.5rem;
+    height: fit-content;
 }
 
 @media (max-width: 768px) {
@@ -73,12 +71,5 @@
     }
     .header__divider-text {
         margin-top: 0.25rem;
-    }
-
-    .header__tag {
-        margin-top: 0.25rem;
-        width: fit-content;
-        margin-left: 0rem;
-        margin-bottom: 0.25rem;
     }
 }

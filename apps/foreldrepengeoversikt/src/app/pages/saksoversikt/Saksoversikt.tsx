@@ -11,7 +11,7 @@ import { erSakOppdatertOptions, hentManglendeVedleggOptions, hentTidslinjehendel
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import ContentSection from 'app/components/content-section/ContentSection';
 import EttersendDokumenter from 'app/components/ettersend-dokumenter/EttersendDokumenter';
-import { getSaksoversiktHeading } from 'app/components/header/Header';
+import { DinSakHeader, getSaksoversiktHeading } from 'app/components/header/Header';
 import SeDokumenter from 'app/components/se-dokumenter/SeDokumenter';
 import SeHeleProsessen from 'app/components/se-hele-prosessen/SeHeleProsessen';
 import { useAnnenPartsVedtak } from 'app/hooks/useAnnenPartsVedtak';
@@ -22,6 +22,7 @@ import {
 } from 'app/hooks/useRedirectedFromSøknadsnummer';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import { useSetSelectedSak } from 'app/hooks/useSelectedSak';
+import { PageRouteLayout } from 'app/routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from 'app/routes/routes';
 import DinPlan from 'app/sections/din-plan/DinPlan';
 import Oppgaver from 'app/sections/oppgaver/Oppgaver';
@@ -41,7 +42,7 @@ interface Props {
 
 const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, isFirstRender }) => {
     const intl = useIntl();
-    const params = useParams();
+    const params = useParams<{ saksnummer: string; redirect?: string }>();
     const navigate = useNavigate();
 
     useSetRedirectedFromSøknadsnummer(params.redirect, params.saksnummer, isFirstRender);
@@ -100,58 +101,60 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, isFir
     const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, gjeldendeSak);
 
     return (
-        <VStack gap="4">
-            {visBekreftelsePåSendtSøknad && (
-                <BekreftelseSendtSøknad
-                    relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
-                    bankkonto={søkerinfo.søker.bankkonto}
-                    ytelse={gjeldendeSak.ytelse}
-                />
-            )}
-
-            <Oppgaver saksnummer={gjeldendeSak.saksnummer} />
-            <VStack gap="1">
-                <ContentSection
-                    heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
-                    showSkeleton={tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending}
-                    skeletonProps={{ height: '250px', variant: 'rounded' }}
-                    marginBottom="small"
-                >
-                    <Tidslinje
-                        saker={saker}
-                        tidslinjeHendelserQuery={tidslinjeHendelserQuery}
-                        manglendeVedleggQuery={manglendeVedleggQuery}
-                        visHeleTidslinjen={false}
-                        søkersBarn={søkerinfo.søker.barn}
+        <PageRouteLayout header={<DinSakHeader sak={gjeldendeSak} />}>
+            <VStack gap="4">
+                {visBekreftelsePåSendtSøknad && (
+                    <BekreftelseSendtSøknad
+                        relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
+                        bankkonto={søkerinfo.søker.bankkonto}
+                        ytelse={gjeldendeSak.ytelse}
                     />
+                )}
+
+                <Oppgaver saksnummer={gjeldendeSak.saksnummer} />
+                <VStack gap="1">
+                    <ContentSection
+                        heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
+                        showSkeleton={tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending}
+                        skeletonProps={{ height: '250px', variant: 'rounded' }}
+                        marginBottom="small"
+                    >
+                        <Tidslinje
+                            saker={saker}
+                            tidslinjeHendelserQuery={tidslinjeHendelserQuery}
+                            manglendeVedleggQuery={manglendeVedleggQuery}
+                            visHeleTidslinjen={false}
+                            søkersBarn={søkerinfo.søker.barn}
+                        />
+                    </ContentSection>
+                    <ContentSection padding="none" marginBottom="large">
+                        <SeHeleProsessen />
+                    </ContentSection>
+                </VStack>
+                <ContentSection padding="none" marginBottom="medium">
+                    <SeDokumenter />
                 </ContentSection>
                 <ContentSection padding="none" marginBottom="large">
-                    <SeHeleProsessen />
+                    <EttersendDokumenter />
                 </ContentSection>
+                {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
+                    <ContentSection
+                        heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
+                        showSkeleton={annenPartsVedtakQuery.isLoading} // Fordi annenPartsVedtakQuery kan være et disabled query må man bruke isLoading heller enn isPending: https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading
+                        skeletonProps={{ height: '210px', variant: 'rounded' }}
+                    >
+                        <DinPlan
+                            sak={gjeldendeSak}
+                            visHelePlanen={false}
+                            navnPåSøker={navnPåSøker}
+                            navnAnnenForelder={navnAnnenForelder}
+                            annenPartsPerioder={annenPartsVedtakQuery.data?.perioder}
+                            termindato={gjeldendeSak.familiehendelse.termindato}
+                        />
+                    </ContentSection>
+                )}
             </VStack>
-            <ContentSection padding="none" marginBottom="medium">
-                <SeDokumenter />
-            </ContentSection>
-            <ContentSection padding="none" marginBottom="large">
-                <EttersendDokumenter />
-            </ContentSection>
-            {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
-                <ContentSection
-                    heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
-                    showSkeleton={annenPartsVedtakQuery.isLoading} // Fordi annenPartsVedtakQuery kan være et disabled query må man bruke isLoading heller enn isPending: https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading
-                    skeletonProps={{ height: '210px', variant: 'rounded' }}
-                >
-                    <DinPlan
-                        sak={gjeldendeSak}
-                        visHelePlanen={false}
-                        navnPåSøker={navnPåSøker}
-                        navnAnnenForelder={navnAnnenForelder}
-                        annenPartsPerioder={annenPartsVedtakQuery.data?.perioder}
-                        termindato={gjeldendeSak.familiehendelse.termindato}
-                    />
-                </ContentSection>
-            )}
-        </VStack>
+        </PageRouteLayout>
     );
 };
 

@@ -1,13 +1,15 @@
 import { BabyWrappedIcon } from '@navikt/aksel-icons';
+import { useQuery } from '@tanstack/react-query';
 import TåteflaskeBaby from 'assets/TåteflaskeBaby';
 import classNames from 'classnames';
 import { ReactNode } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { BodyShort, HGrid, Heading, Show } from '@navikt/ds-react';
+import { BodyShort, Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
+import { hentSakerOptions, søkerInfoOptions } from 'app/api/api';
 import { useGetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 import OversiktRoutes from 'app/routes/routes';
@@ -15,7 +17,7 @@ import { BarnGruppering } from 'app/types/BarnGruppering';
 import { GruppertSak } from 'app/types/GruppertSak';
 import { Sak } from 'app/types/Sak';
 import { Ytelse } from 'app/types/Ytelse';
-import { getFamiliehendelseDato, getSakTittel, utledFamiliesituasjon } from 'app/utils/sakerUtils';
+import { getFamiliehendelseDato, getSakTittel, mapSakerDTOToSaker, utledFamiliesituasjon } from 'app/utils/sakerUtils';
 
 import Breadcrumb from '../breadcrumb/Breadcrumb';
 import StatusTag from '../status-tag/StatusTag';
@@ -138,20 +140,6 @@ const renderHeaderContent = (
             </div>
         );
     }
-
-    return (
-        <div className={bem.element('content')}>
-            <div className={bem.element('baby-ikonBox')}>
-                <TåteflaskeBaby aria-hidden={true} />
-            </div>
-            <div className={bem.element('title-container')}>
-                <Heading size="large">Oversikt over foreldrepenger</Heading>
-                <div className={bem.element('text-with-bar')}>
-                    <BodyShort>PENGESTØTTE</BodyShort>
-                </div>
-            </div>
-        </div>
-    );
 };
 
 interface Props {
@@ -208,7 +196,84 @@ export function ForsideHeader() {
         </HeaderWrapper>
     );
 }
-export function DinSakHeader() {}
+
+function BabyIkon() {
+    return (
+        <>
+            <Show above="md">
+                <BabyWrappedIcon fontSize={44} style={{ color: 'var(--a-lightblue-800)' }} />
+            </Show>
+            <Show below="md">
+                <BabyWrappedIcon fontSize={22} style={{ color: 'var(--a-lightblue-800)' }} />
+            </Show>
+        </>
+    );
+}
+
+export function DinSakHeader({ sak }: { sak: Sak }) {
+    const bem = bemUtils('header');
+
+    const søkerInfoQuery = useQuery(søkerInfoOptions());
+    const sakerQuery = useQuery({
+        ...hentSakerOptions(),
+        select: mapSakerDTOToSaker,
+    });
+
+    // const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn, saker);
+    //
+    // const barnTittel = getSakTittel({
+    //     barngruppering: barn,
+    //     familiehendelsedato: getFamiliehendelseDato(sak.familiehendelse),
+    //     intl,
+    //     antallBarn: sak.ytelse === Ytelse.FORELDREPENGER ? sak.familiehendelse.antallBarn : 0,
+    //     situasjon,
+    // });
+
+    return (
+        <HeaderWrapper>
+            <HGrid columns="max-content 1fr" gap="6" align="start">
+                <BabyIkon />
+                <VStack>
+                    <HStack gap="6" align="center">
+                        <Heading level="1" size="large">
+                            Din sak
+                        </Heading>
+                        <StatusTag sak={sak} className={bem.element('tag')} />
+                    </HStack>
+                    <Show above="md">
+                        <HStack gap="3" align="center">
+                            <Detail uppercase>{sak.ytelse}</Detail>
+                            <BlueDot />
+                            <Detail>SAKSNR {sak.saksnummer}</Detail>
+                            <BlueDot />
+                            <Detail textColor="subtle">
+                                Barn født med TODO
+                                {/*{barnTittel.tittel} {barnTittel.undertittel}*/}
+                            </Detail>
+                        </HStack>
+                    </Show>
+                    <Show below="md">
+                        <VStack gap="1">
+                            <HStack gap="2" align="center">
+                                <Detail uppercase>{sak.ytelse}</Detail>
+                                <BlueDot />
+                                <Detail>SAKSNR {sak.saksnummer}</Detail>
+                            </HStack>
+                            <Detail textColor="subtle">
+                                Barn født med TODO
+                                {/*{barnTittel.tittel} {barnTittel.undertittel}*/}
+                            </Detail>
+                        </VStack>
+                    </Show>
+                </VStack>
+            </HGrid>
+        </HeaderWrapper>
+    );
+}
+
+function BlueDot() {
+    return <div style={{ height: '4px', width: '4px', borderRadius: '50%', background: 'var(--a-deepblue-300)' }} />;
+}
 
 export function PageHeader() {
     const bem = bemUtils('header');
