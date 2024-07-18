@@ -104,7 +104,7 @@ export const getAntallUttaksdagerITidsperiode = (tidsperiode: TidsperiodeDate): 
     return antall;
 };
 
-export const ISOStringToDate = (dateString: string | undefined): Date | undefined => {
+export const ISOStringToDate = (dateString: string | undefined) => {
     if (dateString === undefined) {
         return undefined;
     }

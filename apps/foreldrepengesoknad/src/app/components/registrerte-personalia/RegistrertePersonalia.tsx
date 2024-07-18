@@ -30,9 +30,8 @@ const RegistrertePersonalia: React.FunctionComponent<Props> = ({
             <HStack justify="space-between" align="start">
                 <VStack gap="2" style={{ width: '85%' }}>
                     <Label>
-                        {altTekstHvisUkjentNavn !== undefined
-                            ? altTekstHvisUkjentNavn
-                            : formaterNavn(person.fornavn, person.etternavn, visEtternavn, person.mellomnavn)}
+                        {altTekstHvisUkjentNavn ??
+                            formaterNavn(person.fornavn, person.etternavn, visEtternavn, person.mellomnavn)}
                     </Label>
                     {fødselsnummerForVisning !== undefined && (
                         <BodyShort>

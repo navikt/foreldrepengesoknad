@@ -177,13 +177,10 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         !søkerErAleneOmOmsorg;
 
     const barnFnr = !isUfødtBarn(barn) && barn.fnr !== undefined && barn.fnr.length > 0 ? barn.fnr[0] : undefined;
+
     const eksisterendeSakAnnenPartRequestIsSuspended =
-        !søkerErAleneOmOmsorg &&
-        annenForelderFnr !== undefined &&
-        annenForelderFnr !== '' &&
-        (barnFnr !== undefined || familiehendelsesdato !== undefined)
-            ? false
-            : true;
+        søkerErAleneOmOmsorg || !annenForelderFnr || (barnFnr === undefined && familiehendelsesdato === undefined);
+
     const startStønadsperiodeNyttBarn =
         barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
     const debouncedState = useDebounce(useContextComplete(), 3000);
@@ -262,12 +259,10 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn]);
 
     const nesteBarnsSakAnnenPartRequestIsSuspended =
-        annenForelderFnrNesteSak !== undefined &&
-        annenForelderFnrNesteSak !== '' &&
-        (førsteBarnFraNesteSakFnr !== undefined || familieHendelseDatoNesteSak !== undefined) &&
-        (eksisterendeSakAnnenPartRequestIsSuspended || eksisterendeSakAnnenPartRequestStatus === RequestStatus.FINISHED)
-            ? false
-            : true;
+        !annenForelderFnrNesteSak ||
+        (førsteBarnFraNesteSakFnr === undefined && familieHendelseDatoNesteSak === undefined) ||
+        (!eksisterendeSakAnnenPartRequestIsSuspended &&
+            eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED);
 
     const {
         data: nesteSakAnnenPartData,

@@ -13,7 +13,6 @@ import { BarnGruppering } from 'app/types/BarnGruppering';
 import { GruppertSak } from 'app/types/GruppertSak';
 import { Sak } from 'app/types/Sak';
 import { Ytelse } from 'app/types/Ytelse';
-import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getFamiliehendelseDato, getSakTittel, utledFamiliesituasjon } from 'app/utils/sakerUtils';
 
 import Breadcrumb from '../breadcrumb/Breadcrumb';
@@ -108,16 +107,13 @@ const renderHeaderContent = (
         }
 
         const situasjon = utledFamiliesituasjon(sak.familiehendelse, sak.gjelderAdopsjon);
-        const familiehendelsedato = ISOStringToDate(getFamiliehendelseDato(sak.familiehendelse));
-        const barnTittel = getSakTittel(
-            barn?.fornavn,
-            barn?.fødselsdatoer,
-            familiehendelsedato!,
-            !!barn?.alleBarnaLever,
-            sak.ytelse === Ytelse.FORELDREPENGER ? sak.familiehendelse.antallBarn : 0,
+        const barnTittel = getSakTittel({
+            barngruppering: barn,
+            familiehendelsedato: getFamiliehendelseDato(sak.familiehendelse),
             intl,
+            antallBarn: sak.ytelse === Ytelse.FORELDREPENGER ? sak.familiehendelse.antallBarn : 0,
             situasjon,
-        );
+        });
 
         return (
             <div className={bem.element('content')}>

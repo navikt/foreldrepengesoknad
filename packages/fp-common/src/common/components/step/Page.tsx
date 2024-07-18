@@ -29,10 +29,10 @@ const Page: React.FunctionComponent<PageProps> = ({
     const ariaLabelToUse = ariaLabel ? intlHelper(intl, 'page.defaultMainRoleLabel') : undefined;
 
     return (
-        <div role="main" aria-label={ariaLabelToUse} id={id}>
+        <main aria-label={ariaLabelToUse} id={id}>
             {topContentRenderer?.()}
             <div className={`page ${className}`}>{children}</div>
-        </div>
+        </main>
     );
 };
 
