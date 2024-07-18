@@ -3,7 +3,6 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import Header from 'app/components/header/Header';
 import Snarveier from 'app/components/snarveier/Snarveier';
 import { default as SakComponent } from 'app/pages/Sak';
 import DinPlanPage from 'app/pages/din-plan-page/DinPlanPage';
@@ -16,7 +15,6 @@ import TidslinjePage from 'app/pages/tidslinje-page/TidslinjePage';
 import KontaktOss from 'app/sections/kontakt-oss/KontaktOss';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import { grupperSakerPåBarn } from 'app/utils/sakerUtils';
 
 import OversiktRoutes from './routes';
 import './routes-wrapper.css';
@@ -27,7 +25,6 @@ interface Props {
 }
 
 const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinfo, saker }) => {
-    const bem = bemUtils('routesWrapper');
     const isFirstRender = useRef(true);
 
     // TODO: reimplement redirect for 1 sak
@@ -51,8 +48,6 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
     //         }
     //     }
     // }, [navigate, saker]);
-
-    const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn, saker);
 
     return (
         <>

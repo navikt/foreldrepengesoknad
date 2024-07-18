@@ -197,6 +197,32 @@ export function DokumenterHeader() {
     );
 }
 
+export function EttersendingHeader() {
+    const { saksnummer } = useParams();
+    const saksnr = <Detail>SAKSNR {saksnummer}</Detail>;
+    const header = (
+        <Heading level="1" size="large">
+            Last opp dokumenter
+        </Heading>
+    );
+    return (
+        <HeaderWrapper>
+            <Show above="md">
+                <VStack gap="3">
+                    {header}
+                    {saksnr}
+                </VStack>
+            </Show>
+            <Show below="md">
+                <VStack gap="1">
+                    {header}
+                    {saksnr}
+                </VStack>
+            </Show>
+        </HeaderWrapper>
+    );
+}
+
 export function DinSakHeader({ sak }: { sak: Sak }) {
     const bem = bemUtils('header');
     const intl = useIntl();
