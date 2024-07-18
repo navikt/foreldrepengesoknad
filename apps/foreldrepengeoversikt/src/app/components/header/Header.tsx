@@ -201,10 +201,32 @@ function BabyIkon() {
     return (
         <>
             <Show above="md">
-                <BabyWrappedIcon fontSize={44} style={{ color: 'var(--a-lightblue-800)' }} />
+                <div
+                    style={{
+                        width: '60px',
+                        height: '60px',
+                        borderRadius: '50%',
+                        background: 'var(--a-deepblue-100)',
+                        paddingTop: '8px',
+                        paddingLeft: '8px',
+                    }}
+                >
+                    <BabyWrappedIcon fontSize={44} style={{ color: 'var(--a-lightblue-800)' }} />
+                </div>
             </Show>
             <Show below="md">
-                <BabyWrappedIcon fontSize={22} style={{ color: 'var(--a-lightblue-800)' }} />
+                <div
+                    style={{
+                        width: '38px',
+                        height: '38px',
+                        borderRadius: '50%',
+                        background: 'var(--a-deepblue-100)',
+                        paddingTop: '8px',
+                        paddingLeft: '8px',
+                    }}
+                >
+                    <BabyWrappedIcon fontSize={22} style={{ color: 'var(--a-lightblue-800)' }} />
+                </div>
             </Show>
         </>
     );
@@ -273,26 +295,6 @@ export function DinSakHeader({ sak }: { sak: Sak }) {
 
 function BlueDot() {
     return <div style={{ height: '4px', width: '4px', borderRadius: '50%', background: 'var(--a-deepblue-300)' }} />;
-}
-
-export function PageHeader() {
-    const bem = bemUtils('header');
-
-    return (
-        <div className={bem.block}>
-            {/*<Breadcrumb selectedRoute={selectedRoute} oppgaveId={currentOppgaveId} />*/}
-            <div className={bem.element('wrapper')}>
-                <div className={bem.element('content-fixed')}>
-                    <div>
-                        <Heading size="large">Hele prosessen</Heading>
-                        <div className={bem.element('text-with-bar')}>
-                            <BodyShort>{`SAKSNR 123`}</BodyShort>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
 }
 
 export default Header;
