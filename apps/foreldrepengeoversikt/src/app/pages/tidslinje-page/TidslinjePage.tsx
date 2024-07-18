@@ -10,19 +10,17 @@ import { hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from 'app/
 import { DinSakHeader } from 'app/components/header/Header';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
+import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 import { PageRouteLayout } from 'app/routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from 'app/routes/routes';
 import Tidslinje from 'app/sections/tidslinje/Tidslinje';
 import { Sak } from 'app/types/Sak';
-import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
-import { getAlleYtelser } from 'app/utils/sakerUtils';
 
 import './tidslinje-page.css';
 
 type OuterProps = {
     søkersBarn: SøkerinfoDTOBarn[] | undefined;
-    saker: SakOppslag;
 };
 type InnerProps = {
     søkersBarn: SøkerinfoDTOBarn[] | undefined;
@@ -62,10 +60,9 @@ const TidslinjePageInner: React.FunctionComponent<InnerProps> = ({ søkersBarn, 
     );
 };
 
-function TidslinjePage({ saker, søkersBarn }: OuterProps) {
-    const params = useParams();
-    const sak = getAlleYtelser(saker).find((sak) => sak.saksnummer === params.saksnummer)!; // TODO: burde ikke bruke ! her
-    console.log(sak);
+function TidslinjePage({ søkersBarn }: OuterProps) {
+    const sak = useGetSelectedSak()!; // TODO: burde ikke ha denne.
+
     return (
         <PageRouteLayout header={<DinSakHeader sak={sak} />}>
             <TidslinjePageInner sak={sak} søkersBarn={søkersBarn} />

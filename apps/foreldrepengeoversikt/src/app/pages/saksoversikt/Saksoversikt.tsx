@@ -26,26 +26,24 @@ import {
     useSetRedirectedFromSøknadsnummer,
 } from 'app/hooks/useRedirectedFromSøknadsnummer';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
-import { useSetSelectedSak } from 'app/hooks/useSelectedSak';
+import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 import { PageRouteLayout } from 'app/routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from 'app/routes/routes';
 import DinPlan from 'app/sections/din-plan/DinPlan';
 import Oppgaver from 'app/sections/oppgaver/Oppgaver';
 import Tidslinje from 'app/sections/tidslinje/Tidslinje';
 import { RedirectSource } from 'app/types/RedirectSource';
-import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
-import { getAlleYtelser, getNavnAnnenForelder } from 'app/utils/sakerUtils';
+import { getNavnAnnenForelder } from 'app/utils/sakerUtils';
 import { getRelevantNyTidslinjehendelse } from 'app/utils/tidslinjeUtils';
 
 interface Props {
-    saker: SakOppslag;
     søkerinfo: SøkerinfoDTO;
     isFirstRender: React.MutableRefObject<boolean>;
 }
 
-const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, isFirstRender }) => {
+const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRender }) => {
     const intl = useIntl();
     const params = useParams<{ saksnummer: string; redirect?: string }>();
     const navigate = useNavigate();
@@ -57,9 +55,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ saker, søkerinfo, isFir
     useSetBackgroundColor('blue');
     useSetSelectedRoute(OversiktRoutes.SAKSOVERSIKT);
 
-    const alleSaker = getAlleYtelser(saker);
-    const gjeldendeSak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!;
-    useSetSelectedSak(gjeldendeSak);
+    const gjeldendeSak = useGetSelectedSak();
 
     useDocumentTitle(
         `${getSaksoversiktHeading(gjeldendeSak?.ytelse)} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,

@@ -14,7 +14,6 @@ import {
     useSetRedirectedFromSøknadsnummer,
 } from 'app/hooks/useRedirectedFromSøknadsnummer';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
-import { useSetSelectedSak } from 'app/hooks/useSelectedSak';
 import { PageRouteLayout } from 'app/routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from 'app/routes/routes';
 import { RedirectSource, UKNOWN_SAKSNUMMER } from 'app/types/RedirectSource';
@@ -32,7 +31,6 @@ interface Props {
 
 const Forside: React.FunctionComponent<Props> = ({ saker, isFirstRender, søkerinfo }) => {
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
-    useSetSelectedSak(undefined);
     const params = useParams();
     useSetRedirectedFromSøknadsnummer(params.redirect, undefined, isFirstRender);
 

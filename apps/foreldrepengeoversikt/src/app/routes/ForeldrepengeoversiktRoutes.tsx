@@ -51,25 +51,18 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
 
     return (
         <>
-            {/*<Header grupperteSaker={grupperteSaker} oppgaverIds={[]} />*/}
             <Routes>
                 <Route
                     path={`${OversiktRoutes.HOVEDSIDE}/:redirect?`}
                     element={<Forside saker={saker} isFirstRender={isFirstRender} søkerinfo={søkerinfo} />}
                 />
                 <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer/:redirect?`} element={<SakComponent />}>
-                    <Route
-                        index
-                        element={<Saksoversikt saker={saker} søkerinfo={søkerinfo} isFirstRender={isFirstRender} />}
-                    />
-                    <Route
-                        path={OversiktRoutes.DIN_PLAN}
-                        element={<DinPlanPage saker={saker} søkerinfo={søkerinfo} />}
-                    />
+                    <Route index element={<Saksoversikt søkerinfo={søkerinfo} isFirstRender={isFirstRender} />} />
+                    <Route path={OversiktRoutes.DIN_PLAN} element={<DinPlanPage søkerinfo={søkerinfo} />} />
                     <Route path={OversiktRoutes.DOKUMENTER} element={<DokumenterPage />} />
                     <Route
                         path={OversiktRoutes.TIDSLINJEN}
-                        element={<TidslinjePage saker={saker} søkersBarn={søkerinfo.søker.barn} />}
+                        element={<TidslinjePage søkersBarn={søkerinfo.søker.barn} />}
                     />
                     <Route
                         path={`${OversiktRoutes.OPPGAVER}/:oppgaveId`}
