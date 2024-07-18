@@ -1,4 +1,4 @@
-import { BabyWrappedIcon } from '@navikt/aksel-icons';
+import { BabyWrappedIcon, PersonPregnantIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import TåteflaskeBaby from 'assets/TåteflaskeBaby';
 import classNames from 'classnames';
@@ -183,12 +183,7 @@ export function ForsideHeader() {
     return (
         <HeaderWrapper>
             <HGrid columns="max-content 1fr" gap="6" align="center">
-                <Show above="md">
-                    <BabyWrappedIcon fontSize={44} style={{ color: 'var(--a-lightblue-800)' }} />
-                </Show>
-                <Show below="md">
-                    <BabyWrappedIcon fontSize={22} style={{ color: 'var(--a-lightblue-800)' }} />
-                </Show>
+                <BabyIkon />
                 <Heading level="1" size="large">
                     Oversikt over foreldrepengesaker
                 </Heading>
@@ -197,7 +192,8 @@ export function ForsideHeader() {
     );
 }
 
-function BabyIkon() {
+function BabyIkon({ ytelse }: { ytelse: Ytelse }) {
+    const YtelseIkon = ytelse === Ytelse.SVANGERSKAPSPENGER ? PersonPregnantIcon : BabyWrappedIcon;
     return (
         <>
             <Show above="md">
@@ -211,7 +207,7 @@ function BabyIkon() {
                         paddingLeft: '8px',
                     }}
                 >
-                    <BabyWrappedIcon fontSize={44} style={{ color: 'var(--a-lightblue-800)' }} />
+                    <YtelseIkon fontSize={44} style={{ color: 'var(--a-lightblue-800)' }} />
                 </div>
             </Show>
             <Show below="md">
@@ -225,7 +221,7 @@ function BabyIkon() {
                         paddingLeft: '8px',
                     }}
                 >
-                    <BabyWrappedIcon fontSize={22} style={{ color: 'var(--a-lightblue-800)' }} />
+                    <YtelseIkon fontSize={22} style={{ color: 'var(--a-lightblue-800)' }} />
                 </div>
             </Show>
         </>
