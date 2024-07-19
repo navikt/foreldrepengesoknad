@@ -93,9 +93,9 @@ const konverterSelectVerdi = (selectText: string): Skjemanummer | typeof DEFAULT
     throw Error('Valgt skjemanr finnes ikke');
 };
 
-export interface Props {
-    saker: SakOppslag;
-}
+type Props = {
+    readonly saker: SakOppslag;
+};
 
 const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
     const intl = useIntl();

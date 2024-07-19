@@ -36,7 +36,7 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
     return 'Din sak';
 };
 
-function HeaderWrapper({ children }: { children: ReactNode }) {
+function HeaderWrapper({ children }: { readonly children: ReactNode }) {
     const bem = bemUtils('header');
     const selectedRoute = useGetSelectedRoute();
     // TODO: oppgaveid
@@ -60,7 +60,7 @@ export function ForsideHeader() {
     );
 }
 
-function BabyIkon({ ytelse }: { ytelse: Ytelse }) {
+function BabyIkon({ ytelse }: { readonly ytelse: Ytelse }) {
     const YtelseIkon = ytelse === Ytelse.SVANGERSKAPSPENGER ? PersonPregnantIcon : BabyWrappedIcon;
     return (
         <>
@@ -154,7 +154,7 @@ export function EttersendingHeader() {
     );
 }
 
-export function DinSakHeader({ sak }: { sak: Sak }) {
+export function DinSakHeader({ sak }: { readonly sak: Sak }) {
     const bem = bemUtils('header');
     const intl = useIntl();
 

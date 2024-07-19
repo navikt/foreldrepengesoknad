@@ -20,11 +20,11 @@ import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
 import './tidslinje-page.css';
 
 type OuterProps = {
-    søkersBarn: SøkerinfoDTOBarn[] | undefined;
+    readonly søkersBarn: SøkerinfoDTOBarn[] | undefined;
 };
 type InnerProps = {
-    søkersBarn: SøkerinfoDTOBarn[] | undefined;
-    sak: Sak;
+    readonly søkersBarn: SøkerinfoDTOBarn[] | undefined;
+    readonly sak: Sak;
 };
 
 const TidslinjePageInner: React.FunctionComponent<InnerProps> = ({ søkersBarn, sak }) => {
@@ -61,7 +61,7 @@ const TidslinjePageInner: React.FunctionComponent<InnerProps> = ({ søkersBarn, 
 };
 
 function TidslinjePage({ søkersBarn }: OuterProps) {
-    const sak = useGetSelectedSak()!; // TODO: burde ikke ha denne.
+    const sak = useGetSelectedSak()!; // TODO: burde ikke ha "!-assertion"
 
     return (
         <PageRouteLayout header={<DinSakHeader sak={sak} />}>

@@ -80,7 +80,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
     );
 };
 
-export function PageRouteLayout({ header, children }: { header: ReactNode; children: ReactNode }) {
+export function PageRouteLayout({ header, children }: { readonly header: ReactNode; readonly children: ReactNode }) {
     const bem = bemUtils('routesWrapper');
 
     return (
