@@ -8,33 +8,34 @@ import { useDocumentTitle } from '@navikt/fp-utils';
 
 import { minidialogOptions, sendEttersending } from 'app/api/api';
 import ContentSection from 'app/components/content-section/ContentSection';
+import { DinSakHeader } from 'app/components/header/Header';
 import MinidialogSkjema from 'app/components/minidialog-skjema/MinidialogSkjema';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
+import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
+import { PageRouteLayout } from 'app/routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from 'app/routes/routes';
 import EttersendingDto from 'app/types/EttersendingDTO';
-import { SakOppslag } from 'app/types/SakOppslag';
-import { getAlleYtelser } from 'app/utils/sakerUtils';
 
 interface Props {
     fnr: string;
-    saker: SakOppslag;
 }
 
-const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, saker }) => {
-    const minidialoger = useQuery(minidialogOptions()).data ?? [];
-    // const oppgaverIds = minidialoger.map((oppgave) => oppgave.dialogId);
-
+const MinidialogPage: React.FunctionComponent<Props> = ({ fnr }) => {
     const params = useParams();
+    const minidialog = useQuery({
+        ...minidialogOptions(),
+        select: (data) =>
+            data.find(({ saksnr, dialogId }) => saksnr === params.saksnummer && dialogId === params.oppgaveId),
+    }).data;
+    const sak = useGetSelectedSak();
+
     const navigate = useNavigate();
     const intl = useIntl();
     useDocumentTitle(
         `${intl.formatMessage({ id: 'oppgaver.tittel.tilbakebetaling' })} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
     );
     useSetSelectedRoute(OversiktRoutes.OPPGAVER);
-    const alleSaker = getAlleYtelser(saker);
-    const sak = alleSaker.find((s) => s.saksnummer === params.saksnummer);
-    const minidialog = minidialoger.find((d) => d.saksnr === params.saksnummer);
     useSetBackgroundColor('blue');
 
     const { mutate, isPending, isError, isSuccess } = useMutation({
@@ -51,28 +52,28 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr, saker }) => {
         return null;
     }
 
-    const sakstype = sak ? sak.ytelse : undefined;
-
     return (
-        <ContentSection>
-            <VStack gap="2">
-                <Heading size="medium" level="2">
-                    <FormattedMessage id="miniDialog.tilbakekreving.undertittel" />
-                </Heading>
-                <MinidialogSkjema
-                    sakstype={sakstype!}
-                    minidialog={minidialog}
-                    onSubmit={sendEttersendelse}
-                    isSendingEttersendelse={isPending}
-                    ettersendelseErSendt={isSuccess}
-                    ettersendelseError={
-                        isError
-                            ? 'Vi klarte ikke å sende inn informasjonen din. Prøv igjen senere og hvis problemet vedvarer kontakt brukerstøtte.'
-                            : undefined
-                    }
-                />
-            </VStack>
-        </ContentSection>
+        <PageRouteLayout header={<DinSakHeader sak={sak} />}>
+            <ContentSection>
+                <VStack gap="2">
+                    <Heading size="medium" level="2">
+                        <FormattedMessage id="miniDialog.tilbakekreving.undertittel" />
+                    </Heading>
+                    <MinidialogSkjema
+                        sakstype={sak.ytelse}
+                        minidialog={minidialog}
+                        onSubmit={sendEttersendelse}
+                        isSendingEttersendelse={isPending}
+                        ettersendelseErSendt={isSuccess}
+                        ettersendelseError={
+                            isError
+                                ? 'Vi klarte ikke å sende inn informasjonen din. Prøv igjen senere og hvis problemet vedvarer kontakt brukerstøtte.'
+                                : undefined
+                        }
+                    />
+                </VStack>
+            </ContentSection>
+        </PageRouteLayout>
     );
 };
 
