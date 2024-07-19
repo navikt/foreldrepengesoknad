@@ -31,7 +31,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
     return (
         <>
             <Routes>
-                <Route element={<RedirectRoute saker={saker} />}>
+                <Route element={<RedirectTilSakHvisDetKunFinnesEn saker={saker} />}>
                     <Route
                         path={`${OversiktRoutes.HOVEDSIDE}/:redirect?`}
                         element={<Forside saker={saker} isFirstRender={isFirstRender} søkerinfo={søkerinfo} />}
@@ -58,26 +58,34 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
     );
 };
 
-function RedirectRoute({ saker }: { saker: SakOppslag }) {
+/**
+ * Denne wrapperen ligger rundt alle routene våre og vil gjøre en redirect til aktuell sak kun dersom:
+ * 1. Bruker har kun 1 sak
+ * 2. Bruker besøkte "/" for første gang
+ *
+ * Vi ønsker ikke å redirecte til sak dersom bruker allerede er på en underside på saken, eller at bruker navigerer tilbake til forside via breadcrumbs
+ */
+function RedirectTilSakHvisDetKunFinnesEn({ saker }: { saker: SakOppslag }) {
     const navigate = useNavigate();
-    const alleSaker = getAlleYtelser(saker);
 
-    const harNettoppLandet = useState(true);
-    const viErPåLandingSiden = useMatch(OversiktRoutes.HOVEDSIDE);
-    const [tillatRedirect, setTillatRedirect] = useState(true);
+    const alleSaker = getAlleYtelser(saker);
     const harKunDetteSaksnummeret = alleSaker.length === 1 ? alleSaker[0].saksnummer : undefined;
 
-    const landetPåHovedsideOgHarIkkeRedirected = harNettoppLandet && viErPåLandingSiden;
+    const viErPåLandingSiden = useMatch(OversiktRoutes.HOVEDSIDE);
+    const [tillatRedirect, setTillatRedirect] = useState(true);
 
+    const landetPåHovedsideOgHarIkkeRedirected = viErPåLandingSiden && tillatRedirect;
+
+    // Etter første gang denne komponenten rendres skal det ikke lenger tillates redirects.
     useEffect(() => {
         setTillatRedirect(false);
     }, []);
 
     useEffect(() => {
-        if (landetPåHovedsideOgHarIkkeRedirected && tillatRedirect && harKunDetteSaksnummeret) {
+        if (landetPåHovedsideOgHarIkkeRedirected && harKunDetteSaksnummeret) {
             navigate(`${OversiktRoutes.SAKSOVERSIKT}/${harKunDetteSaksnummeret}`);
         }
-    }, [landetPåHovedsideOgHarIkkeRedirected, navigate, harKunDetteSaksnummeret, tillatRedirect]);
+    }, [landetPåHovedsideOgHarIkkeRedirected, navigate, harKunDetteSaksnummeret]);
 
     return <Outlet />;
 }
