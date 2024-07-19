@@ -96,14 +96,11 @@ function BabyIkon({ ytelse }: { readonly ytelse: Ytelse }) {
 }
 
 export function DokumenterHeader() {
-    const { saksnummer } = useParams();
-
     const heading = (
         <Heading level="1" size="large">
             Dokumenter
         </Heading>
     );
-    const saksnr = <Detail>SAKSNR {saksnummer}</Detail>;
 
     return (
         <HeaderWrapper>
@@ -111,7 +108,7 @@ export function DokumenterHeader() {
                 <VStack gap="3">
                     {heading}
                     <HStack gap="3" align="center">
-                        {saksnr}
+                        <SaksnummerDetail />
                         <BlueDot />
                         <Detail textColor="subtle">Dokumenter som du, arbeidsgiver og NAV har sendt</Detail>
                     </HStack>
@@ -120,16 +117,19 @@ export function DokumenterHeader() {
             <Show below="md">
                 <VStack gap="1">
                     {heading}
-                    {saksnr}
+                    <SaksnummerDetail />
                 </VStack>
             </Show>
         </HeaderWrapper>
     );
 }
 
-export function EttersendingHeader() {
+function SaksnummerDetail() {
     const { saksnummer } = useParams();
-    const saksnr = <Detail>SAKSNR {saksnummer}</Detail>;
+    return <Detail>SAKSNR {saksnummer}</Detail>;
+}
+
+export function EttersendingHeader() {
     const header = (
         <Heading level="1" size="large">
             Last opp dokumenter
@@ -140,13 +140,13 @@ export function EttersendingHeader() {
             <Show above="md">
                 <VStack gap="3">
                     {header}
-                    {saksnr}
+                    <SaksnummerDetail />
                 </VStack>
             </Show>
             <Show below="md">
                 <VStack gap="1">
                     {header}
-                    {saksnr}
+                    <SaksnummerDetail />
                 </VStack>
             </Show>
         </HeaderWrapper>
@@ -155,32 +155,6 @@ export function EttersendingHeader() {
 
 export function DinSakHeader({ sak }: { readonly sak: Sak }) {
     const bem = bemUtils('header');
-    const intl = useIntl();
-
-    const søkerinfo = useQuery(søkerInfoOptions()).data;
-    const saker = useQuery({
-        ...hentSakerOptions(),
-        select: mapSakerDTOToSaker,
-    }).data;
-
-    // TODO: utleding av info her er litt kronglete, kan det gjøres bedre? Også vise noe når vi ikke har familiehendelse?
-    if (!søkerinfo || !saker || !sak.familiehendelse) {
-        return null;
-    }
-
-    const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn ?? [], saker);
-    const sakIGrupperteSaker = sak
-        ? grupperteSaker.find((gruppe) => gruppe.saker.map((s) => s.saksnummer).includes(sak.saksnummer))
-        : undefined;
-
-    const situasjon = utledFamiliesituasjon(sak.familiehendelse, sak.gjelderAdopsjon);
-    const barnTittel = getSakTittel({
-        barngruppering: sakIGrupperteSaker?.barn,
-        familiehendelsedato: getFamiliehendelseDato(sak.familiehendelse),
-        intl,
-        antallBarn: sak.ytelse === Ytelse.FORELDREPENGER ? sak.familiehendelse.antallBarn : 0,
-        situasjon,
-    });
 
     return (
         <HeaderWrapper>
@@ -197,11 +171,10 @@ export function DinSakHeader({ sak }: { readonly sak: Sak }) {
                         <HStack gap="3" align="center">
                             <Detail uppercase>{sak.ytelse}</Detail>
                             <BlueDot />
-                            <Detail>SAKSNR {sak.saksnummer}</Detail>
+                            <SaksnummerDetail />
+
                             <BlueDot />
-                            <Detail textColor="subtle">
-                                {barnTittel.tittel} {barnTittel.undertittel}
-                            </Detail>
+                            <FamiliehendelseDescription sak={sak} />
                         </HStack>
                     </Show>
                     <Show below="md">
@@ -209,16 +182,47 @@ export function DinSakHeader({ sak }: { readonly sak: Sak }) {
                             <HStack gap="2" align="center">
                                 <Detail uppercase>{sak.ytelse}</Detail>
                                 <BlueDot />
-                                <Detail>SAKSNR {sak.saksnummer}</Detail>
+                                <SaksnummerDetail />
                             </HStack>
-                            <Detail textColor="subtle">
-                                {barnTittel.tittel} {barnTittel.undertittel}
-                            </Detail>
+                            <FamiliehendelseDescription sak={sak} />
                         </VStack>
                     </Show>
                 </VStack>
             </HGrid>
         </HeaderWrapper>
+    );
+}
+
+function FamiliehendelseDescription({ sak }: { readonly sak: Sak }) {
+    const intl = useIntl();
+
+    const søkerinfo = useQuery(søkerInfoOptions()).data;
+    const saker = useQuery({
+        ...hentSakerOptions(),
+        select: mapSakerDTOToSaker,
+    }).data;
+
+    if (!søkerinfo || !saker || !sak.familiehendelse) {
+        return null;
+    }
+
+    const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn ?? [], saker);
+    const sakIGrupperteSaker = sak
+        ? grupperteSaker.find((gruppe) => gruppe.saker.map((s) => s.saksnummer).includes(sak.saksnummer))
+        : undefined;
+    const situasjon = utledFamiliesituasjon(sak.familiehendelse, sak.gjelderAdopsjon);
+    const barnTittel = getSakTittel({
+        barngruppering: sakIGrupperteSaker?.barn,
+        familiehendelsedato: getFamiliehendelseDato(sak.familiehendelse),
+        intl,
+        antallBarn: sak.ytelse === Ytelse.FORELDREPENGER ? sak.familiehendelse.antallBarn : 0,
+        situasjon,
+    });
+
+    return (
+        <Detail textColor="subtle">
+            {barnTittel.tittel} {barnTittel.undertittel}
+        </Detail>
     );
 }
 
