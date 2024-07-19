@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Alert, VStack } from '@navikt/ds-react';
@@ -19,7 +20,7 @@ import OversiktRoutes from 'app/routes/routes';
 import { RedirectSource, UKNOWN_SAKSNUMMER } from 'app/types/RedirectSource';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import { getAlleYtelser, grupperSakerPåBarn } from 'app/utils/sakerUtils';
+import { getAlleYtelser, getAntallSaker, grupperSakerPåBarn } from 'app/utils/sakerUtils';
 
 import './forside.css';
 
@@ -42,6 +43,29 @@ const Forside: React.FunctionComponent<Props> = ({ saker, isFirstRender, søkeri
         navigate(OversiktRoutes.HOVEDSIDE);
     }
     const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
+
+    const hasNavigated = useRef(false);
+
+    useEffect(() => {
+        if (!hasNavigated.current) {
+            hasNavigated.current = true;
+            const antallSaker = getAntallSaker(saker);
+            const { foreldrepenger, engangsstønad, svangerskapspenger } = saker;
+            if (antallSaker === 1) {
+                if (foreldrepenger.length === 1) {
+                    navigate(`${OversiktRoutes.SAKSOVERSIKT}/${foreldrepenger[0].saksnummer}`);
+                }
+
+                if (engangsstønad.length === 1) {
+                    navigate(`${OversiktRoutes.SAKSOVERSIKT}/${engangsstønad[0].saksnummer}`);
+                }
+
+                if (svangerskapspenger.length === 1) {
+                    navigate(`${OversiktRoutes.SAKSOVERSIKT}/${svangerskapspenger[0].saksnummer}`);
+                }
+            }
+        }
+    }, [navigate, saker]);
 
     const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn ?? [], saker);
     const alleYtelser = getAlleYtelser(saker);
