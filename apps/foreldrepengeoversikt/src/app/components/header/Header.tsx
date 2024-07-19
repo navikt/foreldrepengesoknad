@@ -39,10 +39,9 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
 function HeaderWrapper({ children }: { readonly children: ReactNode }) {
     const bem = bemUtils('header');
     const selectedRoute = useGetSelectedRoute();
-    // TODO: oppgaveid
     return (
         <div className={bem.block}>
-            <Breadcrumb selectedRoute={selectedRoute} oppgaveId={undefined} />
+            <Breadcrumb selectedRoute={selectedRoute} />
             <div className={bem.element('wrapper')}>{children}</div>
         </div>
     );

@@ -12,20 +12,15 @@ import { getBreadcrumbs } from 'app/types/Breadcrumb';
 
 import './breadcrumb.css';
 
-interface Props {
-    selectedRoute: OversiktRoutes;
-    oppgaveId: string | undefined;
-}
+type Props = {
+    readonly selectedRoute: OversiktRoutes;
+};
 
-const getRoute = (route: string, saksnummer: string | undefined, oppgaveId: string | undefined): string => {
+const getRoute = (route: string, saksnummer: string | undefined): string => {
     const sakRoute = `${OversiktRoutes.SAKSOVERSIKT}/${saksnummer}`;
 
     if (route === OversiktRoutes.SAKSOVERSIKT && saksnummer) {
         return sakRoute;
-    }
-
-    if (route === OversiktRoutes.OPPGAVER && oppgaveId) {
-        return `${OversiktRoutes.OPPGAVER}/${oppgaveId}`;
     }
 
     if (route === OversiktRoutes.DOKUMENTER) {
@@ -35,13 +30,13 @@ const getRoute = (route: string, saksnummer: string | undefined, oppgaveId: stri
     return route;
 };
 
-const Breadcrumb: React.FunctionComponent<Props> = ({ selectedRoute, oppgaveId }) => {
+const Breadcrumb: React.FunctionComponent<Props> = ({ selectedRoute }) => {
     const bem = bemUtils('breadcrumb');
     const path = getBreadcrumbs(selectedRoute);
 
     const sak = useGetSelectedSak();
     const saksnummer = sak ? sak.saksnummer : undefined;
-
+    console.log(path);
     return (
         <div className={bem.block}>
             {path.map((p, index) => {
@@ -69,7 +64,7 @@ const Breadcrumb: React.FunctionComponent<Props> = ({ selectedRoute, oppgaveId }
                             <Link
                                 key={p.displayName}
                                 className={bem.element('link-wrapper')}
-                                to={getRoute(p.route, saksnummer, oppgaveId)}
+                                to={getRoute(p.route, saksnummer)}
                             >
                                 <BodyShort>{p.displayName}</BodyShort>
                             </Link>
