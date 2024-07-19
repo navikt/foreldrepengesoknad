@@ -74,7 +74,6 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
                 </Route>
                 <Route path="*" element={<Navigate to={OversiktRoutes.HOVEDSIDE} />} />
             </Routes>
-            <Snarveier />
             <KontaktOss />
         </>
     );
@@ -87,6 +86,7 @@ export function PageRouteLayout({ header, children }: { readonly header: ReactNo
         <>
             {header}
             <div className={bem.block}>{children}</div>
+            <Snarveier />
         </>
     );
 }
