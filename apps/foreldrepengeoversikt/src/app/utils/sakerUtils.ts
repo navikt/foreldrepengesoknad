@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import orderBy from 'lodash/orderBy';
 import { IntlShape } from 'react-intl';
 
 import { formatDate } from '@navikt/fp-utils';
@@ -42,14 +43,14 @@ export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak): D
     return undefined;
 };
 
-export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[] | undefined): BarnGruppering => {
+export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[]): BarnGruppering => {
     const erForeldrepengesak = sak.ytelse === Ytelse.FORELDREPENGER;
     const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.map((b) => b.fnr).flat() : [];
     const pdlBarnMedSammeFnr =
-        erForeldrepengesak && registrerteBarn ? registrerteBarn.filter((b) => barnFnrFraSaken.includes(b.fnr)) : [];
+        (erForeldrepengesak && registrerteBarn.filter((b) => barnFnrFraSaken.includes(b.fnr))) || [];
     const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse!.fødselsdato);
     const pdlBarnMedSammeFødselsdato =
-        fødselsdatoFraSak !== undefined && registrerteBarn
+        fødselsdatoFraSak !== undefined
             ? registrerteBarn.filter(
                   (barn) =>
                       getErDatoInnenEnDagFraAnnenDato(ISOStringToDate(barn.fødselsdato), fødselsdatoFraSak) &&
@@ -78,10 +79,16 @@ export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[] | un
     };
 };
 
-export const grupperSakerPåBarn = (registrerteBarn: Person[] | undefined, saker: SakOppslag): GruppertSak[] => {
+export const grupperSakerPåBarn = (registrerteBarn: Person[], saker: SakOppslag): GruppertSak[] => {
     const alleSaker = getAlleYtelser(saker);
 
-    return alleSaker.reduce((result, sak) => {
+    const sorterteSaker = orderBy(
+        alleSaker,
+        (sak) => (sak.familiehendelse ? getFamiliehendelseDato(sak.familiehendelse) : ''),
+        'desc',
+    );
+
+    return sorterteSaker.reduce((result, sak) => {
         if (sak.familiehendelse) {
             const familiehendelsedato = getFamiliehendelseDato(sak.familiehendelse);
             const relevantSak = result.find((gruppertSak) => findRelevantSak(gruppertSak, familiehendelsedato));

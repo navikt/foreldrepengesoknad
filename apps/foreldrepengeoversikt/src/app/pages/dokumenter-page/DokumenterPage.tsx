@@ -9,9 +9,11 @@ import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
 import { hentDokumenterOptions } from 'app/api/api';
 import Dokument from 'app/components/dokument/Dokument';
 import GrupperteDokumenter from 'app/components/grupperte-dokumenter/GrupperteDokumenter';
+import { DokumenterHeader } from 'app/components/header/Header';
 import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
+import { PageRouteLayout } from 'app/routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from 'app/routes/routes';
 import { grupperDokumenterPåTidspunkt } from 'app/utils/dokumenterUtils';
 import { guid } from 'app/utils/guid';
@@ -37,7 +39,7 @@ const DokumenterPage: React.FunctionComponent = () => {
     const dokumenterGruppertPåTidspunkt = grupperDokumenterPåTidspunkt(dokumenterQuery.data ?? []);
 
     return (
-        <>
+        <PageRouteLayout header={<DokumenterHeader />}>
             <LinkPanel
                 as={Link}
                 to={`../${OversiktRoutes.ETTERSEND}`}
@@ -79,7 +81,7 @@ const DokumenterPage: React.FunctionComponent = () => {
                     </NoeGikkGalt>
                 </div>
             )}
-        </>
+        </PageRouteLayout>
     );
 };
 

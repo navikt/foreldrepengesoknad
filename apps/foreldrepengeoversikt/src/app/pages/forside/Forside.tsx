@@ -7,57 +7,58 @@ import { erSakOppdatertOptions } from 'app/api/api';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import HarIkkeSaker from 'app/components/har-ikke-saker/HarIkkeSaker';
 import HarSaker from 'app/components/har-saker/HarSaker';
+import { ForsideHeader } from 'app/components/header/Header';
 import SakLink from 'app/components/sak-link/SakLink';
 import {
     useGetRedirectedFromSøknadsnummer,
     useSetRedirectedFromSøknadsnummer,
 } from 'app/hooks/useRedirectedFromSøknadsnummer';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
-import { useSetSelectedSak } from 'app/hooks/useSelectedSak';
+import { PageRouteLayout } from 'app/routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from 'app/routes/routes';
-import Bankkonto from 'app/types/Bankkonto';
-import { GruppertSak } from 'app/types/GruppertSak';
 import { RedirectSource, UKNOWN_SAKSNUMMER } from 'app/types/RedirectSource';
-import { Sak } from 'app/types/Sak';
-import { SvangerskapspengeSak } from 'app/types/SvangerskapspengeSak';
+import { SakOppslag } from 'app/types/SakOppslag';
+import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
+import { getAlleYtelser, grupperSakerPåBarn } from 'app/utils/sakerUtils';
 
 import './forside.css';
 
 interface Props {
-    alleYtelser: Sak[];
-    grupperteSaker: GruppertSak[];
-    avslåttSvangerskapspengesak: SvangerskapspengeSak | undefined;
+    saker: SakOppslag;
     isFirstRender: React.MutableRefObject<boolean>;
-    bankkonto: Bankkonto | undefined;
+    søkerinfo: SøkerinfoDTO;
 }
 
-const Forside: React.FunctionComponent<Props> = ({
-    alleYtelser,
-    grupperteSaker,
-    avslåttSvangerskapspengesak,
-    isFirstRender,
-    bankkonto,
-}) => {
+const Forside: React.FunctionComponent<Props> = ({ saker, isFirstRender, søkerinfo }) => {
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
-    useSetSelectedSak(undefined);
+    const params = useParams();
+    useSetRedirectedFromSøknadsnummer(params.redirect, undefined, isFirstRender);
 
     const harIkkeOppdatertSakQuery = useQuery(erSakOppdatertOptions());
     const harIkkeOppdatertSak = harIkkeOppdatertSakQuery.isSuccess && !harIkkeOppdatertSakQuery.data;
 
-    const params = useParams();
-    useSetRedirectedFromSøknadsnummer(params.redirect, undefined, isFirstRender);
     const navigate = useNavigate();
     if (params.redirect === RedirectSource.REDIRECT_FROM_SØKNAD) {
         navigate(OversiktRoutes.HOVEDSIDE);
     }
     const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
+
+    const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn ?? [], saker);
+    const alleYtelser = getAlleYtelser(saker);
+
+    // Super spesifikt case for avslåtte papirsøknad for svangerskapspenger. Bør fjernes
+    const avslåttSvangerskapspengesak =
+        grupperteSaker.length === 0 && alleYtelser.length === 1 && saker.svangerskapspenger.length === 1
+            ? saker.svangerskapspenger[0]
+            : undefined;
+
     return (
-        <VStack gap="10">
-            <>
+        <PageRouteLayout header={<ForsideHeader />}>
+            <VStack gap="10">
                 {redirectedFromSøknadsnummer === UKNOWN_SAKSNUMMER && (
                     <BekreftelseSendtSøknad
                         relevantNyTidslinjehendelse={undefined}
-                        bankkonto={bankkonto}
+                        bankkonto={søkerinfo.søker.bankkonto}
                         ytelse={undefined}
                     />
                 )}
@@ -67,14 +68,14 @@ const Forside: React.FunctionComponent<Props> = ({
                         kan vente litt og komme tilbake senere for å se alle detaljene i saken din.
                     </Alert>
                 )}
-            </>
-            {alleYtelser.length > 0 ? (
-                <HarSaker grupperteSaker={grupperteSaker} />
-            ) : (
-                <HarIkkeSaker harOppdatertSak={!harIkkeOppdatertSak} />
-            )}
-            {avslåttSvangerskapspengesak && <SakLink sak={avslåttSvangerskapspengesak} />}
-        </VStack>
+                {alleYtelser.length > 0 ? (
+                    <HarSaker grupperteSaker={grupperteSaker} />
+                ) : (
+                    <HarIkkeSaker harOppdatertSak={!harIkkeOppdatertSak} />
+                )}
+                {avslåttSvangerskapspengesak && <SakLink sak={avslåttSvangerskapspengesak} />}
+            </VStack>
+        </PageRouteLayout>
     );
 };
 
