@@ -1,12 +1,9 @@
 import { Accordion, BodyShort, Detail, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { bemUtils } from '@navikt/fp-utils';
 
 import Bankkonto from 'app/types/Bankkonto';
 import { Ytelse } from 'app/types/Ytelse';
-
-import './kontonummer-info.css';
 
 interface Props {
     bankkonto: Bankkonto | undefined;
@@ -37,8 +34,6 @@ const getKontonummerInfoTekst = (harKontonummer: boolean, ytelse: Ytelse | undef
 };
 
 const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, ytelse }) => {
-    const bem = bemUtils('kontonummer-info');
-
     const harKontonummer = !!bankkonto?.kontonummer && bankkonto?.kontonummer.trim().length > 0;
     const kontonummerTittel = getKontonummerTittel(ytelse);
     const kontonummerTekst = harKontonummer ? bankkonto?.kontonummer : 'Du har ikke kontonummer registrert hos NAV. ';
@@ -46,13 +41,11 @@ const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, ytelse }) 
     const kontonummerEndreTekst = harKontonummer ? 'Endre kontonummer' : 'Registrer kontonummer';
 
     return (
-        <Accordion className={bem.block}>
-            <Accordion.Item>
+        <Accordion>
+            <Accordion.Item title={kontonummerTittel}>
                 <Accordion.Header>
-                    <div className={bem.element('accordeonHeader')}>
-                        <Detail className={bem.element('tittelTekst')}>{kontonummerTittel}</Detail>
-                        <BodyShort className={bem.element('kontonummer')}>{kontonummerTekst}</BodyShort>
-                    </div>
+                    <Detail>{kontonummerTittel}</Detail>
+                    <BodyShort>{kontonummerTekst}</BodyShort>
                 </Accordion.Header>
                 <Accordion.Content>
                     <VStack gap="7">
