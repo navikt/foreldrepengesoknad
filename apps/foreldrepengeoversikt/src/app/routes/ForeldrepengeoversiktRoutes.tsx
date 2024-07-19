@@ -86,6 +86,7 @@ export function PageRouteLayout({ header, children }: { readonly header: ReactNo
         <>
             {header}
             <div className={bem.block}>{children}</div>
+            {/*Viktig at Snarveier ligger her slik at den har tilgang til saksnummer fra Route da snarveien er dynamiske*/}
             <Snarveier />
         </>
     );
