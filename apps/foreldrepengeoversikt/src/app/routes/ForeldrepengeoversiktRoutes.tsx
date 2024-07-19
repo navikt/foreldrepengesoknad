@@ -65,7 +65,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
  *
  * Vi ønsker ikke å redirecte til sak dersom bruker allerede er på en underside på saken, eller at bruker navigerer tilbake til forside via breadcrumbs
  */
-function RedirectTilSakHvisDetKunFinnesEn({ saker }: { saker: SakOppslag }) {
+function RedirectTilSakHvisDetKunFinnesEn({ saker }: { readonly saker: SakOppslag }) {
     const navigate = useNavigate();
 
     const alleSaker = getAlleYtelser(saker);
