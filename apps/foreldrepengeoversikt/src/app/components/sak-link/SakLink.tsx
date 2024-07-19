@@ -27,7 +27,6 @@ const getHeading = (ytelse: Ytelse) => {
 
 const SakLink: React.FunctionComponent<Props> = ({ sak }) => {
     const bem = bemUtils('sak-link');
-    console.log(sak);
     return (
         <LinkPanel as={Link} to={`/sak/${sak.saksnummer}`} className={bem.block}>
             <VStack gap="1">
