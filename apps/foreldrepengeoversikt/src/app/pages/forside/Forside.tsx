@@ -43,7 +43,7 @@ const Forside: React.FunctionComponent<Props> = ({ saker, isFirstRender, søkeri
     }
     const redirectedFromSøknadsnummer = useGetRedirectedFromSøknadsnummer();
 
-    const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn, saker);
+    const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn ?? [], saker);
     const alleYtelser = getAlleYtelser(saker);
 
     // Super spesifikt case for avslåtte papirsøknad for svangerskapspenger. Bør fjernes

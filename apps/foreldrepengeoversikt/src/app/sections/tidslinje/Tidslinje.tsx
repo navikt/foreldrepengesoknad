@@ -33,9 +33,8 @@ import './tidslinje-hendelse.css';
 interface Params {
     sak: Sak;
     visHeleTidslinjen: boolean;
-    søkersBarn: SøkerinfoDTOBarn[] | undefined;
+    søkersBarn: SøkerinfoDTOBarn[];
     manglendeVedleggQuery: UseQueryResult<Skjemanummer[], Error>;
-
     tidslinjeHendelserQuery: UseQueryResult<Tidslinjehendelse[], Error>;
 }
 

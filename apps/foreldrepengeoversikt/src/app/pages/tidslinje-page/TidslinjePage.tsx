@@ -20,10 +20,9 @@ import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
 import './tidslinje-page.css';
 
 type OuterProps = {
-    readonly søkersBarn: SøkerinfoDTOBarn[] | undefined;
+    readonly søkersBarn: SøkerinfoDTOBarn[];
 };
-type InnerProps = {
-    readonly søkersBarn: SøkerinfoDTOBarn[] | undefined;
+type InnerProps = OuterProps & {
     readonly sak: Sak;
 };
 

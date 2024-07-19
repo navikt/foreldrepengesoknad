@@ -169,7 +169,7 @@ export function DinSakHeader({ sak }: { readonly sak: Sak }) {
         return null;
     }
 
-    const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn, saker);
+    const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn ?? [], saker);
     const sakIGrupperteSaker = sak
         ? grupperteSaker.find((gruppe) => gruppe.saker.map((s) => s.saksnummer).includes(sak.saksnummer))
         : undefined;

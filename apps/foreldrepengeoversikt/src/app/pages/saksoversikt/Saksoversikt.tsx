@@ -128,7 +128,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
                             tidslinjeHendelserQuery={tidslinjeHendelserQuery}
                             manglendeVedleggQuery={manglendeVedleggQuery}
                             visHeleTidslinjen={false}
-                            søkersBarn={søkerinfo.søker.barn}
+                            søkersBarn={søkerinfo.søker.barn ?? []}
                         />
                     </ContentSection>
                     <ContentSection padding="none" marginBottom="large">
