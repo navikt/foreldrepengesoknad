@@ -36,7 +36,6 @@ const Breadcrumb: React.FunctionComponent<Props> = ({ selectedRoute }) => {
 
     const sak = useGetSelectedSak();
     const saksnummer = sak ? sak.saksnummer : undefined;
-    console.log(path);
     return (
         <div className={bem.block}>
             {path.map((p, index) => {
