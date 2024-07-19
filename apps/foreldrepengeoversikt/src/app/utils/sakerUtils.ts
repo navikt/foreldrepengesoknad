@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import orderBy from 'lodash/orderBy';
 import { IntlShape } from 'react-intl';
 
 import { formatDate } from '@navikt/fp-utils';
@@ -81,7 +82,13 @@ export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[]): Ba
 export const grupperSakerPåBarn = (registrerteBarn: Person[], saker: SakOppslag): GruppertSak[] => {
     const alleSaker = getAlleYtelser(saker);
 
-    return alleSaker.reduce((result, sak) => {
+    const sorterteSaker = orderBy(
+        alleSaker,
+        (sak) => (sak.familiehendelse ? getFamiliehendelseDato(sak.familiehendelse) : ''),
+        'desc',
+    );
+
+    return sorterteSaker.reduce((result, sak) => {
         if (sak.familiehendelse) {
             const familiehendelsedato = getFamiliehendelseDato(sak.familiehendelse);
             const relevantSak = result.find((gruppertSak) => findRelevantSak(gruppertSak, familiehendelsedato));
