@@ -14,7 +14,7 @@
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "tsconfig": "workspace:*",
-        "typescript": "^5.4.3"
+        "typescript": "5.4.5"
     },
     "packageManager": "pnpm@9.1.4"
 }

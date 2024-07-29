@@ -45,7 +45,7 @@
         "storybook": "8.1.6",
         "storybook-react-intl": "^3.0.1",
         "tsconfig": "workspace:*",
-        "typescript": "^5.4.3",
+        "typescript": "5.4.5",
         "vite": "^5.1.6",
         "vite-plugin-checker": "^0.6.4",
         "vitest": "^1.4.0"

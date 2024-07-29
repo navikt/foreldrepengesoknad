@@ -29,8 +29,7 @@
         "dayjs": "^1.11.10",
         "react": "^18.2.0",
         "react-intl": "^6.6.4",
-        "react-to-pdf": "1.0.1",
-        "typescript": "^5.4.3"
+        "react-to-pdf": "1.0.1"
     },
     "devDependencies": {
         "@formatjs/cli-lib": "6.3.6",
@@ -53,7 +52,7 @@
         "storybook": "8.1.6",
         "storybook-react-intl": "^3.0.1",
         "tsconfig": "workspace:*",
-        "typescript": "^5.4.3",
+        "typescript": "5.4.5",
         "vite": "^5.1.6",
         "vite-plugin-checker": "^0.6.4",
         "vitest": "^1.4.0"
