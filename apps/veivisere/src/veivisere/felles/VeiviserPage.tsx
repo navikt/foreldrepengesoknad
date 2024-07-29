@@ -3,7 +3,7 @@ import { ReactElement, forwardRef } from 'react';
 
 import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { GreenHeading, IconCircleWrapper, Page } from '@navikt/fp-ui';
+import { BlueHeading, IconCircleWrapper, Page } from '@navikt/fp-ui';
 
 interface Props {
     label: string;
@@ -16,9 +16,9 @@ const VeiviserPage = forwardRef<HTMLDivElement, Props>(({ label, description, ch
     <>
         <Page
             header={
-                <GreenHeading>
+                <BlueHeading>
                     <HStack gap="5" align="center" wrap={false}>
-                        <IconCircleWrapper color="darkGreen" size="xl">
+                        <IconCircleWrapper color="darkBlue" size="xl">
                             {icon}
                             {!icon && <CalendarIcon height={40} width={40} fontSize="1.5rem" aria-hidden />}
                         </IconCircleWrapper>
@@ -27,7 +27,7 @@ const VeiviserPage = forwardRef<HTMLDivElement, Props>(({ label, description, ch
                             {description && <BodyShort size="medium">{description}</BodyShort>}
                         </VStack>
                     </HStack>
-                </GreenHeading>
+                </BlueHeading>
             }
         >
             {children}

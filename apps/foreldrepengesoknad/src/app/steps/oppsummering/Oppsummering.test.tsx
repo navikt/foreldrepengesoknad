@@ -30,7 +30,6 @@ describe('<Oppsummering>', () => {
 
         render(<Default sendSøknad={sendSøknad} />);
 
-        expect(await screen.findByText('MOR MYGG')).toBeInTheDocument();
         expect(screen.queryByText('Du må bekrefte at du har oppgitt riktige opplysninger')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Send søknaden'));
@@ -155,19 +154,22 @@ describe('<Oppsummering>', () => {
 
         await userEvent.click(await screen.findByText('Bo i utlandet'));
 
-        expect(screen.getByText('Du har bodd i Sverige i løpet av de forrige 12 månedene')).toBeInTheDocument();
+        expect(screen.getByText('Hvilket land har du bodd i de siste 12 månedene?')).toBeInTheDocument();
+        expect(screen.getAllByText('Sverige')).toHaveLength(2);
         expect(
             screen.getByText(
-                dayjs().subtract(10, 'months').format(DDMMYYYY_DATE_FORMAT) +
-                    ' - ' +
+                'Fra ' +
+                    dayjs().subtract(10, 'months').format(DDMMYYYY_DATE_FORMAT) +
+                    ' til ' +
                     dayjs().subtract(1, 'days').format(DDMMYYYY_DATE_FORMAT),
             ),
         ).toBeInTheDocument();
-        expect(screen.getByText('Du skal bo i Sverige i løpet av de neste 12 månedene')).toBeInTheDocument();
+
+        expect(screen.getByText('Hvilket land skal du bo i de neste 12 månedene?')).toBeInTheDocument();
+        expect(screen.getAllByText('Sverige')).toHaveLength(2);
         expect(
-            screen.getByText('i dag - ' + dayjs().add(100, 'days').format(DDMMYYYY_DATE_FORMAT)),
+            screen.getByText('Fra i dag til ' + dayjs().add(100, 'days').format(DDMMYYYY_DATE_FORMAT)),
         ).toBeInTheDocument();
-        expect(screen.getByText('På fødselstidspunktet bodde du i Norge')).toBeInTheDocument();
     });
 
     it('skal vise informasjon om arbeidsforhold og andre inntekter', async () => {

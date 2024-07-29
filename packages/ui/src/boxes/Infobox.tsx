@@ -24,7 +24,7 @@ const Infoboks: React.FC<Props> = ({
 }) => (
     <Box
         className={shouldFadeIn ? styles.box : undefined}
-        background={isGray ? 'bg-subtle' : 'surface-alt-3-subtle'}
+        background={isGray ? 'bg-subtle' : 'surface-alt-2-moderate'}
         padding="4"
         borderRadius="large"
     >
@@ -38,7 +38,7 @@ const Infoboks: React.FC<Props> = ({
                     )}
                     {!header && children}
                     {icon && (
-                        <IconCircleWrapper size="medium" color={isGray ? 'gray' : 'blue'}>
+                        <IconCircleWrapper size="medium" color={isGray ? 'gray' : 'darkGreen'}>
                             {icon}
                         </IconCircleWrapper>
                     )}

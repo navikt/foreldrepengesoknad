@@ -44,5 +44,8 @@
     background: var(--a-deepblue-200);
 }
 .lightBlue {
-    background: var(--a-deepblue-50);
+    background: var(--a-deepblue-100);
+}
+.darkBlue {
+    background: var(--a-deepblue-200);
 }

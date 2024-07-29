@@ -1,10 +1,12 @@
-import { VeiledermeldingerPerPeriode, VeilederMessage } from './types';
+import groupBy from 'lodash/groupBy';
 import { IntlShape } from 'react-intl';
-import { RegelAvvik } from '../utils/types/regelTypes';
+
+import { intlHasKey } from '@navikt/fp-common/src/common/utils/intlUtils';
+
 import { getRegelIntlValues, trimRelaterteRegelAvvik } from '../utils/regelUtils';
 import { UttaksplanAvvikType } from '../utils/types/UttaksplanAvvikType';
-import { groupBy } from 'lodash';
-import { intlHasKey } from '@navikt/fp-common/src/common/utils/intlUtils';
+import { RegelAvvik } from '../utils/types/regelTypes';
+import { VeilederMessage, VeiledermeldingerPerPeriode } from './types';
 
 export const veilederMessageAvsnitt = (
     førsteTekst: VeilederMessage[],

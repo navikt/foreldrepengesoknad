@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 
-import { Heading, LinkPanel } from '@navikt/ds-react';
+import { Heading, LinkPanel, VStack } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
+import { bemUtils, formatDate } from '@navikt/fp-utils';
 
 import { Sak } from 'app/types/Sak';
 import { Ytelse } from 'app/types/Ytelse';
@@ -27,15 +27,15 @@ const getHeading = (ytelse: Ytelse) => {
 
 const SakLink: React.FunctionComponent<Props> = ({ sak }) => {
     const bem = bemUtils('sak-link');
-
     return (
         <LinkPanel as={Link} to={`/sak/${sak.saksnummer}`} className={bem.block}>
-            <div className={bem.element('content')}>
+            <VStack gap="1">
                 <Heading level="3" size="medium">
                     {getHeading(sak.ytelse)}
                 </Heading>
-                <StatusTag sak={sak} />
-            </div>
+                <span>Sist oppdatert {formatDate(sak.oppdatertTidspunkt)}</span>
+            </VStack>
+            <StatusTag sak={sak} />
         </LinkPanel>
     );
 };

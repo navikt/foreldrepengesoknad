@@ -16,8 +16,8 @@ import { Situasjon } from 'types/HvemPlanlegger';
 import { erAlenesøker, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
-import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
-import { finnAntallUkerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
+import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
+import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
@@ -31,17 +31,19 @@ import styles from './planenDeresSteg.module.css';
 import OmÅTilpassePlanen from './tilpassePlanen/OmÅTilpassePlanen';
 import UforutsetteEndringer from './uforutsetteEndringer/UforutsetteEndringer';
 
-const finnAntallUkerSøker1 = (
+const finnAntallDagerSøker1 = (
     dekningsgrad: Dekningsgrad,
     stønadskontoer: TilgjengeligeStønadskontoer,
     fordeling: Fordeling,
 ) => {
-    const ukerFellesperiode = getAntallUkerFellesperiode(
+    const ukerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(
         dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
             ? stønadskontoer[Dekningsgrad.HUNDRE_PROSENT]
             : stønadskontoer[Dekningsgrad.ÅTTI_PROSENT],
     );
-    return fordeling.antallUkerSøker1 > ukerFellesperiode ? ukerFellesperiode : fordeling.antallUkerSøker1;
+    return fordeling.antallDagerSøker1 > ukerOgDagerFellesperiode.totaltAntallDager
+        ? ukerOgDagerFellesperiode.totaltAntallDager
+        : fordeling.antallDagerSøker1;
 };
 
 interface Props {
@@ -70,14 +72,14 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const valgtStønadskonto =
         hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
 
-    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
+    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
 
     const oppdaterPeriodeOgFordeling = (value: string) => {
         const dekningsgrad = value as Dekningsgrad;
         lagreHvorLangPeriode({ dekningsgrad });
         if (fordeling) {
             lagreFordeling({
-                antallUkerSøker1: finnAntallUkerSøker1(dekningsgrad, stønadskontoer, fordeling),
+                antallDagerSøker1: finnAntallDagerSøker1(dekningsgrad, stønadskontoer, fordeling),
             });
         }
     };
@@ -87,23 +89,11 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
         (hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett');
 
-    const uttaksdata100 = finnUttaksdata(
-        hvemHarRett,
-        hvemPlanlegger,
-        stønadskonto100,
-        barnet,
-        fordeling?.antallUkerSøker1,
-    );
-    const uttaksdata80 = finnUttaksdata(
-        hvemHarRett,
-        hvemPlanlegger,
-        stønadskonto80,
-        barnet,
-        fordeling?.antallUkerSøker1,
-    );
+    const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
+    const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, barnet);
 
-    const antallUker100 = finnAntallUkerMedForeldrepenger(uttaksdata100);
-    const antallUker80 = finnAntallUkerMedForeldrepenger(uttaksdata80);
+    const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata100);
+    const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata80);
 
     const erAleneforsørger = erAlenesøker(hvemPlanlegger);
 
@@ -112,7 +102,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         barnet,
         hvemPlanlegger,
         arbeidssituasjon,
-        fordeling?.antallUkerSøker1,
+        fordeling?.antallDagerSøker1,
     );
 
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
@@ -132,7 +122,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         icon={<InformationIcon height={24} width={24} fontSize="1-5rem" aria-hidden />}
                     >
                         <BodyLong>
-                            <FormattedMessage id="OversiktSteg.Infoboks.Utkast.Tekst" values={{ erAleneforsørger }} />
+                            <FormattedMessage id="OversiktSteg.Infoboks.Utkast.Tekst" />
                         </BodyLong>
                     </Infobox>
                     {farOgFarKunEnPartHarRett && barnet.erFødsel && (
@@ -164,36 +154,45 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 <FormattedMessage
                                     id="OversiktSteg.100"
                                     values={{
-                                        uker: antallUker100,
+                                        uker: antallUkerOgDager100.uker,
+                                        dager: antallUkerOgDager100.dager,
                                     }}
                                 />
                             </ToggleGroup.Item>
                             <ToggleGroup.Item value={Dekningsgrad.ÅTTI_PROSENT}>
-                                <FormattedMessage id="OversiktSteg.80" values={{ uker: antallUker80 }} />
+                                <FormattedMessage
+                                    id="OversiktSteg.80"
+                                    values={{ uker: antallUkerOgDager80.uker, dager: antallUkerOgDager80.dager }}
+                                />
                             </ToggleGroup.Item>
                         </ToggleGroup>
                         {hvemHarRett === 'beggeHarRett' &&
                             (!barnet.erFødsel || hvemPlanlegger.type !== Situasjon.FAR_OG_FAR) && (
                                 <Select
-                                    defaultValue={fordeling?.antallUkerSøker1}
+                                    defaultValue={fordeling?.antallDagerSøker1}
                                     label={''}
-                                    name="antallUkerSøker1"
+                                    name="antallDagerSøker1"
                                     onChange={(e) => {
-                                        lagreFordeling({ antallUkerSøker1: parseInt(e.target.value, 10) });
+                                        lagreFordeling({ antallDagerSøker1: parseInt(e.target.value, 10) });
                                     }}
                                 >
-                                    {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (
-                                        <option key={value.antallUkerSøker1} value={value.antallUkerSøker1}>
-                                            {finnFellesperiodeFordelingOptionTekst(
-                                                intl,
-                                                value,
-                                                hvemPlanlegger,
-                                                fornavnSøker1,
-                                                fornavnSøker2,
-                                                erOversiktSteg,
-                                            )}
-                                        </option>
-                                    ))}
+                                    {getFellesperiodefordelingSelectOptions(antallUkerOgDagerFellesperiode).map(
+                                        (value) => (
+                                            <option
+                                                key={value.antallUkerOgDagerSøker1.totaltAntallDager}
+                                                value={value.antallUkerOgDagerSøker1.totaltAntallDager}
+                                            >
+                                                {finnFellesperiodeFordelingOptionTekst(
+                                                    intl,
+                                                    value,
+                                                    hvemPlanlegger,
+                                                    fornavnSøker1,
+                                                    fornavnSøker2,
+                                                    erOversiktSteg,
+                                                )}
+                                            </option>
+                                        ),
+                                    )}
                                 </Select>
                             )}
                     </VStack>

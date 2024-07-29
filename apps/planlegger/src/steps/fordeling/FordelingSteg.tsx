@@ -12,28 +12,44 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { finnSøker1Tekst, finnSøker2Tekst, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { formatError } from 'utils/customErrorFormatter';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
+import { UkerOgDager, getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort, Heading, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
-import { GreenPanel, Infobox } from '@navikt/fp-ui';
+import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import FordelingsdetaljerPanel from './FordelingsdetaljerPanel';
 
 type Fellesperiodefordeling = {
-    antallUkerSøker1: number;
-    antallUkerSøker2: number;
+    antallUkerOgDagerSøker1: UkerOgDager;
+    antallUkerOgDagerSøker2: UkerOgDager;
 };
 
-export const getFellesperiodefordelingSelectOptions = (antallUkerFellesperiode: number): Fellesperiodefordeling[] => {
+export const getFellesperiodefordelingSelectOptions = (
+    antallUkerOgDagerFellesperiode: UkerOgDager,
+): Fellesperiodefordeling[] => {
     const values = [];
-    for (let i = 0; i <= antallUkerFellesperiode; i++) {
-        values.push({ antallUkerSøker2: i, antallUkerSøker1: antallUkerFellesperiode - i });
+    for (let i = 0; i <= antallUkerOgDagerFellesperiode.uker; i++) {
+        const søker1SkalHaDager = antallUkerOgDagerFellesperiode.uker - i >= i;
+        const dagerSøker1 = søker1SkalHaDager ? antallUkerOgDagerFellesperiode.dager : 0;
+        const dagerSøker2 = !søker1SkalHaDager ? antallUkerOgDagerFellesperiode.dager : 0;
+        values.push({
+            antallUkerOgDagerSøker1: {
+                uker: antallUkerOgDagerFellesperiode.uker - i,
+                dager: søker1SkalHaDager ? antallUkerOgDagerFellesperiode.dager : 0,
+                totaltAntallDager: (antallUkerOgDagerFellesperiode.uker - i) * 5 + dagerSøker1,
+            },
+            antallUkerOgDagerSøker2: {
+                uker: i,
+                dager: søker1SkalHaDager ? 0 : antallUkerOgDagerFellesperiode.dager,
+                totaltAntallDager: i * 5 + dagerSøker2,
+            },
+        });
     }
     return values;
 };
@@ -50,19 +66,29 @@ export const finnFellesperiodeFordelingOptionTekst = (
     const søker1Tekst = erFarOgFar && fornavnSøker1 ? fornavnSøker1 : finnSøker1Tekst(intl, hvemPlanlegger);
     const søker2Tekst = erFarOgFar && fornavnSøker2 ? fornavnSøker2 : finnSøker2Tekst(intl, hvemPlanlegger);
 
-    if (value.antallUkerSøker1 === 0) {
+    if (value.antallUkerOgDagerSøker1.uker === 0) {
         return (
             <FormattedMessage
                 id="FordelingSteg.FordelingOptionAlt"
-                values={{ hvem: søker2Tekst, uker: value.antallUkerSøker2, erOversiktSteg }}
+                values={{
+                    hvem: søker2Tekst,
+                    uker: value.antallUkerOgDagerSøker2.uker,
+                    dager: value.antallUkerOgDagerSøker2.dager,
+                    erOversiktSteg,
+                }}
             />
         );
     }
-    if (value.antallUkerSøker2 === 0) {
+    if (value.antallUkerOgDagerSøker2.uker === 0) {
         return (
             <FormattedMessage
                 id="FordelingSteg.FordelingOptionAlt"
-                values={{ hvem: søker1Tekst, uker: value.antallUkerSøker1, erOversiktSteg }}
+                values={{
+                    hvem: søker1Tekst,
+                    uker: value.antallUkerOgDagerSøker1.uker,
+                    dager: value.antallUkerOgDagerSøker1.dager,
+                    erOversiktSteg,
+                }}
             />
         );
     }
@@ -72,8 +98,10 @@ export const finnFellesperiodeFordelingOptionTekst = (
             values={{
                 hvem: søker1Tekst,
                 hvem2: søker2Tekst,
-                uker: value.antallUkerSøker1,
-                uker2: value.antallUkerSøker2,
+                uker: value.antallUkerOgDagerSøker1.uker,
+                dagerS1: value.antallUkerOgDagerSøker1.dager,
+                uker2: value.antallUkerOgDagerSøker2.uker,
+                dagerS2: value.antallUkerOgDagerSøker2.dager,
                 erOversiktSteg,
             }}
         />
@@ -101,7 +129,9 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
         defaultValues: fordeling,
     });
 
-    const antallUkerSøker1 = formMethods.watch('antallUkerSøker1');
+    // TODO FIX string => number
+    const antallDagerSøker1Temp = formMethods.watch('antallDagerSøker1');
+    const antallDagerSøker1 = antallDagerSøker1Temp ? parseInt(antallDagerSøker1Temp.toString(), 10) : undefined;
 
     const lagre = (formValues: Fordeling) => {
         oppdaterFordeling(formValues);
@@ -110,11 +140,11 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     const valgtStønadskonto = stønadskontoer[dekningsgrad];
 
-    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
+    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
-    const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerSøker1);
-    const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallUkerSøker1);
+    const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallDagerSøker1);
+    const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet, antallDagerSøker1);
 
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
@@ -143,16 +173,26 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             isGray
                         >
                             <BodyShort>
-                                <FormattedMessage id="FordelingSteg.Infoboks.HvordanFordeleTekst" />
+                                <FormattedMessage
+                                    id="FordelingSteg.Infoboks.HvordanFordeleTekst"
+                                    values={{
+                                        uker: antallUkerOgDagerFellesperiode.uker,
+                                        dager: antallUkerOgDagerFellesperiode.dager,
+                                        prosent: dekningsgrad,
+                                    }}
+                                />
                             </BodyShort>
                         </Infobox>
-                        <GreenPanel isDarkGreen={fordeling === undefined}>
+                        <BluePanel isDarkBlue={fordeling === undefined}>
                             <Select
-                                name="antallUkerSøker1"
+                                name="antallDagerSøker1"
                                 label={
                                     <FormattedMessage
                                         id="FordelingSteg.FordelingTittel"
-                                        values={{ uker: antallUkerFellesperiode }}
+                                        values={{
+                                            uker: antallUkerOgDagerFellesperiode.uker,
+                                            dager: antallUkerOgDagerFellesperiode.dager,
+                                        }}
                                     />
                                 }
                                 autofocusWhenEmpty
@@ -162,8 +202,11 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                 customErrorFormatter={formatError}
                                 onChange={scrollToBottom}
                             >
-                                {getFellesperiodefordelingSelectOptions(antallUkerFellesperiode).map((value) => (
-                                    <option key={value.antallUkerSøker1} value={value.antallUkerSøker1}>
+                                {getFellesperiodefordelingSelectOptions(antallUkerOgDagerFellesperiode).map((value) => (
+                                    <option
+                                        key={value.antallUkerOgDagerSøker1.totaltAntallDager}
+                                        value={value.antallUkerOgDagerSøker1.totaltAntallDager}
+                                    >
                                         {finnFellesperiodeFordelingOptionTekst(
                                             intl,
                                             value,
@@ -174,10 +217,10 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     </option>
                                 ))}
                             </Select>
-                        </GreenPanel>
-                        {antallUkerSøker1 !== undefined && (
+                        </BluePanel>
+                        {antallDagerSøker1 !== undefined && (
                             <FordelingsdetaljerPanel
-                                key={antallUkerSøker1}
+                                key={antallDagerSøker1}
                                 barnet={barnet}
                                 hvemPlanlegger={hvemPlanlegger}
                                 fornavnSøker1={fornavnSøker1}

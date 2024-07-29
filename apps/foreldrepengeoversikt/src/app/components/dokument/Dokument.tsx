@@ -1,10 +1,10 @@
 import { FileContent } from '@navikt/ds-icons';
-import { BodyShort, Hide, Link, Show } from '@navikt/ds-react';
+import { Detail, HGrid, HStack, Hide, Link, Show, Tag } from '@navikt/ds-react';
 
 import { bemUtils, formatDateExtended } from '@navikt/fp-utils';
 
-import DokumentAvsender from 'app/components/dokument-avsender/DokumentAvsender';
 import { Dokument as DokumentType } from 'app/types/Dokument';
+import { DokumentType as DokumentTypeEnum } from 'app/types/DokumentType';
 import { lagUrl } from 'app/utils/dokumenterUtils';
 
 import './dokument.css';
@@ -15,41 +15,55 @@ interface Props {
 
 const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
     const bem = bemUtils('dokument');
-    const { tittel, type, mottatt } = dokument;
-    const url = lagUrl(dokument);
+    const { type, mottatt } = dokument;
 
     return (
         <div className={bem.block}>
-            <Hide above="md">
-                <div className={bem.element('content-top')}>
-                    <FileContent className={bem.element('ikon')} height={24} width={24} aria-hidden={true} />
-                    <div className={bem.element('link-icon')}>
-                        <Link href={url} target="_blank">
-                            {tittel}
-                        </Link>
-                    </div>
-                </div>
-                <div className={bem.element('content-bottom')}>
-                    <DokumentAvsender type={type} />
-                    <BodyShort>{formatDateExtended(mottatt)}</BodyShort>
-                </div>
+            <Hide above="md" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <HGrid columns={'max-content 1fr'} gap="4">
+                    <DokumentLenke dokument={dokument} />
+                </HGrid>
+                <HStack gap="4" align="center" justify="space-between">
+                    <DokumentAvsender dokumentType={type} />
+                    <Detail textColor="subtle">{formatDateExtended(mottatt)}</Detail>
+                </HStack>
             </Hide>
             <Show above="md">
                 <div className={bem.element('contentWrapper')}>
-                    <div style={{ display: 'flex' }}>
-                        <FileContent className={bem.element('ikon')} height={24} width={24} aria-hidden={true} />
-                        <div className={bem.element('link-icon')}>
-                            <Link href={url} target="_blank">
-                                {tittel}
-                            </Link>
-                        </div>
-                    </div>
-                    <BodyShort>{formatDateExtended(mottatt)}</BodyShort>
-                    <DokumentAvsender type={type} />
+                    <DokumentLenke dokument={dokument} />
+                    <Detail textColor="subtle">{formatDateExtended(mottatt)}</Detail>
+                    <DokumentAvsender dokumentType={type} />
                 </div>
             </Show>
         </div>
     );
 };
+
+function DokumentLenke({ dokument }: { readonly dokument: DokumentType }) {
+    const url = lagUrl(dokument);
+
+    return (
+        <>
+            <FileContent style={{ color: 'var(--a-text-action)' }} height={24} width={24} aria-hidden={true} />
+            <Link
+                href={url}
+                target="_blank"
+                style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: 'block', whiteSpace: 'nowrap' }}
+            >
+                {dokument.tittel}
+            </Link>
+        </>
+    );
+}
+
+function DokumentAvsender({ dokumentType }: { readonly dokumentType: DokumentTypeEnum }) {
+    const text = dokumentType === DokumentTypeEnum.INNGÅENDE_DOKUMENT ? 'Arbeidsgiver' : 'NAV';
+
+    return (
+        <Tag size="small" style={{ width: 'max-content', justifySelf: 'flex-end' }} variant="neutral">
+            {text}
+        </Tag>
+    );
+}
 
 export default Dokument;

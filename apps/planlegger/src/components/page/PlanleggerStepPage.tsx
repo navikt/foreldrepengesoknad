@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Heading, VStack } from '@navikt/ds-react';
 
-import { GreenHeading, Page, ProgressStep, ProgressStepper } from '@navikt/fp-ui';
+import { BlueHeading, Page, ProgressStep, ProgressStepper } from '@navikt/fp-ui';
 
 interface Props {
     steps: Array<ProgressStep<PlanleggerRoutes>>;
@@ -15,14 +15,14 @@ const PlanleggerStepPage = forwardRef<HTMLDivElement, Props>(({ steps, children 
     <>
         <Page
             header={
-                <GreenHeading>
+                <BlueHeading>
                     <VStack gap="4">
                         <Heading size="large">
                             <FormattedMessage id="PlanleggerStepPage.Tittel" />
                         </Heading>
-                        <ProgressStepper steps={steps} hideExpandableStepInfo showGreenStatusBar />
+                        <ProgressStepper steps={steps} hideExpandableStepInfo showBlueStatusBar />
                     </VStack>
-                </GreenHeading>
+                </BlueHeading>
             }
         >
             {children}

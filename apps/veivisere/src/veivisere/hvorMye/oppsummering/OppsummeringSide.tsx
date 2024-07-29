@@ -12,7 +12,7 @@ import { BodyShort, Button, ExpansionCard, HStack, Heading, Link, VStack } from 
 import { links } from '@navikt/fp-constants';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { Dekningsgrad, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
-import { GreenPanel, IconCircleWrapper, Infobox } from '@navikt/fp-ui';
+import { BluePanel, IconCircleWrapper, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -177,7 +177,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                     <ExpansionCard aria-label="" size="small">
                         <ExpansionCard.Header>
                             <HStack gap="6" align="center" wrap={false}>
-                                <IconCircleWrapper size="medium" color="green">
+                                <IconCircleWrapper size="medium" color="lightBlue">
                                     <ChatElipsisIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                                 </IconCircleWrapper>
                                 <ExpansionCard.Title size="small">
@@ -189,7 +189,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                             {(arbeidssituasjon.erArbeidstakerEllerFrilanser ||
                                 arbeidssituasjon.harUtbetalingFraNav) && (
                                 <VStack gap="10">
-                                    <GreenPanel>
+                                    <BluePanel>
                                         <VStack gap="1">
                                             <Heading size="small" level="4">
                                                 <FormattedMessage id="OppsummeringSide.NæverendeArbeidssitasjon" />
@@ -201,8 +201,8 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                                 <FormattedMessage id="OppsummeringSide.UtbetalingFraNav" />
                                             )}
                                         </VStack>
-                                    </GreenPanel>
-                                    <GreenPanel>
+                                    </BluePanel>
+                                    <BluePanel>
                                         <VStack gap="5">
                                             <div>
                                                 <Heading size="small">
@@ -233,7 +233,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                                 </BodyShort>
                                             </div>
                                         </VStack>
-                                    </GreenPanel>
+                                    </BluePanel>
                                 </VStack>
                             )}
                         </ExpansionCard.Content>

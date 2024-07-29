@@ -21,9 +21,9 @@
     },
     "dependencies": {
         "@fontsource/source-sans-3": "^5.0.19",
-        "@navikt/aksel-icons": "^6.3.3",
-        "@navikt/ds-css": "6.3.3",
-        "@navikt/ds-react": "6.3.3",
+        "@navikt/aksel-icons": "^6.13.0",
+        "@navikt/ds-css": "6.13.0",
+        "@navikt/ds-react": "6.13.0",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-api": "workspace:*",
         "@navikt/fp-constants": "workspace:*",

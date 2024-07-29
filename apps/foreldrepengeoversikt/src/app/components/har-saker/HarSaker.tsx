@@ -1,15 +1,11 @@
-import EtBarn from 'assets/EtBarn';
-import ToBarn from 'assets/ToBarn';
-import TreBarn from 'assets/TreBarn';
 import { useIntl } from 'react-intl';
 
-import { Heading } from '@navikt/ds-react';
+import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
+import { bemUtils, capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { GruppertSak } from 'app/types/GruppertSak';
-import { ISOStringToDate } from 'app/utils/dateUtils';
 import { guid } from 'app/utils/guid';
 import { getSakTittel } from 'app/utils/sakerUtils';
 
@@ -20,18 +16,6 @@ interface Props {
     grupperteSaker: GruppertSak[];
 }
 
-const getIkonForAntallBarn = (antallBarn: number) => {
-    switch (antallBarn) {
-        case 0:
-        case 1:
-            return <EtBarn />;
-        case 2:
-            return <ToBarn />;
-        default:
-            return <TreBarn />;
-    }
-};
-
 const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker }) => {
     const bem = bemUtils('har-saker');
     const intl = useIntl();
@@ -40,26 +24,26 @@ const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker }) => {
     return (
         <>
             {grupperteSaker.map((gruppering) => {
-                const tittel = getSakTittel(
-                    gruppering.barn?.fornavn,
-                    gruppering.barn?.fødselsdatoer,
-                    ISOStringToDate(gruppering.familiehendelsedato)!,
-                    !!gruppering.barn?.alleBarnaLever,
-                    gruppering.antallBarn,
+                const { tittel, undertittel } = getSakTittel({
+                    barngruppering: gruppering.barn,
+                    familiehendelsedato: gruppering.familiehendelsedato,
                     intl,
-                    gruppering.type,
-                );
+                    antallBarn: gruppering.antallBarn,
+                    situasjon: gruppering.type,
+                });
                 return (
                     <div className={bem.block} key={gruppering.familiehendelsedato}>
-                        <Heading size="small" level="2" className={bem.element('tittel')}>
-                            {getIkonForAntallBarn(gruppering.antallBarn)}
-                            <div>
-                                <div>{tittel}</div>
-                            </div>
-                        </Heading>
-                        {gruppering.saker.map((sak) => {
-                            return <SakLink key={guid()} sak={sak} />;
-                        })}
+                        <HStack className={bem.element('tittel')} gap="2" align="baseline">
+                            <Heading size="small" level="2">
+                                {tittel}
+                            </Heading>
+                            <BodyShort>{capitalizeFirstLetter(undertittel)}</BodyShort>
+                        </HStack>
+                        <VStack gap="2">
+                            {gruppering.saker.map((sak) => {
+                                return <SakLink key={guid()} sak={sak} />;
+                            })}
+                        </VStack>
                     </div>
                 );
             })}

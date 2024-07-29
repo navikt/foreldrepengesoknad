@@ -9,7 +9,7 @@ import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { Søker, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
+import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 
 import OppsummeringSteg from './OppsummeringSteg';
 
@@ -19,20 +19,6 @@ const promiseAction =
         action('button-click')(...args);
         return Promise.resolve();
     };
-
-const søker = {
-    fnr: '11111111111',
-    fornavn: 'Henrikke',
-    etternavn: 'Ibsen',
-    kjønn: 'K',
-    fødselsdato: '1979-01-28',
-    adresse: 'Testadresse',
-    bankkonto: {
-        kontonummer: '49875234987',
-        banknavn: 'Storebank',
-    },
-    barn: [],
-} as Søker;
 
 const barnet = {
     erBarnetFødt: true,
@@ -84,11 +70,7 @@ const Template: StoryFn<{
                         [ContextDataType.DOKUMENTASJON]: dokumentasjon,
                     }}
                 >
-                    <OppsummeringSteg
-                        søker={søker}
-                        sendSøknad={sendSøknad}
-                        mellomlagreOgNaviger={mellomlagreOgNaviger}
-                    />
+                    <OppsummeringSteg sendSøknad={sendSøknad} mellomlagreOgNaviger={mellomlagreOgNaviger} />
                 </EsDataContext>
             </MemoryRouter>
         </div>

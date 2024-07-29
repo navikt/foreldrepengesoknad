@@ -219,7 +219,7 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
                     <div>
                         <RadioGroup
                             name="harHattArbeidIUtlandet"
-                            label={intl.formatMessage({ id: 'inntektsinformasjon.annenInntekt' })}
+                            label={intl.formatMessage({ id: 'inntektsinformasjon.hattArbeidIUtlandet' })}
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'valideringsfeil.hattArbeidIUtlandet.påkrevd' })),
                             ]}

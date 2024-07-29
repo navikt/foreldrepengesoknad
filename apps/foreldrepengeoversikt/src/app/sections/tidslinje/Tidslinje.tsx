@@ -1,7 +1,7 @@
-import { AxiosError } from 'axios';
+import { UseQueryResult } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
-import { Link as LinkInternal, useParams } from 'react-router-dom';
+import { Link as LinkInternal } from 'react-router-dom';
 
 import { ExternalLink } from '@navikt/ds-icons';
 import { BodyShort, Button, Link, ReadMore } from '@navikt/ds-react';
@@ -11,13 +11,13 @@ import { bemUtils } from '@navikt/fp-utils';
 
 import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
 import OversiktRoutes from 'app/routes/routes';
-import { SakOppslag } from 'app/types/SakOppslag';
+import { Sak } from 'app/types/Sak';
 import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
 import { Ytelse } from 'app/types/Ytelse';
 import { guid } from 'app/utils/guid';
-import { getAlleYtelser, getBarnGrupperingFraSak, getFørsteUttaksdagIForeldrepengesaken } from 'app/utils/sakerUtils';
+import { getBarnGrupperingFraSak, getFørsteUttaksdagIForeldrepengesaken } from 'app/utils/sakerUtils';
 import {
     VENTEÅRSAKER,
     getAktivTidslinjeStegIndex,
@@ -31,31 +31,24 @@ import TidslinjeHendelse from './TidslinjeHendelse';
 import './tidslinje-hendelse.css';
 
 interface Params {
-    saker: SakOppslag;
+    sak: Sak;
     visHeleTidslinjen: boolean;
-    søkersBarn: SøkerinfoDTOBarn[] | undefined;
-    tidslinjeHendelserError: AxiosError<any, any> | null;
-    manglendeVedleggError: AxiosError<any, any> | null;
-    tidslinjeHendelserData: Tidslinjehendelse[];
-    manglendeVedleggData: Skjemanummer[];
+    søkersBarn: SøkerinfoDTOBarn[];
+    manglendeVedleggQuery: UseQueryResult<Skjemanummer[], Error>;
+    tidslinjeHendelserQuery: UseQueryResult<Tidslinjehendelse[], Error>;
 }
 
 const Tidslinje: React.FunctionComponent<Params> = ({
-    saker,
+    sak,
     visHeleTidslinjen,
     søkersBarn,
-    tidslinjeHendelserData,
-    tidslinjeHendelserError,
-    manglendeVedleggData,
-    manglendeVedleggError,
+    tidslinjeHendelserQuery,
+    manglendeVedleggQuery,
 }) => {
-    const params = useParams();
     const intl = useIntl();
     const sakPath = location.pathname.replace(`/${OversiktRoutes.TIDSLINJEN}`, '');
 
     const bem = bemUtils('tidslinje-hendelse');
-    const alleSaker = getAlleYtelser(saker);
-    const sak = alleSaker.find((sak) => sak.saksnummer === params.saksnummer)!;
     const førsteUttaksdagISaken =
         sak.ytelse === Ytelse.FORELDREPENGER ? getFørsteUttaksdagIForeldrepengesaken(sak) : undefined;
 
@@ -67,7 +60,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({
             sak.gjeldendeVedtak.perioder.every((p) => p.resultat !== undefined && p.resultat.innvilget === false));
     const erInnvilgetForeldrepengesøknad =
         sak.ytelse === Ytelse.FORELDREPENGER && sak.åpenBehandling === undefined && !!sak.gjeldendeVedtak;
-    if (tidslinjeHendelserError || manglendeVedleggError || sak === undefined) {
+    if (tidslinjeHendelserQuery.isError || manglendeVedleggQuery.isError || sak === undefined) {
         return (
             <NoeGikkGalt>
                 Vi klarer ikke å vise informasjon om hva som skjer i saken din akkurat nå. Feilen er hos oss, ikke hos
@@ -76,7 +69,10 @@ const Tidslinje: React.FunctionComponent<Params> = ({
         );
     }
 
-    if (!tidslinjeHendelserData || !manglendeVedleggData) {
+    const tidslinjeHendelserData = tidslinjeHendelserQuery.data ?? [];
+    const manglendeVedleggData = manglendeVedleggQuery.data ?? [];
+
+    if (tidslinjeHendelserData.length === 0) {
         return null;
     }
 

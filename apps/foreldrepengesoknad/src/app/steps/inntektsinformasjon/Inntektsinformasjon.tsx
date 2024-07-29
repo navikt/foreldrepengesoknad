@@ -99,7 +99,7 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const [egenNæringInformasjon, setEgenNæringsInformasjon] = useState(
+    const [egenNæringInformasjon, setEgenNæringInformasjon] = useState(
         søker?.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : [],
     );
     const [andreInntekterInformasjon, setAndreInntekterInformasjon] = useState(
@@ -201,7 +201,7 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
                             <Block padBottom="l">
                                 <EgenNæring
                                     egenNæringInformasjon={egenNæringInformasjon}
-                                    setEgenNæringsInformasjon={setEgenNæringsInformasjon}
+                                    setEgenNæringInformasjon={setEgenNæringInformasjon}
                                     visibility={visibility}
                                     formValues={formValues as InntektsinformasjonFormData}
                                 />

@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { LocaleAll } from '@navikt/fp-types';
-import { GreenHeading, IconCircleWrapper, LanguageToggleNew, Page } from '@navikt/fp-ui';
+import { BlueHeading, IconCircleWrapper, LanguageToggleNew, Page } from '@navikt/fp-ui';
 
 import styles from './frontPage.module.css';
 
@@ -36,12 +36,12 @@ const FrontPage: React.FunctionComponent<Props> = ({
         header={
             <>
                 <Show below="md">
-                    <GreenHeading isDarkGreen>
+                    <BlueHeading isDarkBlue>
                         <VStack gap="4" align="center">
                             <div className={styles.languageToggle}>
                                 <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
                             </div>
-                            <IconCircleWrapper color="darkGreen" size="xl">
+                            <IconCircleWrapper color="darkBlue" size="xl">
                                 {icon}
                                 {!icon && <CalendarIcon height={28} width={28} fontSize="1.5rem" aria-hidden />}
                             </IconCircleWrapper>
@@ -53,12 +53,12 @@ const FrontPage: React.FunctionComponent<Props> = ({
                                 </HStack>
                             </VStack>
                         </VStack>
-                    </GreenHeading>
+                    </BlueHeading>
                 </Show>
                 <Show above="md">
-                    <GreenHeading>
+                    <BlueHeading>
                         <VStack gap="4">
-                            <IconCircleWrapper color="darkGreen" size="xl">
+                            <IconCircleWrapper color="darkBlue" size="xl">
                                 {icon}
                                 {!icon && <CalendarIcon height={35} width={35} fontSize="1.5rem" aria-hidden />}
                             </IconCircleWrapper>
@@ -70,7 +70,7 @@ const FrontPage: React.FunctionComponent<Props> = ({
                                 </HStack>
                             </VStack>
                         </VStack>
-                    </GreenHeading>
+                    </BlueHeading>
                 </Show>
             </>
         }

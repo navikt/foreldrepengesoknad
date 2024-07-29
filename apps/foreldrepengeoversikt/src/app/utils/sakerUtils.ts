@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import orderBy from 'lodash/orderBy';
 import { IntlShape } from 'react-intl';
 
 import { formatDate } from '@navikt/fp-utils';
@@ -42,14 +43,14 @@ export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak): D
     return undefined;
 };
 
-export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[] | undefined): BarnGruppering => {
+export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[]): BarnGruppering => {
     const erForeldrepengesak = sak.ytelse === Ytelse.FORELDREPENGER;
     const barnFnrFraSaken = erForeldrepengesak && sak.barn !== undefined ? sak.barn.map((b) => b.fnr).flat() : [];
     const pdlBarnMedSammeFnr =
-        erForeldrepengesak && registrerteBarn ? registrerteBarn.filter((b) => barnFnrFraSaken.includes(b.fnr)) : [];
+        (erForeldrepengesak && registrerteBarn.filter((b) => barnFnrFraSaken.includes(b.fnr))) || [];
     const fødselsdatoFraSak = ISOStringToDate(sak.familiehendelse!.fødselsdato);
     const pdlBarnMedSammeFødselsdato =
-        fødselsdatoFraSak !== undefined && registrerteBarn
+        fødselsdatoFraSak !== undefined
             ? registrerteBarn.filter(
                   (barn) =>
                       getErDatoInnenEnDagFraAnnenDato(ISOStringToDate(barn.fødselsdato), fødselsdatoFraSak) &&
@@ -78,10 +79,16 @@ export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[] | un
     };
 };
 
-export const grupperSakerPåBarn = (registrerteBarn: Person[] | undefined, saker: SakOppslag): GruppertSak[] => {
+export const grupperSakerPåBarn = (registrerteBarn: Person[], saker: SakOppslag): GruppertSak[] => {
     const alleSaker = getAlleYtelser(saker);
 
-    return alleSaker.reduce((result, sak) => {
+    const sorterteSaker = orderBy(
+        alleSaker,
+        (sak) => (sak.familiehendelse ? getFamiliehendelseDato(sak.familiehendelse) : ''),
+        'desc',
+    );
+
+    return sorterteSaker.reduce((result, sak) => {
         if (sak.familiehendelse) {
             const familiehendelsedato = getFamiliehendelseDato(sak.familiehendelse);
             const relevantSak = result.find((gruppertSak) => findRelevantSak(gruppertSak, familiehendelsedato));
@@ -255,36 +262,46 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
     antallBarn: number,
     intl: IntlShape,
     type: Situasjon,
-): string => {
+): { tittel: string; undertittel: string } => {
     const barnTekst = getTekstForAntallBarn(antallBarn, intl);
     if ((antallBarn === 0 && fødselsdatoer === undefined) || type === 'termin') {
-        return intl.formatMessage(
-            { id: 'barnHeader.terminBarn' },
-            {
-                barnTekst,
-                termindato: formatDate(familiehendelsedato),
-            },
-        );
+        return {
+            tittel: intl.formatMessage(
+                { id: 'barnHeader.terminBarn' },
+                {
+                    barnTekst,
+                    termindato: formatDate(familiehendelsedato),
+                },
+            ),
+            undertittel: '',
+        };
     }
 
     if (type === 'adopsjon') {
-        return intl.formatMessage(
-            { id: 'barnHeader.adoptertBarn' },
-            {
-                adopsjonsdato: formatDate(familiehendelsedato),
-            },
-        );
+        return {
+            tittel: intl.formatMessage(
+                { id: 'barnHeader.adoptertBarn' },
+                {
+                    adopsjonsdato: formatDate(familiehendelsedato),
+                },
+            ),
+            undertittel: '',
+        };
     } else {
         const fødselsdatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
-        return fødselsdatoer !== undefined && fødselsdatoer.length > 0
-            ? intl.formatMessage(
-                  { id: 'barnHeader.fødtBarn' },
-                  {
-                      barnTekst,
-                      fødselsdatoTekst,
-                  },
-              )
-            : '';
+        if (fødselsdatoer !== undefined && fødselsdatoer.length > 0) {
+            return {
+                tittel: intl.formatMessage(
+                    { id: 'barnHeader.fødtBarn' },
+                    {
+                        barnTekst,
+                        fødselsdatoTekst,
+                    },
+                ),
+                undertittel: '',
+            };
+        }
+        return { tittel: '', undertittel: '' };
     }
 };
 
@@ -301,26 +318,41 @@ export const getNavnPåBarna = (fornavn: string[]): string => {
     }
 };
 
-export const getSakTittel = (
-    fornavn: string[] | undefined,
-    fødselsdatoer: Date[] | undefined,
-    familiehendelsesdato: Date,
-    alleBarnaLever: boolean,
-    antallBarn: number,
-    intl: IntlShape,
-    type: Situasjon,
-): string => {
-    if (fornavn === undefined || fornavn.length === 0 || !alleBarnaLever) {
-        return getTittelBarnNårNavnSkalIkkeVises(familiehendelsesdato, fødselsdatoer, antallBarn, intl, type);
+type SakTittelArguments = {
+    barngruppering?: BarnGruppering;
+    familiehendelsedato: string;
+    antallBarn: number;
+    intl: IntlShape;
+    situasjon: Situasjon;
+};
+export const getSakTittel = (sakTittelArguments: SakTittelArguments): { tittel: string; undertittel: string } => {
+    const { barngruppering, familiehendelsedato, antallBarn, intl, situasjon } = sakTittelArguments;
+    const fornavn = barngruppering?.fornavn;
+    const fødselsdatoer = barngruppering?.fødselsdatoer;
+    const familiehendelsesdatoIsoString = ISOStringToDate(familiehendelsedato);
+
+    // Burde ikke skje, men håndter explicit istedenfor "!-assertion"
+    if (!familiehendelsesdatoIsoString) {
+        return { tittel: '', undertittel: '' };
+    }
+
+    if (fornavn === undefined || fornavn.length === 0 || !barngruppering?.alleBarnaLever) {
+        return getTittelBarnNårNavnSkalIkkeVises(
+            familiehendelsesdatoIsoString,
+            fødselsdatoer,
+            antallBarn,
+            intl,
+            situasjon,
+        );
     }
     const navn = getNavnPåBarna(fornavn);
 
-    if (type === 'fødsel') {
+    if (situasjon === 'fødsel') {
         const fødtDatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
-        return `${navn} født ${fødtDatoTekst}`;
+        return { tittel: navn, undertittel: `født ${fødtDatoTekst}` };
     }
-    if (type === 'adopsjon') {
-        return `${navn} adoptert ${formatDate(familiehendelsesdato)}`;
+    if (situasjon === 'adopsjon') {
+        return { tittel: navn, undertittel: `adoptert ${formatDate(familiehendelsesdatoIsoString)}` };
     }
-    return '';
+    return { tittel: '', undertittel: '' };
 };

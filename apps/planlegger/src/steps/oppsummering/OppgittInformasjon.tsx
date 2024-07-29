@@ -1,5 +1,4 @@
 import { ChatElipsisIcon } from '@navikt/aksel-icons';
-import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
@@ -10,18 +9,15 @@ import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { erAlenesøker as erAlene, erFarOgFar, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { finnGrunnbeløp } from 'utils/satserUtils';
-import {
-    getAntallUker,
-    getAntallUkerFellesperiode,
-    getAntallUkerForeldrepengerFørFødsel,
-} from 'utils/stønadskontoerUtils';
+import { finnSisteGrunnbeløp } from 'utils/satserUtils';
+import { getAntallUkerOgDagerFellesperiode, getUkerOgDager } from 'utils/stønadskontoerUtils';
+import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
-import { GreenPanel, IconCircleWrapper } from '@navikt/fp-ui';
+import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
 const onToggleExpansionCard = (open: boolean) => {
@@ -80,29 +76,36 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     const denEneFaren = getTekstTilFar1();
     const denAndreFaren = getTekstTilFar2();
 
-    const valgtStønadskonto = stønadskontoer[hvorLangPeriode.dekningsgrad];
-    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
-    const antallUker = getAntallUker(valgtStønadskonto);
-
-    const antallUkerAdopsjon = erAdoptert
-        ? getAntallUker(valgtStønadskonto) - getAntallUkerForeldrepengerFørFødsel(valgtStønadskonto)
-        : getAntallUker(valgtStønadskonto);
-
-    const antallUkerFellesperiodeSøker1 = fordeling ? fordeling.antallUkerSøker1 : '';
-    const antallUkerFellesperiodeSøker2 = fordeling ? antallUkerFellesperiode - fordeling.antallUkerSøker1 : '';
-
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
+    const valgtStønadskonto = stønadskontoer[hvorLangPeriode.dekningsgrad];
+
+    const uttaksdata = finnUttaksdata(
+        hvemHarRett,
+        hvemPlanlegger,
+        valgtStønadskonto,
+        barnet,
+        fordeling?.antallDagerSøker1,
+    );
+
+    const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata);
+
+    const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
+
+    const antallUkerOgDagerFellesperiodeSøker1 = fordeling ? getUkerOgDager(fordeling.antallDagerSøker1) : undefined;
+    const antallUkerOgDagerFellesperiodeSøker2 = fordeling
+        ? getUkerOgDager(antallUkerOgDagerFellesperiode.totaltAntallDager - fordeling.antallDagerSøker1)
+        : undefined;
 
     const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdoptert;
 
-    const minsteInntekt = formatCurrencyWithKr(finnGrunnbeløp(satser, dayjs()) / 2);
+    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2);
 
     return (
         <VStack gap="10">
             <ExpansionCard aria-label="" onToggle={onToggleExpansionCard} size="small">
                 <ExpansionCard.Header>
                     <HStack gap="6" align="center" wrap={false}>
-                        <IconCircleWrapper size="medium" color="green">
+                        <IconCircleWrapper size="medium" color="lightBlue">
                             <ChatElipsisIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
                         <ExpansionCard.Title size="small">
@@ -111,8 +114,8 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                     </HStack>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
-                    <VStack gap="10">
-                        <GreenPanel>
+                    <VStack gap="2">
+                        <BluePanel>
                             <>
                                 <Heading size="small" level="4">
                                     <FormattedMessage id="OppgittInformasjon.Barnet.Tittel" values={{ antallBarn }} />
@@ -176,8 +179,8 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                     </BodyLong>
                                 )}
                             </>
-                        </GreenPanel>
-                        <GreenPanel>
+                        </BluePanel>
+                        <BluePanel>
                             <>
                                 <Heading size="small" level="4">
                                     <FormattedMessage id="OppgittInformasjon.Arbeid.Tittel" />
@@ -260,8 +263,8 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                     </>
                                 )}
                             </>
-                        </GreenPanel>
-                        <GreenPanel>
+                        </BluePanel>
+                        <BluePanel>
                             <Heading size="small" level="4">
                                 <FormattedMessage
                                     id="OppgittInformasjon.LengdeOgFordeling"
@@ -276,9 +279,12 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             values={{
                                                 erAlenesøker,
                                                 prosent: hvorLangPeriode.dekningsgrad,
-                                                uker: erAdoptert ? antallUkerAdopsjon : antallUker,
-                                                fellesuker: antallUkerFellesperiodeSøker1,
-                                                fellesuker2: antallUkerFellesperiodeSøker2,
+                                                uker: ukerOgDagerMedForeldrepenger.uker,
+                                                dager: ukerOgDagerMedForeldrepenger.dager,
+                                                fellesuker: antallUkerOgDagerFellesperiodeSøker1?.uker || 0,
+                                                fellesdager: antallUkerOgDagerFellesperiodeSøker1?.dager || 0,
+                                                fellesuker2: antallUkerOgDagerFellesperiodeSøker2?.uker || 0,
+                                                fellesdager2: antallUkerOgDagerFellesperiodeSøker2?.dager || 0,
                                                 hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
                                                 hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
                                                 kunEnPartSkalHa: hvemHarRett !== 'beggeHarRett',
@@ -291,13 +297,14 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                             values={{
                                                 erAlenesøker,
                                                 prosent: hvorLangPeriode.dekningsgrad,
-                                                uker: erAdoptert ? antallUkerAdopsjon : antallUker,
+                                                uker: ukerOgDagerMedForeldrepenger.uker,
+                                                dager: ukerOgDagerMedForeldrepenger.dager,
                                             }}
                                         />
                                     )}
                                 </BodyLong>
                             </VStack>
-                        </GreenPanel>
+                        </BluePanel>
                     </VStack>
                 </ExpansionCard.Content>
             </ExpansionCard>

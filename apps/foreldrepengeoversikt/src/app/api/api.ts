@@ -1,4 +1,6 @@
-import { getAxiosInstance } from '@navikt/fp-api';
+import { queryOptions } from '@tanstack/react-query';
+import ky from 'ky';
+
 import { Skjemanummer } from '@navikt/fp-constants';
 
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
@@ -6,152 +8,111 @@ import { Dokument } from 'app/types/Dokument';
 import EttersendingDto from 'app/types/EttersendingDTO';
 import { MellomlagredeYtelser } from 'app/types/MellomlagredeYtelser';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
-import { RequestStatus } from 'app/types/RequestStatus';
 import { SakOppslagDTO } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 
-import { useGetRequest, usePostRequest } from './useRequest';
-
-const useSøkerinfo = () => {
-    const { data, error } = useGetRequest<SøkerinfoDTO>('/rest/sokerinfo', { config: { withCredentials: true } });
-
-    return {
-        søkerinfoData: data,
-        søkerinfoError: error,
-    };
-};
-
-const useGetSaker = (sakerSuspended: boolean) => {
-    const { data, error } = useGetRequest<SakOppslagDTO>('/rest/innsyn/v2/saker', {
-        config: { withCredentials: true },
-        isSuspended: sakerSuspended,
+export const søkerInfoOptions = () =>
+    queryOptions({
+        queryKey: ['SØKER_INFO'],
+        queryFn: () => ky.get('/rest/sokerinfo').json<SøkerinfoDTO>(),
     });
 
-    return {
-        sakerData: data,
-        sakerError: error,
-    };
-};
-
-const useGetOversiktOverMellomlagredeYtelser = () => {
-    const { data, error } = useGetRequest<MellomlagredeYtelser>('/rest/storage/aktive', {
-        config: { withCredentials: true },
-        isSuspended: true,
+export const minidialogOptions = () =>
+    queryOptions({
+        queryKey: ['MINIDIALOG'],
+        queryFn: () => ky.get(`/rest/minidialog`).json<MinidialogInnslag[]>(),
     });
 
-    return {
-        storageData: data,
-        storageError: error,
-    };
+export const hentSakerOptions = () =>
+    queryOptions({
+        queryKey: ['SAKER'],
+        queryFn: () => ky.get(`/rest/innsyn/v2/saker`).json<SakOppslagDTO>(),
+    });
+
+export const hentDokumenterOptions = (saksnummer: string) =>
+    queryOptions({
+        queryKey: ['DOKUMENTER', saksnummer],
+        queryFn: () => ky.get(`/rest/dokument/alle`, { searchParams: { saksnummer } }).json<Dokument[]>(),
+    });
+
+export const hentMellomlagredeYtelserOptions = () =>
+    queryOptions({
+        queryKey: ['MELLOMLAGREDE_YTELSER'],
+        queryFn: () => ky.get('/rest/storage/aktive').json<MellomlagredeYtelser>(),
+    });
+
+type AnnenPartsVedtakRequestBody = {
+    annenPartFødselsnummer?: string;
+    barnFødselsnummer?: string;
+    familiehendelse?: string;
 };
 
-const useGetAnnenPartsVedtak = (
-    annenPartFnr: string | undefined,
-    barnFnr: string | undefined,
-    familiehendelsesdato: string | undefined,
-    isSuspended: boolean,
-) => {
-    const body = {
-        annenPartFødselsnummer: annenPartFnr,
-        barnFødselsnummer: barnFnr,
-        familiehendelse: familiehendelsesdato,
-    };
-    const { data, error, requestStatus } = usePostRequest<AnnenPartVedtakDTO>('/rest/innsyn/v2/annenPartVedtak', body, {
-        config: {
-            withCredentials: true,
+export const hentAnnenPartsVedtakOptions = (body: AnnenPartsVedtakRequestBody) =>
+    queryOptions({
+        queryKey: ['ANNEN_PARTS_VEDTAK', body],
+        queryFn: async () => {
+            try {
+                // Det funker ikke å bruke ky.post() her.
+                // Det virker som at siden måten Adrum wrapper alle requests på, gjør at det skjer noe funny-business på et eller annet punkt som fjerner content-type...
+                // Undersøke videre senere, gjør det slik for nå for å rette feil.
+                const response = await fetch(`/rest/innsyn/v2/annenPartVedtak`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(body),
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                return (await response.json()) as AnnenPartVedtakDTO;
+            } catch (error: any) {
+                // NOTE: inkluderer denne sjekken fordi den fantes før Tanstack refactor. Revurder om den behøves?
+                if (error?.message?.includes('Ugyldig ident')) {
+                    return undefined;
+                }
+                throw error;
+            }
         },
-        isSuspended,
     });
 
-    if (error?.message?.includes('Ugyldig ident')) {
-        return {
-            annenPartsVedtakData: undefined,
-            annenPartsVedtakError: undefined,
-            annenPartsVedtakRequestStatus: RequestStatus.FINISHED,
-        };
+export const hentTidslinjehendelserOptions = (saksnummer: string) =>
+    queryOptions({
+        queryKey: ['TIDSLINJEHENDELSER', saksnummer],
+        queryFn: () => ky.get(`/rest/innsyn/tidslinje`, { searchParams: { saksnummer } }).json<Tidslinjehendelse[]>(),
+    });
+
+export const hentManglendeVedleggOptions = (saksnummer: string) =>
+    queryOptions({
+        queryKey: ['MANGLENDE_VEDLEGG', saksnummer],
+        queryFn: () => ky.get('/rest/historikk/vedlegg', { searchParams: { saksnummer } }).json<Skjemanummer[]>(),
+    });
+
+export const sendEttersending = async (ettersending: EttersendingDto, fnr?: string) => {
+    // Det funker ikke å bruke ky.post() her.
+    // Det virker som at siden måten Adrum wrapper alle requests på, gjør at det skjer noe funny-business på et eller annet punkt som fjerner content-type...
+    // Undersøke videre senere, gjør det slik for nå for å rette feil.
+    const response = await fetch(`/rest/soknad/ettersend`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            ...(fnr !== undefined && { fnr: fnr }),
+        },
+        signal: AbortSignal.timeout(30 * 1000),
+        body: JSON.stringify(ettersending),
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
     }
-    return {
-        annenPartsVedtakData: data,
-        annenPartsVedtakError: error,
-        annenPartsVedtakRequestStatus: requestStatus,
-    };
+
+    return (await response.json()) as unknown;
 };
 
-const useGetDokumenter = (saksnr: string) => {
-    const { data, error, requestStatus } = useGetRequest<Dokument[]>('/rest/dokument/alle', {
-        config: { withCredentials: true, params: { saksnummer: saksnr } },
+export const erSakOppdatertOptions = () =>
+    queryOptions({
+        queryKey: ['SAK_OPPDATERT'],
+        queryFn: () => ky.get('/rest/innsyn/v2/saker/oppdatert').json<boolean>(),
     });
-
-    return {
-        dokumenterData: data,
-        dokumenterError: error,
-        dokumenterStatus: requestStatus,
-    };
-};
-
-const useGetTidslinjeHendelser = (saksnr: string) => {
-    const { data, error } = useGetRequest<Tidslinjehendelse[]>('/rest/innsyn/tidslinje', {
-        config: { withCredentials: true, params: { saksnummer: saksnr } },
-    });
-
-    return {
-        tidslinjeHendelserData: data,
-        tidslinjeHendelserError: error,
-    };
-};
-
-const useGetMinidialog = () => {
-    const { data, error } = useGetRequest<MinidialogInnslag[]>('/rest/minidialog', {
-        config: { withCredentials: true },
-    });
-
-    return {
-        minidialogData: data,
-        minidialogError: error,
-    };
-};
-
-const useGetManglendeVedlegg = (saksnr: string) => {
-    const { data, error } = useGetRequest<Skjemanummer[]>('/rest/historikk/vedlegg', {
-        config: { withCredentials: true, params: { saksnummer: saksnr } },
-    });
-
-    return {
-        manglendeVedleggData: data,
-        manglendeVedleggError: error,
-    };
-};
-
-const sendEttersending = (ettersending: EttersendingDto, fnr?: string) => {
-    return getAxiosInstance(fnr).post('/rest/soknad/ettersend', ettersending, {
-        timeout: 30 * 1000,
-        withCredentials: true,
-    });
-};
-
-const useErSakOppdatert = () => {
-    const { data, error } = useGetRequest<boolean>('/rest/innsyn/v2/saker/oppdatert', {
-        config: { withCredentials: true },
-    });
-
-    return {
-        oppdatertData: data,
-        oppdatertError: error,
-    };
-};
-
-const Api = {
-    useSøkerinfo,
-    useGetSaker,
-    useGetDokumenter,
-    useGetAnnenPartsVedtak,
-    useGetTidslinjeHendelser,
-    useGetMinidialog,
-    useGetManglendeVedlegg,
-    useErSakOppdatert,
-    useGetMellomlagretSøknad: useGetOversiktOverMellomlagredeYtelser,
-    sendEttersending,
-};
-
-export default Api;

@@ -14,10 +14,12 @@ import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
-import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
+import { DATE_3_YEARS_AGO, ISO_DATE_REGEX } from '@navikt/fp-constants/src/dates';
 import { Datepicker } from '@navikt/fp-form-hooks';
-import { GreenPanel, Infobox } from '@navikt/fp-ui';
+import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { erI22SvangerskapsukeEllerSenere, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
+
+const erDatoGyldig = (date: string) => ISO_DATE_REGEX.test(date);
 
 type Props = {
     hvemPlanlegger: HvemPlanlegger;
@@ -35,14 +37,14 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnet>();
-    const erFødselsdato = formMethods.watch('fødselsdato');
+    const fødselsdato = formMethods.watch('fødselsdato');
 
     const erAlenesøker = erAlene(hvemPlanlegger);
     const erFar = hvemPlanlegger.type !== Situasjon.MOR;
 
     return (
         <VStack gap="5">
-            <GreenPanel isDarkGreen={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
+            <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
                 <VStack gap="8">
                     <Datepicker
                         label={<FormattedMessage id="ErFødtPanel.Fødselsdato" values={{ antallBarn }} />}
@@ -79,11 +81,11 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                         onChange={scrollToBottom}
                     />
                 </VStack>
-            </GreenPanel>
-            {erFødselsdato !== undefined && dayjs(erFødselsdato).isAfter(DATE_3_YEARS_AGO) && (
+            </BluePanel>
+            {fødselsdato !== undefined && erDatoGyldig(fødselsdato) && dayjs(fødselsdato).isAfter(DATE_3_YEARS_AGO) && (
                 <Infobox
                     header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}
-                    icon={<TasklistStartIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />}
+                    icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
                     shouldFadeIn
                 >
                     <BodyShort>
@@ -111,25 +113,30 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                     )}
                 </Infobox>
             )}
-            {erFødselsdato !== undefined && dayjs(erFødselsdato).isBefore(DATE_3_YEARS_AGO) && (
-                <Infobox
-                    header={
-                        <FormattedMessage
-                            id="ErFødtPanel.Født.InfoboksTittel.EldreEnnTreÅr"
-                            values={{ erAlenesøker, antallBarn }}
-                        />
-                    }
-                    icon={<TasklistStartIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" />}
-                    shouldFadeIn
-                >
-                    <BodyShort>
-                        <FormattedMessage id="ErFødtPanel.Født.InfoboksTekst.EldreEnnTreÅr" values={{ antallBarn }} />
-                    </BodyShort>
-                    <BodyShort>
-                        <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" values={{ erFar }} />
-                    </BodyShort>
-                </Infobox>
-            )}
+            {fødselsdato !== undefined &&
+                erDatoGyldig(fødselsdato) &&
+                dayjs(fødselsdato).isBefore(DATE_3_YEARS_AGO) && (
+                    <Infobox
+                        header={
+                            <FormattedMessage
+                                id="ErFødtPanel.Født.InfoboksTittel.EldreEnnTreÅr"
+                                values={{ erAlenesøker, antallBarn }}
+                            />
+                        }
+                        icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" />}
+                        shouldFadeIn
+                    >
+                        <BodyShort>
+                            <FormattedMessage
+                                id="ErFødtPanel.Født.InfoboksTekst.EldreEnnTreÅr"
+                                values={{ antallBarn }}
+                            />
+                        </BodyShort>
+                        <BodyShort>
+                            <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" values={{ erFar }} />
+                        </BodyShort>
+                    </Infobox>
+                )}
         </VStack>
     );
 };

@@ -5,24 +5,24 @@ import { Radio } from '@navikt/ds-react';
 
 import { Form } from '@navikt/fp-form-hooks';
 
-import GreenRadioGroup from './GreenRadioGroup';
+import BlueRadioGroup from './BlueRadioGroup';
 
 const meta = {
-    title: 'components/GreenRadioGroup',
-    component: GreenRadioGroup,
-} satisfies Meta<typeof GreenRadioGroup>;
+    title: 'components/BlueRadioGroup',
+    component: BlueRadioGroup,
+} satisfies Meta<typeof BlueRadioGroup>;
 export default meta;
 
-type Story = StoryObj<typeof GreenRadioGroup>;
+type Story = StoryObj<typeof BlueRadioGroup>;
 
 const FormWithGreenRadioGroup = (args: Story) => {
     const formMethods = useForm();
     return (
         <Form formMethods={formMethods}>
-            <GreenRadioGroup name="test" {...args}>
+            <BlueRadioGroup name="test" {...args}>
                 <Radio value="1">test 1</Radio>
                 <Radio value="2">test 2</Radio>
-            </GreenRadioGroup>
+            </BlueRadioGroup>
         </Form>
     );
 };

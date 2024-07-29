@@ -10,7 +10,6 @@ import { erBarnetFødt } from 'utils/barnetUtils';
 
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { ProgressStep } from '@navikt/fp-ui';
-import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './PlanleggerDataContext';
 
@@ -68,10 +67,10 @@ const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
     const location = useLocation();
     const getStateData = useContextGetAnyData();
 
-    const currentPath = useMemo(
-        () => notEmpty(Object.values(PlanleggerRoutes).find((v) => v === decodeURIComponent(location.pathname))),
-        [location.pathname],
-    );
+    const currentPath = useMemo(() => {
+        const route = Object.values(PlanleggerRoutes).find((v) => v === decodeURIComponent(location.pathname));
+        return route || PlanleggerRoutes.OM_PLANLEGGEREN;
+    }, [location.pathname]);
 
     const appPathList = useMemo(
         () =>

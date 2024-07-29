@@ -15,16 +15,18 @@ describe('<OppsummeringSteg>', () => {
         expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
         expect(screen.getByText('Steg 1 av 1')).toBeInTheDocument();
 
-        expect(screen.getByText('Deg')).toBeInTheDocument();
-        expect(screen.getByText('Henrikke Ibsen')).toBeInTheDocument();
-        expect(screen.getByText('01018823234')).toBeInTheDocument();
+        expect(screen.getByText('Utenlandsopphold')).toBeInTheDocument();
+        expect(screen.getByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
+        expect(screen.getByText('Jeg har bodd helt eller delvis i utlandet')).toBeInTheDocument();
+        expect(screen.getByText('Hvilket land har du bodd i de siste 12 månedene?')).toBeInTheDocument();
+        expect(screen.getByText('Tyskland')).toBeInTheDocument();
+        expect(screen.getByText('Fra 06.06.2023 til 10.10.2023')).toBeInTheDocument();
 
-        expect(screen.getByText('Bo i utlandet')).toBeInTheDocument();
-        expect(screen.getByText('Du har bodd i Tyskland i løpet av de forrige 12 månedene')).toBeInTheDocument();
-        expect(screen.getByText('06.06.2023 - 10.10.2023')).toBeInTheDocument();
-        expect(screen.getByText('Du har bodd i Sverige i løpet av de forrige 12 månedene')).toBeInTheDocument();
-        expect(screen.getByText('10.10.2022 - 05.05.2023')).toBeInTheDocument();
-        expect(screen.getByText('På fødselstidspunktet bodde du i utlandet')).toBeInTheDocument();
+        expect(screen.getByText('Hvor skal du bo de neste 12 månedene?')).toBeInTheDocument();
+        expect(screen.getByText('Jeg skal bo helt eller delvis i utlandet')).toBeInTheDocument();
+        expect(screen.getByText('Hvilket land skal du bo i de neste 12 månedene?')).toBeInTheDocument();
+        expect(screen.getByText('Sverige')).toBeInTheDocument();
+        expect(screen.getByText('Fra 10.10.2022 til 05.05.2023')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Send søknaden'));
 
@@ -50,9 +52,10 @@ describe('<OppsummeringSteg>', () => {
         expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
         expect(screen.getByText('Steg 1 av 1')).toBeInTheDocument();
 
-        expect(screen.getByText('Bo i utlandet')).toBeInTheDocument();
-        expect(screen.getByText('Du har bodd i Norge de siste 12 månedene')).toBeInTheDocument();
-        expect(screen.getByText('Du skal bo i Norge de neste 12 månadene')).toBeInTheDocument();
-        expect(screen.getByText('På fødselstidspunktet kommer du til å bo i Norge')).toBeInTheDocument();
+        expect(screen.getByText('Utenlandsopphold')).toBeInTheDocument();
+        expect(screen.getByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
+        expect(screen.getByText('Jeg har bodd i Norge')).toBeInTheDocument();
+        expect(screen.getByText('Hvor skal du bo de neste 12 månedene?')).toBeInTheDocument();
+        expect(screen.getByText('Jeg skal bo i Norge')).toBeInTheDocument();
     });
 });

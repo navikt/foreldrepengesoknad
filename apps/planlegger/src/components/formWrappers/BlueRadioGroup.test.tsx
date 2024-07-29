@@ -1,12 +1,12 @@
 import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 
-import * as stories from './GreenRadioGroup.stories';
+import * as stories from './BlueRadioGroup.stories';
 
 const { Default } = composeStories(stories);
 
-describe('<GreenRadioGroup>', () => {
-    it('skal vise grøn radioknapp', async () => {
+describe('<BlueRadioGroup>', () => {
+    it('skal vise blå radioknapp', async () => {
         render(<Default />);
 
         expect(

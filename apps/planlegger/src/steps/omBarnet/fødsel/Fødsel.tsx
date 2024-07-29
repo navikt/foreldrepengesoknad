@@ -1,4 +1,4 @@
-import GreenRadioGroup from 'components/formWrappers/GreenRadioGroup';
+import BlueRadioGroup from 'components/formWrappers/BlueRadioGroup';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
@@ -31,7 +31,7 @@ const Fødsel: React.FunctionComponent<Props> = ({
 
     return (
         <VStack gap="8">
-            <GreenRadioGroup
+            <BlueRadioGroup
                 label={<FormattedMessage id="Fødsel.ErFødt" values={{ antallBarn }} />}
                 name="erBarnetFødt"
                 shouldFadeIn
@@ -57,7 +57,7 @@ const Fødsel: React.FunctionComponent<Props> = ({
                 <Radio value={false}>
                     <FormattedMessage id="DefaultMessage.Nei" />
                 </Radio>
-            </GreenRadioGroup>
+            </BlueRadioGroup>
             {erBarnetFødt && (
                 <ErFødtPanel
                     hvemPlanlegger={hvemPlanlegger}
