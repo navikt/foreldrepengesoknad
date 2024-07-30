@@ -9,7 +9,7 @@
         "prettier": "prettier --write src"
     },
     "dependencies": {
-        "@storybook/react-vite": "8.1.6",
+        "@storybook/react-vite": "8.2.6",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-hook-form": "7.51.2",
