@@ -1,4 +1,5 @@
 import { Attachment } from '@navikt/fp-types';
+
 import { Arbeidsform } from './Arbeidsform';
 import { Forelder } from './Forelder';
 import { MorsAktivitet } from './MorsAktivitet';
