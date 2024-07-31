@@ -25,15 +25,15 @@
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
-        "@types/react": "^18.2.73",
-        "dayjs": "^1.11.10",
-        "react": "^18.2.0",
-        "react-intl": "^6.6.4",
+        "@types/react": "^18.3.3",
+        "dayjs": "^1.11.12",
+        "react": "^18.3.1",
+        "react-intl": "^6.6.8",
         "react-to-pdf": "1.0.1",
-        "typescript": "^5.4.3"
+        "typescript": "^5.5.4"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "6.3.6",
+        "@formatjs/cli-lib": "6.4.2",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@storybook/addon-essentials": "8.2.6",
@@ -47,15 +47,15 @@
         "@testing-library/react": "^16.0.0",
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
         "@types/react": "^18.2.73",
-        "@vitejs/plugin-react": "^4.2.1",
+        "@vitejs/plugin-react": "^4.3.1",
         "fast-glob": "^3.3.2",
-        "react-dom": "^18.2.0",
+        "react-dom": "^18.3.1",
         "storybook": "8.2.6",
         "storybook-react-intl": "^3.0.1",
         "tsconfig": "workspace:*",
         "typescript": "^5.4.3",
-        "vite": "^5.1.6",
-        "vite-plugin-checker": "^0.6.4",
-        "vitest": "^1.4.0"
+        "vite": "^5.3.5",
+        "vite-plugin-checker": "^0.7.2",
+        "vitest": "^2.0.5"
     }
 }
