@@ -1,5 +1,5 @@
-import dayjs from 'dayjs';
 import validator from '@navikt/fnrvalidator';
+import dayjs from 'dayjs';
 
 type FødselsnummerValidationResult = false | 'fnr' | 'dnr' | 'hnr';
 export const isFødselsnummerFormatValid = (fnr: string): FødselsnummerValidationResult => {
