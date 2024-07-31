@@ -145,6 +145,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                         <Infobox
                             header={<FormattedMessage id="SituasjonSide.JobbetMinst8av10" />}
                             icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                            color="green"
                         >
                             <BodyShort>
                                 <FormattedMessage id="SituasjonSide.JobbetMinst8av10Detaljer" />
@@ -187,6 +188,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                 />
                             }
                             icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                            color="green"
                         >
                             <BodyShort>
                                 <FormattedMessage
@@ -239,6 +241,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                         <Infobox
                             header={<FormattedMessage id="SituasjonSide.MåVæreMedlem" />}
                             icon={<EarthIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                            color="green"
                         >
                             <BodyShort>
                                 <FormattedMessage id="SituasjonSide.IkkeRett" />

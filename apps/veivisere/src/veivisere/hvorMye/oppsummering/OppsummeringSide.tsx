@@ -103,7 +103,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                         aria-hidden
                                     />
                                 }
-                                isGray
+                                color="gray"
                             >
                                 <FormattedMessage
                                     id="OppsummeringSide.EsSkalBidra"
@@ -138,7 +138,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                             aria-hidden
                                         />
                                     }
-                                    isGray
+                                    color="gray"
                                 >
                                     <VStack gap="4">
                                         <BodyShort>
@@ -173,7 +173,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                         aria-hidden
                                     />
                                 }
-                                isGray
+                                color="gray"
                             >
                                 <BodyShort>
                                     <FormattedMessage id="OppsummeringSide.ArbeidsgiverFraNav" />

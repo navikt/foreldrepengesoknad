@@ -109,6 +109,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                         aria-hidden
                                     />
                                 }
+                                color="green"
                             >
                                 <BodyShort>
                                     <FormattedMessage id="OmBarnetSteg.Fødsel.Infoboks.DenSomErBiologiskFar" />

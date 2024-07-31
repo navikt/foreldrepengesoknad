@@ -75,6 +75,7 @@ const Utbetalingspanel: React.FunctionComponent<Props> = ({
             }
             icon={<BankNoteIcon aria-hidden />}
             useHorizontalDivider
+            color="blue"
         >
             <VStack gap="4">
                 <div>

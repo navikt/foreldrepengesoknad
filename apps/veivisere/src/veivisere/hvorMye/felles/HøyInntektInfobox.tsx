@@ -26,7 +26,7 @@ const HøyInntektInfobox: React.FunctionComponent<Props> = ({
                     values={{ maxÅrslønn: formatCurrencyWithKr(maxÅrslønnDekket) }}
                 />
             }
-            isGray={isGray}
+            color={isGray ? 'gray' : 'green'}
             icon={
                 showKrIcon ? (
                     <KronerIcon title="a11y-title" fontSize="1.5rem" aria-hidden />
