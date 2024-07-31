@@ -86,6 +86,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                     header={<FormattedMessage id="ErFødtPanel.Født.InfoboksTittel" values={{ erAlenesøker }} />}
                     icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
                     shouldFadeIn
+                    color="green"
                 >
                     <BodyShort>
                         <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" />
@@ -125,6 +126,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                             <TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />
                         }
                         shouldFadeIn
+                        color="green"
                     >
                         <BodyShort>
                             <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
@@ -200,6 +202,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                             <TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />
                         }
                         shouldFadeIn
+                        color="green"
                     >
                         <BodyShort>
                             <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />

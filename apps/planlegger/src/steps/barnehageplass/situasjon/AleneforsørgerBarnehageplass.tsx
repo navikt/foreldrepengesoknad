@@ -49,6 +49,7 @@ const AleneforsørgerBarnehageplass: FunctionComponent<Props> = ({ barnet }) => 
                         }}
                     />
                 }
+                color="green"
                 icon={<BabyWrappedIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
             >
                 <BodyLong>
@@ -83,7 +84,7 @@ const AleneforsørgerBarnehageplass: FunctionComponent<Props> = ({ barnet }) => 
             <Infobox
                 header={<FormattedMessage id="AleneforsørgerBarnehageplass.BarnehageTittel" />}
                 icon={<InformationIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
-                isGray
+                color="gray"
             >
                 <BodyLong>
                     <FormattedMessage id="AleneforsørgerBarnehageplass.BarnehageTekst" />

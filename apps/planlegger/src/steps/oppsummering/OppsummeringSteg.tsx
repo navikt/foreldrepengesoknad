@@ -90,6 +90,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser })
                                         )
                                     }
                                     icon={<TasklistStartIcon height={24} width={24} color="#7F8900" aria-hidden />}
+                                    color="green"
                                 >
                                     <BodyShort>
                                         <FormattedMessage

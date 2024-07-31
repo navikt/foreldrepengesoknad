@@ -170,7 +170,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     aria-hidden
                                 />
                             }
-                            isGray
+                            color="gray"
                         >
                             <BodyShort>
                                 <FormattedMessage
