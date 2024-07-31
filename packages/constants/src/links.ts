@@ -38,6 +38,7 @@ export const links = {
         'https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/arbeidsforholdet/type-arbeidsforhold/frilanser-oppdragstaker-og-personer-som-mottar-honorarer/',
     næringsdrivendeInfoBoks:
         'https://www.skatteetaten.no/bedrift-og-organisasjon/starte-og-drive/er-jeg-naringsdrivende/',
+    selvstendigNæringsdrivendeHvorMye: 'https://www.nav.no/foreldrepenger#hvor-mye',
     hvordanSendeInntektsmelding:
         'https://www.nav.no/no/bedrift/tjenester-og-skjemaer/nav-og-altinn-tjenester/foreldrepenger-og-svangerskapspenger2',
     omLottOgHyre: 'https://www.skatteetaten.no/en/rettskilder/type/handboker/skatte-abc/2021/fiske/F-13.014/F-13.048/',

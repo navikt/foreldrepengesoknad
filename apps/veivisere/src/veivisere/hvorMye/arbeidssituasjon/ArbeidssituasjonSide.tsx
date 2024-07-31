@@ -138,10 +138,9 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                     <FormattedMessage id="ArbeidssituasjonSide.LesOm" />
                                     <Link
                                         inlineText
-                                        href={links.næringsdrivendeInfoBoks}
+                                        href={links.selvstendigNæringsdrivendeHvorMye}
                                         className="lenke"
                                         rel="noreferrer"
-                                        target="_blank"
                                     >
                                         <FormattedMessage id="ArbeidssituasjonSide.Lenke" />
                                     </Link>
