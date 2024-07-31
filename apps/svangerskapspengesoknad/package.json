@@ -27,7 +27,7 @@
         "@navikt/ds-css": "^6.13.0",
         "@navikt/ds-datepicker": "^4.2.0",
         "@navikt/ds-react": "6.13.0",
-        "@navikt/fnrvalidator": "^2.1.0",
+        "@navikt/fnrvalidator": "^1.3.0",
         "@navikt/fp-api": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
