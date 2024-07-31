@@ -22,15 +22,15 @@
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
-        "dayjs": "^1.11.10",
+        "dayjs": "^1.11.12",
         "intl-messageformat": "^10.5.11",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "react-hook-form": "7.51.2",
-        "react-intl": "^6.6.4"
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-hook-form": "7.52.1",
+        "react-intl": "^6.6.8"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "6.3.6",
+        "@formatjs/cli-lib": "6.4.2",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@storybook/addon-actions": "8.2.6",
@@ -42,16 +42,16 @@
         "@testing-library/jest-dom": "^6.4.6",
         "@testing-library/react": "^16.0.0",
         "@testing-library/user-event": "^14.5.2",
-        "@types/react": "^18.2.73",
-        "@vitejs/plugin-react": "^4.2.1",
+        "@types/react": "^18.3.3",
+        "@vitejs/plugin-react": "^4.3.1",
         "fast-glob": "^3.3.2",
         "storybook": "8.2.6",
         "storybook-react-intl": "^3.0.1",
         "tsconfig": "workspace:*",
-        "typescript": "^5.4.3",
-        "vite": "^5.1.6",
-        "vite-plugin-checker": "^0.6.4",
-        "vitest": "^1.4.0"
+        "typescript": "^5.5.4",
+        "vite": "^5.3.5",
+        "vite-plugin-checker": "^0.7.2",
+        "vitest": "^2.0.5"
     },
     "packageManager": "pnpm@9.1.4"
 }
