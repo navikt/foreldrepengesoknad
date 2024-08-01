@@ -46,6 +46,8 @@ export default [
             '@typescript-eslint/no-shadow': [ERROR],
             'no-unused-vars': OFF,
             '@typescript-eslint/no-unused-vars': [ERROR],
+            'no-duplicate-imports': ERROR,
+            '@typescript-eslint/array-type': [ERROR, { default: 'array-simple' }],
 
             // TODO Bør ein ha med desse to?
             'react/function-component-definition': [
@@ -64,15 +66,3 @@ export default [
         },
     },
 ];
-
-// rules: {
-//     'no-duplicate-imports': 'error',
-//     '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
-//     '@typescript-eslint/no-var-requires': 'off',
-//     '@typescript-eslint/explicit-module-boundary-types': 'off',
-//     '@typescript-eslint/no-non-null-assertion': 'off',
-//     '@typescript-eslint/no-unused-vars': [
-//         'error',
-//         { vars: 'all', args: 'all', ignoreRestSiblings: true, varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
-//     ],
-// },
