@@ -45,9 +45,9 @@ describe('<Behov for tilrettelegging>', () => {
 
         expect(screen.getByText('Hvor mye kan du jobbe?')).toBeInTheDocument();
 
-        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        await user.click(screen.getByText('Jeg kan jobbe redusert'));
 
-        await user.click(screen.getByText('Du skal ha perioder med ulik arbeidsprosent'));
+        await user.click(screen.getByText('Nei, jeg skal ha perioder med ulik arbeidsprosent'));
 
         await user.click(screen.getByText('Neste steg'));
 
@@ -128,8 +128,8 @@ describe('<Behov for tilrettelegging>', () => {
     it('redusert valgt', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
-        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
+        await user.click(screen.getByText('Jeg kan jobbe redusert'));
 
         await user.click(screen.getByText('Neste steg'));
 
@@ -140,8 +140,8 @@ describe('<Behov for tilrettelegging>', () => {
 
     it('spørsmål om fra-dato vises når man har valgt at man ikke kan jobbe', async () => {
         render(<Default />);
-        expect(await screen.findByText('Du kan ikke jobbe')).toBeInTheDocument();
-        await user.click(screen.getByText('Du kan ikke jobbe'));
+        expect(await screen.findByText('Jeg kan ikke jobbe')).toBeInTheDocument();
+        await user.click(screen.getByText('Jeg kan ikke jobbe'));
 
         await user.click(screen.getByText('Neste steg'));
 
@@ -151,8 +151,8 @@ describe('<Behov for tilrettelegging>', () => {
     it('redusert valgt, ikke oppgitt stillingsprosent', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
-        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
+        await user.click(screen.getByText('Jeg kan jobbe redusert'));
 
         await user.click(screen.getByText('Neste steg'));
 
@@ -165,9 +165,9 @@ describe('<Behov for tilrettelegging>', () => {
 
     it('spørsmål om stillingsprosent skal vises når redusert arbeidstid og samme stillingsprosent er valgt', async () => {
         render(<Default />);
-        expect(await screen.findByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
+        expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
 
-        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        await user.click(screen.getByText('Jeg kan jobbe redusert'));
         await user.click(screen.getByText('Ja'));
 
         expect(screen.getByText('Hvilken stillingsprosent skal du jobbe?')).toBeInTheDocument();
@@ -176,9 +176,9 @@ describe('<Behov for tilrettelegging>', () => {
     it('feilmelding ved ikke oppgitt stillingsprosent', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
+        expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
 
-        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        await user.click(screen.getByText('Jeg kan jobbe redusert'));
         await user.click(screen.getByText('Ja'));
         expect(screen.getByText('Hvilken stillingsprosent skal du jobbe?')).toBeInTheDocument();
 
@@ -189,9 +189,9 @@ describe('<Behov for tilrettelegging>', () => {
     it('feilmelding ved stillingsprosent i feil format', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
+        expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
 
-        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        await user.click(screen.getByText('Jeg kan jobbe redusert'));
         await user.click(screen.getByText('Ja'));
         expect(screen.getByText('Hvilken stillingsprosent skal du jobbe?')).toBeInTheDocument();
 
@@ -204,9 +204,9 @@ describe('<Behov for tilrettelegging>', () => {
     it('feilmelding ved ikke oppgitt redusert fra-dato', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
+        expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
 
-        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        await user.click(screen.getByText('Jeg kan jobbe redusert'));
         await user.click(screen.getByText('Ja'));
         expect(screen.getByText('Fra hvilken dato skal du jobbe redusert?')).toBeInTheDocument();
 
@@ -217,9 +217,9 @@ describe('<Behov for tilrettelegging>', () => {
     it('feilmelding ved ikke oppgitt redusert til-dato', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
+        expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
 
-        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        await user.click(screen.getByText('Jeg kan jobbe redusert'));
         await user.click(screen.getByText('Ja'));
         expect(screen.getByText('Frem til hvilken dato skal du jobbe redusert?')).toBeInTheDocument();
 
@@ -235,9 +235,9 @@ describe('<Behov for tilrettelegging>', () => {
     it('redusert frem til en dato valgt', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
+        expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
 
-        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        await user.click(screen.getByText('Jeg kan jobbe redusert'));
         await user.click(screen.getByText('Ja'));
         expect(screen.getByText('Frem til hvilken dato skal du jobbe redusert?')).toBeInTheDocument();
         await user.click(screen.getByText('Frem til en dato'));
@@ -253,9 +253,9 @@ describe('<Behov for tilrettelegging>', () => {
             await screen.findByText('Fra hvilken dato har du behov for tilrettelegging eller omplassering?'),
         ).toBeInTheDocument();
 
-        expect(screen.getByText('Du kan jobbe med redusert arbeidstid')).toBeInTheDocument();
+        expect(screen.getByText('Jeg kan jobbe redusert')).toBeInTheDocument();
 
-        await user.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
+        await user.click(screen.getByText('Jeg kan jobbe redusert'));
         await user.click(screen.getByText('Ja'));
 
         expect(screen.getByText('Fra hvilken dato skal du jobbe redusert?')).toBeInTheDocument();

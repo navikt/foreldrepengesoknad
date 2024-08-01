@@ -292,7 +292,7 @@
     "tilrettelegging.tilrettelagtArbeidType.label.flere": "Hvor mye kan du jobbe i {navnArbeidsgiver}?",
     "tilrettelegging.tilrettelagtArbeidType.label.frilanser": "Hvor mye kan du jobbe som frilanser?",
     "tilrettelegging.tilrettelagtArbeidType.description": "Dette er oppgitt av arbeidsgiveren i skjemaet",
-    "tilrettelegging.tilrettelagtArbeidType.delvis": "Jeg kan jobbe med redusert arbeidstid",
+    "tilrettelegging.tilrettelagtArbeidType.delvis": "Jeg kan jobbe redusert",
     "tilrettelegging.tilrettelagtArbeidType.ingen": "Jeg kan ikke jobbe",
     "tilrettelegging.tilrettelagtArbeidType.info.tittel": "Skal du bytte på å jobbe redusert og å ikke jobbe?",
     "tilrettelegging.tilrettelagtArbeidType.info.tekst": "Hvis du skal ha perioder hvor du jobber redusert og perioder hvor du ikke skal jobbe, velger du \"Jeg kan jobbe redusert\" og du vil deretter kunne oppgi når du skal jobbe redusert og når du ikke skal jobbe.",
