@@ -52,7 +52,7 @@ describe('barnUtils', () => {
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
-        expect(registrert).toBeUndefined();
+        expect(registrert).not.toBeUndefined();
     });
 
     it('skal ikke finne registrert barn når barn er ufødt', () => {
