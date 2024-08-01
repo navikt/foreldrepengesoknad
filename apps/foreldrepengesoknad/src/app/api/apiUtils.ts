@@ -123,7 +123,8 @@ export type EndringssøknadForInnsending = Pick<
 >;
 
 export const FOR_MANGE_VEDLEGG_ERROR =
-    'Søknaden kan ikke inneholde flere enn 40 vedlegg. Vennligst gå tilbake, slett noen vedlegg og prøv å sende inn søknaden på nytt. Du kan ettersende vedlegg senere.';
+    'Søknaden kan ikke inneholde flere enn 40 vedlegg. Vennligst gå tilbake, slett noen vedlegg og' +
+    ' prøv å sende inn søknaden på nytt. Du kan ettersende vedlegg senere.';
 
 export const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
@@ -143,6 +144,7 @@ const getUttaksperiodeForInnsending = (
 };
 
 const cleanUttaksperiode = (uttaksPeriode: UttaksperiodeBase): UttaksPeriodeForInnsending => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { erMorForSyk, ...periodeRest } = uttaksPeriode;
     return periodeRest;
 };
@@ -176,6 +178,7 @@ const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = fa
     if (isAnnenForelderOppgitt(annenForelder)) {
         const {
             erMorUfør,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             erForSyk,
             harRettPåForeldrepengerINorge,
             harRettPåForeldrepengerIEØS,
@@ -207,17 +210,20 @@ const cleanAnnenForelder = (annenForelder: AnnenForelder, erEndringssøknad = fa
 
 const cleanBarn = (barn: Barn): BarnForInnsending => {
     if (isFødtBarn(barn)) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { type, fnr, ...barnRest } = barn;
         return barnRest;
     }
 
     if (isAdoptertBarn(barn)) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { type, fnr, ...barnRest } = barn;
         return {
             adopsjonAvEktefellesBarn: isAdoptertStebarn(barn),
             ...barnRest,
         };
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { type, ...barnRest } = barn;
     return barnRest;
 };

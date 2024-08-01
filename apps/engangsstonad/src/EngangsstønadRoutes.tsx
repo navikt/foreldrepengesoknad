@@ -58,7 +58,6 @@ const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChange
             }
             navigate(mellomlagretData[ContextDataType.CURRENT_PATH]);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mellomlagretData]);
 
     if (kvittering) {

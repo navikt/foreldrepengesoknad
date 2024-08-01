@@ -24,7 +24,6 @@ const BlueRadioGroup: FunctionComponent<Props> = (props) => {
             }, 300);
         }
         return () => timeoutId && clearTimeout(timeoutId);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

@@ -54,8 +54,7 @@ export const getEldsteRegistrerteBarn = (registrerteBarn: SøkerBarn[]): SøkerB
 };
 
 export const sorterDatoEtterEldst = (dato: Date[]): string[] => {
-    const d = [...dato].map((d) => dateToISOString(d)).sort((a, b) => (isDateABeforeDateB(a, b) ? -1 : 1));
-    return d;
+    return [...dato].map((d) => dateToISOString(d)).sort((a, b) => (isDateABeforeDateB(a, b) ? -1 : 1));
 };
 
 export const getEldsteDato = (dato: Date[]): string => {
@@ -198,7 +197,8 @@ export const getEndringstidspunkt = (
                 }
             }
 
-            //Hvis endringstidspunktet er etter siste periode i opprinnelig plan, og 'periode' er periode uten uttak, finn første uttak/utsettelse etter endringstidspunktet
+            //Hvis endringstidspunktet er etter siste periode i opprinnelig plan, og 'periode' er periode uten uttak,
+            //finn første uttak/utsettelse etter endringstidspunktet
             if (
                 endringstidspunktNyPlan &&
                 isPeriodeUtenUttak(periode) &&

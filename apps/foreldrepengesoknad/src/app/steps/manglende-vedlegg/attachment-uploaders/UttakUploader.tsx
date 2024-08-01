@@ -94,8 +94,8 @@ const UttakUploader: FunctionComponent<Props> = ({
                 attachmentType={attachmentType}
                 skjemanummer={skjemanummer}
                 existingAttachments={attachments}
-                updateAttachments={(attachments) => {
-                    const attachmentsMedMetadata = attachments.map((a) =>
+                updateAttachments={(vedlegg) => {
+                    const attachmentsMedMetadata = vedlegg.map((a) =>
                         addMetadata(a, {
                             type: AttachmentMetadataType.UTTAK,
                             perioder: perioder.map((p) => ({

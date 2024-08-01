@@ -13,7 +13,7 @@ describe('kontoSkalBesvares - når WLB gjelder', () => {
         MockDate.reset();
     });
 
-    it('Far/medmor skal ikke måtte besvare spørsmål om konto hvis de legger til periode før fødsel ', () => {
+    it('Far/medmor skal ikke måtte besvare spørsmål om konto hvis de legger til periode før fødsel', () => {
         const result = kontoSkalBesvares(
             Periodetype.Uttak,
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },
@@ -23,7 +23,7 @@ describe('kontoSkalBesvares - når WLB gjelder', () => {
         );
         expect(result).toEqual(false);
     });
-    it('Far/medmor skal måtte besvare spørsmål om konto hvis de legger til periode de første seks ukene etter fødsel ', () => {
+    it('Far/medmor skal måtte besvare spørsmål om konto hvis de legger til periode de første seks ukene etter fødsel', () => {
         const result = kontoSkalBesvares(
             Periodetype.Uttak,
             { fom: new Date('2022-08-08T00:00:00.000Z'), tom: new Date('2022-08-09T00:00:00.000Z') },

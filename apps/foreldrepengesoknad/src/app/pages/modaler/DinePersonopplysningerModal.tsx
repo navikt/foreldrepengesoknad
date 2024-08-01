@@ -1,6 +1,8 @@
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Block, intlUtils } from '@navikt/fp-common';
+
 import { BodyShort, Heading, Ingress, Modal } from '@navikt/ds-react';
+
+import { Block, intlUtils } from '@navikt/fp-common';
 
 interface Props {
     isOpen: boolean;
@@ -148,7 +150,10 @@ const DinePersonopplysningerModal = (props: Props) => {
                                             className="lenke"
                                             target="_blank"
                                             rel="noreferrer"
-                                            href="https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten"
+                                            href={
+                                                'https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og' +
+                                                '-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten'
+                                            }
                                         >
                                             {msg}
                                         </a>

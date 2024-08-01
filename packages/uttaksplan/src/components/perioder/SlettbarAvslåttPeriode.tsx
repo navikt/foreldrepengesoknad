@@ -35,12 +35,14 @@ const SlettbarAvslåttPeriode: FunctionComponent<Props> = ({ periode, handleDele
 
     if (isAvslåttPeriode(periode) && periode.opprinneligSøkt === OpprinneligSøkt.Arbeid) {
         bodyTekst =
-            'Perioden om utsettelse av foreldrepenger på grunn av arbeid har blitt avslått. Denne perioden kan du slette og legge inn hva du egentlig gjorde i stedet.';
+            'Perioden om utsettelse av foreldrepenger på grunn av arbeid har blitt avslått. Denne perioden kan' +
+            ' du slette og legge inn hva du egentlig gjorde i stedet.';
     }
 
     if (isAvslåttPeriode(periode) && periode.opprinneligSøkt === OpprinneligSøkt.Ferie) {
         bodyTekst =
-            'Perioden om utsettelse av foreldrepenger på grunn av ferie har blitt avslått. Denne perioden kan du slette og legge inn hva du egentlig gjorde i stedet.';
+            'Perioden om utsettelse av foreldrepenger på grunn av ferie har blitt avslått. Denne perioden kan' +
+            ' du slette og legge inn hva du egentlig gjorde i stedet.';
     }
 
     return (

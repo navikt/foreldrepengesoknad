@@ -66,7 +66,6 @@ const useEsMellomlagring = (esApi: AxiosInstance, locale: LocaleAll, setVelkomme
                 }
             });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [skalMellomlagre]);
 
     const mellomlagreOgNaviger = useCallback(() => {

@@ -46,6 +46,7 @@ const erPerioderLike = (periodeA: Periode, periodeB: Periode) => {
 };
 
 const getPeriodeFootprint = (periode: Periode) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { fom, tom, ...rest } = periode;
     const sortedPeriode: any = {};
 

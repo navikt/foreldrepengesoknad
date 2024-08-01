@@ -10,7 +10,9 @@ describe('intl messages', () => {
         const missingKeysBokmål = Object.keys(nb).filter((key) => !Object.keys(nn).includes(key));
         const missingKeysNynorsk = Object.keys(nn).filter((key) => !Object.keys(nb).includes(key));
 
+        // eslint-disable-next-line no-console
         missingKeysBokmål.forEach((key) => console.log('key ' + key + ' not found in nn_NO.json.'));
+        // eslint-disable-next-line no-console
         missingKeysNynorsk.forEach((key) => console.log('key ' + key + ' not found in nb_NO.json'));
 
         expect(missingKeysBokmål.length).toBe(0);
@@ -21,7 +23,9 @@ describe('intl messages', () => {
         const missingKeysBokmål = Object.keys(nb).filter((key) => !Object.keys(en).includes(key));
         const missingKeysEnglish = Object.keys(en).filter((key) => !Object.keys(nb).includes(key));
 
+        // eslint-disable-next-line no-console
         missingKeysBokmål.forEach((key) => console.log('key ' + key + ' not found in en_US.json.'));
+        // eslint-disable-next-line no-console
         missingKeysEnglish.forEach((key) => console.log('key ' + key + ' not found in nb_NO.json'));
 
         expect(missingKeysBokmål.length).toBe(0);
@@ -32,7 +36,9 @@ describe('intl messages', () => {
         const missingKeysNynorsk = Object.keys(nn).filter((key) => !Object.keys(en).includes(key));
         const missingKeysEnglish = Object.keys(en).filter((key) => !Object.keys(nb).includes(key));
 
+        // eslint-disable-next-line no-console
         missingKeysNynorsk.forEach((key) => console.log('key ' + key + ' not found in en_US.json.'));
+        // eslint-disable-next-line no-console
         missingKeysEnglish.forEach((key) => console.log('key ' + key + ' not found in nb_NO.json'));
 
         expect(missingKeysNynorsk.length).toBe(0);
@@ -50,8 +56,10 @@ describe('intl messages', () => {
 
         const missingKeysBokmål = allTranslationsCodes.filter((key) => !Object.keys(nb).includes(key));
         if (missingKeysBokmål.length > 0) {
+            // eslint-disable-next-line no-console
             console.log('Not found in nb_NO.json:');
         }
+        // eslint-disable-next-line no-console
         missingKeysBokmål.forEach((key) => console.log('key ' + key));
         expect(missingKeysBokmål.length).toBe(0);
     });
@@ -67,8 +75,10 @@ describe('intl messages', () => {
             return !allTranslationsCode.includes(key);
         });
         if (missingKeysCode.length > 0) {
+            // eslint-disable-next-line no-console
             console.log('Not found in code:');
         }
+        // eslint-disable-next-line no-console
         missingKeysCode.forEach((key) => console.log('key ' + key));
         expect(missingKeysCode.length).toBe(0);
     });

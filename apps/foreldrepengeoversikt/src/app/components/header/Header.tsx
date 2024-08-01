@@ -46,17 +46,9 @@ function HeaderWrapper({ children }: { readonly children: ReactNode }) {
         </div>
     );
 }
-export function ForsideHeader() {
-    return (
-        <HeaderWrapper>
-            <HGrid columns="max-content 1fr" gap="6" align="center">
-                <BabyIkon ytelse={Ytelse.FORELDREPENGER} />
-                <Heading level="1" size="large">
-                    Oversikt over foreldrepengesaker
-                </Heading>
-            </HGrid>
-        </HeaderWrapper>
-    );
+
+function BlueDot() {
+    return <div style={{ height: '4px', width: '4px', borderRadius: '50%', background: 'var(--a-deepblue-300)' }} />;
 }
 
 function BabyIkon({ ytelse }: { readonly ytelse: Ytelse }) {
@@ -95,6 +87,24 @@ function BabyIkon({ ytelse }: { readonly ytelse: Ytelse }) {
     );
 }
 
+export function ForsideHeader() {
+    return (
+        <HeaderWrapper>
+            <HGrid columns="max-content 1fr" gap="6" align="center">
+                <BabyIkon ytelse={Ytelse.FORELDREPENGER} />
+                <Heading level="1" size="large">
+                    Oversikt over foreldrepengesaker
+                </Heading>
+            </HGrid>
+        </HeaderWrapper>
+    );
+}
+
+function SaksnummerDetail() {
+    const { saksnummer } = useParams();
+    return <Detail>SAKSNR {saksnummer}</Detail>;
+}
+
 export function DokumenterHeader() {
     const heading = (
         <Heading level="1" size="large">
@@ -124,11 +134,6 @@ export function DokumenterHeader() {
     );
 }
 
-function SaksnummerDetail() {
-    const { saksnummer } = useParams();
-    return <Detail>SAKSNR {saksnummer}</Detail>;
-}
-
 export function EttersendingHeader() {
     const header = (
         <Heading level="1" size="large">
@@ -150,6 +155,39 @@ export function EttersendingHeader() {
                 </VStack>
             </Show>
         </HeaderWrapper>
+    );
+}
+
+function FamiliehendelseDescription({ sak }: { readonly sak: Sak }) {
+    const intl = useIntl();
+
+    const søkerinfo = useQuery(søkerInfoOptions()).data;
+    const saker = useQuery({
+        ...hentSakerOptions(),
+        select: mapSakerDTOToSaker,
+    }).data;
+
+    if (!søkerinfo || !saker || !sak.familiehendelse) {
+        return null;
+    }
+
+    const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn ?? [], saker);
+    const sakIGrupperteSaker = sak
+        ? grupperteSaker.find((gruppe) => gruppe.saker.map((s) => s.saksnummer).includes(sak.saksnummer))
+        : undefined;
+    const situasjon = utledFamiliesituasjon(sak.familiehendelse, sak.gjelderAdopsjon);
+    const barnTittel = getSakTittel({
+        barngruppering: sakIGrupperteSaker?.barn,
+        familiehendelsedato: getFamiliehendelseDato(sak.familiehendelse),
+        intl,
+        antallBarn: sak.ytelse === Ytelse.FORELDREPENGER ? sak.familiehendelse.antallBarn : 0,
+        situasjon,
+    });
+
+    return (
+        <Detail textColor="subtle">
+            {barnTittel.tittel} {barnTittel.undertittel}
+        </Detail>
     );
 }
 
@@ -191,41 +229,4 @@ export function DinSakHeader({ sak }: { readonly sak: Sak }) {
             </HGrid>
         </HeaderWrapper>
     );
-}
-
-function FamiliehendelseDescription({ sak }: { readonly sak: Sak }) {
-    const intl = useIntl();
-
-    const søkerinfo = useQuery(søkerInfoOptions()).data;
-    const saker = useQuery({
-        ...hentSakerOptions(),
-        select: mapSakerDTOToSaker,
-    }).data;
-
-    if (!søkerinfo || !saker || !sak.familiehendelse) {
-        return null;
-    }
-
-    const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn ?? [], saker);
-    const sakIGrupperteSaker = sak
-        ? grupperteSaker.find((gruppe) => gruppe.saker.map((s) => s.saksnummer).includes(sak.saksnummer))
-        : undefined;
-    const situasjon = utledFamiliesituasjon(sak.familiehendelse, sak.gjelderAdopsjon);
-    const barnTittel = getSakTittel({
-        barngruppering: sakIGrupperteSaker?.barn,
-        familiehendelsedato: getFamiliehendelseDato(sak.familiehendelse),
-        intl,
-        antallBarn: sak.ytelse === Ytelse.FORELDREPENGER ? sak.familiehendelse.antallBarn : 0,
-        situasjon,
-    });
-
-    return (
-        <Detail textColor="subtle">
-            {barnTittel.tittel} {barnTittel.undertittel}
-        </Detail>
-    );
-}
-
-function BlueDot() {
-    return <div style={{ height: '4px', width: '4px', borderRadius: '50%', background: 'var(--a-deepblue-300)' }} />;
 }

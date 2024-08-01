@@ -39,7 +39,9 @@ const Day: React.FunctionComponent<Props> = ({ day, periodeColor, dayType }) => 
     return (
         <div
             data-testid={`day:${day};dayColor:${periodeColor};dayType:${dayType}`}
-            className={`${styles.days} ${DAY_STYLE[periodeColor]} ${isStart && styles.firstDay} ${isEnd && styles.lastDay} ${isStartAndEnd && styles.firstAndLastDay}`}
+            className={`${styles.days} ${DAY_STYLE[periodeColor]} ${
+                isStart && styles.firstDay
+            } ${isEnd && styles.lastDay} ${isStartAndEnd && styles.firstAndLastDay}`}
         >
             {day}
         </div>

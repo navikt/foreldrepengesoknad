@@ -74,7 +74,6 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
             team: 'foreldrepenger',
             hendelse: finnHendelse(harIkkeRettTilFp, erMellomMinÅrslønnOg1Komma5G, årslønn > grunnbeløpetGanger6),
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

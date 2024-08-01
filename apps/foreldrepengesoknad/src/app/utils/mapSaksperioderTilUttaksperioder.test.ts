@@ -20,6 +20,7 @@ import {
     UttakArbeidType,
     Uttaksperiode,
 } from '@navikt/fp-common';
+
 import mapSaksperioderTilUttaksperioder, { getKontotypeBareFarHarRett } from './mapSaksperioderTilUttaksperioder';
 
 describe('getKontotypeBareFarHarRett', () => {
@@ -85,252 +86,264 @@ describe('mapSaksperioderTilUttaksperioder', () => {
         expect(infoperiode.årsak).toEqual(OppholdÅrsakType.UttakMødrekvoteAnnenForelder);
     });
 
-    it('Skal vise søkerens perioder og infoperioder om annen part der det er søkerens endringssøknad der begge har søkt fra før og perioder ikke overlapper. Skal også vise søkerens uttaksperiode med gradering og arbeidsinformasjon.', () => {
-        const perioderBeggeParterSomIkkeOverlapper = [
-            {
-                periode: {
-                    fom: '2022-01-03',
-                    tom: '2022-01-10',
+    it(
+        'Skal vise søkerens perioder og infoperioder om annen part der det er søkerens endringssøknad der begge har søkt' +
+            ' fra før og perioder ikke overlapper. Skal også vise søkerens uttaksperiode med gradering og arbeidsinformasjon.',
+        () => {
+            const perioderBeggeParterSomIkkeOverlapper = [
+                {
+                    periode: {
+                        fom: '2022-01-03',
+                        tom: '2022-01-10',
+                    },
+                    resultat: {
+                        innvilget: true,
+                        trekkerMinsterett: false,
+                        trekkerDager: true,
+                        årsak: PeriodeResultatÅrsak.ANNET,
+                    },
+                    gjelderAnnenPart: true,
+                    flerbarnsdager: false,
+                    oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+                    guid: '0',
+                    kontoType: StønadskontoType.Mødrekvote,
                 },
-                resultat: {
-                    innvilget: true,
-                    trekkerMinsterett: false,
-                    trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                {
+                    periode: {
+                        fom: '2022-01-11',
+                        tom: '2022-01-18',
+                    },
+                    resultat: {
+                        innvilget: true,
+                        trekkerMinsterett: false,
+                        trekkerDager: true,
+                        årsak: PeriodeResultatÅrsak.ANNET,
+                    },
+                    gjelderAnnenPart: true,
+                    flerbarnsdager: false,
+                    utbetalingsprosent: 100,
+                    arbeidstidprosent: 100,
+                    oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
+                    guid: '1',
+                    kontoType: StønadskontoType.Fellesperiode,
                 },
-                gjelderAnnenPart: true,
-                flerbarnsdager: false,
-                oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
-                guid: '0',
-                kontoType: StønadskontoType.Mødrekvote,
-            },
-            {
-                periode: {
-                    fom: '2022-01-11',
-                    tom: '2022-01-18',
-                },
-                resultat: {
-                    innvilget: true,
-                    trekkerMinsterett: false,
-                    trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
-                },
-                gjelderAnnenPart: true,
-                flerbarnsdager: false,
-                utbetalingsprosent: 100,
-                arbeidstidprosent: 100,
-                oppholdÅrsak: OppholdÅrsakType.UttakFellesperiodeAnnenForelder,
-                guid: '1',
-                kontoType: StønadskontoType.Fellesperiode,
-            },
-            {
-                periode: {
-                    fom: '2022-01-19',
-                    tom: '2022-01-20',
-                },
-                resultat: {
-                    innvilget: true,
-                    trekkerMinsterett: false,
-                    trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
-                },
-                gjelderAnnenPart: false,
-                samtidigUttak: 50,
-                flerbarnsdager: false,
-                kontoType: StønadskontoType.Fedrekvote,
-                guid: '2',
-                gradering: {
-                    arbeidstidprosent: 80,
-                    aktivitet: {
-                        type: UttakArbeidType.ORDINÆRT_ARBEID,
-                        arbeidsgiver: { id: '50089', type: ArbeidsgiverInfoType.ORGANISASJON },
+                {
+                    periode: {
+                        fom: '2022-01-19',
+                        tom: '2022-01-20',
+                    },
+                    resultat: {
+                        innvilget: true,
+                        trekkerMinsterett: false,
+                        trekkerDager: true,
+                        årsak: PeriodeResultatÅrsak.ANNET,
+                    },
+                    gjelderAnnenPart: false,
+                    samtidigUttak: 50,
+                    flerbarnsdager: false,
+                    kontoType: StønadskontoType.Fedrekvote,
+                    guid: '2',
+                    gradering: {
+                        arbeidstidprosent: 80,
+                        aktivitet: {
+                            type: UttakArbeidType.ORDINÆRT_ARBEID,
+                            arbeidsgiver: { id: '50089', type: ArbeidsgiverInfoType.ORGANISASJON },
+                        },
                     },
                 },
-            },
-            {
-                periode: {
-                    fom: '2022-01-21',
-                    tom: '2022-01-22',
+                {
+                    periode: {
+                        fom: '2022-01-21',
+                        tom: '2022-01-22',
+                    },
+                    resultat: {
+                        innvilget: true,
+                        trekkerMinsterett: false,
+                        trekkerDager: true,
+                        årsak: PeriodeResultatÅrsak.ANNET,
+                    },
+                    gjelderAnnenPart: false,
+                    kontoType: StønadskontoType.Fellesperiode,
+                    morsAktivitet: MorsAktivitet.Innlagt,
+                    guid: '3',
                 },
-                resultat: {
-                    innvilget: true,
-                    trekkerMinsterett: false,
-                    trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
-                },
-                gjelderAnnenPart: false,
-                kontoType: StønadskontoType.Fellesperiode,
-                morsAktivitet: MorsAktivitet.Innlagt,
-                guid: '3',
-            },
-        ] as Saksperiode[];
+            ] as Saksperiode[];
 
-        const result = mapSaksperioderTilUttaksperioder(perioderBeggeParterSomIkkeOverlapper, grunnlag, undefined);
-        expect(result.length).toEqual(4);
-        const infoperiode1 = result[0] as UttakAnnenPartInfoPeriode;
-        expect(infoperiode1.tidsperiode.fom).toEqual(new Date('2022-01-03'));
-        expect(infoperiode1.tidsperiode.tom).toEqual(new Date('2022-01-10'));
-        expect(infoperiode1.type).toEqual(Periodetype.Info);
-        expect(infoperiode1.årsak).toEqual(OppholdÅrsakType.UttakMødrekvoteAnnenForelder);
-        expect(infoperiode1.forelder).toEqual(Forelder.mor);
+            const result = mapSaksperioderTilUttaksperioder(perioderBeggeParterSomIkkeOverlapper, grunnlag, undefined);
+            expect(result.length).toEqual(4);
+            const infoperiode1 = result[0] as UttakAnnenPartInfoPeriode;
+            expect(infoperiode1.tidsperiode.fom).toEqual(new Date('2022-01-03'));
+            expect(infoperiode1.tidsperiode.tom).toEqual(new Date('2022-01-10'));
+            expect(infoperiode1.type).toEqual(Periodetype.Info);
+            expect(infoperiode1.årsak).toEqual(OppholdÅrsakType.UttakMødrekvoteAnnenForelder);
+            expect(infoperiode1.forelder).toEqual(Forelder.mor);
 
-        const infoperiode2 = result[1] as UttakAnnenPartInfoPeriode;
-        expect(infoperiode2.tidsperiode.fom).toEqual(new Date('2022-01-11'));
-        expect(infoperiode2.tidsperiode.tom).toEqual(new Date('2022-01-18'));
-        expect(infoperiode2.type).toEqual(Periodetype.Info);
-        expect(infoperiode2.årsak).toEqual(OppholdÅrsakType.UttakFellesperiodeAnnenForelder);
-        expect(infoperiode2.forelder).toEqual(Forelder.mor);
+            const infoperiode2 = result[1] as UttakAnnenPartInfoPeriode;
+            expect(infoperiode2.tidsperiode.fom).toEqual(new Date('2022-01-11'));
+            expect(infoperiode2.tidsperiode.tom).toEqual(new Date('2022-01-18'));
+            expect(infoperiode2.type).toEqual(Periodetype.Info);
+            expect(infoperiode2.årsak).toEqual(OppholdÅrsakType.UttakFellesperiodeAnnenForelder);
+            expect(infoperiode2.forelder).toEqual(Forelder.mor);
 
-        const uttaksperiode = result[2] as Uttaksperiode;
-        expect(uttaksperiode.tidsperiode.fom).toEqual(new Date('2022-01-19'));
-        expect(uttaksperiode.tidsperiode.tom).toEqual(new Date('2022-01-20'));
-        expect(uttaksperiode.type).toEqual(Periodetype.Uttak);
-        expect(uttaksperiode.forelder).toEqual(Forelder.farMedmor);
-        expect(uttaksperiode.konto).toEqual(StønadskontoType.Fedrekvote);
-        expect(uttaksperiode.gradert).toEqual(true);
-        expect(uttaksperiode.ønskerSamtidigUttak).toEqual(true);
-        expect(uttaksperiode.samtidigUttakProsent).toEqual('50');
-        expect(uttaksperiode.stillingsprosent).toEqual('80');
-        expect(uttaksperiode.orgnumre).toEqual(['50089']);
-        expect(uttaksperiode.arbeidsformer).toEqual([Arbeidsform.arbeidstaker]);
-        expect(uttaksperiode.harIkkeAktivitetskrav).toEqual(undefined);
+            const uttaksperiode = result[2] as Uttaksperiode;
+            expect(uttaksperiode.tidsperiode.fom).toEqual(new Date('2022-01-19'));
+            expect(uttaksperiode.tidsperiode.tom).toEqual(new Date('2022-01-20'));
+            expect(uttaksperiode.type).toEqual(Periodetype.Uttak);
+            expect(uttaksperiode.forelder).toEqual(Forelder.farMedmor);
+            expect(uttaksperiode.konto).toEqual(StønadskontoType.Fedrekvote);
+            expect(uttaksperiode.gradert).toEqual(true);
+            expect(uttaksperiode.ønskerSamtidigUttak).toEqual(true);
+            expect(uttaksperiode.samtidigUttakProsent).toEqual('50');
+            expect(uttaksperiode.stillingsprosent).toEqual('80');
+            expect(uttaksperiode.orgnumre).toEqual(['50089']);
+            expect(uttaksperiode.arbeidsformer).toEqual([Arbeidsform.arbeidstaker]);
+            expect(uttaksperiode.harIkkeAktivitetskrav).toEqual(undefined);
 
-        const uttakFellesperiode = result[3] as Uttaksperiode;
-        expect(uttakFellesperiode.tidsperiode.fom).toEqual(new Date('2022-01-21'));
-        expect(uttakFellesperiode.tidsperiode.tom).toEqual(new Date('2022-01-21'));
-        expect(uttakFellesperiode.type).toEqual(Periodetype.Uttak);
-        expect(uttakFellesperiode.forelder).toEqual(Forelder.farMedmor);
-        expect(uttakFellesperiode.konto).toEqual(StønadskontoType.Fellesperiode);
-        expect(uttakFellesperiode.gradert).toEqual(false);
-        expect(uttakFellesperiode.ønskerSamtidigUttak).toEqual(false);
-        expect(uttakFellesperiode.harIkkeAktivitetskrav).toEqual(undefined);
-        expect(uttakFellesperiode.morsAktivitetIPerioden).toEqual(MorsAktivitet.Innlagt);
-    });
-    it('Skal vise søkerens perioder og infoperioder om annen part der søkerens og annen parts perioder overlapper og annen parts periode er lengere enn søkerens', () => {
-        const perioderBeggeParterSomOverlapper = [
-            {
-                periode: {
-                    fom: '2022-01-03',
-                    tom: '2022-01-10',
+            const uttakFellesperiode = result[3] as Uttaksperiode;
+            expect(uttakFellesperiode.tidsperiode.fom).toEqual(new Date('2022-01-21'));
+            expect(uttakFellesperiode.tidsperiode.tom).toEqual(new Date('2022-01-21'));
+            expect(uttakFellesperiode.type).toEqual(Periodetype.Uttak);
+            expect(uttakFellesperiode.forelder).toEqual(Forelder.farMedmor);
+            expect(uttakFellesperiode.konto).toEqual(StønadskontoType.Fellesperiode);
+            expect(uttakFellesperiode.gradert).toEqual(false);
+            expect(uttakFellesperiode.ønskerSamtidigUttak).toEqual(false);
+            expect(uttakFellesperiode.harIkkeAktivitetskrav).toEqual(undefined);
+            expect(uttakFellesperiode.morsAktivitetIPerioden).toEqual(MorsAktivitet.Innlagt);
+        },
+    );
+    it(
+        'Skal vise søkerens perioder og infoperioder om annen part der søkerens og annen parts perioder' +
+            ' overlapper og annen parts periode er lengere enn søkerens',
+        () => {
+            const perioderBeggeParterSomOverlapper = [
+                {
+                    periode: {
+                        fom: '2022-01-03',
+                        tom: '2022-01-10',
+                    },
+                    gjelderAnnenPart: true,
+                    samtidigUttak: 100,
+                    flerbarnsdager: false,
+                    oppholdAarsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+                    guid: '0',
+                    stønadskontotype: StønadskontoType.Mødrekvote,
+                    resultat: {
+                        innvilget: true,
+                        trekkerMinsterett: false,
+                        trekkerDager: true,
+                        årsak: PeriodeResultatÅrsak.ANNET,
+                    },
                 },
-                gjelderAnnenPart: true,
-                samtidigUttak: 100,
-                flerbarnsdager: false,
-                oppholdAarsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
-                guid: '0',
-                stønadskontotype: StønadskontoType.Mødrekvote,
-                resultat: {
-                    innvilget: true,
-                    trekkerMinsterett: false,
-                    trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                {
+                    periode: {
+                        fom: '2022-01-05',
+                        tom: '2022-01-06',
+                    },
+                    gjelderAnnenPart: false,
+                    samtidigUttak: 100,
+                    flerbarnsdager: false,
+                    kontoType: StønadskontoType.Fedrekvote,
+                    guid: '0',
+                    oppholdÅrsak: OppholdÅrsakType.Ingen,
+                    resultat: {
+                        innvilget: true,
+                        trekkerMinsterett: false,
+                        trekkerDager: true,
+                        årsak: PeriodeResultatÅrsak.ANNET,
+                    },
                 },
-            },
-            {
-                periode: {
-                    fom: '2022-01-05',
-                    tom: '2022-01-06',
-                },
-                gjelderAnnenPart: false,
-                samtidigUttak: 100,
-                flerbarnsdager: false,
-                kontoType: StønadskontoType.Fedrekvote,
-                guid: '0',
-                oppholdÅrsak: OppholdÅrsakType.Ingen,
-                resultat: {
-                    innvilget: true,
-                    trekkerMinsterett: false,
-                    trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
-                },
-            },
-        ] as Saksperiode[];
+            ] as Saksperiode[];
 
-        const result = mapSaksperioderTilUttaksperioder(perioderBeggeParterSomOverlapper, grunnlag, undefined);
-        expect(result.length).toEqual(4);
-        const uttak1 = result[0] as Uttaksperiode;
-        expect(uttak1.tidsperiode.fom).toEqual(new Date('2022-01-03'));
-        expect(uttak1.tidsperiode.tom).toEqual(new Date('2022-01-04'));
-        expect(uttak1.type).toEqual(Periodetype.Info);
-        expect(uttak1.forelder).toEqual(Forelder.mor);
-        const uttak2 = result[1] as Uttaksperiode;
-        expect(uttak2.tidsperiode.fom).toEqual(new Date('2022-01-05'));
-        expect(uttak2.tidsperiode.tom).toEqual(new Date('2022-01-06'));
-        expect(uttak2.type).toEqual(Periodetype.Info);
-        expect(uttak2.forelder).toEqual(Forelder.mor);
-        const uttak3 = result[2] as Uttaksperiode;
-        expect(uttak3.tidsperiode.fom).toEqual(new Date('2022-01-05'));
-        expect(uttak3.tidsperiode.tom).toEqual(new Date('2022-01-06'));
-        expect(uttak3.type).toEqual(Periodetype.Uttak);
-        expect(uttak3.forelder).toEqual(Forelder.farMedmor);
-        const uttak4 = result[3] as Uttaksperiode;
-        expect(uttak4.tidsperiode.fom).toEqual(new Date('2022-01-07'));
-        expect(uttak4.tidsperiode.tom).toEqual(new Date('2022-01-10'));
-        expect(uttak4.type).toEqual(Periodetype.Info);
-        expect(uttak4.forelder).toEqual(Forelder.mor);
-    });
-    it('Skal vise søkerens perioder og infoperioder om annen part der søkerens og annen parts perioder overlapper og søkerens periode er lengere enn annen parts', () => {
-        const perioderBeggeParterSomOverlapper = [
-            {
-                periode: {
-                    fom: '2022-01-03',
-                    tom: '2022-01-10',
+            const result = mapSaksperioderTilUttaksperioder(perioderBeggeParterSomOverlapper, grunnlag, undefined);
+            expect(result.length).toEqual(4);
+            const uttak1 = result[0] as Uttaksperiode;
+            expect(uttak1.tidsperiode.fom).toEqual(new Date('2022-01-03'));
+            expect(uttak1.tidsperiode.tom).toEqual(new Date('2022-01-04'));
+            expect(uttak1.type).toEqual(Periodetype.Info);
+            expect(uttak1.forelder).toEqual(Forelder.mor);
+            const uttak2 = result[1] as Uttaksperiode;
+            expect(uttak2.tidsperiode.fom).toEqual(new Date('2022-01-05'));
+            expect(uttak2.tidsperiode.tom).toEqual(new Date('2022-01-06'));
+            expect(uttak2.type).toEqual(Periodetype.Info);
+            expect(uttak2.forelder).toEqual(Forelder.mor);
+            const uttak3 = result[2] as Uttaksperiode;
+            expect(uttak3.tidsperiode.fom).toEqual(new Date('2022-01-05'));
+            expect(uttak3.tidsperiode.tom).toEqual(new Date('2022-01-06'));
+            expect(uttak3.type).toEqual(Periodetype.Uttak);
+            expect(uttak3.forelder).toEqual(Forelder.farMedmor);
+            const uttak4 = result[3] as Uttaksperiode;
+            expect(uttak4.tidsperiode.fom).toEqual(new Date('2022-01-07'));
+            expect(uttak4.tidsperiode.tom).toEqual(new Date('2022-01-10'));
+            expect(uttak4.type).toEqual(Periodetype.Info);
+            expect(uttak4.forelder).toEqual(Forelder.mor);
+        },
+    );
+    it(
+        'Skal vise søkerens perioder og infoperioder om annen part der søkerens og annen parts perioder' +
+            ' overlapper og søkerens periode er lengere enn annen parts',
+        () => {
+            const perioderBeggeParterSomOverlapper = [
+                {
+                    periode: {
+                        fom: '2022-01-03',
+                        tom: '2022-01-10',
+                    },
+                    gjelderAnnenPart: false,
+                    samtidigUttak: true,
+                    samtidigUttaksprosent: 100,
+                    flerbarnsdager: false,
+                    guid: '0',
+                    kontoType: StønadskontoType.Fedrekvote,
+                    resultat: {
+                        innvilget: true,
+                        trekkerMinsterett: false,
+                        trekkerDager: true,
+                        årsak: PeriodeResultatÅrsak.ANNET,
+                    },
                 },
-                gjelderAnnenPart: false,
-                samtidigUttak: true,
-                samtidigUttaksprosent: 100,
-                flerbarnsdager: false,
-                guid: '0',
-                kontoType: StønadskontoType.Fedrekvote,
-                resultat: {
-                    innvilget: true,
-                    trekkerMinsterett: false,
-                    trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
+                {
+                    periode: {
+                        fom: '2022-01-05',
+                        tom: '2022-01-06',
+                    },
+                    gjelderAnnenPart: true,
+                    samtidigUttak: 100,
+                    flerbarnsdager: false,
+                    kontoType: StønadskontoType.Mødrekvote,
+                    guid: '1',
+                    oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+                    resultat: {
+                        innvilget: true,
+                        trekkerMinsterett: false,
+                        trekkerDager: true,
+                        årsak: PeriodeResultatÅrsak.ANNET,
+                    },
                 },
-            },
-            {
-                periode: {
-                    fom: '2022-01-05',
-                    tom: '2022-01-06',
-                },
-                gjelderAnnenPart: true,
-                samtidigUttak: 100,
-                flerbarnsdager: false,
-                kontoType: StønadskontoType.Mødrekvote,
-                guid: '1',
-                oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
-                resultat: {
-                    innvilget: true,
-                    trekkerMinsterett: false,
-                    trekkerDager: true,
-                    årsak: PeriodeResultatÅrsak.ANNET,
-                },
-            },
-        ] as Saksperiode[];
+            ] as Saksperiode[];
 
-        const result = mapSaksperioderTilUttaksperioder(perioderBeggeParterSomOverlapper, grunnlag, undefined);
-        const uttak1 = result[0] as Uttaksperiode;
-        expect(uttak1.tidsperiode.fom).toEqual(new Date('2022-01-03'));
-        expect(uttak1.tidsperiode.tom).toEqual(new Date('2022-01-04'));
-        expect(uttak1.type).toEqual(Periodetype.Uttak);
-        expect(uttak1.forelder).toEqual(Forelder.farMedmor);
-        const uttak2 = result[2] as Uttaksperiode;
-        expect(uttak2.tidsperiode.fom).toEqual(new Date('2022-01-05'));
-        expect(uttak2.tidsperiode.tom).toEqual(new Date('2022-01-06'));
-        expect(uttak2.type).toEqual(Periodetype.Uttak);
-        expect(uttak2.forelder).toEqual(Forelder.farMedmor);
-        const uttak3 = result[1] as Uttaksperiode;
-        expect(uttak3.tidsperiode.fom).toEqual(new Date('2022-01-05'));
-        expect(uttak3.tidsperiode.tom).toEqual(new Date('2022-01-06'));
-        expect(uttak3.type).toEqual(Periodetype.Info);
-        expect(uttak3.forelder).toEqual(Forelder.mor);
-        const uttak4 = result[3] as Uttaksperiode;
-        expect(uttak4.tidsperiode.fom).toEqual(new Date('2022-01-07'));
-        expect(uttak4.tidsperiode.tom).toEqual(new Date('2022-01-10'));
-        expect(uttak4.type).toEqual(Periodetype.Uttak);
-        expect(uttak4.forelder).toEqual(Forelder.farMedmor);
-    });
+            const result = mapSaksperioderTilUttaksperioder(perioderBeggeParterSomOverlapper, grunnlag, undefined);
+            const uttak1 = result[0] as Uttaksperiode;
+            expect(uttak1.tidsperiode.fom).toEqual(new Date('2022-01-03'));
+            expect(uttak1.tidsperiode.tom).toEqual(new Date('2022-01-04'));
+            expect(uttak1.type).toEqual(Periodetype.Uttak);
+            expect(uttak1.forelder).toEqual(Forelder.farMedmor);
+            const uttak2 = result[2] as Uttaksperiode;
+            expect(uttak2.tidsperiode.fom).toEqual(new Date('2022-01-05'));
+            expect(uttak2.tidsperiode.tom).toEqual(new Date('2022-01-06'));
+            expect(uttak2.type).toEqual(Periodetype.Uttak);
+            expect(uttak2.forelder).toEqual(Forelder.farMedmor);
+            const uttak3 = result[1] as Uttaksperiode;
+            expect(uttak3.tidsperiode.fom).toEqual(new Date('2022-01-05'));
+            expect(uttak3.tidsperiode.tom).toEqual(new Date('2022-01-06'));
+            expect(uttak3.type).toEqual(Periodetype.Info);
+            expect(uttak3.forelder).toEqual(Forelder.mor);
+            const uttak4 = result[3] as Uttaksperiode;
+            expect(uttak4.tidsperiode.fom).toEqual(new Date('2022-01-07'));
+            expect(uttak4.tidsperiode.tom).toEqual(new Date('2022-01-10'));
+            expect(uttak4.type).toEqual(Periodetype.Uttak);
+            expect(uttak4.forelder).toEqual(Forelder.farMedmor);
+        },
+    );
 
     it('Skal mappe utsettelser riktig', () => {
         const perioderUtsettelse = [

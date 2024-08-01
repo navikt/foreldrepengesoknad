@@ -559,7 +559,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             setHarPlanForslagIFørstegangssøknad(true);
             mellomlagreSøknadOgNaviger();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -585,7 +584,8 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         if (nesteSakAnnenPartError) {
             sendErrorMessageToSentry(nesteSakAnnenPartError);
             throw new Error(
-                `Vi klarte ikke å hente informasjon om saken til annen forelder for neste barn. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
+                'Vi klarte ikke å hente informasjon om saken til annen forelder for neste barn. ' +
+                    'Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.',
             );
         }
     }, [tilgjengeligeStønadskontoerError, eksisterendeSakAnnenPartError, nesteSakAnnenPartError]);

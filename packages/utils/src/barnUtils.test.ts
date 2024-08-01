@@ -34,6 +34,6 @@ describe('barnUtils', () => {
 
         const dato = getFamiliehendelsedato(barn);
 
-        expect(dato).toBeUndefined;
+        expect(dato).toBeUndefined();
     });
 });

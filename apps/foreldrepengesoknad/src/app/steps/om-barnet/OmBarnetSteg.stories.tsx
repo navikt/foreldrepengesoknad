@@ -18,7 +18,7 @@ const promiseAction =
         return Promise.resolve();
     };
 
-const søkerinfo = {
+const defaultSøkerinfo = {
     søker: {
         fnr: '19047815714',
         fornavn: 'TALENTFULL',
@@ -76,7 +76,7 @@ export default {
 };
 
 interface Props {
-    søkerinfo: Søkerinfo;
+    søkerinfo?: Søkerinfo;
     søkersituasjon?: SøkersituasjonFp;
     barn?: Barn;
     søknadGjelderEtNyttBarn?: boolean;
@@ -85,7 +85,7 @@ interface Props {
 }
 
 const Template: StoryFn<Props> = ({
-    søkerinfo,
+    søkerinfo = defaultSøkerinfo,
     søkersituasjon = {
         situasjon: 'fødsel',
         rolle: 'mor',
@@ -119,7 +119,6 @@ const Template: StoryFn<Props> = ({
 export const MorFødsel = Template.bind({});
 MorFødsel.args = {
     barn: undefined,
-    søkerinfo,
 };
 
 export const FarFødsel = Template.bind({});
@@ -129,7 +128,7 @@ FarFødsel.args = {
         rolle: 'far',
     },
     barn: undefined,
-    søkerinfo: { ...søkerinfo, søker: { ...søkerinfo.søker, kjønn: 'M' } },
+    søkerinfo: { ...defaultSøkerinfo, søker: { ...defaultSøkerinfo.søker, kjønn: 'M' } },
 };
 
 export const MedmorFødsel = Template.bind({});
@@ -139,7 +138,6 @@ MedmorFødsel.args = {
         rolle: 'medmor',
     },
     barn: undefined,
-    søkerinfo,
 };
 
 export const ForAdopsjon = Template.bind({});
@@ -148,7 +146,6 @@ ForAdopsjon.args = {
         situasjon: 'adopsjon',
         rolle: 'mor',
     },
-    søkerinfo,
 };
 
 export const RegistrertBarnFødselFar = Template.bind({});
@@ -164,7 +161,6 @@ RegistrertBarnFødselFar.args = {
         fødselsdatoer: ['2021-03-15'],
         type: BarnType.FØDT,
     },
-    søkerinfo,
 };
 
 export const RegistrertBarnFødselMor = Template.bind({});
@@ -180,7 +176,6 @@ RegistrertBarnFødselMor.args = {
         type: BarnType.FØDT,
     },
     søknadGjelderEtNyttBarn: false,
-    søkerinfo,
 };
 
 export const RegistrertBarnAdopsjonMor = Template.bind({});
@@ -196,7 +191,6 @@ RegistrertBarnAdopsjonMor.args = {
         type: BarnType.FØDT,
     },
     søknadGjelderEtNyttBarn: false,
-    søkerinfo,
 };
 
 export const RegistrertBarnTrillingerDerEnErDød = Template.bind({});
@@ -295,5 +289,5 @@ SøknadPåUregistrertBarnSomErFødt.args = {
         type: BarnType.FØDT,
     },
     søknadGjelderEtNyttBarn: false,
-    søkerinfo: { ...søkerinfo, søker: { ...søkerinfo.søker, barn: [] } },
+    søkerinfo: { ...defaultSøkerinfo, søker: { ...defaultSøkerinfo.søker, barn: [] } },
 };

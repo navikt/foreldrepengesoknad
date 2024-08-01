@@ -15,7 +15,9 @@ describe('<MinidialogSkjema>', () => {
 
         expect(
             await screen.findByText(
-                'NAV har sendt deg et varsel om at du har fått for mye utbetalte foreldrepenger. Før vi behandler saken, kan du gi en uttalelse og legge ved relevant dokumentasjon om du har det. Du finner relevant informasjon om hva som har skjedd i saken og dine rettigheter i varselet som vi har sendt til deg.',
+                'NAV har sendt deg et varsel om at du har fått for mye utbetalte foreldrepenger. Før vi behandler saken, ' +
+                    'kan du gi en uttalelse og legge ved relevant dokumentasjon om du har det. Du finner relevant informasjon ' +
+                    'om hva som har skjedd i saken og dine rettigheter i varselet som vi har sendt til deg.',
             ),
         ).toBeInTheDocument();
 
@@ -49,7 +51,9 @@ describe('<MinidialogSkjema>', () => {
 
         expect(
             await screen.findByText(
-                'NAV har sendt deg et varsel om at du har fått for mye utbetalte foreldrepenger. Før vi behandler saken, kan du gi en uttalelse og legge ved relevant dokumentasjon om du har det. Du finner relevant informasjon om hva som har skjedd i saken og dine rettigheter i varselet som vi har sendt til deg.',
+                'NAV har sendt deg et varsel om at du har fått for mye utbetalte foreldrepenger. Før vi behandler saken, kan du ' +
+                    'gi en uttalelse og legge ved relevant dokumentasjon om du har det. Du finner relevant informasjon om hva som ' +
+                    'har skjedd i saken og dine rettigheter i varselet som vi har sendt til deg.',
             ),
         ).toBeInTheDocument();
 

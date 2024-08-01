@@ -72,7 +72,7 @@ class CountrySelect extends React.Component<Props> {
     }
 
     render() {
-        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { onChange, name, showOnlyEuAndEftaCountries, locale, useAlpha3Code, ...restProps } = this.props;
         return (
             <Select name={name} {...restProps} onChange={(e) => onChange(e.target.value)} autoComplete="off">

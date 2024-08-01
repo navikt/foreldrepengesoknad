@@ -1,5 +1,6 @@
-import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
+import { render, screen } from '@testing-library/react';
+
 import * as stories from './Umyndig.stories';
 
 const { UmyndigForeldrepenger, UmyndigEngangsstonad, UmyndigSvangerskapspenger } = composeStories(stories);
@@ -11,7 +12,8 @@ describe('<Umyndig>', () => {
         expect(screen.getByText('Fordi du er under 18 år, må du sende papirsøknad')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på søknaden din sammen med deg. Derfor må du fylle ut søknaden på papir og sende den i posten til NAV.',
+                'Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på søknaden' +
+                    ' din sammen med deg. Derfor må du fylle ut søknaden på papir og sende den i posten til NAV.',
             ),
         ).toBeInTheDocument();
         expect(screen.getByText('Gå til papirsøknaden')).toBeInTheDocument();
