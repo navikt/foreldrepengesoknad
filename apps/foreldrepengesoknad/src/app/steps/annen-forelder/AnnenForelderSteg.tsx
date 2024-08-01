@@ -24,7 +24,7 @@ const getRegistrertAnnenForelder = (barn: NonNullable<Barn | undefined>, søker:
     const registrertBarnMedAnnenForelder =
         registrerteBarn === undefined || registrerteBarn.length === 0
             ? undefined
-            : registrerteBarn.find((barn) => barn.annenForelder !== undefined);
+            : registrerteBarn.find((registrertBarn) => registrertBarn.annenForelder !== undefined);
     return registrertBarnMedAnnenForelder !== undefined ? registrertBarnMedAnnenForelder.annenForelder : undefined;
 };
 

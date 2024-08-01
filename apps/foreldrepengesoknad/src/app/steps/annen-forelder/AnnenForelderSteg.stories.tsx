@@ -19,7 +19,7 @@ const promiseAction =
         return Promise.resolve();
     };
 
-const søker = {
+const defaultSøker = {
     fnr: '19047815714',
     fornavn: 'TALENTFULL',
     etternavn: 'MYGG',
@@ -48,7 +48,7 @@ export default {
 };
 
 interface Props {
-    søker: Søker;
+    søker?: Søker;
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelderType;
     barn?: Barn;
@@ -59,7 +59,7 @@ interface Props {
 }
 
 const Template: StoryFn<Props> = ({
-    søker,
+    søker = defaultSøker,
     søkersituasjon = {
         situasjon: 'fødsel',
         rolle: 'mor',
@@ -103,7 +103,6 @@ AnnenForelderFraOppgittBarn.args = {
         antallBarn: 1,
         fnr: ['21091981146'],
     },
-    søker,
     sivilstand: SivilstandType.UGIFT,
 };
 
@@ -113,7 +112,7 @@ SkalOppgiPersonalia.args = {
         kanIkkeOppgis: false,
     },
     søker: {
-        ...søker,
+        ...defaultSøker,
         barn: [],
     },
 };
@@ -125,7 +124,7 @@ SkalOppgiPersonaliaNavnMangler.args = {
         kanIkkeOppgis: false,
     },
     søker: {
-        ...søker,
+        ...defaultSøker,
         barn: [],
     },
 };
@@ -138,7 +137,7 @@ SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike.args = {
         kanIkkeOppgis: false,
     },
     søker: {
-        ...søker,
+        ...defaultSøker,
 
         barn: [
             {
@@ -167,7 +166,7 @@ ForFar.args = {
         rolle: 'far',
     },
     søker: {
-        ...søker,
+        ...defaultSøker,
         fornavn: 'LEALAUS',
         etternavn: 'BÆREPOSE',
         kjønn: 'M',
@@ -204,7 +203,7 @@ MorUfødtBarn.args = {
         kanIkkeOppgis: false,
     },
     søker: {
-        ...søker,
+        ...defaultSøker,
         barn: [],
     },
 };
@@ -224,7 +223,7 @@ MedmorUfødtBarn.args = {
         kanIkkeOppgis: false,
     },
     søker: {
-        ...søker,
+        ...defaultSøker,
         kjønn: 'K',
         barn: [],
     },
@@ -245,7 +244,7 @@ FarUfødtBarn.args = {
         kanIkkeOppgis: false,
     },
     søker: {
-        ...søker,
+        ...defaultSøker,
         fornavn: 'LEALAUS',
         etternavn: 'BÆREPOSE',
         kjønn: 'M',
@@ -268,7 +267,7 @@ FarGiftUfødtBarn.args = {
         kanIkkeOppgis: false,
     },
     søker: {
-        ...søker,
+        ...defaultSøker,
         fornavn: 'LEALAUS',
         etternavn: 'BÆREPOSE',
         kjønn: 'M',

@@ -1,6 +1,8 @@
 import getIntlMock from 'utils-test/intl-test-helper';
-import { validateFødselsnummer } from './validationUtil';
+
 import { getIllegalChars } from '@navikt/fp-common';
+
+import { validateFødselsnummer } from './validationUtil';
 
 describe('validationUtil', () => {
     const intl = getIntlMock();
@@ -11,7 +13,7 @@ describe('validationUtil', () => {
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer')(andrePartFnr);
 
-        expect(resultat).toBeUndefined;
+        expect(resultat).toBeUndefined();
     });
 
     it('skal gi feilmelding når søker oppgir sitt eget fnr som andre parts fnr', () => {
@@ -58,7 +60,7 @@ describe('validationUtil', () => {
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer', erUtenlandskFnr)(andrePartFnr);
 
-        expect(resultat).toBeUndefined;
+        expect(resultat).toBeUndefined();
     });
     it('skal ikke gi feilmelding når frn er utenlandsk og fnr inneholder ulovlige tegn', () => {
         const søkerFnr = '08088620241';

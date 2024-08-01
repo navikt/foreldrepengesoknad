@@ -35,7 +35,8 @@ export const links = {
     arbeidstilsynetSkjema:
         'https://www.arbeidstilsynet.no/tema/graviditet-og-arbeidsmiljo/skjema-for-tilrettelegging-for-gravide/',
     frilanserInfoBoks:
-        'https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/arbeidsforholdet/type-arbeidsforhold/frilanser-oppdragstaker-og-personer-som-mottar-honorarer/',
+        'https://www.skatteetaten.no/bedrift-og-organisasjon/arbeidsgiver/a-meldingen/veiledning/arbeidsforholdet/' +
+        'type-arbeidsforhold/frilanser-oppdragstaker-og-personer-som-mottar-honorarer/',
     næringsdrivendeInfoBoks:
         'https://www.skatteetaten.no/bedrift-og-organisasjon/starte-og-drive/er-jeg-naringsdrivende/',
     selvstendigNæringsdrivendeHvorMye: 'https://www.nav.no/foreldrepenger#hvor-mye',

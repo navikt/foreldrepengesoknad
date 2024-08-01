@@ -182,7 +182,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    it('skal lage "send inn senere" vedlegg for omsorgsovertakelse', async () => {
+    it('skal lage "send inn senere" vedlegg for aleneomsorg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -224,7 +224,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    it('skal laste opp vedlegg for omsorgsovertakelse', async () => {
+    it('skal laste opp vedlegg for aleneomsorg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 

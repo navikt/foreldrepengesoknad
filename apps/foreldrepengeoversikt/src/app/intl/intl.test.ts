@@ -28,8 +28,10 @@ describe('intl foreldrepengeoversikt', () => {
 
         const missingKeysBokmål = allTranslationsCodes.filter((key) => !Object.keys(nb).includes(key));
         if (missingKeysBokmål.length > 0) {
+            // eslint-disable-next-line no-console
             console.log('Not found in nb_NO.json:');
         }
+        // eslint-disable-next-line no-console
         missingKeysBokmål.forEach((key) => console.log('key ' + key));
         expect(missingKeysBokmål.length).toBe(0);
     });
@@ -53,8 +55,10 @@ describe('intl foreldrepengeoversikt', () => {
             return !allTranslationsCode.includes(key);
         });
         if (missingKeysCode.length > 0) {
+            // eslint-disable-next-line no-console
             console.log('Not found in code:');
         }
+        // eslint-disable-next-line no-console
         missingKeysCode.forEach((key) => console.log('key ' + key));
         expect(missingKeysCode.length).toBe(0);
     });

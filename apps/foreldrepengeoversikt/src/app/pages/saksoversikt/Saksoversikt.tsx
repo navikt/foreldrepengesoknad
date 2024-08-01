@@ -144,7 +144,9 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
                 {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
                     <ContentSection
                         heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
-                        showSkeleton={annenPartsVedtakQuery.isLoading} // Fordi annenPartsVedtakQuery kan være et disabled query må man bruke isLoading heller enn isPending: https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading
+                        // Fordi annenPartsVedtakQuery kan være et disabled query må man bruke isLoading heller enn isPending:
+                        // https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading
+                        showSkeleton={annenPartsVedtakQuery.isLoading}
                         skeletonProps={{ height: '210px', variant: 'rounded' }}
                     >
                         <DinPlan

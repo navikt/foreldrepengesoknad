@@ -1,5 +1,3 @@
-import { IntlShape } from 'react-intl';
-
 import {
     Søknadsinfo,
     andreAugust2022ReglerGjelder,
@@ -46,7 +44,7 @@ export const farMedmorHarRettPåFlerbarnsdagerTest: RegelTest = (grunnlag: Søkn
             values: {
                 antallUker: flerbarnsUker,
                 antallUkerÅTaUtFlerbarnsdager: antallUkerPåÅTaUtDager,
-                a: (_intl: IntlShape) => (msg: any) => (
+                a: () => (msg: any) => (
                     <a href={links.aktivitetsfriUttakInfo} className="lenke" rel="noreferrer" target="_blank">
                         {msg}
                     </a>

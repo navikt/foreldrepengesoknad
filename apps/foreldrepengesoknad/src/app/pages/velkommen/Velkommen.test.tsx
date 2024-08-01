@@ -163,7 +163,7 @@ describe('<Velkommen>', () => {
         expect(screen.getByText('Start søknaden')).toBeInTheDocument();
     });
 
-    it('skal vise velkommen-side med løpende behandling sak status og mulighet for endring', async () => {
+    it('skal vise velkommen-side for endringssøknad med løpende behandling sak status og mulighet for endring', async () => {
         render(<HarEndringssøknadUnderBehandlingAdopsjonBarnIPDL />);
 
         expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();

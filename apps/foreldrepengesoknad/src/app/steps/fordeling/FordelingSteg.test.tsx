@@ -994,7 +994,8 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
         expect(screen.getByText('Du mister 3 uker.')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Når du ikke starter foreldrepengerperioden 3 uker før termindato, mister du rett til foreldrepenger disse dagene. Hvis du starter tidligere enn 3 uker før, vil du bruke fra fellesperioden.',
+                'Når du ikke starter foreldrepengerperioden 3 uker før termindato, mister du rett til foreldrepenger' +
+                    ' disse dagene. Hvis du starter tidligere enn 3 uker før, vil du bruke fra fellesperioden.',
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Neste steg'));
@@ -1436,7 +1437,7 @@ describe('Fordeling - MorSøkerFarHarRettIEØSTerminDekningsgrad80', () => {
         expect(screen.getByText("18 uker som påvirkes av Hans' foreldrepenger")).toBeInTheDocument();
         expect(
             screen.getByText('Når Hans skal ha dager fra denne perioden, må du være i aktivitet.', { exact: false }),
-        );
+        ).toBeInTheDocument();
         expect(
             screen.getByText('Hvis Hans bruker mer enn 19 uker med foreldrepenger i et annet EØS land', {
                 exact: false,
@@ -1464,7 +1465,7 @@ describe('Fordeling - FarMedmorSøkerMorHarRettIEØSAdopsjon', () => {
         expect(screen.getByText('18 uker som påvirkes av Hannes foreldrepenger')).toBeInTheDocument();
         expect(
             screen.getByText('Når du skal ha dager fra denne perioden, må Hanne være i aktivitet.', { exact: false }),
-        );
+        ).toBeInTheDocument();
         expect(
             screen.getByText('Hvis Hanne bruker mer enn 19 uker med foreldrepenger i et annet EØS land', {
                 exact: false,

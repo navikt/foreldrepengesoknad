@@ -62,7 +62,7 @@ export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Søk
                         forelder: fornavnAnnenForelder,
                         forelders: (intl: IntlShape) => getNavnGenitivEierform(fornavnAnnenForelder, intl.locale),
                         //strong: (_intl: IntlShape) => (msg: any) => <strong>{msg}</strong>, //TODO: strong does not work.
-                        strong: (_intl: IntlShape) => (msg: any) => msg,
+                        strong: () => (msg: any) => msg,
                     },
                 };
                 return regelInfo;

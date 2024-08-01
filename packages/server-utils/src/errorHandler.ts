@@ -10,6 +10,7 @@ export function errorHandling(
     _next: NextFunction,
 ) {
     if (axios.isAxiosError(error)) {
+        // eslint-disable-next-line no-console
         console.error(error.response?.data);
     }
     return response.status(500).json({

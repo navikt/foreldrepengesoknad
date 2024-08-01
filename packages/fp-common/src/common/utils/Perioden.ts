@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
-import { getTidsperiode, Tidsperioden } from './Tidsperioden';
+
+import { Periode, Periodetype, isForeldrepengerFørFødselUttaksperiode } from '../types';
+import { Tidsperioden, getTidsperiode } from './Tidsperioden';
 import { Uttaksdagen } from './Uttaksdagen';
 import { formaterDatoKompakt } from './dateUtils';
-import { isForeldrepengerFørFødselUttaksperiode, Periode, Periodetype } from '../types';
 
 export const Perioden = (periode: Periode) => ({
     setStartdato: (fom: Date) => flyttPeriode(periode, fom),
@@ -52,6 +53,7 @@ function erPerioderLike(p1: Periode, p2: Periode, inkluderTidsperiode = false, i
 }
 
 function getPeriodeFootprint(periode: Periode, inkluderTidsperiode = false) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { tidsperiode, id, ...rest } = periode;
     const sortedPeriode: any = {};
     Object.keys(rest)

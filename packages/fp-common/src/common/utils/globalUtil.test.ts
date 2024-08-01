@@ -1,4 +1,5 @@
 import { Attachment } from '@navikt/fp-types';
+
 import { bytesString, deleteAttachment } from './globalUtil';
 
 describe('globalUtil', () => {
@@ -7,7 +8,7 @@ describe('globalUtil', () => {
         expect(verdi).toBe('1.9 MB');
     });
 
-    it('skal konvertere bytes til megabytes', () => {
+    it('skal slette ett av vedleggene', () => {
         const vedlegg = [
             {
                 id: '1',

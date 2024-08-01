@@ -26,7 +26,6 @@ const usePlanleggerNavigator = () => {
         if (path) {
             navigate(path);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [path]);
 
     const goToPreviousDefaultStep = useCallback(() => {
@@ -35,8 +34,8 @@ const usePlanleggerNavigator = () => {
         setPath(previousPath);
     }, [stepConfig]);
 
-    const goToNextStep = useCallback((path: PlanleggerRoutes) => {
-        setPath(path);
+    const goToNextStep = useCallback((nextPath: PlanleggerRoutes) => {
+        setPath(nextPath);
     }, []);
 
     const goToNextDefaultStep = useCallback(() => {
