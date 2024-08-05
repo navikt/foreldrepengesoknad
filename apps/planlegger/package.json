@@ -2,7 +2,7 @@
     "name": "planlegger",
     "version": "1.0.0",
     "description": "NAV Foreldrepengeplanlegger",
-    "main": "./src/app/bootstrap.tsx",
+    "module": "./src/app/bootstrap.tsx",
     "type": "module",
     "author": "NAV",
     "license": "MIT",

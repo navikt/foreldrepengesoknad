@@ -137,19 +137,19 @@ importers:
         version: 2.1.6(jsdom@24.1.1)(react@18.3.1)
       '@storybook/addon-actions':
         specifier: 8.2.6
-        version: 8.2.6(storybook@8.2.6(@babel/preset-env@7.25.2(@babel/core@7.25.2)))
+        version: 8.2.6(storybook@8.2.6(@babel/preset-env@7.25.3(@babel/core@7.25.2)))
       '@storybook/addon-essentials':
         specifier: 8.2.6
-        version: 8.2.6(storybook@8.2.6(@babel/preset-env@7.25.2(@babel/core@7.25.2)))
+        version: 8.2.6(storybook@8.2.6(@babel/preset-env@7.25.3(@babel/core@7.25.2)))
       '@storybook/cli':
         specifier: 8.2.6
-        version: 8.2.6(@babel/preset-env@7.25.2(@babel/core@7.25.2))
+        version: 8.2.6(@babel/preset-env@7.25.3(@babel/core@7.25.2))
       '@storybook/react':
         specifier: 8.2.6
-        version: 8.2.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.2.6(@babel/preset-env@7.25.2(@babel/core@7.25.2)))(typescript@5.5.4)
+        version: 8.2.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.2.6(@babel/preset-env@7.25.3(@babel/core@7.25.2)))(typescript@5.5.4)
       '@storybook/react-vite':
         specifier: 8.2.6
-        version: 8.2.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.19.1)(storybook@8.2.6(@babel/preset-env@7.25.2(@babel/core@7.25.2)))(typescript@5.5.4)(vite@5.3.5(@types/node@22.0.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
+        version: 8.2.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.19.1)(storybook@8.2.6(@babel/preset-env@7.25.3(@babel/core@7.25.2)))(typescript@5.5.4)(vite@5.3.5(@types/node@22.0.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -206,10 +206,10 @@ importers:
         version: 1.4.5-lts.1
       mustache-loader:
         specifier: ^1.4.3
-        version: 1.4.3(hogan.js@3.0.2)(webpack@5.93.0(esbuild@0.21.5))
+        version: 1.4.3(hogan.js@3.0.2)(webpack@5.93.0)
       storybook:
         specifier: 8.2.6
-        version: 8.2.6(@babel/preset-env@7.25.2(@babel/core@7.25.2))
+        version: 8.2.6(@babel/preset-env@7.25.3(@babel/core@7.25.2))
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -634,19 +634,19 @@ importers:
         version: 2.1.6(jsdom@24.1.1)(react@18.3.1)
       '@storybook/addon-actions':
         specifier: 8.2.6
-        version: 8.2.6(storybook@8.2.6(@babel/preset-env@7.25.3(@babel/core@7.25.2)))
+        version: 8.2.6(storybook@8.2.6(@babel/preset-env@7.25.2(@babel/core@7.25.2)))
       '@storybook/addon-essentials':
         specifier: 8.2.6
-        version: 8.2.6(storybook@8.2.6(@babel/preset-env@7.25.3(@babel/core@7.25.2)))
+        version: 8.2.6(storybook@8.2.6(@babel/preset-env@7.25.2(@babel/core@7.25.2)))
       '@storybook/cli':
         specifier: 8.2.6
-        version: 8.2.6(@babel/preset-env@7.25.3(@babel/core@7.25.2))
+        version: 8.2.6(@babel/preset-env@7.25.2(@babel/core@7.25.2))
       '@storybook/react':
         specifier: 8.2.6
-        version: 8.2.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.2.6(@babel/preset-env@7.25.3(@babel/core@7.25.2)))(typescript@5.5.4)
+        version: 8.2.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.2.6(@babel/preset-env@7.25.2(@babel/core@7.25.2)))(typescript@5.5.4)
       '@storybook/react-vite':
         specifier: 8.2.6
-        version: 8.2.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.19.1)(storybook@8.2.6(@babel/preset-env@7.25.3(@babel/core@7.25.2)))(typescript@5.5.4)(vite@5.3.5(@types/node@22.0.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
+        version: 8.2.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.19.1)(storybook@8.2.6(@babel/preset-env@7.25.2(@babel/core@7.25.2)))(typescript@5.5.4)(vite@5.3.5(@types/node@22.0.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -745,7 +745,7 @@ importers:
         version: 1.1292.1
       storybook:
         specifier: 8.2.6
-        version: 8.2.6(@babel/preset-env@7.25.3(@babel/core@7.25.2))
+        version: 8.2.6(@babel/preset-env@7.25.2(@babel/core@7.25.2))
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -15791,13 +15791,6 @@ snapshots:
       lru-cache: 5.1.1
       mustache: 4.2.0
 
-  mustache-loader@1.4.3(hogan.js@3.0.2)(webpack@5.93.0(esbuild@0.21.5)):
-    dependencies:
-      hogan.js: 3.0.2
-      html-minifier: 3.5.21
-      loader-utils: 1.4.2
-      webpack: 5.93.0(esbuild@0.21.5)
-
   mustache-loader@1.4.3(hogan.js@3.0.2)(webpack@5.93.0):
     dependencies:
       hogan.js: 3.0.2
@@ -17256,17 +17249,6 @@ snapshots:
       type-fest: 2.19.0
       unique-string: 3.0.0
 
-  terser-webpack-plugin@5.3.10(esbuild@0.21.5)(webpack@5.93.0(esbuild@0.21.5)):
-    dependencies:
-      '@jridgewell/trace-mapping': 0.3.25
-      jest-worker: 27.5.1
-      schema-utils: 3.3.0
-      serialize-javascript: 6.0.2
-      terser: 5.31.3
-      webpack: 5.93.0(esbuild@0.21.5)
-    optionalDependencies:
-      esbuild: 0.21.5
-
   terser-webpack-plugin@5.3.10(webpack@5.93.0):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
@@ -17767,37 +17749,6 @@ snapshots:
       schema-utils: 3.3.0
       tapable: 2.2.1
       terser-webpack-plugin: 5.3.10(webpack@5.93.0)
-      watchpack: 2.4.1
-      webpack-sources: 3.2.3
-    transitivePeerDependencies:
-      - '@swc/core'
-      - esbuild
-      - uglify-js
-
-  webpack@5.93.0(esbuild@0.21.5):
-    dependencies:
-      '@types/eslint-scope': 3.7.7
-      '@types/estree': 1.0.5
-      '@webassemblyjs/ast': 1.12.1
-      '@webassemblyjs/wasm-edit': 1.12.1
-      '@webassemblyjs/wasm-parser': 1.12.1
-      acorn: 8.12.1
-      acorn-import-attributes: 1.9.5(acorn@8.12.1)
-      browserslist: 4.23.2
-      chrome-trace-event: 1.0.4
-      enhanced-resolve: 5.17.1
-      es-module-lexer: 1.5.4
-      eslint-scope: 5.1.1
-      events: 3.3.0
-      glob-to-regexp: 0.4.1
-      graceful-fs: 4.2.11
-      json-parse-even-better-errors: 2.3.1
-      loader-runner: 4.3.0
-      mime-types: 2.1.35
-      neo-async: 2.6.2
-      schema-utils: 3.3.0
-      tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(esbuild@0.21.5)(webpack@5.93.0(esbuild@0.21.5))
       watchpack: 2.4.1
       webpack-sources: 3.2.3
     transitivePeerDependencies:

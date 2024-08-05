@@ -1,6 +1,7 @@
 {
     "name": "@navikt/fp-common",
-    "main": "src/common/index.ts",
+    "module": "src/common/index.ts",
+    "type": "module",
     "types": "src/common/index.ts",
     "scripts": {
         "build-storybook": "storybook build -o .storybook-static-build",

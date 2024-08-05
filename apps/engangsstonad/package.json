@@ -2,7 +2,7 @@
     "name": "engangsstonad",
     "version": "1.0.0",
     "description": "NAV Foreldrepenger engangsstønad",
-    "main": "./src/bootstrap.tsx",
+    "module": "./src/bootstrap.tsx",
     "type": "module",
     "author": "NAV",
     "license": "MIT",

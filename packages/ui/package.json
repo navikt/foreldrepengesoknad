@@ -1,7 +1,8 @@
 {
     "name": "@navikt/fp-ui",
     "description": "Pakke som tilbyr generelle komponenter som fil-opplaster",
-    "main": "index.ts",
+    "module": "index.ts",
+    "type": "module",
     "types": "index.ts",
     "scripts": {
         "test": "vitest run",

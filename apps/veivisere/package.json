@@ -2,7 +2,7 @@
     "name": "veivisere",
     "version": "1.0.0",
     "description": "NAV Foreldrepengeveivisere",
-    "main": "./src/app/bootstrap.tsx",
+    "module": "./src/app/bootstrap.tsx",
     "type": "module",
     "author": "NAV",
     "license": "MIT",
