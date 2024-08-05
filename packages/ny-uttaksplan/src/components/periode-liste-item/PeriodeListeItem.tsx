@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 
 import { Accordion } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-common';
+import { AnnenForelder, NavnPåForeldre, bemUtils } from '@navikt/fp-common';
 
 import Permisjonsperiode from '../../types/Permisjonsperiode';
 import PeriodeListeContent from '../periode-liste-content/PeriodeListeContent';
@@ -13,9 +13,19 @@ interface Props {
     permisjonsperiode: Permisjonsperiode;
     familiehendelsedato: string;
     erFamiliehendelse?: boolean;
+    navnPåForeldre: NavnPåForeldre;
+    erFarEllerMedmor: boolean;
+    annenForelder: AnnenForelder;
 }
 
-const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode, familiehendelsedato, erFamiliehendelse }) => {
+const PeriodeListeItem: FunctionComponent<Props> = ({
+    permisjonsperiode,
+    familiehendelsedato,
+    erFamiliehendelse,
+    navnPåForeldre,
+    erFarEllerMedmor,
+    annenForelder,
+}) => {
     const bem = bemUtils('periode-liste-item');
 
     return (
@@ -32,10 +42,21 @@ const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode, familie
                     <PeriodeListeContent
                         periode={permisjonsperiode.perioder[0]}
                         erFamiliehendelse={!!erFamiliehendelse}
+                        navnPåForeldre={navnPåForeldre}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                        annenForelder={annenForelder}
                     />
                 ) : (
                     permisjonsperiode.perioder.map((p) => {
-                        return <PeriodeListeContent periode={p} erFamiliehendelse={!!erFamiliehendelse} />;
+                        return (
+                            <PeriodeListeContent
+                                periode={p}
+                                erFamiliehendelse={!!erFamiliehendelse}
+                                navnPåForeldre={navnPåForeldre}
+                                erFarEllerMedmor={erFarEllerMedmor}
+                                annenForelder={annenForelder}
+                            />
+                        );
                     })
                 )}
             </Accordion.Content>

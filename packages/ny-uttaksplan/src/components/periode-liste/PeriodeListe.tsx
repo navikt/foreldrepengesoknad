@@ -3,7 +3,7 @@ import { FunctionComponent } from 'react';
 
 import { Accordion } from '@navikt/ds-react';
 
-import { Periode, isValidTidsperiode } from '@navikt/fp-common';
+import { AnnenForelder, NavnPåForeldre, Periode, isValidTidsperiode } from '@navikt/fp-common';
 
 import Permisjonsperiode from '../../types/Permisjonsperiode';
 import { mapPerioderToPermisjonsperiode } from '../../utils/permisjonsperiodeUtils';
@@ -13,6 +13,8 @@ interface Props {
     perioder: Periode[];
     familiehendelsedato: string;
     erFarEllerMedmor: boolean;
+    navnPåForeldre: NavnPåForeldre;
+    annenForelder: AnnenForelder;
 }
 
 const getIndexOfFørstePeriodeEtterFødsel = (permisjonsperioder: Permisjonsperiode[], familiehendelsesdato: string) => {
@@ -21,7 +23,13 @@ const getIndexOfFørstePeriodeEtterFødsel = (permisjonsperioder: Permisjonsperi
     );
 };
 
-const PeriodeListe: FunctionComponent<Props> = ({ perioder, familiehendelsedato }) => {
+const PeriodeListe: FunctionComponent<Props> = ({
+    perioder,
+    familiehendelsedato,
+    navnPåForeldre,
+    erFarEllerMedmor,
+    annenForelder,
+}) => {
     const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder, familiehendelsedato);
     const indexOfFørstePeriodeEtterFødsel = getIndexOfFørstePeriodeEtterFødsel(permisjonsperioder, familiehendelsedato);
 
@@ -36,9 +44,18 @@ const PeriodeListe: FunctionComponent<Props> = ({ perioder, familiehendelsedato 
                                     permisjonsperiode={p}
                                     familiehendelsedato={familiehendelsedato}
                                     erFamiliehendelse={true}
+                                    navnPåForeldre={navnPåForeldre}
+                                    erFarEllerMedmor={erFarEllerMedmor}
+                                    annenForelder={annenForelder}
                                 />
                             ) : null}
-                            <PeriodeListeItem permisjonsperiode={p} familiehendelsedato={familiehendelsedato} />
+                            <PeriodeListeItem
+                                permisjonsperiode={p}
+                                familiehendelsedato={familiehendelsedato}
+                                navnPåForeldre={navnPåForeldre}
+                                erFarEllerMedmor={erFarEllerMedmor}
+                                annenForelder={annenForelder}
+                            />
                         </>
                     );
                 })}

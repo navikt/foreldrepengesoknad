@@ -5,6 +5,7 @@ import {
     Periode,
     Tidsperioden,
     isHull,
+    isOppholdsperiode,
     isOverføringsperiode,
     isPeriodeUtenUttak,
     isUtsettelsesperiode,
@@ -121,7 +122,12 @@ export const mapPerioderToPermisjonsperiode = (
             return;
         }
 
-        if (isUttaksperiode(periode) || isUttakAnnenPart(periode) || isOverføringsperiode(periode)) {
+        if (
+            isUttaksperiode(periode) ||
+            isUttakAnnenPart(periode) ||
+            isOverføringsperiode(periode) ||
+            isOppholdsperiode(periode)
+        ) {
             const forelderType = periode.forelder;
 
             if (!nyPermisjonsperiode) {

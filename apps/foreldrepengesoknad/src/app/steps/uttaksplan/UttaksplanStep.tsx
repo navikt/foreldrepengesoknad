@@ -662,6 +662,8 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                             uttaksplan={uttaksplan}
                             familiehendelsedato={familiehendelsesdato}
                             erFarEllerMedmor={erFarEllerMedmor}
+                            navnPåForeldre={navnPåForeldre}
+                            annenForelder={annenForelder}
                         />
                         <Uttaksplan
                             foreldreSituasjon={foreldreSituasjon}

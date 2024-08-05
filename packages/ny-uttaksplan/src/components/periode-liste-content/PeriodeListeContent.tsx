@@ -3,27 +3,38 @@ import { FunctionComponent } from 'react';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { Periode, Uttaksperiode, isUttaksperiode } from '@navikt/fp-common';
-import { formatDate, formatDateExtended } from '@navikt/fp-utils';
+import {
+    AnnenForelder,
+    NavnPåForeldre,
+    Oppholdsperiode,
+    Periode,
+    Uttaksperiode,
+    isOppholdsperiode,
+    isUttaksperiode,
+} from '@navikt/fp-common';
+import { formatDateExtended } from '@navikt/fp-utils';
 
 interface Props {
     periode: Periode;
     erFamiliehendelse: boolean;
+    navnPåForeldre: NavnPåForeldre;
+    erFarEllerMedmor: boolean;
+    annenForelder: AnnenForelder;
 }
 
-const renderContent = (periode: Periode, erFamiliehendelse: boolean) => {
-    if (erFamiliehendelse) {
-        return <BodyShort>Noe innhold her</BodyShort>;
-    }
+// const renderPeriodeMedSamtidigUttak = (periode: Periode, erFamiliehendelse: boolean) => {
+//     if (erFamiliehendelse) {
+//         return <BodyShort>Noe innhold her</BodyShort>;
+//     }
 
-    if (isUttaksperiode(periode)) {
-        return `${periode.konto} - ${formatDate(periode.tidsperiode.fom)} - ${formatDate(periode.tidsperiode.tom)}`;
-    }
+//     if (isUttaksperiode(periode)) {
+//         return `${periode.konto} - ${formatDate(periode.tidsperiode.fom)} - ${formatDate(periode.tidsperiode.tom)}`;
+//     }
 
-    return `${periode.type} - ${formatDate(periode.tidsperiode.fom)} - ${formatDate(periode.tidsperiode.tom)}`;
-};
+//     return `${periode.type} - ${formatDate(periode.tidsperiode.fom)} - ${formatDate(periode.tidsperiode.tom)}`;
+// };
 
-const renderPeriodeUtenSamtidigUttak = (periode: Uttaksperiode) => {
+const renderUttaksperiode = (periode: Uttaksperiode) => {
     return (
         <>
             <div style={{ margin: '0 1rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -33,22 +44,58 @@ const renderPeriodeUtenSamtidigUttak = (periode: Uttaksperiode) => {
                 </BodyShort>
             </div>
             <div style={{ margin: '1rem' }}>
-                <BodyShort>Foreldrepenger fra Petters kvote</BodyShort>
+                <BodyShort>Din periode</BodyShort>
             </div>
         </>
     );
 };
 
-const PeriodeListeContent: FunctionComponent<Props> = ({ periode, erFamiliehendelse }) => {
-    const erUttakUtenSamtidigUttak = isUttaksperiode(periode) && periode.ønskerSamtidigUttak !== true;
+const renderOppholdsperiode = (
+    periode: Oppholdsperiode,
+    _navnPåForeldre: NavnPåForeldre,
+    _erFarEllerMedmor: boolean,
+) => {
+    return (
+        <>
+            <div style={{ margin: '0', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <CalendarIcon width={24} height={24} />
+                <BodyShort weight="semibold">
+                    {formatDateExtended(periode.tidsperiode.fom)} - {formatDateExtended(periode.tidsperiode.tom)}
+                </BodyShort>
+            </div>
+            <div style={{ margin: '1rem' }}>
+                <BodyShort>Opphold</BodyShort>
+            </div>
+        </>
+    );
+};
+
+const renderPeriode = (periode: Periode, navnPåForeldre: NavnPåForeldre, erFarEllerMedmor: boolean) => {
+    if (isUttaksperiode(periode)) {
+        renderUttaksperiode(periode);
+    }
+
+    if (isOppholdsperiode(periode)) {
+        return renderOppholdsperiode(periode, navnPåForeldre, erFarEllerMedmor);
+    }
 
     return (
-        <div>
-            {erUttakUtenSamtidigUttak
-                ? renderPeriodeUtenSamtidigUttak(periode)
-                : renderContent(periode, erFamiliehendelse)}
-        </div>
+        <>
+            <div style={{ margin: '0 1rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <CalendarIcon width={24} height={24} />
+                <BodyShort weight="semibold">
+                    {formatDateExtended(periode.tidsperiode.fom)} - {formatDateExtended(periode.tidsperiode.tom)}
+                </BodyShort>
+            </div>
+            <div style={{ margin: '1rem' }}>
+                <BodyShort>Opphold</BodyShort>
+            </div>
+        </>
     );
+};
+
+const PeriodeListeContent: FunctionComponent<Props> = ({ periode, navnPåForeldre, erFarEllerMedmor }) => {
+    return <div>{renderPeriode(periode, navnPåForeldre, erFarEllerMedmor)}</div>;
 };
 
 export default PeriodeListeContent;
