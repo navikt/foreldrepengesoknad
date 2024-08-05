@@ -1,5 +1,6 @@
 {
     "name": "@navikt/eslint-config-fp-selvbetjening",
+    "main": "eslint.config.mjs",
     "module": "eslint.config.mjs",
     "type": "module",
     "version": "1.0.0",
