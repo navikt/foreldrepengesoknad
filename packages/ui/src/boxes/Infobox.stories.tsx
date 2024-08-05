@@ -22,7 +22,7 @@ export const GråttPanel: Story = {
     args: {
         header: <div>Dette er en header</div>,
         children: <div>Dette er et barn</div>,
-        isGray: true,
+        color: 'gray',
     },
 };
 

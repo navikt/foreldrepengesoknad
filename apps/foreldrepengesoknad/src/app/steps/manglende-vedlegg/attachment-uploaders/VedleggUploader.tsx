@@ -59,8 +59,8 @@ const VedleggUploader: FunctionComponent<Props> = ({
                 attachmentType={attachmentType}
                 skjemanummer={skjemanummer}
                 existingAttachments={attachments.filter((a) => a.innsendingsType !== InnsendingsType.SEND_SENERE)}
-                updateAttachments={(attachments) => {
-                    const attachmentsMedMetadata = attachments.map((a) =>
+                updateAttachments={(vedlegg) => {
+                    const attachmentsMedMetadata = vedlegg.map((a) =>
                         addMetadata(a, {
                             type: metadataType,
                         }),

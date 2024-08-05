@@ -6,6 +6,41 @@ import { FormSummary, VStack } from '@navikt/ds-react';
 
 import { formatDate } from '@navikt/fp-utils';
 
+function TerminDokumentasjonSummary({ dokumentasjon }: { readonly dokumentasjon: TerminDokumentasjon }) {
+    return (
+        <>
+            <FormSummary.Answer>
+                <FormSummary.Label>
+                    <FormattedMessage id="DokumentasjonOppsummering.Terminbekreftelse" />
+                </FormSummary.Label>
+                <FormSummary.Answer>{formatDate(dokumentasjon.terminbekreftelsedato)}</FormSummary.Answer>
+            </FormSummary.Answer>
+            <FormSummary.Answer>
+                <FormSummary.Label>
+                    <FormattedMessage id="DokumentasjonOppsummering.TerminbekreftelseDokument" />
+                </FormSummary.Label>
+                <FormSummary.Answer>
+                    <VStack gap="2">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
+                </FormSummary.Answer>
+            </FormSummary.Answer>
+        </>
+    );
+}
+
+function AdopsjonDokumentasjon({ dokumentasjon }: { readonly dokumentasjon: Vedlegg }) {
+    return (
+        <FormSummary.Answer>
+            <FormSummary.Label>
+                <FormattedMessage id="DokumentasjonOppsummering.adopsjonsdokumenter" />
+            </FormSummary.Label>
+            <FormSummary.Answer>
+                {/*TODO: klikke på lenke*/}
+                <VStack gap="2">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
+            </FormSummary.Answer>
+        </FormSummary.Answer>
+    );
+}
+
 export function DokumentasjonOppsummering({
     dokumentasjon,
     onVilEndreSvar,
@@ -41,40 +76,5 @@ export function DokumentasjonOppsummering({
                 )}
             </FormSummary.Answers>
         </FormSummary>
-    );
-}
-
-function AdopsjonDokumentasjon({ dokumentasjon }: { readonly dokumentasjon: Vedlegg }) {
-    return (
-        <FormSummary.Answer>
-            <FormSummary.Label>
-                <FormattedMessage id="DokumentasjonOppsummering.adopsjonsdokumenter" />
-            </FormSummary.Label>
-            <FormSummary.Answer>
-                {/*TODO: klikke på lenke*/}
-                <VStack gap="2">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
-            </FormSummary.Answer>
-        </FormSummary.Answer>
-    );
-}
-
-function TerminDokumentasjonSummary({ dokumentasjon }: { readonly dokumentasjon: TerminDokumentasjon }) {
-    return (
-        <>
-            <FormSummary.Answer>
-                <FormSummary.Label>
-                    <FormattedMessage id="DokumentasjonOppsummering.Terminbekreftelse" />
-                </FormSummary.Label>
-                <FormSummary.Answer>{formatDate(dokumentasjon.terminbekreftelsedato)}</FormSummary.Answer>
-            </FormSummary.Answer>
-            <FormSummary.Answer>
-                <FormSummary.Label>
-                    <FormattedMessage id="DokumentasjonOppsummering.TerminbekreftelseDokument" />
-                </FormSummary.Label>
-                <FormSummary.Answer>
-                    <VStack gap="2">{dokumentasjon.vedlegg.map((v) => v.filename)}</VStack>
-                </FormSummary.Answer>
-            </FormSummary.Answer>
-        </>
     );
 }

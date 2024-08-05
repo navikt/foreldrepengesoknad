@@ -8,7 +8,7 @@ import { Infobox } from '@navikt/fp-ui';
 const ShareDataInfobox: React.FunctionComponent = () => (
     <Infobox
         header={<FormattedMessage id="OmPlanleggerenSteg.TaVarePåHeader" />}
-        isGray
+        color="gray"
         icon={<BookmarkIcon aria-hidden height={24} width={24} />}
     >
         <BodyShort>

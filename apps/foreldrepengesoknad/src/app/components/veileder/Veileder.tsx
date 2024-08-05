@@ -22,6 +22,7 @@ interface OwnProps {
 export type Props = VeilederProps & OwnProps;
 
 const Veileder = (props: Props) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { className, farge = 'lilla', ansikt = 'glad', stil = 'normal', height = '184', ...rest } = props;
 
     const svgProps = {
@@ -33,7 +34,7 @@ const Veileder = (props: Props) => {
             `veileder--${ansikt}`,
             `veileder--tema-${farge}`,
             `veileder--stil-${stil}`,
-            props.className,
+            className,
         ),
     };
 

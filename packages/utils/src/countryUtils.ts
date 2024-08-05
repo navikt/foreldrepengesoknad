@@ -92,9 +92,9 @@ export const getCountries = () => countries;
 
 export const createCountryOptions = (): Record<string, any> => {
     const lang = 'nb';
-    const countries = getCountries();
+    const land = getCountries();
 
-    const names: Array<[string, any]> = Object.entries(countries.getNames(lang));
+    const names: Array<[string, any]> = Object.entries(land.getNames(lang));
     return names
         .sort((a: string[], b: string[]) => a[1].localeCompare(b[1], lang))
         .filter((countryOptionValue: string[]) => filteredListEØSCountries(countryOptionValue[0], false));

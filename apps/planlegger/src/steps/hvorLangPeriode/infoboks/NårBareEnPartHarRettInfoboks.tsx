@@ -36,7 +36,7 @@ const NårBareEnPartHarRettInfoboks: FunctionComponent<Props> = ({ hvemPlanlegge
                 />
             }
             icon={<PersonGroupIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
-            isGray
+            color="gray"
         >
             {søker2HarIkkeRett && (
                 <VStack gap="2">

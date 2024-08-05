@@ -13,32 +13,6 @@ interface Props {
     dokument: DokumentType;
 }
 
-const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
-    const bem = bemUtils('dokument');
-    const { type, mottatt } = dokument;
-
-    return (
-        <div className={bem.block}>
-            <Hide above="md" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <HGrid columns={'max-content 1fr'} gap="4">
-                    <DokumentLenke dokument={dokument} />
-                </HGrid>
-                <HStack gap="4" align="center" justify="space-between">
-                    <DokumentAvsender dokumentType={type} />
-                    <Detail textColor="subtle">{formatDateExtended(mottatt)}</Detail>
-                </HStack>
-            </Hide>
-            <Show above="md">
-                <div className={bem.element('contentWrapper')}>
-                    <DokumentLenke dokument={dokument} />
-                    <Detail textColor="subtle">{formatDateExtended(mottatt)}</Detail>
-                    <DokumentAvsender dokumentType={type} />
-                </div>
-            </Show>
-        </div>
-    );
-};
-
 function DokumentLenke({ dokument }: { readonly dokument: DokumentType }) {
     const url = lagUrl(dokument);
 
@@ -65,5 +39,31 @@ function DokumentAvsender({ dokumentType }: { readonly dokumentType: DokumentTyp
         </Tag>
     );
 }
+
+const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
+    const bem = bemUtils('dokument');
+    const { type, mottatt } = dokument;
+
+    return (
+        <div className={bem.block}>
+            <Hide above="md" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <HGrid columns={'max-content 1fr'} gap="4">
+                    <DokumentLenke dokument={dokument} />
+                </HGrid>
+                <HStack gap="4" align="center" justify="space-between">
+                    <DokumentAvsender dokumentType={type} />
+                    <Detail textColor="subtle">{formatDateExtended(mottatt)}</Detail>
+                </HStack>
+            </Hide>
+            <Show above="md">
+                <div className={bem.element('contentWrapper')}>
+                    <DokumentLenke dokument={dokument} />
+                    <Detail textColor="subtle">{formatDateExtended(mottatt)}</Detail>
+                    <DokumentAvsender dokumentType={type} />
+                </div>
+            </Show>
+        </div>
+    );
+};
 
 export default Dokument;

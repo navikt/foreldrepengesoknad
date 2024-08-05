@@ -29,6 +29,7 @@ const HarIkkeRettTilFpInfobox: React.FunctionComponent<Props> = ({ minÅrslønn,
                     <SackKronerIcon title="a11y-title" fontSize="1.5rem" aria-hidden />
                 )
             }
+            color="green"
         >
             <VStack gap="4">
                 <BodyShort>

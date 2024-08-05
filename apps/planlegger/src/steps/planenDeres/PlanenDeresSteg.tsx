@@ -118,7 +118,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                     </Heading>
                     <Infobox
                         header={<FormattedMessage id="OversiktSteg.Infoboks.Utkast" />}
-                        isGray
+                        color="gray"
                         icon={<InformationIcon height={24} width={24} fontSize="1-5rem" aria-hidden />}
                     >
                         <BodyLong>
@@ -131,6 +131,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             icon={
                                 <PersonGroupIcon height={24} width={24} fontSize="1.5rem" color="#0067C5" aria-hidden />
                             }
+                            color="green"
                         >
                             <div>
                                 <BodyShort>

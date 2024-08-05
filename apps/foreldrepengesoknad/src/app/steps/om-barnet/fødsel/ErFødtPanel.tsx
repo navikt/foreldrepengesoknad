@@ -63,8 +63,8 @@ const ErFødtPanel: FunctionComponent = () => {
                         isBeforeTodayOrToday(
                             intl.formatMessage({ id: 'valideringsfeil.omBarnet.fødselsdato.måVæreIdagEllerTidligere' }),
                         ),
-                        (fødselsdato) =>
-                            dayjs(fødselsdato).isBefore(dayjs().subtract(3, 'years').subtract(4, 'months'), 'day')
+                        (fødselsdatoVerdi) =>
+                            dayjs(fødselsdatoVerdi).isBefore(dayjs().subtract(3, 'years').subtract(4, 'months'), 'day')
                                 ? intl.formatMessage({
                                       id: 'valideringsfeil.omBarnet.fødselsdato.ikkeMerEnn3År3MndTilbake',
                                   })

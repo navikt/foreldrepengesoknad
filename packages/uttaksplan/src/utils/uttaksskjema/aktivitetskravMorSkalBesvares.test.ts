@@ -13,7 +13,7 @@ describe('aktivitetskravMorSkalBesvares - når WLB gjelder', () => {
         MockDate.reset();
     });
 
-    it('Skal ikke måtte besvare spørsmål om mors aktivitet hvis WLB gjelder og søker legger til periode rundt fødsel ', () => {
+    it('Skal ikke måtte besvare spørsmål om mors aktivitet hvis WLB gjelder og søker legger til periode rundt fødsel', () => {
         const result = aktivitetskravMorSkalBesvares(
             false, //ønskerFlerbarnsdager
             true, //samtidigUttak
@@ -33,7 +33,7 @@ describe('aktivitetskravMorSkalBesvares - når WLB gjelder', () => {
         );
         expect(result).toEqual(false);
     });
-    it('Skal måtte besvare spørsmål om mors aktivitet søker legger til bruk av fellesperiode-kvote rundt fødsel ', () => {
+    it('Skal måtte besvare spørsmål om mors aktivitet søker legger til bruk av fellesperiode-kvote rundt fødsel', () => {
         const result = aktivitetskravMorSkalBesvares(
             false, //ønskerFlerbarnsdager
             false, //samtidigUttak

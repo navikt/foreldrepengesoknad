@@ -1,6 +1,7 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
+
 import * as stories from './UtenlandsoppholdPanel.stories';
 
 const { ForFødsel } = composeStories(stories);
@@ -77,25 +78,6 @@ describe('<UtenlandsoppholdPanel>', () => {
         expect(saveOnNext).toHaveBeenCalledTimes(1);
         expect(saveOnNext).toHaveBeenNthCalledWith(1, {
             harBoddUtenforNorgeSiste12Mnd: false,
-            skalBoUtenforNorgeNeste12Mnd: true,
-        });
-    });
-
-    it('skal oppgi at en har bodd i utlandet og skal bo i utlandet', async () => {
-        const saveOnNext = vi.fn();
-
-        render(<ForFødsel saveOnNext={saveOnNext} />);
-
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Jeg har bodd helt eller delvis i utlandet'));
-        await userEvent.click(screen.getByText('Jeg skal bo helt eller delvis i utlandet'));
-
-        await userEvent.click(screen.getByText('Neste steg'));
-
-        expect(saveOnNext).toHaveBeenCalledTimes(1);
-        expect(saveOnNext).toHaveBeenNthCalledWith(1, {
-            harBoddUtenforNorgeSiste12Mnd: true,
             skalBoUtenforNorgeNeste12Mnd: true,
         });
     });

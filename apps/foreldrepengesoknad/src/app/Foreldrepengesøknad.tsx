@@ -67,7 +67,6 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
         if (storageData?.locale && storageData.locale !== locale) {
             onChangeLocale(storageData.locale);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [storageData]);
 
     if (kvittering) {

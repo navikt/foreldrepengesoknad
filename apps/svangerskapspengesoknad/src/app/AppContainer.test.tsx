@@ -60,8 +60,8 @@ describe('<AppContainer>', () => {
         const behovDato = utils.getByLabelText('Fra hvilken dato har du behov for tilrettelegging eller omplassering?');
         await userEvent.type(behovDato, dayjs().subtract(1, 'month').format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(behovDato);
-        await userEvent.click(screen.getByText('Du kan jobbe med redusert arbeidstid'));
-        await userEvent.click(screen.getByText('Du skal ha perioder med ulik arbeidsprosent'));
+        await userEvent.click(screen.getByText('Jeg kan jobbe redusert'));
+        await userEvent.click(screen.getByText('Nei, jeg skal ha perioder med ulik arbeidsprosent'));
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(await screen.findByText('Perioder med tilrettelegging')).toBeInTheDocument();

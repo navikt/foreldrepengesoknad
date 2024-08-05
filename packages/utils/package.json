@@ -1,6 +1,7 @@
 {
     "name": "@navikt/fp-utils",
     "main": "index.ts",
+    "type": "module",
     "types": "index.ts",
     "scripts": {
         "test": "vitest run",
@@ -14,26 +15,26 @@
         "@navikt/fp-types": "workspace:*",
         "classnames": "^2.5.1",
         "date-holidays": "^3.23.10",
-        "dayjs": "^1.11.10",
+        "dayjs": "^1.11.12",
         "detect-browser": "^5.3.0",
-        "i18n-iso-countries": "^7.11.0",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "react-intl": "^6.6.4"
+        "i18n-iso-countries": "^7.11.3",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-intl": "^6.6.8"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "6.3.6",
+        "@formatjs/cli-lib": "6.4.2",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@testing-library/jest-dom": "^6.4.6",
         "@testing-library/react": "^16.0.0",
-        "@types/react": "^18.2.73",
-        "@vitejs/plugin-react": "^4.2.1",
+        "@types/react": "^18.3.3",
+        "@vitejs/plugin-react": "^4.3.1",
         "fast-glob": "^3.3.2",
         "tsconfig": "workspace:*",
-        "typescript": "^5.4.3",
-        "vite": "^5.1.6",
-        "vite-plugin-checker": "^0.6.4",
-        "vitest": "^1.4.0"
+        "typescript": "^5.5.4",
+        "vite": "^5.3.5",
+        "vite-plugin-checker": "^0.7.2",
+        "vitest": "^2.0.5"
     },
     "packageManager": "pnpm@9.1.4"
 }

@@ -28,7 +28,6 @@ const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stø
     useEffect(() => {
         setIsFirstLoad(false);
         navigate('/');
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (isFirstLoad) {

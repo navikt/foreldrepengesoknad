@@ -112,10 +112,10 @@ const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
     const [avventerVedlegg, setAvventerVedlegg] = useState(false);
 
     const alleYtelser = getAlleYtelser(saker);
-    const sak = alleYtelser.find((sak) => sak.saksnummer === params.saksnummer);
+    const sak = alleYtelser.find((ytelse) => ytelse.saksnummer === params.saksnummer);
 
-    const updateAttachments = (vedlegg: Attachment[], hasPendingUploads: boolean) => {
-        setVedlegg(vedlegg);
+    const updateAttachments = (v: Attachment[], hasPendingUploads: boolean) => {
+        setVedlegg(v);
         setAvventerVedlegg(hasPendingUploads);
     };
 

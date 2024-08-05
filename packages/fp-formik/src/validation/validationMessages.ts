@@ -1,9 +1,9 @@
 import {
-    ValidateListError,
     ValidateCheckedError,
-    ValidateDateRangeError,
     ValidateDateError,
+    ValidateDateRangeError,
     ValidateFødselsnummerError,
+    ValidateListError,
     ValidateNumberError,
     ValidateOrgNumberError,
     ValidateRequiredFieldError,
@@ -71,7 +71,9 @@ export const validationMessages = {
     [ValidateNumberError.numberIsTooLarge]: ({ hva }: { hva: string }) =>
         `Tallet du har oppgitt for ${hva} er for høyt. Tallet kan ikke være høyere enn {maks}.`,
     [ValidateOrgNumberError.orgNumberHasNoValue]: ({ hva }: { hva: string }) => `Skriv inn ${hva}.`,
-    [ValidateOrgNumberError.orgNumberHasInvalidFormat]: `Du har oppgitt et ugyldig organisasjonsnummer. Oppgi et gyldig organsisasjonsnummer som inneholder 9 siffer.`,
+    [ValidateOrgNumberError.orgNumberHasInvalidFormat]:
+        'Du har oppgitt et ugyldig organisasjonsnummer. ' +
+        ' Oppgi et gyldig organsisasjonsnummer som inneholder 9 siffer.',
     [ValidateStringError.stringHasNoValue]: ({ hva }: { hva: string }) => `Skriv inn ${hva}.`,
     [ValidateStringError.stringIsNotAString]: ({ hva }: { hva: string }) => `${hva} er ikke en gyldig tekst.`,
     [ValidateStringError.stringIsTooShort]: ({ hva, minLengde }: { hva: string; minLengde: number }) =>
@@ -79,6 +81,7 @@ export const validationMessages = {
     [ValidateStringError.stringIsTooLong]: ({ hva, maksLengde }: { hva: string; maksLengde: number }) =>
         `${hva} kan ikke inneholde flere enn ${maksLengde} tegn.`,
     [ValidateStringError.stringHasInvalidFormat]: () =>
-        `Du har oppgitt en ugyldig tekst. Hvis du har limt inn tekst kan det være at du har fått med tegn som ikke vises. Prøv derfor å skrive det inn selv, i stedet for å lime det inn.`,
+        'Du har oppgitt en ugyldig tekst. Hvis du har limt inn tekst kan det være at du har fått med tegn som ikke vises.' +
+        ' Prøv derfor å skrive det inn selv, i stedet for å lime det inn.',
     [ValidateYesOrNoError.yesOrNoIsUnanswered]: ({ hva }: { hva: string }) => `Du må svare ja eller nei på ${hva}.`,
 };

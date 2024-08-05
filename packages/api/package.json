@@ -1,6 +1,7 @@
 {
     "name": "@navikt/fp-api",
     "main": "index.ts",
+    "type": "module",
     "types": "index.ts",
     "scripts": {
         "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
@@ -11,15 +12,15 @@
     "dependencies": {
         "@navikt/fp-types": "workspace:*",
         "axios": "^1.6.8",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0"
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1"
     },
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@testing-library/jest-dom": "^6.4.6",
-        "@types/react": "^18.2.73",
+        "@types/react": "^18.3.3",
         "tsconfig": "workspace:*",
-        "typescript": "^5.4.3"
+        "typescript": "^5.5.4"
     },
     "packageManager": "pnpm@9.1.4"
 }

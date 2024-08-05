@@ -1,5 +1,6 @@
 .background {
     background-color: var(--a-gray-100);
+    --ac-link-active-text: 'black';
 }
 
 .box {

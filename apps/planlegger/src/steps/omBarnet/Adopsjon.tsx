@@ -97,6 +97,7 @@ const Adopsjon: React.FunctionComponent<Props> = ({
                     }
                     icon={<TasklistStartIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
                     shouldFadeIn
+                    color="green"
                 >
                     <BodyLong>
                         <FormattedMessage id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekst" />

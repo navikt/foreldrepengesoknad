@@ -8,7 +8,7 @@ const { FlereForsørgereBarnTerminDesemberStartAugustOmToÅr } = composeStories(
 // TODO Skriv fleire testar når dette steget blir inkludert
 
 describe('<BarnehageplassSteg>', () => {
-    it('skal vise barnehageplass i august ', async () => {
+    it('skal vise barnehageplass i august', async () => {
         render(<FlereForsørgereBarnTerminDesemberStartAugustOmToÅr />);
 
         expect(await screen.findByText('Barnehageplass')).toBeInTheDocument();

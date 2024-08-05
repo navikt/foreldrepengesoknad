@@ -90,9 +90,9 @@ const useEsSendSøknad = (
                     true,
                     abortSignal,
                 );
-            } catch (error: unknown) {
-                if (isApiError(error)) {
-                    setError(error);
+            } catch (postError: unknown) {
+                if (isApiError(postError)) {
+                    setError(postError);
                 } else {
                     throw new Error('This should never happen');
                 }
@@ -101,7 +101,7 @@ const useEsSendSøknad = (
             if (kvittering) {
                 try {
                     await deleteData(esApi, '/rest/storage/engangsstonad', FEIL_VED_INNSENDING, abortSignal);
-                } catch (error) {
+                } catch (deleteError) {
                     // Vi bryr oss ikke om feil her. Logges bare i backend
                 }
 

@@ -31,6 +31,7 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
                     values={{ erAlenesøker, navn: fornavn }}
                 />
             }
+            color="green"
             icon={<CircleSlashIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
             shouldFadeIn
         >

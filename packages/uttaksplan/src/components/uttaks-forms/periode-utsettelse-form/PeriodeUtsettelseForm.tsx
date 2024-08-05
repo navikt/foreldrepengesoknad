@@ -89,7 +89,10 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     const { id } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const bem = bemUtils('periodeUtsettelseForm');
-    const skalViseGamleUtsettelseÅrsaker = førsteOktober2021ReglerGjelder(familiehendelsesdato) === false; // Utsettelseårsaker som gjelder for søknader sendt før 1. oktober 2021
+
+    // Utsettelseårsaker som gjelder for søknader sendt før 1. oktober 2021
+    const skalViseGamleUtsettelseÅrsaker = førsteOktober2021ReglerGjelder(familiehendelsesdato) === false;
+
     const erFarMedmorOgHarAleneomsorg = erFarEllerMedmor && erAleneOmOmsorg;
 
     const toggleVisTidsperiode = () => {
@@ -138,9 +141,9 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                             <TidsperiodeForm
                                 tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                 familiehendelsesdato={familiehendelsesdato}
-                                onBekreft={(values) => {
-                                    setFieldValue(PeriodeUtsettelseFormField.fom, ISOStringToDate(values.fom));
-                                    setFieldValue(PeriodeUtsettelseFormField.tom, ISOStringToDate(values.tom));
+                                onBekreft={(currentValues) => {
+                                    setFieldValue(PeriodeUtsettelseFormField.fom, ISOStringToDate(currentValues.fom));
+                                    setFieldValue(PeriodeUtsettelseFormField.tom, ISOStringToDate(currentValues.tom));
                                 }}
                                 ugyldigeTidsperioder={undefined}
                                 utsettelserIPlan={utsettelserIPlan}
@@ -169,15 +172,21 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                     familiehendelsesdato={familiehendelsesdato}
                                     ugyldigeTidsperioder={undefined}
                                     utsettelserIPlan={utsettelserIPlan}
-                                    onBekreft={(values) => {
+                                    onBekreft={(currentValues) => {
                                         setTidsperiodeIsOpen(false);
-                                        setFieldValue(PeriodeUtsettelseFormField.fom, ISOStringToDate(values.fom));
-                                        setFieldValue(PeriodeUtsettelseFormField.tom, ISOStringToDate(values.tom));
+                                        setFieldValue(
+                                            PeriodeUtsettelseFormField.fom,
+                                            ISOStringToDate(currentValues.fom),
+                                        );
+                                        setFieldValue(
+                                            PeriodeUtsettelseFormField.tom,
+                                            ISOStringToDate(currentValues.tom),
+                                        );
                                     }}
-                                    changeTidsperiode={(values) => {
+                                    changeTidsperiode={(currentValues) => {
                                         setTimeout(() => {
-                                            setFieldValue(PeriodeUtsettelseFormField.fom, values.fom);
-                                            setFieldValue(PeriodeUtsettelseFormField.tom, values.tom);
+                                            setFieldValue(PeriodeUtsettelseFormField.fom, currentValues.fom);
+                                            setFieldValue(PeriodeUtsettelseFormField.tom, currentValues.tom);
                                         }, 0);
                                     }}
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}

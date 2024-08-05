@@ -25,8 +25,8 @@ function FormikValuesObserver<FormValues>({ onChange, delay = 100 }: Props<FormV
     const prefValuesRef = useRef<any>();
     const [mounted, setMounted] = useState(false);
 
-    const emitChanged = debounce((values: FormValues) => {
-        onChange(values);
+    const emitChanged = debounce((valuesChanged: FormValues) => {
+        onChange(valuesChanged);
     }, delay);
 
     useEffect(() => {

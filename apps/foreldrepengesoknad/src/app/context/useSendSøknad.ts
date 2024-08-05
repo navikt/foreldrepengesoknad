@@ -58,32 +58,32 @@ const useSendSøknad = (
         try {
             const response = await Api.sendSøknad(cleanedSøknad, fødselsnr, abortSignal);
             kvittering = response.data;
-        } catch (error: unknown) {
+        } catch (postError: unknown) {
             //TODO (TOR) Håndter dette utanfor denne hook'en (På same måte i alle appane)
 
-            if (isAxiosError(error)) {
-                sendErrorMessageToSentry(error);
+            if (isAxiosError(postError)) {
+                sendErrorMessageToSentry(postError);
 
                 if (
-                    error.response?.status === 400 &&
-                    error.response?.data?.messages?.includes(
+                    postError.response?.status === 400 &&
+                    postError.response?.data?.messages?.includes(
                         'Vedleggslisten kan ikke inneholde flere enn 40 opplastede vedlegg',
                     )
                 ) {
                     setError(new Error(FOR_MANGE_VEDLEGG_ERROR));
                 }
 
-                const submitErrorCallId = getErrorCallId(error);
+                const submitErrorCallId = getErrorCallId(postError);
                 const callIdForBruker =
                     submitErrorCallId !== UKJENT_UUID ? submitErrorCallId.slice(0, 8) : submitErrorCallId;
                 setError(new Error(FEIL_VED_INNSENDING + callIdForBruker));
             }
-            setError(new Error(String(error)));
+            setError(new Error(String(postError)));
         }
 
         try {
             await Api.deleteMellomlagretSøknad(fødselsnr, abortSignal);
-        } catch (error) {
+        } catch (deleteError) {
             // Vi bryr oss ikke om feil her. Logges bare i backend
         }
 

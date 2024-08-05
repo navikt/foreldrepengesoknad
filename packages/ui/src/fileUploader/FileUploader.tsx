@@ -122,7 +122,6 @@ const FileUploader: React.FunctionComponent<Props> = ({
         const successAttachments = attachments.filter((a) => !a.error && a.pending === false);
         const hasPendingUploads = attachments.some((a) => !a.error && a.pending === true);
         updateAttachments(successAttachments, hasPendingUploads);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [attachments]);
 
     const saveFiles = useCallback(

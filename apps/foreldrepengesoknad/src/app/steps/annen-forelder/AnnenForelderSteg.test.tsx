@@ -32,7 +32,8 @@ describe('<AnnenForelderSteg>', () => {
 
         expect(
             screen.getByText(
-                'Selv om du har aleneomsorg kan den andre forelderen ha foreldrepenger hvis dere avtaler dette mellom dere. Da kan hen søke om å bruke ukene med foreldrepenger som du ikke bruker.',
+                'Selv om du har aleneomsorg kan den andre forelderen ha foreldrepenger hvis dere' +
+                    ' avtaler dette mellom dere. Da kan hen søke om å bruke ukene med foreldrepenger som du ikke bruker.',
             ),
         ).toBeInTheDocument();
 
