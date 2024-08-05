@@ -2,6 +2,7 @@
     "name": "@navikt/fp-oppsummering",
     "description": "Pakke som inneholder oppsummeringssteget",
     "main": "index.ts",
+    "type": "module",
     "types": "index.ts",
     "scripts": {
         "test": "vitest run",

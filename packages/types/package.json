@@ -1,6 +1,7 @@
 {
     "name": "@navikt/fp-types",
     "main": "index.ts",
+    "type": "module",
     "types": "index.ts",
     "dependencies": {
         "@navikt/fp-constants": "workspace:*"

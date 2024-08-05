@@ -1,6 +1,7 @@
 {
     "name": "@navikt/fp-utils",
     "main": "index.ts",
+    "type": "module",
     "types": "index.ts",
     "scripts": {
         "test": "vitest run",
