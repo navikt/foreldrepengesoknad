@@ -66,6 +66,7 @@ RUN apk fix \
     && rm -rf /var/cache/apk/*
 
 COPY --from=server-build /usr/src/app/${SERVER}/dist ./
+COPY --from=server-build /usr/src/app/${SERVER}/vite-dev-server.html ./vite-dev-server.html
 
 ENTRYPOINT ["/sbin/tini", "--"]
 

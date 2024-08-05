@@ -12,9 +12,11 @@
     },
     "dependencies": {
         "@navikt/nav-dekoratoren-moduler": "2.1.6",
+        "cookie-parser": "1.4.6",
         "express": "4.19.2"
     },
     "devDependencies": {
+        "@types/cookie-parser": "1.4.7",
         "@types/express": "4.17.21",
         "@types/morgan": "^1.9.9",
         "@types/node": "^22.0.0",
