@@ -2,6 +2,7 @@
     "name": "@navikt/fp-server-utils",
     "description": "Pakke som tilbyr generelle utils for serveroppsett",
     "main": "index.ts",
+    "type": "module",
     "types": "index.ts",
     "scripts": {
         "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",

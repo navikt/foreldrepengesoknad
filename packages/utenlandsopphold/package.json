@@ -2,6 +2,7 @@
     "name": "@navikt/fp-utenlandsopphold",
     "description": "Pakke som inneholder panel for utenlandsopphold, fremtidig utenlandsopphold og historisk utenlandsopphold",
     "main": "index.ts",
+    "type": "module",
     "types": "index.ts",
     "scripts": {
         "test": "vitest run",

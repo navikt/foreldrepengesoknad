@@ -2,6 +2,7 @@
     "author": "navikt",
     "license": "MIT",
     "main": "src/index.ts",
+    "type": "module",
     "types": "src/index.ts",
     "name": "@navikt/fp-formik",
     "scripts": {

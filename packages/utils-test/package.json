@@ -1,6 +1,7 @@
 {
     "name": "@navikt/fp-utils-test",
     "main": "index.ts",
+    "type": "module",
     "types": "index.ts",
     "scripts": {
         "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
