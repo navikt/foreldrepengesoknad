@@ -116,6 +116,7 @@ const Template: StoryFn<TilretteleggingStepStoryProps> = ({
             <SvpDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
+                    [ContextDataType.FERIE]: [],
                     [ContextDataType.INNTEKTSINFORMASJON]: {
                         harHattArbeidIUtlandet: false,
                         harJobbetSomFrilans: false,

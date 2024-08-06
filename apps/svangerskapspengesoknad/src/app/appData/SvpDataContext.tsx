@@ -7,6 +7,7 @@ import { Barn } from 'app/types/Barn';
 import { EgenNæring } from 'app/types/EgenNæring';
 import { Frilans } from 'app/types/Frilans';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
+import { TidsperiodeDTO } from 'app/types/TidsperiodeDTO';
 import Tilrettelegging from 'app/types/Tilrettelegging';
 
 import SøknadRoutes from './routes';
@@ -23,6 +24,7 @@ export enum ContextDataType {
     EGEN_NÆRING = 'EGEN_NÆRING',
     TILRETTELEGGINGER = 'TILRETTELEGGINGER',
     VALGT_TILRETTELEGGING_ID = 'VALGT_TILRETTELEGGING_ID',
+    FERIE = 'FERIE',
 }
 
 export type ContextDataMap = {
@@ -36,6 +38,7 @@ export type ContextDataMap = {
     [ContextDataType.ARBEID_I_UTLANDET]?: ArbeidIUtlandet;
     [ContextDataType.EGEN_NÆRING]?: EgenNæring;
     [ContextDataType.TILRETTELEGGINGER]?: Tilrettelegging[];
+    [ContextDataType.FERIE]: TidsperiodeDTO[];
     [ContextDataType.VALGT_TILRETTELEGGING_ID]?: string;
 };
 

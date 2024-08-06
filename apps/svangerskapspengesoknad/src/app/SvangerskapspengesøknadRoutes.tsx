@@ -8,6 +8,8 @@ import { Kvittering, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 import { redirect } from '@navikt/fp-utils';
 
+import { FerieStep } from 'app/steps/ferie/FerieStep';
+
 import Environment from './appData/Environment';
 import { ContextDataType } from './appData/SvpDataContext';
 import SøknadRoutes from './appData/routes';
@@ -169,6 +171,16 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.PERIODER}
                 element={
                     <PerioderStep
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
+            />
+            <Route
+                path={SøknadRoutes.FERIE}
+                element={
+                    <FerieStep
                         arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}

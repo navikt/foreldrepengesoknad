@@ -99,6 +99,7 @@ const Template: StoryFn<Props> = ({
                         harHattArbeidIUtlandet: false,
                         harJobbetSomSelvstendigNæringsdrivende: false,
                     },
+                    [ContextDataType.FERIE]: [],
                     [ContextDataType.TILRETTELEGGINGER]: [
                         {
                             id: '263929546-6215-9868-5127-161910165730101',

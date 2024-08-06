@@ -96,6 +96,7 @@ const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(
                         harHattArbeidIUtlandet: false,
                         harJobbetSomFrilans: false,
                     },
+                    [ContextDataType.FERIE]: [],
                     [ContextDataType.TILRETTELEGGINGER]: [
                         {
                             id: '263929546-6215-9868-5127-161910165730101',

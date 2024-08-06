@@ -96,6 +96,7 @@ const Template: StoryFn<Props> = ({
             <SvpDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
+                    [ContextDataType.FERIE]: [],
                     [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                 }}
             >

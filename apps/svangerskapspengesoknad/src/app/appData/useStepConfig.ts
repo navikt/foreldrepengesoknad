@@ -38,6 +38,7 @@ const getStepLabels = (
         : intl.formatMessage({ id: 'steps.label.tilrettelegging.en' }),
     [SøknadRoutes.UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'steps.label.utenlandsopphold' }),
     [SøknadRoutes.VELG_ARBEID]: intl.formatMessage({ id: 'steps.label.velgArbeid' }),
+    [SøknadRoutes.FERIE]: intl.formatMessage({ id: 'steps.label.velgArbeid' }), //TODO: tekst
 });
 
 const createStep = (route: SøknadRoutes, intl: IntlShape, currentPath: string) => ({
