@@ -1,0 +1,11 @@
+.feriePeriode {
+}
+
+.indent-divider {
+    background: rgba(224, 227, 230, 1);
+    width: 3px;
+    border-radius: 2px;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    height: auto;
+}
