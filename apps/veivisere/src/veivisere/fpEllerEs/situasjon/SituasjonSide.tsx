@@ -168,7 +168,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                         </Label>
                                         <Heading size="large">
                                             {lønnPerMåned ? (
-                                                formatCurrencyWithKr(lønnPerMåned)
+                                                formatCurrencyWithKr(lønnPerMåned * 12)
                                             ) : (
                                                 <FormattedMessage id="SituasjonSide.IngenKr" />
                                             )}

@@ -6,15 +6,15 @@ import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
-import { FpEllerEsSituasjon } from '../situasjon/SituasjonSide';
-import KravinfoBoks from './KravinfoBoks';
+import { FpEllerEsSituasjon } from '../../situasjon/SituasjonSide';
+import KravinfoBoks from '../KravinfoBoks';
 
 interface Props {
     fpEllerEsSituasjon: FpEllerEsSituasjon;
     grunnbeløpet: number;
 }
 
-const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
+const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
     return (
         <ExpansionCard aria-label="" size="small">
             <ExpansionCard.Header>
@@ -23,14 +23,14 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
                         <QuestionmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                     </IconCircleWrapper>
                     <ExpansionCard.Title size="small">
-                        <FormattedMessage id="HvorforHarJegRettPanel.HvorforHarJegRett" />
+                        <FormattedMessage id="HvorforHarJegRettPanel.HvorforHarJegIkkeRettPåEs" />
                     </ExpansionCard.Title>
                 </HStack>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
                 <VStack gap="5">
                     <BodyShort>
-                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKrav" />
+                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKravEs" />
                     </BodyShort>
                     <VStack gap="4">
                         <KravinfoBoks
@@ -68,4 +68,4 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
     );
 };
 
-export default HvorforHarJegRettPanel;
+export default HvorforHarJegIkkeRettEsPanel;
