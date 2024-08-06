@@ -36,7 +36,7 @@
     "ArbeidssituasjonSide.Arbeidsavklaring": "Work settlement allowance",
     "ArbeidssituasjonSide.Dagpenger": "Daily allowance",
     "ArbeidssituasjonSide.OmsorgOgPleie": "Care, nursing or training allowance for a sick child",
-    "OppsummeringSide.GjennomsnittligUtbetaling": "Average payment with {erDekningsgrad100, select, true {100} other {80}}% parental benefits for {antallUker} weeks",
+    "OppsummeringSide.GjennomsnittligUtbetaling": "Average payment with {erDekningsgrad100, select, true {100} other {80}}% parental benefits for {antallUker} weeks {antallDager, select, 0 {} 1 {and {antallDager} day} other {and {antallDager} days}}",
     "OppsummeringSide.MånedligFørSkatt": "Monthly before tax",
     "OppsummeringSide.DagligFørSkatt": "Daily before tax",
     "OppsummeringSide.Totalt": "Total for {erDekningsgrad100, select, true {25} other {30}} weeks before tax",

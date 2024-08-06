@@ -29,24 +29,22 @@ const satser = {
     ],
 };
 
-interface StoryArgs {}
-
 const meta = {
     title: 'hvorMye/ArbeidssituasjonSide',
     component: ArbeidssituasjonSide,
-} satisfies Meta<typeof ArbeidssituasjonSide & StoryArgs>;
+} satisfies Meta<typeof ArbeidssituasjonSide>;
 export default meta;
 
-type Story = StoryObj<StoryArgs>;
+type Story = StoryObj<typeof ArbeidssituasjonSide>;
 
 export const Default: Story = {
-    render: () => {
+    render: ({ setArbeidssituasjon = () => undefined }) => {
         initAmplitude();
         return (
             <MemoryRouter initialEntries={[HvorMyeRoutes.ARBEIDSSITUASJON]}>
                 <ArbeidssituasjonSide
                     arbeidssituasjon={undefined}
-                    setArbeidssituasjon={() => undefined}
+                    setArbeidssituasjon={setArbeidssituasjon}
                     satser={satser}
                 />
             </MemoryRouter>

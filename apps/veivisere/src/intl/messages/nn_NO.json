@@ -36,7 +36,7 @@
     "ArbeidssituasjonSide.Arbeidsavklaring": "Arbeidsavklaringspengar",
     "ArbeidssituasjonSide.Dagpenger": "Dagpengar",
     "ArbeidssituasjonSide.OmsorgOgPleie": "Omsorgs-, pleie- eller opplæringspengar ved sjukt barn",
-    "OppsummeringSide.GjennomsnittligUtbetaling": "Gjennomsnittleg utbetaling med {erDekningsgrad100, select, true {100} other {80}}% foreldrepengar i {antallUker} veker",
+    "OppsummeringSide.GjennomsnittligUtbetaling": "Gjennomsnittleg utbetaling med {erDekningsgrad100, select, true {100} other {80}}% foreldrepengar i {antallUker} veker {antallDager, select, 0 {} 1 {og {antallDager} dag} other {og {antallDager} dagar}}",
     "OppsummeringSide.MånedligFørSkatt": "Månadleg før skatt",
     "OppsummeringSide.DagligFørSkatt": "Dagleg før skatt",
     "OppsummeringSide.Totalt": "Totalt for {erDekningsgrad100, select, true {25} other {30}} veker før skatt",
