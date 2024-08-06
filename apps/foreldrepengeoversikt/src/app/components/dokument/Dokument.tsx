@@ -31,7 +31,16 @@ function DokumentLenke({ dokument }: { readonly dokument: DokumentType }) {
 }
 
 function DokumentAvsender({ dokumentType }: { readonly dokumentType: DokumentTypeEnum }) {
-    const text = dokumentType === DokumentTypeEnum.INNGÅENDE_DOKUMENT ? 'Arbeidsgiver' : 'NAV';
+    const text = (() => {
+        switch (dokumentType) {
+            case DokumentTypeEnum.ARBEIDSGIVER:
+                return 'Arbeidsgiver';
+            case DokumentTypeEnum.UTGÅENDE_DOKUMENT:
+                return 'Nav';
+            case DokumentTypeEnum.INNGÅENDE_DOKUMENT:
+                return 'Du';
+        }
+    })();
 
     return (
         <Tag size="small" style={{ width: 'max-content', justifySelf: 'flex-end' }} variant="neutral">
