@@ -22,6 +22,9 @@ export default defineConfig({
             app: path.resolve(__dirname, './src/app'),
         },
     },
+    server: {
+        port: 8080,
+    },
     build: {
         sourcemap: true,
     },

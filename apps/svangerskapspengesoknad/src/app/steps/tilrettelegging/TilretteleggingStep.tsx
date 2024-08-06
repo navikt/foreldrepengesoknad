@@ -71,7 +71,7 @@ const getNextRouteAndTilretteleggingIdForTilretteleggingSteg = (
     if (nesteTilretteleggingId) {
         return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: nesteTilretteleggingId };
     }
-    return { nextRoute: SøknadRoutes.OPPSUMMERING };
+    return { nextRoute: SøknadRoutes.FERIE };
 };
 
 const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) =>
@@ -125,6 +125,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const stepConfig = useStepConfig(arbeidsforhold);
+    console.log(stepConfig);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));

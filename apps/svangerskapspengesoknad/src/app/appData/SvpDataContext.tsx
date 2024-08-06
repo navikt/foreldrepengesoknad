@@ -38,11 +38,11 @@ export type ContextDataMap = {
     [ContextDataType.ARBEID_I_UTLANDET]?: ArbeidIUtlandet;
     [ContextDataType.EGEN_NÆRING]?: EgenNæring;
     [ContextDataType.TILRETTELEGGINGER]?: Tilrettelegging[];
-    [ContextDataType.FERIE]: TidsperiodeDTO[];
+    [ContextDataType.FERIE]?: TidsperiodeDTO[];
     [ContextDataType.VALGT_TILRETTELEGGING_ID]?: string;
 };
 
-const defaultInitialState = {} as ContextDataMap;
+const defaultInitialState: ContextDataMap = {};
 
 export type Action = { type: 'update'; key: ContextDataType; data: any } | { type: 'reset' };
 type Dispatch = (action: Action) => void;

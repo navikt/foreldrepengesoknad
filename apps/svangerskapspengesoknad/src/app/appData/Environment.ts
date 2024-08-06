@@ -1,5 +1,10 @@
 const Environment = () => {
-    const settingsNode = document.getElementById('nav:appSettings') as HTMLScriptElement;
+    const settingsNode = document.getElementById('nav:appSettings');
+
+    if (!settingsNode) {
+        return {};
+    }
+
     const appSettings = JSON.parse(settingsNode.text);
 
     return {

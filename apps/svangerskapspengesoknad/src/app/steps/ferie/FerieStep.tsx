@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 
-import { Form } from '@navikt/fp-form-hooks';
+import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 
@@ -28,6 +28,7 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
         >
             <Form formMethods={formMethods} onSubmit={() => {}}>
                 <div>hai</div>
+                <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
             </Form>
         </Step>
     );

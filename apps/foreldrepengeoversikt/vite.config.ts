@@ -28,7 +28,7 @@ export default defineConfig({
         },
     },
     server: {
-        port: 8080,
+        port: 8085,
     },
     test: {
         globals: true,
