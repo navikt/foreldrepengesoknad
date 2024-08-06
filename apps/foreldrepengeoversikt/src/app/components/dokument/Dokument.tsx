@@ -36,9 +36,9 @@ function DokumentAvsender({ dokumentType }: { readonly dokumentType: DokumentTyp
             case DokumentTypeEnum.ARBEIDSGIVER:
                 return 'Arbeidsgiver';
             case DokumentTypeEnum.UTGÅENDE_DOKUMENT:
-                return 'Du';
-            case DokumentTypeEnum.INNGÅENDE_DOKUMENT:
                 return 'Nav';
+            case DokumentTypeEnum.INNGÅENDE_DOKUMENT:
+                return 'Du';
         }
     })();
 
