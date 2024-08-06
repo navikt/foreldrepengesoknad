@@ -10,7 +10,7 @@ import * as stories from './ArbeidssituasjonSide.stories';
 const { Default } = composeStories(stories);
 
 describe('<ArbeidssituasjonSide>', () => {
-    it('skal velge arbeidstaker eller frilanser ', async () => {
+    it('skal velge arbeidstaker eller frilanser', async () => {
         const setArbeidssituasjon = vi.fn();
         const utils = render(<Default setArbeidssituasjon={setArbeidssituasjon} />);
 

@@ -20,7 +20,7 @@ vi.mock('react-router-dom', async () => {
 const useNavigateMock = vi.mocked(useNavigate);
 
 describe('<HvorMyeForside>', () => {
-    it('skal vise forside ', async () => {
+    it('skal vise forside', async () => {
         const navigateMock = vi.fn();
         useNavigateMock.mockReturnValue(navigateMock);
 

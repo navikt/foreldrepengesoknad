@@ -11,7 +11,7 @@ const {
 } = composeStories(stories);
 
 describe('<OppsummeringSide>', () => {
-    it('skal vise oppsummering for arbeidstaker med 20000 i måneden ', async () => {
+    it('skal vise oppsummering for arbeidstaker med 20000 i måneden', async () => {
         render(<ArbeidstakerMed20000Imåneden />);
 
         expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
@@ -37,7 +37,7 @@ describe('<OppsummeringSide>', () => {
         expect(screen.getByText('Arbeidstaker eller frilanser')).toBeInTheDocument();
     });
 
-    it('skal vise oppsummering for arbeidstaker med 100000 i måneden ', async () => {
+    it('skal vise oppsummering for arbeidstaker med 100000 i måneden', async () => {
         render(<ArbeidstakerMed100000Imåneden />);
 
         expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
@@ -67,7 +67,7 @@ describe('<OppsummeringSide>', () => {
         expect(screen.getAllByText('100 000 kr')).toHaveLength(3);
     });
 
-    it('skal vise oppsummering for arbeidstaker med 1000 i måneden ', async () => {
+    it('skal vise oppsummering for arbeidstaker med 1000 i måneden', async () => {
         render(<ArbeidstakerMed1000Imåneden />);
 
         expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
@@ -78,7 +78,7 @@ describe('<OppsummeringSide>', () => {
         expect(screen.getByText('Hva er engangsstønad?')).toBeInTheDocument();
     });
 
-    it('skal vise oppsummering for arbeidstaker med 10000 i måneden ', async () => {
+    it('skal vise oppsummering for arbeidstaker med 10000 i måneden', async () => {
         render(<ArbeidstakerMed10000IMåneden />);
 
         expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
