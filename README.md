@@ -1,6 +1,7 @@
 # Selvbetjeningsløsning for søknadene om foreldrepenger, engangsstønad og svangerskapspenger og for innsynsløsning for foreldrepengeytelser.
 
-Kildekoden til frontend-appene foreldrepengesøknad, engangsstønad, svangerskapspenger og foreldrepengeoversikt (innsynsløsning for foreldrepenger, svangerskapspenger og engangsstønad).
+Kildekoden til frontend-appene foreldrepengesøknad, engangsstønad, svangerskapspenger og foreldrepengeoversikt (
+innsynsløsning for foreldrepenger, svangerskapspenger og engangsstønad).
 
 # For å komme i gang
 
@@ -8,11 +9,13 @@ Du må på forhånd ha installert Node.js (v.18). Vi anbefaler å bruke Git Bash
 
 1. Installer pnpm: `npm install -g pnpm`.
 2. I roten av repoet, kjør `pnpm install`.
-3. Installer turborepo med `pnpm install -g turbo`
-4. Kjør `turbo build`
-5. For å sjekke om alt fungerer, kjør testene med `turbo test`
+3. Kjør `pnpm setup`. Følg instruksjonen i outputen.
+4. Installer turborepo med `pnpm install -g turbo`
+5. Kjør `turbo build`
+6. For å sjekke om alt fungerer, kjør testene med `turbo test`
 
 For å kjøre opp appen i dev:
+
 1. cd til `server` og kjør `pnpm build`
 2. cd til appen du ønsker å jobbe med, f.eks `cd apps/foreldrepengeoversikt`
 3. Kjør `pnpm run dev-api`
