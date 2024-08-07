@@ -353,55 +353,59 @@ describe('<SituasjonSide>', () => {
         });
     });
 
-    it('skal ikke ha rett til engangsstønad når en ikke har inntekt de siste 6 av 10 månendene, ikke bor i Norge og ikke har medlemskap i Folketrygden', async () => {
-        const setFpEllerEsSituasjon = vi.fn();
-        render(<Default setFpEllerEsSituasjon={setFpEllerEsSituasjon} />);
+    it(
+        'skal ikke ha rett til engangsstønad når en ikke har inntekt de siste 6 av 10 månendene, ' +
+            'ikke bor i Norge og ikke har medlemskap i Folketrygden',
+        async () => {
+            const setFpEllerEsSituasjon = vi.fn();
+            render(<Default setFpEllerEsSituasjon={setFpEllerEsSituasjon} />);
 
-        expect(await screen.findByText('Foreldrepenger eller engangsstønad')).toBeInTheDocument();
+            expect(await screen.findByText('Foreldrepenger eller engangsstønad')).toBeInTheDocument();
 
-        expect(screen.getByText('Hvem er du?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Mor'));
+            expect(screen.getByText('Hvem er du?')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Mor'));
 
-        expect(
-            screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra NAV?',
-            ),
-        ).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ja'));
+            expect(
+                screen.getByText(
+                    'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra NAV?',
+                ),
+            ).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Ja'));
 
-        expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[1]);
+            expect(screen.getByText('Har du hatt inntekt 6 av de 10 siste månedene?')).toBeInTheDocument();
+            await userEvent.click(screen.getAllByText('Nei')[1]);
 
-        expect(
-            screen.getByText('For å kunne ha rett på foreldrepenger må man ha jobbet 6 av de 10 siste månedene.'),
-        ).toBeInTheDocument();
+            expect(
+                screen.getByText('For å kunne ha rett på foreldrepenger må man ha jobbet 6 av de 10 siste månedene.'),
+            ).toBeInTheDocument();
 
-        expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[2]);
+            expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
+            await userEvent.click(screen.getAllByText('Nei')[2]);
 
-        expect(
-            screen.getByText(
-                'For å få utbetaling fra NAV, må du være medlem av folketrygden. Er du medlem av folketrygden selv om du ikke bor i Norge?',
-            ),
-        ).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Nei')[3]);
+            expect(
+                screen.getByText(
+                    'For å få utbetaling fra NAV, må du være medlem av folketrygden. Er du medlem av folketrygden selv om du ikke bor i Norge?',
+                ),
+            ).toBeInTheDocument();
+            await userEvent.click(screen.getAllByText('Nei')[3]);
 
-        expect(
-            screen.getByText(
-                'For å kunne ha rett på foreldrepenger eller engangsstønad må man være medlem av folketrygden',
-            ),
-        ).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    'For å kunne ha rett på foreldrepenger eller engangsstønad må man være medlem av folketrygden',
+                ),
+            ).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Se resultatet'));
+            await userEvent.click(screen.getByText('Se resultatet'));
 
-        expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
-            borDuINorge: false,
-            erDuMedlemAvFolketrygden: false,
-            harHattInntekt: false,
-            erIArbeid: true,
-            situasjon: 'mor',
-        });
-    });
+            expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
+                borDuINorge: false,
+                erDuMedlemAvFolketrygden: false,
+                harHattInntekt: false,
+                erIArbeid: true,
+                situasjon: 'mor',
+            });
+        },
+    );
 
     it('skal ha rett til foreldrepenger når en ikke er arbeidstaker men har andre inntektskilder', async () => {
         const setFpEllerEsSituasjon = vi.fn();
