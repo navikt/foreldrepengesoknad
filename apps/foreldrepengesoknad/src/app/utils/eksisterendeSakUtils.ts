@@ -35,6 +35,7 @@ import {
 import PersonFnrDTO from '@navikt/fp-common/src/common/types/PersonFnrDTO';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { dateToISOString } from '@navikt/fp-formik';
 import { Søker, SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
 
 import { Søknad } from 'app/context/types/Søknad';
@@ -226,6 +227,7 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
 export const mapSøkerensEksisterendeSakFromDTO = (
     eksisterendeSak: Sak | undefined | null,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
+    valgtBarnFødselsdatoer: Date[] | undefined,
 ): EksisterendeSak | undefined => {
     if (eksisterendeSak === undefined || eksisterendeSak === null) {
         return undefined;
@@ -233,7 +235,7 @@ export const mapSøkerensEksisterendeSakFromDTO = (
     const erAnnenPartsSak = false;
     const {
         dekningsgrad,
-        familiehendelse: { fødselsdato, termindato, omsorgsovertakelse, antallBarn },
+        familiehendelse: { fødselsdato: fødselsdatoFraFPSak, termindato, omsorgsovertakelse, antallBarn },
         harAnnenForelderTilsvarendeRettEØS,
         morUføretrygd,
         rettighetType,
@@ -244,6 +246,11 @@ export const mapSøkerensEksisterendeSakFromDTO = (
     const perioder = eksisterendeSak.gjeldendeVedtak ? eksisterendeSak.gjeldendeVedtak.perioder : [];
 
     const erFarEllerMedmor = !sakTilhørerMor;
+    const fødselsdatoFraValgtBarn =
+        valgtBarnFødselsdatoer && valgtBarnFødselsdatoer.length > 0
+            ? dateToISOString(valgtBarnFødselsdatoer[0])
+            : undefined;
+    const fødselsdatoForSaken = fødselsdatoFraFPSak || fødselsdatoFraValgtBarn;
     const grunnlag: Saksgrunnlag = {
         dekningsgrad:
             dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT ? Dekningsgrad.HUNDRE_PROSENT : Dekningsgrad.ÅTTI_PROSENT,
@@ -255,13 +262,13 @@ export const mapSøkerensEksisterendeSakFromDTO = (
         farMedmorHarRett: !sakTilhørerMor || rettighetType === RettighetType.BEGGE_RETT,
         søkerErFarEllerMedmor: erFarEllerMedmor,
         termindato,
-        fødselsdato,
+        fødselsdato: fødselsdatoForSaken,
         omsorgsovertakelsesdato: omsorgsovertakelse,
         erDeltUttak: rettighetType === RettighetType.BEGGE_RETT,
-        erBarnetFødt: fødselsdato !== undefined,
-        familiehendelseDato: getRelevantFamiliehendelseDato(termindato, fødselsdato, omsorgsovertakelse),
-        familiehendelseType: getFamiliehendelseType(fødselsdato, termindato, omsorgsovertakelse),
-        ønskerJustertUttakVedFødsel: fødselsdato === undefined ? ønskerJustertUttakVedFødsel : undefined,
+        erBarnetFødt: fødselsdatoForSaken !== undefined,
+        familiehendelseDato: getRelevantFamiliehendelseDato(termindato, fødselsdatoForSaken, omsorgsovertakelse),
+        familiehendelseType: getFamiliehendelseType(fødselsdatoForSaken, termindato, omsorgsovertakelse),
+        ønskerJustertUttakVedFødsel: fødselsdatoForSaken === undefined ? ønskerJustertUttakVedFødsel : undefined,
         harAnnenForelderTilsvarendeRettEØS,
     };
 
@@ -440,6 +447,7 @@ const getBarnFromValgteBarn = (valgteBarn: ValgtBarn): Barn => {
             type: BarnType.FØDT,
             antallBarn: valgteBarn.antallBarn,
             fødselsdatoer: sorterDatoEtterEldst(valgteBarn.fødselsdatoer),
+            termindato: dateToISOString(valgteBarn.termindato),
             fnr:
                 valgteBarn.fnr !== undefined && valgteBarn.fnr.length > 0
                     ? valgteBarn.fnr.filter((fnr) => !!fnr)
@@ -542,7 +550,7 @@ export const opprettSøknadFraValgteBarnMedSak = (
     registrerteBarn: SøkerBarn[],
     søkerFnr: string,
 ): Partial<Søknad> | undefined => {
-    const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, undefined);
+    const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, undefined, valgteBarn.fødselsdatoer);
     const { grunnlag } = eksisterendeSak!;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(grunnlag.familiehendelseType);
     const barn = getBarnFromValgteBarn(valgteBarn);
