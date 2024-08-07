@@ -1,1 +1,0 @@
-import{r as d}from"./index-DVXBtNgz.js";import{u as a}from"./dateFormValidation-Bl1hAFm_.js";function C({value:n,defaultValue:c,onChange:l}){const s=a(l),[u,f]=d.useState(c),t=n!==void 0,e=t?n:u,i=a(o=>{const r=typeof o=="function"?o(e):o;t||f(r),s(r)},[t,s,e]);return[e,i]}export{C as u};

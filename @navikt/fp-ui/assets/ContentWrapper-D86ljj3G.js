@@ -1,1 +1,0 @@
-import{j as r}from"./jsx-runtime-_e34SzbC.js";import{b as e}from"./Uttaksdagen-4XRuHfYI.js";import"./dayjs.min-Dkhc0ShP.js";import"./index-DVXBtNgz.js";import"./dates-BztWV_n-.js";const s=({children:t})=>{const o=e("content");return r.jsx("div",{className:o.block,children:t})};s.__docgenInfo={description:"",methods:[],displayName:"ContentWrapper"};export{s as C};

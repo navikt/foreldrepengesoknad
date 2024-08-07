@@ -1,6 +1,0 @@
-import{j as r}from"./VStack-CUK_170J.js";import{u as p,F as d,R as t}from"./StepButtonsHookForm-BTvbgS1l.js";import"./index-DVXBtNgz.js";import"./Infobox-C9xVbVLy.js";import"./Label-CID3Cstt.js";import{B as n}from"./BlueRadioGroup-COEOYHsZ.js";import"./Calendar-9kL8-203.js";import"./index-Cbx7Fas8.js";import"./useCallbackRef-BwGyppiy.js";import"./Responsive-Btp1HK0W.js";import"./ArrowLeft-CWx9JlvR.js";import"./index-Dcs0RV0A.js";import"./tslib.es6-CMwweBXX.js";const D={title:"components/BlueRadioGroup",component:n},l=o=>{const i=p();return r.jsx(d,{formMethods:i,children:r.jsxs(n,{name:"test",...o,children:[r.jsx(t,{value:"1",children:"test 1"}),r.jsx(t,{value:"2",children:"test 2"})]})})},e={render:o=>r.jsx(l,{...o}),args:{label:"Dette er en radioknapp som blir lysere når du trykker på den"}};var s,a,m;e.parameters={...e.parameters,docs:{...(s=e.parameters)==null?void 0:s.docs,source:{originalSource:`{
-  render: args => <FormWithBlueRadioGroup {...args} />,
-  args: {
-    label: 'Dette er en radioknapp som blir lysere når du trykker på den'
-  }
-}`,...(m=(a=e.parameters)==null?void 0:a.docs)==null?void 0:m.source}}};const E=["Default"];export{e as Default,E as __namedExportsOrder,D as default};
