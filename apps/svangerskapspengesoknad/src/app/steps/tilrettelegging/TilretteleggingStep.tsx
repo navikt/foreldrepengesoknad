@@ -125,7 +125,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const stepConfig = useStepConfig(arbeidsforhold);
-    console.log(stepConfig);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));

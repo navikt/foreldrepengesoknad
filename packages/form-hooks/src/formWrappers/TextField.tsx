@@ -1,11 +1,11 @@
 import { CSSProperties, FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
-import { TextField as DsTextField } from '@navikt/ds-react';
+import { TextField as DsTextField, type TextFieldProps as DsTextFieldProps } from '@navikt/ds-react';
 
 import { getError, getValidationRules, replaceInvisibleCharsWithSpace } from './formUtils';
 
-export interface Props {
+export type Props = {
     name: string;
     label?: string | ReactNode;
     validate?: Array<(value: string) => any> | Array<(value: number) => any>;
@@ -20,7 +20,7 @@ export interface Props {
     shouldReplaceInvisibleChars?: boolean;
     autofocusWhenEmpty?: boolean;
     customErrorFormatter?: (error: string | undefined) => ReactNode;
-}
+} & DsTextFieldProps;
 
 const TextField: FunctionComponent<Props> = ({
     name,
@@ -37,6 +37,7 @@ const TextField: FunctionComponent<Props> = ({
     shouldReplaceInvisibleChars = false,
     autofocusWhenEmpty,
     customErrorFormatter,
+    ...rest
 }) => {
     const {
         formState: { errors },
@@ -85,6 +86,7 @@ const TextField: FunctionComponent<Props> = ({
             className={className}
             style={style}
             onChange={onChangeFn}
+            {...rest}
         />
     );
 };

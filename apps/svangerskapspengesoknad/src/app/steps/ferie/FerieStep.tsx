@@ -1,15 +1,25 @@
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import { useEffect } from 'react';
+import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, HStack, Heading, Radio, ReadMore, TextField, VStack } from '@navikt/ds-react';
+import { BodyShort, HStack, Heading, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import {
+    Datepicker,
+    ErrorSummaryHookForm,
+    Form,
+    RadioGroup,
+    StepButtonsHookForm,
+    TextField,
+} from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
-import { isRequired } from '@navikt/fp-validation';
+import { hasMaxValue, isRequired, isValidNumberForm } from '@navikt/fp-validation';
 
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
+import { TidsperiodeDTO } from 'app/types/TidsperiodeDTO';
 
 import './feriestep.css';
 
@@ -19,16 +29,35 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
+const DEFAULT_FERIE_VALUES = {
+    skalHaFerie: undefined,
+    feriePerioder: [{ fom: undefined, tom: undefined }],
+    antallFeriePerioder: 1,
+};
+
+type FerieFormData = {
+    skalHaFerie?: boolean;
+    feriePerioder: Array<Partial<TidsperiodeDTO>>;
+    antallFeriePerioder: number;
+};
+
 export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) {
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
+    const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);
+    const e = useContextGetData(ContextDataType.FERIE);
 
-    const formMethods = useForm({
-        defaultValues: {
-            skalHaFerie: undefined,
-            antallFeriePerioder: 1,
-        },
+    const formMethods = useForm<FerieFormData>({
+        mode: 'onSubmit',
+        defaultValues: e
+            ? { skalHaFerie: e.length > 0, feriePerioder: e, antallFeriePerioder: e.length }
+            : DEFAULT_FERIE_VALUES,
     });
+
+    const onSubmit = (values: FerieFormData) => {
+        oppdaterFerie(values.feriePerioder); //TODO
+        return navigator.goToNextDefaultStep();
+    };
 
     return (
         <Step
@@ -37,7 +66,7 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
         >
-            <Form formMethods={formMethods} onSubmit={() => {}}>
+            <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     <VStack gap="4">
@@ -70,14 +99,24 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
 }
 
 function FeriePerioder() {
-    const { register, watch } = useFormContext();
+    const { watch, setValue } = useFormContext();
     const antallFeriePerioder = watch('antallFeriePerioder');
+
+    useEffect(() => {
+        setValue('feriePerioder', Array.from(Array(Number(antallFeriePerioder))));
+    }, [antallFeriePerioder]);
+
+    const { fields } = useFieldArray({
+        name: 'feriePerioder',
+    });
+
     return (
         <VStack gap="4">
             <TextField
-                {...register('antallFeriePerioder')}
+                name="antallFeriePerioder"
                 label="Hvor mange perioder med ferie skal du ha?"
                 htmlSize={2}
+                validate={[isRequired('bo'), isValidNumberForm('tall'), hasMaxValue('maks 50', 50)]}
             />
             <ReadMore header="Hvordan man regner antall ferieperioder">
                 <BodyShort>
@@ -86,7 +125,7 @@ function FeriePerioder() {
                 </BodyShort>
             </ReadMore>
             <VStack gap="10">
-                {Array.from(Array(Number(antallFeriePerioder))).map((_, index) => (
+                {fields.map((_, index) => (
                     <VStack gap="4" key={index} className="feriePeriode">
                         <Heading level="3" size="small">
                             {index + 1}. periode
