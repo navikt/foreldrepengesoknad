@@ -74,7 +74,7 @@ export function ArbeidsforholdOppsummering({
     );
 }
 
-function JaNeiTekst({ ja }: { readonly ja: boolean }) {
+export function JaNeiTekst({ ja }: { readonly ja: boolean }) {
     return ja ? <FormattedMessage id="ja" /> : <FormattedMessage id="nei" />;
 }
 

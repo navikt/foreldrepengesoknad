@@ -46,7 +46,7 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
     const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);
     const e = useContextGetData(ContextDataType.FERIE);
-
+    console.log(e);
     const formMethods = useForm<FerieFormData>({
         mode: 'onSubmit',
         defaultValues: e

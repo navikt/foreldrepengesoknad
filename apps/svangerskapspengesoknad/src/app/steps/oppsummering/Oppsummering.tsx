@@ -19,6 +19,7 @@ import {
     SelvstendigNæringsdrivendeSummary,
 } from 'app/steps/oppsummering/ArbeidsforholdOppsummering';
 import { DokumentasjonOppsummering } from 'app/steps/oppsummering/DokumentasjonOppsummering';
+import { FerieOppsummering } from 'app/steps/oppsummering/FerieOppsummering';
 import { PerioderOppsummering } from 'app/steps/oppsummering/PerioderOppsummering';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 
@@ -106,6 +107,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.SKJEMA)}
                 />
                 <PerioderOppsummering onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.TILRETTELEGGING)} />
+                <FerieOppsummering onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.FERIE)} />
             </OppsummeringPanel>
         </ContentWrapper>
     );
