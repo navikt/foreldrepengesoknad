@@ -6,7 +6,7 @@ import { initAmplitude } from '@navikt/fp-metrics';
 
 import SituasjonSide from './SituasjonSide';
 
-const satser = {
+const DEFAULT_SATSER = {
     engangstønad: [
         {
             fom: '01.01.2023',
@@ -27,12 +27,14 @@ const meta = {
 } satisfies Meta<typeof SituasjonSide>;
 export default meta;
 
-export const Default: StoryObj = {
-    render: () => {
+type Story = StoryObj<typeof SituasjonSide>;
+
+export const Default: Story = {
+    render: ({ satser = DEFAULT_SATSER, setFpEllerEsSituasjon = () => undefined }) => {
         initAmplitude();
         return (
             <MemoryRouter initialEntries={[FpEllerEsRoutes.SITUASJON]}>
-                <SituasjonSide satser={satser} setFpEllerEsSituasjon={() => undefined} />
+                <SituasjonSide satser={satser} setFpEllerEsSituasjon={setFpEllerEsSituasjon} />
             </MemoryRouter>
         );
     },
