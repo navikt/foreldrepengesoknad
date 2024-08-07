@@ -11,7 +11,7 @@ const { HvorMyeVeiviser, FpEllerEsVeiviser } = composeStories(stories);
 
 describe('<AppContainer>', () => {
     it('Hvor Mye veiviser: skal gå gjennom app og så tilbake', async () => {
-        const utils = render(<HvorMyeVeiviser />);
+        const utils = render(<HvorMyeVeiviser brukMock />);
 
         expect(await screen.findAllByText('Hvor mye kan jeg få i foreldrepenger?')).toHaveLength(2);
         await userEvent.click(screen.getByText('Start'));
@@ -44,7 +44,7 @@ describe('<AppContainer>', () => {
     });
 
     it('FP eller ES veiviser: skal gå gjennom app og så tilbake', async () => {
-        const utils = render(<FpEllerEsVeiviser />);
+        const utils = render(<FpEllerEsVeiviser brukMock />);
 
         expect(await screen.findAllByText('Foreldrepenger eller engangsstønad?')).toHaveLength(2);
         await userEvent.click(screen.getByText('Start'));
