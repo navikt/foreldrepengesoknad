@@ -14,7 +14,7 @@ import {
 } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
-import { hasMaxValue, isRequired, isValidNumberForm } from '@navikt/fp-validation';
+import { hasMaxValue, hasMinValue, isRequired, isValidNumberForm } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import useStepConfig from 'app/appData/useStepConfig';
@@ -40,6 +40,8 @@ type FerieFormData = {
     feriePerioder: Array<Partial<TidsperiodeDTO>>;
     antallFeriePerioder: number;
 };
+
+const MAKS_ANTALL_PERIODER = 50;
 
 export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) {
     const stepConfig = useStepConfig(arbeidsforhold);
@@ -103,7 +105,9 @@ function FeriePerioder() {
     const antallFeriePerioder = watch('antallFeriePerioder');
 
     useEffect(() => {
-        setValue('feriePerioder', Array.from(Array(Number(antallFeriePerioder))));
+        if (antallFeriePerioder > 0 && antallFeriePerioder < MAKS_ANTALL_PERIODER) {
+            setValue('feriePerioder', Array.from(Array(Number(antallFeriePerioder))));
+        }
     }, [antallFeriePerioder]);
 
     const { fields } = useFieldArray({
@@ -116,7 +120,12 @@ function FeriePerioder() {
                 name="antallFeriePerioder"
                 label="Hvor mange perioder med ferie skal du ha?"
                 htmlSize={2}
-                validate={[isRequired('bo'), isValidNumberForm('tall'), hasMaxValue('maks 50', 50)]}
+                validate={[
+                    isRequired('bo'),
+                    isValidNumberForm('tall'),
+                    hasMinValue('minst 1', 1),
+                    hasMaxValue(`maks ${MAKS_ANTALL_PERIODER}`, MAKS_ANTALL_PERIODER),
+                ]}
             />
             <ReadMore header="Hvordan man regner antall ferieperioder">
                 <BodyShort>
