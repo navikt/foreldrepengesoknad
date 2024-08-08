@@ -124,3 +124,16 @@ export const MorHarIkkeRett: Story = {
         },
     },
 };
+export const FarHarIkkeRett: Story = {
+    args: {
+        fpEllerEsSituasjon: {
+            borDuINorge: false,
+            erDuMedlemAvFolketrygden: false,
+            erIArbeid: false,
+            harHattAndreInntekter: false,
+            harHattInntekt: true,
+            lønnPerMåned: 0,
+            situasjon: Situasjon.FAR,
+        },
+    },
+};

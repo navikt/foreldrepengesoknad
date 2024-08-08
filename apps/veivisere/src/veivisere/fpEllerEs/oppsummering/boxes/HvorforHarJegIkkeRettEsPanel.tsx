@@ -1,9 +1,9 @@
 import { QuestionmarkIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, ExpansionCard, HStack, Heading, List, VStack } from '@navikt/ds-react';
 
-import { IconCircleWrapper } from '@navikt/fp-ui';
+import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
 import { FpEllerEsSituasjon } from '../../situasjon/SituasjonSide';
@@ -15,6 +15,7 @@ interface Props {
 }
 
 const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
+    const erMor = fpEllerEsSituasjon.situasjon === 'mor';
     return (
         <ExpansionCard aria-label="" size="small">
             <ExpansionCard.Header>
@@ -64,6 +65,51 @@ const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerE
                             boxBodyText={<FormattedMessage id="HvorforHarJegRettPanel.OppgittAtDuBorINorge" />}
                             erOppfylt={fpEllerEsSituasjon.erDuMedlemAvFolketrygden}
                         />
+                        {!erMor && (
+                            <>
+                                <Heading size="small">
+                                    <FormattedMessage id="HvorforHarJegRettPanel.FarEllerMedmor" />
+                                </Heading>
+                                <Infobox
+                                    icon={
+                                        <QuestionmarkIcon
+                                            height={24}
+                                            width={24}
+                                            color="#020C1CAD"
+                                            fontSize="1.5rem"
+                                            aria-hidden
+                                        />
+                                    }
+                                    color="gray"
+                                >
+                                    <VStack gap="2">
+                                        <BodyShort>
+                                            <FormattedMessage id="HvorforHarJegRettPanel.HvisDuErFarEllerMedmor" />
+                                        </BodyShort>
+                                        <List as="ul">
+                                            <List.Item>
+                                                <FormattedMessage id="HvorforHarJegRettPanel.AdoptererAlene" />
+                                            </List.Item>
+                                            <List.Item>
+                                                <FormattedMessage
+                                                    id="HvorforHarJegRettPanel.OvertarOmsorgMorDød"
+                                                    values={{ a: (msg: any) => <a target="blank">{msg}</a> }}
+                                                />
+                                            </List.Item>
+                                            <List.Item>
+                                                <FormattedMessage id="HvorforHarJegRettPanel.OvertarOmsorgMorDødFødsel" />
+                                            </List.Item>
+                                            <List.Item>
+                                                <FormattedMessage id="HvorforHarJegRettPanel.Innen56Uker" />
+                                            </List.Item>
+                                        </List>
+                                        <BodyShort>
+                                            <FormattedMessage id="HvorforHarJegRettPanel.DersomEtAvTilfellene" />
+                                        </BodyShort>
+                                    </VStack>
+                                </Infobox>
+                            </>
+                        )}
                     </VStack>
                 </VStack>
             </ExpansionCard.Content>
