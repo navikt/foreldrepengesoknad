@@ -125,6 +125,7 @@
     "HvorforHarJegRettPanel.DuHarOppgittMånedslønn": "You have stated that you have an average monthly salary of {månedslønn} before tax, which is more than {minstelønn} in the year",
     "HvorforHarJegRettPanel.DuMåVæreMedlem": "You must be a member of the National Insurance",
     "HvorforHarJegRettPanel.OppgittAtDuBorINorge": "You have stated that you live in Norway. We therefore assume that you are a member of the National Insurance Scheme.",
+    "HvorforHarJegRettPanel.FolketrygdenLink": "<a>Public Security and Support from NAV</a>",
     "HvorforHarJegRettPanel.FarEllerMedmor": "Your situation as a father or co-mother must apply to at least one of these cases",
     "HvorforHarJegRettPanel.HvisDuErFarEllerMedmor": "If you are the father or co-mother of the child, you may in some cases receive a lump sum benefit. It may apply to these cases:",
     "HvorforHarJegRettPanel.AdoptererAlene": "for each child you adopt alone",

@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, InformationIcon, KronerIcon, StrollerIcon } from '@navikt/aksel-icons';
+import { ArrowLeftIcon, KronerIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, FpEllerEsRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
@@ -8,7 +8,7 @@ import { finnGrunnbeløp } from 'utils/satserUtils';
 import { BodyShort, Box, Button, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { Satser } from '@navikt/fp-types';
-import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
+import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { FpEllerEsSituasjon } from '../situasjon/SituasjonSide';
 import HvorforHarJegIkkeRettEsPanel from './boxes/HvorforHarJegIkkeRettEsPanel';
@@ -58,17 +58,6 @@ const HarIkkeRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satse
                     </Box>
                 </VStack>
             </Box>
-            <Infobox
-                icon={<InformationIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
-                color="gray"
-            >
-                <BodyShort>
-                    <FormattedMessage
-                        id="OppsummeringFpEllerEsSide.KanOgsåHarRettTilEs"
-                        values={{ b: (msg: any) => <b>{msg}</b> }}
-                    />
-                </BodyShort>
-            </Infobox>
             <HStack justify="space-around">
                 <Button type="submit">
                     <FormattedMessage id="OppsummeringFpEllerEsSide.SøkOmFp" />

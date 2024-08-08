@@ -125,6 +125,7 @@
     "HvorforHarJegRettPanel.DuHarOppgittMånedslønn": "Du har oppgitt at du har ei gjennomsnittleg månadslønn på {månedslønn} før skatt, som blir meir enn {minstelønn} i året.",
     "HvorforHarJegRettPanel.DuMåVæreMedlem": "Du må være medlem av folketrygda",
     "HvorforHarJegRettPanel.OppgittAtDuBorINorge": "Du har oppgitt at du bor i Norge. Dermed regner vi med at du er medlem av folketrygden.",
+    "HvorforHarJegRettPanel.FolketrygdenLink": "<a>Folketrygda og støtte frå NAV</a>",
     "HvorforHarJegRettPanel.FarEllerMedmor": "Din situasjon som far eller medmor må gjelda minst eit av desse tilfella",
     "HvorforHarJegRettPanel.HvisDuErFarEllerMedmor": "Viss du er far eller medmor til barnet, kan du i nokre tilfelle få eingongsstønad. Det kan gjelda desse tilfella:",
     "HvorforHarJegRettPanel.AdoptererAlene": "for kvart barn du adopterer åleine",

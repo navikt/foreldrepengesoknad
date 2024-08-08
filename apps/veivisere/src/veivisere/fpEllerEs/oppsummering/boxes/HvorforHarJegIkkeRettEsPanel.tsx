@@ -40,6 +40,18 @@ const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerE
                             boxBodyText={<FormattedMessage id="HvorforHarJegRettPanel.DuHarOppgittInntekt" />}
                             erOppfylt={!!fpEllerEsSituasjon.harHattInntekt}
                         />
+                        <BodyShort>
+                            <FormattedMessage
+                                id="HvorforHarJegRettPanel.FolketrygdenLink"
+                                values={{
+                                    a: (msg: any) => (
+                                        <a href="#" target="_blank">
+                                            {msg}
+                                        </a>
+                                    ),
+                                }}
+                            />
+                        </BodyShort>
                         <KravinfoBoks
                             testId="harIkkeRettEs"
                             headerText={
@@ -93,7 +105,13 @@ const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerE
                                             <List.Item>
                                                 <FormattedMessage
                                                     id="HvorforHarJegRettPanel.OvertarOmsorgMorDød"
-                                                    values={{ a: (msg: any) => <a target="blank">{msg}</a> }}
+                                                    values={{
+                                                        a: (msg: any) => (
+                                                            <a href="#" target="_blank">
+                                                                {msg}
+                                                            </a>
+                                                        ),
+                                                    }}
                                                 />
                                             </List.Item>
                                             <List.Item>

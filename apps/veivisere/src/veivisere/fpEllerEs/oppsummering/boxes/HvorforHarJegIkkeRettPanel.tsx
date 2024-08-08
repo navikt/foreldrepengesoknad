@@ -64,6 +64,18 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
                             boxBodyText={<FormattedMessage id="HvorforHarJegRettPanel.OppgittAtDuBorINorge" />}
                             erOppfylt={fpEllerEsSituasjon.erDuMedlemAvFolketrygden}
                         />
+                        <BodyShort>
+                            <FormattedMessage
+                                id="HvorforHarJegRettPanel.FolketrygdenLink"
+                                values={{
+                                    a: (msg: any) => (
+                                        <a href="#" target="_blank">
+                                            {msg}
+                                        </a>
+                                    ),
+                                }}
+                            />
+                        </BodyShort>
                     </VStack>
                 </VStack>
             </ExpansionCard.Content>
