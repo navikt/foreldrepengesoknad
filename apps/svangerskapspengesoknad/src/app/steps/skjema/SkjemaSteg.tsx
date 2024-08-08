@@ -1,11 +1,11 @@
 import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
 import { getSaveAttachment } from '@navikt/fp-api';
-import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, Skjemanummer, links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
 import { FileUploader, Step } from '@navikt/fp-ui';
@@ -17,10 +17,18 @@ import useSvpNavigator from 'app/appData/useSvpNavigator';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 
 import Bedriftsbanner from '../Bedriftsbanner';
-import SkjemaopplastningTekstArbeidsgiver from './components/SkjemaopplastningTekstArbeidsgiver';
-import SkjemaopplastningTekstFrilansSN from './components/SkjemaopplastningTekstFrilansSN';
 
 const MAX_ANTALL_VEDLEGG = 40;
+
+const finnLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) => {
+    if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
+        return intl.formatMessage({ id: 'skjema.vedlegg.label.frilanser' });
+    }
+    if (typeArbeid === Arbeidsforholdstype.SELVSTENDIG) {
+        return intl.formatMessage({ id: 'skjema.vedlegg.label.selvstendig' });
+    }
+    throw Error('Har ingen tekst for kode: ' + typeArbeid);
+};
 
 const getForrigeTilretteleggingId = (
     tilretteleggingBehov: Tilrettelegging[],
@@ -135,9 +143,33 @@ const SkjemaSteg: FunctionComponent<Props> = ({
                     <ErrorSummaryHookForm />
                     {tilrettelegginger.length > 1 && <Bedriftsbanner arbeid={valgtTilrettelegging.arbeidsforhold} />}
                     <VStack gap="4">
-                        {erSNEllerFrilans && <SkjemaopplastningTekstFrilansSN typeArbeid={typeArbeid} />}
-                        {!erSNEllerFrilans && <SkjemaopplastningTekstArbeidsgiver />}
                         <FileUploader
+                            label={
+                                erSNEllerFrilans
+                                    ? finnLabel(intl, typeArbeid)
+                                    : intl.formatMessage({ id: 'skjema.vedlegg.label.arbeidsgiver' })
+                            }
+                            description={
+                                erSNEllerFrilans ? (
+                                    <FormattedMessage id="skjema.vedlegg.description.frilansSN" />
+                                ) : (
+                                    <FormattedMessage
+                                        id={'skjema.vedlegg.description.arbeidsgiver'}
+                                        values={{
+                                            a: (msg: any) => (
+                                                <a
+                                                    className="lenke"
+                                                    rel="noopener noreferrer"
+                                                    href={links.arbeidstilsynetSkjema}
+                                                    target="_blank"
+                                                >
+                                                    {msg}
+                                                </a>
+                                            ),
+                                        }}
+                                    />
+                                )
+                            }
                             attachmentType={AttachmentType.TILRETTELEGGING}
                             skjemanummer={Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING}
                             existingAttachments={defaultValues?.vedlegg}
