@@ -65,7 +65,7 @@ describe('<MinidialogSkjema>', () => {
 
         expect(screen.getAllByText('Feltet "Svar på tilbakebetalingen " må inneholde minst 25 tegn.')).toHaveLength(2);
 
-        expect(screen.getByText('Last opp fil')).toBeInTheDocument();
+        expect(screen.getByText('Last opp dokumenter')).toBeInTheDocument();
 
         expect(
             screen.queryByText(

@@ -49,7 +49,7 @@ describe('<AppContainer>', () => {
         expect(await screen.findByText('Last opp skjema')).toBeInTheDocument();
         expect(screen.getByText('Steg 5 av 7')).toBeInTheDocument();
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByLabelText('Last opp fil');
+        const fileInput = screen.getByLabelText('Last opp skjema for risiko og tilrettelegging i svangerskapet');
         await fireEvent.change(fileInput, {
             target: { files: { item: () => file, length: 1, 0: file } },
         });
