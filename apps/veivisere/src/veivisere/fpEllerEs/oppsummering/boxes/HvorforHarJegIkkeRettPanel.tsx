@@ -34,11 +34,13 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
                     </BodyShort>
                     <VStack gap="4">
                         <KravinfoBoks
+                            testId="harIkkeRettFp"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåHaInntekt" />}
                             boxBodyText={<FormattedMessage id="HvorforHarJegRettPanel.DuHarOppgittInntekt" />}
                             erOppfylt={!!fpEllerEsSituasjon.harHattInntekt}
                         />
                         <KravinfoBoks
+                            testId="harIkkeRettFp"
                             headerText={
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuMåTeneOver"
@@ -57,6 +59,7 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
                             erOppfylt={fpEllerEsSituasjon.lønnPerMåned * 12 > grunnbeløpet / 2}
                         />
                         <KravinfoBoks
+                            testId="harIkkeRettFp"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
                             boxBodyText={<FormattedMessage id="HvorforHarJegRettPanel.OppgittAtDuBorINorge" />}
                             erOppfylt={fpEllerEsSituasjon.erDuMedlemAvFolketrygden}
