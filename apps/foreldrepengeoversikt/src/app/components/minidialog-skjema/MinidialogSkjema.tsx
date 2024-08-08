@@ -171,6 +171,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                             />
                         </div>
                         <FileUploader
+                            label={intl.formatMessage({ id: 'minidialog.dokumenter' })}
                             updateAttachments={updateAttachments}
                             attachmentType={AttachmentType.TILBAKEBETALING}
                             skjemanummer={Skjemanummer.TILBAKEBETALING}

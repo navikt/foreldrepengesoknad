@@ -41,6 +41,8 @@
     "minidialog.hvaLeggerNAVVektPå.tilbakekreving.punkt5": "hvor stort det feilutbetalte beløpet er",
     "minidialog.hvaLeggerNAVVektPå.tilbakekreving.punkt6": "om feilen kan skyldes NAV",
     "minidialog.tilbakekreving.tilbakekreving.label": "Svar på tilbakebetalingen: ",
+    "minidialog.dokumenter": "Last opp dokumenter",
+    "EttersendingPageInner.dokumenter": "Last opp dokumenter",
     "miniDialog.tilbakekreving.sendButton": "Send",
     "minidialog.tilbakekreving.veilederpanel": "Saken vil bli behandlet med de opplysningene vi har tilgjengelig. Vi sender deg et vedtak når saken er ferdig behandlet.",
     "miniDialog.tilbakekreving.radioPanelGruppe.legend": "Ønsker du å uttale deg i saken før vi behandler den?",

@@ -38,7 +38,7 @@ describe('<DokumentasjonSteg>', () => {
         expect(screen.getByText('Du må laste opp bekreftelse på termindato')).toBeInTheDocument();
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByLabelText('Last opp fil');
+        const fileInput = screen.getByLabelText('Last opp bekreftelse på termindato');
         await fireEvent.change(fileInput, {
             target: { files: { item: () => file, length: 1, 0: file } },
         });
@@ -90,7 +90,7 @@ describe('<DokumentasjonSteg>', () => {
         expect(screen.getByText('Du må laste opp bekreftelse på adopsjon')).toBeInTheDocument();
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByLabelText('Last opp fil');
+        const fileInput = screen.getByLabelText('Bekreftelse på adopsjon');
         await fireEvent.change(fileInput, {
             target: { files: [file] },
         });
