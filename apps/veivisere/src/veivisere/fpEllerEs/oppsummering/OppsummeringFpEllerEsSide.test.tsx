@@ -77,7 +77,7 @@ describe('<OppsummeringFpEllerEsSide>', () => {
         expect(await screen.findByText('Resultat')).toBeInTheDocument();
 
         expect(screen.getByText(/Det ser ut som at du verken har rett på foreldrepenger/)).toBeInTheDocument();
-        expect(screen.getByText(/Foreldrepenger skal erstatte inntekten din/)).toBeInTheDocument();
+        expect(screen.getByText(/Du har ikke rett på engangsstønad når/)).toBeInTheDocument();
         expect(screen.getByText(/Når du har rett på foreldrepenger kan du også/)).toBeInTheDocument();
 
         expect(screen.getByText('Hvorfor har jeg ikke rett på engangsstønad?')).toBeInTheDocument();
@@ -106,7 +106,7 @@ describe('<OppsummeringFpEllerEsSide>', () => {
         expect(await screen.findByText('Resultat')).toBeInTheDocument();
 
         expect(screen.getByText(/Det ser ut som at du verken har rett på foreldrepenger/)).toBeInTheDocument();
-        expect(screen.getByText(/Foreldrepenger skal erstatte inntekten din/)).toBeInTheDocument();
+        expect(screen.getByText(/Du har ikke rett på engangsstønad når/)).toBeInTheDocument();
         expect(screen.getByText(/Når du har rett på foreldrepenger kan du også/)).toBeInTheDocument();
 
         expect(screen.getByText('Hvorfor har jeg ikke rett på engangsstønad?')).toBeInTheDocument();
