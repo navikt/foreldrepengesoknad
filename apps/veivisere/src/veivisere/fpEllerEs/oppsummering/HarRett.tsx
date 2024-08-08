@@ -31,11 +31,9 @@ const HarRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser })
                         <IconCircleWrapper size="xl" color="blue">
                             <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
-                        <HStack justify="center">
-                            <Heading size="medium">
-                                <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRett" />
-                            </Heading>
-                        </HStack>
+                        <Heading size="medium" className="m-6">
+                            <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRett" />
+                        </Heading>
                     </VStack>
                     <Box background="bg-default" padding="4" borderRadius="large">
                         <VStack gap="2">

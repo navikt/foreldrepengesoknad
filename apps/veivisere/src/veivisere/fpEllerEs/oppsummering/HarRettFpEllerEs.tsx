@@ -34,15 +34,13 @@ const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, 
                         <IconCircleWrapper size="xl" color="blue">
                             <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
-                        <HStack justify="center">
-                            <Heading size="medium">
-                                {erMor ? (
-                                    <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRettFpEllerEs" />
-                                ) : (
-                                    <FormattedMessage id="OppsummeringFpEllerEsSide.DuKanHaRettFpEllerEs" />
-                                )}
-                            </Heading>
-                        </HStack>
+                        <Heading size="medium" align="center" className="m-6">
+                            {erMor ? (
+                                <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRettFpEllerEs" />
+                            ) : (
+                                <FormattedMessage id="OppsummeringFpEllerEsSide.DuKanHaRettFpEllerEs" />
+                            )}
+                        </Heading>
                     </VStack>
                     <Box
                         background="surface-alt-3-subtle"

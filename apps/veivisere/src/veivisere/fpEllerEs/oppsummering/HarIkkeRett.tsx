@@ -32,11 +32,9 @@ const HarIkkeRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satse
                         <IconCircleWrapper size="xl" color="blue">
                             <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
-                        <HStack justify="center">
-                            <Heading size="medium" align="center">
-                                <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarIkkeRett" />
-                            </Heading>
-                        </HStack>
+                        <Heading size="medium" align="center" className="m-6">
+                            <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarIkkeRett" />
+                        </Heading>
                     </VStack>
                     <Box
                         background="surface-alt-3-subtle"
