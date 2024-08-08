@@ -48,7 +48,7 @@ const HarIkkeRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satse
                         <VStack gap="4">
                             <HStack gap="8" justify="space-between" wrap={false}>
                                 <BodyShort>
-                                    <FormattedMessage id="OppsummeringFpEllerEsSide.FpSkalErstatteInntekt" />
+                                    <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarIkkeRett.Folketrygden" />
                                 </BodyShort>
                                 <IconCircleWrapper size="medium" color="blue">
                                     <KronerIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />
