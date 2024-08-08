@@ -66,7 +66,7 @@ describe('<ManglendeVedlegg>', () => {
         );
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByTestId('file-upload');
+        const fileInput = screen.getByLabelText('Last opp fil');
         await fireEvent.change(fileInput, {
             target: { files: [file] },
         });
@@ -151,7 +151,7 @@ describe('<ManglendeVedlegg>', () => {
         );
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByTestId('file-upload');
+        const fileInput = screen.getByLabelText('Last opp fil');
         await fireEvent.change(fileInput, {
             target: { files: [file] },
         });
@@ -236,7 +236,7 @@ describe('<ManglendeVedlegg>', () => {
         );
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByTestId('file-upload');
+        const fileInput = screen.getByLabelText('Last opp fil');
         await fireEvent.change(fileInput, {
             target: { files: [file] },
         });

@@ -31,7 +31,7 @@ describe('<SkjemaSteg>', () => {
         expect(screen.getByText('Du må laste opp minst ett dokument')).toBeInTheDocument();
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByTestId('file-upload');
+        const fileInput = screen.getByLabelText('Last opp fil');
         await fireEvent.change(fileInput, {
             target: { files: { item: () => file, length: 1, 0: file } },
         });
@@ -89,7 +89,7 @@ describe('<SkjemaSteg>', () => {
         render(<MedVedlegg />);
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
-        expect(screen.getByText('vedlegg – Kopi (7).png')).toBeInTheDocument();
+        expect(screen.getByText('Filnavn1.jpg')).toBeInTheDocument();
     });
 
     it('skal vise skjema når en har minst to tilrettelegginger', async () => {
@@ -119,7 +119,7 @@ describe('<SkjemaSteg>', () => {
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
 
         const file1 = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByTestId('file-upload');
+        const fileInput = screen.getByLabelText('Last opp fil');
         await fireEvent.change(fileInput, {
             target: { files: { item: () => file1, length: 1, 0: file1 } },
         });

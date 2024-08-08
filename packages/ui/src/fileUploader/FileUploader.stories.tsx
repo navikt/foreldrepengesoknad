@@ -30,8 +30,8 @@ const Template: StoryFn<{
     );
 };
 
-const file1 = new File(['abc'.repeat(100000)], 'Dette er en fil som er lastet opp.jpg');
-const file2 = new File(['abc'.repeat(500000)], 'Dette er en fil som holder på å bli lastet opp.jpg');
+const file1 = new File(['abc'.repeat(100000)], 'Filnavn1.jpg');
+const file2 = new File(['abc'.repeat(500000)], 'Filnavn2.jpg');
 
 export const VisEksisterendeVedlegg = Template.bind({});
 VisEksisterendeVedlegg.args = {
