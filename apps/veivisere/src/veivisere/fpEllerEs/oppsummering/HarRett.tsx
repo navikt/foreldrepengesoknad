@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, InformationIcon } from '@navikt/aksel-icons';
+import { ArrowLeftIcon, InformationIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, FpEllerEsRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
@@ -8,7 +8,7 @@ import { finnGrunnbeløp } from 'utils/satserUtils';
 import { BodyShort, Box, Button, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { Satser } from '@navikt/fp-types';
-import { Infobox } from '@navikt/fp-ui';
+import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
 
 import { FpEllerEsSituasjon } from '../situasjon/SituasjonSide';
 import HvorforHarJegRettPanel from './boxes/HvorforHarJegRettPanel';
@@ -26,12 +26,17 @@ const HarRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser })
     return (
         <VStack gap="8">
             <Box background="surface-alt-3-subtle" padding="4" borderRadius="large">
-                <VStack gap="10">
-                    <HStack justify="center">
-                        <Heading size="medium">
-                            <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRett" />
-                        </Heading>
-                    </HStack>
+                <VStack gap="8">
+                    <VStack gap="8" align="center">
+                        <IconCircleWrapper size="xl" color="blue">
+                            <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden />
+                        </IconCircleWrapper>
+                        <HStack justify="center">
+                            <Heading size="medium">
+                                <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRett" />
+                            </Heading>
+                        </HStack>
+                    </VStack>
                     <Box background="bg-default" padding="4" borderRadius="large">
                         <VStack gap="2">
                             <Heading size="xsmall">

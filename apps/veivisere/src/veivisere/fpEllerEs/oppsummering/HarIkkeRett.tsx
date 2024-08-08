@@ -63,7 +63,10 @@ const HarIkkeRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satse
                 color="gray"
             >
                 <BodyShort>
-                    <FormattedMessage id="OppsummeringFpEllerEsSide.KanOgsåHarRettTilEs" />
+                    <FormattedMessage
+                        id="OppsummeringFpEllerEsSide.KanOgsåHarRettTilEs"
+                        values={{ b: (msg: any) => <b>{msg}</b> }}
+                    />
                 </BodyShort>
             </Infobox>
             <HStack justify="space-around">
