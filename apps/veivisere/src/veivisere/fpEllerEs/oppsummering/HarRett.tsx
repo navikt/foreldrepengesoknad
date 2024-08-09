@@ -24,8 +24,8 @@ const HarRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser })
     const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
 
     return (
-        <VStack gap="8">
-            <Box background="surface-alt-3-subtle" padding="4" borderRadius="large">
+        <>
+            <Box background="surface-alt-3-subtle" padding="8" borderRadius="large">
                 <VStack gap="8">
                     <VStack gap="8" align="center">
                         <IconCircleWrapper size="xl" color="blue">
@@ -80,7 +80,7 @@ const HarRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser })
                     <FormattedMessage id="OppsummeringFpEllerEsSide.Tilbake" />
                 </Button>
             </HStack>
-        </VStack>
+        </>
     );
 };
 

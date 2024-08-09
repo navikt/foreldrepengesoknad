@@ -4,6 +4,8 @@ import { useIntl } from 'react-intl';
 import { finnGrunnbeløp } from 'utils/satserUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
+import { VStack } from '@navikt/ds-react';
+
 import { Satser } from '@navikt/fp-types';
 
 import VeiviserPage from '../../felles/VeiviserPage';
@@ -51,12 +53,12 @@ const OppsummeringFpEllerEsSide: React.FunctionComponent<Props> = ({ fpEllerEsSi
                 label={intl.formatMessage({ id: 'OppsummeringFpEllerEsSide.Oppsummering' })}
                 icon={<CalculatorIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
             >
-                <>
+                <VStack gap="8">
                     {erMor && harRett && <HarRett fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />}
                     {harRettFpEllerEs && <HarRettFpEllerEs fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />}
                     {harRettEs && <HarRettEs fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />}
                     {harIkkeRett && <HarIkkeRett fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />}
-                </>
+                </VStack>
             </VeiviserPage>
             <HvorMyeOgHvaSkjerNåLinkPanel />
         </>

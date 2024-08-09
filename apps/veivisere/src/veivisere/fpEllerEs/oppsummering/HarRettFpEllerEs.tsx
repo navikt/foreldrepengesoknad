@@ -27,9 +27,9 @@ const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, 
     const engangsstønad = 'TODO';
     const utbetaling = 'TODO';
     return (
-        <VStack gap="8">
-            <Box background="surface-alt-3-subtle" padding="4" borderRadius="large">
-                <VStack gap="8">
+        <>
+            <Box background="surface-alt-3-subtle" padding="8" borderRadius="large">
+                <VStack gap="6">
                     <VStack gap="8" align="center">
                         <IconCircleWrapper size="xl" color="blue">
                             <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden />
@@ -49,7 +49,7 @@ const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, 
                         padding="4"
                         borderRadius="large"
                     >
-                        <VStack gap="4">
+                        <VStack gap="3">
                             <HStack justify="space-between">
                                 <Heading size="small">
                                     <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRettFpEllerEs.KanVelgeMellom" />
@@ -152,7 +152,7 @@ const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, 
                     <FormattedMessage id="OppsummeringFpEllerEsSide.Tilbake" />
                 </Button>
             </HStack>
-        </VStack>
+        </>
     );
 };
 
