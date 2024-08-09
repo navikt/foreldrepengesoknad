@@ -3,12 +3,13 @@ import { ContextRoutes, FpEllerEsRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
 import { FormattedMessage } from 'react-intl';
-import { finnGrunnbeløp } from 'utils/satserUtils';
+import { finnEngangsstønad, finnGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Box, Button, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { Satser } from '@navikt/fp-types';
 import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
+import { formatCurrency } from '@navikt/fp-utils';
 
 import { FpEllerEsSituasjon } from '../situasjon/SituasjonSide';
 import HvorforHarJegRettEsPanel from './boxes/HvorforHarJegRettEsPanel';
@@ -21,11 +22,11 @@ interface Props {
 
 const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser }) => {
     const { goToRoute } = useVeiviserNavigator(ContextRoutes.FP_ELLER_ES);
-
     const erMor = fpEllerEsSituasjon.situasjon === 'mor';
     const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
-    const engangsstønad = 'TODO';
-    const utbetaling = 'TODO';
+
+    const engangsstønad = finnEngangsstønad(satser, dayjs());
+
     return (
         <>
             <Box background="surface-alt-3-subtle" padding="8" borderRadius="large">
@@ -70,7 +71,7 @@ const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, 
                                 <BodyShort>
                                     <FormattedMessage
                                         id="OppsummeringFpEllerEsSide.DuFårUtbetaltEs"
-                                        values={{ engangsstønad }}
+                                        values={{ engangsstønad: formatCurrency(engangsstønad) }}
                                     />
                                 </BodyShort>
                             </VStack>
@@ -81,7 +82,7 @@ const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, 
                                 <BodyShort>
                                     <FormattedMessage
                                         id="OppsummeringFpEllerEsSide.BasertPåSvarene"
-                                        values={{ utbetaling }}
+                                        values={{ utbetaling: formatCurrency(fpEllerEsSituasjon.lønnPerMåned) }}
                                     />
                                 </BodyShort>
                             </VStack>
@@ -110,7 +111,10 @@ const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, 
                                 <BodyShort>
                                     <FormattedMessage
                                         id="OppsummeringSide.EsSkalBidra"
-                                        values={{ engangsstønad, b: (msg: any) => <b>{msg}</b> }}
+                                        values={{
+                                            engangsstønad: formatCurrency(engangsstønad),
+                                            b: (msg: any) => <b>{msg}</b>,
+                                        }}
                                     />
                                 </BodyShort>
                             </VStack>

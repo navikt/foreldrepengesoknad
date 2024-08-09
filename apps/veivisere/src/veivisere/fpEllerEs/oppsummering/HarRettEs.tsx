@@ -3,11 +3,12 @@ import { ContextRoutes, FpEllerEsRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
 import { FormattedMessage } from 'react-intl';
-import { finnGrunnbeløp } from 'utils/satserUtils';
+import { finnEngangsstønad, finnGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Box, Button, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { Satser } from '@navikt/fp-types';
+import { formatCurrency } from '@navikt/fp-utils';
 
 import { FpEllerEsSituasjon } from '../situasjon/SituasjonSide';
 import HvorforHarJegIkkeRettPanel from './boxes/HvorforHarJegIkkeRettPanel';
@@ -22,7 +23,7 @@ const HarRettEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser 
     const { goToRoute } = useVeiviserNavigator(ContextRoutes.FP_ELLER_ES);
 
     const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
-    const engangsstønad = 'TODO';
+    const engangsstønad = finnEngangsstønad(satser, dayjs());
 
     return (
         <>
@@ -42,7 +43,10 @@ const HarRettEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser 
                             <BodyShort>
                                 <FormattedMessage
                                     id="OppsummeringSide.EsSkalBidra"
-                                    values={{ engangsstønad, b: (msg: any) => <b>{msg}</b> }}
+                                    values={{
+                                        engangsstønad: formatCurrency(engangsstønad),
+                                        b: (msg: any) => <b>{msg}</b>,
+                                    }}
                                 />
                             </BodyShort>
                         </VStack>

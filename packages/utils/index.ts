@@ -28,7 +28,7 @@ export { getFloatFromString, getNumberFromNumberInputValue } from './src/numberU
 export { capitalizeFirstLetter, getNavnGenitivEierform } from './src/stringUtils';
 export { getOffentligeFridager } from './src/fridagerUtils';
 export { getFamiliehendelsedato } from './src/barnUtils';
-export { formatCurrencyWithKr } from './src/currencyUtils';
+export { formatCurrencyWithKr, formatCurrency } from './src/currencyUtils';
 export {
     getBokmålLocale,
     getLocaleForApi,
