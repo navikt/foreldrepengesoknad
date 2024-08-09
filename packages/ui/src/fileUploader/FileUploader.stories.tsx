@@ -19,6 +19,7 @@ const Template: StoryFn<{
     return (
         <ContentWrapper>
             <FileUploader
+                label="Last opp fil"
                 attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
                 skjemanummer={Skjemanummer.OMSORGSOVERTAKELSE}
                 saveAttachment={saveAttachment}

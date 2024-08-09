@@ -18,7 +18,6 @@ export { default as Sirkelmaske } from './components/sirkelmaske/Sirkelmaske';
 export { default as UkerSirkel } from './components/uker-sirkel/UkerSirkel';
 export { default as SituasjonSirkel } from './components/situasjon-sirkel/SituasjonSirkel';
 export { default as InnholdMedIllustrasjon } from './components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
-export { default as FormikFileUploader } from './components/formik-file-uploader/FormikFileUploader';
 export { default as AttachmentList } from './components/attachment/AttachmentList';
 export { default as AttachmentComponent } from './components/attachment/Attachment';
 export * from './components/foreldrepar/foreldreparUtils';
