@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, KronerIcon, StrollerIcon } from '@navikt/aksel-icons';
+import { ArrowLeftIcon, BabyWrappedIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, FpEllerEsRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
@@ -29,9 +29,7 @@ const HarIkkeRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satse
             <Box background="surface-alt-3-subtle" padding="8" borderRadius="large">
                 <VStack gap="8">
                     <VStack gap="8" align="center">
-                        <IconCircleWrapper size="xl" color="blue">
-                            <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden />
-                        </IconCircleWrapper>
+                        <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden color="#66A3C4" />
                         <Heading size="medium" align="center" className="m-6">
                             <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarIkkeRett" />
                         </Heading>
@@ -49,7 +47,13 @@ const HarIkkeRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satse
                                     <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarIkkeRett.Folketrygden" />
                                 </BodyShort>
                                 <IconCircleWrapper size="medium" color="blue">
-                                    <KronerIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />
+                                    <BabyWrappedIcon
+                                        height={24}
+                                        width={24}
+                                        color="#236B7D"
+                                        fontSize="1.5rem"
+                                        aria-hidden
+                                    />
                                 </IconCircleWrapper>
                             </HStack>
                         </VStack>

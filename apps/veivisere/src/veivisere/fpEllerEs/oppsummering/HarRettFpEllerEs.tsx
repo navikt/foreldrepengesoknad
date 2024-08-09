@@ -31,9 +31,7 @@ const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, 
             <Box background="surface-alt-3-subtle" padding="8" borderRadius="large">
                 <VStack gap="6">
                     <VStack gap="8" align="center">
-                        <IconCircleWrapper size="xl" color="blue">
-                            <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden />
-                        </IconCircleWrapper>
+                        <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden color="#66A3C4" />
                         <Heading size="medium" align="center" className="m-6">
                             {erMor ? (
                                 <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRettFpEllerEs" />
