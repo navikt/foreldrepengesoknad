@@ -1,19 +1,12 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
-import {
-    BodyShort,
-    FileObject,
-    FileRejected,
-    FileRejectionReason,
-    Heading,
-    UNSAFE_FileUpload,
-    VStack,
-} from '@navikt/ds-react';
+import { BodyShort, FileObject, FileRejected, FileRejectionReason, UNSAFE_FileUpload, VStack } from '@navikt/ds-react';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
+import AttachmentList from './AttachmentList';
 import { mapFileToAttachment } from './fileUtils';
 import { FileUploadError } from './typer/FileUploadError';
 import { FileUploaderAttachment } from './typer/FileUploaderAttachment';
@@ -195,109 +188,49 @@ const FileUploader: React.FunctionComponent<Props> = ({
             {skjemanummerTextMap && uploadedAttachments.length > 0 && (
                 <>
                     {findUniqueAndSortSkjemanummer(uploadedAttachments).map((skjemanr) => (
-                        <VStack as="ul" gap="2" key={skjemanr}>
-                            <Heading size="small" level="2">
-                                {intl.formatMessage(
-                                    { id: 'FileInput.Vedlegg.HeaderWithName' },
-                                    {
-                                        length: uploadedAttachments.filter(
-                                            (a) => a.attachmentData.skjemanummer === skjemanr,
-                                        ).length,
-                                        name: skjemanummerTextMap[skjemanr],
-                                    },
-                                )}
-                            </Heading>
-                            <VStack as="ul" gap="3">
-                                {uploadedAttachments
-                                    .filter((a) => a.attachmentData.skjemanummer === skjemanr)
-                                    .map((uploadedAttachment, index) => (
-                                        <UNSAFE_FileUpload.Item
-                                            as="li"
-                                            key={index}
-                                            file={uploadedAttachment.fileObject.file}
-                                            button={{
-                                                action: 'delete',
-                                                onClick: () => deleteAttachment(uploadedAttachment.fileObject),
-                                            }}
-                                            status={uploadedAttachment.attachmentData.pending ? 'uploading' : 'idle'}
-                                            translations={{
-                                                uploading: intl.formatMessage({ id: 'FileInput.Vedlegg.Uploading' }),
-                                                deleteButtonTitle: intl.formatMessage({
-                                                    id: 'FileInput.Vedlegg.Slett',
-                                                }),
-                                            }}
-                                        />
-                                    ))}
-                            </VStack>
-                        </VStack>
+                        <AttachmentList
+                            key={skjemanr}
+                            headingText={intl.formatMessage(
+                                { id: 'FileInput.Vedlegg.HeaderWithName' },
+                                {
+                                    length: uploadedAttachments.filter(
+                                        (a) => a.attachmentData.skjemanummer === skjemanr,
+                                    ).length,
+                                    name: skjemanummerTextMap[skjemanr],
+                                },
+                            )}
+                            attachments={uploadedAttachments.filter((a) => a.attachmentData.skjemanummer === skjemanr)}
+                            deleteAttachment={deleteAttachment}
+                        />
                     ))}
                 </>
             )}
             {!skjemanummerTextMap && uploadedAttachments.length > 0 && (
-                <VStack as="ul" gap="2">
-                    <Heading level="3" size="xsmall">
-                        <FormattedMessage
-                            id="FileInput.Vedlegg.Header"
-                            values={{ length: uploadedAttachments.length }}
-                        />
-                    </Heading>
-                    <VStack as="ul" gap="3">
-                        {uploadedAttachments.map((uploadedAttachment, index) => (
-                            <UNSAFE_FileUpload.Item
-                                as="li"
-                                key={index}
-                                file={uploadedAttachment.fileObject.file}
-                                button={{
-                                    action: 'delete',
-                                    onClick: () => deleteAttachment(uploadedAttachment.fileObject),
-                                }}
-                                status={uploadedAttachment.attachmentData.pending ? 'uploading' : 'idle'}
-                                translations={{
-                                    uploading: intl.formatMessage({ id: 'FileInput.Vedlegg.Uploading' }),
-                                    deleteButtonTitle: intl.formatMessage({
-                                        id: 'FileInput.Vedlegg.Slett',
-                                    }),
-                                }}
-                            />
-                        ))}
-                    </VStack>
-                </VStack>
+                <AttachmentList
+                    headingText={intl.formatMessage(
+                        { id: 'FileInput.Vedlegg.Header' },
+                        { length: uploadedAttachments.length },
+                    )}
+                    attachments={uploadedAttachments}
+                    deleteAttachment={deleteAttachment}
+                />
             )}
             {failedAttachments.length > 0 && (
-                <VStack as="ul" gap="2">
-                    <Heading level="3" size="xsmall">
-                        <FormattedMessage
-                            id="FileInput.Vedlegg.WithErrors"
-                            values={{ length: uploadedAttachments.length }}
-                        />
-                    </Heading>
-                    <VStack as="li" gap="3">
-                        {failedAttachments.map((rejectedAttachment, index) => (
-                            <UNSAFE_FileUpload.Item
-                                as="div"
-                                key={index}
-                                file={rejectedAttachment.fileObject.file}
-                                error={
-                                    rejectedAttachment.attachmentData.error
-                                        ? errorMessageMap[rejectedAttachment.attachmentData.error as FileUploadError]
-                                        : errorMessageMap[
-                                              (rejectedAttachment.fileObject as FileRejected)
-                                                  .reasons[0] as FileRejectionReason
-                                          ]
-                                }
-                                button={{
-                                    action: 'delete',
-                                    onClick: () => deleteAttachment(rejectedAttachment.fileObject),
-                                }}
-                                translations={{
-                                    deleteButtonTitle: intl.formatMessage({
-                                        id: 'FileInput.Vedlegg.Slett',
-                                    }),
-                                }}
-                            />
-                        ))}
-                    </VStack>
-                </VStack>
+                <AttachmentList
+                    headingText={intl.formatMessage(
+                        { id: 'FileInput.Vedlegg.WithErrors' },
+                        { length: failedAttachments.length },
+                    )}
+                    attachments={failedAttachments}
+                    deleteAttachment={deleteAttachment}
+                    getErrorMessage={(rejectedAttachment: FileUploaderAttachment) =>
+                        rejectedAttachment.attachmentData.error
+                            ? errorMessageMap[rejectedAttachment.attachmentData.error as FileUploadError]
+                            : errorMessageMap[
+                                  (rejectedAttachment.fileObject as FileRejected).reasons[0] as FileRejectionReason
+                              ]
+                    }
+                />
             )}
         </VStack>
     );
