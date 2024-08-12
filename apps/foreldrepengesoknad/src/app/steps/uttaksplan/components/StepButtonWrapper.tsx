@@ -1,5 +1,7 @@
 import classNames from 'classnames';
-import bemUtils from './../../utils/bemUtils';
+
+import { bemUtils } from '@navikt/fp-utils';
+
 import './step-button-wrapper.css';
 
 type Props = {

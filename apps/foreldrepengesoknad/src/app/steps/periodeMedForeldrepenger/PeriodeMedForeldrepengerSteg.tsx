@@ -3,15 +3,9 @@ import { useIntl } from 'react-intl';
 
 import { Box, HStack, Loader } from '@navikt/ds-react';
 
-import {
-    Dekningsgrad,
-    DekningsgradDTO,
-    Step,
-    bemUtils,
-    getKjønnFromFnr,
-    isAnnenForelderOppgitt,
-} from '@navikt/fp-common';
+import { Dekningsgrad, DekningsgradDTO, bemUtils, getKjønnFromFnr, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';

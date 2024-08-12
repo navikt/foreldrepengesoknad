@@ -23,7 +23,7 @@ describe('<SkjemaSteg>', () => {
         );
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
-        expect(screen.getByText('Last opp skjema')).toBeInTheDocument();
+        expect(screen.getAllByText('Last opp skjema')).toHaveLength(2);
         expect(screen.getByText('Last opp skjema for risiko og tilrettelegging i svangerskapet')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -96,7 +96,7 @@ describe('<SkjemaSteg>', () => {
         render(<MedToTilrettelegginger />);
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
-        expect(screen.getByText('Last opp skjema for Omsorgspartner Vestfold AS')).toBeInTheDocument();
+        expect(screen.getAllByText('Last opp skjema for Omsorgspartner Vestfold AS')).toHaveLength(3);
         expect(screen.getByText('Om ditt arbeidsforhold i')).toBeInTheDocument();
         expect(screen.getByText('Omsorgspartner Vestfold AS')).toBeInTheDocument();
     });

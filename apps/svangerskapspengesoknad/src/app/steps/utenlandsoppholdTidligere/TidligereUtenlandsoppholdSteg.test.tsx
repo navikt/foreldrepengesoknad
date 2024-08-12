@@ -19,7 +19,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Har bodd i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
 
         await userEvent.selectOptions(screen.getByLabelText('Hvilket land bodde du i?'), 'CA');
 
@@ -68,7 +68,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
             />,
         );
 
-        expect(await screen.findByText('Har bodd i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
 
         await userEvent.selectOptions(screen.getByLabelText('Hvilket land bodde du i?'), 'CA');
 
@@ -111,7 +111,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Har bodd i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
         await userEvent.click(screen.getByText('Forrige steg'));
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);

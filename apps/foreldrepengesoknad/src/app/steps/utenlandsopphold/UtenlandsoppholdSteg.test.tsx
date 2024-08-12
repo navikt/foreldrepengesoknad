@@ -1,9 +1,11 @@
-import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import * as stories from './UtenlandsoppholdSteg.stories';
-import SøknadRoutes from 'app/routes/routes';
+
 import { ContextDataType } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+
+import * as stories from './UtenlandsoppholdSteg.stories';
 
 const { Default } = composeStories(stories);
 
@@ -14,7 +16,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd i Norge'));
 
@@ -56,7 +58,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd helt eller delvis i utlandet'));
 
@@ -93,7 +95,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd i Norge'));
 
@@ -130,7 +132,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd helt eller delvis i utlandet'));
 

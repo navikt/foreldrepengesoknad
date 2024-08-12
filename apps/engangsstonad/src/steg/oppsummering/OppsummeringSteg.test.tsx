@@ -18,10 +18,10 @@ describe('<OppsummeringSteg>', () => {
 
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
-        expect(screen.getByText('Oppsummering')).toBeInTheDocument();
+        expect(screen.getAllByText('Oppsummering')).toHaveLength(2);
         expect(screen.getByText('Steg 5 av 5')).toBeInTheDocument();
 
-        expect(screen.getByText('Barnet')).toBeInTheDocument();
+        expect(screen.getAllByText('Barnet')).toHaveLength(2);
         expect(screen.getByText('Søknaden gjelder')).toBeInTheDocument();
         expect(screen.getByText('ett barn')).toBeInTheDocument();
         expect(screen.getByText('Fødselsdato')).toBeInTheDocument();
@@ -58,7 +58,7 @@ describe('<OppsummeringSteg>', () => {
 
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
-        expect(screen.getByText('Barnet')).toBeInTheDocument();
+        expect(screen.getAllByText('Barnet')).toHaveLength(2);
         expect(screen.getByText('Søknaden gjelder')).toBeInTheDocument();
         expect(screen.getByText('ett barn')).toBeInTheDocument();
         expect(screen.getByText('Adopsjonsdato')).toBeInTheDocument();
@@ -88,7 +88,7 @@ describe('<OppsummeringSteg>', () => {
 
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
-        expect(screen.getByText('Barnet')).toBeInTheDocument();
+        expect(screen.getAllByText('Barnet')).toHaveLength(2);
         expect(screen.getByText('Søknaden gjelder')).toBeInTheDocument();
         expect(screen.getByText('ett barn')).toBeInTheDocument();
         expect(screen.getByText('Termindato')).toBeInTheDocument();

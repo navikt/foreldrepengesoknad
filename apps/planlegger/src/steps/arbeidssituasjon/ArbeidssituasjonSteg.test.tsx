@@ -30,7 +30,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         render(<ArbeidssituasjonMorOgFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
+        expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
 
         await userEvent.click(
             screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 62 014 kr det siste året'),
@@ -61,7 +61,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         render(<ArbeidssituasjonMorOgFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
+        expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
 
         await userEvent.click(
             screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 62 014 kr det siste året'),
@@ -88,7 +88,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         render(<ArbeidssituasjonMorOgFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
+        expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Er ufør'));
 
@@ -111,7 +111,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         render(<ArbeidssituasjonMorOgFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
+        expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Ingen av disse'));
 
@@ -134,7 +134,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         render(<ArbeidssituasjonFarOgFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
+        expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Nei'));
 
@@ -157,7 +157,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         render(<ArbeidssituasjonAleneforsørger gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
+        expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Ja'));
 
@@ -179,7 +179,7 @@ describe('<ArbeidssituasjonSteg>', () => {
 
         render(<ArbeidssituasjonAleneforsørger gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Arbeidssituasjon')).toBeInTheDocument();
+        expect(await screen.findAllByText('Arbeidssituasjon')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Nei'));
 

@@ -28,25 +28,25 @@ describe('<AppContainer>', () => {
         fireEvent.blur(termindato);
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
         expect(screen.getByText('Steg 2 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jeg har bodd i Norge'));
         await userEvent.click(screen.getByText('Jeg skal bo i Norge'));
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Arbeidsforhold og inntekt')).toBeInTheDocument();
+        expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
         expect(screen.getByText('Steg 3 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[0]);
         await userEvent.click(screen.getAllByText('Nei')[1]);
         await userEvent.click(screen.getAllByText('Nei')[2]);
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Velg bedrift')).toBeInTheDocument();
+        expect(await screen.findAllByText('Velg bedrift')).toHaveLength(2);
         expect(screen.getByText('Steg 4 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('SYKEHUSET I VESTFOLD'));
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Last opp skjema')).toBeInTheDocument();
+        expect(await screen.findAllByText('Last opp skjema')).toHaveLength(2);
         expect(screen.getByText('Steg 5 av 7')).toBeInTheDocument();
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Last opp skjema for risiko og tilrettelegging i svangerskapet');
@@ -55,7 +55,7 @@ describe('<AppContainer>', () => {
         });
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Behov for tilrettelegging')).toBeInTheDocument();
+        expect(await screen.findAllByText('Behov for tilrettelegging')).toHaveLength(2);
         expect(screen.getByText('Steg 6 av 7')).toBeInTheDocument();
         const behovDato = utils.getByLabelText('Fra hvilken dato har du behov for tilrettelegging eller omplassering?');
         await userEvent.type(behovDato, dayjs().subtract(1, 'month').format(DDMMYYYY_DATE_FORMAT));
@@ -64,7 +64,7 @@ describe('<AppContainer>', () => {
         await userEvent.click(screen.getByText('Nei, jeg skal ha perioder med ulik arbeidsprosent'));
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Perioder med tilrettelegging')).toBeInTheDocument();
+        expect(await screen.findAllByText('Perioder med tilrettelegging')).toHaveLength(2);
         expect(screen.getByText('Steg 7 av 8')).toBeInTheDocument();
         const jobbeFra = utils.getByLabelText('Du skal jobbe fra:');
         await userEvent.type(jobbeFra, dayjs().subtract(1, 'month').format(DDMMYYYY_DATE_FORMAT));
@@ -74,28 +74,28 @@ describe('<AppContainer>', () => {
         await userEvent.type(stillingsprosent, '50');
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
         expect(screen.getByText('Steg 8 av 8')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Forrige steg'));
-        expect(screen.getByText('Perioder med tilrettelegging')).toBeInTheDocument();
+        expect(screen.getAllByText('Perioder med tilrettelegging')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Forrige steg'));
-        expect(screen.getByText('Behov for tilrettelegging')).toBeInTheDocument();
+        expect(screen.getAllByText('Behov for tilrettelegging')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Forrige steg'));
-        expect(screen.getByText('Last opp skjema')).toBeInTheDocument();
+        expect(screen.getAllByText('Last opp skjema')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Forrige steg'));
-        expect(screen.getByText('Velg bedrift')).toBeInTheDocument();
+        expect(screen.getAllByText('Velg bedrift')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Forrige steg'));
-        expect(screen.getByText('Arbeidsforhold og inntekt')).toBeInTheDocument();
+        expect(screen.getAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Forrige steg'));
-        expect(screen.getByText('Bo i utlandet')).toBeInTheDocument();
+        expect(screen.getAllByText('Bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Forrige steg'));
-        expect(screen.getByText('Barnet')).toBeInTheDocument();
+        expect(screen.getAllByText('Barnet')).toHaveLength(2);
     });
 });
