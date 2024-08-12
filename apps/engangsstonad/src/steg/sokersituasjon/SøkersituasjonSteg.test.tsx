@@ -16,7 +16,7 @@ describe('<SøkersituasjonSteg>', () => {
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />);
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
-        expect(screen.getByText('Din situasjon')).toBeInTheDocument();
+        expect(screen.getAllByText('Din situasjon')).toHaveLength(2);
         expect(screen.getByText('Steg 1 av 4')).toBeInTheDocument();
         expect(screen.getByText('Hva gjelder for deg?')).toBeInTheDocument();
 

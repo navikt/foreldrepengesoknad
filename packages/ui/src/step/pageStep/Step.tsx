@@ -16,9 +16,11 @@ export interface StepProps<TYPE> {
     children: React.ReactNode;
     onCancel?: () => void;
     onContinueLater?: () => void;
+    onStepChange?: (id: TYPE) => void;
     cancelOrContinueLaterAriaLabel?: string;
     pageAriaLabel?: string;
     infoMessage?: React.ReactNode;
+    hideHeader?: boolean;
 }
 
 const Step = <TYPE extends string>({
@@ -26,10 +28,12 @@ const Step = <TYPE extends string>({
     steps,
     onCancel,
     onContinueLater,
+    onStepChange,
     cancelOrContinueLaterAriaLabel,
     children,
     pageAriaLabel,
     infoMessage,
+    hideHeader,
 }: StepProps<TYPE>) => {
     const currentStepIndex = steps.findIndex((s) => s.isSelected);
     if (currentStepIndex === -1) {
@@ -48,7 +52,7 @@ const Step = <TYPE extends string>({
             {infoMessage !== undefined && <div className={bem.element('infoMessage')}>{infoMessage}</div>}
             <VStack gap="6">
                 <div role="presentation">
-                    <ProgressStepper steps={steps} />
+                    <ProgressStepper steps={steps} hideHeader={hideHeader} onStepChange={onStepChange} />
                 </div>
                 <section aria-label={`Steg ${currentStepIndex + 1} av ${steps.length}:  ${title}`}>
                     <VStack gap="4">

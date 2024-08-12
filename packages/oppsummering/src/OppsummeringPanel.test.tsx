@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import * as stories from './OppsummeringIndex.stories';
+import * as stories from './OppsummeringPanel.stories';
 
 const { HarBoddIUtlandetOgFødt, HarIkkeBoddIUtlandetOgIkkeFødt } = composeStories(stories);
 
@@ -12,8 +12,8 @@ describe('<OppsummeringSteg>', () => {
 
         render(<HarBoddIUtlandetOgFødt sendSøknad={sendSøknad} />);
 
-        expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
-        expect(screen.getByText('Steg 1 av 1')).toBeInTheDocument();
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(screen.getByText('Steg 2 av 2')).toBeInTheDocument();
 
         expect(screen.getByText('Utenlandsopphold')).toBeInTheDocument();
         expect(screen.getByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
@@ -49,13 +49,24 @@ describe('<OppsummeringSteg>', () => {
     it('skal ikke ha hatt utenlandsopphold for ES', async () => {
         render(<HarIkkeBoddIUtlandetOgIkkeFødt />);
 
-        expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
-        expect(screen.getByText('Steg 1 av 1')).toBeInTheDocument();
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        expect(screen.getByText('Steg 2 av 2')).toBeInTheDocument();
 
         expect(screen.getByText('Utenlandsopphold')).toBeInTheDocument();
         expect(screen.getByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
         expect(screen.getByText('Jeg har bodd i Norge')).toBeInTheDocument();
         expect(screen.getByText('Hvor skal du bo de neste 12 månedene?')).toBeInTheDocument();
         expect(screen.getByText('Jeg skal bo i Norge')).toBeInTheDocument();
+    });
+
+    it('skal gå til et tidligere steg', async () => {
+        const onStepChange = vi.fn();
+
+        render(<HarBoddIUtlandetOgFødt onStepChange={onStepChange} />);
+
+        await userEvent.click(screen.getByText('Skal bo i utlandet'));
+
+        expect(onStepChange).toHaveBeenCalledTimes(1);
+        expect(onStepChange).toHaveBeenNthCalledWith(1, 'SKAL_BO_I_UTLANDET_PATH');
     });
 });

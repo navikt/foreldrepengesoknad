@@ -4,7 +4,6 @@ import { useIntl } from 'react-intl';
 import { Loader, VStack } from '@navikt/ds-react';
 
 import {
-    Step,
     Uttaksdagen,
     getAntallUkerFellesperiode,
     getNavnPåForeldre,
@@ -12,6 +11,7 @@ import {
     isFødtBarn,
 } from '@navikt/fp-common';
 import { Arbeidsforhold, Søker } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';

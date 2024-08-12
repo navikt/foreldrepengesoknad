@@ -25,9 +25,9 @@ const AttachmentList: React.FunctionComponent<Props> = ({
                 {headingText}
             </Heading>
             <VStack gap="3">
-                {attachments.map((attachment, index) => (
+                {attachments.map((attachment) => (
                     <UNSAFE_FileUpload.Item
-                        key={index}
+                        key={attachment.attachmentData.id}
                         file={attachment.fileObject.file}
                         button={{
                             action: 'delete',

@@ -26,7 +26,7 @@ const BarnehageplassSteg: React.FunctionComponent = () => {
     //TODO Treng ein både AleneforsørgerBarnehageplass og FlereForsørgereBarnehageplass? Ser veldig like ut
 
     return (
-        <PlanleggerStepPage steps={stepConfig}>
+        <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
             <VStack gap="10">
                 <Heading size="large">
                     <FormattedMessage id="BarnehageplassSteg.Tittel" />

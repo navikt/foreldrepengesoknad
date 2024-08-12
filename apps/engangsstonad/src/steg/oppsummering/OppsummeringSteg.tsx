@@ -39,6 +39,7 @@ const OppsummeringSteg = ({ sendSøknad, mellomlagreOgNaviger }: Props) => {
                 cancelApplication={navigator.avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 onContinueLater={navigator.fortsettSøknadSenere}
+                onStepChange={navigator.goToNextStep}
             >
                 <OmBarnetOppsummering
                     omBarnet={omBarnet}

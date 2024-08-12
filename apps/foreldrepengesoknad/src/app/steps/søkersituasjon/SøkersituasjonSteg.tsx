@@ -4,9 +4,9 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Button, HStack, Radio, VStack } from '@navikt/ds-react';
 
-import { Step } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, Form, RadioGroup } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, Kjønn, SøkersituasjonFp } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
 import useFpNavigator from 'app/appData/useFpNavigator';

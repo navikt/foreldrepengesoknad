@@ -25,6 +25,7 @@ const Template: StoryFn<{
     cancelApplication: () => void;
     onContinueLater: () => void;
     goToPreviousStep: () => void;
+    onStepChange: () => void;
     tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
     senereUtenlandsopphold?: UtenlandsoppholdSenere;
 }> = ({
@@ -32,6 +33,7 @@ const Template: StoryFn<{
     cancelApplication = action('button-click'),
     onContinueLater = action('button-click'),
     goToPreviousStep = action('button-click'),
+    onStepChange = action('button-click'),
     tidligereUtenlandsopphold,
     senereUtenlandsopphold,
 }) => {
@@ -40,10 +42,16 @@ const Template: StoryFn<{
             sendSøknad={sendSøknad}
             cancelApplication={cancelApplication}
             onContinueLater={onContinueLater}
+            onStepChange={onStepChange}
             goToPreviousStep={goToPreviousStep}
             stepConfig={[
                 {
-                    id: '1',
+                    id: 'SKAL_BO_I_UTLANDET_PATH',
+                    label: 'Skal bo i utlandet',
+                    isSelected: false,
+                },
+                {
+                    id: 'OPPSUMMERING_PATH',
                     label: 'Oppsummering',
                     isSelected: true,
                 },

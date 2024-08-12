@@ -29,7 +29,7 @@ describe('<FordelingSteg>', () => {
 
         const utils = render(<FlereForsørgereEttBarn gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Fordeling')).toBeInTheDocument();
+        expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Neste'));
 

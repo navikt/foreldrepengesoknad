@@ -16,7 +16,7 @@ describe('<UtenlandsoppholdSteg>', () => {
         render(<Default gåTilNesteSide={nesteStegFn} mellomlagreOgNaviger={mellomlagreOgNaviger} />);
 
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
-        expect(screen.getByText('Bo i utlandet')).toBeInTheDocument();
+        expect(screen.getAllByText('Bo i utlandet')).toHaveLength(2);
         expect(screen.getByText('Steg 3 av 4')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Jeg har bodd i Norge'));

@@ -10,8 +10,8 @@ describe('<UtenlandsoppholdPanel>', () => {
     it('skal vise feilmeldinger når en prøver å gå videre uten å oppgi obligatoriske felter', async () => {
         render(<ForFødsel />);
 
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
-        expect(screen.getByText('Steg 1 av 1')).toBeInTheDocument();
+        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
+        expect(screen.getByText('Steg 2 av 2')).toBeInTheDocument();
 
         expect(screen.getByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
         expect(screen.getByText('Hvor skal du bo de neste 12 månedene?')).toBeInTheDocument();
@@ -30,7 +30,7 @@ describe('<UtenlandsoppholdPanel>', () => {
 
         render(<ForFødsel saveOnNext={saveOnNext} />);
 
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd i Norge'));
         await userEvent.click(screen.getByText('Jeg skal bo i Norge'));
@@ -49,7 +49,7 @@ describe('<UtenlandsoppholdPanel>', () => {
 
         render(<ForFødsel saveOnNext={saveOnNext} />);
 
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd helt eller delvis i utlandet'));
         await userEvent.click(screen.getByText('Jeg skal bo i Norge'));
@@ -68,7 +68,7 @@ describe('<UtenlandsoppholdPanel>', () => {
 
         render(<ForFødsel saveOnNext={saveOnNext} />);
 
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd i Norge'));
         await userEvent.click(screen.getByText('Jeg skal bo helt eller delvis i utlandet'));
@@ -87,7 +87,7 @@ describe('<UtenlandsoppholdPanel>', () => {
 
         render(<ForFødsel saveOnNext={saveOnNext} />);
 
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd helt eller delvis i utlandet'));
         await userEvent.click(screen.getByText('Jeg skal bo helt eller delvis i utlandet'));
@@ -107,7 +107,7 @@ describe('<UtenlandsoppholdPanel>', () => {
 
         render(<ForFødsel saveOnPrevious={saveOnPrevious} goToPreviousStep={goToPreviousStep} />);
 
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd helt eller delvis i utlandet'));
 
@@ -127,10 +127,21 @@ describe('<UtenlandsoppholdPanel>', () => {
 
         render(<ForFødsel cancelApplication={cancelApplication} />);
 
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Avslutt'));
 
         expect(screen.getByText('Fortsett senere')).toBeInTheDocument();
+    });
+
+    it('skal gå til et tidligere steg', async () => {
+        const onStepChange = vi.fn();
+
+        render(<ForFødsel onStepChange={onStepChange} />);
+
+        await userEvent.click(screen.getByText('Barnet'));
+
+        expect(onStepChange).toHaveBeenCalledTimes(1);
+        expect(onStepChange).toHaveBeenNthCalledWith(1, 'BARNET_PATH');
     });
 });

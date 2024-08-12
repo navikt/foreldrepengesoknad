@@ -5,7 +5,6 @@ import { Alert, BodyLong, Heading } from '@navikt/ds-react';
 
 import {
     Block,
-    Step,
     getErSøkerFarEllerMedmor,
     getNavnPåForeldre,
     intlUtils,
@@ -14,6 +13,7 @@ import {
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Attachment, Søkerinfo } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 

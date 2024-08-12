@@ -21,7 +21,7 @@ describe('<DokumentasjonSteg>', () => {
         );
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
-        expect(screen.getByText('Bekreft termin')).toBeInTheDocument();
+        expect(screen.getAllByText('Bekreft termin')).toHaveLength(2);
         expect(screen.getByText('Steg 3 av 5')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -80,7 +80,7 @@ describe('<DokumentasjonSteg>', () => {
         render(<Adopsjonsbekreftelse gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />);
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
-        expect(screen.getByText('Bekreft adopsjon')).toBeInTheDocument();
+        expect(screen.getAllByText('Bekreft adopsjon')).toHaveLength(2);
         expect(screen.getByText('Steg 3 av 5')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
