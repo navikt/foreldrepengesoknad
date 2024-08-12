@@ -133,6 +133,7 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                             ]}
                             minDate={halvannetÅrSiden(new Date())}
                             maxDate={dayjs().toDate()}
+                            onChange={() => formMethods.formState.isSubmitted && formMethods.trigger()}
                         />
                     )}
                     <div>
