@@ -5,20 +5,17 @@ import { setAxiosLocale } from '@navikt/fp-api';
 import { allCommonMessages, getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
 import { oppsummeringMessages } from '@navikt/fp-oppsummering';
 import { LocaleNo } from '@navikt/fp-types';
-import { IntlProvider, uiMessages } from '@navikt/fp-ui';
+import { ByttBrowserModal, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
 import { utilsMessages } from '@navikt/fp-utils';
 import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender';
-
-import ByttBrowserModal from 'app/pages/byttBrowserModal/ByttBrowserModal';
 
 import Foreldrepengesøknad from './Foreldrepengesøknad';
 import { FpApiDataContext } from './api/context/FpApiDataContext';
 import ErrorBoundary from './errorBoundary/ErrorBoundary';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
-import { shouldChangeBrowser } from './utils/browserUtils';
 
 const localeFromSessionStorage = getLocaleFromSessionStorage<LocaleNo>();
 
@@ -54,7 +51,7 @@ const AppContainer = () => {
         <ErrorBoundary>
             <FpApiDataContext>
                 <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-                    <ByttBrowserModal skalEndreNettleser={shouldChangeBrowser()} />
+                    <ByttBrowserModal />
                     <Foreldrepengesøknad
                         locale={locale}
                         onChangeLocale={(activeLocale: LocaleNo) => {

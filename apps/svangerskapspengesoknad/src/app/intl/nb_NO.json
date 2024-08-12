@@ -4,7 +4,6 @@
     "harValgfrieFelt": "Alle felt må fylles ut, unntatt felt markert med (valgfritt).",
     "søknad.pagetitle": "Søknad om svangerskapspenger",
     "søknad.pageheading": "Søknad om svangerskapspenger",
-    "ok": "OK",
     "ja": "Ja",
     "nei": "Nei",
     "pågående": "pågående",
@@ -12,8 +11,6 @@
     "slutter": "slutter",
     "sluttet": "sluttet",
     "somFrilanser": "som frilanser",
-    "byttBrowser.ingress": "For at du skal få den beste brukeropplevelsen så anbefaler vi at du bruker en moderne nettleser som støtter moderne webstandarder, og som er betydelig sikrere.",
-    "byttBrowser.tittel": "Du bruker en utdatert nettleser.",
     "forside.begynnMedSøknad": "Start søknaden",
     "forside.tittel": "Søknad om svangerskapspenger",
     "forside.guidepanel": "Det er tre krav du må oppfylle for å motta svangerskapspenger:",
@@ -359,7 +356,6 @@
     "bedriftsbanner.tittel.frilansarbeid": "Frilanser",
     "ny.periode": "Ny periode",
     "PerioderStep.tidsperiode": "{ukeAntall, select, 0 {} 1 {{ukeAntall} uke} other {{ukeAntall} uker}} {dagAntall, select, 0 {} 1 {{dagAntall} dag} other {{dagAntall} dager}}",
-    "sesjonUtløpt.tittel": "Du er nå logget ut.",
     "SkjemaSteg.MinstEttDokument": "Du må laste opp minst ett dokument",
     "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige tegn i feltet \"{feltNavn}\"."
 }

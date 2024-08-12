@@ -33,3 +33,4 @@ export { default as BlueHeading } from './src/boxes/BlueHeading';
 export { default as BluePanel } from './src/boxes/BluePanel';
 export { default as Infobox } from './src/boxes/Infobox';
 export { default as IconCircleWrapper } from './src/iconCircle/IconCircleWrapper';
+export { default as ByttBrowserModal } from './src/byttBrowserModal/ByttBrowserModal';

@@ -41,9 +41,6 @@
     "LanguageToggle.nb": "Bokmål - norsk",
     "LanguageToggle.nn": "Nynorsk - norsk",
     "LanguageToggle.en": "English",
-    "ProgressStepper.AllStepsSectionAriaLabel": "All steps",
-    "ProgressStepper.NavigasjonAriaLabel": "Navigate application",
-    "ProgressStepper.StepProgressLabel": "Step {currentStep} of {totalSteps}",
     "Page.DefaultMainRoleLabel": "Main content",
     "StepFooter.Avslutt": "Quit",
     "AvsluttModal.ContinueLater": "Continue later",
@@ -52,5 +49,9 @@
     "AvsluttModal.Delete": "Delete application",
     "SimpleErrorPage.ErrorHeader": "Sorry, it looks like something has gone wrong due to a technical error at NAV",
     "SimpleErrorPage.ErrorBody": "You can try planning again, and if you still get an error, you can wait a bit and come back later.",
-    "SimpleErrorPage.TryAgain": "Try planning again"
+    "SimpleErrorPage.TryAgain": "Try planning again",
+    "ByttBrowserModal.Tittel": "You are now logged out",
+    "ByttBrowserModal.Utdatert": "You are using an outdated browser",
+    "ByttBrowserModal.Ingress": "To get the best user experience, we recommend that you switch to a modern browser that supports modern web standards.",
+    "ByttBrowserModal.Ok": "OK"
 }
