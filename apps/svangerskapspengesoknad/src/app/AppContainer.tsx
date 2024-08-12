@@ -4,20 +4,14 @@ import { FunctionComponent, useState } from 'react';
 import { deleteData } from '@navikt/fp-api';
 import { oppsummeringMessages } from '@navikt/fp-oppsummering';
 import { LocaleNo } from '@navikt/fp-types';
-import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
+import { ByttBrowserModal, ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
-import {
-    getLocaleFromSessionStorage,
-    setLocaleInSessionStorage,
-    shouldChangeBrowser,
-    utilsMessages,
-} from '@navikt/fp-utils';
+import { getLocaleFromSessionStorage, setLocaleInSessionStorage, utilsMessages } from '@navikt/fp-utils';
 
 import Svangerskapspengesøknad from './Svangerskapspengesøknad';
 import { svpApi } from './SvangerskapspengesøknadRoutes';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
-import ByttBrowserModal from './pages/byttBrowserModal/ByttBrowserModal';
 
 const allNbMessages = {
     ...nbMessages,
@@ -68,7 +62,7 @@ const AppContainer: FunctionComponent = () => {
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <ErrorBoundary appName="Svangerskapspenger" retryCallback={retryCallback}>
-                <ByttBrowserModal skalEndreNettleser={shouldChangeBrowser()} />
+                <ByttBrowserModal />
                 <Svangerskapspengesøknad
                     locale={locale}
                     onChangeLocale={(activeLocale: LocaleNo) => {

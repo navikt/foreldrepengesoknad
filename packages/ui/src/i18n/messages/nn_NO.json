@@ -41,17 +41,17 @@
     "LanguageToggle.nb": "Bokmål - norsk",
     "LanguageToggle.nn": "Nynorsk - norsk",
     "LanguageToggle.en": "English",
-    "ProgressStepper.AllStepsSectionAriaLabel": "Alle steg",
-    "ProgressStepper.NavigasjonAriaLabel": "Navigasjon i søknaden",
-    "ProgressStepper.StepProgressLabel": "Steg {currentStep} av {totalSteps}",
     "Page.DefaultMainRoleLabel": "Hovudinnhald",
     "StepFooter.Avslutt": "Avslutt",
     "AvsluttModal.ContinueLater": "Fortsett seinare",
     "AvsluttModal.CompleteLater": "Søknaden er lagra, og du kan fullføra den seinare, eller velgja å sletta den. Søknaden blir lagra i 24 timar.",
     "AvsluttModal.Ok": "OK",
     "AvsluttModal.Delete": "Slett søknaden",
-
     "SimpleErrorPage.ErrorHeader": "Beklager, det ser ut til at noko har feila grunna ein teknisk feil hjå NAV",
     "SimpleErrorPage.ErrorBody": "Du kan prøve å planlegge på nytt, og dersom du fortsatt får ein feil kan du vente litt og komme tilbake seinare.",
-    "SimpleErrorPage.TryAgain": "Planlegg på nytt"
+    "SimpleErrorPage.TryAgain": "Planlegg på nytt",
+    "ByttBrowserModal.Tittel": "Du er no logga ut",
+    "ByttBrowserModal.Utdatert": "Vi ser du brukar ein utdatert nettlesar",
+    "ByttBrowserModal.Ingress": "For å få den beste brukaropplevinga anbefaler me at du byttar til ein moderne nettlesar som støttar moderne webstandarder.",
+    "ByttBrowserModal.Ok": "OK"
 }
