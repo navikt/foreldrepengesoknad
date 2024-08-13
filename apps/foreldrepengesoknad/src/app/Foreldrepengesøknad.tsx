@@ -6,6 +6,7 @@ import { Loader } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-common';
 import { LocaleNo } from '@navikt/fp-types';
+import { ErrorBoundary } from '@navikt/fp-ui';
 import { redirect } from '@navikt/fp-utils';
 
 import Environment from './Environment';
@@ -13,7 +14,6 @@ import Api from './api/api';
 import { sendErrorMessageToSentry } from './api/apiUtils';
 import { FpDataContext } from './context/FpDataContext';
 import { konverterMellomlagretDataTilAppData } from './context/konverterMellomlagretDataTilAppData';
-import ErrorBoundary from './errorBoundary/ErrorBoundary';
 import ForeldrepengesøknadRoutes from './routes/ForeldrepengesøknadRoutes';
 import SøknadRoutes from './routes/routes';
 import { Kvittering } from './types/Kvittering';
@@ -25,6 +25,16 @@ const Spinner: React.FunctionComponent = () => (
         <Loader size="2xlarge" />
     </div>
 );
+
+export const retryCallback = async () => {
+    try {
+        await Api.deleteMellomlagretSøknad();
+    } catch (error) {
+        // Vi bryr oss ikke om feil her. Logges bare i backend
+    }
+
+    location.reload();
+};
 
 interface Props {
     locale: LocaleNo;
@@ -86,7 +96,7 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
     }
 
     return (
-        <ErrorBoundary søker={søkerinfoData.søker}>
+        <ErrorBoundary appName="Foreldrepenger" retryCallback={retryCallback}>
             <FpDataContext initialState={initialState}>
                 <BrowserRouter>
                     <ForeldrepengesøknadRoutes

@@ -5,15 +5,14 @@ import { setAxiosLocale } from '@navikt/fp-api';
 import { allCommonMessages, getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
 import { oppsummeringMessages } from '@navikt/fp-oppsummering';
 import { LocaleNo } from '@navikt/fp-types';
-import { ByttBrowserModal, IntlProvider, uiMessages } from '@navikt/fp-ui';
+import { ByttBrowserModal, ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
 import { utilsMessages } from '@navikt/fp-utils';
 import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender';
 
-import Foreldrepengesøknad from './Foreldrepengesøknad';
+import Foreldrepengesøknad, { retryCallback } from './Foreldrepengesøknad';
 import { FpApiDataContext } from './api/context/FpApiDataContext';
-import ErrorBoundary from './errorBoundary/ErrorBoundary';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
 
@@ -48,7 +47,7 @@ const AppContainer = () => {
     const [locale, setLocale] = useState<LocaleNo>(localeFromSessionStorage);
 
     return (
-        <ErrorBoundary>
+        <ErrorBoundary appName="Foreldrepenger" retryCallback={retryCallback}>
             <FpApiDataContext>
                 <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
                     <ByttBrowserModal />
