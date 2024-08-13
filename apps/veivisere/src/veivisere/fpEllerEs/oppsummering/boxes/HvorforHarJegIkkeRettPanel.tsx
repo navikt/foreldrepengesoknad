@@ -61,24 +61,30 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
                         <KravinfoBoks
                             testId="harIkkeRettFp"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
-                            boxBodyText={<FormattedMessage id="HvorforHarJegRettPanel.OppgittAtDuBorINorge" />}
+                            boxBodyText={
+                                <>
+                                    <BodyShort>
+                                        <FormattedMessage id="HvorforHarJegRettPanel.OppgittAtDuBorINorge" />
+                                    </BodyShort>
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="HvorforHarJegRettPanel.FolketrygdenLink"
+                                            values={{
+                                                a: (msg: any) => (
+                                                    <a
+                                                        href="https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden"
+                                                        target="_blank"
+                                                    >
+                                                        {msg}
+                                                    </a>
+                                                ),
+                                            }}
+                                        />
+                                    </BodyShort>
+                                </>
+                            }
                             erOppfylt={fpEllerEsSituasjon.erDuMedlemAvFolketrygden}
                         />
-                        <BodyShort>
-                            <FormattedMessage
-                                id="HvorforHarJegRettPanel.FolketrygdenLink"
-                                values={{
-                                    a: (msg: any) => (
-                                        <a
-                                            href="https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden"
-                                            target="_blank"
-                                        >
-                                            {msg}
-                                        </a>
-                                    ),
-                                }}
-                            />
-                        </BodyShort>
                     </VStack>
                 </VStack>
             </ExpansionCard.Content>
