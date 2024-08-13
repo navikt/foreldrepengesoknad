@@ -1,4 +1,4 @@
-import { BabyWrappedIcon, EarthIcon, PaperplaneIcon, WalletIcon } from '@navikt/aksel-icons';
+import { BabyWrappedIcon, EarthIcon, PaperplaneIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, FpEllerEsRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
@@ -71,7 +71,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
         <VeiviserPage
             ref={ref}
             label={intl.formatMessage({ id: 'FpEllerEs.Tittel' })}
-            icon={<WalletIcon height={28} width={28} fontSize="1.5rem" aria-hidden />}
+            icon={<StrollerIcon height={36} width={36} fontSize="1.5rem" aria-hidden />}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>

@@ -1,4 +1,4 @@
-import { CalculatorIcon } from '@navikt/aksel-icons';
+import { StrollerIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 import { finnGrunnbeløp } from 'utils/satserUtils';
@@ -60,7 +60,7 @@ const OppsummeringFpEllerEsSide: React.FunctionComponent<Props> = ({ fpEllerEsSi
             <VeiviserPage
                 ref={ref}
                 label={intl.formatMessage({ id: 'OppsummeringFpEllerEsSide.Oppsummering' })}
-                icon={<CalculatorIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                icon={<StrollerIcon height={36} width={36} title="a11y-title" fontSize="1.5rem" aria-hidden />}
             >
                 <VStack gap="8">
                     {hvemHarRett === 'morTjener200000EllerMerOgHarRett' && (
