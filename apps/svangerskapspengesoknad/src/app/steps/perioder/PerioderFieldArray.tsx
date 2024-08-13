@@ -20,6 +20,7 @@ import Tilrettelegging, {
 import { getDefaultMonth, getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
 import { getOpprinneligStillingsprosent } from 'app/utils/tilretteleggingUtils';
 
+import { onToggleInfo } from '../barnet/amplitudeLoggerUtils';
 import './perioderFieldArray.css';
 import {
     getMinDatoTom,
@@ -239,6 +240,7 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
                                 ]}
                             />
                             <ReadMore
+                                onOpenChange={onToggleInfo('Ikke_har_100%_stilling')}
                                 size="medium"
                                 header={intl.formatMessage({
                                     id: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',

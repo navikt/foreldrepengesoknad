@@ -4,6 +4,8 @@ import { BodyShort, ReadMore } from '@navikt/ds-react';
 
 import { Arbeidsforhold } from '@navikt/fp-types';
 
+import { onToggleInfo } from 'app/steps/barnet/amplitudeLoggerUtils';
+
 import HarArbeidsforhold from './HarArbeidsforhold';
 import HarIkkeArbeidsforhold from './HarIkkeArbeidsforhold';
 
@@ -20,7 +22,10 @@ const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforh
             <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             {visManglerInfo && (
-                <ReadMore header={intl.formatMessage({ id: 'inntektsinformasjon.arbeidsforhold.info' })}>
+                <ReadMore
+                    onOpenChange={onToggleInfo('Feil_eller_mangler')}
+                    header={intl.formatMessage({ id: 'inntektsinformasjon.arbeidsforhold.info' })}
+                >
                     <BodyShort>
                         <FormattedMessage id="inntektsinformasjon.arbeidsforhold.tekst" />
                     </BodyShort>

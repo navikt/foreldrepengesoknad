@@ -32,6 +32,7 @@ import {
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
 
 import Bedriftsbanner from '../Bedriftsbanner';
+import { onToggleInfo } from '../barnet/amplitudeLoggerUtils';
 import DelvisTilretteleggingPanel from './DelvisTilretteleggingPanel';
 import IngenTilretteleggingPanel from './IngenTilretteleggingPanel';
 import { TilretteleggingFormData, mapOmTilretteleggingFormDataToState } from './tilretteleggingStepUtils';
@@ -268,6 +269,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                                 <ReadMore
                                     size="small"
                                     header={intl.formatMessage({ id: 'tilrettelegging.tiltak.info.title' })}
+                                    onOpenChange={onToggleInfo('Tiltak')}
                                 >
                                     <BodyShort>
                                         <FormattedMessage id="tilrettelegging.tiltak.info.description"></FormattedMessage>
@@ -300,6 +302,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                         </RadioGroup>
                         <ReadMore
                             header={intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidType.info.tittel' })}
+                            onOpenChange={onToggleInfo('Bytte_på_stillingsprosent')}
                         >
                             <BodyShort>
                                 <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.info.tekst"></FormattedMessage>

@@ -28,6 +28,8 @@ import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
 import { Barn } from 'app/types/Barn';
 
+import { onToggleInfo } from './amplitudeLoggerUtils';
+
 const getMinDatoTermin = (erBarnetFødt: boolean, fødselsdato?: string): Dayjs =>
     erBarnetFødt && fødselsdato && isStringADate(fødselsdato) ? enMånedSiden(fødselsdato) : enMånedSiden(new Date());
 
@@ -105,7 +107,10 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                                 <FormattedMessage id="nei" />
                             </Radio>
                         </RadioGroup>
-                        <ReadMore header={intl.formatMessage({ id: 'barnet.erBarnetFødt.merInfo.tittel' })}>
+                        <ReadMore
+                            onOpenChange={onToggleInfo('SVP_tilbake_i_tid')}
+                            header={intl.formatMessage({ id: 'barnet.erBarnetFødt.merInfo.tittel' })}
+                        >
                             <BodyShort>
                                 <FormattedMessage id="barnet.erBarnetFødt.merInfo.tekst" />
                             </BodyShort>
@@ -167,7 +172,10 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                                 validerTermindato(intl, fødselsdato),
                             ]}
                         />
-                        <ReadMore header={intl.formatMessage({ id: 'barnet.termindato.merInfo.tittel' })}>
+                        <ReadMore
+                            onOpenChange={onToggleInfo('SVP_tre_uker_før_termin')}
+                            header={intl.formatMessage({ id: 'barnet.termindato.merInfo.tittel' })}
+                        >
                             <BodyShort>
                                 <FormattedMessage id="barnet.termindato.merInfo.tekst" />
                             </BodyShort>
