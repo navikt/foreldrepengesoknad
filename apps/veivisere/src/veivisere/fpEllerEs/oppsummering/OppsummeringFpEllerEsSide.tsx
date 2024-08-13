@@ -19,47 +19,23 @@ import HvorMyeOgHvaSkjerNåLinkPanel from './HvorMyeOgHvaSkjerNåLinkPanel';
 const finnHvemSomHarRett = (fpEllerEsSituasjon: FpEllerEsSituasjon, satser: Satser) => {
     const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
     const minstelønn = grunnbeløpet / 2;
-    if (
-        fpEllerEsSituasjon.situasjon === 'mor' &&
-        fpEllerEsSituasjon.lønnPerMåned * 12 > 200000 &&
-        fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn &&
-        fpEllerEsSituasjon.harHattInntekt &&
-        fpEllerEsSituasjon.borDuINorge
-    ) {
-        return 'morTjenerOver200000HarRett';
+
+    const { situasjon, lønnPerMåned, borDuINorge } = fpEllerEsSituasjon;
+    const erLønnOverEllerLik200000 = lønnPerMåned * 12 >= 200000;
+    const erLønnOverEllerLikMinstelønn = lønnPerMåned * 12 >= minstelønn;
+    if (situasjon === 'mor' && erLønnOverEllerLik200000 && erLønnOverEllerLikMinstelønn && borDuINorge) {
+        return 'morTjener200000EllerMerOgHarRett';
     }
-    if (
-        fpEllerEsSituasjon.situasjon === 'mor' &&
-        fpEllerEsSituasjon.lønnPerMåned * 12 < 200000 &&
-        fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn &&
-        fpEllerEsSituasjon.harHattInntekt &&
-        fpEllerEsSituasjon.borDuINorge
-    ) {
-        return 'morTjenerUnder200000KanHaRettFpEllerEs';
+    if (situasjon === 'mor' && !erLønnOverEllerLik200000 && erLønnOverEllerLikMinstelønn && borDuINorge) {
+        return 'morTjenerUnder200000OgKanHaRettFpEllerEs';
     }
-    if (
-        (fpEllerEsSituasjon.situasjon === 'far' || 'medmor') &&
-        fpEllerEsSituasjon.lønnPerMåned * 12 > 200000 &&
-        fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn &&
-        fpEllerEsSituasjon.harHattInntekt &&
-        fpEllerEsSituasjon.borDuINorge
-    ) {
+    if (situasjon !== 'mor' && erLønnOverEllerLikMinstelønn && borDuINorge) {
         return 'farEllerMedmorKanHaRettFp';
     }
     if (
-        (fpEllerEsSituasjon.situasjon === 'far' || 'medmor') &&
-        fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn &&
-        fpEllerEsSituasjon.harHattInntekt &&
-        fpEllerEsSituasjon.borDuINorge
-    ) {
-        return 'farEllerMedmorKanHaRettFp';
-    }
-    if (
-        fpEllerEsSituasjon.situasjon === 'mor' &&
-        ((fpEllerEsSituasjon.lønnPerMåned * 12 < 200000 && fpEllerEsSituasjon.lønnPerMåned * 12 < minstelønn) ||
-            (!fpEllerEsSituasjon.harHattInntekt && fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn)) &&
-        fpEllerEsSituasjon.harHattInntekt &&
-        fpEllerEsSituasjon.borDuINorge
+        situasjon === 'mor' &&
+        ((!erLønnOverEllerLik200000 && !erLønnOverEllerLikMinstelønn) || erLønnOverEllerLikMinstelønn) &&
+        borDuINorge
     ) {
         return 'morHarRettEs';
     }
@@ -87,13 +63,13 @@ const OppsummeringFpEllerEsSide: React.FunctionComponent<Props> = ({ fpEllerEsSi
                 icon={<CalculatorIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
             >
                 <VStack gap="8">
-                    {hvemHarRett === 'morTjenerOver200000HarRett' && (
+                    {hvemHarRett === 'morTjener200000EllerMerOgHarRett' && (
                         <HarRett fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
                     )}
                     {hvemHarRett === 'farEllerMedmorKanHaRettFp' && (
                         <HarRett fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
                     )}
-                    {hvemHarRett === 'morTjenerUnder200000KanHaRettFpEllerEs' && (
+                    {hvemHarRett === 'morTjenerUnder200000OgKanHaRettFpEllerEs' && (
                         <HarRettFpEllerEs fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
                     )}
                     {hvemHarRett === 'morHarRettEs' && (
