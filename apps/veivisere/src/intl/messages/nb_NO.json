@@ -108,7 +108,7 @@
     "OppsummeringFpEllerEsSide.HvaErFp": "Hva er foreldrepenger?",
     "OppsummeringFpEllerEsSide.BasertPåSvarene": "Basert på den månedlige lønnen du oppga vil du få utbetalt rundt {utbetaling} kroner i måneden, hvis du tar 100% foreldrepenger. Antall måneder deles mellom far og mor, og vil variere hvis man velger 100% eller 80% foreldrepenger.",
     "OppsummeringFpEllerEsSide.HvaErFp.KanVelgeMellom": "Du kan velge mellom <b>49 uker med 100% foreldrepenger eller 59 uker med 80% foreldrepenger</b>.",
-    "OppsummeringFpEllerEsSide.KanOgsåHarRettTilEs": "Når du har rett på foreldrepenger kan du også ha rett på engangsstønad. Vanligvis vil det lønne seg å velge foreldrepenger. <b>Du kan kun velge én av stønadene</b>.",
+    "OppsummeringFpEllerEsSide.KanOgsåHarRettTilEs": "Når du har rett på foreldrepenger kan du også ha rett på engangsstønad. Vanligvis vil det lønne seg å velge foreldrepenger. Du kan kun velge én av stønadene.",
     "OppsummeringFpEllerEsSide.DuFårUtbetaltEs": "Med engangsstønad får du utbetalt en engangssum på {engangsstønad} kroner.",
     "OppsummeringFpEllerEsSide.SøkOmFp": "Søk om foreldrepenger",
     "OppsummeringFpEllerEsSide.MerOmFp": "Mer om foreldrepenger",
