@@ -122,10 +122,6 @@ export type EndringssøknadForInnsending = Pick<
     | 'vedlegg'
 >;
 
-export const FOR_MANGE_VEDLEGG_ERROR =
-    'Søknaden kan ikke inneholde flere enn 40 vedlegg. Vennligst gå tilbake, slett noen vedlegg og' +
-    ' prøv å sende inn søknaden på nytt. Du kan ettersende vedlegg senere.';
-
 export const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
 
