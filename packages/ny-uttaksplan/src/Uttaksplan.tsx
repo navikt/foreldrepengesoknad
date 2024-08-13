@@ -6,6 +6,7 @@ import { AnnenForelder, NavnPåForeldre, Periode } from '@navikt/fp-common';
 
 import { Barn } from '../../types';
 import PeriodeListe from './components/periode-liste/PeriodeListe';
+import { UttaksplanDataContext } from './context/UttaksplanDataContext';
 
 interface Props {
     uttaksplan: Periode[];
@@ -25,16 +26,20 @@ const UttaksplanNy: FunctionComponent<Props> = ({
     barn,
 }) => {
     return (
-        <div style={{ padding: '2rem 0' }}>
-            <PeriodeListe
-                perioder={uttaksplan}
-                familiehendelsedato={familiehendelsedato}
-                erFarEllerMedmor={erFarEllerMedmor}
-                navnPåForeldre={navnPåForeldre}
-                annenForelder={annenForelder}
-                barn={barn}
-            />
-        </div>
+        <UttaksplanDataContext
+            initialState={{
+                ANNEN_FORELDER: annenForelder,
+                BARN: barn,
+                ER_FAR_ELLER_MEDMOR: erFarEllerMedmor,
+                FAMILIEHENDELSEDATO: familiehendelsedato,
+                NAVN_PÅ_FORELDRE: navnPåForeldre,
+                UTTAKSPLAN: uttaksplan,
+            }}
+        >
+            <div style={{ padding: '2rem 0' }}>
+                <PeriodeListe perioder={uttaksplan} familiehendelsedato={familiehendelsedato} barn={barn} />
+            </div>
+        </UttaksplanDataContext>
     );
 };
 

@@ -5,7 +5,6 @@ import { IntlShape, useIntl } from 'react-intl';
 import { BodyLong, BodyShort, HStack } from '@navikt/ds-react';
 
 import {
-    AnnenForelder,
     FamiliehendelseType,
     NavnPåForeldre,
     Oppholdsperiode,
@@ -16,15 +15,15 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { Tidsperioden, formatDateExtended } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
+
+import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
+import Permisjonsperiode from '../../types/Permisjonsperiode';
 
 interface Props {
-    periode: Periode;
+    permisjonsperiode: Permisjonsperiode;
+    familiehendelseType: FamiliehendelseType | undefined;
     erFamiliehendelse: boolean;
-    navnPåForeldre: NavnPåForeldre;
-    erFarEllerMedmor: boolean;
-    annenForelder: AnnenForelder;
-    inneholderKunEnPeriode: boolean;
-    familiehendelseType?: FamiliehendelseType;
 }
 
 const renderUttaksperiode = (periode: Uttaksperiode, inneholderKunEnPeriode: boolean, intl: IntlShape) => {
@@ -146,14 +145,8 @@ const renderPeriode = (
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
     inneholderKunEnPeriode: boolean,
-    erFamiliehendelse: boolean,
     intl: IntlShape,
-    familiehendelseType?: FamiliehendelseType,
 ) => {
-    if (erFamiliehendelse && familiehendelseType !== undefined) {
-        return renderFamiliehendelse(familiehendelseType);
-    }
-
     if (isUttaksperiode(periode)) {
         return renderUttaksperiode(periode, inneholderKunEnPeriode, intl);
     }
@@ -177,28 +170,37 @@ const renderPeriode = (
 };
 
 const PeriodeListeContent: FunctionComponent<Props> = ({
-    periode,
-    navnPåForeldre,
-    erFarEllerMedmor,
-    inneholderKunEnPeriode,
-    erFamiliehendelse,
+    permisjonsperiode,
     familiehendelseType,
+    erFamiliehendelse,
 }) => {
     const intl = useIntl();
+
+    const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
+    const skalJobbeIPermisjonsperioden =
+        permisjonsperiode.perioder.find((p) => {
+            if (isUttaksperiode(p) && p.gradert) {
+                return p;
+            }
+
+            return undefined;
+        }) !== undefined;
+
+    const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
+    const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
+
+    if (erFamiliehendelse && familiehendelseType !== undefined) {
+        return renderFamiliehendelse(familiehendelseType);
+    }
 
     return (
         <div style={{ marginTop: '1rem' }}>
             <HStack gap="4">
-                {renderPeriode(
-                    periode,
-                    navnPåForeldre,
-                    erFarEllerMedmor,
-                    inneholderKunEnPeriode,
-                    erFamiliehendelse,
-                    intl,
-                    familiehendelseType,
-                )}
+                {permisjonsperiode.perioder.map((periode) => {
+                    return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode, intl);
+                })}
             </HStack>
+            {skalJobbeIPermisjonsperioden ? <div>Skal jobbe</div> : <div>Skal ikke jobbe</div>}
         </div>
     );
 };

@@ -5,16 +5,11 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, Heading, Hide, Show } from '@navikt/ds-react';
 
-import {
-    Forelder,
-    NavnPåForeldre,
-    Tidsperioden,
-    bemUtils,
-    formatDateShortMonth,
-    getVarighetString,
-} from '@navikt/fp-common';
+import { Forelder, Tidsperioden, bemUtils, formatDateShortMonth, getVarighetString } from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/fp-formik';
+import { notEmpty } from '@navikt/fp-validation';
 
+import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
 import Permisjonsperiode from '../../types/Permisjonsperiode';
 import { getFarge, getIkon, getTekst } from './PeriodeListeHeaderUtils';
 import './periode-liste-header.css';
@@ -23,8 +18,6 @@ interface Props {
     permisjonsperiode: Permisjonsperiode;
     familiehendelsedato: string;
     erFamiliehendelse?: boolean;
-    navnPåForeldre: NavnPåForeldre;
-    erFarEllerMedmor: boolean;
 }
 
 const renderPeriode = (permisjonsperiode: Permisjonsperiode, erFamiliehendelse: boolean | undefined) => {
@@ -60,11 +53,12 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({
     permisjonsperiode,
     familiehendelsedato,
     erFamiliehendelse,
-    navnPåForeldre,
-    erFarEllerMedmor,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('periode-liste-header');
+
+    const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
+    const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
 
     const periodeFørTermindato = dayjs(familiehendelsedato).isAfter(permisjonsperiode.tidsperiode.tom);
     const { tidsperiode, erUtsettelse, erHull, forelder } = permisjonsperiode;

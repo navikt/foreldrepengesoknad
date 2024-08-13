@@ -1916,6 +1916,9 @@ importers:
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../utils-test
+      '@navikt/fp-validation':
+        specifier: workspace:*
+        version: link:../validation
       '@types/react':
         specifier: ^18.2.73
         version: 18.3.3
