@@ -8,7 +8,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { finnGrunnbeløp } from 'utils/satserUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
-import { BodyShort, Button, Heading, Label, Radio, ReadMore, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, Heading, Label, List, Radio, ReadMore, Spacer, VStack } from '@navikt/ds-react';
 
 import { Form, TextField } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
@@ -104,7 +104,28 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
                             </BlueRadioGroup>
-                            <ReadMore header={<FormattedMessage id="SituasjonSide.HvaGirRett" />}>todo</ReadMore>
+                            <ReadMore header={<FormattedMessage id="SituasjonSide.HvaGirRett" />}>
+                                <BodyShort>
+                                    <FormattedMessage id="SituasjonSide.HvaGirRett.EnAvDisse" />
+                                </BodyShort>
+                                <List>
+                                    <List.Item>
+                                        <FormattedMessage id="SituasjonSide.HvaGirRett.Sykepenger" />
+                                    </List.Item>
+                                    <List.Item>
+                                        <FormattedMessage id="SituasjonSide.HvaGirRett.Svp" />
+                                    </List.Item>
+                                    <List.Item>
+                                        <FormattedMessage id="SituasjonSide.HvaGirRett.Ap" />
+                                    </List.Item>
+                                    <List.Item>
+                                        <FormattedMessage id="SituasjonSide.HvaGirRett.Dagpenger" />
+                                    </List.Item>
+                                    <List.Item>
+                                        <FormattedMessage id="SituasjonSide.HvaGirRett.Omsorgspenger" />
+                                    </List.Item>
+                                </List>
+                            </ReadMore>
                         </VStack>
                     )}
                     {erIArbeid === false && (
@@ -121,8 +142,18 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
                             </BlueRadioGroup>
-                            <ReadMore header={<FormattedMessage id="SituasjonSide.HvaGirRett" />}>todo</ReadMore>
                         </VStack>
+                    )}
+                    {harHattAndreInntekter === false && (
+                        <Infobox
+                            header={<FormattedMessage id="SituasjonSide.JobbetMinst8av10" />}
+                            icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                            color="green"
+                        >
+                            <BodyShort>
+                                <FormattedMessage id="SituasjonSide.JobbetMinst8av10Detaljer" />
+                            </BodyShort>
+                        </Infobox>
                     )}
                     {(erIArbeid || harHattAndreInntekter) && (
                         <VStack gap="4">
@@ -138,7 +169,6 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
                             </BlueRadioGroup>
-                            <ReadMore header={<FormattedMessage id="SituasjonSide.Hvorfor6AvSiste10" />}>todo</ReadMore>
                         </VStack>
                     )}
                     {harHattInntekt === false && (
@@ -215,7 +245,6 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
                             </BlueRadioGroup>
-                            <ReadMore header={<FormattedMessage id="SituasjonSide.HvorforBoINorge" />}>todo</ReadMore>
                         </VStack>
                     )}
                     {borDuINorge === false && (
