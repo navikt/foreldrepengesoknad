@@ -4,11 +4,14 @@ import { BodyShort, Link, ReadMore, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 
+import { onToggleInfo } from 'app/steps/barnet/amplitudeLoggerUtils';
+
 const HvemKanDriveMedEgenNæring = () => {
     const intl = useIntl();
 
     return (
         <ReadMore
+            onOpenChange={onToggleInfo('Selvstendig_næringsdrivende')}
             header={intl.formatMessage({ id: 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.apneLabel' })}
         >
             <VStack gap="2">
