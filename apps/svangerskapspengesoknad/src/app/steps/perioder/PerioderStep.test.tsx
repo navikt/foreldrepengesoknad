@@ -8,10 +8,11 @@ import SøknadRoutes from 'app/appData/routes';
 
 import * as stories from './PerioderStep.stories';
 
-const { Default, FlereStillinger } = composeStories(stories);
+const { Default, FlereStillinger, FremTilFødselsdato } = composeStories(stories);
 
 describe('<Perioder>', () => {
     const user = userEvent.setup();
+
     it('feilmelding når ingenting er utfylt', async () => {
         render(<Default />);
 
@@ -29,6 +30,7 @@ describe('<Perioder>', () => {
         ).toHaveLength(2);
         expect(screen.getAllByText('Du må oppgi stillingsprosenten du skal jobbe.')).toHaveLength(2);
     });
+
     it('skal ikke vise feilmelding når alt er utfylt', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
@@ -95,6 +97,7 @@ describe('<Perioder>', () => {
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
     });
+
     it('validering av dato på feil format', async () => {
         render(<Default />);
 
@@ -118,6 +121,7 @@ describe('<Perioder>', () => {
             screen.getAllByText('Sluttdatoen må være en gyldig dato på formatet dd.mm.åååå.')[0],
         ).toBeInTheDocument();
     });
+
     it('frem til-dato skal vises når frem til er valgt', async () => {
         render(<Default />);
 
@@ -125,6 +129,7 @@ describe('<Perioder>', () => {
         await user.click(screen.getByText('Frem til en dato'));
         expect(screen.getByText('Til og med dato')).toBeInTheDocument();
     });
+
     it('validering av stillingsprosent på feil format', async () => {
         render(<Default />);
 
@@ -136,6 +141,7 @@ describe('<Perioder>', () => {
 
         expect(screen.getAllByText('Stillingsprosent må være et tall.')[0]).toBeInTheDocument();
     });
+
     it('vis ny periode når legg til ny periode er valgt', async () => {
         render(<Default />);
 
@@ -144,6 +150,7 @@ describe('<Perioder>', () => {
 
         expect(screen.getAllByText('Ny periode')[1]).toBeInTheDocument();
     });
+
     it('fjern perioden hvis slett perioden er klikket på', async () => {
         render(<Default />);
 
@@ -158,13 +165,12 @@ describe('<Perioder>', () => {
         expect(screen.getAllByText('Til:')[1]).toBeInTheDocument();
         await user.click(screen.getAllByText('Frem til tre uker før termin')[1]);
 
-        const nyPeriode = '30.10.2023 - 27.01.2024';
-
         expect(screen.getAllByText('Fjern perioden', { exact: false })[0]).toBeInTheDocument();
         await user.click(screen.getAllByText('Fjern perioden')[0]);
 
-        expect(screen.queryByText(nyPeriode)).not.toBeInTheDocument();
+        expect(screen.queryByText('30.10.2023 - 3 uker før termin (12 uker 6 dager)')).not.toBeInTheDocument();
     });
+
     it('feilmelding ved overlappende perioder', async () => {
         render(<Default />);
 
@@ -179,8 +185,7 @@ describe('<Perioder>', () => {
         expect(screen.getAllByText('Til:')[1]).toBeInTheDocument();
         await user.click(screen.getAllByText('Frem til tre uker før termin')[1]);
 
-        const nyPeriode = '01.01.2024 - 27.01.2024 3 uker 6 dager';
-        expect(screen.getByText(nyPeriode)).toBeInTheDocument();
+        expect(screen.getByText('01.01.2024 - 3 uker før termin (3 uker 6 dager)')).toBeInTheDocument();
 
         expect(screen.getAllByText('Du skal jobbe fra:')[0]).toBeInTheDocument();
         const førsteFradatoInput = screen.getAllByText('Du skal jobbe fra:')[0];
@@ -195,13 +200,28 @@ describe('<Perioder>', () => {
         await user.type(førsteTildatoInput, dayjs('2024-01-27').format('DD.MM.YYYY'));
         await user.tab();
 
-        const førstePeriode = '30.10.2023 - 27.01.2024 12 uker 6 dager';
+        const førstePeriode = '30.10.2023 - 27.01.2024 (12 uker 6 dager)';
         expect(screen.getByText(førstePeriode)).toBeInTheDocument();
 
         await user.click(screen.getByText('Neste steg'));
 
         expect(screen.getAllByText('Perioden overlapper med perioden 01.01.2024 - 27.01.2024.')[0]).toBeInTheDocument();
     });
+
+    it('skal vise felttekst "frem til fødselsdato" når fødselsdato er etter dagen før tre veker før termin', async () => {
+        render(<FremTilFødselsdato />);
+
+        expect(await screen.findAllByText('Perioder med tilrettelegging')).toHaveLength(2);
+
+        await user.type(screen.getByText('Du skal jobbe fra:'), dayjs('2023-01-01').format('DD.MM.YYYY'));
+        await user.tab();
+
+        expect(screen.getByText('Til:')).toBeInTheDocument();
+        await user.click(screen.getByText('Frem til fødselsdato'));
+
+        expect(screen.getByText('01.01.2023 - Fødsel (7 uker)')).toBeInTheDocument();
+    });
+
     it('stillingsprosenten skal valideres mot samlet stillingsprosent (30%) på skjæringstidspunktet', async () => {
         render(<FlereStillinger />);
         expect(await screen.findByText('Du skal jobbe fra:')).toBeInTheDocument();
@@ -225,6 +245,7 @@ describe('<Perioder>', () => {
             )[0],
         ).toBeInTheDocument();
     });
+
     it('stillingsprosenten skal valideres mot samlet stillingsprosent (100%) fordi et av stillingsprosentene på skjæringstidspunktet er på 0%', async () => {
         render(<FlereStillinger />);
 
@@ -249,6 +270,7 @@ describe('<Perioder>', () => {
             )[0],
         ).toBeInTheDocument();
     });
+
     it('Det skal ikke være lov å legge til ny periode etter en periode full tilrettelegging', async () => {
         render(<FlereStillinger />);
 
@@ -279,6 +301,7 @@ describe('<Perioder>', () => {
             )[0],
         ).toBeInTheDocument();
     });
+
     it('Det skal ikke være lov å gå videre med kun full tilrettelegging', async () => {
         render(<FlereStillinger />);
 
