@@ -72,20 +72,20 @@ export const MorHarTjentMindreEnn200000OgHarRettTilFpOgEs: Story = {
         },
     },
 };
-export const FarHarTjentMindreEnn200000OgHarRettTilFpOgEs: Story = {
+export const FarKanHaRettTilFp: Story = {
     args: {
         fpEllerEsSituasjon: {
             borDuINorge: true,
             erDuMedlemAvFolketrygden: true,
             erIArbeid: true,
-            harHattAndreInntekter: true,
+            harHattAndreInntekter: false,
             harHattInntekt: true,
             lønnPerMåned: 10000,
             situasjon: Situasjon.FAR,
         },
     },
 };
-export const MorKanHaRettTilEs: Story = {
+export const MorHarRettTilEs: Story = {
     args: {
         fpEllerEsSituasjon: {
             borDuINorge: true,
@@ -106,11 +106,12 @@ export const FarKanHaRettTilEs: Story = {
             erIArbeid: false,
             harHattAndreInntekter: false,
             harHattInntekt: false,
-            lønnPerMåned: 1000,
+            lønnPerMåned: 0,
             situasjon: Situasjon.FAR,
         },
     },
 };
+
 export const MorHarIkkeRett: Story = {
     args: {
         fpEllerEsSituasjon: {

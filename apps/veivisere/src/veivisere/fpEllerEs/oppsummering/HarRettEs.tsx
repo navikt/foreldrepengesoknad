@@ -24,6 +24,7 @@ const HarRettEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser 
 
     const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
     const engangsstønad = finnEngangsstønad(satser, dayjs());
+    const erMor = fpEllerEsSituasjon.situasjon === 'mor';
 
     return (
         <>
@@ -31,8 +32,12 @@ const HarRettEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser 
                 <VStack gap="8">
                     <VStack gap="8" align="center">
                         <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden color="#66A3C4" />
-                        <Heading size="medium" className="m-6">
-                            <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRettPåEs" />
+                        <Heading size="medium" align="center" className="m-6">
+                            {erMor ? (
+                                <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRettPåEs" />
+                            ) : (
+                                <FormattedMessage id="OppsummeringFpEllerEsSide.DuKanHaRettPåEs" />
+                            )}
                         </Heading>
                     </VStack>
                     <Box background="bg-default" padding="4" borderRadius="large">

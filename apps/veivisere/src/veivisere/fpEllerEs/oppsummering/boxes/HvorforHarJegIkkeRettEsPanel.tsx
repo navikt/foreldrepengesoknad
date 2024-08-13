@@ -45,7 +45,10 @@ const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerE
                                 id="HvorforHarJegRettPanel.FolketrygdenLink"
                                 values={{
                                     a: (msg: any) => (
-                                        <a href="#" target="_blank">
+                                        <a
+                                            href="https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden"
+                                            target="_blank"
+                                        >
                                             {msg}
                                         </a>
                                     ),
@@ -107,7 +110,10 @@ const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerE
                                                     id="HvorforHarJegRettPanel.OvertarOmsorgMorDød"
                                                     values={{
                                                         a: (msg: any) => (
-                                                            <a href="#" target="_blank">
+                                                            <a
+                                                                href="https://lovdata.no/dokument/NL/lov/1981-04-08-7"
+                                                                target="_blank"
+                                                            >
                                                                 {msg}
                                                             </a>
                                                         ),

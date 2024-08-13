@@ -16,6 +16,62 @@ import HarRettEs from './HarRettEs';
 import HarRettFpEllerEs from './HarRettFpEllerEs';
 import HvorMyeOgHvaSkjerNåLinkPanel from './HvorMyeOgHvaSkjerNåLinkPanel';
 
+const finnHvemSomHarRett = (fpEllerEsSituasjon: FpEllerEsSituasjon, satser: Satser) => {
+    const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
+    const minstelønn = grunnbeløpet / 2;
+    if (
+        fpEllerEsSituasjon.situasjon === 'mor' &&
+        fpEllerEsSituasjon.lønnPerMåned * 12 > 200000 &&
+        fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn &&
+        fpEllerEsSituasjon.harHattInntekt &&
+        fpEllerEsSituasjon.borDuINorge
+    ) {
+        return 'morTjenerOver200000HarRett';
+    }
+    if (
+        fpEllerEsSituasjon.situasjon === 'mor' &&
+        fpEllerEsSituasjon.lønnPerMåned * 12 < 200000 &&
+        fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn &&
+        fpEllerEsSituasjon.harHattInntekt &&
+        fpEllerEsSituasjon.borDuINorge
+    ) {
+        return 'morTjenerUnder200000KanHaRettFpEllerEs';
+    }
+    if (
+        (fpEllerEsSituasjon.situasjon === 'far' || 'medmor') &&
+        fpEllerEsSituasjon.lønnPerMåned * 12 > 200000 &&
+        fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn &&
+        fpEllerEsSituasjon.harHattInntekt &&
+        fpEllerEsSituasjon.borDuINorge
+    ) {
+        return 'farEllerMedmorKanHaRettFp';
+    }
+    if (
+        (fpEllerEsSituasjon.situasjon === 'far' || 'medmor') &&
+        fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn &&
+        fpEllerEsSituasjon.harHattInntekt &&
+        fpEllerEsSituasjon.borDuINorge
+    ) {
+        return 'farEllerMedmorKanHaRettFp';
+    }
+    if (
+        // TODO: må sjekke denne
+        (fpEllerEsSituasjon.situasjon === 'far' || 'medmor') &&
+        fpEllerEsSituasjon.borDuINorge
+    ) {
+        return 'farEllerMedmorKanHaRettEs';
+    }
+    if (
+        fpEllerEsSituasjon.situasjon === 'mor' &&
+        ((fpEllerEsSituasjon.lønnPerMåned * 12 < 200000 && fpEllerEsSituasjon.lønnPerMåned * 12 < minstelønn) ||
+            (!fpEllerEsSituasjon.harHattInntekt && fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn)) &&
+        fpEllerEsSituasjon.harHattInntekt &&
+        fpEllerEsSituasjon.borDuINorge
+    ) {
+        return 'morKaHaRettEs';
+    }
+    return 'harIkkeRett';
+};
 interface Props {
     fpEllerEsSituasjon: FpEllerEsSituasjon;
     satser: Satser;
@@ -25,26 +81,10 @@ const OppsummeringFpEllerEsSide: React.FunctionComponent<Props> = ({ fpEllerEsSi
     const intl = useIntl();
     const { ref } = useScrollBehaviour();
 
-    const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
-    const minstelønn = grunnbeløpet / 2;
+    const hvemHarRett = finnHvemSomHarRett(fpEllerEsSituasjon, satser);
 
-    const erMor = fpEllerEsSituasjon.situasjon === 'mor';
     const erFarEllerMedmor = fpEllerEsSituasjon.situasjon !== 'mor';
     console.log(erFarEllerMedmor);
-
-    // TODO: lag sjekk på om man har rett eller ikke
-    const harRett =
-        fpEllerEsSituasjon.borDuINorge &&
-        fpEllerEsSituasjon.harHattInntekt &&
-        fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn &&
-        fpEllerEsSituasjon.lønnPerMåned * 12 > 200000;
-    const harRettFpEllerEs =
-        fpEllerEsSituasjon.borDuINorge &&
-        fpEllerEsSituasjon.harHattInntekt &&
-        fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn &&
-        fpEllerEsSituasjon.lønnPerMåned * 12 < 200000;
-    const harRettEs = !harRett && !harRettFpEllerEs && fpEllerEsSituasjon.borDuINorge;
-    const harIkkeRett = !harRett && !harRettFpEllerEs && !harRettEs;
 
     return (
         <>
@@ -54,10 +94,22 @@ const OppsummeringFpEllerEsSide: React.FunctionComponent<Props> = ({ fpEllerEsSi
                 icon={<CalculatorIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
             >
                 <VStack gap="8">
-                    {erMor && harRett && <HarRett fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />}
-                    {harRettFpEllerEs && <HarRettFpEllerEs fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />}
-                    {harRettEs && <HarRettEs fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />}
-                    {harIkkeRett && <HarIkkeRett fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />}
+                    {hvemHarRett === 'morTjenerOver200000HarRett' && (
+                        <HarRett fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
+                    )}
+                    {hvemHarRett === 'farEllerMedmorKanHaRettFp' && (
+                        <HarRett fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
+                    )}
+                    {hvemHarRett === 'morTjenerUnder200000KanHaRettFpEllerEs' && (
+                        <HarRettFpEllerEs fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
+                    )}
+                    {hvemHarRett === 'morKaHaRettEs' ||
+                        (hvemHarRett === 'farEllerMedmorKanHaRettEs' && (
+                            <HarRettEs fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
+                        ))}
+                    {hvemHarRett === 'harIkkeRett' && (
+                        <HarIkkeRett fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
+                    )}
                 </VStack>
             </VeiviserPage>
             <HvorMyeOgHvaSkjerNåLinkPanel />

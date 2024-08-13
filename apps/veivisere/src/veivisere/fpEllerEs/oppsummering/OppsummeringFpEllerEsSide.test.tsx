@@ -6,11 +6,11 @@ import * as stories from './OppsummeringFpEllerEsSide.stories';
 const {
     MorHarTjentMerEnn200000OgHarRettTilFpOgEs,
     MorHarTjentMindreEnn200000OgHarRettTilFpOgEs,
-    FarHarTjentMindreEnn200000OgHarRettTilFpOgEs,
+    FarKanHaRettTilEs,
     MorHarIkkeRett,
     FarHarIkkeRett,
-    MorKanHaRettTilEs,
-    FarKanHaRettTilEs,
+    MorHarRettTilEs,
+    FarKanHaRettTilFp,
 } = composeStories(stories);
 
 describe('<OppsummeringFpEllerEsSide>', () => {
@@ -66,9 +66,9 @@ describe('<OppsummeringFpEllerEsSide>', () => {
     });
 
     it('skal vise annen formulering (kan) for far som har tjent mindre enn 200 000', async () => {
-        render(<FarHarTjentMindreEnn200000OgHarRettTilFpOgEs />);
+        render(<FarKanHaRettTilEs />);
         expect(await screen.findByText('Resultat')).toBeInTheDocument();
-        expect(screen.getByText('Du kan ha rett på foreldrepenger eller engangsstønad')).toBeInTheDocument();
+        expect(screen.getByText('Du kan ha rett på engangsstønad')).toBeInTheDocument();
         expect(screen.getByText('Hvorfor kan jeg ha rett på engangsstønad?')).toBeInTheDocument();
     });
 
@@ -131,7 +131,7 @@ describe('<OppsummeringFpEllerEsSide>', () => {
     });
 
     it('skal vise oppsummering for mor som har rett på engangsstønad', async () => {
-        render(<MorKanHaRettTilEs />);
+        render(<MorHarRettTilEs />);
         expect(await screen.findByText('Resultat')).toBeInTheDocument();
 
         expect(screen.getByText('Du har rett på engangsstønad')).toBeInTheDocument();
@@ -157,13 +157,11 @@ describe('<OppsummeringFpEllerEsSide>', () => {
     });
 
     it('skal vise annen formulering (kan) for far som har rett på engangsstønad', async () => {
-        render(<FarKanHaRettTilEs />);
+        render(<FarKanHaRettTilFp />);
         expect(await screen.findByText('Resultat')).toBeInTheDocument();
 
-        expect(screen.getByText('Du har rett på engangsstønad')).toBeInTheDocument();
-        expect(screen.getByText('Hva er engangsstønad?')).toBeInTheDocument();
+        expect(screen.getByText('Du kan ha rett på foreldrepenger')).toBeInTheDocument();
 
-        expect(screen.getByText('Hvorfor kan jeg ha rett på engangsstønad?')).toBeInTheDocument();
-        expect(screen.getByText('Hvorfor har jeg ikke rett på foreldrepenger?')).toBeInTheDocument();
+        expect(screen.getByText('Hvorfor kan jeg ha rett på foreldrepenger?')).toBeInTheDocument();
     });
 });

@@ -15,6 +15,7 @@ interface Props {
 }
 
 const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
+    const erMor = fpEllerEsSituasjon.situasjon === 'mor';
     return (
         <ExpansionCard aria-label="" size="small">
             <ExpansionCard.Header>
@@ -23,7 +24,11 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
                         <QuestionmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                     </IconCircleWrapper>
                     <ExpansionCard.Title size="small">
-                        <FormattedMessage id="HvorforHarJegRettPanel.HvorforHarJegRett" />
+                        {erMor ? (
+                            <FormattedMessage id="HvorforHarJegRettPanel.HvorforHarJegRett" />
+                        ) : (
+                            <FormattedMessage id="HvorforHarJegRettPanel.HvorforKanJegHaRett" />
+                        )}
                     </ExpansionCard.Title>
                 </HStack>
             </ExpansionCard.Header>

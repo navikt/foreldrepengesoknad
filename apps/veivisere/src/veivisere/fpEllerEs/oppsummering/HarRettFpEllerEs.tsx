@@ -22,7 +22,6 @@ interface Props {
 
 const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser }) => {
     const { goToRoute } = useVeiviserNavigator(ContextRoutes.FP_ELLER_ES);
-    const erMor = fpEllerEsSituasjon.situasjon === 'mor';
     const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
 
     const engangsstønad = finnEngangsstønad(satser, dayjs());
@@ -34,11 +33,7 @@ const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, 
                     <VStack gap="8" align="center">
                         <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden color="#66A3C4" />
                         <Heading size="medium" align="center" className="m-6">
-                            {erMor ? (
-                                <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRettFpEllerEs" />
-                            ) : (
-                                <FormattedMessage id="OppsummeringFpEllerEsSide.DuKanHaRettFpEllerEs" />
-                            )}
+                            <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRettFpEllerEs" />
                         </Heading>
                     </VStack>
                     <Box

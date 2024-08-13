@@ -22,6 +22,7 @@ const HarRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser })
     const { goToRoute } = useVeiviserNavigator(ContextRoutes.FP_ELLER_ES);
 
     const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
+    const erMor = fpEllerEsSituasjon.situasjon === 'mor';
 
     return (
         <>
@@ -29,8 +30,12 @@ const HarRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser })
                 <VStack gap="8">
                     <VStack gap="8" align="center">
                         <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden color="#66A3C4" />
-                        <Heading size="medium" className="m-6">
-                            <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRett" />
+                        <Heading size="medium" align="center" className="m-6">
+                            {erMor ? (
+                                <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRett" />
+                            ) : (
+                                <FormattedMessage id="OppsummeringFpEllerEsSide.DuKanHaRett" />
+                            )}
                         </Heading>
                     </VStack>
                     <Box background="bg-default" padding="4" borderRadius="large">
@@ -49,17 +54,19 @@ const HarRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser })
                     </Box>
                 </VStack>
             </Box>
-            <Infobox
-                icon={<InformationIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
-                color="gray"
-            >
-                <BodyShort>
-                    <FormattedMessage
-                        id="OppsummeringFpEllerEsSide.KanOgsåHarRettTilEs"
-                        values={{ b: (msg: any) => <b>{msg}</b> }}
-                    />
-                </BodyShort>
-            </Infobox>
+            {erMor && (
+                <Infobox
+                    icon={<InformationIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
+                    color="gray"
+                >
+                    <BodyShort>
+                        <FormattedMessage
+                            id="OppsummeringFpEllerEsSide.KanOgsåHarRettTilEs"
+                            values={{ b: (msg: any) => <b>{msg}</b> }}
+                        />
+                    </BodyShort>
+                </Infobox>
+            )}
             <HStack justify="space-around">
                 <Button type="submit">
                     <FormattedMessage id="OppsummeringFpEllerEsSide.SøkOmFp" />
@@ -68,7 +75,9 @@ const HarRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser })
                     <FormattedMessage id="OppsummeringFpEllerEsSide.MerOmFp" />
                 </Button>
             </HStack>
+
             <HvorforHarJegRettPanel fpEllerEsSituasjon={fpEllerEsSituasjon} grunnbeløpet={grunnbeløpet} />
+
             <HStack>
                 <Button
                     variant="secondary"

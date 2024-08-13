@@ -69,7 +69,10 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
                                 id="HvorforHarJegRettPanel.FolketrygdenLink"
                                 values={{
                                     a: (msg: any) => (
-                                        <a href="#" target="_blank">
+                                        <a
+                                            href="https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden"
+                                            target="_blank"
+                                        >
                                             {msg}
                                         </a>
                                     ),
