@@ -60,10 +60,7 @@ const HarRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser })
                     color="gray"
                 >
                     <BodyShort>
-                        <FormattedMessage
-                            id="OppsummeringFpEllerEsSide.KanOgsåHarRettTilEs"
-                            values={{ b: (msg: any) => <b>{msg}</b> }}
-                        />
+                        <FormattedMessage id="OppsummeringFpEllerEsSide.KanOgsåHarRettTilEs" />
                     </BodyShort>
                 </Infobox>
             )}

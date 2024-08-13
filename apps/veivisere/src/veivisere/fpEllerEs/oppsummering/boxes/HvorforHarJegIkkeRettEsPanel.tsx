@@ -40,21 +40,7 @@ const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerE
                             boxBodyText={<FormattedMessage id="HvorforHarJegRettPanel.DuHarOppgittInntekt" />}
                             erOppfylt={!!fpEllerEsSituasjon.harHattInntekt}
                         />
-                        <BodyShort>
-                            <FormattedMessage
-                                id="HvorforHarJegRettPanel.FolketrygdenLink"
-                                values={{
-                                    a: (msg: any) => (
-                                        <a
-                                            href="https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden"
-                                            target="_blank"
-                                        >
-                                            {msg}
-                                        </a>
-                                    ),
-                                }}
-                            />
-                        </BodyShort>
+
                         <KravinfoBoks
                             testId="harIkkeRettEs"
                             headerText={
@@ -77,7 +63,28 @@ const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerE
                         <KravinfoBoks
                             testId="harIkkeRettEs"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
-                            boxBodyText={<FormattedMessage id="HvorforHarJegRettPanel.OppgittAtDuBorINorge" />}
+                            boxBodyText={
+                                <>
+                                    <BodyShort>
+                                        <FormattedMessage id="HvorforHarJegRettPanel.OppgittAtDuBorINorge" />
+                                    </BodyShort>
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="HvorforHarJegRettPanel.FolketrygdenLink"
+                                            values={{
+                                                a: (msg: any) => (
+                                                    <a
+                                                        href="https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden"
+                                                        target="_blank"
+                                                    >
+                                                        {msg}
+                                                    </a>
+                                                ),
+                                            }}
+                                        />
+                                    </BodyShort>
+                                </>
+                            }
                             erOppfylt={fpEllerEsSituasjon.erDuMedlemAvFolketrygden}
                         />
                         {!erMor && (
