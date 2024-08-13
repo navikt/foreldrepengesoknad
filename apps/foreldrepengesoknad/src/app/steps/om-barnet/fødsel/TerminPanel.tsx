@@ -60,14 +60,14 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
                             isValidDate(
                                 intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.ugyldigDatoFormat' }),
                             ),
-                            (termindato) => {
-                                if (!erMindreEnn3UkerSiden(termindato)) {
+                            (termindatoVerdi) => {
+                                if (!erMindreEnn3UkerSiden(termindatoVerdi)) {
                                     return intl.formatMessage({
                                         id: 'valideringsfeil.omBarnet.termindato.forTidlig',
                                     });
                                 }
 
-                                if (!erIUke22Pluss3(termindato)) {
+                                if (!erIUke22Pluss3(termindatoVerdi)) {
                                     return intl.formatMessage({
                                         id: 'valideringsfeil.omBarnet.termindato.duMåVæreIUke22',
                                     });

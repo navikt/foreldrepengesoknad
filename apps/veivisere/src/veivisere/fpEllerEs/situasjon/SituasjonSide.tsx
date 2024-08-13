@@ -49,13 +49,15 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
         shouldUnregister: true,
     });
 
-    const situasjon = formMethods.watch('situasjon');
-    const erIArbeid = formMethods.watch('erIArbeid');
-    const harHattInntekt = formMethods.watch('harHattInntekt');
-    const lønnPerMåned = formMethods.watch('lønnPerMåned');
-    const borDuINorge = formMethods.watch('borDuINorge');
-    const harHattAndreInntekter = formMethods.watch('harHattAndreInntekter');
-    const erDuMedlemAvFolketrygden = formMethods.watch('erDuMedlemAvFolketrygden');
+    const {
+        situasjon,
+        erIArbeid,
+        harHattInntekt,
+        lønnPerMåned,
+        borDuINorge,
+        harHattAndreInntekter,
+        erDuMedlemAvFolketrygden,
+    } = formMethods.watch();
 
     const onSubmit = (formValues: FpEllerEsSituasjon) => {
         setFpEllerEsSituasjon(formValues);
@@ -145,13 +147,13 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                         <Infobox
                             header={<FormattedMessage id="SituasjonSide.JobbetMinst8av10" />}
                             icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                            color="green"
                         >
                             <BodyShort>
                                 <FormattedMessage id="SituasjonSide.JobbetMinst8av10Detaljer" />
                             </BodyShort>
                         </Infobox>
                     )}
-
                     {harHattInntekt && (
                         <VStack gap="4">
                             <BluePanel isDarkBlue={lønnPerMåned === undefined} shouldFadeIn>
@@ -187,6 +189,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                 />
                             }
                             icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                            color="green"
                         >
                             <BodyShort>
                                 <FormattedMessage
@@ -239,6 +242,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                         <Infobox
                             header={<FormattedMessage id="SituasjonSide.MåVæreMedlem" />}
                             icon={<EarthIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                            color="green"
                         >
                             <BodyShort>
                                 <FormattedMessage id="SituasjonSide.IkkeRett" />

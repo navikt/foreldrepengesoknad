@@ -1,6 +1,7 @@
-import SøknadRoutes from './routes';
-import isAvailable from './isAvailable';
 import { Forelder, Periode, Periodetype, StønadskontoType } from '@navikt/fp-common';
+
+import isAvailable from './isAvailable';
+import SøknadRoutes from './routes';
 
 describe('<isAvailable>', () => {
     it('skal vere tilgjengelig når rute er SØKERSITUASJON og en har godkjent vilkår', () => {
@@ -13,7 +14,7 @@ describe('<isAvailable>', () => {
         expect(erTilgjengelig).toBe(false);
     });
 
-    it('skal vere tilgjengelig når rute er OPPSUMMERING og søknad har uttaksplan der alle uttaksperioder har kontoer ', () => {
+    it('skal vere tilgjengelig når rute er OPPSUMMERING og søknad har uttaksplan der alle uttaksperioder har kontoer', () => {
         const uttaksplan = [
             {
                 type: Periodetype.Uttak,
@@ -29,7 +30,7 @@ describe('<isAvailable>', () => {
         const erTilgjengelig = isAvailable(SøknadRoutes.OPPSUMMERING, true, uttaksplan);
         expect(erTilgjengelig).toBe(true);
     });
-    it('skal ikke vere tilgjengelig når rute er OPPSUMMERING og søknad har uttaksplan der noen  uttaksperioder ikke har kontoer ', () => {
+    it('skal ikke vere tilgjengelig når rute er OPPSUMMERING og søknad har uttaksplan der noen  uttaksperioder ikke har kontoer', () => {
         const uttaksplan = [
             {
                 type: Periodetype.Uttak,

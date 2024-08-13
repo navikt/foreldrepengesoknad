@@ -109,7 +109,7 @@ const sendSøknad = (søknad: SøknadForInnsending | EndringssøknadForInnsendin
     });
 };
 
-const deleteMellomlagretSøknad = (fnr: string, signal?: AbortSignal) => {
+const deleteMellomlagretSøknad = (fnr?: string, signal?: AbortSignal) => {
     return getAxiosInstance(fnr).delete('/rest/storage/foreldrepenger', { withCredentials: true, signal });
 };
 

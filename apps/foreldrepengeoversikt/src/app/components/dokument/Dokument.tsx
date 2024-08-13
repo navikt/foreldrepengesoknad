@@ -13,6 +13,42 @@ interface Props {
     dokument: DokumentType;
 }
 
+function DokumentLenke({ dokument }: { readonly dokument: DokumentType }) {
+    const url = lagUrl(dokument);
+
+    return (
+        <>
+            <FileContent style={{ color: 'var(--a-text-action)' }} height={24} width={24} aria-hidden={true} />
+            <Link
+                href={url}
+                target="_blank"
+                style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: 'block', whiteSpace: 'nowrap' }}
+            >
+                {dokument.tittel}
+            </Link>
+        </>
+    );
+}
+
+function DokumentAvsender({ dokumentType }: { readonly dokumentType: DokumentTypeEnum }) {
+    const text = (() => {
+        switch (dokumentType) {
+            case DokumentTypeEnum.ARBEIDSGIVER:
+                return 'Arbeidsgiver';
+            case DokumentTypeEnum.UTGÅENDE_DOKUMENT:
+                return 'Nav';
+            case DokumentTypeEnum.INNGÅENDE_DOKUMENT:
+                return 'Du';
+        }
+    })();
+
+    return (
+        <Tag size="small" style={{ width: 'max-content', justifySelf: 'flex-end' }} variant="neutral">
+            {text}
+        </Tag>
+    );
+}
+
 const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
     const bem = bemUtils('dokument');
     const { type, mottatt } = dokument;
@@ -38,32 +74,5 @@ const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
         </div>
     );
 };
-
-function DokumentLenke({ dokument }: { readonly dokument: DokumentType }) {
-    const url = lagUrl(dokument);
-
-    return (
-        <>
-            <FileContent style={{ color: 'var(--a-text-action)' }} height={24} width={24} aria-hidden={true} />
-            <Link
-                href={url}
-                target="_blank"
-                style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: 'block', whiteSpace: 'nowrap' }}
-            >
-                {dokument.tittel}
-            </Link>
-        </>
-    );
-}
-
-function DokumentAvsender({ dokumentType }: { readonly dokumentType: DokumentTypeEnum }) {
-    const text = dokumentType === DokumentTypeEnum.INNGÅENDE_DOKUMENT ? 'Arbeidsgiver' : 'NAV';
-
-    return (
-        <Tag size="small" style={{ width: 'max-content', justifySelf: 'flex-end' }} variant="neutral">
-            {text}
-        </Tag>
-    );
-}
 
 export default Dokument;

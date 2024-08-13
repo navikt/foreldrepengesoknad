@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { LocaleAll } from '@navikt/fp-types';
-import { BlueHeading, IconCircleWrapper, LanguageToggleNew, Page } from '@navikt/fp-ui';
+import { BlueHeading, IconCircleWrapper, Page } from '@navikt/fp-ui';
 
 import styles from './frontPage.module.css';
 
@@ -22,8 +22,6 @@ interface Props {
 }
 
 const FrontPage: React.FunctionComponent<Props> = ({
-    locale,
-    changeLocale,
     children,
     titleLabel,
     minutesLabel,
@@ -38,9 +36,9 @@ const FrontPage: React.FunctionComponent<Props> = ({
                 <Show below="md">
                     <BlueHeading isDarkBlue>
                         <VStack gap="4" align="center">
-                            <div className={styles.languageToggle}>
+                            {/* <div className={styles.languageToggle}>
                                 <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
-                            </div>
+                            </div> */}
                             <IconCircleWrapper color="darkBlue" size="xl">
                                 {icon}
                                 {!icon && <CalendarIcon height={28} width={28} fontSize="1.5rem" aria-hidden />}
@@ -92,13 +90,13 @@ const FrontPage: React.FunctionComponent<Props> = ({
                 </HStack>
                 {childrenBelowStartButton && <VStack gap={{ xs: '2', sm: '5' }}>{children}</VStack>}
             </VStack>
-            <Show above="md" asChild>
+            {/* <Show above="md" asChild>
                 <HStack justify="center">
                     <div className={styles.languageToggle}>
                         <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
                     </div>
                 </HStack>
-            </Show>
+            </Show> */}
         </VStack>
     </Page>
 );

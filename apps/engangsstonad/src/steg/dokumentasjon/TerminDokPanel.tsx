@@ -3,8 +3,6 @@ import minMax from 'dayjs/plugin/minMax';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BarnetErIkkeFødt } from 'types/OmBarnet';
 
-import { BodyLong, BodyShort, VStack } from '@navikt/ds-react';
-
 import { getSaveAttachment } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Datepicker } from '@navikt/fp-form-hooks';
@@ -56,26 +54,15 @@ const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAtt
                     isUtstedtDatoIUke22(omBarnet.termindato, intl),
                 ]}
             />
-            <VStack gap="4">
-                <div>
-                    <BodyShort style={{ fontWeight: 'bold' }}>
-                        <FormattedMessage id="TerminDokPanel.Vedlegg.Terminbekreftelse" />
-                    </BodyShort>
-                    <BodyLong>
-                        <FormattedMessage id="TerminDokPanel.Vedlegg.Terminbekreftelse.Info" />
-                    </BodyLong>
-                </div>
-                <BodyLong>
-                    <FormattedMessage id="TerminDokPanel.Dok.Storrelse" />
-                </BodyLong>
-                <FileUploader
-                    attachmentType={AttachmentType.TERMINBEKREFTELSE}
-                    skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
-                    existingAttachments={attachments}
-                    updateAttachments={updateAttachments}
-                    saveAttachment={getSaveAttachment('engangsstonad')}
-                />
-            </VStack>
+            <FileUploader
+                label={intl.formatMessage({ id: 'TerminDokPanel.Vedlegg.Terminbekreftelse' })}
+                description={<FormattedMessage id="TerminDokPanel.Vedlegg.Terminbekreftelse.Info" />}
+                attachmentType={AttachmentType.TERMINBEKREFTELSE}
+                skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
+                existingAttachments={attachments}
+                updateAttachments={updateAttachments}
+                saveAttachment={getSaveAttachment('engangsstonad')}
+            />
         </>
     );
 };

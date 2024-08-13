@@ -1,14 +1,16 @@
 import { extract } from '@formatjs/cli-lib';
 import glob from 'fast-glob';
 
-const nb = require('../nb_NO.json');
-const nn = require('../nn_NO.json');
+import nb from '../nb_NO.json';
+import nn from '../nn_NO.json';
 
 describe('intl tests', () => {
     it('Bokmål and nynorsk files should have exactly the same keys', () => {
         const missingKeysBokmål = Object.keys(nb).filter((key) => !Object.keys(nn).includes(key));
         const missingKeysNynorsk = Object.keys(nn).filter((key) => !Object.keys(nb).includes(key));
+        // eslint-disable-next-line no-console
         missingKeysBokmål.forEach((key) => console.log('key ' + key + ' not found in nn_NO.json.'));
+        // eslint-disable-next-line no-console
         missingKeysNynorsk.forEach((key) => console.log('key ' + key + ' not found in nb_NO.json'));
 
         expect(missingKeysBokmål.length).toBe(0);
@@ -26,8 +28,10 @@ describe('intl tests', () => {
 
         const missingKeysBokmål = allTranslationsCodes.filter((key) => !Object.keys(nb).includes(key));
         if (missingKeysBokmål.length > 0) {
+            // eslint-disable-next-line no-console
             console.log('Not found in nb_NO.json:');
         }
+        // eslint-disable-next-line no-console
         missingKeysBokmål.forEach((key) => console.log('key ' + key));
         expect(missingKeysBokmål.length).toBe(0);
     });
@@ -43,8 +47,10 @@ describe('intl tests', () => {
             return !allTranslationsCode.includes(key);
         });
         if (missingKeysCode.length > 0) {
+            // eslint-disable-next-line no-console
             console.log('Not found in code:');
         }
+        // eslint-disable-next-line no-console
         missingKeysCode.forEach((key) => console.log('key ' + key));
         expect(missingKeysCode.length).toBe(0);
     });

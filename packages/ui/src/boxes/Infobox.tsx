@@ -1,33 +1,43 @@
 import React from 'react';
 
-import { Box, HStack, Heading, VStack } from '@navikt/ds-react';
+import { HStack, Heading, VStack } from '@navikt/ds-react';
 
 import HorizontalLine from '../horizontalLine/HorizontalLine';
-import IconCircleWrapper from '../iconCircle/IconCircleWrapper';
+import IconCircleWrapper, { CircleColor } from '../iconCircle/IconCircleWrapper';
 import styles from './infobox.module.css';
+
+type InfoboxColor = 'green' | 'blue' | 'gray';
+
+const getIconColor = (color: InfoboxColor): CircleColor => {
+    if (color === 'gray') {
+        return 'gray';
+    }
+    return color === 'green' ? 'darkGreen' : 'darkBlue';
+};
+
+const BOX_BACKGROUND = {
+    gray: styles.gray,
+    green: styles.green,
+    blue: styles.blue,
+};
 
 interface Props {
     header?: string | React.ReactNode;
     children: React.ReactNode;
     icon?: React.ReactNode;
-    isGray?: boolean;
+    color: InfoboxColor;
     shouldFadeIn?: boolean;
     useHorizontalDivider?: boolean;
 }
-const Infoboks: React.FC<Props> = ({
+const Infobox: React.FC<Props> = ({
     header,
     children,
     icon,
-    isGray = false,
+    color = 'green',
     shouldFadeIn = false,
     useHorizontalDivider = false,
 }) => (
-    <Box
-        className={shouldFadeIn ? styles.box : undefined}
-        background={isGray ? 'bg-subtle' : 'surface-alt-2-moderate'}
-        padding="4"
-        borderRadius="large"
-    >
+    <div className={`${styles.box} ${shouldFadeIn ? styles.animation : undefined} ${BOX_BACKGROUND[color]}`}>
         <VStack gap="2">
             {(header || (!header && icon)) && (
                 <HStack wrap={false} gap="4" justify="space-between" align={header ? 'center' : 'start'}>
@@ -38,7 +48,7 @@ const Infoboks: React.FC<Props> = ({
                     )}
                     {!header && children}
                     {icon && (
-                        <IconCircleWrapper size="medium" color={isGray ? 'gray' : 'darkGreen'}>
+                        <IconCircleWrapper size="medium" color={getIconColor(color)}>
                             {icon}
                         </IconCircleWrapper>
                     )}
@@ -47,7 +57,7 @@ const Infoboks: React.FC<Props> = ({
             {header && useHorizontalDivider && <HorizontalLine isBlue />}
             {(header || (!header && !icon)) && <div className={styles.leftCol}>{children}</div>}
         </VStack>
-    </Box>
+    </div>
 );
 
-export default Infoboks;
+export default Infobox;

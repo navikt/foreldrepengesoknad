@@ -312,11 +312,13 @@ describe('<Inntektsinformasjon>', () => {
 
         expect(
             screen.getByText(
-                'Hva har du hatt i næringsresultat før skatt de siste 12 månedene? Hvis virksomheten har vart i kortere tid, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.',
+                'Hva har du hatt i næringsresultat før skatt de siste 12 månedene? Hvis virksomheten' +
+                    ' har vart i kortere tid, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.',
             ),
         ).toBeInTheDocument();
         const næringsresultatText = screen.getByLabelText(
-            'Hva har du hatt i næringsresultat før skatt de siste 12 månedene? Hvis virksomheten har vart i kortere tid, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.',
+            'Hva har du hatt i næringsresultat før skatt de siste 12 månedene? Hvis virksomheten har vart' +
+                ' i kortere tid, kan du bruke denne perioden og regne om til årsinntekt. Oppgi beløpet i hele kroner.',
         );
         await userEvent.type(næringsresultatText, '100000');
 

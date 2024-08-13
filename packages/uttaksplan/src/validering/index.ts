@@ -2,6 +2,7 @@ import { førsteOktober2021ReglerGjelder } from '@navikt/fp-common';
 
 import { burdeKanskjeSøkeGraderingTest } from './tester/burdeKanskjeSøkeGraderingTest';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './tester/erUttaksmengdeForFarMedmorForHøyTest';
+import { erUttaksplanBareForeldrepengerFørFødsel } from './tester/erUttaksplanBareForeldrepengerFørFødsel';
 import { erUttaksplanBareOppholdTest } from './tester/erUttaksplanBareOppholdTest';
 import { erUttaksplanGraderingStørreEnnSamtidigUttakTest } from './tester/erUttaksplanGraderingStørreEnnSamtidigUttakTest';
 import { farMedMorHarRettPåUttakRundtFødselTest } from './tester/farMedMorHarRettPåUttakRundtFødselTest';
@@ -67,6 +68,7 @@ export enum UttaksplanRegelKey {
     'inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest' = 'inneholderUttaksperiodeMedUbservartSpmOmFlerbarnsdagerTest',
     'overstigerMinsterettVedToTette' = 'overstigerMinsterettVedToTette',
     'harPerioderEtterFørsteStønadsdagNesteBarnDerToTette' = 'harPerioderEtterFørsteStønadsdagNesteBarnDerToTette',
+    'uttaksplanErBareForeldrepengerFørFødsel' = 'uttaksplanErBareForeldrepengerFørFødsel',
 }
 
 export type RegelKey = UttaksplanRegelKey | PeriodeValiderRegelKey;
@@ -111,6 +113,11 @@ const uttaksplanValideringRegler = (familiehendelsesdato: Date): Regel[] => [
         key: UttaksplanRegelKey.uttaksplanErBareOpphold,
         alvorlighet: RegelAlvorlighet.FEIL,
         test: erUttaksplanBareOppholdTest,
+    },
+    {
+        key: UttaksplanRegelKey.uttaksplanErBareForeldrepengerFørFødsel,
+        alvorlighet: RegelAlvorlighet.FEIL,
+        test: erUttaksplanBareForeldrepengerFørFødsel,
     },
     {
         key: UttaksplanRegelKey.uttaksplanStarterMedOpphold,

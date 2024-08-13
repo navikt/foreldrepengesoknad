@@ -65,16 +65,16 @@ const UtsettelseEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
         onBekreft(values);
     };
 
-    const getDagValue = (uker: number, dager: number): number => {
-        if (dager >= 5) {
+    const getDagValue = (ukerValue: number, dagerValue: number): number => {
+        if (dagerValue >= 5) {
             return 0;
         }
 
-        if (uker === 0 && dager === 0) {
+        if (ukerValue === 0 && dagerValue === 0) {
             return 1;
         }
 
-        return dager;
+        return dagerValue;
     };
 
     return (

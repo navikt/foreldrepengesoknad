@@ -3,11 +3,10 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 
-import { IntlProvider, uiMessages } from '@navikt/fp-ui';
+import { ByttBrowserModal, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
 
 import Foreldrepengeoversikt from './Foreldrepengeoversikt';
-import ByttBrowserModal from './components/bytt-browser-modal/ByttBrowserModal';
 import ErrorBoundary from './components/error-boundary/ErrorBoundary';
 import nbMessages from './intl/nb_NO.json';
 

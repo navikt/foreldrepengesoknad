@@ -20,12 +20,13 @@ describe('<EttersendingPage>', () => {
 
         expect(
             await screen.findByText(
-                'Dokumentene du laster opp vil bli lagt ved søknaden din. Du må velge hva dokumentene inneholder for at saksbehandlerene i NAV skal kunne behandle saken din.',
+                'Dokumentene du laster opp vil bli lagt ved søknaden din. ' +
+                    'Du må velge hva dokumentene inneholder for at saksbehandlerene i NAV skal kunne behandle saken din.',
             ),
         ).toBeInTheDocument();
 
         await userEvent.selectOptions(utils.getByLabelText('Hva inneholder dokumentene dine?'), 'I000060');
 
-        expect(screen.getByText('Last opp fil')).toBeInTheDocument();
+        expect(screen.getAllByText('Last opp dokumenter')).toHaveLength(3);
     });
 });

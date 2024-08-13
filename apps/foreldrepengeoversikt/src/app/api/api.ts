@@ -54,7 +54,8 @@ export const hentAnnenPartsVedtakOptions = (body: AnnenPartsVedtakRequestBody) =
         queryFn: async () => {
             try {
                 // Det funker ikke å bruke ky.post() her.
-                // Det virker som at siden måten Adrum wrapper alle requests på, gjør at det skjer noe funny-business på et eller annet punkt som fjerner content-type...
+                // Det virker som at siden måten Adrum wrapper alle requests på, gjør at det skjer noe funny-business på et
+                // eller annet punkt som fjerner content-type...
                 // Undersøke videre senere, gjør det slik for nå for å rette feil.
                 const response = await fetch(`/rest/innsyn/v2/annenPartVedtak`, {
                     method: 'POST',

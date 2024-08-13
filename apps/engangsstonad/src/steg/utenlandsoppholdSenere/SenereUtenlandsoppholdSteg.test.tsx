@@ -19,7 +19,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
         const utils = render(<Default gåTilNesteSide={nesteStegFn} mellomlagreOgNaviger={mellomlagreOgNaviger} />);
 
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
-        expect(screen.getByText('Skal bo i utlandet')).toBeInTheDocument();
+        expect(screen.getAllByText('Skal bo i utlandet')).toHaveLength(2);
         expect(screen.getByText('Steg 4 av 5')).toBeInTheDocument();
 
         await userEvent.selectOptions(utils.getByLabelText('Hvilket land skal du bo i?'), 'CA');

@@ -1,8 +1,10 @@
 import { DekningsgradDTO, Sak } from '@navikt/fp-common';
-import { getBarnFraNesteSak, getSelectableBarnOptions } from './velkommenUtils';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
-import { ValgtBarn, ValgtBarnType } from 'app/types/ValgtBarn';
 import { SøkerBarn } from '@navikt/fp-types';
+
+import { ValgtBarn, ValgtBarnType } from 'app/types/ValgtBarn';
+
+import { getBarnFraNesteSak, getSelectableBarnOptions } from './velkommenUtils';
 
 const fødselsdato = '2022-01-01';
 const fødselsdatoDate = fødselsdato;
@@ -62,7 +64,7 @@ describe('velkommenUtils - getSelectableBarnOptions', () => {
         expect(result[0].fornavn).toEqual(['Grønn ']);
         expect(result[0].fnr).toEqual(['123456789']);
     });
-    it('skal returnere to barn hvis barn fra PDL og barn ikke har samme fødselsdato som saken ', async () => {
+    it('skal returnere to barn hvis barn fra PDL og barn ikke har samme fødselsdato som saken', async () => {
         const result = getSelectableBarnOptions([sak], [barnFraPDL2] as SøkerBarn[]);
         expect(result.length).toBe(2);
         expect(result[0].fornavn).toEqual(undefined);

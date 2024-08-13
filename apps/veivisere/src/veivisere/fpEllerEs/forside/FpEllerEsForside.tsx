@@ -42,7 +42,7 @@ const FpEllerEsForside: React.FunctionComponent<Props> = ({ locale, changeLocale
         >
             <Infobox
                 header={<FormattedMessage id="FpEllerEsForside.Foreldrepenger" />}
-                isGray
+                color="gray"
                 icon={<InformationIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
             >
                 <BodyShort>
@@ -51,7 +51,7 @@ const FpEllerEsForside: React.FunctionComponent<Props> = ({ locale, changeLocale
             </Infobox>
             <Infobox
                 header={<FormattedMessage id="FpEllerEsForside.Engangsstønad" />}
-                isGray
+                color="gray"
                 icon={<InformationIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
             >
                 <BodyShort>

@@ -7,11 +7,16 @@ import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { IntlProvider } from '@navikt/fp-ui';
 
+import nbMessages from '../intl/messages/nb_NO.json';
 import { ContextDataType, PlanleggerDataContext } from './PlanleggerDataContext';
 import { PlanleggerRoutes } from './routes';
 import useStepData from './useStepData';
 
+const MESSAGES_GROUPED_BY_LOCALE = {
+    nb: nbMessages,
+};
 const getWrapper =
     (
         route: PlanleggerRoutes,
@@ -20,17 +25,19 @@ const getWrapper =
         arbeidssituasjon?: Arbeidssituasjon,
     ) =>
     ({ children }: { children: ReactNode }) => (
-        <MemoryRouter initialEntries={[route]}>
-            <PlanleggerDataContext
-                initialState={{
-                    [ContextDataType.OM_BARNET]: barnet,
-                    [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
-                    [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
-                }}
-            >
-                {children}
-            </PlanleggerDataContext>
-        </MemoryRouter>
+        <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
+            <MemoryRouter initialEntries={[route]}>
+                <PlanleggerDataContext
+                    initialState={{
+                        [ContextDataType.OM_BARNET]: barnet,
+                        [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
+                        [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
+                    }}
+                >
+                    {children}
+                </PlanleggerDataContext>
+            </MemoryRouter>
+        </IntlProvider>
     );
 
 describe('useStepData', () => {
@@ -42,30 +49,37 @@ describe('useStepData', () => {
                 {
                     id: '/hvem-planlegger',
                     isSelected: false,
+                    label: 'Hvem planlegger?',
                 },
                 {
                     id: '/om-barnet',
                     isSelected: false,
+                    label: 'Barnet',
                 },
                 {
                     id: '/arbeidssituasjon',
                     isSelected: false,
+                    label: 'Arbeidssituasjon',
                 },
                 {
                     id: '/hvor-lenge',
                     isSelected: false,
+                    label: 'Hvor lenge',
                 },
                 {
                     id: '/fordeling',
                     isSelected: false,
+                    label: 'Fordeling',
                 },
                 {
                     id: '/planen-deres',
                     isSelected: false,
+                    label: 'Planen',
                 },
                 {
                     id: '/oppsummering',
                     isSelected: false,
+                    label: 'Oppsummering',
                 },
             ]),
         );
@@ -89,30 +103,37 @@ describe('useStepData', () => {
                 {
                     id: '/hvem-planlegger',
                     isSelected: false,
+                    label: 'Hvem planlegger?',
                 },
                 {
                     id: '/om-barnet',
                     isSelected: false,
+                    label: 'Barnet',
                 },
                 {
                     id: '/arbeidssituasjon',
                     isSelected: false,
+                    label: 'Arbeidssituasjon',
                 },
                 {
                     id: '/hvor-lenge',
                     isSelected: false,
+                    label: 'Hvor lenge',
                 },
                 {
                     id: '/fordeling',
                     isSelected: false,
+                    label: 'Fordeling',
                 },
                 {
                     id: '/planen-deres',
                     isSelected: false,
+                    label: 'Planen',
                 },
                 {
                     id: '/oppsummering',
                     isSelected: true,
+                    label: 'Oppsummering',
                 },
             ]),
         );
@@ -136,14 +157,17 @@ describe('useStepData', () => {
                 {
                     id: '/hvem-planlegger',
                     isSelected: false,
+                    label: 'Hvem planlegger?',
                 },
                 {
                     id: '/om-barnet',
                     isSelected: false,
+                    label: 'Barnet',
                 },
                 {
                     id: '/oppsummering',
                     isSelected: true,
+                    label: 'Oppsummering',
                 },
             ]),
         );
@@ -176,30 +200,37 @@ describe('useStepData', () => {
                 {
                     id: '/hvem-planlegger',
                     isSelected: false,
+                    label: 'Hvem planlegger?',
                 },
                 {
                     id: '/om-barnet',
                     isSelected: false,
+                    label: 'Barnet',
                 },
                 {
                     id: '/arbeidssituasjon',
                     isSelected: false,
+                    label: 'Arbeidssituasjon',
                 },
                 {
                     id: '/hvor-lenge',
                     isSelected: false,
+                    label: 'Hvor lenge',
                 },
                 {
                     id: '/fordeling',
                     isSelected: false,
+                    label: 'Fordeling',
                 },
                 {
                     id: '/planen-deres',
                     isSelected: false,
+                    label: 'Planen',
                 },
                 {
                     id: '/oppsummering',
                     isSelected: true,
+                    label: 'Oppsummering',
                 },
             ]),
         );
@@ -232,26 +263,32 @@ describe('useStepData', () => {
                 {
                     id: '/hvem-planlegger',
                     isSelected: false,
+                    label: 'Hvem planlegger?',
                 },
                 {
                     id: '/om-barnet',
                     isSelected: false,
+                    label: 'Barnet',
                 },
                 {
                     id: '/arbeidssituasjon',
                     isSelected: false,
+                    label: 'Arbeidssituasjon',
                 },
                 {
                     id: '/hvor-lenge',
                     isSelected: false,
+                    label: 'Hvor lenge',
                 },
                 {
                     id: '/planen-deres',
                     isSelected: false,
+                    label: 'Planen',
                 },
                 {
                     id: '/oppsummering',
                     isSelected: true,
+                    label: 'Oppsummering',
                 },
             ]),
         );
@@ -283,26 +320,32 @@ describe('useStepData', () => {
                 {
                     id: '/hvem-planlegger',
                     isSelected: false,
+                    label: 'Hvem planlegger?',
                 },
                 {
                     id: '/om-barnet',
                     isSelected: false,
+                    label: 'Barnet',
                 },
                 {
                     id: '/arbeidssituasjon',
                     isSelected: false,
+                    label: 'Arbeidssituasjon',
                 },
                 {
                     id: '/hvor-lenge',
                     isSelected: false,
+                    label: 'Hvor lenge',
                 },
                 {
                     id: '/planen-deres',
                     isSelected: false,
+                    label: 'Planen',
                 },
                 {
                     id: '/oppsummering',
                     isSelected: true,
+                    label: 'Oppsummering',
                 },
             ]),
         );
@@ -335,26 +378,32 @@ describe('useStepData', () => {
                 {
                     id: '/hvem-planlegger',
                     isSelected: false,
+                    label: 'Hvem planlegger?',
                 },
                 {
                     id: '/om-barnet',
                     isSelected: false,
+                    label: 'Barnet',
                 },
                 {
                     id: '/arbeidssituasjon',
                     isSelected: false,
+                    label: 'Arbeidssituasjon',
                 },
                 {
                     id: '/hvor-lenge',
                     isSelected: false,
+                    label: 'Hvor lenge',
                 },
                 {
                     id: '/planen-deres',
                     isSelected: false,
+                    label: 'Planen',
                 },
                 {
                     id: '/oppsummering',
                     isSelected: true,
+                    label: 'Oppsummering',
                 },
             ]),
         );
@@ -387,18 +436,22 @@ describe('useStepData', () => {
                 {
                     id: '/hvem-planlegger',
                     isSelected: false,
+                    label: 'Hvem planlegger?',
                 },
                 {
                     id: '/om-barnet',
                     isSelected: false,
+                    label: 'Barnet',
                 },
                 {
                     id: '/arbeidssituasjon',
                     isSelected: false,
+                    label: 'Arbeidssituasjon',
                 },
                 {
                     id: '/oppsummering',
                     isSelected: true,
+                    label: 'Oppsummering',
                 },
             ]),
         );

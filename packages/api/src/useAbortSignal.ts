@@ -5,7 +5,6 @@ const useAbortSignal = () => {
 
     useEffect(() => {
         return () => {
-            // eslint-disable-next-line react-hooks/exhaustive-deps
             controller.current.abort();
         };
     }, []);

@@ -111,14 +111,14 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const isDesktop = useMedia('screen and (min-width: 480)');
     return (
         <form>
-            <PlanleggerStepPage steps={stepConfig}>
+            <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
                 <VStack gap="10">
                     <Heading size="medium" spacing level="2">
                         <FormattedMessage id="OversiktSteg.Tittel" values={{ erAleneforsørger }} />
                     </Heading>
                     <Infobox
                         header={<FormattedMessage id="OversiktSteg.Infoboks.Utkast" />}
-                        isGray
+                        color="gray"
                         icon={<InformationIcon height={24} width={24} fontSize="1-5rem" aria-hidden />}
                     >
                         <BodyLong>
@@ -131,6 +131,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             icon={
                                 <PersonGroupIcon height={24} width={24} fontSize="1.5rem" color="#0067C5" aria-hidden />
                             }
+                            color="green"
                         >
                             <div>
                                 <BodyShort>

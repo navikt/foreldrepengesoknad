@@ -14,15 +14,14 @@
                 "fnr": "16500479977"
             },
             "familiehendelse": {
-                "fødselsdato": "2024-01-22",
-                "termindato": "2024-01-16",
+                "termindato": "2024-03-13",
                 "antallBarn": 1
             },
             "gjeldendeVedtak": {
                 "perioder": [
                     {
-                        "fom": "2024-01-01",
-                        "tom": "2024-01-19",
+                        "fom": "2024-02-21",
+                        "tom": "2024-03-12",
                         "kontoType": "FORELDREPENGER_FØR_FØDSEL",
                         "resultat": {
                             "innvilget": true,
@@ -33,31 +32,33 @@
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2024-04-22",
-                        "tom": "2024-04-26",
-                        "kontoType": "FEDREKVOTE",
+                        "fom": "2024-03-13",
+                        "tom": "2024-04-24",
+                        "kontoType": "MØDREKVOTE",
                         "resultat": {
                             "innvilget": true,
                             "trekkerMinsterett": true,
                             "trekkerDager": true,
                             "årsak": "ANNET"
                         },
-                        "gradering": {
-                            "arbeidstidprosent": 50,
-                            "aktivitet": {
-                                "type": "FRILANS",
-                                "arbeidsgiver": {
-                                    "id": "string",
-                                    "type": "PRIVAT"
-                                }
-                            }
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2024-04-25",
+                        "tom": "2024-05-26",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
                         },
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2024-04-22",
-                        "tom": "2024-04-26",
-                        " utsettelseÅrsak": "HV_ØVELSE",
+                        "fom": "2024-05-27",
+                        "tom": "2024-06-26",
+                        "kontoType": "FELLESPERIODE",
                         "resultat": {
                             "innvilget": true,
                             "trekkerMinsterett": true,
@@ -68,11 +69,6 @@
                     }
                 ]
             },
-            "barn": [
-                {
-                    "fnr": "22412450632"
-                }
-            ],
             "dekningsgrad": "HUNDRE",
             "oppdatertTidspunkt": "2024-02-28T21:01:11.086"
         }

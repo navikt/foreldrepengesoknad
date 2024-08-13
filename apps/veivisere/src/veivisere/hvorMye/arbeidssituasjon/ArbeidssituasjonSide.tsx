@@ -119,7 +119,6 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                     </VStack>
                     {formValues.erSelvstendigNæringsdrivende && (
                         <Infobox
-                            isGray
                             icon={
                                 <InformationIcon
                                     height={24}
@@ -129,6 +128,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                     aria-hidden
                                 />
                             }
+                            color="gray"
                         >
                             <VStack gap="6">
                                 <BodyShort>
@@ -138,10 +138,9 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                     <FormattedMessage id="ArbeidssituasjonSide.LesOm" />
                                     <Link
                                         inlineText
-                                        href={links.næringsdrivendeInfoBoks}
+                                        href={links.selvstendigNæringsdrivendeHvorMye}
                                         className="lenke"
                                         rel="noreferrer"
-                                        target="_blank"
                                     >
                                         <FormattedMessage id="ArbeidssituasjonSide.Lenke" />
                                     </Link>

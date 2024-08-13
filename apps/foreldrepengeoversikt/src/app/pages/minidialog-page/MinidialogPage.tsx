@@ -39,6 +39,8 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr }) => {
     useSetBackgroundColor('blue');
 
     const { mutate, isPending, isError, isSuccess } = useMutation({
+        //TODO FIX eslint-feil
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         mutationFn: ({ ettersendelse, fnr }: { ettersendelse: EttersendingDto; fnr: string }) =>
             sendEttersending(ettersendelse, fnr),
     });

@@ -415,7 +415,7 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(within(mai2005).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(12);
     });
 
-    it('skal vise korrekt data for fødsel - far og far søker - kun biologisk far har rett', async () => {
+    it('skal vise korrekt data for fødsel - barnet er født dagen etter termindato', async () => {
         render(<BarnetErFødtDagenEtterTermindato />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();

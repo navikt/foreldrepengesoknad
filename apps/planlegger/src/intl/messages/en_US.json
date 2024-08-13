@@ -187,6 +187,7 @@
     "OversiktSteg.ForeldrepengerSrOnly": "Parental benefit starts {startdato}, ends {sluttdato} ",
     "OversiktSteg.UtenAktivitetskrav": "Without requirements",
     "OversiktSteg.MedAktivitetskrav": "With requirements",
+    "PlanenDeresSteg.Tittel": "Plan",
     "FamiliehendelseLabel.Termindato": "Due date",
     "FamiliehendelseLabel.Fødselsdato": "Date of birth",
     "FamiliehendelseLabel.Omsorgsovertakelse": "Date of care transfer",

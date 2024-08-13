@@ -31,12 +31,12 @@ const useSendSøknad = (svpApi: AxiosInstance, setKvittering: (kvittering: Kvitt
                     true,
                     abortSignal,
                 );
-            } catch (error: unknown) {
-                if (isApiError(error)) {
-                    if (error instanceof ApiGeneralError) {
-                        Sentry.captureMessage(error.message);
+            } catch (postError: unknown) {
+                if (isApiError(postError)) {
+                    if (postError instanceof ApiGeneralError) {
+                        Sentry.captureMessage(postError.message);
                     }
-                    setError(error);
+                    setError(postError);
                 } else {
                     throw new Error('SendSøknad - This should never happen');
                 }
@@ -45,7 +45,7 @@ const useSendSøknad = (svpApi: AxiosInstance, setKvittering: (kvittering: Kvitt
             if (kvittering) {
                 try {
                     await deleteData(svpApi, '/rest/storage/svangerskapspenger', FEIL_VED_INNSENDING, abortSignal);
-                } catch (error) {
+                } catch (deleteError) {
                     // Vi bryr oss ikke om feil her. Logges bare i backend
                 }
 

@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 import FormikCheckboxGroup, { FormikCheckboxGroupProps } from './formik-checkbox-group/FormikCheckboxGroup';
 import FormikCheckbox, { FormikCheckboxProps } from './formik-checkbox/FormikCheckbox';
 import FormikConfirmationCheckbox, {
@@ -7,18 +6,18 @@ import FormikConfirmationCheckbox, {
 import FormikCountrySelect, { FormikCountrySelectProps } from './formik-country-select/FormikCountrySelect';
 import FormikDateRangePicker, { FormikDateRangePickerProps } from './formik-date-range-picker/FormikDateRangePicker';
 import FormikDatepicker, { FormikDatepickerProps } from './formik-datepicker/FormikDatepicker';
+import FormikFileDropInput, { FormikFileDropInputProps } from './formik-file-drop-input/FormikFileDropInput';
 import FormikFileInput, { FormikFileInputProps } from './formik-file-input/FormikFileInput';
 import FormikInputGroup, { FormikInputGroupProps } from './formik-input-group/FormikInputGroup';
+import FormikNumberInput, { FormikNumberInputProps } from './formik-number-input/FormikNumberInput';
 import FormikRadioGroup, { FormikRadioGroupProps } from './formik-radio-group/FormikRadioGroup';
 import FormikSelect, { FormikSelectProps } from './formik-select/FormikSelect';
 import FormikTextField, { FormikTextFieldProps } from './formik-text-field/FormikTextField';
-import FormikNumberInput, { FormikNumberInputProps } from './formik-number-input/FormikNumberInput';
 import FormikTextarea, { FormikTextareaProps } from './formik-textarea/FormikTextarea';
 import FormikTimeInput, { FormikTimeInputProps } from './formik-time-input/FormikTimeInput';
 import FormikYesOrNoQuestion, { FormikYesOrNoQuestionProps } from './formik-yes-or-no-question/FormikYesOrNoQuestion';
 import TypedFormikForm, { TypedFormikFormProps } from './typed-formik-form/TypedFormikForm';
 import TypedFormikWrapper, { TypedFormikWrapperProps } from './typed-formik-wrapper/TypedFormikWrapper';
-import FormikFileDropInput, { FormikFileDropInputProps } from './formik-file-drop-input/FormikFileDropInput';
 
 export interface TypedFormComponents<FieldName, FormValues, ErrorType> {
     Checkbox: (props: FormikCheckboxProps<FieldName, ErrorType>) => JSX.Element;

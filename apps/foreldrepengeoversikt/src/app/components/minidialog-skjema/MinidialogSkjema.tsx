@@ -70,8 +70,8 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
     const [fetchCounter, setFetchCounter] = useState(0);
     const [allowedToFetch, setAllowedToFetch] = useState(true);
 
-    const updateAttachments = (vedlegg: Attachment[], hasPendingUploads: boolean) => {
-        setVedlegg(vedlegg);
+    const updateAttachments = (v: Attachment[], hasPendingUploads: boolean) => {
+        setVedlegg(v);
         setAvventerVedlegg(hasPendingUploads);
     };
 
@@ -171,6 +171,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                             />
                         </div>
                         <FileUploader
+                            label={intl.formatMessage({ id: 'minidialog.dokumenter' })}
                             updateAttachments={updateAttachments}
                             attachmentType={AttachmentType.TILBAKEBETALING}
                             skjemanummer={Skjemanummer.TILBAKEBETALING}

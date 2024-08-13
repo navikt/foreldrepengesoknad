@@ -1,12 +1,4 @@
 import {
-    uttaksplanErBareOpphold,
-    uttaksplanSlutterMedOpphold,
-    uttaksplanStarterMedOpphold,
-    getSumUttaksdagerÅTrekkeIPeriodene,
-} from './Periodene';
-import { Uttaksdagen } from './Uttaksdagen';
-import { getTidsperiode } from './Tidsperioden';
-import {
     Forelder,
     InfoPeriode,
     Oppholdsperiode,
@@ -16,6 +8,14 @@ import {
     StønadskontoType,
     Uttaksperiode,
 } from '../types';
+import {
+    getSumUttaksdagerÅTrekkeIPeriodene,
+    uttaksplanErBareOpphold,
+    uttaksplanSlutterMedOpphold,
+    uttaksplanStarterMedOpphold,
+} from './Periodene';
+import { getTidsperiode } from './Tidsperioden';
+import { Uttaksdagen } from './Uttaksdagen';
 
 const familiehendelsesdato = new Date();
 const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
@@ -169,11 +169,11 @@ describe('Periodene - getSumUttaksdagerÅTrekkeIPeriodene', () => {
         expect(result).toEqual(2);
     });
     it('skal returnere 3 for to Uttaksperioder med 3 uttaksdager tilsammen', () => {
-        const periode2dagerOverHelg = {
+        const periode2 = {
             type: Periodetype.Uttak,
             tidsperiode: { fom: new Date('2022-05-27T00:00:00.000Z'), tom: new Date('2022-05-30T00:00:00.000Z') },
         } as Periode;
-        const result = getSumUttaksdagerÅTrekkeIPeriodene([periode1dag, periode2dagerOverHelg]);
+        const result = getSumUttaksdagerÅTrekkeIPeriodene([periode1dag, periode2]);
         expect(result).toEqual(3);
     });
     it('skal returnere 1 for Uttaksperiode med 4 uttaksdager med 75% gradering', () => {
@@ -188,15 +188,12 @@ describe('Periodene - getSumUttaksdagerÅTrekkeIPeriodene', () => {
         const result = getSumUttaksdagerÅTrekkeIPeriodene([periodeMedSamtidigUttakOgGradering]);
         expect(result).toEqual(4);
     });
-    it('skal returnere 4 for Uttaksperiode med 5 uttaksdager med 20% gradering og  50% samtidig uttak', () => {
-        const result = getSumUttaksdagerÅTrekkeIPeriodene([periodeMedSamtidigUttakOgGradering]);
-        expect(result).toEqual(4);
-    });
-    it('skal returnere 1 for Uttaksperiode med 2 uttaksdager med 40% gradering, fordi man avrunder ned til nærmeste heltall ', () => {
+
+    it('skal returnere 1 for Uttaksperiode med 2 uttaksdager med 40% gradering, fordi man avrunder ned til nærmeste heltall', () => {
         const result = getSumUttaksdagerÅTrekkeIPeriodene([periodeMedToDagerOg60prosentGradering]);
         expect(result).toEqual(1);
     });
-    it('skal returnere 0 for Uttaksperiode med 1 uttaksdager med 50% gradering, fordi man avrunder ned til nærmeste heltall ', () => {
+    it('skal returnere 0 for Uttaksperiode med 1 uttaksdager med 50% gradering, fordi man avrunder ned til nærmeste heltall', () => {
         const result = getSumUttaksdagerÅTrekkeIPeriodene([periodeMedEnDagOg50prosentGradering]);
         expect(result).toEqual(0);
     });

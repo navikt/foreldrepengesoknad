@@ -1,7 +1,8 @@
-import Bytes from 'bytes';
+import { FileObject } from '@navikt/ds-react';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Attachment } from '@navikt/fp-types';
+
+import { FileUploaderAttachment } from './typer/FileUploaderAttachment';
 
 const s4 = (): string =>
     Math.floor((1 + Math.random()) * 0x10000)
@@ -11,36 +12,25 @@ const s4 = (): string =>
 //TODO Denne ligg sikkert ein annan stad (evt flytt ut)
 const guid = (): string => `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
 
-export const bytesString = (bytes: number): string => {
-    return Bytes(bytes, {
-        unitSeparator: ' ',
-        thousandsSeparator: ' ',
-        decimalPlaces: 1,
-        fixedDecimals: false,
-    });
-};
-
-export const getTotalFileSize = (files: File[]): number => {
-    return files.reduce(
-        (a, b) =>
-            ({
-                size: a.size + b.size,
-            }) as any,
-        { size: 0 },
-    ).size;
-};
-
 const generateAttachmentId = () => 'V'.concat(guid().replace(/-/g, ''));
 
-export const mapFileToAttachment = (file: File, type: AttachmentType, skjemanummer: Skjemanummer): Attachment => {
+export const mapFileToAttachment = (
+    fileObject: FileObject,
+    type: AttachmentType,
+    skjemanummer: Skjemanummer,
+): FileUploaderAttachment => {
+    const file = fileObject.file;
     return {
-        id: generateAttachmentId(), // TODELETE
-        file,
-        filename: file.name,
-        filesize: file.size,
-        uploaded: false,
-        pending: false,
-        type,
-        skjemanummer,
+        attachmentData: {
+            id: generateAttachmentId(), //TODO Kan denne slettast?
+            file,
+            filename: file.name,
+            filesize: file.size,
+            uploaded: false,
+            pending: false,
+            type,
+            skjemanummer,
+        },
+        fileObject,
     };
 };

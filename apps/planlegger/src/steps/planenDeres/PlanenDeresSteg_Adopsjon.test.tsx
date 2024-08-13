@@ -426,7 +426,7 @@ describe('<PlanenDeresSteg - adopsjon>', () => {
         expect(within(april2025).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(10);
     });
 
-    it('skal vise korrekt data for adopsjon - mor og medmor - kun mor har rett', async () => {
+    it('skal vise korrekt data for adopsjon - mor og medmor - kun mor har rett med omsorgsovertakelse i helgen', async () => {
         render(<MorOgMedmorKunMorHarRettOmsorgsovertakelseIHelgen />);
 
         expect(await screen.findByText('Planen deres')).toBeInTheDocument();

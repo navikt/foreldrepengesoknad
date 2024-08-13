@@ -25,14 +25,7 @@ const AndreVeivisereLinkPanel: React.FunctionComponent<Props> = ({ links }) => {
                         </Heading>
                     )}
                     {links.map((link) => (
-                        <Link
-                            key={link.url}
-                            inlineText
-                            href={link.url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className={styles.lenkepanel}
-                        >
+                        <Link key={link.url} inlineText href={link.url} rel="noreferrer" className={styles.lenkepanel}>
                             <Box padding="4" background="surface-default" borderRadius="xlarge" shadow="small">
                                 {link.content}
                             </Box>

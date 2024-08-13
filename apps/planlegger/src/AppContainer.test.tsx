@@ -18,7 +18,7 @@ describe('<AppContainer>', () => {
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Start'));
 
-        expect(screen.getByText('Hvem planlegger?')).toBeInTheDocument();
+        expect(screen.getAllByText('Hvem planlegger?')).toHaveLength(2);
         expect(screen.getByText('Steg 1 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Mor og far'));
         const morNavn = utils.getByLabelText('Hva heter mor? (valgfritt)');
@@ -27,7 +27,7 @@ describe('<AppContainer>', () => {
         await userEvent.type(farNavn, 'Espen');
         await userEvent.click(screen.getByText('Neste'));
 
-        expect(screen.getByText('Barnet')).toBeInTheDocument();
+        expect(screen.getAllByText('Barnet')).toHaveLength(2);
         expect(screen.getByText('Steg 2 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Fødsel'));
         await userEvent.click(screen.getByText('Ett'));
@@ -40,7 +40,7 @@ describe('<AppContainer>', () => {
         fireEvent.blur(termindato);
         await userEvent.click(screen.getByText('Neste'));
 
-        expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
+        expect(screen.getAllByText('Arbeidssituasjon')).toHaveLength(2);
         expect(screen.getByText('Steg 3 av 7')).toBeInTheDocument();
         await userEvent.click(
             screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 62 014 kr det siste året'),
@@ -48,12 +48,12 @@ describe('<AppContainer>', () => {
         await userEvent.click(screen.getByText('Ja'));
         await userEvent.click(screen.getByText('Neste'));
 
-        expect(screen.getByText('Hvor lenge')).toBeInTheDocument();
+        expect(screen.getAllByText('Hvor lenge')).toHaveLength(2);
         expect(screen.getByText('Steg 4 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));
         await userEvent.click(screen.getByText('Neste'));
 
-        expect(screen.getByText('Fordeling')).toBeInTheDocument();
+        expect(screen.getAllByText('Fordeling')).toHaveLength(2);
         expect(screen.getByText('Steg 5 av 7')).toBeInTheDocument();
         await userEvent.selectOptions(utils.getByLabelText('Hvordan vil dere fordele 16 uker med fellesperiode?'), '5');
         await userEvent.click(screen.getByText('Neste'));
@@ -69,23 +69,23 @@ describe('<AppContainer>', () => {
         expect(screen.getByText('Steg 6 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
-        expect(screen.getByText('Fordeling')).toBeInTheDocument();
+        expect(screen.getAllByText('Fordeling')).toHaveLength(2);
         expect(screen.getByText('Steg 5 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
-        expect(screen.getByText('Hvor lenge')).toBeInTheDocument();
+        expect(screen.getAllByText('Hvor lenge')).toHaveLength(2);
         expect(screen.getByText('Steg 4 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
-        expect(screen.getByText('Arbeidssituasjon')).toBeInTheDocument();
+        expect(screen.getAllByText('Arbeidssituasjon')).toHaveLength(2);
         expect(screen.getByText('Steg 3 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
-        expect(screen.getByText('Barnet')).toBeInTheDocument();
+        expect(screen.getAllByText('Barnet')).toHaveLength(2);
         expect(screen.getByText('Steg 2 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
-        expect(screen.getByText('Hvem planlegger?')).toBeInTheDocument();
+        expect(screen.getAllByText('Hvem planlegger?')).toHaveLength(2);
         expect(screen.getByText('Steg 1 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 

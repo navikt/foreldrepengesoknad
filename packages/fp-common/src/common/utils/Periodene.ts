@@ -351,6 +351,18 @@ export const uttaksplanErBareOpphold = (perioder: Periode[]): boolean => {
     return perioderUtenInfoPerioder.every((periode) => periode.type === Periodetype.Opphold);
 };
 
+export const uttaksplanErBareForeldrepengerFørFødsel = (perioder: Periode[]): boolean => {
+    const perioderUtenInfoPerioderEllerHull = perioder.filter((p) => !isInfoPeriode(p) && !isHull(p));
+
+    if (perioderUtenInfoPerioderEllerHull.length === 0) {
+        return false;
+    }
+
+    return perioderUtenInfoPerioderEllerHull.every(
+        (periode) => periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel,
+    );
+};
+
 export const uttaksplanSlutterMedOpphold = (perioder: Periode[]): boolean => {
     return (
         perioder

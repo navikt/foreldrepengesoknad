@@ -423,21 +423,33 @@ describe('eksisterendeSakUtils', () => {
 
     describe('mapSøkerensEksisterendeSakFromDTO', () => {
         it('skal mappe eksisterende sak for mors søknad på termin fra dto til intern representasjon', () => {
-            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMorTermin, undefined);
+            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMorTermin, undefined, undefined);
             expect(internRep).toStrictEqual(forventetMappetEksisterendeSakMorTermin);
         });
         it('skal mappe eksisterende sak for mors søknad på adopsjon (aleneomsorg) fra dto til intern representasjon', () => {
-            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMorAdopsjonBareMorHarRett, undefined);
+            const internRep = mapSøkerensEksisterendeSakFromDTO(
+                eksisterendeSakMorAdopsjonBareMorHarRett,
+                undefined,
+                undefined,
+            );
             expect(internRep).toStrictEqual(forventetMappetEksisterendeSakMorAdopsjonBareMorHarRett);
         });
 
         it('hvis barnet til far er født, skal ikke mappe ønskerJustertUttakVedFødsel til true selv om den kommer inn som true', () => {
-            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMedØnsketJusteringFarFødsel, undefined);
+            const internRep = mapSøkerensEksisterendeSakFromDTO(
+                eksisterendeSakMedØnsketJusteringFarFødsel,
+                undefined,
+                undefined,
+            );
 
             expect(internRep).toStrictEqual(forventetResultatFar);
         });
         it('hvis barnet til far ikke er født, skal mappe ønskerJustertUttakVedFødsel til true hvis den kommer inn som true', () => {
-            const internRep = mapSøkerensEksisterendeSakFromDTO(eksisterendeSakMedØnsketJusteringFarTermin, undefined);
+            const internRep = mapSøkerensEksisterendeSakFromDTO(
+                eksisterendeSakMedØnsketJusteringFarTermin,
+                undefined,
+                undefined,
+            );
 
             expect(internRep).toStrictEqual(forventetResultatFarTermin);
         });
@@ -467,6 +479,7 @@ describe('eksisterendeSakUtils', () => {
             samtidigUttak: 50,
             flerbarnsdager: true,
         } as SaksperiodeDTO;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { fom, tom, ...uttaksperiodeRest } = uttaksperiode;
 
         const forventetMappetPeriodeSøker = {
@@ -492,6 +505,7 @@ describe('eksisterendeSakUtils', () => {
             },
             utsettelseÅrsak: 'HV_ØVELSE',
         } as SaksperiodeDTO;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { fom: fomU, tom: tomU, ...utsettelsesperiodeRest } = utsettelsesperiode;
 
         const forventetMappetUtsettelseSøker = {
@@ -522,6 +536,7 @@ describe('eksisterendeSakUtils', () => {
             },
             overføringÅrsak: 'INSTITUSJONSOPPHOLD_ANNEN_FORELDER',
         } as SaksperiodeDTO;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { fom: fomO, tom: tomO, ...overføringsperiodeRest } = overføringsperiode;
         const forventetMappetOverføringSøker = {
             ...overføringsperiodeRest,
@@ -549,6 +564,7 @@ describe('eksisterendeSakUtils', () => {
             },
             oppholdÅrsak: 'MØDREKVOTE_ANNEN_FORELDER',
         } as SaksperiodeDTO;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { fom: fomOp, tom: tomOp, ...oppholdsperiodeRest } = oppholdsperiode;
 
         const forventetMappetOppholdSøker = {
@@ -584,6 +600,7 @@ describe('eksisterendeSakUtils', () => {
             },
         } as SaksperiodeDTO;
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { fom: fomAp, tom: tomAp, ...avslåttPeriodeRest } = avslåttPeriode;
 
         const forventetMappetAvslåttPeriodeSøker = {

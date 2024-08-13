@@ -3,6 +3,23 @@
 }
 
 .box {
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.blue {
+    background-color: var(--a-deepblue-100);
+}
+
+.green {
+    background-color: var(--a-limegreen-200);
+}
+
+.gray {
+    background-color: var(--a-gray-100);
+}
+
+.animation {
     animation: fade-in 1s;
 }
 

@@ -65,7 +65,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
     const { ref, scrollToBottom } = useScrollBehaviour();
 
     return (
-        <PlanleggerStepPage ref={ref} steps={stepConfig}>
+        <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
@@ -109,6 +109,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                         aria-hidden
                                     />
                                 }
+                                color="green"
                             >
                                 <BodyShort>
                                     <FormattedMessage id="OmBarnetSteg.Fødsel.Infoboks.DenSomErBiologiskFar" />

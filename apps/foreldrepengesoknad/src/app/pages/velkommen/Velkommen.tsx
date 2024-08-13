@@ -111,6 +111,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
             const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(
                 valgtEksisterendeSak,
                 førsteUttaksdagNesteBarnsSak,
+                valgteBarn.fødselsdatoer,
             );
 
             nextRoute = SøknadRoutes.UTTAKSPLAN;
@@ -221,6 +222,7 @@ const Velkommen: React.FunctionComponent<Props> = ({
                         </HStack>
                         <HStack justify="center">
                             <BodyShort>
+                                {/* eslint-disable-next-line  jsx-a11y/anchor-is-valid */}
                                 <a
                                     className="lenke"
                                     href="#"

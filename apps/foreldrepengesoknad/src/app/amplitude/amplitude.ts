@@ -24,6 +24,7 @@ export const initAmplitude = () => {
             includeUtm: true,
             includeReferrer: true,
             platform: window.location.toString(),
+            // eslint-disable-next-line no-console
             onError: () => console.log('Amplitude klarte ikke å starte opp'),
         });
     }
@@ -32,6 +33,7 @@ export const initAmplitude = () => {
 export const logAmplitudeEvent = (eventName: string, eventData?: any, logToConsoleOnly = true) => {
     if (logToConsoleOnly) {
         if (process.env.NODE_ENV !== 'test') {
+            // eslint-disable-next-line no-console
             console.log({ eventName, eventData });
         }
         return;
@@ -43,6 +45,7 @@ export const logAmplitudeEvent = (eventName: string, eventData?: any, logToConso
                 amplitude.getInstance().logEvent(eventName, eventData);
             }
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error(error);
         }
     });

@@ -93,7 +93,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const { ref, scrollToBottom } = useScrollBehaviour();
 
     return (
-        <PlanleggerStepPage ref={ref} steps={stepConfig}>
+        <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
             <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
@@ -105,7 +105,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             icon={
                                 <CalendarIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />
                             }
-                            isGray
+                            color="gray"
                         >
                             <BodyShort>
                                 <FormattedMessage
@@ -129,7 +129,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         {kunEnAvSøkereneHarRett && hvemPlanlegger.type === Situasjon.FAR_OG_FAR && erAdopsjon && (
                             <Infobox
                                 header={<FormattedMessage id="HvorLangPeriodeSteg.Infoboks.KunEnAvFedreneHarRett" />}
-                                isGray
+                                color="gray"
                             >
                                 <BodyShort>
                                     <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.NårBareEnHarRett" />

@@ -1,6 +1,4 @@
-import { FormattedMessage } from 'react-intl';
-
-import { BodyLong, BodyShort, VStack } from '@navikt/ds-react';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { getSaveAttachment } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
@@ -13,27 +11,17 @@ interface Props {
 }
 
 const AdopsjonDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAttachments }) => {
+    const intl = useIntl();
     return (
-        <VStack gap="4">
-            <div>
-                <BodyShort style={{ fontWeight: 'bold' }}>
-                    <FormattedMessage id="AdopsjonDokPanel.Vedlegg.Adopsjon" />
-                </BodyShort>
-                <BodyLong>
-                    <FormattedMessage id="AdopsjonDokPanel.Veilederpanel.Text" />
-                </BodyLong>
-            </div>
-            <BodyLong>
-                <FormattedMessage id="AdopsjonDokPanel.Dok.Storrelse" />
-            </BodyLong>
-            <FileUploader
-                attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
-                skjemanummer={Skjemanummer.OMSORGSOVERTAKELSE}
-                existingAttachments={attachments}
-                updateAttachments={updateAttachments}
-                saveAttachment={getSaveAttachment('engangsstonad')}
-            />
-        </VStack>
+        <FileUploader
+            label={intl.formatMessage({ id: 'AdopsjonDokPanel.Vedlegg.Adopsjon' })}
+            description={<FormattedMessage id="AdopsjonDokPanel.Veilederpanel.Text" />}
+            attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
+            skjemanummer={Skjemanummer.OMSORGSOVERTAKELSE}
+            existingAttachments={attachments}
+            updateAttachments={updateAttachments}
+            saveAttachment={getSaveAttachment('engangsstonad')}
+        />
     );
 };
 

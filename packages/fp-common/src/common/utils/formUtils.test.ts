@@ -1,4 +1,5 @@
 import { YesOrNo } from '@navikt/fp-formik';
+
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from './formUtils';
 
 describe('formUtils', () => {
@@ -29,6 +30,6 @@ describe('formUtils', () => {
 
     it('skal konvertere enum UNANSWERED til tom verdi', () => {
         const verdi = convertYesOrNoOrUndefinedToBoolean(YesOrNo.UNANSWERED);
-        expect(verdi).toBeUndefined;
+        expect(verdi).toBeUndefined();
     });
 });

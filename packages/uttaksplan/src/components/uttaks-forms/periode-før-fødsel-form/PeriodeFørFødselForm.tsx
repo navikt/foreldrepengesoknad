@@ -11,7 +11,6 @@ import {
     intlUtils,
     isValidTidsperiode,
 } from '@navikt/fp-common';
-import { QuestionVisibility } from '@navikt/fp-formik';
 
 import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from '../../uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
@@ -52,10 +51,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
         setTidsperiodeIsOpen(!tidsperiodeIsOpen);
     };
 
-    const handleCleanup = (
-        values: PeriodeFørFødselFormData,
-        _visibility: QuestionVisibility<PeriodeFørFødselFormField, undefined>,
-    ): PeriodeFørFødselFormData => {
+    const handleCleanup = (values: PeriodeFørFødselFormData): PeriodeFørFødselFormData => {
         return values;
     };
 
@@ -79,9 +75,9 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                             <TidsperiodeForm
                                 tidsperiode={tidsperiode}
                                 familiehendelsesdato={familiehendelsesdato}
-                                onBekreft={(values) => {
-                                    setFieldValue(PeriodeFørFødselFormField.fom, ISOStringToDate(values.fom));
-                                    setFieldValue(PeriodeFørFødselFormField.tom, ISOStringToDate(values.tom));
+                                onBekreft={(currentValues) => {
+                                    setFieldValue(PeriodeFørFødselFormField.fom, ISOStringToDate(currentValues.fom));
+                                    setFieldValue(PeriodeFørFødselFormField.tom, ISOStringToDate(currentValues.tom));
                                 }}
                                 ugyldigeTidsperioder={undefined}
                                 utsettelserIPlan={utsettelserIPlan}
@@ -92,9 +88,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                             />
                         </Block>
                         <PeriodeFørFødselFormComponents.Form includeButtons={false}>
-                            <SubmitListener
-                                cleanup={() => handleCleanup(values as PeriodeFørFødselFormData, visibility)}
-                            />
+                            <SubmitListener cleanup={() => handleCleanup(values as PeriodeFørFødselFormData)} />
 
                             <Block
                                 visible={
@@ -112,14 +106,14 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                                     familiehendelsesdato={familiehendelsesdato}
                                     ugyldigeTidsperioder={undefined}
                                     utsettelserIPlan={utsettelserIPlan}
-                                    onBekreft={(values) => {
+                                    onBekreft={(currentValues) => {
                                         setTidsperiodeIsOpen(false);
-                                        setFieldValue(PeriodeFørFødselFormField.fom, values.fom);
-                                        setFieldValue(PeriodeFørFødselFormField.tom, values.tom);
+                                        setFieldValue(PeriodeFørFødselFormField.fom, currentValues.fom);
+                                        setFieldValue(PeriodeFørFødselFormField.tom, currentValues.tom);
                                     }}
-                                    changeTidsperiode={(values) => {
-                                        setFieldValue(PeriodeFørFødselFormField.fom, values.fom);
-                                        setFieldValue(PeriodeFørFødselFormField.tom, values.tom);
+                                    changeTidsperiode={(currentValues) => {
+                                        setFieldValue(PeriodeFørFødselFormField.fom, currentValues.fom);
+                                        setFieldValue(PeriodeFørFødselFormField.tom, currentValues.tom);
                                     }}
                                     tidsperiode={tidsperiode}
                                     onAvbryt={() => setTidsperiodeIsOpen(false)}

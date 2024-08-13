@@ -1,6 +1,8 @@
-import { Button, Modal, Panel } from '@navikt/ds-react';
-import React from 'react';
 import classNames from 'classnames';
+import React from 'react';
+
+import { Button, Modal, Panel } from '@navikt/ds-react';
+
 import bemUtils from './../../../utils/bemUtils';
 import SkjemagruppeQuestion from './../../helpers/skjemagruppe-question/SkjemagruppeQuestion';
 import { FormikModalFormWidths, ModalFormAndInfoLabels } from './../types';
@@ -64,8 +66,8 @@ function ModalFormAndInfo<DataType>({
         setModalState({ isVisible: false });
     };
 
-    const handleEdit = (data: DataType) => {
-        setModalState({ isVisible: true, data });
+    const handleEdit = (dataEdit: DataType) => {
+        setModalState({ isVisible: true, data: dataEdit });
     };
 
     const handleDelete = () => {

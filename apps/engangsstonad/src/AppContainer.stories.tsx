@@ -34,30 +34,35 @@ const Template: StoryFn<{ søker: Søker; mellomlagretData?: EsDataMapAndMetaDat
     const apiMock = new MockAdapter(axiosInstance);
     apiMock.onGet('/rest/personinfo').reply(() => {
         if (doLogging) {
+            // eslint-disable-next-line no-console
             console.log('network request: get /personinfo');
         }
         return [200, søker];
     });
     apiMock.onGet('/rest/storage/engangsstonad').reply(() => {
         if (doLogging) {
+            // eslint-disable-next-line no-console
             console.log('network request: get /storage/engangstonad');
         }
         return [200, mellomlagretData];
     });
     apiMock.onPost('/rest/soknad/engangsstonad').reply(() => {
         if (doLogging) {
+            // eslint-disable-next-line no-console
             console.log('network request: post /soknad/engangsstonad');
         }
         return [200, kvittering];
     });
     apiMock.onPost('/rest/storage/engangsstonad').reply(() => {
         if (doLogging) {
+            // eslint-disable-next-line no-console
             console.log('network request: post /storage/engangstonad');
         }
         return [200];
     });
     apiMock.onDelete('/rest/storage/engangsstonad').reply(() => {
         if (doLogging) {
+            // eslint-disable-next-line no-console
             console.log('network request: delete /storage/engangstonad');
         }
         return [200];

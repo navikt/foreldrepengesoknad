@@ -25,6 +25,7 @@ export interface Props<TYPE> {
     tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
     saveOnNext: (formValues: UtenlandsoppholdTidligere) => void;
     saveOnPrevious: (data: UtenlandsoppholdTidligere | undefined) => void;
+    onStepChange?: (id: TYPE) => void;
     cancelApplication: () => void;
     onContinueLater?: () => void;
     goToPreviousStep: () => void;
@@ -37,6 +38,7 @@ const TidligereUtenlandsoppholdPanel = <TYPE extends string>({
     saveOnPrevious,
     cancelApplication,
     onContinueLater,
+    onStepChange,
     goToPreviousStep,
     stepConfig,
 }: Props<TYPE>) => {
@@ -60,7 +62,12 @@ const TidligereUtenlandsoppholdPanel = <TYPE extends string>({
     );
 
     return (
-        <Step onCancel={cancelApplication} onContinueLater={onContinueLater} steps={stepConfig}>
+        <Step
+            onCancel={cancelApplication}
+            onContinueLater={onContinueLater}
+            steps={stepConfig}
+            onStepChange={onStepChange}
+        >
             <Form formMethods={formMethods} onSubmit={saveOnNext}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />

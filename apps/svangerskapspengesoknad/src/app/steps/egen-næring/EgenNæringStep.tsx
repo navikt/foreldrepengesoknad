@@ -39,6 +39,7 @@ import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 import { getMinInputTilOgMedValue } from 'app/utils/validationUtils';
 
+import { onToggleInfo } from '../barnet/amplitudeLoggerUtils';
 import { getNæringTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
 import OrgnummerEllerLand from './components/OrgnummerEllerLand';
 import VarigEndringSpørsmål from './components/VarigEndringSpørsmål';
@@ -172,6 +173,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
             onCancel={avbrytSøknad}
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
+            onStepChange={navigator.goToNextStep}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
@@ -335,7 +337,10 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
                             hasMinValue(intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.mindreEnnNull' }), 0),
                         ]}
                     />
-                    <ReadMore header={intl.formatMessage({ id: 'egenNæring.næringsinntekt.info.apneLabel' })}>
+                    <ReadMore
+                        onOpenChange={onToggleInfo('Mer_om_næringsresultat')}
+                        header={intl.formatMessage({ id: 'egenNæring.næringsinntekt.info.apneLabel' })}
+                    >
                         <BodyShort>
                             <FormattedMessage id="egenNæring.næringsinntekt.info" />
                         </BodyShort>

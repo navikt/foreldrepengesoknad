@@ -1,11 +1,14 @@
-import { fireEvent, render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
-import dayjs from 'dayjs';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import * as stories from './TidligereUtenlandsoppholdSteg.stories';
-import SøknadRoutes from 'app/routes/routes';
-import { ContextDataType } from 'app/context/FpDataContext';
+import dayjs from 'dayjs';
+
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+
+import { ContextDataType } from 'app/context/FpDataContext';
+import SøknadRoutes from 'app/routes/routes';
+
+import * as stories from './TidligereUtenlandsoppholdSteg.stories';
 
 const { Default } = composeStories(stories);
 
@@ -16,7 +19,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Har bodd i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
 
         await userEvent.selectOptions(screen.getByLabelText('Hvilket land bodde du i?'), 'CA');
 
@@ -67,7 +70,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
             />,
         );
 
-        expect(await screen.findByText('Har bodd i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
 
         await userEvent.selectOptions(screen.getByLabelText('Hvilket land bodde du i?'), 'CA');
 
@@ -112,7 +115,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Har bodd i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
         await userEvent.click(screen.getByText('Forrige steg'));
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);

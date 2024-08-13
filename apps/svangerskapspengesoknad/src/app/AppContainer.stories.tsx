@@ -10,7 +10,7 @@ import { Søker, Søkerinfo } from '@navikt/fp-types';
 import AppContainer from './AppContainer';
 import { SvpDataMapAndMetaData } from './appData/useMellomlagreSøknad';
 
-const søkerinfo = {
+const defaultSøkerinfo = {
     søker: {
         fnr: '30088930610',
         fornavn: 'ERLINGA-MASK',
@@ -87,6 +87,7 @@ const Template: StoryFn<{ søkerinfo: Søkerinfo; mellomlagretData?: SvpDataMapA
     const apiMock = new MockAdapter(getAxiosInstance());
     apiMock.onGet('/rest/sokerinfo').reply(() => {
         if (doLogging) {
+            // eslint-disable-next-line no-console
             console.log('network request: get /sokerinfo');
         }
         return [200, søkerinfo];
@@ -94,6 +95,7 @@ const Template: StoryFn<{ søkerinfo: Søkerinfo; mellomlagretData?: SvpDataMapA
 
     apiMock.onGet('/rest/storage/svangerskapspenger').reply(() => {
         if (doLogging) {
+            // eslint-disable-next-line no-console
             console.log('network request: get /storage/svangerskapspenger');
         }
         return [200, mellomlagretData];
@@ -101,6 +103,7 @@ const Template: StoryFn<{ søkerinfo: Søkerinfo; mellomlagretData?: SvpDataMapA
 
     apiMock.onPost('rest-api/soknad').reply(() => {
         if (doLogging) {
+            // eslint-disable-next-line no-console
             console.log('network request: post rest-api/soknad');
         }
         return [200, {}];
@@ -108,12 +111,14 @@ const Template: StoryFn<{ søkerinfo: Søkerinfo; mellomlagretData?: SvpDataMapA
 
     apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(() => {
         if (doLogging) {
+            // eslint-disable-next-line no-console
             console.log('network request: post /storage/svangerskapspenger/vedlegg');
         }
         return [200];
     });
     apiMock.onPost('/rest/storage/svangerskapspenger').reply(() => {
         if (doLogging) {
+            // eslint-disable-next-line no-console
             console.log('network request: post /storage/svangerskapspenger');
         }
         return [200];
@@ -121,6 +126,7 @@ const Template: StoryFn<{ søkerinfo: Søkerinfo; mellomlagretData?: SvpDataMapA
 
     apiMock.onDelete('/rest/storage/svangerskapspenger').reply(() => {
         if (doLogging) {
+            // eslint-disable-next-line no-console
             console.log('network request: delete /storage/svangerskapspenger');
         }
         return [200];
@@ -129,6 +135,7 @@ const Template: StoryFn<{ søkerinfo: Søkerinfo; mellomlagretData?: SvpDataMapA
     //story
     apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(() => {
         if (doLogging) {
+            // eslint-disable-next-line no-console
             console.log('network request: post /storage/svangerskapspenger/vedlegg');
         }
         return [200];
@@ -140,13 +147,13 @@ const Template: StoryFn<{ søkerinfo: Søkerinfo; mellomlagretData?: SvpDataMapA
 
 export const VisAppKvinneMedArbeid = Template.bind({});
 VisAppKvinneMedArbeid.args = {
-    søkerinfo,
+    søkerinfo: defaultSøkerinfo,
 };
 
 export const VisAppKvinneUtenArbeid = Template.bind({});
 VisAppKvinneUtenArbeid.args = {
     søkerinfo: {
-        ...søkerinfo,
+        ...defaultSøkerinfo,
         arbeidsforhold: [],
     },
 };
@@ -154,15 +161,15 @@ VisAppKvinneUtenArbeid.args = {
 export const VisAppMann = Template.bind({});
 VisAppMann.args = {
     søkerinfo: {
-        ...søkerinfo,
-        søker: { ...søkerinfo.søker, kjønn: 'M' },
+        ...defaultSøkerinfo,
+        søker: { ...defaultSøkerinfo.søker, kjønn: 'M' },
     },
 };
 
 export const VisAppUmyndig = Template.bind({});
 VisAppUmyndig.args = {
     søkerinfo: {
-        ...søkerinfo,
-        søker: { ...søkerinfo.søker, kjønn: 'K', fødselsdato: '2023-08-30' },
+        ...defaultSøkerinfo,
+        søker: { ...defaultSøkerinfo.søker, kjønn: 'K', fødselsdato: '2023-08-30' },
     },
 };

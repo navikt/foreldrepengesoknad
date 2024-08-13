@@ -152,7 +152,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const { ref, scrollToBottom } = useScrollBehaviour();
 
     return (
-        <PlanleggerStepPage ref={ref} steps={stepConfig}>
+        <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
@@ -170,7 +170,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                     aria-hidden
                                 />
                             }
-                            isGray
+                            color="gray"
                         >
                             <BodyShort>
                                 <FormattedMessage

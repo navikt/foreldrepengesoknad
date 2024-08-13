@@ -93,7 +93,6 @@ export const erDuplikatPeriodePgaFlereArbeidsforhold = (
 };
 
 export const getFelterForSammenligningAvDuplikatePerioderPgaArbeidsforhold = ({
-    gradering,
     ...uttaksperiodeDtoUtenArbeidsgiverInfo
 }: Periode) => {
     return uttaksperiodeDtoUtenArbeidsgiverInfo;

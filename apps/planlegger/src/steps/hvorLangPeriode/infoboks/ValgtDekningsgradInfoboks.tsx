@@ -86,6 +86,7 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
             }
             icon={<CalendarIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
             shouldFadeIn
+            color="gray"
         >
             <BodyShort>
                 {erAdopsjon && (

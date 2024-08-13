@@ -12,8 +12,6 @@ import {
     ISOStringToDate,
     Periode,
     Periodene,
-    Step,
-    StepButtonWrapper,
     getAktiveArbeidsforhold,
     getAntallUker,
     getAntallUkerMinsterett,
@@ -36,6 +34,7 @@ import {
 import { Skjemanummer } from '@navikt/fp-constants';
 import { YesOrNo, dateToISOString } from '@navikt/fp-formik';
 import { Søkerinfo } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import {
     Uttaksplan,
     finnOgSettInnHull,
@@ -76,6 +75,7 @@ import {
     getKanPerioderRundtFødselAutomatiskJusteres,
     getKanSøkersituasjonAutomatiskJustereRundtFødsel,
 } from './automatisk-justering-form/automatiskJusteringUtils';
+import StepButtonWrapper from './components/StepButtonWrapper';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { lagUttaksplanForslag } from './lagUttaksplanForslag';
 import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
@@ -560,7 +560,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             setHarPlanForslagIFørstegangssøknad(true);
             mellomlagreSøknadOgNaviger();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -586,7 +585,8 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         if (nesteSakAnnenPartError) {
             sendErrorMessageToSentry(nesteSakAnnenPartError);
             throw new Error(
-                `Vi klarte ikke å hente informasjon om saken til annen forelder for neste barn. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
+                'Vi klarte ikke å hente informasjon om saken til annen forelder for neste barn. ' +
+                    'Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.',
             );
         }
     }, [tilgjengeligeStønadskontoerError, eksisterendeSakAnnenPartError, nesteSakAnnenPartError]);
