@@ -105,7 +105,7 @@ const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, 
                                 </Heading>
                                 <BodyShort>
                                     <FormattedMessage
-                                        id="OppsummeringSide.EsSkalBidra"
+                                        id="OppsummeringFpEllerEsSide.EsSkalBidra"
                                         values={{
                                             engangsstønad: formatCurrency(engangsstønad),
                                             b: (msg: any) => <b>{msg}</b>,

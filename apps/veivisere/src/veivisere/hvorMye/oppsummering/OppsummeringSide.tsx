@@ -104,10 +104,12 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                 }
                                 color="gray"
                             >
-                                <FormattedMessage
-                                    id="OppsummeringSide.EsSkalBidra"
-                                    values={{ engangsstønad: formatCurrencyWithKr(engangsstønad) }}
-                                />
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="OppsummeringSide.EsSkalBidra"
+                                        values={{ engangsstønad: formatCurrencyWithKr(engangsstønad) }}
+                                    />
+                                </BodyShort>
                             </Infobox>
                         </>
                     )}
