@@ -110,6 +110,7 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
                         erFødsel={erFødsel}
                         setCurrentUthevet={setCurrentUthevet}
                         annenForelderKunRettIEØS={annenForelderHarKunRettIEØS}
+                        erDeltUttak={deltUttak}
                     />
                 );
             })}
