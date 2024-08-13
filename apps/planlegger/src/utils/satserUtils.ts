@@ -1,10 +1,15 @@
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 
 import { Satser } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-export const finnGrunnbeløp = (satser: Satser, dato: string | Dayjs) =>
-    notEmpty(satser.grunnbeløp.find((grunnbeløpData) => dayjs(dato).isSameOrAfter(grunnbeløpData.fom))).verdi;
+dayjs.extend(isSameOrAfter);
 
-export const finnEngangsstønad = (satser: Satser, dato: string | Dayjs) =>
-    notEmpty(satser.engangstønad.find((engangsstønadData) => dayjs(dato).isSameOrAfter(engangsstønadData.fom))).verdi;
+export const finnSisteGrunnbeløp = (satser: Satser): number => {
+    return notEmpty(satser.grunnbeløp[0]).verdi;
+};
+
+export const finnSisteEngangsstønad = (satser: Satser): number => {
+    return notEmpty(satser.engangstønad[0]).verdi;
+};

@@ -161,6 +161,7 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
             onCancel={avbrytSøknad}
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
+            onStepChange={navigator.goToNextStep}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
@@ -219,7 +220,7 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
                     <div>
                         <RadioGroup
                             name="harHattArbeidIUtlandet"
-                            label={intl.formatMessage({ id: 'inntektsinformasjon.annenInntekt' })}
+                            label={intl.formatMessage({ id: 'inntektsinformasjon.hattArbeidIUtlandet' })}
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'valideringsfeil.hattArbeidIUtlandet.påkrevd' })),
                             ]}

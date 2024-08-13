@@ -220,7 +220,6 @@ const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({
             }
             navigate(mellomlagretData[ContextDataType.APP_ROUTE]);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mellomlagretData]);
 
     if (kvittering) {

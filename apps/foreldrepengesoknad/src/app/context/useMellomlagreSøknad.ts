@@ -118,7 +118,6 @@ const useMellomlagreSøknad = (
                 }
             });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [skalMellomlagre]);
 
     const mellomlagreSøknadOgNaviger = useCallback(() => {

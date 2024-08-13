@@ -1,16 +1,19 @@
 .sak-link {
-    margin-bottom: 1rem;
-    padding: 2.5rem 1rem;
+    padding: var(--a-spacing-6) var(--a-spacing-4);
     border: none;
     border-radius: 0.5rem;
     box-shadow: var(--a-shadow-small);
 }
 
-.sak-link__content {
+.sak-link > .navds-link-panel__content {
+    width: 100%;
+    align-items: center;
     display: flex;
     justify-content: space-between;
-}
+    flex-wrap: wrap;
+    gap: var(--a-spacing-2);
 
-.sak-link__content > :first-child {
-    margin-right: 1.5rem;
+    & .navds-tag {
+        height: fit-content;
+    }
 }

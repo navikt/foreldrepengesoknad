@@ -177,19 +177,19 @@ const Uttaksplan: FunctionComponent<Props> = ({
         handleOnPlanChange(result);
     };
 
-    const handleUpdatePeriode = (oppdatertPeriode: Periode, familiehendelsesdato: Date) => {
+    const handleUpdatePeriode = (oppdatertPeriode: Periode, famHendelsesdato: Date) => {
         let resultat: Periode[] = [];
         if (
             farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
                 oppdatertPeriode,
-                familiehendelsesdato,
+                famHendelsesdato,
                 morHarRett,
                 termindato,
             )
         ) {
             const perioder = splittUttaksperiodePåFamiliehendelsesdato(
                 oppdatertPeriode as Uttaksperiode,
-                familiehendelsesdato,
+                famHendelsesdato,
             );
 
             resultat = builder.oppdaterPerioder(perioder);
@@ -209,20 +209,12 @@ const Uttaksplan: FunctionComponent<Props> = ({
         }
     };
 
-    const handleAddPeriode = (nyPeriode: Periode, familiehendelsesdato: Date) => {
+    const handleAddPeriode = (nyPeriode: Periode, famHendelsesdato: Date) => {
         let resultat: Periode[] = [];
         if (
-            farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
-                nyPeriode,
-                familiehendelsesdato,
-                morHarRett,
-                termindato,
-            )
+            farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(nyPeriode, famHendelsesdato, morHarRett, termindato)
         ) {
-            const perioder = splittUttaksperiodePåFamiliehendelsesdato(
-                nyPeriode as Uttaksperiode,
-                familiehendelsesdato,
-            );
+            const perioder = splittUttaksperiodePåFamiliehendelsesdato(nyPeriode as Uttaksperiode, famHendelsesdato);
 
             resultat = builder.leggTilPerioder(perioder);
 

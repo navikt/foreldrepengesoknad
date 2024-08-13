@@ -1,4 +1,5 @@
 const UttakIkon = (props: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { title, ...rest } = props;
     return (
         <svg
@@ -19,6 +20,7 @@ const UttakIkon = (props: any) => {
                     <circle cx={7.083} cy={17.083} r={1.083} stroke="#FFF" strokeWidth={2} />
                     <path
                         fill="#FFF"
+                        // eslint-disable-next-line max-len
                         d="M19.928 8.718c0 3.453-1.997 6.282-5.586 6.282H7.106c-2.586 0-4.682-2.21-4.682-4.936 0-.467.062-.918.176-1.346 3.038 0 14.084-.004 17.328 0zM13.886 2.5c3.734 0 6.042 2.836 6.042 5.385-1.835 0-4.85-.005-8.841-.005l2.8-5.38z"
                     />
                     <path

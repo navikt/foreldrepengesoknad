@@ -10,6 +10,12 @@ export default defineConfig({
             include: '**/*.{jsx,tsx}',
         }),
         checker({ typescript: true }),
+        {
+            name: 'crossorigin',
+            transformIndexHtml(html) {
+                return html.replace(/<link rel="stylesheet" crossorigin/g, '<link rel="stylesheet" ');
+            },
+        },
     ],
     resolve: {
         alias: {

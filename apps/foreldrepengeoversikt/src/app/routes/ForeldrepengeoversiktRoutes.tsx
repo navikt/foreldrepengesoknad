@@ -1,10 +1,8 @@
-import { AxiosError } from 'axios';
-import { useEffect, useRef } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { ReactNode, useEffect, useRef, useState } from 'react';
+import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router-dom';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import Header from 'app/components/header/Header';
 import Snarveier from 'app/components/snarveier/Snarveier';
 import { default as SakComponent } from 'app/pages/Sak';
 import DinPlanPage from 'app/pages/din-plan-page/DinPlanPage';
@@ -15,132 +13,94 @@ import MinidialogPage from 'app/pages/minidialog-page/MinidialogPage';
 import Saksoversikt from 'app/pages/saksoversikt/Saksoversikt';
 import TidslinjePage from 'app/pages/tidslinje-page/TidslinjePage';
 import KontaktOss from 'app/sections/kontakt-oss/KontaktOss';
-import { MellomlagredeYtelser } from 'app/types/MellomlagredeYtelser';
-import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import { getAlleYtelser, getAntallSaker, grupperSakerPåBarn } from 'app/utils/sakerUtils';
+import { getAlleYtelser } from 'app/utils/sakerUtils';
 
 import OversiktRoutes from './routes';
 import './routes-wrapper.css';
 
 interface Props {
-    minidialogerData: MinidialogInnslag[] | undefined;
-    minidialogerError: AxiosError | null;
     saker: SakOppslag;
     søkerinfo: SøkerinfoDTO;
-    oppdatertData: boolean;
-    storageData?: MellomlagredeYtelser;
 }
 
-const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({
-    søkerinfo,
-    saker,
-    minidialogerData,
-    minidialogerError,
-    oppdatertData,
-    storageData,
-}) => {
-    const bem = bemUtils('routesWrapper');
+const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinfo, saker }) => {
     const isFirstRender = useRef(true);
-    const hasNavigated = useRef(false);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (!hasNavigated.current) {
-            hasNavigated.current = true;
-            const antallSaker = getAntallSaker(saker);
-            const { foreldrepenger, engangsstønad, svangerskapspenger } = saker;
-
-            if (antallSaker === 1) {
-                if (foreldrepenger.length === 1) {
-                    navigate(`${OversiktRoutes.SAKSOVERSIKT}/${foreldrepenger[0].saksnummer}`);
-                }
-
-                if (engangsstønad.length === 1) {
-                    navigate(`${OversiktRoutes.SAKSOVERSIKT}/${engangsstønad[0].saksnummer}`);
-                }
-
-                if (svangerskapspenger.length === 1) {
-                    navigate(`${OversiktRoutes.SAKSOVERSIKT}/${svangerskapspenger[0].saksnummer}`);
-                }
-            }
-        }
-    }, [navigate, saker]);
-
-    const oppgaverIds =
-        minidialogerData && minidialogerData instanceof Array
-            ? minidialogerData.map((oppgave) => oppgave.dialogId)
-            : [];
-    const grupperteSaker = grupperSakerPåBarn(søkerinfo.søker.barn, saker);
-    const alleYtelser = getAlleYtelser(saker);
-    // Super spesifikt case for avslåtte papirsøknad for svangerskapspenger. Bør fjernes
-    const avslåttSvangerskapspengesak =
-        grupperteSaker.length === 0 && alleYtelser.length === 1 && saker.svangerskapspenger.length === 1
-            ? saker.svangerskapspenger[0]
-            : undefined;
 
     return (
         <>
-            <Header grupperteSaker={grupperteSaker} oppgaverIds={oppgaverIds} />
-            <div className={bem.block}>
-                <Routes>
+            <Routes>
+                <Route element={<RedirectTilSakHvisDetKunFinnesEn saker={saker} />}>
                     <Route
-                        path={`${OversiktRoutes.HOVEDSIDE}${'/:redirect?'}`}
-                        element={
-                            <Forside
-                                alleYtelser={alleYtelser}
-                                grupperteSaker={grupperteSaker}
-                                avslåttSvangerskapspengesak={avslåttSvangerskapspengesak}
-                                oppdatertData={oppdatertData}
-                                storageData={storageData}
-                                isFirstRender={isFirstRender}
-                                bankkonto={søkerinfo.søker.bankkonto}
-                            />
-                        }
+                        path={`${OversiktRoutes.HOVEDSIDE}/:redirect?`}
+                        element={<Forside saker={saker} isFirstRender={isFirstRender} søkerinfo={søkerinfo} />}
                     />
                     <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer/:redirect?`} element={<SakComponent />}>
-                        <Route
-                            index
-                            element={
-                                <Saksoversikt
-                                    minidialogerData={minidialogerData}
-                                    minidialogerError={minidialogerError}
-                                    saker={saker}
-                                    søkerinfo={søkerinfo}
-                                    oppdatertData={oppdatertData}
-                                    isFirstRender={isFirstRender}
-                                />
-                            }
-                        />
-                        <Route
-                            path={OversiktRoutes.DIN_PLAN}
-                            element={<DinPlanPage navnPåSøker={søkerinfo.søker.fornavn} søkerinfo={søkerinfo} />}
-                        />
+                        <Route index element={<Saksoversikt søkerinfo={søkerinfo} isFirstRender={isFirstRender} />} />
+                        <Route path={OversiktRoutes.DIN_PLAN} element={<DinPlanPage søkerinfo={søkerinfo} />} />
                         <Route path={OversiktRoutes.DOKUMENTER} element={<DokumenterPage />} />
                         <Route
                             path={OversiktRoutes.TIDSLINJEN}
-                            element={<TidslinjePage saker={saker} søkersBarn={søkerinfo.søker.barn} />}
+                            element={<TidslinjePage søkersBarn={søkerinfo.søker.barn ?? []} />}
                         />
                         <Route
                             path={`${OversiktRoutes.OPPGAVER}/:oppgaveId`}
-                            element={
-                                <MinidialogPage
-                                    minidialoger={minidialogerData}
-                                    saker={saker}
-                                    fnr={søkerinfo.søker.fnr}
-                                />
-                            }
+                            element={<MinidialogPage fnr={søkerinfo.søker.fnr} />}
                         />
                         <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />
                     </Route>
                     <Route path="*" element={<Navigate to={OversiktRoutes.HOVEDSIDE} />} />
-                </Routes>
-            </div>
-            <Snarveier />
+                </Route>
+            </Routes>
             <KontaktOss />
         </>
     );
 };
+
+/**
+ * Denne wrapperen ligger rundt alle routene våre og vil gjøre en redirect til aktuell sak kun dersom:
+ * 1. Bruker har kun 1 sak
+ * 2. Bruker besøkte "/" for første gang
+ *
+ * Vi ønsker ikke å redirecte til sak dersom bruker allerede er på en underside på saken, eller at bruker navigerer tilbake til forside via breadcrumbs
+ */
+function RedirectTilSakHvisDetKunFinnesEn({ saker }: { readonly saker: SakOppslag }) {
+    const navigate = useNavigate();
+
+    const alleSaker = getAlleYtelser(saker);
+    const harKunDetteSaksnummeret = alleSaker.length === 1 ? alleSaker[0].saksnummer : undefined;
+
+    const viErPåLandingSiden = useMatch(OversiktRoutes.HOVEDSIDE);
+    const [tillatRedirect, setTillatRedirect] = useState(true);
+
+    const landetPåHovedsideOgHarIkkeRedirected = viErPåLandingSiden && tillatRedirect;
+
+    // Etter første gang denne komponenten rendres skal det ikke lenger tillates redirects.
+    useEffect(() => {
+        setTillatRedirect(false);
+    }, []);
+
+    useEffect(() => {
+        if (landetPåHovedsideOgHarIkkeRedirected && harKunDetteSaksnummeret) {
+            navigate(`${OversiktRoutes.SAKSOVERSIKT}/${harKunDetteSaksnummeret}`);
+        }
+    }, [landetPåHovedsideOgHarIkkeRedirected, navigate, harKunDetteSaksnummeret]);
+
+    return <Outlet />;
+}
+
+export function PageRouteLayout({ header, children }: { readonly header: ReactNode; readonly children: ReactNode }) {
+    const bem = bemUtils('routesWrapper');
+
+    return (
+        <>
+            {header}
+            <div className={bem.block}>{children}</div>
+            {/*Viktig at Snarveier ligger her slik at den har tilgang til saksnummer fra Route da snarveien er dynamiske*/}
+            <Snarveier />
+        </>
+    );
+}
 
 export default ForeldrepengeoversiktRoutes;

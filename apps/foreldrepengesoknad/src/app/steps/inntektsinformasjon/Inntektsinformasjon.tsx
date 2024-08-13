@@ -6,7 +6,6 @@ import { BodyShort } from '@navikt/ds-react';
 import {
     Block,
     ISOStringToDate,
-    Step,
     TidsperiodeMedValgfriSluttdato,
     getAktiveArbeidsforhold,
     intlUtils,
@@ -14,7 +13,7 @@ import {
 } from '@navikt/fp-common';
 import { AttachmentMetadataType, Skjemanummer } from '@navikt/fp-constants';
 import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
-import { StepButtons } from '@navikt/fp-ui';
+import { Step, StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import useFpNavigator from 'app/appData/useFpNavigator';
@@ -99,7 +98,7 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
-    const [egenNæringInformasjon, setEgenNæringsInformasjon] = useState(
+    const [egenNæringInformasjon, setEgenNæringInformasjon] = useState(
         søker?.selvstendigNæringsdrivendeInformasjon ? søker.selvstendigNæringsdrivendeInformasjon : [],
     );
     const [andreInntekterInformasjon, setAndreInntekterInformasjon] = useState(
@@ -201,7 +200,7 @@ const Inntektsinformasjon: React.FunctionComponent<Props> = ({
                             <Block padBottom="l">
                                 <EgenNæring
                                     egenNæringInformasjon={egenNæringInformasjon}
-                                    setEgenNæringsInformasjon={setEgenNæringsInformasjon}
+                                    setEgenNæringInformasjon={setEgenNæringInformasjon}
                                     visibility={visibility}
                                     formValues={formValues as InntektsinformasjonFormData}
                                 />

@@ -12,11 +12,11 @@ import { BodyShort, Button, ExpansionCard, HStack, Heading, Link, VStack } from 
 import { links } from '@navikt/fp-constants';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { Dekningsgrad, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
-import { GreenPanel, IconCircleWrapper, Infobox } from '@navikt/fp-ui';
+import { BluePanel, IconCircleWrapper, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
-import { notEmpty } from '@navikt/fp-validation';
+import { isValidNumber, notEmpty } from '@navikt/fp-validation';
 
-import VeiviserPage from '../../felles/Page/VeiviserPage';
+import VeiviserPage from '../../felles/VeiviserPage';
 import { Arbeidssituasjon, finnGjennomsnittsMånedslønn } from '../arbeidssituasjon/ArbeidssituasjonSide';
 import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
 import HøyInntektInfobox from '../felles/HøyInntektInfobox';
@@ -24,6 +24,10 @@ import FpEllerEsOgHvaSkjerNåLinkPanel from './FpEllerEsOgHvaSkjerNåLinkPanel';
 import Utbetalingspanel from './Utbetalingspanel';
 
 export const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260;
+
+const isNumber = (value?: string) => {
+    return value && isValidNumber(value);
+};
 
 const finnHendelse = (
     harIkkeRettTilFp: boolean,
@@ -70,7 +74,6 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
             team: 'foreldrepenger',
             hendelse: finnHendelse(harIkkeRettTilFp, erMellomMinÅrslønnOg1Komma5G, årslønn > grunnbeløpetGanger6),
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -99,9 +102,12 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                         aria-hidden
                                     />
                                 }
-                                isGray
+                                color="gray"
                             >
-                                <FormattedMessage id="OppsummeringSide.EsSkalBidra" values={{ engangsstønad }} />
+                                <FormattedMessage
+                                    id="OppsummeringSide.EsSkalBidra"
+                                    values={{ engangsstønad: formatCurrencyWithKr(engangsstønad) }}
+                                />
                             </Infobox>
                         </>
                     )}
@@ -131,7 +137,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                             aria-hidden
                                         />
                                     }
-                                    isGray
+                                    color="gray"
                                 >
                                     <VStack gap="4">
                                         <BodyShort>
@@ -166,7 +172,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                         aria-hidden
                                     />
                                 }
-                                isGray
+                                color="gray"
                             >
                                 <BodyShort>
                                     <FormattedMessage id="OppsummeringSide.ArbeidsgiverFraNav" />
@@ -177,7 +183,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                     <ExpansionCard aria-label="" size="small">
                         <ExpansionCard.Header>
                             <HStack gap="6" align="center" wrap={false}>
-                                <IconCircleWrapper size="medium" color="green">
+                                <IconCircleWrapper size="medium" color="lightBlue">
                                     <ChatElipsisIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                                 </IconCircleWrapper>
                                 <ExpansionCard.Title size="small">
@@ -189,20 +195,24 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                             {(arbeidssituasjon.erArbeidstakerEllerFrilanser ||
                                 arbeidssituasjon.harUtbetalingFraNav) && (
                                 <VStack gap="10">
-                                    <GreenPanel>
+                                    <BluePanel>
                                         <VStack gap="1">
                                             <Heading size="small" level="4">
                                                 <FormattedMessage id="OppsummeringSide.NæverendeArbeidssitasjon" />
                                             </Heading>
                                             {arbeidssituasjon.erArbeidstakerEllerFrilanser && (
-                                                <FormattedMessage id="OppsummeringSide.ArbeidstakerEllerFrilanser" />
+                                                <BodyShort>
+                                                    <FormattedMessage id="OppsummeringSide.ArbeidstakerEllerFrilanser" />
+                                                </BodyShort>
                                             )}
                                             {arbeidssituasjon.harUtbetalingFraNav && (
-                                                <FormattedMessage id="OppsummeringSide.UtbetalingFraNav" />
+                                                <BodyShort>
+                                                    <FormattedMessage id="OppsummeringSide.UtbetalingFraNav" />
+                                                </BodyShort>
                                             )}
                                         </VStack>
-                                    </GreenPanel>
-                                    <GreenPanel>
+                                    </BluePanel>
+                                    <BluePanel>
                                         <VStack gap="5">
                                             <div>
                                                 <Heading size="small">
@@ -211,7 +221,11 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                                     )}
                                                 </Heading>
                                                 <BodyShort>
-                                                    {formatCurrencyWithKr(parseInt(arbeidssituasjon.lønnMåned1, 10))}
+                                                    {formatCurrencyWithKr(
+                                                        isNumber(arbeidssituasjon.lønnMåned1)
+                                                            ? parseInt(arbeidssituasjon.lønnMåned1, 10)
+                                                            : 0,
+                                                    )}
                                                 </BodyShort>
                                             </div>
                                             <div>
@@ -221,7 +235,11 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                                     )}
                                                 </Heading>
                                                 <BodyShort>
-                                                    {formatCurrencyWithKr(parseInt(arbeidssituasjon.lønnMåned2, 10))}
+                                                    {formatCurrencyWithKr(
+                                                        isNumber(arbeidssituasjon.lønnMåned2)
+                                                            ? parseInt(arbeidssituasjon.lønnMåned2, 10)
+                                                            : 0,
+                                                    )}
                                                 </BodyShort>
                                             </div>
                                             <div>
@@ -229,11 +247,15 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                                     {capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
                                                 </Heading>
                                                 <BodyShort>
-                                                    {formatCurrencyWithKr(parseInt(arbeidssituasjon.lønnMåned3, 10))}
+                                                    {formatCurrencyWithKr(
+                                                        isNumber(arbeidssituasjon.lønnMåned3)
+                                                            ? parseInt(arbeidssituasjon.lønnMåned3, 10)
+                                                            : 0,
+                                                    )}
                                                 </BodyShort>
                                             </div>
                                         </VStack>
-                                    </GreenPanel>
+                                    </BluePanel>
                                 </VStack>
                             )}
                         </ExpansionCard.Content>

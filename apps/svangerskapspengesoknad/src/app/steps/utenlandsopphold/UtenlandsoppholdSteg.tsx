@@ -66,6 +66,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
                 utenlandsopphold={utenlandsopphold}
                 saveOnNext={onSubmit}
                 saveOnPrevious={saveOnPrevious}
+                onStepChange={navigator.goToNextStep}
                 cancelApplication={avbrytSøknad}
                 onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}

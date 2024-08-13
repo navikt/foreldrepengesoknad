@@ -14,13 +14,18 @@ import {
 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
-import { getAntallUker, getAntallUkerAktivitetsfriKvote, getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
-import { finnUttaksdata } from 'utils/uttakUtils';
+import {
+    getAntallUkerOgDager,
+    getAntallUkerOgDagerAktivitetsfriKvote,
+    getAntallUkerOgDagerFellesperiode,
+    getUkerOgDager,
+} from 'utils/stønadskontoerUtils';
+import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, Heading, VStack } from '@navikt/ds-react';
 
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { Calendar, GreenPanel } from '@navikt/fp-ui';
+import { BluePanel, Calendar } from '@navikt/fp-ui';
 
 interface Props {
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
@@ -48,22 +53,25 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
         hvemPlanlegger,
         valgtStønadskonto,
         barnet,
-        fordeling?.antallUkerSøker1,
+        fordeling?.antallDagerSøker1,
     );
 
-    const antallUkerFellesperiode = getAntallUkerFellesperiode(valgtStønadskonto);
-    const antallUkerFellesperiodeSøker1 = fordeling ? fordeling.antallUkerSøker1 : '';
-    const antallUkerFellesperiodeSøker2 = fordeling ? antallUkerFellesperiode - fordeling.antallUkerSøker1 : '';
-    const antallUkerAktivitetsfriKvote = getAntallUkerAktivitetsfriKvote(valgtStønadskonto);
-    const antallUkerAktivitetskrav = getAntallUker(valgtStønadskonto) - antallUkerAktivitetsfriKvote;
+    const antallDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto).totaltAntallDager;
+    const antallUkerOgDagerFellesperiodeSøker1 = fordeling ? getUkerOgDager(fordeling.antallDagerSøker1) : undefined;
+    const antallUkerOgDagerFellesperiodeSøker2 = fordeling
+        ? getUkerOgDager(antallDagerFellesperiode - fordeling.antallDagerSøker1)
+        : undefined;
+    const antallUkerOgDagerAktivitetsfriKvote = getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskonto);
 
     const uttaksperioder = lagKalenderPerioder(
         valgtStønadskonto,
         barnet,
         hvemPlanlegger,
         arbeidssituasjon,
-        fordeling?.antallUkerSøker1,
+        fordeling?.antallDagerSøker1,
     );
+
+    const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata);
 
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
@@ -72,7 +80,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
     return (
         <VStack gap="5">
             {hvemHarRett === 'beggeHarRett' && !erFarOgFar && fornavnSøker2 && (
-                <GreenPanel>
+                <BluePanel>
                     <Heading level="4" size="small">
                         <FormattedMessage id="OppsummeringSteg.Perioden" />
                     </Heading>
@@ -81,11 +89,14 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             id="OppsummeringSteg.DereValgte"
                             values={{
                                 prosent: hvorLangPeriode.dekningsgrad,
-                                antallUker: getAntallUker(valgtStønadskonto),
+                                antallUker: ukerOgDagerMedForeldrepenger.uker,
+                                antallDager: ukerOgDagerMedForeldrepenger.dager,
                                 hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
                                 hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
-                                uker: antallUkerFellesperiodeSøker1,
-                                uker2: antallUkerFellesperiodeSøker2,
+                                uker: antallUkerOgDagerFellesperiodeSøker1?.uker || 0,
+                                dager: antallUkerOgDagerFellesperiodeSøker1?.dager || 0,
+                                uker2: antallUkerOgDagerFellesperiodeSøker2?.uker || 0,
+                                dager2: antallUkerOgDagerFellesperiodeSøker2?.dager || 0,
                             }}
                         />
                     </BodyLong>
@@ -127,10 +138,10 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             }}
                         />
                     </BodyLong>
-                </GreenPanel>
+                </BluePanel>
             )}
             {(erAlenesøker(hvemPlanlegger) || erFarOgFar) && (
-                <GreenPanel>
+                <BluePanel>
                     <VStack gap="2">
                         <Heading level="4" size="small">
                             <FormattedMessage id="OppsummeringSteg.Perioden" />
@@ -141,7 +152,8 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                 values={{
                                     prosent: hvorLangPeriode.dekningsgrad,
                                     erAlenesøker: erAlenesøker(hvemPlanlegger),
-                                    antallUker: getAntallUker(valgtStønadskonto),
+                                    antallUker: ukerOgDagerMedForeldrepenger.uker,
+                                    antallDager: ukerOgDagerMedForeldrepenger.dager,
                                 }}
                             />
                         </BodyShort>
@@ -164,10 +176,10 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             />
                         </BodyShort>
                     </VStack>
-                </GreenPanel>
+                </BluePanel>
             )}
             {hvemHarRett === 'kunSøker2HarRett' && !erFarOgFar && fornavnSøker2 && (
-                <GreenPanel>
+                <BluePanel>
                     <VStack gap="2">
                         <Heading level="4" size="small">
                             <FormattedMessage id="OppsummeringSteg.Perioden" />
@@ -176,11 +188,18 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             <FormattedMessage
                                 id="OppsummeringSteg.DereValgteAktivitetskrav"
                                 values={{
-                                    uker1: antallUkerAktivitetsfriKvote,
-                                    uker2: antallUkerAktivitetskrav,
+                                    uker1: antallUkerOgDagerAktivitetsfriKvote.uker,
+                                    dager1: antallUkerOgDagerAktivitetsfriKvote.dager,
+                                    uker2:
+                                        getAntallUkerOgDager(valgtStønadskonto).uker -
+                                        antallUkerOgDagerAktivitetsfriKvote.uker,
+                                    dager2:
+                                        getAntallUkerOgDager(valgtStønadskonto).dager -
+                                        antallUkerOgDagerAktivitetsfriKvote.dager,
                                     hvem: fornavnSøker1,
                                     prosent: hvorLangPeriode.dekningsgrad,
-                                    antallUker: getAntallUker(valgtStønadskonto),
+                                    antallUker: getAntallUkerOgDager(valgtStønadskonto).uker,
+                                    dager: getAntallUkerOgDager(valgtStønadskonto).dager,
                                 }}
                             />
                         </BodyShort>
@@ -221,7 +240,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             }}
                         />
                     </BodyShort>
-                </GreenPanel>
+                </BluePanel>
             )}
             <CalendarLabels
                 uttaksdata={uttaksdata}

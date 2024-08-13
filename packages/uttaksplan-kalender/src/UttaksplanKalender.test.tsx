@@ -10,7 +10,7 @@ const {
     KortPeriodeUtenHelg,
 } = composeStories(stories);
 
-describe('MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering ', () => {
+describe('MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering', () => {
     it('skal vise riktige labels og farger på periodene i kalender med gradering, samtidig uttak og tapte dager', async () => {
         render(<MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering />);
 

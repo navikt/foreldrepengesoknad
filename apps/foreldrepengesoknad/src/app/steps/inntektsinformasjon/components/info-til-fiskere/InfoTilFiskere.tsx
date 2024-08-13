@@ -12,9 +12,6 @@ const InfoTilFiskere = () => {
                 <ExpansionCard.Title as="h3" size="small">
                     <FormattedMessage id="inntektsinformasjon.infoTilFiskere.tittel" />
                 </ExpansionCard.Title>
-                <ExpansionCard.Description>
-                    <FormattedMessage id="inntektsinformasjon.infoTilFiskere.description" />
-                </ExpansionCard.Description>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
                 <Block padBottom="l">

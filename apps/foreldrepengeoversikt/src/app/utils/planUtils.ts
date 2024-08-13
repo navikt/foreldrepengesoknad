@@ -1,5 +1,7 @@
-import { Periode } from 'app/types/Periode';
 import dayjs from 'dayjs';
+
+import { Periode } from 'app/types/Periode';
+
 import { Uttaksdagen } from './Uttaksdagen';
 
 export const slåSammenLikePerioder = (plan: Periode[]) => {
@@ -44,6 +46,7 @@ const erPerioderLike = (periodeA: Periode, periodeB: Periode) => {
 };
 
 const getPeriodeFootprint = (periode: Periode) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { fom, tom, ...rest } = periode;
     const sortedPeriode: any = {};
 

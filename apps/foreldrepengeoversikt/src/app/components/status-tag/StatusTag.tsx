@@ -55,7 +55,7 @@ const StatusTag: React.FunctionComponent<Props> = ({ sak, className }) => {
 
     if (sak.sakAvsluttet) {
         return (
-            <Tag className={className} variant="success-moderate" size="xsmall">
+            <Tag className={className} variant="neutral-moderate" size="xsmall">
                 Avsluttet
             </Tag>
         );

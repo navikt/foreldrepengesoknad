@@ -1,18 +1,19 @@
-import { useAtomValue, useSetAtom } from 'jotai';
-import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
-import { selectedSakAtom } from 'app/atoms/selectedSakAtom';
-import { Sak } from 'app/types/Sak';
+import { hentSakerOptions } from 'app/api/api';
+import { getAlleYtelser, mapSakerDTOToSaker } from 'app/utils/sakerUtils';
 
 export const useGetSelectedSak = () => {
-    const selectedSak = useAtomValue(selectedSakAtom);
-    return selectedSak;
-};
+    const params = useParams();
+    const saker = useQuery({
+        ...hentSakerOptions(),
+        select: mapSakerDTOToSaker,
+    }).data;
 
-export const useSetSelectedSak = (sak: Sak | undefined) => {
-    const setSelectedSak = useSetAtom(selectedSakAtom);
+    if (!saker) {
+        return undefined;
+    }
 
-    useEffect(() => {
-        setSelectedSak(sak);
-    }, [setSelectedSak, sak]);
+    return getAlleYtelser(saker).find((sak) => sak.saksnummer === params.saksnummer)!;
 };

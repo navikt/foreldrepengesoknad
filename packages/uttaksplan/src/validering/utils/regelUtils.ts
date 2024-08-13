@@ -1,4 +1,6 @@
-import { flatten, isArray, uniqBy } from 'lodash';
+import flatten from 'lodash/flatten';
+import isArray from 'lodash/isArray';
+import uniqBy from 'lodash/uniqBy';
 import { IntlShape } from 'react-intl';
 
 import { guid } from '@navikt/fp-common';

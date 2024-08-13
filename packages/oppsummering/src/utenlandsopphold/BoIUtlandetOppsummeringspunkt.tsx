@@ -1,54 +1,10 @@
-import dayjs from 'dayjs';
-import { FormattedMessage, IntlShape, PrimitiveType, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, VStack } from '@navikt/ds-react';
+import { FormSummary } from '@navikt/ds-react';
 
-import {
-    Utenlandsopphold,
-    UtenlandsoppholdPeriode,
-    UtenlandsoppholdSenere,
-    UtenlandsoppholdTidligere,
-} from '@navikt/fp-types';
-import { notEmpty } from '@navikt/fp-validation';
+import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
-import Oppsummeringspunkt from '../Oppsummeringspunkt';
 import LandOppsummering from './LandOppsummering';
-
-const erDatoITidsperiode = (dato: string, fom: string, tom: string) => {
-    return dayjs(dato).isBetween(dayjs(fom), dayjs(tom), 'day', '[]');
-};
-
-const finnDatotekst = (
-    intl: IntlShape,
-    hendelseType: HendelseType,
-    values: Record<string, PrimitiveType>,
-): string | undefined => {
-    if (hendelseType === HendelseType.TERMIN) {
-        return intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Text.OgKommerPåFødselstidspunktet' }, values);
-    }
-    if (hendelseType === HendelseType.FØDSEL) {
-        return intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.VarPåFødselstidspunktet' }, values);
-    }
-    if (hendelseType === HendelseType.ADOPSJON) {
-        return intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.VarPåOmsorgsovertakelsepunktet' }, values);
-    }
-    throw new Error('Function not implemented.');
-};
-
-const erFamiliehendelsedatoIEnUtenlandsoppholdPeriode = (
-    familiehendelsedato: string,
-    utenlandsoppholdSiste12Mnd: UtenlandsoppholdPeriode[] = [],
-    utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[] = [],
-) => {
-    return (
-        utenlandsoppholdSiste12Mnd.some((tidligereOpphold) =>
-            erDatoITidsperiode(familiehendelsedato, tidligereOpphold.fom, tidligereOpphold.tom),
-        ) ||
-        utenlandsoppholdNeste12Mnd.some((senereOpphold) =>
-            erDatoITidsperiode(familiehendelsedato, senereOpphold.fom, senereOpphold.tom),
-        )
-    );
-};
 
 export enum HendelseType {
     ADOPSJON = 'ADOPSJON',
@@ -57,72 +13,87 @@ export enum HendelseType {
 }
 
 interface Props {
-    familiehendelseDato: string;
-    hendelseType: HendelseType;
-    utenlandsopphold: Utenlandsopphold;
-    tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
-    senereUtenlandsopphold?: UtenlandsoppholdSenere;
-    hide?: boolean;
+    tidligereUtenlandsopphold: UtenlandsoppholdPeriode[];
+    senereUtenlandsopphold: UtenlandsoppholdPeriode[];
+    onVilEndreSvar: () => void;
 }
 
-const BoIUtlandetOppsummeringspunkt: React.FunctionComponent<Props> = ({
-    familiehendelseDato,
-    hendelseType,
-    utenlandsopphold,
+const BoIUtlandetOppsummeringspunkt = ({
+    onVilEndreSvar,
     tidligereUtenlandsopphold,
     senereUtenlandsopphold,
-    hide = false,
-}) => {
-    const intl = useIntl();
-
-    if (hide) {
-        return null;
-    }
-
+}: Props) => {
     return (
-        <Oppsummeringspunkt tittel={intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Utenlandsopphold' })}>
-            <VStack gap="5">
-                <VStack gap="2">
-                    {utenlandsopphold.harBoddUtenforNorgeSiste12Mnd && (
-                        <LandOppsummering
-                            utenlandsoppholdListe={notEmpty(tidligereUtenlandsopphold).utenlandsoppholdSiste12Mnd}
-                        />
-                    )}
-                    {utenlandsopphold.skalBoUtenforNorgeNeste12Mnd && (
-                        <LandOppsummering
-                            utenlandsoppholdListe={notEmpty(senereUtenlandsopphold).utenlandsoppholdNeste12Mnd}
-                        />
-                    )}
-                </VStack>
-                {utenlandsopphold.harBoddUtenforNorgeSiste12Mnd === false && (
-                    <BodyShort>
-                        <FormattedMessage
-                            id={'BoIUtlandetOppsummeringspunkt.BoddSisteTolv'}
-                            values={{ country: intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Norge' }) }}
-                        />
-                    </BodyShort>
-                )}
-                {utenlandsopphold.skalBoUtenforNorgeNeste12Mnd === false && (
-                    <BodyShort>
-                        <FormattedMessage
-                            id="BoIUtlandetOppsummeringspunkt.BoNesteTolv"
-                            values={{ country: intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Norge' }) }}
-                        />
-                    </BodyShort>
-                )}
-                <BodyShort>
-                    {finnDatotekst(intl, hendelseType, {
-                        country: erFamiliehendelsedatoIEnUtenlandsoppholdPeriode(
-                            familiehendelseDato,
-                            tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd,
-                            senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd,
-                        )
-                            ? intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Utlandet' })
-                            : intl.formatMessage({ id: 'BoIUtlandetOppsummeringspunkt.Norge' }),
-                    })}
-                </BodyShort>
-            </VStack>
-        </Oppsummeringspunkt>
+        <FormSummary>
+            <FormSummary.Header>
+                <FormSummary.Heading level="2">
+                    <FormattedMessage id="BoIUtlandetOppsummeringspunkt.tittel" />
+                </FormSummary.Heading>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id={'EndreSvar'} />
+                </FormSummary.EditLink>
+            </FormSummary.Header>
+            <FormSummary.Answers>
+                <FormSummary.Answer>
+                    <FormSummary.Label>
+                        <FormattedMessage id="BoIUtlandetOppsummeringspunkt.HarBoddSisteTolv.tittel" />
+                    </FormSummary.Label>
+                    <FormSummary.Value>
+                        {tidligereUtenlandsopphold.length > 0 ? (
+                            <FormattedMessage id="BoIUtlandetOppsummeringspunkt.HarBoddSisteTolv.utlandet" />
+                        ) : (
+                            <FormattedMessage id="BoIUtlandetOppsummeringspunkt.HarBoddSisteTolv.iNorge" />
+                        )}
+                    </FormSummary.Value>
+                </FormSummary.Answer>
+            </FormSummary.Answers>
+
+            {tidligereUtenlandsopphold.length > 0 && (
+                <FormSummary.Answers>
+                    <FormSummary.Answer>
+                        <FormSummary.Label>
+                            <FormattedMessage
+                                id="BoIUtlandetOppsummeringspunkt.HarBoddSisteTolv.land.label"
+                                values={{ antall: tidligereUtenlandsopphold.length }}
+                            />
+                        </FormSummary.Label>
+                        <FormSummary.Value>
+                            <LandOppsummering utenlandsoppholdListe={tidligereUtenlandsopphold} />
+                        </FormSummary.Value>
+                    </FormSummary.Answer>
+                </FormSummary.Answers>
+            )}
+
+            <FormSummary.Answers>
+                <FormSummary.Answer>
+                    <FormSummary.Label>
+                        <FormattedMessage id="BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.tittel" />
+                    </FormSummary.Label>
+                    <FormSummary.Value>
+                        {senereUtenlandsopphold.length > 0 ? (
+                            <FormattedMessage id="BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.utlandet" />
+                        ) : (
+                            <FormattedMessage id="BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.iNorge" />
+                        )}
+                    </FormSummary.Value>
+                </FormSummary.Answer>
+            </FormSummary.Answers>
+            {senereUtenlandsopphold.length > 0 && (
+                <FormSummary.Answers>
+                    <FormSummary.Answer>
+                        <FormSummary.Label>
+                            <FormattedMessage
+                                id="BoIUtlandetOppsummeringspunkt.SkalBoNesteTolv.land.label"
+                                values={{ antall: senereUtenlandsopphold.length }}
+                            />
+                        </FormSummary.Label>
+                        <FormSummary.Value>
+                            <LandOppsummering utenlandsoppholdListe={senereUtenlandsopphold} />
+                        </FormSummary.Value>
+                    </FormSummary.Answer>
+                </FormSummary.Answers>
+            )}
+        </FormSummary>
     );
 };
 

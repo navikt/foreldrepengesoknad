@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { Link, useParams } from 'react-router-dom';
 
@@ -5,14 +6,15 @@ import { Alert, BodyLong, Heading, LinkPanel, Loader } from '@navikt/ds-react';
 
 import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
 
-import Api from 'app/api/api';
+import { hentDokumenterOptions } from 'app/api/api';
 import Dokument from 'app/components/dokument/Dokument';
 import GrupperteDokumenter from 'app/components/grupperte-dokumenter/GrupperteDokumenter';
+import { DokumenterHeader } from 'app/components/header/Header';
 import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
+import { PageRouteLayout } from 'app/routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from 'app/routes/routes';
-import { RequestStatus } from 'app/types/RequestStatus';
 import { grupperDokumenterPåTidspunkt } from 'app/utils/dokumenterUtils';
 import { guid } from 'app/utils/guid';
 
@@ -28,16 +30,16 @@ const DokumenterPage: React.FunctionComponent = () => {
     const title = intl.formatMessage({ id: 'dokumenter' });
     const lastOppDokTittel = intl.formatMessage({ id: 'lastOppDokumenter' });
     useDocumentTitle(`${title} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`);
-    const { dokumenterData, dokumenterError, dokumenterStatus } = Api.useGetDokumenter(params.saksnummer!);
+    const dokumenterQuery = useQuery(hentDokumenterOptions(params.saksnummer!));
 
-    if (!dokumenterData && dokumenterStatus !== RequestStatus.FINISHED) {
+    if (dokumenterQuery.isPending) {
         return <Loader size="large" aria-label="Henter dokumenter" />;
     }
 
-    const dokumenterGruppertPåTidspunkt = grupperDokumenterPåTidspunkt(dokumenterData || []);
+    const dokumenterGruppertPåTidspunkt = grupperDokumenterPåTidspunkt(dokumenterQuery.data ?? []);
 
     return (
-        <>
+        <PageRouteLayout header={<DokumenterHeader />}>
             <LinkPanel
                 as={Link}
                 to={`../${OversiktRoutes.ETTERSEND}`}
@@ -46,7 +48,7 @@ const DokumenterPage: React.FunctionComponent = () => {
             >
                 <LinkPanel.Title as="h2">{lastOppDokTittel}</LinkPanel.Title>
             </LinkPanel>
-            {!dokumenterError && (
+            {!dokumenterQuery.isError && (
                 <>
                     <div className={bem.element('dokumenter-liste')}>
                         {Object.entries(dokumenterGruppertPåTidspunkt).map((dokument) => {
@@ -71,7 +73,7 @@ const DokumenterPage: React.FunctionComponent = () => {
                     </Alert>
                 </>
             )}
-            {dokumenterError && (
+            {dokumenterQuery.isError && (
                 <div style={{ marginBottom: '2rem' }}>
                     <NoeGikkGalt>
                         Vi har problemer med å vise informasjon om dine dokumenter akkurat nå. Feilen er hos oss, ikke
@@ -79,7 +81,7 @@ const DokumenterPage: React.FunctionComponent = () => {
                     </NoeGikkGalt>
                 </div>
             )}
-        </>
+        </PageRouteLayout>
     );
 };
 

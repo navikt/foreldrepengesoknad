@@ -10,6 +10,10 @@ body {
     min-width: 320px;
 }
 
+a {
+    cursor: pointer;
+}
+
 @media screen {
     .print-only {
         display: none;

@@ -1,12 +1,11 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Button, HStack, Radio, VStack } from '@navikt/ds-react';
+import { Radio, VStack } from '@navikt/ds-react';
 
-import { Step } from '@navikt/fp-common';
-import { ErrorSummaryHookForm, Form, RadioGroup } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, Kjønn, SøkersituasjonFp } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
 import useFpNavigator from 'app/appData/useFpNavigator';
@@ -31,8 +30,6 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
     const søkersituasjon = useContextGetData(ContextDataType.SØKERSITUASJON);
     const oppdaterSøkersituasjon = useContextSaveData(ContextDataType.SØKERSITUASJON);
 
@@ -45,8 +42,6 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({
     });
 
     const onSubmit = (values: SøkersituasjonFp) => {
-        setIsSubmitting(true);
-
         oppdaterSøkersituasjon({
             situasjon: values.situasjon,
             rolle: values.rolle || 'far',
@@ -101,11 +96,7 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({
                             </Radio>
                         </RadioGroup>
                     )}
-                    <HStack justify="center">
-                        <Button type="submit" disabled={isSubmitting} loading={isSubmitting}>
-                            <FormattedMessage id="søknad.gåVidere" />
-                        </Button>
-                    </HStack>
+                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
             </Form>
         </Step>

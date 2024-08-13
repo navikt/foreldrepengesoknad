@@ -3,10 +3,11 @@ import { useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
-import { Barn, Step, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { Barn, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Søker, Søkerinfo } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import useFpNavigator from 'app/appData/useFpNavigator';
@@ -24,7 +25,7 @@ const getRegistrertAnnenForelder = (barn: NonNullable<Barn | undefined>, søker:
     const registrertBarnMedAnnenForelder =
         registrerteBarn === undefined || registrerteBarn.length === 0
             ? undefined
-            : registrerteBarn.find((barn) => barn.annenForelder !== undefined);
+            : registrerteBarn.find((registrertBarn) => registrertBarn.annenForelder !== undefined);
     return registrertBarnMedAnnenForelder !== undefined ? registrertBarnMedAnnenForelder.annenForelder : undefined;
 };
 

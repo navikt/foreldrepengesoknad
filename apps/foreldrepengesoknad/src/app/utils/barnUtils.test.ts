@@ -34,7 +34,7 @@ describe('barnUtils', () => {
 
         const dato = getFamiliehendelsedato(barn);
 
-        expect(dato).toBeUndefined;
+        expect(dato).toBeUndefined();
     });
 
     it('skal finne registrert barn når barn er født og er registrert fra før med samme fnr', () => {
@@ -52,7 +52,7 @@ describe('barnUtils', () => {
 
         const registrert = getRegistrerteBarnOmDeFinnes(barn, registrerteBarn);
 
-        expect(registrert).toBeUndefined;
+        expect(registrert).not.toBeUndefined();
     });
 
     it('skal ikke finne registrert barn når barn er ufødt', () => {

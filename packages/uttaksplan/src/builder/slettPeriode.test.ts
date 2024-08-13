@@ -1,6 +1,8 @@
-import { slettPeriode } from './slettPeriode';
 import MockDate from 'mockdate';
+
 import { Forelder, Periode, Periodetype, StønadskontoType } from '@navikt/fp-common';
+
+import { slettPeriode } from './slettPeriode';
 
 const perioder: Periode[] = [
     {
@@ -212,32 +214,36 @@ describe('Test av slett periode for far - etter WLB', () => {
         expect(result[1].type).toEqual(Periodetype.PeriodeUtenUttak);
     });
 
-    it('Skal sette inn periode uten uttak og hull (tapte dager) hvis slettet starter innenfor de første seks ukene men slutter etter de første seks ukene.', () => {
-        const slettetPeriode = perioderFar[3];
+    it(
+        'Skal sette inn periode uten uttak og hull (tapte dager) hvis slettet starter innenfor' +
+            ' de første seks ukene men slutter etter de første seks ukene.',
+        () => {
+            const slettetPeriode = perioderFar[3];
 
-        const result = slettPeriode({
-            perioder: perioderFar,
-            slettetPeriode,
-            familiehendelsesdato: new Date('2022-08-02'),
-            harAktivitetskravIPeriodeUtenUttak: false,
-            erAdopsjon: false,
-            bareFarHarRett: true,
-            erFarEllerMedmor: true,
-            førsteUttaksdagNesteBarnsSak: undefined,
-        });
+            const result = slettPeriode({
+                perioder: perioderFar,
+                slettetPeriode,
+                familiehendelsesdato: new Date('2022-08-02'),
+                harAktivitetskravIPeriodeUtenUttak: false,
+                erAdopsjon: false,
+                bareFarHarRett: true,
+                erFarEllerMedmor: true,
+                førsteUttaksdagNesteBarnsSak: undefined,
+            });
 
-        expect(result.length).toEqual(6);
-        expect(result[3].tidsperiode).toEqual({
-            fom: slettetPeriode.tidsperiode.fom,
-            tom: new Date('2022-09-12'),
-        });
-        expect(result[3].type).toEqual(Periodetype.PeriodeUtenUttak);
-        expect(result[4].tidsperiode).toEqual({
-            fom: new Date('2022-09-13'),
-            tom: slettetPeriode.tidsperiode.tom,
-        });
-        expect(result[4].type).toEqual(Periodetype.Hull);
-    });
+            expect(result.length).toEqual(6);
+            expect(result[3].tidsperiode).toEqual({
+                fom: slettetPeriode.tidsperiode.fom,
+                tom: new Date('2022-09-12'),
+            });
+            expect(result[3].type).toEqual(Periodetype.PeriodeUtenUttak);
+            expect(result[4].tidsperiode).toEqual({
+                fom: new Date('2022-09-13'),
+                tom: slettetPeriode.tidsperiode.tom,
+            });
+            expect(result[4].type).toEqual(Periodetype.Hull);
+        },
+    );
 });
 
 describe('Test av slett periode for far - før WLB', () => {

@@ -31,7 +31,7 @@ const findDayColor = (year: number, month: number, day: number, periods: Period[
         return PeriodeColor.NONE;
     }
 
-    const period = periods.find((period) => date.isBetween(period.fom, period.tom, 'day', '[]'));
+    const period = periods.find((p) => date.isBetween(p.fom, p.tom, 'day', '[]'));
 
     if (period?.color === PeriodeColor.PINK) {
         return PeriodeColor.PINK;

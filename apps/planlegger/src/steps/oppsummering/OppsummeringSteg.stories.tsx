@@ -16,31 +16,9 @@ import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import OppsummeringSteg from './OppsummeringSteg';
 
-const kontoer = {
-    '100': {
-        kontoer: [
-            { konto: StønadskontoType.Mødrekvote, dager: 75 },
-            { konto: StønadskontoType.Fedrekvote, dager: 75 },
-            { konto: StønadskontoType.Fellesperiode, dager: 80 },
-            { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
-        ],
-        minsteretter: {
-            farRundtFødsel: 0,
-            toTette: 0,
-        },
-    },
-    '80': {
-        kontoer: [
-            { konto: StønadskontoType.Mødrekvote, dager: 95 },
-            { konto: StønadskontoType.Fedrekvote, dager: 95 },
-            { konto: StønadskontoType.Fellesperiode, dager: 90 },
-            { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
-        ],
-        minsteretter: {
-            farRundtFødsel: 0,
-            toTette: 0,
-        },
-    },
+const MINSTERETTER_FAR_RUNDT_FØDSEL_10 = {
+    farRundtFødsel: 10,
+    toTette: 0,
 };
 
 const satser = {
@@ -83,7 +61,7 @@ const customRenderer = ({
     hvorLangPeriode,
     omBarnet,
     arbeidssituasjon,
-    stønadskontoer = kontoer,
+    stønadskontoer,
 }: StoryArgs) => {
     initAmplitude();
     return (
@@ -118,7 +96,7 @@ export const FlereForsørgereHundreProsentTermin: Story = {
             type: Situasjon.MOR_OG_FAR,
         },
         fordeling: {
-            antallUkerSøker1: 5,
+            antallDagerSøker1: 25,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -126,12 +104,38 @@ export const FlereForsørgereHundreProsentTermin: Story = {
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: false,
-            termindato: '2022-10-24',
+            termindato: '2024-07-24',
             antallBarn: '1',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
+        },
+        stønadskontoer: {
+            '100': {
+                kontoer: [
+                    { konto: StønadskontoType.Mødrekvote, dager: 75 },
+                    { konto: StønadskontoType.Fedrekvote, dager: 75 },
+                    { konto: StønadskontoType.Fellesperiode, dager: 80 },
+                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                ],
+                minsteretter: {
+                    farRundtFødsel: 0,
+                    toTette: 0,
+                },
+            },
+            '80': {
+                kontoer: [
+                    { konto: StønadskontoType.Mødrekvote, dager: 95 },
+                    { konto: StønadskontoType.Fedrekvote, dager: 95 },
+                    { konto: StønadskontoType.Fellesperiode, dager: 101 },
+                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                ],
+                minsteretter: {
+                    farRundtFødsel: 0,
+                    toTette: 0,
+                },
+            },
         },
     },
 };
@@ -149,7 +153,7 @@ export const MorOgFarKunFarHarRett: Story = {
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: false,
-            termindato: '2022-10-24',
+            termindato: '2024-07-24',
             antallBarn: '1',
         },
         arbeidssituasjon: {
@@ -159,23 +163,17 @@ export const MorOgFarKunFarHarRett: Story = {
         stønadskontoer: {
             '80': {
                 kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 155 },
-                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 95 },
+                    { konto: StønadskontoType.Foreldrepenger, dager: 211 },
+                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 50 },
                 ],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
+                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
             },
             '100': {
                 kontoer: [
-                    { konto: StønadskontoType.Foreldrepenger, dager: 125 },
-                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 75 },
+                    { konto: StønadskontoType.Foreldrepenger, dager: 150 },
+                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 50 },
                 ],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
+                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
             },
         },
     },
@@ -189,7 +187,7 @@ export const FarOgFarFødsel: Story = {
             type: Situasjon.FAR_OG_FAR,
         },
         fordeling: {
-            antallUkerSøker1: 5,
+            antallDagerSøker1: 25,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -197,13 +195,14 @@ export const FarOgFarFødsel: Story = {
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: false,
-            termindato: '2022-10-24',
+            termindato: '2024-07-24',
             antallBarn: '1',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
+        stønadskontoer: FlereForsørgereHundreProsentTermin.args?.stønadskontoer,
     },
 };
 
@@ -213,22 +212,23 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
             type: Situasjon.FAR_OG_FAR,
         },
         fordeling: {
-            antallUkerSøker1: 5,
+            antallDagerSøker1: 25,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
         },
         omBarnet: {
             erFødsel: false,
-            termindato: '2022-01-24',
+            termindato: '2024-07-24',
             antallBarn: '1',
-            overtakelsesdato: '2022-10-24',
-            fødselsdato: '2022-01-24',
+            overtakelsesdato: '2024-10-24',
+            fødselsdato: '2024-07-24',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
+        stønadskontoer: MorOgFarKunFarHarRett.args?.stønadskontoer,
     },
 };
 
@@ -239,7 +239,7 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
             type: Situasjon.MOR,
         },
         fordeling: {
-            antallUkerSøker1: 5,
+            antallDagerSøker1: 25,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
@@ -247,12 +247,28 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: true,
-            termindato: '2022-07-10',
+            termindato: '2024-07-10',
             antallBarn: '2',
-            fødselsdato: '2022-08-10',
+            fødselsdato: '2024-08-10',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: [
+                    { konto: StønadskontoType.Foreldrepenger, dager: 397 },
+                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                ],
+                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+            },
+            '100': {
+                kontoer: [
+                    { konto: StønadskontoType.Foreldrepenger, dager: 315 },
+                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                ],
+                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+            },
         },
     },
 };
@@ -268,12 +284,22 @@ export const AleneforsørgerFarÅttiProsentFødsel: Story = {
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: true,
-            termindato: '2022-07-10',
+            termindato: '2024-07-10',
             antallBarn: '1',
-            fødselsdato: '2022-08-10',
+            fødselsdato: '2024-08-10',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
+        },
+        stønadskontoer: {
+            '80': {
+                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 291 }],
+                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+            },
+            '100': {
+                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 230 }],
+                minsteretter: MINSTERETTER_FAR_RUNDT_FØDSEL_10,
+            },
         },
     },
 };
@@ -286,7 +312,7 @@ export const FlereForsørgereHundreProsentAdopsjon: Story = {
             type: Situasjon.MOR_OG_MEDMOR,
         },
         fordeling: {
-            antallUkerSøker1: 5,
+            antallDagerSøker1: 25,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -294,14 +320,15 @@ export const FlereForsørgereHundreProsentAdopsjon: Story = {
         omBarnet: {
             erFødsel: false,
             erBarnetFødt: true,
-            fødselsdato: '2022-07-10',
+            fødselsdato: '2024-07-10',
             antallBarn: '1',
-            overtakelsesdato: '2022-10-10',
+            overtakelsesdato: '2024-10-10',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
+        stønadskontoer: FlereForsørgereHundreProsentTermin.args?.stønadskontoer,
     },
 };
 
@@ -315,9 +342,9 @@ export const HarIkkeRett: Story = {
         omBarnet: {
             erFødsel: false,
             erBarnetFødt: true,
-            fødselsdato: '2022-07-10',
+            fødselsdato: '2024-07-10',
             antallBarn: '1',
-            overtakelsesdato: '2022-010-10',
+            overtakelsesdato: '2024-010-10',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.INGEN,
@@ -336,8 +363,8 @@ export const KunMorHarRett: Story = {
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: true,
-            termindato: '2024-07-10',
-            fødselsdato: '2024-07-10',
+            termindato: '2024-07-01',
+            fødselsdato: '2024-07-01',
             antallBarn: '1',
         },
         hvorLangPeriode: {
@@ -346,6 +373,48 @@ export const KunMorHarRett: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
+        },
+        stønadskontoer: {
+            '100': {
+                kontoer: [
+                    {
+                        konto: StønadskontoType.Foreldrepenger,
+                        dager: 230,
+                    },
+                    {
+                        konto: StønadskontoType.ForeldrepengerFørFødsel,
+                        dager: 15,
+                    },
+                ],
+                minsteretter: {
+                    farRundtFødsel: 0,
+                    toTette: 0,
+                },
+                tillegg: {
+                    flerbarn: 0,
+                    prematur: 0,
+                },
+            },
+            '80': {
+                kontoer: [
+                    {
+                        konto: StønadskontoType.Foreldrepenger,
+                        dager: 291,
+                    },
+                    {
+                        konto: StønadskontoType.ForeldrepengerFørFødsel,
+                        dager: 15,
+                    },
+                ],
+                minsteretter: {
+                    farRundtFødsel: 0,
+                    toTette: 0,
+                },
+                tillegg: {
+                    flerbarn: 0,
+                    prematur: 0,
+                },
+            },
         },
     },
 };
@@ -359,7 +428,7 @@ export const AleneforsørgerMorErUfør: Story = {
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: false,
-            termindato: '2022-10-24',
+            termindato: '2024-10-24',
             antallBarn: '1',
         },
         hvorLangPeriode: {
@@ -380,7 +449,7 @@ export const OppsummeringFarOgFarKunFar2HarRett: Story = {
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: false,
-            termindato: '2022-10-24',
+            termindato: '2024-10-24',
             antallBarn: '1',
         },
         hvorLangPeriode: {
@@ -390,5 +459,6 @@ export const OppsummeringFarOgFarKunFar2HarRett: Story = {
             status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,
         },
+        stønadskontoer: FlereForsørgereHundreProsentTermin.args?.stønadskontoer,
     },
 };

@@ -75,14 +75,12 @@ const CalendarLabels: FunctionComponent<Props> = ({ barnet, uttaksdata, hvemPlan
                     <AktivitetskravLabel
                         utenAktivitetskrav
                         tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
-                        tekstPart2={farOgFarAdopsjonDerKunSøker1HarRett ? søker2Tekst : søker1Tekst}
                         startdato={startdatoPeriode1}
                         sluttdato={sluttdatoPeriode1}
                         isBluePanel
                     />
                     <AktivitetskravLabel
                         tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
-                        tekstPart2={farOgFarAdopsjonDerKunSøker1HarRett ? søker2Tekst : søker1Tekst}
                         startdato={startdatoPeriode2}
                         sluttdato={sluttdatoPeriode2}
                     />

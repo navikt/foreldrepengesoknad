@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { FastField, Field, FieldProps } from 'formik';
 import React from 'react';
 import { DayOfWeek } from 'react-day-picker';

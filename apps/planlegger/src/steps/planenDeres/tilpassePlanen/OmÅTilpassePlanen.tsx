@@ -50,7 +50,7 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
             <ExpansionCard.Header>
                 <HStack gap="6" align="center" wrap={false}>
                     <div>
-                        <IconCircleWrapper color="green" size="medium">
+                        <IconCircleWrapper color="lightBlue" size="medium">
                             <PencilWritingIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                         </IconCircleWrapper>
                     </div>

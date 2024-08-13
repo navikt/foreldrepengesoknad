@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { isString } from 'lodash';
+import isString from 'lodash/isString';
 import { IntlShape } from 'react-intl';
 
 import { erUttaksdag, getVarighetString } from '@navikt/fp-common';
@@ -30,7 +30,7 @@ export const isValidAntallUkerFellesperiode =
             return intl.formatMessage({ id: 'fordeling.antallUker.forLiten' });
         }
 
-        if (!ukerValue && !dagerInput) {
+        if (ukerValue === undefined && dagerInput === undefined) {
             return intl.formatMessage({ id: 'fordeling.antallUkerDager.måOppgis' });
         }
 

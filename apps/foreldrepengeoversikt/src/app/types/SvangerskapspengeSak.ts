@@ -8,6 +8,7 @@ export interface SvangerskapspengeSakDTO {
     gjelderAdopsjon?: boolean;
     familiehendelse?: Familiehendelse;
     åpenBehandling?: ÅpenBehandlingSVP;
+    oppdatertTidspunkt: string;
 }
 
 export interface SvangerskapspengeSak extends SvangerskapspengeSakDTO {

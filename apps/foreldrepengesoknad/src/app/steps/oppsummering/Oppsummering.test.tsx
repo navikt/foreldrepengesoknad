@@ -30,7 +30,6 @@ describe('<Oppsummering>', () => {
 
         render(<Default sendSøknad={sendSøknad} />);
 
-        expect(await screen.findByText('MOR MYGG')).toBeInTheDocument();
         expect(screen.queryByText('Du må bekrefte at du har oppgitt riktige opplysninger')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Send søknaden'));
@@ -58,7 +57,7 @@ describe('<Oppsummering>', () => {
         expect(screen.getByText('Fødselsdato')).toBeInTheDocument();
         expect(screen.getByText('15.03.2021')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Den andre forelderen'));
+        await userEvent.click(screen.getAllByText('Den andre forelderen')[0]);
 
         expect(screen.getByText('Jeg kan ikke oppgi den andre forelderen')).toBeInTheDocument();
 
@@ -70,7 +69,8 @@ describe('<Oppsummering>', () => {
     it('skal vise informasjon om farskapserklæring', async () => {
         render(<MorMedAnnenForelderUgift />);
 
-        await userEvent.click(await screen.findByText('Den andre forelderen'));
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        await userEvent.click(screen.getAllByText('Den andre forelderen')[1]);
 
         expect(screen.getByText('Den andre forelderen heter')).toBeInTheDocument();
         expect(screen.getByText('Espen Utvikler')).toBeInTheDocument();
@@ -94,7 +94,8 @@ describe('<Oppsummering>', () => {
     it('Skal vise riktig informasjon om aleneomsorg', async () => {
         render(<MorMedAleneOmsorg />);
 
-        await userEvent.click(await screen.findByText('Den andre forelderen'));
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        await userEvent.click(screen.getAllByText('Den andre forelderen')[1]);
 
         expect(screen.getByText('Den andre forelderen heter')).toBeInTheDocument();
         expect(screen.getByText('Ingen Omsorg')).toBeInTheDocument();
@@ -111,7 +112,8 @@ describe('<Oppsummering>', () => {
     it('Skal vise riktig informasjon om aleneomsorg og info om farskapserklæring', async () => {
         render(<FarMedAleneOmsorg />);
 
-        await userEvent.click(await screen.findByText('Den andre forelderen'));
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        await userEvent.click(screen.getAllByText('Den andre forelderen')[1]);
 
         expect(screen.getByText('Den andre forelderen heter')).toBeInTheDocument();
         expect(screen.getByText('Ingen Omsorg')).toBeInTheDocument();
@@ -129,7 +131,8 @@ describe('<Oppsummering>', () => {
     it('skal vise informasjon om at mor er ufør', async () => {
         render(<FarMedUførMorUgift />);
 
-        await userEvent.click(await screen.findByText('Den andre forelderen'));
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        await userEvent.click(screen.getAllByText('Den andre forelderen')[1]);
 
         expect(screen.getByText('Mottar Eline uføretrygd?')).toBeInTheDocument();
         expect(screen.getByText('Ja')).toBeInTheDocument();
@@ -138,7 +141,8 @@ describe('<Oppsummering>', () => {
     it('skal vise informasjon om adoptert barn', async () => {
         render(<MorMedAdoptertBarn />);
 
-        await userEvent.click(await screen.findByText('Barnet'));
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        await userEvent.click(screen.getAllByText('Barnet')[1]);
 
         expect(screen.getByText('Søknaden gjelder')).toBeInTheDocument();
         expect(screen.getByText('Ett barn')).toBeInTheDocument();
@@ -153,21 +157,25 @@ describe('<Oppsummering>', () => {
     it('skal vise informasjon om utenlandsopphold', async () => {
         render(<MorMedUtenlandsopphold />);
 
-        await userEvent.click(await screen.findByText('Bo i utlandet'));
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        await userEvent.click(screen.getAllByText('Bo i utlandet')[1]);
 
-        expect(screen.getByText('Du har bodd i Sverige i løpet av de forrige 12 månedene')).toBeInTheDocument();
+        expect(screen.getByText('Hvilket land har du bodd i de siste 12 månedene?')).toBeInTheDocument();
+        expect(screen.getAllByText('Sverige')).toHaveLength(2);
         expect(
             screen.getByText(
-                dayjs().subtract(10, 'months').format(DDMMYYYY_DATE_FORMAT) +
-                    ' - ' +
+                'Fra ' +
+                    dayjs().subtract(10, 'months').format(DDMMYYYY_DATE_FORMAT) +
+                    ' til ' +
                     dayjs().subtract(1, 'days').format(DDMMYYYY_DATE_FORMAT),
             ),
         ).toBeInTheDocument();
-        expect(screen.getByText('Du skal bo i Sverige i løpet av de neste 12 månedene')).toBeInTheDocument();
+
+        expect(screen.getByText('Hvilket land skal du bo i de neste 12 månedene?')).toBeInTheDocument();
+        expect(screen.getAllByText('Sverige')).toHaveLength(2);
         expect(
-            screen.getByText('i dag - ' + dayjs().add(100, 'days').format(DDMMYYYY_DATE_FORMAT)),
+            screen.getByText('Fra i dag til ' + dayjs().add(100, 'days').format(DDMMYYYY_DATE_FORMAT)),
         ).toBeInTheDocument();
-        expect(screen.getByText('På fødselstidspunktet bodde du i Norge')).toBeInTheDocument();
     });
 
     it('skal vise informasjon om arbeidsforhold og andre inntekter', async () => {
@@ -204,7 +212,8 @@ describe('<Oppsummering>', () => {
     it('Skal vise informasjon om at mor har rett til foreldrepenger i EØS', async () => {
         render(<FarMedMorSomHarRettIEØS />);
 
-        await userEvent.click(await screen.findByText('Den andre forelderen'));
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        await userEvent.click(screen.getAllByText('Den andre forelderen')[1]);
 
         expect(screen.getByText('Har Anne rett til foreldrepenger i Norge?')).toBeInTheDocument();
         expect(
@@ -221,7 +230,8 @@ describe('<Oppsummering>', () => {
     it('Skal vise informasjon om at mor har hatt opphold men ikke rett til foreldrepenger i EØS', async () => {
         render(<FarMedMorSomHarRettIEØS />);
 
-        await userEvent.click(await screen.findByText('Den andre forelderen'));
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        await userEvent.click(screen.getAllByText('Den andre forelderen')[1]);
 
         expect(screen.getByText('Har Anne rett til foreldrepenger i Norge?')).toBeInTheDocument();
         expect(
@@ -237,7 +247,8 @@ describe('<Oppsummering>', () => {
     it('skal vise informasjon om at mor har rett til foreldrepenger i Norge og ikke vise info om EØS eller uføretrygd', async () => {
         render(<FarMedMorSomHarRettINorge />);
 
-        await userEvent.click(await screen.findByText('Den andre forelderen'));
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+        await userEvent.click(screen.getAllByText('Den andre forelderen')[1]);
 
         expect(screen.getByText('Har Frida rett til foreldrepenger i Norge?')).toBeInTheDocument();
         expect(
@@ -255,7 +266,7 @@ describe('<Oppsummering>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
         await userEvent.click(screen.getByText('Forrige steg'));
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
@@ -279,7 +290,7 @@ describe('<Oppsummering>', () => {
             />,
         );
 
-        expect(await screen.findByText('Oppsummering')).toBeInTheDocument();
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
         await userEvent.click(screen.getByText('Forrige steg'));
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);

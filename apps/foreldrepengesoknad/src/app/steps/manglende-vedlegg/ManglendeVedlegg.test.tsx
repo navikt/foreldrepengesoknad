@@ -66,7 +66,7 @@ describe('<ManglendeVedlegg>', () => {
         );
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByTestId('file-upload');
+        const fileInput = screen.getByLabelText('Last opp bekreftelse på termindato');
         await fireEvent.change(fileInput, {
             target: { files: [file] },
         });
@@ -151,7 +151,7 @@ describe('<ManglendeVedlegg>', () => {
         );
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByTestId('file-upload');
+        const fileInput = screen.getByLabelText('Dokumentasjon om omsorgsovertakelse');
         await fireEvent.change(fileInput, {
             target: { files: [file] },
         });
@@ -182,7 +182,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    it('skal lage "send inn senere" vedlegg for omsorgsovertakelse', async () => {
+    it('skal lage "send inn senere" vedlegg for aleneomsorg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -224,7 +224,7 @@ describe('<ManglendeVedlegg>', () => {
         });
     });
 
-    it('skal laste opp vedlegg for omsorgsovertakelse', async () => {
+    it('skal laste opp vedlegg for aleneomsorg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -236,7 +236,7 @@ describe('<ManglendeVedlegg>', () => {
         );
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByTestId('file-upload');
+        const fileInput = screen.getByLabelText('Dokumentasjon av aleneomsorg');
         await fireEvent.change(fileInput, {
             target: { files: [file] },
         });

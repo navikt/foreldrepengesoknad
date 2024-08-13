@@ -1,29 +1,37 @@
 import { Forelder, Periode, Periodetype, StønadskontoType } from '../types';
 import {
+    erFarMedmorSinWLBTidsperiodeRundtFødsel,
     farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
     getFørsteUttaksdag2UkerFørFødsel,
     getSisteUttaksdag6UkerEtterFødsel,
     starterTidsperiodeEtter2UkerFørFødsel,
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
-    erFarMedmorSinWLBTidsperiodeRundtFødsel,
 } from './wlbUtils';
 
 describe('wlbUtils - getFørsteUttaksdag2UkerFørFødsel', () => {
-    it('skal returnere riktig startdato mandagen etter søndager 2 uker før for perioden før fødsel hvis termin er på en søndag og fødsel ikke har skjedd (famhendelsesdato = termindato)', () => {
-        const result = getFørsteUttaksdag2UkerFørFødsel(
-            new Date('2022-05-29T00:00:00.000Z'),
-            new Date('2022-05-29T00:00:00.000Z'),
-        );
-        expect(result).toEqual(new Date('2022-05-16T00:00:00.000Z'));
-    });
+    it(
+        'skal returnere riktig startdato mandagen etter søndager 2 uker før for perioden før fødsel hvis' +
+            ' termin er på en søndag og fødsel ikke har skjedd (famhendelsesdato = termindato)',
+        () => {
+            const result = getFørsteUttaksdag2UkerFørFødsel(
+                new Date('2022-05-29T00:00:00.000Z'),
+                new Date('2022-05-29T00:00:00.000Z'),
+            );
+            expect(result).toEqual(new Date('2022-05-16T00:00:00.000Z'));
+        },
+    );
 
-    it('skal returnere riktig startdat to uker før for perioden før fødsel hvis termin er på en fredag og fødsel ikke har skjedd (famhendelsesdato = termindato)', () => {
-        const result = getFørsteUttaksdag2UkerFørFødsel(
-            new Date('2022-05-27T00:00:00.000Z'),
-            new Date('2022-05-27T00:00:00.000Z'),
-        );
-        expect(result).toEqual(new Date('2022-05-13T00:00:00.000Z'));
-    });
+    it(
+        'skal returnere riktig startdat to uker før for perioden før fødsel hvis termin er på en fredag og fødsel' +
+            ' ikke har skjedd (famhendelsesdato = termindato)',
+        () => {
+            const result = getFørsteUttaksdag2UkerFørFødsel(
+                new Date('2022-05-27T00:00:00.000Z'),
+                new Date('2022-05-27T00:00:00.000Z'),
+            );
+            expect(result).toEqual(new Date('2022-05-13T00:00:00.000Z'));
+        },
+    );
 
     it('skal returnere riktig startdato fra 2 uker før termin for perioden før fødsel hvis fødsel har inntruffet og termin-2 uker er før fødsel', () => {
         const result = getFørsteUttaksdag2UkerFørFødsel(
@@ -235,21 +243,25 @@ describe('wlbUtils - farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato', 
         );
         expect(result).toEqual(true);
     });
-    it('skal returnere at periode som går over fødsel ikke skal splittes, når det er far/medmors foreldrepengeperiode og både mor og far/medmor har rett', () => {
-        const periode = {
-            type: Periodetype.Uttak,
-            konto: StønadskontoType.Foreldrepenger,
-            forelder: Forelder.farMedmor,
-            tidsperiode: { fom: new Date('2022-05-25T00:00:00.000Z'), tom: new Date('2022-05-27T00:00:00.000Z') },
-        } as Periode;
-        const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
-            periode,
-            new Date('2022-05-27T00:00:00.000Z'),
-            true,
-            undefined,
-        );
-        expect(result).toEqual(false);
-    });
+    it(
+        'skal returnere at periode som går over fødsel ikke skal splittes, når det er far/medmors' +
+            ' foreldrepengeperiode og både mor og far/medmor har rett',
+        () => {
+            const periode = {
+                type: Periodetype.Uttak,
+                konto: StønadskontoType.Foreldrepenger,
+                forelder: Forelder.farMedmor,
+                tidsperiode: { fom: new Date('2022-05-25T00:00:00.000Z'), tom: new Date('2022-05-27T00:00:00.000Z') },
+            } as Periode;
+            const result = farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato(
+                periode,
+                new Date('2022-05-27T00:00:00.000Z'),
+                true,
+                undefined,
+            );
+            expect(result).toEqual(false);
+        },
+    );
 });
 describe('erFarMedmorSinWLBTidsperiodeRundtFødsel - når WLB gjelder', () => {
     it('erFarMedmorSinWLBTidsperiodeRundtFødsel skal returnere true hvis far legger til uttak av fedrekvote rundt fødsel og det ikke er flerbarnsdager', () => {

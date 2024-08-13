@@ -94,9 +94,7 @@ interface Props {
 }
 
 const periodenGjelderAnnenForelder = (erFarEllerMedmor: boolean, forelder: Forelder): boolean => {
-    return (erFarEllerMedmor && forelder === Forelder.farMedmor) || (!erFarEllerMedmor && forelder === Forelder.mor)
-        ? false
-        : true;
+    return !((erFarEllerMedmor && forelder === Forelder.farMedmor) || (!erFarEllerMedmor && forelder === Forelder.mor));
 };
 
 const erUttakAvAnnenForeldersKvote = (konto: StønadskontoType | '', søkerErFarEllerMedmor: boolean): boolean => {
@@ -331,9 +329,9 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                 familiehendelsesdato={familiehendelsesdato}
                                 periode={periode}
-                                onBekreft={(values) => {
-                                    setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(values.fom));
-                                    setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
+                                onBekreft={(currentValues) => {
+                                    setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(currentValues.fom));
+                                    setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(currentValues.tom));
                                 }}
                                 ugyldigeTidsperioder={undefined}
                                 utsettelserIPlan={utsettelserIPlan}
@@ -361,15 +359,15 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                     familiehendelsesdato={familiehendelsesdato}
                                     ugyldigeTidsperioder={undefined}
                                     utsettelserIPlan={utsettelserIPlan}
-                                    onBekreft={(values) => {
+                                    onBekreft={(currentValues) => {
                                         setTidsperiodeIsOpen(false);
-                                        setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(values.fom));
-                                        setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(values.tom));
+                                        setFieldValue(PeriodeUttakFormField.fom, ISOStringToDate(currentValues.fom));
+                                        setFieldValue(PeriodeUttakFormField.tom, ISOStringToDate(currentValues.tom));
                                     }}
-                                    changeTidsperiode={(values) => {
+                                    changeTidsperiode={(currentValues) => {
                                         setTimeout(() => {
-                                            setFieldValue(PeriodeUttakFormField.fom, values.fom);
-                                            setFieldValue(PeriodeUttakFormField.tom, values.tom);
+                                            setFieldValue(PeriodeUttakFormField.fom, currentValues.fom);
+                                            setFieldValue(PeriodeUttakFormField.tom, currentValues.tom);
                                         }, 0);
                                     }}
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}

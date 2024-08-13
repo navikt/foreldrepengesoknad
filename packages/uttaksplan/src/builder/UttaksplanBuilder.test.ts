@@ -1,4 +1,3 @@
-import Uttaksplanbuilder from './Uttaksplanbuilder';
 import {
     Forelder,
     InfoPeriode,
@@ -10,6 +9,8 @@ import {
     UtsettelseÅrsakType,
     Uttaksperiode,
 } from '@navikt/fp-common';
+
+import Uttaksplanbuilder from './Uttaksplanbuilder';
 
 const perioder: Periode[] = [
     {
@@ -300,40 +301,44 @@ describe('Uttaksplanbuilder tester', () => {
         expect(result[6].tidsperiode.tom).toEqual(new Date('2022-10-25'));
         expect(result[7]).toEqual(nyPeriodeISluttenAvPlanen);
     });
-    it('I en endringssøknad (med opprinnelig plan), skal legge til utsettelse etter annen parts uttak når ingen overlap uten å påvirke de andre periodene', () => {
-        const originaleTidsperiodePerioder = perioderMedAnnenPartsUttakOgUtsettelserISlutten.map((periode) => {
-            return { ...periode.tidsperiode };
-        });
-        const nyUtsettelseISluttenAvPlanen: Periode = {
-            id: '11',
-            type: Periodetype.Utsettelse,
-            tidsperiode: {
-                fom: new Date('2022-09-14'),
-                tom: new Date('2022-09-16'),
-            },
-            forelder: Forelder.mor,
-            årsak: UtsettelseÅrsakType.Arbeid,
-        } as Utsettelsesperiode;
-        const result = Uttaksplanbuilder(
-            perioderMedAnnenPartsUttakOgUtsettelserISlutten,
-            new Date('2021-09-04'),
-            false,
-            false,
-            false,
-            false,
-            undefined,
-            perioderMedAnnenPartsUttakOgUtsettelserISlutten,
-        ).leggTilPeriode(nyUtsettelseISluttenAvPlanen);
+    it(
+        'I en endringssøknad (med opprinnelig plan), skal legge til utsettelse etter annen parts uttak' +
+            ' når ingen overlap uten å påvirke de andre periodene',
+        () => {
+            const originaleTidsperiodePerioder = perioderMedAnnenPartsUttakOgUtsettelserISlutten.map((periode) => {
+                return { ...periode.tidsperiode };
+            });
+            const nyUtsettelseISluttenAvPlanen: Periode = {
+                id: '11',
+                type: Periodetype.Utsettelse,
+                tidsperiode: {
+                    fom: new Date('2022-09-14'),
+                    tom: new Date('2022-09-16'),
+                },
+                forelder: Forelder.mor,
+                årsak: UtsettelseÅrsakType.Arbeid,
+            } as Utsettelsesperiode;
+            const result = Uttaksplanbuilder(
+                perioderMedAnnenPartsUttakOgUtsettelserISlutten,
+                new Date('2021-09-04'),
+                false,
+                false,
+                false,
+                false,
+                undefined,
+                perioderMedAnnenPartsUttakOgUtsettelserISlutten,
+            ).leggTilPeriode(nyUtsettelseISluttenAvPlanen);
 
-        expect(result.length).toEqual(11);
-        perioderMedAnnenPartsUttakOgUtsettelserISlutten.forEach((p, index) => {
-            const resultPeriode = result[index] as Utsettelsesperiode | Uttaksperiode;
-            const opprinneligPeriode = p as Utsettelsesperiode | Uttaksperiode;
-            const opprinneligTidsperiode = originaleTidsperiodePerioder[index];
-            expect(resultPeriode.tidsperiode).toEqual(opprinneligTidsperiode);
-            expect(resultPeriode.type).toEqual(opprinneligPeriode.type);
-            expect(resultPeriode.forelder).toEqual(opprinneligPeriode.forelder);
-        });
-        expect(result[10]).toEqual(nyUtsettelseISluttenAvPlanen);
-    });
+            expect(result.length).toEqual(11);
+            perioderMedAnnenPartsUttakOgUtsettelserISlutten.forEach((p, index) => {
+                const resultPeriode = result[index] as Utsettelsesperiode | Uttaksperiode;
+                const opprinneligPeriode = p as Utsettelsesperiode | Uttaksperiode;
+                const opprinneligTidsperiode = originaleTidsperiodePerioder[index];
+                expect(resultPeriode.tidsperiode).toEqual(opprinneligTidsperiode);
+                expect(resultPeriode.type).toEqual(opprinneligPeriode.type);
+                expect(resultPeriode.forelder).toEqual(opprinneligPeriode.forelder);
+            });
+            expect(result[10]).toEqual(nyUtsettelseISluttenAvPlanen);
+        },
+    );
 });

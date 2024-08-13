@@ -19,14 +19,14 @@ import EgenNæringModal from './modal/EgenNæringModal';
 
 interface Props {
     egenNæringInformasjon: Næring[];
-    setEgenNæringsInformasjon: (oppdrag: Næring[]) => void;
+    setEgenNæringInformasjon: (oppdrag: Næring[]) => void;
     visibility: QuestionVisibility<InntektsinformasjonFormField, undefined>;
     formValues: InntektsinformasjonFormData;
 }
 
 const EgenNæring: FunctionComponent<Props> = ({
     egenNæringInformasjon,
-    setEgenNæringsInformasjon,
+    setEgenNæringInformasjon,
     visibility,
     formValues,
 }) => {
@@ -42,13 +42,13 @@ const EgenNæring: FunctionComponent<Props> = ({
     const addNæring = (næring: Næring) => {
         const updatedEgenNæringInformasjon = egenNæringInformasjon.concat(næring);
 
-        setEgenNæringsInformasjon(updatedEgenNæringInformasjon);
+        setEgenNæringInformasjon(updatedEgenNæringInformasjon);
     };
 
     const deleteNæring = (næring: Næring) => {
         const updatedEgenNæringInformasjon = egenNæringInformasjon.filter((nær) => nær !== næring);
 
-        setEgenNæringsInformasjon(updatedEgenNæringInformasjon);
+        setEgenNæringInformasjon(updatedEgenNæringInformasjon);
     };
 
     const editNæring = (næring: Næring) => {
@@ -56,7 +56,7 @@ const EgenNæring: FunctionComponent<Props> = ({
             .filter((nær) => nær !== selectedNæring)
             .concat(næring);
 
-        setEgenNæringsInformasjon(updatedEgenNæringInformasjon);
+        setEgenNæringInformasjon(updatedEgenNæringInformasjon);
     };
 
     const selectNæring = (næring: Næring) => {

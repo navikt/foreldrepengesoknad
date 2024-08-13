@@ -4,25 +4,26 @@ import { FormattedMessage } from 'react-intl';
 
 import { Heading, VStack } from '@navikt/ds-react';
 
-import { GreenHeading, Page, ProgressStep, ProgressStepper } from '@navikt/fp-ui';
+import { BlueHeading, Page, ProgressStep, ProgressStepper } from '@navikt/fp-ui';
 
 interface Props {
     steps: Array<ProgressStep<PlanleggerRoutes>>;
+    goToStep: (nextPath: PlanleggerRoutes) => void;
     children: React.ReactElement | React.ReactElement[];
 }
 
-const PlanleggerStepPage = forwardRef<HTMLDivElement, Props>(({ steps, children }, ref) => (
+const PlanleggerStepPage = forwardRef<HTMLDivElement, Props>(({ steps, children, goToStep }, ref) => (
     <>
         <Page
             header={
-                <GreenHeading>
+                <BlueHeading>
                     <VStack gap="4">
                         <Heading size="large">
                             <FormattedMessage id="PlanleggerStepPage.Tittel" />
                         </Heading>
-                        <ProgressStepper steps={steps} hideExpandableStepInfo showGreenStatusBar />
+                        <ProgressStepper steps={steps} onStepChange={goToStep} hideHeader />
                     </VStack>
-                </GreenHeading>
+                </BlueHeading>
             }
         >
             {children}

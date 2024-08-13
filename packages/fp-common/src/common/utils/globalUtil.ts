@@ -3,7 +3,7 @@ import Bytes from 'bytes';
 import { Attachment } from '@navikt/fp-types';
 
 export const assertUnreachable = (_x: never, message?: string): never => {
-    throw new Error(message === undefined ? 'This should never happen.' : message);
+    throw new Error(message ?? 'This should never happen.');
 };
 
 export const bytesString = (bytes: number): string => {

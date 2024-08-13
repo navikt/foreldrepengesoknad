@@ -1,10 +1,9 @@
 import { CheckmarkIcon } from '@navikt/aksel-icons';
-import classNames from 'classnames';
 import dayjs from 'dayjs';
 
-import { BodyShort, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { bemUtils, formatDate, formatTime } from '@navikt/fp-utils';
+import { formatDate, formatTime } from '@navikt/fp-utils';
 
 import DokumentHendelse from 'app/sections/tidslinje/DokumentHendelse';
 import Bankkonto from 'app/types/Bankkonto';
@@ -12,7 +11,6 @@ import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 import { Ytelse } from 'app/types/Ytelse';
 
 import KontonummerInfo from '../kontonummer-info/KontonummerInfo';
-import './bekreftelse-sendt-søknad.css';
 
 interface Props {
     relevantNyTidslinjehendelse: Tidslinjehendelse | undefined;
@@ -33,8 +31,6 @@ const getTidspunktTekst = (mottattDato: Date | undefined): string | undefined =>
 };
 
 const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({ relevantNyTidslinjehendelse, bankkonto, ytelse }) => {
-    const bem = bemUtils('bekreftelse-sendt-søknad');
-
     const relevantDokument = relevantNyTidslinjehendelse?.dokumenter
         ? relevantNyTidslinjehendelse.dokumenter.find((dok) => dok.tittel.includes('Søknad'))
         : undefined;
@@ -42,27 +38,37 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({ relevantNyTid
     const sendtInfoTekst = getTidspunktTekst(mottattDato);
 
     return (
-        <VStack gap="4" className={bem.block}>
-            <HStack>
-                <div className={bem.element('ikon-box')}>
-                    <CheckmarkIcon className={bem.element('ikon')} aria-hidden={true}></CheckmarkIcon>
+        <VStack
+            gap="6"
+            style={{
+                padding: 'var(--a-spacing-6)',
+                background: 'white',
+                borderRadius: '8px',
+                boxShadow: 'var(--a-shadow-xsmall)',
+            }}
+        >
+            <HStack gap="4">
+                <div
+                    style={{
+                        width: '52px',
+                        height: '52px',
+                        borderRadius: '50%',
+                        background: 'var(--a-green-100)',
+                        paddingTop: '14px',
+                        paddingLeft: '14px',
+                    }}
+                >
+                    <CheckmarkIcon fontSize={24} style={{ color: 'var(--a-green-800)' }} aria-hidden={true} />
                 </div>
                 <VStack>
-                    <BodyShort
-                        size="medium"
-                        className={classNames(
-                            `${bem.element('tittel')} ${
-                                sendtInfoTekst ? bem.modifier('titleAndInfo') : bem.modifier('justTitle')
-                            }`,
-                        )}
-                    >
+                    <Heading level="2" size="small">
                         Søknaden din er sendt!
-                    </BodyShort>
-                    {sendtInfoTekst && <p className={bem.element('tidspunkt')}>{sendtInfoTekst}</p>}
+                    </Heading>
+                    {sendtInfoTekst && <BodyShort textColor="subtle">{sendtInfoTekst}</BodyShort>}
                 </VStack>
             </HStack>
             {relevantDokument && (
-                <ul className={bem.element('dokument')}>
+                <ul style={{ padding: 0, margin: 0 }}>
                     <DokumentHendelse dokument={relevantDokument} key={relevantDokument.url} visesITidslinjen={false} />
                 </ul>
             )}

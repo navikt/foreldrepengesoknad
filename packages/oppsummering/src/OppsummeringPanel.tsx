@@ -30,6 +30,7 @@ export interface Props<TYPE> {
     cancelApplication: () => void;
     onContinueLater: () => void;
     goToPreviousStep: () => void;
+    onStepChange?: (id: TYPE) => void;
     stepConfig: Array<ProgressStep<TYPE>>;
     children: ReactElement[] | ReactElement;
     appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
@@ -41,6 +42,7 @@ const OppsummeringPanel = <TYPE extends string>({
     cancelApplication,
     onContinueLater,
     goToPreviousStep,
+    onStepChange,
     stepConfig,
     children,
     appName,
@@ -63,9 +65,14 @@ const OppsummeringPanel = <TYPE extends string>({
     };
 
     return (
-        <Step onCancel={cancelApplication} onContinueLater={onContinueLater} steps={stepConfig}>
+        <Step
+            onCancel={cancelApplication}
+            onContinueLater={onContinueLater}
+            steps={stepConfig}
+            onStepChange={onStepChange}
+        >
             <VStack gap="10">
-                {children}
+                <VStack gap="3">{children}</VStack>
                 <ConfirmationPanel
                     label={getSamtykkeTekst(intl, appName, ekstraSamtykketekst)}
                     onChange={() => setIsChecked((state) => !state)}

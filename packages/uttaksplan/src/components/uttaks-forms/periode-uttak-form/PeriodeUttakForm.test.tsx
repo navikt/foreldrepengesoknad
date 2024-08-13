@@ -1,8 +1,9 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
-import * as stories from './PeriodeUttakForm.stories';
 import dayjs from 'dayjs';
+
+import * as stories from './PeriodeUttakForm.stories';
 
 const {
     NyPeriodeForMorEttBarnDeltUttakINorge,
@@ -580,70 +581,75 @@ describe('PeriodeUttakForm - Far søker, bare far har rett', () => {
 });
 
 describe('PeriodeUttakForm - Far søker, bare far har rett, 2 barn, mor ikke ufør, før WLB', () => {
-    it('skal kunne si ja til flerbarnsdager som utgjør foreldrepenger uten aktivitetskrav, og da ikke bli spurt om mors aktivitet. Hvis sier nei til flerbanrsdager, skal bli spurt om mor er for syk.', async () => {
-        render(<NyPeriodeBFHRToBarnFørWLBMorIkkeUfør />);
-        const tomDagInput = screen.getByLabelText(TIL_OG_MED);
-        await userEvent.type(tomDagInput, dayjs(new Date('2022-08-08')).format('DD.MM.YYYY'));
-        await userEvent.tab();
-        await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
+    it(
+        'skal kunne si ja til flerbarnsdager som utgjør foreldrepenger uten aktivitetskrav, og da ikke bli spurt om mors ' +
+            'aktivitet. Hvis sier nei til flerbanrsdager, skal bli spurt om mor er for syk.',
+        async () => {
+            render(<NyPeriodeBFHRToBarnFørWLBMorIkkeUfør />);
+            const tomDagInput = screen.getByLabelText(TIL_OG_MED);
+            await userEvent.type(tomDagInput, dayjs(new Date('2022-08-08')).format('DD.MM.YYYY'));
+            await userEvent.tab();
+            await userEvent.click(screen.getByText(GÅ_VIDERE_KNAPP));
 
-        //Skal slippe å besvare hvem som skal ta ut foreldrepenger i perioden
-        expect(screen.queryByText(HVEM_SKAL_HA_FP)).not.toBeInTheDocument();
+            //Skal slippe å besvare hvem som skal ta ut foreldrepenger i perioden
+            expect(screen.queryByText(HVEM_SKAL_HA_FP)).not.toBeInTheDocument();
 
-        //Skal kunne besvare hvilken konto han ønsker å ta ut i perioden
-        expect(await screen.findByText(HVILKEN_KONTO)).toBeInTheDocument();
-        expect(await screen.findByText(FORELDREPENGER_MED_AKTIVITETSKRAV)).toBeInTheDocument();
-        expect(screen.queryByText(LEGG_TIL)).not.toBeInTheDocument();
-        await userEvent.click(screen.getByText(FORELDREPENGER_MED_AKTIVITETSKRAV));
+            //Skal kunne besvare hvilken konto han ønsker å ta ut i perioden
+            expect(await screen.findByText(HVILKEN_KONTO)).toBeInTheDocument();
+            expect(await screen.findByText(FORELDREPENGER_MED_AKTIVITETSKRAV)).toBeInTheDocument();
+            expect(screen.queryByText(LEGG_TIL)).not.toBeInTheDocument();
+            await userEvent.click(screen.getByText(FORELDREPENGER_MED_AKTIVITETSKRAV));
 
-        //Skal bli spurt om bruk av flerbarnsdager
-        expect(await screen.findByText(FLERBARNSDAGER_SPM)).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText(JA)[0]);
+            //Skal bli spurt om bruk av flerbarnsdager
+            expect(await screen.findByText(FLERBARNSDAGER_SPM)).toBeInTheDocument();
+            await userEvent.click(screen.getAllByText(JA)[0]);
 
-        //Skal ikke måtte legge inn mors aktivitet
-        expect(screen.queryByText(AKTIVIET_MOR_SPM)).not.toBeInTheDocument();
+            //Skal ikke måtte legge inn mors aktivitet
+            expect(screen.queryByText(AKTIVIET_MOR_SPM)).not.toBeInTheDocument();
 
-        //Skal ikke bli spurt om samtidig uttak i perioden
-        expect(screen.queryByText(SAMTIDIG_UTTAK_SPM_MOR)).not.toBeInTheDocument();
+            //Skal ikke bli spurt om samtidig uttak i perioden
+            expect(screen.queryByText(SAMTIDIG_UTTAK_SPM_MOR)).not.toBeInTheDocument();
 
-        //Skal kunne legge inn informasjon om delvis arbeid
-        expect(await screen.findByText(DELVIS_ARBEID_SPM)).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText(NEI)[1]);
+            //Skal kunne legge inn informasjon om delvis arbeid
+            expect(await screen.findByText(DELVIS_ARBEID_SPM)).toBeInTheDocument();
+            await userEvent.click(screen.getAllByText(NEI)[1]);
 
-        //Skal kunne legge til perioden.
-        expect(await screen.findByText(LEGG_TIL)).toBeInTheDocument();
+            //Skal kunne legge til perioden.
+            expect(await screen.findByText(LEGG_TIL)).toBeInTheDocument();
 
-        //Hvis svarer nei på flerbarnsdager...
-        await userEvent.click(screen.getAllByText(NEI)[0]);
+            //Hvis svarer nei på flerbarnsdager...
+            await userEvent.click(screen.getAllByText(NEI)[0]);
 
-        //Skal bli spurt om mor er for syk
-        expect(await screen.findByText(ER_MOR_FOR_SYK_SPM)).toBeInTheDocument();
+            //Skal bli spurt om mor er for syk
+            expect(await screen.findByText(ER_MOR_FOR_SYK_SPM)).toBeInTheDocument();
 
-        //Hvis sier at mor er for syk...
-        await userEvent.click(screen.getAllByText(JA)[1]);
+            //Hvis sier at mor er for syk...
+            await userEvent.click(screen.getAllByText(JA)[1]);
 
-        //Skal be om dokumentasjon når mor er for syk:
-        expect(await screen.findByText(MOR_ER_FOR_SYK_DOKUMENTASJON_INFO, { exact: false })).toBeInTheDocument();
-        expect(await screen.findByText(MOR_ER_FOR_SYK_DOKUMENTASJON)).toBeInTheDocument();
+            //Skal be om dokumentasjon når mor er for syk:
+            expect(await screen.findByText(MOR_ER_FOR_SYK_DOKUMENTASJON_INFO, { exact: false })).toBeInTheDocument();
+            expect(await screen.findByText(MOR_ER_FOR_SYK_DOKUMENTASJON)).toBeInTheDocument();
 
-        //Skal kunne legge inn informasjon om delvis arbeid
-        expect(await screen.findByText(DELVIS_ARBEID_SPM)).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText(NEI)[2]);
+            //Skal kunne legge inn informasjon om delvis arbeid
+            expect(await screen.findByText(DELVIS_ARBEID_SPM)).toBeInTheDocument();
+            await userEvent.click(screen.getAllByText(NEI)[2]);
 
-        //Skal kunne legge til perioden.
-        expect(await screen.findByText(LEGG_TIL)).toBeInTheDocument();
+            //Skal kunne legge til perioden.
+            expect(await screen.findByText(LEGG_TIL)).toBeInTheDocument();
 
-        //Hvis sier at mor ikke er for syk...
-        await userEvent.click(screen.getAllByText(NEI)[1]);
+            //Hvis sier at mor ikke er for syk...
+            await userEvent.click(screen.getAllByText(NEI)[1]);
 
-        //Skal ikke måtte svare på flere spørsmål fordi far skal ikke kunne ta ut denne perioden med mindre mor er syk og validering vil vise feilmelding under planen.
-        expect(screen.queryByText(AKTIVIET_MOR_SPM)).not.toBeInTheDocument();
-        expect(screen.queryByText(SAMTIDIG_UTTAK_SPM_MOR)).not.toBeInTheDocument();
-        expect(screen.queryByText(DELVIS_ARBEID_SPM)).not.toBeInTheDocument();
+            //Skal ikke måtte svare på flere spørsmål fordi far skal ikke kunne ta ut denne perioden med mindre
+            //mor er syk og validering vil vise feilmelding under planen.
+            expect(screen.queryByText(AKTIVIET_MOR_SPM)).not.toBeInTheDocument();
+            expect(screen.queryByText(SAMTIDIG_UTTAK_SPM_MOR)).not.toBeInTheDocument();
+            expect(screen.queryByText(DELVIS_ARBEID_SPM)).not.toBeInTheDocument();
 
-        //Skal kunne legge til perioden.
-        expect(await screen.findByText(LEGG_TIL)).toBeInTheDocument();
-    });
+            //Skal kunne legge til perioden.
+            expect(await screen.findByText(LEGG_TIL)).toBeInTheDocument();
+        },
+    );
 });
 
 describe('PeriodeUttakForm - Far søker, bare far har rett, 2 barn, mor ikke ufør, etter WLB', () => {
@@ -835,7 +841,7 @@ describe('PeriodeUttakForm - Mor søker, 1 barn, far har kun rett i EØS', () =>
             await screen.findByText('Når Pen er syk må legen dokumentere at', {
                 exact: false,
             }),
-        );
+        ).toBeInTheDocument();
 
         //Skal ikke så spm om delvis arbeid
         expect(screen.queryByText(DELVIS_ARBEID_SPM)).not.toBeInTheDocument();
@@ -923,7 +929,7 @@ describe('PeriodeUttakForm - Far søker, 1 barn, mor har kun rett i EØS', () =>
             await screen.findByText('Når Vakker er syk må legen dokumentere at', {
                 exact: false,
             }),
-        );
+        ).toBeInTheDocument();
 
         //Skal ikke så spm om delvis arbeid
         expect(screen.queryByText(DELVIS_ARBEID_SPM)).not.toBeInTheDocument();

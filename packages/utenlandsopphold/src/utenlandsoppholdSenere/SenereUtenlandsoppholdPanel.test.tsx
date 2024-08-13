@@ -1,7 +1,8 @@
-import dayjs from 'dayjs';
+import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { composeStories } from '@storybook/react';
+import dayjs from 'dayjs';
+
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './SenereUtenlandsoppholdPanel.stories';
@@ -12,8 +13,8 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
     it('skal vise feilmeldinger når en prøver å gå videre uten å oppgi obligatoriske felter', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Skal bo i utlandet')).toBeInTheDocument();
-        expect(screen.getByText('Steg 1 av 1')).toBeInTheDocument();
+        expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
+        expect(screen.getByText('Steg 2 av 2')).toBeInTheDocument();
 
         expect(screen.getByText('Hvilket land skal du bo i?')).toBeInTheDocument();
         expect(screen.getByText('Fra og med')).toBeInTheDocument();
@@ -41,7 +42,7 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
 
         const utils = render(<Default saveOnNext={saveOnNext} />);
 
-        expect(await screen.findByText('Skal bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
 
         await userEvent.selectOptions(utils.getByLabelText('Hvilket land skal du bo i?'), 'CA');
 
@@ -89,7 +90,7 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
 
         const utils = render(<Default saveOnNext={saveOnNext} />);
 
-        expect(await screen.findByText('Skal bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
 
         await userEvent.selectOptions(utils.getByLabelText('Hvilket land skal du bo i?'), 'CA');
 
@@ -122,7 +123,7 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
     it('skal legge til periode og så fjerne den', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Skal bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Legg til flere opphold i utlandet'));
 
@@ -139,7 +140,7 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
 
         render(<Default saveOnPrevious={saveOnPrevious} goToPreviousStep={goToPreviousStep} />);
 
-        expect(await screen.findByText('Skal bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
 
         await userEvent.selectOptions(screen.getByLabelText('Hvilket land skal du bo i?'), 'CA');
 
@@ -164,10 +165,21 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
 
         render(<Default cancelApplication={cancelApplication} />);
 
-        expect(await screen.findByText('Skal bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Skal bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Avslutt'));
 
         expect(screen.getByText('Slett søknaden')).toBeInTheDocument();
+    });
+
+    it('skal gå til et tidligere steg', async () => {
+        const onStepChange = vi.fn();
+
+        render(<Default onStepChange={onStepChange} />);
+
+        await userEvent.click(screen.getByText('Utenlandsopphold'));
+
+        expect(onStepChange).toHaveBeenCalledTimes(1);
+        expect(onStepChange).toHaveBeenNthCalledWith(1, 'UTENLANDSOPPHOLD_PATH');
     });
 });

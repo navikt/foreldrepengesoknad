@@ -33,7 +33,7 @@ export const farMedmorHarRettPåForeldrepengerUtenAktivitetskravTest: RegelTest 
 
     const testPasserer = !kontoUtenAktivitetskrav || kontoUtenAktivitetskrav.dager === 0;
     const renderAsHtml = true;
-    const link = (_intl: IntlShape) => (msg: any) => (
+    const link = () => (msg: any) => (
         <a href={links.aktivitetsfriUttakInfo} className="lenke" rel="noreferrer" target="_blank">
             {msg}
         </a>

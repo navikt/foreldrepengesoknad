@@ -9,9 +9,9 @@ import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll } from '@navikt/fp-types';
-import { FrontPage } from '@navikt/fp-ui';
 
-import AndreVeivisereLinkPanel from '../felles/AndreVeivisereLinkPanel';
+import AndreVeivisereLinkPanel from '../../felles/andreVeivisere/AndreVeivisereLinkPanel';
+import FrontPage from '../../felles/frontpage/FrontPage';
 
 interface Props {
     locale: LocaleAll;

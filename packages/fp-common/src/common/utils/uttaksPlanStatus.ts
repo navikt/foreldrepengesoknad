@@ -126,6 +126,7 @@ const getUttakFraInfoperioder = (perioder: InfoPeriode[]): Uttaksperiode[] => {
             }
         });
     return oppholdAnnenPart.map((periode): Uttaksperiode => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { type, årsak, ...rest } = periode;
         return {
             type: Periodetype.Uttak,

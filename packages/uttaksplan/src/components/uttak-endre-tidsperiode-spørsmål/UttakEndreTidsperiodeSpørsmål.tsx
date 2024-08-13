@@ -1,22 +1,25 @@
-import { useIntl } from 'react-intl';
 import dayjs from 'dayjs';
-import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperiode-form/TidsperiodeForm';
+import { useIntl } from 'react-intl';
+
+import { Modal } from '@navikt/ds-react';
+
 import {
     Block,
-    getTidsperiode,
-    getUkerOgDagerFromDager,
-    intlUtils,
-    isForeldrepengerFørFødselUttaksperiode,
     Periode,
     Situasjon,
     Tidsperiode,
     TidsperiodeDate,
     Tidsperioden,
     Utsettelsesperiode,
+    getTidsperiode,
+    getUkerOgDagerFromDager,
+    intlUtils,
+    isForeldrepengerFørFødselUttaksperiode,
 } from '@navikt/fp-common';
-import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
-import { Modal } from '@navikt/ds-react';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+
+import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperiode-form/TidsperiodeForm';
+import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
 
 interface Props {
     periode: Periode;
@@ -65,16 +68,16 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
         onBekreft(values);
     };
 
-    const getDagValue = (uker: number, dager: number): number => {
-        if (dager >= 5) {
+    const getDagValue = (ukerValue: number, dagerValue: number): number => {
+        if (dagerValue >= 5) {
             return 0;
         }
 
-        if (uker === 0 && dager === 0) {
+        if (ukerValue === 0 && dagerValue === 0) {
             return 1;
         }
 
-        return dager;
+        return dagerValue;
     };
 
     return (

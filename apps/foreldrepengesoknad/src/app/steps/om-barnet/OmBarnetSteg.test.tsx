@@ -276,77 +276,87 @@ describe('<OmBarnetSteg>', () => {
         });
     });
 
-    it('skal søke adopsjon men ikke stebarnsadopsjon for ett barn, skal ikke bli spurt om adopsjon fra utland hvis barnet er adoptert etter 1.10.2021', async () => {
-        render(<ForAdopsjon />);
+    it(
+        'skal søke adopsjon men ikke stebarnsadopsjon for ett barn, skal ikke bli spurt om' +
+            ' adopsjon fra utland hvis barnet er adoptert etter 1.10.2021',
+        async () => {
+            render(<ForAdopsjon />);
 
-        expect(await screen.findByText('Gjelder søknaden din stebarnsadopsjon?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Nei'));
+            expect(await screen.findByText('Gjelder søknaden din stebarnsadopsjon?')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Nei'));
 
-        const overtaOmsorgDatoInput = screen.getByLabelText('Når overtar du omsorgen?');
-        await userEvent.type(overtaOmsorgDatoInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
-        await userEvent.tab();
+            const overtaOmsorgDatoInput = screen.getByLabelText('Når overtar du omsorgen?');
+            await userEvent.type(overtaOmsorgDatoInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
+            await userEvent.tab();
 
-        expect(screen.getByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ett barn'));
+            expect(screen.getByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Ett barn'));
 
-        const barnetFødtInput = screen.getByLabelText('Når ble barnet født?');
-        await userEvent.type(barnetFødtInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
-        await userEvent.tab();
+            const barnetFødtInput = screen.getByLabelText('Når ble barnet født?');
+            await userEvent.type(barnetFødtInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
+            await userEvent.tab();
 
-        expect(screen.queryByText('Adopterer du fra utlandet?')).not.toBeInTheDocument();
-        expect(screen.queryByText('Når kommer barnet til Norge?')).not.toBeInTheDocument();
-    });
+            expect(screen.queryByText('Adopterer du fra utlandet?')).not.toBeInTheDocument();
+            expect(screen.queryByText('Når kommer barnet til Norge?')).not.toBeInTheDocument();
+        },
+    );
 
-    it('skal søke adopsjon men ikke stebarnsadopsjon for ett barn, skal bli spurt om adopsjon er fra utland hvis barnet er adoptert før 1.10.2021', async () => {
-        const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknadOgNaviger = vi.fn();
+    it(
+        'skal søke adopsjon men ikke stebarnsadopsjon for ett barn, skal bli spurt om adopsjon' +
+            ' er fra utland hvis barnet er adoptert før 1.10.2021',
+        async () => {
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<ForAdopsjon gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+            render(
+                <ForAdopsjon gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />,
+            );
 
-        expect(await screen.findByText('Gjelder søknaden din stebarnsadopsjon?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Nei'));
+            expect(await screen.findByText('Gjelder søknaden din stebarnsadopsjon?')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Nei'));
 
-        const overtaOmsorgDatoInput = screen.getByLabelText('Når overtar du omsorgen?');
-        await userEvent.type(overtaOmsorgDatoInput, dayjs('2021-09-30').format(DDMMYYYY_DATE_FORMAT));
-        await userEvent.tab();
+            const overtaOmsorgDatoInput = screen.getByLabelText('Når overtar du omsorgen?');
+            await userEvent.type(overtaOmsorgDatoInput, dayjs('2021-09-30').format(DDMMYYYY_DATE_FORMAT));
+            await userEvent.tab();
 
-        expect(screen.getByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Ett barn'));
+            expect(screen.getByText('Hvor mange barn skal du adoptere?')).toBeInTheDocument();
+            await userEvent.click(screen.getByText('Ett barn'));
 
-        const barnetFødtInput = screen.getByLabelText('Når ble barnet født?');
-        await userEvent.type(barnetFødtInput, dayjs('2021-09-30').subtract(1, 'year').format(DDMMYYYY_DATE_FORMAT));
-        await userEvent.tab();
+            const barnetFødtInput = screen.getByLabelText('Når ble barnet født?');
+            await userEvent.type(barnetFødtInput, dayjs('2021-09-30').subtract(1, 'year').format(DDMMYYYY_DATE_FORMAT));
+            await userEvent.tab();
 
-        expect(screen.getByText('Adopterer du fra utlandet?')).toBeInTheDocument();
-        await userEvent.click(screen.getAllByText('Ja')[1]);
+            expect(screen.getByText('Adopterer du fra utlandet?')).toBeInTheDocument();
+            await userEvent.click(screen.getAllByText('Ja')[1]);
 
-        const kommerTilNorgeDatoInput = screen.getByLabelText('Når kommer barnet til Norge?');
-        await userEvent.type(kommerTilNorgeDatoInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
-        await userEvent.tab();
+            const kommerTilNorgeDatoInput = screen.getByLabelText('Når kommer barnet til Norge?');
+            await userEvent.type(kommerTilNorgeDatoInput, dayjs().format(DDMMYYYY_DATE_FORMAT));
+            await userEvent.tab();
 
-        await userEvent.click(screen.getByText('Neste steg'));
+            await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+            expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: {
-                adopsjonsdato: '2021-09-30',
-                adoptertIUtlandet: true,
-                ankomstdato: dayjs().format(ISO_DATE_FORMAT),
-                antallBarn: 1,
-                fødselsdatoer: ['2020-09-30'],
-                type: 'adoptertAnnetBarn',
-            },
-            key: ContextDataType.OM_BARNET,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.ANNEN_FORELDER,
-            key: ContextDataType.APP_ROUTE,
-            type: 'update',
-        });
-    });
+            expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+                data: {
+                    adopsjonsdato: '2021-09-30',
+                    adoptertIUtlandet: true,
+                    ankomstdato: dayjs().format(ISO_DATE_FORMAT),
+                    antallBarn: 1,
+                    fødselsdatoer: ['2020-09-30'],
+                    type: 'adoptertAnnetBarn',
+                },
+                key: ContextDataType.OM_BARNET,
+                type: 'update',
+            });
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+                data: SøknadRoutes.ANNEN_FORELDER,
+                key: ContextDataType.APP_ROUTE,
+                type: 'update',
+            });
+        },
+    );
 
     it('Far kan ikke søke på termin hvis WLB regler ikke gjelder', async () => {
         const mockTodayDate = new Date('2022-08-01');
@@ -466,95 +476,103 @@ describe('<OmBarnetSteg>', () => {
         vi.useRealTimers();
     });
 
-    it('Det registrerte barnet skal vises og far/medmor må oppgi termin hvis han/hun velger registrert barn som er født innenfor de siste 12 ukene', async () => {
-        const mockTodayDate = new Date('2021-03-16');
-        vi.setSystemTime(mockTodayDate);
+    it(
+        'Det registrerte barnet skal vises og far/medmor må oppgi termin hvis han/hun velger' +
+            ' registrert barn som er født innenfor de siste 12 ukene',
+        async () => {
+            const mockTodayDate = new Date('2021-03-16');
+            vi.setSystemTime(mockTodayDate);
 
-        const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknadOgNaviger = vi.fn();
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(
-            <RegistrertBarnFødselFar
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+            render(
+                <RegistrertBarnFødselFar
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
 
-        expect(await screen.findByText('Barnet du søker foreldrepenger for:')).toBeInTheDocument();
-        expect(screen.getByText('KLØKTIG')).toBeInTheDocument();
-        expect(screen.getByText('Født 15. mars 2021')).toBeInTheDocument();
+            expect(await screen.findByText('Barnet du søker foreldrepenger for:')).toBeInTheDocument();
+            expect(screen.getByText('KLØKTIG')).toBeInTheDocument();
+            expect(screen.getByText('Født 15. mars 2021')).toBeInTheDocument();
 
-        const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
-        await userEvent.type(termindatoInput, dayjs('2021-03-01').format(DDMMYYYY_DATE_FORMAT));
-        await userEvent.tab();
+            const termindatoInput = screen.getByLabelText('Hva var termindatoen?');
+            await userEvent.type(termindatoInput, dayjs('2021-03-01').format(DDMMYYYY_DATE_FORMAT));
+            await userEvent.tab();
 
-        await userEvent.click(screen.getByText('Neste steg'));
+            await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+            expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: {
-                antallBarn: 1,
-                fnr: ['21091981146'],
-                fødselsdatoer: ['2021-03-15'],
-                termindato: '2021-03-01',
-                type: 'født',
-            },
-            key: ContextDataType.OM_BARNET,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.ANNEN_FORELDER,
-            key: ContextDataType.APP_ROUTE,
-            type: 'update',
-        });
+            expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+                data: {
+                    antallBarn: 1,
+                    fnr: ['21091981146'],
+                    fødselsdatoer: ['2021-03-15'],
+                    termindato: '2021-03-01',
+                    type: 'født',
+                },
+                key: ContextDataType.OM_BARNET,
+                type: 'update',
+            });
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+                data: SøknadRoutes.ANNEN_FORELDER,
+                key: ContextDataType.APP_ROUTE,
+                type: 'update',
+            });
 
-        vi.useRealTimers();
-    });
+            vi.useRealTimers();
+        },
+    );
 
-    it('Det registrerte barnet skal vises og far/medmor skal ikke måtte ikke oppgi termin hvis han velger registrert barn som er født tidligere enn de siste 12 ukene', async () => {
-        const mockTodayDate = new Date('2021-06-16');
-        vi.setSystemTime(mockTodayDate);
+    it(
+        'Det registrerte barnet skal vises og far/medmor skal ikke måtte ikke oppgi termin hvis han' +
+            ' velger registrert barn som er født tidligere enn de siste 12 ukene',
+        async () => {
+            const mockTodayDate = new Date('2021-06-16');
+            vi.setSystemTime(mockTodayDate);
 
-        const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknadOgNaviger = vi.fn();
-        render(
-            <RegistrertBarnFødselFar
-                gåTilNesteSide={gåTilNesteSide}
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-            />,
-        );
+            const gåTilNesteSide = vi.fn();
+            const mellomlagreSøknadOgNaviger = vi.fn();
+            render(
+                <RegistrertBarnFødselFar
+                    gåTilNesteSide={gåTilNesteSide}
+                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                />,
+            );
 
-        expect(await screen.findByText('Barnet du søker foreldrepenger for:')).toBeInTheDocument();
-        expect(screen.getByText('KLØKTIG')).toBeInTheDocument();
-        expect(screen.getByText('Født 15. mars 2021')).toBeInTheDocument();
-        expect(screen.queryByText('Hva var termindatoen?')).not.toBeInTheDocument();
+            expect(await screen.findByText('Barnet du søker foreldrepenger for:')).toBeInTheDocument();
+            expect(screen.getByText('KLØKTIG')).toBeInTheDocument();
+            expect(screen.getByText('Født 15. mars 2021')).toBeInTheDocument();
+            expect(screen.queryByText('Hva var termindatoen?')).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Neste steg'));
+            await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
+            expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledTimes(1);
 
-        expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: {
-                antallBarn: 1,
-                fnr: ['21091981146'],
-                fødselsdatoer: ['2021-03-15'],
-                termindato: undefined,
-                type: 'født',
-            },
-            key: ContextDataType.OM_BARNET,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.ANNEN_FORELDER,
-            key: ContextDataType.APP_ROUTE,
-            type: 'update',
-        });
+            expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+                data: {
+                    antallBarn: 1,
+                    fnr: ['21091981146'],
+                    fødselsdatoer: ['2021-03-15'],
+                    termindato: undefined,
+                    type: 'født',
+                },
+                key: ContextDataType.OM_BARNET,
+                type: 'update',
+            });
+            expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+                data: SøknadRoutes.ANNEN_FORELDER,
+                key: ContextDataType.APP_ROUTE,
+                type: 'update',
+            });
 
-        vi.useRealTimers();
-    });
+            vi.useRealTimers();
+        },
+    );
 
     it('Det registrerte barnet skal vises og mor skal bli spurt om termindato hvis hun velger registrert barn født innenfor de siste 12 ukene', async () => {
         const mockTodayDate = new Date('2022-08-05');

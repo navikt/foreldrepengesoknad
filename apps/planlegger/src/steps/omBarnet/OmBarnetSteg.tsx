@@ -20,7 +20,7 @@ import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
-import GreenRadioGroup from '../../components/formWrappers/GreenRadioGroup';
+import BlueRadioGroup from '../../components/formWrappers/BlueRadioGroup';
 import Adopsjon from './Adopsjon';
 import Fødsel from './fødsel/Fødsel';
 
@@ -65,14 +65,14 @@ const OmBarnetSteg: React.FunctionComponent = () => {
     const { ref, scrollToBottom } = useScrollBehaviour();
 
     return (
-        <PlanleggerStepPage ref={ref} steps={stepConfig}>
+        <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
             <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
                         <Heading level="2" size="medium">
                             <FormattedMessage id="OmBarnetSteg.Tittel" />
                         </Heading>
-                        <GreenRadioGroup
+                        <BlueRadioGroup
                             name="erFødsel"
                             label={<FormattedMessage id="OmBarnetSteg.HvaGjelder" values={{ erAlenesøker }} />}
                             validate={[
@@ -96,7 +96,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                             <Radio value={false}>
                                 <FormattedMessage id="OmBarnetSteg.Adopsjon" />
                             </Radio>
-                        </GreenRadioGroup>
+                        </BlueRadioGroup>
                         {erFødsel !== undefined && erFødsel === true && erFedre && (
                             <Infobox
                                 header={<FormattedMessage id="OmBarnetSteg.Fødsel.Infoboks" />}
@@ -104,11 +104,12 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                     <PersonGroupIcon
                                         height={24}
                                         width={24}
-                                        color="#236B7D"
+                                        color="#7F8900"
                                         fontSize="1.5rem"
                                         aria-hidden
                                     />
                                 }
+                                color="green"
                             >
                                 <BodyShort>
                                     <FormattedMessage id="OmBarnetSteg.Fødsel.Infoboks.DenSomErBiologiskFar" />
@@ -128,7 +129,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                             </Infobox>
                         )}
                         {erFødsel !== undefined && (
-                            <GreenRadioGroup
+                            <BlueRadioGroup
                                 name="antallBarn"
                                 label={finnHvorMangeBarnLabel(erAlenesøker, erFødsel)}
                                 shouldFadeIn
@@ -160,7 +161,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                                 <Radio value="3">
                                     <FormattedMessage id="OmBarnetSteg.FlereEnnTo" />
                                 </Radio>
-                            </GreenRadioGroup>
+                            </BlueRadioGroup>
                         )}
                         {erFødsel && antallBarn && (
                             <Fødsel

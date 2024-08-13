@@ -42,6 +42,7 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavi
             bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
             onCancel={navigator.avbrytSøknad}
             onContinueLater={navigator.fortsettSøknadSenere}
+            onStepChange={navigator.goToNextStep}
             steps={stepConfig}
         >
             <Form formMethods={formMethods} onSubmit={lagre}>

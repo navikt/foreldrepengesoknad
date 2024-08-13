@@ -1,7 +1,6 @@
 export { default as LanguageToggle } from './components/language-toggle/LanguageToggle';
 export { default as Sidebanner } from './components/sidebanner/Sidebanner';
 export { default as Block } from './components/block/Block';
-export { default as Step } from './components/step/Step';
 export { default as SlettKnapp } from './components/slett-knapp/SlettKnapp';
 export { default as ItemList } from './components/item-list/ItemList';
 export { default as ActionLink } from './components/action-link/ActionLink';
@@ -9,7 +8,6 @@ export { default as DisplayTextWithLabel } from './components/display-text-with-
 export { default as UtvidetInformasjon } from './components/utvidet-informasjon/UtvidetInformasjon';
 export { default as PictureScanningGuide } from './components/picture-scanning-guide/PictureScanningGuide';
 export { default as InfoBlock } from './components/info-block/InfoBlock';
-export { default as StepButtonWrapper } from './components/step/StepButtonWrapper';
 export { default as Fieldset } from './components/fieldset/Fieldset';
 export { default as Personkort } from './components/personkort/Personkort';
 export { default as ForelderIkon } from './components/foreldrepar/ForelderIkon';
@@ -18,7 +16,6 @@ export { default as Sirkelmaske } from './components/sirkelmaske/Sirkelmaske';
 export { default as UkerSirkel } from './components/uker-sirkel/UkerSirkel';
 export { default as SituasjonSirkel } from './components/situasjon-sirkel/SituasjonSirkel';
 export { default as InnholdMedIllustrasjon } from './components/innhold-med-illustrasjon/InnholdMedIllustrasjon';
-export { default as FormikFileUploader } from './components/formik-file-uploader/FormikFileUploader';
 export { default as AttachmentList } from './components/attachment/AttachmentList';
 export { default as AttachmentComponent } from './components/attachment/Attachment';
 export * from './components/foreldrepar/foreldreparUtils';

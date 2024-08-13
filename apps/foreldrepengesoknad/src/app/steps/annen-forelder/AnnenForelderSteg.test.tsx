@@ -32,7 +32,8 @@ describe('<AnnenForelderSteg>', () => {
 
         expect(
             screen.getByText(
-                'Selv om du har aleneomsorg kan den andre forelderen ha foreldrepenger hvis dere avtaler dette mellom dere. Da kan hen søke om å bruke ukene med foreldrepenger som du ikke bruker.',
+                'Selv om du har aleneomsorg kan den andre forelderen ha foreldrepenger hvis dere' +
+                    ' avtaler dette mellom dere. Da kan hen søke om å bruke ukene med foreldrepenger som du ikke bruker.',
             ),
         ).toBeInTheDocument();
 
@@ -285,7 +286,7 @@ describe('<AnnenForelderSteg>', () => {
             />,
         );
 
-        expect(await screen.findByText('Den andre forelderen')).toBeInTheDocument();
+        expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg kan ikke oppgi den andre forelderen'));
 
@@ -318,7 +319,7 @@ describe('<AnnenForelderSteg>', () => {
             />,
         );
 
-        expect(await screen.findByText('Den andre forelderen')).toBeInTheDocument();
+        expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
 
         const fornavnInput = screen.getByLabelText('Fornavnet til den andre forelderen');
         await userEvent.type(fornavnInput, 'Espen');
@@ -467,7 +468,7 @@ describe('<AnnenForelderSteg>', () => {
     it('skal ikke vise infoboks om farskapsportal når mor søker på termin, annen forelder er en medmor og har rett i Norge', async () => {
         render(<MorUfødtBarn />);
 
-        expect(await screen.findByText('Den andre forelderen')).toBeInTheDocument();
+        expect(await screen.findAllByText('Den andre forelderen')).toHaveLength(2);
 
         const fornavnInput = screen.getByLabelText('Fornavnet til den andre forelderen');
         await userEvent.type(fornavnInput, 'Espen');

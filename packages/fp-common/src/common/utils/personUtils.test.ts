@@ -1,4 +1,7 @@
 import { AnnenForelder } from 'common/types';
+
+import { Søker } from '@navikt/fp-types';
+
 import {
     formaterNavn,
     getErSøkerFarEllerMedmor,
@@ -7,7 +10,6 @@ import {
     getNavnGenitivEierform,
     getNavnPåForeldre,
 } from './personUtils';
-import { Søker } from '@navikt/fp-types';
 
 describe('personUtils', () => {
     it('skal formatere navn med mellomnavn', () => {
@@ -131,7 +133,7 @@ describe('personUtils', () => {
         expect(navnPåForeldre.farMedmor).toBe('Espen');
     });
 
-    it('should return true if SøkerRolle is FAR r MEDMOR ', () => {
+    it('should return true if SøkerRolle is FAR r MEDMOR', () => {
         expect(getErSøkerFarEllerMedmor('far')).toBe(true);
         expect(getErSøkerFarEllerMedmor('medmor')).toBe(true);
     });

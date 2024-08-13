@@ -16,7 +16,7 @@ describe('<Utlandsopphold>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd i Norge'));
 
@@ -58,7 +58,7 @@ describe('<Utlandsopphold>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd helt eller delvis i utlandet'));
 
@@ -95,7 +95,7 @@ describe('<Utlandsopphold>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd i Norge'));
 
@@ -132,7 +132,7 @@ describe('<Utlandsopphold>', () => {
 
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
-        expect(await screen.findByText('Bo i utlandet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Bo i utlandet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Jeg har bodd helt eller delvis i utlandet'));
 

@@ -8,14 +8,21 @@ import {
     EksisterendeSak,
     Forelder,
     InfoPeriode,
+    isAnnenPartInfoPeriode,
+    isHull,
+    isOverføringsperiode,
+    isPeriodeUtenUttak,
+    isUttakAnnenPart,
+    isUttakAvFellesperiode,
+    isUttaksperiode,
     MorsAktivitet,
     NavnPåForeldre,
     OppholdÅrsakType,
     OpprinneligSøkt,
     OverføringÅrsakType,
     Periode,
-    PeriodeValidState,
     Periodetype,
+    PeriodeValidState,
     Situasjon,
     StønadskontoType,
     Tidsperiode,
@@ -24,22 +31,15 @@ import {
     UtsettelseÅrsakType,
     UttakAnnenPartInfoPeriode,
     Uttaksperiode,
-    isAnnenPartInfoPeriode,
-    isHull,
-    isOverføringsperiode,
-    isPeriodeUtenUttak,
-    isUttakAnnenPart,
-    isUttakAvFellesperiode,
-    isUttaksperiode,
 } from '../types';
 import { PeriodeInfoType } from '../types/PeriodeInfoType';
 import { Perioden } from './Perioden';
-import { Tidsperioden, erTidsperioderLike } from './Tidsperioden';
+import { erTidsperioderLike, Tidsperioden } from './Tidsperioden';
 import {
-    ISOStringToDate,
     convertTidsperiodeToTidsperiodeDate,
     isDateInTheFuture,
     isDateTodayOrInTheFuture,
+    ISOStringToDate,
 } from './dateUtils';
 import intlUtils from './intlUtils';
 import { getFloatFromString } from './numberUtils';
@@ -499,7 +499,7 @@ export const finnesPeriodeIOpprinneligPlan = (periode: Periode, opprinneligPlan:
 
 export const getAnnenForelderSamtidigUttakPeriode = (periode: Periode, perioder: Periode[]): Periode | undefined => {
     if (isUttaksperiode(periode)) {
-        const samtidigUttak = perioder
+        return perioder
             .filter((p) => isUttakAnnenPart(p))
             .find(
                 (p) =>
@@ -508,8 +508,6 @@ export const getAnnenForelderSamtidigUttakPeriode = (periode: Periode, perioder:
                     p.ønskerSamtidigUttak === true &&
                     p.id !== periode.id,
             );
-
-        return samtidigUttak !== undefined ? samtidigUttak : undefined;
     }
 
     return undefined;
