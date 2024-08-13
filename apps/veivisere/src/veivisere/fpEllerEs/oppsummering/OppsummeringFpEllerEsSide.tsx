@@ -55,20 +55,13 @@ const finnHvemSomHarRett = (fpEllerEsSituasjon: FpEllerEsSituasjon, satser: Sats
         return 'farEllerMedmorKanHaRettFp';
     }
     if (
-        // TODO: må sjekke denne
-        (fpEllerEsSituasjon.situasjon === 'far' || 'medmor') &&
-        fpEllerEsSituasjon.borDuINorge
-    ) {
-        return 'farEllerMedmorKanHaRettEs';
-    }
-    if (
         fpEllerEsSituasjon.situasjon === 'mor' &&
         ((fpEllerEsSituasjon.lønnPerMåned * 12 < 200000 && fpEllerEsSituasjon.lønnPerMåned * 12 < minstelønn) ||
             (!fpEllerEsSituasjon.harHattInntekt && fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn)) &&
         fpEllerEsSituasjon.harHattInntekt &&
         fpEllerEsSituasjon.borDuINorge
     ) {
-        return 'morKaHaRettEs';
+        return 'morHarRettEs';
     }
     return 'harIkkeRett';
 };
@@ -103,10 +96,9 @@ const OppsummeringFpEllerEsSide: React.FunctionComponent<Props> = ({ fpEllerEsSi
                     {hvemHarRett === 'morTjenerUnder200000KanHaRettFpEllerEs' && (
                         <HarRettFpEllerEs fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
                     )}
-                    {hvemHarRett === 'morKaHaRettEs' ||
-                        (hvemHarRett === 'farEllerMedmorKanHaRettEs' && (
-                            <HarRettEs fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
-                        ))}
+                    {hvemHarRett === 'morHarRettEs' && (
+                        <HarRettEs fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
+                    )}
                     {hvemHarRett === 'harIkkeRett' && (
                         <HarIkkeRett fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
                     )}

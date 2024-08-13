@@ -6,7 +6,6 @@ import * as stories from './OppsummeringFpEllerEsSide.stories';
 const {
     MorHarTjentMerEnn200000OgHarRettTilFpOgEs,
     MorHarTjentMindreEnn200000OgHarRettTilFpOgEs,
-    FarKanHaRettTilEs,
     MorHarIkkeRett,
     FarHarIkkeRett,
     MorHarRettTilEs,
@@ -63,13 +62,6 @@ describe('<OppsummeringFpEllerEsSide>', () => {
         expect(within(harRettEs[1]).getByText('Du oppfyller dette kravet')).toBeInTheDocument();
 
         expect(screen.getByText('Hvorfor har jeg rett på engangsstønad?')).toBeInTheDocument();
-    });
-
-    it('skal vise annen formulering (kan) for far som har tjent mindre enn 200 000', async () => {
-        render(<FarKanHaRettTilEs />);
-        expect(await screen.findByText('Resultat')).toBeInTheDocument();
-        expect(screen.getByText('Du kan ha rett på engangsstønad')).toBeInTheDocument();
-        expect(screen.getByText('Hvorfor kan jeg ha rett på engangsstønad?')).toBeInTheDocument();
     });
 
     it('skal vise oppsummering for mor som ikke har rett', async () => {

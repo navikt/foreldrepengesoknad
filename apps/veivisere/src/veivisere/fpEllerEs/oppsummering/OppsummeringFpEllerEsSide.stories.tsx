@@ -98,19 +98,6 @@ export const MorHarRettTilEs: Story = {
         },
     },
 };
-export const FarKanHaRettTilEs: Story = {
-    args: {
-        fpEllerEsSituasjon: {
-            borDuINorge: true,
-            erDuMedlemAvFolketrygden: true,
-            erIArbeid: false,
-            harHattAndreInntekter: false,
-            harHattInntekt: false,
-            lønnPerMåned: 0,
-            situasjon: Situasjon.FAR,
-        },
-    },
-};
 
 export const MorHarIkkeRett: Story = {
     args: {
