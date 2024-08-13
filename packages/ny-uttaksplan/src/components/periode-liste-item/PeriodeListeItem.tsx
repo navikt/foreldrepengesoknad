@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 
 import { Accordion } from '@navikt/ds-react';
 
-import { AnnenForelder, NavnPåForeldre, bemUtils } from '@navikt/fp-common';
+import { AnnenForelder, FamiliehendelseType, NavnPåForeldre, bemUtils, isUttaksperiode } from '@navikt/fp-common';
 
 import Permisjonsperiode from '../../types/Permisjonsperiode';
 import PeriodeListeContent from '../periode-liste-content/PeriodeListeContent';
@@ -16,6 +16,7 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
     annenForelder: AnnenForelder;
+    familiehendelseType?: FamiliehendelseType;
 }
 
 const PeriodeListeItem: FunctionComponent<Props> = ({
@@ -25,8 +26,18 @@ const PeriodeListeItem: FunctionComponent<Props> = ({
     navnPåForeldre,
     erFarEllerMedmor,
     annenForelder,
+    familiehendelseType,
 }) => {
     const bem = bemUtils('periode-liste-item');
+    const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
+    const skalJobbeIPermisjonsperioden =
+        permisjonsperiode.perioder.find((p) => {
+            if (isUttaksperiode(p) && p.gradert) {
+                return p;
+            }
+
+            return undefined;
+        }) !== undefined;
 
     return (
         <Accordion.Item>
@@ -35,6 +46,8 @@ const PeriodeListeItem: FunctionComponent<Props> = ({
                     permisjonsperiode={permisjonsperiode}
                     familiehendelsedato={familiehendelsedato}
                     erFamiliehendelse={erFamiliehendelse}
+                    navnPåForeldre={navnPåForeldre}
+                    erFarEllerMedmor={erFarEllerMedmor}
                 />
             </Accordion.Header>
             <Accordion.Content>
@@ -45,19 +58,25 @@ const PeriodeListeItem: FunctionComponent<Props> = ({
                         navnPåForeldre={navnPåForeldre}
                         erFarEllerMedmor={erFarEllerMedmor}
                         annenForelder={annenForelder}
+                        inneholderKunEnPeriode={inneholderKunEnPeriode}
+                        familiehendelseType={familiehendelseType}
                     />
                 ) : (
-                    permisjonsperiode.perioder.map((p) => {
-                        return (
-                            <PeriodeListeContent
-                                periode={p}
-                                erFamiliehendelse={!!erFamiliehendelse}
-                                navnPåForeldre={navnPåForeldre}
-                                erFarEllerMedmor={erFarEllerMedmor}
-                                annenForelder={annenForelder}
-                            />
-                        );
-                    })
+                    <>
+                        {permisjonsperiode.perioder.map((p) => {
+                            return (
+                                <PeriodeListeContent
+                                    periode={p}
+                                    erFamiliehendelse={!!erFamiliehendelse}
+                                    navnPåForeldre={navnPåForeldre}
+                                    erFarEllerMedmor={erFarEllerMedmor}
+                                    annenForelder={annenForelder}
+                                    inneholderKunEnPeriode={inneholderKunEnPeriode}
+                                />
+                            );
+                        })}
+                        {!skalJobbeIPermisjonsperioden && <div>Skal ikke jobbe</div>}
+                    </>
                 )}
             </Accordion.Content>
         </Accordion.Item>

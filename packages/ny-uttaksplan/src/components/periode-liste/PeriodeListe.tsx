@@ -3,8 +3,9 @@ import { FunctionComponent } from 'react';
 
 import { Accordion } from '@navikt/ds-react';
 
-import { AnnenForelder, NavnPåForeldre, Periode, isValidTidsperiode } from '@navikt/fp-common';
+import { AnnenForelder, FamiliehendelseType, NavnPåForeldre, Periode, isValidTidsperiode } from '@navikt/fp-common';
 
+import { Barn, isAdoptertBarn, isUfødtBarn } from '../../../../types';
 import Permisjonsperiode from '../../types/Permisjonsperiode';
 import { mapPerioderToPermisjonsperiode } from '../../utils/permisjonsperiodeUtils';
 import PeriodeListeItem from './../periode-liste-item/PeriodeListeItem';
@@ -15,6 +16,7 @@ interface Props {
     erFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
+    barn: Barn;
 }
 
 const getIndexOfFørstePeriodeEtterFødsel = (permisjonsperioder: Permisjonsperiode[], familiehendelsesdato: string) => {
@@ -23,15 +25,29 @@ const getIndexOfFørstePeriodeEtterFødsel = (permisjonsperioder: Permisjonsperi
     );
 };
 
+const getFamiliehendelseType = (barn: Barn) => {
+    if (isUfødtBarn(barn)) {
+        return FamiliehendelseType.TERM;
+    }
+
+    if (isAdoptertBarn(barn)) {
+        return FamiliehendelseType.ADOPSJON;
+    }
+
+    return FamiliehendelseType.FØDSEL;
+};
+
 const PeriodeListe: FunctionComponent<Props> = ({
     perioder,
     familiehendelsedato,
     navnPåForeldre,
     erFarEllerMedmor,
     annenForelder,
+    barn,
 }) => {
     const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder, familiehendelsedato);
     const indexOfFørstePeriodeEtterFødsel = getIndexOfFørstePeriodeEtterFødsel(permisjonsperioder, familiehendelsedato);
+    const familiehendelseType = getFamiliehendelseType(barn);
 
     return (
         <div>
@@ -47,6 +63,7 @@ const PeriodeListe: FunctionComponent<Props> = ({
                                     navnPåForeldre={navnPåForeldre}
                                     erFarEllerMedmor={erFarEllerMedmor}
                                     annenForelder={annenForelder}
+                                    familiehendelseType={familiehendelseType}
                                 />
                             ) : null}
                             <PeriodeListeItem

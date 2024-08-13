@@ -5,7 +5,14 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, Heading, Hide, Show } from '@navikt/ds-react';
 
-import { Forelder, Tidsperioden, bemUtils, formatDateShortMonth, getVarighetString } from '@navikt/fp-common';
+import {
+    Forelder,
+    NavnPåForeldre,
+    Tidsperioden,
+    bemUtils,
+    formatDateShortMonth,
+    getVarighetString,
+} from '@navikt/fp-common';
 import { ISOStringToDate } from '@navikt/fp-formik';
 
 import Permisjonsperiode from '../../types/Permisjonsperiode';
@@ -16,6 +23,8 @@ interface Props {
     permisjonsperiode: Permisjonsperiode;
     familiehendelsedato: string;
     erFamiliehendelse?: boolean;
+    navnPåForeldre: NavnPåForeldre;
+    erFarEllerMedmor: boolean;
 }
 
 const renderPeriode = (permisjonsperiode: Permisjonsperiode, erFamiliehendelse: boolean | undefined) => {
@@ -51,13 +60,15 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({
     permisjonsperiode,
     familiehendelsedato,
     erFamiliehendelse,
+    navnPåForeldre,
+    erFarEllerMedmor,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('periode-liste-header');
 
     const periodeFørTermindato = dayjs(familiehendelsedato).isAfter(permisjonsperiode.tidsperiode.tom);
-    const erMor = permisjonsperiode.forelder === Forelder.mor;
-    const { tidsperiode, erUtsettelse, erHull } = permisjonsperiode;
+    const { tidsperiode, erUtsettelse, erHull, forelder } = permisjonsperiode;
+    const erMor = forelder === Forelder.mor;
     const antallDager = Tidsperioden({
         fom: ISOStringToDate(tidsperiode.fom)!,
         tom: ISOStringToDate(tidsperiode.tom)!,
@@ -74,7 +85,16 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({
                 {renderPeriode(permisjonsperiode, erFamiliehendelse)}
                 <Hide above="md">
                     <BodyShort>
-                        {getTekst({ erPeriodeUtenUttak, erSamtidigUttak, erHull, erUtsettelse, erFamiliehendelse })}
+                        {getTekst({
+                            erPeriodeUtenUttak,
+                            erSamtidigUttak,
+                            erHull,
+                            erUtsettelse,
+                            erFamiliehendelse,
+                            erFarEllerMedmor,
+                            navnPåForeldre,
+                            forelder,
+                        })}
                     </BodyShort>
                 </Hide>
             </div>
@@ -96,7 +116,16 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({
                 <BodyShort className={classNames(bem.element('hendelse-wrapper'))}>
                     <Show above="md">
                         <BodyShort>
-                            {getTekst({ erPeriodeUtenUttak, erSamtidigUttak, erHull, erUtsettelse, erFamiliehendelse })}
+                            {getTekst({
+                                erPeriodeUtenUttak,
+                                erSamtidigUttak,
+                                erHull,
+                                erUtsettelse,
+                                erFamiliehendelse,
+                                erFarEllerMedmor,
+                                navnPåForeldre,
+                                forelder,
+                            })}
                         </BodyShort>
                     </Show>
                     {getIkon({

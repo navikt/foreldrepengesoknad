@@ -4,6 +4,7 @@ import '@navikt/ds-css';
 
 import { AnnenForelder, NavnPåForeldre, Periode } from '@navikt/fp-common';
 
+import { Barn } from '../../types';
 import PeriodeListe from './components/periode-liste/PeriodeListe';
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
     erFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
+    barn: Barn;
 }
 
 const UttaksplanNy: FunctionComponent<Props> = ({
@@ -20,6 +22,7 @@ const UttaksplanNy: FunctionComponent<Props> = ({
     erFarEllerMedmor,
     navnPåForeldre,
     annenForelder,
+    barn,
 }) => {
     return (
         <div style={{ padding: '2rem 0' }}>
@@ -29,6 +32,7 @@ const UttaksplanNy: FunctionComponent<Props> = ({
                 erFarEllerMedmor={erFarEllerMedmor}
                 navnPåForeldre={navnPåForeldre}
                 annenForelder={annenForelder}
+                barn={barn}
             />
         </div>
     );

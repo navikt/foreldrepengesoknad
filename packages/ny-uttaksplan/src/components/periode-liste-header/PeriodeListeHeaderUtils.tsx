@@ -7,6 +7,8 @@ import {
     PersonPregnantFillIcon,
 } from '@navikt/aksel-icons';
 
+import { Forelder, NavnPåForeldre } from '@navikt/fp-common';
+
 type GetFargeProps = {
     erPeriodeUtenUttak: boolean;
     erSamtidigUttak: boolean;
@@ -99,6 +101,9 @@ type GetTekstProps = {
     erHull: boolean | undefined;
     erUtsettelse: boolean | undefined;
     erFamiliehendelse: boolean | undefined;
+    navnPåForeldre: NavnPåForeldre;
+    erFarEllerMedmor: boolean;
+    forelder: Forelder | undefined;
 };
 
 export const getTekst = ({
@@ -107,7 +112,13 @@ export const getTekst = ({
     erHull,
     erUtsettelse,
     erFamiliehendelse,
+    navnPåForeldre,
+    erFarEllerMedmor,
+    forelder,
 }: GetTekstProps) => {
+    const navnPåForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const erEgenPeriode = erFarEllerMedmor ? forelder === Forelder.farMedmor : forelder == Forelder.mor;
+
     if (erFamiliehendelse) {
         return 'Fødsel';
     }
@@ -125,10 +136,10 @@ export const getTekst = ({
     }
 
     if (erSamtidigUttak) {
-        return 'Du og Petter i permisjon';
+        return `Du og ${navnPåForelder} i permisjon`;
     }
 
-    return 'Du i permisjon';
+    return erEgenPeriode ? 'Du i permisjon' : `${navnPåForelder} i permisjon`;
 };
 
 type GetIkonProps = {
