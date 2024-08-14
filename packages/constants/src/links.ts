@@ -57,4 +57,5 @@ export const links = {
     godkjentAktivitet: 'https://www.nav.no/foreldrepenger#hvor-lenge',
     søknadForeldrepenger: 'https://www.nav.no/start/soknad-foreldrepenger',
     hvaSkjerNår: 'https://familie.nav.no/soke-om-foreldrepenger',
+    grunnbeløpet: 'https://www.nav.no/grunnbelopet',
 };
