@@ -12,7 +12,7 @@ describe('<HarIkkeRettTilFpInfobox>', () => {
         expect(
             await screen.findByText('Med årslønn under 100 000 kr har du ikke rett til foreldrepenger'),
         ).toBeInTheDocument();
-        expect(screen.getByText(/årslønn på 500 000 kr i året/)).toBeInTheDocument();
+        expect(screen.getByText(/500 000 kr i året/)).toBeInTheDocument();
         expect(screen.getByText(/100 000 kr i året/)).toBeInTheDocument();
     });
 });
