@@ -1,4 +1,4 @@
-import { CalendarIcon, InformationSquareIcon } from '@navikt/aksel-icons';
+import { BriefcaseIcon, CalendarIcon, InformationSquareIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
@@ -200,7 +200,29 @@ const PeriodeListeContent: FunctionComponent<Props> = ({
                     return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode, intl);
                 })}
             </HStack>
-            {skalJobbeIPermisjonsperioden ? <div>Skal jobbe</div> : <div>Skal ikke jobbe</div>}
+            {skalJobbeIPermisjonsperioden ? (
+                <div style={{ margin: '0.5rem 0', display: 'flex' }}>
+                    <div>
+                        <BriefcaseIcon width={24} height={24} />
+                    </div>
+                    <div>
+                        <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
+                            <BodyShort>Skal jobbe</BodyShort>
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <div style={{ margin: '0.5rem 0', display: 'flex' }}>
+                    <div>
+                        <BriefcaseIcon width={24} height={24} />
+                    </div>
+                    <div>
+                        <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
+                            <BodyShort>Du skal ikke jobbe i denne perioden</BodyShort>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
