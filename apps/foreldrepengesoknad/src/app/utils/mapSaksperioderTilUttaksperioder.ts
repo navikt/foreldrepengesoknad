@@ -95,10 +95,6 @@ const slåSammenLikePerioder = (
             return;
         }
 
-        // 1 aug - 18 aug
-        // 21 aug - 25 sep
-        // famdato: 19 aug
-
         if (
             Perioden(forrigePeriode).erLik(periode, false, true) &&
             Perioden(forrigePeriode).erSammenhengende(periode) &&
