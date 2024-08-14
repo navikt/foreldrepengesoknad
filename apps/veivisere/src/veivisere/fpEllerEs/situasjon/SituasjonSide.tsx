@@ -31,7 +31,6 @@ export type FpEllerEsSituasjon = {
     harHattAndreInntekter: boolean;
     lønnPerMåned: number;
     borDuINorge: boolean;
-    erDuMedlemAvFolketrygden: boolean;
 };
 
 interface Props {

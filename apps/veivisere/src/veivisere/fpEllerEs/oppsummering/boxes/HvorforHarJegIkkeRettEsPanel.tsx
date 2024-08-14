@@ -85,7 +85,7 @@ const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerE
                                     </BodyShort>
                                 </>
                             }
-                            erOppfylt={fpEllerEsSituasjon.erDuMedlemAvFolketrygden}
+                            erOppfylt={fpEllerEsSituasjon.borDuINorge}
                         />
                         {!erMor && (
                             <>

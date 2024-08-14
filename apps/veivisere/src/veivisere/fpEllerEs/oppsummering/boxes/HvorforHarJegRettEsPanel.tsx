@@ -17,6 +17,7 @@ interface Props {
 const HvorforHarJegRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
     const erMor = fpEllerEsSituasjon.situasjon === 'mor';
     const minstelønn = grunnbeløpet / 2;
+
     return (
         <ExpansionCard aria-label="" size="small">
             <ExpansionCard.Header>
@@ -68,12 +69,12 @@ const HvorforHarJegRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSit
                                 erOppfylt={fpEllerEsSituasjon.lønnPerMåned * 12 > grunnbeløpet / 2}
                             />
                         )}
-                        {fpEllerEsSituasjon.erDuMedlemAvFolketrygden && (
+                        {fpEllerEsSituasjon.borDuINorge && (
                             <KravinfoBoks
                                 testId="harRettEs"
                                 headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
                                 boxBodyText={<FormattedMessage id="HvorforHarJegRettPanel.OppgittAtDuBorINorge" />}
-                                erOppfylt={fpEllerEsSituasjon.erDuMedlemAvFolketrygden}
+                                erOppfylt={fpEllerEsSituasjon.borDuINorge}
                             />
                         )}
                     </VStack>

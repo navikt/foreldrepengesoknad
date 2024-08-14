@@ -83,7 +83,7 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
                                     </BodyShort>
                                 </>
                             }
-                            erOppfylt={fpEllerEsSituasjon.erDuMedlemAvFolketrygden}
+                            erOppfylt={fpEllerEsSituasjon.borDuINorge}
                         />
                     </VStack>
                 </VStack>
