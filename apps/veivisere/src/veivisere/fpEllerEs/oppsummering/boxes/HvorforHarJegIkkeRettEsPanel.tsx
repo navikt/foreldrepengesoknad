@@ -16,6 +16,8 @@ interface Props {
 
 const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
     const erMor = fpEllerEsSituasjon.situasjon === 'mor';
+    const folketrygdenlenke =
+        'https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden';
     return (
         <ExpansionCard aria-label="" size="small">
             <ExpansionCard.Header>
@@ -73,11 +75,7 @@ const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerE
                                             id="HvorforHarJegRettPanel.FolketrygdenLink"
                                             values={{
                                                 a: (msg: any) => (
-                                                    <a
-                                                        href="https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden"
-                                                        target="_blank"
-                                                        rel="noreferrer"
-                                                    >
+                                                    <a href={folketrygdenlenke} target="_blank" rel="noreferrer">
                                                         {msg}
                                                     </a>
                                                 ),

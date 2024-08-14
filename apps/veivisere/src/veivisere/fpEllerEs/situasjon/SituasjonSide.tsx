@@ -66,6 +66,8 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
     const minstelønn = grunnbeløpet / 2;
 
     const { ref, scrollToBottom } = useScrollBehaviour();
+    const folketrygdenlenke =
+        'https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden';
 
     return (
         <VeiviserPage
@@ -267,11 +269,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                             id="SituasjonSide.IkkeMedlem"
                                             values={{
                                                 a: (msg: any) => (
-                                                    <a
-                                                        href="https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden"
-                                                        target="_blank"
-                                                        rel="noreferrer"
-                                                    >
+                                                    <a href={folketrygdenlenke} target="_blank" rel="noreferrer">
                                                         {msg}
                                                     </a>
                                                 ),
@@ -287,7 +285,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                     {borDuINorge === false && (
                         <VStack gap="3">
                             <BlueRadioGroup
-                                label={<FormattedMessage id="SituasjonSide.BorDuINorge" />}
+                                label={<FormattedMessage id="SituasjonSide.JobberDuINorge" />}
                                 name="jobberDuINorge"
                                 onChange={scrollToBottom}
                             >
@@ -300,20 +298,16 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                             </BlueRadioGroup>
                             {jobberDuINorge === false && (
                                 <Infobox
-                                    header={<FormattedMessage id="SituasjonSide.MåVæreMedlem" />}
+                                    header={<FormattedMessage id="SituasjonSide.DuMåJobbeINorge" />}
                                     icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
                                     color="green"
                                 >
                                     <BodyShort>
                                         <FormattedMessage
-                                            id="SituasjonSide.IkkeMedlem"
+                                            id="SituasjonSide.DuJobberIkkeINorge"
                                             values={{
                                                 a: (msg: any) => (
-                                                    <a
-                                                        href="https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden"
-                                                        target="_blank"
-                                                        rel="noreferrer"
-                                                    >
+                                                    <a href={folketrygdenlenke} target="_blank" rel="noreferrer">
                                                         {msg}
                                                     </a>
                                                 ),
