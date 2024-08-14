@@ -74,6 +74,7 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
                                                     <a
                                                         href="https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden"
                                                         target="_blank"
+                                                        rel="noreferrer"
                                                     >
                                                         {msg}
                                                     </a>
