@@ -31,6 +31,7 @@ export type FpEllerEsSituasjon = {
     harHattAndreInntekter: boolean;
     lønnPerMåned: number;
     borDuINorge: boolean;
+    jobberDuINorge: boolean;
 };
 
 interface Props {
@@ -54,6 +55,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
     const lønnPerMåned = formMethods.watch('lønnPerMåned');
     const borDuINorge = formMethods.watch('borDuINorge');
     const harHattAndreInntekter = formMethods.watch('harHattAndreInntekter');
+    const jobberDuINorge = formMethods.watch('jobberDuINorge');
 
     const onSubmit = (formValues: FpEllerEsSituasjon) => {
         setFpEllerEsSituasjon(formValues);
@@ -281,7 +283,47 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                     )}
                     <Spacer />
 
-                    {borDuINorge !== undefined && (
+                    {borDuINorge === false && (
+                        <VStack gap="3">
+                            <BlueRadioGroup
+                                label={<FormattedMessage id="SituasjonSide.BorDuINorge" />}
+                                name="jobberDuINorge"
+                                onChange={scrollToBottom}
+                            >
+                                <Radio value={true}>
+                                    <FormattedMessage id="SituasjonSide.Ja" />
+                                </Radio>
+                                <Radio value={false}>
+                                    <FormattedMessage id="SituasjonSide.Nei" />
+                                </Radio>
+                            </BlueRadioGroup>
+                            {jobberDuINorge === false && (
+                                <Infobox
+                                    header={<FormattedMessage id="SituasjonSide.MåVæreMedlem" />}
+                                    icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                                    color="green"
+                                >
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="SituasjonSide.IkkeMedlem"
+                                            values={{
+                                                a: (msg: any) => (
+                                                    <a
+                                                        href="https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden"
+                                                        target="_blank"
+                                                    >
+                                                        {msg}
+                                                    </a>
+                                                ),
+                                            }}
+                                        />
+                                    </BodyShort>
+                                </Infobox>
+                            )}
+                        </VStack>
+                    )}
+                    <Spacer />
+                    {(borDuINorge || jobberDuINorge !== undefined) && (
                         <Button
                             icon={<PaperplaneIcon aria-hidden />}
                             iconPosition="right"

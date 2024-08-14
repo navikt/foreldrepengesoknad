@@ -50,12 +50,12 @@ export const MorHarTjentMerEnn200000OgHarRettTilFpOgEs: Story = {
     args: {
         fpEllerEsSituasjon: {
             borDuINorge: true,
-            erDuMedlemAvFolketrygden: true,
             erIArbeid: true,
             harHattAndreInntekter: true,
             harHattInntekt: true,
             lønnPerMåned: 20000,
             situasjon: Situasjon.MOR,
+            jobberDuINorge: true,
         },
     },
 };
@@ -63,12 +63,12 @@ export const MorHarTjentMindreEnn200000OgHarRettTilFpOgEs: Story = {
     args: {
         fpEllerEsSituasjon: {
             borDuINorge: true,
-            erDuMedlemAvFolketrygden: true,
             erIArbeid: true,
             harHattAndreInntekter: true,
             harHattInntekt: true,
             lønnPerMåned: 10000,
             situasjon: Situasjon.MOR,
+            jobberDuINorge: true,
         },
     },
 };
@@ -76,12 +76,12 @@ export const FarKanHaRettTilFp: Story = {
     args: {
         fpEllerEsSituasjon: {
             borDuINorge: true,
-            erDuMedlemAvFolketrygden: true,
             erIArbeid: true,
             harHattAndreInntekter: false,
             harHattInntekt: true,
             lønnPerMåned: 10000,
             situasjon: Situasjon.FAR,
+            jobberDuINorge: true,
         },
     },
 };
@@ -89,12 +89,12 @@ export const MorHarRettTilEs: Story = {
     args: {
         fpEllerEsSituasjon: {
             borDuINorge: true,
-            erDuMedlemAvFolketrygden: true,
             erIArbeid: false,
             harHattAndreInntekter: false,
             harHattInntekt: true,
             lønnPerMåned: 1000,
             situasjon: Situasjon.MOR,
+            jobberDuINorge: true,
         },
     },
 };
@@ -103,12 +103,12 @@ export const MorHarIkkeRett: Story = {
     args: {
         fpEllerEsSituasjon: {
             borDuINorge: false,
-            erDuMedlemAvFolketrygden: false,
             erIArbeid: false,
             harHattAndreInntekter: false,
             harHattInntekt: false,
             lønnPerMåned: 0,
             situasjon: Situasjon.MOR,
+            jobberDuINorge: true,
         },
     },
 };
@@ -116,12 +116,25 @@ export const FarHarIkkeRett: Story = {
     args: {
         fpEllerEsSituasjon: {
             borDuINorge: false,
-            erDuMedlemAvFolketrygden: false,
             erIArbeid: false,
             harHattAndreInntekter: false,
             harHattInntekt: true,
             lønnPerMåned: 0,
             situasjon: Situasjon.FAR,
+            jobberDuINorge: true,
+        },
+    },
+};
+export const MorHarIkkeRettJobberIkkeINorge: Story = {
+    args: {
+        fpEllerEsSituasjon: {
+            borDuINorge: false,
+            erIArbeid: false,
+            harHattAndreInntekter: false,
+            harHattInntekt: false,
+            lønnPerMåned: 0,
+            situasjon: Situasjon.MOR,
+            jobberDuINorge: false,
         },
     },
 };

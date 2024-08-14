@@ -61,11 +61,11 @@ const HarIkkeRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satse
                 </VStack>
             </Box>
             <HStack justify="space-around">
-                <Button type="submit">
-                    <FormattedMessage id="OppsummeringFpEllerEsSide.SøkOmFp" />
-                </Button>
-                <Button variant="secondary" type="submit">
+                <Button type="submit" variant="secondary">
                     <FormattedMessage id="OppsummeringFpEllerEsSide.MerOmFp" />
+                </Button>
+                <Button type="submit" variant="secondary">
+                    <FormattedMessage id="OppsummeringFpEllerEsSide.MerOmEs" />
                 </Button>
             </HStack>
             <VStack gap="4">

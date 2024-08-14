@@ -61,10 +61,10 @@ const HarRettEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser 
 
             <HStack justify="space-around">
                 <Button type="submit">
-                    <FormattedMessage id="OppsummeringFpEllerEsSide.SøkOmFp" />
+                    <FormattedMessage id="OppsummeringFpEllerEsSide.SøkOmEs" />
                 </Button>
                 <Button variant="secondary" type="submit">
-                    <FormattedMessage id="OppsummeringFpEllerEsSide.MerOmFp" />
+                    <FormattedMessage id="OppsummeringFpEllerEsSide.MerOmEs" />
                 </Button>
             </HStack>
             <VStack gap="4">

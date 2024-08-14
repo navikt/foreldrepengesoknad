@@ -116,6 +116,8 @@
     "OppsummeringFpEllerEsSide.EsSkalBidra": "Engangsstønad er ment å bidra til å dekke noen av utgiftene i forbindelse med å få barn. Stønaden er en <b>engangssum på {engangsstønad} kroner</b>.",
     "OppsummeringFpEllerEsSide.SøkOmFp": "Søk om foreldrepenger",
     "OppsummeringFpEllerEsSide.MerOmFp": "Mer om foreldrepenger",
+    "OppsummeringFpEllerEsSide.SøkOmEs": "Søk om engangsstønad",
+    "OppsummeringFpEllerEsSide.MerOmEs": "Mer om engangsstønad",
     "OppsummeringFpEllerEsSide.Tilbake": "Tilbake til spørsmålene",
     "HvorforHarJegRettPanel.HvorforHarJegRett": "Hvorfor har jeg rett på foreldrepenger?",
     "HvorforHarJegRettPanel.HvorforKanJegHaRett": "Hvorfor kan jeg ha rett på foreldrepenger?",
