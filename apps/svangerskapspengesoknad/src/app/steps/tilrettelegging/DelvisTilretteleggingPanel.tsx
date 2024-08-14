@@ -18,6 +18,7 @@ import {
     getSisteDagForSvangerskapspenger,
 } from 'app/utils/dateUtils';
 
+import { onToggleInfo } from '../barnet/amplitudeLoggerUtils';
 import { TilretteleggingFormData } from './tilretteleggingStepUtils';
 import {
     validateSammePeriodeFremTilTerminFom,
@@ -101,6 +102,7 @@ const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({ barnet, valgtTil
                         ]}
                     />
                     <ReadMore
+                        onOpenChange={onToggleInfo('Ikke_har_100%_stilling')}
                         header={intl.formatMessage({
                             id: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
                         })}

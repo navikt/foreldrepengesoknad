@@ -7,4 +7,4 @@ export default {
     component: ByttBrowserModal,
 };
 
-export const Default: StoryFn<typeof ByttBrowserModal> = () => <ByttBrowserModal skalEndreNettleser />;
+export const Default: StoryFn<typeof ByttBrowserModal> = () => <ByttBrowserModal />;

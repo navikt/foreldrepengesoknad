@@ -15,6 +15,7 @@ export interface Props<TYPE> {
     saveOnPrevious: (formValues: Utenlandsopphold | undefined) => void;
     cancelApplication: () => void;
     onContinueLater?: () => void;
+    onStepChange?: (id: TYPE) => void;
     goToPreviousStep: () => void;
     stepConfig: Array<ProgressStep<TYPE>>;
     stønadstype: 'Engangsstønad' | 'Foreldrepenger' | 'Svangerskapspenger';
@@ -26,6 +27,7 @@ const UtenlandsoppholdPanel = <TYPE extends string>({
     saveOnPrevious,
     cancelApplication,
     onContinueLater,
+    onStepChange,
     goToPreviousStep,
     stepConfig,
     stønadstype,
@@ -37,7 +39,12 @@ const UtenlandsoppholdPanel = <TYPE extends string>({
     });
 
     return (
-        <Step steps={stepConfig} onCancel={cancelApplication} onContinueLater={onContinueLater}>
+        <Step
+            steps={stepConfig}
+            onCancel={cancelApplication}
+            onContinueLater={onContinueLater}
+            onStepChange={onStepChange}
+        >
             <Form formMethods={formMethods} onSubmit={saveOnNext}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />

@@ -1,15 +1,15 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
-import { Heading, VStack } from '@navikt/ds-react';
+import { BodyShort, FileObject, FileRejected, FileRejectionReason, UNSAFE_FileUpload, VStack } from '@navikt/ds-react';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
+import AttachmentList from './AttachmentList';
 import { mapFileToAttachment } from './fileUtils';
-import FileInput from './input/FileInput';
-import AttachmentList from './liste/AttachmentList';
-import FailedAttachmentList from './liste/FailedAttachmentList';
 import { FileUploadError } from './typer/FileUploadError';
+import { FileUploaderAttachment } from './typer/FileUploaderAttachment';
 
 const VALID_EXTENSIONS = ['.pdf', '.jpeg', '.jpg', '.png'];
 const MAX_FIL_STØRRELSE_MB = 16;
@@ -18,41 +18,21 @@ const MAX_FIL_STØRRELSE_BYTES = MAX_FIL_STØRRELSE_MB * 1024 * 1024;
 // TODO Fjern any her utan å måtte dra inn axios i denne pakka
 type SaveAttachment = (attachment: Attachment) => Promise<any>;
 
-const findUniqueAndSortSkjemanummer = (attachments: Attachment[]) => {
-    return [...new Set(attachments.map((a) => a.skjemanummer))].sort((s1, s2) => s1.localeCompare(s2));
+const findUniqueAndSortSkjemanummer = (attachments: FileUploaderAttachment[]) => {
+    return [...new Set(attachments.map((a) => a.attachmentData.skjemanummer))].sort((s1, s2) => s1.localeCompare(s2));
 };
 
 const getPendingAttachmentFromFile = (
-    file: File,
+    file: FileObject,
     attachmentType: AttachmentType,
     skjemanummer: Skjemanummer,
-): Attachment => {
+): FileUploaderAttachment => {
     const newAttachment = mapFileToAttachment(file, attachmentType, skjemanummer);
-    newAttachment.pending = true;
+    newAttachment.attachmentData.pending = true;
     return newAttachment;
 };
 
-const fileExtensionIsValid = (filename: string): boolean => {
-    const ext = filename.split('.').pop();
-    return ext ? VALID_EXTENSIONS.includes(`.${ext.toLowerCase()}`) : false;
-};
-
-const fileSizeIsValid = (filesizeInB: number): boolean => {
-    return filesizeInB <= MAX_FIL_STØRRELSE_BYTES;
-};
-
 const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAttachment): Promise<void> => {
-    if (!fileExtensionIsValid(attachment.file.name)) {
-        attachment.pending = false;
-        attachment.error = FileUploadError.VALID_EXTENSION;
-        return;
-    }
-    if (!fileSizeIsValid(attachment.filesize)) {
-        attachment.pending = false;
-        attachment.error = FileUploadError.MAX_SIZE;
-        return;
-    }
-
     try {
         const response = await saveAttachment(attachment);
         attachment.pending = false;
@@ -75,29 +55,53 @@ const uploadAttachment = async (attachment: Attachment, saveAttachment: SaveAtta
 const EMPTY_ATTACHMENT_LIST = [] as Attachment[];
 
 const replaceAttachmentIfFound = (
-    setAttachments: React.Dispatch<React.SetStateAction<Attachment[]>>,
-    pendingAttachment: Attachment,
+    setAttachments: React.Dispatch<React.SetStateAction<FileUploaderAttachment[]>>,
+    pendingAttachment: FileUploaderAttachment,
 ) => {
     setAttachments((currentAttachments) =>
         currentAttachments.map((currentAttachement) =>
-            currentAttachement.filename === pendingAttachment.filename ? pendingAttachment : currentAttachement,
+            currentAttachement.attachmentData.filename === pendingAttachment.attachmentData.filename
+                ? pendingAttachment
+                : currentAttachement,
         ),
     );
 };
 
 const addOrReplaceAttachments = (
-    setAttachments: React.Dispatch<React.SetStateAction<Attachment[]>>,
-    allPendingAttachments: Attachment[],
+    setAttachments: React.Dispatch<React.SetStateAction<FileUploaderAttachment[]>>,
+    allPendingAttachments: FileUploaderAttachment[],
 ) => {
     setAttachments((currentAttachments) => {
         const otherAttachments = currentAttachments.filter(
-            (ca) => !allPendingAttachments.some((pa) => pa.filename === ca.filename),
+            (ca) => !allPendingAttachments.some((pa) => pa.attachmentData.filename === ca.attachmentData.filename),
         );
         return otherAttachments.concat(allPendingAttachments);
     });
 };
 
+const getErrorMessageMap = (intl: IntlShape): Record<FileRejectionReason | FileUploadError, string> => ({
+    fileType: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Type' }),
+    fileSize: intl.formatMessage(
+        { id: 'FailedAttachment.Vedlegg.Feilmelding.Ugyldig.Størrelse' },
+        { maxStørrelse: MAX_FIL_STØRRELSE_MB },
+    ),
+    [FileUploadError.GENERAL]: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Opplasting.Feilet' }),
+    [FileUploadError.TIMEOUT]: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Timeout' }),
+});
+
+const convertToInternalFormat = (attachments: Attachment[]): FileUploaderAttachment[] => {
+    return attachments.map((a) => ({
+        attachmentData: a,
+        fileObject: {
+            file: a.file,
+            error: a.error,
+        },
+    }));
+};
+
 export interface Props {
+    label: string;
+    description?: ReactNode;
     updateAttachments: (attachments: Attachment[], hasPendingUploads: boolean) => void;
     attachmentType: AttachmentType;
     skjemanummer: Skjemanummer;
@@ -108,6 +112,8 @@ export interface Props {
 }
 
 const FileUploader: React.FunctionComponent<Props> = ({
+    label,
+    description,
     existingAttachments = EMPTY_ATTACHMENT_LIST,
     updateAttachments,
     attachmentType,
@@ -116,19 +122,25 @@ const FileUploader: React.FunctionComponent<Props> = ({
     multiple = true,
     skjemanummerTextMap,
 }) => {
-    const [attachments, setAttachments] = useState(existingAttachments);
+    const intl = useIntl();
+    const errorMessageMap = getErrorMessageMap(intl);
+
+    const [attachments, setAttachments] = useState(convertToInternalFormat(existingAttachments));
 
     useEffect(() => {
-        const successAttachments = attachments.filter((a) => !a.error && a.pending === false);
-        const hasPendingUploads = attachments.some((a) => !a.error && a.pending === true);
+        const attachmentsWithoutError = attachments.filter((a) => !a.attachmentData.error && !a.fileObject.error);
+        const successAttachments = attachmentsWithoutError
+            .filter((a) => a.attachmentData.pending === false)
+            .map((a) => a.attachmentData);
+        const hasPendingUploads = attachmentsWithoutError.some((a) => a.attachmentData.pending === true);
         updateAttachments(successAttachments, hasPendingUploads);
     }, [attachments]);
 
     const saveFiles = useCallback(
-        (files: File[]) => {
-            const uploadAttachments = async (allPendingAttachments: Attachment[]) => {
+        (files: FileObject[]) => {
+            const uploadAttachments = async (allPendingAttachments: FileUploaderAttachment[]) => {
                 for (const pendingAttachment of allPendingAttachments) {
-                    await uploadAttachment(pendingAttachment, saveAttachment);
+                    await uploadAttachment(pendingAttachment.attachmentData, saveAttachment);
                     replaceAttachmentIfFound(setAttachments, pendingAttachment);
                 }
             };
@@ -142,41 +154,84 @@ const FileUploader: React.FunctionComponent<Props> = ({
         [attachmentType, skjemanummer, saveAttachment],
     );
 
-    const deleteAttachment = useCallback((file: Attachment) => {
-        setAttachments((currentAttachments) => currentAttachments.filter((a) => a.filename !== file.filename));
+    const deleteAttachment = useCallback((fileToRemove: FileObject) => {
+        setAttachments((currentAttachments) => currentAttachments.filter((a) => a.fileObject !== fileToRemove));
     }, []);
 
-    const uploadedAttachments = useMemo(() => attachments.filter((a) => !a.error), [attachments]);
-    const failedAttachments = useMemo(() => attachments.filter((a) => !!a.error), [attachments]);
+    const uploadedAttachments = useMemo(
+        () => attachments.filter((a) => !a.attachmentData.error && !a.fileObject.error),
+        [attachments],
+    );
+    const failedAttachments = useMemo(
+        () => attachments.filter((a) => !!a.attachmentData.error || !!a.fileObject.error),
+        [attachments],
+    );
 
     return (
         <VStack gap="6">
-            {skjemanummerTextMap && attachments.length > 0 && (
+            <UNSAFE_FileUpload.Dropzone
+                label={label}
+                description={
+                    <VStack gap="2">
+                        {description && <BodyShort>{description}</BodyShort>}
+                        <FormattedMessage
+                            id="FileInput.Vedlegg.Lovlige"
+                            values={{ maxStørrelse: MAX_FIL_STØRRELSE_MB }}
+                        />
+                    </VStack>
+                }
+                accept={VALID_EXTENSIONS.join(', ')}
+                maxSizeInBytes={MAX_FIL_STØRRELSE_BYTES}
+                fileLimit={{ max: multiple ? 40 : 1, current: uploadedAttachments.length }}
+                onSelect={saveFiles}
+            />
+            {skjemanummerTextMap && uploadedAttachments.length > 0 && (
                 <>
-                    {findUniqueAndSortSkjemanummer(attachments).map((skjemanr) => (
-                        <>
-                            <Heading key={skjemanr} size="small" level="2">
-                                {skjemanummerTextMap[skjemanr]}
-                            </Heading>
-                            <AttachmentList
-                                attachments={uploadedAttachments.filter((a) => a.skjemanummer === skjemanr)}
-                                showFileSize={true}
-                                onDelete={deleteAttachment}
-                            />
-                        </>
+                    {findUniqueAndSortSkjemanummer(uploadedAttachments).map((skjemanr) => (
+                        <AttachmentList
+                            key={skjemanr}
+                            headingText={intl.formatMessage(
+                                { id: 'FileInput.Vedlegg.HeaderWithName' },
+                                {
+                                    length: uploadedAttachments.filter(
+                                        (a) => a.attachmentData.skjemanummer === skjemanr,
+                                    ).length,
+                                    name: skjemanummerTextMap[skjemanr],
+                                },
+                            )}
+                            attachments={uploadedAttachments.filter((a) => a.attachmentData.skjemanummer === skjemanr)}
+                            deleteAttachment={deleteAttachment}
+                        />
                     ))}
                 </>
             )}
-            {!skjemanummerTextMap && (
-                <AttachmentList attachments={uploadedAttachments} showFileSize={true} onDelete={deleteAttachment} />
+            {!skjemanummerTextMap && uploadedAttachments.length > 0 && (
+                <AttachmentList
+                    headingText={intl.formatMessage(
+                        { id: 'FileInput.Vedlegg.Header' },
+                        { length: uploadedAttachments.length },
+                    )}
+                    attachments={uploadedAttachments}
+                    deleteAttachment={deleteAttachment}
+                />
             )}
-            <FileInput
-                accept={VALID_EXTENSIONS.join(', ')}
-                onFilesSelect={saveFiles}
-                hasUplodedAttachements={uploadedAttachments.length > 0}
-                multiple={multiple}
-            />
-            <FailedAttachmentList failedAttachments={failedAttachments} onDelete={deleteAttachment} />
+            {failedAttachments.length > 0 && (
+                <AttachmentList
+                    headingText={intl.formatMessage(
+                        { id: 'FileInput.Vedlegg.WithErrors' },
+                        { length: failedAttachments.length },
+                    )}
+                    attachments={failedAttachments}
+                    deleteAttachment={deleteAttachment}
+                    getErrorMessage={(rejectedAttachment: FileUploaderAttachment) =>
+                        rejectedAttachment.attachmentData.error
+                            ? errorMessageMap[rejectedAttachment.attachmentData.error as FileUploadError]
+                            : errorMessageMap[
+                                  (rejectedAttachment.fileObject as FileRejected).reasons[0] as FileRejectionReason
+                              ]
+                    }
+                />
+            )}
         </VStack>
     );
 };

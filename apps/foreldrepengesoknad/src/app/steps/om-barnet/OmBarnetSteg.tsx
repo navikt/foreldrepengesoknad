@@ -8,7 +8,6 @@ import { VStack } from '@navikt/ds-react';
 import {
     Barn,
     Situasjon,
-    Step,
     Søkerrolle,
     andreAugust2022ReglerGjelder,
     isFarEllerMedmor,
@@ -17,6 +16,7 @@ import {
 } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { SøkerBarn, Søkerinfo } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import useFpNavigator from 'app/appData/useFpNavigator';

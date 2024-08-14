@@ -12,8 +12,6 @@ import {
     ISOStringToDate,
     Periode,
     Periodene,
-    Step,
-    StepButtonWrapper,
     getAktiveArbeidsforhold,
     getAntallUker,
     getAntallUkerMinsterett,
@@ -36,6 +34,7 @@ import {
 import { Skjemanummer } from '@navikt/fp-constants';
 import { YesOrNo, dateToISOString } from '@navikt/fp-formik';
 import { Søkerinfo } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import {
     Uttaksplan,
     finnOgSettInnHull,
@@ -75,6 +74,7 @@ import {
     getKanPerioderRundtFødselAutomatiskJusteres,
     getKanSøkersituasjonAutomatiskJustereRundtFødsel,
 } from './automatisk-justering-form/automatiskJusteringUtils';
+import StepButtonWrapper from './components/StepButtonWrapper';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { lagUttaksplanForslag } from './lagUttaksplanForslag';
 import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';

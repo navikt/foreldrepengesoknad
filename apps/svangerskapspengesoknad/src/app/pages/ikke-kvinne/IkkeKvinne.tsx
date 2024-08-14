@@ -1,17 +1,13 @@
 import { ArrowRightIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
-import { Button, GuidePanel, Heading, VStack } from '@navikt/ds-react';
+import { Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { bemUtils } from '@navikt/fp-utils';
-
-import './ikkeKvinne.css';
+import { ContentWrapper } from '@navikt/fp-ui';
 
 const IkkeKvinne: React.FunctionComponent = () => {
-    const bem = bemUtils('ikke-kvinne');
-
     logAmplitudeEvent('sidevisning', {
         app: 'svangerskapspengerny',
         team: 'foreldrepenger',
@@ -19,8 +15,8 @@ const IkkeKvinne: React.FunctionComponent = () => {
     });
 
     return (
-        <div className={bem.block}>
-            <Heading level="1" size="xlarge" className={`${bem.element('tittel')}`}>
+        <ContentWrapper>
+            <Heading level="1" size="xlarge">
                 <FormattedMessage id="søknad.pageheading" />
             </Heading>
             <VStack gap="10">
@@ -33,13 +29,13 @@ const IkkeKvinne: React.FunctionComponent = () => {
                     </VStack>
                 </GuidePanel>
 
-                <div style={{ textAlign: 'center' }} className={bem.element('papirsøknadKnapp')}>
+                <HStack justify="center">
                     <Button as="a" icon={<ArrowRightIcon aria-hidden />} iconPosition="right" href={links.nav}>
                         <FormattedMessage id="ikkeKvinne.knappetekst" />
                     </Button>
-                </div>
+                </HStack>
             </VStack>
-        </div>
+        </ContentWrapper>
     );
 };
 

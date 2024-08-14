@@ -35,7 +35,7 @@ describe('<HvorLangPeriodeSteg>', () => {
 
         render(<FlereForsørgereEttBarnKunMorHarRett gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Hvor lenge')).toBeInTheDocument();
+        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));
 
@@ -71,7 +71,7 @@ describe('<HvorLangPeriodeSteg>', () => {
 
         render(<FarOgFarBeggeHarRett gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Hvor lenge')).toBeInTheDocument();
+        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('100 % utbetaling over 46 uker'));
 
@@ -106,7 +106,7 @@ describe('<HvorLangPeriodeSteg>', () => {
 
         render(<FlereForsørgereFarOgFarKunFar1HarRettAdopsjon gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Hvor lenge')).toBeInTheDocument();
+        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
         expect(screen.getByText('Når bare én av fedrene skal ha foreldrepenger')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('100 % utbetaling over 40 uker'));
@@ -139,7 +139,7 @@ describe('<HvorLangPeriodeSteg>', () => {
 
         render(<FlereForsørgereFarOgFarKunFar1HarRettFødsel gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Hvor lenge')).toBeInTheDocument();
+        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
         expect(screen.queryByText('Når bare én av fedrene skal ha foreldrepenger')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('100 % utbetaling over 0 uker'));
@@ -166,14 +166,14 @@ describe('<HvorLangPeriodeSteg>', () => {
 
     it('skal vise infoboks når kun far skal ha foreldrepenger', async () => {
         render(<FlereForsørgereKunFarHarRett />);
-        expect(await screen.findByText('Hvor lenge')).toBeInTheDocument();
+        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
         expect(screen.getByText('Når bare far skal ha foreldrepenger')).toBeInTheDocument();
         expect(screen.queryByText('Når bare én av fedrene skal ha foreldrepenger')).not.toBeInTheDocument();
     });
 
     it('skal vise infoboks når kun en av fedrene skal ha foreldrepenger', async () => {
         render(<FlereForsørgereFarOgFarKunFar1HarRettAdopsjon />);
-        expect(await screen.findByText('Hvor lenge')).toBeInTheDocument();
+        expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
         expect(screen.getByText('Når bare én av fedrene skal ha foreldrepenger')).toBeInTheDocument();
         expect(screen.queryByText('Når bare far skal ha foreldrepenger')).not.toBeInTheDocument();
     });

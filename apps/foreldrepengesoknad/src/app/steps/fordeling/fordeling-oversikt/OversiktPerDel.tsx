@@ -22,6 +22,7 @@ interface Props {
     erFødsel: boolean;
     annenForelderKunRettIEØS: boolean | undefined;
     setCurrentUthevet: Dispatch<SetStateAction<FordelingEier | undefined>>;
+    erDeltUttak: boolean;
 }
 
 const OversiktPerDel: React.FunctionComponent<Props> = ({
@@ -33,10 +34,13 @@ const OversiktPerDel: React.FunctionComponent<Props> = ({
     erFødsel,
     annenForelderKunRettIEØS,
     setCurrentUthevet,
+    erDeltUttak,
 }) => {
     const intl = useIntl();
     const bem = bemUtils('oversiktPerDel');
-    const hoverClass = currentUthevet === delInformasjon.eier ? 'hover' : 'no-hover';
+
+    const hoverClass = currentUthevet === delInformasjon.eier && erDeltUttak ? 'hover' : 'no-hover';
+
     const handleOnMouseEnter = () => {
         setCurrentUthevet(delInformasjon.eier);
     };
@@ -53,6 +57,7 @@ const OversiktPerDel: React.FunctionComponent<Props> = ({
         erFødsel,
         annenForelderKunRettIEØS,
     );
+
     return (
         <VStack
             className={classNames(bem.block, bem.modifier(`${hoverClass}`))}

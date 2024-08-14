@@ -11,7 +11,7 @@ describe('<Oppsummering>', () => {
         render(<Default />);
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
-        expect(screen.getByText('Oppsummering')).toBeInTheDocument();
+        expect(screen.getAllByText('Oppsummering')).toHaveLength(2);
         expect(screen.getByText('Send søknaden')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Send søknaden'));

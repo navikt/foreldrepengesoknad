@@ -29,12 +29,12 @@ describe('<FordelingSteg>', () => {
 
         const utils = render(<FlereForsørgereEttBarn gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Fordeling')).toBeInTheDocument();
+        expect(await screen.findAllByText('Fordeling')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Neste'));
 
         expect(
-            screen.getByText('Du må svare på hvordan dere vil fordele fellesperioden før du går videre.'),
+            screen.getByText('Du må svare på hvordan dere vil fordele fellesperioden før dere går videre.'),
         ).toBeInTheDocument();
 
         await userEvent.selectOptions(

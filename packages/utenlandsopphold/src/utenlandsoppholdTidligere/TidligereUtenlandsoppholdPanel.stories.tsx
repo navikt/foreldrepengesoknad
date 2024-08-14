@@ -13,16 +13,23 @@ const Template: StoryFn<{
     saveOnPrevious: () => void;
     cancelApplication: () => void;
     goToPreviousStep: () => void;
-}> = ({ saveOnNext, saveOnPrevious, cancelApplication, goToPreviousStep }) => {
+    onStepChange: () => void;
+}> = ({ saveOnNext, saveOnPrevious, cancelApplication, goToPreviousStep, onStepChange }) => {
     return (
         <TidligereUtenlandsoppholdPanel
             saveOnNext={saveOnNext}
             saveOnPrevious={saveOnPrevious}
             cancelApplication={cancelApplication}
             goToPreviousStep={goToPreviousStep}
+            onStepChange={onStepChange}
             stepConfig={[
                 {
-                    id: '1',
+                    id: 'UTENLANDSOPPHOLD_PATH',
+                    label: 'Utenlandsopphold',
+                    isSelected: false,
+                },
+                {
+                    id: 'HAR_BODD_I_UTLANDET_PATH',
                     label: 'Har bodd i utlandet',
                     isSelected: true,
                 },
@@ -37,4 +44,5 @@ Default.args = {
     saveOnPrevious: action('button-click'),
     cancelApplication: action('button-click'),
     goToPreviousStep: action('button-click'),
+    onStepChange: action('button-click'),
 };

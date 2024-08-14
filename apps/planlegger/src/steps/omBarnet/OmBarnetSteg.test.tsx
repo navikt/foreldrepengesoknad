@@ -16,7 +16,7 @@ describe('<OmBarnetSteg>', () => {
 
         const utils = render(<AleneforsørgerFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Barnet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Barnet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Fødsel'));
 
@@ -48,7 +48,7 @@ describe('<OmBarnetSteg>', () => {
 
         const utils = render(<AleneforsørgerFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Barnet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Barnet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Fødsel'));
 
@@ -83,7 +83,7 @@ describe('<OmBarnetSteg>', () => {
 
         const utils = render(<AleneforsørgerFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Barnet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Barnet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Fødsel'));
 
@@ -123,7 +123,7 @@ describe('<OmBarnetSteg>', () => {
 
         const utils = render(<AleneforsørgerFar gåTilNesteSide={gåTilNesteSide} />);
 
-        expect(await screen.findByText('Barnet')).toBeInTheDocument();
+        expect(await screen.findAllByText('Barnet')).toHaveLength(2);
 
         await userEvent.click(screen.getByText('Adopsjon'));
 

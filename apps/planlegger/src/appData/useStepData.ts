@@ -1,6 +1,7 @@
 import { PATH_ORDER, PlanleggerRoutes, REQUIRED_APP_STEPS } from 'appData/routes';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
+import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
@@ -12,6 +13,17 @@ import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { ProgressStep } from '@navikt/fp-ui';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './PlanleggerDataContext';
+
+const getLabelConfig = (intl: IntlShape): Record<PlanleggerRoutes, string> => ({
+    [PlanleggerRoutes.ARBEIDSSITUASJON]: intl.formatMessage({ id: 'ArbeidssituasjonSteg.Tittel' }),
+    [PlanleggerRoutes.FORDELING]: intl.formatMessage({ id: 'FordelingSteg.Tittel' }),
+    [PlanleggerRoutes.HVEM_PLANLEGGER]: intl.formatMessage({ id: 'HvemPlanleggerSteg.HvemPlanlegger' }),
+    [PlanleggerRoutes.HVOR_LANG_PERIODE]: intl.formatMessage({ id: 'HvorLangPeriodeSteg.Tittel' }),
+    [PlanleggerRoutes.OM_BARNET]: intl.formatMessage({ id: 'OmBarnetSteg.Tittel' }),
+    [PlanleggerRoutes.OM_PLANLEGGEREN]: intl.formatMessage({ id: 'OmPlanleggerenSteg.Ingress' }),
+    [PlanleggerRoutes.PLANEN_DERES]: intl.formatMessage({ id: 'PlanenDeresSteg.Tittel' }),
+    [PlanleggerRoutes.OPPSUMMERING]: intl.formatMessage({ id: 'OppsummeringHeader.Tittel' }),
+});
 
 const erBarnIkkeOppgittEllerYngreEnnTreÅr = (omBarnet?: OmBarnet) =>
     !omBarnet || !(erBarnetFødt(omBarnet) && dayjs(omBarnet.fødselsdato).isBefore(DATE_3_YEARS_AGO));
@@ -65,7 +77,9 @@ const showArbeidssituasjonStep = (
 
 const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
     const location = useLocation();
+    const intl = useIntl();
     const getStateData = useContextGetAnyData();
+    const labelMap = getLabelConfig(intl);
 
     const currentPath = useMemo(() => {
         const route = Object.values(PlanleggerRoutes).find((v) => v === decodeURIComponent(location.pathname));
@@ -88,6 +102,7 @@ const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
     return appPathList.map((p) => ({
         id: p,
         isSelected: p === currentPath,
+        label: labelMap[p],
     }));
 };
 

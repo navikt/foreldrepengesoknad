@@ -62,6 +62,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                     navigator.goToPreviousDefaultStep();
                 }}
                 onContinueLater={navigator.fortsettSøknadSenere}
+                onStepChange={navigator.goToNextStep}
             >
                 <FormSummary>
                     <FormSummary.Header>

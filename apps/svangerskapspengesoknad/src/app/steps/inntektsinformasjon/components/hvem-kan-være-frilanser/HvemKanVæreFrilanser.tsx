@@ -4,11 +4,16 @@ import { BodyShort, Link, ReadMore, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 
+import { onToggleInfo } from 'app/steps/barnet/amplitudeLoggerUtils';
+
 const HvemKanVæreFrilanser = () => {
     const intl = useIntl();
 
     return (
-        <ReadMore header={intl.formatMessage({ id: 'inntektsinformasjon.harDuJobbetSomFrilans.apneLabel' })}>
+        <ReadMore
+            onOpenChange={onToggleInfo('Frilanser')}
+            header={intl.formatMessage({ id: 'inntektsinformasjon.harDuJobbetSomFrilans.apneLabel' })}
+        >
             <VStack gap="2">
                 <BodyShort>
                     <FormattedMessage id="inntektsinformasjon.harDuJobbetSomFrilans.infoboksTekst.del1" />

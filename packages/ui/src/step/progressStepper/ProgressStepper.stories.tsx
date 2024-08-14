@@ -18,4 +18,17 @@ Default.args = {
         { id: '3', label: 'Steg 4', isSelected: false },
         { id: '4', label: 'Steg 5', isSelected: false },
     ],
+    onStepChange: undefined,
+};
+
+export const WithInteractiveSteps = Template.bind({});
+WithInteractiveSteps.args = {
+    steps: [
+        { id: '0', label: 'Steg 1', isSelected: false },
+        { id: '1', label: 'Steg 2', isSelected: false },
+        { id: '2', label: 'Steg 3', isSelected: true },
+        { id: '3', label: 'Steg 4', isSelected: false },
+        { id: '4', label: 'Steg 5', isSelected: false },
+    ],
+    onStepChange: () => undefined,
 };
