@@ -1,13 +1,13 @@
 import { QuestionmarkIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
+import { FpEllerEsSituasjon } from 'veivisere/fpEllerEs/situasjon/SituasjonSide';
 
 import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
-import { FpEllerEsSituasjon } from '../situasjon/SituasjonSide';
-import KravinfoBoks from './KravinfoBoks';
+import KravinfoBoks from '../KravinfoBoks';
 
 interface Props {
     fpEllerEsSituasjon: FpEllerEsSituasjon;
@@ -15,6 +15,7 @@ interface Props {
 }
 
 const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
+    const erMor = fpEllerEsSituasjon.situasjon === 'mor';
     return (
         <ExpansionCard aria-label="" size="small">
             <ExpansionCard.Header>
@@ -23,7 +24,11 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
                         <QuestionmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                     </IconCircleWrapper>
                     <ExpansionCard.Title size="small">
-                        <FormattedMessage id="HvorforHarJegRettPanel.HvorforHarJegRett" />
+                        {erMor ? (
+                            <FormattedMessage id="HvorforHarJegRettPanel.HvorforHarJegRett" />
+                        ) : (
+                            <FormattedMessage id="HvorforHarJegRettPanel.HvorforKanJegHaRett" />
+                        )}
                     </ExpansionCard.Title>
                 </HStack>
             </ExpansionCard.Header>
@@ -34,11 +39,13 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
                     </BodyShort>
                     <VStack gap="4">
                         <KravinfoBoks
+                            testId="harRettFp"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåHaInntekt" />}
                             boxBodyText={<FormattedMessage id="HvorforHarJegRettPanel.DuHarOppgittInntekt" />}
                             erOppfylt={!!fpEllerEsSituasjon.harHattInntekt}
                         />
                         <KravinfoBoks
+                            testId="harRettFp"
                             headerText={
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuMåTeneOver"
@@ -57,9 +64,10 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
                             erOppfylt={fpEllerEsSituasjon.lønnPerMåned * 12 > grunnbeløpet / 2}
                         />
                         <KravinfoBoks
+                            testId="harRettFp"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
                             boxBodyText={<FormattedMessage id="HvorforHarJegRettPanel.OppgittAtDuBorINorge" />}
-                            erOppfylt={fpEllerEsSituasjon.erDuMedlemAvFolketrygden}
+                            erOppfylt={fpEllerEsSituasjon.borDuINorge}
                         />
                     </VStack>
                 </VStack>
