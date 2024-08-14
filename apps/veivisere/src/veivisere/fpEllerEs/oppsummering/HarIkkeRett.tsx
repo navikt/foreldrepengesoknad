@@ -26,7 +26,7 @@ const HarIkkeRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satse
 
     return (
         <>
-            <Box background="surface-alt-3-subtle" padding="8" borderRadius="large">
+            <Box background="bg-subtle" padding="8" borderRadius="large">
                 <VStack gap="8">
                     <VStack gap="8" align="center">
                         <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden color="#66A3C4" />
