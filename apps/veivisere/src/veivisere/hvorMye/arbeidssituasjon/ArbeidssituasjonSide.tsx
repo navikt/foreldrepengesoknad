@@ -94,29 +94,26 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
         >
             <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
-                    <VStack gap="2">
-                        <BluePanel isDarkBlue={!isCheckboxValgt(formValues)} shouldFadeIn>
-                            <Label>
-                                <FormattedMessage id="ArbeidssituasjonSide.Arbeidssituasjon" />
-                            </Label>
-                            <BodyShort className={styles.description}>
-                                <FormattedMessage id="ArbeidssituasjonSide.VelgAlternativ" />
-                            </BodyShort>
-                            <Checkbox
-                                name="erArbeidstakerEllerFrilanser"
-                                label={<FormattedMessage id="ArbeidssituasjonSide.ArbeidEllerFrilans" />}
-                            />
-                            <Checkbox
-                                name="harUtbetalingFraNav"
-                                label={<FormattedMessage id="ArbeidssituasjonSide.UtbetalingNav" />}
-                            />
-                            <Checkbox
-                                name="erSelvstendigNæringsdrivende"
-                                label={<FormattedMessage id="ArbeidssituasjonSide.SelvstendigNæringsdrivende" />}
-                            />
-                        </BluePanel>
-                        <ReadMore header={<FormattedMessage id="ArbeidssituasjonSide.Forskjellen" />}>todo</ReadMore>
-                    </VStack>
+                    <BluePanel isDarkBlue={!isCheckboxValgt(formValues)} shouldFadeIn>
+                        <Label>
+                            <FormattedMessage id="ArbeidssituasjonSide.Arbeidssituasjon" />
+                        </Label>
+                        <BodyShort className={styles.description}>
+                            <FormattedMessage id="ArbeidssituasjonSide.VelgAlternativ" />
+                        </BodyShort>
+                        <Checkbox
+                            name="erArbeidstakerEllerFrilanser"
+                            label={<FormattedMessage id="ArbeidssituasjonSide.ArbeidEllerFrilans" />}
+                        />
+                        <Checkbox
+                            name="harUtbetalingFraNav"
+                            label={<FormattedMessage id="ArbeidssituasjonSide.UtbetalingNav" />}
+                        />
+                        <Checkbox
+                            name="erSelvstendigNæringsdrivende"
+                            label={<FormattedMessage id="ArbeidssituasjonSide.SelvstendigNæringsdrivende" />}
+                        />
+                    </BluePanel>
                     {formValues.erSelvstendigNæringsdrivende && (
                         <Infobox
                             icon={
