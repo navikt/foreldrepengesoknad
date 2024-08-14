@@ -1,4 +1,4 @@
-import { BabyWrappedIcon, EarthIcon, PaperplaneIcon, StrollerIcon } from '@navikt/aksel-icons';
+import { BabyWrappedIcon, PaperplaneIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, FpEllerEsRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
@@ -55,7 +55,6 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
     const lønnPerMåned = formMethods.watch('lønnPerMåned');
     const borDuINorge = formMethods.watch('borDuINorge');
     const harHattAndreInntekter = formMethods.watch('harHattAndreInntekter');
-    const erDuMedlemAvFolketrygden = formMethods.watch('erDuMedlemAvFolketrygden');
 
     const onSubmit = (formValues: FpEllerEsSituasjon) => {
         setFpEllerEsSituasjon(formValues);
@@ -74,7 +73,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
             icon={<StrollerIcon height={36} width={36} fontSize="1.5rem" aria-hidden />}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
-                <VStack gap="10" style={{ flex: 1 }}>
+                <VStack gap="6" style={{ flex: 1 }}>
                     <BlueRadioGroup
                         label={<FormattedMessage id="SituasjonSide.HvemErDu" />}
                         name="situasjon"
@@ -129,7 +128,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                         </VStack>
                     )}
                     {erIArbeid === false && (
-                        <VStack gap="4">
+                        <VStack gap="3">
                             <BlueRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.HarDuHattAndeInntektskilder" />}
                                 name="harHattAndreInntekter"
@@ -142,21 +141,22 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
                             </BlueRadioGroup>
+                            {harHattAndreInntekter === false && (
+                                <Infobox
+                                    header={<FormattedMessage id="SituasjonSide.JobbetMinst6av10" />}
+                                    icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                                    color="green"
+                                >
+                                    <BodyShort>
+                                        <FormattedMessage id="SituasjonSide.JobbetMinst6av10Detaljer" />
+                                    </BodyShort>
+                                </Infobox>
+                            )}
                         </VStack>
                     )}
-                    {harHattAndreInntekter === false && (
-                        <Infobox
-                            header={<FormattedMessage id="SituasjonSide.JobbetMinst8av10" />}
-                            icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
-                            color="green"
-                        >
-                            <BodyShort>
-                                <FormattedMessage id="SituasjonSide.JobbetMinst8av10Detaljer" />
-                            </BodyShort>
-                        </Infobox>
-                    )}
+
                     {(erIArbeid || harHattAndreInntekter) && (
-                        <VStack gap="4">
+                        <VStack gap="3">
                             <BlueRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.HarDuHattInntekt" />}
                                 name="harHattInntekt"
@@ -169,70 +169,80 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
                             </BlueRadioGroup>
+                            {harHattInntekt === false && (
+                                <Infobox
+                                    header={<FormattedMessage id="SituasjonSide.JobbetMinst6av10" />}
+                                    icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                                    color="green"
+                                >
+                                    <BodyShort>
+                                        <FormattedMessage id="SituasjonSide.JobbetMinst6av10Detaljer" />
+                                    </BodyShort>
+                                </Infobox>
+                            )}
                         </VStack>
-                    )}
-                    {harHattInntekt === false && (
-                        <Infobox
-                            header={<FormattedMessage id="SituasjonSide.JobbetMinst8av10" />}
-                            icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
-                            color="green"
-                        >
-                            <BodyShort>
-                                <FormattedMessage id="SituasjonSide.JobbetMinst8av10Detaljer" />
-                            </BodyShort>
-                        </Infobox>
                     )}
 
                     {harHattInntekt && (
-                        <VStack gap="4">
-                            <BluePanel isDarkBlue={lønnPerMåned === undefined} shouldFadeIn>
-                                <VStack gap="2">
-                                    <TextField
-                                        name="lønnPerMåned"
-                                        onChange={scrollToBottom}
-                                        label={<FormattedMessage id="SituasjonSide.LønnFørSkatt" />}
-                                    />
+                        <VStack gap="3">
+                            <VStack gap="4">
+                                <BluePanel isDarkBlue={lønnPerMåned === undefined} shouldFadeIn>
                                     <VStack gap="2">
-                                        <Label>
-                                            <FormattedMessage id="SituasjonSide.Årsinntekt" />
-                                        </Label>
-                                        <Heading size="large">
-                                            {lønnPerMåned ? (
-                                                formatCurrencyWithKr(lønnPerMåned * 12)
-                                            ) : (
-                                                <FormattedMessage id="SituasjonSide.IngenKr" />
-                                            )}
-                                        </Heading>
+                                        <TextField
+                                            name="lønnPerMåned"
+                                            onChange={scrollToBottom}
+                                            label={<FormattedMessage id="SituasjonSide.LønnFørSkatt" />}
+                                        />
+                                        <VStack gap="2">
+                                            <Label>
+                                                <FormattedMessage id="SituasjonSide.Årsinntekt" />
+                                            </Label>
+                                            <Heading size="large">
+                                                {lønnPerMåned ? (
+                                                    formatCurrencyWithKr(lønnPerMåned * 12)
+                                                ) : (
+                                                    <FormattedMessage id="SituasjonSide.IngenKr" />
+                                                )}
+                                            </Heading>
+                                        </VStack>
                                     </VStack>
-                                </VStack>
-                            </BluePanel>
-                            <ReadMore header={<FormattedMessage id="SituasjonSide.HvorMyeMåHaTjent" />}>todo</ReadMore>
+                                </BluePanel>
+                                <ReadMore header={<FormattedMessage id="SituasjonSide.HvorMyeMåHaTjent" />}>
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="SituasjonSide.HvorMyeMåHaTjentDetaljer"
+                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
+                                        />
+                                    </BodyShort>
+                                </ReadMore>
+                            </VStack>
+                            {lønnPerMåned * 12 < minstelønn && (
+                                <Infobox
+                                    header={
+                                        <FormattedMessage
+                                            id="SituasjonSide.MåTjeneMinst"
+                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
+                                        />
+                                    }
+                                    icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                                    color="green"
+                                >
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="SituasjonSide.OppgittLønnIkkeRett"
+                                            values={{
+                                                årslønn: formatCurrencyWithKr(lønnPerMåned * 12),
+                                                minstelønn: formatCurrencyWithKr(minstelønn),
+                                            }}
+                                        />
+                                    </BodyShort>
+                                </Infobox>
+                            )}
                         </VStack>
                     )}
-                    {lønnPerMåned * 12 < minstelønn && (
-                        <Infobox
-                            header={
-                                <FormattedMessage
-                                    id="SituasjonSide.MåTjeneMinst"
-                                    values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
-                                />
-                            }
-                            icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
-                            color="green"
-                        >
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="SituasjonSide.OppgittLønnIkkeRett"
-                                    values={{
-                                        årslønn: lønnPerMåned * 12,
-                                        minstelønn: formatCurrencyWithKr(minstelønn),
-                                    }}
-                                />
-                            </BodyShort>
-                        </Infobox>
-                    )}
+
                     {(lønnPerMåned || harHattInntekt === false || harHattAndreInntekter === false) && (
-                        <VStack gap="4">
+                        <VStack gap="3">
                             <BlueRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.BorDuINorge" />}
                                 name="borDuINorge"
@@ -245,40 +255,34 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
                             </BlueRadioGroup>
+                            {borDuINorge === false && (
+                                <Infobox
+                                    header={<FormattedMessage id="SituasjonSide.MåVæreMedlem" />}
+                                    icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                                    color="green"
+                                >
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="SituasjonSide.IkkeMedlem"
+                                            values={{
+                                                a: (msg: any) => (
+                                                    <a
+                                                        href="https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden"
+                                                        target="_blank"
+                                                    >
+                                                        {msg}
+                                                    </a>
+                                                ),
+                                            }}
+                                        />
+                                    </BodyShort>
+                                </Infobox>
+                            )}
                         </VStack>
-                    )}
-                    {borDuINorge === false && (
-                        <VStack gap="4">
-                            <BlueRadioGroup
-                                label={<FormattedMessage id="SituasjonSide.ErDuMedlemAvFolketrygden" />}
-                                name="erDuMedlemAvFolketrygden"
-                                onChange={scrollToBottom}
-                            >
-                                <Radio value={true}>
-                                    <FormattedMessage id="SituasjonSide.Ja" />
-                                </Radio>
-                                <Radio value={false}>
-                                    <FormattedMessage id="SituasjonSide.Nei" />
-                                </Radio>
-                            </BlueRadioGroup>
-                            <ReadMore header={<FormattedMessage id="SituasjonSide.HvaVilDetSiMedlemFolketrygden" />}>
-                                todo
-                            </ReadMore>
-                        </VStack>
-                    )}
-                    {erDuMedlemAvFolketrygden === false && (
-                        <Infobox
-                            header={<FormattedMessage id="SituasjonSide.MåVæreMedlem" />}
-                            icon={<EarthIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
-                            color="green"
-                        >
-                            <BodyShort>
-                                <FormattedMessage id="SituasjonSide.IkkeRett" />
-                            </BodyShort>
-                        </Infobox>
                     )}
                     <Spacer />
-                    {(borDuINorge || erDuMedlemAvFolketrygden !== undefined) && (
+
+                    {borDuINorge !== undefined && (
                         <Button
                             icon={<PaperplaneIcon aria-hidden />}
                             iconPosition="right"
