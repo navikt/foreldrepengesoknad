@@ -52,6 +52,24 @@ const harGyldigTidsperiode = (periode: Periode): boolean => {
     return isValidTidsperiode(periode.tidsperiode);
 };
 
+const erBeggePeriodePåSammeSideAvFamdato = (forrigePeriode: Periode, periode: Periode, familiehendelsesdato: Date) => {
+    if (
+        dayjs(forrigePeriode.tidsperiode.tom).isBefore(familiehendelsesdato) &&
+        dayjs(periode.tidsperiode.tom).isBefore(familiehendelsesdato)
+    ) {
+        return true;
+    }
+
+    if (
+        dayjs(forrigePeriode.tidsperiode.fom).isSameOrAfter(familiehendelsesdato) &&
+        dayjs(periode.tidsperiode.fom).isSameOrAfter(familiehendelsesdato)
+    ) {
+        return true;
+    }
+
+    return false;
+};
+
 const slåSammenLikePerioder = (
     perioder: Periode[],
     familiehendelsesdato: Date,
@@ -77,10 +95,15 @@ const slåSammenLikePerioder = (
             return;
         }
 
+        // 1 aug - 18 aug
+        // 21 aug - 25 sep
+        // famdato: 19 aug
+
         if (
             Perioden(forrigePeriode).erLik(periode, false, true) &&
             Perioden(forrigePeriode).erSammenhengende(periode) &&
             !dayjs(periode.tidsperiode.fom).isSame(familiehendelsesdato, 'day') &&
+            erBeggePeriodePåSammeSideAvFamdato(forrigePeriode, periode, familiehendelsesdato) &&
             !(
                 førsteUttaksdagNesteBarnsSak !== undefined &&
                 dayjs(periode.tidsperiode.fom).isSame(førsteUttaksdagNesteBarnsSak, 'day')
