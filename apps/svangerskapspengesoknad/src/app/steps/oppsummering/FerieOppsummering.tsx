@@ -28,29 +28,31 @@ export function FerieOppsummering({ onVilEndreSvar }: { readonly onVilEndreSvar:
                 <FormSummary.Answer>
                     <FormSummary.Label>
                         Har du planlagt ferie i perioden du skal ha svangerskapspenger?
-                        <FormattedMessage id="frilans.oppstart" />
                     </FormSummary.Label>
                     <JaNeiTekst ja={ferie.length > 0} />
                 </FormSummary.Answer>
-                <FormSummary.Answer>
-                    <FormSummary.Label>Hvor mange perioder med ferie skal du ha?</FormSummary.Label>
-                    <FormSummary.Value>
-                        <JaNeiTekst ja={ferie.length > 0} />
-                    </FormSummary.Value>
-                </FormSummary.Answer>
 
-                <FormSummary.Answer>
-                    <FormSummary.Label>Periode med ferie</FormSummary.Label>
-                    <FormSummary.Value>
-                        <ul>
-                            {ferie.map((feriePeriode, index) => (
-                                <li key={index}>
-                                    {formatDate(feriePeriode.fom)} - {formatDate(feriePeriode.tom)}
-                                </li>
-                            ))}
-                        </ul>
-                    </FormSummary.Value>
-                </FormSummary.Answer>
+                {ferie.length > 0 && (
+                    <>
+                        <FormSummary.Answer>
+                            <FormSummary.Label>Hvor mange perioder med ferie skal du ha?</FormSummary.Label>
+                            <FormSummary.Value>{ferie.length}</FormSummary.Value>
+                        </FormSummary.Answer>
+
+                        <FormSummary.Answer>
+                            <FormSummary.Label>Periode med ferie</FormSummary.Label>
+                            <FormSummary.Value>
+                                <ul>
+                                    {ferie.map((feriePeriode, index) => (
+                                        <li key={index}>
+                                            {formatDate(feriePeriode.fom)} - {formatDate(feriePeriode.tom)}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </FormSummary.Value>
+                        </FormSummary.Answer>
+                    </>
+                )}
             </FormSummary.Answers>
         </FormSummary>
     );

@@ -42,20 +42,23 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
     const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);
-    const e = useContextGetData(ContextDataType.FERIE);
-    // const e = undefined;
-    console.log('Eksisterende verdier', e);
+    const eksisterendeSkjemaVerdier = useContextGetData(ContextDataType.FERIE);
+    console.log('Eksisterende verdier', eksisterendeSkjemaVerdier);
     const formMethods = useForm<FerieFormData>({
         mode: 'onSubmit',
-        defaultValues: e
-            ? { skalHaFerie: e.length > 0, feriePerioder: e, antallFeriePerioder: e.length }
+        defaultValues: eksisterendeSkjemaVerdier
+            ? {
+                  skalHaFerie: eksisterendeSkjemaVerdier.length > 0,
+                  feriePerioder: eksisterendeSkjemaVerdier,
+                  antallFeriePerioder: eksisterendeSkjemaVerdier.length,
+              }
             : DEFAULT_FERIE_VALUES,
     });
     console.log('Verdier i formet', formMethods.watch());
 
     const onSubmit = (values: FerieFormData) => {
         console.log('setter dusse verdiene', values);
-        oppdaterFerie(values.feriePerioder); //TODO
+        values.skalHaFerie ? oppdaterFerie(values.feriePerioder) : oppdaterFerie([]);
         return navigator.goToNextDefaultStep();
     };
 
