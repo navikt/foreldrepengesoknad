@@ -103,10 +103,10 @@ export const MorHarRettBorIkkeINorgeMenJobberINorge: Story = {
     args: {
         fpEllerEsSituasjon: {
             borDuINorge: false,
-            erIArbeid: false,
+            erIArbeid: true,
             harHattAndreInntekter: false,
-            harHattInntekt: false,
-            lønnPerMåned: 0,
+            harHattInntekt: true,
+            lønnPerMåned: 10000,
             situasjon: Situasjon.MOR,
             jobberDuINorge: true,
         },
@@ -126,14 +126,14 @@ export const FarHarIkkeRett: Story = {
         },
     },
 };
-export const MorHarIkkeRettJobberIkkeINorge: Story = {
+export const MorHarIkkeRettJobberIkkeINorgeMenIUtlandet: Story = {
     args: {
         fpEllerEsSituasjon: {
             borDuINorge: false,
-            erIArbeid: false,
+            erIArbeid: true,
             harHattAndreInntekter: false,
-            harHattInntekt: false,
-            lønnPerMåned: 0,
+            harHattInntekt: true,
+            lønnPerMåned: 10000,
             situasjon: Situasjon.MOR,
             jobberDuINorge: false,
         },

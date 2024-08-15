@@ -109,7 +109,7 @@
     "OppsummeringFpEllerEsSide.DuHarRettPåEs": "Du har rett på eingongsstønad",
     "OppsummeringFpEllerEsSide.DuKanHaRettPåEs": "Du kan ha rett på eingongsstønad",
     "OppsummeringFpEllerEsSide.DuHarIkkeRett": "Det ser ut som at du verken har rett på foreldrepengar eller eingongsstønad",
-    "OppsummeringFpEllerEsSide.SidenDuIkkeJobberINorge": "Sidan du ikkje jobbar i Noreg, ser det ut til at du ikkje har rett til verken foreldrepengar eller eingongsstønad. Du kan ha rett på støtte i det landa du jobbar i.",
+    "OppsummeringFpEllerEsSide.SidenDuIkkeJobberINorge": "Du kan ha rett på pengestøtte tilsvarande foreldrepengar i det landa kvar du jobbar i. Du må kontakta relevant styresmakt i landar du jobbar for å finna ut meir.",
     "OppsummeringFpEllerEsSide.DuHarIkkeRett.Folketrygden": "Du har ikkje rett på eingongsstønad når du ikkje er medlem av folketrygda.",
     "OppsummeringFpEllerEsSide.HvaErFp": "Kva er foreldrepengar?",
     "OppsummeringFpEllerEsSide.BasertPåSvarene": "Basert på den månadlege lønna du oppgav vil du få utbetalt rundt {utbetaling} kronar i månaden, viss du tek 100% foreldrepengar. Talet på månader blir delt mellom far og mor, og vil variera viss ein vel 100% eller 80% foreldrepengar.",
