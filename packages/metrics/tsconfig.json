@@ -4,7 +4,6 @@
         "baseUrl": "src",
         "jsx": "react-jsx",
         "rootDir": "src",
-        "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals"],
         "esModuleInterop": true
     },
     "include": ["src/**/*"],
