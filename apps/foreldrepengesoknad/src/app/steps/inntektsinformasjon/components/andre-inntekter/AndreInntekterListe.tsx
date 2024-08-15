@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { formatTidsperiodeMedValgfriSluttdato, intlUtils } from '@navikt/fp-common';
+import { formatTidsperiodeMedValgfriSluttdato } from '@navikt/fp-common';
 
 import InteractiveListElement from 'app/components/interactive-list-element/InteractiveListElement';
 import { AnnenInntekt, AnnenInntektType } from 'app/context/types/AnnenInntekt';
@@ -14,14 +14,14 @@ interface Props {
 
 const getTitle = (type: AnnenInntektType, intl: IntlShape): string => {
     if (type === AnnenInntektType.JOBB_I_UTLANDET) {
-        return intlUtils(intl, 'inntektsinformasjon.andreInntekter.inntektsliste.jobbIUtlandet');
+        return intl.formatMessage({ id: 'inntektsinformasjon.andreInntekter.inntektsliste.jobbIUtlandet' });
     }
 
     if (type === AnnenInntektType.MILITÆRTJENESTE) {
-        return intlUtils(intl, 'inntektsinformasjon.andreInntekter.inntektsliste.førstegangstjeneste');
+        return intl.formatMessage({ id: 'inntektsinformasjon.andreInntekter.inntektsliste.førstegangstjeneste' });
     }
 
-    return intlUtils(intl, 'inntektsinformasjon.andreInntekter.inntektsliste.sluttpakke');
+    return intl.formatMessage({ id: 'inntektsinformasjon.andreInntekter.inntektsliste.sluttpakke' });
 };
 
 const AndreInntekterListe: FunctionComponent<Props> = ({ andreInntekter, deleteAnnenInntekt, selectAnnenInntekt }) => {

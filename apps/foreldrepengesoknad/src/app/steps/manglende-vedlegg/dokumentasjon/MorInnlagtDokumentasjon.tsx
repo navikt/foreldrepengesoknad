@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { Block, NavnPåForeldre, Periode, Periodetype, Situasjon, StønadskontoType, intlUtils } from '@navikt/fp-common';
+import { Block, NavnPåForeldre, Periode, Periodetype, Situasjon, StønadskontoType } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
@@ -58,25 +58,37 @@ const MorInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
                 skjemanummer={Skjemanummer.DOK_INNLEGGELSE_MOR}
                 labelText={
                     morErForSykEllerInnlagtFørsteSeksUker
-                        ? intlUtils(intl, 'manglendeVedlegg.morInnlagtEllerSyk.label', {
-                              navn: navnPåForeldre.mor,
-                              erFarEllerMedmor,
-                          })
-                        : intlUtils(intl, 'manglendeVedlegg.morInnlagt.label', {
-                              navn: navnPåForeldre.mor,
-                              erFarEllerMedmor,
-                          })
+                        ? intl.formatMessage(
+                              { id: 'manglendeVedlegg.morInnlagtEllerSyk.label' },
+                              {
+                                  navn: navnPåForeldre.mor,
+                                  erFarEllerMedmor,
+                              },
+                          )
+                        : intl.formatMessage(
+                              { id: 'manglendeVedlegg.morInnlagt.label' },
+                              {
+                                  navn: navnPåForeldre.mor,
+                                  erFarEllerMedmor,
+                              },
+                          )
                 }
                 description={
                     morErForSykEllerInnlagtFørsteSeksUker
-                        ? intlUtils(intl, 'manglendeVedlegg.morInnlagtEllerSyk.description', {
-                              navn: navnPåForeldre.mor,
-                              erFarEllerMedmor,
-                          })
-                        : intlUtils(intl, 'manglendeVedlegg.morInnlagt.description', {
-                              navn: navnPåForeldre.mor,
-                              erFarEllerMedmor,
-                          })
+                        ? intl.formatMessage(
+                              { id: 'manglendeVedlegg.morInnlagtEllerSyk.description' },
+                              {
+                                  navn: navnPåForeldre.mor,
+                                  erFarEllerMedmor,
+                              },
+                          )
+                        : intl.formatMessage(
+                              { id: 'manglendeVedlegg.morInnlagt.description' },
+                              {
+                                  navn: navnPåForeldre.mor,
+                                  erFarEllerMedmor,
+                              },
+                          )
                 }
                 attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
             />

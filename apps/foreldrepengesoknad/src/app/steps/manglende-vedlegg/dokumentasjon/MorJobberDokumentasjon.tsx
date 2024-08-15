@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { Block, NavnPåForeldre, Periode, Situasjon, intlUtils } from '@navikt/fp-common';
+import { Block, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
@@ -45,8 +45,11 @@ const MorJobberDokumentasjon: React.FunctionComponent<Props> = ({
                 termindato={termindato}
                 situasjon={situasjon}
                 skjemanummer={Skjemanummer.DOK_ARBEID_MOR}
-                labelText={intlUtils(intl, 'manglendeVedlegg.morJobber.label')}
-                description={intlUtils(intl, 'manglendeVedlegg.morJobber.description', { navn: navnPåForeldre.mor })}
+                labelText={intl.formatMessage({ id: 'manglendeVedlegg.morJobber.label' })}
+                description={intl.formatMessage(
+                    { id: 'manglendeVedlegg.morJobber.description' },
+                    { navn: navnPåForeldre.mor },
+                )}
                 attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
             />
         </Block>

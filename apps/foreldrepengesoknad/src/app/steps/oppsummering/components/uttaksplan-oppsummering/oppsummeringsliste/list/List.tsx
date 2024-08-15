@@ -1,6 +1,8 @@
 import * as React from 'react';
+
+import { bemUtils } from '@navikt/fp-utils';
+
 import './list.less';
-import { bemUtils } from '@navikt/fp-common';
 
 interface ListProps {
     data: any[];

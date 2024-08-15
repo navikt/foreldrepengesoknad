@@ -1,12 +1,6 @@
 import { IntlShape } from 'react-intl';
 
-import {
-    erGyldigNorskOrgnummer,
-    hasValue,
-    intlUtils,
-    isDateInTheFuture,
-    validateTextInputField,
-} from '@navikt/fp-common';
+import { erGyldigNorskOrgnummer, hasValue, isDateInTheFuture, validateTextInputField } from '@navikt/fp-common';
 import { getNumberFromNumberInputValue, isISODateString } from '@navikt/fp-utils';
 
 import { SkjemaelementFeil } from 'app/types/SkjemaelementFeil';
@@ -16,19 +10,19 @@ export const validateEgenNæringFom =
     (intl: IntlShape, tom: string) =>
     (fom: string): SkjemaelementFeil => {
         if (!hasValue(fom)) {
-            return intlUtils(intl, 'valideringsfeil.fraOgMedDato.påkrevd');
+            return intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.påkrevd' });
         }
 
         if (!isISODateString(fom)) {
-            return intlUtils(intl, 'valideringsfeil.fraOgMedDato.gyldigDato');
+            return intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.gyldigDato' });
         }
 
         if (isDateInTheFuture(fom)) {
-            return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
+            return intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.erIFremtiden' });
         }
 
         if (isDateABeforeDateB(tom, fom)) {
-            return intlUtils(intl, 'valideringsfeil.fraOgMedDato.førTilDato');
+            return intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.førTilDato' });
         }
 
         return undefined;
@@ -38,19 +32,19 @@ export const validateEgenNæringTom =
     (intl: IntlShape, fom: string) =>
     (tom: string): SkjemaelementFeil => {
         if (!hasValue(tom)) {
-            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
+            return intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.påkrevd' });
         }
 
         if (!isISODateString(tom)) {
-            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
+            return intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.gyldigDato' });
         }
 
         if (isDateInTheFuture(tom)) {
-            return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
+            return intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.erIFremtiden' });
         }
 
         if (isDateABeforeDateB(tom, fom)) {
-            return intlUtils(intl, 'valideringsfeil.fraOgMedDato.førTilDato');
+            return intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.førTilDato' });
         }
 
         return undefined;
@@ -60,7 +54,7 @@ export const validateEgenNæringOrgnr =
     (intl: IntlShape) =>
     (orgnr: string): SkjemaelementFeil => {
         if (!erGyldigNorskOrgnummer(orgnr)) {
-            return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.orgnr.ugyldigFormat');
+            return intl.formatMessage({ id: 'valideringsfeil.inntektsinformasjon.orgnr.ugyldigFormat' });
         }
 
         return undefined;
@@ -68,11 +62,11 @@ export const validateEgenNæringOrgnr =
 
 export const validateEgenNæringForklaringTilEndring = (intl: IntlShape, label: string) => (forklaring: string) => {
     if (forklaring.length < 25) {
-        return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.forklaringTilEndring.forKort');
+        return intl.formatMessage({ id: 'valideringsfeil.inntektsinformasjon.forklaringTilEndring.forKort' });
     }
 
     if (forklaring.length > 1000) {
-        return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.forklaringTilEndring.forLang');
+        return intl.formatMessage({ id: 'valideringsfeil.inntektsinformasjon.forklaringTilEndring.forLang' });
     }
 
     return validateTextInputField(forklaring, label, intl);
@@ -80,15 +74,15 @@ export const validateEgenNæringForklaringTilEndring = (intl: IntlShape, label: 
 
 export const validateEgenNæringEndringAvInntektsDato = (intl: IntlShape) => (dato: string) => {
     if (!hasValue(dato)) {
-        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
+        return intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.påkrevd' });
     }
 
     if (!isISODateString(dato)) {
-        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
+        return intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.gyldigDato' });
     }
 
     if (isDateInTheFuture(dato)) {
-        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
+        return intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.erIFremtiden' });
     }
 
     return undefined;
@@ -96,15 +90,15 @@ export const validateEgenNæringEndringAvInntektsDato = (intl: IntlShape) => (da
 
 export const validateEgenNæringYrkesAktivDatoDato = (intl: IntlShape) => (dato: string) => {
     if (!hasValue(dato)) {
-        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
+        return intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.påkrevd' });
     }
 
     if (!isISODateString(dato)) {
-        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
+        return intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.gyldigDato' });
     }
 
     if (isDateInTheFuture(dato)) {
-        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
+        return intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.erIFremtiden' });
     }
 
     return undefined;
@@ -114,7 +108,7 @@ export const validateNumber = (intl: IntlShape, errorKey: string) => (value: str
     const valueNumber = getNumberFromNumberInputValue(value);
 
     if (!valueNumber || Math.round(valueNumber) !== valueNumber) {
-        return intlUtils(intl, errorKey);
+        return intl.formatMessage({ id: errorKey });
     }
 
     return undefined;

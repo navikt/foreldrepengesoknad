@@ -1,8 +1,11 @@
-import { BodyShort } from '@navikt/ds-react';
-import { Block, bemUtils, formatDateUtc, intlUtils } from '@navikt/fp-common';
-import { Arbeidsforhold } from '@navikt/fp-types';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
+
+import { BodyShort } from '@navikt/ds-react';
+
+import { Block, formatDateUtc } from '@navikt/fp-common';
+import { Arbeidsforhold } from '@navikt/fp-types';
+import { bemUtils } from '@navikt/fp-utils';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];
@@ -27,28 +30,39 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
                             <BodyShort className={bem.element('label')}>
                                 {arbforhold.arbeidsgiverIdType === 'orgnr'
                                     ? arbforhold.arbeidsgiverNavn
-                                    : intlUtils(intl, 'arbeidsgiver')}
+                                    : intl.formatMessage({ id: 'arbeidsgiver' })}
                             </BodyShort>
                             <BodyShort className={bem.element('stillingsprosent')}>
-                                {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.stillingsprosent', {
-                                    stillingsprosent: arbforhold.stillingsprosent,
-                                })}
+                                {intl.formatMessage(
+                                    { id: 'inntektsinformasjon.arbeidsforhold.stillingsprosent' },
+                                    {
+                                        stillingsprosent: arbforhold.stillingsprosent,
+                                    },
+                                )}
                             </BodyShort>
                         </div>
                         <Block padBottom="m">
                             {arbforhold.arbeidsgiverIdType === 'orgnr' && (
                                 <BodyShort>
-                                    {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.organisasjonsnummer', {
-                                        organisasjonsnummer: arbforhold.arbeidsgiverId,
-                                    })}
+                                    {intl.formatMessage(
+                                        { id: 'inntektsinformasjon.arbeidsforhold.organisasjonsnummer' },
+                                        {
+                                            organisasjonsnummer: arbforhold.arbeidsgiverId,
+                                        },
+                                    )}
                                 </BodyShort>
                             )}
                         </Block>
                         <BodyShort>
-                            {intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.periode', {
-                                fom: formatDateUtc(arbforhold.fom),
-                                tom: arbforhold.tom ? formatDateUtc(arbforhold.tom) : intlUtils(intl, 'pågående'),
-                            })}
+                            {intl.formatMessage(
+                                { id: 'inntektsinformasjon.arbeidsforhold.periode' },
+                                {
+                                    fom: formatDateUtc(arbforhold.fom),
+                                    tom: arbforhold.tom
+                                        ? formatDateUtc(arbforhold.tom)
+                                        : intl.formatMessage({ id: 'pågående' }),
+                                },
+                            )}
                         </BodyShort>
                     </div>
                 </li>

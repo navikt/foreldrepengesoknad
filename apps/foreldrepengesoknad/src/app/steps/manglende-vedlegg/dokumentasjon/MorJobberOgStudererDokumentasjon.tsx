@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
-import { Block, NavnPåForeldre, Periode, Situasjon, intlUtils } from '@navikt/fp-common';
+import { Block, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
@@ -47,7 +47,7 @@ const MorJobberOgStudererDokumentasjon: React.FunctionComponent<Props> = ({
                 termindato={termindato}
                 situasjon={situasjon}
                 skjemanummer={Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR}
-                labelText={intlUtils(intl, 'manglendeVedlegg.studererOgJobber.label')}
+                labelText={intl.formatMessage({ id: 'manglendeVedlegg.studererOgJobber.label' })}
                 description={
                     <Block padBottom="m">
                         <BodyShort>

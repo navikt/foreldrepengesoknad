@@ -26,7 +26,6 @@ import {
     convertTidsperiodeToTidsperiodeDate,
     getKjønnFromFnrString,
     guid,
-    intlUtils,
     isAdoptertBarn,
     isFødtBarn,
     isInfoPeriode,
@@ -433,7 +432,7 @@ const finnAnnenForelderForSaken = (
         const annenForelder = barnet.annenForelder;
         const { fornavn } = annenForelder;
         const fornavnAnnenForelder =
-            fornavn !== undefined && fornavn.trim() !== '' ? fornavn : intlUtils(intl, 'annen.forelder');
+            fornavn !== undefined && fornavn.trim() !== '' ? fornavn : intl.formatMessage({ id: 'annen.forelder' });
         const annenPart: SøkerAnnenForelder = { ...annenForelder, fornavn: fornavnAnnenForelder };
         return getAnnenForelderFromSaksgrunnlag(situasjon, grunnlag, annenPart, grunnlag.søkerErFarEllerMedmor, intl);
     }
@@ -521,7 +520,7 @@ export const opprettAnnenForelderFraEksisterendeSak = (
     const fnrAnnenForelderFraSak = annenPartFraSak !== undefined ? annenPartFraSak.fnr : undefined;
 
     const mockAnnenForelder = {
-        fornavn: intlUtils(intl, 'annen.forelder'),
+        fornavn: intl.formatMessage({ id: 'annen.forelder' }),
         etternavn: '',
         fnr: fnrAnnenForelderFraSak ?? '',
         harRettPåForeldrepengerINorge: grunnlag.søkerErFarEllerMedmor

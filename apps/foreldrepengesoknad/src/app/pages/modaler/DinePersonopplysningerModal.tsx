@@ -2,7 +2,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Heading, Ingress, Modal } from '@navikt/ds-react';
 
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 
 interface Props {
     isOpen: boolean;
@@ -16,7 +16,7 @@ const DinePersonopplysningerModal = (props: Props) => {
         <Modal
             open={props.isOpen}
             onClose={() => props.onRequestClose()}
-            aria-label={intlUtils(intl, 'velkommen.dinePersonopplysninger.sectionheading')}
+            aria-label={intl.formatMessage({ id: 'velkommen.dinePersonopplysninger.sectionheading' })}
         >
             <Modal.Header>
                 <Heading size="medium" level="1" className="velkommenModalContent__header">

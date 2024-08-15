@@ -2,7 +2,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Link, ReadMore } from '@navikt/ds-react';
 
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 
 const HvemKanDriveMedEgenNæring = () => {
@@ -10,7 +10,9 @@ const HvemKanDriveMedEgenNæring = () => {
 
     return (
         <ReadMore
-            header={intlUtils(intl, 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.apneLabel')}
+            header={intl.formatMessage({
+                id: 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd.apneLabel',
+            })}
         >
             <div>
                 <Block padBottom="l">

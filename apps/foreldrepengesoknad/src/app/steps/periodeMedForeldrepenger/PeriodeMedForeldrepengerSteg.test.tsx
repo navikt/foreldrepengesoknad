@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MockDate from 'mockdate';
 
-import { Dekningsgrad } from '@navikt/fp-common';
+import { Dekningsgrad } from '@navikt/fp-types';
 
 import { ContextDataType } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';

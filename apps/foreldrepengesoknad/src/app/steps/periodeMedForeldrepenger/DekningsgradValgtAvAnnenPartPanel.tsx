@@ -4,9 +4,10 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad, bemUtils, getAntallUker, getVarighetString } from '@navikt/fp-common';
+import { Dekningsgrad, getAntallUker, getVarighetString } from '@navikt/fp-common';
 import { Kjønn, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
+import { bemUtils } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';

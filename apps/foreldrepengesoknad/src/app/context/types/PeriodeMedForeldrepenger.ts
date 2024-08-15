@@ -1,4 +1,4 @@
-import { Dekningsgrad } from '@navikt/fp-common';
+import { Dekningsgrad } from '@navikt/fp-types';
 
 export type PeriodeMedForeldrepenger = {
     dekningsgrad: Dekningsgrad;

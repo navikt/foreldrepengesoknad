@@ -1,4 +1,5 @@
-import { Dekningsgrad } from '@navikt/fp-common';
+import { Dekningsgrad } from '@navikt/fp-types';
+
 import { getDekningsgradFromString } from './getDekningsgradFromString';
 
 describe('getDekningsgradFromString', () => {
