@@ -9,7 +9,6 @@ import {
     Barn,
     Dekningsgrad,
     Uttaksdagen,
-    bemUtils,
     capitalizeFirstLetter,
     getAntallUker,
     getAntallUkerFraStønadskontoer,
@@ -20,6 +19,7 @@ import {
 import { StønadskontoType, links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { bemUtils } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';

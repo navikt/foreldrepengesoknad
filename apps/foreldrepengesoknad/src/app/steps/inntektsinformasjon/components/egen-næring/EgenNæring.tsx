@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Button } from '@navikt/ds-react';
 
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import { QuestionVisibility, YesOrNo } from '@navikt/fp-formik';
 
 import { Næring } from 'app/context/types/Næring';
@@ -70,14 +70,15 @@ const EgenNæring: FunctionComponent<Props> = ({
                 <Block padBottom="l">
                     <InntektsinformasjonFormComponents.YesOrNoQuestion
                         name={InntektsinformasjonFormField.hattInntektSomNæringsdrivende}
-                        legend={intlUtils(intl, 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd')}
+                        legend={intl.formatMessage({
+                            id: 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd',
+                        })}
                         validate={(hattInntektSomNæringsdrivende) => {
                             if (hattInntektSomNæringsdrivende === YesOrNo.YES) {
                                 if (egenNæringInformasjon.length === 0) {
-                                    return intlUtils(
-                                        intl,
-                                        'valideringsfeil.inntektsinformasjon.andreInntekter.måHaVirksomhet',
-                                    );
+                                    return intl.formatMessage({
+                                        id: 'valideringsfeil.inntektsinformasjon.andreInntekter.måHaVirksomhet',
+                                    });
                                 }
                             }
 

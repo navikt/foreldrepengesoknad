@@ -4,10 +4,9 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { Loader } from '@navikt/ds-react';
 
-import { useDocumentTitle } from '@navikt/fp-common';
 import { LocaleNo } from '@navikt/fp-types';
 import { ErrorBoundary } from '@navikt/fp-ui';
-import { redirect } from '@navikt/fp-utils';
+import { redirect, useDocumentTitle } from '@navikt/fp-utils';
 
 import Environment from './Environment';
 import Api from './api/api';

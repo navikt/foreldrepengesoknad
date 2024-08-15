@@ -1,6 +1,6 @@
 import { IntlShape } from 'react-intl';
 
-import { hasValue, intlUtils, isDateInTheFuture, validateTextInputField } from '@navikt/fp-common';
+import { hasValue, isDateInTheFuture, validateTextInputField } from '@navikt/fp-common';
 import { YesOrNo } from '@navikt/fp-formik';
 import { isISODateString } from '@navikt/fp-utils';
 
@@ -8,11 +8,15 @@ import { isDateABeforeDateB } from '../../../../../utils/dateUtils';
 
 export const validateNavnPåOppdragsgiver = (intl: IntlShape, label: string) => (navn: string) => {
     if (!hasValue(navn) || navn.trim() === '') {
-        return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.navnPåOppdragsgiver.påkrevd');
+        return intl.formatMessage({
+            id: 'valideringsfeil.inntektsinformasjon.frilansoppdrag.navnPåOppdragsgiver.påkrevd',
+        });
     }
 
     if (navn.length > 100) {
-        return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.navnPåOppdragsgiver.lengde');
+        return intl.formatMessage({
+            id: 'valideringsfeil.inntektsinformasjon.frilansoppdrag.navnPåOppdragsgiver.lengde',
+        });
     }
 
     return validateTextInputField(navn, label, intl);
@@ -20,23 +24,23 @@ export const validateNavnPåOppdragsgiver = (intl: IntlShape, label: string) => 
 
 export const validateOppdragFom = (intl: IntlShape, tom: string, oppstartsdato: string) => (fom: string) => {
     if (!hasValue(fom)) {
-        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.påkrevd');
+        return intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.påkrevd' });
     }
 
     if (!isISODateString(fom)) {
-        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.gyldigDato');
+        return intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.gyldigDato' });
     }
 
     if (isDateInTheFuture(fom)) {
-        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.erIFremtiden');
+        return intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.erIFremtiden' });
     }
 
     if (isDateABeforeDateB(fom, oppstartsdato)) {
-        return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.fom.førOppstartsdato');
+        return intl.formatMessage({ id: 'valideringsfeil.inntektsinformasjon.frilansoppdrag.fom.førOppstartsdato' });
     }
 
     if (isDateABeforeDateB(tom, fom)) {
-        return intlUtils(intl, 'valideringsfeil.fraOgMedDato.førTilDato');
+        return intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.førTilDato' });
     }
 
     return undefined;
@@ -44,7 +48,7 @@ export const validateOppdragFom = (intl: IntlShape, tom: string, oppstartsdato: 
 
 export const validatePågåendeOppdrag = (intl: IntlShape) => (pågående: YesOrNo) => {
     if (pågående === YesOrNo.UNANSWERED) {
-        return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.pågående.påkrevd');
+        return intl.formatMessage({ id: 'valideringsfeil.inntektsinformasjon.frilansoppdrag.pågående.påkrevd' });
     }
 
     return undefined;
@@ -57,23 +61,25 @@ export const validateOppdragTom =
         }
 
         if (!hasValue(tom)) {
-            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.påkrevd');
+            return intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.påkrevd' });
         }
 
         if (!isISODateString(tom)) {
-            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
+            return intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.gyldigDato' });
         }
 
         if (isDateInTheFuture(tom)) {
-            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.erIFremtiden');
+            return intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.erIFremtiden' });
         }
 
         if (isDateABeforeDateB(tom, oppstartsdato)) {
-            return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.frilansoppdrag.tom.førOppstartsdato');
+            return intl.formatMessage({
+                id: 'valideringsfeil.inntektsinformasjon.frilansoppdrag.tom.førOppstartsdato',
+            });
         }
 
         if (isDateABeforeDateB(tom, fom)) {
-            return intlUtils(intl, 'valideringsfeil.tilOgMedDato.etterFraDato');
+            return intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.etterFraDato' });
         }
 
         return undefined;

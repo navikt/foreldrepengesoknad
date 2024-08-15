@@ -1,7 +1,8 @@
 import { FunctionComponent } from 'react';
 
-import { Block, bemUtils } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import { Attachment } from '@navikt/fp-types';
+import { bemUtils } from '@navikt/fp-utils';
 
 import { getDokumentasjonStringBarn } from '../../dokumentasjonUtils';
 import VedleggListe from '../VedleggListe';

@@ -1,8 +1,8 @@
 import { AxiosResponse } from 'axios';
 
 import { getAxiosInstance } from '@navikt/fp-api';
-import { BarnFraNesteSak, Dekningsgrad, EksisterendeSak, Periode } from '@navikt/fp-common';
-import { Attachment, LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
+import { Attachment, Dekningsgrad, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 
 import Fordeling from 'app/context/types/Fordeling';
 import { Søknad } from 'app/context/types/Søknad';

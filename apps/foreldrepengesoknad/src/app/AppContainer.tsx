@@ -2,12 +2,12 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import { setAxiosLocale } from '@navikt/fp-api';
-import { allCommonMessages, getLocaleFromSessionStorage, setLocaleInSessionStorage } from '@navikt/fp-common';
+import { allCommonMessages } from '@navikt/fp-common';
 import { oppsummeringMessages } from '@navikt/fp-oppsummering';
 import { LocaleNo } from '@navikt/fp-types';
 import { ByttBrowserModal, ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
-import { utilsMessages } from '@navikt/fp-utils';
+import { getLocaleFromSessionStorage, setLocaleInSessionStorage, utilsMessages } from '@navikt/fp-utils';
 import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender';
 

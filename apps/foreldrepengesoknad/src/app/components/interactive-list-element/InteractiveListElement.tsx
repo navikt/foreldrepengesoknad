@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 
 import { BodyShort, Tag } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-utils';
 
 import Pencil from './Pencil';
 import './interactiveListElement.less';

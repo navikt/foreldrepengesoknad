@@ -4,8 +4,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Box, HStack, Label, VStack } from '@navikt/ds-react';
 
-import { bemUtils, formaterNavn } from '@navikt/fp-common';
+import { formaterNavn } from '@navikt/fp-common';
 import { SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
+import { bemUtils } from '@navikt/fp-utils';
 
 import './registrertePersonalia.less';
 

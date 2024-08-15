@@ -2,14 +2,14 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Link, ReadMore } from '@navikt/ds-react';
 
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 
 const HvemKanVæreFrilanser = () => {
     const intl = useIntl();
 
     return (
-        <ReadMore header={intlUtils(intl, 'inntektsinformasjon.harDuJobbetSomFrilansSiste10Mnd.apneLabel')}>
+        <ReadMore header={intl.formatMessage({ id: 'inntektsinformasjon.harDuJobbetSomFrilansSiste10Mnd.apneLabel' })}>
             <div>
                 <Block padBottom="l">
                     <BodyShort>
