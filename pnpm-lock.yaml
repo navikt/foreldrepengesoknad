@@ -1893,7 +1893,7 @@ importers:
   packages/ny-uttaksplan:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^6.3.3
+        specifier: ^6.13.0
         version: 6.13.0
       '@navikt/ds-css':
         specifier: ^6.6.0
