@@ -21,7 +21,7 @@ interface Props {
 
 const HarIkkeRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser }) => {
     const { goToRoute } = useVeiviserNavigator(ContextRoutes.FP_ELLER_ES);
-
+    const jobberIkkeINorge = fpEllerEsSituasjon.borDuINorge === false && fpEllerEsSituasjon.jobberDuINorge === false;
     const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
 
     return (
@@ -35,7 +35,7 @@ const HarIkkeRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satse
                         </Heading>
                     </VStack>
                     <Box
-                        background="surface-alt-3-subtle"
+                        background="bg-subtle"
                         borderColor="border-info"
                         borderWidth="2"
                         padding="4"
@@ -44,7 +44,11 @@ const HarIkkeRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satse
                         <VStack gap="4">
                             <HStack gap="8" justify="space-between" wrap={false}>
                                 <BodyShort>
-                                    <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarIkkeRett.Folketrygden" />
+                                    {jobberIkkeINorge ? (
+                                        <FormattedMessage id="OppsummeringFpEllerEsSide.SidenDuIkkeJobberINorge" />
+                                    ) : (
+                                        <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarIkkeRett.Folketrygden" />
+                                    )}
                                 </BodyShort>
                                 <IconCircleWrapper size="medium" color="blue">
                                     <BabyWrappedIcon
