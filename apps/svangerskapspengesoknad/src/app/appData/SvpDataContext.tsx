@@ -1,11 +1,11 @@
 import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
 
+import { EgenNæring } from '@navikt/fp-steg-egen-naering';
+import { Frilans } from '@navikt/fp-steg-frilans';
 import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import { Barn } from 'app/types/Barn';
-import { EgenNæring } from 'app/types/EgenNæring';
-import { Frilans } from 'app/types/Frilans';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import Tilrettelegging from 'app/types/Tilrettelegging';
 

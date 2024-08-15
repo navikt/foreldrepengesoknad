@@ -119,7 +119,7 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                     />
                     <RadioGroup
                         name={`arbeidIUtlandet.${index}.pågående`}
-                        label={<FormattedMessage id="egenNæring.næring.pågående" />}
+                        label={<FormattedMessage id="ArbeidsforholdOppsummering.næring.pågående" />}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.arbeidIUtlandetPågående.påkrevd' })),
                         ]}
@@ -132,7 +132,7 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                             name={`arbeidIUtlandet.${index}.tom`}
                             label={intl.formatMessage({ id: 'arbeidIUtlandet.tom' })}
                             description={intl.formatMessage({
-                                id: 'egenNæring.arbeid.tom.description',
+                                id: 'ArbeidIUtlandetFieldArray.arbeid.tom.description',
                             })}
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.påkrevd' })),

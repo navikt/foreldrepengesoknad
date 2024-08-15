@@ -3,15 +3,14 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Link, ReadMore, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-
-import { onToggleInfo } from 'app/steps/barnet/amplitudeLoggerUtils';
+import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 
 const HvemKanDriveMedEgenNæring = () => {
     const intl = useIntl();
 
     return (
         <ReadMore
-            onOpenChange={onToggleInfo('Selvstendig_næringsdrivende')}
+            onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Selvstendig_næringsdrivende')}
             header={intl.formatMessage({ id: 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende.apneLabel' })}
         >
             <VStack gap="2">
