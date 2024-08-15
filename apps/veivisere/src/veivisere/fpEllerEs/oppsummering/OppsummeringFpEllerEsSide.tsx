@@ -61,9 +61,6 @@ const OppsummeringFpEllerEsSide: React.FunctionComponent<Props> = ({ fpEllerEsSi
 
     const hvemHarRett = finnHvemSomHarRett(fpEllerEsSituasjon, satser);
 
-    const erFarEllerMedmor = fpEllerEsSituasjon.situasjon !== 'mor';
-    console.log(erFarEllerMedmor);
-
     return (
         <>
             <VeiviserPage ref={ref} label={intl.formatMessage({ id: 'OppsummeringFpEllerEsSide.Oppsummering' })}>
