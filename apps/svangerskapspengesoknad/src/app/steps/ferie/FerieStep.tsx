@@ -109,17 +109,13 @@ function FeriePerioder() {
     useEffect(() => {
         if (antallFeriePerioder > 0 && antallFeriePerioder < MAKS_ANTALL_PERIODER) {
             if (antallFeriePerioder !== feriePerioder.length) {
-                console.log('setter ferieperioder i useEffect');
                 const forrigeLengde = feriePerioder.length;
                 feriePerioder.length = antallFeriePerioder;
                 feriePerioder.fill(undefined, forrigeLengde, antallFeriePerioder);
                 setValue('feriePerioder', feriePerioder);
-                // setValue('feriePerioder', Array.from(Array(Number(antallFeriePerioder))));
             }
         }
     }, [antallFeriePerioder]);
-
-    console.log('ferieperioder', watch('feriePerioder'));
 
     const { fields } = useFieldArray({
         name: 'feriePerioder',
@@ -132,7 +128,7 @@ function FeriePerioder() {
                 label="Hvor mange perioder med ferie skal du ha?"
                 htmlSize={2}
                 validate={[
-                    isRequired('bo'),
+                    isRequired('Oppgi'),
                     isValidNumberForm('tall'),
                     hasMinValue('minst 1', 1),
                     hasMaxValue(`maks ${MAKS_ANTALL_PERIODER}`, MAKS_ANTALL_PERIODER),
@@ -163,15 +159,25 @@ function FeriePerioder() {
 
 // TODO: vurder å lag generell komponent
 function RangeDatePicker({ name }: { name: string }) {
-    const { field: fromField } = useController({
+    const {
+        field: fromField,
+        fieldState: { error: fromError },
+    } = useController({
         name: `${name}.fom`,
+        rules: {
+            required: 'Må oppgis',
+        },
     });
 
-    const { field: toField } = useController({
+    const {
+        field: toField,
+        fieldState: { error: toError },
+    } = useController({
         name: `${name}.tom`,
+        rules: {
+            required: 'Må oppgis',
+        },
     });
-
-    console.log('from field', fromField.value);
 
     const defaultFom = fromField.value
         ? dayjs(fromField.value, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT)
@@ -185,10 +191,8 @@ function RangeDatePicker({ name }: { name: string }) {
         },
         onRangeChange: (dateRange) => {
             if (dateRange) {
-                const fom = dayjs(dateRange.from).format(ISO_DATE_FORMAT);
-                const tom = dayjs(dateRange.to).format(ISO_DATE_FORMAT);
-                console.log('setter fom', fom);
-                console.log('setter tom', tom);
+                const fom = dateRange.from ? dayjs(dateRange.from).format(ISO_DATE_FORMAT) : undefined;
+                const tom = dateRange.to ? dayjs(dateRange.to).format(ISO_DATE_FORMAT) : undefined;
 
                 fromField.onChange(fom);
                 toField.onChange(tom);
@@ -198,9 +202,21 @@ function RangeDatePicker({ name }: { name: string }) {
 
     return (
         <DatePicker {...datepickerProps}>
-            <HStack gap="10">
-                <DatePicker.Input value={defaultFom} ref={fromField.ref} {...fromInputProps} label="Første feriedag" />
-                <DatePicker.Input value={defaultTom} ref={toField.ref} {...toInputProps} label="Siste feriedag" />
+            <HStack gap="10" align="start">
+                <DatePicker.Input
+                    error={fromError?.message}
+                    value={defaultFom}
+                    ref={fromField.ref}
+                    {...fromInputProps}
+                    label="Første feriedag"
+                />
+                <DatePicker.Input
+                    error={toError?.message}
+                    value={defaultTom}
+                    ref={toField.ref}
+                    {...toInputProps}
+                    label="Siste feriedag"
+                />
             </HStack>
         </DatePicker>
     );
