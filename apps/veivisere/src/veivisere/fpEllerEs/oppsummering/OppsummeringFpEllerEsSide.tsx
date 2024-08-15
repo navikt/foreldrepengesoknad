@@ -1,21 +1,45 @@
-import { ArrowLeftIcon, CalculatorIcon, InformationIcon } from '@navikt/aksel-icons';
-import { ContextRoutes, FpEllerEsRoutes } from 'appData/routes';
-import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { finnGrunnbeløp } from 'utils/satserUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
-import { BodyShort, Box, Button, HStack, Heading, VStack } from '@navikt/ds-react';
+import { VStack } from '@navikt/ds-react';
 
 import { Satser } from '@navikt/fp-types';
-import { Infobox } from '@navikt/fp-ui';
 
 import VeiviserPage from '../../felles/VeiviserPage';
 import { FpEllerEsSituasjon } from '../situasjon/SituasjonSide';
+import HarIkkeRett from './HarIkkeRett';
+import HarRett from './HarRett';
+import HarRettEs from './HarRettEs';
+import HarRettFpEllerEs from './HarRettFpEllerEs';
 import HvorMyeOgHvaSkjerNåLinkPanel from './HvorMyeOgHvaSkjerNåLinkPanel';
-import HvorforHarJegRettPanel from './HvorforHarJegRettPanel';
 
+const finnHvemSomHarRett = (fpEllerEsSituasjon: FpEllerEsSituasjon, satser: Satser) => {
+    const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
+    const minstelønn = grunnbeløpet / 2;
+
+    const { situasjon, lønnPerMåned, borDuINorge } = fpEllerEsSituasjon;
+    const erLønnOverEllerLik200000 = lønnPerMåned * 12 >= 200000;
+    const erLønnOverEllerLikMinstelønn = lønnPerMåned * 12 >= minstelønn;
+    if (situasjon === 'mor' && erLønnOverEllerLik200000 && erLønnOverEllerLikMinstelønn && borDuINorge) {
+        return 'morTjener200000EllerMerOgHarRett';
+    }
+    if (situasjon === 'mor' && !erLønnOverEllerLik200000 && erLønnOverEllerLikMinstelønn && borDuINorge) {
+        return 'morTjenerUnder200000OgKanHaRettFpEllerEs';
+    }
+    if (situasjon !== 'mor' && erLønnOverEllerLikMinstelønn && borDuINorge) {
+        return 'farEllerMedmorKanHaRettFp';
+    }
+    if (
+        situasjon === 'mor' &&
+        ((!erLønnOverEllerLik200000 && !erLønnOverEllerLikMinstelønn) || erLønnOverEllerLikMinstelønn) &&
+        borDuINorge
+    ) {
+        return 'morHarRettEs';
+    }
+    return 'harIkkeRett';
+};
 interface Props {
     fpEllerEsSituasjon: FpEllerEsSituasjon;
     satser: Satser;
@@ -23,66 +47,32 @@ interface Props {
 
 const OppsummeringFpEllerEsSide: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser }) => {
     const intl = useIntl();
-    const { goToRoute } = useVeiviserNavigator(ContextRoutes.FP_ELLER_ES);
     const { ref } = useScrollBehaviour();
 
-    const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
+    const hvemHarRett = finnHvemSomHarRett(fpEllerEsSituasjon, satser);
+
+    const erFarEllerMedmor = fpEllerEsSituasjon.situasjon !== 'mor';
+    console.log(erFarEllerMedmor);
 
     return (
         <>
-            <VeiviserPage
-                ref={ref}
-                label={intl.formatMessage({ id: 'OppsummeringFpEllerEsSide.Oppsummering' })}
-                icon={<CalculatorIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
-            >
+            <VeiviserPage ref={ref} label={intl.formatMessage({ id: 'OppsummeringFpEllerEsSide.Oppsummering' })}>
                 <VStack gap="8">
-                    <Box background="surface-alt-3-subtle" padding="4" borderRadius="large">
-                        <VStack gap="10">
-                            <HStack justify="center">
-                                <Heading size="large">
-                                    <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRett" />
-                                </Heading>
-                            </HStack>
-                            <Box background="bg-default" padding="4" borderRadius="large">
-                                <VStack gap="2">
-                                    <Heading size="xsmall">
-                                        <FormattedMessage id="OppsummeringFpEllerEsSide.HvaErFp" />
-                                    </Heading>
-                                    <BodyShort>
-                                        <FormattedMessage id="OppsummeringFpEllerEsSide.FpSkalErstatteInntekt" />
-                                    </BodyShort>
-                                </VStack>
-                            </Box>
-                        </VStack>
-                    </Box>
-                    <Infobox
-                        icon={
-                            <InformationIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />
-                        }
-                        color="gray"
-                    >
-                        <BodyShort>
-                            <FormattedMessage id="OppsummeringFpEllerEsSide.KanOgsåHarRettTilEs" />
-                        </BodyShort>
-                    </Infobox>
-                    <HStack justify="space-around">
-                        <Button type="submit">
-                            <FormattedMessage id="OppsummeringFpEllerEsSide.SøkOmFp" />
-                        </Button>
-                        <Button variant="secondary" type="submit">
-                            <FormattedMessage id="OppsummeringFpEllerEsSide.MerOmFp" />
-                        </Button>
-                    </HStack>
-                    <HvorforHarJegRettPanel fpEllerEsSituasjon={fpEllerEsSituasjon} grunnbeløpet={grunnbeløpet} />
-                    <HStack>
-                        <Button
-                            variant="secondary"
-                            onClick={() => goToRoute(FpEllerEsRoutes.SITUASJON)}
-                            icon={<ArrowLeftIcon aria-hidden height={24} width={24} />}
-                        >
-                            <FormattedMessage id="OppsummeringFpEllerEsSide.Tilbake" />
-                        </Button>
-                    </HStack>
+                    {hvemHarRett === 'morTjener200000EllerMerOgHarRett' && (
+                        <HarRett fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
+                    )}
+                    {hvemHarRett === 'farEllerMedmorKanHaRettFp' && (
+                        <HarRett fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
+                    )}
+                    {hvemHarRett === 'morTjenerUnder200000OgKanHaRettFpEllerEs' && (
+                        <HarRettFpEllerEs fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
+                    )}
+                    {hvemHarRett === 'morHarRettEs' && (
+                        <HarRettEs fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
+                    )}
+                    {hvemHarRett === 'harIkkeRett' && (
+                        <HarIkkeRett fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
+                    )}
                 </VStack>
             </VeiviserPage>
             <HvorMyeOgHvaSkjerNåLinkPanel />

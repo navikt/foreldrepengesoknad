@@ -8,10 +8,11 @@ interface Props {
     headerText: ReactElement;
     boxBodyText: ReactElement;
     erOppfylt: boolean;
+    testId?: string;
 }
 
-const KravinfoBoks: React.FunctionComponent<Props> = ({ headerText, boxBodyText, erOppfylt }) => (
-    <VStack gap="1">
+const KravinfoBoks: React.FunctionComponent<Props> = ({ headerText, boxBodyText, erOppfylt, testId }) => (
+    <VStack gap="1" data-testid={testId}>
         <Heading size="small">{headerText}</Heading>
         <Box background="surface-alt-3-subtle" padding="4" borderRadius="large">
             <HStack gap="2" wrap={false}>

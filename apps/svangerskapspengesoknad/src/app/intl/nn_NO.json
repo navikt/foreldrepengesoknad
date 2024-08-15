@@ -354,7 +354,9 @@
     "bedriftsbanner.detail": "Om ditt arbeidsforhold i",
     "bedriftsbanner.detail.frilans": "Om ditt arbeid som",
     "bedriftsbanner.tittel.frilansarbeid": "Frilansar",
-    "PerioderStep.tidsperiode": "{ukeAntall, select, 0 {} 1 {{ukeAntall} veke} other {{ukeAntall} veker}} {dagAntall, select, 0 {} 1 {{dagAntall} dag} other {{dagAntall} dagar}}",
+    "PerioderStep.tidsperiode": "{ukeAntall, select, 0 {} 1 {{ukeAntall} veke} other {{ukeAntall} veker}}{dagAntall, select, 0 {} 1 { {dagAntall} dag} other { {dagAntall} dagar}}",
+    "PerioderStep.TreUkerFørTermin": "3 veker før termin",
+    "PerioderStep.Fødsel": "Fødsel",
     "ny.periode": "Ny periode",
     "SkjemaSteg.MinstEttDokument": "Du må lasta opp minst eitt dokument",
     "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige teikn i feltet \"{feltNavn}\"."

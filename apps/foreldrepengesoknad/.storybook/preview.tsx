@@ -2,12 +2,13 @@ import { Preview } from '@storybook/react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
+import React from 'react';
 
 import '@navikt/ds-css';
 
 import { allCommonMessages } from '@navikt/fp-common';
 import { oppsummeringMessages } from '@navikt/fp-oppsummering';
-import { IntlProvider, uiMessages } from '@navikt/fp-ui';
+import { uiMessages } from '@navikt/fp-ui';
 import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 

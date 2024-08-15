@@ -23,7 +23,6 @@ import {
     getMorHarRettPåForeldrepengerINorgeEllerEØS,
     getNavnPåForeldre,
     getPerioderMedUttakRundtFødsel,
-    intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isUfødtBarn,
@@ -650,7 +649,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
                 return (
                     <Step
-                        bannerTitle={intlUtils(intl, 'søknad.pageheading')}
+                        bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
                         onCancel={avbrytSøknad}
                         onContinueLater={navigator.fortsettSøknadSenere}
                         steps={stepConfig}
@@ -763,7 +762,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                                     disabled={isSubmitting}
                                     loading={isSubmitting}
                                 >
-                                    {intlUtils(intl, 'søknad.gåVidere')}
+                                    <FormattedMessage id="søknad.gåVidere" />
                                 </Button>
                             </StepButtonWrapper>
                         </Block>

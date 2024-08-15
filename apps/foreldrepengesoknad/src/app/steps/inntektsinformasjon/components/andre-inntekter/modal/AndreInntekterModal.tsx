@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Button, GuidePanel, Heading, Modal } from '@navikt/ds-react';
 
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import { AttachmentType } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
@@ -71,7 +71,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
         return 'inntektsinformasjon.andreInntekterModal.veileder.sluttpakke';
     };
 
-    const navnPåArbeidsgiverLabel = intlUtils(intl, 'annenInntekt.spørsmål.arbeidsgiver');
+    const navnPåArbeidsgiverLabel = intl.formatMessage({ id: 'annenInntekt.spørsmål.arbeidsgiver' });
 
     return (
         <AndreInntekterModalFormComponents.FormikWrapper
@@ -108,7 +108,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                 <Block padBottom="l" visible={visibility.isVisible(AndreInntekterFormField.land)}>
                                     <AndreInntekterModalFormComponents.CountrySelect
                                         name={AndreInntekterFormField.land}
-                                        label={intlUtils(intl, 'annenInntekt.spørsmål.land')}
+                                        label={intl.formatMessage({ id: 'annenInntekt.spørsmål.land' })}
                                         useAlpha3Code={false}
                                     />
                                 </Block>
@@ -125,7 +125,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                 <Block padBottom="l" visible={visibility.isVisible(AndreInntekterFormField.fom)}>
                                     <AndreInntekterModalFormComponents.DatePicker
                                         name={AndreInntekterFormField.fom}
-                                        label={intlUtils(intl, 'fom')}
+                                        label={intl.formatMessage({ id: 'fom' })}
                                         validate={validateAnnenInntektFom(intl, formValues.tom!)}
                                         maxDate={dayjs().toDate()}
                                     />
@@ -133,13 +133,13 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                 <Block padBottom="l" visible={visibility.isVisible(AndreInntekterFormField.pågående)}>
                                     <AndreInntekterModalFormComponents.YesOrNoQuestion
                                         name={AndreInntekterFormField.pågående}
-                                        legend={intlUtils(intl, 'pågående')}
+                                        legend={intl.formatMessage({ id: 'pågående' })}
                                     />
                                 </Block>
                                 <Block padBottom="l" visible={visibility.isVisible(AndreInntekterFormField.tom)}>
                                     <AndreInntekterModalFormComponents.DatePicker
                                         name={AndreInntekterFormField.tom}
-                                        label={intlUtils(intl, 'tom')}
+                                        label={intl.formatMessage({ id: 'tom' })}
                                         validate={validateAnnenInntektTom(intl, formValues.fom!)}
                                         maxDate={dayjs().toDate()}
                                     />
@@ -170,7 +170,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                 <Block visible={visibility.areAllQuestionsAnswered()} textAlignCenter={true}>
                                     <Button type="submit">
                                         {!selectedAnnenInntekt
-                                            ? intlUtils(intl, 'inntektsinformasjon.leggTilOppdrag')
+                                            ? intl.formatMessage({ id: 'inntektsinformasjon.leggTilOppdrag' })
                                             : 'Lagre endringer'}
                                     </Button>
                                 </Block>

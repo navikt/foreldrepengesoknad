@@ -77,12 +77,13 @@ export const getPeriodeInfoTekst = (
     index: number,
     sisteDagForSvangerskapspenger: string,
     intl: IntlShape,
+    kanHaSVPFremTilTreUkerFørTermin: boolean,
     varierendePerioder?: PeriodeMedVariasjon[],
 ) => {
-    if (
-        varierendePerioder?.[index]?.fom &&
-        (varierendePerioder[index].tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP || varierendePerioder[index].tom)
-    ) {
+    const erSisteDagMedSvpValgt =
+        varierendePerioder && varierendePerioder[index].tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP;
+
+    if (varierendePerioder?.[index]?.fom && (erSisteDagMedSvpValgt || varierendePerioder[index].tom)) {
         const fomDato = varierendePerioder[index].fom;
         const tomDato =
             varierendePerioder[index].tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP
@@ -94,7 +95,13 @@ export const getPeriodeInfoTekst = (
         const ukeAntall = Math.floor(totaltAntallDager / 7);
         const dagAntall = totaltAntallDager - ukeAntall * 7;
 
-        return `${formatDate(fomDato)} - ${formatDate(tomDato)} ${intl.formatMessage({ id: 'PerioderStep.tidsperiode' }, { ukeAntall, dagAntall })}`;
+        let sluttdatotekst = formatDate(tomDato);
+        if (erSisteDagMedSvpValgt) {
+            sluttdatotekst = kanHaSVPFremTilTreUkerFørTermin
+                ? intl.formatMessage({ id: 'PerioderStep.TreUkerFørTermin' })
+                : intl.formatMessage({ id: 'PerioderStep.Fødsel' });
+        }
+        return `${formatDate(fomDato)} - ${sluttdatotekst} (${intl.formatMessage({ id: 'PerioderStep.tidsperiode' }, { ukeAntall, dagAntall })})`;
     }
     return intl.formatMessage({ id: 'ny.periode' });
 };

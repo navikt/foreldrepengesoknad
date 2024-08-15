@@ -4,8 +4,9 @@ import { useIntl } from 'react-intl';
 
 import { Link, Loader } from '@navikt/ds-react';
 
-import { SlettKnapp, VedleggIkon, bemUtils, bytesString, intlUtils } from '@navikt/fp-common';
+import { SlettKnapp, VedleggIkon, bytesString } from '@navikt/fp-common';
 import { Attachment as AttachmentType } from '@navikt/fp-types';
+import { bemUtils } from '@navikt/fp-utils';
 
 import './attachment.less';
 
@@ -44,7 +45,7 @@ const Attachment: React.FunctionComponent<Props> = ({ attachment, showFileSize, 
                 <span className={bem.element('deleteButton')}>
                     <SlettKnapp
                         onClick={() => onDelete(attachment)}
-                        ariaLabel={intlUtils(intl, 'vedlegg.arialabel.slett', { navn: attachment.filename })}
+                        ariaLabel={intl.formatMessage({ id: 'vedlegg.arialabel.slett' }, { navn: attachment.filename })}
                     />
                 </span>
             )}

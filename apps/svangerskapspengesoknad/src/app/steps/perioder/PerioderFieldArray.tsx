@@ -116,6 +116,7 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
                                         index,
                                         sisteDagForSvangerskapspenger,
                                         intl,
+                                        kanHaSVPFremTilTreUkerFørTermin,
                                         alleVarierendePerioder,
                                     )}
                                 </Tag>

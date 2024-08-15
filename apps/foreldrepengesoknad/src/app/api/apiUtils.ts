@@ -519,22 +519,29 @@ export const cleanEndringssøknad = (
     return cleanedSøknad;
 };
 
+const hideNumbersAndTrim = (tekst: string): string => {
+    return tekst.replace(/\d/g, '*').slice(0, 250) + '...';
+};
+
 export const sendErrorMessageToSentry = (error: AxiosError<any>) => {
     const errorCallId = getErrorCallId(error) + '. ';
     const errorTimestamp = getErrorTimestamp(error) + '. ';
-    const hideNumbersAndTrim = (tekst: string): string => {
-        return tekst.replace(/\d/g, '*').slice(0, 250) + '...';
-    };
 
     let errorString = errorCallId + errorTimestamp;
-    if (error.request?.data?.messages) {
-        errorString = errorString + hideNumbersAndTrim(error.request.data.messages);
-    } else if (error.response?.data?.messages) {
-        errorString = errorString + hideNumbersAndTrim(error.response.data.messages);
+
+    const errorMessages = error.request?.data?.messages ?? error.response?.data?.messages;
+    const isErrorMessageArray = Array.isArray(errorMessages);
+
+    if (isErrorMessageArray && errorMessages.length > 0) {
+        errorString = errorString + hideNumbersAndTrim(errorMessages[0]);
+    }
+    if (!isErrorMessageArray && errorMessages) {
+        errorString = errorString + hideNumbersAndTrim(errorMessages);
     }
     if (error.message) {
         errorString = errorString + error.message;
     }
+
     Sentry.captureMessage(errorString);
 };
 

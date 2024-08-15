@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
-import { Block, date20YearsAgo, dateToday, intlUtils } from '@navikt/fp-common';
+import { Block, date20YearsAgo, dateToday } from '@navikt/fp-common';
 import { QuestionVisibility, YesOrNo } from '@navikt/fp-formik';
 
 import {
@@ -25,7 +25,7 @@ const Frilans: FunctionComponent<Props> = ({ visibility, formValues }) => {
             <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.hattInntektSomFrilans)}>
                 <InntektsinformasjonFormComponents.YesOrNoQuestion
                     name={InntektsinformasjonFormField.hattInntektSomFrilans}
-                    legend={intlUtils(intl, 'inntektsinformasjon.harDuJobbetSomFrilansSiste10Mnd')}
+                    legend={intl.formatMessage({ id: 'inntektsinformasjon.harDuJobbetSomFrilansSiste10Mnd' })}
                 />
                 <HvemKanVæreFrilanser />
             </Block>
@@ -38,7 +38,7 @@ const Frilans: FunctionComponent<Props> = ({ visibility, formValues }) => {
                     >
                         <InntektsinformasjonFormComponents.DatePicker
                             name={InntektsinformasjonFormField.frilansOppstartsDato}
-                            label={intlUtils(intl, 'inntektsinformasjon.frilans.oppstart')}
+                            label={intl.formatMessage({ id: 'inntektsinformasjon.frilans.oppstart' })}
                             validate={validateFrilansoppstartsDato(intl)}
                             maxDate={dateToday}
                             minDate={date20YearsAgo}
@@ -51,7 +51,7 @@ const Frilans: FunctionComponent<Props> = ({ visibility, formValues }) => {
                     >
                         <InntektsinformasjonFormComponents.YesOrNoQuestion
                             name={InntektsinformasjonFormField.jobberFremdelesSomFrilanser}
-                            legend={intlUtils(intl, 'inntektsinformasjon.frilans.jobberFremdelesSomFrilans')}
+                            legend={intl.formatMessage({ id: 'inntektsinformasjon.frilans.jobberFremdelesSomFrilans' })}
                         />
                     </Block>
                 </div>

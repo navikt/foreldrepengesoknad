@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
 
-import { Barn, intlUtils, isFødtBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-common';
+import { Barn, isFødtBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-common';
 import { DDMMMMYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { ISOStringToDate } from '@navikt/fp-formik';
 import { SøkerBarn } from '@navikt/fp-types';
@@ -62,13 +62,13 @@ export const getDødeBarnetForMerEnn3MånederSiden = (registrerteBarn: SøkerBar
 
 export const getTekstForAntallBarn = (antallBarn: number, intl: IntlShape): string => {
     if (antallBarn === 1) {
-        return intlUtils(intl, 'barn');
+        return intl.formatMessage({ id: 'barn' });
     } else if (antallBarn === 2) {
-        return intlUtils(intl, 'tvillinger');
+        return intl.formatMessage({ id: 'tvillinger' });
     } else if (antallBarn === 3) {
-        return intlUtils(intl, 'trillinger');
+        return intl.formatMessage({ id: 'trillinger' });
     }
-    return intlUtils(intl, 'flerlinger');
+    return intl.formatMessage({ id: 'flerlinger' });
 };
 
 export const getLeverBarnet = (barn: SøkerBarn) => {
@@ -97,18 +97,24 @@ export const getTittelBarnNårNavnSkalIkkeVises = (
     intl: IntlShape,
 ): string => {
     if (omsorgsovertagelsesdato !== undefined) {
-        return intlUtils(intl, 'velkommen.barnVelger.adoptertBarn', {
-            adopsjonsdato: dayjs(omsorgsovertagelsesdato).format(DDMMMMYYY_DATE_FORMAT),
-        });
+        return intl.formatMessage(
+            { id: 'velkommen.barnVelger.adoptertBarn' },
+            {
+                adopsjonsdato: dayjs(omsorgsovertagelsesdato).format(DDMMMMYYY_DATE_FORMAT),
+            },
+        );
     } else {
         const fødselsdatoTekst = formaterFødselsdatoerPåBarn(fødselsdatoer);
         const barnTekst = getTekstForAntallBarn(antallBarn, intl);
 
         return fødselsdatoer !== undefined && fødselsdatoer.length > 0
-            ? intlUtils(intl, 'velkommen.barnVelger.fødtBarn.barn', {
-                  barnTekst,
-                  fødselsdato: fødselsdatoTekst,
-              })
+            ? intl.formatMessage(
+                  { id: 'velkommen.barnVelger.fødtBarn.barn' },
+                  {
+                      barnTekst,
+                      fødselsdato: fødselsdatoTekst,
+                  },
+              )
             : '';
     }
 };

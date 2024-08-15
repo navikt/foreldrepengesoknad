@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert } from '@navikt/ds-react';
 
-import { Block, Periode, StønadskontoType, intlUtils, isOverføringsperiode, isUttaksperiode } from '@navikt/fp-common';
+import { Block, Periode, StønadskontoType, isOverføringsperiode, isUttaksperiode } from '@navikt/fp-common';
 import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
 import { QuestionVisibility, YesOrNo } from '@navikt/fp-formik';
 
@@ -89,12 +89,15 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({
                 <Block visible={visibility.isVisible(UttaksplanFormField.ønskerAutomatiskJustering)} padBottom="l">
                     <UttaksplanFormComponents.YesOrNoQuestion
                         name={UttaksplanFormField.ønskerAutomatiskJustering}
-                        legend={intlUtils(intl, 'uttaksplan.automatiskJustering.spørsmål', {
-                            antallBarn,
-                        })}
+                        legend={intl.formatMessage(
+                            { id: 'uttaksplan.automatiskJustering.spørsmål' },
+                            {
+                                antallBarn,
+                            },
+                        )}
                         validate={(value: YesOrNo) => {
                             if (value === YesOrNo.UNANSWERED) {
-                                return intlUtils(intl, 'uttaksplan.automatiskJustering.svar.påkrevd');
+                                return intl.formatMessage({ id: 'uttaksplan.automatiskJustering.svar.påkrevd' });
                             }
 
                             return undefined;

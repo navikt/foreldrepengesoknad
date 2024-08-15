@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
-import { Block, hasValue, intlUtils } from '@navikt/fp-common';
+import { Block, hasValue } from '@navikt/fp-common';
 import { QuestionVisibility } from '@navikt/fp-formik';
 
 import { EgenNæringModalFormComponents, EgenNæringModalFormField } from '../egenNæringModalFormConfig';
@@ -19,18 +19,18 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ visibility }) => {
             <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.orgnr)}>
                 <EgenNæringModalFormComponents.NumberInput
                     name={EgenNæringModalFormField.orgnr}
-                    label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.orgnr')}
+                    label={intl.formatMessage({ id: 'inntektsinformasjon.egenNæringModal.orgnr' })}
                     validate={validateEgenNæringOrgnr(intl)}
                 />
             </Block>
             <Block padBottom="l" visible={visibility.isVisible(EgenNæringModalFormField.land)}>
                 <EgenNæringModalFormComponents.CountrySelect
                     name={EgenNæringModalFormField.land}
-                    label={intlUtils(intl, 'inntektsinformasjon.egenNæringModal.registrertILand')}
+                    label={intl.formatMessage({ id: 'inntektsinformasjon.egenNæringModal.registrertILand' })}
                     useAlpha3Code={false}
                     validate={(value) => {
                         if (!hasValue(value)) {
-                            return intlUtils(intl, 'valideringsfeil.inntektsinformasjon.egenNæring.land');
+                            return intl.formatMessage({ id: 'valideringsfeil.inntektsinformasjon.egenNæring.land' });
                         }
 
                         return undefined;

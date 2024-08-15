@@ -92,7 +92,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                         <>
                             <HarIkkeRettTilFpInfobox antattÅrslønn={årslønn} minÅrslønn={minÅrslønn} />
                             <Infobox
-                                header={<FormattedMessage id="OppsummeringSide.HvaErEr" />}
+                                header={<FormattedMessage id="OppsummeringSide.HvaErEs" />}
                                 icon={
                                     <InformationIcon
                                         height={24}
@@ -104,10 +104,12 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                 }
                                 color="gray"
                             >
-                                <FormattedMessage
-                                    id="OppsummeringSide.EsSkalBidra"
-                                    values={{ engangsstønad: formatCurrencyWithKr(engangsstønad) }}
-                                />
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="OppsummeringSide.EsSkalBidra"
+                                        values={{ engangsstønad: formatCurrencyWithKr(engangsstønad) }}
+                                    />
+                                </BodyShort>
                             </Infobox>
                         </>
                     )}

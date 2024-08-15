@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { Block, NavnPåForeldre, Periode, Situasjon, intlUtils } from '@navikt/fp-common';
+import { Block, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
@@ -47,14 +47,20 @@ const MorForSykDokumentasjon: React.FunctionComponent<Props> = ({
                 termindato={termindato}
                 situasjon={situasjon}
                 skjemanummer={Skjemanummer.DOK_SYKDOM_MOR}
-                labelText={intlUtils(intl, 'manglendeVedlegg.morForSyk.label', {
-                    navn: navnPåForeldre.mor,
-                    erFarEllerMedmor,
-                })}
-                description={intlUtils(intl, 'manglendeVedlegg.morForSyk.description', {
-                    navn: navnPåForeldre.mor,
-                    erFarEllerMedmor,
-                })}
+                labelText={intl.formatMessage(
+                    { id: 'manglendeVedlegg.morForSyk.label' },
+                    {
+                        navn: navnPåForeldre.mor,
+                        erFarEllerMedmor,
+                    },
+                )}
+                description={intl.formatMessage(
+                    { id: 'manglendeVedlegg.morForSyk.description' },
+                    {
+                        navn: navnPåForeldre.mor,
+                        erFarEllerMedmor,
+                    },
+                )}
                 attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
             />
         </Block>

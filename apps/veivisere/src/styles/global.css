@@ -11,6 +11,10 @@ body {
     min-height: 100vh;
 }
 
+.m-6 {
+    margin: 0 6rem;
+}
+
 #app {
     flex: 1;
     background-color: var(--a-gray-100);
