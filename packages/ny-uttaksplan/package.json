@@ -15,7 +15,7 @@
         "test:coverage": "vitest --coverage"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^6.13.0",
+        "@navikt/aksel-icons": "^6.16.0",
         "@navikt/ds-css": "^6.6.0",
         "@navikt/ds-react": "^6.6.0",
         "@navikt/fp-common": "workspace:*",
