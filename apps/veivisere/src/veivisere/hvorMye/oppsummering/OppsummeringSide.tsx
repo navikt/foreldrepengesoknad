@@ -196,7 +196,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                         <ExpansionCard.Content>
                             {(arbeidssituasjon.erArbeidstakerEllerFrilanser ||
                                 arbeidssituasjon.harUtbetalingFraNav) && (
-                                <VStack gap="10">
+                                <VStack gap="3">
                                     <BluePanel>
                                         <VStack gap="1">
                                             <Heading size="small" level="4">
@@ -215,9 +215,12 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                         </VStack>
                                     </BluePanel>
                                     <BluePanel>
-                                        <VStack gap="5">
-                                            <div>
+                                        <VStack gap="4">
+                                            <VStack gap="1">
                                                 <Heading size="small">
+                                                    <FormattedMessage id="OppsummeringSide.Lønn" />
+                                                </Heading>
+                                                <Heading size="xsmall">
                                                     {capitalizeFirstLetter(
                                                         forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
                                                     )}
@@ -229,9 +232,9 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                                             : 0,
                                                     )}
                                                 </BodyShort>
-                                            </div>
+                                            </VStack>
                                             <div>
-                                                <Heading size="small">
+                                                <Heading size="xsmall">
                                                     {capitalizeFirstLetter(
                                                         forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
                                                     )}
@@ -245,7 +248,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                                 </BodyShort>
                                             </div>
                                             <div>
-                                                <Heading size="small">
+                                                <Heading size="xsmall">
                                                     {capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
                                                 </Heading>
                                                 <BodyShort>
