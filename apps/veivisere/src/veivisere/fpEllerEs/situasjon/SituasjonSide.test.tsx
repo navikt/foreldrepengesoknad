@@ -68,18 +68,14 @@ describe('<SituasjonSide>', () => {
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[2]);
 
-        expect(
-            screen.getByText(
-                'For å få utbetaling fra NAV, må du være medlem av folketrygden. Er du medlem av folketrygden selv om du ikke bor i Norge?',
-            ),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[3]);
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
         expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
             borDuINorge: false,
-            erDuMedlemAvFolketrygden: true,
+            jobberDuINorge: true,
             erIArbeid: true,
             harHattInntekt: true,
             lønnPerMåned: '50000',
@@ -112,24 +108,18 @@ describe('<SituasjonSide>', () => {
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[2]);
 
-        expect(
-            screen.getByText(
-                'For å få utbetaling fra NAV, må du være medlem av folketrygden. Er du medlem av folketrygden selv om du ikke bor i Norge?',
-            ),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[3]);
 
         expect(
-            screen.getByText(
-                'For å kunne ha rett på foreldrepenger eller engangsstønad må man være medlem av folketrygden',
-            ),
+            screen.getByText('For å kunne ha rett på foreldrepenger eller engangsstønad må man jobbe i Norge'),
         ).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
         expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
             borDuINorge: false,
-            erDuMedlemAvFolketrygden: false,
+            jobberDuINorge: false,
             erIArbeid: true,
             harHattInntekt: true,
             lønnPerMåned: '50000',
@@ -206,18 +196,14 @@ describe('<SituasjonSide>', () => {
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[2]);
 
-        expect(
-            screen.getByText(
-                'For å få utbetaling fra NAV, må du være medlem av folketrygden. Er du medlem av folketrygden selv om du ikke bor i Norge?',
-            ),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[3]);
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
         expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
             borDuINorge: false,
-            erDuMedlemAvFolketrygden: true,
+            jobberDuINorge: true,
             erIArbeid: true,
             harHattInntekt: true,
             lønnPerMåned: '5000',
@@ -254,18 +240,14 @@ describe('<SituasjonSide>', () => {
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[2]);
 
-        expect(
-            screen.getByText(
-                'For å få utbetaling fra NAV, må du være medlem av folketrygden. Er du medlem av folketrygden selv om du ikke bor i Norge?',
-            ),
-        ).toBeInTheDocument();
+        expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[3]);
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
         expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
             borDuINorge: false,
-            erDuMedlemAvFolketrygden: false,
+            jobberDuINorge: false,
             erIArbeid: true,
             harHattInntekt: true,
             lønnPerMåned: '5000',
@@ -335,18 +317,14 @@ describe('<SituasjonSide>', () => {
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[2]);
 
-        expect(
-            screen.getByText(
-                'For å få utbetaling fra NAV, må du være medlem av folketrygden. Er du medlem av folketrygden selv om du ikke bor i Norge?',
-            ),
-        ).toBeInTheDocument();
+        expect(screen.getByText(/For å kunne ha rett på foreldrepenger eller engangsstønad/)).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[3]);
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
         expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
             borDuINorge: false,
-            erDuMedlemAvFolketrygden: true,
+            jobberDuINorge: true,
             erIArbeid: true,
             harHattInntekt: false,
             situasjon: 'mor',
@@ -384,22 +362,21 @@ describe('<SituasjonSide>', () => {
 
             expect(
                 screen.getByText(
-                    'For å få utbetaling fra NAV, må du være medlem av folketrygden. Er du medlem av folketrygden selv om du ikke bor i Norge?',
+                    'For å kunne ha rett på foreldrepenger eller engangsstønad må man være medlem av folketrygden',
                 ),
             ).toBeInTheDocument();
+            expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
             await userEvent.click(screen.getAllByText('Nei')[3]);
 
             expect(
-                screen.getByText(
-                    'For å kunne ha rett på foreldrepenger eller engangsstønad må man være medlem av folketrygden',
-                ),
+                screen.getByText('For å kunne ha rett på foreldrepenger eller engangsstønad må man jobbe i Norge'),
             ).toBeInTheDocument();
 
             await userEvent.click(screen.getByText('Se resultatet'));
 
             expect(setFpEllerEsSituasjon).toHaveBeenNthCalledWith(1, {
                 borDuINorge: false,
-                erDuMedlemAvFolketrygden: false,
+                jobberDuINorge: false,
                 harHattInntekt: false,
                 erIArbeid: true,
                 situasjon: 'mor',

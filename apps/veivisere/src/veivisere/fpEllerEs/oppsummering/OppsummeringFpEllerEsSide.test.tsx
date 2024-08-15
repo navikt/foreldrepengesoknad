@@ -4,9 +4,9 @@ import { render, screen, within } from '@testing-library/react';
 import * as stories from './OppsummeringFpEllerEsSide.stories';
 
 const {
-    MorHarTjentMerEnn200000OgHarRettTilFpOgEs,
+    MorHarTjentMerEnn200000OgHarRettTilFp,
     MorHarTjentMindreEnn200000OgHarRettTilFpOgEs,
-    MorHarIkkeRett,
+    MorHarIkkeRettJobberIkkeINorge,
     FarHarIkkeRett,
     MorHarRettTilEs,
     FarKanHaRettTilFp,
@@ -14,7 +14,7 @@ const {
 
 describe('<OppsummeringFpEllerEsSide>', () => {
     it('skal vise oppsummering for mor som har tjent mer enn 200 000', async () => {
-        render(<MorHarTjentMerEnn200000OgHarRettTilFpOgEs />);
+        render(<MorHarTjentMerEnn200000OgHarRettTilFp />);
 
         expect(await screen.findByText('Resultat')).toBeInTheDocument();
 
@@ -65,11 +65,11 @@ describe('<OppsummeringFpEllerEsSide>', () => {
     });
 
     it('skal vise oppsummering for mor som ikke har rett', async () => {
-        render(<MorHarIkkeRett />);
+        render(<MorHarIkkeRettJobberIkkeINorge />);
         expect(await screen.findByText('Resultat')).toBeInTheDocument();
 
         expect(screen.getByText(/Det ser ut som at du verken har rett på foreldrepenger/)).toBeInTheDocument();
-        expect(screen.getByText(/Du har ikke rett på engangsstønad når/)).toBeInTheDocument();
+        expect(screen.getByText(/Siden du ikke jobber i Norge/)).toBeInTheDocument();
 
         expect(screen.getByText('Hvorfor har jeg ikke rett på engangsstønad?')).toBeInTheDocument();
 
@@ -79,7 +79,7 @@ describe('<OppsummeringFpEllerEsSide>', () => {
         expect(within(harIkkeRettEs[1]).getByText(/Du må i gjennomsnitt tjene/)).toBeInTheDocument();
         expect(within(harIkkeRettEs[1]).getByText('Du oppfyller ikke dette kravet')).toBeInTheDocument();
         expect(within(harIkkeRettEs[2]).getByText('Du må være medlem av folketrygden')).toBeInTheDocument();
-        expect(within(harIkkeRettEs[2]).getByText('Du oppfyller ikke dette kravet')).toBeInTheDocument();
+        expect(within(harIkkeRettEs[2]).getByText(/Du oppfyller mest sannsynlig ikke/)).toBeInTheDocument();
 
         const harIkkeRettFp = screen.getAllByTestId('harIkkeRettFp');
         expect(within(harIkkeRettFp[0]).getByText(/Du må ha hatt inntekt/)).toBeInTheDocument();
@@ -87,7 +87,7 @@ describe('<OppsummeringFpEllerEsSide>', () => {
         expect(within(harIkkeRettFp[1]).getByText(/Du må i gjennomsnitt tjene/)).toBeInTheDocument();
         expect(within(harIkkeRettFp[1]).getByText('Du oppfyller ikke dette kravet')).toBeInTheDocument();
         expect(within(harIkkeRettFp[2]).getByText('Du må være medlem av folketrygden')).toBeInTheDocument();
-        expect(within(harIkkeRettFp[2]).getByText('Du oppfyller ikke dette kravet')).toBeInTheDocument();
+        expect(within(harIkkeRettEs[2]).getByText(/Du oppfyller mest sannsynlig ikke/)).toBeInTheDocument();
 
         expect(screen.getByText('Hvorfor har jeg ikke rett på foreldrepenger?')).toBeInTheDocument();
     });

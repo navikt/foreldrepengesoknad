@@ -69,12 +69,12 @@ const HvorforHarJegRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSit
                                 erOppfylt={fpEllerEsSituasjon.lønnPerMåned * 12 > grunnbeløpet / 2}
                             />
                         )}
-                        {fpEllerEsSituasjon.borDuINorge && (
+                        {(fpEllerEsSituasjon.borDuINorge || fpEllerEsSituasjon.jobberDuINorge) && (
                             <KravinfoBoks
                                 testId="harRettEs"
                                 headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
                                 boxBodyText={<FormattedMessage id="HvorforHarJegRettPanel.OppgittAtDuBorINorge" />}
-                                erOppfylt={fpEllerEsSituasjon.borDuINorge}
+                                erOppfylt={fpEllerEsSituasjon.borDuINorge || fpEllerEsSituasjon.jobberDuINorge}
                             />
                         )}
                     </VStack>

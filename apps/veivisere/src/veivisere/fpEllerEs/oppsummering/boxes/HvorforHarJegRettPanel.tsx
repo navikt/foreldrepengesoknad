@@ -67,7 +67,7 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
                             testId="harRettFp"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
                             boxBodyText={<FormattedMessage id="HvorforHarJegRettPanel.OppgittAtDuBorINorge" />}
-                            erOppfylt={fpEllerEsSituasjon.borDuINorge}
+                            erOppfylt={fpEllerEsSituasjon.borDuINorge || fpEllerEsSituasjon.jobberDuINorge}
                         />
                     </VStack>
                 </VStack>

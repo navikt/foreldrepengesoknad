@@ -15,6 +15,9 @@ interface Props {
 }
 
 const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
+    const jobberIkkeINorge =
+        fpEllerEsSituasjon.borDuINorge !== undefined && fpEllerEsSituasjon.jobberDuINorge === false;
+
     const folketrygdenlenke =
         'https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden';
     return (
@@ -65,12 +68,9 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
                             boxBodyText={
                                 <>
-                                    <BodyShort>
-                                        <FormattedMessage id="HvorforHarJegRettPanel.OppgittAtDuBorINorge" />
-                                    </BodyShort>
-                                    <BodyShort>
+                                    {jobberIkkeINorge ? (
                                         <FormattedMessage
-                                            id="HvorforHarJegRettPanel.FolketrygdenLink"
+                                            id="HvorforHarJegRettPanel.IkkeMedlem"
                                             values={{
                                                 a: (msg: any) => (
                                                     <a href={folketrygdenlenke} target="_blank" rel="noreferrer">
@@ -79,10 +79,15 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
                                                 ),
                                             }}
                                         />
-                                    </BodyShort>
+                                    ) : (
+                                        <FormattedMessage id="HvorforHarJegRettPanel.OppgittAtDuBorINorge" />
+                                    )}
                                 </>
                             }
-                            erOppfylt={fpEllerEsSituasjon.borDuINorge}
+                            erOppfylt={fpEllerEsSituasjon.jobberDuINorge}
+                            jobberIkkeINorge={
+                                fpEllerEsSituasjon.jobberDuINorge === false && fpEllerEsSituasjon.borDuINorge === false
+                            }
                         />
                     </VStack>
                 </VStack>
