@@ -1,6 +1,7 @@
 import { ArrowLeftIcon, ChatElipsisIcon, CheckmarkIcon, InformationIcon, WalletIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
+import { VeiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -70,7 +71,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
 
     useEffect(() => {
         logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'veivisere',
+            app: VeiviserAmplitudeKey.HVOR_MYE,
             team: 'foreldrepenger',
             hendelse: finnHendelse(harIkkeRettTilFp, erMellomMinÅrslønnOg1Komma5G, årslønn > grunnbeløpetGanger6),
         });
