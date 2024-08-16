@@ -3,6 +3,7 @@ import { ComponentProps } from 'react';
 
 import { Forelder } from '@navikt/fp-common';
 
+import { UttaksplanContextDataType, UttaksplanDataContext } from '../../context/UttaksplanDataContext';
 import PeriodeListeItem from './PeriodeListeItem';
 
 type StoryArgs = ComponentProps<typeof PeriodeListeItem>;
@@ -10,7 +11,19 @@ type StoryArgs = ComponentProps<typeof PeriodeListeItem>;
 type Story = StoryObj<StoryArgs>;
 
 const customRenderer = ({ permisjonsperiode }: StoryArgs) => {
-    return <PeriodeListeItem permisjonsperiode={permisjonsperiode} familiehendelsedato="2024-06-01" />;
+    return (
+        <UttaksplanDataContext
+            initialState={{
+                [UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR]: true,
+                [UttaksplanContextDataType.NAVN_PÅ_FORELDRE]: {
+                    farMedmor: 'Far',
+                    mor: 'Mor',
+                },
+            }}
+        >
+            <PeriodeListeItem permisjonsperiode={permisjonsperiode} familiehendelsedato="2024-06-01" />
+        </UttaksplanDataContext>
+    );
 };
 
 const meta = {
