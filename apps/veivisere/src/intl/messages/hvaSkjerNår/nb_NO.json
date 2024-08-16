@@ -15,5 +15,15 @@
     "SituasjonSide.NårVarTermin": "Når var termin?",
     "SituasjonSide.FødtFørOktober": "Barn født før 1. oktober 2021",
     "SituasjonSide.HvisBarnetErFødtFørOktober": "Hvis dere har fått barn før 1. oktober 2021 må dere ta ut foreldrepenge perioden deres sammenhengende. Du må senest starte å ta ut ukene dine når {hvem} sin periode med foreldrepenger er ferdig, eller søke om utsettelse, for å ikke miste dager med foreldrepenger.",
-    "OppsummeringSide.Svar": "Hva svarte {aleneforsørger, select, true {jeg} other {vi}}?"
+    "OppsummeringSide.Svar": "Hva svarte {erAleneforsørger, select, true {jeg} other {vi}}?",
+    "OppsummeringSide.Hvem": "{hvem} skal ha foreldrepenger",
+    "OppsummeringSide.Termin": "Termin {termindato}",
+    "OppsummeringSide.Fødselsdato": "Fødselsdato {fødselsdato}",
+    "valideringsfeil.termindato.forLangtFremITid": "Termindatoen kan ikke være senere enn 6 måneder etter fødselsdatoen",
+    "valideringsfeil.termindato.forLangtTilbakeITid": "Termindatoen kan ikke være tidligere enn 1 måned før fødselsdatoen",
+    "valideringsfeil.termindato.ugyldigDatoFormat": "Termindato må være en gyldig dato på formatet dd.mm.åååå",
+    "valideringsfeil.fødselsdato.førTermindato": "Fødselsdato kan ikke være etter før termindato",
+    "valideringsfeil.fødselsdato.måVæreIdagEllerTidligere": "Fødselsdato må være i dag eller tidligere",
+    "valideringsfeil.fødselsdato.ugyldigDatoFormat": "Fødselsdato må være en gyldig dato på formatet dd.mm.åååå",
+    "valideringsfeil.fødselsdato.førOktober2021": "Fødselsdato er før 1. oktober 2021"
 }

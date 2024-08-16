@@ -9,9 +9,10 @@ import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { BodyShort, Button, Radio, Spacer, VStack } from '@navikt/ds-react';
 
+import { DDMMMMYYY_DATE_FORMAT, ISO_DATE_REGEX } from '@navikt/fp-constants';
 import { Datepicker, Form } from '@navikt/fp-form-hooks';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
-import { isBeforeTodayOrToday, isRequired } from '@navikt/fp-validation';
+import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import VeiviserPage from '../../felles/VeiviserPage';
 import BlueRadioGroup from '../../felles/formWrappers/BlueRadioGroup';
@@ -32,6 +33,8 @@ export type HvaSkjerNårSituasjon = {
     termindato: string;
 };
 
+const erDatoGyldig = (date: string) => ISO_DATE_REGEX.test(date);
+
 interface Props {
     hvaSkjerNårSituasjon?: HvaSkjerNårSituasjon;
     setHvaSkjerNårSituasjon: (data: HvaSkjerNårSituasjon) => void;
@@ -48,7 +51,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
 
     const { situasjon, erFødt, fødselsdato, termindato } = formMethods.watch();
 
-    const oktober2021 = dayjs('2021-10-01');
+    const oktober2021 = dayjs('2021-10-01').format(DDMMMMYYY_DATE_FORMAT);
 
     const onSubmit = (formValues: HvaSkjerNårSituasjon) => {
         setHvaSkjerNårSituasjon(formValues);
@@ -116,12 +119,18 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
                                     <Datepicker
                                         name="fødselsdato"
                                         label={intl.formatMessage({ id: 'SituasjonSide.Født' })}
-                                        minDate={dayjs().subtract(3, 'years').toDate()}
                                         maxDate={dayjs().toDate()}
                                         validate={[
-                                            isRequired(intl.formatMessage({ id: 'SituasjonSide.Født' })),
-
-                                            isBeforeTodayOrToday(intl.formatMessage({ id: 'SituasjonSide.Født' })),
+                                            isValidDate(
+                                                intl.formatMessage({
+                                                    id: 'valideringsfeil.termindato.ugyldigDatoFormat',
+                                                }),
+                                            ),
+                                            isBeforeTodayOrToday(
+                                                intl.formatMessage({
+                                                    id: 'valideringsfeil.fødselsdato.måVæreIdagEllerTidligere',
+                                                }),
+                                            ),
                                         ]}
                                     />
                                     {
@@ -132,7 +141,19 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
                                         label={intl.formatMessage({ id: 'SituasjonSide.NårVarTermin' })}
                                         minDate={dayjs().subtract(3, 'years').toDate()}
                                         maxDate={dayjs().add(6, 'months').toDate()}
-                                        validate={[isRequired(intl.formatMessage({ id: 'SituasjonSide.Født' }))]}
+                                        validate={[
+                                            isBeforeTodayOrToday(
+                                                intl.formatMessage({
+                                                    id: 'valideringsfeil.fødselsdato.måVæreIdagEllerTidligere',
+                                                }),
+                                            ),
+
+                                            isValidDate(
+                                                intl.formatMessage({
+                                                    id: 'valideringsfeil.termindato.ugyldigDatoFormat',
+                                                }),
+                                            ),
+                                        ]}
                                     />
                                     {fødselsdato !== undefined && dayjs(fødselsdato).isBefore(oktober2021) && (
                                         // TODO: fiks validering
@@ -173,16 +194,17 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
                     <Spacer />
 
                     <Spacer />
-                    {((erFødt === true && fødselsdato && termindato) || (erFødt === false && termindato)) && (
-                        <Button
-                            icon={<PaperplaneIcon aria-hidden />}
-                            iconPosition="right"
-                            type="submit"
-                            style={{ flex: 1 }}
-                        >
-                            <FormattedMessage id="ArbeidssituasjonSide.SeResultatet" />
-                        </Button>
-                    )}
+                    {((erFødt === true && fødselsdato && termindato) || (erFødt === false && termindato)) &&
+                        erDatoGyldig(termindato) && (
+                            <Button
+                                icon={<PaperplaneIcon aria-hidden />}
+                                iconPosition="right"
+                                type="submit"
+                                style={{ flex: 1 }}
+                            >
+                                <FormattedMessage id="ArbeidssituasjonSide.SeResultatet" />
+                            </Button>
+                        )}
                 </VStack>
             </Form>
         </VeiviserPage>
