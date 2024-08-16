@@ -1,0 +1,19 @@
+{
+    "HvaSkjerNår.Tittel": "Hva skjer når?",
+    "SituasjonSide.Situasjon": "Hva er din eller deres situasjon?",
+    "SituasjonSide.MorOgFar": "Mor og far",
+    "SituasjonSide.MorOgMedmor": "Mor og medmor",
+    "SituasjonSide.FarOgFar": "Far og far",
+    "SituasjonSide.KunFarEllerMedmor": "Bare far/medmor skal ha utbetaling",
+    "SituasjonSide.KunMor": "Bare mor skal ha utbetaling",
+    "SituasjonSide.Aleneomsorg": "Aleneomsorg",
+    "SituasjonSide.ErBarnetFødt": "Er barnet født?",
+    "SituasjonSide.Ja": "Ja",
+    "SituasjonSide.Nei": "Nei",
+    "SituasjonSide.NårErTermin": "Når er termin?",
+    "SituasjonSide.Født": "Når ble barnet født?",
+    "SituasjonSide.NårVarTermin": "Når var termin?",
+    "SituasjonSide.FødtFørOktober": "Barn født før 1. oktober 2021",
+    "SituasjonSide.HvisBarnetErFødtFørOktober": "Hvis dere har fått barn før 1. oktober 2021 må dere ta ut foreldrepenge perioden deres sammenhengende. Du må senest starte å ta ut ukene dine når {hvem} sin periode med foreldrepenger er ferdig, eller søke om utsettelse, for å ikke miste dager med foreldrepenger.",
+    "OppsummeringSide.Svar": "Hva svarte {aleneforsørger, select, true {jeg} other {vi}}?"
+}

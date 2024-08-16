@@ -7,10 +7,11 @@ import { utilsMessages } from '@navikt/fp-utils';
 
 import Veiviser from './Veiviser';
 import enMessages from './intl/messages/en_US.json';
+import hsnNbMessages from './intl/messages/hvaSkjerNår/nb_NO.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
 
-const allNbMessages = { ...nbMessages, ...uiMessages.nb, ...utilsMessages.nb };
+const allNbMessages = { ...nbMessages, ...uiMessages.nb, ...utilsMessages.nb, ...hsnNbMessages };
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
