@@ -3,15 +3,14 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Link, ReadMore, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-
-import { onToggleInfo } from 'app/steps/barnet/amplitudeLoggerUtils';
+import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 
 const HvemKanVæreFrilanser = () => {
     const intl = useIntl();
 
     return (
         <ReadMore
-            onOpenChange={onToggleInfo('Frilanser')}
+            onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Frilanser')}
             header={intl.formatMessage({ id: 'inntektsinformasjon.harDuJobbetSomFrilans.apneLabel' })}
         >
             <VStack gap="2">

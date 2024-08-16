@@ -1,5 +1,7 @@
 import amplitude from 'amplitude-js';
 
+import { AppName } from '@navikt/fp-types';
+
 export const initAmplitude = () => {
     if (amplitude) {
         amplitude.getInstance().init('default', '', {
@@ -33,4 +35,14 @@ export const logAmplitudeEvent = (eventName: string, eventData?: any, logToConso
             console.error(error); // eslint-disable-line no-console
         }
     });
+};
+
+export const logAmplitudeEventOnOpen = (appName: AppName, hendelsenavn: string) => (open: boolean) => {
+    if (open) {
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: appName,
+            team: 'foreldrepenger',
+            hendelse: hendelsenavn,
+        });
+    }
 };

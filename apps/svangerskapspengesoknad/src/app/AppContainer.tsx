@@ -3,6 +3,8 @@ import { FunctionComponent, useState } from 'react';
 
 import { deleteData } from '@navikt/fp-api';
 import { oppsummeringMessages } from '@navikt/fp-oppsummering';
+import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
+import { frilansMessages } from '@navikt/fp-steg-frilans';
 import { LocaleNo } from '@navikt/fp-types';
 import { ByttBrowserModal, ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
@@ -19,6 +21,8 @@ const allNbMessages = {
     ...utenlandsoppholdMessages.nb,
     ...oppsummeringMessages.nb,
     ...utilsMessages.nb,
+    ...frilansMessages.nb,
+    ...egenNæringMessages.nb,
 };
 const allNnMessages = {
     ...nnMessages,
@@ -26,6 +30,8 @@ const allNnMessages = {
     ...utenlandsoppholdMessages.nn,
     ...oppsummeringMessages.nn,
     ...utilsMessages.nn,
+    ...frilansMessages.nn,
+    ...egenNæringMessages.nn,
 };
 
 declare global {

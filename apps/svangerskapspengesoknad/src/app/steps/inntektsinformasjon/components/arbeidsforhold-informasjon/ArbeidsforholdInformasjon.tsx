@@ -2,9 +2,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ReadMore } from '@navikt/ds-react';
 
+import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
-
-import { onToggleInfo } from 'app/steps/barnet/amplitudeLoggerUtils';
 
 import HarArbeidsforhold from './HarArbeidsforhold';
 import HarIkkeArbeidsforhold from './HarIkkeArbeidsforhold';
@@ -23,7 +22,7 @@ const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforh
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             {visManglerInfo && (
                 <ReadMore
-                    onOpenChange={onToggleInfo('Feil_eller_mangler')}
+                    onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Feil_eller_mangler')}
                     header={intl.formatMessage({ id: 'inntektsinformasjon.arbeidsforhold.info' })}
                 >
                     <BodyShort>
