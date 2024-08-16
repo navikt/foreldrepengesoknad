@@ -15,7 +15,7 @@ import { Checkbox, Form, TextField } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
-import { isValidNumber } from '@navikt/fp-validation';
+import { isValidNumber, isValidNumberForm } from '@navikt/fp-validation';
 
 import VeiviserPage from '../../felles/VeiviserPage';
 import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
@@ -183,6 +183,11 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                                     forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
                                                 )}
                                                 className={styles.widthTextInput}
+                                                validate={[
+                                                    isValidNumberForm(
+                                                        intl.formatMessage({ id: 'ArbeidssituasjonSide.ValidNumber' }),
+                                                    ),
+                                                ]}
                                             />
                                             <TextField
                                                 name="lønnMåned2"
@@ -190,11 +195,21 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                                     forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
                                                 )}
                                                 className={styles.widthTextInput}
+                                                validate={[
+                                                    isValidNumberForm(
+                                                        intl.formatMessage({ id: 'ArbeidssituasjonSide.ValidNumber' }),
+                                                    ),
+                                                ]}
                                             />
                                             <TextField
                                                 name="lønnMåned3"
                                                 label={capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
                                                 className={styles.widthTextInput}
+                                                validate={[
+                                                    isValidNumberForm(
+                                                        intl.formatMessage({ id: 'ArbeidssituasjonSide.ValidNumber' }),
+                                                    ),
+                                                ]}
                                             />
                                         </VStack>
                                         <div>
