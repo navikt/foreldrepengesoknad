@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { ContextRoutes, FpEllerEsRoutes, HvaSkjerNårRoutes, HvorMyeRoutes } from 'appData/routes';
+import { ContextRoutes, HvaSkjerNårRoutes } from 'appData/routes';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { StrictMode } from 'react';
@@ -135,7 +135,7 @@ export const HvorMyeVeiviser: Story = {
         doApiMocking(args);
         return (
             <StrictMode>
-                <MemoryRouter initialEntries={[ContextRoutes.HVOR_MYE + HvorMyeRoutes.OM]}>
+                <MemoryRouter initialEntries={[ContextRoutes.HVOR_MYE]}>
                     <AppContainer />
                 </MemoryRouter>
             </StrictMode>
@@ -163,7 +163,7 @@ export const FpEllerEsVeiviser: Story = {
         doApiMocking(args);
         return (
             <StrictMode>
-                <MemoryRouter initialEntries={[ContextRoutes.FP_ELLER_ES + FpEllerEsRoutes.OM]}>
+                <MemoryRouter initialEntries={[ContextRoutes.FP_ELLER_ES]}>
                     <AppContainer />
                 </MemoryRouter>
             </StrictMode>
