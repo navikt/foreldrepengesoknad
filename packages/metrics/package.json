@@ -10,7 +10,8 @@
         "prettier": "prettier --write src"
     },
     "dependencies": {
-        "amplitude-js": "^8.21.9"
+        "amplitude-js": "^8.21.9",
+        "@navikt/fp-types": "workspace:*"
     },
     "devDependencies": {
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",

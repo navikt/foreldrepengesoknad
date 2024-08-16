@@ -6,6 +6,8 @@ import { BodyShort, Radio, ReadMore } from '@navikt/ds-react';
 
 import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
 import { Datepicker, RadioGroup, TextArea, TextField } from '@navikt/fp-form-hooks';
+import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
+import { AppName } from '@navikt/fp-types';
 import {
     hasMaxLength,
     hasMinLength,
@@ -19,16 +21,22 @@ import {
     isValidNumberForm,
 } from '@navikt/fp-validation';
 
-import { onToggleInfo } from 'app/steps/barnet/amplitudeLoggerUtils';
-import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
+const TEXT_INPUT_MIN_LENGTH = 10;
+const TEXT_INPUT_MAX_LENGTH = 1000;
 
 interface Props {
     egenNæringFom: string;
     egenNæringTom: string;
     varigEndring: boolean | undefined;
+    stønadstype: AppName;
 }
 
-const VarigEndringSpørsmål: FunctionComponent<Props> = ({ egenNæringFom, egenNæringTom, varigEndring }) => {
+const VarigEndringSpørsmål: FunctionComponent<Props> = ({
+    egenNæringFom,
+    egenNæringTom,
+    varigEndring,
+    stønadstype,
+}) => {
     const intl = useIntl();
     const egenNæringVarigEndringBeskrivelseLabel = intl.formatMessage({
         id: 'egenNæring.varigEndringBeskrivelse.label',
@@ -53,7 +61,7 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({ egenNæringFom, egen
                 </Radio>
             </RadioGroup>
             <ReadMore
-                onOpenChange={onToggleInfo('Varig_endring')}
+                onOpenChange={logAmplitudeEventOnOpen(stønadstype, 'Varig_endring')}
                 header={intl.formatMessage({ id: 'egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info.åpneLabel' })}
             >
                 <BodyShort>

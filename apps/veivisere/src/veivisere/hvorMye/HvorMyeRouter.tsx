@@ -1,11 +1,13 @@
 import Environment from 'appData/Environment';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
+import { VeiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
 import dayjs from 'dayjs';
 import { FunctionComponent, useState } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useBeforeUnload } from 'react-router-dom';
 
 import { getAxiosInstance, usePostRequest } from '@navikt/fp-api';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
 
@@ -44,13 +46,21 @@ const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale, satser 
         STØNADSKONTO_OPTIONS,
     );
 
+    useBeforeUnload(() => {
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: VeiviserAmplitudeKey.HVOR_MYE,
+            team: 'foreldrepenger',
+            pageKey: 'page-unload',
+        });
+    });
+
     if (requestData.error) {
         return <SimpleErrorPage />;
     }
 
     return (
         <Routes>
-            <Route path={HvorMyeRoutes.OM} element={<HvorMyeForside locale={locale} changeLocale={changeLocale} />} />
+            <Route path="/" element={<HvorMyeForside locale={locale} changeLocale={changeLocale} />} />
             <Route
                 path={HvorMyeRoutes.ARBEIDSSITUASJON}
                 element={
@@ -73,7 +83,7 @@ const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale, satser 
                     }
                 />
             )}
-            <Route path="*" element={<Navigate to={ContextRoutes.HVOR_MYE + HvorMyeRoutes.OM} />} />
+            <Route path="*" element={<Navigate to={ContextRoutes.HVOR_MYE} />} />
         </Routes>
     );
 };

@@ -4,15 +4,9 @@ import { FormattedMessage } from 'react-intl';
 import { Alert, BodyShort, Box, Button, HStack, Heading, Label, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
+import { AppName } from '@navikt/fp-types';
 
 import ContentWrapper from '../contentWrapper/ContentWrapper';
-
-export type AppName =
-    | 'Foreldrepenger'
-    | 'Engangsstønad'
-    | 'Svangerskapspenger'
-    | 'Foreldrepengeplanlegger'
-    | 'Foreldrepengeveivisere';
 
 export interface Props {
     appName: AppName;

@@ -5,6 +5,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import {
@@ -27,8 +28,6 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appD
 import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
 import { Barn } from 'app/types/Barn';
-
-import { onToggleInfo } from './amplitudeLoggerUtils';
 
 const getMinDatoTermin = (erBarnetFødt: boolean, fødselsdato?: string): Dayjs =>
     erBarnetFødt && fødselsdato && isStringADate(fødselsdato) ? enMånedSiden(fødselsdato) : enMånedSiden(new Date());
@@ -108,7 +107,7 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                             </Radio>
                         </RadioGroup>
                         <ReadMore
-                            onOpenChange={onToggleInfo('SVP_tilbake_i_tid')}
+                            onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'SVP_tilbake_i_tid')}
                             header={intl.formatMessage({ id: 'barnet.erBarnetFødt.merInfo.tittel' })}
                         >
                             <BodyShort>
@@ -173,7 +172,7 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                             ]}
                         />
                         <ReadMore
-                            onOpenChange={onToggleInfo('SVP_tre_uker_før_termin')}
+                            onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'SVP_tre_uker_før_termin')}
                             header={intl.formatMessage({ id: 'barnet.termindato.merInfo.tittel' })}
                         >
                             <BodyShort>

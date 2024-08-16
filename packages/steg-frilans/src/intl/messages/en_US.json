@@ -1,0 +1,10 @@
+{
+    "FrilansPanel.Oppstart": "When did you start as a freelancer?",
+    "FrilansPanel.JobberFremdelesSomFrilans": "Are you still working as a freelancer?",
+    "FrilansPanel.JobberFremdelesSomFrilans.Ja": "Yes",
+    "FrilansPanel.JobberFremdelesSomFrilans.Nei": "No",
+    "FrilansPanel.Valideringsfeil.FraOgMedDato.Påkrevd": "You must enter a start date.",
+    "FrilansPanel.Valideringsfeil.FraOgMedDato.GyldigDato": "The start date must be a valid date on the format dd.mm.yyyy.",
+    "FrilansPanel.Valideringsfeil.FraOgMedDato.ErIFremtiden": "The start date must be before or equal to today's date.",
+    "FrilansPanel.Valideringsfeil.JobberFremdelesSomFrilans.Påkrevd": "You must state whether you are still working as a freelancer."
+}

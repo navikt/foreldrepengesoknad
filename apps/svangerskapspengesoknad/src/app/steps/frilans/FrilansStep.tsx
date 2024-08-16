@@ -1,20 +1,17 @@
-import { useForm } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
-import { Radio, VStack } from '@navikt/ds-react';
+import { Heading } from '@navikt/ds-react';
 
-import { DATE_20_YEARS_AGO, DATE_TODAY } from '@navikt/fp-constants';
-import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { Frilans, FrilansPanel, frilansId } from '@navikt/fp-steg-frilans';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
-import { isBeforeTodayOrToday, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
+import { ContentWrapper } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
 import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
 import { egenNæringId } from 'app/types/EgenNæring';
-import { Frilans, frilansId } from 'app/types/Frilans';
 import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 
@@ -62,7 +59,6 @@ type Props = {
 };
 
 const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }) => {
-    const intl = useIntl();
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
@@ -74,10 +70,6 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
     const oppdaterFrilans = useContextSaveData(ContextDataType.FRILANS);
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
-
-    const formMethods = useForm<Frilans>({
-        defaultValues: frilans,
-    });
 
     const onSubmit = (values: Frilans) => {
         oppdaterFrilans(values);
@@ -103,48 +95,27 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
         return navigator.goToNextStep(nextRoute);
     };
 
+    const saveOnPrevious = () => {
+        // TODO (TOR) Lagre uvalidert data i framtida
+    };
+
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            steps={stepConfig}
-            onContinueLater={navigator.fortsettSøknadSenere}
-            onStepChange={navigator.goToNextStep}
-        >
-            <Form formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    <Datepicker
-                        name="oppstart"
-                        label={intl.formatMessage({ id: 'frilans.oppstart' })}
-                        validate={[
-                            isRequired(intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.påkrevd' })),
-                            isValidDate(intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.gyldigDato' })),
-                            isBeforeTodayOrToday(
-                                intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.erIFremtiden' }),
-                            ),
-                        ]}
-                        maxDate={DATE_TODAY}
-                        minDate={DATE_20_YEARS_AGO}
-                    />
-                    <RadioGroup
-                        name="jobberFremdelesSomFrilans"
-                        label={intl.formatMessage({ id: 'frilans.jobberFremdelesSomFrilans' })}
-                        validate={[
-                            isRequired(intl.formatMessage({ id: 'valideringsfeil.jobberFremdelesSomFrilans.påkrevd' })),
-                        ]}
-                    >
-                        <Radio value={true}>
-                            <FormattedMessage id="frilans.jobberFremdelesSomFrilans.ja" />
-                        </Radio>
-                        <Radio value={false}>
-                            <FormattedMessage id="frilans.jobberFremdelesSomFrilans.nei" />
-                        </Radio>
-                    </RadioGroup>
-                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
-                </VStack>
-            </Form>
-        </Step>
+        <ContentWrapper>
+            <Heading size="large">
+                <FormattedMessage id="søknad.pageheading" />
+            </Heading>
+            <FrilansPanel
+                frilans={frilans}
+                saveOnNext={onSubmit}
+                saveOnPrevious={saveOnPrevious}
+                onStepChange={navigator.goToNextStep}
+                cancelApplication={avbrytSøknad}
+                onContinueLater={navigator.fortsettSøknadSenere}
+                goToPreviousStep={navigator.goToPreviousDefaultStep}
+                stepConfig={stepConfig}
+                stønadstype="Svangerskapspenger"
+            />
+        </ContentWrapper>
     );
 };
 

@@ -2,12 +2,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { FormSummary } from '@navikt/ds-react';
 
+import { Næringstype } from '@navikt/fp-steg-egen-naering';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { formatDate, getCountryName } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/appData/SvpDataContext';
-import { Næringstype } from 'app/types/EgenNæring';
 
 export function ArbeidsforholdOppsummering({
     arbeidsforhold,
@@ -121,19 +121,21 @@ export function SelvstendigNæringsdrivendeSummary({ onVilEndreSvar }: { readonl
             <FormSummary.Answers>
                 <FormSummary.Answer>
                     <FormSummary.Label>
-                        <FormattedMessage id="egenNæring.næringstype" />
+                        <FormattedMessage id="ArbeidsforholdOppsummering.næringstype" />
                     </FormSummary.Label>
                     <FormSummary.Value>
                         {(() => {
                             switch (egenNæring?.næringstype) {
                                 case Næringstype.FISKER:
-                                    return <FormattedMessage id="egenNæring.næringstype.fiske" />;
+                                    return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.fiske" />;
                                 case Næringstype.DAGMAMMA:
-                                    return <FormattedMessage id="egenNæring.næringstype.dagmamma" />;
+                                    return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.dagmamma" />;
                                 case Næringstype.JORDBRUK:
-                                    return <FormattedMessage id="egenNæring.næringstype.jordbrukSkogbruk" />;
+                                    return (
+                                        <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.jordbrukSkogbruk" />
+                                    );
                                 case Næringstype.ANNET:
-                                    return <FormattedMessage id="egenNæring.næringstype.annen" />;
+                                    return <FormattedMessage id="ArbeidsforholdOppsummering.næringstype.annen" />;
                                 default:
                                     return null;
                             }
@@ -144,7 +146,7 @@ export function SelvstendigNæringsdrivendeSummary({ onVilEndreSvar }: { readonl
                 {egenNæring.navnPåNæringen && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
-                            <FormattedMessage id="egenNæring.navnPåNæring" />
+                            <FormattedMessage id="ArbeidsforholdOppsummering.navnPåNæring" />
                         </FormSummary.Label>
                         <FormSummary.Value>{egenNæring.navnPåNæringen}</FormSummary.Value>
                     </FormSummary.Answer>
@@ -152,7 +154,7 @@ export function SelvstendigNæringsdrivendeSummary({ onVilEndreSvar }: { readonl
 
                 <FormSummary.Answer>
                     <FormSummary.Label>
-                        <FormattedMessage id="egenNæring.erNæringenRegistrertINorge" />
+                        <FormattedMessage id="ArbeidsforholdOppsummering.erNæringenRegistrertINorge" />
                     </FormSummary.Label>
                     <FormSummary.Value>
                         <JaNeiTekst ja={egenNæring.registrertINorge} />
@@ -162,7 +164,7 @@ export function SelvstendigNæringsdrivendeSummary({ onVilEndreSvar }: { readonl
                 {egenNæring.organisasjonsnummer && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
-                            <FormattedMessage id="egenNæring.orgnr" />
+                            <FormattedMessage id="ArbeidsforholdOppsummering.orgnr" />
                         </FormSummary.Label>
                         <FormSummary.Value>{egenNæring.organisasjonsnummer}</FormSummary.Value>
                     </FormSummary.Answer>
@@ -170,14 +172,14 @@ export function SelvstendigNæringsdrivendeSummary({ onVilEndreSvar }: { readonl
 
                 <FormSummary.Answer>
                     <FormSummary.Label>
-                        <FormattedMessage id="egenNæring.næring.fom" />
+                        <FormattedMessage id="ArbeidsforholdOppsummering.næring.fom" />
                     </FormSummary.Label>
                     <FormSummary.Value>{formatDate(egenNæring.fomDato)}</FormSummary.Value>
                 </FormSummary.Answer>
 
                 <FormSummary.Answer>
                     <FormSummary.Label>
-                        <FormattedMessage id="egenNæring.næring.pågående" />
+                        <FormattedMessage id="ArbeidsforholdOppsummering.næring.pågående" />
                     </FormSummary.Label>
                     <FormSummary.Value>
                         <JaNeiTekst ja={egenNæring.pågående} />
@@ -187,7 +189,7 @@ export function SelvstendigNæringsdrivendeSummary({ onVilEndreSvar }: { readonl
                 {!egenNæring.pågående && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
-                            <FormattedMessage id="egenNæring.næring.tom" />
+                            <FormattedMessage id="ArbeidsforholdOppsummering.næring.tom" />
                         </FormSummary.Label>
                         <FormSummary.Value>{formatDate(egenNæring.tomDato)}</FormSummary.Value>
                     </FormSummary.Answer>
@@ -195,14 +197,14 @@ export function SelvstendigNæringsdrivendeSummary({ onVilEndreSvar }: { readonl
 
                 <FormSummary.Answer>
                     <FormSummary.Label>
-                        <FormattedMessage id="egenNæring.næringsinntekt" />
+                        <FormattedMessage id="ArbeidsforholdOppsummering.næringsinntekt" />
                     </FormSummary.Label>
                     <FormSummary.Value>{egenNæring.næringsinntekt}</FormSummary.Value>
                 </FormSummary.Answer>
 
                 <FormSummary.Answer>
                     <FormSummary.Label>
-                        <FormattedMessage id="egenNæring.blittYrkesaktivSiste3År" />
+                        <FormattedMessage id="ArbeidsforholdOppsummering.blittYrkesaktivSiste3År" />
                     </FormSummary.Label>
                     <FormSummary.Value>
                         <JaNeiTekst ja={!!egenNæring.harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene} />
@@ -212,7 +214,7 @@ export function SelvstendigNæringsdrivendeSummary({ onVilEndreSvar }: { readonl
                 {egenNæring.oppstartsdato && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
-                            <FormattedMessage id="egenNæring.yrkesaktivDato" />
+                            <FormattedMessage id="ArbeidsforholdOppsummering.yrkesaktivDato" />
                         </FormSummary.Label>
                         <FormSummary.Value>{formatDate(egenNæring.oppstartsdato)}</FormSummary.Value>
                     </FormSummary.Answer>
@@ -242,13 +244,13 @@ export function FrilansSummary({ onVilEndreSvar }: { readonly onVilEndreSvar: ()
             <FormSummary.Answers>
                 <FormSummary.Answer>
                     <FormSummary.Label>
-                        <FormattedMessage id="frilans.oppstart" />
+                        <FormattedMessage id="ArbeidsforholdOppsummering.Oppstart" />
                     </FormSummary.Label>
                     <FormSummary.Value>{formatDate(frilans.oppstart)}</FormSummary.Value>
                 </FormSummary.Answer>
                 <FormSummary.Answer>
                     <FormSummary.Label>
-                        <FormattedMessage id="frilans.jobberFremdelesSomFrilans" />
+                        <FormattedMessage id="ArbeidsforholdOppsummering.JobberFremdelesSomFrilans" />
                     </FormSummary.Label>
                     <FormSummary.Value>
                         <JaNeiTekst ja={frilans.jobberFremdelesSomFrilans} />

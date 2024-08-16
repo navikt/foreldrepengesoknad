@@ -3,10 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
-import { ContextDataType } from 'app/appData/SvpDataContext';
-import SøknadRoutes from 'app/appData/routes';
-
-import * as stories from './EgenNæring.stories';
+import * as stories from './EgenNæringPanel.stories';
 
 const { Default } = composeStories(stories);
 
@@ -14,8 +11,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
     it('skal vise feilmelding når ingenting er fylt eller huket av', async () => {
         render(<Default />);
 
-        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
-        expect(screen.getByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 
@@ -31,10 +27,9 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
     });
 
     it('skal ikke vise feilmelding, alt er utfylt', async () => {
-        const gåTilNesteSide = vi.fn();
-        const mellomlagreSøknadOgNaviger = vi.fn();
+        const saveOnNext = vi.fn();
 
-        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        render(<Default saveOnNext={saveOnNext} />);
 
         expect(await screen.findByText('Hvilken type virksomhet har du?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Jordbruk'));
@@ -70,32 +65,17 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         expect(screen.queryByText('Du må oppgi organisasjonsnummer.')).not.toBeInTheDocument();
         expect(screen.queryByText('Du må oppgi næringsresultat de siste 12 månedene.')).not.toBeInTheDocument();
 
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: {
-                harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
-                navnPåNæringen: 'Virksomhetsnavn AS',
-                næringsinntekt: '1000',
-                næringstype: 'JORDBRUK_SKOGBRUK',
-                organisasjonsnummer: '997519485',
-                pågående: true,
-                registrertINorge: true,
-                fomDato: '2023-04-30',
-            },
-            key: ContextDataType.EGEN_NÆRING,
-            type: 'update',
+        expect(saveOnNext).toHaveBeenCalledTimes(1);
+        expect(saveOnNext).toHaveBeenNthCalledWith(1, {
+            fomDato: '2023-04-30',
+            harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
+            navnPåNæringen: 'Virksomhetsnavn AS',
+            næringsinntekt: '1000',
+            næringstype: 'JORDBRUK_SKOGBRUK',
+            organisasjonsnummer: '997519485',
+            pågående: true,
+            registrertINorge: true,
         });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: undefined,
-            key: ContextDataType.VALGT_TILRETTELEGGING_ID,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
-            data: SøknadRoutes.VELG_ARBEID,
-            key: ContextDataType.APP_ROUTE,
-            type: 'update',
-        });
-
-        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
     });
 
     it('skal ikke vise feilmelding hvis fisker ikke fyller ut navn eller orgnummer', async () => {
@@ -181,5 +161,28 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(screen.queryAllByText('Du må oppgi hvilket land næringen er registert i.')[0]).toBeInTheDocument();
+    });
+
+    it('skal avslutte søknad', async () => {
+        const cancelApplication = vi.fn();
+
+        render(<Default cancelApplication={cancelApplication} />);
+
+        expect(await screen.findByText('Er virksomheten registrert i Norge?')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Avslutt'));
+
+        expect(screen.getByText('Fortsett senere')).toBeInTheDocument();
+    });
+
+    it('skal gå til et tidligere steg', async () => {
+        const onStepChange = vi.fn();
+
+        render(<Default onStepChange={onStepChange} />);
+
+        await userEvent.click(screen.getByText('Barnet'));
+
+        expect(onStepChange).toHaveBeenCalledTimes(1);
+        expect(onStepChange).toHaveBeenNthCalledWith(1, 'BARNET_PATH');
     });
 });

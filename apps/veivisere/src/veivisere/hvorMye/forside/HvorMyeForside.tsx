@@ -1,6 +1,7 @@
 import { BabyWrappedIcon, WalletIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
+import { VeiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
 import { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -24,7 +25,7 @@ const HvorMyeForside: React.FunctionComponent<Props> = ({ locale, changeLocale }
 
     useEffect(() => {
         logAmplitudeEvent('sidevisning', {
-            app: 'veivisere',
+            app: VeiviserAmplitudeKey.HVOR_MYE,
             team: 'foreldrepenger',
             pageKey: ContextRoutes.HVOR_MYE + HvorMyeRoutes.OM,
         });

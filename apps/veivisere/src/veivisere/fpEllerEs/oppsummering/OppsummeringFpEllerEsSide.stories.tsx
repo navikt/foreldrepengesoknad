@@ -46,10 +46,10 @@ const meta = {
 } satisfies Meta<typeof OppsummeringFpEllerEsSide>;
 export default meta;
 
-export const MorHarTjentMerEnn200000OgHarRettTilFpOgEs: Story = {
+export const MorHarTjentMerEnn200000OgHarRettTilFp: Story = {
     args: {
         fpEllerEsSituasjon: {
-            borDuINorge: true,
+            borDuINorge: false,
             erIArbeid: true,
             harHattAndreInntekter: true,
             harHattInntekt: true,
@@ -99,40 +99,41 @@ export const MorHarRettTilEs: Story = {
     },
 };
 
-export const MorHarIkkeRett: Story = {
+export const MorHarRettBorIkkeINorgeMenJobberINorge: Story = {
     args: {
         fpEllerEsSituasjon: {
             borDuINorge: false,
-            erIArbeid: false,
+            erIArbeid: true,
             harHattAndreInntekter: false,
-            harHattInntekt: false,
-            lønnPerMåned: 0,
+            harHattInntekt: true,
+            lønnPerMåned: 10000,
             situasjon: Situasjon.MOR,
             jobberDuINorge: true,
         },
     },
 };
+
 export const FarHarIkkeRett: Story = {
     args: {
         fpEllerEsSituasjon: {
-            borDuINorge: false,
+            borDuINorge: true,
             erIArbeid: false,
             harHattAndreInntekter: false,
             harHattInntekt: true,
             lønnPerMåned: 0,
             situasjon: Situasjon.FAR,
-            jobberDuINorge: true,
+            jobberDuINorge: false,
         },
     },
 };
-export const MorHarIkkeRettJobberIkkeINorge: Story = {
+export const MorHarIkkeRettJobberIkkeINorgeMenIUtlandet: Story = {
     args: {
         fpEllerEsSituasjon: {
             borDuINorge: false,
-            erIArbeid: false,
+            erIArbeid: true,
             harHattAndreInntekter: false,
-            harHattInntekt: false,
-            lønnPerMåned: 0,
+            harHattInntekt: true,
+            lønnPerMåned: 10000,
             situasjon: Situasjon.MOR,
             jobberDuINorge: false,
         },

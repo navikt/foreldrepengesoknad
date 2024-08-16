@@ -1,10 +1,9 @@
 import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
-import { useBeforeUnload, utilsMessages } from '@navikt/fp-utils';
+import { utilsMessages } from '@navikt/fp-utils';
 
 import Veiviser from './Veiviser';
 import enMessages from './intl/messages/en_US.json';
@@ -36,14 +35,6 @@ const initLocale = (): LocaleAll => {
 
 const AppContainer = () => {
     const [locale, setLocale] = useState<LocaleAll>(initLocale());
-
-    useBeforeUnload(() => {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'veivisere',
-            team: 'foreldrepenger',
-            pageKey: 'page-unload',
-        });
-    });
 
     const changeLocale = useCallback((activeLocale: LocaleAll) => {
         setLocale(activeLocale);

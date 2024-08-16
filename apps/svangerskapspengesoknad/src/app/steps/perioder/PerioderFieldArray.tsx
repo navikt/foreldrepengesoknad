@@ -7,6 +7,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, BodyShort, Button, HStack, Heading, Radio, ReadMore, Tag, VStack } from '@navikt/ds-react';
 
 import { Datepicker, RadioGroup, TextField } from '@navikt/fp-form-hooks';
+import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { HorizontalLine } from '@navikt/fp-ui';
 import { bemUtils } from '@navikt/fp-utils';
 import { isAfterOrSame, isBeforeOrSame, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
@@ -20,7 +21,6 @@ import Tilrettelegging, {
 import { getDefaultMonth, getSisteDagForSvangerskapspenger } from 'app/utils/dateUtils';
 import { getOpprinneligStillingsprosent } from 'app/utils/tilretteleggingUtils';
 
-import { onToggleInfo } from '../barnet/amplitudeLoggerUtils';
 import './perioderFieldArray.css';
 import {
     getMinDatoTom,
@@ -241,7 +241,7 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
                                 ]}
                             />
                             <ReadMore
-                                onOpenChange={onToggleInfo('Ikke_har_100%_stilling')}
+                                onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Ikke_har_100%_stilling')}
                                 size="medium"
                                 header={intl.formatMessage({
                                     id: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',

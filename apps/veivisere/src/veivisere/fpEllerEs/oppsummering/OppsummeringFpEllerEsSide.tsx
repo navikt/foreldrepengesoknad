@@ -19,22 +19,32 @@ const finnHvemSomHarRett = (fpEllerEsSituasjon: FpEllerEsSituasjon, satser: Sats
     const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
     const minstelønn = grunnbeløpet / 2;
 
-    const { situasjon, lønnPerMåned, borDuINorge } = fpEllerEsSituasjon;
+    const { situasjon, lønnPerMåned, borDuINorge, jobberDuINorge } = fpEllerEsSituasjon;
     const erLønnOverEllerLik200000 = lønnPerMåned * 12 >= 200000;
     const erLønnOverEllerLikMinstelønn = lønnPerMåned * 12 >= minstelønn;
-    if (situasjon === 'mor' && erLønnOverEllerLik200000 && erLønnOverEllerLikMinstelønn && borDuINorge) {
+    if (
+        situasjon === 'mor' &&
+        erLønnOverEllerLik200000 &&
+        erLønnOverEllerLikMinstelønn &&
+        (borDuINorge || jobberDuINorge)
+    ) {
         return 'morTjener200000EllerMerOgHarRett';
     }
-    if (situasjon === 'mor' && !erLønnOverEllerLik200000 && erLønnOverEllerLikMinstelønn && borDuINorge) {
+    if (
+        situasjon === 'mor' &&
+        !erLønnOverEllerLik200000 &&
+        erLønnOverEllerLikMinstelønn &&
+        (borDuINorge || jobberDuINorge)
+    ) {
         return 'morTjenerUnder200000OgKanHaRettFpEllerEs';
     }
-    if (situasjon !== 'mor' && erLønnOverEllerLikMinstelønn && borDuINorge) {
+    if (situasjon !== 'mor' && erLønnOverEllerLikMinstelønn && (borDuINorge || jobberDuINorge)) {
         return 'farEllerMedmorKanHaRettFp';
     }
     if (
         situasjon === 'mor' &&
         ((!erLønnOverEllerLik200000 && !erLønnOverEllerLikMinstelønn) || erLønnOverEllerLikMinstelønn) &&
-        borDuINorge
+        (borDuINorge || jobberDuINorge)
     ) {
         return 'morHarRettEs';
     }
@@ -50,9 +60,6 @@ const OppsummeringFpEllerEsSide: React.FunctionComponent<Props> = ({ fpEllerEsSi
     const { ref } = useScrollBehaviour();
 
     const hvemHarRett = finnHvemSomHarRett(fpEllerEsSituasjon, satser);
-
-    const erFarEllerMedmor = fpEllerEsSituasjon.situasjon !== 'mor';
-    console.log(erFarEllerMedmor);
 
     return (
         <>
