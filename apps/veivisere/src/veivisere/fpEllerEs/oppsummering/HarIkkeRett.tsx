@@ -1,9 +1,8 @@
 import { ArrowLeftIcon, BabyWrappedIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, FpEllerEsRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
-import dayjs from 'dayjs';
 import { FormattedMessage } from 'react-intl';
-import { finnGrunnbeløp } from 'utils/satserUtils';
+import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Box, Button, HStack, Heading, VStack } from '@navikt/ds-react';
 
@@ -22,7 +21,7 @@ interface Props {
 const HarIkkeRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser }) => {
     const { goToRoute } = useVeiviserNavigator(ContextRoutes.FP_ELLER_ES);
     const jobberIkkeINorge = fpEllerEsSituasjon.borDuINorge === false && fpEllerEsSituasjon.jobberDuINorge === false;
-    const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
+    const grunnbeløpet = finnSisteGrunnbeløp(satser);
 
     return (
         <>

@@ -5,7 +5,7 @@ import { VeiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { finnEngangsstønad, finnGrunnbeløp } from 'utils/satserUtils';
+import { finnSisteEngangsstønad, finnSisteGrunnbeløp } from 'utils/satserUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { BodyShort, Button, ExpansionCard, HStack, Heading, Link, VStack } from '@navikt/ds-react';
@@ -58,11 +58,11 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
     const gjennomsnittslønnPerMåned = parseFloat(notEmpty(finnGjennomsnittsMånedslønn(notEmpty(arbeidssituasjon))));
     const årslønn = gjennomsnittslønnPerMåned * 12;
 
-    const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
+    const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const grunnbeløpetGanger6 = grunnbeløpet * 6;
     const minÅrslønn = grunnbeløpet / 2;
 
-    const engangsstønad = finnEngangsstønad(satser, dayjs());
+    const engangsstønad = finnSisteEngangsstønad(satser);
 
     const harIkkeRettTilFp = årslønn < minÅrslønn;
     const erMellomMinÅrslønnOg1Komma5G = årslønn > minÅrslønn && årslønn < grunnbeløpet * 1.5;

@@ -44,7 +44,10 @@ const AppContainer = () => {
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary appName="Foreldrepengeveivisere" customErrorPage={<SimpleErrorPage />}>
+            <ErrorBoundary
+                appName="Foreldrepengeveivisere"
+                customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
+            >
                 <Veiviser locale={locale} changeLocale={changeLocale} />
             </ErrorBoundary>
         </IntlProvider>
