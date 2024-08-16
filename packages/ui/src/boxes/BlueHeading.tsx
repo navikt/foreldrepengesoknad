@@ -7,7 +7,8 @@ interface Props {
 
 const BlueHeading: React.FunctionComponent<Props> = ({ children, isDarkBlue = false }) => (
     <Box
-        background={isDarkBlue ? 'surface-alt-2-moderate' : 'surface-alt-3-subtle'}
+        //TODO Fiks korrekt farge for dark blue
+        background={isDarkBlue ? 'surface-alt-3-subtle' : 'surface-alt-3-subtle'}
         borderRadius="medium medium 0 0"
         padding="6"
         borderWidth="0 0 2"
