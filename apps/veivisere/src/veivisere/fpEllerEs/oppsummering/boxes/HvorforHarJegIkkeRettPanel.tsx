@@ -84,7 +84,7 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
                                     )}
                                 </>
                             }
-                            erOppfylt={fpEllerEsSituasjon.jobberDuINorge}
+                            erOppfylt={fpEllerEsSituasjon.jobberDuINorge || fpEllerEsSituasjon.borDuINorge}
                             jobberIkkeINorge={
                                 fpEllerEsSituasjon.jobberDuINorge === false && fpEllerEsSituasjon.borDuINorge === false
                             }
