@@ -145,9 +145,9 @@ const FileUploader: React.FunctionComponent<Props> = ({
                 }
             };
 
-            const allPendingAttachments = files.map((file) =>
-                getPendingAttachmentFromFile(file, attachmentType, skjemanummer),
-            );
+            const allPendingAttachments = files
+                .filter((file) => !file.error)
+                .map((file) => getPendingAttachmentFromFile(file, attachmentType, skjemanummer));
             addOrReplaceAttachments(setAttachments, allPendingAttachments);
             uploadAttachments(allPendingAttachments);
         },
