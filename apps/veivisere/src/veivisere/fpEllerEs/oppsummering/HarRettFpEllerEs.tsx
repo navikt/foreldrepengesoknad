@@ -1,9 +1,8 @@
 import { ArrowLeftIcon, BabyWrappedIcon, InformationIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, FpEllerEsRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
-import dayjs from 'dayjs';
 import { FormattedMessage } from 'react-intl';
-import { finnEngangsstønad, finnGrunnbeløp } from 'utils/satserUtils';
+import { finnSisteEngangsstønad, finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Box, Button, HStack, Heading, VStack } from '@navikt/ds-react';
 
@@ -22,9 +21,9 @@ interface Props {
 
 const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser }) => {
     const { goToRoute } = useVeiviserNavigator(ContextRoutes.FP_ELLER_ES);
-    const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
+    const grunnbeløpet = finnSisteGrunnbeløp(satser);
 
-    const engangsstønad = finnEngangsstønad(satser, dayjs());
+    const engangsstønad = finnSisteEngangsstønad(satser);
 
     return (
         <>

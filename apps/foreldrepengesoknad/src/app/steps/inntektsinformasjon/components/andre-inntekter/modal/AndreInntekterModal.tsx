@@ -100,7 +100,7 @@ const AndreInntekterModal: FunctionComponent<Props> = ({
                                         name={AndreInntekterFormField.type}
                                         radios={[
                                             { label: 'Jobb i utlandet', value: AnnenInntektType.JOBB_I_UTLANDET },
-                                            { label: 'Sluttvederlag', value: AnnenInntektType.SLUTTPAKKE },
+                                            { label: 'Etterlønn/sluttvederlag', value: AnnenInntektType.SLUTTPAKKE },
                                             { label: 'Førstegangstjeneste', value: AnnenInntektType.MILITÆRTJENESTE },
                                         ]}
                                     />

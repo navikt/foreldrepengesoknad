@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { finnGrunnbeløp } from 'utils/satserUtils';
+import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { BodyShort, Button, Heading, Label, Link, ReadMore, Spacer, VStack } from '@navikt/ds-react';
@@ -15,7 +15,7 @@ import { Checkbox, Form, TextField } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
-import { isValidNumber } from '@navikt/fp-validation';
+import { isValidNumber, isValidNumberForm } from '@navikt/fp-validation';
 
 import VeiviserPage from '../../felles/VeiviserPage';
 import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
@@ -80,7 +80,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
     const gjennomsnittslønnPerMåned = finnGjennomsnittsMånedslønn(formValues);
     const antattÅrslønn = gjennomsnittslønnPerMåned ? parseFloat(gjennomsnittslønnPerMåned) * 12 : undefined;
 
-    const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
+    const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const minÅrslønn = grunnbeløpet / 2;
     const maxÅrslønn = grunnbeløpet * 6;
 
@@ -183,6 +183,11 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                                     forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
                                                 )}
                                                 className={styles.widthTextInput}
+                                                validate={[
+                                                    isValidNumberForm(
+                                                        intl.formatMessage({ id: 'ArbeidssituasjonSide.ValidNumber' }),
+                                                    ),
+                                                ]}
                                             />
                                             <TextField
                                                 name="lønnMåned2"
@@ -190,11 +195,21 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                                     forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
                                                 )}
                                                 className={styles.widthTextInput}
+                                                validate={[
+                                                    isValidNumberForm(
+                                                        intl.formatMessage({ id: 'ArbeidssituasjonSide.ValidNumber' }),
+                                                    ),
+                                                ]}
                                             />
                                             <TextField
                                                 name="lønnMåned3"
                                                 label={capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
                                                 className={styles.widthTextInput}
+                                                validate={[
+                                                    isValidNumberForm(
+                                                        intl.formatMessage({ id: 'ArbeidssituasjonSide.ValidNumber' }),
+                                                    ),
+                                                ]}
                                             />
                                         </VStack>
                                         <div>

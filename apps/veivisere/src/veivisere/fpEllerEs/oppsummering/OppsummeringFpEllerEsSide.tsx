@@ -1,6 +1,5 @@
-import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
-import { finnGrunnbeløp } from 'utils/satserUtils';
+import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { VStack } from '@navikt/ds-react';
@@ -16,7 +15,7 @@ import HarRettFpEllerEs from './HarRettFpEllerEs';
 import HvorMyeOgHvaSkjerNåLinkPanel from './HvorMyeOgHvaSkjerNåLinkPanel';
 
 const finnHvemSomHarRett = (fpEllerEsSituasjon: FpEllerEsSituasjon, satser: Satser) => {
-    const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
+    const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const minstelønn = grunnbeløpet / 2;
 
     const { situasjon, lønnPerMåned, borDuINorge, jobberDuINorge } = fpEllerEsSituasjon;

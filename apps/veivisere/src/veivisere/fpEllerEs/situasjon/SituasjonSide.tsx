@@ -1,11 +1,10 @@
 import { BabyWrappedIcon, PaperplaneIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, FpEllerEsRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
-import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { finnGrunnbeløp } from 'utils/satserUtils';
+import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { BodyShort, Button, Heading, Label, List, Radio, ReadMore, Spacer, VStack } from '@navikt/ds-react';
@@ -49,23 +48,15 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
         shouldUnregister: true,
     });
 
-    const {
-        situasjon,
-        erIArbeid,
-        harHattInntekt,
-        lønnPerMåned,
-        borDuINorge,
-        harHattAndreInntekter,
-        jobberDuINorge,
-    } = formMethods.watch();
-
+    const { situasjon, erIArbeid, harHattInntekt, lønnPerMåned, borDuINorge, harHattAndreInntekter, jobberDuINorge } =
+        formMethods.watch();
 
     const onSubmit = (formValues: FpEllerEsSituasjon) => {
         setFpEllerEsSituasjon(formValues);
         goToRoute(FpEllerEsRoutes.OPPSUMMERING);
     };
 
-    const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
+    const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const minstelønn = grunnbeløpet / 2;
 
     const { ref, scrollToBottom } = useScrollBehaviour();
