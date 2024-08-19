@@ -41,7 +41,6 @@ import {
     kreverUttaksplanVedlegg,
     settInnAnnenPartsUttak,
 } from '@navikt/fp-uttaksplan';
-import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
@@ -657,14 +656,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                         {startStønadsperiodeNyttBarn && (
                             <InfoOmNesteBarn minsterettUkerToTette={minsterettUkerToTette} />
                         )}
-                        <UttaksplanNy
-                            uttaksplan={uttaksplan}
-                            familiehendelsedato={familiehendelsesdato}
-                            erFarEllerMedmor={erFarEllerMedmor}
-                            navnPåForeldre={navnPåForeldre}
-                            annenForelder={annenForelder}
-                            barn={barn}
-                        />
                         <Uttaksplan
                             foreldreSituasjon={foreldreSituasjon}
                             forelderVedAleneomsorg={forelderVedAleneomsorg}
