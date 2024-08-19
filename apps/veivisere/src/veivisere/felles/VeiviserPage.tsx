@@ -18,7 +18,7 @@ const VeiviserPage = forwardRef<HTMLDivElement, Props>(({ label, description, ch
                 <BlueHeading>
                     <HStack gap="5" align="center" wrap={false}>
                         {icon && (
-                            <IconCircleWrapper color="darkBlue" size="xl">
+                            <IconCircleWrapper color="blue" size="xl">
                                 {icon}
                             </IconCircleWrapper>
                         )}

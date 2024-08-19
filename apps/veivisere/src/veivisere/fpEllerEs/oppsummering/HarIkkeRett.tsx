@@ -30,7 +30,11 @@ const HarIkkeRett: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satse
                     <VStack gap="8" align="center">
                         <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden color="#66A3C4" />
                         <Heading size="medium" align="center" className="m-6">
-                            <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarIkkeRett" />
+                            {jobberIkkeINorge ? (
+                                <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarIkkeRettNorge" />
+                            ) : (
+                                <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarIkkeRett" />
+                            )}
                         </Heading>
                     </VStack>
                     <Box
