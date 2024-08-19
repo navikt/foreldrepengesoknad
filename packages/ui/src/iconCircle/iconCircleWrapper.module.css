@@ -41,11 +41,11 @@
 }
 
 .blue {
-    background: var(--a-deepblue-200);
-}
-.lightBlue {
     background: var(--a-deepblue-100);
 }
-.darkBlue {
+.lightBlue {
     background: var(--a-deepblue-200);
+}
+.darkBlue {
+    background: var(--a-deepblue-500);
 }

@@ -12,6 +12,9 @@ const getIconColor = (color: InfoboxColor): CircleColor => {
     if (color === 'gray') {
         return 'gray';
     }
+    if (color === 'blue') {
+        return 'blue';
+    }
     return color === 'green' ? 'darkGreen' : 'darkBlue';
 };
 
