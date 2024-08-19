@@ -117,7 +117,7 @@
     "OppsummeringFpEllerEsSide.HvaErFp": "Kva er foreldrepengar?",
     "OppsummeringFpEllerEsSide.BasertPåSvarene": "Basert på den månadlege lønna du oppgav vil du få utbetalt rundt {utbetaling} kronar i månaden, viss du tek 100% foreldrepengar. Talet på månader blir delt mellom far og mor, og vil variera viss ein vel 100% eller 80% foreldrepengar.",
     "OppsummeringFpEllerEsSide.HvaErFp.KanVelgeMellom": "Du kan velja mellom <b>49 veker med 100% foreldrepengar eller 59 veker med 80% foreldrepengar</b>.",
-    "OppsummeringFpEllerEsSide.KanOgsåHarRettTilEs": "Når du har rett på foreldrepengar kan du òg ha rett på eingongsstønad. Vanlegvis vil det lønna seg å velgja foreldrepengar. Du kan kun velge én av stønadene.",
+    "OppsummeringFpEllerEsSide.KanOgsåHarRettTilEs": "Når du har rett på foreldrepengar kan du òg ha rett på eingongsstønad. Vanlegvis vil det lønna seg å velgja foreldrepengar. Du kan kun velge én av stønadene og du kan ikkje ombestemma deg.",
     "OppsummeringFpEllerEsSide.DuFårUtbetaltEs": "Med eingongsstønad får du utbetalt ein eingongssum på {engangsstønad} kronar.",
     "OppsummeringFpEllerEsSide.EsSkalBidra": "Eingongsstønad er meint å bidra til å dekkje nokre av utgiftene i samband med å få barn. Stønaden er ein <b>eingongssum på {engangsstønad} kronar</b>.",
     "OppsummeringFpEllerEsSide.SøkOmFp": "Søk om foreldrepengar",
