@@ -3,12 +3,12 @@
 }
 
 .box {
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 1rem;
 }
 
 .blue {
-    background-color: var(--a-deepblue-100);
+    background-color: var(--a-deepblue-50);
 }
 
 .green {
