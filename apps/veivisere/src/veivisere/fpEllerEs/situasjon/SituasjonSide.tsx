@@ -138,6 +138,11 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
                             </BlueRadioGroup>
+                            <ReadMore header={<FormattedMessage id="SituasjonSide.AndreInntektskilder" />}>
+                                <BodyShort>
+                                    <FormattedMessage id="SituasjonSide.AndreInntektskilderDetaljer" />
+                                </BodyShort>
+                            </ReadMore>
                             {harHattAndreInntekter === false && (
                                 <Infobox
                                     header={<FormattedMessage id="SituasjonSide.JobbetMinst6av10" />}
