@@ -15,7 +15,7 @@ interface Props {
 }
 
 const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
-    const erMor = fpEllerEsSituasjon.situasjon === 'mor';
+    const minstelønn = grunnbeløpet / 2;
     return (
         <ExpansionCard aria-label="" size="small">
             <ExpansionCard.Header>
@@ -24,7 +24,7 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
                         <QuestionmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                     </IconCircleWrapper>
                     <ExpansionCard.Title size="small">
-                        {erMor ? (
+                        {fpEllerEsSituasjon.situasjon === 'mor' ? (
                             <FormattedMessage id="HvorforHarJegRettPanel.HvorforHarJegRett" />
                         ) : (
                             <FormattedMessage id="HvorforHarJegRettPanel.HvorforKanJegHaRett" />
@@ -49,7 +49,7 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
                             headerText={
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuMåTeneOver"
-                                    values={{ minstelønn: formatCurrencyWithKr(grunnbeløpet / 2) }}
+                                    values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
                                 />
                             }
                             boxBodyText={
@@ -57,16 +57,22 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
                                     id="HvorforHarJegRettPanel.DuHarOppgittMånedslønn"
                                     values={{
                                         månedslønn: formatCurrencyWithKr(fpEllerEsSituasjon.lønnPerMåned),
-                                        minstelønn: formatCurrencyWithKr(grunnbeløpet / 2),
+                                        minstelønn: formatCurrencyWithKr(minstelønn),
+                                        hvorMye: fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn,
                                     }}
                                 />
                             }
-                            erOppfylt={fpEllerEsSituasjon.lønnPerMåned * 12 > grunnbeløpet / 2}
+                            erOppfylt={fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn}
                         />
                         <KravinfoBoks
                             testId="harRettFp"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
-                            boxBodyText={<FormattedMessage id="HvorforHarJegRettPanel.OppgittAtDuBorINorge" />}
+                            boxBodyText={
+                                <FormattedMessage
+                                    id="HvorforHarJegRettPanel.OppgittAtDuBorINorge"
+                                    values={{ borINorge: fpEllerEsSituasjon.borDuINorge }}
+                                />
+                            }
                             erOppfylt={fpEllerEsSituasjon.borDuINorge || fpEllerEsSituasjon.jobberDuINorge}
                         />
                     </VStack>

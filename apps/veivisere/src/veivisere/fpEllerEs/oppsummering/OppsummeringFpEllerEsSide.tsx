@@ -64,10 +64,8 @@ const OppsummeringFpEllerEsSide: React.FunctionComponent<Props> = ({ fpEllerEsSi
         <>
             <VeiviserPage ref={ref} label={intl.formatMessage({ id: 'OppsummeringFpEllerEsSide.Oppsummering' })}>
                 <VStack gap="8">
-                    {hvemHarRett === 'morTjener200000EllerMerOgHarRett' && (
-                        <HarRett fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
-                    )}
-                    {hvemHarRett === 'farEllerMedmorKanHaRettFp' && (
+                    {(hvemHarRett === 'morTjener200000EllerMerOgHarRett' ||
+                        hvemHarRett === 'farEllerMedmorKanHaRettFp') && (
                         <HarRett fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
                     )}
                     {hvemHarRett === 'morTjenerUnder200000OgKanHaRettFpEllerEs' && (

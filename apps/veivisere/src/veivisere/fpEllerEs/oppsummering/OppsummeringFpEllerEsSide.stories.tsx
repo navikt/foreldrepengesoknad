@@ -49,7 +49,7 @@ export default meta;
 export const MorHarTjentMerEnn200000OgHarRettTilFp: Story = {
     args: {
         fpEllerEsSituasjon: {
-            borDuINorge: false,
+            borDuINorge: true,
             erIArbeid: true,
             harHattAndreInntekter: true,
             harHattInntekt: true,
