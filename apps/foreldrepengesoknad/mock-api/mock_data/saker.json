@@ -1,7 +1,7 @@
 {
     "foreldrepenger": [
         {
-            "saksnummer": "352014672",
+            "saksnummer": "352014461",
             "sakAvsluttet": false,
             "kanSøkeOmEndring": true,
             "sakTilhørerMor": true,
@@ -11,7 +11,7 @@
             "ønskerJustertUttakVedFødsel": false,
             "rettighetType": "BEGGE_RETT",
             "annenPart": {
-                "fnr": "04420556212"
+                "fnr": "16500479977"
             },
             "familiehendelse": {
                 "termindato": "2024-03-13",
@@ -70,7 +70,7 @@
                 ]
             },
             "dekningsgrad": "HUNDRE",
-            "oppdatertTidspunkt": "2024-03-13T13:48:07.569"
+            "oppdatertTidspunkt": "2024-02-28T21:01:11.086"
         }
     ],
     "engangsstønad": [],
