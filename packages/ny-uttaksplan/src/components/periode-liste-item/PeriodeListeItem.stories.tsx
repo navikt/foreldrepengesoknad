@@ -21,7 +21,9 @@ const customRenderer = ({ permisjonsperiode }: StoryArgs) => {
                 },
             }}
         >
-            <PeriodeListeItem permisjonsperiode={permisjonsperiode} familiehendelsedato="2024-06-01" />
+            <div style={{ maxWidth: '704px', margin: '1rem auto 4rem' }}>
+                <PeriodeListeItem permisjonsperiode={permisjonsperiode} familiehendelsedato="2024-06-01" />
+            </div>
         </UttaksplanDataContext>
     );
 };
@@ -38,7 +40,7 @@ export const Uttaksperiode: Story = {
         permisjonsperiode: {
             tidsperiode: {
                 fom: '2024-06-01',
-                tom: '2024-06-31',
+                tom: '2024-06-30',
             },
             forelder: Forelder.mor,
             perioder: [],

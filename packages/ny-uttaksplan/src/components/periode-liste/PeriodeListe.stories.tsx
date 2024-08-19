@@ -28,17 +28,19 @@ const customRenderer = ({ perioder, familiehendelsedato }: StoryArgs) => {
                 },
             }}
         >
-            <PeriodeListe
-                perioder={perioder}
-                familiehendelsedato={familiehendelsedato}
-                barn={{
-                    type: BarnType.FØDT,
-                    antallBarn: 1,
-                    fødselsdatoer: ['2023-08-19'],
-                    termindato: '2023-08-15',
-                    fnr: ['19482356071'],
-                }}
-            />
+            <div style={{ maxWidth: '704px', margin: '1rem auto 4rem' }}>
+                <PeriodeListe
+                    perioder={perioder}
+                    familiehendelsedato={familiehendelsedato}
+                    barn={{
+                        type: BarnType.FØDT,
+                        antallBarn: 1,
+                        fødselsdatoer: ['2023-08-19'],
+                        termindato: '2023-08-15',
+                        fnr: ['19482356071'],
+                    }}
+                />
+            </div>
         </UttaksplanDataContext>
     );
 };
