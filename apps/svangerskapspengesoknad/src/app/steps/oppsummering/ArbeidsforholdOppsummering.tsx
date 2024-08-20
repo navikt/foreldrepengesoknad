@@ -46,7 +46,7 @@ export function ArbeidsforholdOppsummering({
                 </FormSummary.Answer>
                 <FormSummary.Answer>
                     <FormSummary.Label>
-                        <FormattedMessage id="inntektsinformasjon.harDuJobbetSomFrilans" />
+                        <FormattedMessage id="ArbeidsforholdOppsummering.harDuJobbetSomFrilans" />
                     </FormSummary.Label>
                     <FormSummary.Value>
                         <JaNeiTekst ja={inntektsinformasjon.harJobbetSomFrilans} />
@@ -55,7 +55,7 @@ export function ArbeidsforholdOppsummering({
 
                 <FormSummary.Answer>
                     <FormSummary.Label>
-                        <FormattedMessage id="inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende" />
+                        <FormattedMessage id="ArbeidsforholdOppsummering.harJobbetSomSelvstendigNæringsdrivende" />
                     </FormSummary.Label>
                     <FormSummary.Value>
                         <JaNeiTekst ja={inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende} />
@@ -63,7 +63,7 @@ export function ArbeidsforholdOppsummering({
                 </FormSummary.Answer>
                 <FormSummary.Answer>
                     <FormSummary.Label>
-                        <FormattedMessage id="inntektsinformasjon.hattArbeidIUtlandet" />
+                        <FormattedMessage id="ArbeidsforholdOppsummering.hattArbeidIUtlandet" />
                     </FormSummary.Label>
                     <FormSummary.Value>
                         <JaNeiTekst ja={inntektsinformasjon.harHattArbeidIUtlandet} />
@@ -88,7 +88,7 @@ function ArbeidsforholdFormSummaryValue({ arbeidsforhold }: { readonly arbeidsfo
             <FormSummary.Value>
                 Org nr: {arbeidsforhold.arbeidsgiverId},{' '}
                 <FormattedMessage
-                    id="inntektsinformasjon.arbeidsforhold.periode"
+                    id="ArbeidsforholdOppsummering.arbeidsforhold.periode"
                     values={{
                         fom: formatDate(arbeidsforhold.fom),
                         tom: arbeidsforhold.tom
@@ -284,7 +284,7 @@ export function JobbetIUtlandetSummary({ onVilEndreSvar }: { readonly onVilEndre
                         <FormattedMessage
                             id="oppsummering.arbeidIUtlandet.tittel"
                             values={{ antall: arbeidIUtlandet.arbeidIUtlandet.length }}
-                        />{' '}
+                        />
                     </FormSummary.Label>
                     <FormSummary.Value>
                         <FormSummary.Answers>
@@ -295,7 +295,7 @@ export function JobbetIUtlandetSummary({ onVilEndreSvar }: { readonly onVilEndre
                                     </FormSummary.Label>
                                     <FormSummary.Value>
                                         <FormattedMessage
-                                            id="inntektsinformasjon.arbeidsforhold.periode"
+                                            id="ArbeidsforholdOppsummering.arbeidsforhold.periode"
                                             values={{
                                                 fom: formatDate(arbeid.fom),
                                                 tom: arbeid.tom

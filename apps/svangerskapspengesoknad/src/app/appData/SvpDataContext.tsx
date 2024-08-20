@@ -1,12 +1,12 @@
 import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
 
+import { Inntektsinformasjon } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
 import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import { Barn } from 'app/types/Barn';
-import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import Tilrettelegging from 'app/types/Tilrettelegging';
 
 import SøknadRoutes from './routes';

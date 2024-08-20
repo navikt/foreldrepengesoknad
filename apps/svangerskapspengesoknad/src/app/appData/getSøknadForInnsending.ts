@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 
 import { AttachmentMetadataType, DATE_4_YEARS_AGO } from '@navikt/fp-constants';
+import { Inntektsinformasjon } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring, Næringstype } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
 import {
@@ -19,7 +20,6 @@ import { ArbeidsforholdDTO } from 'app/types/Arbeidsforhold';
 import { AttachmentDTO } from 'app/types/AttachmentDTO';
 import { Barn, BarnDTO } from 'app/types/Barn';
 import { EgenNæringDTO } from 'app/types/EgenNæring';
-import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import { SøkerDTO, Søkerrolle } from 'app/types/Søker';
 import { SøknadDTO, Søknadstype } from 'app/types/Søknad';
 import Tilrettelegging, {
