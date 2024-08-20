@@ -152,35 +152,39 @@ const toPerioder: Periode[] = [
 ];
 
 describe('Test av legg til periode i uttaksplan', () => {
-    it('Burde legge til ny periode korrekt i midten av en gammel periode ved å erstatte deler av den gamle perioden, og ikke forskyve noen andre perioder', () => {
-        const nyPeriode: Periode = {
-            id: '4',
-            type: Periodetype.Uttak,
-            tidsperiode: {
-                fom: new Date('2022-07-11'),
-                tom: new Date('2022-07-22'),
-            },
-            forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
-        };
-        const result = leggTilPeriode({
-            perioder,
-            nyPeriode,
-            familiehendelsesdato: new Date('2022-05-05'),
-            harAktivitetskravIPeriodeUtenUttak: false,
-            erAdopsjon: false,
-            bareFarHarRett: false,
-            erFarEllerMedmor: false,
-            førsteUttaksdagNesteBarnsSak: undefined,
-        });
-        expect(result.length).toEqual(5);
-        expect(result[1].tidsperiode.tom).toEqual(new Date('2022-07-08'));
-        expect(result[2]).toEqual(nyPeriode);
-        expect(result[3].tidsperiode.fom).toEqual(new Date('2022-07-25'));
-        expect(result[3].tidsperiode.tom).toEqual(perioder[1].tidsperiode.tom);
-        expect(result[4].tidsperiode.fom).toEqual(perioder[2].tidsperiode.fom);
-        expect(result[4].tidsperiode.tom).toEqual(perioder[2].tidsperiode.tom);
-    });
+    it(
+        'Burde legge til ny periode korrekt i midten av en gammel periode ved å erstatte deler av den gamle ' +
+            ' perioden, og ikke forskyve noen andre perioder',
+        () => {
+            const nyPeriode: Periode = {
+                id: '4',
+                type: Periodetype.Uttak,
+                tidsperiode: {
+                    fom: new Date('2022-07-11'),
+                    tom: new Date('2022-07-22'),
+                },
+                forelder: Forelder.mor,
+                konto: StønadskontoType.Fellesperiode,
+            };
+            const result = leggTilPeriode({
+                perioder,
+                nyPeriode,
+                familiehendelsesdato: new Date('2022-05-05'),
+                harAktivitetskravIPeriodeUtenUttak: false,
+                erAdopsjon: false,
+                bareFarHarRett: false,
+                erFarEllerMedmor: false,
+                førsteUttaksdagNesteBarnsSak: undefined,
+            });
+            expect(result.length).toEqual(5);
+            expect(result[1].tidsperiode.tom).toEqual(new Date('2022-07-08'));
+            expect(result[2]).toEqual(nyPeriode);
+            expect(result[3].tidsperiode.fom).toEqual(new Date('2022-07-25'));
+            expect(result[3].tidsperiode.tom).toEqual(perioder[1].tidsperiode.tom);
+            expect(result[4].tidsperiode.fom).toEqual(perioder[2].tidsperiode.fom);
+            expect(result[4].tidsperiode.tom).toEqual(perioder[2].tidsperiode.tom);
+        },
+    );
     it('Burde legge legge til ny periode korrekt som skal delvis overlappe et hull i starten', () => {
         const nyPeriode: Periode = {
             id: '7',
@@ -529,34 +533,38 @@ describe('Test av legg til periode i uttaksplan', () => {
         expect(result[2].tidsperiode.fom).toEqual(new Date('2022-10-17'));
         expect(result[2].tidsperiode.tom).toEqual(perioderKunAnnenPartsUttak[0].tidsperiode.tom);
     });
-    it('Hvis legger til ny periode en stund etter siste periode slik at det skapes periode uten uttak som overlapper med neste barns stønadsperiode start, skal periode uten uttak splittes.', () => {
-        const nyPeriode: Periode = {
-            id: '6',
-            type: Periodetype.Uttak,
-            tidsperiode: {
-                fom: new Date('2023-05-12'),
-                tom: new Date('2023-09-19'),
-            },
-            forelder: Forelder.mor,
-            konto: StønadskontoType.Fellesperiode,
-        };
-        const result = leggTilPeriode({
-            perioder,
-            nyPeriode,
-            familiehendelsesdato: new Date('2022-05-05'),
-            harAktivitetskravIPeriodeUtenUttak: false,
-            erAdopsjon: false,
-            bareFarHarRett: false,
-            erFarEllerMedmor: false,
-            førsteUttaksdagNesteBarnsSak: new Date('2023-03-21'),
-        });
-        expect(result.length).toEqual(6);
-        expect(result[3].tidsperiode).toEqual({ fom: new Date('2022-10-13'), tom: new Date('2023-03-20') });
-        expect(result[3].type).toEqual(Periodetype.PeriodeUtenUttak);
-        expect(result[4].tidsperiode).toEqual({ fom: new Date('2023-03-21'), tom: new Date('2023-05-11') });
-        expect(result[4].type).toEqual(Periodetype.PeriodeUtenUttak);
-        expect(result[5]).toEqual(nyPeriode);
-    });
+    it(
+        'Hvis legger til ny periode en stund etter siste periode slik at det skapes' +
+            ' periode uten uttak som overlapper med neste barns stønadsperiode start, skal periode uten uttak splittes.',
+        () => {
+            const nyPeriode: Periode = {
+                id: '6',
+                type: Periodetype.Uttak,
+                tidsperiode: {
+                    fom: new Date('2023-05-12'),
+                    tom: new Date('2023-09-19'),
+                },
+                forelder: Forelder.mor,
+                konto: StønadskontoType.Fellesperiode,
+            };
+            const result = leggTilPeriode({
+                perioder,
+                nyPeriode,
+                familiehendelsesdato: new Date('2022-05-05'),
+                harAktivitetskravIPeriodeUtenUttak: false,
+                erAdopsjon: false,
+                bareFarHarRett: false,
+                erFarEllerMedmor: false,
+                førsteUttaksdagNesteBarnsSak: new Date('2023-03-21'),
+            });
+            expect(result.length).toEqual(6);
+            expect(result[3].tidsperiode).toEqual({ fom: new Date('2022-10-13'), tom: new Date('2023-03-20') });
+            expect(result[3].type).toEqual(Periodetype.PeriodeUtenUttak);
+            expect(result[4].tidsperiode).toEqual({ fom: new Date('2023-03-21'), tom: new Date('2023-05-11') });
+            expect(result[4].type).toEqual(Periodetype.PeriodeUtenUttak);
+            expect(result[5]).toEqual(nyPeriode);
+        },
+    );
     it('Skal legge til ny periode som overlapper to gamle perioder.', () => {
         const nyPeriode: Periode = {
             id: '6',
@@ -626,41 +634,43 @@ describe('Test av split periode i uttaksplan', () => {
     } as Uttaksperiode;
     it('Skal spitte periode med fedrekvote med familiehendelsesdato på en virkedag i to perioder der den andre periode skal starte på splittedato', () => {
         const splitteDato = new Date('2022-05-02');
-        const perioder = splittUttaksperiodePåFamiliehendelsesdato(splitPeriodeFedrekvote, splitteDato);
-        expect(perioder.length).toEqual(2);
-        expect(perioder[0].id).toEqual(splitPeriodeFedrekvote.id);
-        expect(perioder[0].type).toEqual(splitPeriodeFedrekvote.type);
-        expect(perioder[0].forelder).toEqual(splitPeriodeFedrekvote.forelder);
-        expect(perioder[0].konto).toEqual(splitPeriodeFedrekvote.konto);
-        expect(perioder[0].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.fom);
-        expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-04-29'));
-        expect(perioder[1].id).not.toEqual(splitPeriodeFedrekvote.id);
-        expect(perioder[1].type).toEqual(splitPeriodeFedrekvote.type);
-        expect(perioder[1].forelder).toEqual(splitPeriodeFedrekvote.forelder);
-        expect(perioder[1].konto).toEqual(splitPeriodeFedrekvote.konto);
-        expect(perioder[1].tidsperiode.fom).toEqual(splitteDato);
-        expect(perioder[1].tidsperiode.tom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
+        const testPerioder = splittUttaksperiodePåFamiliehendelsesdato(splitPeriodeFedrekvote, splitteDato);
+        expect(testPerioder.length).toEqual(2);
+        expect(testPerioder[0].id).toEqual(splitPeriodeFedrekvote.id);
+        expect(testPerioder[0].type).toEqual(splitPeriodeFedrekvote.type);
+        expect(testPerioder[0].forelder).toEqual(splitPeriodeFedrekvote.forelder);
+        expect(testPerioder[0].konto).toEqual(splitPeriodeFedrekvote.konto);
+        expect(testPerioder[0].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.fom);
+        expect(testPerioder[0].tidsperiode.tom).toEqual(new Date('2022-04-29'));
+        expect(testPerioder[1].id).not.toEqual(splitPeriodeFedrekvote.id);
+        expect(testPerioder[1].type).toEqual(splitPeriodeFedrekvote.type);
+        expect(testPerioder[1].forelder).toEqual(splitPeriodeFedrekvote.forelder);
+        expect(testPerioder[1].konto).toEqual(splitPeriodeFedrekvote.konto);
+        expect(testPerioder[1].tidsperiode.fom).toEqual(splitteDato);
+        expect(testPerioder[1].tidsperiode.tom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
     });
     it('Skal spitte periodeperiode med fedrekvote med familiehendelsesdato på en helgedag i to perioder med riktige datoer', () => {
         const splitteDato = new Date('2022-05-01');
-        const perioder = splittUttaksperiodePåFamiliehendelsesdato(splitPeriodeFedrekvote, splitteDato);
-        expect(perioder.length).toEqual(2);
-        expect(perioder[0].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.fom);
-        expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-04-29'));
-        expect(perioder[1].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
-        expect(perioder[1].tidsperiode.tom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
+        const testPerioder = splittUttaksperiodePåFamiliehendelsesdato(splitPeriodeFedrekvote, splitteDato);
+        expect(testPerioder.length).toEqual(2);
+        expect(testPerioder[0].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.fom);
+        expect(testPerioder[0].tidsperiode.tom).toEqual(new Date('2022-04-29'));
+        expect(testPerioder[1].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
+        expect(testPerioder[1].tidsperiode.tom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
     });
     it('Skal spitte periode med aktivitetskrav der BFHR slik at perioden før familiehendelsesdato blir automatisk satt til uten aktivitetskrav', () => {
         const splitteDato = new Date('2022-05-02');
-        const perioder = splittUttaksperiodePåFamiliehendelsesdato(splitPeriodeBFHRMedAktivitetskrav, splitteDato);
-        expect(perioder.length).toEqual(2);
-        expect(perioder[0].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.fom);
-        expect(perioder[0].tidsperiode.tom).toEqual(new Date('2022-04-29'));
-        expect(perioder[0].morsAktivitetIPerioden).toBeUndefined();
-        expect(perioder[0].erMorForSyk).toBeUndefined();
-        expect(perioder[1].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
-        expect(perioder[1].tidsperiode.tom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
-        expect(perioder[1].morsAktivitetIPerioden).toEqual(splitPeriodeBFHRMedAktivitetskrav.morsAktivitetIPerioden);
-        expect(perioder[1].erMorForSyk).toEqual(splitPeriodeBFHRMedAktivitetskrav.erMorForSyk);
+        const testPerioder = splittUttaksperiodePåFamiliehendelsesdato(splitPeriodeBFHRMedAktivitetskrav, splitteDato);
+        expect(testPerioder.length).toEqual(2);
+        expect(testPerioder[0].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.fom);
+        expect(testPerioder[0].tidsperiode.tom).toEqual(new Date('2022-04-29'));
+        expect(testPerioder[0].morsAktivitetIPerioden).toBeUndefined();
+        expect(testPerioder[0].erMorForSyk).toBeUndefined();
+        expect(testPerioder[1].tidsperiode.fom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
+        expect(testPerioder[1].tidsperiode.tom).toEqual(splitPeriodeFedrekvote.tidsperiode.tom);
+        expect(testPerioder[1].morsAktivitetIPerioden).toEqual(
+            splitPeriodeBFHRMedAktivitetskrav.morsAktivitetIPerioden,
+        );
+        expect(testPerioder[1].erMorForSyk).toEqual(splitPeriodeBFHRMedAktivitetskrav.erMorForSyk);
     });
 });

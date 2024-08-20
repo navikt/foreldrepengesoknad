@@ -119,8 +119,8 @@ export const leggTilPeriode = ({
         } = normaliserPerioder(berørtePerioder, [nyPeriode]);
 
         const erstattedeBerørtePerioder = normaliserteBerørtePerioder.map((p) => {
-            const overlappendeNyPeriode = normaliserteNyePerioder.find((nyPeriode) =>
-                dayjs(nyPeriode.tidsperiode.fom).isSame(p.tidsperiode.fom, 'day'),
+            const overlappendeNyPeriode = normaliserteNyePerioder.find((per) =>
+                dayjs(per.tidsperiode.fom).isSame(p.tidsperiode.fom, 'day'),
             );
             return overlappendeNyPeriode || p;
         });
