@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HStack, Heading, List, VStack } from '@navikt/ds-react';
 
+import { links } from '@navikt/fp-constants';
 import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
@@ -15,11 +16,7 @@ interface Props {
 }
 
 const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
-    const erMor = fpEllerEsSituasjon.situasjon === 'mor';
-    const jobberIkkeINorge =
-        fpEllerEsSituasjon.borDuINorge !== undefined && fpEllerEsSituasjon.jobberDuINorge === false;
-    const folketrygdenlenke =
-        'https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden';
+    const minstelønn = grunnbeløpet / 2;
     return (
         <ExpansionCard aria-label="" size="small">
             <ExpansionCard.Header>
@@ -50,7 +47,7 @@ const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerE
                             headerText={
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuMåTeneOver"
-                                    values={{ minstelønn: formatCurrencyWithKr(grunnbeløpet / 2) }}
+                                    values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
                                 />
                             }
                             boxBodyText={
@@ -58,39 +55,42 @@ const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerE
                                     id="HvorforHarJegRettPanel.DuHarOppgittMånedslønn"
                                     values={{
                                         månedslønn: formatCurrencyWithKr(fpEllerEsSituasjon.lønnPerMåned),
-                                        minstelønn: formatCurrencyWithKr(grunnbeløpet / 2),
+                                        minstelønn: formatCurrencyWithKr(minstelønn),
+                                        hvorMye: fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn,
                                     }}
                                 />
                             }
-                            erOppfylt={fpEllerEsSituasjon.lønnPerMåned * 12 > grunnbeløpet / 2}
+                            erOppfylt={fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn}
                         />
                         <KravinfoBoks
                             testId="harIkkeRettEs"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
                             boxBodyText={
                                 <>
-                                    {jobberIkkeINorge ? (
+                                    {fpEllerEsSituasjon.borDuINorge === false &&
+                                    fpEllerEsSituasjon.jobberDuINorge === false ? (
                                         <FormattedMessage
                                             id="HvorforHarJegRettPanel.IkkeMedlem"
                                             values={{
                                                 a: (msg: any) => (
-                                                    <a href={folketrygdenlenke} target="_blank" rel="noreferrer">
+                                                    <a href={links.folketrygden} target="_blank" rel="noreferrer">
                                                         {msg}
                                                     </a>
                                                 ),
                                             }}
                                         />
                                     ) : (
-                                        <FormattedMessage id="HvorforHarJegRettPanel.OppgittAtDuBorINorge" />
+                                        <FormattedMessage
+                                            id="HvorforHarJegRettPanel.OppgittAtDuBorINorge"
+                                            values={{ borINorge: fpEllerEsSituasjon.borDuINorge }}
+                                        />
                                     )}
                                 </>
                             }
-                            erOppfylt={fpEllerEsSituasjon.jobberDuINorge}
-                            jobberIkkeINorge={
-                                fpEllerEsSituasjon.jobberDuINorge === false && fpEllerEsSituasjon.borDuINorge === false
-                            }
+                            erOppfylt={fpEllerEsSituasjon.jobberDuINorge || fpEllerEsSituasjon.borDuINorge}
+                            jobberINorge={fpEllerEsSituasjon.jobberDuINorge}
                         />
-                        {!erMor && (
+                        {fpEllerEsSituasjon.situasjon !== 'mor' && (
                             <>
                                 <Heading size="small">
                                     <FormattedMessage id="HvorforHarJegRettPanel.FarEllerMedmor" />

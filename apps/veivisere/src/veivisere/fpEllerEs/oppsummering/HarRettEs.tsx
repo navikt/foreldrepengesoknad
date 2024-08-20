@@ -4,8 +4,9 @@ import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import { FormattedMessage } from 'react-intl';
 import { finnSisteEngangsstønad, finnSisteGrunnbeløp } from 'utils/satserUtils';
 
-import { BodyShort, Box, Button, HStack, Heading, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
+import { links } from '@navikt/fp-constants';
 import { Satser } from '@navikt/fp-types';
 import { formatCurrency } from '@navikt/fp-utils';
 
@@ -59,12 +60,16 @@ const HarRettEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser 
             </Box>
 
             <HStack justify="space-around">
-                <Button type="submit">
-                    <FormattedMessage id="OppsummeringFpEllerEsSide.SøkOmEs" />
-                </Button>
-                <Button variant="secondary" type="submit">
-                    <FormattedMessage id="OppsummeringFpEllerEsSide.MerOmEs" />
-                </Button>
+                <Link href={links.søknadEngangsstønad} target="_blank" rel="norefferer">
+                    <Button>
+                        <FormattedMessage id="OppsummeringFpEllerEsSide.SøkOmEs" />
+                    </Button>
+                </Link>
+                <Link href={links.engangsstonad} target="_blank" rel="norefferer" underline={false}>
+                    <Button variant="secondary">
+                        <FormattedMessage id="OppsummeringFpEllerEsSide.MerOmEs" />
+                    </Button>
+                </Link>
             </HStack>
             <VStack gap="4">
                 <HvorforHarJegRettEsPanel fpEllerEsSituasjon={fpEllerEsSituasjon} grunnbeløpet={grunnbeløpet} />

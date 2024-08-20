@@ -107,7 +107,7 @@ describe('<OppsummeringFpEllerEsSide>', () => {
         expect(within(harIkkeRettEs[1]).getByText(/Du må i gjennomsnitt tjene/)).toBeInTheDocument();
         expect(within(harIkkeRettEs[1]).getByText('Du oppfyller ikke dette kravet')).toBeInTheDocument();
         expect(within(harIkkeRettEs[2]).getByText('Du må være medlem av folketrygden')).toBeInTheDocument();
-        expect(within(harIkkeRettEs[2]).getByText('Du oppfyller ikke dette kravet')).toBeInTheDocument();
+        expect(within(harIkkeRettEs[2]).getByText('Du oppfyller dette kravet')).toBeInTheDocument();
 
         expect(screen.getByText(/Din situasjon som far eller medmor/)).toBeInTheDocument();
 
@@ -117,7 +117,7 @@ describe('<OppsummeringFpEllerEsSide>', () => {
         expect(within(harIkkeRettFp[1]).getByText(/Du må i gjennomsnitt tjene/)).toBeInTheDocument();
         expect(within(harIkkeRettFp[1]).getByText('Du oppfyller ikke dette kravet')).toBeInTheDocument();
         expect(within(harIkkeRettFp[2]).getByText('Du må være medlem av folketrygden')).toBeInTheDocument();
-        expect(within(harIkkeRettFp[2]).getByText('Du oppfyller ikke dette kravet')).toBeInTheDocument();
+        expect(within(harIkkeRettFp[2]).getByText('Du oppfyller dette kravet')).toBeInTheDocument();
 
         expect(screen.getByText('Hvorfor har jeg ikke rett på foreldrepenger?')).toBeInTheDocument();
     });

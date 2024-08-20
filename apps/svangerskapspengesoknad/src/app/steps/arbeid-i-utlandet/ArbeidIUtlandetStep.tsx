@@ -4,6 +4,7 @@ import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { Inntektsinformasjon } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { frilansId } from '@navikt/fp-steg-frilans';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
@@ -15,7 +16,6 @@ import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
 import { ArbeidIUtlandet } from 'app/types/ArbeidIUtlandet';
 import { egenNæringId } from 'app/types/EgenNæring';
-import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 
 import ArbeidIUtlandetFieldArray, { NEW_ARBEID_I_UTLANDET } from './ArbeidIUtlandetFieldArray';

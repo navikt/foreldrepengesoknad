@@ -37,7 +37,7 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
                                 {arbforhold.arbeidsgiverIdType === 'orgnr' || arbforhold.arbeidsgiverNavn ? (
                                     arbforhold.arbeidsgiverNavn
                                 ) : (
-                                    <FormattedMessage id="privat.arbeidsgiver" />
+                                    <FormattedMessage id="HarArbeidsforhold.arbeidsgiver" />
                                 )}
                             </BodyShort>
                             <BodyShort>
@@ -66,7 +66,7 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
                                     fom: formatDate(arbforhold.fom),
                                     tom: arbforhold.tom
                                         ? formatDate(arbforhold.tom)
-                                        : intl.formatMessage({ id: 'pågående' }),
+                                        : intl.formatMessage({ id: 'HarArbeidsforhold.pågående' }),
                                 }}
                             />
                         </BodyShort>

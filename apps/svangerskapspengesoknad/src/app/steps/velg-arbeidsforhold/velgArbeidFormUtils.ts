@@ -1,5 +1,6 @@
 import { IntlShape } from 'react-intl';
 
+import { Inntektsinformasjon } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans, frilansId } from '@navikt/fp-steg-frilans';
 import { Arbeidsforhold } from '@navikt/fp-types';
@@ -7,7 +8,6 @@ import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
 import { egenNæringId } from 'app/types/EgenNæring';
-import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 import { getUnikeArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 

@@ -10,28 +10,7 @@ import * as stories from './InntektsinformasjonSteg.stories';
 const { Default } = composeStories(stories);
 
 describe('<InntektsinformasjonSteg>', () => {
-    it('skal vise feilmelding hvis spørsmål ikke er besvart', async () => {
-        render(<Default />);
-
-        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
-        expect(screen.getByText('Har du jobbet og hatt inntekt som frilanser de siste 4 ukene?')).toBeInTheDocument();
-        expect(
-            screen.getByText('Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste 4 ukene?'),
-        ).toBeInTheDocument();
-        expect(screen.getByText('Har du jobbet i utlandet de siste 4 ukene?')).toBeInTheDocument();
-
-        expect(screen.getByText('Neste steg')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Neste steg'));
-
-        expect(screen.getAllByText('Du må oppgi om du har arbeidet som frilanser de siste 4 ukene.')).toHaveLength(2);
-        expect(
-            screen.getAllByText('Du må oppgi om du har hatt inntekt som selvstendig næringsdrivende de siste 4 ukene.'),
-        ).toHaveLength(2);
-        expect(screen.getAllByText('Du må oppgi om du har arbeidet i utlandet de siste 4 ukene.')).toHaveLength(2);
-    });
-
-    it('skal ikke vise feilmelding', async () => {
+    it('skal gå til neste steg når informasjon er korrekt', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -47,16 +26,6 @@ describe('<InntektsinformasjonSteg>', () => {
         expect(screen.getByText('Neste steg')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
-
-        expect(
-            screen.queryByText('Du må oppgi om du har arbeidet som frilanser de siste 4 ukene.'),
-        ).not.toBeInTheDocument();
-        expect(
-            screen.queryByText('Du må oppgi om du har hatt inntekt som selvstendig næringsdrivende de siste 4 ukene.'),
-        ).not.toBeInTheDocument();
-        expect(
-            screen.queryByText('Du må oppgi om du har arbeidet i utlandet de siste 4 ukene.'),
-        ).not.toBeInTheDocument();
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {

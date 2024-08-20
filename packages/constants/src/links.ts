@@ -56,6 +56,10 @@ export const links = {
         'https://www.regjeringen.no/no/tema/familie-og-barn/barnehager/innsikt/Rett-til-barnehageplass/id2344761/',
     godkjentAktivitet: 'https://www.nav.no/foreldrepenger#hvor-lenge',
     søknadForeldrepenger: 'https://www.nav.no/start/soknad-foreldrepenger',
+    søknadEngangsstønad: 'https://www.nav.no/start/soknad-engangsstonad',
     hvaSkjerNår: 'https://familie.nav.no/soke-om-foreldrepenger',
     grunnbeløpet: 'https://www.nav.no/grunnbelopet',
+    folketrygden:
+        'https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden',
+    omForeldrepenger: 'https://www.nav.no/foreldrepenger',
 };

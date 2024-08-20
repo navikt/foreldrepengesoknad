@@ -9,10 +9,10 @@ const InfoOmArbeidIUtlandet = () => {
     return (
         <ReadMore
             onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Hvordan_påvirke_SVP')}
-            header={intl.formatMessage({ id: 'arbeidIUtlandet.apneLabel' })}
+            header={intl.formatMessage({ id: 'InfoOmArbeidIUtlandet.apneLabel' })}
         >
             <div>
-                <FormattedMessage id="arbeidIUtlandet.innhold" />
+                <FormattedMessage id="InfoOmArbeidIUtlandet.innhold" />
             </div>
         </ReadMore>
     );

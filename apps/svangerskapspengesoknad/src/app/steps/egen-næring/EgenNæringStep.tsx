@@ -2,6 +2,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
 
+import { Inntektsinformasjon } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring, EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
 import { frilansId } from '@navikt/fp-steg-frilans';
 import { Arbeidsforhold } from '@navikt/fp-types';
@@ -13,7 +14,6 @@ import SøknadRoutes from 'app/appData/routes';
 import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
 import { egenNæringId } from 'app/types/EgenNæring';
-import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 
 import { getNæringTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';

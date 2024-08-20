@@ -31,6 +31,7 @@
         "@navikt/fp-api": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
+        "@navikt/fp-steg-arbeidsforhold-og-inntekt": "workspace:*",
         "@navikt/fp-steg-egen-naering": "workspace:*",
         "@navikt/fp-steg-frilans": "workspace:*",
         "@navikt/fp-metrics": "workspace:*",

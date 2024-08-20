@@ -152,6 +152,7 @@ export const leggTilPeriode = ({
     const nyPeriodeFomDate = nyPeriode.tidsperiode.fom;
     const nyPeriodeTomDate = nyPeriode.tidsperiode.tom;
 
+    //TODO: for mor gir det kanskje mening, men for far vil man helst splitte perioden.
     if (
         dayjs(nyPeriodeFomDate).isBefore(familiehendelsesdato, 'day') &&
         dayjs(nyPeriodeTomDate).isSameOrAfter(familiehendelsesdato, 'day')

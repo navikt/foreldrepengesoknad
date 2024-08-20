@@ -138,6 +138,11 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
                             </BlueRadioGroup>
+                            <ReadMore header={<FormattedMessage id="SituasjonSide.AndreInntektskilder" />}>
+                                <BodyShort>
+                                    <FormattedMessage id="SituasjonSide.AndreInntektskilderDetaljer" />
+                                </BodyShort>
+                            </ReadMore>
                             {harHattAndreInntekter === false && (
                                 <Infobox
                                     header={<FormattedMessage id="SituasjonSide.JobbetMinst6av10" />}
@@ -252,26 +257,6 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                     <FormattedMessage id="SituasjonSide.Nei" />
                                 </Radio>
                             </BlueRadioGroup>
-                            {borDuINorge === false && (
-                                <Infobox
-                                    header={<FormattedMessage id="SituasjonSide.MåVæreMedlem" />}
-                                    icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
-                                    color="green"
-                                >
-                                    <BodyShort>
-                                        <FormattedMessage
-                                            id="SituasjonSide.IkkeMedlem"
-                                            values={{
-                                                a: (msg: any) => (
-                                                    <a href={folketrygdenlenke} target="_blank" rel="noreferrer">
-                                                        {msg}
-                                                    </a>
-                                                ),
-                                            }}
-                                        />
-                                    </BodyShort>
-                                </Infobox>
-                            )}
                         </VStack>
                     )}
                     <Spacer />
@@ -292,13 +277,13 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                             </BlueRadioGroup>
                             {jobberDuINorge === false && (
                                 <Infobox
-                                    header={<FormattedMessage id="SituasjonSide.DuMåJobbeINorge" />}
+                                    header={<FormattedMessage id="SituasjonSide.MåVæreMedlem" />}
                                     icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
                                     color="green"
                                 >
                                     <BodyShort>
                                         <FormattedMessage
-                                            id="SituasjonSide.DuJobberIkkeINorge"
+                                            id="SituasjonSide.IkkeMedlem"
                                             values={{
                                                 a: (msg: any) => (
                                                     <a href={folketrygdenlenke} target="_blank" rel="noreferrer">
