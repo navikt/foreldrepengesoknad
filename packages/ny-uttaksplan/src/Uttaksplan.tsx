@@ -3,8 +3,8 @@ import { FunctionComponent } from 'react';
 import '@navikt/ds-css';
 
 import { AnnenForelder, NavnPåForeldre, Periode } from '@navikt/fp-common';
+import { Barn } from '@navikt/fp-types';
 
-import { Barn } from '../../types';
 import PeriodeListe from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
 

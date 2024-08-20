@@ -1,6 +1,6 @@
-import { StønadskontoUttak } from '@navikt/fp-common';
+import { Stønadskonto } from '@navikt/fp-types';
 
 export interface Uttaksstatus {
     gjelderDagerBrukt: boolean;
-    uttak: StønadskontoUttak[];
+    uttak: Stønadskonto[];
 }

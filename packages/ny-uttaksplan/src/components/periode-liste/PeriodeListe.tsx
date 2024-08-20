@@ -3,9 +3,8 @@ import { FunctionComponent } from 'react';
 
 import { Accordion } from '@navikt/ds-react';
 
-import { FamiliehendelseType, Periode, isValidTidsperiode } from '@navikt/fp-common';
+import { Barn, FamiliehendelseType, Periode, isAdoptertBarn, isUfødtBarn, isValidTidsperiode } from '@navikt/fp-common';
 
-import { Barn, isAdoptertBarn, isUfødtBarn } from '../../../../types';
 import Permisjonsperiode from '../../types/Permisjonsperiode';
 import { mapPerioderToPermisjonsperiode } from '../../utils/permisjonsperiodeUtils';
 import PeriodeListeItem from './../periode-liste-item/PeriodeListeItem';
