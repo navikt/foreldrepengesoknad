@@ -3,6 +3,7 @@ import { FunctionComponent, useState } from 'react';
 
 import { deleteData } from '@navikt/fp-api';
 import { oppsummeringMessages } from '@navikt/fp-oppsummering';
+import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
 import { LocaleNo } from '@navikt/fp-types';
@@ -23,6 +24,7 @@ const allNbMessages = {
     ...utilsMessages.nb,
     ...frilansMessages.nb,
     ...egenNæringMessages.nb,
+    ...arbeidsforholdOgInntektMessages.nb,
 };
 const allNnMessages = {
     ...nnMessages,
@@ -32,6 +34,7 @@ const allNnMessages = {
     ...utilsMessages.nn,
     ...frilansMessages.nn,
     ...egenNæringMessages.nn,
+    ...arbeidsforholdOgInntektMessages.nn,
 };
 
 declare global {

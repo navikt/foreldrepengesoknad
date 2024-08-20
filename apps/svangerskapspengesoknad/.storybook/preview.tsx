@@ -4,6 +4,7 @@ import React from 'react';
 import '@navikt/ds-css';
 
 import { oppsummeringMessages } from '@navikt/fp-oppsummering';
+import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
 import { uiMessages } from '@navikt/fp-ui';
@@ -31,6 +32,7 @@ const withIntlProvider = getIntlDecorator({
         ...oppsummeringMessages.nb,
         ...frilansMessages.nb,
         ...egenNæringMessages.nb,
+        ...arbeidsforholdOgInntektMessages.nb,
     },
     nn: {
         ...nnMessages,
@@ -39,6 +41,7 @@ const withIntlProvider = getIntlDecorator({
         ...oppsummeringMessages.nn,
         ...frilansMessages.nn,
         ...egenNæringMessages.nn,
+        ...arbeidsforholdOgInntektMessages.nn,
     },
 });
 
