@@ -29,8 +29,8 @@ target "foreldrepengesoknad" {
 
 
   args = {
-    APP = "foreldrepengesoknad",
-    SERVER="server"
+    APP    = "foreldrepengesoknad",
+    SERVER = "server"
   }
 }
 
@@ -47,8 +47,8 @@ target "svangerskapspengesoknad" {
 
 
   args = {
-    APP = "svangerskapspengesoknad",
-    SERVER="server"
+    APP    = "svangerskapspengesoknad",
+    SERVER = "server"
   }
 }
 
@@ -64,8 +64,8 @@ target "engangsstonad" {
   ]
 
   args = {
-    APP = "engangsstonad",
-    SERVER="server"
+    APP    = "engangsstonad",
+    SERVER = "server"
   }
 }
 
@@ -81,8 +81,8 @@ target "foreldrepengeoversikt" {
   ]
 
   args = {
-    APP = "foreldrepengeoversikt",
-    SERVER="server"
+    APP    = "foreldrepengeoversikt",
+    SERVER = "server"
   }
 }
 
@@ -98,8 +98,8 @@ target "planlegger" {
   ]
 
   args = {
-    APP = "planlegger",
-    SERVER="server-uinnlogget"
+    APP    = "planlegger",
+    SERVER = "server-uinnlogget"
   }
 }
 
@@ -115,7 +115,7 @@ target "veivisere" {
   ]
 
   args = {
-    APP = "veivisere",
-    SERVER="server-uinnlogget"
+    APP    = "veivisere",
+    SERVER = "server-uinnlogget"
   }
 }
