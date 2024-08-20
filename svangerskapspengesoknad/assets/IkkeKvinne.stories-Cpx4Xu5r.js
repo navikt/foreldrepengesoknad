@@ -1,0 +1,3 @@
+import{j as n}from"./tslib.es6-C_-gbNBy.js";/* empty css              */import{I as s}from"./IkkeKvinne-tUhtahWJ.js";import"./index-CTjT7uj6.js";import"./ByttBrowserModal-DkV6ZvDc.js";import"./index-BRV0Se7Z.js";import"./index-9r8iugjR.js";const l={title:"pages/IkkeKvinne",component:s},a=()=>n.jsx(s,{}),e=a.bind({});var r,t,o;e.parameters={...e.parameters,docs:{...(r=e.parameters)==null?void 0:r.docs,source:{originalSource:`() => {
+  return <IkkeKvinne />;
+}`,...(o=(t=e.parameters)==null?void 0:t.docs)==null?void 0:o.source}}};const f=["Default"];export{e as Default,f as __namedExportsOrder,l as default};
