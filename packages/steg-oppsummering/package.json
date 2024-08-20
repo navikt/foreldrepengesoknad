@@ -1,6 +1,6 @@
 {
-    "name": "@navikt/fp-utenlandsopphold",
-    "description": "Pakke som inneholder panel for utenlandsopphold, fremtidig utenlandsopphold og historisk utenlandsopphold",
+    "name": "@navikt/fp-steg-oppsummering",
+    "description": "Pakke som inneholder oppsummeringssteget",
     "main": "index.ts",
     "type": "module",
     "types": "index.ts",
@@ -14,20 +14,17 @@
         "storybook": "storybook dev --quiet -p 7003"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^6.16.0",
         "@navikt/ds-css": "^6.16.0",
         "@navikt/ds-react": "^6.16.0",
-        "@navikt/fp-constants": "workspace:*",
-        "@navikt/fp-form-hooks": "workspace:*",
+        "@navikt/fp-api": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
         "dayjs": "^1.11.12",
-        "intl-messageformat": "^10.5.11",
+        "i18n-iso-countries": "^7.11.3",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
-        "react-hook-form": "7.52.1",
         "react-intl": "^6.6.8"
     },
     "devDependencies": {

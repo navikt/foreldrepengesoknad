@@ -5,9 +5,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
 
+import { SenereUtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { UtenlandsoppholdSenere } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
-import { SenereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 
 type Props = {
     mellomlagreOgNaviger: () => Promise<void>;

@@ -7,9 +7,9 @@ import React from 'react';
 import '@navikt/ds-css';
 
 import { allCommonMessages } from '@navikt/fp-common';
-import { oppsummeringMessages } from '@navikt/fp-oppsummering';
+import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
+import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { uiMessages } from '@navikt/fp-ui';
-import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 
 import nbMessages from '../src/app/intl/nb_NO.json';
