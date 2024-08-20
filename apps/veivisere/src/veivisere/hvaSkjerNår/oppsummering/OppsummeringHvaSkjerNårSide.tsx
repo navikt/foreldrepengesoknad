@@ -51,7 +51,10 @@ const OppsummeringHvaSkjerNårSide: React.FunctionComponent<Props> = ({ hvaSkjer
                                     <QuestionmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                                 </IconCircleWrapper>
                                 <ExpansionCard.Title size="small">
-                                    <FormattedMessage id="OppsummeringSide.Svar" values={{ erAleneforsørger }} />
+                                    <FormattedMessage
+                                        id="HvaSkjerNår.OppsummeringSide.Svar"
+                                        values={{ erAleneforsørger }}
+                                    />
                                 </ExpansionCard.Title>
                             </HStack>
                         </ExpansionCard.Header>
@@ -59,7 +62,7 @@ const OppsummeringHvaSkjerNårSide: React.FunctionComponent<Props> = ({ hvaSkjer
                             <VStack gap="4">
                                 <Heading size="xsmall">
                                     <FormattedMessage
-                                        id="OppsummeringSide.Hvem"
+                                        id="HvaSkjerNår.OppsummeringSide.Hvem"
                                         values={{
                                             hvem: finnHvemSomPlanlegger(hvaSkjerNårSituasjon),
                                         }}
@@ -70,7 +73,7 @@ const OppsummeringHvaSkjerNårSide: React.FunctionComponent<Props> = ({ hvaSkjer
                                         {termindato && (
                                             <BodyShort>
                                                 <FormattedMessage
-                                                    id="OppsummeringSide.Termin"
+                                                    id="HvaSkjerNår.OppsummeringSide.Termin"
                                                     values={{
                                                         termindato: dayjs(termindato).format(DDMMMMYYY_DATE_FORMAT),
                                                     }}
@@ -80,7 +83,7 @@ const OppsummeringHvaSkjerNårSide: React.FunctionComponent<Props> = ({ hvaSkjer
                                         {fødselsdato && (
                                             <BodyShort>
                                                 <FormattedMessage
-                                                    id="OppsummeringSide.Fødselsdato"
+                                                    id="HvaSkjerNår.OppsummeringSide.Fødselsdato"
                                                     values={{
                                                         fødselsdato: dayjs(fødselsdato).format(DDMMMMYYY_DATE_FORMAT),
                                                     }}

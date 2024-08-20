@@ -9,10 +9,10 @@ import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { BodyShort, Button, Radio, Spacer, VStack } from '@navikt/ds-react';
 
-import { DDMMMMYYY_DATE_FORMAT, ISO_DATE_REGEX } from '@navikt/fp-constants';
+import { ISO_DATE_REGEX } from '@navikt/fp-constants';
 import { Datepicker, Form } from '@navikt/fp-form-hooks';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
-import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
+import { isBeforeTodayOrToday, isValidDate } from '@navikt/fp-validation';
 
 import VeiviserPage from '../../felles/VeiviserPage';
 import BlueRadioGroup from '../../felles/formWrappers/BlueRadioGroup';
@@ -51,7 +51,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
 
     const { situasjon, erFødt, fødselsdato, termindato } = formMethods.watch();
 
-    const oktober2021 = dayjs('2021-10-01').format(DDMMMMYYY_DATE_FORMAT);
+    const oktober2021 = dayjs('2021-10-01');
 
     const onSubmit = (formValues: HvaSkjerNårSituasjon) => {
         setHvaSkjerNårSituasjon(formValues);
@@ -69,41 +69,41 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
             <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="6" style={{ flex: 1 }}>
                     <BlueRadioGroup
-                        label={<FormattedMessage id="SituasjonSide.Situasjon" />}
+                        label={<FormattedMessage id="HvaSkjerNår.SituasjonSide.Situasjon" />}
                         name="situasjon"
                         onChange={scrollToBottom}
                     >
                         <Radio value={Situasjon.MOR_OG_FAR} autoFocus>
-                            <FormattedMessage id="SituasjonSide.MorOgFar" />
+                            <FormattedMessage id="HvaSkjerNår.SituasjonSide.MorOgFar" />
                         </Radio>
                         <Radio value={Situasjon.MOR_OG_MEDMOR}>
-                            <FormattedMessage id="SituasjonSide.MorOgMedmor" />
+                            <FormattedMessage id="HvaSkjerNår.SituasjonSide.MorOgMedmor" />
                         </Radio>
                         <Radio value={Situasjon.FAR_OG_FAR}>
-                            <FormattedMessage id="SituasjonSide.FarOgFar" />
+                            <FormattedMessage id="HvaSkjerNår.SituasjonSide.FarOgFar" />
                         </Radio>
                         <Radio value={Situasjon.KUN_FAR_ELLER_MEDMOR}>
-                            <FormattedMessage id="SituasjonSide.KunFarEllerMedmor" />
+                            <FormattedMessage id="HvaSkjerNår.SituasjonSide.KunFarEllerMedmor" />
                         </Radio>
                         <Radio value={Situasjon.KUN_MOR}>
-                            <FormattedMessage id="SituasjonSide.KunMor" />
+                            <FormattedMessage id="HvaSkjerNår.SituasjonSide.KunMor" />
                         </Radio>
                         <Radio value={Situasjon.ALENEOMSORG}>
-                            <FormattedMessage id="SituasjonSide.Aleneomsorg" />
+                            <FormattedMessage id="HvaSkjerNår.SituasjonSide.Aleneomsorg" />
                         </Radio>
                     </BlueRadioGroup>
                     {situasjon && (
                         <VStack gap="4">
                             <BlueRadioGroup
-                                label={<FormattedMessage id="SituasjonSide.ErBarnetFødt" />}
+                                label={<FormattedMessage id="HvaSkjerNår.SituasjonSide.ErBarnetFødt" />}
                                 name="erFødt"
                                 onChange={scrollToBottom}
                             >
                                 <Radio value={true} autoFocus>
-                                    <FormattedMessage id="SituasjonSide.Ja" />
+                                    <FormattedMessage id="HvaSkjerNår.SituasjonSide.Ja" />
                                 </Radio>
                                 <Radio value={false}>
-                                    <FormattedMessage id="SituasjonSide.Nei" />
+                                    <FormattedMessage id="HvaSkjerNår.SituasjonSide.Nei" />
                                 </Radio>
                             </BlueRadioGroup>
                         </VStack>
@@ -113,17 +113,14 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
                         <VStack gap="4">
                             <BluePanel isDarkBlue shouldFadeIn>
                                 <VStack gap="4">
-                                    {
-                                        // TODO: fiks validering
-                                    }
                                     <Datepicker
                                         name="fødselsdato"
-                                        label={intl.formatMessage({ id: 'SituasjonSide.Født' })}
+                                        label={intl.formatMessage({ id: 'HvaSkjerNår.SituasjonSide.Født' })}
                                         maxDate={dayjs().toDate()}
                                         validate={[
                                             isValidDate(
                                                 intl.formatMessage({
-                                                    id: 'valideringsfeil.termindato.ugyldigDatoFormat',
+                                                    id: 'valideringsfeil.fødselsdato.ugyldigDatoFormat',
                                                 }),
                                             ),
                                             isBeforeTodayOrToday(
@@ -131,60 +128,94 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
                                                     id: 'valideringsfeil.fødselsdato.måVæreIdagEllerTidligere',
                                                 }),
                                             ),
+                                            (fødselsdato) => {
+                                                if (dayjs(fødselsdato).isBefore(dayjs(oktober2021))) {
+                                                    return intl.formatMessage({
+                                                        id: 'valideringsfeil.fødselsdato.førOktober2021',
+                                                    });
+                                                }
+                                                return undefined;
+                                            },
                                         ]}
                                     />
-                                    {
-                                        // TODO: fiks validering
-                                    }
+
                                     <Datepicker
                                         name="termindato"
-                                        label={intl.formatMessage({ id: 'SituasjonSide.NårVarTermin' })}
-                                        minDate={dayjs().subtract(3, 'years').toDate()}
+                                        label={intl.formatMessage({ id: 'HvaSkjerNår.SituasjonSide.NårVarTermin' })}
+                                        minDate={dayjs(fødselsdato).subtract(1, 'month').toDate()}
                                         maxDate={dayjs().add(6, 'months').toDate()}
                                         validate={[
-                                            isBeforeTodayOrToday(
-                                                intl.formatMessage({
-                                                    id: 'valideringsfeil.fødselsdato.måVæreIdagEllerTidligere',
-                                                }),
-                                            ),
-
                                             isValidDate(
                                                 intl.formatMessage({
                                                     id: 'valideringsfeil.termindato.ugyldigDatoFormat',
                                                 }),
                                             ),
+                                            (termindato) => {
+                                                if (
+                                                    !dayjs(termindato)
+                                                        .subtract(6, 'months')
+                                                        .isSameOrBefore(dayjs(fødselsdato), 'day')
+                                                ) {
+                                                    return intl.formatMessage({
+                                                        id: 'valideringsfeil.termindato.forLangtFremITid',
+                                                    });
+                                                }
+                                                if (
+                                                    !dayjs(termindato)
+                                                        .add(1, 'months')
+                                                        .isSameOrAfter(dayjs(fødselsdato), 'day')
+                                                ) {
+                                                    return intl.formatMessage({
+                                                        id: 'valideringsfeil.termindato.forLangtTilbakeITid',
+                                                    });
+                                                }
+                                                return undefined;
+                                            },
                                         ]}
                                     />
-                                    {fødselsdato !== undefined && dayjs(fødselsdato).isBefore(oktober2021) && (
-                                        // TODO: fiks validering
-
-                                        <Infobox
-                                            header={<FormattedMessage id="SituasjonSide.JobbetMinst6av10" />}
-                                            icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
-                                            color="green"
-                                        >
-                                            <BodyShort>
-                                                <FormattedMessage id="SituasjonSide.JobbetMinst6av10Detaljer" />
-                                            </BodyShort>
-                                        </Infobox>
-                                    )}{' '}
                                 </VStack>
                             </BluePanel>
+                            {fødselsdato !== undefined && dayjs(fødselsdato).isBefore(oktober2021) && (
+                                <Infobox
+                                    header={<FormattedMessage id="HvaSkjerNår.SituasjonSide.FødtFørOktober" />}
+                                    icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                                    color="green"
+                                >
+                                    <BodyShort>
+                                        <FormattedMessage id="HvaSkjerNår.SituasjonSide.HvisBarnetErFødtFørOktober" />
+                                    </BodyShort>
+                                </Infobox>
+                            )}
                         </VStack>
                     )}
                     {erFødt === false && (
                         <VStack gap="4">
                             <BluePanel isDarkBlue shouldFadeIn>
                                 <VStack gap="4">
-                                    {
-                                        // TODO: fiks validering
-                                    }
                                     <Datepicker
                                         name="termindato"
-                                        label={intl.formatMessage({ id: 'SituasjonSide.NårErTermin' })}
-                                        minDate={dayjs().subtract(3, 'years').toDate()}
+                                        label={intl.formatMessage({ id: 'HvaSkjerNår.SituasjonSide.NårErTermin' })}
+                                        minDate={dayjs().subtract(3, 'weeks').toDate()}
                                         maxDate={dayjs().add(6, 'months').toDate()}
-                                        validate={[isRequired(intl.formatMessage({ id: 'SituasjonSide.Født' }))]}
+                                        validate={[
+                                            isValidDate(
+                                                intl.formatMessage({
+                                                    id: 'valideringsfeil.termindato.ugyldigDatoFormat',
+                                                }),
+                                            ),
+                                            (termindato) => {
+                                                if (
+                                                    dayjs(termindato).isSameOrBefore(
+                                                        dayjs().subtract(3, 'weeks').subtract(1, 'day').toDate(),
+                                                    )
+                                                ) {
+                                                    return intl.formatMessage({
+                                                        id: 'valideringsfeil.termindato.forTidlig',
+                                                    });
+                                                }
+                                                return undefined;
+                                            },
+                                        ]}
                                     />
                                 </VStack>
                             </BluePanel>
