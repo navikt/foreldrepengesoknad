@@ -1,5 +1,3 @@
-import { TidsperiodeMedValgfriSluttdatoDate } from '@navikt/fp-common';
-
 export enum Næringstype {
     FISKER = 'FISKE',
     JORDBRUK = 'JORDBRUK_SKOGBRUK',
@@ -9,25 +7,27 @@ export enum Næringstype {
 
 export interface Næring {
     næringstyper: Næringstype[];
-    tidsperiode: TidsperiodeMedValgfriSluttdatoDate;
+    tidsperiode: {
+        fom: string;
+        tom?: string;
+    };
     næringsinntekt?: number;
-    pågående: boolean;
     navnPåNæringen: string;
     organisasjonsnummer?: string;
     registrertINorge: boolean;
     registrertILand?: string;
     harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene?: boolean;
-    oppstartsdato?: Date;
+    oppstartsdato?: string;
     hattVarigEndringAvNæringsinntektSiste4Kalenderår?: boolean;
     endringAvNæringsinntektInformasjon?: EndringAvNæringsinntektInformasjon;
 }
 
 export interface EndringAvNæringsinntektInformasjon {
-    dato: Date;
+    dato: string;
     næringsinntektEtterEndring: number;
     forklaring: string;
 }
 
 export interface EndringAvNæringsinntektInformasjonInnsending extends Omit<EndringAvNæringsinntektInformasjon, 'dato'> {
-    dato: Date;
+    dato: string;
 }

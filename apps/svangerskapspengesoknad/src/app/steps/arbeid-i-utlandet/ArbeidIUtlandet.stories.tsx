@@ -93,7 +93,7 @@ const Template: StoryFn<Props> = ({
             <SvpDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
-                    [ContextDataType.INNTEKTSINFORMASJON]: {
+                    [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
                         harHattArbeidIUtlandet: true,
                         harJobbetSomFrilans: false,
                         harJobbetSomSelvstendigNæringsdrivende: false,

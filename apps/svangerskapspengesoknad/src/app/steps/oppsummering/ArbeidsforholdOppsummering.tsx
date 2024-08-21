@@ -16,7 +16,7 @@ export function ArbeidsforholdOppsummering({
     readonly arbeidsforhold: Arbeidsforhold[];
     readonly onVilEndreSvar: () => void;
 }) {
-    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
+    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
 
     return (
         <FormSummary>

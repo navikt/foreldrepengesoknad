@@ -1,6 +1,6 @@
 import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
 
-import { Inntektsinformasjon } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
 import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
@@ -17,7 +17,7 @@ export enum ContextDataType {
     UTENLANDSOPPHOLD = 'UTENLANDSOPPHOLD',
     UTENLANDSOPPHOLD_SENERE = 'UTENLANDSOPPHOLD_SENERE',
     UTENLANDSOPPHOLD_TIDLIGERE = 'UTENLANDSOPPHOLD_TIDLIGERE',
-    INNTEKTSINFORMASJON = 'INNTEKTSINFORMASJON',
+    ARBEIDSFORHOLD_OG_INNTEKT = 'ARBEIDSFORHOLD_OG_INNTEKT',
     FRILANS = 'FRILANS',
     ARBEID_I_UTLANDET = 'ARBEID_I_UTLANDET',
     EGEN_NÆRING = 'EGEN_NÆRING',
@@ -31,7 +31,7 @@ export type ContextDataMap = {
     [ContextDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;
     [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: UtenlandsoppholdSenere;
     [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: UtenlandsoppholdTidligere;
-    [ContextDataType.INNTEKTSINFORMASJON]?: Inntektsinformasjon;
+    [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]?: ArbeidsforholdOgInntektSvp;
     [ContextDataType.FRILANS]?: Frilans;
     [ContextDataType.ARBEID_I_UTLANDET]?: ArbeidIUtlandet;
     [ContextDataType.EGEN_NÆRING]?: EgenNæring;

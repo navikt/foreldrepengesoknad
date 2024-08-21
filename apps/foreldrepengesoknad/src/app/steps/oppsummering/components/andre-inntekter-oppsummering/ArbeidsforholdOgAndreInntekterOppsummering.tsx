@@ -4,11 +4,16 @@ import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { Barn, ISOStringToDate, getAktiveArbeidsforhold, isFarEllerMedmor } from '@navikt/fp-common';
+import {
+    ArbeidsforholdOgInntektFp,
+    HarArbeidsforhold,
+    HarIkkeArbeidsforhold,
+} from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { EgenNæring } from '@navikt/fp-steg-egen-naering';
+import { Frilans } from '@navikt/fp-steg-frilans';
 import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
 
-import SøkerData from 'app/context/types/SøkerData';
-import HarArbeidsforhold from 'app/steps/inntektsinformasjon/components/arbeidsforhold-informasjon/HarArbeidsforhold';
-import HarIkkeArbeidsforhold from 'app/steps/inntektsinformasjon/components/arbeidsforhold-informasjon/HarIkkeArbeidsforhold';
+import { AndreInntektskilder } from 'app/types/AndreInntektskilder';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
@@ -20,18 +25,24 @@ interface Props {
     arbeidsforhold: Arbeidsforhold[];
     barn: Barn;
     søkersituasjon: SøkersituasjonFp;
-    søkerData?: SøkerData;
+    arbeidsforholdOgInntekt: ArbeidsforholdOgInntektFp;
+    frilans?: Frilans;
+    egenNæring?: EgenNæring;
+    andreInntektskilder?: AndreInntektskilder[];
 }
 
 const ArbeidsforholdOgAndreInntekterOppsummering: FunctionComponent<Props> = ({
     arbeidsforhold,
     barn,
     søkersituasjon,
-    søkerData,
+    arbeidsforholdOgInntekt,
+    frilans,
+    egenNæring,
+    andreInntektskilder,
 }) => {
     const intl = useIntl();
 
-    if (!søkerData) {
+    if (!arbeidsforholdOgInntekt) {
         return null;
     }
 
@@ -53,9 +64,15 @@ const ArbeidsforholdOgAndreInntekterOppsummering: FunctionComponent<Props> = ({
                 <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={aktiveArbeidsForhold} />
             </OppsummeringsPunkt>
             <VStack gap="4">
-                <FrilansOppsummering søkerData={søkerData} />
-                <SelvstendigNæringsdrivendeOppsummering søkerData={søkerData} />
-                <AndreInntekterOppsummering søkerData={søkerData} />
+                <FrilansOppsummering arbeidsforholdOgInntekt={arbeidsforholdOgInntekt} frilans={frilans} />
+                <SelvstendigNæringsdrivendeOppsummering
+                    arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
+                    egenNæring={egenNæring}
+                />
+                <AndreInntekterOppsummering
+                    arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
+                    andreInntektskilder={andreInntektskilder}
+                />
             </VStack>
         </>
     );

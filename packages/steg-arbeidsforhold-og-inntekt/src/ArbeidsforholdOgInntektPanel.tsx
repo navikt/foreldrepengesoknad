@@ -1,5 +1,3 @@
-import dayjs from 'dayjs';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -18,25 +16,12 @@ import HvemKanVæreFrilanser from './components/hvem-kan-være-frilanser/HvemKan
 import InfoOmArbeidIUtlandet from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
 import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
-import { Inntektsinformasjon } from './types/Inntektsinformasjon';
-
-dayjs.extend(isSameOrAfter);
-
-export const getAktiveArbeidsforhold = (arbeidsforhold: Arbeidsforhold[], termindato?: string): Arbeidsforhold[] => {
-    if (termindato === undefined) {
-        return arbeidsforhold;
-    }
-
-    return arbeidsforhold.filter((arb) =>
-        arb.tom ? dayjs(arb.tom).isSameOrAfter(dayjs(termindato).subtract(9, 'months'), 'day') : true,
-    );
-};
+import { ArbeidsforholdOgInntekt } from './types/ArbeidsforholdOgInntekt';
 
 interface Props<TYPE> {
-    inntektsinformasjon?: Inntektsinformasjon;
-    arbeidsforhold: Arbeidsforhold[];
-    termindato?: string;
-    saveOnNext: (formValues: Inntektsinformasjon) => void;
+    arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
+    aktiveArbeidsforhold: Arbeidsforhold[];
+    saveOnNext: (formValues: ArbeidsforholdOgInntekt) => void;
     cancelApplication: () => void;
     onContinueLater?: () => void;
     onStepChange?: (id: TYPE) => void;
@@ -46,9 +31,8 @@ interface Props<TYPE> {
 }
 
 const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
-    inntektsinformasjon,
-    arbeidsforhold,
-    termindato,
+    arbeidsforholdOgInntekt,
+    aktiveArbeidsforhold,
     saveOnNext,
     cancelApplication,
     onContinueLater,
@@ -61,17 +45,17 @@ const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
-
-    const formMethods = useForm<Inntektsinformasjon>({
-        defaultValues: inntektsinformasjon,
+    const formMethods = useForm<ArbeidsforholdOgInntekt>({
+        defaultValues: arbeidsforholdOgInntekt,
     });
 
     const hattInntektSomFrilans = formMethods.watch('harJobbetSomFrilans');
     const hattInntektSomNæringsdrivende = formMethods.watch('harJobbetSomSelvstendigNæringsdrivende');
 
     const kanIkkeSøke =
-        arbeidsforhold.length === 0 && hattInntektSomFrilans === false && hattInntektSomNæringsdrivende === false;
+        aktiveArbeidsforhold.length === 0 && hattInntektSomFrilans === false && hattInntektSomNæringsdrivende === false;
+
+    const erSvp = stønadstype === 'Svangerskapspenger';
 
     return (
         <Step
@@ -92,56 +76,65 @@ const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                     <BodyShort>
                         <FormattedMessage id="inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV" />
                     </BodyShort>
-                    <div>
+                    <VStack gap="2">
                         <BodyShort style={{ fontWeight: 'bold' }}>
                             <FormattedMessage id="inntektsinformasjon.arbeidsforhold.label" />
                         </BodyShort>
                         <ArbeidsforholdInformasjon arbeidsforhold={aktiveArbeidsforhold} />
-                    </div>
-                    <div>
+                    </VStack>
+                    <VStack gap="1">
                         <RadioGroup
                             name="harJobbetSomFrilans"
-                            label={intl.formatMessage({ id: 'inntektsinformasjon.harDuJobbetSomFrilans' })}
+                            label={intl.formatMessage({ id: 'inntektsinformasjon.harDuJobbetSomFrilans' }, { erSvp })}
                             validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.frilans.påkrevd' }))]}
-                            description={intl.formatMessage({
-                                id: 'inntektsinformasjon.beskrivelse',
-                            })}
+                            description={
+                                erSvp &&
+                                intl.formatMessage({
+                                    id: 'inntektsinformasjon.beskrivelse',
+                                })
+                            }
                         >
-                            <Radio value={true}>
-                                <FormattedMessage id="inntektsinformasjon.ja" />
-                            </Radio>
                             <Radio value={false}>
                                 <FormattedMessage id="inntektsinformasjon.nei" />
                             </Radio>
+                            <Radio value={true}>
+                                <FormattedMessage id="inntektsinformasjon.ja" />
+                            </Radio>
                         </RadioGroup>
                         <HvemKanVæreFrilanser />
-                    </div>
-                    <div>
+                    </VStack>
+                    <VStack gap="1">
                         <RadioGroup
                             name="harJobbetSomSelvstendigNæringsdrivende"
-                            label={intl.formatMessage({
-                                id: 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende',
-                            })}
+                            label={intl.formatMessage(
+                                {
+                                    id: 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende',
+                                },
+                                { erSvp },
+                            )}
                             validate={[
                                 isRequired(
                                     intl.formatMessage({ id: 'valideringsfeil.hattInntektSomNæringsdrivende.påkrevd' }),
                                 ),
                             ]}
-                            description={intl.formatMessage({
-                                id: 'inntektsinformasjon.beskrivelse',
-                            })}
+                            description={
+                                erSvp &&
+                                intl.formatMessage({
+                                    id: 'inntektsinformasjon.beskrivelse',
+                                })
+                            }
                         >
-                            <Radio value={true}>
-                                <FormattedMessage id="inntektsinformasjon.ja" />
-                            </Radio>
                             <Radio value={false}>
                                 <FormattedMessage id="inntektsinformasjon.nei" />
                             </Radio>
+                            <Radio value={true}>
+                                <FormattedMessage id="inntektsinformasjon.ja" />
+                            </Radio>
                         </RadioGroup>
                         <HvemKanDriveMedEgenNæring />
-                    </div>
-                    {stønadstype === 'Svangerskapspenger' && (
-                        <div>
+                    </VStack>
+                    {erSvp && (
+                        <VStack gap="1">
                             <RadioGroup
                                 name="harHattArbeidIUtlandet"
                                 label={intl.formatMessage({ id: 'inntektsinformasjon.hattArbeidIUtlandet' })}
@@ -154,18 +147,36 @@ const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                                     id: 'inntektsinformasjon.beskrivelse',
                                 })}
                             >
-                                <Radio value={true}>
-                                    <FormattedMessage id="inntektsinformasjon.ja" />
-                                </Radio>
                                 <Radio value={false}>
                                     <FormattedMessage id="inntektsinformasjon.nei" />
                                 </Radio>
+                                <Radio value={true}>
+                                    <FormattedMessage id="inntektsinformasjon.ja" />
+                                </Radio>
                             </RadioGroup>
                             <InfoOmArbeidIUtlandet />
-                        </div>
+                        </VStack>
+                    )}
+                    {!erSvp && (
+                        <RadioGroup
+                            name="harHattAndreInntektskilder"
+                            label={intl.formatMessage({ id: 'inntektsinformasjon.hattAndreInntektskilder' })}
+                            validate={[
+                                isRequired(
+                                    intl.formatMessage({ id: 'valideringsfeil.hattAndreInntektskilder.påkrevd' }),
+                                ),
+                            ]}
+                        >
+                            <Radio value={false}>
+                                <FormattedMessage id="inntektsinformasjon.nei" />
+                            </Radio>
+                            <Radio value={true}>
+                                <FormattedMessage id="inntektsinformasjon.ja" />
+                            </Radio>
+                        </RadioGroup>
                     )}
                     <VStack gap="4">
-                        <InfoOmFørstegangstjeneste />
+                        {erSvp && <InfoOmFørstegangstjeneste />}
                         <InfoTilFiskere />
                     </VStack>
                     {kanIkkeSøke && <BrukerKanIkkeSøke />}

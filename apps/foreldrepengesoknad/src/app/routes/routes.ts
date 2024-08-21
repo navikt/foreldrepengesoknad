@@ -9,7 +9,10 @@ enum SøknadRoutes {
     UTENLANDSOPPHOLD = '/soknad/utenlandsopphold',
     TIDLIGERE_UTENLANDSOPPHOLD = '/soknad/tidligere-utenlandsopphold',
     SENERE_UTENLANDSOPPHOLD = '/soknad/senere-utenlandsopphold',
-    INNTEKTSINFORMASJON = '/soknad/inntektsinformasjon',
+    ARBEID_OG_INNTEKT = '/soknad/inntektsinformasjon',
+    EGEN_NÆRING = '/soknad/egen-naring',
+    FRILANS = '/soknad/frilans',
+    ANDRE_INNTEKTER = '/soknad/andre-inntekter',
     DOKUMENTASJON = '/soknad/dokumentasjon',
     OPPSUMMERING = '/soknad/oppsummering',
     IKKE_MYNDIG = 'ikke-myndig',
@@ -23,11 +26,14 @@ export const ROUTES_ORDER = [
     SøknadRoutes.PERIODE_MED_FORELDREPENGER,
     SøknadRoutes.FORDELING,
     SøknadRoutes.UTTAKSPLAN,
-    SøknadRoutes.DOKUMENTASJON,
     SøknadRoutes.UTENLANDSOPPHOLD,
     SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD,
     SøknadRoutes.SENERE_UTENLANDSOPPHOLD,
-    SøknadRoutes.INNTEKTSINFORMASJON,
+    SøknadRoutes.ARBEID_OG_INNTEKT,
+    SøknadRoutes.EGEN_NÆRING,
+    SøknadRoutes.FRILANS,
+    SøknadRoutes.ANDRE_INNTEKTER,
+    SøknadRoutes.DOKUMENTASJON,
     SøknadRoutes.OPPSUMMERING,
 ];
 
@@ -39,7 +45,7 @@ export const REQUIRED_APP_STEPS = [
     SøknadRoutes.FORDELING,
     SøknadRoutes.UTTAKSPLAN,
     SøknadRoutes.UTENLANDSOPPHOLD,
-    SøknadRoutes.INNTEKTSINFORMASJON,
+    SøknadRoutes.ARBEID_OG_INNTEKT,
     SøknadRoutes.OPPSUMMERING,
 ];
 

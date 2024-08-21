@@ -4,11 +4,11 @@ import userEvent from '@testing-library/user-event';
 
 import * as stories from './ArbeidsforholdOgInntektPanel.stories';
 
-const { Default } = composeStories(stories);
+const { ForSvangerskapspenger } = composeStories(stories);
 
 describe('<ArbeidsforholdOgInntektPanel>', () => {
     it('skal vise feilmelding hvis spørsmål ikke er besvart', async () => {
-        render(<Default />);
+        render(<ForSvangerskapspenger />);
 
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
         expect(screen.getByText('Har du jobbet og hatt inntekt som frilanser de siste 4 ukene?')).toBeInTheDocument();
@@ -31,7 +31,7 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
     it('skal ikke vise feilmelding', async () => {
         const saveOnNext = vi.fn();
 
-        render(<Default saveOnNext={saveOnNext} />);
+        render(<ForSvangerskapspenger saveOnNext={saveOnNext} />);
 
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
 
@@ -65,7 +65,7 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
     it('skal avslutte søknad', async () => {
         const cancelApplication = vi.fn();
 
-        render(<Default cancelApplication={cancelApplication} />);
+        render(<ForSvangerskapspenger cancelApplication={cancelApplication} />);
 
         expect(await screen.findAllByText('Arbeidsforhold og inntekt')).toHaveLength(2);
 
@@ -77,7 +77,7 @@ describe('<ArbeidsforholdOgInntektPanel>', () => {
     it('skal gå til et tidligere steg', async () => {
         const onStepChange = vi.fn();
 
-        render(<Default onStepChange={onStepChange} />);
+        render(<ForSvangerskapspenger onStepChange={onStepChange} />);
 
         await userEvent.click(screen.getByText('Barnet'));
 

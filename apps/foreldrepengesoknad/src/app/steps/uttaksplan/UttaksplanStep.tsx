@@ -38,7 +38,6 @@ import {
     Uttaksplan,
     finnOgSettInnHull,
     getHarAktivitetskravIPeriodeUtenUttak,
-    kreverUttaksplanVedlegg,
     settInnAnnenPartsUttak,
 } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -404,14 +403,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     ]);
 
     const onSubmit = async () => {
-        const planKreverVedlegg = kreverUttaksplanVedlegg(
-            uttaksplan,
-            erFarEllerMedmor,
-            annenForelder,
-            erEndringssøknad,
-            uttaksplanMetadata?.perioderSomSkalSendesInn,
-        );
-
         setIsSubmitting(true);
         setSubmitIsClicked(true);
 
@@ -422,9 +413,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
             antallUkerIUttaksplan,
         });
 
-        if (planKreverVedlegg) {
-            return navigator.goToNextStep(SøknadRoutes.DOKUMENTASJON);
-        }
         return navigator.goToNextDefaultStep();
     };
 

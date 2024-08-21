@@ -17,6 +17,7 @@ import { kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from 'app/context/FpDataContext';
+import { AnnenInntektType } from 'app/types/AndreInntektskilder';
 
 import SøknadRoutes, { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER } from '../routes/routes';
 
@@ -39,7 +40,10 @@ const getPathToLabelMap = (intl: IntlShape) =>
         [SøknadRoutes.UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'steps.label.utenlandsopphold' }),
         [SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'steps.label.utenlandsopphold.tidligere' }),
         [SøknadRoutes.SENERE_UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'steps.label.utenlandsopphold.senere' }),
-        [SøknadRoutes.INNTEKTSINFORMASJON]: intl.formatMessage({ id: 'steps.label.inntektsinformasjon' }),
+        [SøknadRoutes.ARBEID_OG_INNTEKT]: intl.formatMessage({ id: 'steps.label.inntektsinformasjon' }),
+        [SøknadRoutes.FRILANS]: intl.formatMessage({ id: 'steps.label.frilans' }),
+        [SøknadRoutes.EGEN_NÆRING]: intl.formatMessage({ id: 'steps.label.egenNæring' }),
+        [SøknadRoutes.ANDRE_INNTEKTER]: intl.formatMessage({ id: 'steps.label.andreInntekter' }),
         [SøknadRoutes.OPPSUMMERING]: intl.formatMessage({ id: 'steps.label.oppsummering' }),
         [SøknadRoutes.DOKUMENTASJON]: intl.formatMessage({ id: 'søknad.manglendeVedlegg' }),
     }) as Record<string, string>;
@@ -64,6 +68,32 @@ const showUtenlandsoppholdStep = (
             getData(ContextDataType.UTENLANDSOPPHOLD)?.iNorgeNeste12Mnd === false &&
             isAfterStep(SøknadRoutes.UTENLANDSOPPHOLD, currentPath);
         return erValgtOgEtterSteg || !!getData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+    }
+    return false;
+};
+
+const showFrilansOgEgenNæringOgAndreInntekter = (
+    path: SøknadRoutes,
+    currentPath: SøknadRoutes,
+    getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+) => {
+    if (path === SøknadRoutes.FRILANS) {
+        const erValgtOgEtterSteg =
+            getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harJobbetSomFrilans === true &&
+            isAfterStep(SøknadRoutes.ARBEID_OG_INNTEKT, currentPath);
+        return erValgtOgEtterSteg || !!getData(ContextDataType.FRILANS);
+    }
+    if (path === SøknadRoutes.EGEN_NÆRING) {
+        const erValgtOgEtterSteg =
+            getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harJobbetSomSelvstendigNæringsdrivende === true &&
+            isAfterStep(SøknadRoutes.ARBEID_OG_INNTEKT, currentPath);
+        return erValgtOgEtterSteg || !!getData(ContextDataType.EGEN_NÆRING);
+    }
+    if (path === SøknadRoutes.ANDRE_INNTEKTER) {
+        const erValgtOgEtterSteg =
+            getData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)?.harHattAndreInntektskilder === true &&
+            isAfterStep(SøknadRoutes.ARBEID_OG_INNTEKT, currentPath);
+        return erValgtOgEtterSteg || !!getData(ContextDataType.ANDRE_INNTEKTSKILDER);
     }
     return false;
 };
@@ -104,6 +134,7 @@ const showManglendeDokumentasjonSteg = (
         const barn = getData(ContextDataType.OM_BARNET);
         const uttaksplan = getData(ContextDataType.UTTAKSPLAN);
         const uttaksplanMetadata = getData(ContextDataType.UTTAKSPLAN_METADATA);
+        const andreInntektskilder = getData(ContextDataType.ANDRE_INNTEKTSKILDER);
 
         const erFarEllerMedmor = !!søkersituasjon && isFarEllerMedmor(søkersituasjon.rolle);
 
@@ -130,7 +161,11 @@ const showManglendeDokumentasjonSteg = (
                   )
                 : false;
 
-        return skalHaAnnenForelderDok || skalHaOmBarnetDok || skalHaUttakDok;
+        const skalHaAndreInntekterDok = andreInntektskilder?.some(
+            (i) => i.type === AnnenInntektType.MILITÆRTJENESTE || i.type === AnnenInntektType.SLUTTPAKKE,
+        );
+
+        return skalHaAnnenForelderDok || skalHaOmBarnetDok || skalHaUttakDok || skalHaAndreInntekterDok;
     }
 
     return false;
@@ -154,7 +189,8 @@ const useStepConfig = (arbeidsforhold: Arbeidsforhold[], erEndringssøknad = fal
             ROUTES_ORDER.flatMap((path) =>
                 requiredSteps.includes(path) ||
                 showUtenlandsoppholdStep(path, currentPath, getStateData) ||
-                showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, erEndringssøknad)
+                showManglendeDokumentasjonSteg(path, getStateData, arbeidsforhold, erEndringssøknad) ||
+                showFrilansOgEgenNæringOgAndreInntekter(path, currentPath, getStateData)
                     ? [path]
                     : [],
             ),

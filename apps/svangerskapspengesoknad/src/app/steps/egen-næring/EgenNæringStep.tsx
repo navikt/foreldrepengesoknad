@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
 
-import { Inntektsinformasjon } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring, EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
 import { frilansId } from '@navikt/fp-steg-frilans';
 import { Arbeidsforhold } from '@navikt/fp-types';
@@ -21,7 +21,7 @@ import { getNæringTilretteleggingOption } from '../velg-arbeidsforhold/velgArbe
 const getNextRouteValgAvArbeidEllerSkjema = (
     termindato: string,
     arbeidsforhold: Arbeidsforhold[],
-    inntektsinformasjon: Inntektsinformasjon,
+    inntektsinformasjon: ArbeidsforholdOgInntektSvp,
 ): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
     const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
@@ -42,7 +42,7 @@ const getNextRouteValgAvArbeidEllerSkjema = (
 };
 
 const getNextRoute = (
-    inntektsinformasjon: Inntektsinformasjon,
+    inntektsinformasjon: ArbeidsforholdOgInntektSvp,
     termindato: string,
     arbeidsforhold: Arbeidsforhold[],
 ): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
@@ -67,7 +67,7 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
-    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
+    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
 

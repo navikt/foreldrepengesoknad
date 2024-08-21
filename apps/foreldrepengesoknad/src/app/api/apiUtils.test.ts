@@ -9,6 +9,7 @@ import {
     StønadskontoType,
     Uttaksperiode,
 } from '@navikt/fp-common';
+import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt/src/types/ArbeidsforholdOgInntekt';
 
 import { ContextDataType } from 'app/context/FpDataContext';
 
@@ -64,13 +65,12 @@ const getStateMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaks
         if (type === ContextDataType.UTTAKSPLAN) {
             return uttaksplanInput;
         }
-        if (type === ContextDataType.SØKER_DATA) {
+        if (type === ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT) {
             return {
-                erAleneOmOmsorg: false,
-                harHattAnnenInntektSiste10Mnd: false,
-                harJobbetSomFrilansSiste10Mnd: false,
-                harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
-            };
+                harHattAndreInntektskilder: false,
+                harJobbetSomFrilans: false,
+                harJobbetSomSelvstendigNæringsdrivende: false,
+            } as ArbeidsforholdOgInntektFp;
         }
         if (type === ContextDataType.SØKERSITUASJON) {
             return {

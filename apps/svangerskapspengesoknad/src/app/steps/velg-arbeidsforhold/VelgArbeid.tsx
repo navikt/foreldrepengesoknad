@@ -30,7 +30,7 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
-    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
+    const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
@@ -43,7 +43,7 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
 
     const tilretteleggingOptions = mapArbeidsforholdToVelgArbeidOptions(
         tilrettelegginger || [],
-        inntektsinformasjon,
+        arbeidsforholdOgInntekt,
         arbeidsforhold,
         termindato,
         intl,

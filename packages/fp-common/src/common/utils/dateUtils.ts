@@ -1,15 +1,17 @@
-import { Tidsperiode, TidsperiodeMedValgfriSluttdato } from './../types/Tidsperiode';
-import { isISODateString } from '@navikt/fp-utils';
 import dayjs, { Dayjs } from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isBetween from 'dayjs/plugin/isBetween';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
-import { Uttaksdagen } from './Uttaksdagen';
-import { TidsperiodeDate, Utsettelsesperiode } from '../types';
+
+import { isISODateString } from '@navikt/fp-utils';
+
 import uttaksConstants from '../constants/constants';
-import { SkjemaelementFeil, hasValue } from './validationUtils';
+import { TidsperiodeDate, Utsettelsesperiode } from '../types';
+import { Tidsperiode, TidsperiodeMedValgfriSluttdato } from './../types/Tidsperiode';
+import { Uttaksdagen } from './Uttaksdagen';
 import intlUtils from './intlUtils';
+import { SkjemaelementFeil, hasValue } from './validationUtils';
 
 dayjs.extend(utc);
 dayjs.extend(isSameOrAfter);

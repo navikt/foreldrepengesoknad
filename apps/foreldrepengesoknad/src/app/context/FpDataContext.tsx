@@ -1,16 +1,19 @@
 import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
 
 import { AnnenForelder, Barn, BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
+import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { EgenNæring } from '@navikt/fp-steg-egen-naering';
+import { Frilans } from '@navikt/fp-steg-frilans';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 
 import SøknadRoutes from 'app/routes/routes';
+import { AndreInntektskilder } from 'app/types/AndreInntektskilder';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 
 import Fordeling from './types/Fordeling';
 import { Opphold, SenereOpphold, TidligereOpphold } from './types/InformasjonOmUtenlandsopphold';
 import PeriodeMedForeldrepenger from './types/PeriodeMedForeldrepenger';
-import SøkerData from './types/SøkerData';
 
 export enum ContextDataType {
     APP_ROUTE = 'APP_ROUTE',
@@ -19,7 +22,10 @@ export enum ContextDataType {
     SØKERSITUASJON = 'SØKERSITUASJON',
     OM_BARNET = 'OM_BARNET',
     ANNEN_FORELDER = 'ANNEN_FORELDER',
-    SØKER_DATA = 'SØKER',
+    ARBEIDSFORHOLD_OG_INNTEKT = 'ARBEIDSFORHOLD_OG_INNTEKT',
+    EGEN_NÆRING = 'EGEN_NÆRING',
+    FRILANS = 'FRILANS',
+    ANDRE_INNTEKTSKILDER = 'ANDRE_INNTEKTSKILDER',
     UTENLANDSOPPHOLD = 'UTENLANDSOPPHOLD',
     UTENLANDSOPPHOLD_SENERE = 'UTENLANDSOPPHOLD_SENERE',
     UTENLANDSOPPHOLD_TIDLIGERE = 'UTENLANDSOPPHOLD_TIDLIGERE',
@@ -37,7 +43,10 @@ export type ContextDataMap = {
     [ContextDataType.SØKERSITUASJON]?: SøkersituasjonFp;
     [ContextDataType.OM_BARNET]?: Barn;
     [ContextDataType.ANNEN_FORELDER]?: AnnenForelder;
-    [ContextDataType.SØKER_DATA]?: SøkerData;
+    [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]?: ArbeidsforholdOgInntektFp;
+    [ContextDataType.EGEN_NÆRING]?: EgenNæring;
+    [ContextDataType.FRILANS]?: Frilans;
+    [ContextDataType.ANDRE_INNTEKTSKILDER]?: AndreInntektskilder[];
     [ContextDataType.UTENLANDSOPPHOLD]?: Opphold;
     [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: SenereOpphold;
     [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: TidligereOpphold;

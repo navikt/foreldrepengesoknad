@@ -11,9 +11,12 @@ import { useAvbrytSøknad } from 'app/context/useAvbrytSøknad';
 import useMellomlagreSøknad from 'app/context/useMellomlagreSøknad';
 import useSendSøknad from 'app/context/useSendSøknad';
 import Velkommen from 'app/pages/velkommen/Velkommen';
+import AndreInntektskilderSteg from 'app/steps/andre-inntektskilder/AndreInntektskilderSteg';
 import AnnenForelderSteg from 'app/steps/annen-forelder/AnnenForelderSteg';
+import ArbeidsforholdOgInntektSteg from 'app/steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
+import EgenNæringSteg from 'app/steps/egen-næring/EgenNæringSteg';
 import FordelingSteg from 'app/steps/fordeling/FordelingSteg';
-import Inntektsinformasjon from 'app/steps/inntektsinformasjon/Inntektsinformasjon';
+import FrilansSteg from 'app/steps/frilans/FrilansSteg';
 import ManglendeVedlegg from 'app/steps/manglende-vedlegg/ManglendeVedlegg';
 import OmBarnetSteg from 'app/steps/om-barnet/OmBarnetSteg';
 import Oppsummering from 'app/steps/oppsummering/Oppsummering';
@@ -194,9 +197,39 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoutes.INNTEKTSINFORMASJON}
+                path={SøknadRoutes.ARBEID_OG_INNTEKT}
                 element={
-                    <Inntektsinformasjon
+                    <ArbeidsforholdOgInntektSteg
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
+            />
+            <Route
+                path={SøknadRoutes.EGEN_NÆRING}
+                element={
+                    <EgenNæringSteg
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
+            />
+            <Route
+                path={SøknadRoutes.FRILANS}
+                element={
+                    <FrilansSteg
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
+            />
+            <Route
+                path={SøknadRoutes.ARBEID_OG_INNTEKT}
+                element={
+                    <AndreInntektskilderSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}

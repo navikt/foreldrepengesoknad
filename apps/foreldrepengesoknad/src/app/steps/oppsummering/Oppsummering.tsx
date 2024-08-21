@@ -88,7 +88,10 @@ const Oppsummering: FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
 
-    const søkerData = useContextGetData(ContextDataType.SØKER_DATA);
+    const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
+    const frilans = useContextGetData(ContextDataType.FRILANS);
+    const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
+    const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER);
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
@@ -161,7 +164,10 @@ const Oppsummering: FunctionComponent<Props> = ({
                             arbeidsforhold={søkerInfo.arbeidsforhold}
                             barn={barn}
                             søkersituasjon={søkersituasjon}
-                            søkerData={søkerData}
+                            arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
+                            frilans={frilans}
+                            egenNæring={egenNæring}
+                            andreInntektskilder={andreInntektskilder}
                         />
                     </OppsummeringPanel.Punkt>
                     <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.uttak' })}>

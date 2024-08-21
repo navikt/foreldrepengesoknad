@@ -91,7 +91,7 @@ const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(
             <SvpDataContext
                 onDispatch={gåTilNesteSide}
                 initialState={{
-                    [ContextDataType.INNTEKTSINFORMASJON]: {
+                    [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
                         harJobbetSomSelvstendigNæringsdrivende: true,
                         harHattArbeidIUtlandet: false,
                         harJobbetSomFrilans: false,
