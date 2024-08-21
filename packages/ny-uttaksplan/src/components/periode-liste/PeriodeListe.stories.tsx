@@ -28,7 +28,7 @@ const customRenderer = ({ perioder, familiehendelsedato }: StoryArgs) => {
                 },
             }}
         >
-            <div style={{ maxWidth: '704px', margin: '1rem auto 4rem' }}>
+            <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
                 <PeriodeListe
                     perioder={perioder}
                     familiehendelsedato={familiehendelsedato}

@@ -1,7 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ComponentProps } from 'react';
 
-import { Forelder } from '@navikt/fp-common';
+import { Accordion } from '@navikt/ds-react';
+
+import { Forelder, PeriodeHullÅrsak, Periodetype, StønadskontoType } from '@navikt/fp-common';
 
 import { UttaksplanContextDataType, UttaksplanDataContext } from '../../context/UttaksplanDataContext';
 import PeriodeListeItem from './PeriodeListeItem';
@@ -21,8 +23,10 @@ const customRenderer = ({ permisjonsperiode }: StoryArgs) => {
                 },
             }}
         >
-            <div style={{ maxWidth: '704px', margin: '1rem auto 4rem' }}>
-                <PeriodeListeItem permisjonsperiode={permisjonsperiode} familiehendelsedato="2024-06-01" />
+            <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
+                <Accordion>
+                    <PeriodeListeItem permisjonsperiode={permisjonsperiode} familiehendelsedato="2024-06-01" />
+                </Accordion>
             </div>
         </UttaksplanDataContext>
     );
@@ -35,7 +39,7 @@ const meta = {
 } satisfies Meta<StoryArgs>;
 export default meta;
 
-export const Uttaksperiode: Story = {
+export const UttaksperiodeMor: Story = {
     args: {
         permisjonsperiode: {
             tidsperiode: {
@@ -43,7 +47,76 @@ export const Uttaksperiode: Story = {
                 tom: '2024-06-30',
             },
             forelder: Forelder.mor,
-            perioder: [],
+            perioder: [
+                {
+                    id: '88638814-3912-1440-03308-2381934996836',
+                    type: Periodetype.Uttak,
+                    tidsperiode: {
+                        fom: new Date('2024-06-01'),
+                        tom: new Date('2024-06-30'),
+                    },
+                    forelder: Forelder.mor,
+                    konto: StønadskontoType.Mødrekvote,
+                },
+            ],
+        },
+    },
+};
+
+export const UttaksperiodeMorFlerePerioder: Story = {
+    args: {
+        permisjonsperiode: {
+            tidsperiode: {
+                fom: '2024-06-01',
+                tom: '2024-07-26',
+            },
+            forelder: Forelder.mor,
+            perioder: [
+                {
+                    id: '88638814-3912-1440-03308-2381934996836',
+                    type: Periodetype.Uttak,
+                    tidsperiode: {
+                        fom: new Date('2024-06-01'),
+                        tom: new Date('2024-06-28'),
+                    },
+                    forelder: Forelder.mor,
+                    konto: StønadskontoType.Mødrekvote,
+                },
+                {
+                    id: '88638814-3912-1440-03308-2381934996836',
+                    type: Periodetype.Uttak,
+                    tidsperiode: {
+                        fom: new Date('2024-07-01'),
+                        tom: new Date('2024-07-26'),
+                    },
+                    forelder: Forelder.mor,
+                    konto: StønadskontoType.Fellesperiode,
+                },
+            ],
+        },
+    },
+};
+
+export const UttaksperiodeFar: Story = {
+    args: {
+        permisjonsperiode: {
+            tidsperiode: {
+                fom: '2024-06-01',
+                tom: '2024-06-28',
+            },
+            forelder: Forelder.farMedmor,
+            perioder: [
+                {
+                    id: '88638814-3912-1440-03308-2381934996836',
+                    type: Periodetype.Uttak,
+                    tidsperiode: {
+                        fom: new Date('2024-06-01'),
+                        tom: new Date('2024-06-28'),
+                    },
+                    forelder: Forelder.farMedmor,
+                    konto: StønadskontoType.Fedrekvote,
+                },
+            ],
         },
     },
 };
@@ -51,12 +124,22 @@ export const Uttaksperiode: Story = {
 export const PeriodeUtenUttak: Story = {
     args: {
         permisjonsperiode: {
+            erPeriodeUtenUttak: true,
             tidsperiode: {
                 fom: '2024-08-01',
                 tom: '2024-08-31',
             },
-            forelder: Forelder.farMedmor,
-            perioder: [],
+            perioder: [
+                {
+                    id: '88638814-3912-1440-03308-2381934996836',
+                    type: Periodetype.Hull,
+                    tidsperiode: {
+                        fom: new Date('2024-08-01'),
+                        tom: new Date('2024-08-31'),
+                    },
+                    årsak: PeriodeHullÅrsak.fridag,
+                },
+            ],
         },
     },
 };

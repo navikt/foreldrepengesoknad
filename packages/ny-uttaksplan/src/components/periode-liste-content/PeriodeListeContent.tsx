@@ -1,7 +1,7 @@
 import { BriefcaseIcon, CalendarIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
 
-import { BodyShort, HStack } from '@navikt/ds-react';
+import { BodyShort, Stack } from '@navikt/ds-react';
 
 import { FamiliehendelseType, NavnPåForeldre, Periode, isOppholdsperiode, isUttaksperiode } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
@@ -25,7 +25,14 @@ const renderPeriode = (
     inneholderKunEnPeriode: boolean,
 ) => {
     if (isUttaksperiode(periode)) {
-        return <UttaksperiodeContent inneholderKunEnPeriode={inneholderKunEnPeriode} periode={periode} />;
+        return (
+            <UttaksperiodeContent
+                inneholderKunEnPeriode={inneholderKunEnPeriode}
+                periode={periode}
+                erFarEllerMedmor={erFarEllerMedmor}
+                navnPåForeldre={navnPåForeldre}
+            />
+        );
     }
 
     if (isOppholdsperiode(periode)) {
@@ -77,11 +84,11 @@ const PeriodeListeContent: FunctionComponent<Props> = ({
 
     return (
         <div style={{ marginTop: '1rem' }}>
-            <HStack gap="4">
+            <Stack direction={{ sm: 'column', md: 'column' }}>
                 {permisjonsperiode.perioder.map((periode) => {
                     return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode);
                 })}
-            </HStack>
+            </Stack>
             {skalJobbeIPermisjonsperioden ? (
                 <div style={{ margin: '0.5rem 0', display: 'flex' }}>
                     <div>

@@ -26,7 +26,7 @@ const PeriodeListeItem: FunctionComponent<Props> = ({
 
     return (
         <Accordion.Item>
-            <Accordion.Header className={bem.element('header')}>
+            <Accordion.Header style={{ flexDirection: 'row-reverse' }} className={bem.element('header')}>
                 <PeriodeListeHeader
                     permisjonsperiode={permisjonsperiode}
                     familiehendelsedato={familiehendelsedato}
