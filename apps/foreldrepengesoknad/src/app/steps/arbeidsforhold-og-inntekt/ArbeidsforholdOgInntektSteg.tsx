@@ -78,7 +78,7 @@ const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
             </Heading>
             <ArbeidsforholdOgInntektPanel
                 aktiveArbeidsforhold={aktiveArbeidsforhold}
-                inntektsinformasjon={arbeidsforholdOgInntekt}
+                arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                 saveOnNext={onSubmit}
                 cancelApplication={avbrytSøknad}
                 onContinueLater={navigator.fortsettSøknadSenere}

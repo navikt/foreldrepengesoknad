@@ -227,7 +227,7 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoutes.ARBEID_OG_INNTEKT}
+                path={SøknadRoutes.ANDRE_INNTEKTER}
                 element={
                     <AndreInntektskilderSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}

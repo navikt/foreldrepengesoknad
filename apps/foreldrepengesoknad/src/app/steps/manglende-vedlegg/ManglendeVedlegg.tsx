@@ -14,7 +14,6 @@ import { notEmpty } from '@navikt/fp-validation';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
@@ -85,7 +84,6 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
     const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER);
     const saveVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
-    const saveNextRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const relevantePerioder = getRelevantePerioder(
         uttaksplan,
         uttaksplanMetadata?.perioderSomSkalSendesInn,
@@ -154,9 +152,8 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
         };
 
         saveVedlegg(alleVedlegg);
-        saveNextRoute(erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD);
 
-        return mellomlagreSøknadOgNaviger();
+        return navigator.goToNextDefaultStep();
     };
 
     const formMethods = useForm<ManglendeVedleggFormData>({
