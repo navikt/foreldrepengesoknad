@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { Block } from '@navikt/fp-common';
+import { Block, formatDateShortYear } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { Attachment } from '@navikt/fp-types';
@@ -9,7 +9,7 @@ import { Attachment } from '@navikt/fp-types';
 import { AndreInntektskilder, AnnenInntektType } from 'app/types/AndreInntektskilder';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 
-import VedleggMedPeriodeUploader from '../attachment-uploaders/VedleggMedPeriodeUploader';
+import VedleggUploader, { formaterPerioderForVisning } from '../attachment-uploaders/VedleggUploader';
 
 interface Props {
     attachments: Attachment[];
@@ -37,17 +37,23 @@ const EtterlønnEllerSluttvederlagDokumentasjon: React.FunctionComponent<Props> 
     const perioder = andreInntektskilder
         .filter((i) => i.type === AnnenInntektType.SLUTTPAKKE)
         .map((i) => ({
-            fom: i.fom,
-            tom: i.tom,
+            fom: formatDateShortYear(i.fom),
+            tom: formatDateShortYear(i.tom),
         }));
 
     return (
         <Block padBottom="xl">
-            <VedleggMedPeriodeUploader
+            <VedleggUploader
                 attachments={attachments}
                 updateAttachments={updateAttachments(Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG)}
                 skjemanummer={Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG}
-                labelText={intl.formatMessage({ id: 'manglendeVedlegg.etterlønn.tittel' })}
+                labelText={intl.formatMessage(
+                    { id: 'manglendeVedlegg.etterlønn.tittel' },
+                    {
+                        perioder: formaterPerioderForVisning(perioder, intl),
+                        antallPerioder: perioder.length,
+                    },
+                )}
                 description={intl.formatMessage({
                     id: 'manglendeVedlegg.etterlønn.description',
                 })}

@@ -200,8 +200,7 @@ HarAndreInntektskilderMilitærtjeneste.args = {
         },
         {
             fom: '2024-05-01',
-            tom: '2024-07-01',
-            pågående: false,
+            pågående: true,
             type: AnnenInntektType.MILITÆRTJENESTE,
         },
     ],

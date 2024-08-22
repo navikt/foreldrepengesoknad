@@ -7,16 +7,17 @@ export enum AnnenInntektType {
 interface AnnenInntektBase {
     type: AnnenInntektType;
     fom: string;
-    tom: string;
 }
 
 export interface SluttpakkeInntekt extends AnnenInntektBase {
     type: AnnenInntektType.SLUTTPAKKE;
+    tom: string;
 }
 
 export interface MilitærtjenesteInntekt extends AnnenInntektBase {
     type: AnnenInntektType.MILITÆRTJENESTE;
     pågående: boolean;
+    tom?: string;
 }
 
 export interface JobbIUtlandetInntekt extends AnnenInntektBase {
@@ -24,6 +25,7 @@ export interface JobbIUtlandetInntekt extends AnnenInntektBase {
     arbeidsgiverNavn: string;
     land: string;
     pågående: boolean;
+    tom?: string;
 }
 
 export type AndreInntektskilder = SluttpakkeInntekt | MilitærtjenesteInntekt | JobbIUtlandetInntekt;

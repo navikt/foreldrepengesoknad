@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { Block } from '@navikt/fp-common';
+import { Block, formatDateShortYear } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { Attachment } from '@navikt/fp-types';
@@ -9,7 +9,7 @@ import { Attachment } from '@navikt/fp-types';
 import { AndreInntektskilder, AnnenInntektType } from 'app/types/AndreInntektskilder';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 
-import VedleggMedPeriodeUploader from '../attachment-uploaders/VedleggMedPeriodeUploader';
+import VedleggUploader, { formaterPerioderForVisning } from '../attachment-uploaders/VedleggUploader';
 
 interface Props {
     attachments: Attachment[];
@@ -37,20 +37,26 @@ const MilitærEllerSiviltjenesteDokumentasjon: React.FunctionComponent<Props> = 
     const perioder = andreInntektskilder
         .filter((i) => i.type === AnnenInntektType.MILITÆRTJENESTE)
         .map((i) => ({
-            fom: i.fom,
-            tom: i.tom,
+            fom: formatDateShortYear(i.fom),
+            tom:
+                i.pågående || !i.tom
+                    ? intl.formatMessage({ id: 'manglendeVedlegg.militær.pågående' })
+                    : formatDateShortYear(i.tom),
         }));
 
     return (
         <Block padBottom="xl">
-            <VedleggMedPeriodeUploader
+            <VedleggUploader
                 attachments={attachments}
                 updateAttachments={updateAttachments(Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE)}
                 skjemanummer={Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE}
-                labelText={intl.formatMessage({ id: 'manglendeVedlegg.militær.tittel' })}
-                description={intl.formatMessage({
-                    id: 'manglendeVedlegg.militær.description',
-                })}
+                labelText={intl.formatMessage(
+                    { id: 'manglendeVedlegg.militær.tittel' },
+                    {
+                        perioder: formaterPerioderForVisning(perioder, intl),
+                        antallPerioder: perioder.length,
+                    },
+                )}
                 attachmentType={AttachmentType.ANNEN_INNTEKT}
                 metadataType={AttachmentMetadataType.OPPTJENING}
                 perioder={perioder}
