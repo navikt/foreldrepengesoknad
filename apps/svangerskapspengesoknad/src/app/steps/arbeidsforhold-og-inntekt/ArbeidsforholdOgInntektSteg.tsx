@@ -2,7 +2,12 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
 
-import { ArbeidsforholdOgInntektPanel, ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import {
+    ArbeidsforholdOgInntekt,
+    ArbeidsforholdOgInntektPanel,
+    ArbeidsforholdOgInntektSvp,
+    isArbeidsforholdOgInntektSvp,
+} from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -98,7 +103,10 @@ const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
 
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
 
-    const onSubmit = (values: ArbeidsforholdOgInntektSvp) => {
+    const onSubmit = (values: ArbeidsforholdOgInntekt) => {
+        if (!isArbeidsforholdOgInntektSvp(values)) {
+            throw Error('values er på feil format');
+        }
         const automatiskValgtTilrettelegging = getAutomatiskValgtTilretteleggingHvisKunEtArbeid(
             values,
             aktiveArbeidsforhold,

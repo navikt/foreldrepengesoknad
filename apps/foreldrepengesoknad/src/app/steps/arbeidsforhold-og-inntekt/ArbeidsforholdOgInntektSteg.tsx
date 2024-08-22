@@ -3,7 +3,11 @@ import { FormattedMessage } from 'react-intl';
 import { Heading } from '@navikt/ds-react';
 
 import { ISOStringToDate, getAktiveArbeidsforhold, isFarEllerMedmor } from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp, ArbeidsforholdOgInntektPanel } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import {
+    ArbeidsforholdOgInntekt,
+    ArbeidsforholdOgInntektPanel,
+    isArbeidsforholdOgInntektFp,
+} from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
@@ -45,7 +49,11 @@ const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
         ISOStringToDate(getFamiliehendelsedato(barn)),
     );
 
-    const onSubmit = (values: ArbeidsforholdOgInntektFp) => {
+    const onSubmit = (values: ArbeidsforholdOgInntekt) => {
+        if (!isArbeidsforholdOgInntektFp(values)) {
+            throw Error('values er på feil format');
+        }
+
         oppdaterArbeidsforholdOgInntekt(values);
 
         if (values.harHattAndreInntektskilder === false) {

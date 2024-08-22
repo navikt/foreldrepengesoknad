@@ -9,7 +9,12 @@ export const arbeidsforholdOgInntektMessages = {
 };
 
 export { default as ArbeidsforholdOgInntektPanel } from './src/ArbeidsforholdOgInntektPanel';
-export type { ArbeidsforholdOgInntektFp, ArbeidsforholdOgInntektSvp } from './src/types/ArbeidsforholdOgInntekt';
+export type {
+    ArbeidsforholdOgInntekt,
+    ArbeidsforholdOgInntektFp,
+    ArbeidsforholdOgInntektSvp,
+} from './src/types/ArbeidsforholdOgInntekt';
+export { isArbeidsforholdOgInntektFp, isArbeidsforholdOgInntektSvp } from './src/types/ArbeidsforholdOgInntekt';
 //TODO Usikker på om desse to bør ligga i denne pakka sidan dei i tillegg blir brukt i oppsummering i FP
 export { default as HarArbeidsforhold } from './src/components/arbeidsforhold-informasjon/HarArbeidsforhold';
 export { default as HarIkkeArbeidsforhold } from './src/components/arbeidsforhold-informasjon/HarIkkeArbeidsforhold';
