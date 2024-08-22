@@ -1,1 +1,0 @@
-import{b as a}from"./Tidsperioden-Cw9xAJ1Y.js";const n=(e,t)=>{throw new Error(t??"This should never happen.")},o=e=>a(e,{unitSeparator:" ",thousandsSeparator:" ",decimalPlaces:1,fixedDecimals:!1}),c=(e,t)=>e.filter(r=>r!==t);export{n as a,o as b,c as d};
