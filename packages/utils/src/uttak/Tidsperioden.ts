@@ -1,11 +1,9 @@
-import { HolidaysTypes } from 'date-holidays';
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
 import { TidsperiodeDate } from '@navikt/fp-types';
 
 import { dateIsSameOrAfter, dateIsSameOrBefore, formaterDatoUtenDag } from '../dateUtils';
-import { getOffentligeFridager } from '../fridagerUtils';
 import { Uttaksdagen } from './Uttaksdagen';
 
 export const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
@@ -16,7 +14,6 @@ export const Tidsperioden = (tidsperiode: TidsperiodeDate) => ({
     erOmsluttetAv: (tidsperiode2: TidsperiodeDate) => erTidsperiodeOmsluttetAvTidsperiode(tidsperiode, tidsperiode2),
     erUtenfor: (tidsperiode2: TidsperiodeDate) => erTidsperiodeUtenforTidsperiode(tidsperiode, tidsperiode2),
     getAntallUttaksdager: () => getAntallUttaksdagerITidsperiode(tidsperiode),
-    getAntallFridager: () => getUttaksdagerSomErFridager(tidsperiode).length,
     setStartdato: (fom: Date) => (isValidTidsperiode(tidsperiode) ? flyttTidsperiode(tidsperiode, fom) : tidsperiode),
     setUttaksdager: (uttaksdager: number) =>
         tidsperiode.fom ? getTidsperiode(tidsperiode.fom, uttaksdager) : tidsperiode,
@@ -114,12 +111,6 @@ function getAntallUttaksdagerITidsperiode(tidsperiode: TidsperiodeDate): number 
         fom = fom.add(24, 'hours');
     }
     return antall;
-}
-
-function getUttaksdagerSomErFridager(tidsperiode: TidsperiodeDate): HolidaysTypes.Holiday[] {
-    return isValidTidsperiode(tidsperiode)
-        ? getOffentligeFridager(tidsperiode).filter((dag) => Uttaksdagen(new Date(dag.date)).erUttaksdag())
-        : [];
 }
 
 function flyttTidsperiode(tidsperiode: TidsperiodeDate, fom: Date): TidsperiodeDate {
