@@ -13,4 +13,6 @@ export type GyldigeSkjemanummer =
     | Skjemanummer.DOK_ARBEID_MOR
     | Skjemanummer.DOK_AV_ALENEOMSORG
     | Skjemanummer.TERMINBEKREFTELSE
-    | Skjemanummer.OMSORGSOVERTAKELSE;
+    | Skjemanummer.OMSORGSOVERTAKELSE
+    | Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+    | Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE;

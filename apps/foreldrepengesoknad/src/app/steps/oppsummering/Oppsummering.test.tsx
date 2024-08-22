@@ -260,7 +260,7 @@ describe('<Oppsummering>', () => {
         expect(screen.queryByText('Mottar Frida uføretrygd')).not.toBeInTheDocument();
     });
 
-    it('skal gå til inntektsinformasjon når førstegangssøknad og en går til forrige steg', async () => {
+    it('skal gå til dokumentasjon når førstegangssøknad og en går til forrige steg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -273,7 +273,7 @@ describe('<Oppsummering>', () => {
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: SøknadRoutes.INNTEKTSINFORMASJON,
+            data: SøknadRoutes.DOKUMENTASJON,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

@@ -14,7 +14,6 @@ import { notEmpty } from '@navikt/fp-validation';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
@@ -22,8 +21,10 @@ import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { ManglendeVedleggFormData } from './ManglendeVedleggFormData';
 import AleneomsorgDokumentasjon from './dokumentasjon/AleneomsorgDokumentasjon';
 import BarnInnlagtDokumentasjon from './dokumentasjon/BarnInnlagtDokumentasjon';
+import EtterlønnEllerSluttvederlagDokumentasjon from './dokumentasjon/EtterlønnEllerSluttvederlagDokumentasjon';
 import FarForSykDokumentasjon from './dokumentasjon/FarForSykDokumentasjon';
 import FarInnlagtDokumentasjon from './dokumentasjon/FarInnlagtDokumentasjon';
+import MilitærEllerSiviltjenesteDokumentasjon from './dokumentasjon/MilitærEllerSiviltjenesteDokumentasjon';
 import MorForSykDokumentasjon from './dokumentasjon/MorForSykDokumentasjon';
 import MorInnlagtDokumentasjon from './dokumentasjon/MorInnlagtDokumentasjon';
 import MorIntroduksjonsprogrammetDokumentasjon from './dokumentasjon/MorIntroduksjonsprogrammetDokumentasjon';
@@ -80,8 +81,9 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG) || ({} as VedleggDataType);
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
+    const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
+    const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER);
     const saveVedlegg = useContextSaveData(ContextDataType.VEDLEGG);
-    const saveNextRoute = useContextSaveData(ContextDataType.APP_ROUTE);
     const relevantePerioder = getRelevantePerioder(
         uttaksplan,
         uttaksplanMetadata?.perioderSomSkalSendesInn,
@@ -103,6 +105,8 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const aleneomsorgVedlegg = vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG] || [];
     const terminbekreftelseVedlegg = vedlegg[Skjemanummer.TERMINBEKREFTELSE] || [];
     const adopsjonVedlegg = vedlegg[Skjemanummer.OMSORGSOVERTAKELSE] || [];
+    const militærEllerSiviltjenesteVedlegg = vedlegg[Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE] || [];
+    const etterlønnEllerSluttvederlagVedlegg = vedlegg[Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG] || [];
 
     const morInnlagtPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorInnleggelse);
     const barnInnlagtPerioder = perioderSomManglerVedlegg.filter(isUtsettelseBarnInnlagt);
@@ -143,12 +147,13 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             [Skjemanummer.DOK_AV_ALENEOMSORG]: formValues[Skjemanummer.DOK_AV_ALENEOMSORG] || [],
             [Skjemanummer.TERMINBEKREFTELSE]: formValues[Skjemanummer.TERMINBEKREFTELSE] || [],
             [Skjemanummer.OMSORGSOVERTAKELSE]: formValues[Skjemanummer.OMSORGSOVERTAKELSE] || [],
+            [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: formValues[Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE] || [],
+            [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: formValues[Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG] || [],
         };
 
         saveVedlegg(alleVedlegg);
-        saveNextRoute(erEndringssøknad ? SøknadRoutes.OPPSUMMERING : SøknadRoutes.UTENLANDSOPPHOLD);
 
-        return mellomlagreSøknadOgNaviger();
+        return navigator.goToNextDefaultStep();
     };
 
     const formMethods = useForm<ManglendeVedleggFormData>({
@@ -168,6 +173,8 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             [Skjemanummer.DOK_AV_ALENEOMSORG]: vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG] || [],
             [Skjemanummer.TERMINBEKREFTELSE]: vedlegg[Skjemanummer.TERMINBEKREFTELSE] || [],
             [Skjemanummer.OMSORGSOVERTAKELSE]: vedlegg[Skjemanummer.OMSORGSOVERTAKELSE] || [],
+            [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: vedlegg[Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE] || [],
+            [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: vedlegg[Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG] || [],
         },
     });
 
@@ -295,6 +302,18 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     attachments={adopsjonVedlegg}
                     updateAttachments={updateAttachments}
                     søkersituasjon={søkersituasjon}
+                />
+                <EtterlønnEllerSluttvederlagDokumentasjon
+                    attachments={etterlønnEllerSluttvederlagVedlegg}
+                    updateAttachments={updateAttachments}
+                    arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
+                    andreInntektskilder={andreInntektskilder}
+                />
+                <MilitærEllerSiviltjenesteDokumentasjon
+                    attachments={militærEllerSiviltjenesteVedlegg}
+                    updateAttachments={updateAttachments}
+                    arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
+                    andreInntektskilder={andreInntektskilder}
                 />
                 <Block padBottom="xl">
                     <Alert size="small" variant="info">

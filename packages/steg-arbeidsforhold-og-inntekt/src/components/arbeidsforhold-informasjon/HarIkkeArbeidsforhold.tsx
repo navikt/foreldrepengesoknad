@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { BodyShort } from '@navikt/ds-react';
+import { Alert } from '@navikt/ds-react';
 
 interface Props {
     harArbeidsforhold: boolean;
@@ -13,11 +13,9 @@ const HarIkkeArbeidsforhold: FunctionComponent<Props> = ({ harArbeidsforhold }) 
     }
 
     return (
-        <div className="arbeidsforholdInfoBox" style={{ marginBottom: '1rem' }}>
-            <BodyShort>
-                <FormattedMessage id="inntektsinformasjon.arbeidsforhold.ingenRegistrerteArbeidsforhold" />
-            </BodyShort>
-        </div>
+        <Alert variant="info" size="small">
+            <FormattedMessage id="inntektsinformasjon.arbeidsforhold.ingenRegistrerteArbeidsforhold" />
+        </Alert>
     );
 };
 

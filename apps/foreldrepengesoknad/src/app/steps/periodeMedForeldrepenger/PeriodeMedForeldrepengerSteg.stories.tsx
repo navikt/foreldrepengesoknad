@@ -146,10 +146,10 @@ const Template: StoryFn<Props> = ({
                         initialState={{
                             [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                             [ContextDataType.OM_BARNET]: barnet,
-                            [ContextDataType.SØKER_DATA]: {
-                                harJobbetSomFrilansSiste10Mnd: false,
-                                harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
-                                harHattAnnenInntektSiste10Mnd: false,
+                            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                                harHattAndreInntektskilder: false,
+                                harJobbetSomFrilans: false,
+                                harJobbetSomSelvstendigNæringsdrivende: false,
                             },
                             [ContextDataType.ANNEN_FORELDER]: annenForelder,
                         }}

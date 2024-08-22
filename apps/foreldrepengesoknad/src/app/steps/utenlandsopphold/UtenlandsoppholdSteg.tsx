@@ -17,7 +17,7 @@ const utledNesteSide = (values: Utenlandsopphold) => {
     } else if (values.skalBoUtenforNorgeNeste12Mnd) {
         return SøknadRoutes.SENERE_UTENLANDSOPPHOLD;
     }
-    return SøknadRoutes.INNTEKTSINFORMASJON;
+    return SøknadRoutes.ARBEID_OG_INNTEKT;
 };
 
 type Props = {

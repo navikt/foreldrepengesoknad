@@ -13,7 +13,10 @@ export const konverterMellomlagretDataTilAppData = (mellomlagretState: FpMelloml
         [ContextDataType.SØKERSITUASJON]: søknad?.søkersituasjon,
         [ContextDataType.OM_BARNET]: søknad?.barn,
         [ContextDataType.ANNEN_FORELDER]: søknad?.annenForelder,
-        [ContextDataType.SØKER_DATA]: søknad?.søker,
+        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: søknad?.arbeidsforholdOgInntekt,
+        [ContextDataType.EGEN_NÆRING]: søknad?.egenNæring,
+        [ContextDataType.FRILANS]: søknad?.frilans,
+        [ContextDataType.ANDRE_INNTEKTSKILDER]: søknad?.andreInntektskilder,
         [ContextDataType.UTENLANDSOPPHOLD]: søknad?.informasjonOmUtenlandsopphold
             ? {
                   iNorgeNeste12Mnd: søknad.informasjonOmUtenlandsopphold.iNorgeNeste12Mnd,

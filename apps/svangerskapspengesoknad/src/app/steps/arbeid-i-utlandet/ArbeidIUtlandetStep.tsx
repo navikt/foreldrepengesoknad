@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Inntektsinformasjon } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { frilansId } from '@navikt/fp-steg-frilans';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
@@ -24,7 +24,7 @@ import './arbeidIUtlandet.css';
 const getNextRouteValgAvArbeidEllerSkjema = (
     termindato: string,
     arbeidsforhold: Arbeidsforhold[],
-    inntektsinformasjon: Inntektsinformasjon,
+    inntektsinformasjon: ArbeidsforholdOgInntektSvp,
 ): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
     const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
@@ -61,7 +61,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
 
     const arbeidIUtlandet = useContextGetData(ContextDataType.ARBEID_I_UTLANDET);
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
+    const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
 
     const oppdaterArbeidIUtlandet = useContextSaveData(ContextDataType.ARBEID_I_UTLANDET);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
@@ -72,7 +72,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
         const { nextRoute, nextTilretteleggingId } = getNextRouteValgAvArbeidEllerSkjema(
             barnet.termindato,
             arbeidsforhold,
-            inntektsinformasjon,
+            arbeidsforholdOgInntekt,
         );
         oppdaterValgtTilretteleggingId(nextTilretteleggingId);
 

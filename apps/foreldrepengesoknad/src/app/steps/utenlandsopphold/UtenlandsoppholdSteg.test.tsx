@@ -46,7 +46,7 @@ describe('<UtenlandsoppholdSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(4, {
-            data: SøknadRoutes.INNTEKTSINFORMASJON,
+            data: SøknadRoutes.ARBEID_OG_INNTEKT,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

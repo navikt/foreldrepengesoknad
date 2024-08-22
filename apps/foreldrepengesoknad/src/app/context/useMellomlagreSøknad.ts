@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-import Api from 'app/api/api';
+import Api, { FpMellomlagretData } from 'app/api/api';
 import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import { MELLOMLAGRET_VERSJON } from 'app/utils/mellomlagringUtils';
 
@@ -23,7 +23,10 @@ const mellomlagre = (
     const søkersituasjon = getDataFromState(ContextDataType.SØKERSITUASJON);
     const barn = getDataFromState(ContextDataType.OM_BARNET);
     const annenForelder = getDataFromState(ContextDataType.ANNEN_FORELDER);
-    const søker = getDataFromState(ContextDataType.SØKER_DATA);
+    const arbeidsforholdOgInntekt = getDataFromState(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
+    const frilans = getDataFromState(ContextDataType.FRILANS);
+    const egenNæring = getDataFromState(ContextDataType.EGEN_NÆRING);
+    const andreInntektskilder = getDataFromState(ContextDataType.ANDRE_INNTEKTSKILDER);
     const utenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD);
     const senereUtenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = getDataFromState(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
@@ -46,7 +49,10 @@ const mellomlagre = (
             søkersituasjon,
             barn,
             annenForelder,
-            søker,
+            arbeidsforholdOgInntekt,
+            frilans,
+            egenNæring,
+            andreInntektskilder,
             informasjonOmUtenlandsopphold: utenlandsopphold
                 ? {
                       ...utenlandsopphold,
@@ -68,7 +74,7 @@ const mellomlagre = (
         perioderSomSkalSendesInn: uttaksplanMetadata?.perioderSomSkalSendesInn,
         harUttaksplanBlittSlettet: uttaksplanMetadata?.harUttaksplanBlittSlettet,
         annenPartsUttakErLagtTilIPlan: uttaksplanMetadata?.annenPartsUttakErLagtTilIPlan,
-    };
+    } as FpMellomlagretData;
 
     return Api.storeAppState(dataSomSkalMellomlagres, fødselsnr);
 };

@@ -34,15 +34,17 @@ import {
     sorterPerioder,
     uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-common';
+import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt/src/types/ArbeidsforholdOgInntekt';
+import { EgenNæring } from '@navikt/fp-steg-egen-naering';
+import { Frilans } from '@navikt/fp-steg-frilans';
 import { Attachment, LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType } from 'app/context/FpDataContext';
 import { AnnenInntekt } from 'app/context/types/AnnenInntekt';
-import { Frilans } from 'app/context/types/Frilans';
 import { Næring } from 'app/context/types/Næring';
-import SøkerData from 'app/context/types/SøkerData';
 import { Søknad } from 'app/context/types/Søknad';
+import { AndreInntektskilder, AnnenInntektType } from 'app/types/AndreInntektskilder';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getTermindato } from 'app/utils/barnUtils';
@@ -93,7 +95,10 @@ export interface SøknadForInnsending
         | 'barn'
         | 'annenForelder'
         | 'uttaksplan'
-        | 'søker'
+        | 'arbeidsforholdOgInntekt'
+        | 'egenNæring'
+        | 'frilans'
+        | 'andreInntektskilder'
         | 'søkersituasjon'
         | 'tilleggsopplysninger'
         | 'manglerDokumentasjon'
@@ -388,7 +393,10 @@ export const cleanSøknad = (
 ): SøknadForInnsending => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
-    const søker = notEmpty(hentData(ContextDataType.SØKER_DATA));
+    const arbeidsforholdOgInntekt = notEmpty(hentData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
+    const frilans = hentData(ContextDataType.FRILANS);
+    const egenNæring = hentData(ContextDataType.EGEN_NÆRING);
+    const andreInntektskilder = hentData(ContextDataType.ANDRE_INNTEKTSKILDER);
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const utenlandsopphold = notEmpty(hentData(ContextDataType.UTENLANDSOPPHOLD));
     const periodeMedForeldrepenger = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
@@ -400,7 +408,15 @@ export const cleanSøknad = (
     const vedlegg = hentData(ContextDataType.VEDLEGG);
 
     const annenForelderInnsending = cleanAnnenForelder(annenForelder);
-    const søkerInnsending = cleanSøker(søkersituasjon, locale, annenForelder, søker);
+    const søkerInnsending = cleanSøker(
+        søkersituasjon,
+        locale,
+        annenForelder,
+        arbeidsforholdOgInntekt,
+        frilans,
+        egenNæring,
+        andreInntektskilder,
+    );
     const barnInnsending = cleanBarn(barn);
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const termindato = getTermindato(barn);
@@ -439,7 +455,10 @@ const cleanSøker = (
     søkersituasjon: Søkersituasjon,
     locale: LocaleNo,
     annenForelder: AnnenForelder,
-    søkerData?: SøkerData,
+    arbeidsforholdOgInntekt: ArbeidsforholdOgInntektFp,
+    frilans?: Frilans,
+    egenNæring?: EgenNæring,
+    andreInntektskilder?: AndreInntektskilder[],
 ): SøkerForInnsending => {
     const rolle = konverterRolle(søkersituasjon.rolle);
     const erOppgitt = isAnnenForelderOppgitt(annenForelder);
@@ -450,12 +469,36 @@ const cleanSøker = (
         erAleneOmOmsorg: erOppgitt ? annenForelder.erAleneOmOmsorg : true,
     };
 
-    if (søkerData) {
+    if (
+        arbeidsforholdOgInntekt.harJobbetSomFrilans ||
+        arbeidsforholdOgInntekt.harHattAndreInntektskilder ||
+        arbeidsforholdOgInntekt.harHattAndreInntektskilder
+    ) {
         return {
             ...common,
-            andreInntekterSiste10Mnd: søkerData.andreInntekterSiste10Mnd,
-            frilansInformasjon: søkerData.frilansInformasjon,
-            selvstendigNæringsdrivendeInformasjon: søkerData.selvstendigNæringsdrivendeInformasjon,
+            andreInntekterSiste10Mnd: andreInntektskilder?.map((i) => ({
+                ...i,
+                tidsperiode: {
+                    fom: i.fom,
+                    tom: i.tom,
+                    pågående: i.type === AnnenInntektType.SLUTTPAKKE ? false : i.pågående,
+                },
+                pågående: i.type === AnnenInntektType.SLUTTPAKKE ? false : i.pågående,
+            })),
+            frilansInformasjon: frilans,
+            selvstendigNæringsdrivendeInformasjon: egenNæring
+                ? [
+                      {
+                          næringstyper: [egenNæring.næringstype],
+                          tidsperiode: {
+                              fom: egenNæring.fomDato,
+                              tom: egenNæring.tomDato,
+                          },
+                          navnPåNæringen: egenNæring.navnPåNæringen!,
+                          ...egenNæring,
+                      },
+                  ]
+                : [],
         };
     }
     return { ...common, andreInntekterSiste10Mnd: [], selvstendigNæringsdrivendeInformasjon: [] };
@@ -486,7 +529,10 @@ export const cleanEndringssøknad = (
     const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
-    const søker = hentData(ContextDataType.SØKER_DATA);
+    const arbeidsforholdOgInntekt = notEmpty(hentData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
+    const frilans = hentData(ContextDataType.FRILANS);
+    const egenNæring = hentData(ContextDataType.EGEN_NÆRING);
+    const andreInntektskilder = hentData(ContextDataType.ANDRE_INNTEKTSKILDER);
     const periodeMedForeldrepenger = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const eksisterendeSak = notEmpty(hentData(ContextDataType.EKSISTERENDE_SAK));
@@ -507,7 +553,15 @@ export const cleanEndringssøknad = (
             annenForelder,
             endringstidspunkt,
         ),
-        søker: cleanSøker(søkersituasjon, locale, annenForelder, søker),
+        søker: cleanSøker(
+            søkersituasjon,
+            locale,
+            annenForelder,
+            arbeidsforholdOgInntekt,
+            frilans,
+            egenNæring,
+            andreInntektskilder,
+        ),
         annenForelder: cleanAnnenForelder(annenForelder, true),
         barn,
         dekningsgrad: periodeMedForeldrepenger.dekningsgrad,

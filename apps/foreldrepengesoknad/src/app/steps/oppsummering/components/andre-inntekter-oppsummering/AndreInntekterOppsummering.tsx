@@ -1,20 +1,26 @@
-import { BodyShort } from '@navikt/ds-react';
-import { ISOStringToDate, formatDate } from '@navikt/fp-common';
-import SøkerData from 'app/context/types/SøkerData';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+
+import { BodyShort } from '@navikt/ds-react';
+
+import { ISOStringToDate, formatDate } from '@navikt/fp-common';
+import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+
+import { AndreInntektskilder, AnnenInntektType } from 'app/types/AndreInntektskilder';
+
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import AnnenInntektDetaljer from './AnnenInntektDetaljer';
 import InntekterTabell from './InntekterTabell';
 
 interface Props {
-    søkerData: SøkerData;
+    arbeidsforholdOgInntekt: ArbeidsforholdOgInntektFp;
+    andreInntektskilder?: AndreInntektskilder[];
 }
 
-const AndreInntekterOppsummering: FunctionComponent<Props> = ({ søkerData }) => {
+const AndreInntekterOppsummering: FunctionComponent<Props> = ({ arbeidsforholdOgInntekt, andreInntektskilder }) => {
     const intl = useIntl();
 
-    if (!søkerData.harHattAnnenInntektSiste10Mnd || !søkerData.andreInntekterSiste10Mnd) {
+    if (!arbeidsforholdOgInntekt.harHattAndreInntektskilder || !andreInntektskilder) {
         return (
             <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.andreInntekter.tittel' })}>
                 <BodyShort>
@@ -27,16 +33,17 @@ const AndreInntekterOppsummering: FunctionComponent<Props> = ({ søkerData }) =>
     return (
         <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.andreInntekter.tittel' })}>
             <InntekterTabell
-                list={søkerData.andreInntekterSiste10Mnd.map((annenInntekt) => ({
-                    key: annenInntekt.type + annenInntekt.tidsperiode,
+                list={andreInntektskilder.map((annenInntekt) => ({
+                    key: annenInntekt.type + annenInntekt.fom + annenInntekt.tom,
                     headerVenstre: intl.formatMessage({ id: `inntektstype.${annenInntekt.type.toLowerCase()}` }),
                     headerHøyre: intl.formatMessage(
                         { id: 'tidsintervall' },
                         {
-                            fom: formatDate(ISOStringToDate(annenInntekt.tidsperiode.fom)!),
-                            tom: annenInntekt.pågående
-                                ? 'pågående'
-                                : formatDate(ISOStringToDate(annenInntekt.tidsperiode.tom)!),
+                            fom: formatDate(ISOStringToDate(annenInntekt.fom)!),
+                            tom:
+                                annenInntekt.type !== AnnenInntektType.SLUTTPAKKE && annenInntekt.pågående
+                                    ? intl.formatMessage({ id: 'pågående' })
+                                    : formatDate(ISOStringToDate(annenInntekt.tom)!),
                         },
                     ),
                     content: <AnnenInntektDetaljer annenInntekt={annenInntekt} />,
