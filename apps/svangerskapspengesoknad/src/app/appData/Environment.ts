@@ -5,7 +5,7 @@ const Environment = () => {
         return {};
     }
 
-    const appSettings = JSON.parse(settingsNode.text);
+    const appSettings = JSON.parse((settingsNode as HTMLScriptElement).text);
 
     return {
         LOG_VALIDATION: appSettings.LOG_VALIDATION,

@@ -58,7 +58,7 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
 
     const onSubmit = (values: FerieFormData) => {
         console.log('setter dusse verdiene', values);
-        values.skalHaFerie ? oppdaterFerie(values.feriePerioder) : oppdaterFerie([]);
+        values.skalHaFerie ? oppdaterFerie(values.feriePerioder as TidsperiodeDTO[]) : oppdaterFerie([]);
         return navigator.goToNextDefaultStep();
     };
 
