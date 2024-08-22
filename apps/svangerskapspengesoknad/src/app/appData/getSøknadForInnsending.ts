@@ -275,6 +275,8 @@ export const getSøknadForInnsending = (
     const allePerioderMedFomOgTom = mapTilretteleggingTilPerioder(tilrettelegging, sisteDagForSvangerskapspenger);
     const tilretteleggingForInnsending = mapTilretteleggingerForInnsending(allePerioderMedFomOgTom);
 
+    const ferie = hentData(ContextDataType.FERIE) ?? [];
+
     return {
         type: Søknadstype.SVANGERSKAPSPENGER,
         erEndringssøknad: false,
@@ -283,5 +285,6 @@ export const getSøknadForInnsending = (
         vedlegg: vedleggForInnsending,
         tilrettelegging: tilretteleggingForInnsending,
         søker: søkerForInnsending,
+        ferie,
     };
 };

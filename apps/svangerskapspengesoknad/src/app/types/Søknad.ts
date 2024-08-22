@@ -1,5 +1,7 @@
 import { Attachment } from '@navikt/fp-types';
 
+import { TidsperiodeDTO } from 'app/types/TidsperiodeDTO';
+
 import { BarnDTO } from './Barn';
 import { SøkerDTO } from './Søker';
 import { TilretteleggingDTO } from './Tilrettelegging';
@@ -17,4 +19,5 @@ export interface SøknadDTO {
     tilrettelegging: TilretteleggingDTO[];
     søker: SøkerDTO;
     vedlegg: Attachment[];
+    ferie: TidsperiodeDTO[];
 }
