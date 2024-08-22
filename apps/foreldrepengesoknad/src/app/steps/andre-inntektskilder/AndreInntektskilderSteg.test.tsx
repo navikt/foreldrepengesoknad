@@ -408,4 +408,80 @@ describe('<AndreInntektskilderSteg>', () => {
         expect(screen.getAllByText('Du må oppgi en gyldig fra dato')).toHaveLength(2);
         expect(screen.getAllByText('Du må oppgi en gyldig til dato')).toHaveLength(2);
     });
+
+    it('skal velge flere typer inntektskilder, og så gå til neste steg', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+
+        expect(
+            await screen.findByText('Hvilken type annen inntektskilde har du hatt de siste 10 månedene?'),
+        ).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Jobb i utlandet'));
+
+        await userEvent.selectOptions(screen.getByLabelText('Hvilket land har du jobbet i?'), 'UA');
+        await userEvent.tab();
+
+        await userEvent.type(screen.getByLabelText('Hva er navnet på arbeidsgiveren?'), 'NAV');
+
+        expect(screen.getByText('Jobber du der nå?')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Ja'));
+
+        const fraDato = screen.getByLabelText('Fra');
+        await userEvent.type(fraDato, dayjs('2023-04-30').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Legg til en ny inntektskilde'));
+
+        expect(screen.getAllByText('Hvilken type annen inntektskilde har du hatt de siste 10 månedene?')).toHaveLength(
+            2,
+        );
+
+        await userEvent.click(screen.getByText('Slett inntektskilde'));
+
+        expect(
+            await screen.findByText('Hvilken type annen inntektskilde har du hatt de siste 10 månedene?'),
+        ).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Legg til en ny inntektskilde'));
+
+        await userEvent.click(screen.getAllByText('Etterlønn eller sluttvederlag')[1]);
+
+        const periodenfraDato = screen.getByLabelText('Perioden den gjelder fra');
+        await userEvent.type(periodenfraDato, dayjs('2023-04-30').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        const tilDato = screen.getByLabelText('Til');
+        await userEvent.type(tilDato, dayjs('2023-09-30').format('DD.MM.YYYY'));
+        await userEvent.tab();
+
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: [
+                {
+                    arbeidsgiverNavn: 'NAV',
+                    fom: '2023-04-30',
+                    land: 'UA',
+                    type: 'JOBB_I_UTLANDET',
+                    pågående: true,
+                },
+                {
+                    fom: '2023-04-30',
+                    tom: '2023-09-30',
+                    type: 'ETTERLØNN_SLUTTPAKKE',
+                },
+            ],
+            key: ContextDataType.ANDRE_INNTEKTSKILDER,
+            type: 'update',
+        });
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: SøknadRoutes.DOKUMENTASJON,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
+    });
 });

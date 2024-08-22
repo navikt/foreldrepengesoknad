@@ -10,7 +10,7 @@ import * as stories from './EgenNæringSteg.stories';
 
 const { Default } = composeStories(stories);
 
-describe('<Arbeid som selvstendig næringsdrivende>', () => {
+describe('<EgenNæringSteg>', () => {
     it('skal gå til neste steg når informasjon er korrekt', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();

@@ -120,7 +120,7 @@ const Template: StoryFn<Props> = ({
 
 export const Default = Template.bind({});
 
-export const BrukerKanIkkeSøke = Template.bind({});
-BrukerKanIkkeSøke.args = {
+export const BrukerKanIkkeSøkeVedKunNeiSvar = Template.bind({});
+BrukerKanIkkeSøkeVedKunNeiSvar.args = {
     arbeidsforhold: [],
 };
