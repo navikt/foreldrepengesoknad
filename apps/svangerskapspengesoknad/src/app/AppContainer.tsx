@@ -3,21 +3,18 @@ import { FunctionComponent, useState } from 'react';
 
 import { deleteData } from '@navikt/fp-api';
 import { oppsummeringMessages } from '@navikt/fp-oppsummering';
+import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
+import { frilansMessages } from '@navikt/fp-steg-frilans';
 import { LocaleNo } from '@navikt/fp-types';
-import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
+import { ByttBrowserModal, ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
-import {
-    getLocaleFromSessionStorage,
-    setLocaleInSessionStorage,
-    shouldChangeBrowser,
-    utilsMessages,
-} from '@navikt/fp-utils';
+import { getLocaleFromSessionStorage, setLocaleInSessionStorage, utilsMessages } from '@navikt/fp-utils';
 
 import Svangerskapspengesøknad from './Svangerskapspengesøknad';
 import { svpApi } from './SvangerskapspengesøknadRoutes';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
-import ByttBrowserModal from './pages/byttBrowserModal/ByttBrowserModal';
 
 const allNbMessages = {
     ...nbMessages,
@@ -25,6 +22,9 @@ const allNbMessages = {
     ...utenlandsoppholdMessages.nb,
     ...oppsummeringMessages.nb,
     ...utilsMessages.nb,
+    ...frilansMessages.nb,
+    ...egenNæringMessages.nb,
+    ...arbeidsforholdOgInntektMessages.nb,
 };
 const allNnMessages = {
     ...nnMessages,
@@ -32,6 +32,9 @@ const allNnMessages = {
     ...utenlandsoppholdMessages.nn,
     ...oppsummeringMessages.nn,
     ...utilsMessages.nn,
+    ...frilansMessages.nn,
+    ...egenNæringMessages.nn,
+    ...arbeidsforholdOgInntektMessages.nn,
 };
 
 declare global {
@@ -68,7 +71,7 @@ const AppContainer: FunctionComponent = () => {
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <ErrorBoundary appName="Svangerskapspenger" retryCallback={retryCallback}>
-                <ByttBrowserModal skalEndreNettleser={shouldChangeBrowser()} />
+                <ByttBrowserModal />
                 <Svangerskapspengesøknad
                     locale={locale}
                     onChangeLocale={(activeLocale: LocaleNo) => {

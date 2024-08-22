@@ -111,7 +111,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
     const isDesktop = useMedia('screen and (min-width: 480)');
     return (
         <form>
-            <PlanleggerStepPage steps={stepConfig}>
+            <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
                 <VStack gap="10">
                     <Heading size="medium" spacing level="2">
                         <FormattedMessage id="OversiktSteg.Tittel" values={{ erAleneforsørger }} />

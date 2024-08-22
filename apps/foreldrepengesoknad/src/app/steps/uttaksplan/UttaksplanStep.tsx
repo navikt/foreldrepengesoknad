@@ -12,8 +12,6 @@ import {
     ISOStringToDate,
     Periode,
     Periodene,
-    Step,
-    StepButtonWrapper,
     getAktiveArbeidsforhold,
     getAntallUker,
     getAntallUkerMinsterett,
@@ -25,7 +23,6 @@ import {
     getMorHarRettPåForeldrepengerINorgeEllerEØS,
     getNavnPåForeldre,
     getPerioderMedUttakRundtFødsel,
-    intlUtils,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isUfødtBarn,
@@ -36,6 +33,7 @@ import {
 import { Skjemanummer } from '@navikt/fp-constants';
 import { YesOrNo, dateToISOString } from '@navikt/fp-formik';
 import { Søkerinfo } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import {
     Uttaksplan,
     finnOgSettInnHull,
@@ -75,6 +73,7 @@ import {
     getKanPerioderRundtFødselAutomatiskJusteres,
     getKanSøkersituasjonAutomatiskJustereRundtFødsel,
 } from './automatisk-justering-form/automatiskJusteringUtils';
+import StepButtonWrapper from './components/StepButtonWrapper';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { lagUttaksplanForslag } from './lagUttaksplanForslag';
 import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
@@ -649,7 +648,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
                 return (
                     <Step
-                        bannerTitle={intlUtils(intl, 'søknad.pageheading')}
+                        bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
                         onCancel={avbrytSøknad}
                         onContinueLater={navigator.fortsettSøknadSenere}
                         steps={stepConfig}
@@ -754,7 +753,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                                     disabled={isSubmitting}
                                     loading={isSubmitting}
                                 >
-                                    {intlUtils(intl, 'søknad.gåVidere')}
+                                    <FormattedMessage id="søknad.gåVidere" />
                                 </Button>
                             </StepButtonWrapper>
                         </Block>

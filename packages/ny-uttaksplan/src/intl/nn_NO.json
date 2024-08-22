@@ -1,0 +1,16 @@
+{
+    "uttaksplan.stønadskontotype.AKTIVITETSFRI_FLERBARNSDAGER": "Flerbarnsdagar utan aktivitetskrav",
+    "uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE": "Foreldrepengar utan aktivitetskrav",
+    "uttaksplan.stønadskontotype.AKTIVITETSFRI_KVOTE_BFHR": "Foreldrepengar",
+    "uttaksplan.stønadskontotype.AKTIVITETSKRAV_KVOTE_BFHR": "Foreldrepengar med aktivitetskrav",
+    "uttaksplan.stønadskontotype.FEDREKVOTE": "Fars kvote",
+    "uttaksplan.stønadskontotype.FELLESPERIODE": "Fellesperiode",
+    "uttaksplan.stønadskontotype.FLERBARNSDAGER": "Flerbarnsdagar",
+    "uttaksplan.stønadskontotype.FLERBARNSUKER": "Flerbarnsdagar",
+    "uttaksplan.stønadskontotype.FORELDREPENGER": "Foreldrepengar",
+    "uttaksplan.stønadskontotype.FORELDREPENGER_FØR_FØDSEL": "Foreldrepengar før fødsel",
+    "uttaksplan.stønadskontotype.MØDREKVOTE": "Mors kvote",
+    "uttaksplan.stønadskontotype.foreldernavn.kvote": "{navn} kvote",
+    "uttaksplan.stønadskontotype.dinKvote": "Din kvote",
+    "uttaksplan.stønadskontotype.undefined": "Ny periode utan kvote"
+}

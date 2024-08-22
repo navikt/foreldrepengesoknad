@@ -5,11 +5,11 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { Næringstype } from '@navikt/fp-steg-egen-naering';
 import { Søker } from '@navikt/fp-types';
 
 import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
-import { Næringstype } from 'app/types/EgenNæring';
 import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 
 import Oppsummering from './Oppsummering';

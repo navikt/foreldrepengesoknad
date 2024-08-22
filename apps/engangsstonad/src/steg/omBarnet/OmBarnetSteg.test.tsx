@@ -21,7 +21,7 @@ describe('<OmBarnetSteg>', () => {
         );
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
-        expect(screen.getByText('Barnet')).toBeInTheDocument();
+        expect(screen.getAllByText('Barnet')).toHaveLength(2);
         expect(screen.getByText('Steg 2 av 4')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -78,7 +78,7 @@ describe('<OmBarnetSteg>', () => {
         );
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
-        expect(screen.getByText('Barnet')).toBeInTheDocument();
+        expect(screen.getAllByText('Barnet')).toHaveLength(2);
         expect(screen.getByText('Steg 2 av 4')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Nei'));

@@ -45,7 +45,7 @@ const HøyInntektInfobox: React.FunctionComponent<Props> = ({
                             id="HøyInntektInfobox.HøyereLenke1"
                             values={{ maxÅrslønn: formatCurrencyWithKr(maxÅrslønnDekket) }}
                         />
-                        <Link inlineText href={links.engangsstonad} className="lenke" rel="noreferrer" target="_blank">
+                        <Link inlineText href={links.grunnbeløpet} className="lenke" rel="noreferrer" target="_blank">
                             <FormattedMessage id="HøyInntektInfobox.HøyereLenke2" />
                         </Link>
                     </BodyShort>

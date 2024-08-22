@@ -1,22 +1,22 @@
-import { Label } from '@navikt/ds-react';
-import { intlUtils } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
+
+import { Label } from '@navikt/ds-react';
 
 interface Props {
     harArbeidsforhold: boolean;
 }
 
 const HarIkkeArbeidsforhold: FunctionComponent<Props> = ({ harArbeidsforhold }) => {
-    const intl = useIntl();
-
     if (harArbeidsforhold) {
         return null;
     }
 
     return (
         <div className="arbeidsforholdInfoBox" style={{ marginBottom: '1rem' }}>
-            <Label>{intlUtils(intl, 'inntektsinformasjon.arbeidsforhold.ingenRegistrerteArbeidsforhold')}</Label>
+            <Label>
+                <FormattedMessage id="inntektsinformasjon.arbeidsforhold.ingenRegistrerteArbeidsforhold" />
+            </Label>
         </div>
     );
 };

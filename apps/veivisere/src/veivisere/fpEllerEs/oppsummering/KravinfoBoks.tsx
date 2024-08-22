@@ -8,10 +8,12 @@ interface Props {
     headerText: ReactElement;
     boxBodyText: ReactElement;
     erOppfylt: boolean;
+    testId?: string;
+    jobberINorge?: boolean;
 }
 
-const KravinfoBoks: React.FunctionComponent<Props> = ({ headerText, boxBodyText, erOppfylt }) => (
-    <VStack gap="1">
+const KravinfoBoks: React.FunctionComponent<Props> = ({ headerText, boxBodyText, erOppfylt, testId, jobberINorge }) => (
+    <VStack gap="1" data-testid={testId}>
         <Heading size="small">{headerText}</Heading>
         <Box background="surface-alt-3-subtle" padding="4" borderRadius="large">
             <HStack gap="2" wrap={false}>
@@ -26,7 +28,15 @@ const KravinfoBoks: React.FunctionComponent<Props> = ({ headerText, boxBodyText,
                 <VStack gap="2">
                     <Heading size="xsmall">
                         {erOppfylt && <FormattedMessage id="KravinfoBoks.DuOppfyllerKravet" />}
-                        {!erOppfylt && <FormattedMessage id="KravinfoBoks.DuIkkeOppfyllerKravet" />}
+                        {!erOppfylt && (
+                            <>
+                                {jobberINorge !== undefined && jobberINorge === false ? (
+                                    <FormattedMessage id="KravinfoBoks.DuIkkeMestSannsynligOppfyllerKravet" />
+                                ) : (
+                                    <FormattedMessage id="KravinfoBoks.DuIkkeOppfyllerKravet" />
+                                )}
+                            </>
+                        )}
                     </Heading>
                     <BodyShort>{boxBodyText}</BodyShort>
                 </VStack>

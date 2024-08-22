@@ -3,7 +3,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { Uttaksdagen, bemUtils, formaterDato, getToTetteReglerGjelder } from '@navikt/fp-common';
+import { Uttaksdagen, formaterDato, getToTetteReglerGjelder } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';

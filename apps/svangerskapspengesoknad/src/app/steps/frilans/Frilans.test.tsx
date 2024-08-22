@@ -11,18 +11,7 @@ import * as stories from './Frilans.stories';
 const { Default } = composeStories(stories);
 
 describe('<Arbeid som frilanser>', () => {
-    it('skal vise feilmelding når ingenting er fylt eller huket av', async () => {
-        render(<Default />);
-
-        expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
-
-        await userEvent.click(screen.getByText('Neste steg'));
-
-        expect(screen.getAllByText('Du må oppgi en startdato.')[0]).toBeInTheDocument();
-        expect(screen.getAllByText('Du må oppgi om du fortsatt jobber som frilanser.')[0]).toBeInTheDocument();
-    });
-
-    it('skal ikke vise feilmelding, alt er utfylt', async () => {
+    it('skal gå til neste steg når informasjon er korrekt', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
@@ -62,22 +51,5 @@ describe('<Arbeid som frilanser>', () => {
         });
 
         expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
-    });
-
-    it('validering av dato på feil format', async () => {
-        render(<Default />);
-
-        expect(await screen.findByText('Når startet du som frilanser?')).toBeInTheDocument();
-        expect(screen.getByText('Jobber du fortsatt som frilanser?')).toBeInTheDocument();
-
-        const frilansStartdatoInput = screen.getByLabelText('Når startet du som frilanser?');
-        await userEvent.type(frilansStartdatoInput, 'sjnkf');
-        await userEvent.tab();
-
-        await userEvent.click(screen.getByText('Neste steg'));
-
-        expect(
-            screen.getAllByText('Startdatoen må være en gyldig dato på formatet dd.mm.åååå.')[0],
-        ).toBeInTheDocument();
     });
 });

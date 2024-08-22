@@ -16,16 +16,23 @@ const Template: StoryFn<{
     saveOnPrevious: () => void;
     cancelApplication: () => void;
     goToPreviousStep: () => void;
-}> = ({ saveOnNext, saveOnPrevious, cancelApplication, goToPreviousStep }) => {
+    onStepChange: () => void;
+}> = ({ saveOnNext, saveOnPrevious, cancelApplication, goToPreviousStep, onStepChange }) => {
     return (
         <UtenlandsoppholdPanel
             saveOnNext={saveOnNext}
             saveOnPrevious={saveOnPrevious}
+            onStepChange={onStepChange}
             cancelApplication={cancelApplication}
             goToPreviousStep={goToPreviousStep}
             stepConfig={[
                 {
-                    id: '1',
+                    id: 'BARNET_PATH',
+                    label: 'Barnet',
+                    isSelected: false,
+                },
+                {
+                    id: 'BO_I_UTLANDET_PATH',
                     label: 'Bo i utlandet',
                     isSelected: true,
                 },
@@ -41,6 +48,7 @@ ForFødsel.args = {
     saveOnPrevious: action('button-click'),
     cancelApplication: action('button-click'),
     goToPreviousStep: action('button-click'),
+    onStepChange: action('button-click'),
 };
 
 export const ForAdopsjon = Template.bind({});
@@ -49,4 +57,5 @@ ForAdopsjon.args = {
     saveOnPrevious: action('button-click'),
     cancelApplication: action('button-click'),
     goToPreviousStep: action('button-click'),
+    onStepChange: action('button-click'),
 };

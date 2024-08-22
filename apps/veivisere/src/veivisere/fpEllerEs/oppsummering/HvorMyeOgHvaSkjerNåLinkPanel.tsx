@@ -12,7 +12,7 @@ const HvorMyeOgHvaSkjerNåLinkPanel: React.FunctionComponent = () => {
         <AndreVeivisereLinkPanel
             links={[
                 {
-                    url: links.veiviser,
+                    url: links.hvorMye,
                     content: (
                         <HStack gap="5" align="center" wrap={false}>
                             <BabyWrappedIcon aria-hidden height={45} width={45} />

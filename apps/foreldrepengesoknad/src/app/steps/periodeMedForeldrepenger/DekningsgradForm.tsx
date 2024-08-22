@@ -3,13 +3,12 @@ import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
-import { BodyShort, Box, HStack, Heading, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
+import { BodyShort, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import {
     Barn,
     Dekningsgrad,
     Uttaksdagen,
-    bemUtils,
     capitalizeFirstLetter,
     getAntallUker,
     getAntallUkerFraStønadskontoer,
@@ -20,6 +19,7 @@ import {
 import { StønadskontoType, links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { Infobox } from '@navikt/fp-ui';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
@@ -110,7 +110,6 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
     stønadskonto80,
 }) => {
     const intl = useIntl();
-    const bem = bemUtils('circle');
 
     const periodeMedForeldrepenger = useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -219,75 +218,70 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                     </ReadMore>
                 </VStack>
                 {!!ekstraDagePrematur && (
-                    <Box padding="4" background="surface-alt-3-subtle">
-                        <HStack justify="space-between" align="start">
-                            <VStack gap="2" style={{ width: '85%' }}>
-                                <Heading size="xsmall">
-                                    <FormattedMessage
-                                        id="DekningsgradForm.InformasjonPrematurukerHeader"
-                                        values={{
-                                            soker: capitalizeFirstLetter(søkerAntallTekst),
-                                        }}
-                                    />
-                                </Heading>
-                                <BodyShort>
-                                    <FormattedMessage
-                                        id="DekningsgradForm.InformasjonPrematuruker"
-                                        values={{
-                                            varighet: getVarighetString(ekstraDagePrematur, intl),
-                                            soker: erDeltUttak
-                                                ? intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.dere' })
-                                                : intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.deg' }),
-                                        }}
-                                    />
-                                </BodyShort>
-                            </VStack>
-                            <div className={bem.block}>
-                                <FeedingBottleIcon height={24} width={24} color="#005B82" />
-                            </div>
-                        </HStack>
-                    </Box>
+                    <Infobox
+                        color="blue"
+                        header={
+                            <FormattedMessage
+                                id="DekningsgradForm.InformasjonPrematurukerHeader"
+                                values={{
+                                    soker: capitalizeFirstLetter(søkerAntallTekst),
+                                }}
+                            />
+                        }
+                        icon={<FeedingBottleIcon height={24} width={24} color="#005B82" />}
+                    >
+                        <BodyShort>
+                            <FormattedMessage
+                                id="DekningsgradForm.InformasjonPrematuruker"
+                                values={{
+                                    varighet: getVarighetString(ekstraDagePrematur, intl),
+                                    soker: erDeltUttak
+                                        ? intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.dere' })
+                                        : intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.deg' }),
+                                }}
+                            />
+                        </BodyShort>
+                    </Infobox>
                 )}
                 {barn.antallBarn > 1 && (
-                    <Box padding="4" background="surface-alt-3-subtle">
-                        <HStack justify="space-between" align="start">
-                            <VStack gap="2" style={{ width: '85%' }}>
-                                <Heading size="xsmall">
-                                    {barn.antallBarn === 2 && (
-                                        <FormattedMessage
-                                            id="DekningsgradForm.InformasjonToBarn"
-                                            values={{
-                                                sokerStorBokstav: capitalizeFirstLetter(søkerAntallTekst),
-                                                soker: søkerAntallTekst,
-                                            }}
-                                        />
-                                    )}
-                                    {barn.antallBarn > 2 && (
-                                        <FormattedMessage
-                                            id="DekningsgradForm.InformasjonFlereEnnToBarn"
-                                            values={{
-                                                sokerStorBokstav: capitalizeFirstLetter(søkerAntallTekst),
-                                                soker: søkerAntallTekst,
-                                            }}
-                                        />
-                                    )}
-                                </Heading>
-                                <BodyShort>
+                    <Infobox
+                        color="blue"
+                        header={
+                            <>
+                                {barn.antallBarn === 2 && (
                                     <FormattedMessage
-                                        id="DekningsgradForm.InformasjonFlerbarnUker"
+                                        id="DekningsgradForm.InformasjonToBarn"
                                         values={{
-                                            uker80: getVarighetString(stønadskonto80.tillegg?.flerbarn || 0, intl),
-                                            uker100: getVarighetString(stønadskonto100.tillegg?.flerbarn || 0, intl),
+                                            sokerStorBokstav: capitalizeFirstLetter(søkerAntallTekst),
                                             soker: søkerAntallTekst,
                                         }}
                                     />
-                                </BodyShort>
-                            </VStack>
-                            <div className={bem.block}>
-                                <FeedingBottleIcon height={24} width={24} color="#005B82" />
-                            </div>
-                        </HStack>
-                    </Box>
+                                )}
+                                {barn.antallBarn > 2 && (
+                                    <FormattedMessage
+                                        id="DekningsgradForm.InformasjonFlereEnnToBarn"
+                                        values={{
+                                            sokerStorBokstav: capitalizeFirstLetter(søkerAntallTekst),
+                                            soker: søkerAntallTekst,
+                                        }}
+                                    />
+                                )}
+                            </>
+                        }
+                        icon={<FeedingBottleIcon height={24} width={24} color="#005B82" />}
+                    >
+                        {' '}
+                        <BodyShort>
+                            <FormattedMessage
+                                id="DekningsgradForm.InformasjonFlerbarnUker"
+                                values={{
+                                    uker80: getVarighetString(stønadskonto80.tillegg?.flerbarn || 0, intl),
+                                    uker100: getVarighetString(stønadskonto100.tillegg?.flerbarn || 0, intl),
+                                    soker: søkerAntallTekst,
+                                }}
+                            />
+                        </BodyShort>
+                    </Infobox>
                 )}
                 <StepButtonsHookForm goToPreviousStep={goToPreviousDefaultStep} />
             </VStack>

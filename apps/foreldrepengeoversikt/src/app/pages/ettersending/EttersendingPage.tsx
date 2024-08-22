@@ -173,6 +173,7 @@ const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
                 </Select>
                 {type !== DEFAULT_OPTION && (
                     <FileUploader
+                        label={intl.formatMessage({ id: 'EttersendingPageInner.dokumenter' })}
                         updateAttachments={updateAttachments}
                         attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                         skjemanummer={type}

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MockDate from 'mockdate';
 
-import { Dekningsgrad } from '@navikt/fp-common';
+import { Dekningsgrad } from '@navikt/fp-types';
 
 import { ContextDataType } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
@@ -37,7 +37,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             />,
         );
 
-        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
         expect(screen.getByText('Hvor lang periode med foreldrepenger vil du ha?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -77,7 +77,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             />,
         );
 
-        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
         expect(screen.getByText('Hvor lang periode med foreldrepenger vil dere ha?')).toBeInTheDocument();
         expect(
             screen.getByText(
@@ -117,7 +117,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             />,
         );
 
-        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
         expect(screen.getByText('Hvor lang periode med foreldrepenger vil du ha?')).toBeInTheDocument();
 
         expect(
@@ -163,7 +163,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             />,
         );
 
-        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
         expect(screen.getByText('Hvor lang periode med foreldrepenger vil dere ha?')).toBeInTheDocument();
 
         expect(
@@ -209,7 +209,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             />,
         );
 
-        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
         expect(screen.getByText('Hvor lang periode med foreldrepenger vil dere ha?')).toBeInTheDocument();
 
         expect(
@@ -253,7 +253,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             />,
         );
 
-        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
         expect(screen.getByText('Hvor lang periode med foreldrepenger vil dere ha?')).toBeInTheDocument();
 
         expect(
@@ -297,7 +297,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             />,
         );
 
-        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
         expect(screen.getByText('Hvor lang periode med foreldrepenger vil du ha?')).toBeInTheDocument();
 
         expect(
@@ -341,7 +341,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             />,
         );
 
-        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
 
         expect(screen.queryByText('Hvor lang periode med foreldrepenger vil du ha?')).not.toBeInTheDocument();
 
@@ -463,7 +463,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
             />,
         );
-        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
         expect(
             screen.getByText(
                 'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir høyere ved å velge 100% foreldrepenger.',
@@ -491,7 +491,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
             />,
         );
-        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
         expect(
             screen.getByText(
                 'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir høyere ved å velge 100% foreldrepenger.',
@@ -521,7 +521,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+            expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
             expect(
                 screen.getByText(
                     'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir omtrent lik om man velger 100 % eller 80 %.',
@@ -549,7 +549,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
             />,
         );
-        expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+        expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
         expect(
             screen.getByText(
                 'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir høyere ved å velge 100% foreldrepenger.',
@@ -579,7 +579,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
                     mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 />,
             );
-            expect(await screen.findByText('Periode med foreldrepenger')).toBeInTheDocument();
+            expect(await screen.findAllByText('Periode med foreldrepenger')).toHaveLength(2);
             expect(
                 screen.getByText(
                     'Dette valget gjelder for begge og kan ikke endres senere. Den totale utbetalingen blir omtrent lik om man velger 100 % eller 80 %.',

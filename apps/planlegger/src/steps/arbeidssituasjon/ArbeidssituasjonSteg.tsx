@@ -73,7 +73,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser }) => {
     const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2);
 
     return (
-        <PlanleggerStepPage ref={ref} steps={stepConfig}>
+        <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
             <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">

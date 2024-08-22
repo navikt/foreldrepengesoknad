@@ -56,6 +56,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNav
                 cancelApplication={navigator.avbrytSøknad}
                 onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
+                onStepChange={navigator.goToNextStep}
                 stepConfig={stepConfig}
                 stønadstype="Engangsstønad"
             />

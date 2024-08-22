@@ -1,8 +1,12 @@
 import { Preview } from '@storybook/react';
+import React from 'react';
 
 import '@navikt/ds-css';
 
 import { oppsummeringMessages } from '@navikt/fp-oppsummering';
+import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
+import { frilansMessages } from '@navikt/fp-steg-frilans';
 import { uiMessages } from '@navikt/fp-ui';
 import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
@@ -21,8 +25,24 @@ scriptTag.innerHTML = JSON.stringify({
 document.head.appendChild(scriptTag);
 
 const withIntlProvider = getIntlDecorator({
-    nb: { ...nbMessages, ...uiMessages.nb, ...utenlandsoppholdMessages.nb, ...oppsummeringMessages.nb },
-    nn: { ...nnMessages, ...uiMessages.nn, ...utenlandsoppholdMessages.nn, ...oppsummeringMessages.nn },
+    nb: {
+        ...nbMessages,
+        ...uiMessages.nb,
+        ...utenlandsoppholdMessages.nb,
+        ...oppsummeringMessages.nb,
+        ...frilansMessages.nb,
+        ...egenNæringMessages.nb,
+        ...arbeidsforholdOgInntektMessages.nb,
+    },
+    nn: {
+        ...nnMessages,
+        ...uiMessages.nn,
+        ...utenlandsoppholdMessages.nn,
+        ...oppsummeringMessages.nn,
+        ...frilansMessages.nn,
+        ...egenNæringMessages.nn,
+        ...arbeidsforholdOgInntektMessages.nn,
+    },
 });
 
 export const globalTypes = {

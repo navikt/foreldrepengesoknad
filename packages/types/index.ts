@@ -14,6 +14,7 @@ export type { Arbeidsforhold } from './src/Arbeidsforhold';
 export type { Søkerinfo } from './src/Søkerinfo';
 export type { TidsperiodeDate } from './src/TidsperiodeDate';
 export type { Satser } from './src/Satser';
+export type { AppName } from './src/AppName';
 export type { DatepickerDateRange } from './src/DatepickerDateRange';
 export { isFødtBarn, isUfødtBarn, isAdoptertBarn } from './src/Barn';
 export {

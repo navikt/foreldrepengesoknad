@@ -1,0 +1,10 @@
+{
+    "FrilansPanel.Oppstart": "Når byrja du som frilansar?",
+    "FrilansPanel.JobberFremdelesSomFrilans": "Jobbar du framleis som frilansar?",
+    "FrilansPanel.JobberFremdelesSomFrilans.Ja": "Ja",
+    "FrilansPanel.JobberFremdelesSomFrilans.Nei": "Nei",
+    "FrilansPanel.Valideringsfeil.FraOgMedDato.Påkrevd": "Du må oppgi ei startdato.",
+    "FrilansPanel.Valideringsfeil.FraOgMedDato.GyldigDato": "Startdatoen må vere ein gyldig dato på formatet dd.mm.åååå.",
+    "FrilansPanel.Valideringsfeil.FraOgMedDato.ErIFremtiden": "Startdatoen må vere før eller lik dagens dato.",
+    "FrilansPanel.Valideringsfeil.JobberFremdelesSomFrilans.Påkrevd": "Du må oppgi om du framleis jobbar som frilansar."
+}

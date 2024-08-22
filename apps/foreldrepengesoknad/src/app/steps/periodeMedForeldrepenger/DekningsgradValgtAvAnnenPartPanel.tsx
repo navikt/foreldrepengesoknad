@@ -2,11 +2,11 @@ import { CalendarIcon } from '@navikt/aksel-icons';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
+import { BodyShort, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad, bemUtils, getAntallUker, getVarighetString } from '@navikt/fp-common';
+import { Dekningsgrad, getAntallUker, getVarighetString } from '@navikt/fp-common';
 import { Kjønn, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { StepButtons } from '@navikt/fp-ui';
+import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
@@ -33,7 +33,6 @@ const DekningsgradValgtAvAnnenPartPanel: React.FunctionComponent<Props> = ({
     valgtStønadskonto,
 }) => {
     const intl = useIntl();
-    const bem = bemUtils('circle');
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const oppdaterPeriodeMedForeldrepenger = useContextSaveData(ContextDataType.PERIODE_MED_FORELDREPENGER);
@@ -54,46 +53,42 @@ const DekningsgradValgtAvAnnenPartPanel: React.FunctionComponent<Props> = ({
     const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && dekningsgrad === Dekningsgrad.ÅTTI_PROSENT;
     return (
         <VStack gap="10">
-            <Box padding="4" background="surface-alt-3-subtle">
-                <HStack justify="space-between" align="start">
-                    <VStack gap="3" style={{ width: '85%' }}>
-                        <Heading size="xsmall">
-                            <FormattedMessage
-                                id="DekningsgradValgtAvAnnenPartPanel.Heading"
-                                values={{
-                                    uker: getVarighetString(uker * 5, intl),
-                                    dekningsgrad,
-                                }}
-                            />
-                        </Heading>
-                        <BodyShort>
-                            {kjønnAnnenForelder === 'M' ? (
-                                <FormattedMessage
-                                    id="DekningsgradValgtAvAnnenPartPanel.ValgtAvHans"
-                                    values={{
-                                        navn: fornavnAnnenForelder,
-                                    }}
-                                />
-                            ) : (
-                                <FormattedMessage
-                                    id="DekningsgradValgtAvAnnenPartPanel.ValgtAvHennes"
-                                    values={{
-                                        navn: fornavnAnnenForelder,
-                                    }}
-                                />
-                            )}
-                        </BodyShort>
-                        {vis1Juli2024Info && (
-                            <div style={{ paddingTop: '1.5rem' }}>
-                                <InfoOmUtvidet80ProsentPeriode />
-                            </div>
-                        )}
-                    </VStack>
-                    <div className={bem.block}>
-                        <CalendarIcon height={24} width={24} color="#005B82" />
+            <Infobox
+                color="blue"
+                header={
+                    <FormattedMessage
+                        id="DekningsgradValgtAvAnnenPartPanel.Heading"
+                        values={{
+                            uker: getVarighetString(uker * 5, intl),
+                            dekningsgrad,
+                        }}
+                    />
+                }
+                icon={<CalendarIcon height={24} width={24} color="#005B82" />}
+            >
+                <BodyShort>
+                    {kjønnAnnenForelder === 'M' ? (
+                        <FormattedMessage
+                            id="DekningsgradValgtAvAnnenPartPanel.ValgtAvHans"
+                            values={{
+                                navn: fornavnAnnenForelder,
+                            }}
+                        />
+                    ) : (
+                        <FormattedMessage
+                            id="DekningsgradValgtAvAnnenPartPanel.ValgtAvHennes"
+                            values={{
+                                navn: fornavnAnnenForelder,
+                            }}
+                        />
+                    )}
+                </BodyShort>
+                {vis1Juli2024Info && (
+                    <div style={{ paddingTop: '1.5rem' }}>
+                        <InfoOmUtvidet80ProsentPeriode />
                     </div>
-                </HStack>
-            </Box>
+                )}
+            </Infobox>
             <StepButtons
                 isDisabledAndLoading={isSubmitting}
                 nextButtonOnClick={lagre}

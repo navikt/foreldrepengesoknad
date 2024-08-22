@@ -1,5 +1,5 @@
-import { AnnenForelder, Dekningsgrad, Periode, Søkersituasjon } from '@navikt/fp-common';
-import Barn from '@navikt/fp-common/src/common/types/Barn';
+import { AnnenForelder, Barn, Periode, Søkersituasjon } from '@navikt/fp-common';
+import { Dekningsgrad } from '@navikt/fp-types';
 
 import { VedleggDataType } from 'app/types/VedleggDataType';
 

@@ -1,8 +1,5 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
-
-import { BodyLong, Label, VStack } from '@navikt/ds-react';
 
 import { getSaveAttachment } from '@navikt/fp-api';
 import { addMetadata, lagSendSenereDokument } from '@navikt/fp-common';
@@ -48,29 +45,23 @@ const VedleggUploader: FunctionComponent<Props> = ({
     }, [updateAttachments, formAttachments, attachmentType, skjemanummer, metadataType]);
 
     return (
-        <VStack gap="4">
-            <Label>{labelText}</Label>
-            <BodyLong>{description}</BodyLong>
+        <FileUploader
+            label={labelText}
+            description={description}
+            attachmentType={attachmentType}
+            skjemanummer={skjemanummer}
+            existingAttachments={attachments.filter((a) => a.innsendingsType !== InnsendingsType.SEND_SENERE)}
+            updateAttachments={(vedlegg) => {
+                const attachmentsMedMetadata = vedlegg.map((a) =>
+                    addMetadata(a, {
+                        type: metadataType,
+                    }),
+                );
 
-            <BodyLong>
-                <FormattedMessage id="manglendeVedlegg.størrelse" />
-            </BodyLong>
-            <FileUploader
-                attachmentType={attachmentType}
-                skjemanummer={skjemanummer}
-                existingAttachments={attachments.filter((a) => a.innsendingsType !== InnsendingsType.SEND_SENERE)}
-                updateAttachments={(vedlegg) => {
-                    const attachmentsMedMetadata = vedlegg.map((a) =>
-                        addMetadata(a, {
-                            type: metadataType,
-                        }),
-                    );
-
-                    return updateAttachments(attachmentsMedMetadata);
-                }}
-                saveAttachment={getSaveAttachment('foreldrepenger')}
-            />
-        </VStack>
+                return updateAttachments(attachmentsMedMetadata);
+            }}
+            saveAttachment={getSaveAttachment('foreldrepenger')}
+        />
     );
 };
 

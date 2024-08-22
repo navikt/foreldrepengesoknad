@@ -6,6 +6,7 @@ import { initAmplitude } from '@navikt/fp-metrics';
 
 import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
+import { Barn } from 'app/types/Barn';
 import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
 import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 
@@ -72,6 +73,12 @@ const arbeidsforhold = [
     },
 ];
 
+const DEFAULT_BARN = {
+    erBarnetFødt: false,
+    termindato: '2024-02-18',
+    fødselsdato: '2024-02-18',
+};
+
 const promiseAction =
     () =>
     (...args: any): Promise<any> => {
@@ -83,12 +90,14 @@ interface Props {
     mellomlagreSøknadOgNaviger?: () => Promise<void>;
     gåTilNesteSide?: (action: Action) => void;
     tilrettelegging: Tilrettelegging[];
+    barn?: Barn;
 }
 
 const Template: StoryFn<Props> = ({
     mellomlagreSøknadOgNaviger = promiseAction(),
     gåTilNesteSide = action('button-click'),
     tilrettelegging,
+    barn = DEFAULT_BARN,
 }) => {
     initAmplitude();
     return (
@@ -99,11 +108,7 @@ const Template: StoryFn<Props> = ({
                     [ContextDataType.FERIE]: [],
                     [ContextDataType.TILRETTELEGGINGER]: tilrettelegging,
                     [ContextDataType.VALGT_TILRETTELEGGING_ID]: '263929546-6215-9868-5127-161910165730101',
-                    [ContextDataType.OM_BARNET]: {
-                        erBarnetFødt: false,
-                        termindato: '2024-02-18',
-                        fødselsdato: '2024-02-18',
-                    },
+                    [ContextDataType.OM_BARNET]: barn,
                 }}
             >
                 <PerioderStep
@@ -129,6 +134,26 @@ Default.args = {
             delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
         } as Tilrettelegging,
     ],
+};
+
+export const FremTilFødselsdato = Template.bind({});
+FremTilFødselsdato.args = {
+    tilrettelegging: [
+        {
+            id: '263929546-6215-9868-5127-161910165730101',
+            arbeidsforhold: {
+                navn: 'Omsorgspartner Vestfold AS',
+                stillinger: [{ fom: '2019-01-01', stillingsprosent: 100 }],
+            },
+            type: TilretteleggingstypeOptions.DELVIS,
+            delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
+        } as Tilrettelegging,
+    ],
+    barn: {
+        erBarnetFødt: true,
+        termindato: '2024-01-18',
+        fødselsdato: '2023-02-18',
+    },
 };
 
 export const FlereStillinger = Template.bind({});

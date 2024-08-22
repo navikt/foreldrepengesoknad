@@ -3,17 +3,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyLong, Heading } from '@navikt/ds-react';
 
-import {
-    Block,
-    Step,
-    getErSøkerFarEllerMedmor,
-    getNavnPåForeldre,
-    intlUtils,
-    isUtsettelseBarnInnlagt,
-} from '@navikt/fp-common';
+import { Block, getErSøkerFarEllerMedmor, getNavnPåForeldre, isUtsettelseBarnInnlagt } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Attachment, Søkerinfo } from '@navikt/fp-types';
+import { Step } from '@navikt/fp-ui';
 import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -184,7 +178,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
 
     return (
         <Step
-            bannerTitle={intlUtils(intl, 'søknad.pageheading')}
+            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
             onCancel={avbrytSøknad}
             onContinueLater={navigator.fortsettSøknadSenere}
             steps={stepConfig}

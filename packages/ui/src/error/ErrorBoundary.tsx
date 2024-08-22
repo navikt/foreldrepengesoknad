@@ -1,7 +1,9 @@
 import * as Sentry from '@sentry/browser';
 import { Component, ReactElement } from 'react';
 
-import ErrorPage, { AppName } from './ErrorPage';
+import { AppName } from '@navikt/fp-types';
+
+import ErrorPage from './ErrorPage';
 
 interface Props {
     appName: AppName;

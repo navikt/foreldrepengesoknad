@@ -6,6 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { Datepicker, RadioGroup, TextField } from '@navikt/fp-form-hooks';
+import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { tiMånederSidenDato } from '@navikt/fp-utils';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -101,6 +102,7 @@ const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({ barnet, valgtTil
                         ]}
                     />
                     <ReadMore
+                        onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Ikke_har_100%_stilling')}
                         header={intl.formatMessage({
                             id: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
                         })}

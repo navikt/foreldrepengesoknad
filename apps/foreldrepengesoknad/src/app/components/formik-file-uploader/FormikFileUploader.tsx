@@ -4,7 +4,7 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { Block, deleteAttachment, intlUtils, isAttachmentWithError, mapFilTilVedlegg } from '@navikt/fp-common';
+import { Block, deleteAttachment, isAttachmentWithError, mapFilTilVedlegg } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { FormikFileInput } from '@navikt/fp-formik';
 import { Attachment } from '@navikt/fp-types';
@@ -62,17 +62,22 @@ const sjekkVedlegg = (
         const erGyldigFiltype = fileExtensionIsValid(vedlegg.filename);
         if (!erGyldigFiltype) {
             setErrors((oldState) =>
-                oldState.concat(intlUtils(intl, 'vedlegg.feilmelding.ugyldig.type', { filename: vedlegg.filename })),
+                oldState.concat(
+                    intl.formatMessage({ id: 'vedlegg.feilmelding.ugyldig.type' }, { filename: vedlegg.filename }),
+                ),
             );
         }
         const erGyldigFilstørrelse = fileSizeIsValid(vedlegg.filesize);
         if (!erGyldigFilstørrelse) {
             setErrors((oldState) =>
                 oldState.concat(
-                    intlUtils(intl, 'vedlegg.feilmelding.ugyldig.størrelse', {
-                        filename: vedlegg.filename,
-                        maxStørrelse: MAX_FIL_STØRRELSE_MB,
-                    }),
+                    intl.formatMessage(
+                        { id: 'vedlegg.feilmelding.ugyldig.størrelse' },
+                        {
+                            filename: vedlegg.filename,
+                            maxStørrelse: MAX_FIL_STØRRELSE_MB,
+                        },
+                    ),
                 ),
             );
         }
@@ -100,7 +105,7 @@ const lastOppVedlegg = (
             removeFn(antallEksisterendeVedlegg + index);
             setErrors((oldState) =>
                 oldState.concat(
-                    intlUtils(intl, 'vedlegg.feilmelding.opplasting.feilet', { filename: vedlegg.filename }),
+                    intl.formatMessage({ id: 'vedlegg.feilmelding.opplasting.feilet' }, { filename: vedlegg.filename }),
                 ),
             );
         }

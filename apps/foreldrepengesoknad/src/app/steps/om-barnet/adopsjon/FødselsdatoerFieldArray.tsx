@@ -6,6 +6,7 @@ import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { Datepicker } from '@navikt/fp-form-hooks';
+import { isBeforeToday } from '@navikt/fp-utils';
 import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 const erBarnetUnder15årPåAdopsjonsdato = (i18nText: string, adopsjonsdato?: string) => (fødselsdato: string) => {
@@ -61,7 +62,8 @@ const FødselsdatoerFieldArray: React.FunctionComponent<Props> = ({ adopsjonsdat
                     key={field.id}
                     name={`fødselsdatoer.${index}.dato`}
                     minDate={dayjs(adopsjonsdato).subtract(15, 'years').toDate()}
-                    maxDate={dayjs(adopsjonsdato).toDate()}
+                    maxDate={adopsjonsdato && isBeforeToday(adopsjonsdato) ? dayjs(adopsjonsdato).toDate() : dayjs()}
+                    defaultMonth={adopsjonsdato && isBeforeToday(adopsjonsdato) ? adopsjonsdato : dayjs()}
                     label={
                         fields.length === 1
                             ? intl.formatMessage({ id: 'omBarnet.fødselsdato' })

@@ -1,30 +1,20 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
-import { BodyShort, Radio, VStack } from '@navikt/ds-react';
+import { Heading } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, Form, RadioGroup } from '@navikt/fp-form-hooks';
+import { ArbeidsforholdOgInntektPanel, Inntektsinformasjon } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { Step, StepButtons } from '@navikt/fp-ui';
-import { isRequired, notEmpty } from '@navikt/fp-validation';
+import { ContentWrapper } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
 import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
-import { Inntektsinformasjon } from 'app/types/Inntektsinformasjon';
 import Tilrettelegging from 'app/types/Tilrettelegging';
 import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 
 import { getArbeidsforholdTilretteleggingOptions } from '../velg-arbeidsforhold/velgArbeidFormUtils';
-import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
-import BrukerKanIkkeSøke from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
-import HvemKanDriveMedEgenNæring from './components/hvem-kan-drive-egen-næring/HvemKanDriveMedEgenNæring';
-import HvemKanVæreFrilanser from './components/hvem-kan-være-frilanser/HvemKanVæreFrilanser';
-import InfoOmArbeidIUtlandet from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
-import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
-import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
 
 const søkerHarKunEttARegArbeidsforholdForTilrettelegging = (
     formValues: Inntektsinformasjon,
@@ -95,8 +85,6 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
-
     const inntektsinformasjon = useContextGetData(ContextDataType.INNTEKTSINFORMASJON);
     const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
     const { termindato } = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -111,8 +99,6 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
 
     const onSubmit = (values: Inntektsinformasjon) => {
-        setIsSubmitting(true);
-
         const automatiskValgtTilrettelegging = getAutomatiskValgtTilretteleggingHvisKunEtArbeid(
             values,
             aktiveArbeidsforhold,
@@ -145,110 +131,24 @@ const InntektsinformasjonSteg: React.FunctionComponent<Props> = ({
         return navigator.goToNextStep(neste);
     };
 
-    const formMethods = useForm<Inntektsinformasjon>({
-        defaultValues: inntektsinformasjon,
-    });
-
-    const hattInntektSomFrilans = formMethods.watch('harJobbetSomFrilans');
-    const hattInntektSomNæringsdrivende = formMethods.watch('harJobbetSomSelvstendigNæringsdrivende');
-
-    const kanIkkeSøke =
-        arbeidsforhold.length === 0 && hattInntektSomFrilans === false && hattInntektSomNæringsdrivende === false;
-
     return (
-        <Step
-            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
-            onCancel={avbrytSøknad}
-            steps={stepConfig}
-            onContinueLater={navigator.fortsettSøknadSenere}
-        >
-            <Form formMethods={formMethods} onSubmit={onSubmit}>
-                <VStack gap="10">
-                    <ErrorSummaryHookForm />
-                    <BodyShort>
-                        <FormattedMessage id="inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV" />
-                    </BodyShort>
-                    <div>
-                        <BodyShort style={{ fontWeight: 'bold' }}>
-                            <FormattedMessage id="inntektsinformasjon.arbeidsforhold.label" />
-                        </BodyShort>
-                        <ArbeidsforholdInformasjon arbeidsforhold={aktiveArbeidsforhold} />
-                    </div>
-                    <div>
-                        <RadioGroup
-                            name="harJobbetSomFrilans"
-                            label={intl.formatMessage({ id: 'inntektsinformasjon.harDuJobbetSomFrilans' })}
-                            validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.frilans.påkrevd' }))]}
-                            description={intl.formatMessage({
-                                id: 'inntektsinformasjon.beskrivelse',
-                            })}
-                        >
-                            <Radio value={true}>
-                                <FormattedMessage id="ja" />
-                            </Radio>
-                            <Radio value={false}>
-                                <FormattedMessage id="nei" />
-                            </Radio>
-                        </RadioGroup>
-                        <HvemKanVæreFrilanser />
-                    </div>
-                    <div>
-                        <RadioGroup
-                            name="harJobbetSomSelvstendigNæringsdrivende"
-                            label={intl.formatMessage({
-                                id: 'inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende',
-                            })}
-                            validate={[
-                                isRequired(
-                                    intl.formatMessage({ id: 'valideringsfeil.hattInntektSomNæringsdrivende.påkrevd' }),
-                                ),
-                            ]}
-                            description={intl.formatMessage({
-                                id: 'inntektsinformasjon.beskrivelse',
-                            })}
-                        >
-                            <Radio value={true}>
-                                <FormattedMessage id="ja" />
-                            </Radio>
-                            <Radio value={false}>
-                                <FormattedMessage id="nei" />
-                            </Radio>
-                        </RadioGroup>
-                        <HvemKanDriveMedEgenNæring />
-                    </div>
-                    <div>
-                        <RadioGroup
-                            name="harHattArbeidIUtlandet"
-                            label={intl.formatMessage({ id: 'inntektsinformasjon.hattArbeidIUtlandet' })}
-                            validate={[
-                                isRequired(intl.formatMessage({ id: 'valideringsfeil.hattArbeidIUtlandet.påkrevd' })),
-                            ]}
-                            description={intl.formatMessage({
-                                id: 'inntektsinformasjon.beskrivelse',
-                            })}
-                        >
-                            <Radio value={true}>
-                                <FormattedMessage id="ja" />
-                            </Radio>
-                            <Radio value={false}>
-                                <FormattedMessage id="nei" />
-                            </Radio>
-                        </RadioGroup>
-                        <InfoOmArbeidIUtlandet />
-                    </div>
-                    <VStack gap="4">
-                        <InfoOmFørstegangstjeneste />
-                        <InfoTilFiskere />
-                    </VStack>
-                    {kanIkkeSøke && <BrukerKanIkkeSøke />}
-                    <StepButtons
-                        isNexButtonVisible={!kanIkkeSøke}
-                        isDisabledAndLoading={isSubmitting}
-                        goToPreviousStep={navigator.goToPreviousDefaultStep}
-                    />
-                </VStack>
-            </Form>
-        </Step>
+        <ContentWrapper>
+            <Heading size="large">
+                <FormattedMessage id="søknad.pageheading" />
+            </Heading>
+            <ArbeidsforholdOgInntektPanel
+                arbeidsforhold={arbeidsforhold}
+                termindato={termindato}
+                inntektsinformasjon={inntektsinformasjon}
+                saveOnNext={onSubmit}
+                onStepChange={navigator.goToNextStep}
+                cancelApplication={avbrytSøknad}
+                onContinueLater={navigator.fortsettSøknadSenere}
+                goToPreviousStep={navigator.goToPreviousDefaultStep}
+                stepConfig={stepConfig}
+                stønadstype="Svangerskapspenger"
+            />
+        </ContentWrapper>
     );
 };
 

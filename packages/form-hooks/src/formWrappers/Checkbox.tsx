@@ -1,5 +1,6 @@
 import { FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
+
 import { Checkbox as DsCheckbox, ErrorMessage } from '@navikt/ds-react';
 
 import { getError, getValidationRules } from './formUtils';
@@ -9,7 +10,6 @@ export interface Props {
     label: string | ReactNode;
     validate?: Array<(value: string) => any>;
     onChange?: (isChecked: boolean) => void;
-    onClick?: () => void;
     className?: string;
     disabled?: boolean;
 }

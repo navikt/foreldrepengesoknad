@@ -1,10 +1,11 @@
 import { ArrowLeftIcon, ChatElipsisIcon, CheckmarkIcon, InformationIcon, WalletIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
+import { VeiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { finnEngangsstønad, finnGrunnbeløp } from 'utils/satserUtils';
+import { finnSisteEngangsstønad, finnSisteGrunnbeløp } from 'utils/satserUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { BodyShort, Button, ExpansionCard, HStack, Heading, Link, VStack } from '@navikt/ds-react';
@@ -57,11 +58,11 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
     const gjennomsnittslønnPerMåned = parseFloat(notEmpty(finnGjennomsnittsMånedslønn(notEmpty(arbeidssituasjon))));
     const årslønn = gjennomsnittslønnPerMåned * 12;
 
-    const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
+    const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const grunnbeløpetGanger6 = grunnbeløpet * 6;
     const minÅrslønn = grunnbeløpet / 2;
 
-    const engangsstønad = finnEngangsstønad(satser, dayjs());
+    const engangsstønad = finnSisteEngangsstønad(satser);
 
     const harIkkeRettTilFp = årslønn < minÅrslønn;
     const erMellomMinÅrslønnOg1Komma5G = årslønn > minÅrslønn && årslønn < grunnbeløpet * 1.5;
@@ -70,7 +71,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
 
     useEffect(() => {
         logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'veivisere',
+            app: VeiviserAmplitudeKey.HVOR_MYE,
             team: 'foreldrepenger',
             hendelse: finnHendelse(harIkkeRettTilFp, erMellomMinÅrslønnOg1Komma5G, årslønn > grunnbeløpetGanger6),
         });
@@ -92,7 +93,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                         <>
                             <HarIkkeRettTilFpInfobox antattÅrslønn={årslønn} minÅrslønn={minÅrslønn} />
                             <Infobox
-                                header={<FormattedMessage id="OppsummeringSide.HvaErEr" />}
+                                header={<FormattedMessage id="OppsummeringSide.HvaErEs" />}
                                 icon={
                                     <InformationIcon
                                         height={24}
@@ -104,10 +105,12 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                 }
                                 color="gray"
                             >
-                                <FormattedMessage
-                                    id="OppsummeringSide.EsSkalBidra"
-                                    values={{ engangsstønad: formatCurrencyWithKr(engangsstønad) }}
-                                />
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="OppsummeringSide.EsSkalBidra"
+                                        values={{ engangsstønad: formatCurrencyWithKr(engangsstønad) }}
+                                    />
+                                </BodyShort>
                             </Infobox>
                         </>
                     )}
@@ -194,7 +197,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                         <ExpansionCard.Content>
                             {(arbeidssituasjon.erArbeidstakerEllerFrilanser ||
                                 arbeidssituasjon.harUtbetalingFraNav) && (
-                                <VStack gap="10">
+                                <VStack gap="3">
                                     <BluePanel>
                                         <VStack gap="1">
                                             <Heading size="small" level="4">
@@ -213,9 +216,12 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                         </VStack>
                                     </BluePanel>
                                     <BluePanel>
-                                        <VStack gap="5">
-                                            <div>
+                                        <VStack gap="4">
+                                            <VStack gap="1">
                                                 <Heading size="small">
+                                                    <FormattedMessage id="OppsummeringSide.Lønn" />
+                                                </Heading>
+                                                <Heading size="xsmall">
                                                     {capitalizeFirstLetter(
                                                         forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
                                                     )}
@@ -227,9 +233,9 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                                             : 0,
                                                     )}
                                                 </BodyShort>
-                                            </div>
+                                            </VStack>
                                             <div>
-                                                <Heading size="small">
+                                                <Heading size="xsmall">
                                                     {capitalizeFirstLetter(
                                                         forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
                                                     )}
@@ -243,7 +249,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                                 </BodyShort>
                                             </div>
                                             <div>
-                                                <Heading size="small">
+                                                <Heading size="xsmall">
                                                     {capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
                                                 </Heading>
                                                 <BodyShort>

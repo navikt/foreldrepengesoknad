@@ -1,0 +1,49 @@
+{
+    "name": "@navikt/fp-uttaksplan-ny",
+    "version": "1.0.0",
+    "private": true,
+    "license": "MIT",
+    "type": "module",
+    "main": "src/index.ts",
+    "types": "src/index.ts",
+    "scripts": {
+        "lint:eslint": "eslint ./src/**/*.{js,ts,tsx}",
+        "build-storybook": "storybook build -o .storybook-static-build",
+        "storybook": "storybook dev --quiet -p 7003",
+        "test": "vitest run",
+        "test:watch": "vitest --watch=true",
+        "test:coverage": "vitest --coverage"
+    },
+    "dependencies": {
+        "@navikt/aksel-icons": "^6.16.0",
+        "@navikt/ds-css": "^6.6.0",
+        "@navikt/ds-react": "^6.6.0",
+        "@navikt/fp-common": "workspace:*",
+        "@navikt/fp-formik": "workspace:*",
+        "@navikt/fp-types": "workspace:*",
+        "@navikt/fp-utils": "workspace:*",
+        "@navikt/fp-utils-test": "workspace:*",
+        "@navikt/fp-validation": "workspace:*",
+        "@types/react": "^18.2.73",
+        "classnames": "^2.5.1",
+        "dayjs": "^1.11.10",
+        "react": "^18.2.0",
+        "react-intl": "^6.6.4",
+        "typescript": "5.4.5"
+    },
+    "devDependencies": {
+        "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
+        "@storybook/addon-viewport": "^8.1.4",
+        "@storybook/react": "^8.0.0",
+        "@testing-library/jest-dom": "^6.4.2",
+        "@vitejs/plugin-react": "^4.2.1",
+        "mockdate": "^3.0.5",
+        "path": "^0.12.7",
+        "react-dom": "^18.2.0",
+        "storybook": "8.0.0",
+        "tsconfig": "workspace:*",
+        "vite": "^5.1.6",
+        "vite-plugin-checker": "^0.6.4",
+        "vitest": "^1.4.0"
+    }
+}

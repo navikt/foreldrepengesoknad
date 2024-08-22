@@ -64,6 +64,7 @@ const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavige
             bannerTitle={intl.formatMessage({ id: 'Søknad.Pageheading' })}
             onCancel={navigator.avbrytSøknad}
             onContinueLater={navigator.fortsettSøknadSenere}
+            onStepChange={navigator.goToNextStep}
             steps={stepConfig}
         >
             <Form formMethods={formMethods} onSubmit={lagre}>

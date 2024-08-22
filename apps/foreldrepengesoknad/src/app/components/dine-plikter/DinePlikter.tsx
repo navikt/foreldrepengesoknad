@@ -1,14 +1,13 @@
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, Link } from '@navikt/ds-react';
 
-import { bemUtils, intlUtils } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
+import { bemUtils } from '@navikt/fp-utils';
 
 import './dinePlikter.less';
 
 const DinePlikter = () => {
-    const intl = useIntl();
     const bem = bemUtils('dinePlikter');
 
     return (
@@ -29,7 +28,9 @@ const DinePlikter = () => {
                     </BodyLong>
                 </li>
                 <li>
-                    <BodyLong>{intlUtils(intl, 'velkommen.dinePlikter.listeElement.2')}</BodyLong>
+                    <BodyLong>
+                        <FormattedMessage id="velkommen.dinePlikter.listeElement.2" />
+                    </BodyLong>
                 </li>
             </ul>
         </div>

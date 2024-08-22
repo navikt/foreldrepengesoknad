@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Button } from '@navikt/ds-react';
 
-import { Block, intlUtils } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import { QuestionVisibility, YesOrNo } from '@navikt/fp-formik';
 import { Attachment } from '@navikt/fp-types';
 
@@ -104,14 +104,13 @@ const AndreInntekter: FunctionComponent<Props> = ({
             <Block padBottom="l" visible={visibility.isVisible(InntektsinformasjonFormField.hattAndreInntekter)}>
                 <InntektsinformasjonFormComponents.YesOrNoQuestion
                     name={InntektsinformasjonFormField.hattAndreInntekter}
-                    legend={intlUtils(intl, 'inntektsinformasjon.annenInntekt')}
+                    legend={intl.formatMessage({ id: 'inntektsinformasjon.annenInntekt' })}
                     validate={(hattAndreInntekter) => {
                         if (hattAndreInntekter === YesOrNo.YES) {
                             if (andreInntekterInformasjon.length === 0) {
-                                return intlUtils(
-                                    intl,
-                                    'valideringsfeil.inntektsinformasjon.andreInntekter.måHaOppdrag',
-                                );
+                                return intl.formatMessage({
+                                    id: 'valideringsfeil.inntektsinformasjon.andreInntekter.måHaOppdrag',
+                                });
                             }
                         }
 
@@ -123,7 +122,9 @@ const AndreInntekter: FunctionComponent<Props> = ({
                 <div style={{ backgroundColor: '#f1f1f1', marginBottom: '1rem', padding: '1rem' }}>
                     <AndreInntekterModal
                         isOpen={isModalOpen}
-                        contentLabel={intlUtils(intl, 'inntektsinformasjon.andreInntekterModal.contentLabel')}
+                        contentLabel={intl.formatMessage({
+                            id: 'inntektsinformasjon.andreInntekterModal.contentLabel',
+                        })}
                         onRequestClose={() => {
                             setSelectedAnnenInntekt(undefined);
                             setIsModalOpen(false);

@@ -30,7 +30,7 @@ export const isValidAntallUkerFellesperiode =
             return intl.formatMessage({ id: 'fordeling.antallUker.forLiten' });
         }
 
-        if (!ukerValue && !dagerInput) {
+        if (ukerValue === undefined && dagerInput === undefined) {
             return intl.formatMessage({ id: 'fordeling.antallUkerDager.måOppgis' });
         }
 

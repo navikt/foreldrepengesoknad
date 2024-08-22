@@ -2,10 +2,11 @@ import { BabyWrappedIcon } from '@navikt/aksel-icons';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, Box, HStack, Label, VStack } from '@navikt/ds-react';
+import { BodyShort } from '@navikt/ds-react';
 
-import { bemUtils, formaterNavn } from '@navikt/fp-common';
+import { formaterNavn } from '@navikt/fp-common';
 import { SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
+import { Infobox } from '@navikt/fp-ui';
 
 import './registrertePersonalia.less';
 
@@ -24,37 +25,36 @@ const RegistrertePersonalia: React.FunctionComponent<Props> = ({
     altTekstHvisUkjentNavn,
     visEtternavn,
 }: Props) => {
-    const bem = bemUtils('circle');
     return (
-        <Box padding="4" background="surface-alt-3-subtle" borderRadius="medium">
-            <HStack justify="space-between" align="start">
-                <VStack gap="2" style={{ width: '85%' }}>
-                    <Label>
+        <>
+            <Infobox
+                color="blue"
+                header={
+                    <>
                         {altTekstHvisUkjentNavn ??
                             formaterNavn(person.fornavn, person.etternavn, visEtternavn, person.mellomnavn)}
-                    </Label>
-                    {fødselsnummerForVisning !== undefined && (
-                        <BodyShort>
-                            <FormattedMessage
-                                id="registrertePersonalia.fødselsnummer"
-                                values={{ fnr: fødselsnummerForVisning }}
-                            />
-                        </BodyShort>
-                    )}
-                    {!altTekstHvisUkjentNavn && fødselsdatoForVisning !== undefined && (
-                        <BodyShort>
-                            <FormattedMessage
-                                id="registrertePersonalia.fødselsdato"
-                                values={{ fødselsdato: fødselsdatoForVisning }}
-                            />
-                        </BodyShort>
-                    )}
-                </VStack>
-                <div className={bem.block}>
-                    <BabyWrappedIcon height={24} width={24} color="#005B82" />
-                </div>
-            </HStack>
-        </Box>
+                    </>
+                }
+                icon={<BabyWrappedIcon height={24} width={24} color="#005B82" />}
+            >
+                {fødselsnummerForVisning !== undefined && (
+                    <BodyShort>
+                        <FormattedMessage
+                            id="registrertePersonalia.fødselsnummer"
+                            values={{ fnr: fødselsnummerForVisning }}
+                        />
+                    </BodyShort>
+                )}
+                {!altTekstHvisUkjentNavn && fødselsdatoForVisning !== undefined && (
+                    <BodyShort>
+                        <FormattedMessage
+                            id="registrertePersonalia.fødselsdato"
+                            values={{ fødselsdato: fødselsdatoForVisning }}
+                        />
+                    </BodyShort>
+                )}
+            </Infobox>
+        </>
     );
 };
 

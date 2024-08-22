@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import { bemUtils } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-utils';
 
 import './dokumentasjon-container.css';
 

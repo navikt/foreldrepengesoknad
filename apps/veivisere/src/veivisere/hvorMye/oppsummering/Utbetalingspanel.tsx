@@ -1,7 +1,6 @@
 import { BankNoteIcon } from '@navikt/aksel-icons';
-import dayjs from 'dayjs';
 import { FormattedMessage } from 'react-intl';
-import { finnGrunnbeløp } from 'utils/satserUtils';
+import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 
@@ -20,20 +19,28 @@ const getDagerForKonto = (
     stønadskontoType: StønadskontoType,
 ) => {
     const konto = stønadskontoer.kontoer.find((k) => k.konto === stønadskontoType);
-    return konto ? konto.dager / 5 : 0;
+    return konto ? konto.dager : 0;
 };
 
-const finnAntallUker = (valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad) => {
-    const totaltAntallUkerFellesperiode = getDagerForKonto(valgtStønadskonto, StønadskontoType.Fellesperiode);
-    const antallUkerForeldrepengerFørFødsel = getDagerForKonto(
+const finnAntallUkerOgDager = (valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad) => {
+    const totaltAntallDagerFellesperiode = getDagerForKonto(valgtStønadskonto, StønadskontoType.Fellesperiode);
+    const antallDagerForeldrepengerFørFødsel = getDagerForKonto(
         valgtStønadskonto,
         StønadskontoType.ForeldrepengerFørFødsel,
     );
     const antallUkerMødrekvote = getDagerForKonto(valgtStønadskonto, StønadskontoType.Mødrekvote);
     const antallUkerFedrekvote = getDagerForKonto(valgtStønadskonto, StønadskontoType.Fedrekvote);
-    return (
-        totaltAntallUkerFellesperiode + antallUkerForeldrepengerFørFødsel + antallUkerMødrekvote + antallUkerFedrekvote
-    );
+
+    const totaltAntallDager =
+        totaltAntallDagerFellesperiode +
+        antallDagerForeldrepengerFørFødsel +
+        antallUkerMødrekvote +
+        antallUkerFedrekvote;
+    const uker = Math.floor(totaltAntallDager / 5);
+    return {
+        uker,
+        dager: totaltAntallDager - uker * 5,
+    };
 };
 
 export const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260;
@@ -51,11 +58,11 @@ const Utbetalingspanel: React.FunctionComponent<Props> = ({
     stønadskontoer,
     satser,
 }) => {
-    const antallUkerMedUttak = finnAntallUker(stønadskontoer[dekningsgrad]);
+    const antallUkerOgDagerMedUttak = finnAntallUkerOgDager(stønadskontoer[dekningsgrad]);
 
     const erDekningsgrad100 = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT;
 
-    const grunnbeløpet = finnGrunnbeløp(satser, dayjs());
+    const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const annualMax = 6 * grunnbeløpet;
     const monthlyMax = annualMax / 12;
 
@@ -70,7 +77,11 @@ const Utbetalingspanel: React.FunctionComponent<Props> = ({
             header={
                 <FormattedMessage
                     id="OppsummeringSide.GjennomsnittligUtbetaling"
-                    values={{ erDekningsgrad100, antallUker: antallUkerMedUttak }}
+                    values={{
+                        erDekningsgrad100,
+                        antallUker: antallUkerOgDagerMedUttak.uker,
+                        antallDager: antallUkerOgDagerMedUttak.dager,
+                    }}
                 />
             }
             icon={<BankNoteIcon aria-hidden />}

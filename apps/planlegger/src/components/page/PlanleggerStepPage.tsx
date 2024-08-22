@@ -8,10 +8,11 @@ import { BlueHeading, Page, ProgressStep, ProgressStepper } from '@navikt/fp-ui'
 
 interface Props {
     steps: Array<ProgressStep<PlanleggerRoutes>>;
+    goToStep: (nextPath: PlanleggerRoutes) => void;
     children: React.ReactElement | React.ReactElement[];
 }
 
-const PlanleggerStepPage = forwardRef<HTMLDivElement, Props>(({ steps, children }, ref) => (
+const PlanleggerStepPage = forwardRef<HTMLDivElement, Props>(({ steps, children, goToStep }, ref) => (
     <>
         <Page
             header={
@@ -20,7 +21,7 @@ const PlanleggerStepPage = forwardRef<HTMLDivElement, Props>(({ steps, children 
                         <Heading size="large">
                             <FormattedMessage id="PlanleggerStepPage.Tittel" />
                         </Heading>
-                        <ProgressStepper steps={steps} hideExpandableStepInfo showBlueStatusBar />
+                        <ProgressStepper steps={steps} onStepChange={goToStep} hideHeader />
                     </VStack>
                 </BlueHeading>
             }

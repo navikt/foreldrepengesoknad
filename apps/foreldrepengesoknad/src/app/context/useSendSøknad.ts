@@ -7,7 +7,6 @@ import { notEmpty } from '@navikt/fp-validation';
 import Api from 'app/api/api';
 import {
     FEIL_VED_INNSENDING,
-    FOR_MANGE_VEDLEGG_ERROR,
     UKJENT_UUID,
     getErrorCallId,
     getSøknadsdataForInnsending,
@@ -59,26 +58,15 @@ const useSendSøknad = (
             const response = await Api.sendSøknad(cleanedSøknad, fødselsnr, abortSignal);
             kvittering = response.data;
         } catch (postError: unknown) {
-            //TODO (TOR) Håndter dette utanfor denne hook'en (På same måte i alle appane)
-
             if (isAxiosError(postError)) {
                 sendErrorMessageToSentry(postError);
-
-                if (
-                    postError.response?.status === 400 &&
-                    postError.response?.data?.messages?.includes(
-                        'Vedleggslisten kan ikke inneholde flere enn 40 opplastede vedlegg',
-                    )
-                ) {
-                    setError(new Error(FOR_MANGE_VEDLEGG_ERROR));
-                }
-
                 const submitErrorCallId = getErrorCallId(postError);
                 const callIdForBruker =
                     submitErrorCallId !== UKJENT_UUID ? submitErrorCallId.slice(0, 8) : submitErrorCallId;
                 setError(new Error(FEIL_VED_INNSENDING + callIdForBruker));
+            } else {
+                setError(new Error(String(postError)));
             }
-            setError(new Error(String(postError)));
         }
 
         try {

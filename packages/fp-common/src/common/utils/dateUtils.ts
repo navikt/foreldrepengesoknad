@@ -18,11 +18,13 @@ dayjs.extend(isBetween);
 dayjs.extend(utc);
 const dateFormat = 'DD.MM.YYYY';
 const dateFormatExtended = 'DD. MMMM YYYY';
+const dateFormatShortMonth = 'DD. MMM';
 const dateFormatMedUkedag = 'dddd DD. MMM YYYY';
 
 export const formatDate = (date: Date | string) => dayjs(date).format(dateFormat);
 export const formatDateUtc = (date: Date | string) => dayjs.utc(date).format(dateFormat);
 export const formatDateExtended = (date: Date | string) => dayjs(date).format(dateFormatExtended);
+export const formatDateShortMonth = (date: Date | string) => dayjs(date).format(dateFormatShortMonth);
 export const formatDateMedUkedag = (date: Date | string) => dayjs(date).format(dateFormatMedUkedag);
 
 export const formatTidsperiode = (tidsperiode: Tidsperiode) => {

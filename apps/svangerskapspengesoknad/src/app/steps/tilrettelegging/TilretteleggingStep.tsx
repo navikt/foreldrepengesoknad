@@ -13,6 +13,7 @@ import {
     StepButtonsHookForm,
     TextArea,
 } from '@navikt/fp-form-hooks';
+import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { tiMånederSidenDato } from '@navikt/fp-utils';
@@ -192,6 +193,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
             onCancel={avbrytSøknad}
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
+            onStepChange={navigator.goToNextStep}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
@@ -267,6 +269,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                                 <ReadMore
                                     size="small"
                                     header={intl.formatMessage({ id: 'tilrettelegging.tiltak.info.title' })}
+                                    onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Tiltak')}
                                 >
                                     <BodyShort>
                                         <FormattedMessage id="tilrettelegging.tiltak.info.description"></FormattedMessage>
@@ -299,6 +302,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                         </RadioGroup>
                         <ReadMore
                             header={intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidType.info.tittel' })}
+                            onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Bytte_på_stillingsprosent')}
                         >
                             <BodyShort>
                                 <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.info.tekst"></FormattedMessage>

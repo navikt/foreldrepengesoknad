@@ -1,6 +1,7 @@
-import { InformationIcon } from '@navikt/aksel-icons';
+import { InformationIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { ContextRoutes, FpEllerEsRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
+import { VeiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
 import { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -24,7 +25,7 @@ const FpEllerEsForside: React.FunctionComponent<Props> = ({ locale, changeLocale
 
     useEffect(() => {
         logAmplitudeEvent('sidevisning', {
-            app: 'veivisere',
+            app: VeiviserAmplitudeKey.FP_ELLER_ES,
             team: 'foreldrepenger',
             pageKey: ContextRoutes.FP_ELLER_ES + FpEllerEsRoutes.OM,
         });
@@ -39,6 +40,7 @@ const FpEllerEsForside: React.FunctionComponent<Props> = ({ locale, changeLocale
             innholdLabel={intl.formatMessage({ id: 'FpEllerEsForside.Innhold' })}
             goToNextDefaultStep={() => goToRoute(FpEllerEsRoutes.SITUASJON)}
             childrenBelowStartButton
+            icon={<StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden />}
         >
             <Infobox
                 header={<FormattedMessage id="FpEllerEsForside.Foreldrepenger" />}

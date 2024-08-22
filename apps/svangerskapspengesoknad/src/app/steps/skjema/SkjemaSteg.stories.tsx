@@ -13,6 +13,9 @@ import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging'
 
 import SkjemaSteg from './SkjemaSteg';
 
+const file1 = new File(['abc'.repeat(100000)], 'Filnavn1.jpg');
+const file2 = new File(['abc'.repeat(500000)], 'Filnavn2.jpg');
+
 const defaultExport = {
     title: 'steps/SkjemaSteg',
     component: SkjemaSteg,
@@ -162,9 +165,9 @@ MedVedlegg.args = {
             vedlegg: [
                 {
                     id: 'V134300149934973076055420920289127108',
-                    file: {} as any,
-                    filename: 'vedlegg – Kopi (7).png',
-                    filesize: 7477,
+                    filename: file1.name,
+                    filesize: file1.size,
+                    file: file1,
                     uploaded: true,
                     pending: false,
                     type: AttachmentType.TILRETTELEGGING,
@@ -206,9 +209,9 @@ KanMaxHaToVedlegg.args = {
             vedlegg: [
                 {
                     id: 'V134300149934973076055420920289127108',
-                    file: {} as any,
-                    filename: 'vedlegg – Kopi (7).png',
-                    filesize: 7477,
+                    filename: file1.name,
+                    filesize: file1.size,
+                    file: file1,
                     uploaded: true,
                     pending: false,
                     type: AttachmentType.TILRETTELEGGING,
@@ -223,9 +226,9 @@ KanMaxHaToVedlegg.args = {
             vedlegg: [
                 {
                     id: 'V134300149934973076055420920289127108',
-                    file: {} as any,
-                    filename: 'vedlegg – Kopi (7).png',
-                    filesize: 7477,
+                    filename: file2.name,
+                    filesize: file2.size,
+                    file: file2,
                     uploaded: true,
                     pending: false,
                     type: AttachmentType.TILRETTELEGGING,

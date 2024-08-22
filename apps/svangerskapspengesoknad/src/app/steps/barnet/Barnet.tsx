@@ -5,6 +5,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import {
@@ -81,6 +82,7 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
             onCancel={avbrytSøknad}
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
+            onStepChange={navigator.goToNextStep}
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
@@ -104,7 +106,10 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                                 <FormattedMessage id="nei" />
                             </Radio>
                         </RadioGroup>
-                        <ReadMore header={intl.formatMessage({ id: 'barnet.erBarnetFødt.merInfo.tittel' })}>
+                        <ReadMore
+                            onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'SVP_tilbake_i_tid')}
+                            header={intl.formatMessage({ id: 'barnet.erBarnetFødt.merInfo.tittel' })}
+                        >
                             <BodyShort>
                                 <FormattedMessage id="barnet.erBarnetFødt.merInfo.tekst" />
                             </BodyShort>
@@ -132,6 +137,7 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                             ]}
                             minDate={halvannetÅrSiden(new Date())}
                             maxDate={dayjs().toDate()}
+                            onChange={() => formMethods.formState.isSubmitted && formMethods.trigger()}
                         />
                     )}
                     <div>
@@ -165,7 +171,10 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                                 validerTermindato(intl, fødselsdato),
                             ]}
                         />
-                        <ReadMore header={intl.formatMessage({ id: 'barnet.termindato.merInfo.tittel' })}>
+                        <ReadMore
+                            onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'SVP_tre_uker_før_termin')}
+                            header={intl.formatMessage({ id: 'barnet.termindato.merInfo.tittel' })}
+                        >
                             <BodyShort>
                                 <FormattedMessage id="barnet.termindato.merInfo.tekst" />
                             </BodyShort>
