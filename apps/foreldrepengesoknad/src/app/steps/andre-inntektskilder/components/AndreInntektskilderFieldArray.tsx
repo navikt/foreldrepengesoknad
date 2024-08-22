@@ -31,7 +31,7 @@ const AndreInntektskilderFieldArray: React.FunctionComponent = () => {
     return (
         <VStack gap="10">
             {fields.map((field, index) => {
-                const { type } = andreInntektskilder[index];
+                const inntektskilde = andreInntektskilder[index];
                 return (
                     <VStack gap="10" key={field.id}>
                         {index !== 0 && <HorizontalLine />}
@@ -52,9 +52,15 @@ const AndreInntektskilderFieldArray: React.FunctionComponent = () => {
                                 <FormattedMessage id="AndreInntektskilderStep.RadioButton.Førstegangstjeneste" />
                             </Radio>
                         </RadioGroup>
-                        {type === AnnenInntektType.JOBB_I_UTLANDET && <JobbIUtlandetPanel index={index} />}
-                        {type === AnnenInntektType.SLUTTPAKKE && <EtterlønnEllerSluttvederlagPanel index={index} />}
-                        {type === AnnenInntektType.MILITÆRTJENESTE && <FørstegangstjenestePanel index={index} />}
+                        {inntektskilde.type === AnnenInntektType.JOBB_I_UTLANDET && (
+                            <JobbIUtlandetPanel index={index} inntektskilde={inntektskilde} />
+                        )}
+                        {inntektskilde.type === AnnenInntektType.SLUTTPAKKE && (
+                            <EtterlønnEllerSluttvederlagPanel index={index} inntektskilde={inntektskilde} />
+                        )}
+                        {inntektskilde.type === AnnenInntektType.MILITÆRTJENESTE && (
+                            <FørstegangstjenestePanel index={index} inntektskilde={inntektskilde} />
+                        )}
                         {index !== 0 && (
                             <HStack>
                                 <Button

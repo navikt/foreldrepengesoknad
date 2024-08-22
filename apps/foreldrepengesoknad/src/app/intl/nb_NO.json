@@ -1087,6 +1087,9 @@
     "JobbIUtlandetPanel.Tom": "Til",
     "JobbIUtlandetPanel.Validering.Required.Tom": "Du må oppgi til dato",
     "JobbIUtlandetPanel.Validering.Valid.Tom": "Du må oppgi en gyldig til dato",
+    "JobbIUtlandetPanel.FraOgMedDato.ErIFremtiden": "Fra og med dato må være før eller lik dagens dato",
+    "JobbIUtlandetPanel.FraOgMedDato.FørTilDato": "Du må legge inn en fra og med dato som er før til og med datoen.",
+    "JobbIUtlandetPanel.TilOgMedDato.ErIFremtiden": "Til og med dato må være før eller lik dagens dato",
     "EtterlønnEllerSluttvederlagPanel.Fom": "Perioden den gjelder fra",
     "EtterlønnEllerSluttvederlagPanel.Validering.Required.Fom": "Du må oppgi perioden den gjelder fra",
     "EtterlønnEllerSluttvederlagPanel.Validering.Valid.Fom": "Du må oppgi en gyldig dato for perioden den gjelder for",
@@ -1094,6 +1097,8 @@
     "EtterlønnEllerSluttvederlagPanel.Validering.Required.Tom": "Du må oppgi til dato",
     "EtterlønnEllerSluttvederlagPanel.Validering.Valid.Tom": "Du må oppgi en gyldig til dato",
     "EtterlønnEllerSluttvederlagPanel.Vedlegg": "Senere i søknaden vil du bli bedt om å laste opp dokumentasjon fra arbeidsgiveren din. Den må vise inntekten og perioden den gjelder for.",
+    "EtterlønnEllerSluttvederlagPanel.FraOgMedDato.ErIFremtiden": "Perioden den gjelder fra må være før eller lik dagens dato",
+    "EtterlønnEllerSluttvederlagPanel.FraOgMedDato.FørTilDato": "Du må legge inn en fra og med dato som er før til og med datoen.",
     "FørstegangstjenestePanel.IFørstegangstjenesteNå": "Er du i førstegangstjeneste nå?",
     "FørstegangstjenestePanel.Validering.IFørstegangstjenesteNå": "Du må oppgi om du er i førstegangstjeneste nå?",
     "FørstegangstjenestePanel.RadioButton.Nei": "Nei",
@@ -1104,5 +1109,8 @@
     "FørstegangstjenestePanel.Tom": "Til",
     "FørstegangstjenestePanel.Validering.Required.Tom": "Du må oppgi til dato",
     "FørstegangstjenestePanel.Validering.Valid.Tom": "Du må oppgi en gyldig til dato",
-    "FørstegangstjenestePanel.Vedlegg": "Senere i søknaden vil du bli bedt om å laste opp dokumentasjon dokumentasjon på perioden fra tjenestestedet ditt."
+    "FørstegangstjenestePanel.Vedlegg": "Senere i søknaden vil du bli bedt om å laste opp dokumentasjon dokumentasjon på perioden fra tjenestestedet ditt.",
+    "FørstegangstjenestePanel.FraOgMedDato.ErIFremtiden": "Fra og med dato må være før eller lik dagens dato",
+    "FørstegangstjenestePanel.FraOgMedDato.FørTilDato": "Du må legge inn en fra og med dato som er før til og med datoen.",
+    "FørstegangstjenestePanel.TilOgMedDato.ErIFremtiden": "Til og med dato må være før eller lik dagens dato"
 }

@@ -1,17 +1,21 @@
 import { FileIcon } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { BluePanel } from '@navikt/fp-ui';
-import { isRequired, isValidDate } from '@navikt/fp-validation';
+import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
+
+import { AndreInntektskilder } from 'app/types/AndreInntektskilder';
 
 interface Props {
     index: number;
+    inntektskilde: AndreInntektskilder;
 }
 
-export const EtterlønnEllerSluttvederlagPanel: React.FunctionComponent<Props> = ({ index }) => {
+export const EtterlønnEllerSluttvederlagPanel: React.FunctionComponent<Props> = ({ index, inntektskilde }) => {
     const intl = useIntl();
 
     return (
@@ -20,12 +24,20 @@ export const EtterlønnEllerSluttvederlagPanel: React.FunctionComponent<Props> =
                 <Datepicker
                     name={`andreInntektskilder.${index}.fom`}
                     label={intl.formatMessage({ id: 'EtterlønnEllerSluttvederlagPanel.Fom' })}
+                    maxDate={dayjs()}
                     validate={[
                         isRequired(
                             intl.formatMessage({ id: 'EtterlønnEllerSluttvederlagPanel.Validering.Required.Fom' }),
                         ),
                         isValidDate(
                             intl.formatMessage({ id: 'EtterlønnEllerSluttvederlagPanel.Validering.Valid.Fom' }),
+                        ),
+                        isBeforeTodayOrToday(
+                            intl.formatMessage({ id: 'EtterlønnEllerSluttvederlagPanel.FraOgMedDato.ErIFremtiden' }),
+                        ),
+                        isBeforeOrSame(
+                            intl.formatMessage({ id: 'EtterlønnEllerSluttvederlagPanel.FraOgMedDato.FørTilDato' }),
+                            inntektskilde.tom,
                         ),
                     ]}
                 />

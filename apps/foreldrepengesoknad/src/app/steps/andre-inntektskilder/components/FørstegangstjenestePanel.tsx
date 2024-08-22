@@ -1,18 +1,26 @@
 import { FileIcon } from '@navikt/aksel-icons';
+import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Radio, VStack } from '@navikt/ds-react';
 
 import { Datepicker, RadioGroup } from '@navikt/fp-form-hooks';
 import { BluePanel } from '@navikt/fp-ui';
-import { isRequired, isValidDate } from '@navikt/fp-validation';
+import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
+
+import { AndreInntektskilder, AnnenInntektType } from 'app/types/AndreInntektskilder';
 
 interface Props {
     index: number;
+    inntektskilde: AndreInntektskilder;
 }
 
-export const FørstegangstjenestePanel: React.FunctionComponent<Props> = ({ index }) => {
+export const FørstegangstjenestePanel: React.FunctionComponent<Props> = ({ index, inntektskilde }) => {
     const intl = useIntl();
+
+    if (inntektskilde.type !== AnnenInntektType.MILITÆRTJENESTE) {
+        throw Error('Inntektskilde ikke av type MILITÆRTJENESTE');
+    }
 
     return (
         <VStack gap="10">
@@ -36,19 +44,33 @@ export const FørstegangstjenestePanel: React.FunctionComponent<Props> = ({ inde
                 <Datepicker
                     name={`andreInntektskilder.${index}.fom`}
                     label={intl.formatMessage({ id: 'FørstegangstjenestePanel.Fom' })}
+                    maxDate={dayjs()}
                     validate={[
                         isRequired(intl.formatMessage({ id: 'FørstegangstjenestePanel.Validering.Required.Fom' })),
                         isValidDate(intl.formatMessage({ id: 'FørstegangstjenestePanel.Validering.Valid.Fom' })),
+                        isBeforeTodayOrToday(
+                            intl.formatMessage({ id: 'FørstegangstjenestePanel.FraOgMedDato.ErIFremtiden' }),
+                        ),
+                        isBeforeOrSame(
+                            intl.formatMessage({ id: 'FørstegangstjenestePanel.FraOgMedDato.FørTilDato' }),
+                            inntektskilde.pågående === false ? inntektskilde.tom : dayjs(),
+                        ),
                     ]}
                 />
-                <Datepicker
-                    name={`andreInntektskilder.${index}.tom`}
-                    label={intl.formatMessage({ id: 'FørstegangstjenestePanel.Tom' })}
-                    validate={[
-                        isRequired(intl.formatMessage({ id: 'FørstegangstjenestePanel.Validering.Required.Tom' })),
-                        isValidDate(intl.formatMessage({ id: 'FørstegangstjenestePanel.Validering.Valid.Tom' })),
-                    ]}
-                />
+                {inntektskilde.pågående === false && (
+                    <Datepicker
+                        name={`andreInntektskilder.${index}.tom`}
+                        label={intl.formatMessage({ id: 'FørstegangstjenestePanel.Tom' })}
+                        maxDate={dayjs()}
+                        validate={[
+                            isRequired(intl.formatMessage({ id: 'FørstegangstjenestePanel.Validering.Required.Tom' })),
+                            isValidDate(intl.formatMessage({ id: 'FørstegangstjenestePanel.Validering.Valid.Tom' })),
+                            isBeforeTodayOrToday(
+                                intl.formatMessage({ id: 'FørstegangstjenestePanel.TilOgMedDato.ErIFremtiden' }),
+                            ),
+                        ]}
+                    />
+                )}
             </HStack>
             <BluePanel isDarkBlue>
                 <HStack gap="2" wrap={false}>

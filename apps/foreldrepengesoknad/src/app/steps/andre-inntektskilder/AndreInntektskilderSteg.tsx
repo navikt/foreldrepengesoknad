@@ -36,6 +36,7 @@ const AndreInntektskilderSteg: React.FunctionComponent<Props> = ({
 
     const formMethods = useForm<FormValues>({
         defaultValues: { andreInntektskilder: andreInntektskilder || [{}] },
+        shouldUnregister: true,
     });
 
     const onSubmit = (values: FormValues) => {
