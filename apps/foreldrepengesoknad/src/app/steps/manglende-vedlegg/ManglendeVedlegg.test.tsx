@@ -48,7 +48,7 @@ describe('<ManglendeVedlegg>', () => {
         });
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.UTENLANDSOPPHOLD,
+            data: SøknadRoutes.OPPSUMMERING,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -133,7 +133,7 @@ describe('<ManglendeVedlegg>', () => {
         });
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.UTENLANDSOPPHOLD,
+            data: SøknadRoutes.OPPSUMMERING,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -218,7 +218,7 @@ describe('<ManglendeVedlegg>', () => {
         });
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.UTENLANDSOPPHOLD,
+            data: SøknadRoutes.OPPSUMMERING,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
