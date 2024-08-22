@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useController, useFieldArray, useForm, useFormContext } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, DatePicker, HStack, Heading, Radio, ReadMore, VStack, useRangeDatepicker } from '@navikt/ds-react';
 
@@ -39,11 +39,11 @@ type FerieFormData = {
 const MAKS_ANTALL_PERIODER = 50;
 
 export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) {
+    const intl = useIntl();
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
     const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);
     const eksisterendeSkjemaVerdier = useContextGetData(ContextDataType.FERIE);
-    console.log('Eksisterende verdier', eksisterendeSkjemaVerdier);
     const formMethods = useForm<FerieFormData>({
         mode: 'onSubmit',
         defaultValues: eksisterendeSkjemaVerdier
@@ -54,17 +54,15 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
               }
             : DEFAULT_FERIE_VALUES,
     });
-    console.log('Verdier i formet', formMethods.watch());
 
     const onSubmit = (values: FerieFormData) => {
-        console.log('setter dusse verdiene', values);
         values.skalHaFerie ? oppdaterFerie(values.feriePerioder as TidsperiodeDTO[]) : oppdaterFerie([]);
         return navigator.goToNextDefaultStep();
     };
 
     return (
         <Step
-            bannerTitle="hei"
+            bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
             onCancel={avbrytSøknad}
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
@@ -75,8 +73,8 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
                     <VStack gap="4">
                         <RadioGroup
                             name="skalHaFerie"
-                            label="Har du planlagt ferie i perioden du skal ha svangerskapspenger?"
-                            validate={[isRequired('bø')]}
+                            label={intl.formatMessage({ id: 'ferie.harDuPlanlagtFerie.label' })}
+                            validate={[isRequired(intl.formatMessage({ id: 'ferie.harDuPlanlagtFerie.validering' }))]}
                         >
                             <Radio value={true}>
                                 <FormattedMessage id="ja" />
@@ -85,11 +83,9 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
                                 <FormattedMessage id="nei" />
                             </Radio>
                         </RadioGroup>
-                        <ReadMore header="Hvordan planlagt ferie virker inn på svangerskapspengene">
+                        <ReadMore header={intl.formatMessage({ id: 'ferie.readmore.hvordanPlanlegge.header' })}>
                             <BodyShort>
-                                Hvis du allerede har planlagt ferie i perioden du søker om svangerskapspenger for, vil
-                                ferien bestå. Du vil bruke feriedagene dine og motta lønn fra arbeidsgiveren, ikke
-                                svangerskapspenger.
+                                <FormattedMessage id="ferie.readmore.hvordanPlanlegge.body" />
                             </BodyShort>
                         </ReadMore>
                     </VStack>
@@ -102,6 +98,7 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
 }
 
 function FeriePerioder() {
+    const intl = useIntl();
     const { watch, setValue } = useFormContext();
     const antallFeriePerioder = watch('antallFeriePerioder');
     const feriePerioder = watch('feriePerioder');
@@ -125,26 +122,31 @@ function FeriePerioder() {
         <VStack gap="4">
             <TextField
                 name="antallFeriePerioder"
-                label="Hvor mange perioder med ferie skal du ha?"
+                label={intl.formatMessage({ id: 'ferie.antallPerioder.label' })}
                 htmlSize={2}
                 validate={[
-                    isRequired('Oppgi'),
-                    isValidNumberForm('tall'),
-                    hasMinValue('minst 1', 1),
-                    hasMaxValue(`maks ${MAKS_ANTALL_PERIODER}`, MAKS_ANTALL_PERIODER),
+                    isRequired(intl.formatMessage({ id: 'ferie.antallPerioder.validering.obligatorisk' })),
+                    isValidNumberForm(intl.formatMessage({ id: 'ferie.antallPerioder.validering.tall' })),
+                    hasMinValue(intl.formatMessage({ id: 'ferie.antallPerioder.validering.minimum' }), 1),
+                    hasMaxValue(
+                        intl.formatMessage(
+                            { id: 'ferie.antallPerioder.validering.maksimum' },
+                            { maks: MAKS_ANTALL_PERIODER },
+                        ),
+                        MAKS_ANTALL_PERIODER,
+                    ),
                 ]}
             />
-            <ReadMore header="Hvordan man regner antall ferieperioder">
+            <ReadMore header={intl.formatMessage({ id: 'ferie.antallPerioder.readmore.label' })}>
                 <BodyShort>
-                    En sammenhengende periode med feriedager og helger uten arbeidsdager regnes som én ferieperiode.
-                    Hvis det er en arbeidsdag mellom to ferieperioder, regnes de som to separate perioder.
+                    <FormattedMessage id="ferie.antallPerioder.readmore.body" />
                 </BodyShort>
             </ReadMore>
             <VStack gap="10">
                 {fields.map((field, index) => (
                     <VStack gap="4" key={field.id} className="feriePeriode">
                         <Heading level="3" size="small">
-                            {index + 1}. periode
+                            <FormattedMessage id="ferie.periode.heading" values={{ teller: index + 1 }} />
                         </Heading>
                         <HStack>
                             <IndentDivider />
@@ -208,14 +210,14 @@ function RangeDatePicker({ name }: { name: string }) {
                     value={defaultFom}
                     ref={fromField.ref}
                     {...fromInputProps}
-                    label="Første feriedag"
+                    label={<FormattedMessage id="ferie.periode.førsteDag" />}
                 />
                 <DatePicker.Input
                     error={toError?.message}
                     value={defaultTom}
                     ref={toField.ref}
                     {...toInputProps}
-                    label="Siste feriedag"
+                    label={<FormattedMessage id="ferie.periode.sisteDag" />}
                 />
             </HStack>
         </DatePicker>
