@@ -74,21 +74,21 @@ const AndreInntektskilderFieldArray: React.FunctionComponent = () => {
                                 <HorizontalLine />
                             </HStack>
                         )}
-                        <HStack>
-                            <Button
-                                icon={<PlusIcon aria-hidden />}
-                                type="button"
-                                variant="secondary"
-                                // @ts-ignore
-                                onClick={() => append({})}
-                                size="small"
-                            >
-                                <FormattedMessage id="AndreInntektskilderStep.LeggTil" />
-                            </Button>
-                        </HStack>
                     </VStack>
                 );
             })}
+            <HStack>
+                <Button
+                    icon={<PlusIcon aria-hidden />}
+                    type="button"
+                    variant="secondary"
+                    // @ts-ignore
+                    onClick={() => append({})}
+                    size="small"
+                >
+                    <FormattedMessage id="AndreInntektskilderStep.LeggTil" />
+                </Button>
+            </HStack>
         </VStack>
     );
 };
