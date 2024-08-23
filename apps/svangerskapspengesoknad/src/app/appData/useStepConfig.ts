@@ -116,11 +116,6 @@ const getStepConfig = (
                 isSelected:
                     currentPath === SøknadRoutes.TILRETTELEGGING && tilrettelegging.id === valgtTilretteleggingId,
             });
-            steps.push({
-                id: SøknadRoutes.FERIE,
-                label: labels[SøknadRoutes.FERIE],
-                isSelected: currentPath === SøknadRoutes.FERIE && tilrettelegging.id === valgtTilretteleggingId,
-            });
             if (
                 tilrettelegging.type === TilretteleggingstypeOptions.DELVIS &&
                 tilrettelegging.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
@@ -131,13 +126,18 @@ const getStepConfig = (
                     isSelected: currentPath === SøknadRoutes.PERIODER && tilrettelegging.id === valgtTilretteleggingId,
                 });
             }
+            steps.push({
+                id: SøknadRoutes.FERIE,
+                label: labels[SøknadRoutes.FERIE],
+                isSelected: currentPath === SøknadRoutes.FERIE && tilrettelegging.id === valgtTilretteleggingId,
+            });
         });
     } else {
         steps.push(createStep(SøknadRoutes.SKJEMA, intl, currentPath));
         steps.push(createStep(SøknadRoutes.TILRETTELEGGING, intl, currentPath));
+        steps.push(createStep(SøknadRoutes.FERIE, intl, currentPath));
     }
 
-    // steps.push(createStep(SøknadRoutes.FERIE, intl, currentPath));
     steps.push(createStep(SøknadRoutes.OPPSUMMERING, intl, currentPath));
 
     return steps;

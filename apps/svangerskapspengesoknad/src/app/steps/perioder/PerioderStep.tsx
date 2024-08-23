@@ -13,26 +13,11 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appD
 import SøknadRoutes from 'app/appData/routes';
 import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
-import Tilrettelegging from 'app/types/Tilrettelegging';
 import { getKanHaSvpFremTilTreUkerFørTermin } from 'app/utils/dateUtils';
 
 import Bedriftsbanner from '../Bedriftsbanner';
 import PerioderFieldArray, { NEW_PERIODE, PerioderFormData } from './PerioderFieldArray';
 import { mapPerioderFormDataToState } from './perioderStepUtils';
-
-const getNesteTilretteleggingId = (
-    tilretteleggingBehov: Tilrettelegging[],
-    currentTilretteleggingId: string | undefined,
-): string | undefined => {
-    if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
-        return tilretteleggingBehov[0].id;
-    }
-    const nesteTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) + 1;
-    if (nesteTilretteleggingIndex === tilretteleggingBehov.length) {
-        return undefined;
-    }
-    return tilretteleggingBehov[nesteTilretteleggingIndex].id;
-};
 
 export interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -45,14 +30,13 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
-    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const vti = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
     const [valgtTilretteleggingId] = useState(vti); //For å unngå oppdatering ved neste
 
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
-    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
 
+    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const valgtTilrettelegging = notEmpty(tilrettelegginger.find((t) => t.id === valgtTilretteleggingId));
     const erFlereTilrettelegginger = tilrettelegginger.length > 1;
 
@@ -62,12 +46,7 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
         const mappedTilrettelegging = mapPerioderFormDataToState(valgtTilretteleggingId, values, tilrettelegginger);
         oppdaterTilrettelegginger(mappedTilrettelegging);
 
-        const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegginger, valgtTilretteleggingId);
-        if (nesteTilretteleggingId) {
-            oppdaterValgtTilretteleggingId(nesteTilretteleggingId);
-        }
-
-        return navigator.goToNextStep(nesteTilretteleggingId ? SøknadRoutes.SKJEMA : SøknadRoutes.OPPSUMMERING);
+        return navigator.goToNextStep(SøknadRoutes.FERIE);
     };
 
     // TODO (TOR) Denne typen er ikkje heilt korrekt for forma. Forma har ingen 'type' i periodane
