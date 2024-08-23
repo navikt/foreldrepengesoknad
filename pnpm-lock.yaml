@@ -50,18 +50,18 @@ importers:
       '@navikt/fp-metrics':
         specifier: workspace:*
         version: link:../../packages/metrics
-      '@navikt/fp-oppsummering':
+      '@navikt/fp-steg-oppsummering':
         specifier: workspace:*
-        version: link:../../packages/oppsummering
+        version: link:../../packages/steg-oppsummering
+      '@navikt/fp-steg-utenlandsopphold':
+        specifier: workspace:*
+        version: link:../../packages/steg-utenlandsopphold
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../../packages/types
       '@navikt/fp-ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@navikt/fp-utenlandsopphold':
-        specifier: workspace:*
-        version: link:../../packages/utenlandsopphold
       '@navikt/fp-utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -487,9 +487,6 @@ importers:
       '@navikt/fp-metrics':
         specifier: workspace:*
         version: link:../../packages/metrics
-      '@navikt/fp-oppsummering':
-        specifier: workspace:*
-        version: link:../../packages/oppsummering
       '@navikt/fp-steg-arbeidsforhold-og-inntekt':
         specifier: workspace:*
         version: link:../../packages/steg-arbeidsforhold-og-inntekt
@@ -499,15 +496,18 @@ importers:
       '@navikt/fp-steg-frilans':
         specifier: workspace:*
         version: link:../../packages/steg-frilans
+      '@navikt/fp-steg-oppsummering':
+        specifier: workspace:*
+        version: link:../../packages/steg-oppsummering
+      '@navikt/fp-steg-utenlandsopphold':
+        specifier: workspace:*
+        version: link:../../packages/steg-utenlandsopphold
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../../packages/types
       '@navikt/fp-ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@navikt/fp-utenlandsopphold':
-        specifier: workspace:*
-        version: link:../../packages/utenlandsopphold
       '@navikt/fp-utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -996,9 +996,6 @@ importers:
       '@navikt/fp-metrics':
         specifier: workspace:*
         version: link:../../packages/metrics
-      '@navikt/fp-oppsummering':
-        specifier: workspace:*
-        version: link:../../packages/oppsummering
       '@navikt/fp-steg-arbeidsforhold-og-inntekt':
         specifier: workspace:*
         version: link:../../packages/steg-arbeidsforhold-og-inntekt
@@ -1008,12 +1005,15 @@ importers:
       '@navikt/fp-steg-frilans':
         specifier: workspace:*
         version: link:../../packages/steg-frilans
+      '@navikt/fp-steg-oppsummering':
+        specifier: workspace:*
+        version: link:../../packages/steg-oppsummering
+      '@navikt/fp-steg-utenlandsopphold':
+        specifier: workspace:*
+        version: link:../../packages/steg-utenlandsopphold
       '@navikt/fp-ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@navikt/fp-utenlandsopphold':
-        specifier: workspace:*
-        version: link:../../packages/utenlandsopphold
       '@navikt/fp-utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -1573,10 +1573,10 @@ importers:
         version: 6.4.8
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
-        version: 14.5.2(@testing-library/dom@10.1.0)
+        version: 14.5.2(@testing-library/dom@10.4.0)
       '@vitejs/plugin-react':
         specifier: ^4.3.1
         version: 4.3.1(vite@5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
@@ -1999,112 +1999,6 @@ importers:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@22.1.0)(jsdom@24.1.1)(less@4.2.0)(sass@1.77.8)(terser@5.31.3)
 
-  packages/oppsummering:
-    dependencies:
-      '@navikt/ds-css':
-        specifier: ^6.16.0
-        version: 6.16.0
-      '@navikt/ds-react':
-        specifier: ^6.16.0
-        version: 6.16.0(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@navikt/fp-api':
-        specifier: workspace:*
-        version: link:../api
-      '@navikt/fp-types':
-        specifier: workspace:*
-        version: link:../types
-      '@navikt/fp-ui':
-        specifier: workspace:*
-        version: link:../ui
-      '@navikt/fp-utils':
-        specifier: workspace:*
-        version: link:../utils
-      '@navikt/fp-validation':
-        specifier: workspace:*
-        version: link:../validation
-      dayjs:
-        specifier: ^1.11.12
-        version: 1.11.12
-      i18n-iso-countries:
-        specifier: ^7.11.3
-        version: 7.11.3
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-      react-intl:
-        specifier: ^6.6.8
-        version: 6.6.8(react@18.3.1)(typescript@5.5.4)
-    devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 6.4.2
-        version: 6.4.2
-      '@navikt/eslint-config-fp-selvbetjening':
-        specifier: workspace:*
-        version: link:../eslint-config-custom
-      '@navikt/fp-utils-test':
-        specifier: workspace:*
-        version: link:../utils-test
-      '@storybook/addon-actions':
-        specifier: 8.1.11
-        version: 8.1.11
-      '@storybook/addon-essentials':
-        specifier: 8.1.11
-        version: 8.1.11(@types/react-dom@18.3.0)(@types/react@18.3.3)(prettier@3.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@storybook/addon-interactions':
-        specifier: 8.1.11
-        version: 8.1.11(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@22.1.0))(vitest@2.0.5(@types/node@22.1.0)(jsdom@24.1.1)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
-      '@storybook/addon-links':
-        specifier: 8.1.11
-        version: 8.1.11(react@18.3.1)
-      '@storybook/builder-vite':
-        specifier: 8.1.11
-        version: 8.1.11(prettier@3.3.3)(typescript@5.5.4)(vite@5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
-      '@storybook/react':
-        specifier: 8.1.11
-        version: 8.1.11(prettier@3.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.5.4)
-      '@testing-library/jest-dom':
-        specifier: ^6.4.6
-        version: 6.4.8
-      '@testing-library/react':
-        specifier: ^16.0.0
-        version: 16.0.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@testing-library/user-event':
-        specifier: ^14.5.2
-        version: 14.5.2(@testing-library/dom@10.4.0)
-      '@types/react':
-        specifier: ^18.3.3
-        version: 18.3.3
-      '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
-      fast-glob:
-        specifier: ^3.3.2
-        version: 3.3.2
-      storybook:
-        specifier: 8.1.11
-        version: 8.1.11(@babel/preset-env@7.25.3(@babel/core@7.25.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      storybook-react-intl:
-        specifier: ^3.0.1
-        version: 3.1.1(react-intl@6.6.8(react@18.3.1)(typescript@5.5.4))
-      tsconfig:
-        specifier: workspace:*
-        version: link:../tsconfig
-      typescript:
-        specifier: ^5.5.4
-        version: 5.5.4
-      vite:
-        specifier: ^5.3.5
-        version: 5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3)
-      vite-plugin-checker:
-        specifier: ^0.7.2
-        version: 0.7.2(eslint@9.8.0)(optionator@0.9.4)(typescript@5.5.4)(vite@5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
-      vitest:
-        specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.1.0)(jsdom@24.1.1)(less@4.2.0)(sass@1.77.8)(terser@5.31.3)
-
   packages/server-utils:
     dependencies:
       '@navikt/nav-dekoratoren-moduler':
@@ -2508,6 +2402,227 @@ importers:
         specifier: ^2.0.5
         version: 2.0.5(@types/node@22.1.0)(jsdom@24.1.1)(less@4.2.0)(sass@1.77.8)(terser@5.31.3)
 
+  packages/steg-oppsummering:
+    dependencies:
+      '@navikt/ds-css':
+        specifier: ^6.16.0
+        version: 6.16.0
+      '@navikt/ds-react':
+        specifier: ^6.16.0
+        version: 6.16.0(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@navikt/fp-api':
+        specifier: workspace:*
+        version: link:../api
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../types
+      '@navikt/fp-ui':
+        specifier: workspace:*
+        version: link:../ui
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../utils
+      '@navikt/fp-validation':
+        specifier: workspace:*
+        version: link:../validation
+      dayjs:
+        specifier: ^1.11.12
+        version: 1.11.12
+      i18n-iso-countries:
+        specifier: ^7.11.3
+        version: 7.11.3
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-intl:
+        specifier: ^6.6.8
+        version: 6.6.8(react@18.3.1)(typescript@5.5.4)
+    devDependencies:
+      '@formatjs/cli-lib':
+        specifier: 6.4.2
+        version: 6.4.2
+      '@navikt/eslint-config-fp-selvbetjening':
+        specifier: workspace:*
+        version: link:../eslint-config-custom
+      '@navikt/fp-utils-test':
+        specifier: workspace:*
+        version: link:../utils-test
+      '@storybook/addon-actions':
+        specifier: 8.1.11
+        version: 8.1.11
+      '@storybook/addon-essentials':
+        specifier: 8.1.11
+        version: 8.1.11(@types/react-dom@18.3.0)(@types/react@18.3.3)(prettier@3.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/addon-interactions':
+        specifier: 8.1.11
+        version: 8.1.11(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@22.1.0))(vitest@2.0.5(@types/node@22.1.0)(jsdom@24.1.1)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
+      '@storybook/addon-links':
+        specifier: 8.1.11
+        version: 8.1.11(react@18.3.1)
+      '@storybook/builder-vite':
+        specifier: 8.1.11
+        version: 8.1.11(prettier@3.3.3)(typescript@5.5.4)(vite@5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
+      '@storybook/react':
+        specifier: 8.1.11
+        version: 8.1.11(prettier@3.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.5.4)
+      '@testing-library/jest-dom':
+        specifier: ^6.4.6
+        version: 6.4.8
+      '@testing-library/react':
+        specifier: ^16.0.0
+        version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@testing-library/user-event':
+        specifier: ^14.5.2
+        version: 14.5.2(@testing-library/dom@10.1.0)
+      '@types/react':
+        specifier: ^18.3.3
+        version: 18.3.3
+      '@vitejs/plugin-react':
+        specifier: ^4.3.1
+        version: 4.3.1(vite@5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
+      fast-glob:
+        specifier: ^3.3.2
+        version: 3.3.2
+      storybook:
+        specifier: 8.1.11
+        version: 8.1.11(@babel/preset-env@7.25.3(@babel/core@7.25.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      storybook-react-intl:
+        specifier: ^3.0.1
+        version: 3.1.1(react-intl@6.6.8(react@18.3.1)(typescript@5.5.4))
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: ^5.5.4
+        version: 5.5.4
+      vite:
+        specifier: ^5.3.5
+        version: 5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3)
+      vite-plugin-checker:
+        specifier: ^0.7.2
+        version: 0.7.2(eslint@9.8.0)(optionator@0.9.4)(typescript@5.5.4)(vite@5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
+      vitest:
+        specifier: ^2.0.5
+        version: 2.0.5(@types/node@22.1.0)(jsdom@24.1.1)(less@4.2.0)(sass@1.77.8)(terser@5.31.3)
+
+  packages/steg-utenlandsopphold:
+    dependencies:
+      '@navikt/aksel-icons':
+        specifier: ^6.16.0
+        version: 6.16.0
+      '@navikt/ds-css':
+        specifier: ^6.16.0
+        version: 6.16.0
+      '@navikt/ds-react':
+        specifier: ^6.16.0
+        version: 6.16.0(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@navikt/fp-constants':
+        specifier: workspace:*
+        version: link:../constants
+      '@navikt/fp-form-hooks':
+        specifier: workspace:*
+        version: link:../form-hooks
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../types
+      '@navikt/fp-ui':
+        specifier: workspace:*
+        version: link:../ui
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../utils
+      '@navikt/fp-validation':
+        specifier: workspace:*
+        version: link:../validation
+      dayjs:
+        specifier: ^1.11.12
+        version: 1.11.12
+      intl-messageformat:
+        specifier: ^10.5.11
+        version: 10.5.14
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-hook-form:
+        specifier: 7.52.1
+        version: 7.52.1(react@18.3.1)
+      react-intl:
+        specifier: ^6.6.8
+        version: 6.6.8(react@18.3.1)(typescript@5.5.4)
+    devDependencies:
+      '@formatjs/cli-lib':
+        specifier: 6.4.2
+        version: 6.4.2
+      '@navikt/eslint-config-fp-selvbetjening':
+        specifier: workspace:*
+        version: link:../eslint-config-custom
+      '@navikt/fp-utils-test':
+        specifier: workspace:*
+        version: link:../utils-test
+      '@storybook/addon-actions':
+        specifier: 8.1.11
+        version: 8.1.11
+      '@storybook/addon-essentials':
+        specifier: 8.1.11
+        version: 8.1.11(@types/react-dom@18.3.0)(@types/react@18.3.3)(prettier@3.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/addon-interactions':
+        specifier: 8.1.11
+        version: 8.1.11(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@22.1.0))(vitest@2.0.5(@types/node@22.1.0)(jsdom@24.1.1)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
+      '@storybook/addon-links':
+        specifier: 8.1.11
+        version: 8.1.11(react@18.3.1)
+      '@storybook/builder-vite':
+        specifier: 8.1.11
+        version: 8.1.11(prettier@3.3.3)(typescript@5.5.4)(vite@5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
+      '@storybook/react':
+        specifier: 8.1.11
+        version: 8.1.11(prettier@3.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.5.4)
+      '@testing-library/jest-dom':
+        specifier: ^6.4.6
+        version: 6.4.8
+      '@testing-library/react':
+        specifier: ^16.0.0
+        version: 16.0.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@testing-library/user-event':
+        specifier: ^14.5.2
+        version: 14.5.2(@testing-library/dom@10.4.0)
+      '@types/react':
+        specifier: ^18.3.3
+        version: 18.3.3
+      '@vitejs/plugin-react':
+        specifier: ^4.3.1
+        version: 4.3.1(vite@5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
+      fast-glob:
+        specifier: ^3.3.2
+        version: 3.3.2
+      storybook:
+        specifier: 8.1.11
+        version: 8.1.11(@babel/preset-env@7.25.3(@babel/core@7.25.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      storybook-react-intl:
+        specifier: ^3.0.1
+        version: 3.1.1(react-intl@6.6.8(react@18.3.1)(typescript@5.5.4))
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: ^5.5.4
+        version: 5.5.4
+      vite:
+        specifier: ^5.3.5
+        version: 5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3)
+      vite-plugin-checker:
+        specifier: ^0.7.2
+        version: 0.7.2(eslint@9.8.0)(optionator@0.9.4)(typescript@5.5.4)(vite@5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
+      vitest:
+        specifier: ^2.0.5
+        version: 2.0.5(@types/node@22.1.0)(jsdom@24.1.1)(less@4.2.0)(sass@1.77.8)(terser@5.31.3)
+
   packages/tsconfig: {}
 
   packages/types:
@@ -2616,121 +2731,6 @@ importers:
       '@types/react-aria-menubutton':
         specifier: ^6.2.14
         version: 6.2.14
-      '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
-      fast-glob:
-        specifier: ^3.3.2
-        version: 3.3.2
-      storybook:
-        specifier: 8.1.11
-        version: 8.1.11(@babel/preset-env@7.25.3(@babel/core@7.25.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      storybook-react-intl:
-        specifier: ^3.0.1
-        version: 3.1.1(react-intl@6.6.8(react@18.3.1)(typescript@5.5.4))
-      tsconfig:
-        specifier: workspace:*
-        version: link:../tsconfig
-      typescript:
-        specifier: ^5.5.4
-        version: 5.5.4
-      vite:
-        specifier: ^5.3.5
-        version: 5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3)
-      vite-plugin-checker:
-        specifier: ^0.7.2
-        version: 0.7.2(eslint@9.8.0)(optionator@0.9.4)(typescript@5.5.4)(vite@5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
-      vitest:
-        specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.1.0)(jsdom@24.1.1)(less@4.2.0)(sass@1.77.8)(terser@5.31.3)
-
-  packages/utenlandsopphold:
-    dependencies:
-      '@navikt/aksel-icons':
-        specifier: ^6.16.0
-        version: 6.16.0
-      '@navikt/ds-css':
-        specifier: ^6.16.0
-        version: 6.16.0
-      '@navikt/ds-react':
-        specifier: ^6.16.0
-        version: 6.16.0(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@navikt/fp-constants':
-        specifier: workspace:*
-        version: link:../constants
-      '@navikt/fp-form-hooks':
-        specifier: workspace:*
-        version: link:../form-hooks
-      '@navikt/fp-types':
-        specifier: workspace:*
-        version: link:../types
-      '@navikt/fp-ui':
-        specifier: workspace:*
-        version: link:../ui
-      '@navikt/fp-utils':
-        specifier: workspace:*
-        version: link:../utils
-      '@navikt/fp-validation':
-        specifier: workspace:*
-        version: link:../validation
-      dayjs:
-        specifier: ^1.11.12
-        version: 1.11.12
-      intl-messageformat:
-        specifier: ^10.5.11
-        version: 10.5.14
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-      react-hook-form:
-        specifier: 7.52.1
-        version: 7.52.1(react@18.3.1)
-      react-intl:
-        specifier: ^6.6.8
-        version: 6.6.8(react@18.3.1)(typescript@5.5.4)
-    devDependencies:
-      '@formatjs/cli-lib':
-        specifier: 6.4.2
-        version: 6.4.2
-      '@navikt/eslint-config-fp-selvbetjening':
-        specifier: workspace:*
-        version: link:../eslint-config-custom
-      '@navikt/fp-utils-test':
-        specifier: workspace:*
-        version: link:../utils-test
-      '@storybook/addon-actions':
-        specifier: 8.1.11
-        version: 8.1.11
-      '@storybook/addon-essentials':
-        specifier: 8.1.11
-        version: 8.1.11(@types/react-dom@18.3.0)(@types/react@18.3.3)(prettier@3.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@storybook/addon-interactions':
-        specifier: 8.1.11
-        version: 8.1.11(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@22.1.0))(vitest@2.0.5(@types/node@22.1.0)(jsdom@24.1.1)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
-      '@storybook/addon-links':
-        specifier: 8.1.11
-        version: 8.1.11(react@18.3.1)
-      '@storybook/builder-vite':
-        specifier: 8.1.11
-        version: 8.1.11(prettier@3.3.3)(typescript@5.5.4)(vite@5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))
-      '@storybook/react':
-        specifier: 8.1.11
-        version: 8.1.11(prettier@3.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.5.4)
-      '@testing-library/jest-dom':
-        specifier: ^6.4.6
-        version: 6.4.8
-      '@testing-library/react':
-        specifier: ^16.0.0
-        version: 16.0.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@testing-library/user-event':
-        specifier: ^14.5.2
-        version: 14.5.2(@testing-library/dom@10.4.0)
-      '@types/react':
-        specifier: ^18.3.3
-        version: 18.3.3
       '@vitejs/plugin-react':
         specifier: ^4.3.1
         version: 4.3.1(vite@5.3.5(@types/node@22.1.0)(less@4.2.0)(sass@1.77.8)(terser@5.31.3))

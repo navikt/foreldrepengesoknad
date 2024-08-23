@@ -6,9 +6,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
 
+import { UtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { Utenlandsopphold } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
-import { UtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 
 const utledNesteSide = (formValues: Utenlandsopphold): Path => {
     if (formValues?.harBoddUtenforNorgeSiste12Mnd) {

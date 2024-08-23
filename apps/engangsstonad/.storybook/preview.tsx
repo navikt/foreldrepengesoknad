@@ -3,9 +3,9 @@ import 'styles/globals.css';
 
 import '@navikt/ds-css';
 
-import { oppsummeringMessages } from '@navikt/fp-oppsummering';
+import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
+import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { uiMessages } from '@navikt/fp-ui';
-import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 
 import enMessages from '../src/intl/messages/en_US.json';
