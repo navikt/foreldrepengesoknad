@@ -3,13 +3,13 @@ import { useState } from 'react';
 
 import { setAxiosLocale } from '@navikt/fp-api';
 import { allCommonMessages } from '@navikt/fp-common';
-import { oppsummeringMessages } from '@navikt/fp-oppsummering';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
+import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
+import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { LocaleNo } from '@navikt/fp-types';
 import { ByttBrowserModal, ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
-import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
 import { getLocaleFromSessionStorage, setLocaleInSessionStorage, utilsMessages } from '@navikt/fp-utils';
 import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender';

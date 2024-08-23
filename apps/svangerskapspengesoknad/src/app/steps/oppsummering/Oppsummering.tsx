@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { FormSummary, Heading } from '@navikt/ds-react';
 
-import { BoIUtlandetOppsummeringspunkt, OppsummeringPanel } from '@navikt/fp-oppsummering';
+import { BoIUtlandetOppsummeringspunkt, OppsummeringPanel } from '@navikt/fp-steg-oppsummering';
 import { Søkerinfo } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';

@@ -3,10 +3,10 @@ import { useCallback, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { deleteData } from '@navikt/fp-api';
-import { oppsummeringMessages } from '@navikt/fp-oppsummering';
+import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
+import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
-import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
 import { getLocaleFromSessionStorage, setLocaleInSessionStorage, utilsMessages } from '@navikt/fp-utils';
 
 import Engangsstønad from './Engangsstønad';
