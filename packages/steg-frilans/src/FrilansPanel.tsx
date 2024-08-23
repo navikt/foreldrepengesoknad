@@ -62,6 +62,7 @@ const FrilansPanel = <TYPE extends string>({
                         ]}
                         maxDate={DATE_TODAY}
                         minDate={DATE_20_YEARS_AGO}
+                        showMonthAndYearDropdowns
                     />
                     <RadioGroup
                         name="jobberFremdelesSomFrilans"

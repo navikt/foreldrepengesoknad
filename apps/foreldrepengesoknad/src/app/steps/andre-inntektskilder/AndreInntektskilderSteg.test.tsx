@@ -282,7 +282,7 @@ describe('<AndreInntektskilderSteg>', () => {
 
         expect(
             screen.getByText(
-                'Senere i søknaden vil du bli bedt om å laste opp dokumentasjon dokumentasjon på perioden fra tjenestestedet ditt.',
+                'Senere i søknaden vil du bli bedt om å laste opp dokumentasjon på perioden fra tjenestestedet ditt.',
             ),
         ).toBeInTheDocument();
 

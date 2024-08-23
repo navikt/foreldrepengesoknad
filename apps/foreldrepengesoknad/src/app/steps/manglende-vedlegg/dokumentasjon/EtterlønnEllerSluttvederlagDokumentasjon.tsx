@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { Block, formatDateShortYear } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { Attachment } from '@navikt/fp-types';
@@ -34,12 +34,7 @@ const EtterlønnEllerSluttvederlagDokumentasjon: React.FunctionComponent<Props> 
         return null;
     }
 
-    const perioder = andreInntektskilder
-        .filter((i) => i.type === AnnenInntektType.SLUTTPAKKE)
-        .map((i) => ({
-            fom: formatDateShortYear(i.fom),
-            tom: formatDateShortYear(i.tom),
-        }));
+    const perioder = andreInntektskilder.filter((i) => i.type === AnnenInntektType.SLUTTPAKKE);
 
     return (
         <Block padBottom="xl">
