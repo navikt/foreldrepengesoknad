@@ -38,7 +38,9 @@ const getStepLabels = (
         : intl.formatMessage({ id: 'steps.label.tilrettelegging.en' }),
     [SøknadRoutes.UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'steps.label.utenlandsopphold' }),
     [SøknadRoutes.VELG_ARBEID]: intl.formatMessage({ id: 'steps.label.velgArbeid' }),
-    [SøknadRoutes.FERIE]: intl.formatMessage({ id: 'steps.label.ferie' }),
+    [SøknadRoutes.FERIE]: erFlereTilrettelegginger
+        ? intl.formatMessage({ id: 'steps.label.ferie.flere' }, { navn })
+        : intl.formatMessage({ id: 'steps.label.ferie.en' }),
 });
 
 const createStep = (route: SøknadRoutes, intl: IntlShape, currentPath: string) => ({
@@ -114,6 +116,11 @@ const getStepConfig = (
                 isSelected:
                     currentPath === SøknadRoutes.TILRETTELEGGING && tilrettelegging.id === valgtTilretteleggingId,
             });
+            steps.push({
+                id: SøknadRoutes.FERIE,
+                label: labels[SøknadRoutes.FERIE],
+                isSelected: currentPath === SøknadRoutes.FERIE && tilrettelegging.id === valgtTilretteleggingId,
+            });
             if (
                 tilrettelegging.type === TilretteleggingstypeOptions.DELVIS &&
                 tilrettelegging.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
@@ -130,7 +137,7 @@ const getStepConfig = (
         steps.push(createStep(SøknadRoutes.TILRETTELEGGING, intl, currentPath));
     }
 
-    steps.push(createStep(SøknadRoutes.FERIE, intl, currentPath));
+    // steps.push(createStep(SøknadRoutes.FERIE, intl, currentPath));
     steps.push(createStep(SøknadRoutes.OPPSUMMERING, intl, currentPath));
 
     return steps;

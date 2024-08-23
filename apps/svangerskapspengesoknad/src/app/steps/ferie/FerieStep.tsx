@@ -9,12 +9,14 @@ import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
-import { hasMaxValue, hasMinValue, isRequired, isValidNumberForm } from '@navikt/fp-validation';
+import { hasMaxValue, hasMinValue, isRequired, isValidNumberForm, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
 import { TidsperiodeDTO } from 'app/types/TidsperiodeDTO';
+import Tilrettelegging from 'app/types/Tilrettelegging';
 
 import './feriestep.css';
 
@@ -44,6 +46,12 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
     const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);
     const eksisterendeSkjemaVerdier = useContextGetData(ContextDataType.FERIE);
+
+    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
+    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
+    const valgtTilretteleggingId = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
+    const currentTilrettelegging = notEmpty(tilrettelegginger.find((t) => t.id === valgtTilretteleggingId));
+
     const formMethods = useForm<FerieFormData>({
         mode: 'onSubmit',
         defaultValues: eksisterendeSkjemaVerdier
@@ -57,7 +65,13 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
 
     const onSubmit = (values: FerieFormData) => {
         values.skalHaFerie ? oppdaterFerie(values.feriePerioder as TidsperiodeDTO[]) : oppdaterFerie([]);
-        return navigator.goToNextDefaultStep();
+
+        const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegginger, currentTilrettelegging.id);
+        const nextRoute = nesteTilretteleggingId ? SøknadRoutes.SKJEMA : SøknadRoutes.OPPSUMMERING;
+        if (nesteTilretteleggingId) {
+            oppdaterValgtTilretteleggingId(nesteTilretteleggingId);
+        }
+        return navigator.goToNextStep(nextRoute);
     };
 
     return (
@@ -227,3 +241,17 @@ function RangeDatePicker({ name }: { name: string }) {
 function IndentDivider() {
     return <div className="indent-divider"></div>;
 }
+
+const getNesteTilretteleggingId = (
+    tilretteleggingBehov: Tilrettelegging[],
+    currentTilretteleggingId: string | undefined,
+): string | undefined => {
+    if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
+        return tilretteleggingBehov[0].id;
+    }
+    const nesteTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) + 1;
+    if (nesteTilretteleggingIndex === tilretteleggingBehov.length) {
+        return undefined;
+    }
+    return tilretteleggingBehov[nesteTilretteleggingIndex].id;
+};

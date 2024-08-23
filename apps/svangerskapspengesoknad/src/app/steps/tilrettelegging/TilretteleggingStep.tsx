@@ -24,7 +24,7 @@ import SøknadRoutes from 'app/appData/routes';
 import useStepConfig from 'app/appData/useStepConfig';
 import useSvpNavigator from 'app/appData/useSvpNavigator';
 import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
-import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import {
     getDefaultMonth,
     getKanHaSvpFremTilTreUkerFørTermin,
@@ -42,23 +42,8 @@ import {
     validateTilretteleggingstiltak,
 } from './tilretteleggingValidation';
 
-const getNesteTilretteleggingId = (
-    tilretteleggingBehov: Tilrettelegging[],
-    currentTilretteleggingId: string | undefined,
-): string | undefined => {
-    if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
-        return tilretteleggingBehov[0].id;
-    }
-    const nesteTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) + 1;
-    if (nesteTilretteleggingIndex === tilretteleggingBehov.length) {
-        return undefined;
-    }
-    return tilretteleggingBehov[nesteTilretteleggingIndex].id;
-};
-
 const getNextRouteAndTilretteleggingIdForTilretteleggingSteg = (
     values: TilretteleggingFormData,
-    tilrettelegging: Tilrettelegging[],
     currentTilretteleggingId: string,
 ): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
     if (
@@ -68,11 +53,7 @@ const getNextRouteAndTilretteleggingIdForTilretteleggingSteg = (
         return { nextRoute: SøknadRoutes.PERIODER, nextTilretteleggingId: currentTilretteleggingId };
     }
 
-    const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegging, currentTilretteleggingId);
-    if (nesteTilretteleggingId) {
-        return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: nesteTilretteleggingId };
-    }
-    return { nextRoute: SøknadRoutes.FERIE };
+    return { nextRoute: SøknadRoutes.FERIE, nextTilretteleggingId: currentTilretteleggingId };
 };
 
 const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) =>
@@ -170,7 +151,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
 
         const { nextRoute, nextTilretteleggingId } = getNextRouteAndTilretteleggingIdForTilretteleggingSteg(
             values,
-            tilrettelegginger,
             currentTilrettelegging.id,
         );
         if (nextTilretteleggingId) {
