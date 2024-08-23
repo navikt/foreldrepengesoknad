@@ -2,7 +2,7 @@ import { AttachmentMetadataType } from '@navikt/fp-constants';
 
 interface Tidsperiode {
     fom: string;
-    tom: string;
+    tom?: string;
 }
 
 export type AttachmentMetadata = {

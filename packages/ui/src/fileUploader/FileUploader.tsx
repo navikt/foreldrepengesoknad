@@ -172,7 +172,7 @@ const FileUploader: React.FunctionComponent<Props> = ({
             <UNSAFE_FileUpload.Dropzone
                 label={label}
                 description={
-                    <VStack gap="2">
+                    <VStack>
                         {description && <BodyShort>{description}</BodyShort>}
                         <FormattedMessage
                             id="FileInput.Vedlegg.Lovlige"

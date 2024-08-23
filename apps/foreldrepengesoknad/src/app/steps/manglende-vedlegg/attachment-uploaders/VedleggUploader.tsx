@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { IntlShape } from 'react-intl';
 
 import { getSaveAttachment } from '@navikt/fp-api';
-import { addMetadata, lagSendSenereDokument } from '@navikt/fp-common';
+import { addMetadata, formatDateShortYear, lagSendSenereDokument } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, InnsendingsType } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
@@ -14,16 +14,19 @@ import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
 
 type Perioder = Array<{
     fom: string;
-    tom: string;
+    tom?: string;
 }>;
 
 export const formaterPerioderForVisning = (perioder: Perioder, intl: IntlShape) => {
     return perioder
         .map((p, index) => {
-            const periode = `${p.fom}-${p.tom}`;
+            const tom = p.tom ? formatDateShortYear(p.tom) : intl.formatMessage({ id: 'VedleggUploader.pågående' });
+            const periode = `${formatDateShortYear(p.fom)}-${tom}`;
+
             if (perioder.length === 1 || index === perioder.length - 1) {
                 return periode;
             }
+
             return index < perioder.length - 2
                 ? `${periode}, `
                 : `${periode} ${intl.formatMessage({
@@ -62,13 +65,7 @@ const VedleggUploader: FunctionComponent<Props> = ({
             const init = lagSendSenereDokument(attachmentType, skjemanummer);
             const sendSenereVedlegg = addMetadata(init, {
                 type: metadataType,
-                perioder:
-                    perioder.length > 0
-                        ? perioder.map((p) => ({
-                              fom: p.fom,
-                              tom: p.tom,
-                          }))
-                        : undefined,
+                perioder,
             });
 
             updateAttachments([sendSenereVedlegg]);
@@ -86,13 +83,7 @@ const VedleggUploader: FunctionComponent<Props> = ({
                 const attachmentsMedMetadata = vedlegg.map((a) =>
                     addMetadata(a, {
                         type: metadataType,
-                        perioder:
-                            perioder.length > 0
-                                ? perioder.map((p) => ({
-                                      fom: p.fom,
-                                      tom: p.tom,
-                                  }))
-                                : undefined,
+                        perioder,
                     }),
                 );
 
