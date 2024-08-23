@@ -8,8 +8,6 @@ import { BlueHeading, IconCircleWrapper, LanguageToggleNew, Page } from '@navikt
 
 import styles from './planleggerForside.module.css';
 
-const TOGGLE = false;
-
 interface Props {
     locale: LocaleAll;
     changeLocale: (locale: LocaleAll) => void;
@@ -23,11 +21,9 @@ const PlanleggerForside: React.FunctionComponent<Props> = ({ locale, changeLocal
                 <Show below="md">
                     <BlueHeading>
                         <VStack gap="4" align="center">
-                            {TOGGLE && (
-                                <div className={styles.languageToggle}>
-                                    <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
-                                </div>
-                            )}
+                            <div className={styles.languageToggle}>
+                                <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
+                            </div>
                             <IconCircleWrapper color="darkBlue" size="xl">
                                 <CalendarIcon height={28} width={28} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
