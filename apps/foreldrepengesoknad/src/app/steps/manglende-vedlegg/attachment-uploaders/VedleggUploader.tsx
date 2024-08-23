@@ -55,7 +55,7 @@ const VedleggUploader: FunctionComponent<Props> = ({
     description,
     attachmentType,
     metadataType,
-    perioder = [],
+    perioder,
 }) => {
     const { watch } = useFormContext<ManglendeVedleggFormData>();
     const formAttachments = watch(skjemanummer);
