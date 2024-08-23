@@ -34,7 +34,7 @@ const FrontPage: React.FunctionComponent<Props> = ({
         header={
             <>
                 <Show below="md">
-                    <BlueHeading isDarkBlue>
+                    <BlueHeading>
                         <VStack gap="4" align="center">
                             {/* <div className={styles.languageToggle}>
                                 <LanguageToggleNew locale={locale} changeLocale={changeLocale} />

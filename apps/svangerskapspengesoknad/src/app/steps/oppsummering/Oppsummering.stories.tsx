@@ -139,7 +139,7 @@ const Template: StoryFn<Props> = ({
                             ],
                         },
                     ],
-                    [ContextDataType.INNTEKTSINFORMASJON]: {
+                    [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
                         harHattArbeidIUtlandet: true,
                         harJobbetSomFrilans: true,
                         harJobbetSomSelvstendigNæringsdrivende: true,
@@ -175,7 +175,7 @@ const Template: StoryFn<Props> = ({
                         næringstype: Næringstype.FISKER,
                         pågående: true,
                         registrertINorge: true,
-                        næringsinntekt: '700000',
+                        næringsinntekt: 700000,
                         organisasjonsnummer: '12132323',
                         hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
                         varigEndringDato: '2024-01-01',

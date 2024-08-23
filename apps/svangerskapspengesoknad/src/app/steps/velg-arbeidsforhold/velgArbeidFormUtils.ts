@@ -1,6 +1,6 @@
 import { IntlShape } from 'react-intl';
 
-import { Inntektsinformasjon } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans, frilansId } from '@navikt/fp-steg-frilans';
 import { Arbeidsforhold } from '@navikt/fp-types';
@@ -128,7 +128,7 @@ export const getArbeidsforholdTilretteleggingOptions = (
 
 export const mapArbeidsforholdToVelgArbeidOptions = (
     tilrettelegginger: Tilrettelegging[],
-    inntektsinformasjon: Inntektsinformasjon,
+    inntektsinformasjon: ArbeidsforholdOgInntektSvp,
     arbeidsforhold: Arbeidsforhold[],
     termindato: string,
     intl: IntlShape,

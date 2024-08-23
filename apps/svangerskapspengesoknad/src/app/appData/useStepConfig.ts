@@ -53,7 +53,7 @@ const getStepConfig = (
     arbeidsforhold: Arbeidsforhold[],
     getStateData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
 ): Array<ProgressStep<SøknadRoutes>> => {
-    const inntektsinformasjon = getStateData(ContextDataType.INNTEKTSINFORMASJON);
+    const arbeidsforholdOgInntekt = getStateData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const tilrettelegginger = getStateData(ContextDataType.TILRETTELEGGINGER);
     const barn = getStateData(ContextDataType.OM_BARNET);
     const utenlandsopphold = getStateData(ContextDataType.UTENLANDSOPPHOLD);
@@ -73,15 +73,15 @@ const getStepConfig = (
 
     steps.push(createStep(SøknadRoutes.INNTEKTSINFORMASJON, intl, currentPath));
 
-    if (inntektsinformasjon?.harJobbetSomFrilans) {
+    if (arbeidsforholdOgInntekt?.harJobbetSomFrilans) {
         steps.push(createStep(SøknadRoutes.FRILANS, intl, currentPath));
     }
 
-    if (inntektsinformasjon?.harJobbetSomSelvstendigNæringsdrivende) {
+    if (arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende) {
         steps.push(createStep(SøknadRoutes.NÆRING, intl, currentPath));
     }
 
-    if (inntektsinformasjon?.harHattArbeidIUtlandet) {
+    if (arbeidsforholdOgInntekt?.harHattArbeidIUtlandet) {
         steps.push(createStep(SøknadRoutes.ARBEID_I_UTLANDET, intl, currentPath));
     }
 
@@ -89,8 +89,8 @@ const getStepConfig = (
         ? søkerHarKunEtAktivtArbeid(
               barn.termindato,
               arbeidsforhold,
-              inntektsinformasjon?.harJobbetSomFrilans || false,
-              inntektsinformasjon?.harJobbetSomSelvstendigNæringsdrivende || false,
+              arbeidsforholdOgInntekt?.harJobbetSomFrilans || false,
+              arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende || false,
           )
         : true;
 

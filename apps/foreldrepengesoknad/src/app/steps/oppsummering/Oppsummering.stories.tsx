@@ -5,17 +5,20 @@ import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
 import AxiosMock from 'storybook/utils/AxiosMock';
 
-import { AnnenForelder, Barn, BarnType, Dekningsgrad, ISOStringToDate, Periode } from '@navikt/fp-common';
+import { AnnenForelder, Barn, BarnType, Dekningsgrad, Periode } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT, SivilstandType, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { EgenNæring } from '@navikt/fp-steg-egen-naering';
+import { Frilans } from '@navikt/fp-steg-frilans';
 import { Sivilstand, Søker, Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
 
 import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import { AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import { Opphold, SenereOpphold, TidligereOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
 import { Næringstype } from 'app/context/types/Næring';
-import SøkerData from 'app/context/types/SøkerData';
 import SøknadRoutes from 'app/routes/routes';
+import { AndreInntektskilder } from 'app/types/AndreInntektskilder';
 
 import Oppsummering from './Oppsummering';
 
@@ -105,8 +108,6 @@ const defaultUtenlandsopphold = {
     iNorgeSiste12Mnd: true,
 };
 
-const defaultSøker = {} as SøkerData;
-
 const defaultUttaksplan = [
     {
         id: '0',
@@ -149,6 +150,12 @@ const defaultUttaksplan = [
     },
 ] as Periode[];
 
+const defaultArbeidsforholdOgInntekt = {
+    harHattAndreInntektskilder: false,
+    harJobbetSomFrilans: false,
+    harJobbetSomSelvstendigNæringsdrivende: false,
+} as ArbeidsforholdOgInntektFp;
+
 const defaultVedlegg = {
     [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: [],
     [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: [],
@@ -174,7 +181,6 @@ export default {
 
 interface Props {
     søkerinfo?: Søkerinfo;
-    søkerData?: SøkerData;
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelder;
     utenlandsopphold?: Opphold;
@@ -182,6 +188,10 @@ interface Props {
     utenlandsoppholdTidligere?: TidligereOpphold;
     barn?: Barn;
     sivilstand?: Sivilstand;
+    arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
+    frilans?: Frilans;
+    egenNæring?: EgenNæring;
+    andreInntekter?: AndreInntektskilder[];
     erEndringssøknad?: boolean;
     mellomlagreSøknadOgNaviger?: () => Promise<void>;
     gåTilNesteSide: (action: Action) => void;
@@ -192,13 +202,16 @@ interface Props {
 const Template: StoryFn<Props> = ({
     søkerinfo = defaultSøkerinfoMor,
     søkersituasjon = defaultSøkersituasjon,
-    søkerData = defaultSøker,
     annenForelder = defaultAnnenForelder,
     barn = defaultBarn,
     utenlandsopphold = defaultUtenlandsopphold,
     utenlandsoppholdSenere,
     utenlandsoppholdTidligere,
     erEndringssøknad = false,
+    arbeidsforholdOgInntekt = defaultArbeidsforholdOgInntekt,
+    frilans,
+    egenNæring,
+    andreInntekter,
     mellomlagreSøknadOgNaviger = promiseAction(),
     gåTilNesteSide,
     avbrytSøknad = action('button-click'),
@@ -214,7 +227,10 @@ const Template: StoryFn<Props> = ({
                 <FpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
-                        [ContextDataType.SØKER_DATA]: søkerData,
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
+                        [ContextDataType.FRILANS]: frilans,
+                        [ContextDataType.EGEN_NÆRING]: egenNæring,
+                        [ContextDataType.ANDRE_INNTEKTSKILDER]: andreInntekter,
                         [ContextDataType.ANNEN_FORELDER]: annenForelder,
                         [ContextDataType.SØKERSITUASJON]: søkersituasjon,
                         [ContextDataType.UTTAKSPLAN_METADATA]: {
@@ -248,11 +264,6 @@ export const Default = Template.bind({});
 
 export const MorMedAnnenForelderUgift = Template.bind({});
 MorMedAnnenForelderUgift.args = {
-    søkerData: {
-        harHattAnnenInntektSiste10Mnd: false,
-        harJobbetSomFrilansSiste10Mnd: false,
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
-    },
     annenForelder: {
         erAleneOmOmsorg: false,
         fornavn: 'Espen',
@@ -279,11 +290,6 @@ MorMedAnnenForelderUgift.args = {
 
 export const MorMedAleneOmsorg = Template.bind({});
 MorMedAleneOmsorg.args = {
-    søkerData: {
-        harHattAnnenInntektSiste10Mnd: false,
-        harJobbetSomFrilansSiste10Mnd: false,
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
-    },
     søkersituasjon: {
         situasjon: 'fødsel',
         rolle: 'mor',
@@ -298,11 +304,6 @@ MorMedAleneOmsorg.args = {
 };
 export const FarMedAleneOmsorg = Template.bind({});
 FarMedAleneOmsorg.args = {
-    søkerData: {
-        harHattAnnenInntektSiste10Mnd: false,
-        harJobbetSomFrilansSiste10Mnd: false,
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
-    },
     søkersituasjon: {
         situasjon: 'fødsel',
         rolle: 'far',
@@ -327,11 +328,6 @@ FarMedAleneOmsorg.args = {
 export const FarMedUførMorUgift = Template.bind({});
 FarMedUførMorUgift.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
-    søkerData: {
-        harHattAnnenInntektSiste10Mnd: false,
-        harJobbetSomFrilansSiste10Mnd: false,
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
-    },
     annenForelder: {
         erAleneOmOmsorg: false,
         fornavn: 'Eline',
@@ -361,11 +357,6 @@ FarMedUførMorUgift.args = {
 export const FarMedMorSomHarRettIEØS = Template.bind({});
 FarMedMorSomHarRettIEØS.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
-    søkerData: {
-        harHattAnnenInntektSiste10Mnd: false,
-        harJobbetSomFrilansSiste10Mnd: false,
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
-    },
     annenForelder: {
         erAleneOmOmsorg: false,
         fornavn: 'Anne',
@@ -384,11 +375,6 @@ FarMedMorSomHarRettIEØS.args = {
 export const FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS = Template.bind({});
 FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
-    søkerData: {
-        harHattAnnenInntektSiste10Mnd: false,
-        harJobbetSomFrilansSiste10Mnd: false,
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
-    },
     annenForelder: {
         erAleneOmOmsorg: false,
         fornavn: 'Anne',
@@ -407,11 +393,6 @@ FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS.args = {
 export const FarMedMorSomHarRettINorge = Template.bind({});
 FarMedMorSomHarRettINorge.args = {
     søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
-    søkerData: {
-        harHattAnnenInntektSiste10Mnd: false,
-        harJobbetSomFrilansSiste10Mnd: false,
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
-    },
     annenForelder: {
         erAleneOmOmsorg: false,
         fornavn: 'Frida',
@@ -473,14 +454,14 @@ MorMedUtenlandsopphold.args = {
 
 export const MorMedArbeidsforholdOgAndreInntekter = Template.bind({});
 MorMedArbeidsforholdOgAndreInntekter.args = {
-    søkerData: {
-        harJobbetSomFrilansSiste10Mnd: true,
-        frilansInformasjon: {
-            jobberFremdelesSomFrilans: true,
-            oppstart: ISOStringToDate('2019-01-01')!,
-        },
-        harHattAnnenInntektSiste10Mnd: false,
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+    arbeidsforholdOgInntekt: {
+        harJobbetSomFrilans: true,
+        harHattAndreInntektskilder: false,
+        harJobbetSomSelvstendigNæringsdrivende: false,
+    },
+    frilans: {
+        jobberFremdelesSomFrilans: true,
+        oppstart: '2019-01-01',
     },
     annenForelder: {
         ...defaultAnnenForelder,
@@ -510,31 +491,22 @@ MorMedArbeidsforholdOgAndreInntekter.args = {
 
 export const MorMedSelvstendigNæringsdrivende = Template.bind({});
 MorMedSelvstendigNæringsdrivende.args = {
-    søkerData: {
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: true,
-        selvstendigNæringsdrivendeInformasjon: [
-            {
-                navnPåNæringen: 'Fiske',
-                pågående: false,
-                tidsperiode: {
-                    fom: ISOStringToDate('2018-01-01')!,
-                    tom: ISOStringToDate('2021-01-01'),
-                },
-                næringstyper: [Næringstype.FISKER],
-                organisasjonsnummer: '123',
-                næringsinntekt: 1000000,
-                registrertINorge: true,
-                harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: true,
-                hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
-                endringAvNæringsinntektInformasjon: {
-                    dato: ISOStringToDate('2019-01-01')!,
-                    næringsinntektEtterEndring: 1000000,
-                    forklaring: 'Jobbar beinhardt!',
-                },
-            },
-        ],
-        harHattAnnenInntektSiste10Mnd: false,
-        harJobbetSomFrilansSiste10Mnd: false,
+    arbeidsforholdOgInntekt: {
+        harJobbetSomFrilans: false,
+        harHattAndreInntektskilder: false,
+        harJobbetSomSelvstendigNæringsdrivende: true,
+    },
+    egenNæring: {
+        navnPåNæringen: 'Fiske',
+        pågående: false,
+        fomDato: '2018-01-01',
+        tomDato: '2021-01-01',
+        næringstype: Næringstype.FISKER,
+        organisasjonsnummer: '123',
+        næringsinntekt: 1000000,
+        registrertINorge: true,
+        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: true,
+        hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
     },
     annenForelder: {
         ...defaultAnnenForelder,
@@ -545,25 +517,21 @@ MorMedSelvstendigNæringsdrivende.args = {
 
 export const MorMedSelvstendigNæringsdrivendeUtenDiverse = Template.bind({});
 MorMedSelvstendigNæringsdrivendeUtenDiverse.args = {
-    søkerData: {
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: true,
-        selvstendigNæringsdrivendeInformasjon: [
-            {
-                navnPåNæringen: 'Fiske',
-                pågående: false,
-                tidsperiode: {
-                    fom: ISOStringToDate('2018-01-01')!,
-                    tom: ISOStringToDate('2021-01-01'),
-                },
-                næringstyper: [Næringstype.FISKER],
-                registrertILand: 'SE',
-                registrertINorge: false,
-                harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
-                hattVarigEndringAvNæringsinntektSiste4Kalenderår: false,
-            },
-        ],
-        harHattAnnenInntektSiste10Mnd: false,
-        harJobbetSomFrilansSiste10Mnd: false,
+    arbeidsforholdOgInntekt: {
+        harJobbetSomFrilans: false,
+        harHattAndreInntektskilder: false,
+        harJobbetSomSelvstendigNæringsdrivende: true,
+    },
+    egenNæring: {
+        navnPåNæringen: 'Fiske',
+        pågående: false,
+        fomDato: '2018-01-01',
+        tomDato: '2021-01-01',
+        næringstype: Næringstype.FISKER,
+        registrertILand: 'SE',
+        registrertINorge: false,
+        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
+        hattVarigEndringAvNæringsinntektSiste4Kalenderår: false,
     },
     annenForelder: {
         ...defaultAnnenForelder,
@@ -574,23 +542,21 @@ MorMedSelvstendigNæringsdrivendeUtenDiverse.args = {
 
 export const MorMedAndreInntekterJobbIUtlandet = Template.bind({});
 MorMedAndreInntekterJobbIUtlandet.args = {
-    søkerData: {
-        harHattAnnenInntektSiste10Mnd: true,
-        andreInntekterSiste10Mnd: [
-            {
-                type: AnnenInntektType.JOBB_I_UTLANDET,
-                pågående: false,
-                tidsperiode: {
-                    fom: '2018-01-01',
-                    tom: '2021-01-01',
-                },
-                arbeidsgiverNavn: 'Statoil',
-                land: 'SE',
-            },
-        ],
-        harJobbetSomFrilansSiste10Mnd: false,
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+    arbeidsforholdOgInntekt: {
+        harJobbetSomFrilans: false,
+        harHattAndreInntektskilder: true,
+        harJobbetSomSelvstendigNæringsdrivende: false,
     },
+    andreInntekter: [
+        {
+            type: AnnenInntektType.JOBB_I_UTLANDET,
+            pågående: false,
+            fom: '2018-01-01',
+            tom: '2021-01-01',
+            arbeidsgiverNavn: 'Statoil',
+            land: 'SE',
+        },
+    ],
     annenForelder: {
         ...defaultAnnenForelder,
         erAleneOmOmsorg: false,
@@ -600,21 +566,19 @@ MorMedAndreInntekterJobbIUtlandet.args = {
 
 export const MorMedAndreInntekterMilitærtjeneste = Template.bind({});
 MorMedAndreInntekterMilitærtjeneste.args = {
-    søkerData: {
-        harHattAnnenInntektSiste10Mnd: true,
-        andreInntekterSiste10Mnd: [
-            {
-                type: AnnenInntektType.MILITÆRTJENESTE,
-                pågående: false,
-                tidsperiode: {
-                    fom: '2018-01-01',
-                    tom: '2021-01-01',
-                },
-            },
-        ],
-        harJobbetSomFrilansSiste10Mnd: false,
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
+    arbeidsforholdOgInntekt: {
+        harJobbetSomFrilans: false,
+        harHattAndreInntektskilder: true,
+        harJobbetSomSelvstendigNæringsdrivende: false,
     },
+    andreInntekter: [
+        {
+            type: AnnenInntektType.MILITÆRTJENESTE,
+            pågående: false,
+            fom: '2018-01-01',
+            tom: '2021-01-01',
+        },
+    ],
     annenForelder: {
         ...defaultAnnenForelder,
         erAleneOmOmsorg: false,
@@ -625,11 +589,6 @@ MorMedAndreInntekterMilitærtjeneste.args = {
 export const ErEndringssøknad = Template.bind({});
 ErEndringssøknad.args = {
     erEndringssøknad: true,
-    søkerData: {
-        harHattAnnenInntektSiste10Mnd: false,
-        harJobbetSomFrilansSiste10Mnd: false,
-        harJobbetSomSelvstendigNæringsdrivendeSiste10Mnd: false,
-    },
     annenForelder: {
         fornavn: 'Espen',
         etternavn: 'Utvikler',

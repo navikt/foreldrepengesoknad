@@ -9,7 +9,7 @@ export type EgenNæring = {
     næringstype: Næringstype;
     fomDato: string;
     tomDato: string;
-    næringsinntekt?: string;
+    næringsinntekt?: number;
     pågående: boolean;
     navnPåNæringen?: string;
     organisasjonsnummer?: string;

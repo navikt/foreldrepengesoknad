@@ -1,6 +1,6 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, ReadMore } from '@navikt/ds-react';
+import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
 
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
@@ -17,7 +17,7 @@ const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforh
     const intl = useIntl();
 
     return (
-        <div style={{ marginTop: '1rem' }}>
+        <VStack gap="4">
             <HarIkkeArbeidsforhold harArbeidsforhold={harArbeidsforhold} />
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             {visManglerInfo && (
@@ -30,7 +30,7 @@ const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforh
                     </BodyShort>
                 </ReadMore>
             )}
-        </div>
+        </VStack>
     );
 };
 

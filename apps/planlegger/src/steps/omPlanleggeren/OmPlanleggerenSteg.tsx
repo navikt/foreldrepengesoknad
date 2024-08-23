@@ -11,8 +11,6 @@ import { IconCircleWrapper, LanguageToggleNew } from '@navikt/fp-ui';
 import PlanleggerForside from './PlanleggerForside';
 import styles from './omPlanleggerenSteg.module.css';
 
-const TOGGLE = false;
-
 interface Props {
     locale: LocaleAll;
     changeLocale: (locale: LocaleAll) => void;
@@ -61,15 +59,13 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
                         </Button>
                     </HStack>
                 </VStack>
-                {TOGGLE && (
-                    <Show above="md" asChild>
-                        <HStack justify="center">
-                            <div className={styles.languageToggle}>
-                                <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
-                            </div>
-                        </HStack>
-                    </Show>
-                )}
+                <Show above="md" asChild>
+                    <HStack justify="center">
+                        <div className={styles.languageToggle}>
+                            <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
+                        </div>
+                    </HStack>
+                </Show>
             </VStack>
         </PlanleggerForside>
     );

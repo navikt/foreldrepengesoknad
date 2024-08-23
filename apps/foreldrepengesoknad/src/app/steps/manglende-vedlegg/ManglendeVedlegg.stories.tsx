@@ -6,10 +6,12 @@ import { MemoryRouter } from 'react-router-dom';
 import { getAxiosInstance } from '@navikt/fp-api';
 import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt/src/types/ArbeidsforholdOgInntekt';
 import { Situasjon, Søkerinfo } from '@navikt/fp-types';
 
 import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
 import SøknadRoutes from 'app/routes/routes';
+import { AndreInntektskilder, AnnenInntektType } from 'app/types/AndreInntektskilder';
 
 import ManglendeVedlegg from './ManglendeVedlegg';
 
@@ -84,6 +86,12 @@ const defaultBarn = {
     fødselsdatoer: ['2024-01-01'],
 } as Barn;
 
+const defaultArbeidsforholdOgInntekt = {
+    harHattAndreInntektskilder: false,
+    harJobbetSomFrilans: false,
+    harJobbetSomSelvstendigNæringsdrivende: false,
+};
+
 export default {
     title: 'steps/ManglendeVedlegg',
     component: ManglendeVedlegg,
@@ -94,6 +102,8 @@ interface Props {
     situasjon?: Situasjon;
     annenForelder: AnnenForelder;
     barn: Barn;
+    arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
+    annenInntekt?: AndreInntektskilder[];
     mellomlagreSøknadOgNaviger?: () => Promise<void>;
     gåTilNesteSide: (action: Action) => void;
 }
@@ -103,6 +113,8 @@ const Template: StoryFn<Props> = ({
     situasjon = 'fødsel',
     annenForelder = defaultAnnenForelder,
     barn = defaultBarn,
+    arbeidsforholdOgInntekt = defaultArbeidsforholdOgInntekt,
+    annenInntekt,
     gåTilNesteSide = action('button-click'),
     mellomlagreSøknadOgNaviger = promiseAction(),
 }) => {
@@ -120,6 +132,8 @@ const Template: StoryFn<Props> = ({
                     [ContextDataType.UTTAKSPLAN]: [],
                     [ContextDataType.ANNEN_FORELDER]: annenForelder,
                     [ContextDataType.OM_BARNET]: barn,
+                    [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
+                    [ContextDataType.ANDRE_INNTEKTSKILDER]: annenInntekt,
                     [ContextDataType.SØKERSITUASJON]: {
                         rolle: 'mor',
                         situasjon: situasjon,
@@ -167,4 +181,49 @@ Aleneomsorgdokumentasjon.args = {
         ...defaultAnnenForelder,
         datoForAleneomsorg: '2024-01-01',
     },
+};
+
+export const HarAndreInntektskilderMilitærtjeneste = Template.bind({});
+HarAndreInntektskilderMilitærtjeneste.args = {
+    søkerInfo: defaultSøkerinfo,
+    arbeidsforholdOgInntekt: {
+        harHattAndreInntektskilder: true,
+        harJobbetSomFrilans: false,
+        harJobbetSomSelvstendigNæringsdrivende: false,
+    },
+    annenInntekt: [
+        {
+            fom: '2024-01-01',
+            tom: '2024-04-01',
+            pågående: false,
+            type: AnnenInntektType.MILITÆRTJENESTE,
+        },
+        {
+            fom: '2024-05-01',
+            pågående: true,
+            type: AnnenInntektType.MILITÆRTJENESTE,
+        },
+    ],
+};
+
+export const HarAndreInntektskilderEtterlønn = Template.bind({});
+HarAndreInntektskilderEtterlønn.args = {
+    søkerInfo: defaultSøkerinfo,
+    arbeidsforholdOgInntekt: {
+        harHattAndreInntektskilder: true,
+        harJobbetSomFrilans: false,
+        harJobbetSomSelvstendigNæringsdrivende: false,
+    },
+    annenInntekt: [
+        {
+            fom: '2024-01-01',
+            tom: '2024-04-01',
+            type: AnnenInntektType.SLUTTPAKKE,
+        },
+        {
+            fom: '2024-05-01',
+            tom: '2024-07-01',
+            type: AnnenInntektType.SLUTTPAKKE,
+        },
+    ],
 };

@@ -1,15 +1,17 @@
-import { Tidsperiode, TidsperiodeMedValgfriSluttdato } from './../types/Tidsperiode';
-import { isISODateString } from '@navikt/fp-utils';
 import dayjs, { Dayjs } from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isBetween from 'dayjs/plugin/isBetween';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
-import { Uttaksdagen } from './Uttaksdagen';
-import { TidsperiodeDate, Utsettelsesperiode } from '../types';
+
+import { isISODateString } from '@navikt/fp-utils';
+
 import uttaksConstants from '../constants/constants';
-import { SkjemaelementFeil, hasValue } from './validationUtils';
+import { TidsperiodeDate, Utsettelsesperiode } from '../types';
+import { Tidsperiode, TidsperiodeMedValgfriSluttdato } from './../types/Tidsperiode';
+import { Uttaksdagen } from './Uttaksdagen';
 import intlUtils from './intlUtils';
+import { SkjemaelementFeil, hasValue } from './validationUtils';
 
 dayjs.extend(utc);
 dayjs.extend(isSameOrAfter);
@@ -17,12 +19,14 @@ dayjs.extend(isBetween);
 
 dayjs.extend(utc);
 const dateFormat = 'DD.MM.YYYY';
+const dateFormatShortYear = 'DD.MM.YY';
 const dateFormatExtended = 'DD. MMMM YYYY';
 const dateFormatShortMonth = 'DD. MMM';
 const dateFormatMedUkedag = 'dddd DD. MMM YYYY';
 
 export const formatDate = (date: Date | string) => dayjs(date).format(dateFormat);
 export const formatDateUtc = (date: Date | string) => dayjs.utc(date).format(dateFormat);
+export const formatDateShortYear = (date: Date | string) => dayjs(date).format(dateFormatShortYear);
 export const formatDateExtended = (date: Date | string) => dayjs(date).format(dateFormatExtended);
 export const formatDateShortMonth = (date: Date | string) => dayjs(date).format(dateFormatShortMonth);
 export const formatDateMedUkedag = (date: Date | string) => dayjs(date).format(dateFormatMedUkedag);

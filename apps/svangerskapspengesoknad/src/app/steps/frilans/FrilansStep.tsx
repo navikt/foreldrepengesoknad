@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
 
-import { Inntektsinformasjon } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { Frilans, FrilansPanel, frilansId } from '@navikt/fp-steg-frilans';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
@@ -20,7 +20,7 @@ import { getFrilansTilretteleggingOption } from '../velg-arbeidsforhold/velgArbe
 const getNextRouteValgAvArbeidEllerSkjema = (
     termindato: string,
     arbeidsforhold: Arbeidsforhold[],
-    inntektsinformasjon: Inntektsinformasjon,
+    inntektsinformasjon: ArbeidsforholdOgInntektSvp,
 ): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
     const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
@@ -41,7 +41,7 @@ const getNextRouteValgAvArbeidEllerSkjema = (
 };
 
 const getNextRoute = (
-    inntektsinformasjon: Inntektsinformasjon,
+    inntektsinformasjon: ArbeidsforholdOgInntektSvp,
     termindato: string,
     arbeidsforhold: Arbeidsforhold[],
 ): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
@@ -63,7 +63,7 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
     const frilans = useContextGetData(ContextDataType.FRILANS);
-    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.INNTEKTSINFORMASJON));
+    const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
     const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
@@ -77,8 +77,8 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
         const harKunEtAktivtArbeid = søkerHarKunEtAktivtArbeid(
             barnet.termindato,
             arbeidsforhold,
-            inntektsinformasjon.harJobbetSomFrilans,
-            inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
+            arbeidsforholdOgInntekt.harJobbetSomFrilans,
+            arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende,
         );
         if (harKunEtAktivtArbeid) {
             const tilretteleggingOptions = [getFrilansTilretteleggingOption(tilrettelegginger || [], values.oppstart)];
@@ -86,7 +86,7 @@ const FrilansStep: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
         }
 
         const { nextRoute, nextTilretteleggingId } = getNextRoute(
-            inntektsinformasjon,
+            arbeidsforholdOgInntekt,
             barnet.termindato,
             arbeidsforhold,
         );

@@ -120,7 +120,7 @@ const Template: StoryFn<TilretteleggingStepStoryProps> = ({
                 onDispatch={gåTilNesteSide}
                 initialState={{
                     [ContextDataType.FERIE]: [],
-                    [ContextDataType.INNTEKTSINFORMASJON]: {
+                    [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
                         harHattArbeidIUtlandet: false,
                         harJobbetSomFrilans: false,
                         harJobbetSomSelvstendigNæringsdrivende: false,

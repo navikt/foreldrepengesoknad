@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 import { AttachmentMetadataType, DATE_4_YEARS_AGO } from '@navikt/fp-constants';
-import { Inntektsinformasjon } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring, Næringstype } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
 import {
@@ -164,7 +164,7 @@ const mapEgenNæringForInnsending = (næring: EgenNæring | undefined): EgenNær
                 fom: næring.fomDato,
                 tom: næring.tomDato,
             },
-            næringsinntekt: næring.næringsinntekt ? parseInt(næring.næringsinntekt!, 10) : undefined,
+            næringsinntekt: næring.næringsinntekt,
             navnPåNæringen: navn,
             organisasjonsnummer: næring.organisasjonsnummer,
             registrertINorge: næring.registrertINorge,
@@ -214,7 +214,7 @@ const mapArbeidIUtlandetForInnsending = (arbeid: ArbeidIUtlandetInput): ArbeidIU
 
 const mapSøkerForInnsending = (
     locale: LocaleNo,
-    inntektsinformasjon: Inntektsinformasjon,
+    inntektsinformasjon: ArbeidsforholdOgInntektSvp,
     egenNæring?: EgenNæring,
     frilans?: Frilans,
     arbeidIUtlandet?: ArbeidIUtlandet,
@@ -265,7 +265,7 @@ export const getSøknadForInnsending = (
     const vedleggForInnsending = mapVedleggForInnsending(tilrettelegging);
     const søkerForInnsending = mapSøkerForInnsending(
         locale,
-        notEmpty(hentData(ContextDataType.INNTEKTSINFORMASJON)),
+        notEmpty(hentData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT)),
         hentData(ContextDataType.EGEN_NÆRING),
         hentData(ContextDataType.FRILANS),
         hentData(ContextDataType.ARBEID_I_UTLANDET),

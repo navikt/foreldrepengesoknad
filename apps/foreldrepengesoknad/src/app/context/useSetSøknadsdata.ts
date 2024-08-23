@@ -1,4 +1,5 @@
 import { EksisterendeSak } from '@navikt/fp-common';
+
 import { ContextDataType, useContextSaveAnyData } from './FpDataContext';
 import { Søknad } from './types/Søknad';
 
@@ -9,7 +10,10 @@ export const useSetSøknadsdata = () => {
         oppdaterData(ContextDataType.SØKERSITUASJON, søknad.søkersituasjon);
         oppdaterData(ContextDataType.OM_BARNET, søknad.barn);
         oppdaterData(ContextDataType.ANNEN_FORELDER, søknad.annenForelder);
-        oppdaterData(ContextDataType.SØKER_DATA, søknad.søker);
+        oppdaterData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT, søknad.arbeidsforholdOgInntekt);
+        oppdaterData(ContextDataType.FRILANS, søknad.frilans);
+        oppdaterData(ContextDataType.EGEN_NÆRING, søknad.egenNæring);
+        oppdaterData(ContextDataType.ANDRE_INNTEKTSKILDER, søknad.andreInntektskilder);
         oppdaterData(
             ContextDataType.UTENLANDSOPPHOLD,
             søknad.informasjonOmUtenlandsopphold

@@ -6,7 +6,7 @@ import uniqBy from 'lodash/uniqBy';
 import { IntlShape } from 'react-intl';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { Inntektsinformasjon } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
 import { UnikArbeidsforhold } from 'app/types/Arbeidsforhold';
@@ -123,7 +123,7 @@ export const søkerHarKunEtAktivtArbeid = (
 };
 
 export const getTekstOmManglendeArbeidsforhold = (
-    inntektsinformasjon: Inntektsinformasjon,
+    inntektsinformasjon: ArbeidsforholdOgInntektSvp,
     intl: IntlShape,
 ): string => {
     const erFrilanser = inntektsinformasjon.harJobbetSomFrilans;

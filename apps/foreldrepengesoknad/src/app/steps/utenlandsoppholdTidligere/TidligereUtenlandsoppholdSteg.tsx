@@ -2,9 +2,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
 
+import { TidligereUtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { Arbeidsforhold, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
-import { TidligereUtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 import { notEmpty } from '@navikt/fp-validation';
 
 import useFpNavigator from 'app/appData/useFpNavigator';
@@ -53,7 +53,7 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
         });
 
         const nesteSide = utenlandsopphold.iNorgeNeste12Mnd
-            ? SøknadRoutes.INNTEKTSINFORMASJON
+            ? SøknadRoutes.ARBEID_OG_INNTEKT
             : SøknadRoutes.SENERE_UTENLANDSOPPHOLD;
         return navigator.goToNextStep(nesteSide);
     };

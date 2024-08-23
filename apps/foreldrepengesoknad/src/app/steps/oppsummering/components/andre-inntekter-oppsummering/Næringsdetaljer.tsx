@@ -1,34 +1,39 @@
-import { formatDate } from '@navikt/fp-common';
-import { Næring } from 'app/context/types/Næring';
 import * as countries from 'i18n-iso-countries';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-import OppsummeringsPunkt from '../OppsummeringsPunkt';
+
 import { BodyShort } from '@navikt/ds-react';
 
+import { formatDate } from '@navikt/fp-common';
+import { EgenNæring } from '@navikt/fp-steg-egen-naering';
+
+import OppsummeringsPunkt from '../OppsummeringsPunkt';
+
 interface Props {
-    næring: Næring;
+    egenNæring: EgenNæring;
 }
 
-const Næringsdetaljer: FunctionComponent<Props> = ({ næring }) => {
+const Næringsdetaljer: FunctionComponent<Props> = ({ egenNæring }) => {
     const intl = useIntl();
     const {
-        næringstyper,
+        næringstype,
         organisasjonsnummer,
         næringsinntekt,
         registrertINorge,
         registrertILand,
         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene,
         hattVarigEndringAvNæringsinntektSiste4Kalenderår,
-        endringAvNæringsinntektInformasjon,
-    } = næring;
+        varigEndringDato,
+        varigEndringInntektEtterEndring,
+        varigEndringBeskrivelse,
+    } = egenNæring;
 
     return (
         <>
             <OppsummeringsPunkt
                 title={intl.formatMessage({ id: 'oppsummering.selvstendigNæringsdrivende.næringstype' })}
             >
-                <BodyShort>{intl.formatMessage({ id: `næringstype.${næringstyper[0].toLowerCase()}` })}</BodyShort>
+                <BodyShort>{intl.formatMessage({ id: `næringstype.${næringstype.toLowerCase()}` })}</BodyShort>
             </OppsummeringsPunkt>
             {organisasjonsnummer && (
                 <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.selvstendigNæringsdrivende.orgnr' })}>
@@ -65,24 +70,26 @@ const Næringsdetaljer: FunctionComponent<Props> = ({ næring }) => {
             )}
             {hattVarigEndringAvNæringsinntektSiste4Kalenderår === true && (
                 <>
-                    <OppsummeringsPunkt
-                        title={intl.formatMessage({
-                            id: 'oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt',
-                        })}
-                    >
-                        <BodyShort>{formatDate(endringAvNæringsinntektInformasjon!.dato)}</BodyShort>
-                    </OppsummeringsPunkt>
+                    {varigEndringDato && (
+                        <OppsummeringsPunkt
+                            title={intl.formatMessage({
+                                id: 'oppsummering.selvstendigNæringsdrivende.datoForEndringAvNæringsinntekt',
+                            })}
+                        >
+                            <BodyShort>{formatDate(varigEndringDato)}</BodyShort>
+                        </OppsummeringsPunkt>
+                    )}
                     <OppsummeringsPunkt
                         title={intl.formatMessage({
                             id: 'oppsummering.selvstendigNæringsdrivende.næringsinntektEtterEndring',
                         })}
                     >
-                        <BodyShort>{endringAvNæringsinntektInformasjon!.næringsinntektEtterEndring}</BodyShort>
+                        <BodyShort>{varigEndringInntektEtterEndring}</BodyShort>
                     </OppsummeringsPunkt>
                     <OppsummeringsPunkt
                         title={intl.formatMessage({ id: 'oppsummering.selvstendigNæringsdrivende.forklaring' })}
                     >
-                        <BodyShort>{endringAvNæringsinntektInformasjon!.forklaring}</BodyShort>
+                        <BodyShort>{varigEndringBeskrivelse}</BodyShort>
                     </OppsummeringsPunkt>
                 </>
             )}

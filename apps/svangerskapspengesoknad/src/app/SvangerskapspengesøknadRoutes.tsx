@@ -18,10 +18,10 @@ import useMellomlagreSøknad, { SvpDataMapAndMetaData } from './appData/useMello
 import useSendSøknad from './appData/useSendSøknad';
 import Forside from './pages/forside/Forside';
 import ArbeidIUtlandetStep from './steps/arbeid-i-utlandet/ArbeidIUtlandetStep';
+import ArbeidsforholdOgInntektSteg from './steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
 import Barnet from './steps/barnet/Barnet';
 import EgenNæringStep from './steps/egen-næring/EgenNæringStep';
 import FrilansStep from './steps/frilans/FrilansStep';
-import InntektsinformasjonSteg from './steps/inntektsinformasjon/InntektsinformasjonSteg';
 import Oppsummering from './steps/oppsummering/Oppsummering';
 import PerioderStep from './steps/perioder/PerioderStep';
 import SkjemaSteg from './steps/skjema/SkjemaSteg';
@@ -100,7 +100,7 @@ const renderSøknadRoutes = (
             <Route
                 path={SøknadRoutes.INNTEKTSINFORMASJON}
                 element={
-                    <InntektsinformasjonSteg
+                    <ArbeidsforholdOgInntektSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}

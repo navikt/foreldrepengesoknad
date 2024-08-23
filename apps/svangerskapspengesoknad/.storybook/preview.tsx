@@ -3,12 +3,12 @@ import React from 'react';
 
 import '@navikt/ds-css';
 
-import { oppsummeringMessages } from '@navikt/fp-oppsummering';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
+import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
+import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { uiMessages } from '@navikt/fp-ui';
-import { utenlandsoppholdMessages } from '@navikt/fp-utenlandsopphold';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 
 import nbMessages from '../src/app/intl/nb_NO.json';

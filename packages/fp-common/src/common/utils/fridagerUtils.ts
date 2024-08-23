@@ -1,5 +1,6 @@
-import dayjs from 'dayjs';
 import DateHolidays, { HolidaysTypes } from 'date-holidays';
+import dayjs from 'dayjs';
+
 import { TidsperiodeDate } from '../types';
 
 const holidays = new DateHolidays('no');

@@ -2,9 +2,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
 
+import { UtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { Arbeidsforhold, Utenlandsopphold } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
-import { UtenlandsoppholdPanel } from '@navikt/fp-utenlandsopphold';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
 import SøknadRoutes from 'app/appData/routes';
