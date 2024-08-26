@@ -65,8 +65,6 @@ const VedleggUploader: FunctionComponent<Props> = ({
             const init = lagSendSenereDokument(attachmentType, skjemanummer);
             const sendSenereVedlegg = addMetadata(init, {
                 type: metadataType,
-                // FIXME (Avklar om tom kan vera tom)
-                //@ts-ignore
                 perioder,
             });
 
@@ -85,8 +83,6 @@ const VedleggUploader: FunctionComponent<Props> = ({
                 const attachmentsMedMetadata = vedlegg.map((a) =>
                     addMetadata(a, {
                         type: metadataType,
-                        // FIXME (Avklar om tom kan vera tom)
-                        //@ts-ignore
                         perioder,
                     }),
                 );
