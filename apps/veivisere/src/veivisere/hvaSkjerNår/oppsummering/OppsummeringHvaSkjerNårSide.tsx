@@ -1,11 +1,9 @@
 import { QuestionmarkIcon } from '@navikt/aksel-icons';
-import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { BodyShort, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { DDMMMMYYY_DATE_FORMAT } from '@navikt/fp-constants';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 
 import VeiviserPage from '../../felles/VeiviserPage';
@@ -75,7 +73,11 @@ const OppsummeringHvaSkjerNårSide: React.FunctionComponent<Props> = ({ hvaSkjer
                                                 <FormattedMessage
                                                     id="HvaSkjerNår.OppsummeringSide.Termin"
                                                     values={{
-                                                        termindato: dayjs(termindato).format(DDMMMMYYY_DATE_FORMAT),
+                                                        termindato: intl.formatDate(termindato, {
+                                                            day: '2-digit',
+                                                            month: 'long',
+                                                            year: 'numeric',
+                                                        }),
                                                     }}
                                                 />
                                             </BodyShort>
@@ -85,7 +87,11 @@ const OppsummeringHvaSkjerNårSide: React.FunctionComponent<Props> = ({ hvaSkjer
                                                 <FormattedMessage
                                                     id="HvaSkjerNår.OppsummeringSide.Fødselsdato"
                                                     values={{
-                                                        fødselsdato: dayjs(fødselsdato).format(DDMMMMYYY_DATE_FORMAT),
+                                                        fødselsdato: intl.formatDate(fødselsdato, {
+                                                            day: '2-digit',
+                                                            month: 'long',
+                                                            year: 'numeric',
+                                                        }),
                                                     }}
                                                 />
                                             </BodyShort>
