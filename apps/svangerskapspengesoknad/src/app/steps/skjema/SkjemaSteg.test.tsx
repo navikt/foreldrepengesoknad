@@ -109,7 +109,7 @@ describe('<SkjemaSteg>', () => {
             screen.getByText('Last opp bekreftelse for krav til svangerskapspenger til frilans'),
         ).toBeInTheDocument();
         expect(
-            screen.getByText('Her skal du laste opp bekreftelsen som er skrevet av din lege eller jordmor.'),
+            screen.getByText(/Her skal du laste opp bekreftelsen som er skrevet av din lege eller jordmor./),
         ).toBeInTheDocument();
     });
 
