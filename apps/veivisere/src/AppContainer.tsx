@@ -3,13 +3,14 @@ import { useCallback, useState } from 'react';
 
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
+import { utilsMessages } from '@navikt/fp-utils';
 
 import Veiviser from './Veiviser';
 import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
 
-const allNbMessages = { ...nbMessages, ...uiMessages.nb };
+const allNbMessages = { ...nbMessages, ...uiMessages.nb, ...utilsMessages.nb };
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -22,8 +23,8 @@ declare global {
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: allNbMessages,
-    nn: { ...nnMessages, ...uiMessages.nn },
-    en: { ...enMessages, ...uiMessages.en },
+    nn: { ...nnMessages, ...uiMessages.nn, ...utilsMessages.nn },
+    en: { ...enMessages, ...uiMessages.en, ...utilsMessages.en },
 };
 
 const initLocale = (): LocaleAll => {
