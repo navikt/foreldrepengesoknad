@@ -25,7 +25,7 @@ export { default as useDocumentTitle } from './src/hooks/useDocumentTitle';
 export { default as useBeforeUnload } from './src/hooks/useBeforeUnload';
 export { default as bemUtils } from './src/bemUtils';
 export { getFloatFromString, getNumberFromNumberInputValue } from './src/numberUtils';
-export { capitalizeFirstLetter, getNavnGenitivEierform } from './src/stringUtils';
+export { capitalizeFirstLetter, capitalizeFirstLetterInEveryWordOnly, getNavnGenitivEierform } from './src/stringUtils';
 export { getFamiliehendelsedato } from './src/barnUtils';
 export { formatCurrencyWithKr, formatCurrency } from './src/currencyUtils';
 export {

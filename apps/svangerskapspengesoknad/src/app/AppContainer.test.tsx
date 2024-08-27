@@ -43,7 +43,7 @@ describe('<AppContainer>', () => {
 
         expect(await screen.findAllByText('Velg bedrift')).toHaveLength(2);
         expect(screen.getByText('Steg 4 av 7')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('SYKEHUSET I VESTFOLD'));
+        await userEvent.click(screen.getByText('Sykehuset i Vestfold'));
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(await screen.findAllByText('Last opp skjema')).toHaveLength(2);
