@@ -135,7 +135,7 @@
     "HvorforHarJegRettPanel.OppfylleKravEs": "For at du skal ha rett til engangsstønad må du oppfylle disse kravene:",
     "HvorforHarJegRettPanel.DuMåHaInntekt": "Du må ha hatt inntekt 6 av de 10 siste månedene",
     "HvorforHarJegRettPanel.DuHarOppgittInntekt": "Du har oppgitt at du {harHatt, select, true {} other {ikke }}har hatt inntekt 6 av de siste 10 månedene.",
-    "HvorforHarJegRettPanel.DuMåTeneOver": "Du må i gjennomsnitt tjene mer enn {minstelønn} i året før skatt",
+    "HvorforHarJegRettPanel.DuMåTeneOver": "Du må i gjennomsnitt tjene minst {minstelønn} i året før skatt",
     "HvorforHarJegRettPanel.DuHarOppgittMånedslønn": "Du har oppgitt at du har en gjennomsnittlig månedslønn på {månedslønn} før skatt, som blir {hvorMye, select, true {mer} other {mindre}} enn {minstelønn} i året.",
     "HvorforHarJegRettPanel.DuMåVæreMedlem": "Du må være medlem av folketrygden",
     "HvorforHarJegRettPanel.OppgittAtDuBorINorge": "Du har oppgitt at du {borINorge, select, true {bor} other {jobber}} i Norge. Dermed regner vi med at du er medlem av folketrygden.",
