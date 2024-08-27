@@ -16,22 +16,22 @@ interface Props {
 }
 const finnHvemSomPlanlegger = (hvaSkjerNårSituasjon: HvaSkjerNårSituasjon) => {
     if (hvaSkjerNårSituasjon.situasjon === 'morOgFar') {
-        return 'Mor og far';
+        return <FormattedMessage id="HvaSkjerNår.OppsummeringSide.MorOgFar" />;
     }
     if (hvaSkjerNårSituasjon.situasjon === 'morOgMedmor') {
-        return 'Mor og medmor';
+        return <FormattedMessage id="HvaSkjerNår.OppsummeringSide.MorOgMedmor" />;
     }
     if (hvaSkjerNårSituasjon.situasjon === 'farOgFar') {
-        return 'Far og far';
+        return <FormattedMessage id="HvaSkjerNår.OppsummeringSide.FarOgFar" />;
     }
     if (hvaSkjerNårSituasjon.situasjon === 'kunMor') {
-        return 'Mor';
+        return <FormattedMessage id="HvaSkjerNår.OppsummeringSide.Mor" />;
     }
     if (hvaSkjerNårSituasjon.situasjon === 'kunFarEllerMedmor') {
-        return 'Far/medmor';
+        return <FormattedMessage id="HvaSkjerNår.OppsummeringSide.FarEllerMedmor" />;
     }
     if (hvaSkjerNårSituasjon.situasjon === 'aleneomsorg') {
-        return 'Jeg';
+        return <FormattedMessage id="HvaSkjerNår.OppsummeringSide.Jeg" />;
     }
     return 'undefined';
 };
