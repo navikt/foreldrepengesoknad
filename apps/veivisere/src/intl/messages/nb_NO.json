@@ -134,7 +134,7 @@
     "HvorforHarJegRettPanel.OppfylleKrav": "For at du skal ha rett på foreldrepenger må du oppfylle disse kravene:",
     "HvorforHarJegRettPanel.OppfylleKravEs": "For at du skal ha rett på engangsstønad må du oppfylle disse kravene:",
     "HvorforHarJegRettPanel.DuMåHaInntekt": "Du må ha hatt inntekt 6 av de 10 siste månedene",
-    "HvorforHarJegRettPanel.DuHarOppgittInntekt": "Du har oppgitt at du har hatt inntekt 6 av de siste 10 månedene.",
+    "HvorforHarJegRettPanel.DuHarOppgittInntekt": "Du har oppgitt at du {harHatt, select, true {} other {ikke }}har hatt inntekt 6 av de siste 10 månedene.",
     "HvorforHarJegRettPanel.DuMåTeneOver": "Du må i gjennomsnitt tjene mer enn {minstelønn} i året før skatt",
     "HvorforHarJegRettPanel.DuHarOppgittMånedslønn": "Du har oppgitt at du har en gjennomsnittlig månedslønn på {månedslønn} før skatt, som blir {hvorMye, select, true {mer} other {mindre}} enn {minstelønn} i året.",
     "HvorforHarJegRettPanel.DuMåVæreMedlem": "Du må være medlem av folketrygden",
