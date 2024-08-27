@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { FormSummary, List } from '@navikt/ds-react';
 
-import { formatDate } from '@navikt/fp-utils';
+import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/appData/SvpDataContext';
@@ -43,7 +43,9 @@ function VirksomhetSummary() {
 
     return tilretteleggingVirksomhet.map((tilrettelegging) => (
         <FormSummary.Answer key={tilrettelegging.id}>
-            <FormSummary.Label>{tilrettelegging.arbeidsforhold.navn}</FormSummary.Label>
+            <FormSummary.Label>
+                {capitalizeFirstLetterInEveryWordOnly(tilrettelegging.arbeidsforhold.navn)}
+            </FormSummary.Label>
             <FormSummary.Value>
                 <FormSummary.Answers>
                     {perioder.length === 1 ? (
@@ -146,7 +148,11 @@ function SelvstendigNæringsdrivendeSummary() {
                         <FormSummary.Label>
                             <FormattedMessage
                                 id="tilrettelegging.tilrettelagtArbeidFom.label.flere"
-                                values={{ navnArbeidsgiver: tilretteleggingMedSN.arbeidsforhold.navn }}
+                                values={{
+                                    navnArbeidsgiver: capitalizeFirstLetterInEveryWordOnly(
+                                        tilretteleggingMedSN.arbeidsforhold.navn,
+                                    ),
+                                }}
                             />
                         </FormSummary.Label>
                         <FormSummary.Value>

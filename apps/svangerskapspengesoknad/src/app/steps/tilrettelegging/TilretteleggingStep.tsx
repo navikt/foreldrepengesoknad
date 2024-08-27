@@ -16,7 +16,7 @@ import {
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
-import { tiMånederSidenDato } from '@navikt/fp-utils';
+import { capitalizeFirstLetterInEveryWordOnly, tiMånederSidenDato } from '@navikt/fp-utils';
 import { hasLegalChars, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
@@ -92,13 +92,13 @@ const getLabel = (
             ? intl.formatMessage(
                   { id: 'tilrettelegging.tilrettelagtArbeidFom.label.flere' },
                   {
-                      navnArbeidsgiver,
+                      navnArbeidsgiver: capitalizeFirstLetterInEveryWordOnly(navnArbeidsgiver),
                   },
               )
             : intl.formatMessage(
                   { id: 'tilrettelegging.tilrettelagtArbeidType.label.flere' },
                   {
-                      navnArbeidsgiver,
+                      navnArbeidsgiver: capitalizeFirstLetterInEveryWordOnly(navnArbeidsgiver),
                   },
               );
     }

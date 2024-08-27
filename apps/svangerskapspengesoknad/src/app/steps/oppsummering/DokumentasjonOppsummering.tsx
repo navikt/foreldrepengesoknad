@@ -2,6 +2,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { FormSummary, Link, VStack } from '@navikt/ds-react';
 
+import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
+
 import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 
 export function DokumentasjonOppsummering({
@@ -53,7 +55,9 @@ function DokumentasjonLabel({ tilrettelegging }: { readonly tilrettelegging: Til
             return (
                 <FormattedMessage
                     id="oppsummering.dokumentasjon.virksomhet"
-                    values={{ arbeidsforholdNavn: tilrettelegging.arbeidsforhold.navn }}
+                    values={{
+                        arbeidsforholdNavn: capitalizeFirstLetterInEveryWordOnly(tilrettelegging.arbeidsforhold.navn),
+                    }}
                 />
             );
     }
