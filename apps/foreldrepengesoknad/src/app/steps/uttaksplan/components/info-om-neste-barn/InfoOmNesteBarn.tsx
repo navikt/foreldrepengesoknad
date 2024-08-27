@@ -7,7 +7,7 @@ import { Uttaksdagen, formaterDato, getToTetteReglerGjelder } from '@navikt/fp-c
 import { bemUtils } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 
 import './info-om-neste-barn.css';

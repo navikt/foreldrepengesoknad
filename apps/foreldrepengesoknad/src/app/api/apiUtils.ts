@@ -40,12 +40,12 @@ import { Frilans } from '@navikt/fp-steg-frilans';
 import { Attachment, LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataMap, ContextDataType } from 'app/context/FpDataContext';
-import { AnnenInntekt } from 'app/context/types/AnnenInntekt';
-import { Næring } from 'app/context/types/Næring';
-import { Søknad } from 'app/context/types/Søknad';
+import { ContextDataMap, ContextDataType } from 'app/appData/FpDataContext';
 import { AndreInntektskilder, AnnenInntektType } from 'app/types/AndreInntektskilder';
+import { AnnenInntekt } from 'app/types/AnnenInntekt';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
+import { Næring } from 'app/types/Næring';
+import { Søknad } from 'app/types/Søknad';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getTermindato } from 'app/utils/barnUtils';
 

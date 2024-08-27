@@ -6,7 +6,7 @@ import { getVarighetString } from '@navikt/fp-common';
 import { RadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
-import { FellesperiodeFordelingValg } from 'app/context/types/Fordeling';
+import { FellesperiodeFordelingValg } from 'app/types/Fordeling';
 
 interface Props {
     dagerMedFellesperiode: number;

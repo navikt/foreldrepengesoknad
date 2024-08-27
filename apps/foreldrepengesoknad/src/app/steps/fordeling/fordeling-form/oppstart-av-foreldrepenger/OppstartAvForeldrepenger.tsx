@@ -5,8 +5,8 @@ import { VStack } from '@navikt/ds-react';
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import Fordeling, { OppstartValg } from 'app/context/types/Fordeling';
+import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
+import Fordeling, { OppstartValg } from 'app/types/Fordeling';
 import { getErAleneOmOmsorg } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedatoDate } from 'app/utils/barnUtils';
 

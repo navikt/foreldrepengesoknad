@@ -10,7 +10,7 @@ import { bemUtils, isValidDate } from '@navikt/fp-utils';
 import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 
 import './mor-oppstartinformasjon.css';

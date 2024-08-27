@@ -16,7 +16,7 @@ import { ISOStringToDate } from '@navikt/fp-formik';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
 import { DelInformasjon, FordelingEier } from 'app/types/FordelingOversikt';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 

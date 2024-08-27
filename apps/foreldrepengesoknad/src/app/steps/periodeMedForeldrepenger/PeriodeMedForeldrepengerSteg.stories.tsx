@@ -14,8 +14,8 @@ import {
 } from '@navikt/fp-types';
 
 import { FpApiDataContext } from 'app/api/context/FpApiDataContext';
-import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
+import { Action, ContextDataType, FpDataContext } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 
 import PeriodeMedForeldrepengerSteg from './PeriodeMedForeldrepengerSteg';

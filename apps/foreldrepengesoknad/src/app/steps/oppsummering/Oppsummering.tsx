@@ -20,11 +20,11 @@ import { Søker, Søkerinfo, Søkerrolle } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import { Utenlandsopphold as OldUtenlandsOpphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
-import SøknadRoutes from 'app/routes/routes';
+import { Utenlandsopphold as OldUtenlandsOpphold } from 'app/types/InformasjonOmUtenlandsopphold';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 
 import { søknadInneholderIngenVedlegg } from '../manglende-vedlegg/util';

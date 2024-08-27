@@ -37,12 +37,11 @@ import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { dateToISOString } from '@navikt/fp-formik';
 import { Søker, SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
 
-import { Søknad } from 'app/context/types/Søknad';
-import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import { Søknad } from 'app/types/Søknad';
 import { ValgtBarn } from 'app/types/ValgtBarn';
 
-import { getRelevantFamiliehendelseDato, sorterDatoEtterEldst } from './dateUtils';
+import { getErDatoInnenEnDagFraAnnenDato, getRelevantFamiliehendelseDato, sorterDatoEtterEldst } from './dateUtils';
 import { getFamiliehendelseType } from './familiehendelseUtils';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 

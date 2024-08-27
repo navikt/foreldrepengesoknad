@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
-import { ContextDataType } from 'app/context/FpDataContext';
+import { ContextDataType } from 'app/appData/FpDataContext';
 
 import * as stories from './FrilansSteg.stories';
 

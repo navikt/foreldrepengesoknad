@@ -7,10 +7,10 @@ import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
 import { AnnenInntektType } from 'app/types/AndreInntektskilder';
 
 import AndreInntektskilderFieldArray, { FormValues } from './components/AndreInntektskilderFieldArray';

@@ -6,10 +6,10 @@ import { UtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { Arbeidsforhold, Utenlandsopphold } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
 
 const utledNesteSide = (values: Utenlandsopphold) => {
     if (values.harBoddUtenforNorgeSiste12Mnd) {

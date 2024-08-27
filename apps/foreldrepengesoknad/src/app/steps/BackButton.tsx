@@ -1,7 +1,9 @@
 import { FormattedMessage } from 'react-intl';
-import SøknadRoutes from 'app/routes/routes';
+
 import { Button } from '@navikt/ds-react';
-import { ContextDataType, useContextSaveData } from 'app/context/FpDataContext';
+
+import { ContextDataType, useContextSaveData } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 
 // TODO (TOR) Midlertidig komponent. Erstatt med StepButtonsHookForm når ein skriv om til react-hook-form
 
