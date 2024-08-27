@@ -128,8 +128,8 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
                                                     id: 'valideringsfeil.fødselsdato.måVæreIdagEllerTidligere',
                                                 }),
                                             ),
-                                            (fødselsdato) => {
-                                                if (dayjs(fødselsdato).isBefore(dayjs(oktober2021))) {
+                                            (dato) => {
+                                                if (dayjs(dato).isBefore(dayjs(oktober2021))) {
                                                     return intl.formatMessage({
                                                         id: 'valideringsfeil.fødselsdato.førOktober2021',
                                                     });
@@ -150,9 +150,9 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
                                                     id: 'valideringsfeil.termindato.ugyldigDatoFormat',
                                                 }),
                                             ),
-                                            (termindato) => {
+                                            (termin) => {
                                                 if (
-                                                    !dayjs(termindato)
+                                                    !dayjs(termin)
                                                         .subtract(6, 'months')
                                                         .isSameOrBefore(dayjs(fødselsdato), 'day')
                                                 ) {
@@ -161,7 +161,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
                                                     });
                                                 }
                                                 if (
-                                                    !dayjs(termindato)
+                                                    !dayjs(termin)
                                                         .add(1, 'months')
                                                         .isSameOrAfter(dayjs(fødselsdato), 'day')
                                                 ) {
@@ -203,9 +203,9 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
                                                     id: 'valideringsfeil.termindato.ugyldigDatoFormat',
                                                 }),
                                             ),
-                                            (termindato) => {
+                                            (termin) => {
                                                 if (
-                                                    dayjs(termindato).isSameOrBefore(
+                                                    dayjs(termin).isSameOrBefore(
                                                         dayjs().subtract(3, 'weeks').subtract(1, 'day').toDate(),
                                                     )
                                                 ) {
