@@ -39,71 +39,69 @@ const OppsummeringHvaSkjerNårSide: React.FunctionComponent<Props> = ({ hvaSkjer
     const { situasjon, fødselsdato, termindato } = hvaSkjerNårSituasjon;
     const erAleneforsørger = situasjon === 'aleneomsorg' || situasjon === 'kunMor' || situasjon === 'kunFarEllerMedmor';
     return (
-        <>
-            <VeiviserPage ref={ref} label={intl.formatMessage({ id: 'OppsummeringFpEllerEsSide.Oppsummering' })}>
-                <VStack gap="8">
-                    <ExpansionCard aria-label="" size="small">
-                        <ExpansionCard.Header>
-                            <HStack gap="6" align="center" wrap={false}>
-                                <IconCircleWrapper size="medium" color="green">
-                                    <QuestionmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
-                                </IconCircleWrapper>
-                                <ExpansionCard.Title size="small">
-                                    <FormattedMessage
-                                        id="HvaSkjerNår.OppsummeringSide.Svar"
-                                        values={{ erAleneforsørger }}
-                                    />
-                                </ExpansionCard.Title>
-                            </HStack>
-                        </ExpansionCard.Header>
-                        <ExpansionCard.Content>
-                            <VStack gap="4">
-                                <Heading size="xsmall">
-                                    <FormattedMessage
-                                        id="HvaSkjerNår.OppsummeringSide.Hvem"
-                                        values={{
-                                            hvem: finnHvemSomPlanlegger(hvaSkjerNårSituasjon),
-                                        }}
-                                    />
-                                </Heading>
-                                <BluePanel isDarkBlue>
-                                    <VStack gap="4">
-                                        {termindato && (
-                                            <BodyShort>
-                                                <FormattedMessage
-                                                    id="HvaSkjerNår.OppsummeringSide.Termin"
-                                                    values={{
-                                                        termindato: intl.formatDate(termindato, {
-                                                            day: '2-digit',
-                                                            month: 'long',
-                                                            year: 'numeric',
-                                                        }),
-                                                    }}
-                                                />
-                                            </BodyShort>
-                                        )}
-                                        {fødselsdato && (
-                                            <BodyShort>
-                                                <FormattedMessage
-                                                    id="HvaSkjerNår.OppsummeringSide.Fødselsdato"
-                                                    values={{
-                                                        fødselsdato: intl.formatDate(fødselsdato, {
-                                                            day: '2-digit',
-                                                            month: 'long',
-                                                            year: 'numeric',
-                                                        }),
-                                                    }}
-                                                />
-                                            </BodyShort>
-                                        )}
-                                    </VStack>
-                                </BluePanel>
-                            </VStack>
-                        </ExpansionCard.Content>
-                    </ExpansionCard>
-                </VStack>
-            </VeiviserPage>
-        </>
+        <VeiviserPage ref={ref} label={intl.formatMessage({ id: 'OppsummeringFpEllerEsSide.Oppsummering' })}>
+            <VStack gap="8">
+                <ExpansionCard aria-label="" size="small">
+                    <ExpansionCard.Header>
+                        <HStack gap="6" align="center" wrap={false}>
+                            <IconCircleWrapper size="medium" color="green">
+                                <QuestionmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
+                            </IconCircleWrapper>
+                            <ExpansionCard.Title size="small">
+                                <FormattedMessage
+                                    id="HvaSkjerNår.OppsummeringSide.Svar"
+                                    values={{ erAleneforsørger }}
+                                />
+                            </ExpansionCard.Title>
+                        </HStack>
+                    </ExpansionCard.Header>
+                    <ExpansionCard.Content>
+                        <VStack gap="4">
+                            <Heading size="xsmall">
+                                <FormattedMessage
+                                    id="HvaSkjerNår.OppsummeringSide.Hvem"
+                                    values={{
+                                        hvem: finnHvemSomPlanlegger(hvaSkjerNårSituasjon),
+                                    }}
+                                />
+                            </Heading>
+                            <BluePanel isDarkBlue>
+                                <VStack gap="4">
+                                    {termindato && (
+                                        <BodyShort>
+                                            <FormattedMessage
+                                                id="HvaSkjerNår.OppsummeringSide.Termin"
+                                                values={{
+                                                    termindato: intl.formatDate(termindato, {
+                                                        day: '2-digit',
+                                                        month: 'long',
+                                                        year: 'numeric',
+                                                    }),
+                                                }}
+                                            />
+                                        </BodyShort>
+                                    )}
+                                    {fødselsdato && (
+                                        <BodyShort>
+                                            <FormattedMessage
+                                                id="HvaSkjerNår.OppsummeringSide.Fødselsdato"
+                                                values={{
+                                                    fødselsdato: intl.formatDate(fødselsdato, {
+                                                        day: '2-digit',
+                                                        month: 'long',
+                                                        year: 'numeric',
+                                                    }),
+                                                }}
+                                            />
+                                        </BodyShort>
+                                    )}
+                                </VStack>
+                            </BluePanel>
+                        </VStack>
+                    </ExpansionCard.Content>
+                </ExpansionCard>
+            </VStack>
+        </VeiviserPage>
     );
 };
 
