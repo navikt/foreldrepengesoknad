@@ -113,7 +113,7 @@ describe('<SituasjonSide>', () => {
 
         expect(
             screen.getByText(
-                'For å kunne ha rett på foreldrepenger eller engangsstønad må man være medlem av folketrygden',
+                'For å kunne ha rett til foreldrepenger eller engangsstønad må man være medlem av folketrygden',
             ),
         ).toBeInTheDocument();
 
@@ -152,7 +152,7 @@ describe('<SituasjonSide>', () => {
         await userEvent.type(hvorMye, '5000');
 
         expect(
-            screen.getByText('For å kunne ha rett på foreldrepenger må man tjene minst 62 014 kr i året'),
+            screen.getByText('For å kunne ha rett til foreldrepenger må man tjene minst 62 014 kr i året'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
@@ -192,7 +192,7 @@ describe('<SituasjonSide>', () => {
         await userEvent.type(hvorMye, '5000');
 
         expect(
-            screen.getByText('For å kunne ha rett på foreldrepenger må man tjene minst 62 014 kr i året'),
+            screen.getByText('For å kunne ha rett til foreldrepenger må man tjene minst 62 014 kr i året'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
@@ -236,7 +236,7 @@ describe('<SituasjonSide>', () => {
         await userEvent.type(hvorMye, '5000');
 
         expect(
-            screen.getByText('For å kunne ha rett på foreldrepenger må man tjene minst 62 014 kr i året'),
+            screen.getByText('For å kunne ha rett til foreldrepenger må man tjene minst 62 014 kr i året'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
@@ -277,7 +277,7 @@ describe('<SituasjonSide>', () => {
         await userEvent.click(screen.getAllByText('Nei')[1]);
 
         expect(
-            screen.getByText('For å kunne ha rett på foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
+            screen.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
@@ -313,7 +313,7 @@ describe('<SituasjonSide>', () => {
         await userEvent.click(screen.getAllByText('Nei')[1]);
 
         expect(
-            screen.getByText('For å kunne ha rett på foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
+            screen.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
@@ -322,7 +322,7 @@ describe('<SituasjonSide>', () => {
         expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[3]);
 
-        expect(screen.getByText(/For å kunne ha rett på foreldrepenger eller engangsstønad/)).toBeInTheDocument();
+        expect(screen.getByText(/For å kunne ha rett til foreldrepenger eller engangsstønad/)).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[3]);
 
         await userEvent.click(screen.getByText('Se resultatet'));
@@ -359,7 +359,7 @@ describe('<SituasjonSide>', () => {
             await userEvent.click(screen.getAllByText('Nei')[1]);
 
             expect(
-                screen.getByText('For å kunne ha rett på foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
+                screen.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
             ).toBeInTheDocument();
 
             expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
@@ -368,7 +368,7 @@ describe('<SituasjonSide>', () => {
             expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
             await userEvent.click(screen.getAllByText('Nei')[3]);
 
-            expect(screen.getByText(/For å kunne ha rett på foreldrepenger eller engangsstønad/)).toBeInTheDocument();
+            expect(screen.getByText(/For å kunne ha rett til foreldrepenger eller engangsstønad/)).toBeInTheDocument();
 
             await userEvent.click(screen.getByText('Se resultatet'));
 

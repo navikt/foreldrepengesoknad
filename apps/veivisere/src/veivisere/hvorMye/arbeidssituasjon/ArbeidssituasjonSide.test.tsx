@@ -152,7 +152,7 @@ describe('<ArbeidssituasjonSide>', () => {
         ).toBeInTheDocument();
     });
 
-    it('skal velge en så lav månedsinntekt at en ikke har rett på foreldrepenger', async () => {
+    it('skal velge en så lav månedsinntekt at en ikke har rett til foreldrepenger', async () => {
         const setArbeidssituasjon = vi.fn();
         const utils = render(<Default setArbeidssituasjon={setArbeidssituasjon} />);
 

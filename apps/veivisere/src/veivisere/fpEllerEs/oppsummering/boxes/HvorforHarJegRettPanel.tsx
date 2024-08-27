@@ -41,7 +41,12 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
                         <KravinfoBoks
                             testId="harRettFp"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåHaInntekt" />}
-                            boxBodyText={<FormattedMessage id="HvorforHarJegRettPanel.DuHarOppgittInntekt" />}
+                            boxBodyText={
+                                <FormattedMessage
+                                    id="HvorforHarJegRettPanel.DuHarOppgittInntekt"
+                                    values={{ harHatt: fpEllerEsSituasjon.harHattInntekt }}
+                                />
+                            }
                             erOppfylt={!!fpEllerEsSituasjon.harHattInntekt}
                         />
                         <KravinfoBoks
