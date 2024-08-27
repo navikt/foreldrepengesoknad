@@ -39,14 +39,6 @@ const HvorforHarJegRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSit
                         <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKravEs" />
                     </BodyShort>
                     <VStack gap="4">
-                        {fpEllerEsSituasjon.harHattInntekt && (
-                            <KravinfoBoks
-                                testId="harRettEs"
-                                headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåHaInntekt" />}
-                                boxBodyText={<FormattedMessage id="HvorforHarJegRettPanel.DuHarOppgittInntekt" />}
-                                erOppfylt={!!fpEllerEsSituasjon.harHattInntekt}
-                            />
-                        )}
                         {fpEllerEsSituasjon.lønnPerMåned > minstelønn && (
                             <KravinfoBoks
                                 testId="harRettEs"
