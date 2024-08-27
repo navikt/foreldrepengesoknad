@@ -172,12 +172,14 @@ const FileUploader: React.FunctionComponent<Props> = ({
             <UNSAFE_FileUpload.Dropzone
                 label={label}
                 description={
-                    <VStack>
-                        {description && <BodyShort>{description}</BodyShort>}
-                        <FormattedMessage
-                            id="FileInput.Vedlegg.Lovlige"
-                            values={{ maxStørrelse: MAX_FIL_STØRRELSE_MB }}
-                        />
+                    <VStack gap="2">
+                        <BodyShort>
+                            {description && `${description} `}
+                            <FormattedMessage
+                                id="FileInput.Vedlegg.Lovlige"
+                                values={{ maxStørrelse: MAX_FIL_STØRRELSE_MB }}
+                            />
+                        </BodyShort>
                     </VStack>
                 }
                 accept={VALID_EXTENSIONS.join(', ')}

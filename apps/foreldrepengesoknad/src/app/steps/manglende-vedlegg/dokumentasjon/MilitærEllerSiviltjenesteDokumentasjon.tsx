@@ -49,6 +49,7 @@ const MilitærEllerSiviltjenesteDokumentasjon: React.FunctionComponent<Props> = 
                         antallPerioder: perioder.length,
                     },
                 )}
+                description={intl.formatMessage({ id: 'manglendeVedlegg.militær.description' })}
                 attachmentType={AttachmentType.ANNEN_INNTEKT}
                 metadataType={AttachmentMetadataType.OPPTJENING}
                 perioder={perioder}
