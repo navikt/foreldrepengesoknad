@@ -1,0 +1,262 @@
+import{j as k}from"./tslib.es6-BMc9PpVS.js";import{a as S}from"./chunk-MZXVCX43-CM0pFb8Z.js";import"./Tidsperioden-CRlAJzBJ.js";import"./Uttaksdagen-CHlL4_FN.js";import{B as a,M as X,F as Z,C as m}from"./FpDataContext-wT6-gpAc.js";import"./index-BP8_t0zE.js";import{S as Y}from"./sivilstandType-DxfjzFEG.js";import"./_baseToString-7VaozA17.js";import"./_createSet-1Wr4uFiM.js";import{i as $}from"./ErrorSummaryHookForm-B_LopTqh.js";import{S as nn}from"./useFpNavigator-CdYY8cCo.js";import{A as q}from"./AnnenForelderSteg-DRYAp6qq.js";import"./v4-CQkTLCs1.js";import"./index-Snk9MO9S.js";import"./index-BxmsGmlx.js";import"./dateFormValidation-B567oMpk.js";import"./bemUtils-DTdo7NuC.js";import"./links-BegG-28I.js";import"./iframe-Cn5AZTru.js";import"../sb-preview/runtime.js";import"./_baseForOwn-BL0n5IRD.js";import"./_baseUniq-Bi7npIOr.js";import"./barnUtils-DfbV6eO6.js";import"./RegistrertePersonalia-C2VQxgVR.js";import"./BabyWrapped-ClmcjsZr.js";import"./index-Dh_lE5Vb.js";const en=()=>(...p)=>(S("button-click")(...p),Promise.resolve()),n={fnr:"19047815714",fornavn:"TALENTFULL",etternavn:"MYGG",kjønn:"K",fødselsdato:"1978-04-19",barn:[{fnr:"21091981146",fødselsdato:"2021-03-15",annenForelder:{fnr:"12038517080",fødselsdato:"1985-03-12",fornavn:"LEALAUS",etternavn:"BÆREPOSE"},fornavn:"KLØKTIG",etternavn:"MIDTPUNKT",kjønn:"M"}]},vn={title:"steps/AnnenForelderSteg",component:q},e=({søker:p=n,søkersituasjon:w={situasjon:"fødsel",rolle:"mor"},barn:z={type:a.FØDT,fødselsdatoer:["2021-03-15"],antallBarn:1},annenForelder:H,gåTilNesteSide:Q=S("button-click"),mellomlagreSøknadOgNaviger:V=en(),avbrytSøknad:W=S("button-click")})=>($(),k.jsx(X,{initialEntries:[nn.ANNEN_FORELDER],children:k.jsx(Z,{onDispatch:Q,initialState:{[m.SØKERSITUASJON]:w,[m.OM_BARNET]:z,[m.ANNEN_FORELDER]:H},children:k.jsx(q,{søkerInfo:{søker:p,arbeidsforhold:[]},mellomlagreSøknadOgNaviger:V,avbrytSøknad:W})})})),r=e.bind({});r.args={barn:{type:a.FØDT,fødselsdatoer:["2021-03-15"],antallBarn:1,fnr:["21091981146"]},sivilstand:Y.UGIFT};const t=e.bind({});t.args={annenForelder:{kanIkkeOppgis:!1},søker:{...n,barn:[]}};const o=e.bind({});o.args={annenForelder:{fornavn:"annen forelder",kanIkkeOppgis:!1},søker:{...n,barn:[]}};const s=e.bind({});s.args={annenForelder:{fornavn:"Tom",fnr:"123456789",kanIkkeOppgis:!1},søker:{...n,barn:[{fornavn:"Ben",annenForelder:{fnr:"999999999",fødselsdato:"1985-03-12",fornavn:"LEALAUS",etternavn:"BÆREPOSE"}}]}};const i=e.bind({});i.args={barn:{type:a.FØDT,fødselsdatoer:["2021-03-15"],antallBarn:1,fnr:["21091981146"]},søkersituasjon:{situasjon:"fødsel",rolle:"far"},søker:{...n,fornavn:"LEALAUS",etternavn:"BÆREPOSE",kjønn:"M",barn:[{fnr:"21091981146",fødselsdato:"2021-03-15",annenForelder:{fnr:"12038517080",fødselsdato:"1985-03-12",fornavn:"TALENTFULL",etternavn:"MYGG"},fornavn:"KLØKTIG",etternavn:"MIDTPUNKT",kjønn:"K"}]}};const l=e.bind({});l.args={barn:{type:a.UFØDT,antallBarn:1,termindato:"2023-05-05"},søkersituasjon:{situasjon:"fødsel",rolle:"mor"},annenForelder:{kanIkkeOppgis:!1},søker:{...n,barn:[]}};const d=e.bind({});d.args={barn:{type:a.UFØDT,antallBarn:1,termindato:"2023-05-05"},søkersituasjon:{situasjon:"fødsel",rolle:"medmor"},annenForelder:{kanIkkeOppgis:!1},søker:{...n,kjønn:"K",barn:[]}};const F=e.bind({});F.args={barn:{type:a.UFØDT,antallBarn:1,termindato:"2023-05-05"},søkersituasjon:{situasjon:"fødsel",rolle:"far"},annenForelder:{kanIkkeOppgis:!1},søker:{...n,fornavn:"LEALAUS",etternavn:"BÆREPOSE",kjønn:"M",barn:[]}};const x=e.bind({});x.args={barn:{type:a.UFØDT,antallBarn:1,termindato:"2023-05-05"},søkersituasjon:{situasjon:"fødsel",rolle:"far"},annenForelder:{kanIkkeOppgis:!1},søker:{...n,fornavn:"LEALAUS",etternavn:"BÆREPOSE",kjønn:"M",barn:[],sivilstand:{type:Y.GIFT}}};var c,g,u;r.parameters={...r.parameters,docs:{...(c=r.parameters)==null?void 0:c.docs,source:{originalSource:`({
+  søker = defaultSøker,
+  søkersituasjon = {
+    situasjon: 'fødsel',
+    rolle: 'mor'
+  },
+  barn = {
+    type: BarnType.FØDT,
+    fødselsdatoer: ['2021-03-15'],
+    antallBarn: 1
+  },
+  annenForelder,
+  gåTilNesteSide = action('button-click'),
+  mellomlagreSøknadOgNaviger = promiseAction(),
+  avbrytSøknad = action('button-click')
+}) => {
+  initAmplitude();
+  return <MemoryRouter initialEntries={[SøknadRoutes.ANNEN_FORELDER]}>
+            <FpDataContext onDispatch={gåTilNesteSide} initialState={{
+      [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+      [ContextDataType.OM_BARNET]: barn,
+      [ContextDataType.ANNEN_FORELDER]: annenForelder
+    }}>
+                <AnnenForelderSteg søkerInfo={{
+        søker,
+        arbeidsforhold: []
+      }} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} avbrytSøknad={avbrytSøknad} />
+            </FpDataContext>
+        </MemoryRouter>;
+}`,...(u=(g=r.parameters)==null?void 0:g.docs)==null?void 0:u.source}}};var N,E,f;t.parameters={...t.parameters,docs:{...(N=t.parameters)==null?void 0:N.docs,source:{originalSource:`({
+  søker = defaultSøker,
+  søkersituasjon = {
+    situasjon: 'fødsel',
+    rolle: 'mor'
+  },
+  barn = {
+    type: BarnType.FØDT,
+    fødselsdatoer: ['2021-03-15'],
+    antallBarn: 1
+  },
+  annenForelder,
+  gåTilNesteSide = action('button-click'),
+  mellomlagreSøknadOgNaviger = promiseAction(),
+  avbrytSøknad = action('button-click')
+}) => {
+  initAmplitude();
+  return <MemoryRouter initialEntries={[SøknadRoutes.ANNEN_FORELDER]}>
+            <FpDataContext onDispatch={gåTilNesteSide} initialState={{
+      [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+      [ContextDataType.OM_BARNET]: barn,
+      [ContextDataType.ANNEN_FORELDER]: annenForelder
+    }}>
+                <AnnenForelderSteg søkerInfo={{
+        søker,
+        arbeidsforhold: []
+      }} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} avbrytSøknad={avbrytSøknad} />
+            </FpDataContext>
+        </MemoryRouter>;
+}`,...(f=(E=t.parameters)==null?void 0:E.docs)==null?void 0:f.source}}};var D,T,y;o.parameters={...o.parameters,docs:{...(D=o.parameters)==null?void 0:D.docs,source:{originalSource:`({
+  søker = defaultSøker,
+  søkersituasjon = {
+    situasjon: 'fødsel',
+    rolle: 'mor'
+  },
+  barn = {
+    type: BarnType.FØDT,
+    fødselsdatoer: ['2021-03-15'],
+    antallBarn: 1
+  },
+  annenForelder,
+  gåTilNesteSide = action('button-click'),
+  mellomlagreSøknadOgNaviger = promiseAction(),
+  avbrytSøknad = action('button-click')
+}) => {
+  initAmplitude();
+  return <MemoryRouter initialEntries={[SøknadRoutes.ANNEN_FORELDER]}>
+            <FpDataContext onDispatch={gåTilNesteSide} initialState={{
+      [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+      [ContextDataType.OM_BARNET]: barn,
+      [ContextDataType.ANNEN_FORELDER]: annenForelder
+    }}>
+                <AnnenForelderSteg søkerInfo={{
+        søker,
+        arbeidsforhold: []
+      }} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} avbrytSøknad={avbrytSøknad} />
+            </FpDataContext>
+        </MemoryRouter>;
+}`,...(y=(T=o.parameters)==null?void 0:T.docs)==null?void 0:y.source}}};var b,R,O;s.parameters={...s.parameters,docs:{...(b=s.parameters)==null?void 0:b.docs,source:{originalSource:`({
+  søker = defaultSøker,
+  søkersituasjon = {
+    situasjon: 'fødsel',
+    rolle: 'mor'
+  },
+  barn = {
+    type: BarnType.FØDT,
+    fødselsdatoer: ['2021-03-15'],
+    antallBarn: 1
+  },
+  annenForelder,
+  gåTilNesteSide = action('button-click'),
+  mellomlagreSøknadOgNaviger = promiseAction(),
+  avbrytSøknad = action('button-click')
+}) => {
+  initAmplitude();
+  return <MemoryRouter initialEntries={[SøknadRoutes.ANNEN_FORELDER]}>
+            <FpDataContext onDispatch={gåTilNesteSide} initialState={{
+      [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+      [ContextDataType.OM_BARNET]: barn,
+      [ContextDataType.ANNEN_FORELDER]: annenForelder
+    }}>
+                <AnnenForelderSteg søkerInfo={{
+        søker,
+        arbeidsforhold: []
+      }} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} avbrytSøknad={avbrytSøknad} />
+            </FpDataContext>
+        </MemoryRouter>;
+}`,...(O=(R=s.parameters)==null?void 0:R.docs)==null?void 0:O.source}}};var A,v,B;i.parameters={...i.parameters,docs:{...(A=i.parameters)==null?void 0:A.docs,source:{originalSource:`({
+  søker = defaultSøker,
+  søkersituasjon = {
+    situasjon: 'fødsel',
+    rolle: 'mor'
+  },
+  barn = {
+    type: BarnType.FØDT,
+    fødselsdatoer: ['2021-03-15'],
+    antallBarn: 1
+  },
+  annenForelder,
+  gåTilNesteSide = action('button-click'),
+  mellomlagreSøknadOgNaviger = promiseAction(),
+  avbrytSøknad = action('button-click')
+}) => {
+  initAmplitude();
+  return <MemoryRouter initialEntries={[SøknadRoutes.ANNEN_FORELDER]}>
+            <FpDataContext onDispatch={gåTilNesteSide} initialState={{
+      [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+      [ContextDataType.OM_BARNET]: barn,
+      [ContextDataType.ANNEN_FORELDER]: annenForelder
+    }}>
+                <AnnenForelderSteg søkerInfo={{
+        søker,
+        arbeidsforhold: []
+      }} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} avbrytSøknad={avbrytSøknad} />
+            </FpDataContext>
+        </MemoryRouter>;
+}`,...(B=(v=i.parameters)==null?void 0:v.docs)==null?void 0:B.source}}};var j,C,M;l.parameters={...l.parameters,docs:{...(j=l.parameters)==null?void 0:j.docs,source:{originalSource:`({
+  søker = defaultSøker,
+  søkersituasjon = {
+    situasjon: 'fødsel',
+    rolle: 'mor'
+  },
+  barn = {
+    type: BarnType.FØDT,
+    fødselsdatoer: ['2021-03-15'],
+    antallBarn: 1
+  },
+  annenForelder,
+  gåTilNesteSide = action('button-click'),
+  mellomlagreSøknadOgNaviger = promiseAction(),
+  avbrytSøknad = action('button-click')
+}) => {
+  initAmplitude();
+  return <MemoryRouter initialEntries={[SøknadRoutes.ANNEN_FORELDER]}>
+            <FpDataContext onDispatch={gåTilNesteSide} initialState={{
+      [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+      [ContextDataType.OM_BARNET]: barn,
+      [ContextDataType.ANNEN_FORELDER]: annenForelder
+    }}>
+                <AnnenForelderSteg søkerInfo={{
+        søker,
+        arbeidsforhold: []
+      }} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} avbrytSøknad={avbrytSøknad} />
+            </FpDataContext>
+        </MemoryRouter>;
+}`,...(M=(C=l.parameters)==null?void 0:C.docs)==null?void 0:M.source}}};var L,U,_;d.parameters={...d.parameters,docs:{...(L=d.parameters)==null?void 0:L.docs,source:{originalSource:`({
+  søker = defaultSøker,
+  søkersituasjon = {
+    situasjon: 'fødsel',
+    rolle: 'mor'
+  },
+  barn = {
+    type: BarnType.FØDT,
+    fødselsdatoer: ['2021-03-15'],
+    antallBarn: 1
+  },
+  annenForelder,
+  gåTilNesteSide = action('button-click'),
+  mellomlagreSøknadOgNaviger = promiseAction(),
+  avbrytSøknad = action('button-click')
+}) => {
+  initAmplitude();
+  return <MemoryRouter initialEntries={[SøknadRoutes.ANNEN_FORELDER]}>
+            <FpDataContext onDispatch={gåTilNesteSide} initialState={{
+      [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+      [ContextDataType.OM_BARNET]: barn,
+      [ContextDataType.ANNEN_FORELDER]: annenForelder
+    }}>
+                <AnnenForelderSteg søkerInfo={{
+        søker,
+        arbeidsforhold: []
+      }} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} avbrytSøknad={avbrytSøknad} />
+            </FpDataContext>
+        </MemoryRouter>;
+}`,...(_=(U=d.parameters)==null?void 0:U.docs)==null?void 0:_.source}}};var I,h,K;F.parameters={...F.parameters,docs:{...(I=F.parameters)==null?void 0:I.docs,source:{originalSource:`({
+  søker = defaultSøker,
+  søkersituasjon = {
+    situasjon: 'fødsel',
+    rolle: 'mor'
+  },
+  barn = {
+    type: BarnType.FØDT,
+    fødselsdatoer: ['2021-03-15'],
+    antallBarn: 1
+  },
+  annenForelder,
+  gåTilNesteSide = action('button-click'),
+  mellomlagreSøknadOgNaviger = promiseAction(),
+  avbrytSøknad = action('button-click')
+}) => {
+  initAmplitude();
+  return <MemoryRouter initialEntries={[SøknadRoutes.ANNEN_FORELDER]}>
+            <FpDataContext onDispatch={gåTilNesteSide} initialState={{
+      [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+      [ContextDataType.OM_BARNET]: barn,
+      [ContextDataType.ANNEN_FORELDER]: annenForelder
+    }}>
+                <AnnenForelderSteg søkerInfo={{
+        søker,
+        arbeidsforhold: []
+      }} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} avbrytSøknad={avbrytSøknad} />
+            </FpDataContext>
+        </MemoryRouter>;
+}`,...(K=(h=F.parameters)==null?void 0:h.docs)==null?void 0:K.source}}};var P,G,J;x.parameters={...x.parameters,docs:{...(P=x.parameters)==null?void 0:P.docs,source:{originalSource:`({
+  søker = defaultSøker,
+  søkersituasjon = {
+    situasjon: 'fødsel',
+    rolle: 'mor'
+  },
+  barn = {
+    type: BarnType.FØDT,
+    fødselsdatoer: ['2021-03-15'],
+    antallBarn: 1
+  },
+  annenForelder,
+  gåTilNesteSide = action('button-click'),
+  mellomlagreSøknadOgNaviger = promiseAction(),
+  avbrytSøknad = action('button-click')
+}) => {
+  initAmplitude();
+  return <MemoryRouter initialEntries={[SøknadRoutes.ANNEN_FORELDER]}>
+            <FpDataContext onDispatch={gåTilNesteSide} initialState={{
+      [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+      [ContextDataType.OM_BARNET]: barn,
+      [ContextDataType.ANNEN_FORELDER]: annenForelder
+    }}>
+                <AnnenForelderSteg søkerInfo={{
+        søker,
+        arbeidsforhold: []
+      }} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} avbrytSøknad={avbrytSøknad} />
+            </FpDataContext>
+        </MemoryRouter>;
+}`,...(J=(G=x.parameters)==null?void 0:G.docs)==null?void 0:J.source}}};const Bn=["AnnenForelderFraOppgittBarn","SkalOppgiPersonalia","SkalOppgiPersonaliaNavnMangler","SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike","ForFar","MorUfødtBarn","MedmorUfødtBarn","FarUfødtBarn","FarGiftUfødtBarn"];export{r as AnnenForelderFraOppgittBarn,x as FarGiftUfødtBarn,F as FarUfødtBarn,i as ForFar,d as MedmorUfødtBarn,l as MorUfødtBarn,t as SkalOppgiPersonalia,s as SkalOppgiPersonaliaFnrPåAnnenForelderOgBarnErUlike,o as SkalOppgiPersonaliaNavnMangler,Bn as __namedExportsOrder,vn as default};
