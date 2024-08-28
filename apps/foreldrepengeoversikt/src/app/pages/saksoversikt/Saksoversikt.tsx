@@ -35,7 +35,6 @@ import Tidslinje from 'app/sections/tidslinje/Tidslinje';
 import { RedirectSource } from 'app/types/RedirectSource';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
-import { getNavnAnnenForelder } from 'app/utils/sakerUtils';
 import { getRelevantNyTidslinjehendelse } from 'app/utils/tidslinjeUtils';
 
 interface Props {
@@ -101,9 +100,6 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
         return <Alert variant="warning">{`Vi finner ingen sak med saksnummer: ${params.saksnummer}.`}</Alert>;
     }
 
-    const navnPåSøker = søkerinfo.søker.fornavn;
-    const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, gjeldendeSak);
-
     return (
         <PageRouteLayout header={<DinSakHeader sak={gjeldendeSak} />}>
             <VStack gap="4">
@@ -149,14 +145,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
                         showSkeleton={annenPartsVedtakQuery.isLoading}
                         skeletonProps={{ height: '210px', variant: 'rounded' }}
                     >
-                        <DinPlan
-                            sak={gjeldendeSak}
-                            visHelePlanen={false}
-                            navnPåSøker={navnPåSøker}
-                            navnAnnenForelder={navnAnnenForelder}
-                            annenPartsPerioder={annenPartsVedtakQuery.data?.perioder}
-                            termindato={gjeldendeSak.familiehendelse.termindato}
-                        />
+                        <DinPlan />
                     </ContentSection>
                 )}
             </VStack>

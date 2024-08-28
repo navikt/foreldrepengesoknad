@@ -93,7 +93,6 @@ interface Props {
     handleSlettUttaksplan: () => void;
     handleResetUttaksplan: () => void;
     visAutomatiskJusteringForm: boolean;
-    perioderMedUttakRundtFødsel: Uttaksperiode[];
     barnFraNesteSak: BarnFraNesteSak | undefined;
     familiehendelsesdatoNesteSak: Date | undefined;
     førsteUttaksdagNesteBarnsSak: Date | undefined;

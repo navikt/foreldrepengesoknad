@@ -16,7 +16,6 @@ import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
 
 import { Uttaksdagen } from './Uttaksdagen';
 import { ISOStringToDate } from './dateUtils';
-import { guid } from './guid';
 import { NavnPåForeldre } from './personUtils';
 import { capitalizeFirstLetter } from './stringUtils';
 import { Tidsperioden, getTidsperiode, isValidTidsperiode } from './tidsperiodeUtils';
@@ -421,7 +420,6 @@ const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]
         if (index < datoerIPerioden.length - 1) {
             oppsplittetPeriode.push({
                 ...periode,
-                id: guid(),
                 fom: formatDateIso(datoWrapper.erFom ? datoWrapper.dato : Uttaksdagen(datoWrapper.dato).neste()),
                 tom: undefined!,
             });
@@ -501,7 +499,7 @@ export const filtrerAnnenPartsUttakNårIkkeSamtidigUttak = (
 };
 
 export const leggTilVisningsInfo = (annenPartsPerioder: Periode[], søkerensPerioder: Periode[]): Periode[] => {
-    const annenPartsPerioderMedVisningsInfo = annenPartsPerioder.map((periode) => {
+    const annenPartsPerioderMedVisningsInfo = annenPartsPerioder.map((periode): Periode => {
         const overlappendeSøkersPeriode = søkerensPerioder.find((p) => {
             return Tidsperioden(getTidsperiode(p)).overlapper(getTidsperiode(periode));
         });
@@ -511,7 +509,7 @@ export const leggTilVisningsInfo = (annenPartsPerioder: Periode[], søkerensPeri
         if (erInnvilgetSamtidigUttak) {
             return {
                 ...periode,
-                visIPlan: false,
+                // visIPlan: false,
             };
         }
         const overlapperMedSøkerensPeriodeSomTrekkerDager =
@@ -520,25 +518,25 @@ export const leggTilVisningsInfo = (annenPartsPerioder: Periode[], søkerensPeri
         if (overlapperMedSøkerensPeriodeSomTrekkerDager) {
             return {
                 ...periode,
-                visIPlan: false,
+                // visIPlan: false,
             };
         }
 
         return {
             ...periode,
-            visIPlan: true,
+            // visIPlan: true,
         };
     });
     return annenPartsPerioderMedVisningsInfo;
 };
 
-export const getPerioderForVisning = (perioder: Periode[], erAnnenPartsPeriode: boolean): Periode[] => {
+export const getPerioderForVisning = (perioder: Periode[]): Periode[] => {
+    //  erAnnenPartsPeriode: boolean
     return perioder
-        .map((periode) => {
+        .map((periode): Periode => {
             return {
                 ...periode,
-                gjelderAnnenPart: erAnnenPartsPeriode,
-                id: guid(),
+                // gjelderAnnenPart: erAnnenPartsPeriode,
             };
         })
         .filter(
@@ -587,15 +585,16 @@ export const skalAnnenPartsPeriodeVises = (annenPartsPeriode: Periode, termindat
     return erAnnenPartsPrematurePeriode(annenPartsPeriode, termindato);
 };
 
-export const getPeriodeForelder = (erFarEllerMedmor: boolean, periode: Periode): Forelder => {
+export const getPeriodeForelder = (erFarEllerMedmor: boolean): Forelder => {
+    //periode: Periode
     if (erFarEllerMedmor) {
-        if (periode.gjelderAnnenPart) {
-            return Forelder.mor;
-        }
+        // if (periode.gjelderAnnenPart) {
+        //     return Forelder.mor;
+        // }
         return Forelder.farMedmor;
     }
-    if (periode.gjelderAnnenPart) {
-        return Forelder.farMedmor;
-    }
+    // if (periode.gjelderAnnenPart) {
+    //     return Forelder.farMedmor;
+    // }
     return Forelder.mor;
 };

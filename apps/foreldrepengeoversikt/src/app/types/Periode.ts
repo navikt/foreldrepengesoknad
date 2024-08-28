@@ -8,21 +8,17 @@ import { PeriodeResultat } from './PeriodeResultat';
 import { UtsettelseÅrsakType } from './UtsettelseÅrsakType';
 
 export interface Periode {
-    id: string;
     fom: string;
     tom: string;
     resultat?: PeriodeResultat;
-    kontoType?: StønadskontoType;
     flerbarnsdager?: boolean;
+    kontoType?: StønadskontoType;
     gradering?: Gradering;
     oppholdÅrsak?: OppholdÅrsakType;
     utsettelseÅrsak?: UtsettelseÅrsakType;
     overføringÅrsak?: OverføringÅrsakType;
     samtidigUttak?: number;
     morsAktivitet?: MorsAktivitet;
-    angittAvAnnenPart?: boolean;
-    gjelderAnnenPart?: boolean;
-    visIPlan?: boolean;
 }
 
 export enum PeriodeHullType {
