@@ -16,10 +16,10 @@ import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
 import { kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataMap, ContextDataType, useContextGetAnyData } from 'app/context/FpDataContext';
 import { AnnenInntektType } from 'app/types/AndreInntektskilder';
 
-import SøknadRoutes, { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER } from '../routes/routes';
+import SøknadRoutes, { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER } from '../appData/routes';
+import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
 
 const getKanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
     if (!isFarEllerMedmor(rolle)) {

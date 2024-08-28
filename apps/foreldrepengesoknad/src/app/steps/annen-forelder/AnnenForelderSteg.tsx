@@ -10,12 +10,12 @@ import { Søker, Søkerinfo } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
 
-import RegistrertePersonalia from '../../components/registrerte-personalia/RegistrertePersonalia';
+import RegistrertePersonalia from '../../pages/registrerte-personalia/RegistrertePersonalia';
 import { AnnenForelderFormData } from './AnnenForelderFormData';
 import AnnenForelderOppgittPanel from './AnnenForelderOppgittPanel';
 import OppgiPersonalia from './OppgiPersonalia';

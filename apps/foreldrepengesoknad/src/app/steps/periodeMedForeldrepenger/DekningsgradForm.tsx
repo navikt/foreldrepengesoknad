@@ -22,8 +22,8 @@ import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '
 import { Infobox } from '@navikt/fp-ui';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import PeriodeMedForeldrepenger from 'app/context/types/PeriodeMedForeldrepenger';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
+import PeriodeMedForeldrepenger from 'app/types/PeriodeMedForeldrepenger';
 import { getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { førsteJuli2024ReglerGjelder } from 'app/utils/dateUtils';
 

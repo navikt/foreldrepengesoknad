@@ -4,11 +4,11 @@ import { getAxiosInstance } from '@navikt/fp-api';
 import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
 import { Attachment, Dekningsgrad, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 
-import Fordeling from 'app/context/types/Fordeling';
-import { Søknad } from 'app/context/types/Søknad';
-import SøknadRoutes from 'app/routes/routes';
+import SøknadRoutes from 'app/appData/routes';
+import Fordeling from 'app/types/Fordeling';
 import { Kvittering } from 'app/types/Kvittering';
 import { SakerOppslag } from 'app/types/SakerOppslag';
+import { Søknad } from 'app/types/Søknad';
 import { useGetRequest } from 'app/utils/hooks/useRequest';
 
 import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';

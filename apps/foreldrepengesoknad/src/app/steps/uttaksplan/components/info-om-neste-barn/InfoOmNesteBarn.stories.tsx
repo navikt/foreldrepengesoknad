@@ -3,7 +3,7 @@ import withRouter from 'storybook/decorators/withRouter';
 
 import { BarnFraNesteSak, BarnType } from '@navikt/fp-common';
 
-import { ContextDataType, FpDataContext } from 'app/context/FpDataContext';
+import { ContextDataType, FpDataContext } from 'app/appData/FpDataContext';
 
 import InfoOmNesteBarn from './InfoOmNesteBarn';
 

@@ -5,7 +5,7 @@ import { Alert, VStack } from '@navikt/ds-react';
 import { getVarighetString } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
 import { getTekstForAntallBarn } from 'app/utils/barnUtils';
 
 import {

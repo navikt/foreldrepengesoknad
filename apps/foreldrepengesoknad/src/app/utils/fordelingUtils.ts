@@ -7,7 +7,7 @@ import {
     getFørsteUttaksdagForeldrepengerFørFødsel,
 } from '@navikt/fp-uttaksplan';
 
-import Fordeling, { FellesperiodeFordelingValg, OppstartValg } from 'app/context/types/Fordeling';
+import Fordeling, { FellesperiodeFordelingValg, OppstartValg } from 'app/types/Fordeling';
 
 export const getNesteUttaksdagEtterAnnenForelder = (sisteDagAnnenForelder: Date | undefined) => {
     if (!sisteDagAnnenForelder) {

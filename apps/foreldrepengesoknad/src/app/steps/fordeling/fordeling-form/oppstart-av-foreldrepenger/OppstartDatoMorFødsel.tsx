@@ -9,8 +9,8 @@ import { ISOStringToDate } from '@navikt/fp-formik';
 import { isValidDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import Fordeling, { OppstartValg } from 'app/context/types/Fordeling';
+import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
+import Fordeling, { OppstartValg } from 'app/types/Fordeling';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 
 import MorOppstartInformasjon from './MorOppstartInformasjon';

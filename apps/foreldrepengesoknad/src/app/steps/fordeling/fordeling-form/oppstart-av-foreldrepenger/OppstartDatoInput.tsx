@@ -9,8 +9,8 @@ import { SøkersituasjonFp } from '@navikt/fp-types';
 import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-uttaksplan';
 import { isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import { OppstartValg } from 'app/context/types/Fordeling';
+import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
+import { OppstartValg } from 'app/types/Fordeling';
 import { getDatoForAleneomsorg, getErAleneOmOmsorg } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato, getFamiliehendelsedatoDate, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 

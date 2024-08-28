@@ -20,7 +20,7 @@ import {
     leggTilAnnenPartsPerioderISøkerenesUttaksplan,
 } from '@navikt/fp-uttaksplan';
 
-import Fordeling from 'app/context/types/Fordeling';
+import Fordeling from 'app/types/Fordeling';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { getDatoForAleneomsorg, getErAleneOmOmsorg, getIsDeltUttak } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedatoDate, getTermindato } from 'app/utils/barnUtils';

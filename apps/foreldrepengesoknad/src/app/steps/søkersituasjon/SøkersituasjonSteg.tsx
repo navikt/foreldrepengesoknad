@@ -8,9 +8,9 @@ import { Arbeidsforhold, Kjønn, SøkersituasjonFp } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 
 type Props = {
     arbeidsforhold: Arbeidsforhold[];

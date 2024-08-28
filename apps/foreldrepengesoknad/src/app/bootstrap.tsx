@@ -12,8 +12,9 @@ import { createRoot } from 'react-dom/client';
 
 import '@navikt/ds-css';
 
+import { initAmplitude } from '@navikt/fp-metrics';
+
 import AppContainer from './AppContainer';
-import { initAmplitude } from './amplitude/amplitude';
 import './styles/app.less';
 
 countries.registerLocale(langNB);

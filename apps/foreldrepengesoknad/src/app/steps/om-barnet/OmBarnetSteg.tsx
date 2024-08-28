@@ -19,12 +19,11 @@ import { SøkerBarn, Søkerinfo } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { getEldsteRegistrerteBarn } from 'app/utils/dateUtils';
+import { getEldsteRegistrerteBarn, getErDatoInnenEnDagFraAnnenDato } from 'app/utils/dateUtils';
 
 import { BarnetFormValues } from './OmBarnetFormValues';
 import ValgteRegistrerteBarn from './ValgteRegistrerteBarn';
