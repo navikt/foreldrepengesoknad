@@ -5,6 +5,7 @@ import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { VStack } from '@navikt/ds-react';
 
 import { Satser } from '@navikt/fp-types';
+import { formatValue } from '@navikt/fp-validation/src/form/numberFormValidation';
 
 import VeiviserPage from '../../felles/VeiviserPage';
 import { FpEllerEsSituasjon } from '../situasjon/SituasjonSide';
@@ -19,8 +20,9 @@ const finnHvemSomHarRett = (fpEllerEsSituasjon: FpEllerEsSituasjon, satser: Sats
     const minstelønn = grunnbeløpet / 2;
 
     const { situasjon, lønnPerMåned, borDuINorge, jobberDuINorge } = fpEllerEsSituasjon;
-    const erLønnOverEllerLik200000 = lønnPerMåned * 12 >= 200000;
-    const erLønnOverEllerLikMinstelønn = lønnPerMåned * 12 >= minstelønn;
+    const lønnPerMånedNummer = formatValue(lønnPerMåned);
+    const erLønnOverEllerLik200000 = lønnPerMånedNummer !== undefined && lønnPerMånedNummer * 12 >= 200000;
+    const erLønnOverEllerLikMinstelønn = lønnPerMånedNummer !== undefined && lønnPerMånedNummer * 12 >= minstelønn;
     if (
         situasjon === 'mor' &&
         erLønnOverEllerLik200000 &&
