@@ -10,11 +10,12 @@ import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { BodyShort, Button, Heading, Label, List, Radio, ReadMore, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Form, TextField } from '@navikt/fp-form-hooks';
+import { Form, NumericField } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
-import { isValidDecimal } from '@navikt/fp-validation';
+import { isValidDecimal, isValidNumberForm } from '@navikt/fp-validation';
+import { formatValue } from '@navikt/fp-validation/src/form/numberFormValidation';
 
 import VeiviserPage from '../../felles/VeiviserPage';
 import BlueRadioGroup from '../../felles/formWrappers/BlueRadioGroup';
@@ -30,7 +31,7 @@ export type FpEllerEsSituasjon = {
     erIArbeid: boolean;
     harHattInntekt: boolean;
     harHattAndreInntekter: boolean;
-    lønnPerMåned: number;
+    lønnPerMåned: string;
     borDuINorge: boolean;
     jobberDuINorge: boolean;
 };
@@ -60,6 +61,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const minstelønn = grunnbeløpet / 2;
+    const lønnPerMånedNummer = formatValue(lønnPerMåned);
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
@@ -190,13 +192,16 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                             <VStack gap="4">
                                 <BluePanel isDarkBlue={lønnPerMåned === undefined} shouldFadeIn>
                                     <VStack gap="2">
-                                        <TextField
+                                        <NumericField
                                             name="lønnPerMåned"
                                             onChange={scrollToBottom}
                                             label={<FormattedMessage id="SituasjonSide.LønnFørSkatt" />}
                                             validate={[
-                                                isValidDecimal(
+                                                isValidNumberForm(
                                                     intl.formatMessage({ id: 'valideringsfeil.lønn.ikkeTall' }),
+                                                ),
+                                                isValidDecimal(
+                                                    intl.formatMessage({ id: 'valideringsfeil.lønn.desimaler' }),
                                                 ),
                                             ]}
                                         />
@@ -205,8 +210,8 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                                 <FormattedMessage id="SituasjonSide.Årsinntekt" />
                                             </Label>
                                             <Heading size="large">
-                                                {lønnPerMåned ? (
-                                                    formatCurrencyWithKr(lønnPerMåned * 12)
+                                                {lønnPerMånedNummer ? (
+                                                    formatCurrencyWithKr(lønnPerMånedNummer * 12)
                                                 ) : (
                                                     <FormattedMessage id="SituasjonSide.IngenKr" />
                                                 )}
@@ -223,7 +228,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                     </BodyShort>
                                 </ReadMore>
                             </VStack>
-                            {lønnPerMåned * 12 < minstelønn && (
+                            {lønnPerMånedNummer !== undefined && lønnPerMånedNummer * 12 < minstelønn && (
                                 <Infobox
                                     header={
                                         <FormattedMessage
@@ -238,7 +243,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                         <FormattedMessage
                                             id="SituasjonSide.OppgittLønnIkkeRett"
                                             values={{
-                                                årslønn: formatCurrencyWithKr(lønnPerMåned * 12),
+                                                årslønn: formatCurrencyWithKr(lønnPerMånedNummer * 12),
                                                 minstelønn: formatCurrencyWithKr(minstelønn),
                                             }}
                                         />

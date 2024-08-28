@@ -187,5 +187,6 @@
     "valideringsfeil.fødselsdato.måVæreIdagEllerTidligere": "Fødselsdato må vera i dag eller tidlegare",
     "valideringsfeil.fødselsdato.ugyldigDatoFormat": "Fødselsdato må vera ein gyldig dato på formatet dd.mm.åååå",
     "valideringsfeil.fødselsdato.førOktober2021": "Fødselsdato er før 1. oktober 2021",
-    "valideringsfeil.lønn.ikkeTall": "Du har skrive noko som ikkje er eit tal"
+    "valideringsfeil.lønn.ikkeTall": "Du har skrive noko som ikkje er eit tal",
+    "valideringsfeil.lønn.desimaler": "Du har skrive for mange desimalar. Skriv inn eit tal med maks 2 desimalar"
 }
