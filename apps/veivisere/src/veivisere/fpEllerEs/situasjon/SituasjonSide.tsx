@@ -9,10 +9,12 @@ import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { BodyShort, Button, Heading, Label, List, Radio, ReadMore, Spacer, VStack } from '@navikt/ds-react';
 
+import { links } from '@navikt/fp-constants';
 import { Form, TextField } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
+import { isValidDecimal } from '@navikt/fp-validation';
 
 import VeiviserPage from '../../felles/VeiviserPage';
 import BlueRadioGroup from '../../felles/formWrappers/BlueRadioGroup';
@@ -60,8 +62,6 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
     const minstelønn = grunnbeløpet / 2;
 
     const { ref, scrollToBottom } = useScrollBehaviour();
-    const folketrygdenlenke =
-        'https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden';
 
     return (
         <VeiviserPage
@@ -194,6 +194,11 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                             name="lønnPerMåned"
                                             onChange={scrollToBottom}
                                             label={<FormattedMessage id="SituasjonSide.LønnFørSkatt" />}
+                                            validate={[
+                                                isValidDecimal(
+                                                    intl.formatMessage({ id: 'valideringsfeil.lønn.ikkeTall' }),
+                                                ),
+                                            ]}
                                         />
                                         <VStack gap="2">
                                             <Label>
@@ -286,7 +291,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                             id="SituasjonSide.IkkeMedlem"
                                             values={{
                                                 a: (msg: any) => (
-                                                    <a href={folketrygdenlenke} target="_blank" rel="noreferrer">
+                                                    <a href={links.folketrygden} target="_blank" rel="noreferrer">
                                                         {msg}
                                                     </a>
                                                 ),

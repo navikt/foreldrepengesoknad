@@ -186,5 +186,6 @@
     "valideringsfeil.termindato.forTidlig": "Termindatoen kan ikke være tidligere enn 3 uker fra i dag",
     "valideringsfeil.fødselsdato.måVæreIdagEllerTidligere": "Fødselsdato må være i dag eller tidligere",
     "valideringsfeil.fødselsdato.ugyldigDatoFormat": "Fødselsdato må være en gyldig dato på formatet dd.mm.åååå",
-    "valideringsfeil.fødselsdato.førOktober2021": "Fødselsdato er før 1. oktober 2021"
+    "valideringsfeil.fødselsdato.førOktober2021": "Fødselsdato er før 1. oktober 2021",
+    "valideringsfeil.lønn.ikkeTall": "Du har skrevet noe som ikke er et tall"
 }
