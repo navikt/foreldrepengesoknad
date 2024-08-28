@@ -6,6 +6,7 @@ import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
+import { isValidNumber } from '@navikt/fp-validation';
 
 import KravinfoBoks from '../KravinfoBoks';
 
@@ -18,7 +19,7 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
     const { borDuINorge, jobberDuINorge, lønnPerMåned, harHattInntekt } = fpEllerEsSituasjon;
 
     const minstelønn = grunnbeløpet / 2;
-    const årslønn = lønnPerMåned * 12;
+    const årslønn = isValidNumber(lønnPerMåned) ? Number(lønnPerMåned) * 12 : 0;
 
     const erFlereKrav = harHattInntekt && (borDuINorge || jobberDuINorge);
 
