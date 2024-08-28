@@ -15,7 +15,13 @@ interface Props {
 }
 
 const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
+    const { borDuINorge, jobberDuINorge, lønnPerMåned, harHattInntekt } = fpEllerEsSituasjon;
+
     const minstelønn = grunnbeløpet / 2;
+    const årslønn = lønnPerMåned * 12;
+
+    const erFlereKrav = harHattInntekt && (borDuINorge || jobberDuINorge);
+
     return (
         <ExpansionCard aria-label="" size="small">
             <ExpansionCard.Header>
@@ -35,7 +41,7 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
             <ExpansionCard.Content>
                 <VStack gap="5">
                     <BodyShort>
-                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKrav" />
+                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKrav" values={{ erFlereKrav }} />
                     </BodyShort>
                     <VStack gap="4">
                         <KravinfoBoks
@@ -61,13 +67,13 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuHarOppgittMånedslønn"
                                     values={{
-                                        månedslønn: formatCurrencyWithKr(fpEllerEsSituasjon.lønnPerMåned),
+                                        månedslønn: formatCurrencyWithKr(lønnPerMåned),
                                         minstelønn: formatCurrencyWithKr(minstelønn),
-                                        hvorMye: fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn,
+                                        hvorMye: årslønn > minstelønn,
                                     }}
                                 />
                             }
-                            erOppfylt={fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn}
+                            erOppfylt={årslønn > minstelønn}
                         />
                         <KravinfoBoks
                             testId="harRettFp"
@@ -75,10 +81,10 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
                             boxBodyText={
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.OppgittAtDuBorINorge"
-                                    values={{ borINorge: fpEllerEsSituasjon.borDuINorge }}
+                                    values={{ borINorge: borDuINorge }}
                                 />
                             }
-                            erOppfylt={fpEllerEsSituasjon.borDuINorge || fpEllerEsSituasjon.jobberDuINorge}
+                            erOppfylt={borDuINorge || jobberDuINorge}
                         />
                     </VStack>
                 </VStack>

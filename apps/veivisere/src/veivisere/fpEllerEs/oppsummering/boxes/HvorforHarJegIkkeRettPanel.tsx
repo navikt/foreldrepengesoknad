@@ -16,7 +16,12 @@ interface Props {
 }
 
 const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
+    const { borDuINorge, jobberDuINorge, lønnPerMåned, harHattInntekt } = fpEllerEsSituasjon;
+
     const minstelønn = grunnbeløpet / 2;
+    const årslønn = lønnPerMåned * 12;
+
+    const erFlereKrav = harHattInntekt && (borDuINorge || jobberDuINorge);
 
     return (
         <ExpansionCard aria-label="" size="small">
@@ -33,7 +38,7 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
             <ExpansionCard.Content>
                 <VStack gap="5">
                     <BodyShort>
-                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKrav" />
+                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKrav" values={{ erFlereKrav }} />
                     </BodyShort>
                     <VStack gap="4">
                         <KravinfoBoks
@@ -42,10 +47,10 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
                             boxBodyText={
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuHarOppgittInntekt"
-                                    values={{ harHatt: fpEllerEsSituasjon.harHattInntekt }}
+                                    values={{ harHatt: harHattInntekt }}
                                 />
                             }
-                            erOppfylt={!!fpEllerEsSituasjon.harHattInntekt}
+                            erOppfylt={!!harHattInntekt}
                         />
                         <KravinfoBoks
                             testId="harIkkeRettFp"
@@ -59,21 +64,20 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuHarOppgittMånedslønn"
                                     values={{
-                                        månedslønn: formatCurrencyWithKr(fpEllerEsSituasjon.lønnPerMåned),
+                                        månedslønn: formatCurrencyWithKr(lønnPerMåned),
                                         minstelønn: formatCurrencyWithKr(minstelønn),
-                                        hvorMye: fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn,
+                                        hvorMye: årslønn > minstelønn,
                                     }}
                                 />
                             }
-                            erOppfylt={fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn}
+                            erOppfylt={årslønn > minstelønn}
                         />
                         <KravinfoBoks
                             testId="harIkkeRettFp"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
                             boxBodyText={
                                 <>
-                                    {fpEllerEsSituasjon.borDuINorge === false &&
-                                    fpEllerEsSituasjon.jobberDuINorge === false ? (
+                                    {borDuINorge === false && jobberDuINorge === false ? (
                                         <FormattedMessage
                                             id="HvorforHarJegRettPanel.IkkeMedlem"
                                             values={{
@@ -87,13 +91,13 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
                                     ) : (
                                         <FormattedMessage
                                             id="HvorforHarJegRettPanel.OppgittAtDuBorINorge"
-                                            values={{ borINorge: fpEllerEsSituasjon.borDuINorge }}
+                                            values={{ borINorge: borDuINorge }}
                                         />
                                     )}
                                 </>
                             }
-                            erOppfylt={fpEllerEsSituasjon.jobberDuINorge || fpEllerEsSituasjon.borDuINorge}
-                            jobberINorge={fpEllerEsSituasjon.jobberDuINorge}
+                            erOppfylt={jobberDuINorge || borDuINorge}
+                            jobberINorge={jobberDuINorge}
                         />
                     </VStack>
                 </VStack>

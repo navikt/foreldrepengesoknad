@@ -15,7 +15,12 @@ interface Props {
 }
 
 const HvorforHarJegRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
+    const { borDuINorge, jobberDuINorge, lønnPerMåned, harHattInntekt } = fpEllerEsSituasjon;
+
     const minstelønn = grunnbeløpet / 2;
+    const årslønn = lønnPerMåned * 12;
+
+    const erFlereKrav = harHattInntekt && (borDuINorge || jobberDuINorge);
 
     return (
         <ExpansionCard aria-label="" size="small">
@@ -36,10 +41,10 @@ const HvorforHarJegRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSit
             <ExpansionCard.Content>
                 <VStack gap="5">
                     <BodyShort>
-                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKravEs" />
+                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKravEs" values={{ erFlereKrav }} />
                     </BodyShort>
                     <VStack gap="4">
-                        {fpEllerEsSituasjon.lønnPerMåned > minstelønn && (
+                        {årslønn > minstelønn && (
                             <KravinfoBoks
                                 testId="harRettEs"
                                 headerText={
@@ -52,26 +57,26 @@ const HvorforHarJegRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSit
                                     <FormattedMessage
                                         id="HvorforHarJegRettPanel.DuHarOppgittMånedslønn"
                                         values={{
-                                            månedslønn: formatCurrencyWithKr(fpEllerEsSituasjon.lønnPerMåned),
+                                            månedslønn: formatCurrencyWithKr(lønnPerMåned),
                                             minstelønn: formatCurrencyWithKr(minstelønn),
-                                            hvorMye: fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn,
+                                            hvorMye: årslønn > minstelønn,
                                         }}
                                     />
                                 }
-                                erOppfylt={fpEllerEsSituasjon.lønnPerMåned * 12 > minstelønn}
+                                erOppfylt={årslønn > minstelønn}
                             />
                         )}
-                        {(fpEllerEsSituasjon.borDuINorge || fpEllerEsSituasjon.jobberDuINorge) && (
+                        {(borDuINorge || jobberDuINorge) && (
                             <KravinfoBoks
                                 testId="harRettEs"
                                 headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
                                 boxBodyText={
                                     <FormattedMessage
                                         id="HvorforHarJegRettPanel.OppgittAtDuBorINorge"
-                                        values={{ borINorge: fpEllerEsSituasjon.borDuINorge }}
+                                        values={{ borINorge: borDuINorge }}
                                     />
                                 }
-                                erOppfylt={fpEllerEsSituasjon.borDuINorge || fpEllerEsSituasjon.jobberDuINorge}
+                                erOppfylt={borDuINorge || jobberDuINorge}
                             />
                         )}
                     </VStack>

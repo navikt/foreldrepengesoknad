@@ -56,8 +56,10 @@ describe('<OppsummeringFpEllerEsSide>', () => {
         expect(within(harRettFp[2]).getByText('Du oppfyller dette kravet')).toBeInTheDocument();
 
         const harRettEs = screen.getAllByTestId('harRettEs');
-        expect(within(harRettEs[0]).getByText('Du må være medlem av folketrygden')).toBeInTheDocument();
+        expect(within(harRettEs[0]).getByText(/Du må i gjennomsnitt/)).toBeInTheDocument();
         expect(within(harRettEs[0]).getByText('Du oppfyller dette kravet')).toBeInTheDocument();
+        expect(within(harRettEs[1]).getByText('Du må være medlem av folketrygden')).toBeInTheDocument();
+        expect(within(harRettEs[1]).getByText('Du oppfyller dette kravet')).toBeInTheDocument();
 
         expect(screen.getByText('Hvorfor har jeg rett til engangsstønad?')).toBeInTheDocument();
     });
