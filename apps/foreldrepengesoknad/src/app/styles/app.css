@@ -1,3 +1,15 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#app {
+    flex: 1;
+    background-color: white;
+    min-width: 320px;
+}
+
 @media screen {
     .print-only {
         display: none;
