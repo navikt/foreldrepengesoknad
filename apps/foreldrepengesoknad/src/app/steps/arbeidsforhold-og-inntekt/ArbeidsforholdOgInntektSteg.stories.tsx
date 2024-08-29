@@ -6,8 +6,8 @@ import { BarnType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
-import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
+import { Action, ContextDataType, FpDataContext } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 
 import ArbeidsforholdOgInntektSteg from './ArbeidsforholdOgInntektSteg';
 

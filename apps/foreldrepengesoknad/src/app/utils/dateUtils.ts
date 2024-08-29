@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import advanced from 'dayjs/plugin/advancedFormat';
 import isBetween from 'dayjs/plugin/isBetween';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import minMax from 'dayjs/plugin/minMax';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
@@ -27,6 +29,8 @@ import { getIsDeltUttak } from './annenForelderUtils';
 import { getFamiliehendelsedato } from './barnUtils';
 import fn from './toggleUtils';
 
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
 dayjs.extend(utc);
 dayjs.extend(isBetween);
 dayjs.extend(minMax);
@@ -273,5 +277,18 @@ export const getVis1Juli2024Info = (barn: Barn, annenForelder: AnnenForelder) =>
         dayjs().isBefore(dayjs('2024-07-01'), 'd') &&
         erDeltUttak &&
         barn.antallBarn === 1
+    );
+};
+
+export const getErDatoInnenEnDagFraAnnenDato = (
+    dato1: Date | string | undefined,
+    dato2: Date | string | undefined,
+): boolean => {
+    if (dato1 === undefined || dato2 === undefined) {
+        return false;
+    }
+    return (
+        dayjs.utc(dato1).isSameOrAfter(dayjs(dato2).subtract(1, 'day'), 'day') &&
+        dayjs.utc(dato1).isSameOrBefore(dayjs(dato2).add(1, 'day'), 'day')
     );
 };

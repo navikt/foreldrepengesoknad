@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { ProgressStep } from '@navikt/fp-ui';
+import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
@@ -103,7 +104,7 @@ const getStepConfig = (
     if (tilrettelegginger && tilrettelegginger.length > 0) {
         const erFlereTilrettelegginger = tilrettelegginger.length > 1;
         tilrettelegginger.forEach((tilrettelegging: Tilrettelegging) => {
-            const navn = tilrettelegging.arbeidsforhold.navn;
+            const navn = capitalizeFirstLetterInEveryWordOnly(tilrettelegging.arbeidsforhold.navn);
             const labels = getStepLabels(intl, erFlereTilrettelegginger, navn);
             steps.push({
                 id: SøknadRoutes.SKJEMA,

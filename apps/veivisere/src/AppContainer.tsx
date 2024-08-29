@@ -23,8 +23,8 @@ declare global {
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: allNbMessages,
-    nn: { ...nnMessages, ...uiMessages.nn },
-    en: { ...enMessages, ...uiMessages.en },
+    nn: { ...nnMessages, ...uiMessages.nn, ...utilsMessages.nn },
+    en: { ...enMessages, ...uiMessages.en, ...utilsMessages.en },
 };
 
 const initLocale = (): LocaleAll => {

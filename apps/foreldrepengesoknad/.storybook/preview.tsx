@@ -17,7 +17,7 @@ import { getIntlDecorator } from '@navikt/fp-utils-test';
 
 import nbMessages from '../src/app/intl/nb_NO.json';
 import nnMessages from '../src/app/intl/nn_NO.json';
-import '../src/app/styles/app.less';
+import '../src/app/styles/app.css';
 
 dayjs.locale('nb');
 

@@ -14,7 +14,7 @@ import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { bemUtils } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
 
 import './fordeling-påvirkninger.css';
 import { getDegEllerMorTekst, getDegEllerSegTekst, getDuEllerDereTekst } from './fordelingOversiktUtils';

@@ -13,10 +13,10 @@ import { ContentWrapper } from '@navikt/fp-ui';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -76,7 +76,8 @@ const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
             return navigator.goToNextStep(SøknadRoutes.ANDRE_INNTEKTER);
         }
 
-        return navigator.goToNextDefaultStep();
+        const harDokumentasjonssteg = stepConfig.some((s) => s.id === SøknadRoutes.DOKUMENTASJON);
+        return navigator.goToNextStep(harDokumentasjonssteg ? SøknadRoutes.DOKUMENTASJON : SøknadRoutes.OPPSUMMERING);
     };
 
     return (

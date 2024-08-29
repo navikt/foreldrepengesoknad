@@ -3,7 +3,7 @@ import { ComponentProps } from 'react';
 
 import { Accordion } from '@navikt/ds-react';
 
-import { Forelder, PeriodeHullÅrsak, Periodetype, StønadskontoType } from '@navikt/fp-common';
+import { Arbeidsform, Forelder, PeriodeHullÅrsak, Periodetype, StønadskontoType } from '@navikt/fp-common';
 
 import { UttaksplanContextDataType, UttaksplanDataContext } from '../../context/UttaksplanDataContext';
 import PeriodeListeItem from './PeriodeListeItem';
@@ -91,6 +91,53 @@ export const UttaksperiodeMorFlerePerioder: Story = {
                     },
                     forelder: Forelder.mor,
                     konto: StønadskontoType.Fellesperiode,
+                },
+            ],
+        },
+    },
+};
+
+export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
+    args: {
+        permisjonsperiode: {
+            tidsperiode: {
+                fom: '2024-06-01',
+                tom: '2024-07-26',
+            },
+            forelder: Forelder.mor,
+            perioder: [
+                {
+                    id: '88638814-3912-1440-03308-2381934996836',
+                    type: Periodetype.Uttak,
+                    tidsperiode: {
+                        fom: new Date('2024-06-01'),
+                        tom: new Date('2024-06-28'),
+                    },
+                    forelder: Forelder.mor,
+                    konto: StønadskontoType.Mødrekvote,
+                },
+                {
+                    id: '88638814-3912-1440-03308-2381934996836',
+                    type: Periodetype.Uttak,
+                    tidsperiode: {
+                        fom: new Date('2024-07-01'),
+                        tom: new Date('2024-07-26'),
+                    },
+                    forelder: Forelder.mor,
+                    konto: StønadskontoType.Fellesperiode,
+                },
+                {
+                    id: '88638814-3912-1440-03308-2381934996836',
+                    type: Periodetype.Uttak,
+                    tidsperiode: {
+                        fom: new Date('2024-07-29'),
+                        tom: new Date('2024-08-23'),
+                    },
+                    forelder: Forelder.mor,
+                    konto: StønadskontoType.Fellesperiode,
+                    gradert: true,
+                    arbeidsformer: [Arbeidsform.arbeidstaker],
+                    stillingsprosent: '50',
                 },
             ],
         },

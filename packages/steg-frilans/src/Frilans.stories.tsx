@@ -40,7 +40,7 @@ const Template: StoryFn<Props> = ({
                 },
                 {
                     id: 'FRILANS',
-                    label: 'Frilans',
+                    label: 'Arbeid som frilanser',
                     isSelected: true,
                 },
             ]}

@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Box, HStack, VStack } from '@navikt/ds-react';
 
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { bemUtils, formatDate } from '@navikt/fp-utils';
+import { bemUtils, capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
 import './harArbeidsforhold.css';
 
@@ -35,7 +35,7 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
                         <HStack justify="space-between">
                             <BodyShort className={bem.element('name')}>
                                 {arbforhold.arbeidsgiverIdType === 'orgnr' || arbforhold.arbeidsgiverNavn ? (
-                                    arbforhold.arbeidsgiverNavn
+                                    capitalizeFirstLetterInEveryWordOnly(arbforhold.arbeidsgiverNavn)
                                 ) : (
                                     <FormattedMessage id="HarArbeidsforhold.arbeidsgiver" />
                                 )}

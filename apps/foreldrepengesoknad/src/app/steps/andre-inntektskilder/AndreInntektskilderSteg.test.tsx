@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
 
-import { ContextDataType } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
+import { ContextDataType } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 
 import * as stories from './AndreInntektskilderSteg.stories';
 
@@ -282,7 +282,7 @@ describe('<AndreInntektskilderSteg>', () => {
 
         expect(
             screen.getByText(
-                'Senere i søknaden vil du bli bedt om å laste opp dokumentasjon dokumentasjon på perioden fra tjenestestedet ditt.',
+                'Senere i søknaden vil du bli bedt om å laste opp dokumentasjon på perioden fra tjenestestedet ditt.',
             ),
         ).toBeInTheDocument();
 

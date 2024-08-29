@@ -3,7 +3,7 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
+import { bemUtils, capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 import { ArbeidsforholdForTilrettelegging, Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 
@@ -20,7 +20,7 @@ const getNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?: string) => {
     if (type === Arbeidsforholdstype.SELVSTENDIG && navn && navn.trim().length === 0) {
         return intl.formatMessage({ id: 'egenNæring' });
     }
-    return navn;
+    return capitalizeFirstLetterInEveryWordOnly(navn);
 };
 
 const Bedriftsbanner: React.FunctionComponent<Props> = ({ arbeid }) => {

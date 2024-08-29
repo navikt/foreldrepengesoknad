@@ -12,6 +12,8 @@ export enum HvorMyeRoutes {
 
 export enum HvaSkjerNårRoutes {
     OM = '/om',
+    SITUASJON = '/situasjon',
+    OPPSUMMERING = '/oppsummering',
 }
 
 export enum FpEllerEsRoutes {

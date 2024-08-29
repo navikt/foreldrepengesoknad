@@ -4,7 +4,7 @@ import { FormSummary } from '@navikt/ds-react';
 
 import { Næringstype } from '@navikt/fp-steg-egen-naering';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { formatDate, getCountryName } from '@navikt/fp-utils';
+import { capitalizeFirstLetterInEveryWordOnly, formatDate, getCountryName } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/appData/SvpDataContext';
@@ -83,7 +83,8 @@ function ArbeidsforholdFormSummaryValue({ arbeidsforhold }: { readonly arbeidsfo
     return (
         <FormSummary.Answer>
             <FormSummary.Label>
-                {arbeidsforhold.arbeidsgiverNavn}, {arbeidsforhold.stillingsprosent}%
+                {capitalizeFirstLetterInEveryWordOnly(arbeidsforhold.arbeidsgiverNavn)},{' '}
+                {arbeidsforhold.stillingsprosent}%
             </FormSummary.Label>
             <FormSummary.Value>
                 Org nr: {arbeidsforhold.arbeidsgiverId},{' '}

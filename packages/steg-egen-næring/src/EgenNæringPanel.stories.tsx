@@ -40,7 +40,7 @@ const Template: StoryFn<Props> = ({
                 },
                 {
                     id: 'EGEN_NÆRING',
-                    label: 'Egen næring',
+                    label: 'Arbeid som selvstendig næringsdrivende',
                     isSelected: true,
                 },
             ]}

@@ -173,11 +173,14 @@ const FileUploader: React.FunctionComponent<Props> = ({
                 label={label}
                 description={
                     <VStack gap="2">
-                        {description && <BodyShort>{description}</BodyShort>}
-                        <FormattedMessage
-                            id="FileInput.Vedlegg.Lovlige"
-                            values={{ maxStørrelse: MAX_FIL_STØRRELSE_MB }}
-                        />
+                        <BodyShort>
+                            {description}
+                            {description && ' '}
+                            <FormattedMessage
+                                id="FileInput.Vedlegg.Lovlige"
+                                values={{ maxStørrelse: MAX_FIL_STØRRELSE_MB }}
+                            />
+                        </BodyShort>
                     </VStack>
                 }
                 accept={VALID_EXTENSIONS.join(', ')}

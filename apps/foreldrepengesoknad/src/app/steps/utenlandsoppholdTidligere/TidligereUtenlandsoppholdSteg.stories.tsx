@@ -6,9 +6,9 @@ import AxiosMock from 'storybook/utils/AxiosMock';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
-import { Opphold } from 'app/context/types/InformasjonOmUtenlandsopphold';
-import SøknadRoutes from 'app/routes/routes';
+import { Action, ContextDataType, FpDataContext } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+import { Opphold } from 'app/types/InformasjonOmUtenlandsopphold';
 
 import TidligereUtenlandsoppholdSteg from './TidligereUtenlandsoppholdSteg';
 

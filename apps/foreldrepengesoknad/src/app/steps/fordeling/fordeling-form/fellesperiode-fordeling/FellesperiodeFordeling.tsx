@@ -8,7 +8,7 @@ import { TextField } from '@navikt/fp-form-hooks';
 import { bemUtils, getNumberFromNumberInputValue } from '@navikt/fp-utils';
 import { isValidInteger, isValidNumberForm } from '@navikt/fp-validation';
 
-import Fordeling, { FellesperiodeFordelingValg } from 'app/context/types/Fordeling';
+import Fordeling, { FellesperiodeFordelingValg } from 'app/types/Fordeling';
 import { FordelingDager, FordelingFargekode } from 'app/types/FordelingOversikt';
 
 import { isValidAntallDagerFellesperiode, isValidAntallUkerFellesperiode } from '../fordelingFormUtils';

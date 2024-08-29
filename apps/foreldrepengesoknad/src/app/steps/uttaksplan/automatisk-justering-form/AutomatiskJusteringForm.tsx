@@ -8,7 +8,7 @@ import { Block, Periode, StønadskontoType, isOverføringsperiode, isUttaksperio
 import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
 import { QuestionVisibility, YesOrNo } from '@navikt/fp-formik';
 
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import { mapUttaksplanFormValueToState } from 'app/steps/uttaksplan/UttaksplanFormUtils';
 

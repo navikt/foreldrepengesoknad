@@ -14,7 +14,6 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import { Søkerinfo } from '@navikt/fp-types';
 
 import AppContainer from './AppContainer';
-import './styles/app.less';
 import { RequestStatus } from './types/RequestState';
 
 const søkerinfo = {

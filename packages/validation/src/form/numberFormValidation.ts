@@ -27,3 +27,15 @@ export const hasMaxValue =
     (i18nText: string, length: number) =>
     (number: number): FormValidationResult =>
         number <= length ? null : i18nText;
+
+export const formatValue = (value: string) => {
+    if (!value) {
+        return undefined;
+    }
+    const formattedValue = value.replace(/,/g, '.');
+    const returnValue = Number(formattedValue);
+    if (typeof returnValue === 'number') {
+        return returnValue;
+    }
+    return undefined;
+};

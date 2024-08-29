@@ -1,25 +1,20 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react/*';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-
-import '@navikt/ds-css';
 
 import OversiktRoutes from 'app/routes/routes';
 import { Ytelse } from 'app/types/Ytelse';
 
 import EttersendingPage from './EttersendingPage';
 
-export default {
-    title: 'EttersendingPage',
-    component: EttersendingPage,
-};
-
 const queryClient = new QueryClient();
 
-const Template: StoryFn = () => {
-    return (
-        <div style={{ backgroundColor: 'white', padding: '50px' }}>
+const meta = {
+    title: 'EttersendingPage',
+    component: EttersendingPage,
+    render: () => {
+        return (
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter initialEntries={[`/${OversiktRoutes.ETTERSEND}/1`]}>
                     <Routes>
@@ -50,20 +45,25 @@ const Template: StoryFn = () => {
                     </Routes>
                 </MemoryRouter>
             </QueryClientProvider>
-        </div>
-    );
-};
+        );
+    },
+} satisfies Meta<typeof EttersendingPage>;
+export default meta;
 
-export const SkalIkkeFeileOpplasting = Template.bind({});
-SkalIkkeFeileOpplasting.parameters = {
-    msw: {
-        handlers: [http.post('/rest/storage/engangsstonad/vedlegg', () => new HttpResponse(null, { status: 200 }))],
+type Story = StoryObj<typeof EttersendingPage>;
+
+export const SkalIkkeFeileOpplasting: Story = {
+    parameters: {
+        msw: {
+            handlers: [http.post('/rest/storage/engangsstonad/vedlegg', () => new HttpResponse(null, { status: 200 }))],
+        },
     },
 };
 
-export const SkalFeileOpplasting = Template.bind({});
-SkalFeileOpplasting.parameters = {
-    msw: {
-        handlers: [http.post('/rest/storage/engangsstonad/vedlegg', () => new HttpResponse(null, { status: 400 }))],
+export const SkalFeileOpplasting: Story = {
+    parameters: {
+        msw: {
+            handlers: [http.post('/rest/storage/engangsstonad/vedlegg', () => new HttpResponse(null, { status: 400 }))],
+        },
     },
 };

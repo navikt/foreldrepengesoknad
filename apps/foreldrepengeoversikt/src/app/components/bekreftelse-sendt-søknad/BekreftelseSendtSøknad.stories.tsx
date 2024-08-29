@@ -1,41 +1,36 @@
-import { StoryFn } from '@storybook/react';
-
-import '@navikt/ds-css';
+import { Meta, StoryObj } from '@storybook/react/*';
 
 import { DokumentType } from 'app/types/DokumentType';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
-import { Ytelse } from 'app/types/Ytelse';
 
+import { Ytelse } from '../../types/Ytelse';
 import BekreftelseSendtSøknad from './BekreftelseSendtSøknad';
 
-export default {
+const meta = {
     title: 'BekreftelseSendtSøknad',
     component: BekreftelseSendtSøknad,
-};
+} satisfies Meta<typeof BekreftelseSendtSøknad>;
+export default meta;
 
-const Template: StoryFn<any> = () => {
-    return (
-        <BekreftelseSendtSøknad
-            relevantNyTidslinjehendelse={
+type Story = StoryObj<typeof BekreftelseSendtSøknad>;
+
+export const Default: Story = {
+    args: {
+        relevantNyTidslinjehendelse: {
+            opprettet: new Date(),
+            dokumenter: [
                 {
-                    opprettet: new Date(),
-                    dokumenter: [
-                        {
-                            dokumentId: '1',
-                            type: DokumentType.ARBEIDSGIVER,
-                            journalpostId: '1',
-                            mottatt: new Date(),
-                            saksnummer: '1212',
-                            tittel: 'Dokumenttittel',
-                            url: 'test',
-                        },
-                    ],
-                } as Tidslinjehendelse
-            }
-            bankkonto={{ kontonummer: '1212224', banknavn: 'Luster Sparebank' }}
-            ytelse={Ytelse.FORELDREPENGER}
-        />
-    );
+                    dokumentId: '1',
+                    type: DokumentType.ARBEIDSGIVER,
+                    journalpostId: '1',
+                    mottatt: new Date(),
+                    saksnummer: '1212',
+                    tittel: 'Dokumenttittel',
+                    url: 'test',
+                },
+            ],
+        } as Tidslinjehendelse,
+        bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
+        ytelse: Ytelse.FORELDREPENGER,
+    },
 };
-
-export const VisApp = Template.bind({});

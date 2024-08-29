@@ -89,18 +89,7 @@ const PeriodeListeContent: FunctionComponent<Props> = ({
                     return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode);
                 })}
             </Stack>
-            {skalJobbeIPermisjonsperioden ? (
-                <div style={{ margin: '0.5rem 0', display: 'flex' }}>
-                    <div>
-                        <BriefcaseIcon width={24} height={24} />
-                    </div>
-                    <div>
-                        <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
-                            <BodyShort>Skal jobbe</BodyShort>
-                        </div>
-                    </div>
-                </div>
-            ) : (
+            {skalJobbeIPermisjonsperioden ? null : (
                 <div style={{ margin: '0.5rem 0', display: 'flex' }}>
                     <div>
                         <BriefcaseIcon width={24} height={24} />

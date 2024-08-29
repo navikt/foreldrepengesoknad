@@ -11,7 +11,7 @@ const { SkalIkkeFeileOpplasting } = composeStories(stories);
 describe('<MinidialogSkjema>', () => {
     it('skal velge at en ikke ønsker å uttale seg og så sende inn', async () => {
         const send = vi.fn();
-        render(<SkalIkkeFeileOpplasting send={send} />);
+        render(<SkalIkkeFeileOpplasting onSubmit={send} />);
 
         expect(
             await screen.findByText(
@@ -47,7 +47,7 @@ describe('<MinidialogSkjema>', () => {
 
     it('skal velge at en ønsker å uttale seg og så sende inn', async () => {
         const send = vi.fn();
-        render(<SkalIkkeFeileOpplasting send={send} />);
+        render(<SkalIkkeFeileOpplasting onSubmit={send} />);
 
         expect(
             await screen.findByText(

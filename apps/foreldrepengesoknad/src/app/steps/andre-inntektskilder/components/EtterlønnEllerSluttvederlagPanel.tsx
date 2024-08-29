@@ -1,10 +1,9 @@
 import { FileIcon } from '@navikt/aksel-icons';
-import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
-import { Datepicker } from '@navikt/fp-form-hooks';
+import { DateRangepicker } from '@navikt/fp-form-hooks';
 import { BluePanel } from '@navikt/fp-ui';
 import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -21,11 +20,12 @@ export const EtterlønnEllerSluttvederlagPanel: React.FunctionComponent<Props> =
     return (
         <VStack gap="10">
             <HStack gap="6">
-                <Datepicker
-                    name={`andreInntektskilder.${index}.fom`}
-                    label={intl.formatMessage({ id: 'EtterlønnEllerSluttvederlagPanel.Fom' })}
-                    maxDate={dayjs()}
-                    validate={[
+                <DateRangepicker
+                    nameFrom={`andreInntektskilder.${index}.fom`}
+                    nameTo={`andreInntektskilder.${index}.tom`}
+                    labelFrom={intl.formatMessage({ id: 'EtterlønnEllerSluttvederlagPanel.Fom' })}
+                    labelTo={intl.formatMessage({ id: 'EtterlønnEllerSluttvederlagPanel.Tom' })}
+                    validateFrom={[
                         isRequired(
                             intl.formatMessage({ id: 'EtterlønnEllerSluttvederlagPanel.Validering.Required.Fom' }),
                         ),
@@ -40,11 +40,7 @@ export const EtterlønnEllerSluttvederlagPanel: React.FunctionComponent<Props> =
                             inntektskilde.tom,
                         ),
                     ]}
-                />
-                <Datepicker
-                    name={`andreInntektskilder.${index}.tom`}
-                    label={intl.formatMessage({ id: 'EtterlønnEllerSluttvederlagPanel.Tom' })}
-                    validate={[
+                    validateTo={[
                         isRequired(
                             intl.formatMessage({ id: 'EtterlønnEllerSluttvederlagPanel.Validering.Required.Tom' }),
                         ),

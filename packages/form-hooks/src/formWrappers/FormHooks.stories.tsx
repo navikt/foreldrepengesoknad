@@ -1,16 +1,19 @@
-import { useForm } from 'react-hook-form';
-import { Radio, VStack, Checkbox as DsCheckbox, HStack, Alert, BodyShort, Label } from '@navikt/ds-react';
-import dayjs from 'dayjs';
 import { StoryFn } from '@storybook/react';
-import Form from './Form';
-import Datepicker from './Datepicker';
-import Select from './Select';
-import RadioGroup from './RadioGroup';
+import dayjs from 'dayjs';
+import { useForm } from 'react-hook-form';
+
+import { Alert, BodyShort, Checkbox as DsCheckbox, HStack, Heading, Label, Radio, VStack } from '@navikt/ds-react';
+
 import Checkbox from './Checkbox';
-import TextField from './TextField';
-import TextArea from './TextArea';
 import CheckboxGroup from './CheckboxGroup';
 import Combobox from './Combobox';
+import DateRangepicker from './DateRangepicker';
+import Datepicker from './Datepicker';
+import Form from './Form';
+import RadioGroup from './RadioGroup';
+import Select from './Select';
+import TextArea from './TextArea';
+import TextField from './TextField';
 
 export default {
     title: 'FormHooks',
@@ -27,6 +30,8 @@ const Template: StoryFn = () => {
             textareapre: 'Har en tekst',
             checkpanelpre: ['test1', 'test2'],
             comboboxPre: 'Tekst 1',
+            dateRangepickerFieldFromPre: '2024-08-01',
+            dateRangepickerFieldToPre: '2024-09-22',
         },
     });
 
@@ -109,6 +114,26 @@ const Template: StoryFn = () => {
                         showMonthAndYearDropdowns
                     />
                     <Datepicker label="Dette er en datepicker der verdi er valgt" name="datepickerFieldPre" />
+                    <div>
+                        <Heading size="small">dateRangepicker</Heading>
+                        <DateRangepicker
+                            nameFrom="dateRangepickerFieldFrom"
+                            nameTo="dateRangepickerFieldTo"
+                            labelFrom="Fom"
+                            labelTo="Tom"
+                            useStrategyAbsolute
+                        />
+                    </div>
+                    <div>
+                        <Heading size="small">dateRangepicker med verdi</Heading>
+                        <DateRangepicker
+                            nameFrom="dateRangepickerFieldFromPre"
+                            nameTo="dateRangepickerFieldToPre"
+                            labelFrom="Fom"
+                            labelTo="Tom"
+                            useStrategyAbsolute
+                        />
+                    </div>
                 </VStack>
                 <div>
                     <Alert variant="info">

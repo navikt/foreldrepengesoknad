@@ -23,7 +23,7 @@ type OuterProps = {
     readonly søkersBarn: SøkerinfoDTOBarn[];
 };
 type InnerProps = OuterProps & {
-    readonly sak: Sak;
+    readonly sak?: Sak;
 };
 
 const TidslinjePageInner: React.FunctionComponent<InnerProps> = ({ søkersBarn, sak }) => {
@@ -39,7 +39,7 @@ const TidslinjePageInner: React.FunctionComponent<InnerProps> = ({ søkersBarn, 
     const tidslinjeHendelserQuery = useQuery(hentTidslinjehendelserOptions(params.saksnummer!));
     const manglendeVedleggQuery = useQuery(hentManglendeVedleggOptions(params.saksnummer!));
 
-    if (tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending) {
+    if (tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending || !sak) {
         return <Loader size="large" aria-label="Henter status for din søknad" />;
     }
 
@@ -60,7 +60,7 @@ const TidslinjePageInner: React.FunctionComponent<InnerProps> = ({ søkersBarn, 
 };
 
 function TidslinjePage({ søkersBarn }: OuterProps) {
-    const sak = useGetSelectedSak()!; // TODO: burde ikke ha "!-assertion"
+    const sak = useGetSelectedSak();
 
     return (
         <PageRouteLayout header={<DinSakHeader sak={sak} />}>

@@ -205,6 +205,7 @@ const EgenNæringPanel = <TYPE extends string>({
                         ]}
                         maxDate={dayjs()}
                         minDate={DATE_20_YEARS_AGO}
+                        showMonthAndYearDropdowns
                     />
 
                     <RadioGroup
@@ -236,7 +237,11 @@ const EgenNæringPanel = <TYPE extends string>({
                                     navnPåNæringen: navnPåNæring,
                                 },
                             )}
-                            description={intl.formatMessage({ id: 'egenNæring.næring.tom.description' })}
+                            description={
+                                stønadstype === 'Svangerskapspenger'
+                                    ? intl.formatMessage({ id: 'egenNæring.næring.tom.description' })
+                                    : undefined
+                            }
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.påkrevd' })),
                                 isValidDate(intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.gyldigDato' })),
@@ -257,6 +262,7 @@ const EgenNæringPanel = <TYPE extends string>({
                             ]}
                             maxDate={dayjs().add(9, 'month')}
                             minDate={getMinInputTilOgMedValue(næringFom, DATE_5_MONTHS_AGO)}
+                            showMonthAndYearDropdowns
                         />
                     )}
                     {!erVirksomhetRegnetSomNyoppstartet(næringFom) && (

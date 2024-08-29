@@ -9,7 +9,7 @@ import { Kjønn, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-
 import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
 import { getVis1Juli2024Info } from 'app/utils/dateUtils';
 
 import InfoOmUtvidet80ProsentPeriode from './InfoOmUtvidet80ProsentPeriode';

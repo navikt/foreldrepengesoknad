@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { Block, formatDateShortYear } from '@navikt/fp-common';
+import { Block } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { Attachment } from '@navikt/fp-types';
@@ -34,15 +34,7 @@ const MilitærEllerSiviltjenesteDokumentasjon: React.FunctionComponent<Props> = 
         return null;
     }
 
-    const perioder = andreInntektskilder
-        .filter((i) => i.type === AnnenInntektType.MILITÆRTJENESTE)
-        .map((i) => ({
-            fom: formatDateShortYear(i.fom),
-            tom:
-                i.pågående || !i.tom
-                    ? intl.formatMessage({ id: 'manglendeVedlegg.militær.pågående' })
-                    : formatDateShortYear(i.tom),
-        }));
+    const perioder = andreInntektskilder.filter((i) => i.type === AnnenInntektType.MILITÆRTJENESTE);
 
     return (
         <Block padBottom="xl">
@@ -57,6 +49,7 @@ const MilitærEllerSiviltjenesteDokumentasjon: React.FunctionComponent<Props> = 
                         antallPerioder: perioder.length,
                     },
                 )}
+                description={intl.formatMessage({ id: 'manglendeVedlegg.militær.description' })}
                 attachmentType={AttachmentType.ANNEN_INNTEKT}
                 metadataType={AttachmentMetadataType.OPPTJENING}
                 perioder={perioder}

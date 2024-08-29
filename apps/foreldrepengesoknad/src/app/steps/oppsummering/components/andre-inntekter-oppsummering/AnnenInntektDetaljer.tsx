@@ -4,8 +4,8 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { AnnenInntektType } from 'app/context/types/AnnenInntekt';
 import { AndreInntektskilder } from 'app/types/AndreInntektskilder';
+import { AnnenInntektType } from 'app/types/AnnenInntekt';
 
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 

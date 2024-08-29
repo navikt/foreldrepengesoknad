@@ -3,9 +3,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyLong } from '@navikt/ds-react';
 
-import { Tidsperiode, formatDate } from '@navikt/fp-common';
+import { formatDate } from '@navikt/fp-common';
 import { InnsendingsType } from '@navikt/fp-constants';
-import { Attachment } from '@navikt/fp-types';
+import { Attachment, AttachmentMetadataTidsperiode } from '@navikt/fp-types';
 import { bemUtils } from '@navikt/fp-utils';
 
 import {
@@ -26,22 +26,22 @@ import {
     isTerminbekreftelseVedlegg,
 } from 'app/steps/manglende-vedlegg/util';
 
-const getTidsperiodeString = (tidsperioder: Tidsperiode[]) => {
+const getTidsperiodeString = (tidsperioder: AttachmentMetadataTidsperiode[]) => {
     let periodeString: string | undefined = undefined;
 
     tidsperioder.forEach((tidsperiode, index) => {
         if (periodeString) {
             if (index === tidsperioder.length - 1) {
                 periodeString = periodeString.concat(
-                    ` og ${formatDate(tidsperiode.fom)} - ${formatDate(tidsperiode.tom)}`,
+                    ` og ${formatDate(tidsperiode.fom)} - ${tidsperiode.tom ? formatDate(tidsperiode.tom) : ''}`,
                 );
             } else {
                 periodeString = periodeString.concat(
-                    `, ${formatDate(tidsperiode.fom)} - ${formatDate(tidsperiode.tom)}`,
+                    `, ${formatDate(tidsperiode.fom)} - ${tidsperiode.tom ? formatDate(tidsperiode.tom) : ''}`,
                 );
             }
         } else {
-            periodeString = `${formatDate(tidsperiode.fom)} - ${formatDate(tidsperiode.tom)}`;
+            periodeString = `${formatDate(tidsperiode.fom)} - ${tidsperiode.tom ? formatDate(tidsperiode.tom) : ''}`;
         }
 
         return periodeString;
