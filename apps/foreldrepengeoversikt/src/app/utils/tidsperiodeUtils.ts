@@ -1,8 +1,7 @@
 import dayjs from 'dayjs';
 
 import { TidsperiodeDate } from '@navikt/fp-types';
-
-import { Periode } from 'app/types/Periode';
+import { SaksperiodeNy } from '@navikt/fp-types';
 
 import { ISOStringToDate } from './dateUtils';
 
@@ -47,7 +46,7 @@ const overlapperTidsperioder = (t1: TidsperiodeDate, t2: TidsperiodeDate) => {
     );
 };
 
-export const getTidsperiode = (periode: Periode): TidsperiodeDate => {
+export const getTidsperiode = (periode: SaksperiodeNy): TidsperiodeDate => {
     return {
         fom: ISOStringToDate(periode.fom)!,
         tom: ISOStringToDate(periode.tom)!,

@@ -2,11 +2,10 @@ import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
 import { StønadskontoType } from '@navikt/fp-constants';
+import { MorsAktivitet, PeriodeResultat } from '@navikt/fp-types';
 import { getUttaksperiodeFarge } from '@navikt/fp-utils';
 
 import { Forelder } from 'app/types/Forelder';
-import { MorsAktivitet } from 'app/types/MorsAktivitet';
-import { PeriodeResultat } from 'app/types/PeriodeResultat';
 import { getStønadskontoForelderNavn } from 'app/utils/periodeUtils';
 import { NavnPåForeldre } from 'app/utils/personUtils';
 

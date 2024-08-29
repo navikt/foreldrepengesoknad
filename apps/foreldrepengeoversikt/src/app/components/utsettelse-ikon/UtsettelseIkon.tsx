@@ -1,9 +1,9 @@
 import { useIntl } from 'react-intl';
 
+import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { getUtsettelseFarge } from '@navikt/fp-utils';
 
 import { Forelder } from 'app/types/Forelder';
-import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
 import { finnTekstForUtsettelseÅrsak } from 'app/utils/periodeUtils';
 
 import IconBox from '../icon-box/IconBox';

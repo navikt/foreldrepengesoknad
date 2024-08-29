@@ -1,16 +1,16 @@
 import dayjs from 'dayjs';
 
-import { Periode } from 'app/types/Periode';
+import { SaksperiodeNy } from '@navikt/fp-types';
 
 import { Uttaksdagen } from './Uttaksdagen';
 
-export const slåSammenLikePerioder = (plan: Periode[]) => {
+export const slåSammenLikePerioder = (plan: SaksperiodeNy[]) => {
     if (plan.length <= 0) {
         return plan;
     }
 
     let forrigePeriode = plan[0];
-    const nyPlan: Periode[] = [];
+    const nyPlan: SaksperiodeNy[] = [];
 
     plan.forEach((periode, index) => {
         if (index === 0) {
@@ -32,20 +32,20 @@ export const slåSammenLikePerioder = (plan: Periode[]) => {
     return nyPlan;
 };
 
-const erPerioderSammenhengende = (p1: Periode, p2: Periode) => {
+const erPerioderSammenhengende = (p1: SaksperiodeNy, p2: SaksperiodeNy) => {
     const p1NesteUttaksdato = Uttaksdagen(dayjs(p1.tom).toDate()).neste();
     const p2Startdato = p2.fom;
     return dayjs(p1NesteUttaksdato).isSame(p2Startdato, 'day');
 };
 
-const erPerioderLike = (periodeA: Periode, periodeB: Periode) => {
+const erPerioderLike = (periodeA: SaksperiodeNy, periodeB: SaksperiodeNy) => {
     const periodeFootprintA = getPeriodeFootprint(periodeA);
     const periodeFootprintB = getPeriodeFootprint(periodeB);
 
     return periodeFootprintA === periodeFootprintB;
 };
 
-const getPeriodeFootprint = (periode: Periode) => {
+const getPeriodeFootprint = (periode: SaksperiodeNy) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { fom, tom, ...rest } = periode;
     const sortedPeriode: any = {};

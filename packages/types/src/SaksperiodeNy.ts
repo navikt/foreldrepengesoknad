@@ -7,7 +7,7 @@ import { OverføringÅrsakType } from './OverføringÅrsakType';
 import { PeriodeResultat } from './PeriodeResultat';
 import { UtsettelseÅrsakType } from './UtsettelseÅrsakType';
 
-export interface Periode {
+export interface SaksperiodeNy {
     fom: string;
     tom: string;
     resultat?: PeriodeResultat;
