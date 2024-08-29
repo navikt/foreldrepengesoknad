@@ -68,7 +68,7 @@ const useEsSendSøknad = (
                 type: 'engangsstønad',
                 språkkode: locale,
                 barn: mapBarn(omBarnet, dokumentasjon),
-                oppholdIUtlandet: (tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd || []).concat(
+                utenlandsopphold: (tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd || []).concat(
                     senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd || [],
                 ),
                 vedlegg:
