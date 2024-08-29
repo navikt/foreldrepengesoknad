@@ -191,8 +191,12 @@ function FamiliehendelseDescription({ sak }: { readonly sak: Sak }) {
     );
 }
 
-export function DinSakHeader({ sak }: { readonly sak: Sak }) {
+export function DinSakHeader({ sak }: { readonly sak?: Sak }) {
     const bem = bemUtils('header');
+
+    if (!sak) {
+        return null;
+    }
 
     return (
         <HeaderWrapper>
