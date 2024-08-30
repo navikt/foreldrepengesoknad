@@ -8,7 +8,7 @@ import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
-import Tilrettelegging, { TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
+import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
 import { søkerHarKunEtAktivtArbeid } from 'app/utils/arbeidsforholdUtils';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './SvpDataContext';
@@ -127,16 +127,25 @@ const getStepConfig = (
                     isSelected: currentPath === SøknadRoutes.PERIODER && tilrettelegging.id === valgtTilretteleggingId,
                 });
             }
-            steps.push({
-                id: SøknadRoutes.FERIE,
-                label: labels[SøknadRoutes.FERIE],
-                isSelected: currentPath === SøknadRoutes.FERIE && tilrettelegging.id === valgtTilretteleggingId,
-            });
+
+            if (tilrettelegging.arbeidsforhold.type === Arbeidsforholdstype.VIRKSOMHET) {
+                steps.push({
+                    id: SøknadRoutes.FERIE,
+                    label: labels[SøknadRoutes.FERIE],
+                    isSelected: currentPath === SøknadRoutes.FERIE && tilrettelegging.id === valgtTilretteleggingId,
+                });
+            }
         });
     } else {
         steps.push(createStep(SøknadRoutes.SKJEMA, intl, currentPath));
         steps.push(createStep(SøknadRoutes.TILRETTELEGGING, intl, currentPath));
-        steps.push(createStep(SøknadRoutes.FERIE, intl, currentPath));
+
+        if (
+            !arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende &&
+            !arbeidsforholdOgInntekt?.harJobbetSomFrilans
+        ) {
+            steps.push(createStep(SøknadRoutes.FERIE, intl, currentPath));
+        }
     }
 
     steps.push(createStep(SøknadRoutes.OPPSUMMERING, intl, currentPath));
