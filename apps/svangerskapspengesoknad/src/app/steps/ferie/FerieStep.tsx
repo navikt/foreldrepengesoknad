@@ -118,6 +118,10 @@ function FeriePerioder() {
     const feriePerioder = watch('feriePerioder');
 
     useEffect(() => {
+        /*
+         Hvis antall ferieperioder har forandret seg innenfor gyldige verdier
+         Så enten kutt bort de som er over antall, eller utvid array med "undefined" for nye entries
+        */
         if (antallFeriePerioder > 0 && antallFeriePerioder < MAKS_ANTALL_PERIODER) {
             if (antallFeriePerioder !== feriePerioder.length) {
                 const forrigeLengde = feriePerioder.length;
