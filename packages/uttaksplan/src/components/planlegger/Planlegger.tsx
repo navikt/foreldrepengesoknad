@@ -4,26 +4,26 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, Heading } from '@navikt/ds-react';
 
 import {
-    ActionLink,
     AnnenForelder,
     Arbeidsforhold,
     Barn,
     BarnFraNesteSak,
-    Block,
-    InfoBlock,
     NavnPåForeldre,
     Periode,
     PeriodeValidState,
     Periodene,
     Situasjon,
     Utsettelsesperiode,
-    bemUtils,
     intlUtils,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { bemUtils } from '@navikt/fp-utils';
 
+import ActionLink from '../../common/action-link/ActionLink';
+import Block from '../../common/block/Block';
+import InfoBlock from '../../common/info-block/InfoBlock';
 import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
 import NyPeriode from '../uttaks-forms/ny-periode/NyPeriode';
 import Periodeliste from './../periodeliste/Periodeliste';

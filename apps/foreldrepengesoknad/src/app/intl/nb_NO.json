@@ -1114,5 +1114,6 @@
     "FørstegangstjenestePanel.Vedlegg": "Senere i søknaden vil du bli bedt om å laste opp dokumentasjon på perioden fra tjenestestedet ditt.",
     "FørstegangstjenestePanel.FraOgMedDato.ErIFremtiden": "Fra og med dato må være før eller lik dagens dato",
     "FørstegangstjenestePanel.FraOgMedDato.FørTilDato": "Du må legge inn en fra og med dato som er før til og med datoen.",
-    "FørstegangstjenestePanel.TilOgMedDato.ErIFremtiden": "Til og med dato må være før eller lik dagens dato"
+    "FørstegangstjenestePanel.TilOgMedDato.ErIFremtiden": "Til og med dato må være før eller lik dagens dato",
+    "backlink.label": "Forrige steg"
 }

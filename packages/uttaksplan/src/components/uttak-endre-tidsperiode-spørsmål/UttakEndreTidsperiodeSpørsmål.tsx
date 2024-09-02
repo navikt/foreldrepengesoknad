@@ -4,7 +4,6 @@ import { useIntl } from 'react-intl';
 import { Modal } from '@navikt/ds-react';
 
 import {
-    Block,
     Periode,
     Situasjon,
     Tidsperiode,
@@ -18,6 +17,7 @@ import {
 } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
+import Block from '../../common/block/Block';
 import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperiode-form/TidsperiodeForm';
 import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
 

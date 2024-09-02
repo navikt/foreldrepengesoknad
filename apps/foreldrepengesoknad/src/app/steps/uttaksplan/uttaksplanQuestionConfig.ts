@@ -1,4 +1,4 @@
-import { QuestionConfig, Questions, YesOrNo } from '@navikt/fp-formik';
+import { QuestionConfig, Questions, YesOrNo } from '@navikt/fp-uttaksplan';
 
 import { UttaksplanFormData, UttaksplanFormField } from './UttaksplanFormConfig';
 

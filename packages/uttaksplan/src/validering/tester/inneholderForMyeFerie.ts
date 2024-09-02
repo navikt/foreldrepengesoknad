@@ -1,13 +1,9 @@
 import { IntlShape } from 'react-intl';
+
+import { Perioden, Søknadsinfo, UtsettelseÅrsakType, getVarighetString, isUtsettelsesperiode } from '@navikt/fp-common';
+
+import uttaksConstants from '../../common/uttaksConstants';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
-import {
-    Perioden,
-    Søknadsinfo,
-    UtsettelseÅrsakType,
-    getVarighetString,
-    isUtsettelsesperiode,
-    uttaksConstants,
-} from '@navikt/fp-common';
 
 export const inneholderForMyeFerie: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const ferieUtsettelser = grunnlag.perioder.filter(

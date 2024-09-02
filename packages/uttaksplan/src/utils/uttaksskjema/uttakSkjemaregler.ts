@@ -5,11 +5,11 @@ import {
     StønadskontoType,
     TidsperiodeDate,
     Tidsperioden,
-    convertYesOrNoOrUndefinedToBoolean,
 } from '@navikt/fp-common';
 import { Stønadskonto } from '@navikt/fp-types';
 
 import { PeriodeUttakFormData } from '../../components/uttaks-forms/periode-uttak-form/periodeUttakFormConfig';
+import { convertYesOrNoOrUndefinedToBoolean } from '../../utils/formUtils';
 import { getUttaksdatoer } from '../uttaksdatoerUtils';
 import { aktivitetskravMorSkalBesvares } from './aktivitetskravMorSkalBesvares';
 import erMorForForSykSkalBesvares from './erMorForSykSkalBesvares';

@@ -3,8 +3,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { Barn, bemUtils, formaterDatoUtenDag, isAdoptertBarn, isFødtBarn } from '@navikt/fp-common';
-import { getFamiliehendelsedato } from '@navikt/fp-utils';
+import { Barn, formaterDatoUtenDag, isAdoptertBarn, isFødtBarn } from '@navikt/fp-common';
+import { bemUtils, getFamiliehendelsedato } from '@navikt/fp-utils';
 
 import HjerteIkon from '../../assets/HjerteIkon';
 import './familiehendelsesdatoDisplay.less';

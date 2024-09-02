@@ -1,10 +1,11 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { Block, NavnPåForeldre, Periode, Periodetype, Situasjon, StønadskontoType } from '@navikt/fp-common';
+import { NavnPåForeldre, Periode, Periodetype, Situasjon, StønadskontoType } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
+import Block from 'app/pages/block/Block';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 
 import UttakUploader from '../attachment-uploaders/UttakUploader';

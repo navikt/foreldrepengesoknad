@@ -17,7 +17,6 @@
         "@navikt/ds-icons": "3.4.3",
         "@navikt/ds-react": "^6.16.0",
         "@navikt/fnrvalidator": "^1.3.0",
-        "@navikt/fp-formik": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@types/node": "^22.0.0",

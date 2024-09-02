@@ -4,12 +4,12 @@ import { VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre, isAnnenForelderOppgitt, isFarEllerMedmor } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { ISOStringToDate } from '@navikt/fp-formik';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
 import Fordeling from 'app/types/Fordeling';
 import { getDatoForAleneomsorg } from 'app/utils/annenForelderUtils';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 
 import FellesperiodeFordeling from './fellesperiode-fordeling/FellesperiodeFordeling';
 import OppstartAvForeldrepenger from './oppstart-av-foreldrepenger/OppstartAvForeldrepenger';

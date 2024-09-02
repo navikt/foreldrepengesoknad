@@ -5,14 +5,13 @@ import {
     TidsperiodeDate,
     Tidsperioden,
     Uttaksdagen,
-    getFørsteUttaksdag2UkerFørFødsel,
-    getSisteUttaksdag6UkerEtterFødsel,
     isValidTidsperiode,
-    uttaksplanDatoavgrensninger,
 } from '@navikt/fp-common';
-import { DatepickerLimitationsString, dateToISOString } from '@navikt/fp-formik';
 
+import { DatepickerLimitationsString, dateToISOString } from '../formik-wrappers';
 import { getFørsteMuligeUttaksdag, getSisteMuligeUttaksdag } from './uttaksdatoerUtils';
+import { uttaksplanDatoavgrensninger } from './uttaksplanDatoavgrensninger';
+import { getFørsteUttaksdag2UkerFørFødsel, getSisteUttaksdag6UkerEtterFødsel } from './wlbUtils';
 
 export interface DatoAvgrensninger {
     fra: Avgrensninger;

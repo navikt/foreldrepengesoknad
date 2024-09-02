@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { bemUtils } from '@navikt/fp-common';
+
+import { bemUtils } from '@navikt/fp-utils';
+
 import './tilesList.less';
 
 const bem = bemUtils('tilesList');

@@ -5,12 +5,12 @@ import {
     PeriodeInfoType,
     StønadskontoType,
     Søknadsinfo,
-    beregnGjenståendeUttaksdager,
     isInfoPeriodeAnnenPart,
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
+import { beregnGjenståendeUttaksdager } from '../../utils/uttaksPlanStatus';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
 const harSøktOmFellesperiode = (periode: Periode) => {

@@ -12,6 +12,8 @@ export const uttaksplanMessages = {
 export * from './utils/manglendeVedleggUtils';
 export * from './utils/uttaksplanUtils';
 export * from './utils/leggTilAnnenPartsPerioderISøkerenesUttaksplan';
+export { convertYesOrNoOrUndefinedToBoolean, convertBooleanOrUndefinedToYesOrNo } from './utils/formUtils';
+export { getFørsteUttaksdag2UkerFørFødsel, getPerioderMedUttakRundtFødsel } from './utils/wlbUtils';
 export { getBrukteDager } from './utils/brukteDagerUtils';
 export {
     getFørsteUttaksdagForeldrepengerFørFødsel,
@@ -21,3 +23,16 @@ export {
 export { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
 export { finnOgSettInnHull, settInnAnnenPartsUttak } from './builder/uttaksplanbuilderUtils';
 export { default as PeriodelisteItemHeader } from './components/periodeliste-item-header/PeriodelisteItemHeader';
+export { getTypedFormComponents, YesOrNo } from './formik-wrappers';
+export type { QuestionVisibility, QuestionConfig } from './formik-wrappers';
+export { Questions } from './formik-wrappers';
+export { default as uttaksConstants } from './common/uttaksConstants';
+export { getForeldreparSituasjon } from './utils/foreldreparSituasjonUtils';
+export { uttaksplanDatoavgrensninger } from './utils/uttaksplanDatoavgrensninger';
+export {
+    appendPeriodeNavnHvisUttakRundtFødselFarMedmor,
+    uttaksperiodeKanJusteresVedFødsel,
+    starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
+    farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
+    getLengdePåForeslåttWLBUttakFarMedmor,
+} from './utils/wlbUtils';

@@ -34,14 +34,18 @@ import {
 import PersonFnrDTO from '@navikt/fp-common/src/common/types/PersonFnrDTO';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { dateToISOString } from '@navikt/fp-formik';
 import { Søker, SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
 
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { Søknad } from 'app/types/Søknad';
 import { ValgtBarn } from 'app/types/ValgtBarn';
 
-import { getErDatoInnenEnDagFraAnnenDato, getRelevantFamiliehendelseDato, sorterDatoEtterEldst } from './dateUtils';
+import {
+    dateToISOString,
+    getErDatoInnenEnDagFraAnnenDato,
+    getRelevantFamiliehendelseDato,
+    sorterDatoEtterEldst,
+} from './dateUtils';
 import { getFamiliehendelseType } from './familiehendelseUtils';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
 

@@ -3,7 +3,6 @@ import {
     Barn,
     BarnFraNesteSak,
     EksisterendeSak,
-    getErMorUfør,
     getFarMedmorErAleneOmOmsorg,
     getMorErAleneOmOmsorg,
     isAdoptertAnnetBarn,
@@ -16,6 +15,7 @@ import {
 import { SøkersituasjonFp } from '@navikt/fp-types';
 
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 

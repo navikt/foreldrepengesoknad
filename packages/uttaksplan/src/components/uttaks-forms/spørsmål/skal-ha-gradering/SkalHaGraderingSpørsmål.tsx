@@ -5,18 +5,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ReadMore } from '@navikt/ds-react';
 
-import {
-    Arbeidsforhold,
-    Arbeidsform,
-    Block,
-    TidsperiodeDate,
-    dateIsBetween,
-    hasValue,
-    intlUtils,
-} from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/fp-formik';
-import { FormikRadioProp } from '@navikt/fp-formik/src/components/formik-radio-group/FormikRadioGroup';
+import { Arbeidsforhold, Arbeidsform, TidsperiodeDate, dateIsBetween, hasValue, intlUtils } from '@navikt/fp-common';
 
+import Block from '../../../../common/block/Block';
+import { YesOrNo } from '../../../../formik-wrappers';
+import { FormikRadioProp } from '../../../../formik-wrappers/components/formik-radio-group/FormikRadioGroup';
 import { prosentValideringGradering } from '../../../../utils/prosentValidering';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 

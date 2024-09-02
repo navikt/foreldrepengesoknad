@@ -5,7 +5,6 @@ import { Accordion, Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
 import {
     AnnenForelder,
-    Block,
     ISOStringToDate,
     SivilstandType,
     getErSøkerFarEllerMedmor,
@@ -24,6 +23,7 @@ import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
 import SøknadRoutes from 'app/appData/routes';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
+import Block from 'app/pages/block/Block';
 import { Utenlandsopphold as OldUtenlandsOpphold } from 'app/types/InformasjonOmUtenlandsopphold';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 

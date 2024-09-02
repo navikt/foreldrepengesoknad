@@ -12,7 +12,6 @@ import {
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
 } from '@navikt/fp-common';
-import { ISOStringToDate } from '@navikt/fp-formik';
 import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import {
     finnOgSettInnHull,
@@ -24,6 +23,7 @@ import Fordeling from 'app/types/Fordeling';
 import { UttaksplanMetaData } from 'app/types/UttaksplanMetaData';
 import { getDatoForAleneomsorg, getErAleneOmOmsorg, getIsDeltUttak } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedatoDate, getTermindato } from 'app/utils/barnUtils';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getAntallDagerFellesperiodeTilSøker, getOppstartsdatoFromFordelingValg } from 'app/utils/fordelingUtils';
 import { deltUttak } from 'app/utils/uttaksplan/deltUttak';
 import { ikkeDeltUttak } from 'app/utils/uttaksplan/ikkeDeltUttak';

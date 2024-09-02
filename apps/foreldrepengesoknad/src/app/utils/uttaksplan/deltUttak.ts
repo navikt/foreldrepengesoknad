@@ -10,17 +10,20 @@ import {
     Uttaksdagen,
     andreAugust2022ReglerGjelder,
     dateIsSameOrAfter,
-    farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
-    getLengdePåForeslåttWLBUttakFarMedmor,
     getTidsperiode,
     guid,
     isUttaksperiode,
     sorterPerioder,
-    starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { Stønadskonto } from '@navikt/fp-types/src/TilgjengeligeStønadskontoer';
-import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from '@navikt/fp-uttaksplan';
+import {
+    farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
+    getLengdePåForeslåttWLBUttakFarMedmor,
+    splittPeriodePåDato,
+    splittUttaksperiodePåFamiliehendelsesdato,
+    starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
+} from '@navikt/fp-uttaksplan';
 
 const deltUttakAdopsjonSøktFørst = (
     famDato: Date,

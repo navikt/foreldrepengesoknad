@@ -12,13 +12,13 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { ISOStringToDate } from '@navikt/fp-formik';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
 import { DelInformasjon, FordelingEier } from 'app/types/FordelingOversikt';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 
 import FlerbarnsdagerInformasjon from './Flerbarnsdagerinformasjon';
 import FordelingPåvirkninger from './FordelingPåvirkninger';

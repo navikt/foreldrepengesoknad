@@ -18,7 +18,6 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { dateToISOString } from '@navikt/fp-formik';
 import { SøkerBarn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { isISODateString } from '@navikt/fp-utils';
 
@@ -36,6 +35,20 @@ dayjs.extend(isBetween);
 dayjs.extend(minMax);
 dayjs.extend(timezone);
 dayjs.extend(advanced);
+
+const isoStringFormat = 'YYYY-MM-DD';
+export const dateToISOString = (date?: Date) => (date ? dayjs(date).format(isoStringFormat) : '');
+export const ISOStringToDate = (dateString = ''): Date | undefined => getDateFromDateString(dateString);
+
+const getDateFromDateString = (dateString: string | undefined): Date | undefined => {
+    if (dateString === undefined) {
+        return undefined;
+    }
+    if (isISODateString(dateString) && dayjs(dateString, 'YYYY-MM-DD', true).isValid()) {
+        return new Date(dateString);
+    }
+    return undefined;
+};
 
 export const date4YearsAgo = dayjs().subtract(4, 'year').startOf('day').toDate();
 

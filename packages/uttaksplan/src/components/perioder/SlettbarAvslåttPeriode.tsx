@@ -3,16 +3,11 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyLong } from '@navikt/ds-react';
 
-import {
-    ActionLink,
-    InfoPeriode,
-    OpprinneligSøkt,
-    bemUtils,
-    getSlettPeriodeTekst,
-    isAvslåttPeriode,
-} from '@navikt/fp-common';
+import { InfoPeriode, OpprinneligSøkt, getSlettPeriodeTekst, isAvslåttPeriode } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { bemUtils } from '@navikt/fp-utils';
 
+import ActionLink from '../../common/action-link/ActionLink';
 import './slettbarAvslåttPeriode.less';
 
 interface Props {

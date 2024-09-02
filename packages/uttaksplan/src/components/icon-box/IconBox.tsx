@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 
-import { bemUtils } from '@navikt/fp-common';
 import { PeriodeColor } from '@navikt/fp-constants';
+import { bemUtils } from '@navikt/fp-utils';
 
 import './iconBox.less';
 

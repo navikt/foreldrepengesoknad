@@ -6,7 +6,6 @@ import {
     AnnenForelder,
     Barn,
     BarnFraNesteSak,
-    Block,
     Dekningsgrad,
     EksisterendeSak,
     Forelder,
@@ -19,7 +18,6 @@ import {
     Søkersituasjon,
     Utsettelsesperiode,
     Uttaksperiode,
-    farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
     getToTetteReglerGjelder,
     intlUtils,
     isAnnenForelderOppgitt,
@@ -33,12 +31,14 @@ import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender';
 
 import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
 import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from './builder/leggTilPeriode';
+import Block from './common/block/Block';
 import OversiktKvoter from './components/oversikt-kvoter/OversiktKvoter';
 import Planlegger from './components/planlegger/Planlegger';
 import PlanvisningToggle from './components/planvisning-toggle/PlanvisningToggle';
 import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttaksplanModal';
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
 import { getHarAktivitetskravIPeriodeUtenUttak } from './utils/uttaksplanUtils';
+import { farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato } from './utils/wlbUtils';
 import { validerUttaksplan } from './validering/validerUttaksplan';
 import VeilederInfo from './validering/veilederInfo/VeilederInfo';
 import { getPeriodelisteMeldinger, getUttaksplanVeilederinfo } from './validering/veilederInfo/utils';

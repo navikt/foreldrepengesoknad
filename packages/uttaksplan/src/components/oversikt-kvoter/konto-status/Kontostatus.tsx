@@ -3,9 +3,10 @@ import { IntlShape, injectIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Situasjon, StønadskontoType, bemUtils, getVarighetString } from '@navikt/fp-common';
+import { NavnPåForeldre, Situasjon, StønadskontoType, getVarighetString } from '@navikt/fp-common';
 import { getStønadskontoNavn } from '@navikt/fp-common/src/common/utils/stønadskontoerUtils';
 import { Stønadskonto } from '@navikt/fp-types';
+import { bemUtils } from '@navikt/fp-utils';
 
 import StønadskontoIkon from '../../stønadskonto-ikon/StønadskontoIkon';
 import './kontostatus.less';

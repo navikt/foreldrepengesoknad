@@ -5,13 +5,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, HStack, VStack } from '@navikt/ds-react';
 
 import { Uttaksdagen, erUttaksdag, isFødtBarn } from '@navikt/fp-common';
-import { ISOStringToDate } from '@navikt/fp-formik';
 import { isValidDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
 import Fordeling, { OppstartValg } from 'app/types/Fordeling';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 
 import MorOppstartInformasjon from './MorOppstartInformasjon';
 import OppstartDatoInput from './OppstartDatoInput';

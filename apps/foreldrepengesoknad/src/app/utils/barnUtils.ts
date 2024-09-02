@@ -4,8 +4,9 @@ import { IntlShape } from 'react-intl';
 
 import { Barn, isFødtBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-common';
 import { DDMMMMYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { ISOStringToDate } from '@navikt/fp-formik';
 import { SøkerBarn } from '@navikt/fp-types';
+
+import { ISOStringToDate } from './dateUtils';
 
 dayjs.extend(utc);
 

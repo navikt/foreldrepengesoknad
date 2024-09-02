@@ -1,28 +1,20 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { dateToISOString } from '@navikt/fp-formik';
 import { Stønadskonto } from '@navikt/fp-types';
 
 import {
     EksisterendeSak,
     Forelder,
     InfoPeriode,
-    isAnnenPartInfoPeriode,
-    isHull,
-    isOverføringsperiode,
-    isPeriodeUtenUttak,
-    isUttakAnnenPart,
-    isUttakAvFellesperiode,
-    isUttaksperiode,
     MorsAktivitet,
     NavnPåForeldre,
     OppholdÅrsakType,
     OpprinneligSøkt,
     OverføringÅrsakType,
     Periode,
-    Periodetype,
     PeriodeValidState,
+    Periodetype,
     Situasjon,
     StønadskontoType,
     Tidsperiode,
@@ -31,21 +23,31 @@ import {
     UtsettelseÅrsakType,
     UttakAnnenPartInfoPeriode,
     Uttaksperiode,
+    isAnnenPartInfoPeriode,
+    isHull,
+    isOverføringsperiode,
+    isPeriodeUtenUttak,
+    isUttakAnnenPart,
+    isUttakAvFellesperiode,
+    isUttaksperiode,
 } from '../types';
 import { PeriodeInfoType } from '../types/PeriodeInfoType';
 import { Perioden } from './Perioden';
-import { erTidsperioderLike, Tidsperioden } from './Tidsperioden';
+import { Tidsperioden, erTidsperioderLike } from './Tidsperioden';
 import {
+    ISOStringToDate,
     convertTidsperiodeToTidsperiodeDate,
     isDateInTheFuture,
     isDateTodayOrInTheFuture,
-    ISOStringToDate,
 } from './dateUtils';
 import intlUtils from './intlUtils';
 import { getFloatFromString } from './numberUtils';
 import { capitalizeFirstLetter } from './stringUtils';
 import { getStønadskontoNavn, getUttakAnnenPartStønadskontoNavn } from './stønadskontoerUtils';
 import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from './wlbUtils';
+
+const isoStringFormat = 'YYYY-MM-DD';
+const dateToISOString = (date?: Date) => (date ? dayjs(date).format(isoStringFormat) : '');
 
 export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Partial<TidsperiodeDate> => {
     return {

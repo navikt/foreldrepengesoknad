@@ -15,7 +15,6 @@ import {
     Situasjon,
     StønadskontoType,
     Tidsperioden,
-    bemUtils,
     getUkerOgDagerFromDager,
     getValidTidsperiode,
     intlUtils,
@@ -27,6 +26,7 @@ import {
     år,
 } from '@navikt/fp-common';
 import { getForelderNavn, getPeriodeTittel } from '@navikt/fp-common/src/common/utils/periodeUtils';
+import { bemUtils } from '@navikt/fp-utils';
 
 import UttaksplanAdvarselIkon from '../../assets/UttaksplanAdvarselIkon';
 import { getIkonForVeilederMelding } from '../../validering/veilederInfo/components/VeilederMelding';

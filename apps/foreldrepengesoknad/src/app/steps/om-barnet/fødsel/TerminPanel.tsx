@@ -5,7 +5,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 
 import {
-    Block,
     Søkersituasjon,
     andreAugust2022ReglerGjelder,
     attenUkerTreDager,
@@ -18,6 +17,8 @@ import {
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, Søkerrolle } from '@navikt/fp-types';
 import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
+
+import Block from 'app/pages/block/Block';
 
 import { UfødtBarn } from '../OmBarnetFormValues';
 

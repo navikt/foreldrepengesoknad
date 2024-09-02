@@ -4,16 +4,12 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Heading } from '@navikt/ds-react';
 
 import {
-    ForelderIkon,
     ForeldreparSituasjon,
     NavnPåForeldre,
     Periode,
-    Personkort,
     Situasjon,
     StønadskontoType,
     Søkerrolle,
-    bemUtils,
-    getSituasjonForelderSvg,
     getVarighetString,
     guid,
     intlUtils,
@@ -21,8 +17,12 @@ import {
 } from '@navikt/fp-common';
 import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { bemUtils } from '@navikt/fp-utils';
 
+import ForelderIkon from '../../common/foreldrepar/ForelderIkon';
+import Personkort from '../../common/personkort/Personkort';
 import { BrukteDager, getBrukteDager } from '../../utils/brukteDagerUtils';
+import { getSituasjonForelderSvg } from '../../utils/foreldreparSituasjonUtils';
 import { Uttaksstatus, getUttaksstatus } from '../../utils/uttaksstatus';
 import Kontostatus from './konto-status/Kontostatus';
 import './oversiktKvoter.less';

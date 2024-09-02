@@ -24,21 +24,20 @@ import {
     isFødtBarn,
     isInfoPeriode,
     isUfødtBarn,
-    uttaksConstants,
 } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
-import { ISOStringToDate } from '@navikt/fp-formik';
 import {
     SøkersituasjonFp,
     TilgjengeligeMinsterettskontoer,
     TilgjengeligeStønadskontoerForDekningsgrad,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
-import { getBrukteDager } from '@navikt/fp-uttaksplan';
+import { getBrukteDager, uttaksConstants } from '@navikt/fp-uttaksplan';
 
 import { DelInformasjon, FordelingEier, FordelingFargekode } from 'app/types/FordelingOversikt';
 import { getErAleneOmOmsorg, getIsDeltUttak } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 
 import { getFormattedMessage } from './FordelingOversikt';
 

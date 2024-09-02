@@ -3,8 +3,9 @@ import isString from 'lodash/isString';
 import { IntlShape } from 'react-intl';
 
 import { erUttaksdag, getVarighetString } from '@navikt/fp-common';
-import { ISOStringToDate } from '@navikt/fp-formik';
 import { formatDate, getNumberFromNumberInputValue, isValidDate } from '@navikt/fp-utils';
+
+import { ISOStringToDate } from 'app/utils/dateUtils';
 
 const validateMaxValueAntallUkerFellesperiode = (
     antallUker: number,

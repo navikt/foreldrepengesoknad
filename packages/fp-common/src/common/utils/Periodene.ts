@@ -1,12 +1,18 @@
 import dayjs from 'dayjs';
-import { Perioden } from './Perioden';
-import { datoErInnenforTidsperiode, isValidTidsperiode, Tidsperioden } from './Tidsperioden';
-import { Uttaksdagen } from './Uttaksdagen';
-import { finnAntallDagerÅTrekke } from './uttaksPlanStatus';
+
 import {
     Forelder,
     ForeldrepengerFørFødselUttaksperiode,
     InfoPeriode,
+    Oppholdsperiode,
+    Overføringsperiode,
+    Periode,
+    PeriodeHull,
+    PeriodeUtenUttak,
+    Periodetype,
+    StønadskontoType,
+    Utsettelsesperiode,
+    Uttaksperiode,
     isForeldrepengerFørFødselUttaksperiode,
     isHull,
     isInfoPeriode,
@@ -17,16 +23,10 @@ import {
     isUtsettelsePgaFerie,
     isUtsettelsesperiode,
     isUttaksperiode,
-    Oppholdsperiode,
-    Overføringsperiode,
-    Periode,
-    PeriodeHull,
-    Periodetype,
-    PeriodeUtenUttak,
-    StønadskontoType,
-    Utsettelsesperiode,
-    Uttaksperiode,
 } from '../types';
+import { Perioden } from './Perioden';
+import { Tidsperioden, datoErInnenforTidsperiode, isValidTidsperiode } from './Tidsperioden';
+import { Uttaksdagen } from './Uttaksdagen';
 
 export const Periodene = (perioder: Periode[]) => ({
     getPeriode: (id: string) => getPeriode(perioder, id),
@@ -375,8 +375,4 @@ export const uttaksplanSlutterMedOpphold = (perioder: Periode[]): boolean => {
 
 export const uttaksplanStarterMedOpphold = (perioder: Periode[]): boolean => {
     return perioder.filter((p) => !isInfoPeriode(p)).findIndex((periode) => periode.type === Periodetype.Opphold) === 0;
-};
-
-export const getSumUttaksdagerÅTrekkeIPeriodene = (perioder: Periode[]) => {
-    return Math.floor(perioder.map((p) => finnAntallDagerÅTrekke(p)).reduce((prev, curr) => prev + curr, 0));
 };

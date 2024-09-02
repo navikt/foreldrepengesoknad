@@ -3,9 +3,10 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, GuidePanel } from '@navikt/ds-react';
 
-import { Block, UtsettelseÅrsakType, intlUtils } from '@navikt/fp-common';
-import { FormikRadioProp } from '@navikt/fp-formik/src/components/formik-radio-group/FormikRadioGroup';
+import { UtsettelseÅrsakType, intlUtils } from '@navikt/fp-common';
 
+import Block from '../../../../common/block/Block';
+import { FormikRadioProp } from '../../../../formik-wrappers/components/formik-radio-group/FormikRadioGroup';
 import {
     PeriodeUtsettelseFormComponents,
     PeriodeUtsettelseFormField,

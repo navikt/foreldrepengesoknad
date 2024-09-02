@@ -6,7 +6,6 @@ import { IntlShape } from 'react-intl';
 
 import { isISODateString } from '@navikt/fp-utils';
 
-import uttaksConstants from '../constants/constants';
 import { TidsperiodeDate, Utsettelsesperiode } from '../types';
 import { Tidsperiode, TidsperiodeMedValgfriSluttdato } from './../types/Tidsperiode';
 import { Uttaksdagen } from './Uttaksdagen';
@@ -201,12 +200,6 @@ export const dateIsBetween = (date: DateValue, fom: DateValue | string, tom: Dat
 
 export function getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato: Date) {
     return Uttaksdagen(familiehendelsesdato).denneEllerNeste();
-}
-
-export function getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato: Date): Date {
-    return Uttaksdagen(getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato)).trekkFra(
-        uttaksConstants.ANTALL_UKER_FORELDREPENGER_FØR_FØDSEL * 5,
-    );
 }
 
 export const getToTetteReglerGjelder = (

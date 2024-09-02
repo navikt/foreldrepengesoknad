@@ -1,6 +1,6 @@
 import { Søkerrolle, hasValue } from '@navikt/fp-common';
-import { QuestionConfig, Questions } from '@navikt/fp-formik';
 
+import { QuestionConfig, Questions } from '../../../formik-wrappers';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 
 export interface PeriodeUttakQuestionPayload extends PeriodeUttakFormData {

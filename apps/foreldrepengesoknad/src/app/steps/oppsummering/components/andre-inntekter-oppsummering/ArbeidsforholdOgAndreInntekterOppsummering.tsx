@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
-import { Barn, ISOStringToDate, getAktiveArbeidsforhold, isFarEllerMedmor } from '@navikt/fp-common';
+import { Barn, ISOStringToDate, isFarEllerMedmor } from '@navikt/fp-common';
 import {
     ArbeidsforholdOgInntektFp,
     HarArbeidsforhold,
@@ -14,6 +14,7 @@ import { Frilans } from '@navikt/fp-steg-frilans';
 import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
 
 import { AndreInntektskilder } from 'app/types/AndreInntektskilder';
+import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 
 import OppsummeringsPunkt from '../OppsummeringsPunkt';

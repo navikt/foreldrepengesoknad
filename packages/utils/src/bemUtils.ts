@@ -1,5 +1,8 @@
 import classNames from 'classnames';
 
+/**
+ * @deprecated Bruk heller css-modules
+ */
 const bemUtils = (cls: string) => ({
     block: cls,
     element: (e?: string, m?: string) => `${cls}__${e}${m ? ` ${cls}__${e}--${m}` : ''}`,

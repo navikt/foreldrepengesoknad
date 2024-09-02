@@ -10,7 +10,6 @@ import {
     Uttaksdagen,
     Uttaksperiode,
     andreAugust2022ReglerGjelder,
-    farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
     getTidsperiode,
     guid,
     isUttaksperiode,
@@ -18,7 +17,11 @@ import {
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { Stønadskonto } from '@navikt/fp-types';
-import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from '@navikt/fp-uttaksplan';
+import {
+    farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
+    splittPeriodePåDato,
+    splittUttaksperiodePåFamiliehendelsesdato,
+} from '@navikt/fp-uttaksplan';
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
     famDato: Date,

@@ -1,6 +1,6 @@
-import StepperKnapp from './StepperKnapp';
-import { bemUtils } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-utils';
 
+import StepperKnapp from './StepperKnapp';
 import './numberStepper.less';
 
 export interface Props {
