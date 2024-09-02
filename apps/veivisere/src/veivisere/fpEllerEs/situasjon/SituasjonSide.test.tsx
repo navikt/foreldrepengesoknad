@@ -40,6 +40,8 @@ describe('<SituasjonSide>', () => {
             harHattInntekt: true,
             lønnPerMåned: '50000',
             situasjon: 'mor',
+            harHattAndreInntekter: null,
+            jobberDuINorge: null,
         });
     });
 
@@ -80,6 +82,7 @@ describe('<SituasjonSide>', () => {
             harHattInntekt: true,
             lønnPerMåned: '50000',
             situasjon: 'mor',
+            harHattAndreInntekter: null,
         });
     });
 
@@ -126,6 +129,7 @@ describe('<SituasjonSide>', () => {
             harHattInntekt: true,
             lønnPerMåned: '50000',
             situasjon: 'mor',
+            harHattAndreInntekter: null,
         });
     });
 
@@ -166,6 +170,8 @@ describe('<SituasjonSide>', () => {
             harHattInntekt: true,
             lønnPerMåned: '5000',
             situasjon: 'mor',
+            harHattAndreInntekter: null,
+            jobberDuINorge: null,
         });
     });
 
@@ -210,6 +216,7 @@ describe('<SituasjonSide>', () => {
             harHattInntekt: true,
             lønnPerMåned: '5000',
             situasjon: 'mor',
+            harHattAndreInntekter: null,
         });
     });
 
@@ -254,6 +261,7 @@ describe('<SituasjonSide>', () => {
             harHattInntekt: true,
             lønnPerMåned: '5000',
             situasjon: 'mor',
+            harHattAndreInntekter: null,
         });
     });
 
@@ -290,6 +298,9 @@ describe('<SituasjonSide>', () => {
             erIArbeid: true,
             harHattInntekt: false,
             situasjon: 'mor',
+            harHattAndreInntekter: null,
+            jobberDuINorge: null,
+            lønnPerMåned: null,
         });
     });
 
@@ -333,6 +344,8 @@ describe('<SituasjonSide>', () => {
             erIArbeid: true,
             harHattInntekt: false,
             situasjon: 'mor',
+            harHattAndreInntekter: null,
+            lønnPerMåned: null,
         });
     });
 
@@ -378,6 +391,8 @@ describe('<SituasjonSide>', () => {
                 harHattInntekt: false,
                 erIArbeid: true,
                 situasjon: 'mor',
+                harHattAndreInntekter: null,
+                lønnPerMåned: null,
             });
         },
     );
@@ -419,6 +434,7 @@ describe('<SituasjonSide>', () => {
             harHattInntekt: true,
             lønnPerMåned: '50000',
             situasjon: 'mor',
+            jobberDuINorge: null,
         });
     });
 
@@ -451,6 +467,9 @@ describe('<SituasjonSide>', () => {
             erIArbeid: false,
             harHattAndreInntekter: false,
             situasjon: 'mor',
+            harHattInntekt: null,
+            jobberDuINorge: null,
+            lønnPerMåned: null,
         });
     });
 });

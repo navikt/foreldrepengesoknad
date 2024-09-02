@@ -2,7 +2,7 @@ import { BabyWrappedIcon, PaperplaneIcon, StrollerIcon } from '@navikt/aksel-ico
 import { ContextRoutes, FpEllerEsRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import { FunctionComponent } from 'react';
-import { useForm } from 'react-hook-form';
+import { UseFormReturn, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
@@ -29,11 +29,43 @@ export enum Situasjon {
 export type FpEllerEsSituasjon = {
     situasjon: Situasjon;
     erIArbeid: boolean;
-    harHattInntekt: boolean;
     harHattAndreInntekter: boolean;
+    harHattInntekt: boolean;
     lønnPerMåned: string;
     borDuINorge: boolean;
     jobberDuINorge: boolean;
+};
+
+const REKKEFØLGE_FELT = [
+    'situasjon',
+    'erIArbeid',
+    'harHattAndreInntekter',
+    'harHattInntekt',
+    'lønnPerMåned',
+    'borDuINorge',
+    'jobberDuINorge',
+];
+
+const resetFields = (
+    formMethods: UseFormReturn<FpEllerEsSituasjon>,
+    fieldName: string,
+    newValue: string | number | boolean,
+) => {
+    const etterfølgendeFelt = REKKEFØLGE_FELT.slice(REKKEFØLGE_FELT.indexOf(fieldName) + 1);
+
+    const updatedFormValues = {
+        ...formMethods.getValues(),
+        [fieldName]: newValue,
+        ...etterfølgendeFelt.reduce(
+            (prev, current) => ({
+                ...prev,
+                [current]: null,
+            }),
+            {},
+        ),
+    };
+
+    formMethods.reset(updatedFormValues);
 };
 
 interface Props {
@@ -48,7 +80,6 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
 
     const formMethods = useForm<FpEllerEsSituasjon>({
         defaultValues: fpEllerEsSituasjon,
-        shouldUnregister: true,
     });
 
     const { situasjon, erIArbeid, harHattInntekt, lønnPerMåned, borDuINorge, harHattAndreInntekter, jobberDuINorge } =
@@ -65,6 +96,11 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
 
     const { ref, scrollToBottom } = useScrollBehaviour();
 
+    const resetFieldsAndScroll = (fieldName: string) => (newFieldValue: string | number | boolean) => {
+        resetFields(formMethods, fieldName, newFieldValue);
+        scrollToBottom();
+    };
+
     return (
         <VeiviserPage
             ref={ref}
@@ -76,7 +112,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                     <BlueRadioGroup
                         label={<FormattedMessage id="SituasjonSide.HvemErDu" />}
                         name="situasjon"
-                        onChange={scrollToBottom}
+                        onChange={resetFieldsAndScroll('situasjon')}
                     >
                         <Radio value={Situasjon.MOR} autoFocus>
                             <FormattedMessage id="SituasjonSide.Mor" />
@@ -93,7 +129,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                             <BlueRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.ArbeidEllerNav" />}
                                 name="erIArbeid"
-                                onChange={scrollToBottom}
+                                onChange={resetFieldsAndScroll('erIArbeid')}
                             >
                                 <Radio value={true} autoFocus>
                                     <FormattedMessage id="SituasjonSide.Ja" />
@@ -131,7 +167,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                             <BlueRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.HarDuHattAndeInntektskilder" />}
                                 name="harHattAndreInntekter"
-                                onChange={scrollToBottom}
+                                onChange={resetFieldsAndScroll('harHattAndreInntekter')}
                             >
                                 <Radio value={true} autoFocus>
                                     <FormattedMessage id="SituasjonSide.Ja" />
@@ -164,7 +200,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                             <BlueRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.HarDuHattInntekt" />}
                                 name="harHattInntekt"
-                                onChange={scrollToBottom}
+                                onChange={resetFieldsAndScroll('harHattInntekt')}
                             >
                                 <Radio value={true} autoFocus>
                                     <FormattedMessage id="SituasjonSide.Ja" />
@@ -190,7 +226,10 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                     {harHattInntekt && (
                         <VStack gap="3">
                             <VStack gap="4">
-                                <BluePanel isDarkBlue={lønnPerMåned === undefined} shouldFadeIn>
+                                <BluePanel
+                                    isDarkBlue={lønnPerMåned === undefined || lønnPerMåned === null}
+                                    shouldFadeIn
+                                >
                                     <VStack gap="2">
                                         <NumericField
                                             name="lønnPerMåned"
@@ -258,7 +297,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                             <BlueRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.BorDuINorge" />}
                                 name="borDuINorge"
-                                onChange={scrollToBottom}
+                                onChange={resetFieldsAndScroll('borDuINorge')}
                             >
                                 <Radio value={true}>
                                     <FormattedMessage id="SituasjonSide.Ja" />
@@ -308,7 +347,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                         </VStack>
                     )}
                     <Spacer />
-                    {(borDuINorge || jobberDuINorge !== undefined) && (
+                    {(borDuINorge || (jobberDuINorge !== undefined && jobberDuINorge !== null)) && (
                         <Button
                             icon={<PaperplaneIcon aria-hidden />}
                             iconPosition="right"

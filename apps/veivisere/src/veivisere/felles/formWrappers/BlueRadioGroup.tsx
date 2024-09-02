@@ -27,7 +27,7 @@ const BlueRadioGroup: FunctionComponent<Props> = (props) => {
     }, []);
 
     return (
-        <BluePanel isDarkBlue={value === undefined} shouldFadeIn={props.shouldFadeIn}>
+        <BluePanel isDarkBlue={value === undefined || value === null} shouldFadeIn={props.shouldFadeIn}>
             <RadioGroup {...props} customErrorFormatter={formatError}>
                 {props.children}
             </RadioGroup>
