@@ -1,4 +1,4 @@
-import{r as c,a as te}from"./index-CTjT7uj6.js";import{n as O}from"./Infobox-BWTFR4k9.js";var B=(e=>(e.HVOR_MYE="/hvor-mye",e.HVA_SKJER="/hva-skjer",e.FP_ELLER_ES="/fp-eller-es",e))(B||{}),ne=(e=>(e.OM="/om",e.ARBEIDSSITUASJON="/arbeidssituasjon",e.OPPSUMMERING="/oppsummering",e))(ne||{}),re=(e=>(e.OM="/om",e.SITUASJON="/situasjon",e.OPPSUMMERING="/oppsummering",e))(re||{}),ae=(e=>(e.OM="/om",e.SITUASJON="/situasjon",e.OPPSUMMERING="/oppsummering",e))(ae||{});/**
+import{r as c,a as te}from"./index-CTjT7uj6.js";import{n as O}from"./Infobox-BWTFR4k9.js";var B=(e=>(e.HVOR_MYE="/hvor-mye",e.HVA_SKJER="/hva-skjer",e.FP_ELLER_ES="/foreldrepenger-eller-engangsstonad",e))(B||{}),ne=(e=>(e.OM="/om",e.ARBEIDSSITUASJON="/arbeidssituasjon",e.OPPSUMMERING="/oppsummering",e))(ne||{}),re=(e=>(e.OM="/om",e.SITUASJON="/situasjon",e.OPPSUMMERING="/oppsummering",e))(re||{}),ae=(e=>(e.OM="/om",e.SITUASJON="/situasjon",e.OPPSUMMERING="/oppsummering",e))(ae||{});/**
  * @remix-run/router v1.19.0
  *
  * Copyright (c) Remix Software Inc.
