@@ -20,7 +20,7 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
     const { borDuINorge, jobberDuINorge, lønnPerMåned, harHattInntekt } = fpEllerEsSituasjon;
 
     const minstelønn = grunnbeløpet / 2;
-    const årslønn = isValidNumber(lønnPerMåned) ? Number(lønnPerMåned) * 12 : 0;
+    const årslønn = lønnPerMåned && isValidNumber(lønnPerMåned) ? Number(lønnPerMåned) * 12 : 0;
 
     const erFlereKrav = harHattInntekt && (borDuINorge || jobberDuINorge);
 
