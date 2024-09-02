@@ -26,12 +26,12 @@ import {
     isDateToday,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
-import { dateToISOString } from '@navikt/fp-formik';
 import { SøkerBarn } from '@navikt/fp-types';
 
 import {
     dateIsSameOrAfter,
     dateIsSameOrBefore,
+    dateToISOString,
     findEldsteDato,
     førsteJuli2024ReglerGjelder,
     getAlderFraDato,

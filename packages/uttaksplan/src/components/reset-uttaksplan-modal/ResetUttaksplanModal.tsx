@@ -1,10 +1,13 @@
 import { FunctionComponent } from 'react';
-import { bemUtils, Block } from '@navikt/fp-common';
 import { FormattedMessage } from 'react-intl';
+
 import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 
-import './resetUttaksplanModal.less';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { bemUtils } from '@navikt/fp-utils';
+
+import Block from '../../common/block/Block';
+import './resetUttaksplanModal.less';
 
 interface Props {
     isOpen: boolean;

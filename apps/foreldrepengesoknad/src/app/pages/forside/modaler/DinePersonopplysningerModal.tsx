@@ -2,7 +2,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Heading, Ingress, Modal } from '@navikt/ds-react';
 
-import { Block } from '@navikt/fp-common';
+import Block from 'app/pages/block/Block';
 
 interface Props {
     isOpen: boolean;

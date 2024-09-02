@@ -6,7 +6,8 @@ import {
     StønadskontoType,
     UttakRundtFødselÅrsak,
 } from '@navikt/fp-common';
-import { YesOrNo, getTypedFormComponents } from '@navikt/fp-formik';
+
+import { YesOrNo, getTypedFormComponents } from '../../../formik-wrappers';
 
 export enum PeriodeUttakFormField {
     fom = 'fom',

@@ -1,5 +1,7 @@
+import { StønadskontoType, Søknadsinfo, isUtsettelsesperiode } from '@navikt/fp-common';
+
+import { beregnGjenståendeUttaksdager } from '../../utils/uttaksPlanStatus';
 import { RegelTestresultat } from '../utils/types/regelTypes';
-import { beregnGjenståendeUttaksdager, isUtsettelsesperiode, StønadskontoType, Søknadsinfo } from '@navikt/fp-common';
 
 // Denne regelen sparker inn dersom forelders kvote + fellesperiode er tømt
 // Dersom noe er igjen av andre forelders kvote er det OK

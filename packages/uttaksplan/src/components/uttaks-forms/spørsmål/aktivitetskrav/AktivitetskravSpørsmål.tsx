@@ -1,8 +1,9 @@
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { Block, MorsAktivitet, NavnPåForeldre, hasValue, intlUtils } from '@navikt/fp-common';
+import { MorsAktivitet, NavnPåForeldre, hasValue, intlUtils } from '@navikt/fp-common';
 
+import Block from '../../../../common/block/Block';
 import { PeriodeUtsettelseFormField } from '../../periode-utsettelse-form/periodeUtsettelseFormConfig';
 import { PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 

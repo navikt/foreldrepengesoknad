@@ -1,16 +1,17 @@
+import dayjs from 'dayjs';
+
+import { Søknadsinfo, formaterDatoKompakt } from '@navikt/fp-common';
+
+import { getSumUttaksdagerÅTrekkeIPeriodene } from '../../utils/Periodene';
 import {
     ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL,
-    Søknadsinfo,
-    formaterDatoKompakt,
     getFarMedmorUttakRundtFødsel,
     getFørsteUttaksdag2UkerFørFødsel,
     getSisteUttaksdag6UkerEtterFødsel,
-    getSumUttaksdagerÅTrekkeIPeriodene,
     gjelderWLBReglerFarMedmorRundtFødsel,
-} from '@navikt/fp-common';
+} from '../../utils/wlbUtils';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './erUttaksmengdeForFarMedmorForHøyTest';
-import dayjs from 'dayjs';
 
 export const farMedMorHarRettPåUttakRundtFødselTest: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const tattUtForMangeDagerIPlanen = erUttaksmengdeForFarMedmorForHøyTest(grunnlag).passerer === false;

@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { VeilederMessage } from './types';
+
+import Block from '../../common/block/Block';
 import VeilederMelding, { VeilederMeldingStil } from './components/VeilederMelding';
-import { Block } from '@navikt/fp-common';
+import { VeilederMessage } from './types';
 
 interface Props {
     meldinger: VeilederMessage[];

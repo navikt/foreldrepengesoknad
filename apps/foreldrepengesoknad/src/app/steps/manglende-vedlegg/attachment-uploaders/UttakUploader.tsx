@@ -7,13 +7,13 @@ import { BodyLong } from '@navikt/ds-react';
 import { getSaveAttachment } from '@navikt/fp-api';
 import { NavnPåForeldre, Periode, Situasjon, addMetadata, lagSendSenereDokument } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType } from '@navikt/fp-constants';
-import { dateToISOString } from '@navikt/fp-formik';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { bemUtils } from '@navikt/fp-utils';
 import { PeriodelisteItemHeader } from '@navikt/fp-uttaksplan';
 
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
+import { dateToISOString } from 'app/utils/dateUtils';
 
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
 import './periode-attachment-uploader.css';

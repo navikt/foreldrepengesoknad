@@ -1,9 +1,10 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
-import { Block, intlUtils } from '@navikt/fp-common';
-import { YesOrNo } from '@navikt/fp-formik';
+import { intlUtils } from '@navikt/fp-common';
 
+import Block from '../../../../common/block/Block';
+import { YesOrNo } from '../../../../formik-wrappers';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 
 interface Props {

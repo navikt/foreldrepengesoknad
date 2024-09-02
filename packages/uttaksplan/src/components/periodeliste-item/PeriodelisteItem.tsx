@@ -7,21 +7,21 @@ import { Accordion } from '@navikt/ds-react';
 import {
     AnnenForelder,
     Arbeidsforhold,
-    Block,
     NavnPåForeldre,
     Periode,
     PeriodeValidState,
     Periodetype,
     Situasjon,
     Utsettelsesperiode,
-    bemUtils,
     isAvslåttPeriode,
     isForeldrepengerFørFødselUttaksperiode,
     isInfoPeriode,
     isSlettbarAvslåttPeriode,
 } from '@navikt/fp-common';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { bemUtils } from '@navikt/fp-utils';
 
+import Block from '../../common/block/Block';
 import VeilederMeldinger from '../../validering/veilederInfo/VeilederMeldinger';
 import { VeilederMessage } from '../../validering/veilederInfo/types';
 import PeriodelisteItemHeader from '../periodeliste-item-header/PeriodelisteItemHeader';

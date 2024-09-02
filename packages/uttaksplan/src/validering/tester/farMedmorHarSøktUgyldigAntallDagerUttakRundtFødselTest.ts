@@ -1,17 +1,17 @@
+import dayjs from 'dayjs';
+
+import { Periode, Søknadsinfo, formaterDatoKompakt } from '@navikt/fp-common';
+
+import { getSumUttaksdagerÅTrekkeIPeriodene } from '../../utils/Periodene';
 import {
     ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL,
-    Periode,
-    Søknadsinfo,
-    formaterDatoKompakt,
     getFarMedmorUttakRundtFødsel,
     getFørsteUttaksdag2UkerFørFødsel,
     getSisteUttaksdag6UkerEtterFødsel,
-    getSumUttaksdagerÅTrekkeIPeriodene,
     gjelderWLBReglerFarMedmorRundtFødsel,
     slutterTidsperiodeInnen6UkerEtterFødsel,
-} from '@navikt/fp-common';
+} from '../../utils/wlbUtils';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
-import dayjs from 'dayjs';
 
 const overskridelseUttakRundtFødselAntallDager = (
     perioderRundtFødsel: Periode[],

@@ -1,17 +1,13 @@
-import {
-    ActionLink,
-    bemUtils,
-    Block,
-    førsteOktober2021ReglerGjelder,
-    intlUtils,
-    Periode,
-    Periodetype,
-    Tidsperioden,
-} from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+
 import { BodyShort } from '@navikt/ds-react';
 
+import { Periode, Periodetype, Tidsperioden, førsteOktober2021ReglerGjelder, intlUtils } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-utils';
+
+import ActionLink from '../../common/action-link/ActionLink';
+import Block from '../../common/block/Block';
 import './periodeHull.less';
 
 interface Props {

@@ -19,7 +19,6 @@
         "@navikt/ds-css": "^6.6.0",
         "@navikt/ds-react": "^6.6.0",
         "@navikt/fp-common": "workspace:*",
-        "@navikt/fp-formik": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",

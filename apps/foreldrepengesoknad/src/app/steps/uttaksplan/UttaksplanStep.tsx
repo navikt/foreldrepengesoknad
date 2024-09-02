@@ -6,23 +6,18 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, Button, Loader } from '@navikt/ds-react';
 
 import {
-    Block,
     Dekningsgrad,
     Forelder,
     ISOStringToDate,
     Periode,
     Periodene,
-    getAktiveArbeidsforhold,
     getAntallUker,
     getAntallUkerMinsterett,
-    getErMorUfør,
     getFarMedmorErAleneOmOmsorg,
-    getForeldreparSituasjon,
     getKjønnFromFnr,
     getMorErAleneOmOmsorg,
     getMorHarRettPåForeldrepengerINorgeEllerEØS,
     getNavnPåForeldre,
-    getPerioderMedUttakRundtFødsel,
     isAnnenForelderOppgitt,
     isFarEllerMedmor,
     isUfødtBarn,
@@ -31,13 +26,15 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
-import { YesOrNo, dateToISOString } from '@navikt/fp-formik';
 import { Søkerinfo } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import {
     Uttaksplan,
+    YesOrNo,
     finnOgSettInnHull,
+    getForeldreparSituasjon,
     getHarAktivitetskravIPeriodeUtenUttak,
+    getPerioderMedUttakRundtFødsel,
     settInnAnnenPartsUttak,
 } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -52,12 +49,15 @@ import { ContextDataType, useContextComplete, useContextGetData, useContextSaveD
 import SøknadRoutes from 'app/appData/routes';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
+import Block from 'app/pages/block/Block';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import InfoOmNesteBarn from 'app/steps/uttaksplan/components/info-om-neste-barn/InfoOmNesteBarn';
 import { RequestStatus } from 'app/types/RequestState';
 import { VedleggDataType } from 'app/types/VedleggDataType';
+import { getErMorUfør } from 'app/utils/annenForelderUtils';
+import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { getEndringstidspunkt } from 'app/utils/dateUtils';
+import { dateToISOString, getEndringstidspunkt } from 'app/utils/dateUtils';
 import {
     getStartdatoFørstePeriodeAnnenPart,
     mapAnnenPartsEksisterendeSakFromDTO,

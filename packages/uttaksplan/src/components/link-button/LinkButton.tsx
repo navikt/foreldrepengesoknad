@@ -1,13 +1,14 @@
-import { ButtonHTMLAttributes, FunctionComponent, ReactNode } from 'react';
 import classNames from 'classnames';
-import { bemUtils } from '@navikt/fp-common';
+import { ButtonHTMLAttributes, FunctionComponent, ReactNode } from 'react';
+
+import { bemUtils } from '@navikt/fp-utils';
+
+import './linkButton.less';
 
 export interface LinkButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children: ReactNode;
     color?: 'default' | 'white';
 }
-
-import './linkButton.less';
 
 const LinkButton: FunctionComponent<LinkButtonProps> = ({ color, className, ...rest }) => {
     const bem = bemUtils('linkButton');

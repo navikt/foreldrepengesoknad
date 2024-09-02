@@ -4,7 +4,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button } from '@navikt/ds-react';
 
 import {
-    Block,
     ISOStringToDate,
     Periode,
     Situasjon,
@@ -17,12 +16,11 @@ import {
     intlUtils,
     isUtsettelsesperiode,
     isUttaksperiode,
-    isUttaksperiodeBareFarMedmorHarRett,
-    isUttaksperiodeFarMedmorPgaFødsel,
     mapTidsperiodeStringToTidsperiode,
 } from '@navikt/fp-common';
-import { dateToISOString, getTypedFormComponents } from '@navikt/fp-formik';
 
+import Block from '../../../common/block/Block';
+import { dateToISOString, getTypedFormComponents } from '../../../formik-wrappers';
 import {
     DatoAvgrensninger,
     getDatoavgrensningerForBareFarMedmorHarRettWLB,
@@ -30,6 +28,7 @@ import {
     getDatoavgrensningerForStønadskonto,
 } from '../../../utils/datoAvgrensningerUtils';
 import { getFørsteMuligeUttaksdag } from '../../../utils/uttaksdatoerUtils';
+import { isUttaksperiodeBareFarMedmorHarRett, isUttaksperiodeFarMedmorPgaFødsel } from '../../../utils/wlbUtils';
 
 interface Props {
     periode?: Periode;

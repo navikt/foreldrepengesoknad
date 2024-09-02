@@ -4,10 +4,8 @@ import { FormattedMessage, IntlShape } from 'react-intl';
 import { BodyLong, Button, GuidePanel } from '@navikt/ds-react';
 
 import {
-    ActionLink,
     AnnenForelder,
     Arbeidsforhold,
-    Block,
     Forelder,
     ISOStringToDate,
     NavnPåForeldre,
@@ -20,12 +18,9 @@ import {
     TidsperiodeDate,
     Utsettelsesperiode,
     andreAugust2022ReglerGjelder,
-    bemUtils,
     formaterDatoKompakt,
     getFiltrerteVelgbareStønadskontotyper,
-    getFørsteUttaksdag2UkerFørFødsel,
     getIsValidStateForPerioder,
-    getSisteUttaksdag6UkerEtterFødsel,
     getSlettPeriodeTekst,
     getVelgbareStønadskontotyper,
     guid,
@@ -33,11 +28,18 @@ import {
     isAnnenForelderOppgitt,
     isUttaksperiode,
     isValidTidsperiode,
-    starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
 } from '@navikt/fp-common';
-import { QuestionVisibility } from '@navikt/fp-formik';
 import { Stønadskonto } from '@navikt/fp-types';
+import { bemUtils } from '@navikt/fp-utils';
 
+import ActionLink from '../../../common/action-link/ActionLink';
+import Block from '../../../common/block/Block';
+import { QuestionVisibility } from '../../../formik-wrappers';
+import {
+    getFørsteUttaksdag2UkerFørFødsel,
+    getSisteUttaksdag6UkerEtterFødsel,
+    starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
+} from '../../../utils/wlbUtils';
 import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from '../../uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';

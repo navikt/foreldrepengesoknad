@@ -5,7 +5,6 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
 
-import { DateRange, YesOrNo } from '@navikt/fp-formik';
 import { getNumberFromNumberInputValue } from '@navikt/fp-utils';
 
 import { Kjønn } from './../../common';
@@ -31,14 +30,6 @@ export const date20YearsAgo = dayjs().subtract(20, 'years').startOf('day').toDat
 const ukerAaTrekkeFraTerminDato = 18;
 const ekstraDagerAaTrekkeFraTerminDato = 3;
 const dagerForTerminbekreftelse = ukerAaTrekkeFraTerminDato * 7 + ekstraDagerAaTrekkeFraTerminDato;
-
-export const validateYesOrNoIsAnswered = (answer: YesOrNo, errorIntlKey: string): string | undefined => {
-    if (answer === YesOrNo.UNANSWERED || answer === undefined) {
-        return errorIntlKey;
-    }
-
-    return undefined;
-};
 
 export const validateRequiredField = (value: any, errorMsg: string): string | undefined => {
     if (!hasValue(value) || (typeof value === 'string' && value.trim() === '')) {
@@ -144,41 +135,6 @@ export const getForsteMuligeTerminbekreftelsesdato = (termindato?: Date | string
 };
 
 export const getSisteMuligeTerminbekreftelsesdato = () => dayjs(new Date()).endOf('day').toDate();
-
-export const dateRangesCollide = (ranges: DateRange[]): boolean => {
-    if (ranges.length > 0) {
-        const sortedDates = [...ranges].sort(sortDateRange);
-        const hasOverlap = sortedDates.find((d, idx) => {
-            if (idx < sortedDates.length - 1) {
-                return dayjs(d.to).isSameOrAfter(sortedDates[idx + 1].from);
-            }
-            return false;
-        });
-        return hasOverlap !== undefined;
-    }
-    return false;
-};
-
-export const dateRangesExceedsRange = (ranges: DateRange[], allowedRange: DateRange): boolean => {
-    if (ranges.length === 0) {
-        return false;
-    }
-    const sortedRanges = [...ranges].sort(sortDateRange);
-    const from = sortedRanges[0].from;
-    const to = sortedRanges[sortedRanges.length - 1].to;
-
-    if (
-        !dayjs(from).isBetween(allowedRange.from, allowedRange.to, 'day', '[]') ||
-        !dayjs(to).isBetween(allowedRange.from, allowedRange.to, 'day', '[]')
-    ) {
-        return true;
-    }
-    return false;
-};
-
-export const sortDateRange = (d1: DateRange, d2: DateRange): number => {
-    return sortOpenDateRange(d1, d2);
-};
 
 export const sortItemsByFom = (a: ItemWithFom, b: ItemWithFom) =>
     sortOpenDateRange({ from: dayjs(a.fom).toDate() }, { from: dayjs(b.fom).toDate() });

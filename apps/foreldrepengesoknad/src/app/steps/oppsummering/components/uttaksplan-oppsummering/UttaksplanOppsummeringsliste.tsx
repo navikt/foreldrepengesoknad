@@ -15,15 +15,17 @@ import {
     TidsperiodeDate,
     Utsettelsesperiode,
     Uttaksperiode,
-    appendPeriodeNavnHvisUttakRundtFødselFarMedmor,
     finnesPeriodeIOpprinneligPlan,
     formatDate,
     getPeriodeTittel,
     getStønadskontoNavn,
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
-    uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
+import {
+    appendPeriodeNavnHvisUttakRundtFødselFarMedmor,
+    uttaksperiodeKanJusteresVedFødsel,
+} from '@navikt/fp-uttaksplan';
 
 import Overføringsperiodedetaljer from './detaljer/Overføringsperiodedetaljer';
 import Uttaksperiodedetaljer from './detaljer/Uttaksperiodedetaljer';

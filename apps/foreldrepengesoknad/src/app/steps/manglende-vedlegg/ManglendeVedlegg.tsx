@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyLong, Heading } from '@navikt/ds-react';
 
-import { Block, getErSøkerFarEllerMedmor, getNavnPåForeldre, isUtsettelseBarnInnlagt } from '@navikt/fp-common';
+import { getErSøkerFarEllerMedmor, getNavnPåForeldre, isUtsettelseBarnInnlagt } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Attachment, Søkerinfo } from '@navikt/fp-types';
@@ -14,6 +14,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
+import Block from 'app/pages/block/Block';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';

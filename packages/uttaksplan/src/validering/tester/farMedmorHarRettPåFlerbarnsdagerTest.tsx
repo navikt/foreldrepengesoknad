@@ -1,11 +1,10 @@
-import {
-    Søknadsinfo,
-    andreAugust2022ReglerGjelder,
-    getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB,
-    getBareFarHarRettFlerbarnsdagerUker,
-} from '@navikt/fp-common';
+import { Søknadsinfo, andreAugust2022ReglerGjelder } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 
+import {
+    getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB,
+    getBareFarHarRettFlerbarnsdagerUker,
+} from '../../utils/minsterettUtils';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './erUttaksmengdeForFarMedmorForHøyTest';
 

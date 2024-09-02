@@ -1,4 +1,4 @@
-import { getTypedFormComponents } from '@navikt/fp-formik';
+import { getTypedFormComponents } from '../../../formik-wrappers';
 
 export enum PeriodeFørFødselFormField {
     fom = 'fom',

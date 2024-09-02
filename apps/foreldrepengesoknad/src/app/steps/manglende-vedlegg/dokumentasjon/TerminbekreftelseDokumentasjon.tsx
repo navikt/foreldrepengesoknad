@@ -1,10 +1,11 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { Barn, Block, andreAugust2022ReglerGjelder, isFarEllerMedmor, isUfødtBarn } from '@navikt/fp-common';
+import { Barn, andreAugust2022ReglerGjelder, isFarEllerMedmor, isUfødtBarn } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Arbeidsforhold, Attachment, Søkerrolle } from '@navikt/fp-types';
 
+import Block from 'app/pages/block/Block';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 
 import VedleggUploader from '../attachment-uploaders/VedleggUploader';

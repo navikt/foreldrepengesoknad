@@ -4,11 +4,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert } from '@navikt/ds-react';
 
-import { Block, Periode, StønadskontoType, isOverføringsperiode, isUttaksperiode } from '@navikt/fp-common';
+import { Periode, StønadskontoType, isOverføringsperiode, isUttaksperiode } from '@navikt/fp-common';
 import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
-import { QuestionVisibility, YesOrNo } from '@navikt/fp-formik';
+import { QuestionVisibility, YesOrNo } from '@navikt/fp-uttaksplan';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
+import Block from 'app/pages/block/Block';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import { mapUttaksplanFormValueToState } from 'app/steps/uttaksplan/UttaksplanFormUtils';
 

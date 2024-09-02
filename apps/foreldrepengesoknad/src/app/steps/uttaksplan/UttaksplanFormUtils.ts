@@ -1,5 +1,9 @@
-import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from '@navikt/fp-common';
-import { QuestionVisibility, YesOrNo } from '@navikt/fp-formik';
+import {
+    QuestionVisibility,
+    YesOrNo,
+    convertBooleanOrUndefinedToYesOrNo,
+    convertYesOrNoOrUndefinedToBoolean,
+} from '@navikt/fp-uttaksplan';
 
 import { UttaksplanFormData, UttaksplanFormField } from './UttaksplanFormConfig';
 

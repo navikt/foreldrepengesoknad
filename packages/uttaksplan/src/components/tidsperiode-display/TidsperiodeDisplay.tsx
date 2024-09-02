@@ -1,8 +1,12 @@
 import { IntlShape, useIntl } from 'react-intl';
-import { formatDate, Block, intlUtils, TidsperiodeDate, bemUtils } from '@navikt/fp-common';
-import { BodyShort, Label, Link } from '@navikt/ds-react';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
+import { BodyShort, Label, Link } from '@navikt/ds-react';
+
+import { TidsperiodeDate, formatDate, intlUtils } from '@navikt/fp-common';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { bemUtils } from '@navikt/fp-utils';
+
+import Block from '../../common/block/Block';
 import './tidsperiodeDisplay.less';
 
 interface Props {

@@ -1,9 +1,11 @@
-import { VeilederMessage } from '../types';
 import { FormattedMessage } from 'react-intl';
-import { bemUtils } from '@navikt/fp-common';
-import { Alert, Label } from '@navikt/ds-react';
-import { UttaksplanIkonKeys } from '../../../components/uttaksplan-ikon/UttaksplanIkon';
 
+import { Alert, Label } from '@navikt/ds-react';
+
+import { bemUtils } from '@navikt/fp-utils';
+
+import { UttaksplanIkonKeys } from '../../../components/uttaksplan-ikon/UttaksplanIkon';
+import { VeilederMessage } from '../types';
 import './veilederMelding.less';
 
 export type VeilederMeldingStil = 'transparent' | 'default';

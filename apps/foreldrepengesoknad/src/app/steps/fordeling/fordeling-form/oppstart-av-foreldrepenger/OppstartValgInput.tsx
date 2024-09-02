@@ -15,7 +15,6 @@ import {
     isFødtBarn,
 } from '@navikt/fp-common';
 import { RadioGroup } from '@navikt/fp-form-hooks';
-import { ISOStringToDate } from '@navikt/fp-formik';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import { formatDateExtended } from '@navikt/fp-utils';
 import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-uttaksplan';
@@ -25,6 +24,7 @@ import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
 import { OppstartValg } from 'app/types/Fordeling';
 import { getDatoForAleneomsorg, getIsDeltUttak } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 
 const getOppstartsvalgFarFødsel = (
     familiehendelsesDato: Date,

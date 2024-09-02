@@ -2,7 +2,6 @@ import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import {
-    Block,
     ForeldrepengerFørFødselUttaksperiode,
     ISOStringToDate,
     Periode,
@@ -12,6 +11,7 @@ import {
     isValidTidsperiode,
 } from '@navikt/fp-common';
 
+import Block from '../../../common/block/Block';
 import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from '../../uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
 import { SubmitListener } from '../submit-listener/SubmitListener';

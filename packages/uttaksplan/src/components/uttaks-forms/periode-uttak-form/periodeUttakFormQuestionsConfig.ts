@@ -8,19 +8,18 @@ import {
     TidsperiodeDate,
     UttakRundtFødselÅrsak,
     andreAugust2022ReglerGjelder,
-    erFarMedmorSinWLBTidsperiodeRundtFødsel,
-    getSisteUttaksdag6UkerEtterFødsel,
-    harAnnenForelderRettIEØS,
     hasValue,
     isValidTidsperiode,
 } from '@navikt/fp-common';
-import { QuestionConfig, Questions, YesOrNo } from '@navikt/fp-formik';
 
+import { QuestionConfig, Questions, YesOrNo } from '../../../formik-wrappers';
+import { harAnnenForelderRettIEØS } from '../../../utils/annenForelderUtils';
 import hvemSkalTaUttakSkalBesvares from '../../../utils/uttaksskjema/hvemSkalTaUttakSkalBesvares';
 import getUttakSkjemaregler, {
     UttakSkjemaReglerProps,
     UttakSkjemaregler,
 } from '../../../utils/uttaksskjema/uttakSkjemaregler';
+import { erFarMedmorSinWLBTidsperiodeRundtFødsel, getSisteUttaksdag6UkerEtterFødsel } from '../../../utils/wlbUtils';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 
 export interface PeriodeUttakFormQuestionsPayload {

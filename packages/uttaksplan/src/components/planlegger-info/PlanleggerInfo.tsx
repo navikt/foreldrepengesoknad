@@ -1,15 +1,12 @@
-import {
-    Forelder,
-    ForeldreparSituasjon,
-    InfoBlock,
-    InnholdMedIllustrasjon,
-    SituasjonSirkel,
-    UkerSirkel,
-    intlUtils,
-} from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
+import { Forelder, ForeldreparSituasjon, intlUtils } from '@navikt/fp-common';
+
+import InfoBlock from '../../common/info-block/InfoBlock';
+import InnholdMedIllustrasjon from '../../common/innhold-med-illustrasjon/InnholdMedIllustrasjon';
+import SituasjonSirkel from '../../common/situasjon-sirkel/SituasjonSirkel';
+import UkerSirkel from '../../common/uker-sirkel/UkerSirkel';
 import './planleggerInfo.less';
 
 interface Props {

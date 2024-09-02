@@ -4,11 +4,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { LanguageToggle, Sak } from '@navikt/fp-common';
+import { Sak } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import { ConfirmationPanel, Form } from '@navikt/fp-form-hooks';
 import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
-import { ContentWrapper } from '@navikt/fp-ui';
+import { ContentWrapper, LanguageToggle } from '@navikt/fp-ui';
 
 import { ContextDataType, useContextSaveAnyData } from 'app/appData/FpDataContext';
 import SøknadRoutes from 'app/appData/routes';
@@ -167,7 +167,7 @@ const Forside: React.FunctionComponent<Props> = ({
     return (
         <Form formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="10">
-                <LanguageToggle locale={locale} availableLocales={['nb', 'nn']} toggle={onChangeLocale} />
+                <LanguageToggle locale={locale} availableLocales={['nb', 'nn']} toggleLanguage={onChangeLocale} />
                 <ContentWrapper>
                     <VStack gap="8">
                         <HStack justify="center">

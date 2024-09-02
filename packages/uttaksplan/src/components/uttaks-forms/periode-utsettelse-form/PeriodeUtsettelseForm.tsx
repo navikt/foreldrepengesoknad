@@ -4,9 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button } from '@navikt/ds-react';
 
 import {
-    ActionLink,
     Arbeidsforhold,
-    Block,
     ISOStringToDate,
     NavnPåForeldre,
     Periode,
@@ -14,7 +12,6 @@ import {
     Situasjon,
     Tidsperioden,
     Utsettelsesperiode,
-    bemUtils,
     førsteOktober2021ReglerGjelder,
     getIsValidStateForPerioder,
     getSlettPeriodeTekst,
@@ -23,7 +20,10 @@ import {
     intlUtils,
     isValidTidsperiode,
 } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-utils';
 
+import ActionLink from '../../../common/action-link/ActionLink';
+import Block from '../../../common/block/Block';
 import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
 import UtsettelseEndreTidsperiodeSpørsmål from '../../utsettelse-tidsperiode-spørsmål/UtsettelseTidsperiodeSpørsmål';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';

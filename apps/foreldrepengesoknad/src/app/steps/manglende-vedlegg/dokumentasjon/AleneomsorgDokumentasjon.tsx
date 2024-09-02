@@ -1,10 +1,11 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { AnnenForelder, Block, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { AnnenForelder, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
+import Block from 'app/pages/block/Block';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 
 import VedleggUploader from '../attachment-uploaders/VedleggUploader';

@@ -2,8 +2,8 @@ import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
 import { NavnPåForeldre, StønadskontoType, getStønadskontoNavn, hasValue, intlUtils } from '@navikt/fp-common';
-import { FormikRadioProp } from '@navikt/fp-formik/src/components/formik-radio-group/FormikRadioGroup';
 
+import { FormikRadioProp } from '../../../../formik-wrappers/components/formik-radio-group/FormikRadioGroup';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 
 interface Props {

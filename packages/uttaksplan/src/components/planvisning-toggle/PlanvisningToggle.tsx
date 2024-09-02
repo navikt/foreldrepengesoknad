@@ -4,8 +4,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { ToggleGroup } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { bemUtils } from '@navikt/fp-utils';
 
 import './planvisning-toggle.css';
 

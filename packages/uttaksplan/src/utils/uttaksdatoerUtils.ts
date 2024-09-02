@@ -5,11 +5,12 @@ import {
     TidsperiodeDate,
     Uttaksdagen,
     andreAugust2022ReglerGjelder,
-    getFørsteUttaksdag2UkerFørFødsel,
     getTidsperiode,
     isValidTidsperiode,
-    uttaksConstants,
 } from '@navikt/fp-common';
+
+import uttaksConstants from '../common/uttaksConstants';
+import { getFørsteUttaksdag2UkerFørFødsel } from './wlbUtils';
 
 export interface Uttaksdatoer {
     førsteUttaksdag: Date;
