@@ -1,7 +1,7 @@
 export enum ContextRoutes {
     HVOR_MYE = '/hvor-mye',
     HVA_SKJER = '/hva-skjer',
-    FP_ELLER_ES = '/fp-eller-es',
+    FP_ELLER_ES = '/foreldrepenger-eller-engangsstonad',
 }
 
 export enum HvorMyeRoutes {
