@@ -89,11 +89,23 @@ const getErrorMessageMap = (intl: IntlShape): Record<FileRejectionReason | FileU
     [FileUploadError.TIMEOUT]: intl.formatMessage({ id: 'FailedAttachment.Vedlegg.Feilmelding.Timeout' }),
 });
 
+// Etter refresh lokalt og i dev så er file = {}, så dette må til for å hindra feil i Aksel-komponent
+const createFileIfEmpty = (attachment: Attachment): File => {
+    const file = attachment.file;
+    if (!file || Object.keys(file).length === 0) {
+        return {
+            name: attachment.filename,
+            size: attachment.filesize,
+        } as File;
+    }
+    return file;
+};
+
 const convertToInternalFormat = (attachments: Attachment[]): FileUploaderAttachment[] => {
     return attachments.map((a) => ({
         attachmentData: a,
         fileObject: {
-            file: a.file,
+            file: createFileIfEmpty(a),
             error: a.error,
         },
     }));

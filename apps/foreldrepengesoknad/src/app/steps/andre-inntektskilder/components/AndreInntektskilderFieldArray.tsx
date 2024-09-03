@@ -34,7 +34,6 @@ const AndreInntektskilderFieldArray: React.FunctionComponent = () => {
                 const inntektskilde = andreInntektskilder[index];
                 return (
                     <VStack gap="10" key={field.id}>
-                        {index !== 0 && <HorizontalLine />}
                         <RadioGroup
                             name={`andreInntektskilder.${index}.type`}
                             label={<FormattedMessage id="AndreInntektskilderStep.HvilkenTypeAnnenInntekskilder" />}
@@ -61,18 +60,21 @@ const AndreInntektskilderFieldArray: React.FunctionComponent = () => {
                         {inntektskilde.type === AnnenInntektType.MILITÆRTJENESTE && (
                             <FørstegangstjenestePanel index={index} inntektskilde={inntektskilde} />
                         )}
+                        {index === 0 && fields.length > 1 && <HorizontalLine />}
                         {index !== 0 && (
-                            <HStack>
-                                <Button
-                                    icon={<XMarkIcon aria-hidden />}
-                                    type="button"
-                                    variant="tertiary"
-                                    onClick={() => remove(index)}
-                                >
-                                    <FormattedMessage id="AndreInntektskilderStep.Slett" />
-                                </Button>
+                            <VStack gap="2">
+                                <HStack>
+                                    <Button
+                                        icon={<XMarkIcon aria-hidden />}
+                                        type="button"
+                                        variant="tertiary"
+                                        onClick={() => remove(index)}
+                                    >
+                                        <FormattedMessage id="AndreInntektskilderStep.Slett" />
+                                    </Button>
+                                </HStack>
                                 <HorizontalLine />
-                            </HStack>
+                            </VStack>
                         )}
                     </VStack>
                 );
