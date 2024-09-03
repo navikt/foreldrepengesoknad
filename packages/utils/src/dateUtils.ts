@@ -85,6 +85,16 @@ export const isISODateString = (value: any): value is string => {
     }
 };
 
+export const ISOStringToDate = (dateString: string | undefined) => {
+    if (dateString === undefined) {
+        return undefined;
+    }
+    if (isISODateString(dateString) && dayjs(dateString, 'YYYY-MM-DD', true).isValid()) {
+        return dayjs.utc(dateString).toDate();
+    }
+    return undefined;
+};
+
 export const erMyndig = (fødselsdato: DateTypes): boolean => {
     const now = dayjs.utc();
     const momentDate = dayjs.utc(fødselsdato);

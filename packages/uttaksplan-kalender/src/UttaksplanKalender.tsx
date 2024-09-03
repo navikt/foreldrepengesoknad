@@ -25,7 +25,7 @@ import {
 } from '@navikt/fp-types';
 import { Calendar, Period } from '@navikt/fp-ui';
 import {
-    Uttaksdagen,
+    UttaksdagenNy,
     formatDateIso,
     getAnnenForelderSamtidigUttakPeriode,
     getFamiliehendelsedato,
@@ -65,7 +65,7 @@ const slåSammenPeriods = (periods: Period[]) => {
         if (
             index !== 0 &&
             period.color === res[res.length - 1].color &&
-            dayjs(Uttaksdagen(new Date(res[res.length - 1].tom)).neste()).isSame(dayjs(period.fom), 'day')
+            dayjs(UttaksdagenNy(new Date(res[res.length - 1].tom)).neste()).isSame(dayjs(period.fom), 'day')
         ) {
             res[res.length - 1].tom = period.tom;
             return res;
@@ -99,7 +99,7 @@ const getPerioderForKalendervisning = (
         const color = getKalenderFargeForPeriodeType(p, erFarEllerMedmor, uttaksplan, barn);
         return {
             fom: dayjs(p.tidsperiode.fom).isSame(dayjs(familiehendelsesdato), 'd')
-                ? formatDateIso(Uttaksdagen(p.tidsperiode.fom).neste())
+                ? formatDateIso(UttaksdagenNy(p.tidsperiode.fom).neste())
                 : formatDateIso(p.tidsperiode.fom),
             tom: formatDateIso(p.tidsperiode.tom),
             color,

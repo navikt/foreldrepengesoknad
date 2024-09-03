@@ -5,7 +5,7 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { Uttaksdagen, treUkerSiden } from '@navikt/fp-utils';
+import { UttaksdagenNy, treUkerSiden } from '@navikt/fp-utils';
 
 import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from './barnetUtils';
@@ -156,10 +156,10 @@ const finnDeltUttaksdata = (
 
     const sluttdatoPeriode1 =
         hvemPlanlegger.type === Situasjon.FAR_OG_FAR
-            ? Uttaksdagen(dayjs(startdatoPeriode1).toDate()).leggTil(
+            ? UttaksdagenNy(dayjs(startdatoPeriode1).toDate()).leggTil(
                   antallDagerMødrekvote + antallUkerOgDagerFellesperiodeForSøker1.totaltAntallDager - 1,
               )
-            : Uttaksdagen(dayjs(startdatoPeriode1).toDate()).leggTil(
+            : UttaksdagenNy(dayjs(startdatoPeriode1).toDate()).leggTil(
                   antallDagerForeldrepengerFørFødsel +
                       antallDagerMødrekvote +
                       antallUkerOgDagerFellesperiodeForSøker1.totaltAntallDager -
@@ -168,7 +168,7 @@ const finnDeltUttaksdata = (
 
     const startdatoPeriode2 = getUttaksdagFraOgMedDato(dayjs(sluttdatoPeriode1).add(1, 'day').format(ISO_DATE_FORMAT));
 
-    const sluttdatoPeriode2 = Uttaksdagen(dayjs(startdatoPeriode2).toDate()).leggTil(
+    const sluttdatoPeriode2 = UttaksdagenNy(dayjs(startdatoPeriode2).toDate()).leggTil(
         antallUkerOgDagerFellesperiodeForSøker2.totaltAntallDager + antallDagerFedrekvote - 1,
     );
 
@@ -202,7 +202,7 @@ const finnEnsligUttaksdata = (
     if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
         const aktivitetsfriDager = getAntallDagerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskonto);
-        const sluttAktivitetsfri = Uttaksdagen(dayjs(getUttaksdagTilOgMedDato(familiehendelsedato)).toDate()).leggTil(
+        const sluttAktivitetsfri = UttaksdagenNy(dayjs(getUttaksdagTilOgMedDato(familiehendelsedato)).toDate()).leggTil(
             aktivitetsfriDager + (erBarnetAdoptert(barnet) ? 0 : 6 * 5 - 1),
         );
 
@@ -218,7 +218,7 @@ const finnEnsligUttaksdata = (
                 dayjs(sluttAktivitetsfri).add(1, 'day').format(ISO_DATE_FORMAT),
             ),
             sluttdatoPeriode2: dayjs(
-                Uttaksdagen(sluttAktivitetsfri).leggTil(aktivitetskravUkerOgDager.totaltAntallDager),
+                UttaksdagenNy(sluttAktivitetsfri).leggTil(aktivitetskravUkerOgDager.totaltAntallDager),
             ).format(ISO_DATE_FORMAT),
         };
     }
@@ -226,7 +226,7 @@ const finnEnsligUttaksdata = (
     if (hvemHarRett === 'kunSøker2HarRett' && (erFarSøker2(hvemPlanlegger) || erMedmorDelAvSøknaden(hvemPlanlegger))) {
         const aktivitetsfriDager = getAntallDagerAktivitetsfriKvote(valgtStønadskonto);
         const aktivitetskravUkerOgDager = getAntallUkerOgDagerForeldrepenger(valgtStønadskonto);
-        const sluttAktivitetsfri = Uttaksdagen(dayjs(getUttaksdagTilOgMedDato(familiehendelsedato)).toDate()).leggTil(
+        const sluttAktivitetsfri = UttaksdagenNy(dayjs(getUttaksdagTilOgMedDato(familiehendelsedato)).toDate()).leggTil(
             aktivitetsfriDager + (erBarnetAdoptert(barnet) ? 0 : 6 * 5 - 1),
         );
 
@@ -242,7 +242,7 @@ const finnEnsligUttaksdata = (
                 dayjs(sluttAktivitetsfri).add(1, 'day').format(ISO_DATE_FORMAT),
             ),
             sluttdatoPeriode2: dayjs(
-                Uttaksdagen(sluttAktivitetsfri).leggTil(aktivitetskravUkerOgDager.totaltAntallDager),
+                UttaksdagenNy(sluttAktivitetsfri).leggTil(aktivitetskravUkerOgDager.totaltAntallDager),
             ).format(ISO_DATE_FORMAT),
         };
     }
@@ -256,7 +256,7 @@ const finnEnsligUttaksdata = (
             ? getUttaksdagFraOgMedDato(familiehendelsedato)
             : getFørsteUttaksdagForeldrepengerFørFødsel(barnet);
 
-    const sluttdatoSøker = Uttaksdagen(dayjs(startdatoSøker).toDate()).leggTil(
+    const sluttdatoSøker = UttaksdagenNy(dayjs(startdatoSøker).toDate()).leggTil(
         aktivitetskravUkerOgDager.totaltAntallDager + dagerAktivitetsfriKvote + antallDagerForeldrepengerFørFødsel - 1,
     );
 
