@@ -8,14 +8,12 @@ import {
     Situasjon,
     Tidsperiode,
     TidsperiodeDate,
-    Tidsperioden,
     Utsettelsesperiode,
-    getTidsperiode,
     getUkerOgDagerFromDager,
-    intlUtils,
     isForeldrepengerFørFødselUttaksperiode,
 } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { Tidsperioden, getTidsperiode } from '@navikt/fp-utils';
 
 import Block from '../../common/block/Block';
 import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperiode-form/TidsperiodeForm';
@@ -102,8 +100,8 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
             </Modal>
             <Block padBottom="m">
                 <UkerDagerTeller
-                    ukeLegend={intlUtils(intl, 'uker.label')}
-                    dagLegend={intlUtils(intl, 'dager.label')}
+                    ukeLegend={intl.formatMessage({ id: 'uker.label' })}
+                    dagLegend={intl.formatMessage({ id: 'dager.label' })}
                     ukeStepper={{
                         value: uker !== undefined ? uker : 0,
                         min: 0,

@@ -3,8 +3,9 @@ import { useIntl } from 'react-intl';
 
 import { Link, Tag } from '@navikt/ds-react';
 
-import { isAttachmentWithError } from '@navikt/fp-common';
 import { Attachment } from '@navikt/fp-types';
+
+import { isAttachmentWithError } from 'app/utils/vedleggUtils';
 
 import KompleksFeltoppsummering from '../kompleks-feltoppsummering/KompleksFeltoppsummering';
 import './oppsummeringAvDokumentasjon.less';

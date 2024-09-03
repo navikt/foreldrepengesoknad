@@ -1,12 +1,5 @@
-import {
-    ISOStringToDate,
-    StønadskontoType,
-    Tidsperiode,
-    TidsperiodeDate,
-    Tidsperioden,
-    Uttaksdagen,
-    isValidTidsperiode,
-} from '@navikt/fp-common';
+import { ISOStringToDate, StønadskontoType, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
+import { Tidsperioden, Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
 
 import { DatepickerLimitationsString, dateToISOString } from '../formik-wrappers';
 import { getFørsteMuligeUttaksdag, getSisteMuligeUttaksdag } from './uttaksdatoerUtils';

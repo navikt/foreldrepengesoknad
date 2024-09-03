@@ -6,11 +6,11 @@ import {
     Periode,
     Situasjon,
     StønadskontoType,
-    Uttaksdagen,
     andreAugust2022ReglerGjelder,
     isUfødtBarn,
     isUttaksperiode,
 } from '@navikt/fp-common';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 export const getKanPeriodenRundtFødselJusteres = (
     periodeRundtFødsel: Periode,

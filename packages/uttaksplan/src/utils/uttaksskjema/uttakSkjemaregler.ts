@@ -1,12 +1,6 @@
-import {
-    AnnenForelder,
-    Periodetype,
-    Situasjon,
-    StønadskontoType,
-    TidsperiodeDate,
-    Tidsperioden,
-} from '@navikt/fp-common';
+import { AnnenForelder, Periodetype, Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
 import { Stønadskonto } from '@navikt/fp-types';
+import { Tidsperioden } from '@navikt/fp-utils';
 
 import { PeriodeUttakFormData } from '../../components/uttaks-forms/periode-uttak-form/periodeUttakFormConfig';
 import { convertYesOrNoOrUndefinedToBoolean } from '../../utils/formUtils';

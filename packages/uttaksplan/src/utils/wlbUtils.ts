@@ -14,9 +14,8 @@ import {
     isUttaksperiode,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
+import { Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
 
-import { isValidTidsperiode } from './Tidsperioden';
-import { Uttaksdagen } from './Uttaksdagen';
 import { finnAntallDagerÅTrekke } from './uttaksPlanStatus';
 
 export const ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL = 10;

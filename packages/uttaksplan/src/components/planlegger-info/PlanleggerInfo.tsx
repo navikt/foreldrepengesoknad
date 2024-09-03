@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
-import { Forelder, ForeldreparSituasjon, intlUtils } from '@navikt/fp-common';
+import { Forelder, ForeldreparSituasjon } from '@navikt/fp-common';
 
 import InfoBlock from '../../common/info-block/InfoBlock';
 import InnholdMedIllustrasjon from '../../common/innhold-med-illustrasjon/InnholdMedIllustrasjon';
@@ -22,7 +22,7 @@ const PlanleggerInfo: FunctionComponent<Props> = ({ foreldreSituasjon, forelderV
     return (
         <InfoBlock>
             <InnholdMedIllustrasjon
-                tittel={intlUtils(intl, tittelKey)}
+                tittel={intl.formatMessage({ id: tittelKey })}
                 illustrasjoner={[
                     <SituasjonSirkel
                         key="situasjon"

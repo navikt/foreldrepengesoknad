@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 
-import { Periodetype, TidsperiodeDate, andreAugust2022ReglerGjelder, isValidTidsperiode } from '@navikt/fp-common';
+import { Periodetype, TidsperiodeDate, andreAugust2022ReglerGjelder } from '@navikt/fp-common';
 import { Stønadskonto } from '@navikt/fp-types';
+import { isValidTidsperiode } from '@navikt/fp-utils';
 
 const kontoSkalBesvares = (
     periodetype: Periodetype,

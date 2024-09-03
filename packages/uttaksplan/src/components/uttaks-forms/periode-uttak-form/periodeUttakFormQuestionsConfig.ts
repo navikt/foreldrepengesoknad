@@ -9,8 +9,8 @@ import {
     UttakRundtFødselÅrsak,
     andreAugust2022ReglerGjelder,
     hasValue,
-    isValidTidsperiode,
 } from '@navikt/fp-common';
+import { isValidTidsperiode } from '@navikt/fp-utils';
 
 import { QuestionConfig, Questions, YesOrNo } from '../../../formik-wrappers';
 import { harAnnenForelderRettIEØS } from '../../../utils/annenForelderUtils';

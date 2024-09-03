@@ -3,10 +3,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyLong } from '@navikt/ds-react';
 
-import { formatDate } from '@navikt/fp-common';
 import { InnsendingsType } from '@navikt/fp-constants';
 import { Attachment, AttachmentMetadataTidsperiode } from '@navikt/fp-types';
-import { bemUtils } from '@navikt/fp-utils';
+import { bemUtils, formatDate } from '@navikt/fp-utils';
 
 import {
     isAleneOmOmsorgVedlegg,

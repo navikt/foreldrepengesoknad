@@ -19,22 +19,21 @@ import {
     Utsettelsesperiode,
     andreAugust2022ReglerGjelder,
     formaterDatoKompakt,
-    getFiltrerteVelgbareStønadskontotyper,
-    getIsValidStateForPerioder,
-    getSlettPeriodeTekst,
-    getVelgbareStønadskontotyper,
-    guid,
-    intlUtils,
     isAnnenForelderOppgitt,
     isUttaksperiode,
-    isValidTidsperiode,
 } from '@navikt/fp-common';
 import { Stønadskonto } from '@navikt/fp-types';
-import { bemUtils } from '@navikt/fp-utils';
+import { bemUtils, isValidTidsperiode } from '@navikt/fp-utils';
 
 import ActionLink from '../../../common/action-link/ActionLink';
 import Block from '../../../common/block/Block';
 import { QuestionVisibility } from '../../../formik-wrappers';
+import { guid } from '../../../utils/guid';
+import { getIsValidStateForPerioder, getSlettPeriodeTekst } from '../../../utils/periodeUtils';
+import {
+    getFiltrerteVelgbareStønadskontotyper,
+    getVelgbareStønadskontotyper,
+} from '../../../utils/stønadskontoerUtils';
 import {
     getFørsteUttaksdag2UkerFørFødsel,
     getSisteUttaksdag6UkerEtterFødsel,
@@ -200,7 +199,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     const navnPåAnnenForelder =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.fornavn !== undefined && annenForelder.fornavn !== ''
             ? annenForelder.fornavn
-            : intlUtils(intl, 'annen.forelder');
+            : intl.formatMessage({ id: 'annen.forelder' });
 
     const startDatoPeriodeRundtFødselFarMedmor =
         erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)

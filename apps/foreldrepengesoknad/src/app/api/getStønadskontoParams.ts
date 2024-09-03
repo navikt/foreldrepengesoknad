@@ -3,12 +3,9 @@ import {
     Barn,
     BarnFraNesteSak,
     EksisterendeSak,
-    getFarMedmorErAleneOmOmsorg,
-    getMorErAleneOmOmsorg,
     isAdoptertAnnetBarn,
     isAdoptertStebarn,
     isAnnenForelderOppgitt,
-    isFarEllerMedmor,
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
@@ -18,6 +15,8 @@ import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import { getFarMedmorErAleneOmOmsorg, getMorErAleneOmOmsorg } from 'app/utils/personUtils';
 
 const getFarHarRettINorge = (erFarMedmor: boolean, annenForelder: AnnenForelder): boolean => {
     if (erFarMedmor) {

@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
 
-import { ISOStringToDate, isFarEllerMedmor } from '@navikt/fp-common';
+import { ISOStringToDate } from '@navikt/fp-common';
 import {
     ArbeidsforholdOgInntekt,
     ArbeidsforholdOgInntektPanel,
@@ -18,6 +18,7 @@ import SøknadRoutes from 'app/appData/routes';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;

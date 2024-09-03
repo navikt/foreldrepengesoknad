@@ -1,13 +1,12 @@
-import { AnnenForelder } from 'common/types';
-
+import { AnnenForelder } from '@navikt/fp-common';
 import { Søker } from '@navikt/fp-types';
+import { getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import {
     formaterNavn,
     getErSøkerFarEllerMedmor,
     getKjønnFromFnr,
     getMorErAleneOmOmsorg,
-    getNavnGenitivEierform,
     getNavnPåForeldre,
 } from './personUtils';
 

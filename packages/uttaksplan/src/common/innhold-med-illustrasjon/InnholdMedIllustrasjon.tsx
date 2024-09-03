@@ -2,9 +2,9 @@ import { Children } from 'react';
 
 import { Heading } from '@navikt/ds-react';
 
-import { guid } from '@navikt/fp-common';
 import { bemUtils } from '@navikt/fp-utils';
 
+import { guid } from '../../utils/guid';
 import './innholdMedIllustrasjon.less';
 
 interface Props {

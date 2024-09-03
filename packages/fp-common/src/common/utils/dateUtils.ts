@@ -4,12 +4,10 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
 
-import { isISODateString } from '@navikt/fp-utils';
+import { Uttaksdagen, isISODateString } from '@navikt/fp-utils';
 
 import { TidsperiodeDate, Utsettelsesperiode } from '../types';
-import { Tidsperiode, TidsperiodeMedValgfriSluttdato } from './../types/Tidsperiode';
-import { Uttaksdagen } from './Uttaksdagen';
-import intlUtils from './intlUtils';
+import { Tidsperiode } from './../types/Tidsperiode';
 import { SkjemaelementFeil, hasValue } from './validationUtils';
 
 dayjs.extend(utc);
@@ -18,42 +16,10 @@ dayjs.extend(isBetween);
 
 dayjs.extend(utc);
 const dateFormat = 'DD.MM.YYYY';
-const dateFormatShortYear = 'DD.MM.YY';
 const dateFormatExtended = 'DD. MMMM YYYY';
-const dateFormatShortMonth = 'DD. MMM';
-const dateFormatMedUkedag = 'dddd DD. MMM YYYY';
 
-export const formatDate = (date: Date | string) => dayjs(date).format(dateFormat);
-export const formatDateUtc = (date: Date | string) => dayjs.utc(date).format(dateFormat);
-export const formatDateShortYear = (date: Date | string) => dayjs(date).format(dateFormatShortYear);
-export const formatDateExtended = (date: Date | string) => dayjs(date).format(dateFormatExtended);
-export const formatDateShortMonth = (date: Date | string) => dayjs(date).format(dateFormatShortMonth);
-export const formatDateMedUkedag = (date: Date | string) => dayjs(date).format(dateFormatMedUkedag);
-
-export const formatTidsperiode = (tidsperiode: Tidsperiode) => {
-    return `${formatDate(tidsperiode.fom)} - ${formatDate(tidsperiode.tom)}`;
-};
-
-export const formatTidsperiodeMedValgfriSluttdato = (tidsperiode: TidsperiodeMedValgfriSluttdato) => {
-    const tomString = tidsperiode.tom ? formatDate(tidsperiode.tom) : 'pågående';
-
-    return `${formatDate(tidsperiode.fom)} - ${tomString}`;
-};
-
-export const doesTidsperiodeContainDate = (tidsperiode: Tidsperiode, date: string) => {
-    return dayjs(date).isBetween(tidsperiode.fom, tidsperiode.tom, 'day', '[]');
-};
-
-export const doesTidsperiodeMedValgfriSluttdatoContainDate = (
-    tidsperiode: TidsperiodeMedValgfriSluttdato,
-    date: string,
-) => {
-    if (tidsperiode.tom === undefined) {
-        return false;
-    }
-
-    return dayjs(date).isBetween(tidsperiode.fom, tidsperiode.tom, 'day', '[]');
-};
+const formatDate = (date: Date | string) => dayjs(date).format(dateFormat);
+const formatDateExtended = (date: Date | string) => dayjs(date).format(dateFormatExtended);
 
 export const andreAugust2022ReglerGjelder = (familiehendelsesdato: string | Date): boolean => {
     const andreAugust2022 = new Date('2022-08-02');
@@ -237,10 +203,13 @@ const getMeldingOmOverlappendeUtsettelser = (
             up.id !== periodeId,
     );
     if (overlappendeUtsettelsesPerioder.length > 0) {
-        return intlUtils(intl, 'valideringsfeil.overlapperEnUtsettelse', {
-            fom: formatDate(overlappendeUtsettelsesPerioder[0].tidsperiode.fom),
-            tom: formatDate(overlappendeUtsettelsesPerioder[0].tidsperiode.tom),
-        });
+        return intl.formatMessage(
+            { id: 'valideringsfeil.overlapperEnUtsettelse' },
+            {
+                fom: formatDate(overlappendeUtsettelsesPerioder[0].tidsperiode.fom),
+                tom: formatDate(overlappendeUtsettelsesPerioder[0].tidsperiode.tom),
+            },
+        );
     }
 
     return undefined;
@@ -255,23 +224,29 @@ const validateDateInRange = (
 ) => {
     if (date === undefined) {
         if (isFomDate) {
-            return intlUtils(intl, 'valideringsfeil.fraOgMedDato.gyldigDato');
+            return intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.gyldigDato' });
         }
-        return intlUtils(intl, 'valideringsfeil.tilOgMedDato.gyldigDato');
+        return intl.formatMessage({ id: 'valideringsfeil.tilOgMedDato.gyldigDato' });
     }
 
     if (!dateIsWithinRange(date, minDate, maxDate)) {
         if (isFomDate) {
-            return intlUtils(intl, 'valideringsfeil.dateOutsideRange.fom', {
-                fom: formatDateExtended(minDate),
-                tom: formatDateExtended(maxDate),
-            });
+            return intl.formatMessage(
+                { id: 'valideringsfeil.dateOutsideRange.fom' },
+                {
+                    fom: formatDateExtended(minDate),
+                    tom: formatDateExtended(maxDate),
+                },
+            );
         }
 
-        return intlUtils(intl, 'valideringsfeil.dateOutsideRange.tom', {
-            fom: formatDateExtended(minDate),
-            tom: formatDateExtended(maxDate),
-        });
+        return intl.formatMessage(
+            { id: 'valideringsfeil.dateOutsideRange.tom' },
+            {
+                fom: formatDateExtended(minDate),
+                tom: formatDateExtended(maxDate),
+            },
+        );
     }
 
     return undefined;
@@ -299,13 +274,13 @@ const validateFromDateInRange = ({
     toDate?: Date;
 }): SkjemaelementFeil => {
     if (toDate && date && dayjs(date).isAfter(toDate, 'day')) {
-        return intlUtils(intl, errorKey);
+        return intl.formatMessage({ id: errorKey });
     }
 
     const error = validateDateInRange(intl, date, minDate, maxDate, true);
 
     if (disableWeekend && (dayjs(date).day() === 0 || dayjs(date).day() === 6)) {
-        return intlUtils(intl, 'valideringsfeil.fraDatoErHelgedag');
+        return intl.formatMessage({ id: 'valideringsfeil.fraDatoErHelgedag' });
     }
 
     if (error !== undefined) {
@@ -337,7 +312,7 @@ const validateToDateInRange = ({
     fromDate?: Date;
 }): SkjemaelementFeil => {
     if (fromDate && date && dayjs(date).isBefore(fromDate, 'day')) {
-        return intlUtils(intl, errorKey);
+        return intl.formatMessage({ id: errorKey });
     }
 
     const error = validateDateInRange(intl, date, minDate, maxDate, false);
@@ -347,7 +322,7 @@ const validateToDateInRange = ({
     }
 
     if (disableWeekend && (dayjs(date).day() === 0 || dayjs(date).day() === 6)) {
-        return intlUtils(intl, 'valideringsfeil.tilDatoErHelgedag');
+        return intl.formatMessage({ id: 'valideringsfeil.tilDatoErHelgedag' });
     }
 
     return getMeldingOmOverlappendeUtsettelser(utsettelserIPlan, date, intl, periodeId);

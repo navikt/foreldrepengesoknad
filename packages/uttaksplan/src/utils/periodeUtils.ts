@@ -1,48 +1,35 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { Stønadskonto } from '@navikt/fp-types';
-
 import {
     EksisterendeSak,
     Forelder,
     InfoPeriode,
-    MorsAktivitet,
     NavnPåForeldre,
     OppholdÅrsakType,
     OpprinneligSøkt,
     OverføringÅrsakType,
     Periode,
+    PeriodeInfoType,
     PeriodeValidState,
+    Perioden,
     Periodetype,
     Situasjon,
     StønadskontoType,
     Tidsperiode,
     TidsperiodeDate,
-    Utsettelsesperiode,
     UtsettelseÅrsakType,
     UttakAnnenPartInfoPeriode,
     Uttaksperiode,
-    isAnnenPartInfoPeriode,
-    isHull,
-    isOverføringsperiode,
-    isPeriodeUtenUttak,
-    isUttakAnnenPart,
-    isUttakAvFellesperiode,
-    isUttaksperiode,
-} from '../types';
-import { PeriodeInfoType } from '../types/PeriodeInfoType';
-import { Perioden } from './Perioden';
-import { Tidsperioden, erTidsperioderLike } from './Tidsperioden';
-import {
-    ISOStringToDate,
     convertTidsperiodeToTidsperiodeDate,
     isDateInTheFuture,
     isDateTodayOrInTheFuture,
-} from './dateUtils';
-import intlUtils from './intlUtils';
-import { getFloatFromString } from './numberUtils';
-import { capitalizeFirstLetter } from './stringUtils';
+    isUttakAnnenPart,
+    isUttaksperiode,
+} from '@navikt/fp-common';
+import { capitalizeFirstLetter, erTidsperioderLike, getFloatFromString } from '@navikt/fp-utils';
+
+import { ISOStringToDate } from '../formik-wrappers';
 import { getStønadskontoNavn, getUttakAnnenPartStønadskontoNavn } from './stønadskontoerUtils';
 import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from './wlbUtils';
 
@@ -53,13 +40,6 @@ export const mapTidsperiodeStringToTidsperiode = (t: Partial<Tidsperiode>): Part
     return {
         fom: ISOStringToDate(t.fom),
         tom: ISOStringToDate(t.tom),
-    };
-};
-
-export const mapTidsperiodeToTidsperiodeString = (t: Partial<TidsperiodeDate>): Partial<Tidsperiode> => {
-    return {
-        fom: dateToISOString(t.fom),
-        tom: dateToISOString(t.tom),
     };
 };
 
@@ -131,8 +111,8 @@ export const getOppholdskontoNavn = (
 ) => {
     const navn = capitalizeFirstLetter(foreldernavn);
     return erMor
-        ? intlUtils(intl, `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}`, { foreldernavn: navn })
-        : intlUtils(intl, `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}`, { foreldernavn: navn });
+        ? intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.far.${årsak}` }, { foreldernavn: navn })
+        : intl.formatMessage({ id: `uttaksplan.oppholdsårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn: navn });
 };
 
 export const getStønadskontoFromOppholdsårsak = (årsak: OppholdÅrsakType): StønadskontoType => {
@@ -168,14 +148,6 @@ export const getOppholdsÅrsakFromStønadskonto = (konto: StønadskontoType): Op
     }
 };
 
-export const getForelderFromPeriode = (periode: Periode): Forelder | undefined => {
-    if (!isHull(periode) && !isPeriodeUtenUttak(periode)) {
-        return periode.forelder;
-    }
-
-    return undefined;
-};
-
 export const getForelderNavn = (forelder: Forelder, navnPåForeldre: NavnPåForeldre): string => {
     let forelderNavn = '';
     if (navnPåForeldre.farMedmor) {
@@ -209,12 +181,15 @@ const getPeriodeTittelUttaksPeriode = (
         (periode.gradert && isValidStillingsprosent(periode.stillingsprosent)) ||
         (periode.ønskerSamtidigUttak && isValidStillingsprosent(periode.samtidigUttakProsent))
     ) {
-        return `${tittel} ${intlUtils(intl, 'gradering.prosent', {
-            stillingsprosent: getUttaksprosentFromStillingsprosent(
-                prettifyProsent(periode.stillingsprosent),
-                periode.samtidigUttakProsent ? prettifyProsent(periode.samtidigUttakProsent) : undefined,
-            ),
-        })}`;
+        return `${tittel} ${intl.formatMessage(
+            { id: 'gradering.prosent' },
+            {
+                stillingsprosent: getUttaksprosentFromStillingsprosent(
+                    prettifyProsent(periode.stillingsprosent),
+                    periode.samtidigUttakProsent ? prettifyProsent(periode.samtidigUttakProsent) : undefined,
+                ),
+            },
+        )}`;
     }
     return tittel;
 };
@@ -236,9 +211,12 @@ const getPeriodeTittelInfoPeriode = (
                 erFarEllerMedmor,
             );
         case PeriodeInfoType.utsettelseAnnenPart:
-            return intlUtils(intl, `uttaksplan.periodetype.info.utsettelse.${periode.årsak}`, {
-                navn: getForelderNavn(periode.forelder, navnPåForeldre),
-            });
+            return intl.formatMessage(
+                { id: `uttaksplan.periodetype.info.utsettelse.${periode.årsak}` },
+                {
+                    navn: getForelderNavn(periode.forelder, navnPåForeldre),
+                },
+            );
         case PeriodeInfoType.avslåttPeriode:
             if (
                 periode.opprinneligSøkt === OpprinneligSøkt.Arbeid ||
@@ -251,11 +229,14 @@ const getPeriodeTittelInfoPeriode = (
                 (periode.forelder === Forelder.mor && erFarEllerMedmor) ||
                 (periode.forelder === Forelder.farMedmor && !erFarEllerMedmor)
             ) {
-                return intlUtils(intl, 'uttaksplan.periodetype.info.avslåttPeriode.annenPart', {
-                    navn: getForelderNavn(periode.forelder, navnPåForeldre),
-                });
+                return intl.formatMessage(
+                    { id: 'uttaksplan.periodetype.info.avslåttPeriode.annenPart' },
+                    {
+                        navn: getForelderNavn(periode.forelder, navnPåForeldre),
+                    },
+                );
             }
-            return intlUtils(intl, `uttaksplan.periodetype.info.${periode.infotype}`);
+            return intl.formatMessage({ id: `uttaksplan.periodetype.info.${periode.infotype}` });
     }
 };
 
@@ -283,16 +264,19 @@ export const getPeriodeTittel = (
             );
         }
         case Periodetype.PeriodeUtenUttak:
-            return intlUtils(intl, 'uttaksplan.periodetype.periodeUtenUttak.tittel');
+            return intl.formatMessage({ id: 'uttaksplan.periodetype.periodeUtenUttak.tittel' });
         case Periodetype.Overføring:
             return getStønadskontoNavn(intl, periode.konto, navnPåForeldre, erFarEllerMedmor);
         case Periodetype.Utsettelse:
             if (periode.årsak) {
-                return intlUtils(intl, 'uttaksplan.periodeliste.utsettelsesårsak', {
-                    årsak: intlUtils(intl, `uttaksplan.utsettelsesårsak.${periode.årsak}`),
-                });
+                return intl.formatMessage(
+                    { id: 'uttaksplan.periodeliste.utsettelsesårsak' },
+                    {
+                        årsak: intl.formatMessage({ id: `uttaksplan.utsettelsesårsak.${periode.årsak}` }),
+                    },
+                );
             }
-            return intlUtils(intl, 'uttaksplan.periodeliste.utsettelsesårsak.ukjent');
+            return intl.formatMessage({ id: 'uttaksplan.periodeliste.utsettelsesårsak.ukjent' });
         case Periodetype.Opphold:
             return getOppholdskontoNavn(
                 intl,
@@ -301,7 +285,7 @@ export const getPeriodeTittel = (
                 periode.forelder === 'mor',
             );
         case Periodetype.Hull:
-            return intlUtils(intl, 'uttaksplan.periodetype.hull.tittel');
+            return intl.formatMessage({ id: 'uttaksplan.periodetype.hull.tittel' });
         case Periodetype.Info:
             return getPeriodeTittelInfoPeriode(intl, periode, navnPåForeldre, erFarEllerMedmor);
     }
@@ -363,42 +347,6 @@ export const getSamtidigUttaksprosent = (
     return gradertPeriode && stillingsprosent ? (100 - parseInt(stillingsprosent, 10)).toString() : '100';
 };
 
-export const justerAndrePartsUttakAvFellesperiodeOmMulig = (
-    perioder: Periode[],
-    uttakFellesperiode: Stønadskonto | undefined,
-): Periode[] => {
-    if (uttakFellesperiode === undefined || uttakFellesperiode.dager >= 0 || perioder.length === 0) {
-        return perioder;
-    }
-
-    const dagerGjenståendeFellesperiode = uttakFellesperiode.dager;
-
-    const sisteFellesperiodeAnnenPart = [...perioder]
-        .reverse()
-        .find((p) => isAnnenPartInfoPeriode(p) && p.årsak === OppholdÅrsakType.UttakFellesperiodeAnnenForelder);
-
-    if (sisteFellesperiodeAnnenPart !== undefined && isAnnenPartInfoPeriode(sisteFellesperiodeAnnenPart)) {
-        const dagerMedFellesperiodeISistePeriode = Perioden(sisteFellesperiodeAnnenPart).getAntallUttaksdager();
-        const justeringsProsent = getSamtidigUttakEllerGraderingsProsent(sisteFellesperiodeAnnenPart) || 1;
-        const diff = dagerGjenståendeFellesperiode / justeringsProsent + dagerMedFellesperiodeISistePeriode;
-        const indexSistePeriode = perioder.findIndex((p) => p.id === sisteFellesperiodeAnnenPart.id);
-
-        if (dagerGjenståendeFellesperiode < 0 && diff > 0) {
-            perioder[indexSistePeriode] = {
-                ...sisteFellesperiodeAnnenPart,
-                tidsperiode: Tidsperioden(sisteFellesperiodeAnnenPart.tidsperiode).setUttaksdager(diff),
-            };
-            return perioder;
-        }
-
-        if (dagerGjenståendeFellesperiode < 0 && diff === 0) {
-            return perioder.splice(indexSistePeriode, 1);
-        }
-    }
-
-    return perioder;
-};
-
 export const getSlettPeriodeTekst = (periodetype: Periodetype): string => {
     switch (periodetype) {
         case Periodetype.Uttak:
@@ -431,62 +379,10 @@ export const erPeriodeFørDato = (periode: Periode, dato: Date) => {
 
 export const erGradering = (periode: Periode) => periode.type === Periodetype.Uttak && periode.gradert === true;
 
-export const erUttakEllerOppholdMerEnnTreMånederSiden = (periode: Periode) =>
-    (periode.type === Periodetype.Uttak || periode.type === Periodetype.Opphold) &&
-    dayjs(periode.tidsperiode.fom).isBefore(dayjs().startOf('day').subtract(3, 'months'), 'day');
-
-export const erUtsettelsePgaSykdom = (periode: Utsettelsesperiode) =>
-    periode.årsak === UtsettelseÅrsakType.Sykdom ||
-    periode.årsak === UtsettelseÅrsakType.InstitusjonSøker ||
-    periode.årsak === UtsettelseÅrsakType.InstitusjonBarnet;
-
-export const erUttakGrunnetSykdom = (periode: Periode) => {
-    if (
-        isOverføringsperiode(periode) &&
-        (periode.årsak === OverføringÅrsakType.institusjonsoppholdAnnenForelder ||
-            periode.årsak === OverføringÅrsakType.sykdomAnnenForelder)
-    ) {
-        return true;
-    }
-
-    if (isUttaksperiode(periode)) {
-        if (
-            periode.erMorForSyk === true ||
-            periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp ||
-            periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt
-        ) {
-            return true;
-        }
-    }
-
-    if (
-        isUttakAvFellesperiode(periode) &&
-        (periode.morsAktivitetIPerioden === MorsAktivitet.Innlagt ||
-            periode.morsAktivitetIPerioden === MorsAktivitet.TrengerHjelp)
-    ) {
-        return true;
-    }
-
-    return false;
-};
-
-export const erUttakTilbakeITid = (periode: Periode) =>
-    isUttaksperiode(periode) && !isDateInTheFuture(dateToISOString(periode.tidsperiode.fom));
-
 export const erUtsettelseTilbakeITid = (periode: Periode) =>
     periode.type === Periodetype.Utsettelse && !isDateInTheFuture(dateToISOString(periode.tidsperiode.fom));
 
-export const erUtsettelseGrunnetPgaArbeid = (periode: Utsettelsesperiode) =>
-    periode.årsak === UtsettelseÅrsakType.Arbeid;
-
 export const erUtsettelse = (periode: Periode) => periode.type === Periodetype.Utsettelse;
-
-const erUtsettelsePgaFerieEllerArbeid = (periode: Periode) =>
-    periode.type === Periodetype.Utsettelse &&
-    (periode.årsak === UtsettelseÅrsakType.Ferie || periode.årsak === UtsettelseÅrsakType.Arbeid);
-
-export const erSenUtsettelsePgaFerieEllerArbeid = (periode: Periode) =>
-    erUtsettelseTilbakeITid(periode) && erUtsettelsePgaFerieEllerArbeid(periode);
 
 export const erÅrsakSykdomEllerInstitusjonsopphold = (årsak: UtsettelseÅrsakType | OverføringÅrsakType) =>
     årsak === UtsettelseÅrsakType.Sykdom ||

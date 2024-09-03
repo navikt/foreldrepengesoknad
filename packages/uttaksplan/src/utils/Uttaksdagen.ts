@@ -1,9 +1,7 @@
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 
-import { formatDate } from '@navikt/fp-utils';
-
-import { Tidsperioden } from './Tidsperioden';
+import { Tidsperioden, formatDate } from '@navikt/fp-utils';
 
 dayjs.extend(isoWeek);
 

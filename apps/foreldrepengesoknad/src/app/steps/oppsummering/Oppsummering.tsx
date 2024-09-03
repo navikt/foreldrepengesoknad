@@ -3,16 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Accordion, Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
-import {
-    AnnenForelder,
-    ISOStringToDate,
-    SivilstandType,
-    getErSøkerFarEllerMedmor,
-    getKjønnFromFnrString,
-    getNavnPåForeldre,
-    isAnnenForelderOppgitt,
-    isUfødtBarn,
-} from '@navikt/fp-common';
+import { AnnenForelder, ISOStringToDate, SivilstandType, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 import { BoIUtlandetOppsummeringspunkt, OppsummeringPanel } from '@navikt/fp-steg-oppsummering';
 import { Søker, Søkerinfo, Søkerrolle } from '@navikt/fp-types';
@@ -26,6 +17,7 @@ import useStepConfig from 'app/appData/useStepConfig';
 import Block from 'app/pages/block/Block';
 import { Utenlandsopphold as OldUtenlandsOpphold } from 'app/types/InformasjonOmUtenlandsopphold';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
+import { getErSøkerFarEllerMedmor, getKjønnFromFnrString, getNavnPåForeldre } from 'app/utils/personUtils';
 
 import { søknadInneholderIngenVedlegg } from '../manglende-vedlegg/util';
 import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-inntekter-oppsummering/ArbeidsforholdOgAndreInntekterOppsummering';

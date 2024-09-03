@@ -1,3 +1,5 @@
+import { Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
+
 import {
     Forelder,
     InfoPeriode,
@@ -8,8 +10,6 @@ import {
     Uttaksperiode,
 } from '../types';
 import { uttaksplanErBareOpphold, uttaksplanSlutterMedOpphold, uttaksplanStarterMedOpphold } from './Periodene';
-import { getTidsperiode } from './Tidsperioden';
-import { Uttaksdagen } from './Uttaksdagen';
 
 const familiehendelsesdato = new Date();
 const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();

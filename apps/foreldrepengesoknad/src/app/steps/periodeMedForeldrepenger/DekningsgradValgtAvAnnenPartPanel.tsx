@@ -4,13 +4,14 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
-import { Dekningsgrad, getAntallUker, getVarighetString } from '@navikt/fp-common';
+import { Dekningsgrad, getVarighetString } from '@navikt/fp-common';
 import { Kjønn, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
 import { getVis1Juli2024Info } from 'app/utils/dateUtils';
+import { getAntallUker } from 'app/utils/stønadskontoerUtils';
 
 import InfoOmUtvidet80ProsentPeriode from './InfoOmUtvidet80ProsentPeriode';
 import './panelWithCircleIcon.less';

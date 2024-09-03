@@ -21,7 +21,6 @@ import {
     getToTetteReglerGjelder,
     getUkerOgDagerFromDager,
     getVarighetString,
-    guid,
     isDateInTheFuture,
     isDateToday,
     tidperiodeOverlapperDato,
@@ -42,6 +41,7 @@ import {
     isDateABeforeDateB,
     sorterDatoEtterEldst,
 } from './dateUtils';
+import { guid } from './guid';
 import fns from './toggleUtils';
 
 describe('dateUtils', () => {

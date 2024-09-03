@@ -1,11 +1,5 @@
-import {
-    Periodene,
-    Søknadsinfo,
-    Uttaksdagen,
-    formaterDato,
-    isOverskrivbarPeriode,
-    isUtsettelsesperiode,
-} from '@navikt/fp-common';
+import { Periodene, Søknadsinfo, formaterDato, isOverskrivbarPeriode, isUtsettelsesperiode } from '@navikt/fp-common';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 import { RegelTestresultat } from '../utils/types/regelTypes';
 

@@ -8,19 +8,10 @@ import {
     NavnPåForeldre,
     Periode,
     StønadskontoType,
-    Uttaksdagen,
     førsteOktober2021ReglerGjelder,
-    getAntallUkerAktivitetsfriKvote,
-    getAntallUkerFedrekvote,
-    getAntallUkerFellesperiode,
-    getAntallUkerForeldrepenger,
-    getAntallUkerForeldrepengerFørFødsel,
-    getAntallUkerMødrekvote,
-    getNavnGenitivEierform,
     getVarighetString,
     isAdoptertBarn,
     isAnnenForelderOppgitt,
-    isFarEllerMedmor,
     isFødtBarn,
     isInfoPeriode,
     isUfødtBarn,
@@ -31,13 +22,22 @@ import {
     TilgjengeligeMinsterettskontoer,
     TilgjengeligeStønadskontoerForDekningsgrad,
 } from '@navikt/fp-types';
-import { capitalizeFirstLetter } from '@navikt/fp-utils';
+import { Uttaksdagen, capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 import { getBrukteDager, uttaksConstants } from '@navikt/fp-uttaksplan';
 
 import { DelInformasjon, FordelingEier, FordelingFargekode } from 'app/types/FordelingOversikt';
 import { getErAleneOmOmsorg, getIsDeltUttak } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import {
+    getAntallUkerAktivitetsfriKvote,
+    getAntallUkerFedrekvote,
+    getAntallUkerFellesperiode,
+    getAntallUkerForeldrepenger,
+    getAntallUkerForeldrepengerFørFødsel,
+    getAntallUkerMødrekvote,
+} from 'app/utils/stønadskontoerUtils';
 
 import { getFormattedMessage } from './FordelingOversikt';
 

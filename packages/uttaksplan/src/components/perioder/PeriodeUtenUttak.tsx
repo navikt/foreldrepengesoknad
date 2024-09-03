@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { Periode, Periodetype, intlUtils } from '@navikt/fp-common';
+import { Periode, Periodetype } from '@navikt/fp-common';
 
 import ActionLink from '../../common/action-link/ActionLink';
 import Block from '../../common/block/Block';
@@ -35,7 +35,9 @@ const PeriodeUtenUttak: FunctionComponent<Props> = ({ periode, handleUpdatePerio
                     <FormattedMessage id="uttaksplan.periodeUtenUttak.info.del2" />
                 </BodyShort>
             </Block>
-            <ActionLink onClick={onLeggTilNyPeriode}>{intlUtils(intl, 'uttaksplan.leggInnNyPeriode')}</ActionLink>
+            <ActionLink onClick={onLeggTilNyPeriode}>
+                {intl.formatMessage({ id: 'uttaksplan.leggInnNyPeriode' })}
+            </ActionLink>
         </div>
     );
 };

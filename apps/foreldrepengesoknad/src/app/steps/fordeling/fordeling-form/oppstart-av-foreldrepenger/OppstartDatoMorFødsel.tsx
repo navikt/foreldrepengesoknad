@@ -4,8 +4,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, HStack, VStack } from '@navikt/ds-react';
 
-import { Uttaksdagen, erUttaksdag, isFødtBarn } from '@navikt/fp-common';
-import { isValidDate } from '@navikt/fp-utils';
+import { isFødtBarn } from '@navikt/fp-common';
+import { Uttaksdagen, erUttaksdag, isValidDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';

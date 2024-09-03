@@ -1,5 +1,6 @@
-import { Attachment, AttachmentMetadata } from '@navikt/fp-types';
 import { AttachmentType, InnsendingsType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment, AttachmentMetadata } from '@navikt/fp-types';
+
 import { guid } from './guid';
 
 const generateAttachmentId = () => 'V'.concat(guid().replace(/-/g, ''));
@@ -42,31 +43,4 @@ export const lagSendSenereDokument = (
 
 export const addMetadata = (attachment: Attachment, metadata: AttachmentMetadata): Attachment => {
     return { ...attachment, dokumenterer: metadata };
-};
-
-export const lagSendSenereDokumentNårIngenAndreFinnes = (
-    dokumenter: Attachment[],
-    type: AttachmentType,
-    skjema: Skjemanummer,
-    dokumenterer?: AttachmentMetadata,
-): Attachment[] => {
-    if (dokumenter.length === 0) {
-        return [lagSendSenereDokument(type, skjema, dokumenterer)];
-    }
-
-    if (dokumenter.length === 1 && dokumenterer) {
-        return dokumenter.map((dok) => addMetadata(dok, dokumenterer));
-    }
-
-    if (dokumenter.length === 1) {
-        return dokumenter;
-    }
-
-    if (dokumenterer) {
-        return dokumenter
-            .filter((dok) => dok.innsendingsType !== InnsendingsType.SEND_SENERE)
-            .map((dok) => addMetadata(dok, dokumenterer));
-    }
-
-    return dokumenter.filter((dok) => dok.innsendingsType !== InnsendingsType.SEND_SENERE);
 };

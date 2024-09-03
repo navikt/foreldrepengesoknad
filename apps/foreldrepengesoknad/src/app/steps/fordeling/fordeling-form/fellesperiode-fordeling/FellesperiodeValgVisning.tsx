@@ -2,10 +2,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
-import { getVarighetString, guid } from '@navikt/fp-common';
+import { getVarighetString } from '@navikt/fp-common';
 import { bemUtils } from '@navikt/fp-utils';
 
 import { FordelingDager, FordelingFargekode } from 'app/types/FordelingOversikt';
+import { guid } from 'app/utils/guid';
 
 import DelGraf from '../../fordeling-oversikt/grafer/del-graf/DelGraf';
 import './fellesperiodeValgVisning.css';

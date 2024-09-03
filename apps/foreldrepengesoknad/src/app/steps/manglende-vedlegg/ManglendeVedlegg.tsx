@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyLong, Heading } from '@navikt/ds-react';
 
-import { getErSøkerFarEllerMedmor, getNavnPåForeldre, isUtsettelseBarnInnlagt } from '@navikt/fp-common';
+import { isUtsettelseBarnInnlagt } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Attachment, Søkerinfo } from '@navikt/fp-types';
@@ -18,6 +18,7 @@ import Block from 'app/pages/block/Block';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
+import { getErSøkerFarEllerMedmor, getNavnPåForeldre } from 'app/utils/personUtils';
 
 import { ManglendeVedleggFormData } from './ManglendeVedleggFormData';
 import AleneomsorgDokumentasjon from './dokumentasjon/AleneomsorgDokumentasjon';

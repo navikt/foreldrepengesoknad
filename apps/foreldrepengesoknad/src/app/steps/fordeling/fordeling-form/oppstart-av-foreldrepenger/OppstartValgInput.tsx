@@ -9,9 +9,7 @@ import {
     NavnPåForeldre,
     andreAugust2022ReglerGjelder,
     førsteOktober2021ReglerGjelder,
-    getKunFarHarRett,
     isAdoptertAnnetBarn,
-    isFarEllerMedmor,
     isFødtBarn,
 } from '@navikt/fp-common';
 import { RadioGroup } from '@navikt/fp-form-hooks';
@@ -25,6 +23,8 @@ import { OppstartValg } from 'app/types/Fordeling';
 import { getDatoForAleneomsorg, getIsDeltUttak } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import { getKunFarHarRett } from 'app/utils/personUtils';
 
 const getOppstartsvalgFarFødsel = (
     familiehendelsesDato: Date,

@@ -2,8 +2,8 @@ import dayjs from 'dayjs';
 import isString from 'lodash/isString';
 import { IntlShape } from 'react-intl';
 
-import { erUttaksdag, getVarighetString } from '@navikt/fp-common';
-import { formatDate, getNumberFromNumberInputValue, isValidDate } from '@navikt/fp-utils';
+import { getVarighetString } from '@navikt/fp-common';
+import { erUttaksdag, formatDate, getNumberFromNumberInputValue, isValidDate } from '@navikt/fp-utils';
 
 import { ISOStringToDate } from 'app/utils/dateUtils';
 

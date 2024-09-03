@@ -5,14 +5,11 @@ import {
     Barn,
     BarnFraNesteSak,
     Periode,
-    Uttaksdagen,
-    getAntallUkerFellesperiode,
-    getKunFarHarRett,
     isAdoptertAnnetBarn,
     isAnnenForelderOppgitt,
-    isFarEllerMedmor,
 } from '@navikt/fp-common';
 import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { Uttaksdagen } from '@navikt/fp-utils';
 import {
     finnOgSettInnHull,
     getHarAktivitetskravIPeriodeUtenUttak,
@@ -25,6 +22,9 @@ import { getDatoForAleneomsorg, getErAleneOmOmsorg, getIsDeltUttak } from 'app/u
 import { getFamiliehendelsedatoDate, getTermindato } from 'app/utils/barnUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getAntallDagerFellesperiodeTilSøker, getOppstartsdatoFromFordelingValg } from 'app/utils/fordelingUtils';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import { getKunFarHarRett } from 'app/utils/personUtils';
+import { getAntallUkerFellesperiode } from 'app/utils/stønadskontoerUtils';
 import { deltUttak } from 'app/utils/uttaksplan/deltUttak';
 import { ikkeDeltUttak } from 'app/utils/uttaksplan/ikkeDeltUttak';
 

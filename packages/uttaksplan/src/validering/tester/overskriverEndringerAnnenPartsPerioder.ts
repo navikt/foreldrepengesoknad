@@ -1,17 +1,9 @@
 import { IntlShape } from 'react-intl';
 
-import {
-    Periode,
-    Periodene,
-    Søknadsinfo,
-    Tidsperioden,
-    getNavnGenitivEierform,
-    getPeriodeTittel,
-    isAvslåttPeriode,
-    isInfoPeriode,
-    isUttaksperiode,
-} from '@navikt/fp-common';
+import { Periode, Periodene, Søknadsinfo, isAvslåttPeriode, isInfoPeriode, isUttaksperiode } from '@navikt/fp-common';
+import { Tidsperioden, getNavnGenitivEierform } from '@navikt/fp-utils';
 
+import { getPeriodeTittel } from '../../utils/periodeUtils';
 import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/types/regelTypes';
 
 export const overskriverEndringerAnnenPartsPerioder: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {

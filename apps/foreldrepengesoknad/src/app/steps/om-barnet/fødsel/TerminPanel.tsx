@@ -12,13 +12,13 @@ import {
     dateToday,
     erIUke22Pluss3,
     erMindreEnn3UkerSiden,
-    isFarEllerMedmor,
 } from '@navikt/fp-common';
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, Søkerrolle } from '@navikt/fp-types';
 import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import Block from 'app/pages/block/Block';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 
 import { UfødtBarn } from '../OmBarnetFormValues';
 

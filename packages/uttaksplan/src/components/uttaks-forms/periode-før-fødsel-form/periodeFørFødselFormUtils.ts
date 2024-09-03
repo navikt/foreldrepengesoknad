@@ -1,12 +1,7 @@
 import dayjs from 'dayjs';
 
-import {
-    ForeldrepengerFørFødselUttaksperiode,
-    Periode,
-    Periodetype,
-    StønadskontoType,
-    Uttaksdagen,
-} from '@navikt/fp-common';
+import { ForeldrepengerFørFødselUttaksperiode, Periode, Periodetype, StønadskontoType } from '@navikt/fp-common';
+import { Uttaksdagen } from '@navikt/fp-utils';
 
 import uttaksConstants from '../../../common/uttaksConstants';
 import { PeriodeFørFødselFormData, PeriodeFørFødselFormField } from './periodeFørFødselFormConfig';

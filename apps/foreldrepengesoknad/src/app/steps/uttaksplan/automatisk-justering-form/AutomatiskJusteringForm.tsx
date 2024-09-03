@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert } from '@navikt/ds-react';
 
 import { Periode, StønadskontoType, isOverføringsperiode, isUttaksperiode } from '@navikt/fp-common';
-import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
+import { Uttaksdagen } from '@navikt/fp-utils';
 import { QuestionVisibility, YesOrNo } from '@navikt/fp-uttaksplan';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';

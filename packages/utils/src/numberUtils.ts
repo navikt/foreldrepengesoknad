@@ -1,4 +1,4 @@
-const trimNumberValue = (value: string): string => {
+export const trimNumberValue = (value: string): string => {
     return value.replace(/,/g, '.').replace(/\s/g, '').replace(/%/g, '');
 };
 

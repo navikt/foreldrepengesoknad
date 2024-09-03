@@ -3,8 +3,9 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { ISOStringToDate, formatDate } from '@navikt/fp-common';
+import { ISOStringToDate } from '@navikt/fp-common';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { formatDate } from '@navikt/fp-utils';
 
 import { AndreInntektskilder, AnnenInntektType } from 'app/types/AndreInntektskilder';
 

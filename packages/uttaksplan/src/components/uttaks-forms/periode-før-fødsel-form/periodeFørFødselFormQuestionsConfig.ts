@@ -1,4 +1,5 @@
-import { hasValue, isValidTidsperiode } from '@navikt/fp-common';
+import { hasValue } from '@navikt/fp-common';
+import { isValidTidsperiode } from '@navikt/fp-utils';
 
 import { QuestionConfig, Questions } from '../../../formik-wrappers';
 import { PeriodeFørFødselFormData, PeriodeFørFødselFormField } from './periodeFørFødselFormConfig';

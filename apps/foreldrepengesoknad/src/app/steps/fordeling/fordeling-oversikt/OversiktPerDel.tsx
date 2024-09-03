@@ -4,10 +4,10 @@ import { useIntl } from 'react-intl';
 
 import { BodyLong, VStack } from '@navikt/ds-react';
 
-import { guid } from '@navikt/fp-common';
 import { bemUtils } from '@navikt/fp-utils';
 
 import { DelInformasjon, FordelingEier } from 'app/types/FordelingOversikt';
+import { guid } from 'app/utils/guid';
 
 import { getFordelingDelTittel } from './fordelingOversiktUtils';
 import DelGraf from './grafer/del-graf/DelGraf';

@@ -19,7 +19,6 @@ import {
     Utsettelsesperiode,
     Uttaksperiode,
     getToTetteReglerGjelder,
-    intlUtils,
     isAnnenForelderOppgitt,
     isAnnenPartInfoPeriode,
     isUtsettelsesperiode,
@@ -364,7 +363,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
             <Block visible={uttaksplanVeilederInfo.length > 0} padBottom="l">
                 <VeilederInfo
                     messages={uttaksplanVeilederInfo}
-                    ariaTittel={intlUtils(intl, 'uttaksplan.regelAvvik.ariaTittel')}
+                    ariaTittel={intl.formatMessage({ id: 'uttaksplan.regelAvvik.ariaTittel' })}
                 />
             </Block>
             <SlettUttaksplanModal

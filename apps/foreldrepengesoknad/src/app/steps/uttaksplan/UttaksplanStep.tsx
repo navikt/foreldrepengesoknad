@@ -11,15 +11,7 @@ import {
     ISOStringToDate,
     Periode,
     Periodene,
-    getAntallUker,
-    getAntallUkerMinsterett,
-    getFarMedmorErAleneOmOmsorg,
-    getKjønnFromFnr,
-    getMorErAleneOmOmsorg,
-    getMorHarRettPåForeldrepengerINorgeEllerEØS,
-    getNavnPåForeldre,
     isAnnenForelderOppgitt,
-    isFarEllerMedmor,
     isUfødtBarn,
     isUttakAnnenPart,
     isUttakAvForeldrepengerFørFødsel,
@@ -63,6 +55,15 @@ import {
     mapAnnenPartsEksisterendeSakFromDTO,
 } from 'app/utils/eksisterendeSakUtils';
 import useDebounce from 'app/utils/hooks/useDebounce';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import {
+    getFarMedmorErAleneOmOmsorg,
+    getKjønnFromFnr,
+    getMorErAleneOmOmsorg,
+    getMorHarRettPåForeldrepengerINorgeEllerEØS,
+    getNavnPåForeldre,
+} from 'app/utils/personUtils';
+import { getAntallUker, getAntallUkerMinsterett } from 'app/utils/stønadskontoerUtils';
 import { getPerioderSomSkalSendesInn } from 'app/utils/submitUtils';
 
 import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';

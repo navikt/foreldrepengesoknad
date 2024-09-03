@@ -6,15 +6,6 @@ import {
     mapSøkerensEksisterendeSakFromDTO,
 } from './eksisterendeSakUtils';
 
-vi.mock('@navikt/fp-common', async () => {
-    const original = await vi.importActual<any>('@navikt/fp-common');
-
-    return {
-        ...original,
-        guid: () => '1',
-    };
-});
-
 describe('eksisterendeSakUtils', () => {
     const eksisterendeSakMorTermin = {
         saksnummer: '352010329',
@@ -86,11 +77,10 @@ describe('eksisterendeSakUtils', () => {
             harAnnenForelderTilsvarendeRettEØS: false,
         },
         saksperioder: [
-            {
+            expect.objectContaining({
                 flerbarnsdager: false,
                 gjelderAnnenPart: false,
                 gradering: undefined,
-                guid: '1',
                 periode: {
                     fom: '2022-11-09',
                     tom: '2022-11-29',
@@ -107,12 +97,11 @@ describe('eksisterendeSakUtils', () => {
                 },
                 samtidigUttak: undefined,
                 utsettelseÅrsak: undefined,
-            },
-            {
+            }),
+            expect.objectContaining({
                 flerbarnsdager: false,
                 gjelderAnnenPart: false,
                 gradering: undefined,
-                guid: '1',
                 periode: {
                     fom: '2022-11-30',
                     tom: '2022-12-13',
@@ -129,11 +118,10 @@ describe('eksisterendeSakUtils', () => {
                 },
                 samtidigUttak: 100,
                 utsettelseÅrsak: undefined,
-            },
+            }),
         ],
         uttaksplan: [
-            {
-                id: '1',
+            expect.objectContaining({
                 type: 'uttak',
                 konto: 'FORELDREPENGER_FØR_FØDSEL',
                 tidsperiode: {
@@ -152,9 +140,8 @@ describe('eksisterendeSakUtils', () => {
                 erMorForSyk: undefined,
                 angittAvAnnenPart: undefined,
                 opprinneligSøkt: undefined,
-            },
-            {
-                id: '1',
+            }),
+            expect.objectContaining({
                 type: 'uttak',
                 konto: 'MØDREKVOTE',
                 tidsperiode: {
@@ -173,7 +160,7 @@ describe('eksisterendeSakUtils', () => {
                 erMorForSyk: undefined,
                 angittAvAnnenPart: undefined,
                 opprinneligSøkt: undefined,
-            },
+            }),
         ],
     };
 
@@ -231,11 +218,10 @@ describe('eksisterendeSakUtils', () => {
         },
         saksnummer: '352010530',
         saksperioder: [
-            {
+            expect.objectContaining({
                 flerbarnsdager: false,
                 gjelderAnnenPart: false,
                 gradering: undefined,
-                guid: '1',
                 periode: {
                     fom: '2022-11-09',
                     tom: '2022-11-29',
@@ -252,11 +238,10 @@ describe('eksisterendeSakUtils', () => {
                 },
                 samtidigUttak: undefined,
                 utsettelseÅrsak: undefined,
-            },
+            }),
         ],
         uttaksplan: [
-            {
-                id: '1',
+            expect.objectContaining({
                 type: 'uttak',
                 konto: 'FORELDREPENGER_FØR_FØDSEL',
                 tidsperiode: {
@@ -275,7 +260,7 @@ describe('eksisterendeSakUtils', () => {
                 erMorForSyk: undefined,
                 angittAvAnnenPart: undefined,
                 opprinneligSøkt: undefined,
-            },
+            }),
         ],
     };
 
@@ -322,11 +307,10 @@ describe('eksisterendeSakUtils', () => {
             termindato: '2022-10-30',
         },
         saksperioder: [
-            {
+            expect.objectContaining({
                 flerbarnsdager: false,
                 gjelderAnnenPart: false,
                 gradering: undefined,
-                guid: '1',
                 periode: {
                     fom: '2022-11-09',
                     tom: '2022-11-29',
@@ -343,19 +327,17 @@ describe('eksisterendeSakUtils', () => {
                 },
                 samtidigUttak: undefined,
                 utsettelseÅrsak: undefined,
-            },
+            }),
         ],
         uttaksplan: [
-            {
-                id: '1',
+            expect.objectContaining({
                 tidsperiode: {
                     fom: new Date('2022-10-31'),
                     tom: new Date('2022-11-08'),
                 },
                 type: 'periodeUtenUttak',
-            },
-            {
-                id: '1',
+            }),
+            expect.objectContaining({
                 type: 'uttak',
                 konto: 'FEDREKVOTE',
                 tidsperiode: {
@@ -374,7 +356,7 @@ describe('eksisterendeSakUtils', () => {
                 erMorForSyk: true,
                 angittAvAnnenPart: undefined,
                 opprinneligSøkt: undefined,
-            },
+            }),
         ],
     };
 
@@ -485,7 +467,6 @@ describe('eksisterendeSakUtils', () => {
         const forventetMappetPeriodeSøker = {
             ...uttaksperiodeRest,
             gjelderAnnenPart: false,
-            guid: '1',
             oppholdÅrsak: undefined,
             overføringÅrsak: undefined,
             periode: { fom: '2022-12-07', tom: '2022-12-07' },
@@ -511,7 +492,6 @@ describe('eksisterendeSakUtils', () => {
         const forventetMappetUtsettelseSøker = {
             ...utsettelsesperiodeRest,
             gjelderAnnenPart: false,
-            guid: '1',
             oppholdÅrsak: undefined,
             overføringÅrsak: undefined,
             periode: { fom: '2021-11-02', tom: '2021-11-02' },
@@ -541,7 +521,6 @@ describe('eksisterendeSakUtils', () => {
         const forventetMappetOverføringSøker = {
             ...overføringsperiodeRest,
             gjelderAnnenPart: false,
-            guid: '1',
             oppholdÅrsak: undefined,
             periode: { fom: '2022-11-07', tom: '2022-11-07' },
             samtidigUttak: undefined,
@@ -570,7 +549,6 @@ describe('eksisterendeSakUtils', () => {
         const forventetMappetOppholdSøker = {
             ...oppholdsperiodeRest,
             gjelderAnnenPart: true,
-            guid: '1',
             kontoType: 'MØDREKVOTE',
             periode: { fom: '2022-08-05', tom: '2022-08-05' },
             samtidigUttak: undefined,
@@ -608,7 +586,6 @@ describe('eksisterendeSakUtils', () => {
             gjelderAnnenPart: false,
             flerbarnsdager: undefined,
             gradering: undefined,
-            guid: '1',
             periode: { fom: '2022-10-07', tom: '2022-10-07' },
             morsAktivitet: undefined,
             oppholdÅrsak: undefined,
@@ -619,39 +596,39 @@ describe('eksisterendeSakUtils', () => {
 
         it('map søkerens uttaksperiode fra DTO', () => {
             const mappetPeriode = mapSaksperiodeFromDTO(uttaksperiode, false);
-            expect(mappetPeriode).toStrictEqual(forventetMappetPeriodeSøker);
+            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetPeriodeSøker));
         });
         it('map annen parts uttaksperiode fra DTO', () => {
             const mappetPeriode = mapSaksperiodeFromDTO(uttaksperiode, true);
-            expect(mappetPeriode).toStrictEqual(forventetMappetPeriodeAnnenPart);
+            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetPeriodeAnnenPart));
         });
         it('map søkerens utsettelsesoperiode fra DTO', () => {
             const mappetPeriode = mapSaksperiodeFromDTO(utsettelsesperiode, false);
-            expect(mappetPeriode).toStrictEqual(forventetMappetUtsettelseSøker);
+            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetUtsettelseSøker));
         });
         it('map annen parts utsettelsesoperiode fra DTO', () => {
             const mappetPeriode = mapSaksperiodeFromDTO(utsettelsesperiode, true);
-            expect(mappetPeriode).toStrictEqual(forventetMappetUtsettelseAnnenPart);
+            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetUtsettelseAnnenPart));
         });
         it('map søkerens overføringsperiode fra DTO', () => {
             const mappetPeriode = mapSaksperiodeFromDTO(overføringsperiode, false);
-            expect(mappetPeriode).toStrictEqual(forventetMappetOverføringSøker);
+            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetOverføringSøker));
         });
         it('map annen parts overføringsperiode fra DTO', () => {
             const mappetPeriode = mapSaksperiodeFromDTO(overføringsperiode, true);
-            expect(mappetPeriode).toStrictEqual(forventetMappetOverføringAnnenPart);
+            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetOverføringAnnenPart));
         });
         it('map søkerens oppholdsperiode fra DTO', () => {
             const mappetPeriode = mapSaksperiodeFromDTO(oppholdsperiode, false);
-            expect(mappetPeriode).toStrictEqual(forventetMappetOppholdSøker);
+            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetOppholdSøker));
         });
         it('map annen parts oppholdsperiode fra DTO', () => {
             const mappetPeriode = mapSaksperiodeFromDTO(oppholdsperiode, true);
-            expect(mappetPeriode).toStrictEqual(forventetMappetOppholdAnnenPart);
+            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetOppholdAnnenPart));
         });
         it('map søkerens avslåtte periode fra DTO', () => {
             const mappetPeriode = mapSaksperiodeFromDTO(avslåttPeriode, false);
-            expect(mappetPeriode).toStrictEqual(forventetMappetAvslåttPeriodeSøker);
+            expect(mappetPeriode).toStrictEqual(expect.objectContaining(forventetMappetAvslåttPeriodeSøker));
         });
     });
 });

@@ -1,8 +1,6 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
-import { intlUtils } from '@navikt/fp-common';
-
 import Block from '../../../../common/block/Block';
 import { YesOrNo } from '../../../../formik-wrappers';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
@@ -18,10 +16,10 @@ const ErMorForSykSpørsmål: FunctionComponent<Props> = ({ fieldName }) => {
         <Block padBottom="l">
             <PeriodeUttakFormComponents.YesOrNoQuestion
                 name={fieldName}
-                legend={intlUtils(intl, 'uttaksplan.erMorForSyk')}
+                legend={intl.formatMessage({ id: 'uttaksplan.erMorForSyk' })}
                 validate={(value: YesOrNo) => {
                     if (value === YesOrNo.UNANSWERED) {
-                        return intlUtils(intl, 'uttaksplan.validering.erMorForSyk');
+                        return intl.formatMessage({ id: 'uttaksplan.validering.erMorForSyk' });
                     }
 
                     return undefined;

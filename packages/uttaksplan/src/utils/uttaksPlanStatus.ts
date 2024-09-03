@@ -8,8 +8,6 @@ import {
     Periodetype,
     UttakAnnenPartInfoPeriode,
     Uttaksperiode,
-    getFloatFromString,
-    getStønadskontoFromOppholdsårsak,
     isAvslåttPeriode,
     isInfoPeriode,
     isOppholdsperiode,
@@ -18,6 +16,9 @@ import {
 } from '@navikt/fp-common';
 import { PeriodeInfoType } from '@navikt/fp-constants';
 import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { getFloatFromString } from '@navikt/fp-utils';
+
+import { getStønadskontoFromOppholdsårsak } from './periodeUtils';
 
 export const finnAntallDagerÅTrekke = (periode: Periode): number => {
     const dager = Perioden(periode).getAntallUttaksdager();

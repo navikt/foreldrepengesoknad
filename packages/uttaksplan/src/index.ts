@@ -13,6 +13,7 @@ export * from './utils/manglendeVedleggUtils';
 export * from './utils/uttaksplanUtils';
 export * from './utils/leggTilAnnenPartsPerioderISøkerenesUttaksplan';
 export { convertYesOrNoOrUndefinedToBoolean, convertBooleanOrUndefinedToYesOrNo } from './utils/formUtils';
+export { getPeriodeTittel, finnesPeriodeIOpprinneligPlan } from './utils/periodeUtils';
 export { getFørsteUttaksdag2UkerFørFødsel, getPerioderMedUttakRundtFødsel } from './utils/wlbUtils';
 export { getBrukteDager } from './utils/brukteDagerUtils';
 export {

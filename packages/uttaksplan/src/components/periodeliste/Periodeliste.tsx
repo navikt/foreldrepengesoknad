@@ -14,16 +14,14 @@ import {
     PeriodeValidState,
     Situasjon,
     Utsettelsesperiode,
-    formatDate,
     isInfoPeriode,
-    isValidTidsperiode,
 } from '@navikt/fp-common';
-import { getAnnenForelderSamtidigUttakPeriode } from '@navikt/fp-common/src/common/utils/periodeUtils';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { bemUtils, formatDateIso } from '@navikt/fp-utils';
+import { bemUtils, formatDate, formatDateIso, isValidTidsperiode } from '@navikt/fp-utils';
 
 import Block from '../../common/block/Block';
+import { getAnnenForelderSamtidigUttakPeriode } from '../../utils/periodeUtils';
 import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
 import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
 import PeriodelisteItem from './../periodeliste-item/PeriodelisteItem';
