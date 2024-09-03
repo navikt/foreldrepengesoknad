@@ -6,10 +6,7 @@ import {
     AnnenForelder,
     Søkerrolle,
     andreAugust2022ReglerGjelder,
-    getFarMedmorErAleneOmOmsorg,
-    getMorHarRettPåForeldrepengerINorgeEllerEØS,
     isAnnenForelderOppgitt,
-    isFarEllerMedmor,
     isUfødtBarn,
 } from '@navikt/fp-common';
 import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
@@ -17,6 +14,8 @@ import { kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { AnnenInntektType } from 'app/types/AndreInntektskilder';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import { getFarMedmorErAleneOmOmsorg, getMorHarRettPåForeldrepengerINorgeEllerEØS } from 'app/utils/personUtils';
 
 import SøknadRoutes, { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER } from '../appData/routes';
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';

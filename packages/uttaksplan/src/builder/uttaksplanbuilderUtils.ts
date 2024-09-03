@@ -9,21 +9,19 @@ import {
     Periodene,
     Periodetype,
     TidsperiodeDate,
-    Tidsperioden,
     andreAugust2022ReglerGjelder,
     førsteOktober2021ReglerGjelder,
-    guid,
     isHull,
     isPeriodeUtenUttak,
     isPeriodeUtenUttakUtsettelse,
     isUtsettelseAnnenPart,
     isUttaksperiode,
-    isValidTidsperiode,
     sorterPerioder,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
-import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
+import { Tidsperioden, Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
 
+import { guid } from '../utils/guid';
 import { splittPeriodePåDato } from './leggTilPeriode';
 
 export const slåSammenLikePerioder = (

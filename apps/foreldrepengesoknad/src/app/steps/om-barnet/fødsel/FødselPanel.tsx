@@ -4,10 +4,12 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Søkersituasjon, isFarEllerMedmor } from '@navikt/fp-common';
+import { Søkersituasjon } from '@navikt/fp-common';
 import { RadioGroup, Select } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
+
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 
 import { BarnetFormValues } from '../OmBarnetFormValues';
 import ErFødtPanel from './ErFødtPanel';

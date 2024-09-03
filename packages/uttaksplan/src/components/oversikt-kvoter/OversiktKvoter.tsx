@@ -11,18 +11,16 @@ import {
     StønadskontoType,
     Søkerrolle,
     getVarighetString,
-    guid,
-    intlUtils,
-    isFarEllerMedmor,
 } from '@navikt/fp-common';
-import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { bemUtils } from '@navikt/fp-utils';
+import { bemUtils, capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import ForelderIkon from '../../common/foreldrepar/ForelderIkon';
 import Personkort from '../../common/personkort/Personkort';
 import { BrukteDager, getBrukteDager } from '../../utils/brukteDagerUtils';
 import { getSituasjonForelderSvg } from '../../utils/foreldreparSituasjonUtils';
+import { guid } from '../../utils/guid';
+import isFarEllerMedmor from '../../utils/isFarEllerMedmor';
 import { Uttaksstatus, getUttaksstatus } from '../../utils/uttaksstatus';
 import Kontostatus from './konto-status/Kontostatus';
 import './oversiktKvoter.less';
@@ -58,7 +56,7 @@ const OversiktPerForelder: FunctionComponent<PropsPerForelder> = ({
         <div className={bem.block}>
             <div className={bem.element('perForelder')}>
                 <Heading size="small" as="h3" className="blokk-xs">
-                    {intlUtils(intl, 'uttaksplan.oversiktKvoter.tittel.foreldre')}
+                    {intl.formatMessage({ id: 'uttaksplan.oversiktKvoter.tittel.foreldre' })}
                 </Heading>
                 <TilesList columns={'flex'}>
                     {(erDeltUttakINorge || søkerErMor) && (

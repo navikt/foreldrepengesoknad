@@ -13,10 +13,8 @@ import {
     andreAugust2022ReglerGjelder,
     dateRangeValidation,
     getFørsteUttaksdagPåEllerEtterFødsel,
-    intlUtils,
     isUtsettelsesperiode,
     isUttaksperiode,
-    mapTidsperiodeStringToTidsperiode,
 } from '@navikt/fp-common';
 
 import Block from '../../../common/block/Block';
@@ -27,6 +25,7 @@ import {
     getDatoavgrensningerForFarMedmorPeriodeRundtFødselWLB,
     getDatoavgrensningerForStønadskonto,
 } from '../../../utils/datoAvgrensningerUtils';
+import { mapTidsperiodeStringToTidsperiode } from '../../../utils/periodeUtils';
 import { getFørsteMuligeUttaksdag } from '../../../utils/uttaksdatoerUtils';
 import { isUttaksperiodeBareFarMedmorHarRett, isUttaksperiodeFarMedmorPgaFødsel } from '../../../utils/wlbUtils';
 
@@ -164,10 +163,12 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                     <Form.Form onCancel={onCancel} includeButtons={false}>
                         <Block>
                             <Form.DateRangePicker
-                                legend={intlUtils(intl, 'utenlandsopphold.leggTilUtenlandsopphold.tidsrom')}
+                                legend={intl.formatMessage({ id: 'utenlandsopphold.leggTilUtenlandsopphold.tidsrom' })}
                                 fromInputProps={{
                                     name: TidsperiodeFormFields.fom,
-                                    label: intlUtils(intl, 'utenlandsopphold.leggTilUtenlandsopphold.fraogmed'),
+                                    label: intl.formatMessage({
+                                        id: 'utenlandsopphold.leggTilUtenlandsopphold.fraogmed',
+                                    }),
 
                                     validate: (value) =>
                                         dateRangeValidation.validateFromDateInRange({
@@ -185,7 +186,9 @@ const TidsperiodeForm: React.FunctionComponent<Props> = ({
                                 }}
                                 toInputProps={{
                                     name: TidsperiodeFormFields.tom,
-                                    label: intlUtils(intl, 'utenlandsopphold.leggTilUtenlandsopphold.tilogmed'),
+                                    label: intl.formatMessage({
+                                        id: 'utenlandsopphold.leggTilUtenlandsopphold.tilogmed',
+                                    }),
 
                                     validate: (value) =>
                                         dateRangeValidation.validateToDateInRange({

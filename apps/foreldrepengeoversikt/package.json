@@ -33,6 +33,7 @@
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
+        "@navikt/fp-validation": "workspace:*",
         "@sentry/browser": "^7.109.0",
         "@tanstack/react-query": "5.51.16",
         "@tanstack/react-query-devtools": "^5.51.16",

@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import { BodyLong } from '@navikt/ds-react';
 
 import { getSaveAttachment } from '@navikt/fp-api';
-import { NavnPåForeldre, Periode, Situasjon, addMetadata, lagSendSenereDokument } from '@navikt/fp-common';
+import { NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
@@ -14,6 +14,7 @@ import { PeriodelisteItemHeader } from '@navikt/fp-uttaksplan';
 
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 import { dateToISOString } from 'app/utils/dateUtils';
+import { addMetadata, lagSendSenereDokument } from 'app/utils/vedleggUtils';
 
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
 import './periode-attachment-uploader.css';

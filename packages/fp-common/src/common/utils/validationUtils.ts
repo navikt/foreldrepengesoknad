@@ -8,7 +8,6 @@ import { IntlShape } from 'react-intl';
 import { getNumberFromNumberInputValue } from '@navikt/fp-utils';
 
 import { Kjønn } from './../../common';
-import intlUtils from './intlUtils';
 
 dayjs.extend(isBetween);
 dayjs.extend(minMax);
@@ -164,10 +163,13 @@ export const getIllegalChars = (value: any): string => {
 
 export const getIllegalCharsErrorMessage = (value: any, feltNavn: string, intl: IntlShape): string => {
     const ugyldigeTegn = getIllegalChars(value).replace(/[\t]/g, 'Tabulatortegn');
-    return intlUtils(intl, 'valideringsfeil.fritekst.kanIkkeInneholdeTegn', {
-        feltNavn: feltNavn,
-        ugyldigeTegn: ugyldigeTegn,
-    });
+    return intl.formatMessage(
+        { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
+        {
+            feltNavn: feltNavn,
+            ugyldigeTegn: ugyldigeTegn,
+        },
+    );
 };
 
 export const validateTextHasLegalChars = (value: any): boolean => textRegex.test(value);
@@ -182,7 +184,10 @@ export const validateTextInputField = (value: any, feltNavn: string, intl: IntlS
 export const validateRequiredTextInputField =
     (feltNavn: string, intl: IntlShape) =>
     (value: string): SkjemaelementFeil => {
-        const errorMsgEmpty = intlUtils(intl, 'valideringsfeil.inputfelt.required', { inputFeltLabel: feltNavn });
+        const errorMsgEmpty = intl.formatMessage(
+            { id: 'valideringsfeil.inputfelt.required' },
+            { inputFeltLabel: feltNavn },
+        );
         const requiredFieldIsEmptyError = validateRequiredField(value, errorMsgEmpty);
         if (requiredFieldIsEmptyError) {
             return requiredFieldIsEmptyError;

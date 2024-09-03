@@ -5,8 +5,8 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, Heading, Hide, Show } from '@navikt/ds-react';
 
-import { Forelder, Tidsperioden, bemUtils, formatDateShortMonth, getVarighetString } from '@navikt/fp-common';
-import { ISOStringToDate } from '@navikt/fp-formik';
+import { Forelder, ISOStringToDate, Tidsperioden, getVarighetString } from '@navikt/fp-common';
+import { bemUtils, formatDateShortMonth } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';

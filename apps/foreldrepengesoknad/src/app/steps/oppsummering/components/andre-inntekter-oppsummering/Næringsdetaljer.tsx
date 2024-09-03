@@ -4,8 +4,8 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { formatDate } from '@navikt/fp-common';
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
+import { formatDate } from '@navikt/fp-utils';
 
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 

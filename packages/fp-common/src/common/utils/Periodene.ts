@@ -1,5 +1,7 @@
 import dayjs from 'dayjs';
 
+import { Tidsperioden, Uttaksdagen, datoErInnenforTidsperiode, isValidTidsperiode } from '@navikt/fp-utils';
+
 import {
     Forelder,
     ForeldrepengerFørFødselUttaksperiode,
@@ -25,8 +27,6 @@ import {
     isUttaksperiode,
 } from '../types';
 import { Perioden } from './Perioden';
-import { Tidsperioden, datoErInnenforTidsperiode, isValidTidsperiode } from './Tidsperioden';
-import { Uttaksdagen } from './Uttaksdagen';
 
 export const Periodene = (perioder: Periode[]) => ({
     getPeriode: (id: string) => getPeriode(perioder, id),

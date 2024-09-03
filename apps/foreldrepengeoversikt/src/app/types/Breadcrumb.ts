@@ -1,5 +1,6 @@
+import { assertUnreachable } from '@navikt/fp-validation';
+
 import OversiktRoutes from 'app/routes/routes';
-import { assertUnreachable } from 'app/utils/globalUtils';
 
 export interface Breadcrumb {
     displayName: string;
@@ -82,6 +83,6 @@ export const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
         case OversiktRoutes.OPPGAVER:
             return [nav, minSide, hovedside, saksoversikt, oppgaver];
         default:
-            return assertUnreachable(selectedRoute, 'En rute mangler brødsmulesti');
+            return assertUnreachable('En rute mangler brødsmulesti');
     }
 };

@@ -17,23 +17,19 @@ import {
     Saksgrunnlag,
     Saksperiode,
     StønadskontoType,
-    Tidsperioden,
     UtsettelseAnnenPartInfoPeriode,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     UtsettelseÅrsakTypeDTO,
     UttakAnnenPartInfoPeriode,
-    Uttaksdagen,
     Uttaksperiode,
     convertTidsperiodeToTidsperiodeDate,
-    erUttaksdag,
-    guid,
     isInfoPeriode,
     isUttaksperiode,
-    isValidTidsperiode,
     sorterPerioder,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
+import { Tidsperioden, Uttaksdagen, erUttaksdag, isValidTidsperiode } from '@navikt/fp-utils';
 import {
     finnOgSettInnHull,
     settInnAnnenPartsUttak,
@@ -43,6 +39,7 @@ import {
 
 import { getRelevantFamiliehendelseDato } from './dateUtils';
 import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
+import { guid } from './guid';
 
 const harUttaksdager = (periode: Periode): boolean => {
     return Perioden(periode).getAntallUttaksdager() > 0;

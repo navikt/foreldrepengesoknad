@@ -13,18 +13,17 @@ import {
     TidsperiodeDate,
     UttakRundtFødselÅrsak,
     Uttaksperiode,
-    getMorsAktivitet,
-    getOppholdsÅrsakFromStønadskonto,
-    getStønadskontoFromOppholdsårsak,
     hasValue,
     isOppholdsperiode,
     isOverføringsperiode,
     isUttaksperiode,
-    trimNumberValue,
 } from '@navikt/fp-common';
+import { trimNumberValue } from '@navikt/fp-utils';
 
 import { QuestionVisibility, YesOrNo } from '../../../formik-wrappers';
 import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from '../../../utils/formUtils';
+import { getMorsAktivitet } from '../../../utils/morsAktivitetUtils';
+import { getOppholdsÅrsakFromStønadskonto, getStønadskontoFromOppholdsårsak } from '../../../utils/periodeUtils';
 import { getSisteUttaksdag6UkerEtterFødsel } from '../../../utils/wlbUtils';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 import {

@@ -1,4 +1,4 @@
-import { Søkerrolle } from '../types';
+import { Søkerrolle } from '@navikt/fp-common';
 
 const isFarEllerMedmor = (rolle: Søkerrolle) => {
     if (rolle === 'far' || rolle === 'medmor') {

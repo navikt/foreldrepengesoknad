@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import { hasValue } from './validationUtils';
-import { isAnnenForelderOppgitt, AnnenForelder, MorsAktivitet } from '../types';
+
+import { AnnenForelder, MorsAktivitet, hasValue, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
 
 export const aktivitetskravMorUtil = {

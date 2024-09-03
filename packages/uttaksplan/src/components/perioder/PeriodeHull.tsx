@@ -3,11 +3,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { Periode, Periodetype, Tidsperioden, førsteOktober2021ReglerGjelder, intlUtils } from '@navikt/fp-common';
-import { bemUtils } from '@navikt/fp-utils';
+import { Periode, Periodetype, førsteOktober2021ReglerGjelder } from '@navikt/fp-common';
+import { Tidsperioden, bemUtils } from '@navikt/fp-utils';
 
 import ActionLink from '../../common/action-link/ActionLink';
 import Block from '../../common/block/Block';
+import { getUttaksdagerSomErFridager } from '../../utils/getUttaksdagerSomErFridager';
 import './periodeHull.less';
 
 interface Props {
@@ -33,7 +34,7 @@ const PeriodeHull: FunctionComponent<Props> = ({
     const bem = bemUtils('periodeHull');
 
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
-    const antallHelligdager = Tidsperioden(periode.tidsperiode).getAntallFridager();
+    const antallHelligdager = getUttaksdagerSomErFridager(periode.tidsperiode).length;
     const antallUttaksdager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
     const kunHelligdager = antallHelligdager === antallUttaksdager;
     const kunUttaksdager = antallHelligdager === 0;
@@ -84,9 +85,11 @@ const PeriodeHull: FunctionComponent<Props> = ({
                 </BodyShort>
             </Block>
             <div className={bem.element('lenker')}>
-                <ActionLink onClick={onLeggInnNyPeriode}>{intlUtils(intl, 'uttaksplan.leggInnNyPeriode')}</ActionLink>
+                <ActionLink onClick={onLeggInnNyPeriode}>
+                    {intl.formatMessage({ id: 'uttaksplan.leggInnNyPeriode' })}
+                </ActionLink>
                 <ActionLink onClick={leggInnNyUtsettelse}>
-                    {intlUtils(intl, 'uttaksplan.leggInnNyUtsettelse')}
+                    {intl.formatMessage({ id: 'uttaksplan.leggInnNyUtsettelse' })}
                 </ActionLink>
             </div>
         </div>

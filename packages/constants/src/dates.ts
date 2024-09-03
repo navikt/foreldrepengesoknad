@@ -4,7 +4,9 @@ export const ISO_DATE_REGEX = /(19|20)\d{2}-(0?[1-9]|1[0-2])-(0?[1-9]|1\d|2\d|3[
 
 export const ISO_DATE_FORMAT = 'YYYY-MM-DD';
 export const DDMMYYYY_DATE_FORMAT = 'DD.MM.YYYY';
+export const DDMMYY_DATE_FORMAT = 'DD.MM.YY';
 export const DDMMMMYYY_DATE_FORMAT = 'DD. MMMM YYYY';
+export const DDMMM_DATE_FORMAT = 'DD. MMM';
 export const TIME_FORMAT = 'HH:mm';
 export const WEEKDAY_DDMMMMYYYY_DATE_FORMAT = 'dddd DD. MMMM YYYY';
 export const DAY_MONTHNAME_YEAR_FORMAT = 'D. MMMM YYYY';

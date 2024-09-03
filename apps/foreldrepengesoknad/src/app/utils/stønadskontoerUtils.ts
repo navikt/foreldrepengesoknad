@@ -1,47 +1,19 @@
-import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
+import { Forelder, NavnPåForeldre, StønadskontoType } from '@navikt/fp-common';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { Stønadskonto } from '@navikt/fp-types/src/TilgjengeligeStønadskontoer';
+import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
-import { Forelder, NavnPåForeldre, StønadskontoType } from '../types';
-import { Uttaksdagen } from './Uttaksdagen';
-import intlUtils from './intlUtils';
-import { getForelderNavn } from './periodeUtils';
-import { getNavnGenitivEierform } from './personUtils';
-import { capitalizeFirstLetter } from './stringUtils';
-
-export const getFiltrerteVelgbareStønadskontotyper = (
-    valgbareKontoer: StønadskontoType[],
-    periodeFom: Date | undefined,
-    familiehendelsesdato: Date,
-): StønadskontoType[] => {
-    if (!periodeFom) {
-        return valgbareKontoer;
+const getForelderNavn = (forelder: Forelder, navnPåForeldre: NavnPåForeldre): string => {
+    let forelderNavn = '';
+    if (navnPåForeldre.farMedmor) {
+        forelderNavn = forelder === Forelder.mor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    } else {
+        forelderNavn = forelder === Forelder.mor ? navnPåForeldre.mor : forelder;
     }
-    const uttaksdagFamiliehendelse = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
-    const periodenStarterFørFødsel = dayjs(periodeFom).isBefore(dayjs(uttaksdagFamiliehendelse), 'd');
-    const kontoer = periodenStarterFørFødsel
-        ? valgbareKontoer.filter(
-              (kontoType) =>
-                  kontoType === StønadskontoType.Fellesperiode || kontoType === StønadskontoType.Foreldrepenger,
-          )
-        : valgbareKontoer;
-
-    return kontoer;
+    return capitalizeFirstLetter(forelderNavn);
 };
-
-export const getVelgbareStønadskontotyper = (stønadskontoTyper: Stønadskonto[]): StønadskontoType[] =>
-    stønadskontoTyper
-        .filter(
-            (kontoType) =>
-                kontoType.konto === StønadskontoType.Fellesperiode ||
-                kontoType.konto === StønadskontoType.Fedrekvote ||
-                kontoType.konto === StønadskontoType.Mødrekvote ||
-                kontoType.konto === StønadskontoType.Foreldrepenger ||
-                kontoType.konto === StønadskontoType.AktivitetsfriKvote,
-        )
-        .map((kontoType) => kontoType.konto);
 
 export const getStønadskontoNavn = (
     intl: IntlShape,
@@ -103,10 +75,13 @@ export const getUttakAnnenPartStønadskontoNavn = (
             konto === StønadskontoType.Fellesperiode
                 ? 'uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttakFellesperiode'
                 : 'uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttak';
-        return intlUtils(intl, intlTekst, {
-            navn: capitalizeFirstLetter(navn),
-            prosent: samtidigUttakProsent,
-        });
+        return intl.formatMessage(
+            { id: intlTekst },
+            {
+                navn: capitalizeFirstLetter(navn),
+                prosent: samtidigUttakProsent,
+            },
+        );
     }
     return getStønadskontoNavn(intl, konto, navnPåForeldre, erFarEllerMedmor, erAleneOmOmsorg);
 };

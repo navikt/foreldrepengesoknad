@@ -5,27 +5,19 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import {
-    Barn,
-    Dekningsgrad,
-    Uttaksdagen,
-    capitalizeFirstLetter,
-    getAntallUker,
-    getAntallUkerFraStønadskontoer,
-    getVarighetString,
-    isAdoptertBarn,
-    isAnnenForelderOppgitt,
-} from '@navikt/fp-common';
+import { Barn, Dekningsgrad, getVarighetString, isAdoptertBarn, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { StønadskontoType, links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
+import { Uttaksdagen, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
 import PeriodeMedForeldrepenger from 'app/types/PeriodeMedForeldrepenger';
 import { getFødselsdato, getTermindato } from 'app/utils/barnUtils';
 import { førsteJuli2024ReglerGjelder } from 'app/utils/dateUtils';
+import { getAntallUker, getAntallUkerFraStønadskontoer } from 'app/utils/stønadskontoerUtils';
 
 import './panelWithCircleIcon.less';
 

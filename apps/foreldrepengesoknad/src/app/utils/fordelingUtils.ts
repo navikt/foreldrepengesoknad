@@ -1,5 +1,4 @@
-import { Uttaksdagen } from '@navikt/fp-common';
-import { getNumberFromNumberInputValue } from '@navikt/fp-utils';
+import { Uttaksdagen, getNumberFromNumberInputValue } from '@navikt/fp-utils';
 import {
     getFørsteUttaksdagAnkomstdatoNorge,
     getFørsteUttaksdagDatoForAleneomsorg,

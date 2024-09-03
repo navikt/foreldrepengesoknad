@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
+import { Uttaksdagen } from '@navikt/fp-utils';
+
 import { Forelder, Periode, Situasjon, StønadskontoType, TidsperiodeDate, isUttaksperiode } from '../types';
-import { Uttaksdagen } from './Uttaksdagen';
 
 export const ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL = 10;
 const ANTALL_DAGER_TO_UKER = 2 * 7;

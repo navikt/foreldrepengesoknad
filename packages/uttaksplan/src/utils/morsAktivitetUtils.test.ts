@@ -1,5 +1,6 @@
+import { AnnenForelder, AnnenForelderOppgitt, MorsAktivitet } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
-import { AnnenForelder, AnnenForelderOppgitt, MorsAktivitet } from '../types';
+
 import { aktivitetskravMorUtil, getMorsAktivitet, getMorsAktivitetSkjemanummer } from './morsAktivitetUtils';
 
 describe('Aktivitetskrav ved utsettelse', () => {

@@ -1,15 +1,16 @@
+import dayjs from 'dayjs';
+
 import {
     Periode,
     TidsperiodeDate,
     UtsettelseFormPeriodeType,
-    Uttaksdagen,
     isForeldrepengerFørFødselUttaksperiode,
-    isValidTidsperiode,
 } from '@navikt/fp-common';
-import dayjs from 'dayjs';
+import { Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
+
+import { uttaksdatoer } from '../../utils/uttaksdatoerUtils';
 import { DatoValidatorer, Validator } from './types/validatorTypes';
 import { allValidatorsPass } from './validatorUtils';
-import { uttaksdatoer } from '../../utils/uttaksdatoerUtils';
 
 type DateValue = Date | undefined;
 

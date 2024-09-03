@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { MorsAktivitet, NavnPåForeldre, hasValue, intlUtils } from '@navikt/fp-common';
+import { MorsAktivitet, NavnPåForeldre, hasValue } from '@navikt/fp-common';
 
 import Block from '../../../../common/block/Block';
 import { PeriodeUtsettelseFormField } from '../../periode-utsettelse-form/periodeUtsettelseFormConfig';
@@ -22,7 +22,7 @@ const renderOptions = (intl: IntlShape) => {
         )
         .map((aktivitetsid) => (
             <option value={(MorsAktivitet as any)[aktivitetsid]} key={(MorsAktivitet as any)[aktivitetsid]}>
-                {intlUtils(intl, `uttaksplan.morsAktivitet.${aktivitetsid}`)}
+                {intl.formatMessage({ id: `uttaksplan.morsAktivitet.${aktivitetsid}` })}
             </option>
         ));
 };
@@ -35,10 +35,10 @@ const AktivitetskravSpørsmål: FunctionComponent<Props> = ({ fieldName, navnPå
             <FormComponents.Select
                 name={fieldName}
                 description="For at du skal kunne bruke fellesperioden må mor være i aktivitet"
-                label={intlUtils(intl, 'uttaksplan.aktivitetskrav', { navnMor: navnPåForeldre.mor })}
+                label={intl.formatMessage({ id: 'uttaksplan.aktivitetskrav' }, { navnMor: navnPåForeldre.mor })}
                 validate={(value: MorsAktivitet | '') => {
                     if (!hasValue(value)) {
-                        return intlUtils(intl, 'uttaksplan.validering.aktivitetskrav');
+                        return intl.formatMessage({ id: 'uttaksplan.validering.aktivitetskrav' });
                     }
 
                     return undefined;

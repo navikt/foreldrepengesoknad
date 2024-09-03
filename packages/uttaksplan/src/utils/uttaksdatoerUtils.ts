@@ -1,13 +1,7 @@
 import dayjs from 'dayjs';
 
-import {
-    Situasjon,
-    TidsperiodeDate,
-    Uttaksdagen,
-    andreAugust2022ReglerGjelder,
-    getTidsperiode,
-    isValidTidsperiode,
-} from '@navikt/fp-common';
+import { Situasjon, TidsperiodeDate, andreAugust2022ReglerGjelder } from '@navikt/fp-common';
+import { Uttaksdagen, getTidsperiode, isValidTidsperiode } from '@navikt/fp-utils';
 
 import uttaksConstants from '../common/uttaksConstants';
 import { getFørsteUttaksdag2UkerFørFødsel } from './wlbUtils';

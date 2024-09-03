@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 
 import { Box, HStack, Loader } from '@navikt/ds-react';
 
-import { Dekningsgrad, DekningsgradDTO, getKjønnFromFnr, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { Dekningsgrad, DekningsgradDTO, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { bemUtils } from '@navikt/fp-utils';
@@ -18,6 +18,7 @@ import useStepConfig from 'app/appData/useStepConfig';
 import { RequestStatus } from 'app/types/RequestState';
 import { getAnnenPartVedtakParam, shouldSuspendAnnenPartVedtakApiRequest } from 'app/utils/annenForelderUtils';
 import { getVis1Juli2024Info } from 'app/utils/dateUtils';
+import { getKjønnFromFnr } from 'app/utils/personUtils';
 
 import DekningsgradForm from './DekningsgradForm';
 import DekningsgradValgtAvAnnenPartPanel from './DekningsgradValgtAvAnnenPartPanel';

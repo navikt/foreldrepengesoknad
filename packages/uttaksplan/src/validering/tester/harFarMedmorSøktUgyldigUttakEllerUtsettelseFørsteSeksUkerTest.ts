@@ -1,4 +1,6 @@
-import { Søknadsinfo, andreAugust2022ReglerGjelder, erPeriodeInnvilget } from '@navikt/fp-common';
+import { Søknadsinfo, andreAugust2022ReglerGjelder } from '@navikt/fp-common';
+
+import { erPeriodeInnvilget } from '../../utils/periodeUtils';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { getUgyldigUttakFørsteSeksUkerForFarMedmor } from '../utils/uttakValideringUtils';
 

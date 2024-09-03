@@ -3,8 +3,7 @@ import isArray from 'lodash/isArray';
 import uniqBy from 'lodash/uniqBy';
 import { IntlShape } from 'react-intl';
 
-import { guid } from '@navikt/fp-common';
-
+import { guid } from '../../utils/guid';
 import {
     Regel,
     RegelAlvorlighet,

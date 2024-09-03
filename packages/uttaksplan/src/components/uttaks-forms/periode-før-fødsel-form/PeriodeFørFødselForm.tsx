@@ -7,9 +7,8 @@ import {
     Periode,
     Situasjon,
     Utsettelsesperiode,
-    intlUtils,
-    isValidTidsperiode,
 } from '@navikt/fp-common';
+import { isValidTidsperiode } from '@navikt/fp-utils';
 
 import Block from '../../../common/block/Block';
 import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
@@ -131,7 +130,9 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                             >
                                 <PeriodeFørFødselFormComponents.Checkbox
                                     name={PeriodeFørFødselFormField.skalIkkeHaUttakFørTermin}
-                                    label={intlUtils(intl, 'uttaksplan.periodeFørFødselForm.skalIkkeHaUttakFørTermin')}
+                                    label={intl.formatMessage({
+                                        id: 'uttaksplan.periodeFørFødselForm.skalIkkeHaUttakFørTermin',
+                                    })}
                                 />
                             </Block>
                         </PeriodeFørFødselFormComponents.Form>

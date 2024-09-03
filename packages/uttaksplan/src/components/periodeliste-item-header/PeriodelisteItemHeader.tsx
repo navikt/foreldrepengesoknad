@@ -14,10 +14,7 @@ import {
     Periodetype,
     Situasjon,
     StønadskontoType,
-    Tidsperioden,
     getUkerOgDagerFromDager,
-    getValidTidsperiode,
-    intlUtils,
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
     isUtsettelseAnnenPart,
     isUttakAnnenPart,
@@ -25,10 +22,10 @@ import {
     måned3bokstaver,
     år,
 } from '@navikt/fp-common';
-import { getForelderNavn, getPeriodeTittel } from '@navikt/fp-common/src/common/utils/periodeUtils';
-import { bemUtils } from '@navikt/fp-utils';
+import { Tidsperioden, bemUtils, getValidTidsperiode } from '@navikt/fp-utils';
 
 import UttaksplanAdvarselIkon from '../../assets/UttaksplanAdvarselIkon';
+import { getForelderNavn, getPeriodeTittel } from '../../utils/periodeUtils';
 import { getIkonForVeilederMelding } from '../../validering/veilederInfo/components/VeilederMelding';
 import { VeilederMessage } from '../../validering/veilederInfo/types';
 import StønadskontoIkon from '../stønadskonto-ikon/StønadskontoIkon';
@@ -180,7 +177,7 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
     let varighetString;
     const erFpFørTerminUtenUttak = isSkalIkkeHaForeldrepengerFørFødselPeriode(periode);
     if (erFpFørTerminUtenUttak) {
-        varighetString = intlUtils(intl, 'uttaksplan.periodeliste.header.skalIkkeHaUttakFørTermin');
+        varighetString = intl.formatMessage({ id: 'uttaksplan.periodeliste.header.skalIkkeHaUttakFørTermin' });
     } else {
         varighetString = getVarighetString(Tidsperioden(periode.tidsperiode).getAntallUttaksdager(), intl);
     }

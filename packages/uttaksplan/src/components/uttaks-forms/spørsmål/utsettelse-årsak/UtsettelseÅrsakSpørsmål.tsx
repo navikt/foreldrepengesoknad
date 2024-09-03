@@ -3,7 +3,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, GuidePanel } from '@navikt/ds-react';
 
-import { UtsettelseÅrsakType, intlUtils } from '@navikt/fp-common';
+import { UtsettelseÅrsakType } from '@navikt/fp-common';
 
 import Block from '../../../../common/block/Block';
 import { FormikRadioProp } from '../../../../formik-wrappers/components/formik-radio-group/FormikRadioGroup';
@@ -32,36 +32,36 @@ const getUtsettelseÅrsakOptions = (
 ) => {
     const allRadios: FormikRadioProp[] = [
         {
-            label: intlUtils(intl, 'uttaksplan.utsettelseårsak.jegskalhaferie'),
+            label: intl.formatMessage({ id: 'uttaksplan.utsettelseårsak.jegskalhaferie' }),
             value: UtsettelseÅrsakType.Ferie,
             disabled: periodenErKunHelligdager === true,
         },
         {
-            label: intlUtils(intl, 'uttaksplan.utsettelseårsak.jegskaljobbeheltid'),
+            label: intl.formatMessage({ id: 'uttaksplan.utsettelseårsak.jegskaljobbeheltid' }),
             value: UtsettelseÅrsakType.Arbeid,
         },
         {
-            label: intlUtils(intl, 'uttaksplan.utsettelseårsak.pgasykdom'),
+            label: intl.formatMessage({ id: 'uttaksplan.utsettelseårsak.pgasykdom' }),
             value: UtsettelseÅrsakType.Sykdom,
         },
         {
-            label: intlUtils(intl, 'uttaksplan.utsettelseårsak.institusjonBarn'),
+            label: intl.formatMessage({ id: 'uttaksplan.utsettelseårsak.institusjonBarn' }),
             value: UtsettelseÅrsakType.InstitusjonBarnet,
         },
         {
-            label: intlUtils(intl, 'uttaksplan.utsettelseårsak.institusjonSøker'),
+            label: intl.formatMessage({ id: 'uttaksplan.utsettelseårsak.institusjonSøker' }),
             value: UtsettelseÅrsakType.InstitusjonSøker,
         },
         {
-            label: intlUtils(intl, 'uttaksplan.utsettelseårsak.hv_øvelse'),
+            label: intl.formatMessage({ id: 'uttaksplan.utsettelseårsak.hv_øvelse' }),
             value: UtsettelseÅrsakType.HvØvelse,
         },
         {
-            label: intlUtils(intl, 'uttaksplan.utsettelseårsak.navtiltak'),
+            label: intl.formatMessage({ id: 'uttaksplan.utsettelseårsak.navtiltak' }),
             value: UtsettelseÅrsakType.NavTiltak,
         },
         {
-            label: intlUtils(intl, 'uttaksplan.utsettelseårsak.fri'),
+            label: intl.formatMessage({ id: 'uttaksplan.utsettelseårsak.fri' }),
             value: UtsettelseÅrsakType.Fri,
         },
     ];

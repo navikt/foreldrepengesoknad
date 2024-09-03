@@ -1,8 +1,8 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
-import { OverføringÅrsakType, getNavnGenitivEierform, hasValue, intlUtils } from '@navikt/fp-common';
-import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
+import { OverføringÅrsakType, hasValue } from '@navikt/fp-common';
+import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import Block from '../../../../common/block/Block';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
@@ -17,28 +17,37 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({ navnAnnenForel
     const navn = capitalizeFirstLetter(navnAnnenForelder);
     const radios = [
         {
-            label: intlUtils(intl, 'uttaksplan.overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER', {
-                navnAnnenForelder: navn,
-            }),
+            label: intl.formatMessage(
+                { id: 'uttaksplan.overføringsårsaktype.INSTITUSJONSOPPHOLD_ANNEN_FORELDER' },
+                {
+                    navnAnnenForelder: navn,
+                },
+            ),
             value: OverføringÅrsakType.institusjonsoppholdAnnenForelder,
         },
         {
-            label: intlUtils(intl, 'uttaksplan.overføringsårsaktype.SYKDOM_ANNEN_FORELDER', {
-                navnAnnenForelder: navn,
-            }),
+            label: intl.formatMessage(
+                { id: 'uttaksplan.overføringsårsaktype.SYKDOM_ANNEN_FORELDER' },
+                {
+                    navnAnnenForelder: navn,
+                },
+            ),
             value: OverføringÅrsakType.sykdomAnnenForelder,
         },
     ];
 
     if (erEndringssøknad) {
         radios.push({
-            label: intlUtils(intl, 'uttaksplan.overføringsårsaktype.ALENEOMSORG'),
+            label: intl.formatMessage({ id: 'uttaksplan.overføringsårsaktype.ALENEOMSORG' }),
             value: OverføringÅrsakType.aleneomsorg,
         });
         radios.push({
-            label: intlUtils(intl, 'uttaksplan.overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER', {
-                navnAnnenForelder: navn,
-            }),
+            label: intl.formatMessage(
+                { id: 'uttaksplan.overføringsårsaktype.IKKE_RETT_ANNEN_FORELDER' },
+                {
+                    navnAnnenForelder: navn,
+                },
+            ),
             value: OverføringÅrsakType.ikkeRettAnnenForelder,
         });
     }
@@ -47,13 +56,16 @@ const OverføringsårsakSpørsmål: FunctionComponent<Props> = ({ navnAnnenForel
         <Block padBottom="l">
             <PeriodeUttakFormComponents.RadioGroup
                 name={PeriodeUttakFormField.overføringsårsak}
-                legend={intlUtils(intl, 'uttaksplan.overføringsårsak', {
-                    navnAnnenForelder: getNavnGenitivEierform(navnAnnenForelder, intl.locale),
-                })}
+                legend={intl.formatMessage(
+                    { id: 'uttaksplan.overføringsårsak' },
+                    {
+                        navnAnnenForelder: getNavnGenitivEierform(navnAnnenForelder, intl.locale),
+                    },
+                )}
                 radios={radios}
                 validate={(value) => {
                     if (!hasValue(value)) {
-                        return intlUtils(intl, 'uttaksplan.validering.overføringsårsak');
+                        return intl.formatMessage({ id: 'uttaksplan.validering.overføringsårsak' });
                     }
 
                     return undefined;

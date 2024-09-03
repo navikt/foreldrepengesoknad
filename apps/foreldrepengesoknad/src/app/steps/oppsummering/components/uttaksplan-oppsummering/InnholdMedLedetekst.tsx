@@ -1,6 +1,8 @@
 import * as React from 'react';
+
 import { BodyShort, Label } from '@navikt/ds-react';
-import { guid } from '@navikt/fp-common';
+
+import { guid } from 'app/utils/guid';
 
 interface InnholdMedLedetekstProps {
     ledetekst: string;

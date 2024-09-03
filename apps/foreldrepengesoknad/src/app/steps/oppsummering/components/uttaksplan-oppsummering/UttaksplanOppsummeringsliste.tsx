@@ -15,17 +15,18 @@ import {
     TidsperiodeDate,
     Utsettelsesperiode,
     Uttaksperiode,
-    finnesPeriodeIOpprinneligPlan,
-    formatDate,
-    getPeriodeTittel,
-    getStønadskontoNavn,
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
 } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
+import { formatDate } from '@navikt/fp-utils';
 import {
     appendPeriodeNavnHvisUttakRundtFødselFarMedmor,
+    finnesPeriodeIOpprinneligPlan,
+    getPeriodeTittel,
     uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-uttaksplan';
+
+import { getStønadskontoNavn } from 'app/utils/stønadskontoerUtils';
 
 import Overføringsperiodedetaljer from './detaljer/Overføringsperiodedetaljer';
 import Uttaksperiodedetaljer from './detaljer/Uttaksperiodedetaljer';

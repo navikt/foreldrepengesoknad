@@ -6,17 +6,14 @@ import {
     Periodetype,
     Situasjon,
     StønadskontoType,
-    Tidsperioden,
-    Uttaksdagen,
     andreAugust2022ReglerGjelder,
     dateIsSameOrAfter,
-    getTidsperiode,
-    guid,
     isUttaksperiode,
     sorterPerioder,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { Stønadskonto } from '@navikt/fp-types/src/TilgjengeligeStønadskontoer';
+import { Tidsperioden, Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
 import {
     farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
     getLengdePåForeslåttWLBUttakFarMedmor,
@@ -24,6 +21,8 @@ import {
     splittUttaksperiodePåFamiliehendelsesdato,
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
 } from '@navikt/fp-uttaksplan';
+
+import { guid } from '../guid';
 
 const deltUttakAdopsjonSøktFørst = (
     famDato: Date,

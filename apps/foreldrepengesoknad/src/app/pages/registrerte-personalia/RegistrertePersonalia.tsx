@@ -4,9 +4,10 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { formaterNavn } from '@navikt/fp-common';
 import { SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
+
+import { formaterNavn } from 'app/utils/personUtils';
 
 import './registrertePersonalia.less';
 

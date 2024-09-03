@@ -14,7 +14,6 @@ import {
     Periodene,
     Situasjon,
     Utsettelsesperiode,
-    intlUtils,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
@@ -105,7 +104,7 @@ const Planlegger: FunctionComponent<Props> = ({
                             <div className={bem.element('tittel')}>
                                 <div className={bem.element('tittelLinkWrapper')}>
                                     <Heading size="medium" level="3">
-                                        {intlUtils(intl, 'uttaksplan.dinPlan')}
+                                        {intl.formatMessage({ id: 'uttaksplan.dinPlan' })}
                                     </Heading>
                                     {erEndringssøknad && (
                                         <ActionLink

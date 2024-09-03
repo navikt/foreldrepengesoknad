@@ -1,18 +1,19 @@
-import { BodyShort } from '@navikt/ds-react';
-import {
-    NavnPåForeldre,
-    intlUtils,
-    UtsettelseÅrsakType,
-    UttakAnnenPartInfoPeriode,
-    UtsettelseAnnenPartInfoPeriode,
-    formaterDatoKompakt,
-    isUttakAnnenPart,
-    getOppholdskontoNavn,
-    getForelderNavn,
-    Forelder,
-} from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
+
+import { BodyShort } from '@navikt/ds-react';
+
+import {
+    Forelder,
+    NavnPåForeldre,
+    UtsettelseAnnenPartInfoPeriode,
+    UtsettelseÅrsakType,
+    UttakAnnenPartInfoPeriode,
+    formaterDatoKompakt,
+    isUttakAnnenPart,
+} from '@navikt/fp-common';
+
+import { getForelderNavn, getOppholdskontoNavn } from '../../utils/periodeUtils';
 
 export interface Props {
     periode: UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode;
@@ -21,8 +22,8 @@ export interface Props {
 
 const getUtsettelseTekst = (intl: IntlShape, årsak: UtsettelseÅrsakType, foreldernavn: string, erMor: boolean) => {
     return erMor
-        ? intlUtils(intl, `uttaksplan.utsettelseårsaktype.foreldernavn.far.${årsak}`, { foreldernavn })
-        : intlUtils(intl, `uttaksplan.utsettelseårsaktype.foreldernavn.mor.${årsak}`, { foreldernavn });
+        ? intl.formatMessage({ id: `uttaksplan.utsettelseårsaktype.foreldernavn.far.${årsak}` }, { foreldernavn })
+        : intl.formatMessage({ id: `uttaksplan.utsettelseårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn });
 };
 
 const PeriodeInfo: FunctionComponent<Props> = ({ periode, navnPåForeldre }) => {

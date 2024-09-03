@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ReadMore } from '@navikt/ds-react';
 
-import { Arbeidsforhold, Arbeidsform, TidsperiodeDate, dateIsBetween, hasValue, intlUtils } from '@navikt/fp-common';
+import { Arbeidsforhold, Arbeidsform, TidsperiodeDate, dateIsBetween, hasValue } from '@navikt/fp-common';
 
 import Block from '../../../../common/block/Block';
 import { YesOrNo } from '../../../../formik-wrappers';
@@ -104,10 +104,10 @@ const SkalHaGraderingSpørsmål: FunctionComponent<Props> = ({
             <Block padBottom="l">
                 <PeriodeUttakFormComponents.YesOrNoQuestion
                     name={PeriodeUttakFormField.skalHaGradering}
-                    legend={intlUtils(intl, 'uttaksplan.skalHaGradering')}
+                    legend={intl.formatMessage({ id: 'uttaksplan.skalHaGradering' })}
                     validate={(value: YesOrNo) => {
                         if (value === YesOrNo.UNANSWERED) {
-                            return intlUtils(intl, 'uttaksplan.validering.skalHaGradering');
+                            return intl.formatMessage({ id: 'uttaksplan.validering.skalHaGradering' });
                         }
 
                         return undefined;
@@ -118,12 +118,12 @@ const SkalHaGraderingSpørsmål: FunctionComponent<Props> = ({
                 <Block padBottom="s">
                     <PeriodeUttakFormComponents.NumberInput
                         name={PeriodeUttakFormField.stillingsprosent}
-                        label={intlUtils(intl, 'uttaksplan.stillingsprosent')}
+                        label={intl.formatMessage({ id: 'uttaksplan.stillingsprosent' })}
                         maxLength={5}
                         validate={prosentValideringGradering(intl)}
                     />
                 </Block>
-                <ReadMore header={intlUtils(intl, 'uttaksplan.stillingsprosent.lesMer.tittel')}>
+                <ReadMore header={intl.formatMessage({ id: 'uttaksplan.stillingsprosent.lesMer.tittel' })}>
                     <BodyShort>
                         <FormattedMessage id="uttaksplan.stillingsprosent.lesMer.innhold" />
                     </BodyShort>
@@ -132,17 +132,17 @@ const SkalHaGraderingSpørsmål: FunctionComponent<Props> = ({
             <Block visible={graderingsprosentVisible}>
                 <PeriodeUttakFormComponents.RadioGroup
                     name={PeriodeUttakFormField.arbeidsformer}
-                    legend={intlUtils(intl, 'uttaksplan.arbeidsformer')}
+                    legend={intl.formatMessage({ id: 'uttaksplan.arbeidsformer' })}
                     radios={getArbeidsOptions(arbeidsforhold, tidsperiode)}
                     validate={(value) => {
                         if (!hasValue(value)) {
-                            return intlUtils(intl, 'uttaksplan.validering.arbeidsformer');
+                            return intl.formatMessage({ id: 'uttaksplan.validering.arbeidsformer' });
                         }
 
                         return undefined;
                     }}
                 />
-                <ReadMore header={intlUtils(intl, 'uttaksplan.arbeidsformer.lesMer.tittel')}>
+                <ReadMore header={intl.formatMessage({ id: 'uttaksplan.arbeidsformer.lesMer.tittel' })}>
                     <BodyShort>
                         <FormattedMessage id="uttaksplan.arbeidsformer.lesMer.innhold" />
                     </BodyShort>

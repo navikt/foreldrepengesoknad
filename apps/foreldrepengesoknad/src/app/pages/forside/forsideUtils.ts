@@ -2,18 +2,10 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
-import {
-    BarnFraNesteSak,
-    ISOStringToDate,
-    RegistrertAnnenForelder,
-    Sak,
-    Uttaksdagen,
-    erEldreEnn3ÅrOg3Måneder,
-    guid,
-} from '@navikt/fp-common';
+import { BarnFraNesteSak, ISOStringToDate, RegistrertAnnenForelder, Sak } from '@navikt/fp-common';
 import { Familiehendelse } from '@navikt/fp-common/src/common/types/Familiehendelse';
 import { SøkerBarn } from '@navikt/fp-types';
-import { isISODateString } from '@navikt/fp-utils';
+import { Uttaksdagen, isISODateString } from '@navikt/fp-utils';
 
 import { ValgtBarn, ValgtBarnType } from 'app/types/ValgtBarn';
 import {
@@ -22,6 +14,8 @@ import {
     getLeverBarnet,
     sorterRegistrerteBarnEtterEldstOgNavn,
 } from 'app/utils/barnUtils';
+import { guid } from 'app/utils/guid';
+import { erEldreEnn3ÅrOg3Måneder } from 'app/utils/personUtils';
 
 import { getErDatoInnenEnDagFraAnnenDato, getRelevantFamiliehendelseDato } from '../../utils/dateUtils';
 

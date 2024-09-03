@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { GuidePanel, Link } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Situasjon, andreAugust2022ReglerGjelder, intlUtils } from '@navikt/fp-common';
+import { NavnPåForeldre, Situasjon, andreAugust2022ReglerGjelder } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 
 import Block from '../../../../common/block/Block';
@@ -43,10 +43,13 @@ const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({
             <Block padBottom={samtidigUttakProsentVisible ? 'l' : 'none'}>
                 <PeriodeUttakFormComponents.YesOrNoQuestion
                     name={PeriodeUttakFormField.samtidigUttak}
-                    legend={intlUtils(intl, 'uttaksplan.samtidigUttak', { navnAnnenForelder: navnPåAnnenForelder })}
+                    legend={intl.formatMessage(
+                        { id: 'uttaksplan.samtidigUttak' },
+                        { navnAnnenForelder: navnPåAnnenForelder },
+                    )}
                     validate={(value: YesOrNo) => {
                         if (value === YesOrNo.UNANSWERED) {
-                            return intlUtils(intl, 'uttaksplan.validering.samtidigUttak');
+                            return intl.formatMessage({ id: 'uttaksplan.validering.samtidigUttak' });
                         }
 
                         return undefined;
@@ -72,7 +75,7 @@ const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({
             <Block visible={samtidigUttakProsentVisible}>
                 <PeriodeUttakFormComponents.NumberInput
                     name={PeriodeUttakFormField.samtidigUttakProsent}
-                    label={intlUtils(intl, 'uttaksplan.samtidigUttakProsent')}
+                    label={intl.formatMessage({ id: 'uttaksplan.samtidigUttakProsent' })}
                     maxLength={5}
                     validate={prosentValideringSamtidigUttak(intl)}
                 />

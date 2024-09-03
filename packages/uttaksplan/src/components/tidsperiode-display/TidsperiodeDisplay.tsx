@@ -2,9 +2,9 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, Label, Link } from '@navikt/ds-react';
 
-import { TidsperiodeDate, formatDate, intlUtils } from '@navikt/fp-common';
+import { TidsperiodeDate } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { bemUtils } from '@navikt/fp-utils';
+import { bemUtils, formatDate } from '@navikt/fp-utils';
 
 import Block from '../../common/block/Block';
 import './tidsperiodeDisplay.less';
@@ -29,11 +29,11 @@ const renderTidsperiode = (tidsperiode: Partial<TidsperiodeDate> | undefined, in
         return (
             <div className={bem.element('dato-container')}>
                 <div className={bem.element('dato')}>
-                    <Label>{`${intlUtils(intl, 'fraogmed')}:`}</Label>
+                    <Label>{`${intl.formatMessage({ id: 'fraogmed' })}:`}</Label>
                     <BodyShort>{formaterTidsperiodeDato(tidsperiode.fom)}</BodyShort>
                 </div>
                 <div className={bem.element('dato')}>
-                    <Label>{`${intlUtils(intl, 'tilogmed')}:`}</Label>
+                    <Label>{`${intl.formatMessage({ id: 'tilogmed' })}:`}</Label>
                     <BodyShort>{formaterTidsperiodeDato(tidsperiode.tom)}</BodyShort>
                 </div>
             </div>
