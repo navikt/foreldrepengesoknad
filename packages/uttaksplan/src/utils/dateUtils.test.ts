@@ -1,9 +1,23 @@
 import MockDate from 'mockdate';
-import getIntlMock from 'utils-test/intl-test-helper';
+import { createIntl, createIntlCache } from 'react-intl';
 
 import { Utsettelsesperiode } from '@navikt/fp-common';
 
 import { ISOStringToDate, dateRangeValidation } from './dateUtils';
+
+// Create the IntlProvider to retrieve context for wrapping around.
+const cache = createIntlCache();
+
+const getIntlMock = () => {
+    return createIntl(
+        {
+            locale: 'nb',
+            defaultLocale: 'nb',
+            messages: {},
+        },
+        cache,
+    );
+};
 
 describe('dateUtils', () => {
     const intl = getIntlMock();
