@@ -1,1 +1,0 @@
-import{c as t}from"./dateFormValidation-DXkRFCUV.js";const i=/^\d+([,.]\d+)?$/,o=s=>i.test(s.toString()),r=/^\s*\d+\s*$/,l=s=>n=>t(n)||o(n)?null:s,c=s=>n=>t(n)||r.test(n.toString())?null:s,m=(s,n)=>e=>e>=n?null:s;export{c as a,m as h,l as i};
