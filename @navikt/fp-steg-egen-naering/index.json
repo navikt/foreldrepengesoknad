@@ -1,1 +1,1 @@
-{"v":5,"entries":{"egennæringpanel--default":{"type":"story","id":"egennæringpanel--default","name":"Default","title":"EgenNæringPanel","importPath":"./src/EgenNæringPanel.stories.tsx","tags":["dev","test"]}}}
+{"v":5,"entries":{"egennæringpanel--default":{"type":"story","id":"egennæringpanel--default","name":"Default","title":"EgenNæringPanel","importPath":"./src/EgenNæringPanel.stories.tsx","componentPath":"./src/EgenNæringPanel.tsx","tags":["dev","test"]}}}

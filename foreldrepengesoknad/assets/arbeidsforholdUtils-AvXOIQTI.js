@@ -1,0 +1,1 @@
+import{d as s}from"./Uttaksdagen-DrQ0Oxxl.js";import{g,c as F}from"./useFpNavigator-rsQS18v_.js";import"./dateFormValidation-DXkRFCUV.js";import"./index-BP8_t0zE.js";const a=(t,o,r)=>{if(r!==void 0)return t?r:o?g(r,void 0):F(r)},v=(t,o,r,d)=>{const i=a(o,r,d);return t.filter(e=>e.tom===void 0||e.tom===null||i!==void 0&&s(i).isSameOrBefore(s.utc(e.tom),"days"))};export{v as g};

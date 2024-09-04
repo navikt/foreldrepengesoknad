@@ -1,1 +1,1 @@
-{"v":5,"entries":{"frilanspanel--default":{"type":"story","id":"frilanspanel--default","name":"Default","title":"FrilansPanel","importPath":"./src/Frilans.stories.tsx","tags":["dev","test"]}}}
+{"v":5,"entries":{"frilanspanel--default":{"type":"story","id":"frilanspanel--default","name":"Default","title":"FrilansPanel","importPath":"./src/Frilans.stories.tsx","componentPath":"./src/FrilansPanel.tsx","tags":["dev","test"]}}}
