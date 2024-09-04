@@ -57,6 +57,7 @@ dayjs.locale(localeFromSessionStorage);
 const retryCallback = async () => {
     try {
         await deleteData(esApi, '/rest/engangsstonad', 'Feil ved sletting av mellomlagret data');
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
         // Vi bryr oss ikke om feil her. Logges bare i backend
     }

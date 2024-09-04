@@ -33,9 +33,6 @@ export default defineConfig({
         globals: true,
         environment: 'jsdom',
         setupFiles: './vitest/setupTests.ts',
-        deps: {
-            inline: ['@navikt/ds-react'],
-        },
         coverage: {
             include: ['src/**/*'],
             exclude: [],

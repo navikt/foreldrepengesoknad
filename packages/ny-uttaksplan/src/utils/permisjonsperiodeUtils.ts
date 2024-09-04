@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import {
     Forelder,
     Periode,
-    Tidsperioden,
     isHull,
     isOppholdsperiode,
     isOverføringsperiode,
@@ -12,7 +11,7 @@ import {
     isUttakAnnenPart,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { formatDateIso } from '@navikt/fp-utils';
+import { Tidsperioden, formatDateIso } from '@navikt/fp-utils';
 
 import Permisjonsperiode from '../types/Permisjonsperiode';
 

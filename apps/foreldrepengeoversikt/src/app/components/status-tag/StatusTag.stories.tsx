@@ -20,8 +20,8 @@ export const AktivSak: Story = {
 
 export const AvsluttetSak: Story = {
     args: {
-        //@ts-ignore fiks
         sak: {
+            //@ts-ignore fiks
             ...saker.foreldrepenger[0],
             sakAvsluttet: true,
         },

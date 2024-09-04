@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
-import { Periode, Periodene, StønadskontoType, Tidsperioden, Uttaksperiode, sorterPerioder } from '@navikt/fp-common';
-import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
+import { Periode, Periodene, StønadskontoType, Uttaksperiode, sorterPerioder } from '@navikt/fp-common';
+import { Tidsperioden, Uttaksdagen } from '@navikt/fp-utils';
 
 import { guid } from './guid';
 import {

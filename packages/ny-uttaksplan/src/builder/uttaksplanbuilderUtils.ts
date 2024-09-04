@@ -19,8 +19,7 @@ import {
     sorterPerioder,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
-import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
-import { Tidsperioden, isValidTidsperiode } from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
 
 import { guid } from './guid';
 import { splittPeriodePåDato } from './leggTilPeriode';

@@ -71,6 +71,7 @@ const useSendSøknad = (
 
         try {
             await Api.deleteMellomlagretSøknad(fødselsnr, abortSignal);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (deleteError) {
             // Vi bryr oss ikke om feil her. Logges bare i backend
         }
