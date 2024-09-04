@@ -10,7 +10,6 @@ import {
     Forelder,
     ISOStringToDate,
     Periode,
-    Periodene,
     isAnnenForelderOppgitt,
     isUfødtBarn,
     isUttakAnnenPart,
@@ -21,6 +20,7 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import { Søkerinfo } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import {
+    Periodene,
     Uttaksplan,
     YesOrNo,
     finnOgSettInnHull,

@@ -12,7 +12,6 @@ import {
     Periode,
     PeriodeInfoType,
     PeriodeResultatÅrsak,
-    Perioden,
     Periodetype,
     Saksgrunnlag,
     Saksperiode,
@@ -26,13 +25,14 @@ import {
     convertTidsperiodeToTidsperiodeDate,
     isInfoPeriode,
     isUttaksperiode,
-    sorterPerioder,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { Tidsperioden, Uttaksdagen, erUttaksdag, isValidTidsperiode } from '@navikt/fp-utils';
 import {
+    Perioden,
     finnOgSettInnHull,
     settInnAnnenPartsUttak,
+    sorterPerioder,
     splittPeriodePåDato,
     splittUttaksperiodePåFamiliehendelsesdato,
 } from '@navikt/fp-uttaksplan';

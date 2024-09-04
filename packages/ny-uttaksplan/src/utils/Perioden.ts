@@ -1,9 +1,7 @@
 import dayjs from 'dayjs';
 
+import { Periode, Periodetype, formaterDatoKompakt, isForeldrepengerFørFødselUttaksperiode } from '@navikt/fp-common';
 import { Tidsperioden, Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
-
-import { Periode, Periodetype, isForeldrepengerFørFødselUttaksperiode } from '../types';
-import { formaterDatoKompakt } from './dateUtils';
 
 export const Perioden = (periode: Periode) => ({
     setStartdato: (fom: Date) => flyttPeriode(periode, fom),

@@ -9,7 +9,6 @@ import {
     andreAugust2022ReglerGjelder,
     dateIsSameOrAfter,
     isUttaksperiode,
-    sorterPerioder,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { Stønadskonto } from '@navikt/fp-types/src/TilgjengeligeStønadskontoer';
@@ -17,6 +16,7 @@ import { Tidsperioden, Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
 import {
     farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
     getLengdePåForeslåttWLBUttakFarMedmor,
+    sorterPerioder,
     splittPeriodePåDato,
     splittUttaksperiodePåFamiliehendelsesdato,
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,

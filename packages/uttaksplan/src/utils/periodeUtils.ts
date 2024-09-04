@@ -12,7 +12,6 @@ import {
     Periode,
     PeriodeInfoType,
     PeriodeValidState,
-    Perioden,
     Periodetype,
     Situasjon,
     StønadskontoType,
@@ -30,6 +29,7 @@ import {
 import { capitalizeFirstLetter, erTidsperioderLike, getFloatFromString } from '@navikt/fp-utils';
 
 import { ISOStringToDate } from '../formik-wrappers';
+import { Perioden } from './Perioden';
 import { getStønadskontoNavn, getUttakAnnenPartStønadskontoNavn } from './stønadskontoerUtils';
 import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from './wlbUtils';
 

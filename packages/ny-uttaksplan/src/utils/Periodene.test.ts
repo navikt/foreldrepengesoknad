@@ -1,5 +1,3 @@
-import { Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
-
 import {
     Forelder,
     InfoPeriode,
@@ -8,7 +6,9 @@ import {
     Periodetype,
     StønadskontoType,
     Uttaksperiode,
-} from '../types';
+} from '@navikt/fp-common';
+import { Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
+
 import { uttaksplanErBareOpphold, uttaksplanSlutterMedOpphold, uttaksplanStarterMedOpphold } from './Periodene';
 
 const familiehendelsesdato = new Date();

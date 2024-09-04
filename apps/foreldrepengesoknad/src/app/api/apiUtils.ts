@@ -26,14 +26,13 @@ import {
     isForeldrepengerFørFødselUttaksperiode,
     isFødtBarn,
     isUttaksperiode,
-    sorterPerioder,
 } from '@navikt/fp-common';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt/src/types/ArbeidsforholdOgInntekt';
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
 import { Attachment, LocaleNo } from '@navikt/fp-types';
 import { Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
-import { uttaksperiodeKanJusteresVedFødsel } from '@navikt/fp-uttaksplan';
+import { sorterPerioder, uttaksperiodeKanJusteresVedFødsel } from '@navikt/fp-uttaksplan';
 import { assertUnreachable, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType } from 'app/appData/FpDataContext';

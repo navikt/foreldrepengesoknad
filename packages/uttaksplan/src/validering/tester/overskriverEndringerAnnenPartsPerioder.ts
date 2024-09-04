@@ -1,8 +1,9 @@
 import { IntlShape } from 'react-intl';
 
-import { Periode, Periodene, Søknadsinfo, isAvslåttPeriode, isInfoPeriode, isUttaksperiode } from '@navikt/fp-common';
+import { Periode, Søknadsinfo, isAvslåttPeriode, isInfoPeriode, isUttaksperiode } from '@navikt/fp-common';
 import { Tidsperioden, getNavnGenitivEierform } from '@navikt/fp-utils';
 
+import { Periodene } from '../../utils/Periodene';
 import { getPeriodeTittel } from '../../utils/periodeUtils';
 import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/types/regelTypes';
 

@@ -6,7 +6,6 @@ import 'dayjs/locale/nn.js';
 
 import '@navikt/ds-css';
 
-import { fpCommonMessages } from '@navikt/fp-common';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 
 import nbMessages from './../src/intl/nb_NO.json';
@@ -15,8 +14,8 @@ import nnMessages from './../src/intl/nn_NO.json';
 dayjs.locale('nb');
 
 const withIntlProvider = getIntlDecorator({
-    nb: { ...nbMessages, ...fpCommonMessages.nb },
-    nn: { ...nnMessages, ...fpCommonMessages.nb },
+    nb: nbMessages,
+    nn: nnMessages,
 });
 
 const preview: Preview = {

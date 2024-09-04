@@ -1,6 +1,7 @@
-import { Periodene, Søknadsinfo, formaterDato, isOverskrivbarPeriode, isUtsettelsesperiode } from '@navikt/fp-common';
+import { Søknadsinfo, formaterDato, isOverskrivbarPeriode, isUtsettelsesperiode } from '@navikt/fp-common';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
+import { Periodene } from '../../utils/Periodene';
 import { RegelTestresultat } from '../utils/types/regelTypes';
 
 export function inneholderBareUtsettelserTest(grunnlag: Søknadsinfo): RegelTestresultat {

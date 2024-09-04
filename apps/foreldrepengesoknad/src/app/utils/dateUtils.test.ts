@@ -19,8 +19,6 @@ import {
     formaterDatoKompakt,
     formaterDatoUtenDag,
     getToTetteReglerGjelder,
-    getUkerOgDagerFromDager,
-    getVarighetString,
     isDateInTheFuture,
     isDateToday,
     tidperiodeOverlapperDato,
@@ -38,6 +36,8 @@ import {
     getEldsteRegistrerteBarn,
     getEndringstidspunkt,
     getRelevantFamiliehendelseDato,
+    getUkerOgDagerFromDager,
+    getVarighetString,
     isDateABeforeDateB,
     sorterDatoEtterEldst,
 } from './dateUtils';

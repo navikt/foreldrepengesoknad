@@ -1,8 +1,9 @@
 import { IntlShape } from 'react-intl';
 
-import { StønadskontoType, Søknadsinfo, andreAugust2022ReglerGjelder, getVarighetString } from '@navikt/fp-common';
+import { StønadskontoType, Søknadsinfo, andreAugust2022ReglerGjelder } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 
+import { getVarighetString } from '../../components/periodeliste-item-header/PeriodelisteItemHeader';
 import { getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB } from '../../utils/minsterettUtils';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './erUttaksmengdeForFarMedmorForHøyTest';

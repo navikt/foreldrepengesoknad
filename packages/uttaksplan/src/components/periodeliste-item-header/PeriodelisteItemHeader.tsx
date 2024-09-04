@@ -14,7 +14,6 @@ import {
     Periodetype,
     Situasjon,
     StønadskontoType,
-    getUkerOgDagerFromDager,
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
     isUtsettelseAnnenPart,
     isUttakAnnenPart,
@@ -121,6 +120,14 @@ export const getPeriodeIkon = (
 };
 
 type VarighetFormat = 'full' | 'normal';
+
+export const getUkerOgDagerFromDager = (dager: number): { uker: number; dager: number } => {
+    const uker = Math.floor(dager / 5);
+    return {
+        dager: dager - uker * 5,
+        uker,
+    };
+};
 
 export const getVarighetString = (antallDager: number, intl: IntlShape, format: VarighetFormat = 'full'): string => {
     const { uker, dager } = getUkerOgDagerFromDager(Math.abs(antallDager));

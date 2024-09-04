@@ -9,13 +9,13 @@ import {
     Uttaksperiode,
     andreAugust2022ReglerGjelder,
     isUttaksperiode,
-    sorterPerioder,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { Stønadskonto } from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
 import {
     farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
+    sorterPerioder,
     splittPeriodePåDato,
     splittUttaksperiodePåFamiliehendelsesdato,
 } from '@navikt/fp-uttaksplan';

@@ -4,7 +4,6 @@ import {
     MorsAktivitet,
     OverføringÅrsakType,
     Periode,
-    Periodene,
     Periodetype,
     Situasjon,
     StønadskontoType,
@@ -16,6 +15,7 @@ import {
 } from '@navikt/fp-common';
 import { Tidsperioden, Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
 
+import { Periodene } from '../../utils/Periodene';
 import { erPeriodeFørDato } from '../../utils/periodeUtils';
 import { uttaksdatoer } from '../../utils/uttaksdatoerUtils';
 

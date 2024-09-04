@@ -6,12 +6,12 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import minMax from 'dayjs/plugin/minMax';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+import { IntlShape } from 'react-intl';
 
 import {
     AnnenForelder,
     Barn,
     Periode,
-    Perioden,
     hasValue,
     isInfoPeriode,
     isPeriodeUtenUttak,
@@ -20,6 +20,7 @@ import {
 } from '@navikt/fp-common';
 import { SøkerBarn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { isISODateString } from '@navikt/fp-utils';
+import { Perioden } from '@navikt/fp-uttaksplan';
 
 import FeatureToggle from 'app/FeatureToggle';
 import { Alder } from 'app/types/Alder';
@@ -304,4 +305,33 @@ export const getErDatoInnenEnDagFraAnnenDato = (
         dayjs.utc(dato1).isSameOrAfter(dayjs(dato2).subtract(1, 'day'), 'day') &&
         dayjs.utc(dato1).isSameOrBefore(dayjs(dato2).add(1, 'day'), 'day')
     );
+};
+
+export const getUkerOgDagerFromDager = (dager: number): { uker: number; dager: number } => {
+    const uker = Math.floor(dager / 5);
+    return {
+        dager: dager - uker * 5,
+        uker,
+    };
+};
+
+type VarighetFormat = 'full' | 'normal';
+export const getVarighetString = (antallDager: number, intl: IntlShape, format: VarighetFormat = 'full'): string => {
+    const { uker, dager } = getUkerOgDagerFromDager(Math.abs(antallDager));
+    const dagerStr = intl.formatMessage(
+        { id: 'varighet.dager' },
+        {
+            dager,
+        },
+    );
+    if (uker === 0) {
+        return dagerStr;
+    }
+    const ukerStr = intl.formatMessage({ id: 'varighet.uker' }, { uker });
+    if (dager > 0) {
+        return `${ukerStr}${intl.formatMessage({
+            id: `varighet.separator--${format}`,
+        })}${dagerStr}`;
+    }
+    return ukerStr;
 };

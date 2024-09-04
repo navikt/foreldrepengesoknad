@@ -11,7 +11,6 @@ import {
     NavnPåForeldre,
     Periode,
     PeriodeValidState,
-    Periodene,
     Situasjon,
     Utsettelsesperiode,
     isAnnenForelderOppgitt,
@@ -23,6 +22,7 @@ import { bemUtils } from '@navikt/fp-utils';
 import ActionLink from '../../common/action-link/ActionLink';
 import Block from '../../common/block/Block';
 import InfoBlock from '../../common/info-block/InfoBlock';
+import { Periodene } from '../../utils/Periodene';
 import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
 import NyPeriode from '../uttaks-forms/ny-periode/NyPeriode';
 import Periodeliste from './../periodeliste/Periodeliste';

@@ -30,6 +30,8 @@ export { Questions } from './formik-wrappers';
 export { default as uttaksConstants } from './common/uttaksConstants';
 export { getForeldreparSituasjon } from './utils/foreldreparSituasjonUtils';
 export { uttaksplanDatoavgrensninger } from './utils/uttaksplanDatoavgrensninger';
+export { sorterPerioder, Periodene } from './utils/Periodene';
+export { Perioden } from './utils/Perioden';
 export {
     appendPeriodeNavnHvisUttakRundtFødselFarMedmor,
     uttaksperiodeKanJusteresVedFødsel,

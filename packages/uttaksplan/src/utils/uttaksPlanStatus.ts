@@ -4,7 +4,6 @@ import {
     Oppholdsperiode,
     Overføringsperiode,
     Periode,
-    Perioden,
     Periodetype,
     UttakAnnenPartInfoPeriode,
     Uttaksperiode,
@@ -18,6 +17,7 @@ import { PeriodeInfoType } from '@navikt/fp-constants';
 import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { getFloatFromString } from '@navikt/fp-utils';
 
+import { Perioden } from './Perioden';
 import { getStønadskontoFromOppholdsårsak } from './periodeUtils';
 
 export const finnAntallDagerÅTrekke = (periode: Periode): number => {

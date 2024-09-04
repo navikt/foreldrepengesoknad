@@ -2,11 +2,11 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { Alert, VStack } from '@navikt/ds-react';
 
-import { getVarighetString } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
 import { getTekstForAntallBarn } from 'app/utils/barnUtils';
+import { getVarighetString } from 'app/utils/dateUtils';
 
 import {
     getDegEllerMorTekst,

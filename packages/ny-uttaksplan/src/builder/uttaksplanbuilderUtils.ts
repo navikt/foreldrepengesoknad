@@ -5,8 +5,6 @@ import {
     PeriodeHull,
     PeriodeHullÅrsak,
     PeriodeUtenUttak,
-    Perioden,
-    Periodene,
     Periodetype,
     TidsperiodeDate,
     andreAugust2022ReglerGjelder,
@@ -16,11 +14,12 @@ import {
     isPeriodeUtenUttakUtsettelse,
     isUtsettelseAnnenPart,
     isUttaksperiode,
-    sorterPerioder,
     tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { Tidsperioden, Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
 
+import { Perioden } from '../utils/Perioden';
+import { Periodene, sorterPerioder } from '../utils/Periodene';
 import { guid } from './guid';
 import { splittPeriodePåDato } from './leggTilPeriode';
 

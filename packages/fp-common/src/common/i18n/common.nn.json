@@ -1,7 +1,0 @@
-{
-    "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige teikn i feltet \"{feltNavn}\".",
-    "varighet.uker": "{uker, plural, one {# veke} other {# veker}}",
-    "varighet.dager": "{dager, plural, one {# dag} other {# dagar}}",
-    "tidsperiode.kort": "{fom} - {tom}",
-    "tidsperiode": "Frå {fom} til {tom}"
-}

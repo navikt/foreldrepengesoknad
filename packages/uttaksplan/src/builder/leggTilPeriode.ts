@@ -2,16 +2,15 @@ import dayjs from 'dayjs';
 
 import {
     Periode,
-    Periodene,
     StønadskontoType,
     Uttaksperiode,
     isForeldrepengerFørFødselUttaksperiode,
     isOverskrivbarPeriode,
     isUtsettelsesperiode,
-    sorterPerioder,
 } from '@navikt/fp-common';
 import { Tidsperioden, Uttaksdagen } from '@navikt/fp-utils';
 
+import { Periodene, sorterPerioder } from '../utils/Periodene';
 import { guid } from '../utils/guid';
 import { getPeriodeHullEllerPeriodeUtenUttak, getTidsperiodeMellomPerioder } from './uttaksplanbuilderUtils';
 
