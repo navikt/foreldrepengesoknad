@@ -1,10 +1,12 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
-import { UttakRundtFødselÅrsak, hasValue } from '@navikt/fp-common';
+import { UttakRundtFødselÅrsak } from '@navikt/fp-common';
 
 import Block from '../../../../common/block/Block';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 interface Props {
     fieldName: PeriodeUttakFormField;

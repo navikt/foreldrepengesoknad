@@ -1,11 +1,13 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
-import { OverføringÅrsakType, hasValue } from '@navikt/fp-common';
+import { OverføringÅrsakType } from '@navikt/fp-common';
 import { capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 import Block from '../../../../common/block/Block';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 interface Props {
     navnAnnenForelder: string;

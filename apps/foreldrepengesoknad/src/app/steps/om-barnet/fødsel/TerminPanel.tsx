@@ -4,21 +4,20 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 
-import {
-    Søkersituasjon,
-    andreAugust2022ReglerGjelder,
-    attenUkerTreDager,
-    date21DaysAgo,
-    dateToday,
-    erIUke22Pluss3,
-    erMindreEnn3UkerSiden,
-} from '@navikt/fp-common';
+import { Søkersituasjon, andreAugust2022ReglerGjelder } from '@navikt/fp-common';
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, Søkerrolle } from '@navikt/fp-types';
 import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import Block from 'app/pages/block/Block';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import {
+    attenUkerTreDager,
+    date21DaysAgo,
+    dateToday,
+    erIUke22Pluss3,
+    erMindreEnn3UkerSiden,
+} from 'app/utils/validationUtil';
 
 import { UfødtBarn } from '../OmBarnetFormValues';
 

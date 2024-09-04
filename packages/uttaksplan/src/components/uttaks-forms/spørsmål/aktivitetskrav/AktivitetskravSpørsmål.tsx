@@ -1,11 +1,13 @@
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { MorsAktivitet, NavnPåForeldre, hasValue } from '@navikt/fp-common';
+import { MorsAktivitet, NavnPåForeldre } from '@navikt/fp-common';
 
 import Block from '../../../../common/block/Block';
 import { PeriodeUtsettelseFormField } from '../../periode-utsettelse-form/periodeUtsettelseFormConfig';
 import { PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 interface Props {
     fieldName: PeriodeUttakFormField | PeriodeUtsettelseFormField;

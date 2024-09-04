@@ -1,7 +1,8 @@
 import { IntlShape } from 'react-intl';
 
-import { hasValue } from '@navikt/fp-common';
 import { getFloatFromString } from '@navikt/fp-utils';
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 export const prosentValideringSamtidigUttak = (intl: IntlShape) => (value: string) => {
     const samtidigUttakProsent = getFloatFromString(value);

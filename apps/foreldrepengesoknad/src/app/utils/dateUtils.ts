@@ -12,7 +12,6 @@ import {
     AnnenForelder,
     Barn,
     Periode,
-    hasValue,
     isInfoPeriode,
     isPeriodeUtenUttak,
     isUtsettelsesperiode,
@@ -28,6 +27,7 @@ import { Alder } from 'app/types/Alder';
 import { getIsDeltUttak } from './annenForelderUtils';
 import { getFamiliehendelsedato } from './barnUtils';
 import fn from './toggleUtils';
+import { hasValue } from './validationUtil';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);

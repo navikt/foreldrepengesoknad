@@ -1,7 +1,9 @@
-import { Søkerrolle, hasValue } from '@navikt/fp-common';
+import { Søkerrolle } from '@navikt/fp-common';
 
 import { QuestionConfig, Questions } from '../../../formik-wrappers';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 export interface PeriodeUttakQuestionPayload extends PeriodeUttakFormData {
     situasjon: string;

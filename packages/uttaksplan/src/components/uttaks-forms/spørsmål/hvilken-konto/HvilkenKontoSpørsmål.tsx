@@ -1,11 +1,13 @@
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { NavnPåForeldre, StønadskontoType, hasValue } from '@navikt/fp-common';
+import { NavnPåForeldre, StønadskontoType } from '@navikt/fp-common';
 
 import { FormikRadioProp } from '../../../../formik-wrappers/components/formik-radio-group/FormikRadioGroup';
 import { getStønadskontoNavn } from '../../../../utils/stønadskontoerUtils';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 interface Props {
     velgbareStønadskontoer: StønadskontoType[];

@@ -8,7 +8,6 @@ import {
     TidsperiodeDate,
     UttakRundtFødselÅrsak,
     andreAugust2022ReglerGjelder,
-    hasValue,
 } from '@navikt/fp-common';
 import { isValidTidsperiode } from '@navikt/fp-utils';
 
@@ -21,6 +20,8 @@ import getUttakSkjemaregler, {
 } from '../../../utils/uttaksskjema/uttakSkjemaregler';
 import { erFarMedmorSinWLBTidsperiodeRundtFødsel, getSisteUttaksdag6UkerEtterFødsel } from '../../../utils/wlbUtils';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 export interface PeriodeUttakFormQuestionsPayload {
     values: PeriodeUttakFormData;

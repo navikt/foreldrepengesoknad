@@ -12,7 +12,6 @@ import {
     Situasjon,
     Utsettelsesperiode,
     førsteOktober2021ReglerGjelder,
-    hasValue,
 } from '@navikt/fp-common';
 import { Tidsperioden, bemUtils, isValidTidsperiode } from '@navikt/fp-utils';
 
@@ -42,6 +41,8 @@ import {
     getPeriodeUtsettelseFormInitialValues,
     mapPeriodeUtsettelseFormToPeriode,
 } from './periodeUtsettelseFormUtils';
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 interface Props {
     periode: Periode;

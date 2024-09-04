@@ -1,4 +1,6 @@
-import { MorsAktivitet, hasValue } from '@navikt/fp-common';
+import { MorsAktivitet } from '@navikt/fp-common';
+
+import { hasValue } from './validationUtil';
 
 export const getMorsAktivitet = (
     aktivitetskravMorValue: string | undefined,

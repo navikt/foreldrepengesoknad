@@ -8,13 +8,16 @@ import { Uttaksdagen, isISODateString } from '@navikt/fp-utils';
 
 import { TidsperiodeDate, Utsettelsesperiode } from '../types';
 import { Tidsperiode } from './../types/Tidsperiode';
-import { SkjemaelementFeil, hasValue } from './validationUtils';
+
+type SkjemaelementFeil = string | undefined;
 
 dayjs.extend(utc);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isBetween);
-
 dayjs.extend(utc);
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
+
 const dateFormat = 'DD.MM.YYYY';
 const dateFormatExtended = 'DD. MMMM YYYY';
 
