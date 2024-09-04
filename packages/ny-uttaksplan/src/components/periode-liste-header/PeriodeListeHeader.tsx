@@ -5,12 +5,13 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, Heading, Hide, Show } from '@navikt/ds-react';
 
-import { Forelder, ISOStringToDate, getVarighetString } from '@navikt/fp-common';
+import { Forelder } from '@navikt/fp-common';
 import { Tidsperioden, bemUtils, formatDateShortMonth } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
 import Permisjonsperiode from '../../types/Permisjonsperiode';
+import { ISOStringToDate, getVarighetString } from '../../utils/dateUtils';
 import { getFarge, getIkon, getTekst } from './PeriodeListeHeaderUtils';
 import './periode-liste-header.css';
 

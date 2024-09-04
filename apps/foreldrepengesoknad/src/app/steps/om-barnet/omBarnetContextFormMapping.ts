@@ -6,13 +6,14 @@ import {
     IkkeUtfyltTypeBarn,
     Situasjon,
     UfødtBarn,
-    hasValue,
     isAdoptertAnnetBarn,
     isAdoptertStebarn,
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
+
+import { hasValue } from 'app/utils/validationUtil';
 
 import BarnetFormValues, {
     erAdoptertAnnetBarn,

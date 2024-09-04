@@ -7,7 +7,6 @@ import {
     AnnenForelder,
     Arbeidsforhold,
     Forelder,
-    ISOStringToDate,
     NavnPåForeldre,
     OpprinneligSøkt,
     Periode,
@@ -17,8 +16,6 @@ import {
     StønadskontoType,
     TidsperiodeDate,
     Utsettelsesperiode,
-    andreAugust2022ReglerGjelder,
-    formaterDatoKompakt,
     isAnnenForelderOppgitt,
     isUttaksperiode,
 } from '@navikt/fp-common';
@@ -28,6 +25,7 @@ import { bemUtils, isValidTidsperiode } from '@navikt/fp-utils';
 import ActionLink from '../../../common/action-link/ActionLink';
 import Block from '../../../common/block/Block';
 import { QuestionVisibility } from '../../../formik-wrappers';
+import { ISOStringToDate, andreAugust2022ReglerGjelder, formaterDatoKompakt } from '../../../utils/dateUtils';
 import { guid } from '../../../utils/guid';
 import { getIsValidStateForPerioder, getSlettPeriodeTekst } from '../../../utils/periodeUtils';
 import {

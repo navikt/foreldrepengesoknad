@@ -4,21 +4,23 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button } from '@navikt/ds-react';
 
 import {
-    ISOStringToDate,
     Periode,
     Situasjon,
     Tidsperiode,
     TidsperiodeDate,
     Utsettelsesperiode,
-    andreAugust2022ReglerGjelder,
-    dateRangeValidation,
-    getFørsteUttaksdagPåEllerEtterFødsel,
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
 
 import Block from '../../../common/block/Block';
 import { dateToISOString, getTypedFormComponents } from '../../../formik-wrappers';
+import {
+    ISOStringToDate,
+    andreAugust2022ReglerGjelder,
+    dateRangeValidation,
+    getFørsteUttaksdagPåEllerEtterFødsel,
+} from '../../../utils/dateUtils';
 import {
     DatoAvgrensninger,
     getDatoavgrensningerForBareFarMedmorHarRettWLB,

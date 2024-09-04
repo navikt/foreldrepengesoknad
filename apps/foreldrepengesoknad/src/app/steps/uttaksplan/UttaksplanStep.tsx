@@ -8,9 +8,7 @@ import { Alert, Button, Loader } from '@navikt/ds-react';
 import {
     Dekningsgrad,
     Forelder,
-    ISOStringToDate,
     Periode,
-    Periodene,
     isAnnenForelderOppgitt,
     isUfødtBarn,
     isUttakAnnenPart,
@@ -21,6 +19,7 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import { Søkerinfo } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import {
+    Periodene,
     Uttaksplan,
     YesOrNo,
     finnOgSettInnHull,
@@ -49,7 +48,7 @@ import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { dateToISOString, getEndringstidspunkt } from 'app/utils/dateUtils';
+import { ISOStringToDate, dateToISOString, getEndringstidspunkt } from 'app/utils/dateUtils';
 import {
     getStartdatoFørstePeriodeAnnenPart,
     mapAnnenPartsEksisterendeSakFromDTO,

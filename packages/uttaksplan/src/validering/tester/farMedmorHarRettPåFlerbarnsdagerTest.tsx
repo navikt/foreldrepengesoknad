@@ -1,6 +1,7 @@
-import { Søknadsinfo, andreAugust2022ReglerGjelder } from '@navikt/fp-common';
+import { Søknadsinfo } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 
+import { andreAugust2022ReglerGjelder } from '../../utils/dateUtils';
 import {
     getBareFarHarRettAntallUkerPåÅTaUtDagerUtenAktivitetskravFørWLB,
     getBareFarHarRettFlerbarnsdagerUker,

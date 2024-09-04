@@ -5,22 +5,23 @@ import {
     PeriodeHull,
     PeriodeHullÅrsak,
     PeriodeUtenUttak,
-    Perioden,
-    Periodene,
     Periodetype,
     TidsperiodeDate,
-    andreAugust2022ReglerGjelder,
-    førsteOktober2021ReglerGjelder,
     isHull,
     isPeriodeUtenUttak,
     isPeriodeUtenUttakUtsettelse,
     isUtsettelseAnnenPart,
     isUttaksperiode,
-    sorterPerioder,
-    tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { Tidsperioden, Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
 
+import { Perioden } from '../utils/Perioden';
+import { Periodene, sorterPerioder } from '../utils/Periodene';
+import {
+    andreAugust2022ReglerGjelder,
+    førsteOktober2021ReglerGjelder,
+    tidperiodeOverlapperDato,
+} from '../utils/dateUtils';
 import { guid } from '../utils/guid';
 import { splittPeriodePåDato } from './leggTilPeriode';
 

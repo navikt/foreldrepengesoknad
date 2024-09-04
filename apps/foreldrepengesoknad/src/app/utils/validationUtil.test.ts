@@ -1,8 +1,6 @@
 import getIntlMock from 'utils-test/intl-test-helper';
 
-import { getIllegalChars } from '@navikt/fp-common';
-
-import { validateFødselsnummer } from './validationUtil';
+import { getIllegalChars, validateFødselsnummer } from './validationUtil';
 
 describe('validationUtil', () => {
     const intl = getIntlMock();

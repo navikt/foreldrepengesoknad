@@ -4,7 +4,6 @@ import {
     AvslåttPeriode,
     FamiliehendelseType,
     Forelder,
-    ISOStringToDate,
     MorsAktivitet,
     OppholdÅrsakType,
     OpprinneligSøkt,
@@ -12,7 +11,6 @@ import {
     Periode,
     PeriodeInfoType,
     PeriodeResultatÅrsak,
-    Perioden,
     Periodetype,
     Saksgrunnlag,
     Saksperiode,
@@ -23,21 +21,22 @@ import {
     UtsettelseÅrsakTypeDTO,
     UttakAnnenPartInfoPeriode,
     Uttaksperiode,
-    convertTidsperiodeToTidsperiodeDate,
     isInfoPeriode,
     isUttaksperiode,
-    sorterPerioder,
-    tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { Tidsperioden, Uttaksdagen, erUttaksdag, isValidTidsperiode } from '@navikt/fp-utils';
 import {
+    Perioden,
+    convertTidsperiodeToTidsperiodeDate,
     finnOgSettInnHull,
     settInnAnnenPartsUttak,
+    sorterPerioder,
     splittPeriodePåDato,
     splittUttaksperiodePåFamiliehendelsesdato,
+    tidperiodeOverlapperDato,
 } from '@navikt/fp-uttaksplan';
 
-import { getRelevantFamiliehendelseDato } from './dateUtils';
+import { ISOStringToDate, getRelevantFamiliehendelseDato } from './dateUtils';
 import { getArbeidsformFromUttakArbeidstype } from './eksisterendeSakUtils';
 import { guid } from './guid';
 

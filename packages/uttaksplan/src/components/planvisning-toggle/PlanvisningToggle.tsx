@@ -5,8 +5,8 @@ import { FormattedMessage } from 'react-intl';
 import { ToggleGroup } from '@navikt/ds-react';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { bemUtils } from '@navikt/fp-utils';
 
+import bemUtils from '../../utils/bemUtils';
 import './planvisning-toggle.css';
 
 export type Visningsmodus = 'liste' | 'kalender';

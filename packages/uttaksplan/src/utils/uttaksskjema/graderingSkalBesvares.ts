@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 
-import { Periodetype, StønadskontoType, TidsperiodeDate, andreAugust2022ReglerGjelder } from '@navikt/fp-common';
+import { Periodetype, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
 
+import { andreAugust2022ReglerGjelder } from '../../utils/dateUtils';
 import { getSisteUttaksdag6UkerEtterFødsel } from '../../utils/wlbUtils';
 
 export const graderingSkalBesvares = (

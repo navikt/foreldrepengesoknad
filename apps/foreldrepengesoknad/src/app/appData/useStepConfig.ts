@@ -2,15 +2,9 @@ import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 
-import {
-    AnnenForelder,
-    Søkerrolle,
-    andreAugust2022ReglerGjelder,
-    isAnnenForelderOppgitt,
-    isUfødtBarn,
-} from '@navikt/fp-common';
+import { AnnenForelder, Søkerrolle, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
 import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
-import { kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
+import { andreAugust2022ReglerGjelder, kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { AnnenInntektType } from 'app/types/AndreInntektskilder';

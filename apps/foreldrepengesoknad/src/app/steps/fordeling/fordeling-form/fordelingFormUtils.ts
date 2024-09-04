@@ -2,10 +2,9 @@ import dayjs from 'dayjs';
 import isString from 'lodash/isString';
 import { IntlShape } from 'react-intl';
 
-import { getVarighetString } from '@navikt/fp-common';
 import { erUttaksdag, formatDate, getNumberFromNumberInputValue, isValidDate } from '@navikt/fp-utils';
 
-import { ISOStringToDate } from 'app/utils/dateUtils';
+import { ISOStringToDate, getVarighetString } from 'app/utils/dateUtils';
 
 const validateMaxValueAntallUkerFellesperiode = (
     antallUker: number,

@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
 
 import { getAxiosInstance } from '@navikt/fp-api';
-import { allCommonMessages } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { SøkerBarn, Søkerinfo } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
@@ -13,7 +12,7 @@ import nbMessages from './intl/nb_NO.json';
 import { RequestStatus } from './types/RequestState';
 
 const MESSAGES_GROUPED_BY_LOCALE = {
-    nb: { ...nbMessages, ...allCommonMessages.nb },
+    nb: nbMessages,
 };
 
 describe('<Foreldrepengesøknad>', () => {

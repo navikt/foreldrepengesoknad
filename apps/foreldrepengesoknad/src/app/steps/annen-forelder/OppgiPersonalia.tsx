@@ -1,13 +1,13 @@
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
-import { Barn, isAdoptertStebarn, validateTextInputField } from '@navikt/fp-common';
+import { Barn, isAdoptertStebarn } from '@navikt/fp-common';
 import { Checkbox, Select, TextField } from '@navikt/fp-form-hooks';
 import { Søkerrolle } from '@navikt/fp-types';
 import { bemUtils, createCountryOptions } from '@navikt/fp-utils';
 import { isRequired } from '@navikt/fp-validation';
 
-import { validateFødselsnummer } from 'app/utils/validationUtil';
+import { validateFødselsnummer, validateTextInputField } from 'app/utils/validationUtil';
 
 import { AnnenForelderFormData } from './AnnenForelderFormData';
 import './oppgiPersonalia.css';

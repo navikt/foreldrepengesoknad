@@ -5,9 +5,9 @@ import { BodyLong } from '@navikt/ds-react';
 
 import { InfoPeriode, OpprinneligSøkt, isAvslåttPeriode } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { bemUtils } from '@navikt/fp-utils';
 
 import ActionLink from '../../common/action-link/ActionLink';
+import bemUtils from '../../utils/bemUtils';
 import { getSlettPeriodeTekst } from '../../utils/periodeUtils';
 import './slettbarAvslåttPeriode.less';
 

@@ -1,8 +1,8 @@
 import classnames from 'classnames';
 
 import { PeriodeColor } from '@navikt/fp-constants';
-import { bemUtils } from '@navikt/fp-utils';
 
+import bemUtils from '../../utils/bemUtils';
 import './iconBox.less';
 
 export interface Props {

@@ -1,5 +1,6 @@
-import { Søknadsinfo, formaterDatoKompakt } from '@navikt/fp-common';
+import { Søknadsinfo } from '@navikt/fp-common';
 
+import { formaterDatoKompakt } from '../../../utils/dateUtils';
 import {
     getFørsteUttaksdag2UkerFørFødsel,
     gjelderWLBReglerFarMedmorRundtFødsel,

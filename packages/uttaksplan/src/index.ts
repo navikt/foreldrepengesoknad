@@ -30,6 +30,15 @@ export { Questions } from './formik-wrappers';
 export { default as uttaksConstants } from './common/uttaksConstants';
 export { getForeldreparSituasjon } from './utils/foreldreparSituasjonUtils';
 export { uttaksplanDatoavgrensninger } from './utils/uttaksplanDatoavgrensninger';
+export { sorterPerioder, Periodene } from './utils/Periodene';
+export {
+    andreAugust2022ReglerGjelder,
+    førsteOktober2021ReglerGjelder,
+    tidperiodeOverlapperDato,
+    convertTidsperiodeToTidsperiodeDate,
+    dateIsWithinRange,
+} from './utils/dateUtils';
+export { Perioden } from './utils/Perioden';
 export {
     appendPeriodeNavnHvisUttakRundtFødselFarMedmor,
     uttaksperiodeKanJusteresVedFødsel,

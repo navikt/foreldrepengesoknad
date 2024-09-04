@@ -10,13 +10,13 @@ import {
     Situasjon,
     StønadskontoType,
     Søkerrolle,
-    getVarighetString,
 } from '@navikt/fp-common';
 import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { bemUtils, capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import ForelderIkon from '../../common/foreldrepar/ForelderIkon';
 import Personkort from '../../common/personkort/Personkort';
+import { getVarighetString } from '../../components/periodeliste-item-header/PeriodelisteItemHeader';
 import { BrukteDager, getBrukteDager } from '../../utils/brukteDagerUtils';
 import { getSituasjonForelderSvg } from '../../utils/foreldreparSituasjonUtils';
 import { guid } from '../../utils/guid';

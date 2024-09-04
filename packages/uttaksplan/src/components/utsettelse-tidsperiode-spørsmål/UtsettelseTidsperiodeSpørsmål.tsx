@@ -9,11 +9,11 @@ import {
     Tidsperiode,
     TidsperiodeDate,
     Utsettelsesperiode,
-    getUkerOgDagerFromDager,
     isForeldrepengerFørFødselUttaksperiode,
 } from '@navikt/fp-common';
 import { Tidsperioden, getTidsperiode } from '@navikt/fp-utils';
 
+import { getUkerOgDagerFromDager } from '../../components/periodeliste-item-header/PeriodelisteItemHeader';
 import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperiode-form/TidsperiodeForm';
 import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
 

@@ -9,10 +9,10 @@ import {
     UtsettelseAnnenPartInfoPeriode,
     UtsettelseÅrsakType,
     UttakAnnenPartInfoPeriode,
-    formaterDatoKompakt,
     isUttakAnnenPart,
 } from '@navikt/fp-common';
 
+import { formaterDatoKompakt } from '../../utils/dateUtils';
 import { getForelderNavn, getOppholdskontoNavn } from '../../utils/periodeUtils';
 
 export interface Props {

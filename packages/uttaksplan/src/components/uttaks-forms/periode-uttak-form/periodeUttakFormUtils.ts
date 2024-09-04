@@ -13,7 +13,6 @@ import {
     TidsperiodeDate,
     UttakRundtFødselÅrsak,
     Uttaksperiode,
-    hasValue,
     isOppholdsperiode,
     isOverføringsperiode,
     isUttaksperiode,
@@ -30,6 +29,8 @@ import {
     erSamtidigUttakFarMedmorFørFødselWLB,
     erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB,
 } from './periodeUttakFormQuestionsConfig';
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 const getInitialKonto = (
     erDeltUttak: boolean,

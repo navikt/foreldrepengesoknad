@@ -3,11 +3,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { GuidePanel, Link } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Situasjon, andreAugust2022ReglerGjelder } from '@navikt/fp-common';
+import { NavnPåForeldre, Situasjon } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
 
 import Block from '../../../../common/block/Block';
 import { YesOrNo } from '../../../../formik-wrappers';
+import { andreAugust2022ReglerGjelder } from '../../../../utils/dateUtils';
 import { prosentValideringSamtidigUttak } from '../../../../utils/prosentValidering';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 

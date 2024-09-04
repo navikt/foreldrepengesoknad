@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import { ButtonHTMLAttributes, FunctionComponent, ReactNode } from 'react';
 
-import { bemUtils } from '@navikt/fp-utils';
-
+import bemUtils from '../../utils/bemUtils';
 import './linkButton.less';
 
 export interface LinkButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

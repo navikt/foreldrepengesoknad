@@ -3,10 +3,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { AdoptertAnnetBarn, AdoptertStebarn, hasValue, isAdoptertStebarn } from '@navikt/fp-common';
+import { AdoptertAnnetBarn, AdoptertStebarn, isAdoptertStebarn } from '@navikt/fp-common';
 import { formatDate } from '@navikt/fp-utils';
 
 import { førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
+import { hasValue } from 'app/utils/validationUtil';
 
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 

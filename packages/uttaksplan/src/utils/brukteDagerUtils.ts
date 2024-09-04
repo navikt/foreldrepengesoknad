@@ -1,6 +1,7 @@
-import { Forelder, Periode, Periodene, StønadskontoType, Uttaksperiode, isUttaksperiode } from '@navikt/fp-common';
+import { Forelder, Periode, StønadskontoType, Uttaksperiode, isUttaksperiode } from '@navikt/fp-common';
 import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
+import { Periodene } from './Periodene';
 import { beregnBrukteUttaksdager, getAllePerioderMedUttaksinfoFraUttaksplan } from './uttaksPlanStatus';
 
 interface ForeldersBrukteDager {

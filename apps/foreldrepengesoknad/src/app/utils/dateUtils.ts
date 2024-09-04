@@ -6,13 +6,12 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import minMax from 'dayjs/plugin/minMax';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+import { IntlShape } from 'react-intl';
 
 import {
     AnnenForelder,
     Barn,
     Periode,
-    Perioden,
-    hasValue,
     isInfoPeriode,
     isPeriodeUtenUttak,
     isUtsettelsesperiode,
@@ -20,6 +19,7 @@ import {
 } from '@navikt/fp-common';
 import { SøkerBarn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { isISODateString } from '@navikt/fp-utils';
+import { Perioden } from '@navikt/fp-uttaksplan';
 
 import FeatureToggle from 'app/FeatureToggle';
 import { Alder } from 'app/types/Alder';
@@ -27,6 +27,7 @@ import { Alder } from 'app/types/Alder';
 import { getIsDeltUttak } from './annenForelderUtils';
 import { getFamiliehendelsedato } from './barnUtils';
 import fn from './toggleUtils';
+import { hasValue } from './validationUtil';
 
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -142,7 +143,7 @@ export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boo
     );
 };
 
-export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolean => {
+export const andreAugust2022ReglerGjelder = (familiehendelsesdato: string | Date): boolean => {
     const andreAugust2022 = new Date('2022-08-02');
 
     return (
@@ -304,4 +305,56 @@ export const getErDatoInnenEnDagFraAnnenDato = (
         dayjs.utc(dato1).isSameOrAfter(dayjs(dato2).subtract(1, 'day'), 'day') &&
         dayjs.utc(dato1).isSameOrBefore(dayjs(dato2).add(1, 'day'), 'day')
     );
+};
+
+export const getUkerOgDagerFromDager = (dager: number): { uker: number; dager: number } => {
+    const uker = Math.floor(dager / 5);
+    return {
+        dager: dager - uker * 5,
+        uker,
+    };
+};
+
+type VarighetFormat = 'full' | 'normal';
+export const getVarighetString = (antallDager: number, intl: IntlShape, format: VarighetFormat = 'full'): string => {
+    const { uker, dager } = getUkerOgDagerFromDager(Math.abs(antallDager));
+    const dagerStr = intl.formatMessage(
+        { id: 'varighet.dager' },
+        {
+            dager,
+        },
+    );
+    if (uker === 0) {
+        return dagerStr;
+    }
+    const ukerStr = intl.formatMessage({ id: 'varighet.uker' }, { uker });
+    if (dager > 0) {
+        return `${ukerStr}${intl.formatMessage({
+            id: `varighet.separator--${format}`,
+        })}${dagerStr}`;
+    }
+    return ukerStr;
+};
+
+export const getToTetteReglerGjelder = (
+    familiehendelsesdato: string | Date | undefined,
+    familiehendelsesdatoNesteBarn: string | Date | undefined,
+): boolean => {
+    if (familiehendelsesdato === undefined || familiehendelsesdatoNesteBarn === undefined) {
+        return false;
+    }
+    const familiehendelsePlus48Uker = dayjs(familiehendelsesdato).add(48, 'week');
+    return (
+        andreAugust2022ReglerGjelder(familiehendelsesdato) &&
+        andreAugust2022ReglerGjelder(familiehendelsesdatoNesteBarn) &&
+        dayjs(familiehendelsePlus48Uker).isAfter(familiehendelsesdatoNesteBarn, 'day')
+    );
+};
+
+export const formaterDatoKompakt = (dato: Date): string => {
+    return formaterDato(dato, 'DD.MM.YYYY');
+};
+
+export const formaterDato = (dato: string | Date | undefined, datoformat?: string): string => {
+    return dayjs(dato).format(datoformat ?? 'dddd D. MMMM YYYY');
 };

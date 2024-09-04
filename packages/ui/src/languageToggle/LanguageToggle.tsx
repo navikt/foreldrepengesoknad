@@ -16,9 +16,9 @@ const MenuListItem: FunctionComponent<{ locale: LocaleAll }> = ({ locale }) => {
                     <NorwayFlagSVG />
                 </div>
                 <div className="languageToggle__button__language" data-locale={locale}>
-                    {locale === 'en' && <FormattedMessage id={`LanguageToggle.en`} />}
-                    {locale === 'nb' && <FormattedMessage id={`LanguageToggle.nb`} />}
-                    {locale === 'nn' && <FormattedMessage id={`LanguageToggle.nn`} />}
+                    {locale === 'en' && <FormattedMessage id="LanguageToggle.en" />}
+                    {locale === 'nb' && <FormattedMessage id="LanguageToggle.nb" />}
+                    {locale === 'nn' && <FormattedMessage id="LanguageToggle.nn" />}
                 </div>
             </MenuItem>
         </li>
@@ -45,9 +45,9 @@ const LanguageToggle = <T extends LocaleAll>({ locale, availableLocales, toggleL
                         <NorwayFlagSVG />
                     </div>
                     <div className="languageToggle__button__language">
-                        {locale === 'en' && <FormattedMessage id={`LanguageToggle.en`} />}
-                        {locale === 'nb' && <FormattedMessage id={`LanguageToggle.nb`} />}
-                        {locale === 'nn' && <FormattedMessage id={`LanguageToggle.nn`} />}
+                        {locale === 'en' && <FormattedMessage id="LanguageToggle.en" />}
+                        {locale === 'nb' && <FormattedMessage id="LanguageToggle.nb" />}
+                        {locale === 'nn' && <FormattedMessage id="LanguageToggle.nn" />}
                     </div>
                     <div>
                         <ChevronDownIcon />

@@ -3,11 +3,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { ISOStringToDate } from '@navikt/fp-common';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { formatDate } from '@navikt/fp-utils';
 
 import { AndreInntektskilder, AnnenInntektType } from 'app/types/AndreInntektskilder';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import AnnenInntektDetaljer from './AnnenInntektDetaljer';

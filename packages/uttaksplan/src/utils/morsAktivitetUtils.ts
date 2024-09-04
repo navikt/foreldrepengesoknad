@@ -1,7 +1,9 @@
 import dayjs from 'dayjs';
 
-import { AnnenForelder, MorsAktivitet, hasValue, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { AnnenForelder, MorsAktivitet, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 export const aktivitetskravMorUtil = {
     skalBesvaresVedUtsettelse(søkerErFarEllerMedmor: boolean, annenForelder: AnnenForelder): boolean {

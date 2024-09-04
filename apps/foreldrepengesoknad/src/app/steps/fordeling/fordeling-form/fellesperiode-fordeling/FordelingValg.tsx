@@ -2,11 +2,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Radio } from '@navikt/ds-react';
 
-import { getVarighetString } from '@navikt/fp-common';
 import { RadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
 import { FellesperiodeFordelingValg } from 'app/types/Fordeling';
+import { getVarighetString } from 'app/utils/dateUtils';
 
 interface Props {
     dagerMedFellesperiode: number;

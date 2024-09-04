@@ -4,14 +4,14 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { getVarighetString, isFødtBarn } from '@navikt/fp-common';
+import { isFødtBarn } from '@navikt/fp-common';
 import { Tidsperioden, Uttaksdagen, bemUtils, getValidTidsperiode, isValidDate } from '@navikt/fp-utils';
 import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { ISOStringToDate } from 'app/utils/dateUtils';
+import { ISOStringToDate, getVarighetString } from 'app/utils/dateUtils';
 
 import './mor-oppstartinformasjon.css';
 

@@ -4,18 +4,18 @@ import {
     MorsAktivitet,
     OverføringÅrsakType,
     Periode,
-    Periodene,
     Periodetype,
     Situasjon,
     StønadskontoType,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksperiode,
-    andreAugust2022ReglerGjelder,
     isPeriodeUtenUttak,
 } from '@navikt/fp-common';
 import { Tidsperioden, Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
 
+import { Periodene } from '../../utils/Periodene';
+import { andreAugust2022ReglerGjelder } from '../../utils/dateUtils';
 import { erPeriodeFørDato } from '../../utils/periodeUtils';
 import { uttaksdatoer } from '../../utils/uttaksdatoerUtils';
 

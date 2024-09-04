@@ -1,8 +1,9 @@
-import { hasValue } from '@navikt/fp-common';
 import { isValidTidsperiode } from '@navikt/fp-utils';
 
 import { QuestionConfig, Questions } from '../../../formik-wrappers';
 import { PeriodeFørFødselFormData, PeriodeFørFødselFormField } from './periodeFørFødselFormConfig';
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 const PeriodeFørFødselFormConfig: QuestionConfig<PeriodeFørFødselFormData, PeriodeFørFødselFormField> = {
     [PeriodeFørFødselFormField.fom]: {

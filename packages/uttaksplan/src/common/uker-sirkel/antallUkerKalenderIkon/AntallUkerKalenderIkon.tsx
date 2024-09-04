@@ -1,6 +1,5 @@
-import { bemUtils } from '@navikt/fp-utils';
-
 import KalenderBakgrunnIkon from '../../../common/kalender-bakgrunn-ikon/KalenderBakgrunnIkon';
+import bemUtils from '../../../utils/bemUtils';
 import './antallUkerKalenderIkon.less';
 
 interface Props {

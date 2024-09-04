@@ -9,13 +9,12 @@ import {
     StønadskontoType,
     TidsperiodeDate,
     Uttaksperiode,
-    andreAugust2022ReglerGjelder,
     isOverføringsperiode,
     isUttaksperiode,
-    tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
 
+import { andreAugust2022ReglerGjelder, tidperiodeOverlapperDato } from './dateUtils';
 import { finnAntallDagerÅTrekke } from './uttaksPlanStatus';
 
 export const ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL = 10;

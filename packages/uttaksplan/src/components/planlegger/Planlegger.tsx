@@ -11,18 +11,18 @@ import {
     NavnPåForeldre,
     Periode,
     PeriodeValidState,
-    Periodene,
     Situasjon,
     Utsettelsesperiode,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { bemUtils } from '@navikt/fp-utils';
 
 import ActionLink from '../../common/action-link/ActionLink';
 import Block from '../../common/block/Block';
 import InfoBlock from '../../common/info-block/InfoBlock';
+import { Periodene } from '../../utils/Periodene';
+import bemUtils from '../../utils/bemUtils';
 import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
 import NyPeriode from '../uttaks-forms/ny-periode/NyPeriode';
 import Periodeliste from './../periodeliste/Periodeliste';

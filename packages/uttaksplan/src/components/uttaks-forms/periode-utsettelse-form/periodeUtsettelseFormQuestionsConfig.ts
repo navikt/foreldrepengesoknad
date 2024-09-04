@@ -1,8 +1,10 @@
-import { UtsettelseÅrsakType, hasValue } from '@navikt/fp-common';
+import { UtsettelseÅrsakType } from '@navikt/fp-common';
 import { isValidTidsperiode } from '@navikt/fp-utils';
 
 import { QuestionConfig, Questions } from '../../../formik-wrappers';
 import { PeriodeUtsettelseFormData, PeriodeUtsettelseFormField } from './periodeUtsettelseFormConfig';
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 export interface PeriodeUtsettelseFormConfigPayload {
     values: PeriodeUtsettelseFormData;

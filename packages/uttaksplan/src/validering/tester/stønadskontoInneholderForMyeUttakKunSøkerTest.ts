@@ -7,11 +7,11 @@ import {
     PeriodeInfoType,
     StønadskontoType,
     Søknadsinfo,
-    getVarighetString,
     isInfoPeriodeAnnenPart,
     isUttaksperiode,
 } from '@navikt/fp-common';
 
+import { getVarighetString } from '../../components/periodeliste-item-header/PeriodelisteItemHeader';
 import { getStønadskontoNavn } from '../../utils/stønadskontoerUtils';
 import { getUttaksstatus } from '../../utils/uttaksstatus';
 import { RegelTest, RegelTestresultat, RegelTestresultatInfo } from '../utils/types/regelTypes';

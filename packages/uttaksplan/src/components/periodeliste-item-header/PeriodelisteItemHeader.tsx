@@ -14,17 +14,14 @@ import {
     Periodetype,
     Situasjon,
     StønadskontoType,
-    getUkerOgDagerFromDager,
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
     isUtsettelseAnnenPart,
     isUttakAnnenPart,
-    måned,
-    måned3bokstaver,
-    år,
 } from '@navikt/fp-common';
 import { Tidsperioden, bemUtils, getValidTidsperiode } from '@navikt/fp-utils';
 
 import UttaksplanAdvarselIkon from '../../assets/UttaksplanAdvarselIkon';
+import { måned, måned3bokstaver, år } from '../../utils/dateUtils';
 import { getForelderNavn, getPeriodeTittel } from '../../utils/periodeUtils';
 import { getIkonForVeilederMelding } from '../../validering/veilederInfo/components/VeilederMelding';
 import { VeilederMessage } from '../../validering/veilederInfo/types';
@@ -121,6 +118,14 @@ export const getPeriodeIkon = (
 };
 
 type VarighetFormat = 'full' | 'normal';
+
+export const getUkerOgDagerFromDager = (dager: number): { uker: number; dager: number } => {
+    const uker = Math.floor(dager / 5);
+    return {
+        dager: dager - uker * 5,
+        uker,
+    };
+};
 
 export const getVarighetString = (antallDager: number, intl: IntlShape, format: VarighetFormat = 'full'): string => {
     const { uker, dager } = getUkerOgDagerFromDager(Math.abs(antallDager));
