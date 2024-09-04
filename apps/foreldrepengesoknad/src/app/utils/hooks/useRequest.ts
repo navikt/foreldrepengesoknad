@@ -29,7 +29,7 @@ export const useGetRequest = <T>(url: string, options: Options = DEFAULT_OPTIONS
             axiosInstance
                 .get(url, options.config)
                 .then((res) => {
-                    res.data === '' ? setData(undefined) : setData(res.data);
+                    setData(res.data === '' ? undefined : res.data);
                     setRequestStatus(RequestStatus.FINISHED);
                 })
                 .catch((err) => {
@@ -56,7 +56,7 @@ export const usePostRequest = <T>(url: string, body: any, options: Options = DEF
             axiosInstance
                 .post(url, body, options.config)
                 .then((res) => {
-                    res.data === '' ? setData(undefined) : setData(res.data);
+                    setData(res.data === '' ? undefined : res.data);
                     setRequestStatus(RequestStatus.FINISHED);
                 })
                 .catch((err) => {

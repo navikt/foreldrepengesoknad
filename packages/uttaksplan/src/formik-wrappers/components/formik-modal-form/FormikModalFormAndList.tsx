@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable  */
 import { FastField, Field, FieldProps } from 'formik';
 import React from 'react';
 

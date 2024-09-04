@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable */
 import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
 import { v4 as uuid } from 'uuid';

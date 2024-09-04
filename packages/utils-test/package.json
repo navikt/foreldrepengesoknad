@@ -10,10 +10,10 @@
         "prettier": "prettier --write src"
     },
     "dependencies": {
-        "@storybook/react-vite": "8.1.11",
+        "@storybook/react-vite": "8.2.9",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
-        "react-hook-form": "7.52.1",
+        "react-hook-form": "7.53.0",
         "react-intl": "^6.6.8"
     },
     "devDependencies": {
@@ -26,7 +26,7 @@
         "@vitejs/plugin-react": "^4.3.1",
         "tsconfig": "workspace:*",
         "typescript": "^5.5.4",
-        "vite": "^5.3.5",
+        "vite": "^5.4.3",
         "vite-plugin-checker": "^0.7.2",
         "vitest": "^2.0.5"
     },

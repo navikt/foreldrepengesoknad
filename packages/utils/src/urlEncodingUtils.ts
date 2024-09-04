@@ -23,6 +23,7 @@ function isWellFormed(str: string) {
         try {
             encodeURIComponent(str);
             return true;
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             return false;
         }
