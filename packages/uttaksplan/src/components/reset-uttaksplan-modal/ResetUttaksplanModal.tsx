@@ -4,9 +4,9 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { bemUtils } from '@navikt/fp-utils';
 
 import Block from '../../common/block/Block';
+import bemUtils from '../../utils/bemUtils';
 import './resetUttaksplanModal.less';
 
 interface Props {

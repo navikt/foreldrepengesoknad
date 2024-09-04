@@ -2,8 +2,7 @@ import { Children } from 'react';
 
 import { Heading } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
-
+import bemUtils from '../../utils/bemUtils';
 import { guid } from '../../utils/guid';
 import './innholdMedIllustrasjon.less';
 

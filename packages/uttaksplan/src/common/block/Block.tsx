@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { bemUtils } from '@navikt/fp-utils';
-
+import bemUtils from '../../utils/bemUtils';
 import './block.less';
 
 type BlockMargin = 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl' | 'none';

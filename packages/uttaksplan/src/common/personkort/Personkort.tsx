@@ -2,8 +2,7 @@ import * as React from 'react';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
-
+import bemUtils from '../../utils/bemUtils';
 import './personkort.less';
 
 interface Props {

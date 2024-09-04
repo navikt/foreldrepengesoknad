@@ -1,5 +1,4 @@
-import { bemUtils } from '@navikt/fp-utils';
-
+import bemUtils from '../../utils/bemUtils';
 import StepperKnapp from './StepperKnapp';
 import './numberStepper.less';
 

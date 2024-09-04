@@ -1,5 +1,4 @@
-import { bemUtils } from '@navikt/fp-utils';
-
+import bemUtils from '../../utils/bemUtils';
 import Sirkelmaske from '../sirkelmaske/Sirkelmaske';
 import AntallUkerKalenderIkon from './antallUkerKalenderIkon/AntallUkerKalenderIkon';
 import './ukerSirkel.less';

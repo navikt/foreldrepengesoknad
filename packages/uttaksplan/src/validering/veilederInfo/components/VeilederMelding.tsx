@@ -2,9 +2,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { Alert, Label } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
-
 import { UttaksplanIkonKeys } from '../../../components/uttaksplan-ikon/UttaksplanIkon';
+import bemUtils from '../../../utils/bemUtils';
 import { VeilederMessage } from '../types';
 import './veilederMelding.less';
 

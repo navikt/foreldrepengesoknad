@@ -5,9 +5,9 @@ import { BodyShort } from '@navikt/ds-react';
 
 import { NavnPåForeldre, Situasjon, StønadskontoType } from '@navikt/fp-common';
 import { Stønadskonto } from '@navikt/fp-types';
-import { bemUtils } from '@navikt/fp-utils';
 
 import { getVarighetString } from '../../../components/periodeliste-item-header/PeriodelisteItemHeader';
+import bemUtils from '../../../utils/bemUtils';
 import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
 import StønadskontoIkon from '../../stønadskonto-ikon/StønadskontoIkon';
 import './kontostatus.less';

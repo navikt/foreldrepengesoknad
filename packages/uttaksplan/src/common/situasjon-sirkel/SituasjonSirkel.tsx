@@ -1,6 +1,6 @@
 import { Forelder, ForeldreparSituasjon } from '@navikt/fp-common';
-import { bemUtils } from '@navikt/fp-utils';
 
+import bemUtils from '../../utils/bemUtils';
 import { getAntallForeldreISituasjon, getSituasjonForelderSvg } from '../../utils/foreldreparSituasjonUtils';
 import Foreldrepar from '../foreldrepar/Foreldrepar';
 import Sirkelmaske from '../sirkelmaske/Sirkelmaske';

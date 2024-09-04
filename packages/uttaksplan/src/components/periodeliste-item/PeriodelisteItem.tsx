@@ -19,9 +19,9 @@ import {
     isSlettbarAvslåttPeriode,
 } from '@navikt/fp-common';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { bemUtils } from '@navikt/fp-utils';
 
 import Block from '../../common/block/Block';
+import bemUtils from '../../utils/bemUtils';
 import VeilederMeldinger from '../../validering/veilederInfo/VeilederMeldinger';
 import { VeilederMessage } from '../../validering/veilederInfo/types';
 import PeriodelisteItemHeader from '../periodeliste-item-header/PeriodelisteItemHeader';

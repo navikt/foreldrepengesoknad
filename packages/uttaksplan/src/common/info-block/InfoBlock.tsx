@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import { bemUtils } from '@navikt/fp-utils';
-
+import bemUtils from '../../utils/bemUtils';
 import './infoBlock.less';
 
 export interface InfoBlockProps {
