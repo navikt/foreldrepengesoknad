@@ -30,7 +30,6 @@ import {
     getKanHaSvpFremTilTreUkerFørTermin,
     getSisteDagForSvangerskapspenger,
 } from 'app/utils/dateUtils';
-import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
 
 import Bedriftsbanner from '../Bedriftsbanner';
 import DelvisTilretteleggingPanel from './DelvisTilretteleggingPanel';
@@ -231,8 +230,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                             <TextArea
                                 name="risikofaktorer"
                                 label={risikofaktorerLabel}
-                                minLength={TEXT_INPUT_MIN_LENGTH}
-                                maxLength={TEXT_INPUT_MAX_LENGTH}
                                 validate={[
                                     validateRisikofaktorer(intl, typeArbeid),
                                     hasLegalChars((ugyldigeTegn: string) =>
@@ -251,8 +248,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                                 <TextArea
                                     name="tilretteleggingstiltak"
                                     label={labelTiltak}
-                                    minLength={TEXT_INPUT_MIN_LENGTH}
-                                    maxLength={TEXT_INPUT_MAX_LENGTH}
                                     validate={[
                                         validateTilretteleggingstiltak(intl),
                                         hasLegalChars((ugyldigeTegn: string) =>

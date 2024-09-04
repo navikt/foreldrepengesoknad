@@ -77,11 +77,13 @@ const arbeidsforhold = [
 interface Props {
     mellomlagreSøknadOgNaviger?: () => Promise<void>;
     gåTilNesteSide?: (action: Action) => void;
+    type: Arbeidsforholdstype;
 }
 
 const Template: StoryFn<Props> = ({
     mellomlagreSøknadOgNaviger = promiseAction(),
     gåTilNesteSide = action('button-click'),
+    type,
 }) => {
     initAmplitude();
     return (
@@ -94,7 +96,7 @@ const Template: StoryFn<Props> = ({
                             id: '990322244',
                             arbeidsforhold: {
                                 arbeidsgiverId: '990322244',
-                                type: Arbeidsforholdstype.VIRKSOMHET,
+                                type: type,
                                 navn: 'Omsorgspartner Vestfold AS',
                                 stillinger: [],
                                 startdato: '2023-01-01',
@@ -136,3 +138,11 @@ const Template: StoryFn<Props> = ({
     );
 };
 export const Default = Template.bind({});
+Default.args = {
+    type: Arbeidsforholdstype.VIRKSOMHET,
+};
+
+export const Frilanser = Template.bind({});
+Frilanser.args = {
+    type: Arbeidsforholdstype.FRILANSER,
+};
