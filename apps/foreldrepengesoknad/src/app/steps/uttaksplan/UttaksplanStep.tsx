@@ -40,7 +40,6 @@ import { ContextDataType, useContextComplete, useContextGetData, useContextSaveD
 import SøknadRoutes from 'app/appData/routes';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import Block from 'app/pages/block/Block';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import InfoOmNesteBarn from 'app/steps/uttaksplan/components/info-om-neste-barn/InfoOmNesteBarn';
 import { RequestStatus } from 'app/types/RequestState';
@@ -72,6 +71,7 @@ import {
     getKanPerioderRundtFødselAutomatiskJusteres,
     getKanSøkersituasjonAutomatiskJustereRundtFødsel,
 } from './automatisk-justering-form/automatiskJusteringUtils';
+import Block from './block/Block';
 import StepButtonWrapper from './components/StepButtonWrapper';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { lagUttaksplanForslag } from './lagUttaksplanForslag';

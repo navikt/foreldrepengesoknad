@@ -2,8 +2,8 @@ import { Children } from 'react';
 
 import { Heading } from '@navikt/ds-react';
 
-import bemUtils from '../../utils/bemUtils';
 import { guid } from '../../utils/guid';
+import planBemUtils from '../../utils/planBemUtils';
 import './innholdMedIllustrasjon.less';
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const InnholdMedIllustrasjon: React.FunctionComponent<Props> = ({ tittel, illustrasjoner, infoboks, children }) => {
-    const bem = bemUtils('innholdMedIllustrasjon');
+    const bem = planBemUtils('innholdMedIllustrasjon');
 
     return (
         <div

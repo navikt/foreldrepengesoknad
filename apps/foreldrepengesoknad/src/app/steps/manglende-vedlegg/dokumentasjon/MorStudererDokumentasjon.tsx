@@ -7,7 +7,6 @@ import { NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
-import Block from 'app/pages/block/Block';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 
 import UttakUploader from '../attachment-uploaders/UttakUploader';
@@ -38,54 +37,52 @@ const MorStudererDokumentasjon: React.FunctionComponent<Props> = ({
     }
 
     return (
-        <Block padBottom="xl">
-            <UttakUploader
-                attachments={attachments}
-                updateAttachments={updateAttachments(Skjemanummer.DOK_UTDANNING_MOR)}
-                perioder={perioder}
-                navnPåForeldre={navnPåForeldre}
-                familiehendelsesdato={familiehendelsesdato}
-                termindato={termindato}
-                situasjon={situasjon}
-                skjemanummer={Skjemanummer.DOK_UTDANNING_MOR}
-                labelText={intl.formatMessage({ id: 'manglendeVedlegg.studerer.label' })}
-                description={
-                    <Block padBottom="m">
-                        <BodyShort>
-                            <FormattedMessage
-                                id="manglendeVedlegg.studerer.description.tittel"
-                                values={{ navn: navnPåForeldre.mor }}
-                            />
-                        </BodyShort>
-                        <ul style={{ margin: '0', padding: '0.5rem 2.5rem' }}>
-                            <VStack gap="2">
-                                <li>
-                                    <BodyShort>
-                                        <FormattedMessage id="manglendeVedlegg.studerer.description.punkt1" />
-                                    </BodyShort>
-                                </li>
-                                <li>
-                                    <BodyShort>
-                                        <FormattedMessage id="manglendeVedlegg.studerer.description.punkt2" />
-                                    </BodyShort>
-                                </li>
-                                <li>
-                                    <BodyShort>
-                                        <FormattedMessage id="manglendeVedlegg.studerer.description.punkt3" />
-                                    </BodyShort>
-                                </li>
-                                <li>
-                                    <BodyShort>
-                                        <FormattedMessage id="manglendeVedlegg.studerer.description.punkt4" />
-                                    </BodyShort>
-                                </li>
-                            </VStack>
-                        </ul>
-                    </Block>
-                }
-                attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
-            />
-        </Block>
+        <UttakUploader
+            attachments={attachments}
+            updateAttachments={updateAttachments(Skjemanummer.DOK_UTDANNING_MOR)}
+            perioder={perioder}
+            navnPåForeldre={navnPåForeldre}
+            familiehendelsesdato={familiehendelsesdato}
+            termindato={termindato}
+            situasjon={situasjon}
+            skjemanummer={Skjemanummer.DOK_UTDANNING_MOR}
+            labelText={intl.formatMessage({ id: 'manglendeVedlegg.studerer.label' })}
+            description={
+                <>
+                    <BodyShort>
+                        <FormattedMessage
+                            id="manglendeVedlegg.studerer.description.tittel"
+                            values={{ navn: navnPåForeldre.mor }}
+                        />
+                    </BodyShort>
+                    <ul style={{ margin: '0', padding: '0.5rem 2.5rem' }}>
+                        <VStack gap="2">
+                            <li>
+                                <BodyShort>
+                                    <FormattedMessage id="manglendeVedlegg.studerer.description.punkt1" />
+                                </BodyShort>
+                            </li>
+                            <li>
+                                <BodyShort>
+                                    <FormattedMessage id="manglendeVedlegg.studerer.description.punkt2" />
+                                </BodyShort>
+                            </li>
+                            <li>
+                                <BodyShort>
+                                    <FormattedMessage id="manglendeVedlegg.studerer.description.punkt3" />
+                                </BodyShort>
+                            </li>
+                            <li>
+                                <BodyShort>
+                                    <FormattedMessage id="manglendeVedlegg.studerer.description.punkt4" />
+                                </BodyShort>
+                            </li>
+                        </VStack>
+                    </ul>
+                </>
+            }
+            attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
+        />
     );
 };
 

@@ -5,7 +5,6 @@ import { Barn, isUfødtBarn } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Arbeidsforhold, Attachment, Søkerrolle } from '@navikt/fp-types';
 
-import Block from 'app/pages/block/Block';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
@@ -47,21 +46,19 @@ const TerminbekreftelseDokumentasjon: React.FunctionComponent<Props> = ({
     }
 
     return (
-        <Block padBottom="xl">
-            <VedleggUploader
-                attachments={attachments}
-                updateAttachments={updateAttachments(Skjemanummer.TERMINBEKREFTELSE)}
-                skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
-                labelText={intl.formatMessage({ id: 'manglendeVedlegg.terminbekreftelse.tittel' })}
-                description={intl.formatMessage({
-                    id: !erFarEllerMedmor
-                        ? 'manglendeVedlegg.terminbekreftelse.description'
-                        : 'manglendeVedlegg.terminbekreftelse.description.farMedmor',
-                })}
-                attachmentType={AttachmentType.TERMINBEKREFTELSE}
-                metadataType={AttachmentMetadataType.BARN}
-            />
-        </Block>
+        <VedleggUploader
+            attachments={attachments}
+            updateAttachments={updateAttachments(Skjemanummer.TERMINBEKREFTELSE)}
+            skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
+            labelText={intl.formatMessage({ id: 'manglendeVedlegg.terminbekreftelse.tittel' })}
+            description={intl.formatMessage({
+                id: !erFarEllerMedmor
+                    ? 'manglendeVedlegg.terminbekreftelse.description'
+                    : 'manglendeVedlegg.terminbekreftelse.description.farMedmor',
+            })}
+            attachmentType={AttachmentType.TERMINBEKREFTELSE}
+            metadataType={AttachmentMetadataType.BARN}
+        />
     );
 };
 

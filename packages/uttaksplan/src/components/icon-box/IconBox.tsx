@@ -2,7 +2,7 @@ import classnames from 'classnames';
 
 import { PeriodeColor } from '@navikt/fp-constants';
 
-import bemUtils from '../../utils/bemUtils';
+import planBemUtils from '../../utils/planBemUtils';
 import './iconBox.less';
 
 export interface Props {
@@ -12,7 +12,7 @@ export interface Props {
 }
 
 const IconBox: React.FunctionComponent<Props> = ({ children, color, stripes }) => {
-    const bem = bemUtils('iconBox');
+    const bem = planBemUtils('iconBox');
 
     return (
         <div className={classnames(bem.block, bem.modifier(`${color}${stripes ? '--striped' : ''}`))}>{children}</div>

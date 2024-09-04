@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import bemUtils from '../../utils/bemUtils';
+import planBemUtils from '../../utils/planBemUtils';
 import './personkort.less';
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const Personkort: React.FunctionComponent<Props> = ({ tittel, children, ikon, invertert, textValign = 'top' }) => {
-    const bem = bemUtils('personkort');
+    const bem = planBemUtils('personkort');
 
     return (
         <div

@@ -18,11 +18,12 @@ import {
     isUtsettelseAnnenPart,
     isUttakAnnenPart,
 } from '@navikt/fp-common';
-import { Tidsperioden, bemUtils, getValidTidsperiode } from '@navikt/fp-utils';
+import { Tidsperioden, getValidTidsperiode } from '@navikt/fp-utils';
 
 import UttaksplanAdvarselIkon from '../../assets/UttaksplanAdvarselIkon';
 import { måned, måned3bokstaver, år } from '../../utils/dateUtils';
 import { getForelderNavn, getPeriodeTittel } from '../../utils/periodeUtils';
+import planBemUtils from '../../utils/planBemUtils';
 import { getIkonForVeilederMelding } from '../../validering/veilederInfo/components/VeilederMelding';
 import { VeilederMessage } from '../../validering/veilederInfo/types';
 import StønadskontoIkon from '../stønadskonto-ikon/StønadskontoIkon';
@@ -42,7 +43,7 @@ interface Props {
     erAleneOmOmsorg: boolean;
 }
 
-const bem = bemUtils('periodelisteItemHeader');
+const bem = planBemUtils('periodelisteItemHeader');
 
 export const getPeriodeIkon = (
     periode: Periode,

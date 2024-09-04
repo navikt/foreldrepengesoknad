@@ -4,9 +4,10 @@ import { BodyShort, Label, Link } from '@navikt/ds-react';
 
 import { TidsperiodeDate } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { bemUtils, formatDate } from '@navikt/fp-utils';
+import { formatDate } from '@navikt/fp-utils';
 
 import Block from '../../common/block/Block';
+import planBemUtils from '../../utils/planBemUtils';
 import './tidsperiodeDisplay.less';
 
 interface Props {
@@ -14,7 +15,7 @@ interface Props {
     toggleVisTidsperiode: () => void;
 }
 
-const bem = bemUtils('tidsperiodeDisplay');
+const bem = planBemUtils('tidsperiodeDisplay');
 
 const formaterTidsperiodeDato = (dato: Date | undefined) => {
     if (dato) {

@@ -5,7 +5,7 @@ import { v4 as uuid } from 'uuid';
 
 import { Alert, Button, Modal } from '@navikt/ds-react';
 
-import bemUtils from './../../../utils/bemUtils';
+import planBemUtils from '../../../../utils/planBemUtils';
 import ConfirmationDialog from './../../helpers/confirmation-dialog/ConfirmationDialog';
 import SkjemagruppeQuestion from './../../helpers/skjemagruppe-question/SkjemagruppeQuestion';
 import { FormikModalFormWidths, ModalFormAndListLabels, ModalFormAndListListItemBase } from './../types';
@@ -48,7 +48,7 @@ interface PrivateProps<ItemType> {
 
 type Props<ItemType extends {}> = ModalFormAndListProps<ItemType> & PrivateProps<ItemType>;
 
-const bem = bemUtils('formikModalForm').child('modal');
+const bem = planBemUtils('formikModalForm').child('modal');
 
 interface ModalState<ItemType> {
     isVisible: boolean;

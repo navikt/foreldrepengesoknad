@@ -11,7 +11,7 @@ import {
     Situasjon,
     Utsettelsesperiode,
 } from '@navikt/fp-common';
-import { Tidsperioden, bemUtils, isValidTidsperiode } from '@navikt/fp-utils';
+import { Tidsperioden, isValidTidsperiode } from '@navikt/fp-utils';
 
 import ActionLink from '../../../common/action-link/ActionLink';
 import Block from '../../../common/block/Block';
@@ -19,6 +19,7 @@ import { ISOStringToDate, førsteOktober2021ReglerGjelder } from '../../../utils
 import { getUttaksdagerSomErFridager } from '../../../utils/getUttaksdagerSomErFridager';
 import { guid } from '../../../utils/guid';
 import { getIsValidStateForPerioder, getSlettPeriodeTekst } from '../../../utils/periodeUtils';
+import planBemUtils from '../../../utils/planBemUtils';
 import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
 import UtsettelseEndreTidsperiodeSpørsmål from '../../utsettelse-tidsperiode-spørsmål/UtsettelseTidsperiodeSpørsmål';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
@@ -85,7 +86,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     const [periodeIsValid, setPeriodeIsValid] = useState(true);
     const { id } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
-    const bem = bemUtils('periodeUtsettelseForm');
+    const bem = planBemUtils('periodeUtsettelseForm');
 
     // Utsettelseårsaker som gjelder for søknader sendt før 1. oktober 2021
     const skalViseGamleUtsettelseÅrsaker = førsteOktober2021ReglerGjelder(familiehendelsesdato) === false;

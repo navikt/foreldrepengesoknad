@@ -7,8 +7,8 @@ import { InfoPeriode, OpprinneligSøkt, isAvslåttPeriode } from '@navikt/fp-com
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 import ActionLink from '../../common/action-link/ActionLink';
-import bemUtils from '../../utils/bemUtils';
 import { getSlettPeriodeTekst } from '../../utils/periodeUtils';
+import planBemUtils from '../../utils/planBemUtils';
 import './slettbarAvslåttPeriode.less';
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const SlettbarAvslåttPeriode: FunctionComponent<Props> = ({ periode, handleDeletePeriode }) => {
-    const bem = bemUtils('slettbarAvslåttPeriode');
+    const bem = planBemUtils('slettbarAvslåttPeriode');
     const onSlettPeriode = () => {
         logAmplitudeEvent('applikasjon-hendelse', {
             app: 'foreldrepengesoknad',

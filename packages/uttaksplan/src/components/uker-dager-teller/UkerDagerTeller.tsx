@@ -2,8 +2,8 @@ import { Label } from '@navikt/ds-react';
 
 import Block from '../../common/block/Block';
 import Fieldset from '../../common/fieldset/Fieldset';
-import bemUtils from '../../utils/bemUtils';
 import { guid } from '../../utils/guid';
+import planBemUtils from '../../utils/planBemUtils';
 import NumberStepper, { Props as NumberStepperProps } from './../number-stepper/NumberStepper';
 import './ukerDagerTeller.less';
 
@@ -15,7 +15,7 @@ export interface Props {
 }
 
 const UkerDagerTeller: React.FunctionComponent<Props> = ({ ukeStepper, dagStepper, ukeLegend, dagLegend }) => {
-    const bem = bemUtils('ukerDagerTeller');
+    const bem = planBemUtils('ukerDagerTeller');
     const ukeLegendId = guid();
     const dagLegendId = guid();
     return (

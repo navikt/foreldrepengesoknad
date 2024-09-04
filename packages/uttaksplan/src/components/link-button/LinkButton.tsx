@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { ButtonHTMLAttributes, FunctionComponent, ReactNode } from 'react';
 
-import bemUtils from '../../utils/bemUtils';
+import planBemUtils from '../../utils/planBemUtils';
 import './linkButton.less';
 
 export interface LinkButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -10,7 +10,7 @@ export interface LinkButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>
 }
 
 const LinkButton: FunctionComponent<LinkButtonProps> = ({ color, className, ...rest }) => {
-    const bem = bemUtils('linkButton');
+    const bem = planBemUtils('linkButton');
 
     return (
         <button

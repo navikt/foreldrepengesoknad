@@ -4,8 +4,8 @@ import { Accept, FileRejection, useDropzone } from 'react-dropzone';
 
 import { BodyShort } from '@navikt/ds-react';
 
+import planBemUtils from '../../../../utils/planBemUtils';
 import { FormError } from './../../../types';
-import bemUtils from './../../../utils/bemUtils';
 import SkjemagruppeQuestion from './../../helpers/skjemagruppe-question/SkjemagruppeQuestion';
 import './fileDropInput.scss';
 
@@ -24,7 +24,7 @@ interface Props {
     onClick?: () => void;
 }
 
-const bem = bemUtils('fileDropInput');
+const bem = planBemUtils('fileDropInput');
 
 const FileDropInput: React.FunctionComponent<Props> = (props) => {
     const { id, name, buttonLabel, error, description, multiple, legend, rejectLabel, acceptLabel, accept } = props;

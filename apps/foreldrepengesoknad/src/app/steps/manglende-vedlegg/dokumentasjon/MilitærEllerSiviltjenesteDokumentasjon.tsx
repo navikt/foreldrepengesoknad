@@ -5,7 +5,6 @@ import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { Attachment } from '@navikt/fp-types';
 
-import Block from 'app/pages/block/Block';
 import { AndreInntektskilder, AnnenInntektType } from 'app/types/AndreInntektskilder';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 
@@ -37,24 +36,22 @@ const MilitærEllerSiviltjenesteDokumentasjon: React.FunctionComponent<Props> = 
     const perioder = andreInntektskilder.filter((i) => i.type === AnnenInntektType.MILITÆRTJENESTE);
 
     return (
-        <Block padBottom="xl">
-            <VedleggUploader
-                attachments={attachments}
-                updateAttachments={updateAttachments(Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE)}
-                skjemanummer={Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE}
-                labelText={intl.formatMessage(
-                    { id: 'manglendeVedlegg.militær.tittel' },
-                    {
-                        perioder: formaterPerioderForVisning(perioder, intl),
-                        antallPerioder: perioder.length,
-                    },
-                )}
-                description={intl.formatMessage({ id: 'manglendeVedlegg.militær.description' })}
-                attachmentType={AttachmentType.ANNEN_INNTEKT}
-                metadataType={AttachmentMetadataType.OPPTJENING}
-                perioder={perioder}
-            />
-        </Block>
+        <VedleggUploader
+            attachments={attachments}
+            updateAttachments={updateAttachments(Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE)}
+            skjemanummer={Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE}
+            labelText={intl.formatMessage(
+                { id: 'manglendeVedlegg.militær.tittel' },
+                {
+                    perioder: formaterPerioderForVisning(perioder, intl),
+                    antallPerioder: perioder.length,
+                },
+            )}
+            description={intl.formatMessage({ id: 'manglendeVedlegg.militær.description' })}
+            attachmentType={AttachmentType.ANNEN_INNTEKT}
+            metadataType={AttachmentMetadataType.OPPTJENING}
+            perioder={perioder}
+        />
     );
 };
 

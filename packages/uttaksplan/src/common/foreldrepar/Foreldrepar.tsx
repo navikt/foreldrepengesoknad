@@ -1,6 +1,6 @@
 import { ForeldreparForelder, ForeldreparIllustrasjonsvariant } from '@navikt/fp-common';
 
-import bemUtils from '../../utils/bemUtils';
+import planBemUtils from '../../utils/planBemUtils';
 import './foreldrepar.less';
 import { getForeldreparIkon } from './foreldreparUtils';
 
@@ -11,7 +11,7 @@ interface Props {
     kompakt?: boolean;
 }
 
-const bem = bemUtils('foreldrepar');
+const bem = planBemUtils('foreldrepar');
 
 const Foreldrepar: React.FunctionComponent<Props> = ({ forelder1, forelder2, variant, kompakt }) => {
     return (

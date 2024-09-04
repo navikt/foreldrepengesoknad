@@ -1,5 +1,5 @@
 import KalenderBakgrunnIkon from '../../../common/kalender-bakgrunn-ikon/KalenderBakgrunnIkon';
-import bemUtils from '../../../utils/bemUtils';
+import planBemUtils from '../../../utils/planBemUtils';
 import './antallUkerKalenderIkon.less';
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 }
 
 const AntallUkerKalenderIkon: React.FunctionComponent<Props> = ({ uker }) => {
-    const bem = bemUtils('antallUkerKalenderIkon');
+    const bem = planBemUtils('antallUkerKalenderIkon');
     return (
         <div className={bem.classNames(bem.block, bem.modifierConditional('over99', uker > 99))}>
             <div className={bem.element('ikon')}>

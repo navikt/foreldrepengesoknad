@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Button, Modal, Panel } from '@navikt/ds-react';
 
-import bemUtils from './../../../utils/bemUtils';
+import planBemUtils from '../../../../utils/planBemUtils';
 import SkjemagruppeQuestion from './../../helpers/skjemagruppe-question/SkjemagruppeQuestion';
 import { FormikModalFormWidths, ModalFormAndInfoLabels } from './../types';
 import './modalFormAndInfo.scss';
@@ -40,7 +40,7 @@ interface PrivateProps<DataType> {
 
 type Props<DataType> = ModalFormAndInfoProps<DataType> & PrivateProps<DataType>;
 
-const bem = bemUtils('formikModalForm').child('modal');
+const bem = planBemUtils('formikModalForm').child('modal');
 
 function ModalFormAndInfo<DataType>({
     data,

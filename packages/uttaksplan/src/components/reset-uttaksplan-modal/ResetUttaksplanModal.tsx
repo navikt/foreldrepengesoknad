@@ -6,7 +6,7 @@ import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 import Block from '../../common/block/Block';
-import bemUtils from '../../utils/bemUtils';
+import planBemUtils from '../../utils/planBemUtils';
 import './resetUttaksplanModal.less';
 
 interface Props {
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const ResetUttaksplanModal: FunctionComponent<Props> = ({ isOpen, onClose, handleResetUttaksplanModalBekreft }) => {
-    const bem = bemUtils('resetUttaksplanModal');
+    const bem = planBemUtils('resetUttaksplanModal');
 
     const onBekreft = () => {
         logAmplitudeEvent('applikasjon-hendelse', {

@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import bemUtils from '../../../utils/bemUtils';
+import planBemUtils from '../../../utils/planBemUtils';
 import './tilesList.less';
 
-const bem = bemUtils('tilesList');
+const bem = planBemUtils('tilesList');
 
 const TilesList: React.FunctionComponent<{ columns?: 1 | 2 | 3 | 'flex'; children?: React.ReactNode }> = ({
     columns = 3,

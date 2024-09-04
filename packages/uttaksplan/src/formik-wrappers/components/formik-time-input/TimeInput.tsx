@@ -3,8 +3,8 @@ import React, { RefObject, useState } from 'react';
 
 import { TextField } from '@navikt/ds-react';
 
+import planBemUtils from '../../../utils/planBemUtils';
 import { InputTime, TestProps } from './../../types';
-import bemUtils from './../../utils/bemUtils';
 import { getNumberFromNumberInputValue } from './../../utils/numberInputUtils';
 import { hasValue } from './../../validation/validationUtils';
 import './timeInput.scss';
@@ -47,7 +47,7 @@ interface TimeInputProps extends TimeInputLayoutProps, TestProps, TimeInputRefPr
     onChange: TimeInputChangeFunc;
 }
 
-const bem = bemUtils('timeInput');
+const bem = planBemUtils('timeInput');
 
 export const isValidTime = (time: Partial<InputTime>): time is InputTime => {
     const hours = getNumberFromNumberInputValue(time.hours || '0');

@@ -22,7 +22,7 @@ import ActionLink from '../../common/action-link/ActionLink';
 import Block from '../../common/block/Block';
 import InfoBlock from '../../common/info-block/InfoBlock';
 import { Periodene } from '../../utils/Periodene';
-import bemUtils from '../../utils/bemUtils';
+import planBemUtils from '../../utils/planBemUtils';
 import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
 import NyPeriode from '../uttaks-forms/ny-periode/NyPeriode';
 import Periodeliste from './../periodeliste/Periodeliste';
@@ -84,7 +84,7 @@ const Planlegger: FunctionComponent<Props> = ({
     perioderErGyldige,
 }) => {
     const intl = useIntl();
-    const bem = bemUtils('planlegger');
+    const bem = planBemUtils('planlegger');
     const [nyPeriodeFormIsVisible, setNyPeriodeFormIsVisible] = useState(false);
     const [isUtsettelse, setIsUtsettelse] = useState(false);
     const nesteLedigeUttaksdato = Periodene(uttaksplan).getFørsteUttaksdagEtterSistePeriode();

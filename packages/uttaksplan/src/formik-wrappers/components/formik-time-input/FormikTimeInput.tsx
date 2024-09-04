@@ -4,8 +4,8 @@ import React, { useRef } from 'react';
 
 import { TextFieldProps } from '@navikt/ds-react';
 
+import planBemUtils from '../../../utils/planBemUtils';
 import { InputTime, TestProps, TypedFormInputValidationProps, UseFastFieldProps } from './../../types';
-import bemUtils from './../../utils/bemUtils';
 import { focusFirstElement } from './../../utils/focusUtils';
 import { getErrorPropForFormikInput } from './../../utils/typedFormErrorUtils';
 import SkjemagruppeQuestion from './../helpers/skjemagruppe-question/SkjemagruppeQuestion';
@@ -26,7 +26,7 @@ export type FormikTimeInputProps<FieldName, ErrorType> = OwnProps<FieldName> &
     TimeInputRefProps &
     TestProps;
 
-const bem = bemUtils('formikTimeInput');
+const bem = planBemUtils('formikTimeInput');
 
 export const Div = (props: any) => <div {...props} />;
 

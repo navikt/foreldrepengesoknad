@@ -12,7 +12,7 @@ import {
     Søkerrolle,
 } from '@navikt/fp-common';
 import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { bemUtils, capitalizeFirstLetter } from '@navikt/fp-utils';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import ForelderIkon from '../../common/foreldrepar/ForelderIkon';
 import Personkort from '../../common/personkort/Personkort';
@@ -21,12 +21,13 @@ import { BrukteDager, getBrukteDager } from '../../utils/brukteDagerUtils';
 import { getSituasjonForelderSvg } from '../../utils/foreldreparSituasjonUtils';
 import { guid } from '../../utils/guid';
 import isFarEllerMedmor from '../../utils/isFarEllerMedmor';
+import planBemUtils from '../../utils/planBemUtils';
 import { Uttaksstatus, getUttaksstatus } from '../../utils/uttaksstatus';
 import Kontostatus from './konto-status/Kontostatus';
 import './oversiktKvoter.less';
 import TilesList from './tilesList/TilesList';
 
-const bem = bemUtils('oversiktKvoter');
+const bem = planBemUtils('oversiktKvoter');
 
 const filtrerBortAnnenPartsKonto = (uttakskontoer: Stønadskonto[], erFarEllerMedmor: boolean): Stønadskonto[] => {
     return erFarEllerMedmor

@@ -4,12 +4,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort } from '@navikt/ds-react';
 
 import { Periode, Periodetype } from '@navikt/fp-common';
-import { Tidsperioden, bemUtils } from '@navikt/fp-utils';
+import { Tidsperioden } from '@navikt/fp-utils';
 
 import ActionLink from '../../common/action-link/ActionLink';
 import Block from '../../common/block/Block';
 import { førsteOktober2021ReglerGjelder } from '../../utils/dateUtils';
 import { getUttaksdagerSomErFridager } from '../../utils/getUttaksdagerSomErFridager';
+import planBemUtils from '../../utils/planBemUtils';
 import './periodeHull.less';
 
 interface Props {
@@ -32,7 +33,7 @@ const PeriodeHull: FunctionComponent<Props> = ({
     handleUpdatePeriode,
 }) => {
     const intl = useIntl();
-    const bem = bemUtils('periodeHull');
+    const bem = planBemUtils('periodeHull');
 
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
     const antallHelligdager = getUttaksdagerSomErFridager(periode.tidsperiode).length;

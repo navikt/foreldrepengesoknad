@@ -1,12 +1,10 @@
 import { FileIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
 
-import { BodyShort, Link } from '@navikt/ds-react';
+import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 import { InnsendingsType } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
-
-import Block from 'app/pages/block/Block';
 
 interface Props {
     vedlegg: Attachment[];
@@ -20,20 +18,18 @@ const VedleggListe: FunctionComponent<Props> = ({ vedlegg }) => {
     }
 
     return (
-        <>
+        <VStack gap="2">
             {vedleggUtenSendSenere.map((attachment) => {
                 return (
-                    <Block padBottom="l" key={attachment.id}>
-                        <BodyShort>
-                            <Link href={attachment.url} target="_blank">
-                                <FileIcon aria-hidden={true} fontSize="1.5rem" />
-                                {attachment.filename}
-                            </Link>
-                        </BodyShort>
-                    </Block>
+                    <BodyShort key={attachment.id}>
+                        <Link href={attachment.url} target="_blank">
+                            <FileIcon aria-hidden={true} fontSize="1.5rem" />
+                            {attachment.filename}
+                        </Link>
+                    </BodyShort>
                 );
             })}
-        </>
+        </VStack>
     );
 };
 

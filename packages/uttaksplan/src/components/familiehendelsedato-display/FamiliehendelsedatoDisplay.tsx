@@ -4,9 +4,10 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort } from '@navikt/ds-react';
 
 import { Barn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-common';
-import { bemUtils, formaterDatoUtenDag, getFamiliehendelsedato } from '@navikt/fp-utils';
+import { formaterDatoUtenDag, getFamiliehendelsedato } from '@navikt/fp-utils';
 
 import HjerteIkon from '../../assets/HjerteIkon';
+import planBemUtils from '../../utils/planBemUtils';
 import './familiehendelsesdatoDisplay.less';
 
 interface Props {
@@ -43,7 +44,7 @@ export const getFamiliehendelseTekst = (barn: Barn): ReactNode => {
 };
 
 const FamiliehendelsedatoDisplay: FunctionComponent<Props> = ({ barn }) => {
-    const bem = bemUtils('familiehendelsesdatoDisplay');
+    const bem = planBemUtils('familiehendelsesdatoDisplay');
 
     return (
         <div className={bem.block}>

@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { Alert, BodyLong, Heading } from '@navikt/ds-react';
+import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
 import { isUtsettelseBarnInnlagt } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
@@ -14,7 +14,6 @@ import { notEmpty } from '@navikt/fp-validation';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import Block from 'app/pages/block/Block';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
@@ -193,131 +192,134 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             steps={stepConfig}
         >
             <Form formMethods={formMethods} onSubmit={lagre}>
-                <MorInnlagtDokumentasjon
-                    attachments={morInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={familiehendelsesdato}
-                    navnPåForeldre={navnPåForeldre}
-                    perioder={morInnlagtPerioder}
-                    situasjon={søkersituasjon.situasjon}
-                    termindato={termindato}
-                    updateAttachments={updateAttachments}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                />
-                <MorForSykDokumentasjon
-                    attachments={morForSykVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={familiehendelsesdato}
-                    navnPåForeldre={navnPåForeldre}
-                    perioder={morForSykPerioder}
-                    situasjon={søkersituasjon.situasjon}
-                    termindato={termindato}
-                    updateAttachments={updateAttachments}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                />
-                <FarInnlagtDokumentasjon
-                    attachments={farInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={familiehendelsesdato}
-                    navnPåForeldre={navnPåForeldre}
-                    perioder={farInnlagtPerioder}
-                    situasjon={søkersituasjon.situasjon}
-                    termindato={termindato}
-                    updateAttachments={updateAttachments}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                />
-                <FarForSykDokumentasjon
-                    attachments={farForSykvedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={familiehendelsesdato}
-                    navnPåForeldre={navnPåForeldre}
-                    perioder={farForSykPerioder}
-                    situasjon={søkersituasjon.situasjon}
-                    termindato={termindato}
-                    updateAttachments={updateAttachments}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                />
-                <BarnInnlagtDokumentasjon
-                    attachments={barnInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={familiehendelsesdato}
-                    navnPåForeldre={navnPåForeldre}
-                    perioder={barnInnlagtPerioder}
-                    situasjon={søkersituasjon.situasjon}
-                    termindato={termindato}
-                    updateAttachments={updateAttachments}
-                />
-                <MorStudererDokumentasjon
-                    attachments={morStudererVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={familiehendelsesdato}
-                    navnPåForeldre={navnPåForeldre}
-                    perioder={morStudererPerioder}
-                    situasjon={søkersituasjon.situasjon}
-                    termindato={termindato}
-                    updateAttachments={updateAttachments}
-                />
-                <MorJobberDokumentasjon
-                    attachments={morJobberVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={familiehendelsesdato}
-                    navnPåForeldre={navnPåForeldre}
-                    perioder={morJobberPerioder}
-                    situasjon={søkersituasjon.situasjon}
-                    termindato={termindato}
-                    updateAttachments={updateAttachments}
-                />
-                <MorJobberOgStudererDokumentasjon
-                    attachments={morJobberOgStudererVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={familiehendelsesdato}
-                    navnPåForeldre={navnPåForeldre}
-                    perioder={morJobberOgStudererPerioder}
-                    situasjon={søkersituasjon.situasjon}
-                    termindato={termindato}
-                    updateAttachments={updateAttachments}
-                />
-                <MorIntroduksjonsprogrammetDokumentasjon
-                    attachments={morIntroprogramVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={familiehendelsesdato}
-                    navnPåForeldre={navnPåForeldre}
-                    perioder={morIntroPerioder}
-                    situasjon={søkersituasjon.situasjon}
-                    termindato={termindato}
-                    updateAttachments={updateAttachments}
-                />
-                <MorKvalifiseringsprogrammetDokumentasjon
-                    attachments={morKvalprogramVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
-                    familiehendelsesdato={familiehendelsesdato}
-                    navnPåForeldre={navnPåForeldre}
-                    perioder={morKvalPerioder}
-                    situasjon={søkersituasjon.situasjon}
-                    termindato={termindato}
-                    updateAttachments={updateAttachments}
-                />
-                <AleneomsorgDokumentasjon
-                    attachments={aleneomsorgVedlegg}
-                    updateAttachments={updateAttachments}
-                    annenForelder={annenForelder}
-                />
-                <TerminbekreftelseDokumentasjon
-                    attachments={terminbekreftelseVedlegg}
-                    updateAttachments={updateAttachments}
-                    barn={barn}
-                    arbeidsforhold={søkerInfo.arbeidsforhold}
-                    rolle={søkersituasjon.rolle}
-                    erFarEllerMedmor={erFarEllerMedmor}
-                />
-                <OmsorgsovertakelseDokumentasjon
-                    attachments={adopsjonVedlegg}
-                    updateAttachments={updateAttachments}
-                    søkersituasjon={søkersituasjon}
-                />
-                <EtterlønnEllerSluttvederlagDokumentasjon
-                    attachments={etterlønnEllerSluttvederlagVedlegg}
-                    updateAttachments={updateAttachments}
-                    arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
-                    andreInntektskilder={andreInntektskilder}
-                />
-                <MilitærEllerSiviltjenesteDokumentasjon
-                    attachments={militærEllerSiviltjenesteVedlegg}
-                    updateAttachments={updateAttachments}
-                    arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
-                    andreInntektskilder={andreInntektskilder}
-                />
-                <Block padBottom="xl">
+                <VStack gap="10">
+                    <MorInnlagtDokumentasjon
+                        attachments={morInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        familiehendelsesdato={familiehendelsesdato}
+                        navnPåForeldre={navnPåForeldre}
+                        perioder={morInnlagtPerioder}
+                        situasjon={søkersituasjon.situasjon}
+                        termindato={termindato}
+                        updateAttachments={updateAttachments}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                    />
+                    <MorForSykDokumentasjon
+                        attachments={morForSykVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        familiehendelsesdato={familiehendelsesdato}
+                        navnPåForeldre={navnPåForeldre}
+                        perioder={morForSykPerioder}
+                        situasjon={søkersituasjon.situasjon}
+                        termindato={termindato}
+                        updateAttachments={updateAttachments}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                    />
+                    <FarInnlagtDokumentasjon
+                        attachments={farInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        familiehendelsesdato={familiehendelsesdato}
+                        navnPåForeldre={navnPåForeldre}
+                        perioder={farInnlagtPerioder}
+                        situasjon={søkersituasjon.situasjon}
+                        termindato={termindato}
+                        updateAttachments={updateAttachments}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                    />
+                    <FarForSykDokumentasjon
+                        attachments={farForSykvedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        familiehendelsesdato={familiehendelsesdato}
+                        navnPåForeldre={navnPåForeldre}
+                        perioder={farForSykPerioder}
+                        situasjon={søkersituasjon.situasjon}
+                        termindato={termindato}
+                        updateAttachments={updateAttachments}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                    />
+                    <BarnInnlagtDokumentasjon
+                        attachments={barnInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        familiehendelsesdato={familiehendelsesdato}
+                        navnPåForeldre={navnPåForeldre}
+                        perioder={barnInnlagtPerioder}
+                        situasjon={søkersituasjon.situasjon}
+                        termindato={termindato}
+                        updateAttachments={updateAttachments}
+                    />
+                    <MorStudererDokumentasjon
+                        attachments={morStudererVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        familiehendelsesdato={familiehendelsesdato}
+                        navnPåForeldre={navnPåForeldre}
+                        perioder={morStudererPerioder}
+                        situasjon={søkersituasjon.situasjon}
+                        termindato={termindato}
+                        updateAttachments={updateAttachments}
+                    />
+                    <MorJobberDokumentasjon
+                        attachments={morJobberVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        familiehendelsesdato={familiehendelsesdato}
+                        navnPåForeldre={navnPåForeldre}
+                        perioder={morJobberPerioder}
+                        situasjon={søkersituasjon.situasjon}
+                        termindato={termindato}
+                        updateAttachments={updateAttachments}
+                    />
+                    <MorJobberOgStudererDokumentasjon
+                        attachments={morJobberOgStudererVedlegg.filter(
+                            (attachment) => !isSendSenereVedlegg(attachment),
+                        )}
+                        familiehendelsesdato={familiehendelsesdato}
+                        navnPåForeldre={navnPåForeldre}
+                        perioder={morJobberOgStudererPerioder}
+                        situasjon={søkersituasjon.situasjon}
+                        termindato={termindato}
+                        updateAttachments={updateAttachments}
+                    />
+                    <MorIntroduksjonsprogrammetDokumentasjon
+                        attachments={morIntroprogramVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        familiehendelsesdato={familiehendelsesdato}
+                        navnPåForeldre={navnPåForeldre}
+                        perioder={morIntroPerioder}
+                        situasjon={søkersituasjon.situasjon}
+                        termindato={termindato}
+                        updateAttachments={updateAttachments}
+                    />
+                    <MorKvalifiseringsprogrammetDokumentasjon
+                        attachments={morKvalprogramVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        familiehendelsesdato={familiehendelsesdato}
+                        navnPåForeldre={navnPåForeldre}
+                        perioder={morKvalPerioder}
+                        situasjon={søkersituasjon.situasjon}
+                        termindato={termindato}
+                        updateAttachments={updateAttachments}
+                    />
+                    <AleneomsorgDokumentasjon
+                        attachments={aleneomsorgVedlegg}
+                        updateAttachments={updateAttachments}
+                        annenForelder={annenForelder}
+                    />
+                    <TerminbekreftelseDokumentasjon
+                        attachments={terminbekreftelseVedlegg}
+                        updateAttachments={updateAttachments}
+                        barn={barn}
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        rolle={søkersituasjon.rolle}
+                        erFarEllerMedmor={erFarEllerMedmor}
+                    />
+                    <OmsorgsovertakelseDokumentasjon
+                        attachments={adopsjonVedlegg}
+                        updateAttachments={updateAttachments}
+                        søkersituasjon={søkersituasjon}
+                    />
+                    <EtterlønnEllerSluttvederlagDokumentasjon
+                        attachments={etterlønnEllerSluttvederlagVedlegg}
+                        updateAttachments={updateAttachments}
+                        arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
+                        andreInntektskilder={andreInntektskilder}
+                    />
+                    <MilitærEllerSiviltjenesteDokumentasjon
+                        attachments={militærEllerSiviltjenesteVedlegg}
+                        updateAttachments={updateAttachments}
+                        arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
+                        andreInntektskilder={andreInntektskilder}
+                    />
+
                     <Alert size="small" variant="info">
                         <Heading level="2" size="small">
                             <FormattedMessage id="manglendeVedlegg.duKanSende.tittel" />
@@ -326,8 +328,8 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                             <FormattedMessage id="manglendeVedlegg.duKanSende.innhold" />
                         </BodyLong>
                     </Alert>
-                </Block>
-                <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
+                    <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
+                </VStack>
             </Form>
         </Step>
     );

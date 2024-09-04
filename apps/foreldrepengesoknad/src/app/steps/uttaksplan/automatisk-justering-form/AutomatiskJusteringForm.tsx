@@ -9,9 +9,10 @@ import { Uttaksdagen } from '@navikt/fp-utils';
 import { QuestionVisibility, YesOrNo } from '@navikt/fp-uttaksplan';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
-import Block from 'app/pages/block/Block';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import { mapUttaksplanFormValueToState } from 'app/steps/uttaksplan/UttaksplanFormUtils';
+
+import Block from '../block/Block';
 
 interface Props {
     termindato: Date;

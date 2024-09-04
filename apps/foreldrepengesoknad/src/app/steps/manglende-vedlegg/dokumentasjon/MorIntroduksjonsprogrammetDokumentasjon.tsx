@@ -5,7 +5,6 @@ import { NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
-import Block from 'app/pages/block/Block';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 
 import UttakUploader from '../attachment-uploaders/UttakUploader';
@@ -36,26 +35,24 @@ const MorIntroduksjonsprogrammetDokumentasjon: React.FunctionComponent<Props> = 
     }
 
     return (
-        <Block padBottom="xl">
-            <UttakUploader
-                attachments={attachments}
-                updateAttachments={updateAttachments(Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET)}
-                perioder={perioder}
-                navnPåForeldre={navnPåForeldre}
-                familiehendelsesdato={familiehendelsesdato}
-                termindato={termindato}
-                situasjon={situasjon}
-                skjemanummer={Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET}
-                labelText={intl.formatMessage({ id: 'manglendeVedlegg.introduksjonsprogram.tittel' })}
-                description={intl.formatMessage(
-                    { id: 'manglendeVedlegg.introduksjonsprogram.description' },
-                    {
-                        navn: navnPåForeldre.mor,
-                    },
-                )}
-                attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
-            />
-        </Block>
+        <UttakUploader
+            attachments={attachments}
+            updateAttachments={updateAttachments(Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET)}
+            perioder={perioder}
+            navnPåForeldre={navnPåForeldre}
+            familiehendelsesdato={familiehendelsesdato}
+            termindato={termindato}
+            situasjon={situasjon}
+            skjemanummer={Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET}
+            labelText={intl.formatMessage({ id: 'manglendeVedlegg.introduksjonsprogram.tittel' })}
+            description={intl.formatMessage(
+                { id: 'manglendeVedlegg.introduksjonsprogram.description' },
+                {
+                    navn: navnPåForeldre.mor,
+                },
+            )}
+            attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
+        />
     );
 };
 

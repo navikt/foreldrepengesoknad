@@ -2,7 +2,7 @@ import { CSSProperties } from 'react';
 
 import { UttaksplanHexColor } from '@navikt/fp-common';
 
-import bemUtils from '../../utils/bemUtils';
+import planBemUtils from '../../utils/planBemUtils';
 import './sirkelmaske.less';
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const Sirkelmaske: React.FunctionComponent<Props> = ({ farge, diameter, aktiv = true, children }) => {
-    const bem = bemUtils('sirkelmaske');
+    const bem = planBemUtils('sirkelmaske');
     const style: Partial<CSSProperties> = {
         backgroundColor: farge,
     };

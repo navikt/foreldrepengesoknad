@@ -1,4 +1,4 @@
-import bemUtils from '../../utils/bemUtils';
+import planBemUtils from '../../utils/planBemUtils';
 import Sirkelmaske from '../sirkelmaske/Sirkelmaske';
 import AntallUkerKalenderIkon from './antallUkerKalenderIkon/AntallUkerKalenderIkon';
 import './ukerSirkel.less';
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const UkerSirkel: React.FunctionComponent<Props> = ({ uker }) => {
-    const bem = bemUtils('ukerSirkel');
+    const bem = planBemUtils('ukerSirkel');
 
     return (
         <div className={bem.block}>

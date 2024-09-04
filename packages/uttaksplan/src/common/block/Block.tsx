@@ -1,6 +1,6 @@
 import React from 'react';
 
-import bemUtils from '../../utils/bemUtils';
+import planBemUtils from '../../utils/planBemUtils';
 import './block.less';
 
 type BlockMargin = 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl' | 'none';
@@ -14,7 +14,7 @@ export interface BlockProps {
     children: React.ReactNode;
 }
 
-const bem = bemUtils('block');
+const bem = planBemUtils('block');
 
 const Block: React.FunctionComponent<BlockProps> = ({
     margin,

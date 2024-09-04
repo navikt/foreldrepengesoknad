@@ -9,7 +9,6 @@ import { Datepicker } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, Søkerrolle } from '@navikt/fp-types';
 import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
-import Block from 'app/pages/block/Block';
 import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import {
@@ -80,10 +79,14 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
                     />
                     {!søkerErFarMedmor && (
                         <ReadMore header={intl.formatMessage({ id: 'omBarnet.termindato.åpneLabel' })}>
-                            <Block padBottom="m">
-                                <FormattedMessage id="omBarnet.termindato.innhold.del1" />
-                            </Block>
-                            <FormattedMessage id="omBarnet.termindato.innhold.del2" />
+                            <VStack gap="2">
+                                <BodyShort>
+                                    <FormattedMessage id="omBarnet.termindato.innhold.del1" />
+                                </BodyShort>
+                                <BodyShort>
+                                    <FormattedMessage id="omBarnet.termindato.innhold.del2" />
+                                </BodyShort>
+                            </VStack>
                         </ReadMore>
                     )}
                 </VStack>

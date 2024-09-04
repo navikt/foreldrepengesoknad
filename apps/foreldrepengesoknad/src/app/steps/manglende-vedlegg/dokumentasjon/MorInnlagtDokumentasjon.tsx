@@ -5,7 +5,6 @@ import { NavnPåForeldre, Periode, Periodetype, Situasjon, StønadskontoType } f
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
-import Block from 'app/pages/block/Block';
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
 
 import UttakUploader from '../attachment-uploaders/UttakUploader';
@@ -47,53 +46,51 @@ const MorInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
         }) !== undefined;
 
     return (
-        <Block padBottom="xl">
-            <UttakUploader
-                attachments={attachments}
-                updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE_MOR)}
-                perioder={perioder}
-                navnPåForeldre={navnPåForeldre}
-                familiehendelsesdato={familiehendelsesdato}
-                termindato={termindato}
-                situasjon={situasjon}
-                skjemanummer={Skjemanummer.DOK_INNLEGGELSE_MOR}
-                labelText={
-                    morErForSykEllerInnlagtFørsteSeksUker
-                        ? intl.formatMessage(
-                              { id: 'manglendeVedlegg.morInnlagtEllerSyk.label' },
-                              {
-                                  navn: navnPåForeldre.mor,
-                                  erFarEllerMedmor,
-                              },
-                          )
-                        : intl.formatMessage(
-                              { id: 'manglendeVedlegg.morInnlagt.label' },
-                              {
-                                  navn: navnPåForeldre.mor,
-                                  erFarEllerMedmor,
-                              },
-                          )
-                }
-                description={
-                    morErForSykEllerInnlagtFørsteSeksUker
-                        ? intl.formatMessage(
-                              { id: 'manglendeVedlegg.morInnlagtEllerSyk.description' },
-                              {
-                                  navn: navnPåForeldre.mor,
-                                  erFarEllerMedmor,
-                              },
-                          )
-                        : intl.formatMessage(
-                              { id: 'manglendeVedlegg.morInnlagt.description' },
-                              {
-                                  navn: navnPåForeldre.mor,
-                                  erFarEllerMedmor,
-                              },
-                          )
-                }
-                attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
-            />
-        </Block>
+        <UttakUploader
+            attachments={attachments}
+            updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE_MOR)}
+            perioder={perioder}
+            navnPåForeldre={navnPåForeldre}
+            familiehendelsesdato={familiehendelsesdato}
+            termindato={termindato}
+            situasjon={situasjon}
+            skjemanummer={Skjemanummer.DOK_INNLEGGELSE_MOR}
+            labelText={
+                morErForSykEllerInnlagtFørsteSeksUker
+                    ? intl.formatMessage(
+                          { id: 'manglendeVedlegg.morInnlagtEllerSyk.label' },
+                          {
+                              navn: navnPåForeldre.mor,
+                              erFarEllerMedmor,
+                          },
+                      )
+                    : intl.formatMessage(
+                          { id: 'manglendeVedlegg.morInnlagt.label' },
+                          {
+                              navn: navnPåForeldre.mor,
+                              erFarEllerMedmor,
+                          },
+                      )
+            }
+            description={
+                morErForSykEllerInnlagtFørsteSeksUker
+                    ? intl.formatMessage(
+                          { id: 'manglendeVedlegg.morInnlagtEllerSyk.description' },
+                          {
+                              navn: navnPåForeldre.mor,
+                              erFarEllerMedmor,
+                          },
+                      )
+                    : intl.formatMessage(
+                          { id: 'manglendeVedlegg.morInnlagt.description' },
+                          {
+                              navn: navnPåForeldre.mor,
+                              erFarEllerMedmor,
+                          },
+                      )
+            }
+            attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
+        />
     );
 };
 
