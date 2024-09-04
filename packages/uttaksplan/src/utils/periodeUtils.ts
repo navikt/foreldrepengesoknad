@@ -20,9 +20,6 @@ import {
     UtsettelseÅrsakType,
     UttakAnnenPartInfoPeriode,
     Uttaksperiode,
-    convertTidsperiodeToTidsperiodeDate,
-    isDateInTheFuture,
-    isDateTodayOrInTheFuture,
     isUttakAnnenPart,
     isUttaksperiode,
 } from '@navikt/fp-common';
@@ -30,6 +27,7 @@ import { capitalizeFirstLetter, erTidsperioderLike, getFloatFromString } from '@
 
 import { ISOStringToDate } from '../formik-wrappers';
 import { Perioden } from './Perioden';
+import { convertTidsperiodeToTidsperiodeDate, isDateInTheFuture, isDateTodayOrInTheFuture } from './dateUtils';
 import { getStønadskontoNavn, getUttakAnnenPartStønadskontoNavn } from './stønadskontoerUtils';
 import { appendPeriodeNavnHvisUttakRundtFødselFarMedmor } from './wlbUtils';
 

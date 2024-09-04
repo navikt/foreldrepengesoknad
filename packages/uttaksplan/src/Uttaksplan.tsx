@@ -10,7 +10,6 @@ import {
     EksisterendeSak,
     Forelder,
     ForeldreparSituasjon,
-    ISOStringToDate,
     NavnPåForeldre,
     Arbeidsforhold as OldArbeidsforhold,
     Periode,
@@ -18,11 +17,9 @@ import {
     Søkersituasjon,
     Utsettelsesperiode,
     Uttaksperiode,
-    getToTetteReglerGjelder,
     isAnnenForelderOppgitt,
     isAnnenPartInfoPeriode,
     isUtsettelsesperiode,
-    tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold, Periode as PeriodeType, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
@@ -36,6 +33,7 @@ import Planlegger from './components/planlegger/Planlegger';
 import PlanvisningToggle from './components/planvisning-toggle/PlanvisningToggle';
 import ResetUttaksplanModal from './components/reset-uttaksplan-modal/ResetUttaksplanModal';
 import SlettUttaksplanModal from './components/slett-uttaksplan-modal/SlettUttaksplanModal';
+import { ISOStringToDate, getToTetteReglerGjelder, tidperiodeOverlapperDato } from './utils/dateUtils';
 import { getHarAktivitetskravIPeriodeUtenUttak } from './utils/uttaksplanUtils';
 import { farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato } from './utils/wlbUtils';
 import { validerUttaksplan } from './validering/validerUttaksplan';

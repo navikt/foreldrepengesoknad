@@ -8,7 +8,6 @@ import { Alert, Button, Loader } from '@navikt/ds-react';
 import {
     Dekningsgrad,
     Forelder,
-    ISOStringToDate,
     Periode,
     isAnnenForelderOppgitt,
     isUfødtBarn,
@@ -49,7 +48,7 @@ import { VedleggDataType } from 'app/types/VedleggDataType';
 import { getErMorUfør } from 'app/utils/annenForelderUtils';
 import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { dateToISOString, getEndringstidspunkt } from 'app/utils/dateUtils';
+import { ISOStringToDate, dateToISOString, getEndringstidspunkt } from 'app/utils/dateUtils';
 import {
     getStartdatoFørstePeriodeAnnenPart,
     mapAnnenPartsEksisterendeSakFromDTO,

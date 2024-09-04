@@ -47,6 +47,7 @@
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-types": "workspace:*",
+        "@navikt/fp-utils-test": "workspace:*",
         "@storybook/addon-essentials": "8.2.9",
         "@storybook/addon-interactions": "8.2.9",
         "@storybook/addon-links": "8.2.9",

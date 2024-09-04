@@ -143,7 +143,7 @@ export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boo
     );
 };
 
-export const andreAugust2022ReglerGjelder = (familiehendelsesdato: Date): boolean => {
+export const andreAugust2022ReglerGjelder = (familiehendelsesdato: string | Date): boolean => {
     const andreAugust2022 = new Date('2022-08-02');
 
     return (
@@ -334,4 +334,27 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
         })}${dagerStr}`;
     }
     return ukerStr;
+};
+
+export const getToTetteReglerGjelder = (
+    familiehendelsesdato: string | Date | undefined,
+    familiehendelsesdatoNesteBarn: string | Date | undefined,
+): boolean => {
+    if (familiehendelsesdato === undefined || familiehendelsesdatoNesteBarn === undefined) {
+        return false;
+    }
+    const familiehendelsePlus48Uker = dayjs(familiehendelsesdato).add(48, 'week');
+    return (
+        andreAugust2022ReglerGjelder(familiehendelsesdato) &&
+        andreAugust2022ReglerGjelder(familiehendelsesdatoNesteBarn) &&
+        dayjs(familiehendelsePlus48Uker).isAfter(familiehendelsesdatoNesteBarn, 'day')
+    );
+};
+
+export const formaterDatoKompakt = (dato: Date): string => {
+    return formaterDato(dato, 'DD.MM.YYYY');
+};
+
+export const formaterDato = (dato: string | Date | undefined, datoformat?: string): string => {
+    return dayjs(dato).format(datoformat ?? 'dddd D. MMMM YYYY');
 };

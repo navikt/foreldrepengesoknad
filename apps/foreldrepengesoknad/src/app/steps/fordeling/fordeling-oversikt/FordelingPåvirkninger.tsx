@@ -9,13 +9,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
 
-import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { bemUtils } from '@navikt/fp-utils';
 import { uttaksConstants } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
+import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
 
 import './fordeling-påvirkninger.css';
 import { getDegEllerMorTekst, getDegEllerSegTekst, getDuEllerDereTekst } from './fordelingOversiktUtils';

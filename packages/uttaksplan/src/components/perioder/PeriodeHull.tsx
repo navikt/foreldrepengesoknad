@@ -3,11 +3,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { Periode, Periodetype, førsteOktober2021ReglerGjelder } from '@navikt/fp-common';
+import { Periode, Periodetype } from '@navikt/fp-common';
 import { Tidsperioden, bemUtils } from '@navikt/fp-utils';
 
 import ActionLink from '../../common/action-link/ActionLink';
 import Block from '../../common/block/Block';
+import { førsteOktober2021ReglerGjelder } from '../../utils/dateUtils';
 import { getUttaksdagerSomErFridager } from '../../utils/getUttaksdagerSomErFridager';
 import './periodeHull.less';
 

@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
 
-import { Periode, Søknadsinfo, formaterDatoKompakt } from '@navikt/fp-common';
+import { Periode, Søknadsinfo } from '@navikt/fp-common';
 
 import { getSumUttaksdagerÅTrekkeIPeriodene } from '../../utils/Periodene';
+import { formaterDatoKompakt } from '../../utils/dateUtils';
 import {
     ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL,
     getFarMedmorUttakRundtFødsel,

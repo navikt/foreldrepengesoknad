@@ -8,7 +8,6 @@ import {
     NavnPåForeldre,
     Periode,
     StønadskontoType,
-    førsteOktober2021ReglerGjelder,
     isAdoptertBarn,
     isAnnenForelderOppgitt,
     isFødtBarn,
@@ -27,7 +26,7 @@ import { getBrukteDager, uttaksConstants } from '@navikt/fp-uttaksplan';
 import { DelInformasjon, FordelingEier, FordelingFargekode } from 'app/types/FordelingOversikt';
 import { getErAleneOmOmsorg, getIsDeltUttak } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { ISOStringToDate, getVarighetString } from 'app/utils/dateUtils';
+import { ISOStringToDate, førsteOktober2021ReglerGjelder, getVarighetString } from 'app/utils/dateUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import {
     getAntallUkerAktivitetsfriKvote,

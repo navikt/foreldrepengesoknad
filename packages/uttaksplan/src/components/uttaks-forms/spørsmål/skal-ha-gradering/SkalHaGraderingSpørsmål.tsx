@@ -5,11 +5,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ReadMore } from '@navikt/ds-react';
 
-import { Arbeidsforhold, Arbeidsform, TidsperiodeDate, dateIsBetween } from '@navikt/fp-common';
+import { Arbeidsforhold, Arbeidsform, TidsperiodeDate } from '@navikt/fp-common';
 
 import Block from '../../../../common/block/Block';
 import { YesOrNo } from '../../../../formik-wrappers';
 import { FormikRadioProp } from '../../../../formik-wrappers/components/formik-radio-group/FormikRadioGroup';
+import { dateIsBetween } from '../../../../utils/dateUtils';
 import { prosentValideringGradering } from '../../../../utils/prosentValidering';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
 

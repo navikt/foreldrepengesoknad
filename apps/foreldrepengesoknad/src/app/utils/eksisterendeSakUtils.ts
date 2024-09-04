@@ -10,7 +10,6 @@ import {
     DekningsgradDTO,
     EksisterendeSak,
     FamiliehendelseType,
-    ISOStringToDate,
     OppholdÅrsakType,
     OppholdÅrsakTypeDTO,
     Sak,
@@ -22,7 +21,6 @@ import {
     Søkerrolle,
     Søkersituasjon,
     UttakArbeidType,
-    convertTidsperiodeToTidsperiodeDate,
     isAdoptertBarn,
     isFødtBarn,
     isInfoPeriode,
@@ -33,12 +31,14 @@ import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType'
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { Søker, SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
+import { convertTidsperiodeToTidsperiodeDate } from '@navikt/fp-uttaksplan';
 
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { Søknad } from 'app/types/Søknad';
 import { ValgtBarn } from 'app/types/ValgtBarn';
 
 import {
+    ISOStringToDate,
     dateToISOString,
     getErDatoInnenEnDagFraAnnenDato,
     getRelevantFamiliehendelseDato,

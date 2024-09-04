@@ -1,6 +1,7 @@
-import { Dekningsgrad, andreAugust2022ReglerGjelder } from '@navikt/fp-common';
+import { Dekningsgrad } from '@navikt/fp-common';
 
 import uttaksConstants from '../common/uttaksConstants';
+import { andreAugust2022ReglerGjelder } from './dateUtils';
 
 export const getBareFarHarRettFlerbarnsdagerUker = (
     antallBarn: number,

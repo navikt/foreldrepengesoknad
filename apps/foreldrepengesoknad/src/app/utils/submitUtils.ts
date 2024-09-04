@@ -6,12 +6,12 @@ import {
     Periodetype,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
-    dateIsWithinRange,
     isOppholdsperiode,
     isOverføringsperiode,
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
+import { dateIsWithinRange } from '@navikt/fp-uttaksplan';
 
 import { guid } from './guid';
 

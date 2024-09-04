@@ -1,10 +1,11 @@
 import dayjs from 'dayjs';
 import { DayOfWeek } from 'react-day-picker';
 
-import { Situasjon, andreAugust2022ReglerGjelder } from '@navikt/fp-common';
+import { Situasjon } from '@navikt/fp-common';
 import { Uttaksdagen } from '@navikt/fp-utils';
 
 import uttaksConstants from '../common/uttaksConstants';
+import { andreAugust2022ReglerGjelder } from './dateUtils';
 import { getFørsteUttaksdag2UkerFørFødsel } from './wlbUtils';
 
 interface DatepickerDateRange {

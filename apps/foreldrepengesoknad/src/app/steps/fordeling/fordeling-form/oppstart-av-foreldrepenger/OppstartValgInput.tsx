@@ -4,18 +4,15 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { Radio } from '@navikt/ds-react';
 
-import {
-    Barn,
-    NavnPåForeldre,
-    andreAugust2022ReglerGjelder,
-    førsteOktober2021ReglerGjelder,
-    isAdoptertAnnetBarn,
-    isFødtBarn,
-} from '@navikt/fp-common';
+import { Barn, NavnPåForeldre, isAdoptertAnnetBarn, isFødtBarn } from '@navikt/fp-common';
 import { RadioGroup } from '@navikt/fp-form-hooks';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import { formatDateExtended } from '@navikt/fp-utils';
-import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-uttaksplan';
+import {
+    andreAugust2022ReglerGjelder,
+    førsteOktober2021ReglerGjelder,
+    getFørsteUttaksdagForeldrepengerFørFødsel,
+} from '@navikt/fp-uttaksplan';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';

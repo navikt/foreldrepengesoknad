@@ -1,7 +1,8 @@
-import { ISOStringToDate, StønadskontoType, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
+import { StønadskontoType, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
 import { Tidsperioden, Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
 
 import { DatepickerLimitationsString, dateToISOString } from '../formik-wrappers';
+import { ISOStringToDate } from './dateUtils';
 import { getFørsteMuligeUttaksdag, getSisteMuligeUttaksdag } from './uttaksdatoerUtils';
 import { uttaksplanDatoavgrensninger } from './uttaksplanDatoavgrensninger';
 import { getFørsteUttaksdag2UkerFørFødsel, getSisteUttaksdag6UkerEtterFødsel } from './wlbUtils';

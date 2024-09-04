@@ -4,25 +4,35 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
 
-import { Uttaksdagen, isISODateString } from '@navikt/fp-utils';
-
-import { TidsperiodeDate, Utsettelsesperiode } from '../types';
-import { Tidsperiode } from './../types/Tidsperiode';
-
-type SkjemaelementFeil = string | undefined;
+import { Tidsperiode, TidsperiodeDate, Utsettelsesperiode } from '@navikt/fp-common';
+import { Uttaksdagen, formatDate, formatDateExtended, isISODateString } from '@navikt/fp-utils';
 
 dayjs.extend(utc);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isBetween);
-dayjs.extend(utc);
 
-const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
+type SkjemaelementFeil = string | undefined;
+type DateValue = Date | undefined;
 
-const dateFormat = 'DD.MM.YYYY';
-const dateFormatExtended = 'DD. MMMM YYYY';
+export const år = (dato: Dayjs): string => {
+    return dato.format('YYYY');
+};
 
-const formatDate = (date: Date | string) => dayjs(date).format(dateFormat);
-const formatDateExtended = (date: Date | string) => dayjs(date).format(dateFormatExtended);
+export const måned = (dato: Dayjs): string => {
+    return dato.format('MMMM');
+};
+
+export const måned3bokstaver = (dato: Dayjs): string => {
+    return dato.format('MMM').substr(0, 3);
+};
+
+export const formaterDato = (dato: string | Date | undefined, datoformat?: string): string => {
+    return dayjs(dato).format(datoformat ?? 'dddd D. MMMM YYYY');
+};
+
+export const formaterDatoKompakt = (dato: Date): string => {
+    return formaterDato(dato, 'DD.MM.YYYY');
+};
 
 export const andreAugust2022ReglerGjelder = (familiehendelsesdato: string | Date): boolean => {
     const andreAugust2022 = new Date('2022-08-02');
@@ -44,120 +54,6 @@ export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: string | D
 
 export const tidperiodeOverlapperDato = (tidsperiode: TidsperiodeDate, dato: string | Date): boolean => {
     return dayjs(tidsperiode.fom).isBefore(dato, 'day') && dayjs(tidsperiode.tom).isSameOrAfter(dato, 'day');
-};
-
-export const formaterDatoUtenDag = (dato: string | Date): string => {
-    return dayjs(dato).format('D. MMMM YYYY');
-};
-
-export const formaterDatoKompakt = (dato: Date): string => {
-    return formaterDato(dato, 'DD.MM.YYYY');
-};
-
-export const formaterDato = (dato: string | Date | undefined, datoformat?: string): string => {
-    return dayjs(dato).format(datoformat ?? 'dddd D. MMMM YYYY');
-};
-
-export const ISOStringToDate = (dateString: string | undefined): Date | undefined => {
-    if (dateString === undefined) {
-        return undefined;
-    }
-    if (isISODateString(dateString) && dayjs(dateString, 'YYYY-MM-DD', true).isValid()) {
-        return dayjs.utc(dateString).toDate();
-    }
-    return undefined;
-};
-
-export const convertTidsperiodeToTidsperiodeDate = (tidsperiode: Tidsperiode): TidsperiodeDate => {
-    return {
-        fom: ISOStringToDate(tidsperiode.fom)!,
-        tom: ISOStringToDate(tidsperiode.tom)!,
-    };
-};
-
-export const isDateToday = (date: string): boolean => {
-    if (dayjs().isSame(date, 'day')) {
-        return true;
-    }
-
-    return false;
-};
-
-export const isDateTodayOrInTheFuture = (date: string): boolean => {
-    return isDateInTheFuture(date) || isDateToday(date);
-};
-
-export const isDateInTheFuture = (date: string): boolean => {
-    if (dayjs().isBefore(date, 'day')) {
-        return true;
-    }
-
-    return false;
-};
-
-export const isDateABeforeDateB = (a: string, b: string): boolean => {
-    if (!hasValue(a) || !hasValue(b) || !isISODateString(a) || !isISODateString(b)) {
-        return false;
-    }
-
-    if (dayjs(a).isBefore(b, 'day')) {
-        return true;
-    }
-
-    return false;
-};
-
-export const måned = (dato: Dayjs): string => {
-    return dato.format('MMMM');
-};
-
-export const måned3bokstaver = (dato: Dayjs): string => {
-    return dato.format('MMM').substr(0, 3);
-};
-
-export const år = (dato: Dayjs): string => {
-    return dato.format('YYYY');
-};
-
-type DateValue = Date | undefined;
-
-export const dateIsSameOrBefore = (date: DateValue, otherDate: DateValue): boolean => {
-    if (date && otherDate) {
-        return dayjs(date).isSameOrBefore(otherDate, 'day');
-    }
-    return false;
-};
-export const dateIsSameOrAfter = (date: DateValue, otherDate: DateValue): boolean => {
-    if (date && otherDate) {
-        return dayjs(date).isSameOrAfter(otherDate, 'day');
-    }
-    return false;
-};
-
-export const dateIsBetween = (date: DateValue, fom: DateValue | string, tom: DateValue | string): boolean =>
-    dayjs(date).isBetween(fom, tom, 'day', '[]');
-
-export function getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato: Date) {
-    return Uttaksdagen(familiehendelsesdato).denneEllerNeste();
-}
-
-export const getToTetteReglerGjelder = (
-    familiehendelsesdato: string | Date | undefined,
-    familiehendelsesdatoNesteBarn: string | Date | undefined,
-): boolean => {
-    if (familiehendelsesdato === undefined || familiehendelsesdatoNesteBarn === undefined) {
-        return false;
-    }
-    const familiehendelsePlus48Uker = dayjs(familiehendelsesdato).add(48, 'week');
-    return (
-        andreAugust2022ReglerGjelder(familiehendelsesdato) &&
-        andreAugust2022ReglerGjelder(familiehendelsesdatoNesteBarn) &&
-        dayjs(familiehendelsePlus48Uker).isAfter(familiehendelsesdatoNesteBarn, 'day')
-    );
-};
-
-export const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {
-    return dayjs(date).isBetween(minDate, maxDate, 'day', '[]');
 };
 
 const getMeldingOmOverlappendeUtsettelser = (
@@ -187,6 +83,17 @@ const getMeldingOmOverlappendeUtsettelser = (
 
     return undefined;
 };
+
+export const dateIsWithinRange = (date: Date, minDate: Date, maxDate: Date) => {
+    return dayjs(date).isBetween(minDate, maxDate, 'day', '[]');
+};
+
+export function getFørsteUttaksdagPåEllerEtterFødsel(familiehendelsesdato: Date) {
+    return Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+}
+
+export const dateIsBetween = (date: DateValue, fom: DateValue | string, tom: DateValue | string): boolean =>
+    dayjs(date).isBetween(fom, tom, 'day', '[]');
 
 const validateDateInRange = (
     intl: IntlShape,
@@ -223,6 +130,58 @@ const validateDateInRange = (
     }
 
     return undefined;
+};
+
+export const ISOStringToDate = (dateString: string | undefined): Date | undefined => {
+    if (dateString === undefined) {
+        return undefined;
+    }
+    if (isISODateString(dateString) && dayjs(dateString, 'YYYY-MM-DD', true).isValid()) {
+        return dayjs.utc(dateString).toDate();
+    }
+    return undefined;
+};
+
+export const convertTidsperiodeToTidsperiodeDate = (tidsperiode: Tidsperiode): TidsperiodeDate => {
+    return {
+        fom: ISOStringToDate(tidsperiode.fom)!,
+        tom: ISOStringToDate(tidsperiode.tom)!,
+    };
+};
+
+export const getToTetteReglerGjelder = (
+    familiehendelsesdato: string | Date | undefined,
+    familiehendelsesdatoNesteBarn: string | Date | undefined,
+): boolean => {
+    if (familiehendelsesdato === undefined || familiehendelsesdatoNesteBarn === undefined) {
+        return false;
+    }
+    const familiehendelsePlus48Uker = dayjs(familiehendelsesdato).add(48, 'week');
+    return (
+        andreAugust2022ReglerGjelder(familiehendelsesdato) &&
+        andreAugust2022ReglerGjelder(familiehendelsesdatoNesteBarn) &&
+        dayjs(familiehendelsePlus48Uker).isAfter(familiehendelsesdatoNesteBarn, 'day')
+    );
+};
+
+export const isDateToday = (date: string): boolean => {
+    if (dayjs().isSame(date, 'day')) {
+        return true;
+    }
+
+    return false;
+};
+
+export const isDateTodayOrInTheFuture = (date: string): boolean => {
+    return isDateInTheFuture(date) || isDateToday(date);
+};
+
+export const isDateInTheFuture = (date: string): boolean => {
+    if (dayjs().isBefore(date, 'day')) {
+        return true;
+    }
+
+    return false;
 };
 
 const validateFromDateInRange = ({

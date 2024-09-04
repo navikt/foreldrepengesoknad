@@ -3,14 +3,14 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
-import { førsteOktober2021ReglerGjelder, isAnnenForelderOppgitt, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
+import { isAnnenForelderOppgitt, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
 import { DelInformasjon, FordelingEier } from 'app/types/FordelingOversikt';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { ISOStringToDate } from 'app/utils/dateUtils';
+import { ISOStringToDate, førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
 import { guid } from 'app/utils/guid';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import { getAntallUker } from 'app/utils/stønadskontoerUtils';

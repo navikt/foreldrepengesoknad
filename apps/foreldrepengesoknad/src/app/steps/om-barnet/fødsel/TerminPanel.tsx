@@ -4,12 +4,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Søkersituasjon, andreAugust2022ReglerGjelder } from '@navikt/fp-common';
+import { Søkersituasjon } from '@navikt/fp-common';
 import { Datepicker } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, Søkerrolle } from '@navikt/fp-types';
 import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import Block from 'app/pages/block/Block';
+import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
 import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import {
     attenUkerTreDager,

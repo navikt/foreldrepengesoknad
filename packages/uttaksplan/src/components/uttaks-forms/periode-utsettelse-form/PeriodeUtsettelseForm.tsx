@@ -5,18 +5,17 @@ import { Button } from '@navikt/ds-react';
 
 import {
     Arbeidsforhold,
-    ISOStringToDate,
     NavnPåForeldre,
     Periode,
     PeriodeValidState,
     Situasjon,
     Utsettelsesperiode,
-    førsteOktober2021ReglerGjelder,
 } from '@navikt/fp-common';
 import { Tidsperioden, bemUtils, isValidTidsperiode } from '@navikt/fp-utils';
 
 import ActionLink from '../../../common/action-link/ActionLink';
 import Block from '../../../common/block/Block';
+import { ISOStringToDate, førsteOktober2021ReglerGjelder } from '../../../utils/dateUtils';
 import { getUttaksdagerSomErFridager } from '../../../utils/getUttaksdagerSomErFridager';
 import { guid } from '../../../utils/guid';
 import { getIsValidStateForPerioder, getSlettPeriodeTekst } from '../../../utils/periodeUtils';

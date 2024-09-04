@@ -17,13 +17,11 @@ import {
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
     isUtsettelseAnnenPart,
     isUttakAnnenPart,
-    måned,
-    måned3bokstaver,
-    år,
 } from '@navikt/fp-common';
 import { Tidsperioden, bemUtils, getValidTidsperiode } from '@navikt/fp-utils';
 
 import UttaksplanAdvarselIkon from '../../assets/UttaksplanAdvarselIkon';
+import { måned, måned3bokstaver, år } from '../../utils/dateUtils';
 import { getForelderNavn, getPeriodeTittel } from '../../utils/periodeUtils';
 import { getIkonForVeilederMelding } from '../../validering/veilederInfo/components/VeilederMelding';
 import { VeilederMessage } from '../../validering/veilederInfo/types';

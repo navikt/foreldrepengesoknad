@@ -7,12 +7,12 @@ import {
     StønadskontoType,
     TidsperiodeDate,
     UttakRundtFødselÅrsak,
-    andreAugust2022ReglerGjelder,
 } from '@navikt/fp-common';
 import { isValidTidsperiode } from '@navikt/fp-utils';
 
 import { QuestionConfig, Questions, YesOrNo } from '../../../formik-wrappers';
 import { harAnnenForelderRettIEØS } from '../../../utils/annenForelderUtils';
+import { andreAugust2022ReglerGjelder } from '../../../utils/dateUtils';
 import hvemSkalTaUttakSkalBesvares from '../../../utils/uttaksskjema/hvemSkalTaUttakSkalBesvares';
 import getUttakSkjemaregler, {
     UttakSkjemaReglerProps,

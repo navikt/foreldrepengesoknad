@@ -5,30 +5,19 @@ import getIntlMock from 'utils-test/intl-test-helper';
 import {
     Barn,
     BarnType,
-    ISOStringToDate,
     Periode,
     PeriodeHull,
     Periodetype,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksperiode,
-    andreAugust2022ReglerGjelder,
-    convertTidsperiodeToTidsperiodeDate,
-    dateRangeValidation,
-    formaterDato,
-    formaterDatoKompakt,
-    formaterDatoUtenDag,
-    getToTetteReglerGjelder,
-    isDateInTheFuture,
-    isDateToday,
-    tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { SøkerBarn } from '@navikt/fp-types';
 
 import {
+    ISOStringToDate,
     dateIsSameOrAfter,
     dateIsSameOrBefore,
-    dateToISOString,
     findEldsteDato,
     førsteJuli2024ReglerGjelder,
     getAlderFraDato,
@@ -61,237 +50,6 @@ describe('dateUtils', () => {
         expect(dato?.getTime()).toBe(new Date('2021-05-05').getTime());
     });
 
-    const periodeId = '0';
-
-    describe('validateToDateInRange', () => {
-        it('skal ikke gi feilmelding når dato er innenfor intervall', () => {
-            const date = new Date('2021-05-10');
-            const minDate = new Date('2021-05-09');
-            const maxDate = new Date('2021-05-11');
-
-            const dato = dateRangeValidation.validateToDateInRange({
-                intl,
-                date,
-                minDate,
-                maxDate,
-                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
-                disableWeekend: false,
-            });
-
-            expect(dato).toBeUndefined();
-        });
-
-        it('skal gi feilmelding når dato ikke er innenfor intervall', () => {
-            const date = new Date('2021-05-10');
-            const minDate = new Date('2021-05-05');
-            const maxDate = new Date('2021-05-07');
-
-            const dato = dateRangeValidation.validateToDateInRange({
-                intl,
-                date,
-                minDate,
-                maxDate,
-                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
-                disableWeekend: false,
-            });
-
-            expect(dato).toBe(
-                'Til og med dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er fra 05. mai 2021 til 07. mai 2021',
-            );
-        });
-
-        it('skal gi feilmelding når dato ikke er satt', () => {
-            const minDate = new Date('2021-05-05');
-            const maxDate = new Date('2021-05-11');
-            const fromDate = new Date('2021-05-11');
-
-            const dato = dateRangeValidation.validateToDateInRange({
-                intl,
-                date: undefined,
-                minDate,
-                maxDate,
-                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
-                fromDate,
-                disableWeekend: false,
-            });
-
-            expect(dato).toBe('Til og med dato må være en gyldig dato på formatet dd.mm.åååå');
-        });
-
-        it('skal gi feilmelding når dato er før fromDate', () => {
-            const date = new Date('2021-05-10');
-            const minDate = new Date('2021-05-05');
-            const maxDate = new Date('2021-05-11');
-            const fromDate = new Date('2021-05-11');
-
-            const dato = dateRangeValidation.validateToDateInRange({
-                intl,
-                date,
-                minDate,
-                maxDate,
-                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
-                disableWeekend: false,
-                fromDate,
-            });
-
-            expect(dato).toBe('Du må legge inn en til og med dato som er etter fra og med datoen.');
-        });
-        it('skal gi feilmelding når til-dato overlapper en utsettelsesperiode', () => {
-            const date = new Date('2022-08-13');
-            const minDate = new Date('2020-05-05');
-            const maxDate = new Date('2023-05-11');
-            const fromDate = new Date('2020-05-11');
-            const utsettelserIPlan = [
-                { tidsperiode: { fom: new Date('2022-08-10'), tom: new Date('2022-08-15') }, id: '4' },
-            ] as Utsettelsesperiode[];
-
-            const validering = dateRangeValidation.validateToDateInRange({
-                intl,
-                date,
-                minDate,
-                maxDate,
-                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
-                fromDate,
-                disableWeekend: false,
-                periodeId,
-                utsettelserIPlan,
-            });
-
-            expect(validering).toBe(
-                'Du har en utsettelse fra 10.08.2022 til 15.08.2022 som overlapper med den valgte datoen. Du må endre på denne utsettelsen først.',
-            );
-        });
-    });
-
-    describe('validateFromDateInRange', () => {
-        it('skal ikke gi feilmelding når dato er innenfor intervall', () => {
-            const date = new Date('2021-05-10');
-            const minDate = new Date('2021-05-09');
-            const maxDate = new Date('2021-05-11');
-
-            const dato = dateRangeValidation.validateFromDateInRange({
-                intl,
-                date,
-                minDate,
-                maxDate,
-                disableWeekend: false,
-                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
-            });
-
-            expect(dato).toBeUndefined();
-        });
-
-        it('skal gi feilmelding når dato ikke er innenfor intervall', () => {
-            const date = new Date('2021-05-10');
-            const minDate = new Date('2021-05-05');
-            const maxDate = new Date('2021-05-07');
-
-            const dato = dateRangeValidation.validateFromDateInRange({
-                intl,
-                date,
-                minDate,
-                maxDate,
-                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
-                disableWeekend: false,
-            });
-
-            expect(dato).toBe(
-                'Fra og med dato er ikke innenfor gyldig tidsrom. Gyldig tidsrom er fra 05. mai 2021 til 07. mai 2021',
-            );
-        });
-
-        it('skal gi feilmelding når dato ikke er satt', () => {
-            const minDate = new Date('2021-05-05');
-            const maxDate = new Date('2021-05-11');
-            const toDate = new Date('2021-05-11');
-
-            const dato = dateRangeValidation.validateFromDateInRange({
-                intl,
-                date: undefined,
-                minDate,
-                maxDate,
-                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
-                toDate,
-                disableWeekend: false,
-            });
-
-            expect(dato).toBe('Fra og med dato må være en gyldig dato på formatet dd.mm.åååå');
-        });
-
-        it('skal gi feilmelding når dato er før toDate', () => {
-            const date = new Date('2021-05-10');
-            const minDate = new Date('2021-05-05');
-            const maxDate = new Date('2021-05-11');
-            const toDate = new Date('2021-05-05');
-
-            const dato = dateRangeValidation.validateFromDateInRange({
-                intl,
-                date,
-                minDate,
-                maxDate,
-                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
-                disableWeekend: false,
-                toDate,
-            });
-
-            expect(dato).toBe('Du må legge inn en til og med dato som er etter fra og med datoen.');
-        });
-        it('skal gi feilmelding når fra-dato overlapper en utsettelsesperiode', () => {
-            const date = new Date('2021-05-10');
-            const minDate = new Date('2020-05-05');
-            const maxDate = new Date('2023-05-11');
-            const toDate = new Date('2021-05-11');
-            const utsettelse1 = {
-                tidsperiode: { fom: new Date('2021-04-10'), tom: new Date('2021-04-12') },
-                id: '1',
-            } as Utsettelsesperiode;
-            const utsettelse2 = {
-                tidsperiode: { fom: new Date('2021-05-01'), tom: new Date('2021-06-10') },
-                id: '2',
-            } as Utsettelsesperiode;
-
-            const validering = dateRangeValidation.validateFromDateInRange({
-                intl,
-                date,
-                minDate,
-                maxDate,
-                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
-                toDate,
-                disableWeekend: false,
-                periodeId,
-                utsettelserIPlan: [utsettelse1, utsettelse2],
-            });
-
-            expect(validering).toBe(
-                'Du har en utsettelse fra 01.05.2021 til 10.06.2021 som overlapper med den valgte datoen. Du må endre på denne utsettelsen først.',
-            );
-        });
-        it('skal ikke gi feilmelding om overlappende utsettelser når fra-dato settes på selve utsettelsen', () => {
-            const date = new Date('2021-05-10');
-            const minDate = new Date('2020-05-05');
-            const maxDate = new Date('2023-05-11');
-            const toDate = new Date('2021-05-11');
-
-            const utsettelseSomEndres = {
-                tidsperiode: { fom: new Date('2021-05-01'), tom: new Date('2021-06-10') },
-                id: '2',
-            } as Utsettelsesperiode;
-            const validering = dateRangeValidation.validateFromDateInRange({
-                intl,
-                date,
-                minDate,
-                maxDate,
-                errorKey: 'valideringsfeil.tilOgMedDato.etterFraDato',
-                toDate,
-                disableWeekend: false,
-                periodeId: utsettelseSomEndres.id,
-                utsettelserIPlan: [utsettelseSomEndres],
-            });
-
-            expect(validering).toBe(undefined);
-        });
-    });
-
     it('skal returnere true når dato er før en annen dato', () => {
         const erFør = isDateABeforeDateB('2021-05-03', '2021-05-04');
         expect(erFør).toBe(true);
@@ -305,26 +63,6 @@ describe('dateUtils', () => {
     it('skal returnere false når dato ikke er på iso-format', () => {
         const erFør = isDateABeforeDateB('06.05.2021', '2021-05-04');
         expect(erFør).toBe(false);
-    });
-
-    it('skal returnere true når dato er fremtidig', () => {
-        const erIFremtiden = isDateInTheFuture('06.05.2090');
-        expect(erIFremtiden).toBe(true);
-    });
-
-    it('skal returnere false når dato er i fortiden', () => {
-        const erIFremtiden = isDateInTheFuture('06.05.2020');
-        expect(erIFremtiden).toBe(false);
-    });
-
-    it('skal returnere true når dato er i dag', () => {
-        const erIDag = isDateToday(dateToISOString(new Date()));
-        expect(erIDag).toBe(true);
-    });
-
-    it('skal returnere false når dato ikke er i dag', () => {
-        const erIDag = isDateToday('17-01-2022');
-        expect(erIDag).toBe(false);
     });
 
     it('skal finne det eldste barnet', () => {
@@ -367,18 +105,6 @@ describe('dateUtils', () => {
         expect(varighet).toBe('2 dager');
     });
 
-    it('skal formatere dato', () => {
-        const formatertDato = formaterDato('2021-01-01');
-        //TODO Engelsk?
-        expect(formatertDato).toBe('fredag 1. januar 2021');
-    });
-
-    it('skal formatere dato uten dag', () => {
-        const formatertDato = formaterDatoUtenDag('2021-01-01');
-        //TODO Engelsk?
-        expect(formatertDato).toBe('1. januar 2021');
-    });
-
     it('skal returnere true når dato er før annen dato', () => {
         const erDatoFørAnnenDato = dateIsSameOrBefore(ISOStringToDate('2021-01-01'), ISOStringToDate('2021-01-02'));
         expect(erDatoFørAnnenDato).toBe(true);
@@ -387,11 +113,6 @@ describe('dateUtils', () => {
     it('skal returnere true når dato er etter annen dato', () => {
         const erDatoEtterAnnenDato = dateIsSameOrAfter(ISOStringToDate('2021-01-02'), ISOStringToDate('2021-01-01'));
         expect(erDatoEtterAnnenDato).toBe(true);
-    });
-
-    it('skal returnere kompakt datoformat', () => {
-        const kompaktDato = formaterDatoKompakt(ISOStringToDate('2021-01-02')!);
-        expect(kompaktDato).toBe('02.01.2021');
     });
 
     it('skal returnere eldste dato', () => {
@@ -408,16 +129,6 @@ describe('dateUtils', () => {
         expect(alder.år).toBe(1);
         expect(alder.måneder).toBe(18);
         expect(alder.dager).toBe(553);
-    });
-
-    it('skal konvertere string-versjon av tidsperiode til date-versjon', () => {
-        const tidsperiodeStreng = {
-            fom: '2021-01-01',
-            tom: '2021-02-02',
-        };
-        const tidsperiodeDato = convertTidsperiodeToTidsperiodeDate(tidsperiodeStreng);
-        expect(tidsperiodeDato.fom).toEqual(ISOStringToDate('2021-01-01'));
-        expect(tidsperiodeDato.tom).toEqual(ISOStringToDate('2021-02-02'));
     });
 
     it('skal hente fødselsdato når denne finnes', () => {
@@ -956,114 +667,6 @@ describe('dateUtils', () => {
                 expect(endringstidspunkt).toBe(opprinneligPlanMedAnnenPart[1].tidsperiode?.fom);
             },
         );
-    });
-});
-
-const førsteAugust2022 = '2022-08-01T00:00:00.000Z';
-const førsteAugust2022Date = new Date(førsteAugust2022);
-const andreAugust2022 = '2022-08-02T00:00:00.000Z';
-const andreAugust2022Date = new Date(andreAugust2022);
-
-describe('dateUtils - skal returnere at WLB regler ikke gjelder for dagens dato 1. august 2022', () => {
-    beforeAll(() => {
-        MockDate.set(førsteAugust2022);
-    });
-
-    afterAll(() => {
-        MockDate.reset();
-    });
-
-    it('skal returnere at WLB regler i prod ikke gjelder med familiehendelsesdato før 2. august 2022', () => {
-        //Sjekk at dagens dato er riktig satt
-        expect(new Date()).toEqual(førsteAugust2022Date);
-
-        const gjelderWLB = andreAugust2022ReglerGjelder(førsteAugust2022Date);
-        expect(gjelderWLB).toEqual(false);
-    });
-    it('skal returnere at WLB regler ikke gjelder med familiehendelsesdato etter 2. august 2022', () => {
-        expect(new Date()).toEqual(førsteAugust2022Date);
-        const gjelderWLB = andreAugust2022ReglerGjelder(andreAugust2022Date);
-
-        expect(gjelderWLB).toEqual(false);
-    });
-});
-
-describe('dateUtils - WLB regler for dagens dato fom 2. august 2022', () => {
-    beforeAll(() => {
-        MockDate.set(andreAugust2022);
-    });
-
-    afterAll(() => {
-        MockDate.reset();
-    });
-
-    it('skal returnere at WLB regler i prod ikke gjelder med familiehendelsesdato før 2. august 2022', () => {
-        //Sjekk at dagens dato er riktig satt
-        expect(new Date()).toEqual(andreAugust2022Date);
-
-        const gjelderWLB = andreAugust2022ReglerGjelder(førsteAugust2022Date);
-        expect(gjelderWLB).toEqual(false);
-    });
-    it('skal returnere at WLB regler i prod gjelder med familiehendelsesdato etter 2. august 2022', () => {
-        expect(new Date()).toEqual(andreAugust2022Date);
-
-        const gjelderWLB = andreAugust2022ReglerGjelder(andreAugust2022Date);
-        expect(gjelderWLB).toEqual(true);
-    });
-});
-
-describe('To tette - WLB i prod', () => {
-    it('Skal returnere at to tette regler ikke gjelder hvis første barnet sin familihendelse dato er undefined', () => {
-        const result = getToTetteReglerGjelder(undefined, '2023-01-01');
-        expect(result).toEqual(false);
-    });
-    it('Skal returnere at to tette regler ikke gjelder hvis det andre barnet sin familihendelse dato er undefined', () => {
-        const result = getToTetteReglerGjelder('2022-08-02', undefined);
-        expect(result).toEqual(false);
-    });
-    it('Skal returnere at to tette regler ikke gjelder hvis første barnet er født før 2 august 2022', () => {
-        const result = getToTetteReglerGjelder('2022-08-01', '2022-08-02');
-        expect(result).toEqual(false);
-    });
-    it('Skal returnere at to tette regler ikke gjelder hvis andre barnet er født før 2 august 2022', () => {
-        const result = getToTetteReglerGjelder('2022-08-02', '2022-08-01');
-        expect(result).toEqual(false);
-    });
-
-    it('Skal returnere at to tette regler gjelder hvis begge barna er født etter 2 august 2022 og det er mindre enn 48 uker mellom barna', () => {
-        const result = getToTetteReglerGjelder('2023-01-02', '2023-12-03');
-        expect(result).toEqual(true);
-    });
-    it('Skal returnere at to tette regler ikke gjelder hvis det er mer enn 48 uker mellom barna', () => {
-        const result = getToTetteReglerGjelder('2023-01-02', '2023-12-04');
-        expect(result).toEqual(false);
-    });
-    it('Skal returnere at to tette regler ikke gjelder hvis det er akkurat 48 uker mellom barna', () => {
-        const result = getToTetteReglerGjelder('2023-01-02', '2023-12-05');
-        expect(result).toEqual(false);
-    });
-});
-
-describe('tidperiodeOverlapperDato', () => {
-    it('Skal returnere at tidsperiode overlapper dato hvis starter før dato', () => {
-        const tidsperiode = { fom: new Date('2023-11-20'), tom: new Date('2023-11-30') };
-        const result = tidperiodeOverlapperDato(tidsperiode, new Date('2023-11-21'));
-        expect(result).toEqual(true);
-    });
-    it('Skal returnere at tidsperiode ikke overlapper dato hvis starter samme dag som dato', () => {
-        const tidsperiode = { fom: new Date('2023-11-20'), tom: new Date('2023-11-30') };
-        const result = tidperiodeOverlapperDato(tidsperiode, new Date('2023-11-20'));
-        expect(result).toEqual(false);
-    });
-    it('Skal returnere at tidsperiode overlapper dato hvis slutter på dato', () => {
-        const tidsperiode = { fom: new Date('2023-11-20'), tom: new Date('2023-11-30') };
-        const result = tidperiodeOverlapperDato(tidsperiode, new Date('2023-11-30'));
-        expect(result).toEqual(true);
-    });
-    it('Skal returnere at tidsperiode ikke overlapper dato hvis slutter før dato', () => {
-        const tidsperiode = { fom: new Date('2023-11-20'), tom: new Date('2023-11-29') };
-        const result = tidperiodeOverlapperDato(tidsperiode, new Date('2023-11-30'));
-        expect(result).toEqual(false);
     });
 });
 

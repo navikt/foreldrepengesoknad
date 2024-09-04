@@ -18,8 +18,6 @@ import {
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     UttaksperiodeBase,
-    andreAugust2022ReglerGjelder,
-    førsteOktober2021ReglerGjelder,
     isAdoptertBarn,
     isAdoptertStebarn,
     isAnnenForelderOppgitt,
@@ -32,7 +30,12 @@ import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
 import { Attachment, LocaleNo } from '@navikt/fp-types';
 import { Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
-import { sorterPerioder, uttaksperiodeKanJusteresVedFødsel } from '@navikt/fp-uttaksplan';
+import {
+    andreAugust2022ReglerGjelder,
+    førsteOktober2021ReglerGjelder,
+    sorterPerioder,
+    uttaksperiodeKanJusteresVedFødsel,
+} from '@navikt/fp-uttaksplan';
 import { assertUnreachable, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType } from 'app/appData/FpDataContext';
