@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Radio, VStack } from '@navikt/ds-react';
+import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, Form, RadioGroup } from '@navikt/fp-form-hooks';
+import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { AppName, Arbeidsforhold } from '@navikt/fp-types';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
@@ -158,22 +159,34 @@ const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                         </VStack>
                     )}
                     {!erSvp && (
-                        <RadioGroup
-                            name="harHattAndreInntektskilder"
-                            label={intl.formatMessage({ id: 'inntektsinformasjon.hattAndreInntektskilder' })}
-                            validate={[
-                                isRequired(
-                                    intl.formatMessage({ id: 'valideringsfeil.hattAndreInntektskilder.påkrevd' }),
-                                ),
-                            ]}
-                        >
-                            <Radio value={false}>
-                                <FormattedMessage id="inntektsinformasjon.nei" />
-                            </Radio>
-                            <Radio value={true}>
-                                <FormattedMessage id="inntektsinformasjon.ja" />
-                            </Radio>
-                        </RadioGroup>
+                        <VStack gap="1">
+                            <RadioGroup
+                                name="harHattAndreInntektskilder"
+                                label={intl.formatMessage({ id: 'inntektsinformasjon.hattAndreInntektskilder' })}
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({ id: 'valideringsfeil.hattAndreInntektskilder.påkrevd' }),
+                                    ),
+                                ]}
+                            >
+                                <Radio value={false}>
+                                    <FormattedMessage id="inntektsinformasjon.nei" />
+                                </Radio>
+                                <Radio value={true}>
+                                    <FormattedMessage id="inntektsinformasjon.ja" />
+                                </Radio>
+                            </RadioGroup>
+                            <ReadMore
+                                onOpenChange={logAmplitudeEventOnOpen(stønadstype, 'Andre_inntektskilder')}
+                                header={intl.formatMessage({
+                                    id: 'ArbeidsforholdOgInntektPanel.ReadMore.Header.AndreInntektskilder',
+                                })}
+                            >
+                                <BodyShort>
+                                    <FormattedMessage id="ArbeidsforholdOgInntektPanel.ReadMore.Body.AndreInntektskilder" />
+                                </BodyShort>
+                            </ReadMore>
+                        </VStack>
                     )}
                     <VStack gap="4">
                         {erSvp && <InfoOmFørstegangstjeneste />}

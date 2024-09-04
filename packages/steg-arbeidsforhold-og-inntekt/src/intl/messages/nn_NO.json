@@ -40,6 +40,8 @@
     "inntektsinformasjon.alert.ingenArbeidsforhold": "Det ser dessverre ikkje ut som om du kan søke om svangerskapspengar. Det er ingen arbeidsforhold registrert på deg. Du jobbar heller ikkje som frilans eller sjølvstendig næringsdrivande. For oss verkar det difor ikkje som at du har nokon jobb som kan skade det ufødde barnet. Dersom du meiner at noko av informasjonen over ikkje stemmer, må du kontakte din arbeidsgivar og be dei oppdatere med riktig informasjon i Arbeidsgivar- og arbeidstakarregisteret. Når dette har blitt gjort, vil det bli mogleg for deg å søke. Dersom du er usikker på om du har rett til å søke om svangerskapspengar, kan du lese meir <a>om svangerskapspengar</a> eller ",
     "inntektsinformasjon.alert.ingenArbeidsforhold.forsettelse": "<a>tak kontakt med oss.</a>",
     "inntektsinformasjon.hattAndreInntektskilder": "Har du hatt andre inntektskilder dei siste 10 månadene?",
+    "ArbeidsforholdOgInntektPanel.ReadMore.Header.AndreInntektskilder": "Nokon andre inntektskilder kan virka inn på retten på foreldrepengar",
+    "ArbeidsforholdOgInntektPanel.ReadMore.Body.AndreInntektskilder": "Arbeid i utlandet, sluttpakke eller etterlønn og førstegangstjeneste er inntektskilder som kan virka inn på foreldrepengane.",
     "InfoOmArbeidIUtlandet.apneLabel": "Korleis kan dette påverke svangerskapspengane?",
     "InfoOmArbeidIUtlandet.innhold": "For å vurdera om du har rett til svangerskapspengar tel me med arbeid i andre EØS-land enn Noreg i dei siste fire vekene.",
     "inntektsinformasjon.ja": "Ja",
