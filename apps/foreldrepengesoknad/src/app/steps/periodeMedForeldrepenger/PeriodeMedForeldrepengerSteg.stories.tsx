@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 import { MemoryRouter } from 'react-router-dom';
-import AxiosMock from 'storybook/utils/AxiosMock';
+import AxiosMock from 'storybookData/utils/AxiosMock';
 
 import { AnnenForelder, Barn, BarnType, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';

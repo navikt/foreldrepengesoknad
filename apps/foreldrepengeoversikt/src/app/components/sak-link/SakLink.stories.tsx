@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 import { MemoryRouter } from 'react-router-dom';
-import saker from 'storybook/storyData/saker/saker.json';
+import saker from 'storybookData/saker/saker.json';
 
 import SakLink from './SakLink';
 

@@ -3,7 +3,7 @@ import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
-import AxiosMock from 'storybook/utils/AxiosMock';
+import AxiosMock from 'storybookData/utils/AxiosMock';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, Periode } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT, SivilstandType, Skjemanummer } from '@navikt/fp-constants';

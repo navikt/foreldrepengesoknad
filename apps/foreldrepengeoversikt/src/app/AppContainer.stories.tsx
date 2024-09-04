@@ -1,12 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 import { HttpResponse, http } from 'msw';
-import annenPartsVedtak from 'storybook/storyData/annenPartVedtak/annenPartVedtak.json';
-import dokumenter from 'storybook/storyData/dokumenter/dokumenter.json';
-import manglendeVedlegg from 'storybook/storyData/manglendeVedlegg/manglendeVedlegg.json';
-import miniDialog from 'storybook/storyData/miniDialog/miniDialog.json';
-import saker from 'storybook/storyData/saker/saker.json';
-import søkerinfo from 'storybook/storyData/sokerinfo/sokerinfo.json';
-import tidslinjeHendelser from 'storybook/storyData/tidslinjeHendelser/tidslinjeHendelser.json';
+import annenPartsVedtak from 'storybookData/annenPartVedtak/annenPartVedtak.json';
+import dokumenter from 'storybookData/dokumenter/dokumenter.json';
+import manglendeVedlegg from 'storybookData/manglendeVedlegg/manglendeVedlegg.json';
+import miniDialog from 'storybookData/miniDialog/miniDialog.json';
+import saker from 'storybookData/saker/saker.json';
+import søkerinfo from 'storybookData/sokerinfo/sokerinfo.json';
+import tidslinjeHendelser from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.json';
 
 import AppContainer from './AppContainer';
 

@@ -3,10 +3,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { useRef } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import manglendeVedlegg from 'storybook/storyData/manglendeVedlegg/manglendeVedlegg.json';
-import saker from 'storybook/storyData/saker/saker.json';
-import søkerinfo from 'storybook/storyData/sokerinfo/sokerinfo.json';
-import tidslinjeHendelser from 'storybook/storyData/tidslinjeHendelser/tidslinjeHendelser.json';
+import manglendeVedlegg from 'storybookData/manglendeVedlegg/manglendeVedlegg.json';
+import saker from 'storybookData/saker/saker.json';
+import søkerinfo from 'storybookData/sokerinfo/sokerinfo.json';
+import tidslinjeHendelser from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.json';
 
 import OversiktRoutes from 'app/routes/routes';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';

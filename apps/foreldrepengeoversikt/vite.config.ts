@@ -23,7 +23,7 @@ export default defineConfig({
     resolve: {
         alias: {
             app: path.resolve(__dirname, './src/app'),
-            storybook: path.resolve(__dirname, './src/storybook'),
+            storybookData: path.resolve(__dirname, './src/storybook-data'),
             assets: path.resolve(__dirname, './src/assets'),
         },
     },

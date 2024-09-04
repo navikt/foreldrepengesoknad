@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import AxiosMock from 'storybook/utils/AxiosMock';
+import AxiosMock from 'storybookData/utils/AxiosMock';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';

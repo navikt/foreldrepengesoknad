@@ -1,11 +1,11 @@
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
-import annenPartVedtak from 'storybook/storyData/annenPartVedtak/annenPartVedtak.json';
-import storageKvittering from 'storybook/storyData/kvittering/storage_kvittering.json';
-import saker from 'storybook/storyData/saker/saker.json';
-import stønadskontoDeltUttak80 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
-import stønadskontoDeltUttak100 from 'storybook/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
-import stønadskontoer from 'storybook/storyData/stonadskontoer/stønadskontoer.json';
+import annenPartVedtak from 'storybookData/storyData/annenPartVedtak/annenPartVedtak.json';
+import storageKvittering from 'storybookData/storyData/kvittering/storage_kvittering.json';
+import saker from 'storybookData/storyData/saker/saker.json';
+import stønadskontoDeltUttak80 from 'storybookData/storyData/stonadskontoer/stønadskontoDeltUttak80.json';
+import stønadskontoDeltUttak100 from 'storybookData/storyData/stonadskontoer/stønadskontoDeltUttak100.json';
+import stønadskontoer from 'storybookData/storyData/stonadskontoer/stønadskontoer.json';
 
 import '@navikt/ds-css';
 

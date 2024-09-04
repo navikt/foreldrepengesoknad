@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react/*';
-import saker from 'storybook/storyData/saker/saker.json';
+import saker from 'storybookData/saker/saker.json';
 
 import StatusTag from './StatusTag';
 
@@ -20,6 +20,7 @@ export const AktivSak: Story = {
 
 export const AvsluttetSak: Story = {
     args: {
+        //@ts-ignore fiks
         sak: {
             //@ts-ignore fiks
             ...saker.foreldrepenger[0],
