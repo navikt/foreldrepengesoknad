@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 
-import { formatDate } from './../dateUtils';
-import { TidsperiodenNy } from './TidsperiodenNy';
+import { formatDate } from '../dateUtils';
+import { Tidsperioden } from './Tidsperioden';
 
 dayjs.extend(isoWeek);
 
@@ -10,7 +10,7 @@ dayjs.extend(isoWeek);
  * Wrapper en dato med uttaksdager-funksjonalitet
  * @param dato
  */
-export const UttaksdagenNy = (dato: Date) => ({
+export const Uttaksdagen = (dato: Date) => ({
     erUttaksdag: (): boolean => erUttaksdag(dato),
     forrige: (): Date => getUttaksdagFørDato(dato),
     neste: (): Date => getUttaksdagEtterDato(dato),
@@ -142,11 +142,11 @@ function getUttaksdagerFremTilDato(fom: Date, tom: Date): number {
         return 0;
     }
     if (dayjs(fom).isBefore(tom, 'day')) {
-        return TidsperiodenNy({ fom, tom }).getAntallUttaksdager() - 1;
+        return Tidsperioden({ fom, tom }).getAntallUttaksdager() - 1;
     }
     return (
         -1 *
-        (TidsperiodenNy({
+        (Tidsperioden({
             fom: tom,
             tom: fom,
         }).getAntallUttaksdager() -

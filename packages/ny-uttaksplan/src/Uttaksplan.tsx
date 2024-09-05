@@ -3,28 +3,45 @@ import { FunctionComponent } from 'react';
 import '@navikt/ds-css';
 
 import { AnnenForelder, NavnPåForeldre, Periode } from '@navikt/fp-common';
-import { Barn } from '@navikt/fp-types';
+import { Barn, SaksperiodeNy } from '@navikt/fp-types';
 
+import { slåSammenLikePerioder } from './builder/uttaksplanbuilderUtils';
 import PeriodeListe from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
+import { PlanPeriode } from './types/Planperiode';
 
 interface Props {
-    uttaksplan: Periode[];
     familiehendelsedato: string;
     erFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
     annenForelder: AnnenForelder;
     barn: Barn;
+    søkersPerioder: SaksperiodeNy[];
+    annenPartsPerioder?: SaksperiodeNy[];
 }
 
 const UttaksplanNy: FunctionComponent<Props> = ({
-    uttaksplan,
     familiehendelsedato,
     erFarEllerMedmor,
     navnPåForeldre,
     annenForelder,
     barn,
+    søkersPerioder,
+    annenPartsPerioder,
 }) => {
+    let kombinertUttaksplan: PlanPeriode[] = [];
+    let søkersPlan = slåSammenLikePerioder(
+        søkersPerioder,
+        new Date(familiehendelsedato),
+        undefined,
+        annenPartsPerioder,
+    );
+
+    if (annenPartsPerioder !== undefined) {
+    } else {
+        kombinertUttaksplan = søkersPerioder;
+    }
+
     return (
         <UttaksplanDataContext
             initialState={{
@@ -33,11 +50,11 @@ const UttaksplanNy: FunctionComponent<Props> = ({
                 ER_FAR_ELLER_MEDMOR: erFarEllerMedmor,
                 FAMILIEHENDELSEDATO: familiehendelsedato,
                 NAVN_PÅ_FORELDRE: navnPåForeldre,
-                UTTAKSPLAN: uttaksplan,
+                UTTAKSPLAN: kombinertUttaksplan,
             }}
         >
             <div style={{ padding: '2rem 0' }}>
-                <PeriodeListe perioder={uttaksplan} familiehendelsedato={familiehendelsedato} barn={barn} />
+                <PeriodeListe perioder={kombinertUttaksplan} familiehendelsedato={familiehendelsedato} barn={barn} />
             </div>
         </UttaksplanDataContext>
     );

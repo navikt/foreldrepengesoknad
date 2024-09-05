@@ -99,6 +99,10 @@ export const ISOStringToDate = (dateString: string | undefined) => {
     return undefined;
 };
 
+const isoStringFormat = 'YYYY-MM-DD';
+
+export const dateToISOString = (date?: Date) => (date ? dayjs(date).format(isoStringFormat) : '');
+
 export const erMyndig = (fødselsdato: DateTypes): boolean => {
     const now = dayjs.utc();
     const momentDate = dayjs.utc(fødselsdato);

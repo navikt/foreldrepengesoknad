@@ -16,8 +16,8 @@ import { OppholdÅrsakType } from '@navikt/fp-types/src/OppholdÅrsakType';
 
 import { ISOStringToDate, formatDateIso } from './dateUtils';
 import { capitalizeFirstLetter, getNavnGenitivEierform } from './stringUtils';
-import { TidsperiodenNy, getTidsperiodeDate, isValidTidsperiode } from './uttak/TidsperiodenNy';
-import { UttaksdagenNy } from './uttak/UttaksdagenNy';
+import { TidsperiodenNy, getTidsperiodeDate, isValidTidsperiode } from './uttak/Tidsperioden';
+import { UttaksdagenNy } from './uttak/Uttaksdagen';
 
 export const Periodene = (perioder: SaksperiodeNy[]) => ({
     sort: () => [...perioder].sort(sorterPerioder),
@@ -42,6 +42,10 @@ export function sorterPerioder(p1: SaksperiodeNy, p2: SaksperiodeNy) {
 
 export const isUttaksperiode = (periode: SaksperiodeNy) => {
     return periode.kontoType !== undefined && periode.utsettelseÅrsak === undefined;
+};
+
+export const isForeldrepengerFørFødselPeriode = (periode: SaksperiodeNy) => {
+    return periode.kontoType !== undefined && periode.kontoType === StønadskontoType.ForeldrepengerFørFødsel;
 };
 
 export const isUtsettelsesperiode = (periode: SaksperiodeNy) => {

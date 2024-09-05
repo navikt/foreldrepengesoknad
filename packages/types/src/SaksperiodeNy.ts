@@ -20,8 +20,3 @@ export interface SaksperiodeNy {
     samtidigUttak?: number;
     morsAktivitet?: MorsAktivitet;
 }
-
-export enum PeriodeHullType {
-    PERIODE_UTEN_UTTAK = 'Periode uten uttak',
-    TAPTE_DAGER = 'Tapte dager',
-}

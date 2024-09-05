@@ -4,7 +4,7 @@ import { Forelder, PeriodeColor, StønadskontoType } from '@navikt/fp-constants'
 import { Oppholdsperiode, Periode, isAvslåttPeriode, isUttaksperiode } from '@navikt/fp-types';
 import { isUttakAnnenPart } from '@navikt/fp-types/src/Periode';
 
-import { UttaksdagenNy } from './UttaksdagenNy';
+import { UttaksdagenNy } from './Uttaksdagen';
 
 const ANTALL_DAGER_SEKS_UKER = 6 * 7;
 

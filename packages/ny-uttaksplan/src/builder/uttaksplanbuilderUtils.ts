@@ -13,6 +13,7 @@ import {
     isUtsettelseAnnenPart,
     isUttaksperiode,
 } from '@navikt/fp-common';
+import { SaksperiodeNy } from '@navikt/fp-types';
 import { Tidsperioden, Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
 
 import { Perioden } from '../utils/Perioden';
@@ -26,16 +27,16 @@ import { guid } from './guid';
 import { splittPeriodePåDato } from './leggTilPeriode';
 
 export const slåSammenLikePerioder = (
-    perioder: Periode[],
+    perioder: SaksperiodeNy[],
     familiehendelsesdato: Date,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
-    annenPartsUttak?: Periode[],
-): Periode[] => {
+    annenPartsUttak?: SaksperiodeNy[],
+): SaksperiodeNy[] => {
     if (perioder.length <= 1) {
         return perioder;
     }
-    const nyePerioder: Periode[] = [];
-    let forrigePeriode: Periode | undefined = { ...perioder[0] };
+    const nyePerioder: SaksperiodeNy[] = [];
+    let forrigePeriode: SaksperiodeNy | undefined = { ...perioder[0] };
     perioder.forEach((periode, index) => {
         if (index === 0) {
             return;
@@ -51,9 +52,9 @@ export const slåSammenLikePerioder = (
             if (
                 annenPartsUttak &&
                 isUttaksperiode(periode) &&
-                periode.ønskerSamtidigUttak &&
+                periode.samtidigUttak &&
                 isUttaksperiode(forrigePeriode) &&
-                forrigePeriode.ønskerSamtidigUttak
+                forrigePeriode.samtidigUttak
             ) {
                 const overlappendePerioderAnnenPartForrigePeriode =
                     Periodene(annenPartsUttak).finnOverlappendePerioder(forrigePeriode);
@@ -72,13 +73,11 @@ export const slåSammenLikePerioder = (
             }
 
             if (
-                (dayjs(forrigePeriode.tidsperiode.tom).isBefore(familiehendelsesdato, 'day') &&
-                    dayjs(periode.tidsperiode.tom).isSameOrAfter(
-                        Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
-                    )) ||
+                (dayjs(forrigePeriode.tom).isBefore(familiehendelsesdato, 'day') &&
+                    dayjs(periode.tom).isSameOrAfter(Uttaksdagen(familiehendelsesdato).denneEllerNeste())) ||
                 (førsteUttaksdagNesteBarnsSak !== undefined &&
-                    dayjs(forrigePeriode.tidsperiode.tom).isBefore(førsteUttaksdagNesteBarnsSak, 'day') &&
-                    dayjs(periode.tidsperiode.fom).isSameOrAfter(
+                    dayjs(forrigePeriode.tom).isBefore(førsteUttaksdagNesteBarnsSak, 'day') &&
+                    dayjs(periode.fom).isSameOrAfter(
                         Uttaksdagen(førsteUttaksdagNesteBarnsSak).denneEllerNeste(),
                         'day',
                     ))
@@ -89,13 +88,14 @@ export const slåSammenLikePerioder = (
             }
 
             const nyTidsperiode = {
-                fom: forrigePeriode.tidsperiode.fom,
-                tom: periode.tidsperiode.tom,
+                fom: forrigePeriode.fom,
+                tom: periode.tom,
             };
 
             forrigePeriode = {
                 ...forrigePeriode,
-                tidsperiode: nyTidsperiode,
+                fom: nyTidsperiode.fom,
+                tom: nyTidsperiode.tom,
             };
 
             return;
@@ -353,11 +353,11 @@ interface SplittetDatoType {
     erFom: boolean;
 }
 
-const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]) => {
+const splittPeriodePåDatoer = (periode: SaksperiodeNy, alleDatoer: SplittetDatoType[]): SaksperiodeNy[] => {
     const datoerIPerioden = alleDatoer.filter((datoWrapper) =>
-        Tidsperioden(periode.tidsperiode).inneholderDato(datoWrapper.dato),
+        Tidsperioden(getTidsperiodeDate(periode)).inneholderDato(datoWrapper.dato),
     );
-    const oppsplittetPeriode: Periode[] = [];
+    const oppsplittetPeriode: SaksperiodeNy[] = [];
 
     if (datoerIPerioden.length === 2) {
         return [periode];
@@ -367,42 +367,45 @@ const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]
         if (index === 0) {
             oppsplittetPeriode.push({
                 ...periode,
-                tidsperiode: { fom: datoWrapper.dato, tom: undefined! },
+                fom: dateToISOString(datoWrapper.dato),
+                tom: undefined!,
             });
             return;
         }
 
-        oppsplittetPeriode[index - 1].tidsperiode.tom = datoWrapper.erFom
-            ? Uttaksdagen(datoWrapper.dato).forrige()
-            : datoWrapper.dato;
+        oppsplittetPeriode[index - 1].tom = datoWrapper.erFom
+            ? dateToISOString(Uttaksdagen(datoWrapper.dato).forrige())
+            : dateToISOString(datoWrapper.dato);
 
         if (index < datoerIPerioden.length - 1) {
             oppsplittetPeriode.push({
                 ...periode,
-                id: guid(),
-                tidsperiode: {
-                    fom: datoWrapper.erFom ? datoWrapper.dato : Uttaksdagen(datoWrapper.dato).neste(),
-                    tom: undefined!,
-                },
+                fom: datoWrapper.erFom
+                    ? dateToISOString(datoWrapper.dato)
+                    : dateToISOString(Uttaksdagen(datoWrapper.dato).neste()),
+                tom: undefined!,
             });
         }
     });
 
-    return oppsplittetPeriode.filter((p) => isValidTidsperiode(p.tidsperiode));
+    return oppsplittetPeriode.filter((p) => isValidTidsperiode(getTidsperiodeDate(p)));
 };
 
 // Funksjon som gjør at alle perioder overlapper 1 til 1
-export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode[]) => {
+export const normaliserPerioder = (perioder: SaksperiodeNy[], annenPartsUttak: SaksperiodeNy[]) => {
     const perioderTidsperioder: SplittetDatoType[] = perioder
-        .filter((per) => isValidTidsperiode(per.tidsperiode))
+        .filter((per) => {
+            const tidsperiode = getTidsperiodeDate(per);
+            return isValidTidsperiode(tidsperiode);
+        })
         .reduce((res, p) => {
-            res.push({ dato: p.tidsperiode.fom, erFom: true });
-            res.push({ dato: p.tidsperiode.tom, erFom: false });
+            res.push({ dato: ISOStringToDate(p.fom)!, erFom: true });
+            res.push({ dato: ISOStringToDate(p.tom)!, erFom: false });
             return res;
         }, [] as SplittetDatoType[]);
     const annenPartsUttakTidsperioder = annenPartsUttak.reduce((res, p) => {
-        res.push({ dato: p.tidsperiode.fom, erFom: true });
-        res.push({ dato: p.tidsperiode.tom, erFom: false });
+        res.push({ dato: ISOStringToDate(p.fom)!, erFom: true });
+        res.push({ dato: ISOStringToDate(p.tom)!, erFom: false });
         return res;
     }, [] as SplittetDatoType[]);
 
@@ -425,8 +428,8 @@ export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode
             self.findIndex((d) => d.dato.getTime() === date.dato.getTime() && d.erFom === date.erFom) === i,
     );
 
-    const normaliserteEgnePerioder: Periode[] = [];
-    const normaliserteAnnenPartsPerioder: Periode[] = [];
+    const normaliserteEgnePerioder: SaksperiodeNy[] = [];
+    const normaliserteAnnenPartsPerioder: SaksperiodeNy[] = [];
 
     perioder.forEach((p) => {
         const oppsplittetPeriode = splittPeriodePåDatoer(p, alleUnikeDatoer);
@@ -445,8 +448,8 @@ export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode
 };
 
 export const settInnAnnenPartsUttak = (
-    perioder: Periode[],
-    annenPartsUttak: Periode[],
+    perioder: SaksperiodeNy[],
+    annenPartsUttak: SaksperiodeNy[],
     familiehendelsesdato: Date,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
     initiellMappingFraSaksperioder = false,
@@ -465,7 +468,7 @@ export const settInnAnnenPartsUttak = (
         const overlappendePerioderAnnenPart = Periodene(normaliserteAnnenPartsPerioder).finnOverlappendePerioder(p);
 
         if (overlappendePerioderAnnenPart.length === 0) {
-            if (isUttaksperiode(p) && p.ønskerSamtidigUttak && initiellMappingFraSaksperioder) {
+            if (isUttaksperiode(p) && p.samtidigUttak && initiellMappingFraSaksperioder) {
                 res.push({
                     ...p,
                     ønskerSamtidigUttak: false,

@@ -64,11 +64,14 @@ export {
     enMånedSiden,
     niMånederFremITid,
     isISODateString,
+    ISOStringToDate,
+    dateToISOString,
     dateIsSameOrAfter,
     dateIsSameOrBefore,
     formaterDatoUtenDag,
 } from './src/dateUtils';
 
-export * from './src/uttak/UttaksdagenNy';
-export * from './src/uttak/TidsperiodenNy';
+export * from './src/uttak/Uttaksdagen';
+export * from './src/uttak/Tidsperioden';
 export * from './src/uttak/uttakUtils';
+export * from './src/periodeUtils';

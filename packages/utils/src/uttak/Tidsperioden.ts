@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
 
-import { SaksperiodeNy, TidsperiodeDate } from '@navikt/fp-types';
+import { TidsperiodeDate } from '@navikt/fp-types';
 
 import { ISOStringToDate, dateIsSameOrAfter, dateIsSameOrBefore, formaterDatoUtenDag } from '../dateUtils';
-import { UttaksdagenNy } from './UttaksdagenNy';
+import { Uttaksdagen } from './Uttaksdagen';
 
 export const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 
-export const TidsperiodenNy = (tidsperiode: TidsperiodeDate) => ({
+export const Tidsperioden = (tidsperiode: TidsperiodeDate) => ({
     erLik: (tidsperiode2: TidsperiodeDate) => erTidsperioderLike(tidsperiode, tidsperiode2),
     overlapper: (tidsperiode2: TidsperiodeDate) => overlapperTidsperioder(tidsperiode, tidsperiode2),
     erOmsluttetAv: (tidsperiode2: TidsperiodeDate) => erTidsperiodeOmsluttetAvTidsperiode(tidsperiode, tidsperiode2),
@@ -36,8 +36,8 @@ const overlapperTidsperioder = (t1: TidsperiodeDate, t2: TidsperiodeDate) => {
 };
 
 const erTidsperiodeInnenforFørsteSeksUker = (tidsperiode: any, familiehendelsesdato: Date) => {
-    const førsteUttaksdagFamiliehendelsesdato = UttaksdagenNy(familiehendelsesdato).denneEllerNeste();
-    const førsteUttaksdagEtterSeksUker = UttaksdagenNy(førsteUttaksdagFamiliehendelsesdato).leggTil(
+    const førsteUttaksdagFamiliehendelsesdato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+    const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdagFamiliehendelsesdato).leggTil(
         ANTALL_UTTAKSDAGER_SEKS_UKER,
     );
     return erTidsperiodeFomEllerEtterDato(tidsperiode, førsteUttaksdagEtterSeksUker) === false;
@@ -80,19 +80,19 @@ export function getValidTidsperiode(tidsperiode: TidsperiodeDate | undefined): T
 }
 
 export function getTidsperiode(fom: Date, uttaksdager: number): TidsperiodeDate {
-    if (!UttaksdagenNy(fom).erUttaksdag()) {
+    if (!Uttaksdagen(fom).erUttaksdag()) {
         throw new Error('FOM er ikke en uttaksdag');
     }
     return {
         fom,
-        tom: UttaksdagenNy(fom).leggTil(uttaksdager - 1),
+        tom: Uttaksdagen(fom).leggTil(uttaksdager - 1),
     };
 }
 
-export const getTidsperiodeDate = (periode: SaksperiodeNy): TidsperiodeDate => {
+export const getTidsperiodeDate = (fom: string, tom: string): TidsperiodeDate => {
     return {
-        fom: ISOStringToDate(periode.fom)!,
-        tom: ISOStringToDate(periode.tom)!,
+        fom: ISOStringToDate(fom)!,
+        tom: ISOStringToDate(tom)!,
     };
 };
 
@@ -112,7 +112,7 @@ function getAntallUttaksdagerITidsperiode(tidsperiode: TidsperiodeDate): number 
     const tom = dayjs(tidsperiode.tom);
     let antall = 0;
     while (fom.isSameOrBefore(tom, 'day')) {
-        if (UttaksdagenNy(fom.toDate()).erUttaksdag()) {
+        if (Uttaksdagen(fom.toDate()).erUttaksdag()) {
             antall++;
         }
         fom = fom.add(24, 'hours');

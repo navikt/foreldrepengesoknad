@@ -1,6 +1,7 @@
 import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
 
-import { AnnenForelder, Barn, NavnPåForeldre, Periode } from '@navikt/fp-common';
+import { AnnenForelder, Barn, NavnPåForeldre } from '@navikt/fp-common';
+import { SaksperiodeNy } from '@navikt/fp-types';
 
 export enum UttaksplanContextDataType {
     UTTAKSPLAN = 'UTTAKSPLAN',
@@ -12,7 +13,7 @@ export enum UttaksplanContextDataType {
 }
 
 export type UttaksplanContextDataMap = {
-    [UttaksplanContextDataType.UTTAKSPLAN]?: Periode[];
+    [UttaksplanContextDataType.UTTAKSPLAN]?: SaksperiodeNy[];
     [UttaksplanContextDataType.FAMILIEHENDELSEDATO]?: string;
     [UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR]?: boolean;
     [UttaksplanContextDataType.NAVN_PÅ_FORELDRE]?: NavnPåForeldre;
