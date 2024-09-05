@@ -8,7 +8,7 @@ const meta = {
 } satisfies Meta<typeof CalendarIconLabel>;
 export default meta;
 
-type Story = StoryObj<typeof CalendarIconLabel>;
+type Story = StoryObj<typeof meta>;
 
 export const GreenLabel: Story = {
     args: {

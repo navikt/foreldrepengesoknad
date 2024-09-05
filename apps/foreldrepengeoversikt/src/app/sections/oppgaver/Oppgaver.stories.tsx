@@ -10,11 +10,11 @@ const queryClient = new QueryClient();
 const meta = {
     title: 'Oppgaver',
     component: Oppgaver,
-    render: () => {
+    render: (props) => {
         return (
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <Oppgaver saksnummer="352011079" />
+                    <Oppgaver {...props} />
                 </MemoryRouter>
             </QueryClientProvider>
         );
@@ -22,7 +22,7 @@ const meta = {
 } satisfies Meta<typeof Oppgaver>;
 export default meta;
 
-type Story = StoryObj<typeof Oppgaver>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     parameters: {
@@ -40,6 +40,9 @@ export const Default: Story = {
             ],
         },
     },
+    args: {
+        saksnummer: '352011079',
+    },
 };
 
 export const FeilIMinidialogApiKall: Story = {
@@ -47,5 +50,8 @@ export const FeilIMinidialogApiKall: Story = {
         msw: {
             handlers: [http.get('/rest/minidialog', () => new HttpResponse(null, { status: 400 }))],
         },
+    },
+    args: {
+        saksnummer: '352011079',
     },
 };

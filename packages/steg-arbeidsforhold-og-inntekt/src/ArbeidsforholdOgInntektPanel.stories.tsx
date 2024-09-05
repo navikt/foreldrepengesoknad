@@ -1,7 +1,5 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
-
-import { AppName, Arbeidsforhold } from '@navikt/fp-types';
+import { Meta, StoryObj } from '@storybook/react';
 
 import ArbeidsforholdOgInntektPanel from './ArbeidsforholdOgInntektPanel';
 
@@ -32,65 +30,47 @@ const DEFAULT_ARBEIDSFORHOLD = [
     },
 ];
 
-const defaultExport = {
-    title: 'ArbeidsforholdOgInntektPanel',
+const meta = {
     component: ArbeidsforholdOgInntektPanel,
+} satisfies Meta<typeof ArbeidsforholdOgInntektPanel>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const ForSvangerskapspenger: Story = {
+    args: {
+        aktiveArbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        saveOnNext: action('button-click'),
+        cancelApplication: action('button-click'),
+        goToPreviousStep: action('button-click'),
+        onStepChange: action('button-click'),
+        stepConfig: [
+            {
+                id: 'BARNET_PATH',
+                label: 'Barnet',
+                isSelected: false,
+            },
+            {
+                id: 'ARBEIDSFORHOLD_OG_INNTEKT',
+                label: 'Arbeidsforhold og inntekt',
+                isSelected: true,
+            },
+        ],
+        stønadstype: 'Svangerskapspenger',
+    },
 };
 
-export default defaultExport;
-
-interface Props {
-    arbeidsforhold: Arbeidsforhold[];
-    saveOnNext: () => void;
-    cancelApplication: () => void;
-    goToPreviousStep: () => void;
-    onStepChange: () => void;
-    stønadstype: AppName;
-}
-
-const Template: StoryFn<Props> = ({
-    arbeidsforhold = DEFAULT_ARBEIDSFORHOLD,
-    saveOnNext = action('button-click'),
-    cancelApplication = action('button-click'),
-    goToPreviousStep = action('button-click'),
-    onStepChange = action('button-click'),
-    stønadstype,
-}) => {
-    return (
-        <ArbeidsforholdOgInntektPanel
-            aktiveArbeidsforhold={arbeidsforhold}
-            saveOnNext={saveOnNext}
-            onStepChange={onStepChange}
-            cancelApplication={cancelApplication}
-            goToPreviousStep={goToPreviousStep}
-            stepConfig={[
-                {
-                    id: 'BARNET_PATH',
-                    label: 'Barnet',
-                    isSelected: false,
-                },
-                {
-                    id: 'ARBEIDSFORHOLD_OG_INNTEKT',
-                    label: 'Arbeidsforhold og inntekt',
-                    isSelected: true,
-                },
-            ]}
-            stønadstype={stønadstype}
-        />
-    );
-};
-export const ForSvangerskapspenger = Template.bind({});
-ForSvangerskapspenger.args = {
-    stønadstype: 'Svangerskapspenger',
+export const ForForeldrepenger: Story = {
+    args: {
+        ...ForSvangerskapspenger.args,
+        stønadstype: 'Foreldrepenger',
+    },
 };
 
-export const ForForeldrepenger = Template.bind({});
-ForForeldrepenger.args = {
-    stønadstype: 'Foreldrepenger',
-};
-
-export const HarIngenArbeidsforhold = Template.bind({});
-HarIngenArbeidsforhold.args = {
-    stønadstype: 'Foreldrepenger',
-    arbeidsforhold: [],
+export const HarIngenArbeidsforhold: Story = {
+    args: {
+        ...ForSvangerskapspenger.args,
+        stønadstype: 'Foreldrepenger',
+        aktiveArbeidsforhold: [],
+    },
 };

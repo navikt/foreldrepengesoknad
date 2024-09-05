@@ -1,13 +1,12 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
+
 import ScanDocumentInfo from './ScanDocumentInfo';
 
-export default {
-    title: 'ScanDocumentInfo',
+const meta = {
     component: ScanDocumentInfo,
-};
+} satisfies Meta<typeof ScanDocumentInfo>;
+export default meta;
 
-const Template: StoryFn = () => {
-    return <ScanDocumentInfo />;
-};
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
+export const Default: Story = {};

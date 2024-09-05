@@ -1,19 +1,18 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
-import { LocaleAll } from '@navikt/fp-types';
+import LanguageToggle from './LanguageToggle';
 
-import LanguageToggle, { LanguageToggleProps } from './LanguageToggle';
-
-export default {
-    title: 'LanguageToggle',
+const meta = {
     component: LanguageToggle,
-};
+} satisfies Meta<typeof LanguageToggle>;
+export default meta;
 
-const Template: StoryFn<LanguageToggleProps<LocaleAll>> = (args) => <LanguageToggle {...args} />;
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
-Default.args = {
-    toggleLanguage: () => null,
-    locale: 'nb',
-    availableLocales: ['nb', 'nn', 'en'],
+export const Default: Story = {
+    args: {
+        toggleLanguage: () => null,
+        locale: 'nb',
+        availableLocales: ['nb', 'nn', 'en'],
+    },
 };

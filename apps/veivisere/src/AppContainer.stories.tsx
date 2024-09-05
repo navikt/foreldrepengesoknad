@@ -2,6 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { ContextRoutes, HvaSkjerNårRoutes } from 'appData/routes';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import { InitialEntry } from 'history';
 import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -86,10 +87,10 @@ const satser = {
     ],
 };
 
-const doApiMocking = (args: { brukMock?: boolean }) => {
+const doApiMocking = (brukMock?: boolean) => {
     const axiosInstance = getAxiosInstance();
     const apiMock = new MockAdapter(axiosInstance);
-    if (args.brukMock) {
+    if (brukMock) {
         apiMock.onPost('/rest/konto').reply(() => {
             return [200, kontoer];
         });
@@ -122,51 +123,36 @@ const doApiMocking = (args: { brukMock?: boolean }) => {
 const meta = {
     title: 'AppContainer',
     component: AppContainer,
-} satisfies Meta<typeof AppContainer>;
-export default meta;
-
-type Story = StoryObj<{
-    brukMock?: boolean;
-}>;
-
-export const HvorMyeVeiviser: Story = {
-    render: (args) => {
+    render: ({ initialEntries, brukMock }) => {
         initAmplitude();
-        doApiMocking(args);
+        doApiMocking(brukMock);
         return (
             <StrictMode>
-                <MemoryRouter initialEntries={[ContextRoutes.HVOR_MYE]}>
+                <MemoryRouter initialEntries={initialEntries}>
                     <AppContainer />
                 </MemoryRouter>
             </StrictMode>
         );
+    },
+} satisfies Meta<{ initialEntries?: InitialEntry[]; brukMock?: boolean }>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const HvorMyeVeiviser: Story = {
+    args: {
+        initialEntries: [ContextRoutes.HVOR_MYE],
     },
 };
 
 export const HvaSkjerNårVeiviser: Story = {
-    render: (args) => {
-        initAmplitude();
-        doApiMocking(args);
-        return (
-            <StrictMode>
-                <MemoryRouter initialEntries={[ContextRoutes.HVA_SKJER + HvaSkjerNårRoutes.OM]}>
-                    <AppContainer />
-                </MemoryRouter>
-            </StrictMode>
-        );
+    args: {
+        initialEntries: [ContextRoutes.HVA_SKJER + HvaSkjerNårRoutes.OM],
     },
 };
 
 export const FpEllerEsVeiviser: Story = {
-    render: (args) => {
-        initAmplitude();
-        doApiMocking(args);
-        return (
-            <StrictMode>
-                <MemoryRouter initialEntries={[ContextRoutes.FP_ELLER_ES]}>
-                    <AppContainer />
-                </MemoryRouter>
-            </StrictMode>
-        );
+    args: {
+        initialEntries: [ContextRoutes.FP_ELLER_ES],
     },
 };

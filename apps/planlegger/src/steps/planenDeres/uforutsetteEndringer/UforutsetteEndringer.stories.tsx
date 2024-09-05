@@ -7,18 +7,18 @@ import UforutsetteEndringer from './UforutsetteEndringer';
 
 type StoryArgs = ComponentProps<typeof UforutsetteEndringer>;
 
-type Story = StoryObj<StoryArgs>;
-
-const customRenderer = ({ hvemPlanlegger, barnet, arbeidssituasjon }: StoryArgs) => {
-    return <UforutsetteEndringer arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} barnet={barnet} />;
-};
-
 const meta = {
     title: 'steg/PlanenDeresSteg/components/UforutsetteEndringer',
     component: UforutsetteEndringer,
-    render: customRenderer,
+    render: ({ hvemPlanlegger, barnet, arbeidssituasjon }) => {
+        return (
+            <UforutsetteEndringer arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} barnet={barnet} />
+        );
+    },
 } satisfies Meta<StoryArgs>;
 export default meta;
+
+type Story = StoryObj<typeof meta>;
 
 export const AdopsjonMorOgFarBeggeHarRettToBarn: Story = {
     args: {

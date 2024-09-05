@@ -1,7 +1,8 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, EsDataContext } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -15,31 +16,34 @@ const promiseAction =
         return Promise.resolve();
     };
 
-export default {
-    title: 'UtenlandsoppholdSteg',
+type StoryArgs = {
+    gåTilNesteSide?: (action: Action) => void;
+} & ComponentProps<typeof UtenlandsoppholdSteg>;
+
+const meta = {
     component: UtenlandsoppholdSteg,
-};
+    render: ({ gåTilNesteSide = action('button-click'), mellomlagreOgNaviger }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[Path.UTENLANDSOPPHOLD]}>
+                <EsDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: { situasjon: 'fødsel' },
+                    }}
+                >
+                    <UtenlandsoppholdSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />
+                </EsDataContext>
+            </MemoryRouter>
+        );
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
 
-const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void; mellomlagreOgNaviger?: () => Promise<void> }> = ({
-    gåTilNesteSide,
-    mellomlagreOgNaviger = promiseAction(),
-}) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[Path.UTENLANDSOPPHOLD]}>
-            <EsDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.SØKERSITUASJON]: { situasjon: 'fødsel' },
-                }}
-            >
-                <UtenlandsoppholdSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />
-            </EsDataContext>
-        </MemoryRouter>
-    );
-};
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
-Default.args = {
-    gåTilNesteSide: action('button-click'),
+export const Default: Story = {
+    args: {
+        mellomlagreOgNaviger: promiseAction(),
+    },
 };

@@ -1,7 +1,8 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Action, EsDataContext } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -15,26 +16,30 @@ const promiseAction =
         return Promise.resolve();
     };
 
-export default {
-    title: 'SøkersituasjonSteg',
+type StoryArgs = {
+    gåTilNesteSide: (action: Action) => void;
+} & ComponentProps<typeof SøkersituasjonSteg>;
+
+const meta = {
     component: SøkersituasjonSteg,
-};
+    render: ({ gåTilNesteSide, mellomlagreOgNaviger }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[Path.SØKERSITUASJON]}>
+                <EsDataContext onDispatch={gåTilNesteSide}>
+                    <SøkersituasjonSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />
+                </EsDataContext>
+            </MemoryRouter>
+        );
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
 
-const Template: StoryFn<{ gåTilNesteSide: (action: Action) => void; mellomlagreOgNaviger?: () => Promise<void> }> = ({
-    gåTilNesteSide,
-    mellomlagreOgNaviger = promiseAction(),
-}) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[Path.SØKERSITUASJON]}>
-            <EsDataContext onDispatch={gåTilNesteSide}>
-                <SøkersituasjonSteg mellomlagreOgNaviger={mellomlagreOgNaviger} />
-            </EsDataContext>
-        </MemoryRouter>
-    );
-};
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
-Default.args = {
-    gåTilNesteSide: action('button-click'),
+export const Default: Story = {
+    args: {
+        gåTilNesteSide: action('button-click'),
+        mellomlagreOgNaviger: promiseAction(),
+    },
 };

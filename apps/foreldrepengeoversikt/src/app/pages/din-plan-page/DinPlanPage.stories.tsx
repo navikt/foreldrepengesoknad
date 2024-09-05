@@ -16,15 +16,12 @@ const queryClient = new QueryClient();
 const meta = {
     title: 'DinPlanPage',
     component: DinPlanPage,
-    render: () => {
+    render: (props) => {
         return (
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/352011079`]}>
                     <Routes>
-                        <Route
-                            element={<DinPlanPage søkerinfo={søkerinfo as SøkerinfoDTO} />}
-                            path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer`}
-                        />
+                        <Route element={<DinPlanPage {...props} />} path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer`} />
                     </Routes>
                 </MemoryRouter>
             </QueryClientProvider>
@@ -33,7 +30,7 @@ const meta = {
 } satisfies Meta<typeof DinPlanPage>;
 export default meta;
 
-type Story = StoryObj<typeof DinPlanPage>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     parameters: {
@@ -43,5 +40,8 @@ export const Default: Story = {
                 http.post('/rest/innsyn/v2/annenPartVedtak', () => HttpResponse.json(annenPartsVedtak)),
             ],
         },
+    },
+    args: {
+        søkerinfo: søkerinfo as SøkerinfoDTO,
     },
 };

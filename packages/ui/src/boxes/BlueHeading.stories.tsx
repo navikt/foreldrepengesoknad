@@ -8,7 +8,7 @@ const meta = {
 } satisfies Meta<typeof BlueHeading>;
 export default meta;
 
-type Story = StoryObj<typeof BlueHeading>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {

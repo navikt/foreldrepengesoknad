@@ -10,9 +10,7 @@ import PeriodeListeItem from './PeriodeListeItem';
 
 type StoryArgs = ComponentProps<typeof PeriodeListeItem>;
 
-type Story = StoryObj<StoryArgs>;
-
-const customRenderer = ({ permisjonsperiode }: StoryArgs) => {
+const customRenderer = (props: StoryArgs) => {
     return (
         <UttaksplanDataContext
             initialState={{
@@ -25,7 +23,7 @@ const customRenderer = ({ permisjonsperiode }: StoryArgs) => {
         >
             <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
                 <Accordion>
-                    <PeriodeListeItem permisjonsperiode={permisjonsperiode} familiehendelsedato="2024-06-01" />
+                    <PeriodeListeItem {...props} />
                 </Accordion>
             </div>
         </UttaksplanDataContext>
@@ -39,8 +37,11 @@ const meta = {
 } satisfies Meta<StoryArgs>;
 export default meta;
 
+type Story = StoryObj<typeof meta>;
+
 export const UttaksperiodeMor: Story = {
     args: {
+        familiehendelsedato: '2024-06-01',
         permisjonsperiode: {
             tidsperiode: {
                 fom: '2024-06-01',
@@ -65,6 +66,7 @@ export const UttaksperiodeMor: Story = {
 
 export const UttaksperiodeMorFlerePerioder: Story = {
     args: {
+        familiehendelsedato: '2024-06-01',
         permisjonsperiode: {
             tidsperiode: {
                 fom: '2024-06-01',
@@ -99,6 +101,7 @@ export const UttaksperiodeMorFlerePerioder: Story = {
 
 export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
     args: {
+        familiehendelsedato: '2024-06-01',
         permisjonsperiode: {
             tidsperiode: {
                 fom: '2024-06-01',
@@ -146,6 +149,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
 
 export const UttaksperiodeFar: Story = {
     args: {
+        familiehendelsedato: '2024-06-01',
         permisjonsperiode: {
             tidsperiode: {
                 fom: '2024-06-01',
@@ -170,6 +174,7 @@ export const UttaksperiodeFar: Story = {
 
 export const PeriodeUtenUttak: Story = {
     args: {
+        familiehendelsedato: '2024-06-01',
         permisjonsperiode: {
             erPeriodeUtenUttak: true,
             tidsperiode: {

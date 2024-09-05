@@ -9,12 +9,13 @@ const meta = {
 } satisfies Meta<typeof Infobox>;
 export default meta;
 
-type Story = StoryObj<typeof Infobox>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
         header: <div>Dette er en header</div>,
         children: <div>Dette er et barn</div>,
+        color: 'blue',
     },
 };
 
@@ -31,17 +32,20 @@ export const MedIkon: Story = {
         header: <div>Dette er en header</div>,
         children: <div>Dette er et barn</div>,
         icon: <TasklistStartIcon height={28} width={28} color="#236B7D" aria-hidden />,
+        color: 'blue',
     },
 };
 export const UtenHeaderMedIkon: Story = {
     args: {
         children: <div>Dette er et barn</div>,
         icon: <TasklistStartIcon height={28} width={28} color="#236B7D" aria-hidden />,
+        color: 'blue',
     },
 };
 
 export const UtenHeaderUtenIkon: Story = {
     args: {
         children: <div>Dette er et barn</div>,
+        color: 'blue',
     },
 };

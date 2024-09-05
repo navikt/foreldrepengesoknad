@@ -9,7 +9,7 @@ const meta = {
 } satisfies Meta<typeof StatusTag>;
 export default meta;
 
-type Story = StoryObj<typeof StatusTag>;
+type Story = StoryObj<typeof meta>;
 
 export const AktivSak: Story = {
     args: {

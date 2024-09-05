@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Action } from 'appData/PlanleggerDataContext';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { StrictMode } from 'react';
@@ -88,15 +87,6 @@ const satser = {
 const meta = {
     title: 'AppContainer',
     component: AppContainer,
-} satisfies Meta<typeof AppContainer>;
-export default meta;
-
-type Story = StoryObj<{
-    gåTilNesteSide: (action: Action) => void;
-    brukMocks?: boolean;
-}>;
-
-export const Default: Story = {
     render: (args) => {
         initAmplitude();
 
@@ -137,4 +127,11 @@ export const Default: Story = {
             </StrictMode>
         );
     },
-};
+} satisfies Meta<{
+    brukMocks?: boolean;
+}>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {};

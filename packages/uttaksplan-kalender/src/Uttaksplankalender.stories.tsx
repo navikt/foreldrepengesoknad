@@ -20,7 +20,7 @@ const meta = {
 } satisfies Meta<typeof UttaksplanKalender>;
 export default meta;
 
-type Story = StoryObj<typeof UttaksplanKalender>;
+type Story = StoryObj<typeof meta>;
 
 const uttaksplanMor = [
     {

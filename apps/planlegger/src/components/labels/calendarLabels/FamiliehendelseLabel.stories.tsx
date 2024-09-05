@@ -8,7 +8,7 @@ const meta = {
 } satisfies Meta<typeof FamiliehendelseLabel>;
 export default meta;
 
-type Story = StoryObj<typeof FamiliehendelseLabel>;
+type Story = StoryObj<typeof meta>;
 
 export const FødselLabel: Story = {
     args: {

@@ -10,7 +10,7 @@ const meta = {
 } satisfies Meta<typeof KontonummerInfo>;
 export default meta;
 
-type Story = StoryObj<typeof KontonummerInfo>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
@@ -45,5 +45,6 @@ export const ForSvangerskapspenger: Story = {
 export const HarIkkeKontonr: Story = {
     args: {
         ytelse: Ytelse.ENGANGSSTØNAD,
+        bankkonto: undefined,
     },
 };

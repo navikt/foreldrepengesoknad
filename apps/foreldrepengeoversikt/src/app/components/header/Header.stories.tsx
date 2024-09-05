@@ -29,7 +29,7 @@ const meta = {
 } satisfies Meta<typeof DinSakHeader>;
 export default meta;
 
-type Story = StoryObj<typeof DinSakHeader>;
+type Story = StoryObj<typeof meta>;
 
 export const DefaultDinSakHeader: Story = {
     args: {

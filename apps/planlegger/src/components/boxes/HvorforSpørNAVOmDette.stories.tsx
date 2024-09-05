@@ -8,7 +8,7 @@ const meta = {
 } satisfies Meta<typeof HvorforSpørNAVOmDette>;
 export default meta;
 
-type Story = StoryObj<typeof HvorforSpørNAVOmDette>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {

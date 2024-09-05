@@ -10,7 +10,7 @@ const meta = {
 } satisfies Meta<typeof IconBox>;
 export default meta;
 
-type Story = StoryObj<typeof IconBox>;
+type Story = StoryObj<typeof meta>;
 
 export const BlueBox: Story = {
     args: {

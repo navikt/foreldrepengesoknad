@@ -9,11 +9,13 @@ const meta = {
 } satisfies Meta<typeof IconCircleWrapper>;
 export default meta;
 
-type Story = StoryObj<typeof IconCircleWrapper>;
+type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const GreenXlSizedIcon: Story = {
     args: {
         children: <CalendarIcon width="24" height="25" aria-label="icon-label" />,
+        color: 'green',
+        size: 'xl',
     },
 };
 

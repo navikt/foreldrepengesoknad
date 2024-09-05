@@ -1,16 +1,18 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
-import Banner, { BannerProps } from './Banner';
+import Banner from './Banner';
 
-export default {
+const meta = {
     title: 'step/Banner',
     component: Banner,
-};
+} satisfies Meta<typeof Banner>;
+export default meta;
 
-const Template: StoryFn<BannerProps> = (args) => <Banner {...args} />;
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
-Default.args = {
-    children: 'Dette er innhold for et banner',
-    size: 'small',
+export const Default: Story = {
+    args: {
+        children: 'Dette er innhold for et banner',
+        size: 'small',
+    },
 };

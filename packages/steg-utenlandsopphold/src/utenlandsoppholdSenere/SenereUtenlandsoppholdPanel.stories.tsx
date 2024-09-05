@@ -1,48 +1,33 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import SenereUtenlandsoppholdPanel from './SenereUtenlandsoppholdPanel';
 
-export default {
-    title: 'SenereUtenlandsoppholdPanel',
+const meta = {
     component: SenereUtenlandsoppholdPanel,
-};
+} satisfies Meta<typeof SenereUtenlandsoppholdPanel>;
+export default meta;
 
-const Template: StoryFn<{
-    saveOnNext: () => void;
-    saveOnPrevious: () => void;
-    cancelApplication: () => void;
-    goToPreviousStep: () => void;
-    onStepChange: () => void;
-}> = ({ saveOnNext, saveOnPrevious, cancelApplication, goToPreviousStep, onStepChange }) => {
-    return (
-        <SenereUtenlandsoppholdPanel
-            saveOnNext={saveOnNext}
-            saveOnPrevious={saveOnPrevious}
-            cancelApplication={cancelApplication}
-            onStepChange={onStepChange}
-            goToPreviousStep={goToPreviousStep}
-            stepConfig={[
-                {
-                    id: 'UTENLANDSOPPHOLD_PATH',
-                    label: 'Utenlandsopphold',
-                    isSelected: false,
-                },
-                {
-                    id: 'SKAL_BO_I_UTLANDET_PATH',
-                    label: 'Skal bo i utlandet',
-                    isSelected: true,
-                },
-            ]}
-        />
-    );
-};
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
-Default.args = {
-    saveOnNext: action('button-click'),
-    saveOnPrevious: action('button-click'),
-    cancelApplication: action('button-click'),
-    goToPreviousStep: action('button-click'),
-    onStepChange: action('button-click'),
+export const Default: Story = {
+    args: {
+        saveOnNext: action('button-click'),
+        cancelApplication: action('button-click'),
+        goToPreviousStep: action('button-click'),
+        onStepChange: action('button-click'),
+        saveOnPrevious: action('button-click'),
+        stepConfig: [
+            {
+                id: 'UTENLANDSOPPHOLD_PATH',
+                label: 'Utenlandsopphold',
+                isSelected: false,
+            },
+            {
+                id: 'SKAL_BO_I_UTLANDET_PATH',
+                label: 'Skal bo i utlandet',
+                isSelected: true,
+            },
+        ],
+    },
 };

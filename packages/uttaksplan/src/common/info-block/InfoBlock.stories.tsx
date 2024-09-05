@@ -1,15 +1,17 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
-import InfoBlock, { InfoBlockProps } from './InfoBlock';
+import InfoBlock from './InfoBlock';
 
-export default {
+const meta = {
     title: 'components/InfoBlock',
     component: InfoBlock,
-};
+} satisfies Meta<typeof InfoBlock>;
+export default meta;
 
-const Template: StoryFn<InfoBlockProps> = (args) => <InfoBlock {...args} />;
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
-Default.args = {
-    children: 'Tekst i en infoboks',
+export const Default: Story = {
+    args: {
+        children: 'Tekst i en infoboks',
+    },
 };

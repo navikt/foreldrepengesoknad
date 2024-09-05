@@ -8,7 +8,7 @@ const meta = {
 } satisfies Meta<typeof AndreVeivisereLinkPanel>;
 export default meta;
 
-type Story = StoryObj<typeof AndreVeivisereLinkPanel>;
+type Story = StoryObj<typeof meta>;
 
 export const EnLenke: Story = {
     args: {

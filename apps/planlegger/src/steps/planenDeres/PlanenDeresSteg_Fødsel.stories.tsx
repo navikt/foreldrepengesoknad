@@ -24,48 +24,46 @@ const MINSTERETTER = {
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
     hvorLangPeriode: HvorLangPeriode;
-    fordeling: Fordeling;
+    fordeling?: Fordeling;
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
-    gåTilNesteSide: (action: Action) => void;
+    gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof PlanenDeresSteg>;
-
-type Story = StoryObj<StoryArgs>;
-
-const customRenderer = ({
-    gåTilNesteSide = action('button-click'),
-    hvemPlanlegger,
-    fordeling,
-    hvorLangPeriode,
-    omBarnet,
-    arbeidssituasjon,
-    stønadskontoer,
-}: StoryArgs) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[PlanleggerRoutes.PLANEN_DERES]}>
-            <PlanleggerDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.FORDELING]: fordeling,
-                    [ContextDataType.HVOR_LANG_PERIODE]: hvorLangPeriode,
-                    [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
-                    [ContextDataType.OM_BARNET]: omBarnet,
-                    [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
-                }}
-            >
-                <PlanenDeresSteg stønadskontoer={stønadskontoer} />
-            </PlanleggerDataContext>
-        </MemoryRouter>
-    );
-};
 
 const meta = {
     title: 'steg/PlanenDeresSteg/Fødsel',
     component: PlanenDeresSteg,
-    render: customRenderer,
+    render: ({
+        gåTilNesteSide = action('button-click'),
+        hvemPlanlegger,
+        fordeling,
+        hvorLangPeriode,
+        omBarnet,
+        arbeidssituasjon,
+        stønadskontoer,
+    }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[PlanleggerRoutes.PLANEN_DERES]}>
+                <PlanleggerDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.FORDELING]: fordeling,
+                        [ContextDataType.HVOR_LANG_PERIODE]: hvorLangPeriode,
+                        [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
+                        [ContextDataType.OM_BARNET]: omBarnet,
+                        [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
+                    }}
+                >
+                    <PlanenDeresSteg stønadskontoer={stønadskontoer} />
+                </PlanleggerDataContext>
+            </MemoryRouter>
+        );
+    },
 } satisfies Meta<StoryArgs>;
 export default meta;
+
+type Story = StoryObj<typeof meta>;
 
 export const MorOgFarBeggeHarRett: Story = {
     args: {

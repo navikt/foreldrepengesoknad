@@ -1,35 +1,27 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { HvaSkjerNårRoutes } from 'appData/routes';
-import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { Action } from 'vite-plugin-checker/dist/esm/types';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
 import { Situasjon } from '../situasjon/SituasjonSide';
 import OppsummeringHvaSkjerNårSide from './OppsummeringHvaSkjerNårSide';
 
-type StoryArgs = {
-    gåTilNesteSide?: (action: Action) => void;
-} & ComponentProps<typeof OppsummeringHvaSkjerNårSide>;
-
-type Story = StoryObj<StoryArgs>;
-
-const customRenderer = ({ hvaSkjerNårSituasjon }: StoryArgs) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[HvaSkjerNårRoutes.SITUASJON]}>
-            <OppsummeringHvaSkjerNårSide hvaSkjerNårSituasjon={hvaSkjerNårSituasjon} />
-        </MemoryRouter>
-    );
-};
-
 const meta = {
     title: 'hvaSkjerNår/OppsummeringHvaSkjerNårSide',
     component: OppsummeringHvaSkjerNårSide,
-    render: customRenderer,
+    render: (props) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[HvaSkjerNårRoutes.SITUASJON]}>
+                <OppsummeringHvaSkjerNårSide {...props} />
+            </MemoryRouter>
+        );
+    },
 } satisfies Meta<typeof OppsummeringHvaSkjerNårSide>;
 export default meta;
+
+type Story = StoryObj<typeof meta>;
 
 export const MorOgFarTermin: Story = {
     args: {

@@ -9,7 +9,7 @@ const meta = {
 } satisfies Meta<typeof LanguageToggle>;
 export default meta;
 
-type Story = StoryObj<typeof LanguageToggle>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {

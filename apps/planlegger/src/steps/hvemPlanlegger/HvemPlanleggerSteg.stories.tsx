@@ -16,12 +16,6 @@ type StoryArgs = {
 const meta = {
     title: 'steg/HvemPlanleggerSteg',
     component: HvemPlanleggerSteg,
-} satisfies Meta<StoryArgs>;
-export default meta;
-
-type Story = StoryObj<StoryArgs>;
-
-export const Default: Story = {
     render: ({ gåTilNesteSide = action('button-click') }) => {
         initAmplitude();
         return (
@@ -32,4 +26,9 @@ export const Default: Story = {
             </MemoryRouter>
         );
     },
-};
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {};

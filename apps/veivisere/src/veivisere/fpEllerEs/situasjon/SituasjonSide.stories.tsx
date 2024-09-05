@@ -24,18 +24,22 @@ const DEFAULT_SATSER = {
 const meta = {
     title: 'fpEllerEs/SituasjonSide',
     component: SituasjonSide,
-} satisfies Meta<typeof SituasjonSide>;
-export default meta;
-
-type Story = StoryObj<typeof SituasjonSide>;
-
-export const Default: Story = {
-    render: ({ satser = DEFAULT_SATSER, setFpEllerEsSituasjon = () => undefined }) => {
+    render: (props) => {
         initAmplitude();
         return (
             <MemoryRouter initialEntries={[FpEllerEsRoutes.SITUASJON]}>
-                <SituasjonSide satser={satser} setFpEllerEsSituasjon={setFpEllerEsSituasjon} />
+                <SituasjonSide {...props} />
             </MemoryRouter>
         );
+    },
+} satisfies Meta<typeof SituasjonSide>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        satser: DEFAULT_SATSER,
+        setFpEllerEsSituasjon: () => undefined,
     },
 };
