@@ -7,8 +7,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyLong, Box, HStack, Radio, VStack } from '@navikt/ds-react';
 
-import { førsteOktober2021ReglerGjelder } from '@navikt/fp-common';
 import { Datepicker, RadioGroup, Select } from '@navikt/fp-form-hooks';
+import { førsteOktober2021ReglerGjelder } from '@navikt/fp-uttaksplan';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { BarnetFormValues } from '../OmBarnetFormValues';

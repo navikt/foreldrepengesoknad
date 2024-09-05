@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { Block, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
+import { NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
@@ -35,21 +35,19 @@ const BarnInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
     }
 
     return (
-        <Block padBottom="xl">
-            <UttakUploader
-                attachments={attachments}
-                updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE_BARN)}
-                perioder={perioder}
-                navnPåForeldre={navnPåForeldre}
-                familiehendelsesdato={familiehendelsesdato}
-                termindato={termindato}
-                situasjon={situasjon}
-                skjemanummer={Skjemanummer.DOK_INNLEGGELSE_BARN}
-                labelText={intl.formatMessage({ id: 'manglendeVedlegg.barnInnlagt.label' })}
-                description={intl.formatMessage({ id: 'manglendeVedlegg.barnInnlagt.description' })}
-                attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
-            />
-        </Block>
+        <UttakUploader
+            attachments={attachments}
+            updateAttachments={updateAttachments(Skjemanummer.DOK_INNLEGGELSE_BARN)}
+            perioder={perioder}
+            navnPåForeldre={navnPåForeldre}
+            familiehendelsesdato={familiehendelsesdato}
+            termindato={termindato}
+            situasjon={situasjon}
+            skjemanummer={Skjemanummer.DOK_INNLEGGELSE_BARN}
+            labelText={intl.formatMessage({ id: 'manglendeVedlegg.barnInnlagt.label' })}
+            description={intl.formatMessage({ id: 'manglendeVedlegg.barnInnlagt.description' })}
+            attachmentType={AttachmentType.UTSETTELSE_SYKDOM}
+        />
     );
 };
 

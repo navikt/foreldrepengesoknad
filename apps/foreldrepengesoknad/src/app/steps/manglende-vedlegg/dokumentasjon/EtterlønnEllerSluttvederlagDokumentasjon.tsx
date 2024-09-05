@@ -1,7 +1,6 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { Block } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { Attachment } from '@navikt/fp-types';
@@ -37,26 +36,24 @@ const EtterlønnEllerSluttvederlagDokumentasjon: React.FunctionComponent<Props> 
     const perioder = andreInntektskilder.filter((i) => i.type === AnnenInntektType.SLUTTPAKKE);
 
     return (
-        <Block padBottom="xl">
-            <VedleggUploader
-                attachments={attachments}
-                updateAttachments={updateAttachments(Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG)}
-                skjemanummer={Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG}
-                labelText={intl.formatMessage(
-                    { id: 'manglendeVedlegg.etterlønn.tittel' },
-                    {
-                        perioder: formaterPerioderForVisning(perioder, intl),
-                        antallPerioder: perioder.length,
-                    },
-                )}
-                description={intl.formatMessage({
-                    id: 'manglendeVedlegg.etterlønn.description',
-                })}
-                attachmentType={AttachmentType.ANNEN_INNTEKT}
-                metadataType={AttachmentMetadataType.OPPTJENING}
-                perioder={perioder}
-            />
-        </Block>
+        <VedleggUploader
+            attachments={attachments}
+            updateAttachments={updateAttachments(Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG)}
+            skjemanummer={Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG}
+            labelText={intl.formatMessage(
+                { id: 'manglendeVedlegg.etterlønn.tittel' },
+                {
+                    perioder: formaterPerioderForVisning(perioder, intl),
+                    antallPerioder: perioder.length,
+                },
+            )}
+            description={intl.formatMessage({
+                id: 'manglendeVedlegg.etterlønn.description',
+            })}
+            attachmentType={AttachmentType.ANNEN_INNTEKT}
+            metadataType={AttachmentMetadataType.OPPTJENING}
+            perioder={perioder}
+        />
     );
 };
 

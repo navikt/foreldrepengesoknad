@@ -5,26 +5,22 @@ import { useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
-import {
-    Barn,
-    Situasjon,
-    Søkerrolle,
-    andreAugust2022ReglerGjelder,
-    isFarEllerMedmor,
-    isFødtBarn,
-    isUfødtBarn,
-} from '@navikt/fp-common';
+import { Barn, Situasjon, Søkerrolle, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { SøkerBarn, Søkerinfo } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
-import { getEldsteRegistrerteBarn } from 'app/utils/dateUtils';
+import {
+    andreAugust2022ReglerGjelder,
+    getEldsteRegistrerteBarn,
+    getErDatoInnenEnDagFraAnnenDato,
+} from 'app/utils/dateUtils';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 
 import { BarnetFormValues } from './OmBarnetFormValues';
 import ValgteRegistrerteBarn from './ValgteRegistrerteBarn';

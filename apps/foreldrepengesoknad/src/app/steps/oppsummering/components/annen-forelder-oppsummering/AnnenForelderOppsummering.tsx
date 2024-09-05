@@ -3,13 +3,9 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
-import {
-    AnnenForelder,
-    Søkerrolle,
-    isAnnenForelderIkkeOppgitt,
-    isAnnenForelderOppgitt,
-    isFarEllerMedmor,
-} from '@navikt/fp-common';
+import { AnnenForelder, Søkerrolle, isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from '@navikt/fp-common';
+
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 

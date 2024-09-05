@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { AnnenForelder, Block, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { AnnenForelder, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
@@ -27,17 +27,15 @@ const AleneomsorgDokumentasjon: React.FunctionComponent<Props> = ({
     }
 
     return (
-        <Block padBottom="xl">
-            <VedleggUploader
-                attachments={attachments}
-                updateAttachments={updateAttachments(Skjemanummer.DOK_AV_ALENEOMSORG)}
-                skjemanummer={Skjemanummer.DOK_AV_ALENEOMSORG}
-                labelText={intl.formatMessage({ id: 'manglendeVedlegg.aleneomsorg.tittel' })}
-                description={intl.formatMessage({ id: 'manglendeVedlegg.aleneomsorg.description' })}
-                attachmentType={AttachmentType.ALENEOMSORG}
-                metadataType={AttachmentMetadataType.BARN}
-            />
-        </Block>
+        <VedleggUploader
+            attachments={attachments}
+            updateAttachments={updateAttachments(Skjemanummer.DOK_AV_ALENEOMSORG)}
+            skjemanummer={Skjemanummer.DOK_AV_ALENEOMSORG}
+            labelText={intl.formatMessage({ id: 'manglendeVedlegg.aleneomsorg.tittel' })}
+            description={intl.formatMessage({ id: 'manglendeVedlegg.aleneomsorg.description' })}
+            attachmentType={AttachmentType.ALENEOMSORG}
+            metadataType={AttachmentMetadataType.BARN}
+        />
     );
 };
 

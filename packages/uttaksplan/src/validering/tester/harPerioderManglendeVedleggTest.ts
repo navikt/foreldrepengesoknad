@@ -1,7 +1,10 @@
 import dayjs from 'dayjs';
-import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
-import { MissingAttachment, Søknadsinfo, isInfoPeriode, sorterPerioder } from '@navikt/fp-common';
+
+import { MissingAttachment, Søknadsinfo, isInfoPeriode } from '@navikt/fp-common';
+
+import { sorterPerioder } from '../../utils/Periodene';
 import { findMissingAttachmentsForPerioder } from '../../utils/manglendeVedleggUtils';
+import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
 export const harPerioderManglendeVedleggTest: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {
     const manglendeVedlegg: MissingAttachment[] = findMissingAttachmentsForPerioder(grunnlag);

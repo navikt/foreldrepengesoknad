@@ -1,8 +1,13 @@
 import { IntlShape, useIntl } from 'react-intl';
-import { formatDate, Block, intlUtils, TidsperiodeDate, bemUtils } from '@navikt/fp-common';
-import { BodyShort, Label, Link } from '@navikt/ds-react';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
+import { BodyShort, Label, Link } from '@navikt/ds-react';
+
+import { TidsperiodeDate } from '@navikt/fp-common';
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { formatDate } from '@navikt/fp-utils';
+
+import Block from '../../common/block/Block';
+import planBemUtils from '../../utils/planBemUtils';
 import './tidsperiodeDisplay.less';
 
 interface Props {
@@ -10,7 +15,7 @@ interface Props {
     toggleVisTidsperiode: () => void;
 }
 
-const bem = bemUtils('tidsperiodeDisplay');
+const bem = planBemUtils('tidsperiodeDisplay');
 
 const formaterTidsperiodeDato = (dato: Date | undefined) => {
     if (dato) {
@@ -25,11 +30,11 @@ const renderTidsperiode = (tidsperiode: Partial<TidsperiodeDate> | undefined, in
         return (
             <div className={bem.element('dato-container')}>
                 <div className={bem.element('dato')}>
-                    <Label>{`${intlUtils(intl, 'fraogmed')}:`}</Label>
+                    <Label>{`${intl.formatMessage({ id: 'fraogmed' })}:`}</Label>
                     <BodyShort>{formaterTidsperiodeDato(tidsperiode.fom)}</BodyShort>
                 </div>
                 <div className={bem.element('dato')}>
-                    <Label>{`${intlUtils(intl, 'tilogmed')}:`}</Label>
+                    <Label>{`${intl.formatMessage({ id: 'tilogmed' })}:`}</Label>
                     <BodyShort>{formaterTidsperiodeDato(tidsperiode.tom)}</BodyShort>
                 </div>
             </div>

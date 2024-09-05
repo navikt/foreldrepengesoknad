@@ -5,12 +5,13 @@ import { Link } from 'react-router-dom';
 
 import { Alert, BodyLong, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { AnnenForelder, Barn, isFarEllerMedmor } from '@navikt/fp-common';
+import { AnnenForelder, Barn } from '@navikt/fp-common';
 import { Datepicker, RadioGroup } from '@navikt/fp-form-hooks';
 import { Søker, Søkerrolle } from '@navikt/fp-types';
 import { isAfterOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 
 import { AnnenForelderFormData, erAnnenForelderOppgitt } from './AnnenForelderFormData';
 

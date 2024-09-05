@@ -16,7 +16,7 @@ import {
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
-import { tiMånederSidenDato } from '@navikt/fp-utils';
+import { capitalizeFirstLetterInEveryWordOnly, tiMånederSidenDato } from '@navikt/fp-utils';
 import { hasLegalChars, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
@@ -30,7 +30,6 @@ import {
     getKanHaSvpFremTilTreUkerFørTermin,
     getSisteDagForSvangerskapspenger,
 } from 'app/utils/dateUtils';
-import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH } from 'app/utils/validationUtils';
 
 import Bedriftsbanner from '../Bedriftsbanner';
 import DelvisTilretteleggingPanel from './DelvisTilretteleggingPanel';
@@ -92,13 +91,13 @@ const getLabel = (
             ? intl.formatMessage(
                   { id: 'tilrettelegging.tilrettelagtArbeidFom.label.flere' },
                   {
-                      navnArbeidsgiver,
+                      navnArbeidsgiver: capitalizeFirstLetterInEveryWordOnly(navnArbeidsgiver),
                   },
               )
             : intl.formatMessage(
                   { id: 'tilrettelegging.tilrettelagtArbeidType.label.flere' },
                   {
-                      navnArbeidsgiver,
+                      navnArbeidsgiver: capitalizeFirstLetterInEveryWordOnly(navnArbeidsgiver),
                   },
               );
     }
@@ -231,8 +230,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                             <TextArea
                                 name="risikofaktorer"
                                 label={risikofaktorerLabel}
-                                minLength={TEXT_INPUT_MIN_LENGTH}
-                                maxLength={TEXT_INPUT_MAX_LENGTH}
                                 validate={[
                                     validateRisikofaktorer(intl, typeArbeid),
                                     hasLegalChars((ugyldigeTegn: string) =>
@@ -251,8 +248,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                                 <TextArea
                                     name="tilretteleggingstiltak"
                                     label={labelTiltak}
-                                    minLength={TEXT_INPUT_MIN_LENGTH}
-                                    maxLength={TEXT_INPUT_MAX_LENGTH}
                                     validate={[
                                         validateTilretteleggingstiltak(intl),
                                         hasLegalChars((ugyldigeTegn: string) =>

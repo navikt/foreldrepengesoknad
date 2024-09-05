@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { MorsAktivitet, assertUnreachable } from '@navikt/fp-common';
+import { MorsAktivitet } from '@navikt/fp-common';
+import { assertUnreachable } from '@navikt/fp-validation';
 
 import Feltoppsummering from '../feltoppsummering/Feltoppsummering';
 
@@ -32,7 +33,7 @@ const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet): strin
         case MorsAktivitet.IkkeOppgitt:
             return intl.formatMessage({ id: 'oppsummering.morsAktivitet.UtenAktivitetsKrav' });
         default:
-            return assertUnreachable(aktivitet, 'Mor har ingen aktivitet');
+            return assertUnreachable('Mor har ingen aktivitet');
     }
 };
 

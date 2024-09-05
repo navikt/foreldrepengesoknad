@@ -4,31 +4,30 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Heading } from '@navikt/ds-react';
 
 import {
-    ForelderIkon,
     ForeldreparSituasjon,
     NavnPåForeldre,
     Periode,
-    Personkort,
     Situasjon,
     StønadskontoType,
     Søkerrolle,
-    bemUtils,
-    getSituasjonForelderSvg,
-    getVarighetString,
-    guid,
-    intlUtils,
-    isFarEllerMedmor,
 } from '@navikt/fp-common';
-import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
+import ForelderIkon from '../../common/foreldrepar/ForelderIkon';
+import Personkort from '../../common/personkort/Personkort';
+import { getVarighetString } from '../../components/periodeliste-item-header/PeriodelisteItemHeader';
 import { BrukteDager, getBrukteDager } from '../../utils/brukteDagerUtils';
+import { getSituasjonForelderSvg } from '../../utils/foreldreparSituasjonUtils';
+import { guid } from '../../utils/guid';
+import isFarEllerMedmor from '../../utils/isFarEllerMedmor';
+import planBemUtils from '../../utils/planBemUtils';
 import { Uttaksstatus, getUttaksstatus } from '../../utils/uttaksstatus';
 import Kontostatus from './konto-status/Kontostatus';
 import './oversiktKvoter.less';
 import TilesList from './tilesList/TilesList';
 
-const bem = bemUtils('oversiktKvoter');
+const bem = planBemUtils('oversiktKvoter');
 
 const filtrerBortAnnenPartsKonto = (uttakskontoer: Stønadskonto[], erFarEllerMedmor: boolean): Stønadskonto[] => {
     return erFarEllerMedmor
@@ -58,7 +57,7 @@ const OversiktPerForelder: FunctionComponent<PropsPerForelder> = ({
         <div className={bem.block}>
             <div className={bem.element('perForelder')}>
                 <Heading size="small" as="h3" className="blokk-xs">
-                    {intlUtils(intl, 'uttaksplan.oversiktKvoter.tittel.foreldre')}
+                    {intl.formatMessage({ id: 'uttaksplan.oversiktKvoter.tittel.foreldre' })}
                 </Heading>
                 <TilesList columns={'flex'}>
                     {(erDeltUttakINorge || søkerErMor) && (

@@ -2,7 +2,6 @@ import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
 
-import { ISOStringToDate, getAktiveArbeidsforhold, isFarEllerMedmor } from '@navikt/fp-common';
 import {
     ArbeidsforholdOgInntekt,
     ArbeidsforholdOgInntektPanel,
@@ -13,10 +12,13 @@ import { ContentWrapper } from '@navikt/fp-ui';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
+import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
+import { ISOStringToDate } from 'app/utils/dateUtils';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -76,7 +78,8 @@ const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
             return navigator.goToNextStep(SøknadRoutes.ANDRE_INNTEKTER);
         }
 
-        return navigator.goToNextDefaultStep();
+        const harDokumentasjonssteg = stepConfig.some((s) => s.id === SøknadRoutes.DOKUMENTASJON);
+        return navigator.goToNextStep(harDokumentasjonssteg ? SøknadRoutes.DOKUMENTASJON : SøknadRoutes.OPPSUMMERING);
     };
 
     return (

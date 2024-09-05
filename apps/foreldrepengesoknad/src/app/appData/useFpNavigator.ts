@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
-import { ContextDataType, useContextSaveData } from '../context/FpDataContext';
-import SøknadRoutes from '../routes/routes';
+import SøknadRoutes from '../appData/routes';
+import { ContextDataType, useContextSaveData } from './FpDataContext';
 import useStepConfig from './useStepConfig';
 
 const useFpNavigator = (

@@ -11,7 +11,7 @@ import {
 } from '@navikt/fp-common';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt/src/types/ArbeidsforholdOgInntekt';
 
-import { ContextDataType } from 'app/context/FpDataContext';
+import { ContextDataType } from 'app/appData/FpDataContext';
 
 import { cleanSøknad, getPeriodeVedTidspunkt, getUttaksplanMedFriUtsettelsesperiode } from './apiUtils';
 

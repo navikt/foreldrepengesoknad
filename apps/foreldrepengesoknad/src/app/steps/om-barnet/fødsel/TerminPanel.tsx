@@ -4,20 +4,20 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Alert, BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 
+import { Søkersituasjon } from '@navikt/fp-common';
+import { Datepicker } from '@navikt/fp-form-hooks';
+import { Arbeidsforhold, Søkerrolle } from '@navikt/fp-types';
+import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
+
+import { andreAugust2022ReglerGjelder } from 'app/utils/dateUtils';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
 import {
-    Block,
-    Søkersituasjon,
-    andreAugust2022ReglerGjelder,
     attenUkerTreDager,
     date21DaysAgo,
     dateToday,
     erIUke22Pluss3,
     erMindreEnn3UkerSiden,
-    isFarEllerMedmor,
-} from '@navikt/fp-common';
-import { Datepicker } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold, Søkerrolle } from '@navikt/fp-types';
-import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
+} from 'app/utils/validationUtil';
 
 import { UfødtBarn } from '../OmBarnetFormValues';
 
@@ -79,10 +79,14 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
                     />
                     {!søkerErFarMedmor && (
                         <ReadMore header={intl.formatMessage({ id: 'omBarnet.termindato.åpneLabel' })}>
-                            <Block padBottom="m">
-                                <FormattedMessage id="omBarnet.termindato.innhold.del1" />
-                            </Block>
-                            <FormattedMessage id="omBarnet.termindato.innhold.del2" />
+                            <VStack gap="2">
+                                <BodyShort>
+                                    <FormattedMessage id="omBarnet.termindato.innhold.del1" />
+                                </BodyShort>
+                                <BodyShort>
+                                    <FormattedMessage id="omBarnet.termindato.innhold.del2" />
+                                </BodyShort>
+                            </VStack>
                         </ReadMore>
                     )}
                 </VStack>

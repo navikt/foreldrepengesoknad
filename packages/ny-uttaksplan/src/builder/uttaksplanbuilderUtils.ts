@@ -5,25 +5,24 @@ import {
     PeriodeHull,
     PeriodeHullÅrsak,
     PeriodeUtenUttak,
-    Perioden,
-    Periodene,
     Periodetype,
     TidsperiodeDate,
-    Tidsperioden,
-    andreAugust2022ReglerGjelder,
-    førsteOktober2021ReglerGjelder,
-    guid,
     isHull,
     isPeriodeUtenUttak,
     isPeriodeUtenUttakUtsettelse,
     isUtsettelseAnnenPart,
     isUttaksperiode,
-    isValidTidsperiode,
-    sorterPerioder,
-    tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
-import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
+import { Tidsperioden, Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
 
+import { Perioden } from '../utils/Perioden';
+import { Periodene, sorterPerioder } from '../utils/Periodene';
+import {
+    andreAugust2022ReglerGjelder,
+    førsteOktober2021ReglerGjelder,
+    tidperiodeOverlapperDato,
+} from '../utils/dateUtils';
+import { guid } from './guid';
 import { splittPeriodePåDato } from './leggTilPeriode';
 
 export const slåSammenLikePerioder = (

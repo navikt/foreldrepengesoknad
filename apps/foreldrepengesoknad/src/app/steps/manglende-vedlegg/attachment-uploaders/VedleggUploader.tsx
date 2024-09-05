@@ -3,12 +3,13 @@ import { useFormContext } from 'react-hook-form';
 import { IntlShape } from 'react-intl';
 
 import { getSaveAttachment } from '@navikt/fp-api';
-import { addMetadata, formatDateShortYear, lagSendSenereDokument } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, InnsendingsType } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
+import { formatDateShortYear } from '@navikt/fp-utils';
 
 import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
+import { addMetadata, lagSendSenereDokument } from 'app/utils/vedleggUtils';
 
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
 

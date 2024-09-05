@@ -109,10 +109,15 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                             isBeforeTodayOrToday(
                                 intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.erIFremtiden' }),
                             ),
-                            isBeforeDate(
-                                intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.førTilDato' }),
-                                alleArbeidIUtlandet[index].tom,
-                            ),
+                            (fom) => {
+                                if (alleArbeidIUtlandet[index].tom) {
+                                    return isBeforeDate(
+                                        intl.formatMessage({ id: 'valideringsfeil.fraOgMedDato.førTilDato' }),
+                                        alleArbeidIUtlandet[index].tom,
+                                    )(fom);
+                                }
+                                return null;
+                            },
                         ]}
                         maxDate={dayjs().toDate()}
                         minDate={DATE_20_YEARS_AGO}

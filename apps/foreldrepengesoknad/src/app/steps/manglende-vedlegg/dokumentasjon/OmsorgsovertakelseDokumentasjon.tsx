@@ -1,7 +1,6 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { Block } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, Søkersituasjon } from '@navikt/fp-types';
 
@@ -27,17 +26,15 @@ const OmsorgsovertakelseDokumentasjon: React.FunctionComponent<Props> = ({
     }
 
     return (
-        <Block padBottom="xl">
-            <VedleggUploader
-                attachments={attachments}
-                updateAttachments={updateAttachments(Skjemanummer.OMSORGSOVERTAKELSE)}
-                skjemanummer={Skjemanummer.OMSORGSOVERTAKELSE}
-                labelText={intl.formatMessage({ id: 'manglendeVedlegg.omsorgsovertakelse.tittel' })}
-                description={intl.formatMessage({ id: 'manglendeVedlegg.omsorgsovertakelse.description' })}
-                attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
-                metadataType={AttachmentMetadataType.BARN}
-            />
-        </Block>
+        <VedleggUploader
+            attachments={attachments}
+            updateAttachments={updateAttachments(Skjemanummer.OMSORGSOVERTAKELSE)}
+            skjemanummer={Skjemanummer.OMSORGSOVERTAKELSE}
+            labelText={intl.formatMessage({ id: 'manglendeVedlegg.omsorgsovertakelse.tittel' })}
+            description={intl.formatMessage({ id: 'manglendeVedlegg.omsorgsovertakelse.description' })}
+            attachmentType={AttachmentType.OMSORGSOVERTAKELSE}
+            metadataType={AttachmentMetadataType.BARN}
+        />
     );
 };
 

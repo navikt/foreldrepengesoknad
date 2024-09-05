@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { Block, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
+import { NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
@@ -35,24 +35,22 @@ const MorJobberDokumentasjon: React.FunctionComponent<Props> = ({
     }
 
     return (
-        <Block padBottom="xl">
-            <UttakUploader
-                attachments={attachments}
-                updateAttachments={updateAttachments(Skjemanummer.DOK_ARBEID_MOR)}
-                perioder={perioder}
-                navnPåForeldre={navnPåForeldre}
-                familiehendelsesdato={familiehendelsesdato}
-                termindato={termindato}
-                situasjon={situasjon}
-                skjemanummer={Skjemanummer.DOK_ARBEID_MOR}
-                labelText={intl.formatMessage({ id: 'manglendeVedlegg.morJobber.label' })}
-                description={intl.formatMessage(
-                    { id: 'manglendeVedlegg.morJobber.description' },
-                    { navn: navnPåForeldre.mor },
-                )}
-                attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
-            />
-        </Block>
+        <UttakUploader
+            attachments={attachments}
+            updateAttachments={updateAttachments(Skjemanummer.DOK_ARBEID_MOR)}
+            perioder={perioder}
+            navnPåForeldre={navnPåForeldre}
+            familiehendelsesdato={familiehendelsesdato}
+            termindato={termindato}
+            situasjon={situasjon}
+            skjemanummer={Skjemanummer.DOK_ARBEID_MOR}
+            labelText={intl.formatMessage({ id: 'manglendeVedlegg.morJobber.label' })}
+            description={intl.formatMessage(
+                { id: 'manglendeVedlegg.morJobber.description' },
+                { navn: navnPåForeldre.mor },
+            )}
+            attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
+        />
     );
 };
 

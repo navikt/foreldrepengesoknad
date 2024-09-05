@@ -4,20 +4,18 @@ import { useIntl } from 'react-intl';
 import { Modal } from '@navikt/ds-react';
 
 import {
-    Block,
     Periode,
     Situasjon,
     Tidsperiode,
     TidsperiodeDate,
-    Tidsperioden,
     Utsettelsesperiode,
-    getTidsperiode,
-    getUkerOgDagerFromDager,
-    intlUtils,
     isForeldrepengerFørFødselUttaksperiode,
 } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { Tidsperioden, getTidsperiode } from '@navikt/fp-utils';
 
+import Block from '../../common/block/Block';
+import { getUkerOgDagerFromDager } from '../../components/periodeliste-item-header/PeriodelisteItemHeader';
 import TidsperiodeForm, { TidsperiodeFormValues } from '../uttaks-forms/tidsperiode-form/TidsperiodeForm';
 import UkerDagerTeller from './../uker-dager-teller/UkerDagerTeller';
 
@@ -102,8 +100,8 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
             </Modal>
             <Block padBottom="m">
                 <UkerDagerTeller
-                    ukeLegend={intlUtils(intl, 'uker.label')}
-                    dagLegend={intlUtils(intl, 'dager.label')}
+                    ukeLegend={intl.formatMessage({ id: 'uker.label' })}
+                    dagLegend={intl.formatMessage({ id: 'dager.label' })}
                     ukeStepper={{
                         value: uker !== undefined ? uker : 0,
                         min: 0,

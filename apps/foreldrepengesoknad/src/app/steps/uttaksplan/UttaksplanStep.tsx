@@ -6,38 +6,26 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Alert, Button, Loader } from '@navikt/ds-react';
 
 import {
-    Block,
     Dekningsgrad,
     Forelder,
-    ISOStringToDate,
     Periode,
-    Periodene,
-    getAktiveArbeidsforhold,
-    getAntallUker,
-    getAntallUkerMinsterett,
-    getErMorUfør,
-    getFarMedmorErAleneOmOmsorg,
-    getForeldreparSituasjon,
-    getKjønnFromFnr,
-    getMorErAleneOmOmsorg,
-    getMorHarRettPåForeldrepengerINorgeEllerEØS,
-    getNavnPåForeldre,
-    getPerioderMedUttakRundtFødsel,
     isAnnenForelderOppgitt,
-    isFarEllerMedmor,
     isUfødtBarn,
     isUttakAnnenPart,
     isUttakAvForeldrepengerFørFødsel,
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
-import { YesOrNo, dateToISOString } from '@navikt/fp-formik';
 import { Søkerinfo } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import {
+    Periodene,
     Uttaksplan,
+    YesOrNo,
     finnOgSettInnHull,
+    getForeldreparSituasjon,
     getHarAktivitetskravIPeriodeUtenUttak,
+    getPerioderMedUttakRundtFødsel,
     settInnAnnenPartsUttak,
 } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
@@ -48,21 +36,32 @@ import { useApiPostData } from 'app/api/context/useFpApiData';
 import getStønadskontoParams, {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'app/api/getStønadskontoParams';
+import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'app/steps/uttaksplan/UttaksplanFormConfig';
 import InfoOmNesteBarn from 'app/steps/uttaksplan/components/info-om-neste-barn/InfoOmNesteBarn';
 import { RequestStatus } from 'app/types/RequestState';
 import { VedleggDataType } from 'app/types/VedleggDataType';
+import { getErMorUfør } from 'app/utils/annenForelderUtils';
+import { getAktiveArbeidsforhold } from 'app/utils/arbeidsforholdUtils';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
-import { getEndringstidspunkt } from 'app/utils/dateUtils';
+import { ISOStringToDate, dateToISOString, getEndringstidspunkt } from 'app/utils/dateUtils';
 import {
     getStartdatoFørstePeriodeAnnenPart,
     mapAnnenPartsEksisterendeSakFromDTO,
 } from 'app/utils/eksisterendeSakUtils';
 import useDebounce from 'app/utils/hooks/useDebounce';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import {
+    getFarMedmorErAleneOmOmsorg,
+    getKjønnFromFnr,
+    getMorErAleneOmOmsorg,
+    getMorHarRettPåForeldrepengerINorgeEllerEØS,
+    getNavnPåForeldre,
+} from 'app/utils/personUtils';
+import { getAntallUker, getAntallUkerMinsterett } from 'app/utils/stønadskontoerUtils';
 import { getPerioderSomSkalSendesInn } from 'app/utils/submitUtils';
 
 import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
@@ -72,6 +71,7 @@ import {
     getKanPerioderRundtFødselAutomatiskJusteres,
     getKanSøkersituasjonAutomatiskJustereRundtFødsel,
 } from './automatisk-justering-form/automatiskJusteringUtils';
+import Block from './block/Block';
 import StepButtonWrapper from './components/StepButtonWrapper';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { lagUttaksplanForslag } from './lagUttaksplanForslag';

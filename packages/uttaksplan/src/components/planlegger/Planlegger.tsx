@@ -4,26 +4,25 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, Heading } from '@navikt/ds-react';
 
 import {
-    ActionLink,
     AnnenForelder,
     Arbeidsforhold,
     Barn,
     BarnFraNesteSak,
-    Block,
-    InfoBlock,
     NavnPåForeldre,
     Periode,
     PeriodeValidState,
-    Periodene,
     Situasjon,
     Utsettelsesperiode,
-    bemUtils,
-    intlUtils,
     isAnnenForelderOppgitt,
 } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
+import ActionLink from '../../common/action-link/ActionLink';
+import Block from '../../common/block/Block';
+import InfoBlock from '../../common/info-block/InfoBlock';
+import { Periodene } from '../../utils/Periodene';
+import planBemUtils from '../../utils/planBemUtils';
 import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
 import NyPeriode from '../uttaks-forms/ny-periode/NyPeriode';
 import Periodeliste from './../periodeliste/Periodeliste';
@@ -85,7 +84,7 @@ const Planlegger: FunctionComponent<Props> = ({
     perioderErGyldige,
 }) => {
     const intl = useIntl();
-    const bem = bemUtils('planlegger');
+    const bem = planBemUtils('planlegger');
     const [nyPeriodeFormIsVisible, setNyPeriodeFormIsVisible] = useState(false);
     const [isUtsettelse, setIsUtsettelse] = useState(false);
     const nesteLedigeUttaksdato = Periodene(uttaksplan).getFørsteUttaksdagEtterSistePeriode();
@@ -105,7 +104,7 @@ const Planlegger: FunctionComponent<Props> = ({
                             <div className={bem.element('tittel')}>
                                 <div className={bem.element('tittelLinkWrapper')}>
                                     <Heading size="medium" level="3">
-                                        {intlUtils(intl, 'uttaksplan.dinPlan')}
+                                        {intl.formatMessage({ id: 'uttaksplan.dinPlan' })}
                                     </Heading>
                                     {erEndringssøknad && (
                                         <ActionLink

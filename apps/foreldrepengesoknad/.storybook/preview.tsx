@@ -6,7 +6,6 @@ import React from 'react';
 
 import '@navikt/ds-css';
 
-import { allCommonMessages } from '@navikt/fp-common';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
@@ -14,10 +13,11 @@ import { oppsummeringMessages } from '@navikt/fp-steg-oppsummering';
 import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
+import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
 
 import nbMessages from '../src/app/intl/nb_NO.json';
 import nnMessages from '../src/app/intl/nn_NO.json';
-import '../src/app/styles/app.less';
+import '../src/app/styles/app.css';
 
 dayjs.locale('nb');
 
@@ -32,7 +32,7 @@ document.head.appendChild(scriptTag);
 const withIntlProvider = getIntlDecorator({
     nb: {
         ...nbMessages,
-        ...allCommonMessages.nb,
+        ...uttaksplanMessages.nb,
         ...uiMessages.nb,
         ...utenlandsoppholdMessages.nb,
         ...oppsummeringMessages.nb,
@@ -42,7 +42,7 @@ const withIntlProvider = getIntlDecorator({
     },
     nn: {
         ...nnMessages,
-        ...allCommonMessages.nn,
+        ...uttaksplanMessages.nn,
         ...uiMessages.nn,
         ...utenlandsoppholdMessages.nn,
         ...oppsummeringMessages.nn,

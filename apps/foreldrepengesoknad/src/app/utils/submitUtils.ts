@@ -6,13 +6,14 @@ import {
     Periodetype,
     Utsettelsesperiode,
     UtsettelseÅrsakType,
-    dateIsWithinRange,
-    guid,
     isOppholdsperiode,
     isOverføringsperiode,
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
+import { dateIsWithinRange } from '@navikt/fp-uttaksplan';
+
+import { guid } from './guid';
 
 export const erPeriodeSomSkalSendesInn = (periode: Periode): boolean => {
     return (

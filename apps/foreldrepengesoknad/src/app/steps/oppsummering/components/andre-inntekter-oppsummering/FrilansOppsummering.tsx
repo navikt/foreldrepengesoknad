@@ -3,9 +3,9 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { formatDate } from '@navikt/fp-common';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { Frilans } from '@navikt/fp-steg-frilans';
+import { formatDate } from '@navikt/fp-utils';
 
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 

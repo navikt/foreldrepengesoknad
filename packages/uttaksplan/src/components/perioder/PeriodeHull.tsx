@@ -1,17 +1,16 @@
-import {
-    ActionLink,
-    bemUtils,
-    Block,
-    førsteOktober2021ReglerGjelder,
-    intlUtils,
-    Periode,
-    Periodetype,
-    Tidsperioden,
-} from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+
 import { BodyShort } from '@navikt/ds-react';
 
+import { Periode, Periodetype } from '@navikt/fp-common';
+import { Tidsperioden } from '@navikt/fp-utils';
+
+import ActionLink from '../../common/action-link/ActionLink';
+import Block from '../../common/block/Block';
+import { førsteOktober2021ReglerGjelder } from '../../utils/dateUtils';
+import { getUttaksdagerSomErFridager } from '../../utils/getUttaksdagerSomErFridager';
+import planBemUtils from '../../utils/planBemUtils';
 import './periodeHull.less';
 
 interface Props {
@@ -34,10 +33,10 @@ const PeriodeHull: FunctionComponent<Props> = ({
     handleUpdatePeriode,
 }) => {
     const intl = useIntl();
-    const bem = bemUtils('periodeHull');
+    const bem = planBemUtils('periodeHull');
 
     const antallDager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
-    const antallHelligdager = Tidsperioden(periode.tidsperiode).getAntallFridager();
+    const antallHelligdager = getUttaksdagerSomErFridager(periode.tidsperiode).length;
     const antallUttaksdager = Tidsperioden(periode.tidsperiode).getAntallUttaksdager();
     const kunHelligdager = antallHelligdager === antallUttaksdager;
     const kunUttaksdager = antallHelligdager === 0;
@@ -88,9 +87,11 @@ const PeriodeHull: FunctionComponent<Props> = ({
                 </BodyShort>
             </Block>
             <div className={bem.element('lenker')}>
-                <ActionLink onClick={onLeggInnNyPeriode}>{intlUtils(intl, 'uttaksplan.leggInnNyPeriode')}</ActionLink>
+                <ActionLink onClick={onLeggInnNyPeriode}>
+                    {intl.formatMessage({ id: 'uttaksplan.leggInnNyPeriode' })}
+                </ActionLink>
                 <ActionLink onClick={leggInnNyUtsettelse}>
-                    {intlUtils(intl, 'uttaksplan.leggInnNyUtsettelse')}
+                    {intl.formatMessage({ id: 'uttaksplan.leggInnNyUtsettelse' })}
                 </ActionLink>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import { useIntl } from 'react-intl';
 
-import { Forelder, UtsettelseÅrsakType, intlUtils } from '@navikt/fp-common';
+import { Forelder, UtsettelseÅrsakType } from '@navikt/fp-common';
 import { getUtsettelseFarge } from '@navikt/fp-utils';
 
 import IconBox from '../icon-box/IconBox';
@@ -34,7 +34,7 @@ const UtsettelseIkon: React.FunctionComponent<Props> = ({ årsak, forelder }) =>
         <IconBox color={getUtsettelseFarge(forelder)}>
             <UttaksplanIkon
                 ikon={getIkonForÅrsak(årsak)}
-                title={intlUtils(intl, `uttaksplan.utsettelsesårsak.${årsak || 'ukjent'}`)}
+                title={intl.formatMessage({ id: `uttaksplan.utsettelsesårsak.${årsak || 'ukjent'}` })}
             />
         </IconBox>
     );

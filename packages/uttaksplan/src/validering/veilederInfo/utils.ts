@@ -1,8 +1,7 @@
 import groupBy from 'lodash/groupBy';
 import { IntlShape } from 'react-intl';
 
-import { intlHasKey } from '@navikt/fp-common/src/common/utils/intlUtils';
-
+import { intlHasKey } from '../../utils/intlUtils';
 import { getRegelIntlValues, trimRelaterteRegelAvvik } from '../utils/regelUtils';
 import { UttaksplanAvvikType } from '../utils/types/UttaksplanAvvikType';
 import { RegelAvvik } from '../utils/types/regelTypes';

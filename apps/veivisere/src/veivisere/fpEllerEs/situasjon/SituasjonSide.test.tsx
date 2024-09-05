@@ -40,6 +40,8 @@ describe('<SituasjonSide>', () => {
             harHattInntekt: true,
             lønnPerMåned: '50000',
             situasjon: 'mor',
+            harHattAndreInntekter: null,
+            jobberDuINorge: null,
         });
     });
 
@@ -80,6 +82,7 @@ describe('<SituasjonSide>', () => {
             harHattInntekt: true,
             lønnPerMåned: '50000',
             situasjon: 'mor',
+            harHattAndreInntekter: null,
         });
     });
 
@@ -113,7 +116,7 @@ describe('<SituasjonSide>', () => {
 
         expect(
             screen.getByText(
-                'For å kunne ha rett på foreldrepenger eller engangsstønad må man være medlem av folketrygden',
+                'For å kunne ha rett til foreldrepenger eller engangsstønad må man være medlem av folketrygden',
             ),
         ).toBeInTheDocument();
 
@@ -126,6 +129,7 @@ describe('<SituasjonSide>', () => {
             harHattInntekt: true,
             lønnPerMåned: '50000',
             situasjon: 'mor',
+            harHattAndreInntekter: null,
         });
     });
 
@@ -152,7 +156,7 @@ describe('<SituasjonSide>', () => {
         await userEvent.type(hvorMye, '5000');
 
         expect(
-            screen.getByText('For å kunne ha rett på foreldrepenger må man tjene minst 62 014 kr i året'),
+            screen.getByText('For å kunne ha rett til foreldrepenger må man tjene minst 62 014 kr i året'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
@@ -166,6 +170,8 @@ describe('<SituasjonSide>', () => {
             harHattInntekt: true,
             lønnPerMåned: '5000',
             situasjon: 'mor',
+            harHattAndreInntekter: null,
+            jobberDuINorge: null,
         });
     });
 
@@ -192,7 +198,7 @@ describe('<SituasjonSide>', () => {
         await userEvent.type(hvorMye, '5000');
 
         expect(
-            screen.getByText('For å kunne ha rett på foreldrepenger må man tjene minst 62 014 kr i året'),
+            screen.getByText('For å kunne ha rett til foreldrepenger må man tjene minst 62 014 kr i året'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
@@ -210,6 +216,7 @@ describe('<SituasjonSide>', () => {
             harHattInntekt: true,
             lønnPerMåned: '5000',
             situasjon: 'mor',
+            harHattAndreInntekter: null,
         });
     });
 
@@ -236,7 +243,7 @@ describe('<SituasjonSide>', () => {
         await userEvent.type(hvorMye, '5000');
 
         expect(
-            screen.getByText('For å kunne ha rett på foreldrepenger må man tjene minst 62 014 kr i året'),
+            screen.getByText('For å kunne ha rett til foreldrepenger må man tjene minst 62 014 kr i året'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
@@ -254,6 +261,7 @@ describe('<SituasjonSide>', () => {
             harHattInntekt: true,
             lønnPerMåned: '5000',
             situasjon: 'mor',
+            harHattAndreInntekter: null,
         });
     });
 
@@ -277,7 +285,7 @@ describe('<SituasjonSide>', () => {
         await userEvent.click(screen.getAllByText('Nei')[1]);
 
         expect(
-            screen.getByText('For å kunne ha rett på foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
+            screen.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
@@ -290,6 +298,9 @@ describe('<SituasjonSide>', () => {
             erIArbeid: true,
             harHattInntekt: false,
             situasjon: 'mor',
+            harHattAndreInntekter: null,
+            jobberDuINorge: null,
+            lønnPerMåned: null,
         });
     });
 
@@ -313,7 +324,7 @@ describe('<SituasjonSide>', () => {
         await userEvent.click(screen.getAllByText('Nei')[1]);
 
         expect(
-            screen.getByText('For å kunne ha rett på foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
+            screen.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
         ).toBeInTheDocument();
 
         expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
@@ -322,7 +333,7 @@ describe('<SituasjonSide>', () => {
         expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Nei')[3]);
 
-        expect(screen.getByText(/For å kunne ha rett på foreldrepenger eller engangsstønad/)).toBeInTheDocument();
+        expect(screen.getByText(/For å kunne ha rett til foreldrepenger eller engangsstønad/)).toBeInTheDocument();
         await userEvent.click(screen.getAllByText('Ja')[3]);
 
         await userEvent.click(screen.getByText('Se resultatet'));
@@ -333,6 +344,8 @@ describe('<SituasjonSide>', () => {
             erIArbeid: true,
             harHattInntekt: false,
             situasjon: 'mor',
+            harHattAndreInntekter: null,
+            lønnPerMåned: null,
         });
     });
 
@@ -359,7 +372,7 @@ describe('<SituasjonSide>', () => {
             await userEvent.click(screen.getAllByText('Nei')[1]);
 
             expect(
-                screen.getByText('For å kunne ha rett på foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
+                screen.getByText('For å kunne ha rett til foreldrepenger må man ha jobbet 6 av de 10 siste månedene'),
             ).toBeInTheDocument();
 
             expect(screen.getByText('Bor du i Norge?')).toBeInTheDocument();
@@ -368,7 +381,7 @@ describe('<SituasjonSide>', () => {
             expect(screen.getByText('Jobber du i Norge?')).toBeInTheDocument();
             await userEvent.click(screen.getAllByText('Nei')[3]);
 
-            expect(screen.getByText(/For å kunne ha rett på foreldrepenger eller engangsstønad/)).toBeInTheDocument();
+            expect(screen.getByText(/For å kunne ha rett til foreldrepenger eller engangsstønad/)).toBeInTheDocument();
 
             await userEvent.click(screen.getByText('Se resultatet'));
 
@@ -378,6 +391,8 @@ describe('<SituasjonSide>', () => {
                 harHattInntekt: false,
                 erIArbeid: true,
                 situasjon: 'mor',
+                harHattAndreInntekter: null,
+                lønnPerMåned: null,
             });
         },
     );
@@ -419,6 +434,7 @@ describe('<SituasjonSide>', () => {
             harHattInntekt: true,
             lønnPerMåned: '50000',
             situasjon: 'mor',
+            jobberDuINorge: null,
         });
     });
 
@@ -451,6 +467,9 @@ describe('<SituasjonSide>', () => {
             erIArbeid: false,
             harHattAndreInntekter: false,
             situasjon: 'mor',
+            harHattInntekt: null,
+            jobberDuINorge: null,
+            lønnPerMåned: null,
         });
     });
 });

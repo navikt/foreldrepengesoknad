@@ -1,4 +1,4 @@
-import { YesOrNo, getTypedFormComponents } from '@navikt/fp-formik';
+import { YesOrNo, getTypedFormComponents } from '@navikt/fp-uttaksplan';
 
 export enum UttaksplanFormField {
     ønskerAutomatiskJustering = 'ønskerAutomatiskJustering',

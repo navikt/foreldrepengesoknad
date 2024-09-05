@@ -7,14 +7,12 @@ import { Accordion } from '@navikt/ds-react';
 import {
     AnnenForelder,
     Arbeidsforhold,
-    Block,
     NavnPåForeldre,
     Periode,
     PeriodeValidState,
     Periodetype,
     Situasjon,
     Utsettelsesperiode,
-    bemUtils,
     isAvslåttPeriode,
     isForeldrepengerFørFødselUttaksperiode,
     isInfoPeriode,
@@ -22,6 +20,8 @@ import {
 } from '@navikt/fp-common';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
+import Block from '../../common/block/Block';
+import planBemUtils from '../../utils/planBemUtils';
 import VeilederMeldinger from '../../validering/veilederInfo/VeilederMeldinger';
 import { VeilederMessage } from '../../validering/veilederInfo/types';
 import PeriodelisteItemHeader from '../periodeliste-item-header/PeriodelisteItemHeader';
@@ -218,7 +218,7 @@ const PeriodelisteItem: FunctionComponent<Props> = ({
     intl,
     periodeErGyldig,
 }) => {
-    const bem = bemUtils('periodelisteItem');
+    const bem = planBemUtils('periodelisteItem');
     let melding = meldinger.length > 0 ? meldinger[0] : undefined;
 
     if (!periodeErGyldig) {

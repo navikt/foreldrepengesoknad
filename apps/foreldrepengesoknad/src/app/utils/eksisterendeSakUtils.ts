@@ -10,7 +10,6 @@ import {
     DekningsgradDTO,
     EksisterendeSak,
     FamiliehendelseType,
-    ISOStringToDate,
     OppholdÅrsakType,
     OppholdÅrsakTypeDTO,
     Sak,
@@ -21,11 +20,7 @@ import {
     StønadskontoType,
     Søkerrolle,
     Søkersituasjon,
-    Tidsperioden,
     UttakArbeidType,
-    convertTidsperiodeToTidsperiodeDate,
-    getKjønnFromFnrString,
-    guid,
     isAdoptertBarn,
     isFødtBarn,
     isInfoPeriode,
@@ -34,17 +29,25 @@ import {
 import PersonFnrDTO from '@navikt/fp-common/src/common/types/PersonFnrDTO';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { dateToISOString } from '@navikt/fp-formik';
 import { Søker, SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
+import { Tidsperioden } from '@navikt/fp-utils';
+import { convertTidsperiodeToTidsperiodeDate } from '@navikt/fp-uttaksplan';
 
-import { Søknad } from 'app/context/types/Søknad';
-import { getErDatoInnenEnDagFraAnnenDato } from 'app/pages/velkommen/velkommenUtils';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import { Søknad } from 'app/types/Søknad';
 import { ValgtBarn } from 'app/types/ValgtBarn';
 
-import { getRelevantFamiliehendelseDato, sorterDatoEtterEldst } from './dateUtils';
+import {
+    ISOStringToDate,
+    dateToISOString,
+    getErDatoInnenEnDagFraAnnenDato,
+    getRelevantFamiliehendelseDato,
+    sorterDatoEtterEldst,
+} from './dateUtils';
 import { getFamiliehendelseType } from './familiehendelseUtils';
+import { guid } from './guid';
 import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
+import { getKjønnFromFnrString } from './personUtils';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {
     switch (arbeidstype) {

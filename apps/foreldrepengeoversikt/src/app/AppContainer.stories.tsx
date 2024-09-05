@@ -1,18 +1,16 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react/*';
 import { HttpResponse, http } from 'msw';
-import annenPartsVedtak from 'storybook/storyData/annenPartVedtak/annenPartVedtak.json';
-import dokumenter from 'storybook/storyData/dokumenter/dokumenter.json';
-import manglendeVedlegg from 'storybook/storyData/manglendeVedlegg/manglendeVedlegg.json';
-import miniDialog from 'storybook/storyData/miniDialog/miniDialog.json';
-import saker from 'storybook/storyData/saker/saker.json';
-import søkerinfo from 'storybook/storyData/sokerinfo/sokerinfo.json';
-import tidslinjeHendelser from 'storybook/storyData/tidslinjeHendelser/tidslinjeHendelser.json';
-
-import '@navikt/ds-css';
+import annenPartsVedtak from 'storybookData/annenPartVedtak/annenPartVedtak.json';
+import dokumenter from 'storybookData/dokumenter/dokumenter.json';
+import manglendeVedlegg from 'storybookData/manglendeVedlegg/manglendeVedlegg.json';
+import miniDialog from 'storybookData/miniDialog/miniDialog.json';
+import saker from 'storybookData/saker/saker.json';
+import søkerinfo from 'storybookData/sokerinfo/sokerinfo.json';
+import tidslinjeHendelser from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.json';
 
 import AppContainer from './AppContainer';
 
-export default {
+const meta = {
     title: 'AppContainer',
     component: AppContainer,
     parameters: {
@@ -30,10 +28,9 @@ export default {
             ],
         },
     },
-};
+} satisfies Meta<typeof AppContainer>;
+export default meta;
 
-const Template: StoryFn<any> = () => {
-    return <AppContainer />;
-};
+type Story = StoryObj<typeof AppContainer>;
 
-export const VisApp = Template.bind({});
+export const Default: Story = {};

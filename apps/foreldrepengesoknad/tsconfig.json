@@ -5,7 +5,8 @@
         "jsx": "react-jsx",
         "paths": {
             "utils-test/*": ["./utils-test/*"],
-            "app/*": ["./app/*"]
+            "app/*": ["./app/*"],
+            "storybookData/*": ["storybook/*"]
         },
         "rootDir": "src",
         "types": ["vite/client", "node", "@testing-library/jest-dom", "vitest/globals"]

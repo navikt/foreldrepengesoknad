@@ -2,15 +2,10 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import {
-    AnnenForelder,
-    Dekningsgrad,
-    NavnPåForeldre,
-    Periode,
-    Situasjon,
-    getUkerOgDagerFromDager,
-} from '@navikt/fp-common';
+import { AnnenForelder, Dekningsgrad, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
+
+import { getUkerOgDagerFromDager } from 'app/utils/dateUtils';
 
 import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import UttaksplanOppsummeringsliste from './UttaksplanOppsummeringsliste';

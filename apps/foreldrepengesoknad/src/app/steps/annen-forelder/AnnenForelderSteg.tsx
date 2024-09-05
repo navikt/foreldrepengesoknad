@@ -4,18 +4,18 @@ import { useIntl } from 'react-intl';
 import { VStack } from '@navikt/ds-react';
 
 import { Barn, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { replaceInvisibleCharsWithSpace } from '@navikt/fp-common/src/common/utils/stringUtils';
 import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Søker, Søkerinfo } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { getRegistrerteBarnOmDeFinnes } from 'app/utils/barnUtils';
+import { replaceInvisibleCharsWithSpace } from 'app/utils/stringUtils';
 
-import RegistrertePersonalia from '../../components/registrerte-personalia/RegistrertePersonalia';
+import RegistrertePersonalia from '../../pages/registrerte-personalia/RegistrertePersonalia';
 import { AnnenForelderFormData } from './AnnenForelderFormData';
 import AnnenForelderOppgittPanel from './AnnenForelderOppgittPanel';
 import OppgiPersonalia from './OppgiPersonalia';

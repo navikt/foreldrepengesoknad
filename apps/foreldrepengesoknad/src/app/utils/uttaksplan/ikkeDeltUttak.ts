@@ -6,19 +6,21 @@ import {
     Periodetype,
     Situasjon,
     StønadskontoType,
-    Tidsperioden,
-    Uttaksdagen,
     Uttaksperiode,
-    andreAugust2022ReglerGjelder,
-    farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
-    getTidsperiode,
-    guid,
     isUttaksperiode,
-    sorterPerioder,
-    tidperiodeOverlapperDato,
 } from '@navikt/fp-common';
 import { Stønadskonto } from '@navikt/fp-types';
-import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from '@navikt/fp-uttaksplan';
+import { Tidsperioden, Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
+import {
+    farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
+    sorterPerioder,
+    splittPeriodePåDato,
+    splittUttaksperiodePåFamiliehendelsesdato,
+    tidperiodeOverlapperDato,
+} from '@navikt/fp-uttaksplan';
+
+import { andreAugust2022ReglerGjelder } from '../dateUtils';
+import { guid } from '../guid';
 
 const ikkeDeltUttakAdopsjonFarMedmor = (
     famDato: Date,

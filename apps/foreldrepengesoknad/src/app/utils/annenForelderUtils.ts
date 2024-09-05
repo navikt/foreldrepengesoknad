@@ -33,3 +33,11 @@ export const getIsDeltUttak = (annenForelder: AnnenForelder): boolean => {
         ? !!annenForelder.harRettPåForeldrepengerINorge || !!annenForelder.harRettPåForeldrepengerIEØS
         : false;
 };
+
+export const getErMorUfør = (annenForelder: AnnenForelder, erFarEllerMedmor: boolean) => {
+    if (isAnnenForelderOppgitt(annenForelder) && erFarEllerMedmor) {
+        return !!annenForelder.erMorUfør;
+    }
+
+    return false;
+};

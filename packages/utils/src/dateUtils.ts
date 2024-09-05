@@ -7,7 +7,9 @@ import utc from 'dayjs/plugin/utc';
 import {
     DATE_TODAY,
     DDMMMMYYY_DATE_FORMAT,
+    DDMMM_DATE_FORMAT,
     DDMMYYYY_DATE_FORMAT,
+    DDMMYY_DATE_FORMAT,
     ISO_DATE_FORMAT,
     ISO_DATE_REGEX,
     TIME_FORMAT,
@@ -26,7 +28,9 @@ type Period = { from: DateTypes; to: DateTypes };
 /** --- Formater til string --- */
 export const formatDate = (date: DateTypes): string => dayjs(date).format(DDMMYYYY_DATE_FORMAT);
 export const formatDateIso = (date: DateTypes): string => dayjs(date).format(ISO_DATE_FORMAT);
+export const formatDateShortYear = (date: DateTypes): string => dayjs(date).format(DDMMYY_DATE_FORMAT);
 export const formatDateExtended = (date: DateTypes): string => dayjs(date).format(DDMMMMYYY_DATE_FORMAT);
+export const formatDateShortMonth = (date: DateTypes): string => dayjs(date).format(DDMMM_DATE_FORMAT);
 export const formatTime = (date: DateTypes): string => dayjs(date).format(TIME_FORMAT);
 export const formatDateMedUkedag = (date: Date | string) => dayjs(date).format(WEEKDAY_DDMMMMYYYY_DATE_FORMAT);
 export const formaterDatoUtenDag = (dato: string | Date): string => dayjs(dato).format(DAY_MONTHNAME_YEAR_FORMAT);

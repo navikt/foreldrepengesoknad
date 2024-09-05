@@ -5,8 +5,8 @@ import MockDate from 'mockdate';
 
 import { Dekningsgrad } from '@navikt/fp-types';
 
-import { ContextDataType } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
+import { ContextDataType } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 
 import * as stories from './PeriodeMedForeldrepengerSteg.stories';
 

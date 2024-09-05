@@ -68,7 +68,7 @@ const useEsSendSøknad = (
                 type: 'engangsstønad',
                 språkkode: locale,
                 barn: mapBarn(omBarnet, dokumentasjon),
-                oppholdIUtlandet: (tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd || []).concat(
+                utenlandsopphold: (tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd || []).concat(
                     senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd || [],
                 ),
                 vedlegg:
@@ -101,6 +101,7 @@ const useEsSendSøknad = (
             if (kvittering) {
                 try {
                     await deleteData(esApi, '/rest/storage/engangsstonad', FEIL_VED_INNSENDING, abortSignal);
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 } catch (deleteError) {
                     // Vi bryr oss ikke om feil her. Logges bare i backend
                 }

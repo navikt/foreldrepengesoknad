@@ -1,13 +1,13 @@
-import { Uttaksdagen } from '@navikt/fp-common';
-import { ISOStringToDate } from '@navikt/fp-formik';
-import { getNumberFromNumberInputValue } from '@navikt/fp-utils';
+import { Uttaksdagen, getNumberFromNumberInputValue } from '@navikt/fp-utils';
 import {
     getFørsteUttaksdagAnkomstdatoNorge,
     getFørsteUttaksdagDatoForAleneomsorg,
     getFørsteUttaksdagForeldrepengerFørFødsel,
 } from '@navikt/fp-uttaksplan';
 
-import Fordeling, { FellesperiodeFordelingValg, OppstartValg } from 'app/context/types/Fordeling';
+import Fordeling, { FellesperiodeFordelingValg, OppstartValg } from 'app/types/Fordeling';
+
+import { ISOStringToDate } from './dateUtils';
 
 export const getNesteUttaksdagEtterAnnenForelder = (sisteDagAnnenForelder: Date | undefined) => {
     if (!sisteDagAnnenForelder) {

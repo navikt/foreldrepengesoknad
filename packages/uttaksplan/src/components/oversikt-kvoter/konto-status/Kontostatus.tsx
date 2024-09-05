@@ -3,10 +3,12 @@ import { IntlShape, injectIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Situasjon, StønadskontoType, bemUtils, getVarighetString } from '@navikt/fp-common';
-import { getStønadskontoNavn } from '@navikt/fp-common/src/common/utils/stønadskontoerUtils';
+import { NavnPåForeldre, Situasjon, StønadskontoType } from '@navikt/fp-common';
 import { Stønadskonto } from '@navikt/fp-types';
 
+import { getVarighetString } from '../../../components/periodeliste-item-header/PeriodelisteItemHeader';
+import planBemUtils from '../../../utils/planBemUtils';
+import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
 import StønadskontoIkon from '../../stønadskonto-ikon/StønadskontoIkon';
 import './kontostatus.less';
 
@@ -20,7 +22,7 @@ export interface Props {
     erAleneOmOmsorg: boolean;
 }
 
-const bem = bemUtils('kontostatus');
+const bem = planBemUtils('kontostatus');
 
 const Kontostatus: FunctionComponent<Props> = ({
     uttak,

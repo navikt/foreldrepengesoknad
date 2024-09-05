@@ -9,8 +9,8 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt/src/types/ArbeidsforholdOgInntekt';
 import { Situasjon, Søkerinfo } from '@navikt/fp-types';
 
-import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
+import { Action, ContextDataType, FpDataContext } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import { AndreInntektskilder, AnnenInntektType } from 'app/types/AndreInntektskilder';
 
 import ManglendeVedlegg from './ManglendeVedlegg';

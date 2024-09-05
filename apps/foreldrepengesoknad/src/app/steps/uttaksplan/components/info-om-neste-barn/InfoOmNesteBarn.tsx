@@ -3,12 +3,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { Uttaksdagen, formaterDato, getToTetteReglerGjelder } from '@navikt/fp-common';
-import { bemUtils } from '@navikt/fp-utils';
+import { Uttaksdagen, bemUtils } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
+import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
 import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { formaterDato, getToTetteReglerGjelder } from 'app/utils/dateUtils';
 
 import './info-om-neste-barn.css';
 

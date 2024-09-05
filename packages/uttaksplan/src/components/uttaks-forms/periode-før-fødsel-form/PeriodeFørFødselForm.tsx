@@ -1,17 +1,11 @@
 import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import {
-    Block,
-    ForeldrepengerFørFødselUttaksperiode,
-    ISOStringToDate,
-    Periode,
-    Situasjon,
-    Utsettelsesperiode,
-    intlUtils,
-    isValidTidsperiode,
-} from '@navikt/fp-common';
+import { ForeldrepengerFørFødselUttaksperiode, Periode, Situasjon, Utsettelsesperiode } from '@navikt/fp-common';
+import { isValidTidsperiode } from '@navikt/fp-utils';
 
+import Block from '../../../common/block/Block';
+import { ISOStringToDate } from '../../../utils/dateUtils';
 import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from '../../uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
 import { SubmitListener } from '../submit-listener/SubmitListener';
@@ -131,7 +125,9 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                             >
                                 <PeriodeFørFødselFormComponents.Checkbox
                                     name={PeriodeFørFødselFormField.skalIkkeHaUttakFørTermin}
-                                    label={intlUtils(intl, 'uttaksplan.periodeFørFødselForm.skalIkkeHaUttakFørTermin')}
+                                    label={intl.formatMessage({
+                                        id: 'uttaksplan.periodeFørFødselForm.skalIkkeHaUttakFørTermin',
+                                    })}
                                 />
                             </Block>
                         </PeriodeFørFødselFormComponents.Form>

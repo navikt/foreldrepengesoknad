@@ -6,9 +6,9 @@ import { SenereUtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
 import { Arbeidsforhold, UtenlandsoppholdSenere } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 
 type Props = {
     arbeidsforhold: Arbeidsforhold[];

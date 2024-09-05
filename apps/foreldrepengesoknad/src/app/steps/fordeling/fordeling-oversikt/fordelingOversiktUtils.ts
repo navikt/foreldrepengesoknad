@@ -8,37 +8,34 @@ import {
     NavnPåForeldre,
     Periode,
     StønadskontoType,
-    Uttaksdagen,
-    førsteOktober2021ReglerGjelder,
+    isAdoptertBarn,
+    isAnnenForelderOppgitt,
+    isFødtBarn,
+    isInfoPeriode,
+    isUfødtBarn,
+} from '@navikt/fp-common';
+import { links } from '@navikt/fp-constants';
+import {
+    SøkersituasjonFp,
+    TilgjengeligeMinsterettskontoer,
+    TilgjengeligeStønadskontoerForDekningsgrad,
+} from '@navikt/fp-types';
+import { Uttaksdagen, capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
+import { getBrukteDager, uttaksConstants } from '@navikt/fp-uttaksplan';
+
+import { DelInformasjon, FordelingEier, FordelingFargekode } from 'app/types/FordelingOversikt';
+import { getErAleneOmOmsorg, getIsDeltUttak } from 'app/utils/annenForelderUtils';
+import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+import { ISOStringToDate, førsteOktober2021ReglerGjelder, getVarighetString } from 'app/utils/dateUtils';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import {
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerFedrekvote,
     getAntallUkerFellesperiode,
     getAntallUkerForeldrepenger,
     getAntallUkerForeldrepengerFørFødsel,
     getAntallUkerMødrekvote,
-    getNavnGenitivEierform,
-    getVarighetString,
-    isAdoptertBarn,
-    isAnnenForelderOppgitt,
-    isFarEllerMedmor,
-    isFødtBarn,
-    isInfoPeriode,
-    isUfødtBarn,
-    uttaksConstants,
-} from '@navikt/fp-common';
-import { links } from '@navikt/fp-constants';
-import { ISOStringToDate } from '@navikt/fp-formik';
-import {
-    SøkersituasjonFp,
-    TilgjengeligeMinsterettskontoer,
-    TilgjengeligeStønadskontoerForDekningsgrad,
-} from '@navikt/fp-types';
-import { capitalizeFirstLetter } from '@navikt/fp-utils';
-import { getBrukteDager } from '@navikt/fp-uttaksplan';
-
-import { DelInformasjon, FordelingEier, FordelingFargekode } from 'app/types/FordelingOversikt';
-import { getErAleneOmOmsorg, getIsDeltUttak } from 'app/utils/annenForelderUtils';
-import { getFamiliehendelsedato } from 'app/utils/barnUtils';
+} from 'app/utils/stønadskontoerUtils';
 
 import { getFormattedMessage } from './FordelingOversikt';
 

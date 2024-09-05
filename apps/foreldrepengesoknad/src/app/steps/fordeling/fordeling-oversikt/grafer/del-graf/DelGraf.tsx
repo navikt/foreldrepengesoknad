@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 
-import { guid } from '@navikt/fp-common';
 import { bemUtils } from '@navikt/fp-utils';
 
 import { FordelingDager } from 'app/types/FordelingOversikt';
+import { guid } from 'app/utils/guid';
 
 import './../graf.css';
 

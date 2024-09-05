@@ -12,15 +12,14 @@ import {
     Utsettelsesperiode,
     UtsettelseÅrsakType,
     Uttaksperiode,
-    aktivitetskravMorUtil,
-    erÅrsakSykdomEllerInstitusjonsopphold,
-    getMorsAktivitetSkjemanummer,
     isOverføringsperiode,
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
+import { aktivitetskravMorUtil, getMorsAktivitetSkjemanummer } from './morsAktivitetUtils';
+import { erÅrsakSykdomEllerInstitusjonsopphold } from './periodeUtils';
 import { aktivitetskravMorSkalBesvares } from './uttaksskjema/aktivitetskravMorSkalBesvares';
 
 const createMissingAttachment = (

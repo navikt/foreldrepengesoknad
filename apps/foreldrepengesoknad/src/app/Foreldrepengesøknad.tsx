@@ -9,12 +9,12 @@ import { ErrorBoundary } from '@navikt/fp-ui';
 import { redirect, useDocumentTitle } from '@navikt/fp-utils';
 
 import Environment from './Environment';
+import ForeldrepengesøknadRoutes from './ForeldrepengesøknadRoutes';
 import Api from './api/api';
 import { sendErrorMessageToSentry } from './api/apiUtils';
-import { FpDataContext } from './context/FpDataContext';
-import { konverterMellomlagretDataTilAppData } from './context/konverterMellomlagretDataTilAppData';
-import ForeldrepengesøknadRoutes from './routes/ForeldrepengesøknadRoutes';
-import SøknadRoutes from './routes/routes';
+import { FpDataContext } from './appData/FpDataContext';
+import { konverterMellomlagretDataTilAppData } from './appData/konverterMellomlagretDataTilAppData';
+import SøknadRoutes from './appData/routes';
 import { Kvittering } from './types/Kvittering';
 import { RequestStatus } from './types/RequestState';
 import { shouldApplyStorage } from './utils/mellomlagringUtils';
@@ -28,6 +28,7 @@ const Spinner: React.FunctionComponent = () => (
 export const retryCallback = async () => {
     try {
         await Api.deleteMellomlagretSøknad();
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
         // Vi bryr oss ikke om feil her. Logges bare i backend
     }

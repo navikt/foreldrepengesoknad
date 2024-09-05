@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 import { MemoryRouter } from 'react-router-dom';
-import AxiosMock from 'storybook/utils/AxiosMock';
+import AxiosMock from 'storybookData/utils/AxiosMock';
 
 import { AnnenForelder, Barn, BarnType, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
@@ -14,8 +14,8 @@ import {
 } from '@navikt/fp-types';
 
 import { FpApiDataContext } from 'app/api/context/FpApiDataContext';
-import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
+import { Action, ContextDataType, FpDataContext } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 
 import PeriodeMedForeldrepengerSteg from './PeriodeMedForeldrepengerSteg';

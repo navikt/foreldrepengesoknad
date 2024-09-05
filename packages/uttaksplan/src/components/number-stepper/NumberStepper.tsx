@@ -1,6 +1,5 @@
+import planBemUtils from '../../utils/planBemUtils';
 import StepperKnapp from './StepperKnapp';
-import { bemUtils } from '@navikt/fp-common';
-
 import './numberStepper.less';
 
 export interface Props {
@@ -14,7 +13,7 @@ export interface Props {
     legendId?: string;
 }
 
-const bem = bemUtils('numberStepper');
+const bem = planBemUtils('numberStepper');
 
 const NumberStepper: React.FunctionComponent<Props> = ({
     value,

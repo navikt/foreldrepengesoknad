@@ -14,21 +14,16 @@ import {
     Periodetype,
     Situasjon,
     StønadskontoType,
-    Tidsperioden,
-    bemUtils,
-    getUkerOgDagerFromDager,
-    getValidTidsperiode,
-    intlUtils,
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
     isUtsettelseAnnenPart,
     isUttakAnnenPart,
-    måned,
-    måned3bokstaver,
-    år,
 } from '@navikt/fp-common';
-import { getForelderNavn, getPeriodeTittel } from '@navikt/fp-common/src/common/utils/periodeUtils';
+import { Tidsperioden, getValidTidsperiode } from '@navikt/fp-utils';
 
 import UttaksplanAdvarselIkon from '../../assets/UttaksplanAdvarselIkon';
+import { måned, måned3bokstaver, år } from '../../utils/dateUtils';
+import { getForelderNavn, getPeriodeTittel } from '../../utils/periodeUtils';
+import planBemUtils from '../../utils/planBemUtils';
 import { getIkonForVeilederMelding } from '../../validering/veilederInfo/components/VeilederMelding';
 import { VeilederMessage } from '../../validering/veilederInfo/types';
 import StønadskontoIkon from '../stønadskonto-ikon/StønadskontoIkon';
@@ -48,7 +43,7 @@ interface Props {
     erAleneOmOmsorg: boolean;
 }
 
-const bem = bemUtils('periodelisteItemHeader');
+const bem = planBemUtils('periodelisteItemHeader');
 
 export const getPeriodeIkon = (
     periode: Periode,
@@ -125,6 +120,14 @@ export const getPeriodeIkon = (
 
 type VarighetFormat = 'full' | 'normal';
 
+export const getUkerOgDagerFromDager = (dager: number): { uker: number; dager: number } => {
+    const uker = Math.floor(dager / 5);
+    return {
+        dager: dager - uker * 5,
+        uker,
+    };
+};
+
 export const getVarighetString = (antallDager: number, intl: IntlShape, format: VarighetFormat = 'full'): string => {
     const { uker, dager } = getUkerOgDagerFromDager(Math.abs(antallDager));
     const dagerStr = intl.formatMessage(
@@ -180,7 +183,7 @@ const PeriodelisteItemHeader: FunctionComponent<Props> = ({
     let varighetString;
     const erFpFørTerminUtenUttak = isSkalIkkeHaForeldrepengerFørFødselPeriode(periode);
     if (erFpFørTerminUtenUttak) {
-        varighetString = intlUtils(intl, 'uttaksplan.periodeliste.header.skalIkkeHaUttakFørTermin');
+        varighetString = intl.formatMessage({ id: 'uttaksplan.periodeliste.header.skalIkkeHaUttakFørTermin' });
     } else {
         varighetString = getVarighetString(Tidsperioden(periode.tidsperiode).getAntallUttaksdager(), intl);
     }

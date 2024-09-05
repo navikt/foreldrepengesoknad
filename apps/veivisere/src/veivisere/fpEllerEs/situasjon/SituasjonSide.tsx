@@ -2,17 +2,20 @@ import { BabyWrappedIcon, PaperplaneIcon, StrollerIcon } from '@navikt/aksel-ico
 import { ContextRoutes, FpEllerEsRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import { FunctionComponent } from 'react';
-import { useForm } from 'react-hook-form';
+import { UseFormReturn, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 import useScrollBehaviour from 'utils/useScrollBehaviour';
 
 import { BodyShort, Button, Heading, Label, List, Radio, ReadMore, Spacer, VStack } from '@navikt/ds-react';
 
-import { Form, TextField } from '@navikt/fp-form-hooks';
+import { links } from '@navikt/fp-constants';
+import { Form, NumericField } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
+import { isValidDecimal, isValidNumberForm } from '@navikt/fp-validation';
+import { formatValue } from '@navikt/fp-validation/src/form/numberFormValidation';
 
 import VeiviserPage from '../../felles/VeiviserPage';
 import BlueRadioGroup from '../../felles/formWrappers/BlueRadioGroup';
@@ -26,11 +29,43 @@ export enum Situasjon {
 export type FpEllerEsSituasjon = {
     situasjon: Situasjon;
     erIArbeid: boolean;
-    harHattInntekt: boolean;
     harHattAndreInntekter: boolean;
-    lønnPerMåned: number;
+    harHattInntekt: boolean;
+    lønnPerMåned: string;
     borDuINorge: boolean;
     jobberDuINorge: boolean;
+};
+
+const REKKEFØLGE_FELT = [
+    'situasjon',
+    'erIArbeid',
+    'harHattAndreInntekter',
+    'harHattInntekt',
+    'lønnPerMåned',
+    'borDuINorge',
+    'jobberDuINorge',
+];
+
+const resetFields = (
+    formMethods: UseFormReturn<FpEllerEsSituasjon>,
+    fieldName: string,
+    newValue: string | number | boolean,
+) => {
+    const etterfølgendeFelt = REKKEFØLGE_FELT.slice(REKKEFØLGE_FELT.indexOf(fieldName) + 1);
+
+    const updatedFormValues = {
+        ...formMethods.getValues(),
+        [fieldName]: newValue,
+        ...etterfølgendeFelt.reduce(
+            (prev, current) => ({
+                ...prev,
+                [current]: null,
+            }),
+            {},
+        ),
+    };
+
+    formMethods.reset(updatedFormValues);
 };
 
 interface Props {
@@ -45,7 +80,6 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
 
     const formMethods = useForm<FpEllerEsSituasjon>({
         defaultValues: fpEllerEsSituasjon,
-        shouldUnregister: true,
     });
 
     const { situasjon, erIArbeid, harHattInntekt, lønnPerMåned, borDuINorge, harHattAndreInntekter, jobberDuINorge } =
@@ -58,10 +92,14 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const minstelønn = grunnbeløpet / 2;
+    const lønnPerMånedNummer = formatValue(lønnPerMåned);
 
     const { ref, scrollToBottom } = useScrollBehaviour();
-    const folketrygdenlenke =
-        'https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden';
+
+    const resetFieldsAndScroll = (fieldName: string) => (newFieldValue: string | number | boolean) => {
+        resetFields(formMethods, fieldName, newFieldValue);
+        scrollToBottom();
+    };
 
     return (
         <VeiviserPage
@@ -74,7 +112,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                     <BlueRadioGroup
                         label={<FormattedMessage id="SituasjonSide.HvemErDu" />}
                         name="situasjon"
-                        onChange={scrollToBottom}
+                        onChange={resetFieldsAndScroll('situasjon')}
                     >
                         <Radio value={Situasjon.MOR} autoFocus>
                             <FormattedMessage id="SituasjonSide.Mor" />
@@ -91,7 +129,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                             <BlueRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.ArbeidEllerNav" />}
                                 name="erIArbeid"
-                                onChange={scrollToBottom}
+                                onChange={resetFieldsAndScroll('erIArbeid')}
                             >
                                 <Radio value={true} autoFocus>
                                     <FormattedMessage id="SituasjonSide.Ja" />
@@ -129,7 +167,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                             <BlueRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.HarDuHattAndeInntektskilder" />}
                                 name="harHattAndreInntekter"
-                                onChange={scrollToBottom}
+                                onChange={resetFieldsAndScroll('harHattAndreInntekter')}
                             >
                                 <Radio value={true} autoFocus>
                                     <FormattedMessage id="SituasjonSide.Ja" />
@@ -162,7 +200,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                             <BlueRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.HarDuHattInntekt" />}
                                 name="harHattInntekt"
-                                onChange={scrollToBottom}
+                                onChange={resetFieldsAndScroll('harHattInntekt')}
                             >
                                 <Radio value={true} autoFocus>
                                     <FormattedMessage id="SituasjonSide.Ja" />
@@ -188,20 +226,31 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                     {harHattInntekt && (
                         <VStack gap="3">
                             <VStack gap="4">
-                                <BluePanel isDarkBlue={lønnPerMåned === undefined} shouldFadeIn>
+                                <BluePanel
+                                    isDarkBlue={lønnPerMåned === undefined || lønnPerMåned === null}
+                                    shouldFadeIn
+                                >
                                     <VStack gap="2">
-                                        <TextField
+                                        <NumericField
                                             name="lønnPerMåned"
                                             onChange={scrollToBottom}
                                             label={<FormattedMessage id="SituasjonSide.LønnFørSkatt" />}
+                                            validate={[
+                                                isValidNumberForm(
+                                                    intl.formatMessage({ id: 'valideringsfeil.lønn.ikkeTall' }),
+                                                ),
+                                                isValidDecimal(
+                                                    intl.formatMessage({ id: 'valideringsfeil.lønn.desimaler' }),
+                                                ),
+                                            ]}
                                         />
                                         <VStack gap="2">
                                             <Label>
                                                 <FormattedMessage id="SituasjonSide.Årsinntekt" />
                                             </Label>
                                             <Heading size="large">
-                                                {lønnPerMåned ? (
-                                                    formatCurrencyWithKr(lønnPerMåned * 12)
+                                                {lønnPerMånedNummer ? (
+                                                    formatCurrencyWithKr(lønnPerMånedNummer * 12)
                                                 ) : (
                                                     <FormattedMessage id="SituasjonSide.IngenKr" />
                                                 )}
@@ -218,7 +267,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                     </BodyShort>
                                 </ReadMore>
                             </VStack>
-                            {lønnPerMåned * 12 < minstelønn && (
+                            {lønnPerMånedNummer !== undefined && lønnPerMånedNummer * 12 < minstelønn && (
                                 <Infobox
                                     header={
                                         <FormattedMessage
@@ -233,7 +282,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                         <FormattedMessage
                                             id="SituasjonSide.OppgittLønnIkkeRett"
                                             values={{
-                                                årslønn: formatCurrencyWithKr(lønnPerMåned * 12),
+                                                årslønn: formatCurrencyWithKr(lønnPerMånedNummer * 12),
                                                 minstelønn: formatCurrencyWithKr(minstelønn),
                                             }}
                                         />
@@ -248,7 +297,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                             <BlueRadioGroup
                                 label={<FormattedMessage id="SituasjonSide.BorDuINorge" />}
                                 name="borDuINorge"
-                                onChange={scrollToBottom}
+                                onChange={resetFieldsAndScroll('borDuINorge')}
                             >
                                 <Radio value={true}>
                                     <FormattedMessage id="SituasjonSide.Ja" />
@@ -286,7 +335,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                             id="SituasjonSide.IkkeMedlem"
                                             values={{
                                                 a: (msg: any) => (
-                                                    <a href={folketrygdenlenke} target="_blank" rel="noreferrer">
+                                                    <a href={links.folketrygden} target="_blank" rel="noreferrer">
                                                         {msg}
                                                     </a>
                                                 ),
@@ -298,7 +347,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                         </VStack>
                     )}
                     <Spacer />
-                    {(borDuINorge || jobberDuINorge !== undefined) && (
+                    {(borDuINorge || (jobberDuINorge !== undefined && jobberDuINorge !== null)) && (
                         <Button
                             icon={<PaperplaneIcon aria-hidden />}
                             iconPosition="right"

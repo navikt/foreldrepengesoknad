@@ -1,5 +1,4 @@
-import { førsteOktober2021ReglerGjelder } from '@navikt/fp-common';
-
+import { førsteOktober2021ReglerGjelder } from '../utils/dateUtils';
 import { burdeKanskjeSøkeGraderingTest } from './tester/burdeKanskjeSøkeGraderingTest';
 import { erUttaksmengdeForFarMedmorForHøyTest } from './tester/erUttaksmengdeForFarMedmorForHøyTest';
 import { erUttaksplanBareForeldrepengerFørFødsel } from './tester/erUttaksplanBareForeldrepengerFørFødsel';

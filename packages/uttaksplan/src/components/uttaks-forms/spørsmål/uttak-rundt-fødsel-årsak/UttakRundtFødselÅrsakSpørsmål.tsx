@@ -1,9 +1,12 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
-import { Block, UttakRundtFødselÅrsak, hasValue, intlUtils } from '@navikt/fp-common';
+import { UttakRundtFødselÅrsak } from '@navikt/fp-common';
 
+import Block from '../../../../common/block/Block';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 interface Props {
     fieldName: PeriodeUttakFormField;
@@ -13,11 +16,11 @@ const UttakRundtFødselÅrsakSpørsmål: FunctionComponent<Props> = ({ fieldName
     const intl = useIntl();
     const radios = [
         {
-            label: intlUtils(intl, 'ja'),
+            label: intl.formatMessage({ id: 'ja' }),
             value: UttakRundtFødselÅrsak.samtidigUttak,
         },
         {
-            label: intlUtils(intl, 'uttaksplan.uttakrundtFødselÅrsak.nei.morErForSyk'),
+            label: intl.formatMessage({ id: 'uttaksplan.uttakrundtFødselÅrsak.nei.morErForSyk' }),
             value: UttakRundtFødselÅrsak.morErForSyk,
         },
     ];
@@ -25,12 +28,12 @@ const UttakRundtFødselÅrsakSpørsmål: FunctionComponent<Props> = ({ fieldName
     return (
         <Block padBottom="l">
             <PeriodeUttakFormComponents.RadioGroup
-                legend={intlUtils(intl, 'uttaksplan.uttakrundtFødselÅrsak.spørsmål')}
+                legend={intl.formatMessage({ id: 'uttaksplan.uttakrundtFødselÅrsak.spørsmål' })}
                 name={fieldName}
                 radios={radios}
                 validate={(value) => {
                     if (!hasValue(value)) {
-                        return intlUtils(intl, 'uttaksplan.validering.uttakRundtFødselFarMedmorWLB');
+                        return intl.formatMessage({ id: 'uttaksplan.validering.uttakRundtFødselFarMedmorWLB' });
                     }
 
                     return undefined;

@@ -1,26 +1,20 @@
 import dayjs from 'dayjs';
 
+import { Forelder, Periode, Periodetype, Situasjon, StønadskontoType, isUttaksperiode } from '@navikt/fp-common';
+import { Stønadskonto } from '@navikt/fp-types/src/TilgjengeligeStønadskontoer';
+import { Tidsperioden, Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
 import {
-    Forelder,
-    Periode,
-    Periodetype,
-    Situasjon,
-    StønadskontoType,
-    Tidsperioden,
-    Uttaksdagen,
-    andreAugust2022ReglerGjelder,
-    dateIsSameOrAfter,
     farMedmorsTidsperiodeSkalSplittesPåFamiliehendelsesdato,
     getLengdePåForeslåttWLBUttakFarMedmor,
-    getTidsperiode,
-    guid,
-    isUttaksperiode,
     sorterPerioder,
+    splittPeriodePåDato,
+    splittUttaksperiodePåFamiliehendelsesdato,
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
     tidperiodeOverlapperDato,
-} from '@navikt/fp-common';
-import { Stønadskonto } from '@navikt/fp-types/src/TilgjengeligeStønadskontoer';
-import { splittPeriodePåDato, splittUttaksperiodePåFamiliehendelsesdato } from '@navikt/fp-uttaksplan';
+} from '@navikt/fp-uttaksplan';
+
+import { andreAugust2022ReglerGjelder, dateIsSameOrAfter } from '../dateUtils';
+import { guid } from '../guid';
 
 const deltUttakAdopsjonSøktFørst = (
     famDato: Date,

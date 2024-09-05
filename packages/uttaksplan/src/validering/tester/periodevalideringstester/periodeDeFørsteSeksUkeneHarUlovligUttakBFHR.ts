@@ -1,10 +1,7 @@
-import {
-    StønadskontoType,
-    Søknadsinfo,
-    andreAugust2022ReglerGjelder,
-    isUttaksperiode,
-    starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
-} from '@navikt/fp-common';
+import { StønadskontoType, Søknadsinfo, isUttaksperiode } from '@navikt/fp-common';
+
+import { andreAugust2022ReglerGjelder } from '../../../utils/dateUtils';
+import { starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel } from '../../../utils/wlbUtils';
 import { RegelTest, RegelTestresultat } from '../../utils/types/regelTypes';
 
 export const periodeDeFørsteSeksUkeneHarUlovligUttakBFHR: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {

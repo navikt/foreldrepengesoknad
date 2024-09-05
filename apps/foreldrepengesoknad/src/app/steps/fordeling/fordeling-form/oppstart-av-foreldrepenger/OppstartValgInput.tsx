@@ -4,27 +4,24 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { Radio } from '@navikt/ds-react';
 
-import {
-    Barn,
-    NavnPåForeldre,
-    andreAugust2022ReglerGjelder,
-    førsteOktober2021ReglerGjelder,
-    getKunFarHarRett,
-    isAdoptertAnnetBarn,
-    isFarEllerMedmor,
-    isFødtBarn,
-} from '@navikt/fp-common';
+import { Barn, NavnPåForeldre, isAdoptertAnnetBarn, isFødtBarn } from '@navikt/fp-common';
 import { RadioGroup } from '@navikt/fp-form-hooks';
-import { ISOStringToDate } from '@navikt/fp-formik';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import { formatDateExtended } from '@navikt/fp-utils';
-import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-uttaksplan';
+import {
+    andreAugust2022ReglerGjelder,
+    førsteOktober2021ReglerGjelder,
+    getFørsteUttaksdagForeldrepengerFørFødsel,
+} from '@navikt/fp-uttaksplan';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import { OppstartValg } from 'app/context/types/Fordeling';
+import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
+import { OppstartValg } from 'app/types/Fordeling';
 import { getDatoForAleneomsorg, getIsDeltUttak } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
+import { ISOStringToDate } from 'app/utils/dateUtils';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import { getKunFarHarRett } from 'app/utils/personUtils';
 
 const getOppstartsvalgFarFødsel = (
     familiehendelsesDato: Date,

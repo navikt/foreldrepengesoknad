@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import { Block, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
+import { NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
@@ -35,26 +35,24 @@ const MorKvalifiseringsprogrammetDokumentasjon: React.FunctionComponent<Props> =
     }
 
     return (
-        <Block padBottom="xl">
-            <UttakUploader
-                attachments={attachments}
-                updateAttachments={updateAttachments(Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM)}
-                perioder={perioder}
-                navnPåForeldre={navnPåForeldre}
-                familiehendelsesdato={familiehendelsesdato}
-                termindato={termindato}
-                situasjon={situasjon}
-                skjemanummer={Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM}
-                labelText={intl.formatMessage({ id: 'manglendeVedlegg.kvalifiseringsprogram.tittel' })}
-                description={intl.formatMessage(
-                    { id: 'manglendeVedlegg.kvalifiseringsprogram.description' },
-                    {
-                        navn: navnPåForeldre.mor,
-                    },
-                )}
-                attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
-            />
-        </Block>
+        <UttakUploader
+            attachments={attachments}
+            updateAttachments={updateAttachments(Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM)}
+            perioder={perioder}
+            navnPåForeldre={navnPåForeldre}
+            familiehendelsesdato={familiehendelsesdato}
+            termindato={termindato}
+            situasjon={situasjon}
+            skjemanummer={Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM}
+            labelText={intl.formatMessage({ id: 'manglendeVedlegg.kvalifiseringsprogram.tittel' })}
+            description={intl.formatMessage(
+                { id: 'manglendeVedlegg.kvalifiseringsprogram.description' },
+                {
+                    navn: navnPåForeldre.mor,
+                },
+            )}
+            attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
+        />
     );
 };
 

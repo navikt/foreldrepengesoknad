@@ -10,9 +10,12 @@ import { Datepicker } from '@navikt/fp-form-hooks';
 import { SøkerBarn } from '@navikt/fp-types';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
-import RegistrertePersonalia from 'app/components/registrerte-personalia/RegistrertePersonalia';
-import { sorterRegistrerteBarnEtterEldstOgNavn } from 'app/pages/velkommen/velkommenUtils';
-import { formaterFødselsdatoerPåBarn, getTittelBarnNårNavnSkalIkkeVises } from 'app/utils/barnUtils';
+import RegistrertePersonalia from 'app/pages/registrerte-personalia/RegistrertePersonalia';
+import {
+    formaterFødselsdatoerPåBarn,
+    getTittelBarnNårNavnSkalIkkeVises,
+    sorterRegistrerteBarnEtterEldstOgNavn,
+} from 'app/utils/barnUtils';
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);

@@ -1,6 +1,7 @@
 import { FunctionComponent } from 'react';
 
-import { Block } from '@navikt/fp-common';
+import { VStack } from '@navikt/ds-react';
+
 import { Attachment } from '@navikt/fp-types';
 import { bemUtils } from '@navikt/fp-utils';
 
@@ -20,12 +21,10 @@ const AndreInntekterDokumentasjon: FunctionComponent<Props> = ({ vedlegg }) => {
     }
 
     return (
-        <div>
-            <Block padBottom="l">
-                <div className={bem.block}>{getDokumentasjonStringAndreInntekter(vedlegg)}</div>
-            </Block>
+        <VStack gap="2">
+            <div className={bem.block}>{getDokumentasjonStringAndreInntekter(vedlegg)}</div>
             <VedleggListe vedlegg={vedlegg} />
-        </div>
+        </VStack>
     );
 };
 

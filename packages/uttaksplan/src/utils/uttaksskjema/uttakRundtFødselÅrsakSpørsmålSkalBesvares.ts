@@ -1,12 +1,9 @@
-import {
-    Periodetype,
-    Situasjon,
-    StønadskontoType,
-    TidsperiodeDate,
-    andreAugust2022ReglerGjelder,
-    erFarMedmorSinWLBTidsperiodeRundtFødsel,
-} from '@navikt/fp-common';
 import dayjs from 'dayjs';
+
+import { Periodetype, Situasjon, StønadskontoType, TidsperiodeDate } from '@navikt/fp-common';
+
+import { andreAugust2022ReglerGjelder } from '../../utils/dateUtils';
+import { erFarMedmorSinWLBTidsperiodeRundtFødsel } from '../../utils/wlbUtils';
 
 export const uttakRundtFødselÅrsakSpørsmålSkalBesvares = (
     periodetype: Periodetype,

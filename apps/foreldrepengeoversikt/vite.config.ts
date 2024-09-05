@@ -23,7 +23,7 @@ export default defineConfig({
     resolve: {
         alias: {
             app: path.resolve(__dirname, './src/app'),
-            storybook: path.resolve(__dirname, './src/storybook'),
+            storybookData: path.resolve(__dirname, './src/storybook-data'),
             assets: path.resolve(__dirname, './src/assets'),
         },
     },
@@ -34,9 +34,6 @@ export default defineConfig({
         globals: true,
         environment: 'jsdom',
         setupFiles: './vitest/setupTests.ts',
-        deps: {
-            inline: ['@navikt/ds-react'],
-        },
         coverage: {
             include: ['src/**/*'],
             exclude: [],

@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import { setAxiosLocale } from '@navikt/fp-api';
-import { allCommonMessages } from '@navikt/fp-common';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
@@ -24,7 +23,6 @@ const localeFromSessionStorage = getLocaleFromSessionStorage<LocaleNo>();
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: {
         ...nbMessages,
-        ...allCommonMessages.nb,
         ...uiMessages.nb,
         ...utenlandsoppholdMessages.nb,
         ...oppsummeringMessages.nb,
@@ -37,7 +35,6 @@ const MESSAGES_GROUPED_BY_LOCALE = {
     },
     nn: {
         ...nnMessages,
-        ...allCommonMessages.nn,
         ...uiMessages.nn,
         ...utenlandsoppholdMessages.nn,
         ...oppsummeringMessages.nn,

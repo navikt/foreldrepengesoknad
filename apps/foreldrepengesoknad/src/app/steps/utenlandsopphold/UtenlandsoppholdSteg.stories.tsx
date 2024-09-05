@@ -2,12 +2,12 @@ import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 import { MemoryRouter } from 'react-router-dom';
-import AxiosMock from 'storybook/utils/AxiosMock';
+import AxiosMock from 'storybookData/utils/AxiosMock';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import { Action, ContextDataType, FpDataContext } from 'app/context/FpDataContext';
-import SøknadRoutes from 'app/routes/routes';
+import { Action, ContextDataType, FpDataContext } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 
 import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
 

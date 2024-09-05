@@ -2,18 +2,16 @@ import dayjs from 'dayjs';
 
 import {
     Periode,
-    Periodene,
     StønadskontoType,
-    Tidsperioden,
     Uttaksperiode,
-    guid,
     isForeldrepengerFørFødselUttaksperiode,
     isOverskrivbarPeriode,
     isUtsettelsesperiode,
-    sorterPerioder,
 } from '@navikt/fp-common';
-import { Uttaksdagen } from '@navikt/fp-common/src/common/utils/Uttaksdagen';
+import { Tidsperioden, Uttaksdagen } from '@navikt/fp-utils';
 
+import { Periodene, sorterPerioder } from '../utils/Periodene';
+import { guid } from '../utils/guid';
 import { getPeriodeHullEllerPeriodeUtenUttak, getTidsperiodeMellomPerioder } from './uttaksplanbuilderUtils';
 
 const splittPeriodePåPeriode = (berørtPeriode: Periode, nyPeriode: Periode): Periode[] => {

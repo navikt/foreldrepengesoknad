@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 
 import { Box, HStack, Loader } from '@navikt/ds-react';
 
-import { Dekningsgrad, DekningsgradDTO, getKjønnFromFnr, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { Dekningsgrad, DekningsgradDTO, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { bemUtils } from '@navikt/fp-utils';
@@ -12,12 +12,13 @@ import { notEmpty } from '@navikt/fp-validation';
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
 import { useApiPostData } from 'app/api/context/useFpApiData';
 import getStønadskontoParams from 'app/api/getStønadskontoParams';
+import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
 import { RequestStatus } from 'app/types/RequestState';
 import { getAnnenPartVedtakParam, shouldSuspendAnnenPartVedtakApiRequest } from 'app/utils/annenForelderUtils';
 import { getVis1Juli2024Info } from 'app/utils/dateUtils';
+import { getKjønnFromFnr } from 'app/utils/personUtils';
 
 import DekningsgradForm from './DekningsgradForm';
 import DekningsgradValgtAvAnnenPartPanel from './DekningsgradValgtAvAnnenPartPanel';

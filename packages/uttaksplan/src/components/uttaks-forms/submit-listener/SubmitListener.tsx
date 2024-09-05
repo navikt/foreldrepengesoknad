@@ -1,8 +1,9 @@
-import { FunctionComponent, useEffect, useRef } from 'react';
 import { useFormikContext } from 'formik';
-import { PeriodeUttakFormData } from '../periode-uttak-form/periodeUttakFormConfig';
-import { PeriodeUtsettelseFormData } from '../periode-utsettelse-form/periodeUtsettelseFormConfig';
+import { FunctionComponent, useEffect, useRef } from 'react';
+
 import { PeriodeFørFødselFormData } from '../periode-før-fødsel-form/periodeFørFødselFormConfig';
+import { PeriodeUtsettelseFormData } from '../periode-utsettelse-form/periodeUtsettelseFormConfig';
+import { PeriodeUttakFormData } from '../periode-uttak-form/periodeUttakFormConfig';
 
 interface Props {
     cleanup: () => PeriodeUttakFormData | PeriodeUtsettelseFormData | PeriodeFørFødselFormData;

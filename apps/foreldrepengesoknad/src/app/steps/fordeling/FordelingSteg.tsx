@@ -3,15 +3,10 @@ import { useIntl } from 'react-intl';
 
 import { Loader, VStack } from '@navikt/ds-react';
 
-import {
-    Uttaksdagen,
-    getAntallUkerFellesperiode,
-    getNavnPåForeldre,
-    isFarEllerMedmor,
-    isFødtBarn,
-} from '@navikt/fp-common';
+import { isFødtBarn } from '@navikt/fp-common';
 import { Arbeidsforhold, Søker } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
+import { Uttaksdagen } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { FpApiDataType } from 'app/api/context/FpApiDataContext';
@@ -20,9 +15,9 @@ import getStønadskontoParams, {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'app/api/getStønadskontoParams';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/context/FpDataContext';
 import { RequestStatus } from 'app/types/RequestState';
 import {
     getAnnenPartVedtakParam,
@@ -32,6 +27,9 @@ import {
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'app/utils/eksisterendeSakUtils';
 import { getDekningsgradFromString } from 'app/utils/getDekningsgradFromString';
+import isFarEllerMedmor from 'app/utils/isFarEllerMedmor';
+import { getNavnPåForeldre } from 'app/utils/personUtils';
+import { getAntallUkerFellesperiode } from 'app/utils/stønadskontoerUtils';
 
 import FordelingForm from './fordeling-form/FordelingForm';
 import FordelingOversikt from './fordeling-oversikt/FordelingOversikt';

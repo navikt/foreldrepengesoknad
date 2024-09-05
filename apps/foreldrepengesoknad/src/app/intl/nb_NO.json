@@ -468,9 +468,9 @@
     "oppsummering.dokumentasjon.overtakelseAvOmsorg": "Dokumentasjon av overtakelse av omsorg",
     "oppsummering.dokumentasjon.overtakelseAvOmsorg.sendSenere": "Husk å sende dokumentasjon på overtakelse av omsorg",
     "oppsummering.dokumentasjon.militær": "Dokumentasjon av førstegangstjenesten",
-    "oppsummering.dokumentasjon.militær.sendSenere": "Husk å sende dokumentasjon på militær",
+    "oppsummering.dokumentasjon.militær.sendSenere": "Husk å sende dokumentasjon på førstegangstjeneste",
     "oppsummering.dokumentasjon.etterlønn": "Dokumentasjon av sluttvederlag/etterlønn",
-    "oppsummering.dokumentasjon.etterlønn.sendSenere": "Husk å sende dokumentasjon på etterlønn",
+    "oppsummering.dokumentasjon.etterlønn.sendSenere": "Husk å sende dokumentasjon på sluttvederlag/etterlønn",
     "oppsummering.tekstOmFarskapsportal.overskrift": "Har du og {hvem, select, far {mor} other {far}} erklært farskap?",
     "oppsummering.tekstOmFarskapsportal.far": "Siden du og {hvem, select, far {moren} other {faren}} til {antallBarn, select, 1 {barnet} other {barna}} ikke er gift, må {hvem, select, far {du} other {far}} erklære farskap for at {hvem, select, far {du} other {han}} skal bli registrert som far til {antallBarn, select, 1 {barnet} other {barna}} i folkeregisteret. <a>Her kan {hvem, select, far {du} other {han}} erklære farskap digitalt.</a>",
     "inntektstype.jobb_i_utlandet": "Jobb i utlandet",
@@ -1114,5 +1114,6 @@
     "FørstegangstjenestePanel.Vedlegg": "Senere i søknaden vil du bli bedt om å laste opp dokumentasjon på perioden fra tjenestestedet ditt.",
     "FørstegangstjenestePanel.FraOgMedDato.ErIFremtiden": "Fra og med dato må være før eller lik dagens dato",
     "FørstegangstjenestePanel.FraOgMedDato.FørTilDato": "Du må legge inn en fra og med dato som er før til og med datoen.",
-    "FørstegangstjenestePanel.TilOgMedDato.ErIFremtiden": "Til og med dato må være før eller lik dagens dato"
+    "FørstegangstjenestePanel.TilOgMedDato.ErIFremtiden": "Til og med dato må være før eller lik dagens dato",
+    "backlink.label": "Forrige steg"
 }

@@ -1,18 +1,19 @@
 import dayjs from 'dayjs';
 import React from 'react';
+import { DayOfWeek } from 'react-day-picker';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { AnnenForelder, Barn, uttaksplanDatoavgrensninger } from '@navikt/fp-common';
+import { AnnenForelder, Barn } from '@navikt/fp-common';
 import { Datepicker } from '@navikt/fp-form-hooks';
-import { DatepickerLimitationsString, ISOStringToDate } from '@navikt/fp-formik';
 import { SøkersituasjonFp } from '@navikt/fp-types';
-import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-uttaksplan';
+import { getFørsteUttaksdagForeldrepengerFørFødsel, uttaksplanDatoavgrensninger } from '@navikt/fp-uttaksplan';
 import { isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
-import { ContextDataType, useContextGetData } from 'app/context/FpDataContext';
-import { OppstartValg } from 'app/context/types/Fordeling';
+import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
+import { OppstartValg } from 'app/types/Fordeling';
 import { getDatoForAleneomsorg, getErAleneOmOmsorg } from 'app/utils/annenForelderUtils';
 import { getFamiliehendelsedato, getFamiliehendelsedatoDate, getFødselsdato, getTermindato } from 'app/utils/barnUtils';
+import { ISOStringToDate } from 'app/utils/dateUtils';
 
 import { validateOppstartsdato } from '../fordelingFormUtils';
 
@@ -31,6 +32,19 @@ const getDefaultDateOppstartsdato = (
     }
     return getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
 };
+
+interface DatepickerDateRange {
+    from: string;
+    to: string;
+}
+
+interface DatepickerLimitationsString {
+    minDate?: string;
+    maxDate?: string;
+    invalidDateRanges?: DatepickerDateRange[];
+    weekendsNotSelectable?: boolean;
+    disabledDaysOfWeek?: DayOfWeek;
+}
 
 const getDatoAvgrensninger = (
     barn: Barn,

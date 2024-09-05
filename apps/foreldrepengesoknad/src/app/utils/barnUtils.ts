@@ -4,8 +4,9 @@ import { IntlShape } from 'react-intl';
 
 import { Barn, isFødtBarn, isIkkeUtfyltTypeBarn, isUfødtBarn } from '@navikt/fp-common';
 import { DDMMMMYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { ISOStringToDate } from '@navikt/fp-formik';
 import { SøkerBarn } from '@navikt/fp-types';
+
+import { ISOStringToDate } from './dateUtils';
 
 dayjs.extend(utc);
 
@@ -159,4 +160,14 @@ export const formaterFødselsdatoerPåBarn = (fødselsdatoer: string[] | Date[] 
         return `${førsteFødselsdaoer} og ${sisteFødselsdato}`;
     }
     return dayjs(unikeFødselsdatoer[0]).format(DDMMMMYYY_DATE_FORMAT);
+};
+
+export const sorterRegistrerteBarnEtterEldstOgNavn = (b1: SøkerBarn, b2: SøkerBarn) => {
+    if (dayjs(b1.fødselsdato).isAfter(b2.fødselsdato, 'd')) {
+        return 1;
+    } else if (dayjs(b1.fødselsdato).isBefore(b2.fødselsdato, 'd')) {
+        return -1;
+    } else {
+        return b1.fornavn < b2.fornavn ? -1 : 1;
+    }
 };

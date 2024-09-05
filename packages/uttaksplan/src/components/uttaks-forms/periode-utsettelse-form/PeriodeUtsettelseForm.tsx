@@ -4,26 +4,22 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button } from '@navikt/ds-react';
 
 import {
-    ActionLink,
     Arbeidsforhold,
-    Block,
-    ISOStringToDate,
     NavnPåForeldre,
     Periode,
     PeriodeValidState,
     Situasjon,
-    Tidsperioden,
     Utsettelsesperiode,
-    bemUtils,
-    førsteOktober2021ReglerGjelder,
-    getIsValidStateForPerioder,
-    getSlettPeriodeTekst,
-    guid,
-    hasValue,
-    intlUtils,
-    isValidTidsperiode,
 } from '@navikt/fp-common';
+import { Tidsperioden, isValidTidsperiode } from '@navikt/fp-utils';
 
+import ActionLink from '../../../common/action-link/ActionLink';
+import Block from '../../../common/block/Block';
+import { ISOStringToDate, førsteOktober2021ReglerGjelder } from '../../../utils/dateUtils';
+import { getUttaksdagerSomErFridager } from '../../../utils/getUttaksdagerSomErFridager';
+import { guid } from '../../../utils/guid';
+import { getIsValidStateForPerioder, getSlettPeriodeTekst } from '../../../utils/periodeUtils';
+import planBemUtils from '../../../utils/planBemUtils';
 import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
 import UtsettelseEndreTidsperiodeSpørsmål from '../../utsettelse-tidsperiode-spørsmål/UtsettelseTidsperiodeSpørsmål';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
@@ -45,6 +41,8 @@ import {
     getPeriodeUtsettelseFormInitialValues,
     mapPeriodeUtsettelseFormToPeriode,
 } from './periodeUtsettelseFormUtils';
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 interface Props {
     periode: Periode;
@@ -88,7 +86,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
     const [periodeIsValid, setPeriodeIsValid] = useState(true);
     const { id } = periode;
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
-    const bem = bemUtils('periodeUtsettelseForm');
+    const bem = planBemUtils('periodeUtsettelseForm');
 
     // Utsettelseårsaker som gjelder for søknader sendt før 1. oktober 2021
     const skalViseGamleUtsettelseÅrsaker = førsteOktober2021ReglerGjelder(familiehendelsesdato) === false;
@@ -132,7 +130,7 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                 if (isValid !== periodeIsValid) {
                     setPeriodeIsValid(isValid);
                 }
-                const antallHelligdager = Tidsperioden({ fom: values.fom!, tom: values.tom! }).getAntallFridager();
+                const antallHelligdager = getUttaksdagerSomErFridager({ fom: values.fom!, tom: values.tom! }).length;
                 const antallUttaksdager = Tidsperioden({ fom: values.fom!, tom: values.tom! }).getAntallUttaksdager();
                 const periodenErKunHelligdager = antallHelligdager === antallUttaksdager;
                 return (
@@ -217,10 +215,12 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                             >
                                 <PeriodeUtsettelseFormComponents.Checkbox
                                     name={PeriodeUtsettelseFormField.bekrefterArbeidIPerioden}
-                                    label={intlUtils(intl, 'uttaksplan.bekrefterArbeidIPerioden')}
+                                    label={intl.formatMessage({ id: 'uttaksplan.bekrefterArbeidIPerioden' })}
                                     validate={(value) => {
                                         if (!hasValue(value) || value === undefined || value === false) {
-                                            return intlUtils(intl, 'uttaksplan.validering.bekrefterArbeidIPerioden');
+                                            return intl.formatMessage({
+                                                id: 'uttaksplan.validering.bekrefterArbeidIPerioden',
+                                            });
                                         }
 
                                         return undefined;

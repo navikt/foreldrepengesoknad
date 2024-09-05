@@ -3,9 +3,9 @@ import {
     isForeldrepengerFørFødselUttaksperiode,
     isInfoPeriodeAnnenPart,
     isUtsettelsesperiode,
-    starterUttaksperiodeFørFødsel,
 } from '@navikt/fp-common';
 
+import { starterUttaksperiodeFørFødsel } from '../utils/wlbUtils';
 import { leggTilPeriode } from './leggTilPeriode';
 import { oppdaterPeriode } from './oppdaterPeriode';
 import { slettPeriode } from './slettPeriode';

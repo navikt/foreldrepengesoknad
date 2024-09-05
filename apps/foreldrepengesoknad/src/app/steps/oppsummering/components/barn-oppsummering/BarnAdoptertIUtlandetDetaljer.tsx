@@ -1,9 +1,15 @@
-import { AdoptertAnnetBarn, AdoptertStebarn, formatDate, hasValue, isAdoptertStebarn } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import OppsummeringsPunkt from '../OppsummeringsPunkt';
+
 import { BodyShort } from '@navikt/ds-react';
+
+import { AdoptertAnnetBarn, AdoptertStebarn, isAdoptertStebarn } from '@navikt/fp-common';
+import { formatDate } from '@navikt/fp-utils';
+
 import { førsteOktober2021ReglerGjelder } from 'app/utils/dateUtils';
+import { hasValue } from 'app/utils/validationUtil';
+
+import OppsummeringsPunkt from '../OppsummeringsPunkt';
 
 interface Props {
     barn: AdoptertAnnetBarn | AdoptertStebarn;

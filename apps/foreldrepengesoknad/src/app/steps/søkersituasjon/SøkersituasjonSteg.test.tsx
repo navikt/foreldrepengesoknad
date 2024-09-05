@@ -1,9 +1,11 @@
-import { render, screen } from '@testing-library/react';
 import { composeStories } from '@storybook/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
+import { ContextDataType } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+
 import * as stories from './SøkersituasjonSteg.stories';
-import SøknadRoutes from 'app/routes/routes';
-import { ContextDataType } from 'app/context/FpDataContext';
 
 const { Mor, Far } = composeStories(stories);
 

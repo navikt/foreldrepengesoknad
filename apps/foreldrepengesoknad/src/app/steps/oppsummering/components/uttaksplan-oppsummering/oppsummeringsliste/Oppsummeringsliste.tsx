@@ -1,8 +1,11 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import List from './list/List';
+
 import { BodyShort, Label } from '@navikt/ds-react';
-import { guid } from '@navikt/fp-common';
+
+import { guid } from 'app/utils/guid';
+
+import List from './list/List';
 import './oppsummeringsliste.less';
 
 export interface OppsummeringslisteelementProps {
