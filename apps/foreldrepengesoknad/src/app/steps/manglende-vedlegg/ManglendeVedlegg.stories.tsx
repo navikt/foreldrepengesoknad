@@ -1,6 +1,7 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { getAxiosInstance } from '@navikt/fp-api';
@@ -92,138 +93,148 @@ const defaultArbeidsforholdOgInntekt = {
     harJobbetSomSelvstendigNæringsdrivende: false,
 };
 
-export default {
-    title: 'steps/ManglendeVedlegg',
-    component: ManglendeVedlegg,
-};
-
-interface Props {
-    søkerInfo: Søkerinfo;
+type StoryArgs = {
     situasjon?: Situasjon;
-    annenForelder: AnnenForelder;
-    barn: Barn;
+    annenForelder?: AnnenForelder;
+    barn?: Barn;
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
     annenInntekt?: AndreInntektskilder[];
-    mellomlagreSøknadOgNaviger?: () => Promise<void>;
-    gåTilNesteSide: (action: Action) => void;
-}
+    gåTilNesteSide?: (action: Action) => void;
+} & ComponentProps<typeof ManglendeVedlegg>;
 
-const Template: StoryFn<Props> = ({
-    søkerInfo,
-    situasjon = 'fødsel',
-    annenForelder = defaultAnnenForelder,
-    barn = defaultBarn,
-    arbeidsforholdOgInntekt = defaultArbeidsforholdOgInntekt,
-    annenInntekt,
-    gåTilNesteSide = action('button-click'),
-    mellomlagreSøknadOgNaviger = promiseAction(),
-}) => {
-    initAmplitude();
+const meta = {
+    component: ManglendeVedlegg,
+    render: ({
+        situasjon = 'fødsel',
+        annenForelder = defaultAnnenForelder,
+        barn = defaultBarn,
+        arbeidsforholdOgInntekt = defaultArbeidsforholdOgInntekt,
+        annenInntekt,
+        gåTilNesteSide = action('button-click'),
+        ...rest
+    }) => {
+        initAmplitude();
 
-    const apiMock = new MockAdapter(getAxiosInstance());
-    apiMock.onPost('/rest/storage/foreldrepenger/vedlegg').reply(200); //story
-    apiMock.onPost('http://localhost:8888/rest/storage/foreldrepenger/vedlegg').reply(200); //test
+        const apiMock = new MockAdapter(getAxiosInstance());
+        apiMock.onPost('/rest/storage/foreldrepenger/vedlegg').reply(200); //story
+        apiMock.onPost('http://localhost:8888/rest/storage/foreldrepenger/vedlegg').reply(200); //test
 
-    return (
-        <MemoryRouter initialEntries={[SøknadRoutes.DOKUMENTASJON]}>
-            <FpDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.UTTAKSPLAN]: [],
-                    [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                    [ContextDataType.OM_BARNET]: barn,
-                    [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
-                    [ContextDataType.ANDRE_INNTEKTSKILDER]: annenInntekt,
-                    [ContextDataType.SØKERSITUASJON]: {
-                        rolle: 'mor',
-                        situasjon: situasjon,
-                    },
-                }}
-            >
-                <ManglendeVedlegg
-                    søkerInfo={søkerInfo}
-                    erEndringssøknad={false}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={action('button-click')}
-                />
-            </FpDataContext>
-        </MemoryRouter>
-    );
-};
-
-export const Termindatodokumentasjon = Template.bind({});
-Termindatodokumentasjon.args = {
-    søkerInfo: defaultSøkerinfo,
-    barn: {
-        antallBarn: 1,
-        type: BarnType.UFØDT,
-        termindato: '2024-01-01',
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.DOKUMENTASJON]}>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.UTTAKSPLAN]: [],
+                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                        [ContextDataType.OM_BARNET]: barn,
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
+                        [ContextDataType.ANDRE_INNTEKTSKILDER]: annenInntekt,
+                        [ContextDataType.SØKERSITUASJON]: {
+                            rolle: 'mor',
+                            situasjon: situasjon,
+                        },
+                    }}
+                >
+                    <ManglendeVedlegg {...rest} />
+                </FpDataContext>
+            </MemoryRouter>
+        );
     },
-};
+} satisfies Meta<StoryArgs>;
+export default meta;
 
-export const Omsorgsovertakelsedokumentasjon = Template.bind({});
-Omsorgsovertakelsedokumentasjon.args = {
-    søkerInfo: defaultSøkerinfo,
-    situasjon: 'adopsjon',
-    barn: {
-        antallBarn: 1,
-        type: BarnType.ADOPTERT_ANNET_BARN,
-        adopsjonsdato: '2023-01-01',
-        adoptertIUtlandet: false,
-        fødselsdatoer: ['2022-01-01'],
-    },
-};
+type Story = StoryObj<typeof meta>;
 
-export const Aleneomsorgdokumentasjon = Template.bind({});
-Aleneomsorgdokumentasjon.args = {
-    søkerInfo: defaultSøkerinfo,
-    annenForelder: {
-        ...defaultAnnenForelder,
-        datoForAleneomsorg: '2024-01-01',
-    },
-};
-
-export const HarAndreInntektskilderMilitærtjeneste = Template.bind({});
-HarAndreInntektskilderMilitærtjeneste.args = {
-    søkerInfo: defaultSøkerinfo,
-    arbeidsforholdOgInntekt: {
-        harHattAndreInntektskilder: true,
-        harJobbetSomFrilans: false,
-        harJobbetSomSelvstendigNæringsdrivende: false,
-    },
-    annenInntekt: [
-        {
-            fom: '2024-01-01',
-            tom: '2024-04-01',
-            pågående: false,
-            type: AnnenInntektType.MILITÆRTJENESTE,
+export const Termindatodokumentasjon: Story = {
+    args: {
+        søkerInfo: defaultSøkerinfo,
+        barn: {
+            antallBarn: 1,
+            type: BarnType.UFØDT,
+            termindato: '2024-01-01',
         },
-        {
-            fom: '2024-05-01',
-            pågående: true,
-            type: AnnenInntektType.MILITÆRTJENESTE,
-        },
-    ],
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+    },
 };
 
-export const HarAndreInntektskilderEtterlønn = Template.bind({});
-HarAndreInntektskilderEtterlønn.args = {
-    søkerInfo: defaultSøkerinfo,
-    arbeidsforholdOgInntekt: {
-        harHattAndreInntektskilder: true,
-        harJobbetSomFrilans: false,
-        harJobbetSomSelvstendigNæringsdrivende: false,
+export const Omsorgsovertakelsedokumentasjon: Story = {
+    args: {
+        ...Termindatodokumentasjon.args,
+        situasjon: 'adopsjon',
+        barn: {
+            antallBarn: 1,
+            type: BarnType.ADOPTERT_ANNET_BARN,
+            adopsjonsdato: '2023-01-01',
+            adoptertIUtlandet: false,
+            fødselsdatoer: ['2022-01-01'],
+        },
     },
-    annenInntekt: [
-        {
-            fom: '2024-01-01',
-            tom: '2024-04-01',
-            type: AnnenInntektType.SLUTTPAKKE,
+};
+
+export const Aleneomsorgdokumentasjon: Story = {
+    args: {
+        søkerInfo: defaultSøkerinfo,
+        annenForelder: {
+            ...defaultAnnenForelder,
+            datoForAleneomsorg: '2024-01-01',
         },
-        {
-            fom: '2024-05-01',
-            tom: '2024-07-01',
-            type: AnnenInntektType.SLUTTPAKKE,
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+    },
+};
+
+export const HarAndreInntektskilderMilitærtjeneste: Story = {
+    args: {
+        søkerInfo: defaultSøkerinfo,
+        arbeidsforholdOgInntekt: {
+            harHattAndreInntektskilder: true,
+            harJobbetSomFrilans: false,
+            harJobbetSomSelvstendigNæringsdrivende: false,
         },
-    ],
+        annenInntekt: [
+            {
+                fom: '2024-01-01',
+                tom: '2024-04-01',
+                pågående: false,
+                type: AnnenInntektType.MILITÆRTJENESTE,
+            },
+            {
+                fom: '2024-05-01',
+                pågående: true,
+                type: AnnenInntektType.MILITÆRTJENESTE,
+            },
+        ],
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+    },
+};
+
+export const HarAndreInntektskilderEtterlønn: Story = {
+    args: {
+        søkerInfo: defaultSøkerinfo,
+        arbeidsforholdOgInntekt: {
+            harHattAndreInntektskilder: true,
+            harJobbetSomFrilans: false,
+            harJobbetSomSelvstendigNæringsdrivende: false,
+        },
+        annenInntekt: [
+            {
+                fom: '2024-01-01',
+                tom: '2024-04-01',
+                type: AnnenInntektType.SLUTTPAKKE,
+            },
+            {
+                fom: '2024-05-01',
+                tom: '2024-07-01',
+                type: AnnenInntektType.SLUTTPAKKE,
+            },
+        ],
+        erEndringssøknad: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+    },
 };

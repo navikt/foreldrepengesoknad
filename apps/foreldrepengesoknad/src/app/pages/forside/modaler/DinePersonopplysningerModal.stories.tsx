@@ -1,16 +1,18 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import DinePersonopplysningerModal from './DinePersonopplysningerModal';
 
-export default {
-    title: 'pages/DinePersonopplysningerModal',
+const meta = {
+    title: 'DinePersonopplysningerModal',
     component: DinePersonopplysningerModal,
-};
+} satisfies Meta<typeof DinePersonopplysningerModal>;
+export default meta;
 
-const Template: StoryFn<any> = (args) => <DinePersonopplysningerModal {...args} />;
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
-Default.args = {
-    isOpen: true,
-    onRequestClose: () => alert('Du prøver å lukke'),
+export const Default: Story = {
+    args: {
+        isOpen: true,
+        onRequestClose: () => alert('Du prøver å lukke'),
+    },
 };

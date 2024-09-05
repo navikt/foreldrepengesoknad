@@ -1,5 +1,6 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -9,13 +10,6 @@ import SøknadRoutes from 'app/appData/routes';
 
 import FrilansSteg from './FrilansSteg';
 
-const defaultExport = {
-    title: 'steps/FrilansSteg',
-    component: FrilansSteg,
-};
-
-export default defaultExport;
-
 const promiseAction =
     () =>
     (...args: any): Promise<any> => {
@@ -23,35 +17,40 @@ const promiseAction =
         return Promise.resolve();
     };
 
-interface Props {
-    mellomlagreSøknadOgNaviger?: () => Promise<void>;
+type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
-}
+} & ComponentProps<typeof FrilansSteg>;
 
-const Template: StoryFn<Props> = ({
-    mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide = action('button-click'),
-}) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[SøknadRoutes.FRILANS]}>
-            <FpDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                        harJobbetSomFrilans: true,
-                        harJobbetSomSelvstendigNæringsdrivende: false,
-                        harHattAndreInntektskilder: false,
-                    },
-                }}
-            >
-                <FrilansSteg
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={promiseAction()}
-                    arbeidsforhold={[]}
-                />
-            </FpDataContext>
-        </MemoryRouter>
-    );
+const meta = {
+    component: FrilansSteg,
+    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.FRILANS]}>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                            harJobbetSomFrilans: true,
+                            harJobbetSomSelvstendigNæringsdrivende: false,
+                            harHattAndreInntektskilder: false,
+                        },
+                    }}
+                >
+                    <FrilansSteg {...rest} />
+                </FpDataContext>
+            </MemoryRouter>
+        );
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: promiseAction(),
+        arbeidsforhold: [],
+    },
 };
-export const Default = Template.bind({});
