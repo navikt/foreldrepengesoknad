@@ -12,7 +12,6 @@ import { HvorLangPeriode } from 'types/HvorLangPeriode';
 
 import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import OppsummeringSteg from './OppsummeringSteg';
 
@@ -21,7 +20,7 @@ const MINSTERETTER_FAR_RUNDT_FØDSEL_10 = {
     toTette: 0,
 };
 
-const satser = {
+const DEFAULT_SATSER = {
     engangstønad: [
         {
             fom: '01.01.2023',
@@ -46,50 +45,41 @@ const satser = {
 
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
-    fordeling: Fordeling;
-    hvorLangPeriode: HvorLangPeriode;
+    fordeling?: Fordeling;
+    hvorLangPeriode?: HvorLangPeriode;
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
-    stønadskontoer?: TilgjengeligeStønadskontoer;
 } & ComponentProps<typeof OppsummeringSteg>;
-
-type Story = StoryObj<StoryArgs>;
-
-const customRenderer = ({
-    hvemPlanlegger,
-    fordeling,
-    hvorLangPeriode,
-    omBarnet,
-    arbeidssituasjon,
-    stønadskontoer,
-}: StoryArgs) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[PlanleggerRoutes.OPPSUMMERING]}>
-            <PlanleggerDataContext
-                initialState={{
-                    [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
-                    [ContextDataType.FORDELING]: fordeling,
-                    [ContextDataType.HVOR_LANG_PERIODE]: hvorLangPeriode,
-                    [ContextDataType.OM_BARNET]: omBarnet,
-                    [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
-                }}
-            >
-                <OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} />
-            </PlanleggerDataContext>
-        </MemoryRouter>
-    );
-};
 
 const meta = {
     title: 'steg/OppsummeringSteg',
     component: OppsummeringSteg,
-    render: customRenderer,
+    render: ({ hvemPlanlegger, fordeling, hvorLangPeriode, omBarnet, arbeidssituasjon, stønadskontoer, satser }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[PlanleggerRoutes.OPPSUMMERING]}>
+                <PlanleggerDataContext
+                    initialState={{
+                        [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
+                        [ContextDataType.FORDELING]: fordeling,
+                        [ContextDataType.HVOR_LANG_PERIODE]: hvorLangPeriode,
+                        [ContextDataType.OM_BARNET]: omBarnet,
+                        [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
+                    }}
+                >
+                    <OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} />
+                </PlanleggerDataContext>
+            </MemoryRouter>
+        );
+    },
 } satisfies Meta<StoryArgs>;
 export default meta;
 
+type Story = StoryObj<typeof meta>;
+
 export const FlereForsørgereHundreProsentTermin: Story = {
     args: {
+        satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -142,6 +132,7 @@ export const FlereForsørgereHundreProsentTermin: Story = {
 
 export const MorOgFarKunFarHarRett: Story = {
     args: {
+        satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             navnPåFar: 'Espen Utvikler',
@@ -181,6 +172,7 @@ export const MorOgFarKunFarHarRett: Story = {
 
 export const FarOgFarFødsel: Story = {
     args: {
+        satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Anders Utvikler',
@@ -208,6 +200,7 @@ export const FarOgFarFødsel: Story = {
 
 export const FarOgFarAdopsjonKunFar1HarRett: Story = {
     args: {
+        satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             type: Situasjon.FAR_OG_FAR,
         },
@@ -234,6 +227,7 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
 
 export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
     args: {
+        satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             type: Situasjon.MOR,
@@ -274,6 +268,7 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
 };
 export const AleneforsørgerFarÅttiProsentFødsel: Story = {
     args: {
+        satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             type: Situasjon.FAR,
@@ -306,6 +301,7 @@ export const AleneforsørgerFarÅttiProsentFødsel: Story = {
 
 export const FlereForsørgereHundreProsentAdopsjon: Story = {
     args: {
+        satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             navnPåMedmor: 'Esther Utvikler',
@@ -334,6 +330,7 @@ export const FlereForsørgereHundreProsentAdopsjon: Story = {
 
 export const HarIkkeRett: Story = {
     args: {
+        satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             navnPåFar: 'Espen Utvikler',
@@ -355,6 +352,7 @@ export const HarIkkeRett: Story = {
 
 export const KunMorHarRett: Story = {
     args: {
+        satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             navnPåFar: 'Espen Utvikler',
@@ -421,6 +419,7 @@ export const KunMorHarRett: Story = {
 
 export const AleneforsørgerMorErUfør: Story = {
     args: {
+        satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             type: Situasjon.MOR,
@@ -441,6 +440,7 @@ export const AleneforsørgerMorErUfør: Story = {
 };
 export const OppsummeringFarOgFarKunFar2HarRett: Story = {
     args: {
+        satser: DEFAULT_SATSER,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Hugo Utvikler',

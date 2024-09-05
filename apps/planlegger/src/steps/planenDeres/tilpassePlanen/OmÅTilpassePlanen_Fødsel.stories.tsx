@@ -7,18 +7,18 @@ import OmÅTilpassePlanen from './OmÅTilpassePlanen';
 
 type StoryArgs = ComponentProps<typeof OmÅTilpassePlanen>;
 
-type Story = StoryObj<StoryArgs>;
-
-const customRenderer = ({ hvemPlanlegger, barnet, arbeidssituasjon }: StoryArgs) => {
-    return <OmÅTilpassePlanen arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} barnet={barnet} />;
-};
-
 const meta = {
     title: 'steg/PlanenDeresSteg/components/OmÅTilpassePlanen - Fødsel',
     component: OmÅTilpassePlanen,
-    render: customRenderer,
+    render: ({ hvemPlanlegger, barnet, arbeidssituasjon }) => {
+        return (
+            <OmÅTilpassePlanen arbeidssituasjon={arbeidssituasjon} hvemPlanlegger={hvemPlanlegger} barnet={barnet} />
+        );
+    },
 } satisfies Meta<StoryArgs>;
 export default meta;
+
+type Story = StoryObj<typeof meta>;
 
 export const FødselMorOgFarBeggeHarRett: Story = {
     args: {

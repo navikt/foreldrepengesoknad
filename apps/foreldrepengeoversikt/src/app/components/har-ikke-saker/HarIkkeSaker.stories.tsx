@@ -8,9 +8,13 @@ const meta = {
 } satisfies Meta<typeof HarIkkeSaker>;
 export default meta;
 
-type Story = StoryObj<typeof HarIkkeSaker>;
+type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+    args: {
+        harOppdatertSak: false,
+    },
+};
 
 export const HarOppdatertSak: Story = {
     args: {

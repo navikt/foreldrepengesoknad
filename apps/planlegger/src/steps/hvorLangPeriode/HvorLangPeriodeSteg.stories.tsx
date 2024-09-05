@@ -22,41 +22,39 @@ type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
-    gåTilNesteSide: (action: Action) => void;
+    gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof HvorLangPeriodeSteg>;
-
-type Story = StoryObj<StoryArgs>;
-
-const customRenderer = ({
-    hvemPlanlegger,
-    omBarnet,
-    arbeidssituasjon,
-    stønadskontoer,
-    gåTilNesteSide = action('button-click'),
-}: StoryArgs) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[PlanleggerRoutes.HVOR_LANG_PERIODE]}>
-            <PlanleggerDataContext
-                initialState={{
-                    [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
-                    [ContextDataType.OM_BARNET]: omBarnet,
-                    [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
-                }}
-                onDispatch={gåTilNesteSide}
-            >
-                <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} />
-            </PlanleggerDataContext>
-        </MemoryRouter>
-    );
-};
 
 const meta = {
     title: 'steg/HvorLangPeriodeSteg',
     component: HvorLangPeriodeSteg,
-    render: customRenderer,
+    render: ({
+        hvemPlanlegger,
+        omBarnet,
+        arbeidssituasjon,
+        stønadskontoer,
+        gåTilNesteSide = action('button-click'),
+    }: StoryArgs) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[PlanleggerRoutes.HVOR_LANG_PERIODE]}>
+                <PlanleggerDataContext
+                    initialState={{
+                        [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
+                        [ContextDataType.OM_BARNET]: omBarnet,
+                        [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
+                    }}
+                    onDispatch={gåTilNesteSide}
+                >
+                    <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} />
+                </PlanleggerDataContext>
+            </MemoryRouter>
+        );
+    },
 } satisfies Meta<StoryArgs>;
 export default meta;
+
+type Story = StoryObj<typeof meta>;
 
 export const FlereForsørgereEttBarnKunMorHarRett: Story = {
     args: {

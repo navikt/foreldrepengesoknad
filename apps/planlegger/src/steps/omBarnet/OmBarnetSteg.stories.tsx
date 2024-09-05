@@ -2,7 +2,6 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
-import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
@@ -12,33 +11,31 @@ import OmBarnetSteg from './OmBarnetSteg';
 
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
-    gåTilNesteSide: (action: Action) => void;
-} & ComponentProps<typeof OmBarnetSteg>;
-
-type Story = StoryObj<StoryArgs>;
-
-const customRenderer = ({ hvemPlanlegger, gåTilNesteSide = action('button-click') }: StoryArgs) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[PlanleggerRoutes.OM_BARNET]}>
-            <PlanleggerDataContext
-                initialState={{
-                    [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
-                }}
-                onDispatch={gåTilNesteSide}
-            >
-                <OmBarnetSteg />
-            </PlanleggerDataContext>
-        </MemoryRouter>
-    );
+    gåTilNesteSide?: (action: Action) => void;
 };
 
 const meta = {
     title: 'steg/OmBarnetSteg',
     component: OmBarnetSteg,
-    render: customRenderer,
+    render: ({ hvemPlanlegger, gåTilNesteSide = action('button-click') }: StoryArgs) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[PlanleggerRoutes.OM_BARNET]}>
+                <PlanleggerDataContext
+                    initialState={{
+                        [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
+                    }}
+                    onDispatch={gåTilNesteSide}
+                >
+                    <OmBarnetSteg />
+                </PlanleggerDataContext>
+            </MemoryRouter>
+        );
+    },
 } satisfies Meta<StoryArgs>;
 export default meta;
+
+type Story = StoryObj<typeof meta>;
 
 export const FlereForsørgere: Story = {
     args: {

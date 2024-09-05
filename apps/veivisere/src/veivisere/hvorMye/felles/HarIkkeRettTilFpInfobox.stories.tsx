@@ -8,7 +8,7 @@ const meta = {
 } satisfies Meta<typeof HarIkkeRettTilFpInfobox>;
 export default meta;
 
-type Story = StoryObj<typeof HarIkkeRettTilFpInfobox>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {

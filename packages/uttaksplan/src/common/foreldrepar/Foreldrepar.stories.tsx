@@ -1,50 +1,57 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import Foreldrepar from './Foreldrepar';
 
-export default {
+const meta = {
     title: 'components/Foreldrepar',
     component: Foreldrepar,
+} satisfies Meta<typeof Foreldrepar>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        forelder1: 'mor1',
+    },
 };
 
-const Template: StoryFn<any> = (args) => <Foreldrepar {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-    forelder1: 'mor1',
+export const MorOgFar: Story = {
+    args: {
+        forelder1: 'mor1',
+        forelder2: 'far1',
+    },
 };
 
-export const MorOgFar = Template.bind({});
-MorOgFar.args = {
-    forelder1: 'mor1',
-    forelder2: 'far1',
+export const MorHalvtSynlig: Story = {
+    args: {
+        forelder1: 'mor1',
+        forelder2: 'far1',
+        variant: 'førsteForelderHalvtSynlig',
+    },
 };
 
-export const MorHalvtSynlig = Template.bind({});
-MorHalvtSynlig.args = {
-    forelder1: 'mor1',
-    forelder2: 'far1',
-    variant: 'førsteForelderHalvtSynlig',
+export const ForeldreSeparert: Story = {
+    args: {
+        forelder1: 'mor1',
+        forelder2: 'far1',
+        variant: 'foreldreSeparert',
+    },
 };
 
-export const ForeldreSeparert = Template.bind({});
-ForeldreSeparert.args = {
-    forelder1: 'mor1',
-    forelder2: 'far1',
-    variant: 'foreldreSeparert',
+export const ForeldreNærmere: Story = {
+    args: {
+        forelder1: 'mor1',
+        forelder2: 'far1',
+        variant: 'foreldreNærmere',
+    },
 };
 
-export const ForeldreNærmere = Template.bind({});
-ForeldreNærmere.args = {
-    forelder1: 'mor1',
-    forelder2: 'far1',
-    variant: 'foreldreNærmere',
-};
-
-export const Kompakt = Template.bind({});
-Kompakt.args = {
-    forelder1: 'mor1',
-    forelder2: 'far1',
-    variant: 'foreldreNærmere',
-    kompakt: true,
+export const Kompakt: Story = {
+    args: {
+        forelder1: 'mor1',
+        forelder2: 'far1',
+        variant: 'foreldreNærmere',
+        kompakt: true,
+    },
 };

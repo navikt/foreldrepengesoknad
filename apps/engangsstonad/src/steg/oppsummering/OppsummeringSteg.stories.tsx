@@ -1,8 +1,9 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { ContextDataType, EsDataContext } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import dayjs from 'dayjs';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import Dokumentasjon from 'types/Dokumentasjon';
 import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
@@ -20,7 +21,7 @@ const promiseAction =
         return Promise.resolve();
     };
 
-const barnet = {
+const barnetDefault = {
     erBarnetFødt: true,
     antallBarn: 1,
     fødselsdato: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
@@ -35,156 +36,167 @@ const vedleggDefault = {
     vedlegg: [],
 };
 
-export default {
-    title: 'OppsummeringSteg',
-    component: OppsummeringSteg,
-};
-
-const Template: StoryFn<{
-    sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
+type StoryArgs = {
     omBarnet?: OmBarnet;
     utenlandsopphold?: Utenlandsopphold;
     tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
     senereUtenlandsopphold?: UtenlandsoppholdSenere;
     dokumentasjon?: Dokumentasjon;
-    mellomlagreOgNaviger?: () => Promise<void>;
-}> = ({
-    sendSøknad,
-    omBarnet = barnet,
-    utenlandsopphold = utenlandsoppholdDefault,
-    senereUtenlandsopphold,
-    tidligereUtenlandsopphold,
-    dokumentasjon = vedleggDefault,
-    mellomlagreOgNaviger = promiseAction(),
-}) => {
-    initAmplitude();
-    return (
-        <div id="app">
-            <MemoryRouter initialEntries={[Path.OPPSUMMERING]}>
-                <EsDataContext
-                    initialState={{
-                        [ContextDataType.OM_BARNET]: omBarnet,
-                        [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                        [ContextDataType.UTENLANDSOPPHOLD_SENERE]: senereUtenlandsopphold,
-                        [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: tidligereUtenlandsopphold,
-                        [ContextDataType.DOKUMENTASJON]: dokumentasjon,
-                    }}
-                >
-                    <OppsummeringSteg sendSøknad={sendSøknad} mellomlagreOgNaviger={mellomlagreOgNaviger} />
-                </EsDataContext>
-            </MemoryRouter>
-        </div>
-    );
-};
+} & ComponentProps<typeof OppsummeringSteg>;
 
-export const BarnetErFodt = Template.bind({});
-BarnetErFodt.args = {
-    sendSøknad: promiseAction(),
-};
-
-export const AdopsjonAvEktefellesBarn = Template.bind({});
-AdopsjonAvEktefellesBarn.args = {
-    sendSøknad: promiseAction(),
-    omBarnet: {
-        adopsjonAvEktefellesBarn: true,
-        antallBarn: 1,
-        adopsjonsdato: '2023-01-01',
-        fødselsdatoer: [{ dato: '2023-01-01' }],
+const meta = {
+    component: OppsummeringSteg,
+    render: ({
+        sendSøknad,
+        omBarnet = barnetDefault,
+        utenlandsopphold = utenlandsoppholdDefault,
+        senereUtenlandsopphold,
+        tidligereUtenlandsopphold,
+        dokumentasjon = vedleggDefault,
+        mellomlagreOgNaviger,
+    }) => {
+        initAmplitude();
+        return (
+            <div id="app">
+                <MemoryRouter initialEntries={[Path.OPPSUMMERING]}>
+                    <EsDataContext
+                        initialState={{
+                            [ContextDataType.OM_BARNET]: omBarnet,
+                            [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                            [ContextDataType.UTENLANDSOPPHOLD_SENERE]: senereUtenlandsopphold,
+                            [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: tidligereUtenlandsopphold,
+                            [ContextDataType.DOKUMENTASJON]: dokumentasjon,
+                        }}
+                    >
+                        <OppsummeringSteg sendSøknad={sendSøknad} mellomlagreOgNaviger={mellomlagreOgNaviger} />
+                    </EsDataContext>
+                </MemoryRouter>
+            </div>
+        );
     },
-    dokumentasjon: {
-        vedlegg: [
-            {
-                id: '1',
-                filename: 'filnavn.pdf',
-                filesize: 2323,
-                file: {} as any,
-                pending: false,
-                uploaded: true,
-                type: AttachmentType.OMSORGSOVERTAKELSE,
-                skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
-            },
-        ],
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const BarnetErFodt: Story = {
+    args: {
+        sendSøknad: promiseAction(),
+        mellomlagreOgNaviger: promiseAction(),
     },
 };
 
-export const AdopsjonAvEktefellesFlereBarn = Template.bind({});
-AdopsjonAvEktefellesFlereBarn.args = {
-    sendSøknad: promiseAction(),
-    omBarnet: {
-        adopsjonAvEktefellesBarn: true,
-        antallBarn: 1,
-        adopsjonsdato: '2023-01-01',
-        fødselsdatoer: [{ dato: '2023-01-01' }, { dato: '2020-01-01' }],
-    },
-    dokumentasjon: {
-        vedlegg: [
-            {
-                id: '1',
-                filename: 'filnavn.pdf',
-                filesize: 2323,
-                file: {} as any,
-                pending: false,
-                uploaded: true,
-                type: AttachmentType.OMSORGSOVERTAKELSE,
-                skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
-            },
-        ],
-    },
-};
-
-export const BarnetErIkkeFodt = Template.bind({});
-BarnetErIkkeFodt.args = {
-    sendSøknad: promiseAction(),
-    omBarnet: {
-        erBarnetFødt: false,
-        antallBarn: 1,
-        termindato: '2023-01-02',
-    },
-    dokumentasjon: {
-        terminbekreftelsedato: '2023-01-01',
-        vedlegg: [
-            {
-                id: '1',
-                filename: 'filnavn.pdf',
-                filesize: 2323,
-                file: {} as any,
-                pending: false,
-                uploaded: true,
-                type: AttachmentType.TERMINBEKREFTELSE,
-                skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
-            },
-        ],
+export const AdopsjonAvEktefellesBarn: Story = {
+    args: {
+        sendSøknad: promiseAction(),
+        omBarnet: {
+            adopsjonAvEktefellesBarn: true,
+            antallBarn: 1,
+            adopsjonsdato: '2023-01-01',
+            fødselsdatoer: [{ dato: '2023-01-01' }],
+        },
+        dokumentasjon: {
+            vedlegg: [
+                {
+                    id: '1',
+                    filename: 'filnavn.pdf',
+                    filesize: 2323,
+                    file: {} as any,
+                    pending: false,
+                    uploaded: true,
+                    type: AttachmentType.OMSORGSOVERTAKELSE,
+                    skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
+                },
+            ],
+        },
+        mellomlagreOgNaviger: promiseAction(),
     },
 };
 
-export const HarTidligereOgFremtidigeUtenlandsopphold = Template.bind({});
-HarTidligereOgFremtidigeUtenlandsopphold.args = {
-    sendSøknad: promiseAction(),
-    utenlandsopphold: {
-        harBoddUtenforNorgeSiste12Mnd: true,
-        skalBoUtenforNorgeNeste12Mnd: true,
+export const AdopsjonAvEktefellesFlereBarn: Story = {
+    args: {
+        sendSøknad: promiseAction(),
+        omBarnet: {
+            adopsjonAvEktefellesBarn: true,
+            antallBarn: 1,
+            adopsjonsdato: '2023-01-01',
+            fødselsdatoer: [{ dato: '2023-01-01' }, { dato: '2020-01-01' }],
+        },
+        dokumentasjon: {
+            vedlegg: [
+                {
+                    id: '1',
+                    filename: 'filnavn.pdf',
+                    filesize: 2323,
+                    file: {} as any,
+                    pending: false,
+                    uploaded: true,
+                    type: AttachmentType.OMSORGSOVERTAKELSE,
+                    skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
+                },
+            ],
+        },
+        mellomlagreOgNaviger: promiseAction(),
     },
-    senereUtenlandsopphold: {
-        utenlandsoppholdNeste12Mnd: [
-            {
-                fom: dayjs().format(ISO_DATE_FORMAT),
-                tom: dayjs().add(100, 'day').format(ISO_DATE_FORMAT),
-                landkode: 'SE',
-            },
-            {
-                fom: dayjs().add(101, 'day').format(ISO_DATE_FORMAT),
-                tom: dayjs().add(200, 'day').format(ISO_DATE_FORMAT),
-                landkode: 'DK',
-            },
-        ],
+};
+
+export const BarnetErIkkeFodt: Story = {
+    args: {
+        sendSøknad: promiseAction(),
+        omBarnet: {
+            erBarnetFødt: false,
+            antallBarn: 1,
+            termindato: '2023-01-02',
+        },
+        dokumentasjon: {
+            terminbekreftelsedato: '2023-01-01',
+            vedlegg: [
+                {
+                    id: '1',
+                    filename: 'filnavn.pdf',
+                    filesize: 2323,
+                    file: {} as any,
+                    pending: false,
+                    uploaded: true,
+                    type: AttachmentType.TERMINBEKREFTELSE,
+                    skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
+                },
+            ],
+        },
+        mellomlagreOgNaviger: promiseAction(),
     },
-    tidligereUtenlandsopphold: {
-        utenlandsoppholdSiste12Mnd: [
-            {
-                fom: dayjs().subtract(100, 'day').format(ISO_DATE_FORMAT),
-                tom: dayjs().format(ISO_DATE_FORMAT),
-                landkode: 'IS',
-            },
-        ],
+};
+
+export const HarTidligereOgFremtidigeUtenlandsopphold: Story = {
+    args: {
+        sendSøknad: promiseAction(),
+        utenlandsopphold: {
+            harBoddUtenforNorgeSiste12Mnd: true,
+            skalBoUtenforNorgeNeste12Mnd: true,
+        },
+        senereUtenlandsopphold: {
+            utenlandsoppholdNeste12Mnd: [
+                {
+                    fom: dayjs().format(ISO_DATE_FORMAT),
+                    tom: dayjs().add(100, 'day').format(ISO_DATE_FORMAT),
+                    landkode: 'SE',
+                },
+                {
+                    fom: dayjs().add(101, 'day').format(ISO_DATE_FORMAT),
+                    tom: dayjs().add(200, 'day').format(ISO_DATE_FORMAT),
+                    landkode: 'DK',
+                },
+            ],
+        },
+        tidligereUtenlandsopphold: {
+            utenlandsoppholdSiste12Mnd: [
+                {
+                    fom: dayjs().subtract(100, 'day').format(ISO_DATE_FORMAT),
+                    tom: dayjs().format(ISO_DATE_FORMAT),
+                    landkode: 'IS',
+                },
+            ],
+        },
+        mellomlagreOgNaviger: promiseAction(),
     },
 };

@@ -87,26 +87,26 @@ interface StoryArgs {
     arbeidssituasjon: Arbeidssituasjon;
 }
 
-const customRenderer = ({ arbeidssituasjon }: StoryArgs) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[HvorMyeRoutes.OPPSUMMERING]}>
-            <OppsummeringSide arbeidssituasjon={arbeidssituasjon} stønadskontoer={STØNADSKONTOER} satser={satser} />
-        </MemoryRouter>
-    );
-};
-
 const meta = {
     title: 'hvorMye/OppsummeringSide',
     component: OppsummeringSide,
-    render: customRenderer,
+    render: (props) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[HvorMyeRoutes.OPPSUMMERING]}>
+                <OppsummeringSide {...props} />
+            </MemoryRouter>
+        );
+    },
 } satisfies Meta<typeof OppsummeringSide & StoryArgs>;
 export default meta;
 
-type Story = StoryObj<StoryArgs>;
+type Story = StoryObj<typeof meta>;
 
 export const ArbeidstakerMed20000Imåneden: Story = {
     args: {
+        stønadskontoer: STØNADSKONTOER,
+        satser: satser,
         arbeidssituasjon: {
             erArbeidstakerEllerFrilanser: true,
             erSelvstendigNæringsdrivende: false,
@@ -120,6 +120,7 @@ export const ArbeidstakerMed20000Imåneden: Story = {
 
 export const ArbeidstakerMed100000Imåneden: Story = {
     args: {
+        ...ArbeidstakerMed20000Imåneden.args,
         arbeidssituasjon: {
             erArbeidstakerEllerFrilanser: true,
             erSelvstendigNæringsdrivende: false,
@@ -133,6 +134,7 @@ export const ArbeidstakerMed100000Imåneden: Story = {
 
 export const ArbeidstakerMed1000Imåneden: Story = {
     args: {
+        ...ArbeidstakerMed20000Imåneden.args,
         arbeidssituasjon: {
             erArbeidstakerEllerFrilanser: true,
             erSelvstendigNæringsdrivende: false,
@@ -146,6 +148,7 @@ export const ArbeidstakerMed1000Imåneden: Story = {
 
 export const ArbeidstakerMed10000IMåneden: Story = {
     args: {
+        ...ArbeidstakerMed20000Imåneden.args,
         arbeidssituasjon: {
             erArbeidstakerEllerFrilanser: true,
             erSelvstendigNæringsdrivende: false,

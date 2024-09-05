@@ -1,10 +1,13 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import ByttBrowserModal from './ByttBrowserModal';
 
-export default {
+const meta = {
     title: 'pages/ByttBrowserModal',
     component: ByttBrowserModal,
-};
+} satisfies Meta<typeof ByttBrowserModal>;
+export default meta;
 
-export const Default: StoryFn<typeof ByttBrowserModal> = () => <ByttBrowserModal />;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {};

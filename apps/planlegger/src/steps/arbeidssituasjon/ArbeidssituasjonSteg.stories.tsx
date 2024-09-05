@@ -10,7 +10,7 @@ import { initAmplitude } from '@navikt/fp-metrics';
 
 import ArbeidssituasjonSteg from './ArbeidssituasjonSteg';
 
-const satser = {
+const DEFAULT_SATSER = {
     engangstønad: [
         {
             fom: '01.01.2023',
@@ -38,9 +38,9 @@ type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof ArbeidssituasjonSteg>;
 
-type Story = StoryObj<StoryArgs>;
+type Story = StoryObj<typeof meta>;
 
-const customRenderer = ({ hvemPlanlegger, gåTilNesteSide = action('button-click') }: StoryArgs) => {
+const customRenderer = ({ hvemPlanlegger, gåTilNesteSide = action('button-click'), satser }: StoryArgs) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.ARBEIDSSITUASJON]}>
@@ -76,6 +76,7 @@ export const ArbeidssituasjonMorOgFar: Story = {
             navnPåMor: 'Klara Utvikler',
             type: Situasjon.MOR_OG_FAR,
         },
+        satser: DEFAULT_SATSER,
     },
 };
 
@@ -85,6 +86,7 @@ export const ArbeidssituasjonAleneforsørger: Story = {
             navnPåMor: 'Klara Utvikler',
             type: Situasjon.MOR,
         },
+        satser: DEFAULT_SATSER,
     },
 };
 
@@ -95,6 +97,7 @@ export const ArbeidssituasjonMorOgMedmor: Story = {
             navnPåMedmor: 'Klara Utvikler',
             type: Situasjon.MOR_OG_MEDMOR,
         },
+        satser: DEFAULT_SATSER,
     },
 };
 
@@ -105,5 +108,6 @@ export const ArbeidssituasjonFarOgFar: Story = {
             navnPåMedfar: 'Anders Utvikler',
             type: Situasjon.FAR_OG_FAR,
         },
+        satser: DEFAULT_SATSER,
     },
 };

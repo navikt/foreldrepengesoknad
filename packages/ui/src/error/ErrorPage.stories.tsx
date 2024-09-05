@@ -1,26 +1,20 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import ErrorPage from './ErrorPage';
 
-export default {
+const meta = {
     title: 'ErrorPage',
     component: ErrorPage,
-};
+} satisfies Meta<typeof ErrorPage>;
+export default meta;
 
-const Template: StoryFn<{
-    søkPåNytt: () => void;
-}> = ({ søkPåNytt }) => {
-    return (
-        <ErrorPage
-            appName="Engangsstønad"
-            errorMessage="Kall mot url: ‘/hjelpemidler/barnebriller/api/vilkarsgrunnlag’ feilet,  At S.kallFeilet"
-            retryCallback={søkPåNytt}
-        />
-    );
-};
+type Story = StoryObj<typeof meta>;
 
-export const VisFeilmelding = Template.bind({});
-VisFeilmelding.args = {
-    søkPåNytt: action('button-click'),
+export const Default: Story = {
+    args: {
+        appName: 'Engangsstønad',
+        errorMessage: 'Kall mot url: ‘/hjelpemidler/barnebriller/api/vilkarsgrunnlag’ feilet,  At S.kallFeilet',
+        retryCallback: action('button-click'),
+    },
 };

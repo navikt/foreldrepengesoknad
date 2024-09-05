@@ -27,7 +27,7 @@ const meta = {
 } satisfies Meta<typeof DokumenterPage>;
 export default meta;
 
-type Story = StoryObj<typeof DokumenterPage>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     parameters: {

@@ -1,20 +1,22 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
-import Step, { StepProps } from './Step';
+import Step from './Step';
 
-export default {
+const meta = {
     title: 'step/Step',
     component: Step,
-};
+} satisfies Meta<typeof Step>;
+export default meta;
 
-const Template: StoryFn<StepProps<string>> = (args) => <Step {...args} />;
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
-Default.args = {
-    steps: [
-        { id: 'test', label: 'Om Barnet', isSelected: false },
-        { id: 'test2', label: 'Annet', isSelected: true },
-        { id: 'test3', label: 'Oppsummering', isSelected: false },
-    ],
-    children: <>Her er det noe kult innhold</>,
+export const Default: Story = {
+    args: {
+        steps: [
+            { id: 'test', label: 'Om Barnet', isSelected: false },
+            { id: 'test2', label: 'Annet', isSelected: true },
+            { id: 'test3', label: 'Oppsummering', isSelected: false },
+        ],
+        children: <>Her er det noe kult innhold</>,
+    },
 };

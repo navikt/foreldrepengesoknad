@@ -8,7 +8,7 @@ const meta = {
 } satisfies Meta<typeof PeriodeListe>;
 export default meta;
 
-type Story = StoryObj<typeof PeriodeListe>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
@@ -20,5 +20,6 @@ export const Default: Story = {
         },
         periodeListe: [],
         tittel: 'Dette er en tittel',
+        overlappendePerioderAnnenPart: undefined,
     },
 };

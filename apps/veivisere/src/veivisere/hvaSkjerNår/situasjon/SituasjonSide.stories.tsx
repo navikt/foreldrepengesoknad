@@ -9,18 +9,21 @@ import SituasjonSide from './SituasjonSide';
 const meta = {
     title: 'hvaSkjerNår/SituasjonSide',
     component: SituasjonSide,
-} satisfies Meta<typeof SituasjonSide>;
-export default meta;
-
-type Story = StoryObj<typeof SituasjonSide>;
-
-export const Default: Story = {
-    render: ({ setHvaSkjerNårSituasjon = () => undefined }) => {
+    render: (props) => {
         initAmplitude();
         return (
             <MemoryRouter initialEntries={[HvaSkjerNårRoutes.SITUASJON]}>
-                <SituasjonSide setHvaSkjerNårSituasjon={setHvaSkjerNårSituasjon} />
+                <SituasjonSide {...props} />
             </MemoryRouter>
         );
+    },
+} satisfies Meta<typeof SituasjonSide>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        setHvaSkjerNårSituasjon: () => undefined,
     },
 };

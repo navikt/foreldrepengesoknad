@@ -1,29 +1,32 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import UkerSirkel from '../uker-sirkel/UkerSirkel';
 import InnholdMedIllustrasjon from './InnholdMedIllustrasjon';
 
-export default {
+const meta = {
     title: 'components/InnholdMedIllustrasjon',
     component: InnholdMedIllustrasjon,
+} satisfies Meta<typeof InnholdMedIllustrasjon>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        tittel: 'Dette er en tittel',
+    },
 };
 
-const Template: StoryFn<any> = (args) => <InnholdMedIllustrasjon {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-    tittel: 'Dette er en tittel',
+export const MedIllustrasjon: Story = {
+    args: {
+        ...Default.args,
+        illustrasjoner: [<UkerSirkel key="uker" uker={10} />],
+    },
 };
 
-export const MedIllustrasjon = Template.bind({});
-MedIllustrasjon.args = {
-    tittel: 'Dette er en tittel',
-    illustrasjoner: [<UkerSirkel key="uker" uker={10} />],
-};
-
-export const MedIllustrasjonOgInfoboks = Template.bind({});
-MedIllustrasjonOgInfoboks.args = {
-    tittel: 'Dette er en tittel',
-    illustrasjoner: [<UkerSirkel key="uker" uker={10} />],
-    infoboks: <div>Dette er en infoboks</div>,
+export const MedIllustrasjonOgInfoboks: Story = {
+    args: {
+        ...MedIllustrasjon.args,
+        infoboks: <div>Dette er en infoboks</div>,
+    },
 };

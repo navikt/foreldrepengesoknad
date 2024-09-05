@@ -194,7 +194,7 @@ const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                     </VStack>
                     {kanIkkeSøke && <BrukerKanIkkeSøke />}
                     <StepButtons
-                        isNexButtonVisible={!kanIkkeSøke}
+                        isNextButtonVisible={!kanIkkeSøke}
                         isDisabledAndLoading={isSubmitting}
                         goToPreviousStep={goToPreviousStep}
                     />

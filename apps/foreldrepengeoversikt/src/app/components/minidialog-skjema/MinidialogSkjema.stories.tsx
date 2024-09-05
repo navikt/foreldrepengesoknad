@@ -12,22 +12,11 @@ const queryClient = new QueryClient();
 const meta = {
     title: 'MinidialogSkjema',
     component: MinidialogSkjema,
-    render: ({ onSubmit }) => {
+    render: (props) => {
         return (
             <QueryClientProvider client={queryClient}>
                 <div style={{ backgroundColor: 'white', padding: '50px' }}>
-                    <MinidialogSkjema
-                        ettersendelseErSendt={false}
-                        isSendingEttersendelse={false}
-                        minidialog={{
-                            dialogId: '1',
-                            opprettet: '2020-01-01',
-                            saksnr: '1',
-                        }}
-                        ettersendelseError={undefined}
-                        onSubmit={onSubmit}
-                        sakstype={Ytelse.FORELDREPENGER}
-                    />
+                    <MinidialogSkjema {...props} />
                 </div>
             </QueryClientProvider>
         );
@@ -35,11 +24,20 @@ const meta = {
 } satisfies Meta<typeof MinidialogSkjema>;
 export default meta;
 
-type Story = StoryObj<typeof MinidialogSkjema>;
+type Story = StoryObj<typeof meta>;
 
 export const SkalIkkeFeileOpplasting: Story = {
     args: {
         onSubmit: action('button-click'),
+        ettersendelseErSendt: false,
+        isSendingEttersendelse: false,
+        minidialog: {
+            dialogId: '1',
+            opprettet: '2020-01-01',
+            saksnr: '1',
+        },
+        sakstype: Ytelse.FORELDREPENGER,
+        ettersendelseError: undefined,
     },
 };
 
@@ -51,4 +49,5 @@ export const SkalFeileOpplasting: Story = {
             ],
         },
     },
+    args: SkalIkkeFeileOpplasting.args,
 };

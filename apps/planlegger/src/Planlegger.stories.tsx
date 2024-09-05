@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Action, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
+import { PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { StrictMode } from 'react';
+import { ComponentProps, StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { getAxiosInstance } from '@navikt/fp-api';
@@ -101,15 +101,6 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 const meta = {
     title: 'PlanleggerDataFetcher',
     component: PlanleggerDataFetcher,
-} satisfies Meta<typeof PlanleggerDataFetcher>;
-export default meta;
-
-type Story = StoryObj<{
-    gåTilNesteSide: (action: Action) => void;
-    brukMocks?: boolean;
-}>;
-
-export const Default: Story = {
     render: (args) => {
         initAmplitude();
 
@@ -157,5 +148,19 @@ export const Default: Story = {
                 </IntlProvider>
             </StrictMode>
         );
+    },
+} satisfies Meta<
+    ComponentProps<typeof PlanleggerDataFetcher> & {
+        brukMocks?: boolean;
+    }
+>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        changeLocale: () => undefined,
+        locale: 'nb',
     },
 };
