@@ -274,7 +274,7 @@ export const MorMedAnnenForelderUgift: Story = {
             antallBarn: 1,
             termindato: '2025-10-01',
         },
-        søkerinfo: {
+        søkerInfo: {
             ...defaultSøkerinfoMor,
             søker: {
                 ...defaultSøkerinfoMor.søker,
@@ -310,7 +310,7 @@ export const FarMedAleneOmsorg: Story = {
             situasjon: 'fødsel',
             rolle: 'far',
         },
-        søkerinfo: {
+        søkerInfo: {
             ...defaultSøkerinfoFar,
         },
         annenForelder: {
@@ -342,7 +342,7 @@ export const FarMedUførMorUgift: Story = {
             kanIkkeOppgis: false,
             erMorUfør: true,
         },
-        søkerinfo: {
+        søkerInfo: {
             ...defaultSøkerinfoFar,
             søker: {
                 ...defaultSøkerinfoFar.søker,
@@ -373,7 +373,7 @@ export const FarMedMorSomHarRettIEØS: Story = {
             harRettPåForeldrepengerIEØS: true,
             kanIkkeOppgis: false,
         },
-        søkerinfo: {
+        søkerInfo: {
             ...defaultSøkerinfoFar,
         },
     },
@@ -393,7 +393,7 @@ export const FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS: Story = {
             harRettPåForeldrepengerIEØS: false,
             kanIkkeOppgis: false,
         },
-        søkerinfo: {
+        søkerInfo: {
             ...defaultSøkerinfoFar,
         },
     },
@@ -411,7 +411,7 @@ export const FarMedMorSomHarRettINorge: Story = {
             harRettPåForeldrepengerINorge: true,
             kanIkkeOppgis: false,
         },
-        søkerinfo: {
+        søkerInfo: {
             ...defaultSøkerinfoFar,
         },
     },
@@ -483,7 +483,7 @@ export const MorMedArbeidsforholdOgAndreInntekter: Story = {
             ...defaultAnnenForelder,
             erAleneOmOmsorg: false,
         },
-        søkerinfo: {
+        søkerInfo: {
             søker: defaultSøkerinfoMor.søker,
             arbeidsforhold: [
                 {
@@ -530,7 +530,7 @@ export const MorMedSelvstendigNæringsdrivende: Story = {
             ...defaultAnnenForelder,
             erAleneOmOmsorg: false,
         },
-        søkerinfo: defaultSøkerinfoMor,
+        søkerInfo: defaultSøkerinfoMor,
     },
 };
 
@@ -557,7 +557,7 @@ export const MorMedSelvstendigNæringsdrivendeUtenDiverse: Story = {
             ...defaultAnnenForelder,
             erAleneOmOmsorg: false,
         },
-        søkerinfo: defaultSøkerinfoMor,
+        søkerInfo: defaultSøkerinfoMor,
     },
 };
 
@@ -583,7 +583,7 @@ export const MorMedAndreInntekterJobbIUtlandet: Story = {
             ...defaultAnnenForelder,
             erAleneOmOmsorg: false,
         },
-        søkerinfo: defaultSøkerinfoMor,
+        søkerInfo: defaultSøkerinfoMor,
     },
 };
 
@@ -607,7 +607,7 @@ export const MorMedAndreInntekterMilitærtjeneste: Story = {
             ...defaultAnnenForelder,
             erAleneOmOmsorg: false,
         },
-        søkerinfo: defaultSøkerinfoMor,
+        søkerInfo: defaultSøkerinfoMor,
     },
 };
 

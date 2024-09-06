@@ -204,11 +204,7 @@ export const ForFar: Story = {
             },
             arbeidsforhold: [],
         },
-        annenForelder: {
-            fornavn: 'Tom',
-            fnr: '123456789',
-            kanIkkeOppgis: false,
-        },
+        annenForelder: undefined,
     },
 };
 
