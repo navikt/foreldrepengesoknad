@@ -26,13 +26,13 @@ const defaultUtenlandsopphold = {
 };
 
 type StoryArgs = {
-    utenlandsforhold?: Opphold;
+    utenlandsopphold?: Opphold;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof SenereUtenlandsoppholdSteg>;
 
 const meta = {
     component: SenereUtenlandsoppholdSteg,
-    render: ({ gåTilNesteSide = action('button-click'), utenlandsforhold = defaultUtenlandsopphold, ...rest }) => {
+    render: ({ gåTilNesteSide = action('button-click'), utenlandsopphold = defaultUtenlandsopphold, ...rest }) => {
         initAmplitude();
         const restMock = (apiMock: MockAdapter) => {
             apiMock.onPost('/rest/storage/foreldrepenger').reply(200, undefined);
@@ -43,7 +43,7 @@ const meta = {
                     <FpDataContext
                         onDispatch={gåTilNesteSide}
                         initialState={{
-                            [ContextDataType.UTENLANDSOPPHOLD]: utenlandsforhold,
+                            [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                         }}
                     >
                         <SenereUtenlandsoppholdSteg {...rest} />
