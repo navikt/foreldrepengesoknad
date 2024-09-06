@@ -20,61 +20,50 @@ const promiseAction =
 
 type StoryArgs = {
     søkersituasjon?: SøkersituasjonFp;
-    gåTilNesteSide: (action: Action) => void;
+    gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof SøkersituasjonSteg>;
 
-type Story = StoryObj<StoryArgs>;
-
-const customRenderer = ({
-    kjønn,
-    søkersituasjon,
-    mellomlagreSøknadOgNaviger = promiseAction(),
-    avbrytSøknad = action('button-click'),
-    gåTilNesteSide,
-    arbeidsforhold = [],
-}: StoryArgs) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[SøknadRoutes.SØKERSITUASJON]}>
-            <FpDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                }}
-            >
-                <SøkersituasjonSteg
-                    arbeidsforhold={arbeidsforhold}
-                    kjønn={kjønn}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={avbrytSøknad}
-                />
-            </FpDataContext>
-        </MemoryRouter>
-    );
-};
-
 const meta = {
-    title: 'steps/SøkersituasjonSteg',
     component: SøkersituasjonSteg,
-    render: customRenderer,
+    render: ({ søkersituasjon, gåTilNesteSide = action('button-click'), ...rest }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.SØKERSITUASJON]}>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                    }}
+                >
+                    <SøkersituasjonSteg {...rest} />
+                </FpDataContext>
+            </MemoryRouter>
+        );
+    },
 } satisfies Meta<StoryArgs>;
 export default meta;
+
+type Story = StoryObj<typeof meta>;
 
 export const Mor: Story = {
     args: {
         kjønn: 'K',
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
 export const Far: Story = {
     args: {
+        ...Mor.args,
         kjønn: 'M',
     },
 };
 
 export const HarMellomlagretData: Story = {
     args: {
-        kjønn: 'K',
+        ...Mor.args,
         søkersituasjon: {
             situasjon: 'adopsjon',
             rolle: 'mor',

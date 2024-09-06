@@ -1,7 +1,8 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
 import dayjs from 'dayjs';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import AxiosMock from 'storybookData/utils/AxiosMock';
 
@@ -174,12 +175,7 @@ const defaultVedlegg = {
     [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: [],
 };
 
-export default {
-    title: 'steps/Oppsummering',
-    component: Oppsummering,
-};
-
-interface Props {
+type StoryArgs = {
     søkerinfo?: Søkerinfo;
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelder;
@@ -192,409 +188,440 @@ interface Props {
     frilans?: Frilans;
     egenNæring?: EgenNæring;
     andreInntekter?: AndreInntektskilder[];
-    erEndringssøknad?: boolean;
-    mellomlagreSøknadOgNaviger?: () => Promise<void>;
-    gåTilNesteSide: (action: Action) => void;
-    avbrytSøknad: () => void;
-    sendSøknad: () => Promise<any>;
-}
+    gåTilNesteSide?: (action: Action) => void;
+} & ComponentProps<typeof Oppsummering>;
 
-const Template: StoryFn<Props> = ({
-    søkerinfo = defaultSøkerinfoMor,
-    søkersituasjon = defaultSøkersituasjon,
-    annenForelder = defaultAnnenForelder,
-    barn = defaultBarn,
-    utenlandsopphold = defaultUtenlandsopphold,
-    utenlandsoppholdSenere,
-    utenlandsoppholdTidligere,
-    erEndringssøknad = false,
-    arbeidsforholdOgInntekt = defaultArbeidsforholdOgInntekt,
-    frilans,
-    egenNæring,
-    andreInntekter,
-    mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide,
-    avbrytSøknad = action('button-click'),
-    sendSøknad = () => Promise.resolve(),
-}) => {
-    initAmplitude();
-    const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost('/rest/storage/foreldrepenger').reply(200, undefined);
-    };
-    return (
-        <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
-            <AxiosMock mock={restMock}>
-                <FpDataContext
-                    onDispatch={gåTilNesteSide}
-                    initialState={{
-                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
-                        [ContextDataType.FRILANS]: frilans,
-                        [ContextDataType.EGEN_NÆRING]: egenNæring,
-                        [ContextDataType.ANDRE_INNTEKTSKILDER]: andreInntekter,
-                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                        [ContextDataType.UTTAKSPLAN_METADATA]: {
-                            ønskerJustertUttakVedFødsel: false,
-                            harUttaksplanBlittSlettet: false,
-                            antallUkerIUttaksplan: 1,
-                        },
-                        [ContextDataType.OM_BARNET]: barn,
-                        [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                        [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
-                        [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
-                        [ContextDataType.PERIODE_MED_FORELDREPENGER]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
-                        [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
-                        [ContextDataType.VEDLEGG]: defaultVedlegg,
-                    }}
-                >
-                    <Oppsummering
-                        erEndringssøknad={erEndringssøknad}
-                        sendSøknad={sendSøknad}
-                        søkerInfo={søkerinfo}
-                        avbrytSøknad={avbrytSøknad}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    />
-                </FpDataContext>
-            </AxiosMock>
-        </MemoryRouter>
-    );
+const meta = {
+    component: Oppsummering,
+    render: ({
+        søkersituasjon = defaultSøkersituasjon,
+        annenForelder = defaultAnnenForelder,
+        barn = defaultBarn,
+        utenlandsopphold = defaultUtenlandsopphold,
+        utenlandsoppholdSenere,
+        utenlandsoppholdTidligere,
+        arbeidsforholdOgInntekt = defaultArbeidsforholdOgInntekt,
+        frilans,
+        egenNæring,
+        andreInntekter,
+        gåTilNesteSide,
+        ...rest
+    }) => {
+        initAmplitude();
+        const restMock = (apiMock: MockAdapter) => {
+            apiMock.onPost('/rest/storage/foreldrepenger').reply(200, undefined);
+        };
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
+                <AxiosMock mock={restMock}>
+                    <FpDataContext
+                        onDispatch={gåTilNesteSide}
+                        initialState={{
+                            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
+                            [ContextDataType.FRILANS]: frilans,
+                            [ContextDataType.EGEN_NÆRING]: egenNæring,
+                            [ContextDataType.ANDRE_INNTEKTSKILDER]: andreInntekter,
+                            [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                            [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                            [ContextDataType.UTTAKSPLAN_METADATA]: {
+                                ønskerJustertUttakVedFødsel: false,
+                                harUttaksplanBlittSlettet: false,
+                                antallUkerIUttaksplan: 1,
+                            },
+                            [ContextDataType.OM_BARNET]: barn,
+                            [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                            [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
+                            [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
+                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
+                            [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
+                            [ContextDataType.VEDLEGG]: defaultVedlegg,
+                        }}
+                    >
+                        <Oppsummering {...rest} />
+                    </FpDataContext>
+                </AxiosMock>
+            </MemoryRouter>
+        );
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        erEndringssøknad: false,
+        sendSøknad: () => Promise.resolve(),
+        søkerInfo: defaultSøkerinfoMor,
+        avbrytSøknad: action('button-click'),
+        mellomlagreSøknadOgNaviger: promiseAction(),
+    },
 };
 
-export const Default = Template.bind({});
-
-export const MorMedAnnenForelderUgift = Template.bind({});
-MorMedAnnenForelderUgift.args = {
-    annenForelder: {
-        erAleneOmOmsorg: false,
-        fornavn: 'Espen',
-        etternavn: 'Utvikler',
-        fnr: '08099017784',
-        harRettPåForeldrepengerINorge: true,
-        kanIkkeOppgis: false,
-    },
-    barn: {
-        type: BarnType.UFØDT,
-        antallBarn: 1,
-        termindato: '2025-10-01',
-    },
-    søkerinfo: {
-        ...defaultSøkerinfoMor,
-        søker: {
-            ...defaultSøkerinfoMor.søker,
-            sivilstand: {
-                type: SivilstandType.UGIFT,
+export const MorMedAnnenForelderUgift: Story = {
+    args: {
+        ...Default.args,
+        annenForelder: {
+            erAleneOmOmsorg: false,
+            fornavn: 'Espen',
+            etternavn: 'Utvikler',
+            fnr: '08099017784',
+            harRettPåForeldrepengerINorge: true,
+            kanIkkeOppgis: false,
+        },
+        barn: {
+            type: BarnType.UFØDT,
+            antallBarn: 1,
+            termindato: '2025-10-01',
+        },
+        søkerInfo: {
+            ...defaultSøkerinfoMor,
+            søker: {
+                ...defaultSøkerinfoMor.søker,
+                sivilstand: {
+                    type: SivilstandType.UGIFT,
+                },
             },
         },
     },
 };
 
-export const MorMedAleneOmsorg = Template.bind({});
-MorMedAleneOmsorg.args = {
-    søkersituasjon: {
-        situasjon: 'fødsel',
-        rolle: 'mor',
-    },
-    annenForelder: {
-        erAleneOmOmsorg: true,
-        fornavn: 'Ingen',
-        etternavn: 'Omsorg',
-        fnr: '08099017784',
-        kanIkkeOppgis: false,
-    },
-};
-export const FarMedAleneOmsorg = Template.bind({});
-FarMedAleneOmsorg.args = {
-    søkersituasjon: {
-        situasjon: 'fødsel',
-        rolle: 'far',
-    },
-    søkerinfo: {
-        ...defaultSøkerinfoFar,
-    },
-    annenForelder: {
-        erAleneOmOmsorg: true,
-        fornavn: 'Ingen',
-        etternavn: 'Omsorg',
-        fnr: '02520489226',
-        kanIkkeOppgis: false,
-    },
-    barn: {
-        type: BarnType.UFØDT,
-        antallBarn: 2,
-        termindato: '2025-10-01',
-    },
-};
-
-export const FarMedUførMorUgift = Template.bind({});
-FarMedUførMorUgift.args = {
-    søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
-    annenForelder: {
-        erAleneOmOmsorg: false,
-        fornavn: 'Eline',
-        etternavn: 'Utvikler',
-        fnr: '02520489226',
-        harRettPåForeldrepengerINorge: false,
-        harRettPåForeldrepengerIEØS: false,
-        kanIkkeOppgis: false,
-        erMorUfør: true,
-    },
-    søkerinfo: {
-        ...defaultSøkerinfoFar,
-        søker: {
-            ...defaultSøkerinfoFar.søker,
-            sivilstand: {
-                type: SivilstandType.UGIFT,
-            },
+export const MorMedAleneOmsorg: Story = {
+    args: {
+        ...Default.args,
+        søkersituasjon: {
+            situasjon: 'fødsel',
+            rolle: 'mor',
+        },
+        annenForelder: {
+            erAleneOmOmsorg: true,
+            fornavn: 'Ingen',
+            etternavn: 'Omsorg',
+            fnr: '08099017784',
+            kanIkkeOppgis: false,
         },
     },
-    barn: {
-        type: BarnType.UFØDT,
-        antallBarn: 1,
-        termindato: '2025-10-01',
+};
+
+export const FarMedAleneOmsorg: Story = {
+    args: {
+        ...Default.args,
+        søkersituasjon: {
+            situasjon: 'fødsel',
+            rolle: 'far',
+        },
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+        },
+        annenForelder: {
+            erAleneOmOmsorg: true,
+            fornavn: 'Ingen',
+            etternavn: 'Omsorg',
+            fnr: '02520489226',
+            kanIkkeOppgis: false,
+        },
+        barn: {
+            type: BarnType.UFØDT,
+            antallBarn: 2,
+            termindato: '2025-10-01',
+        },
     },
 };
 
-export const FarMedMorSomHarRettIEØS = Template.bind({});
-FarMedMorSomHarRettIEØS.args = {
-    søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
-    annenForelder: {
-        erAleneOmOmsorg: false,
-        fornavn: 'Anne',
-        etternavn: 'Forelder',
-        fnr: '02520489226',
-        harOppholdtSegIEØS: true,
-        harRettPåForeldrepengerINorge: false,
-        harRettPåForeldrepengerIEØS: true,
-        kanIkkeOppgis: false,
-    },
-    søkerinfo: {
-        ...defaultSøkerinfoFar,
-    },
-};
-
-export const FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS = Template.bind({});
-FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS.args = {
-    søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
-    annenForelder: {
-        erAleneOmOmsorg: false,
-        fornavn: 'Anne',
-        etternavn: 'Forelder',
-        fnr: '02520489226',
-        harOppholdtSegIEØS: true,
-        harRettPåForeldrepengerINorge: false,
-        harRettPåForeldrepengerIEØS: false,
-        kanIkkeOppgis: false,
-    },
-    søkerinfo: {
-        ...defaultSøkerinfoFar,
-    },
-};
-
-export const FarMedMorSomHarRettINorge = Template.bind({});
-FarMedMorSomHarRettINorge.args = {
-    søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
-    annenForelder: {
-        erAleneOmOmsorg: false,
-        fornavn: 'Frida',
-        etternavn: 'Norsk',
-        fnr: '02520489226',
-        harRettPåForeldrepengerINorge: true,
-        kanIkkeOppgis: false,
-    },
-    søkerinfo: {
-        ...defaultSøkerinfoFar,
-    },
-};
-
-export const MorMedAdoptertBarn = Template.bind({});
-MorMedAdoptertBarn.args = {
-    søkersituasjon: {
-        rolle: 'mor',
-        situasjon: 'adopsjon',
-    },
-    barn: {
-        type: BarnType.ADOPTERT_STEBARN,
-        antallBarn: 1,
-        adopsjonsdato: '2021-10-01',
-        fødselsdatoer: ['2021-01-01'],
-        adoptertIUtlandet: false,
-        omsorgsovertakelse: [],
-    } as Barn,
-};
-
-export const MorMedUtenlandsopphold = Template.bind({});
-MorMedUtenlandsopphold.args = {
-    utenlandsopphold: {
-        iNorgeNeste12Mnd: false,
-        iNorgeSiste12Mnd: false,
-    },
-    utenlandsoppholdSenere: {
-        senereOpphold: [
-            {
-                land: 'SE',
-                tidsperiode: {
-                    fom: dayjs().format(ISO_DATE_FORMAT),
-                    tom: dayjs().add(100, 'days').format(ISO_DATE_FORMAT),
+export const FarMedUførMorUgift: Story = {
+    args: {
+        ...Default.args,
+        søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
+        annenForelder: {
+            erAleneOmOmsorg: false,
+            fornavn: 'Eline',
+            etternavn: 'Utvikler',
+            fnr: '02520489226',
+            harRettPåForeldrepengerINorge: false,
+            harRettPåForeldrepengerIEØS: false,
+            kanIkkeOppgis: false,
+            erMorUfør: true,
+        },
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+            søker: {
+                ...defaultSøkerinfoFar.søker,
+                sivilstand: {
+                    type: SivilstandType.UGIFT,
                 },
             },
-        ],
-    },
-    utenlandsoppholdTidligere: {
-        tidligereOpphold: [
-            {
-                land: 'SE',
-                tidsperiode: {
-                    fom: dayjs().subtract(10, 'months').format(ISO_DATE_FORMAT),
-                    tom: dayjs().subtract(1, 'days').format(ISO_DATE_FORMAT),
-                },
-            },
-        ],
+        },
+        barn: {
+            type: BarnType.UFØDT,
+            antallBarn: 1,
+            termindato: '2025-10-01',
+        },
     },
 };
 
-export const MorMedArbeidsforholdOgAndreInntekter = Template.bind({});
-MorMedArbeidsforholdOgAndreInntekter.args = {
-    arbeidsforholdOgInntekt: {
-        harJobbetSomFrilans: true,
-        harHattAndreInntektskilder: false,
-        harJobbetSomSelvstendigNæringsdrivende: false,
+export const FarMedMorSomHarRettIEØS: Story = {
+    args: {
+        ...Default.args,
+        søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
+        annenForelder: {
+            erAleneOmOmsorg: false,
+            fornavn: 'Anne',
+            etternavn: 'Forelder',
+            fnr: '02520489226',
+            harOppholdtSegIEØS: true,
+            harRettPåForeldrepengerINorge: false,
+            harRettPåForeldrepengerIEØS: true,
+            kanIkkeOppgis: false,
+        },
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+        },
     },
-    frilans: {
-        jobberFremdelesSomFrilans: true,
-        oppstart: '2019-01-01',
+};
+
+export const FarMedMorSomHarOppholdsSegIEØSMenIkkeHarRettIEØS: Story = {
+    args: {
+        ...Default.args,
+        søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
+        annenForelder: {
+            erAleneOmOmsorg: false,
+            fornavn: 'Anne',
+            etternavn: 'Forelder',
+            fnr: '02520489226',
+            harOppholdtSegIEØS: true,
+            harRettPåForeldrepengerINorge: false,
+            harRettPåForeldrepengerIEØS: false,
+            kanIkkeOppgis: false,
+        },
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+        },
     },
-    annenForelder: {
-        ...defaultAnnenForelder,
-        erAleneOmOmsorg: false,
+};
+
+export const FarMedMorSomHarRettINorge: Story = {
+    args: {
+        ...Default.args,
+        søkersituasjon: { situasjon: 'fødsel', rolle: 'far' },
+        annenForelder: {
+            erAleneOmOmsorg: false,
+            fornavn: 'Frida',
+            etternavn: 'Norsk',
+            fnr: '02520489226',
+            harRettPåForeldrepengerINorge: true,
+            kanIkkeOppgis: false,
+        },
+        søkerInfo: {
+            ...defaultSøkerinfoFar,
+        },
     },
-    søkerinfo: {
-        søker: defaultSøkerinfoMor.søker,
-        arbeidsforhold: [
+};
+
+export const MorMedAdoptertBarn: Story = {
+    args: {
+        ...Default.args,
+        søkersituasjon: {
+            rolle: 'mor',
+            situasjon: 'adopsjon',
+        },
+        barn: {
+            type: BarnType.ADOPTERT_STEBARN,
+            antallBarn: 1,
+            adopsjonsdato: '2021-10-01',
+            fødselsdatoer: ['2021-01-01'],
+            adoptertIUtlandet: false,
+            omsorgsovertakelse: [],
+        } as Barn,
+    },
+};
+
+export const MorMedUtenlandsopphold: Story = {
+    args: {
+        ...Default.args,
+        utenlandsopphold: {
+            iNorgeNeste12Mnd: false,
+            iNorgeSiste12Mnd: false,
+        },
+        utenlandsoppholdSenere: {
+            senereOpphold: [
+                {
+                    land: 'SE',
+                    tidsperiode: {
+                        fom: dayjs().format(ISO_DATE_FORMAT),
+                        tom: dayjs().add(100, 'days').format(ISO_DATE_FORMAT),
+                    },
+                },
+            ],
+        },
+        utenlandsoppholdTidligere: {
+            tidligereOpphold: [
+                {
+                    land: 'SE',
+                    tidsperiode: {
+                        fom: dayjs().subtract(10, 'months').format(ISO_DATE_FORMAT),
+                        tom: dayjs().subtract(1, 'days').format(ISO_DATE_FORMAT),
+                    },
+                },
+            ],
+        },
+    },
+};
+
+export const MorMedArbeidsforholdOgAndreInntekter: Story = {
+    args: {
+        ...Default.args,
+        arbeidsforholdOgInntekt: {
+            harJobbetSomFrilans: true,
+            harHattAndreInntektskilder: false,
+            harJobbetSomSelvstendigNæringsdrivende: false,
+        },
+        frilans: {
+            jobberFremdelesSomFrilans: true,
+            oppstart: '2019-01-01',
+        },
+        annenForelder: {
+            ...defaultAnnenForelder,
+            erAleneOmOmsorg: false,
+        },
+        søkerInfo: {
+            søker: defaultSøkerinfoMor.søker,
+            arbeidsforhold: [
+                {
+                    arbeidsgiverId: '1',
+                    arbeidsgiverIdType: 'orgnr',
+                    arbeidsgiverNavn: 'Auto Joachim Bilpleie',
+                    stillingsprosent: 80,
+                    fom: '2015-01-01',
+                },
+                {
+                    arbeidsgiverId: '2',
+                    arbeidsgiverIdType: 'orgnr',
+                    arbeidsgiverNavn: 'Taco Express',
+                    stillingsprosent: 20,
+                    fom: '2019-01-01',
+                    tom: '2021-01-01',
+                },
+            ],
+        },
+    },
+};
+
+export const MorMedSelvstendigNæringsdrivende: Story = {
+    args: {
+        ...Default.args,
+        arbeidsforholdOgInntekt: {
+            harJobbetSomFrilans: false,
+            harHattAndreInntektskilder: false,
+            harJobbetSomSelvstendigNæringsdrivende: true,
+        },
+        egenNæring: {
+            navnPåNæringen: 'Fiske',
+            pågående: false,
+            fomDato: '2018-01-01',
+            tomDato: '2021-01-01',
+            næringstype: Næringstype.FISKER,
+            organisasjonsnummer: '123',
+            næringsinntekt: 1000000,
+            registrertINorge: true,
+            harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: true,
+            hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
+        },
+        annenForelder: {
+            ...defaultAnnenForelder,
+            erAleneOmOmsorg: false,
+        },
+        søkerInfo: defaultSøkerinfoMor,
+    },
+};
+
+export const MorMedSelvstendigNæringsdrivendeUtenDiverse: Story = {
+    args: {
+        ...Default.args,
+        arbeidsforholdOgInntekt: {
+            harJobbetSomFrilans: false,
+            harHattAndreInntektskilder: false,
+            harJobbetSomSelvstendigNæringsdrivende: true,
+        },
+        egenNæring: {
+            navnPåNæringen: 'Fiske',
+            pågående: false,
+            fomDato: '2018-01-01',
+            tomDato: '2021-01-01',
+            næringstype: Næringstype.FISKER,
+            registrertILand: 'SE',
+            registrertINorge: false,
+            harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
+            hattVarigEndringAvNæringsinntektSiste4Kalenderår: false,
+        },
+        annenForelder: {
+            ...defaultAnnenForelder,
+            erAleneOmOmsorg: false,
+        },
+        søkerInfo: defaultSøkerinfoMor,
+    },
+};
+
+export const MorMedAndreInntekterJobbIUtlandet: Story = {
+    args: {
+        ...Default.args,
+        arbeidsforholdOgInntekt: {
+            harJobbetSomFrilans: false,
+            harHattAndreInntektskilder: true,
+            harJobbetSomSelvstendigNæringsdrivende: false,
+        },
+        andreInntekter: [
             {
-                arbeidsgiverId: '1',
-                arbeidsgiverIdType: 'orgnr',
-                arbeidsgiverNavn: 'Auto Joachim Bilpleie',
-                stillingsprosent: 80,
-                fom: '2015-01-01',
+                type: AnnenInntektType.JOBB_I_UTLANDET,
+                pågående: false,
+                fom: '2018-01-01',
+                tom: '2021-01-01',
+                arbeidsgiverNavn: 'Statoil',
+                land: 'SE',
             },
+        ],
+        annenForelder: {
+            ...defaultAnnenForelder,
+            erAleneOmOmsorg: false,
+        },
+        søkerInfo: defaultSøkerinfoMor,
+    },
+};
+
+export const MorMedAndreInntekterMilitærtjeneste: Story = {
+    args: {
+        ...Default.args,
+        arbeidsforholdOgInntekt: {
+            harJobbetSomFrilans: false,
+            harHattAndreInntektskilder: true,
+            harJobbetSomSelvstendigNæringsdrivende: false,
+        },
+        andreInntekter: [
             {
-                arbeidsgiverId: '2',
-                arbeidsgiverIdType: 'orgnr',
-                arbeidsgiverNavn: 'Taco Express',
-                stillingsprosent: 20,
-                fom: '2019-01-01',
+                type: AnnenInntektType.MILITÆRTJENESTE,
+                pågående: false,
+                fom: '2018-01-01',
                 tom: '2021-01-01',
             },
         ],
-    },
-};
-
-export const MorMedSelvstendigNæringsdrivende = Template.bind({});
-MorMedSelvstendigNæringsdrivende.args = {
-    arbeidsforholdOgInntekt: {
-        harJobbetSomFrilans: false,
-        harHattAndreInntektskilder: false,
-        harJobbetSomSelvstendigNæringsdrivende: true,
-    },
-    egenNæring: {
-        navnPåNæringen: 'Fiske',
-        pågående: false,
-        fomDato: '2018-01-01',
-        tomDato: '2021-01-01',
-        næringstype: Næringstype.FISKER,
-        organisasjonsnummer: '123',
-        næringsinntekt: 1000000,
-        registrertINorge: true,
-        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: true,
-        hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
-    },
-    annenForelder: {
-        ...defaultAnnenForelder,
-        erAleneOmOmsorg: false,
-    },
-    søkerinfo: defaultSøkerinfoMor,
-};
-
-export const MorMedSelvstendigNæringsdrivendeUtenDiverse = Template.bind({});
-MorMedSelvstendigNæringsdrivendeUtenDiverse.args = {
-    arbeidsforholdOgInntekt: {
-        harJobbetSomFrilans: false,
-        harHattAndreInntektskilder: false,
-        harJobbetSomSelvstendigNæringsdrivende: true,
-    },
-    egenNæring: {
-        navnPåNæringen: 'Fiske',
-        pågående: false,
-        fomDato: '2018-01-01',
-        tomDato: '2021-01-01',
-        næringstype: Næringstype.FISKER,
-        registrertILand: 'SE',
-        registrertINorge: false,
-        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
-        hattVarigEndringAvNæringsinntektSiste4Kalenderår: false,
-    },
-    annenForelder: {
-        ...defaultAnnenForelder,
-        erAleneOmOmsorg: false,
-    },
-    søkerinfo: defaultSøkerinfoMor,
-};
-
-export const MorMedAndreInntekterJobbIUtlandet = Template.bind({});
-MorMedAndreInntekterJobbIUtlandet.args = {
-    arbeidsforholdOgInntekt: {
-        harJobbetSomFrilans: false,
-        harHattAndreInntektskilder: true,
-        harJobbetSomSelvstendigNæringsdrivende: false,
-    },
-    andreInntekter: [
-        {
-            type: AnnenInntektType.JOBB_I_UTLANDET,
-            pågående: false,
-            fom: '2018-01-01',
-            tom: '2021-01-01',
-            arbeidsgiverNavn: 'Statoil',
-            land: 'SE',
+        annenForelder: {
+            ...defaultAnnenForelder,
+            erAleneOmOmsorg: false,
         },
-    ],
-    annenForelder: {
-        ...defaultAnnenForelder,
-        erAleneOmOmsorg: false,
+        søkerInfo: defaultSøkerinfoMor,
     },
-    søkerinfo: defaultSøkerinfoMor,
 };
 
-export const MorMedAndreInntekterMilitærtjeneste = Template.bind({});
-MorMedAndreInntekterMilitærtjeneste.args = {
-    arbeidsforholdOgInntekt: {
-        harJobbetSomFrilans: false,
-        harHattAndreInntektskilder: true,
-        harJobbetSomSelvstendigNæringsdrivende: false,
-    },
-    andreInntekter: [
-        {
-            type: AnnenInntektType.MILITÆRTJENESTE,
-            pågående: false,
-            fom: '2018-01-01',
-            tom: '2021-01-01',
+export const ErEndringssøknad: Story = {
+    args: {
+        ...Default.args,
+        erEndringssøknad: true,
+        annenForelder: {
+            fornavn: 'Espen',
+            etternavn: 'Utvikler',
+            fnr: '1212121313',
+            harRettPåForeldrepengerINorge: true,
+            kanIkkeOppgis: false,
+            erAleneOmOmsorg: false,
         },
-    ],
-    annenForelder: {
-        ...defaultAnnenForelder,
-        erAleneOmOmsorg: false,
-    },
-    søkerinfo: defaultSøkerinfoMor,
-};
-
-export const ErEndringssøknad = Template.bind({});
-ErEndringssøknad.args = {
-    erEndringssøknad: true,
-    annenForelder: {
-        fornavn: 'Espen',
-        etternavn: 'Utvikler',
-        fnr: '1212121313',
-        harRettPåForeldrepengerINorge: true,
-        kanIkkeOppgis: false,
-        erAleneOmOmsorg: false,
     },
 };

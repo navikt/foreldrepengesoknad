@@ -85,7 +85,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
             <Default
                 gåTilNesteSide={gåTilNesteSide}
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                utenlandsforhold={{
+                utenlandsopphold={{
                     iNorgeNeste12Mnd: false,
                     iNorgeSiste12Mnd: false,
                 }}

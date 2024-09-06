@@ -1,6 +1,7 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter/types';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import AxiosMock from 'storybookData/utils/AxiosMock';
 
@@ -19,47 +20,47 @@ const promiseAction =
         return Promise.resolve();
     };
 
-export default {
-    title: 'steps/TidligereUtenlandsoppholdSteg',
-    component: TidligereUtenlandsoppholdSteg,
+const defaultUtenlandsopphold = {
+    iNorgeNeste12Mnd: true,
+    iNorgeSiste12Mnd: false,
 };
 
-interface Props {
-    mellomlagreSøknadOgNaviger?: () => Promise<void>;
-    gåTilNesteSide: (action: Action) => void;
+type StoryArgs = {
     utenlandsopphold?: Opphold;
-}
+    gåTilNesteSide?: (action: Action) => void;
+} & ComponentProps<typeof TidligereUtenlandsoppholdSteg>;
 
-const Template: StoryFn<Props> = ({
-    mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide,
-    utenlandsopphold = {
-        iNorgeNeste12Mnd: true,
-        iNorgeSiste12Mnd: false,
+const meta = {
+    component: TidligereUtenlandsoppholdSteg,
+    render: ({ gåTilNesteSide = action('button-click'), utenlandsopphold = defaultUtenlandsopphold, ...rest }) => {
+        initAmplitude();
+        const restMock = (apiMock: MockAdapter) => {
+            apiMock.onPost('/rest/storage/foreldrepenger').reply(200, undefined);
+        };
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD]}>
+                <AxiosMock mock={restMock}>
+                    <FpDataContext
+                        onDispatch={gåTilNesteSide}
+                        initialState={{
+                            [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                        }}
+                    >
+                        <TidligereUtenlandsoppholdSteg {...rest} />
+                    </FpDataContext>
+                </AxiosMock>
+            </MemoryRouter>
+        );
     },
-}) => {
-    initAmplitude();
-    const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost('/rest/storage/foreldrepenger').reply(200, undefined);
-    };
-    return (
-        <MemoryRouter initialEntries={[SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD]}>
-            <AxiosMock mock={restMock}>
-                <FpDataContext
-                    onDispatch={gåTilNesteSide}
-                    initialState={{
-                        [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                    }}
-                >
-                    <TidligereUtenlandsoppholdSteg
-                        arbeidsforhold={[]}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                        avbrytSøknad={() => undefined}
-                    />
-                </FpDataContext>
-            </AxiosMock>
-        </MemoryRouter>
-    );
-};
+} satisfies Meta<StoryArgs>;
+export default meta;
 
-export const Default = Template.bind({});
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+    },
+};

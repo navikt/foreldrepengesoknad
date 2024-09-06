@@ -1,21 +1,14 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
-import { Arbeidsforhold } from '@navikt/fp-types';
 
 import { Action, ContextDataType, FpDataContext } from 'app/appData/FpDataContext';
 import SøknadRoutes from 'app/appData/routes';
 
 import AndreInntektskilderSteg from './AndreInntektskilderSteg';
-
-const defaultExport = {
-    title: 'steps/AndreInntektskilderSteg',
-    component: AndreInntektskilderSteg,
-};
-
-export default defaultExport;
 
 const promiseAction =
     () =>
@@ -24,37 +17,40 @@ const promiseAction =
         return Promise.resolve();
     };
 
-interface Props {
-    mellomlagreSøknadOgNaviger?: () => Promise<void>;
+type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
-    arbeidsforhold?: Arbeidsforhold[];
-}
+} & ComponentProps<typeof AndreInntektskilderSteg>;
 
-const Template: StoryFn<Props> = ({
-    mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide = action('button-click'),
-}) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[SøknadRoutes.ANDRE_INNTEKTER]}>
-            <FpDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                        harJobbetSomFrilans: false,
-                        harJobbetSomSelvstendigNæringsdrivende: false,
-                        harHattAndreInntektskilder: true,
-                    },
-                }}
-            >
-                <AndreInntektskilderSteg
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={promiseAction()}
-                    arbeidsforhold={[]}
-                />
-            </FpDataContext>
-        </MemoryRouter>
-    );
+const meta = {
+    component: AndreInntektskilderSteg,
+    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.ANDRE_INNTEKTER]}>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                            harJobbetSomFrilans: false,
+                            harJobbetSomSelvstendigNæringsdrivende: false,
+                            harHattAndreInntektskilder: true,
+                        },
+                    }}
+                >
+                    <AndreInntektskilderSteg {...rest} />
+                </FpDataContext>
+            </MemoryRouter>
+        );
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: promiseAction(),
+        arbeidsforhold: [],
+    },
 };
-
-export const Default = Template.bind({});

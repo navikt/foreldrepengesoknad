@@ -1,5 +1,6 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { BehandlingTilstand, DekningsgradDTO, Sak, SaksperiodeDTO } from '@navikt/fp-common';
@@ -19,11 +20,6 @@ const promiseAction =
         return Promise.resolve();
     };
 
-export default {
-    title: 'pages/Forside',
-    component: Forside,
-};
-
 const defaultPerson = {
     fnr: '19047815714',
     fornavn: 'TALENTFULL',
@@ -32,43 +28,6 @@ const defaultPerson = {
     fødselsdato: '1978-04-19',
     barn: [],
 } as Søker;
-
-interface Props {
-    harGodkjentVilkår: boolean;
-    saker: Sak[];
-    søker?: Søker;
-    mellomlagreSøknadOgNaviger: () => Promise<void>;
-    onDispatch?: (action: Action) => void;
-}
-
-const Template: StoryFn<Props> = ({
-    harGodkjentVilkår,
-    saker,
-    søker = defaultPerson,
-    mellomlagreSøknadOgNaviger = promiseAction(),
-    onDispatch,
-}) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[SøknadRoutes.VELKOMMEN]}>
-            <FpDataContext onDispatch={onDispatch}>
-                <Forside
-                    fornavn="Espen"
-                    onChangeLocale={() => undefined}
-                    locale="nb"
-                    saker={saker}
-                    fnr={'123'}
-                    harGodkjentVilkår={harGodkjentVilkår}
-                    søkerInfo={{ søker, arbeidsforhold: [] }}
-                    setErEndringssøknad={action('button-click')}
-                    setHarGodkjentVilkår={action('button-click')}
-                    setSøknadGjelderNyttBarn={action('button-click')}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                />
-            </FpDataContext>
-        </MemoryRouter>
-    );
-};
 
 interface SakInfo {
     kanSøkeOmEndring: boolean;
@@ -226,10 +185,6 @@ const sakMedTvillinger = getSak({
     åpenbehandlingTilstand: BehandlingTilstand.UNDER_BEHANDLING,
 });
 
-const sakMedTvillingerMedFnrPåSaken = getSakMedBarn(sakMedTvillinger, ['1', '2']);
-
-const sakMedTvillingerMedEnDødfødt = getSakMedBarn(sakMedTvillinger, ['1']);
-
 const sakMedTrillinger = getSak({
     kanSøkeOmEndring: true,
     gjelderAdopsjon: false,
@@ -238,223 +193,356 @@ const sakMedTrillinger = getSak({
     fødselsdato: dato,
 });
 
-const flereSaker = [sakOpprettetFødsel, { ...sakUnderBehandlingTermin, saksnummer: '555555' }];
-const ingenSaker: Sak[] = [];
+type StoryArgs = {
+    onDispatch?: (action: Action) => void;
+} & ComponentProps<typeof Forside>;
 
-export const Default = Template.bind({});
-Default.args = {
-    harGodkjentVilkår: false,
-    saker: ingenSaker,
+const meta = {
+    component: Forside,
+    render: ({ onDispatch, ...rest }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.VELKOMMEN]}>
+                <FpDataContext onDispatch={onDispatch}>
+                    <Forside {...rest} />
+                </FpDataContext>
+            </MemoryRouter>
+        );
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        fornavn: 'Espen',
+        harGodkjentVilkår: false,
+        saker: [],
+        søkerInfo: { søker: defaultPerson, arbeidsforhold: [] },
+        onChangeLocale: () => undefined,
+        locale: 'nb',
+        fnr: '123',
+        setErEndringssøknad: action('button-click'),
+        setHarGodkjentVilkår: action('button-click'),
+        setSøknadGjelderNyttBarn: action('button-click'),
+        mellomlagreSøknadOgNaviger: promiseAction(),
+    },
 };
 
-export const HarAlleredeLestOgForstått = Template.bind({});
-HarAlleredeLestOgForstått.args = {
-    harGodkjentVilkår: true,
-    saker: ingenSaker,
+export const HarAlleredeLestOgForstått: Story = {
+    args: {
+        ...Default.args,
+        harGodkjentVilkår: true,
+    },
 };
 
-export const HarOpprettetFPSakFødselMedBarnetIPDL = Template.bind({});
-HarOpprettetFPSakFødselMedBarnetIPDL.args = {
-    saker: [sakOpprettetFødsel],
-    søker: getSøkerinfoMedBarn([ettBarn]),
+export const HarOpprettetFPSakFødselMedBarnetIPDL: Story = {
+    args: {
+        ...Default.args,
+        saker: [sakOpprettetFødsel],
+        søkerInfo: { søker: getSøkerinfoMedBarn([ettBarn]), arbeidsforhold: [] },
+    },
 };
 
-export const HarFPSakUnderBehandlingTermin = Template.bind({});
-HarFPSakUnderBehandlingTermin.args = {
-    saker: [sakUnderBehandlingTermin],
+export const HarFPSakUnderBehandlingTermin: Story = {
+    args: {
+        ...Default.args,
+        saker: [sakUnderBehandlingTermin],
+    },
 };
 
-export const HarEndringssøknadUnderBehandlingAdopsjonBarnIPDL = Template.bind({});
-HarEndringssøknadUnderBehandlingAdopsjonBarnIPDL.args = {
-    saker: [erEndringssøknadUnderBehandlingAdopsjon],
-    søker: getSøkerinfoMedBarn([ettBarn]),
+export const HarEndringssøknadUnderBehandlingAdopsjonBarnIPDL: Story = {
+    args: {
+        ...Default.args,
+        saker: [erEndringssøknadUnderBehandlingAdopsjon],
+        søkerInfo: { søker: getSøkerinfoMedBarn([ettBarn]), arbeidsforhold: [] },
+    },
 };
 
-export const HarAvsluttetFPSak = Template.bind({});
-HarAvsluttetFPSak.args = {
-    saker: [sakAvsluttet],
-    søker: getSøkerinfoMedBarn([ettBarn]),
+export const HarAvsluttetFPSak: Story = {
+    args: {
+        ...Default.args,
+        saker: [sakAvsluttet],
+        søkerInfo: { søker: getSøkerinfoMedBarn([ettBarn]), arbeidsforhold: [] },
+    },
 };
 
-export const HarFlereSaker = Template.bind({});
-HarFlereSaker.args = {
-    saker: flereSaker,
-    søker: getSøkerinfoMedBarn([ettBarn]),
+export const HarFlereSaker: Story = {
+    args: {
+        ...Default.args,
+        saker: [sakOpprettetFødsel, { ...sakUnderBehandlingTermin, saksnummer: '555555' }],
+        søkerInfo: { søker: getSøkerinfoMedBarn([ettBarn]), arbeidsforhold: [] },
+    },
 };
 
-export const HarSakFødselUtenBarnIPDL = Template.bind({});
-HarSakFødselUtenBarnIPDL.args = {
-    saker: [sakUtenBarnFødsel],
+export const HarSakFødselUtenBarnIPDL: Story = {
+    args: {
+        ...Default.args,
+        saker: [sakUtenBarnFødsel],
+    },
 };
 
-export const HarSakAdopsjonUtenBarnIPDL = Template.bind({});
-HarSakAdopsjonUtenBarnIPDL.args = {
-    saker: [sakEttBarnAdopsjon],
-    søker: defaultPerson,
+export const HarSakAdopsjonUtenBarnIPDL: Story = {
+    args: {
+        ...Default.args,
+        saker: [sakEttBarnAdopsjon],
+    },
 };
 
-export const HarSakAdopsjonMedBarnIPDL = Template.bind({});
-HarSakAdopsjonMedBarnIPDL.args = {
-    saker: [sakEttBarnAdopsjon],
-    søker: getSøkerinfoMedBarn([ettBarn]),
+export const HarSakAdopsjonMedBarnIPDL: Story = {
+    args: {
+        ...Default.args,
+        saker: [sakEttBarnAdopsjon],
+        søkerInfo: { søker: getSøkerinfoMedBarn([ettBarn]), arbeidsforhold: [] },
+    },
 };
 
-export const HarSakFødselTvillinger = Template.bind({});
-HarSakFødselTvillinger.args = {
-    saker: [sakMedTvillinger],
-    søker: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato]),
+export const HarSakFødselTvillinger: Story = {
+    args: {
+        ...Default.args,
+        saker: [sakMedTvillinger],
+        søkerInfo: { søker: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato]), arbeidsforhold: [] },
+    },
 };
 
-export const HarSakFødselTrillinger = Template.bind({});
-HarSakFødselTrillinger.args = {
-    saker: [sakMedTrillinger],
-    søker: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato, tredjeBarnSammeDato]),
-};
-
-const søkerinfoMedEtLevendeBarn = getSøkerinfoMedBarn([levendeBarn]);
-const søkerinfoMedLevendeTvillinger = getSøkerinfoMedBarn([levendeBarn, levendeTvilling]);
-const søkerinfoMedEtDødtBarn = getSøkerinfoMedBarn([dødtBarn]);
-const søkerinfoMedToDødeTvillinger = getSøkerinfoMedBarn([dødtBarn, dødTvilling]);
-const søkerinfoMedEtDødfødtBarn = getSøkerinfoMedBarn([dødfødtBarn]);
-const søkerinfoMedToDødfødteBarn = getSøkerinfoMedBarn([dødfødtBarn, dødfødtBarn]);
-const søkerinfoMedEnLevendeOgEnDødfødtTvilling = getSøkerinfoMedBarn([levendeBarn, dødfødtBarn]);
-const søkerinfoMedEnLevendeOgEnDødTvilling = getSøkerinfoMedBarn([levendeBarn, dødTvilling]);
-
-export const HarIngenSakerOgEttBarn = Template.bind({});
-HarIngenSakerOgEttBarn.args = {
-    saker: [],
-    søker: søkerinfoMedEtLevendeBarn,
-};
-
-export const HarIngenSakerOgTvillinger = Template.bind({});
-HarIngenSakerOgTvillinger.args = {
-    saker: [],
-    søker: søkerinfoMedLevendeTvillinger,
-};
-
-export const HarIngenSakerOgEttDødtBarn = Template.bind({});
-HarIngenSakerOgEttDødtBarn.args = {
-    saker: [],
-    søker: søkerinfoMedEtDødtBarn,
-};
-
-export const HarIngenSakerOgToDødeTvillinger = Template.bind({});
-HarIngenSakerOgToDødeTvillinger.args = {
-    saker: [],
-    søker: søkerinfoMedToDødeTvillinger,
-};
-export const HarIngenSakerOgEtDødfødtBarn = Template.bind({});
-HarIngenSakerOgEtDødfødtBarn.args = {
-    saker: [],
-    søker: søkerinfoMedEtDødfødtBarn,
-};
-
-export const HarIngenSakerOgToDødfødteBarn = Template.bind({});
-HarIngenSakerOgToDødfødteBarn.args = {
-    saker: [],
-    søker: søkerinfoMedToDødfødteBarn,
-};
-
-export const HarIngenSakerMedEnLevendeOgEnDødfødtTvilling = Template.bind({});
-HarIngenSakerMedEnLevendeOgEnDødfødtTvilling.args = {
-    saker: [],
-    søker: søkerinfoMedEnLevendeOgEnDødfødtTvilling,
-};
-
-export const HarIngenSakerMedEnLevendeOgEnDødTvilling = Template.bind({});
-HarIngenSakerMedEnLevendeOgEnDødTvilling.args = {
-    saker: [],
-    søker: søkerinfoMedEnLevendeOgEnDødTvilling,
-};
-
-export const HarSakMedEnLevendeOgEnDødfødtTvilling = Template.bind({});
-HarSakMedEnLevendeOgEnDødfødtTvilling.args = {
-    saker: [sakMedTvillinger],
-    søker: søkerinfoMedEnLevendeOgEnDødfødtTvilling,
-};
-
-export const HarSakMedEtDødtBarn = Template.bind({});
-HarSakMedEtDødtBarn.args = {
-    saker: [sakOpprettetFødsel],
-    søker: søkerinfoMedEtDødtBarn,
-};
-
-export const HarSakAdopsjonMedEtDødtBarn = Template.bind({});
-HarSakAdopsjonMedEtDødtBarn.args = {
-    saker: [sakEttBarnAdopsjon],
-    søker: søkerinfoMedEtDødtBarn,
-};
-
-export const HarSakMedOppgittBarnTvillingerAlleLever = Template.bind({});
-HarSakMedOppgittBarnTvillingerAlleLever.args = {
-    saker: [sakMedTvillingerMedFnrPåSaken],
-    søker: søkerinfoMedLevendeTvillinger,
-};
-
-export const HarSakMedOppgittBarnMedEnLevendeOgEnDødfødtTvilling = Template.bind({});
-HarSakMedOppgittBarnMedEnLevendeOgEnDødfødtTvilling.args = {
-    saker: [sakMedTvillingerMedEnDødfødt],
-    søker: søkerinfoMedEnLevendeOgEnDødfødtTvilling,
-};
-
-export const HarSakMedTrillingerEnErDød = Template.bind({});
-HarSakMedTrillingerEnErDød.args = {
-    saker: [sakMedTrillinger],
-    søker: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato, dødfødtBarn]),
-};
-
-export const HarSakPåTerminSomSkalKoblesMedFødtPDLBarnFødtInnenTerminMinus17uker = Template.bind({});
-HarSakPåTerminSomSkalKoblesMedFødtPDLBarnFødtInnenTerminMinus17uker.args = {
-    saker: [sakUnderBehandlingTermin],
-    søker: getSøkerinfoMedBarn([
-        {
-            fnr: '1',
-            fornavn: 'Hanne',
-            etternavn: 'Brokkoli',
-            fødselsdato: '2024-03-01',
-            kjønn: 'K',
+export const HarSakFødselTrillinger: Story = {
+    args: {
+        ...Default.args,
+        saker: [sakMedTrillinger],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato, tredjeBarnSammeDato]),
+            arbeidsforhold: [],
         },
-    ]),
+    },
 };
 
-export const HarSakPåTerminSomSkalKoblesMedFødtPDLBarnFødtInnenTerminPlus6uker = Template.bind({});
-HarSakPåTerminSomSkalKoblesMedFødtPDLBarnFødtInnenTerminPlus6uker.args = {
-    saker: [sakUnderBehandlingTermin],
-    søker: getSøkerinfoMedBarn([
-        {
-            fnr: '1',
-            fornavn: 'Hanne',
-            etternavn: 'Brokkoli',
-            fødselsdato: '2024-08-09',
-            kjønn: 'K',
+export const HarIngenSakerOgEttBarn: Story = {
+    args: {
+        ...Default.args,
+        saker: [],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([levendeBarn]),
+            arbeidsforhold: [],
         },
-    ]),
+    },
 };
 
-export const HarSakPåTerminSomIkkeSkalKoblesMedPDLBarnFødtForTidlig = Template.bind({});
-HarSakPåTerminSomIkkeSkalKoblesMedPDLBarnFødtForTidlig.args = {
-    saker: [sakUnderBehandlingTermin],
-    søker: getSøkerinfoMedBarn([
-        {
-            fnr: '1',
-            fornavn: 'Hanne',
-            etternavn: 'Brokkoli',
-            fødselsdato: '2024-02-29',
-            kjønn: 'K',
+export const HarIngenSakerOgTvillinger: Story = {
+    args: {
+        ...Default.args,
+        saker: [],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([levendeBarn, levendeTvilling]),
+            arbeidsforhold: [],
         },
-    ]),
+    },
 };
 
-export const HarSakPåTerminSomIkkeSkalKoblesMedMedPDLBarnFødtForSent = Template.bind({});
-HarSakPåTerminSomIkkeSkalKoblesMedMedPDLBarnFødtForSent.args = {
-    saker: [sakUnderBehandlingTermin],
-    søker: getSøkerinfoMedBarn([
-        {
-            fnr: '1',
-            fornavn: 'Hanne',
-            etternavn: 'Brokkoli',
-            fødselsdato: '2024-08-10',
-            kjønn: 'K',
+export const HarIngenSakerOgEttDødtBarn: Story = {
+    args: {
+        ...Default.args,
+        saker: [],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([dødtBarn]),
+            arbeidsforhold: [],
         },
-    ]),
+    },
+};
+
+export const HarIngenSakerOgToDødeTvillinger: Story = {
+    args: {
+        ...Default.args,
+        saker: [],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([dødtBarn, dødTvilling]),
+            arbeidsforhold: [],
+        },
+    },
+};
+
+export const HarIngenSakerOgEtDødfødtBarn: Story = {
+    args: {
+        ...Default.args,
+        saker: [],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([dødfødtBarn]),
+            arbeidsforhold: [],
+        },
+    },
+};
+
+export const HarIngenSakerOgToDødfødteBarn: Story = {
+    args: {
+        ...Default.args,
+        saker: [],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([dødfødtBarn, dødfødtBarn]),
+            arbeidsforhold: [],
+        },
+    },
+};
+
+export const HarIngenSakerMedEnLevendeOgEnDødfødtTvilling: Story = {
+    args: {
+        ...Default.args,
+        saker: [],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([levendeBarn, dødfødtBarn]),
+            arbeidsforhold: [],
+        },
+    },
+};
+
+export const HarIngenSakerMedEnLevendeOgEnDødTvilling: Story = {
+    args: {
+        ...Default.args,
+        saker: [],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([levendeBarn, dødTvilling]),
+            arbeidsforhold: [],
+        },
+    },
+};
+
+export const HarSakMedEnLevendeOgEnDødfødtTvilling: Story = {
+    args: {
+        ...Default.args,
+        saker: [sakMedTvillinger],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([levendeBarn, dødfødtBarn]),
+            arbeidsforhold: [],
+        },
+    },
+};
+
+export const HarSakMedEtDødtBarn: Story = {
+    args: {
+        ...Default.args,
+        saker: [sakOpprettetFødsel],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([dødtBarn]),
+            arbeidsforhold: [],
+        },
+    },
+};
+
+export const HarSakAdopsjonMedEtDødtBarn: Story = {
+    args: {
+        ...Default.args,
+        saker: [sakEttBarnAdopsjon],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([dødtBarn]),
+            arbeidsforhold: [],
+        },
+    },
+};
+
+export const HarSakMedOppgittBarnTvillingerAlleLever: Story = {
+    args: {
+        ...Default.args,
+        saker: [getSakMedBarn(sakMedTvillinger, ['1', '2'])],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([levendeBarn, levendeTvilling]),
+            arbeidsforhold: [],
+        },
+    },
+};
+
+export const HarSakMedOppgittBarnMedEnLevendeOgEnDødfødtTvilling: Story = {
+    args: {
+        ...Default.args,
+        saker: [getSakMedBarn(sakMedTvillinger, ['1'])],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([levendeBarn, dødfødtBarn]),
+            arbeidsforhold: [],
+        },
+    },
+};
+
+export const HarSakMedTrillingerEnErDød: Story = {
+    args: {
+        ...Default.args,
+        saker: [sakMedTrillinger],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([ettBarn, annetBarnSammeDato, dødfødtBarn]),
+            arbeidsforhold: [],
+        },
+    },
+};
+
+export const HarSakPåTerminSomSkalKoblesMedFødtPDLBarnFødtInnenTerminMinus17uker: Story = {
+    args: {
+        ...Default.args,
+        saker: [sakUnderBehandlingTermin],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([
+                {
+                    fnr: '1',
+                    fornavn: 'Hanne',
+                    etternavn: 'Brokkoli',
+                    fødselsdato: '2024-03-01',
+                    kjønn: 'K',
+                },
+            ]),
+            arbeidsforhold: [],
+        },
+    },
+};
+
+export const HarSakPåTerminSomSkalKoblesMedFødtPDLBarnFødtInnenTerminPlus6uker: Story = {
+    args: {
+        ...Default.args,
+        saker: [sakUnderBehandlingTermin],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([
+                {
+                    fnr: '1',
+                    fornavn: 'Hanne',
+                    etternavn: 'Brokkoli',
+                    fødselsdato: '2024-08-09',
+                    kjønn: 'K',
+                },
+            ]),
+            arbeidsforhold: [],
+        },
+    },
+};
+
+export const HarSakPåTerminSomIkkeSkalKoblesMedPDLBarnFødtForTidlig: Story = {
+    args: {
+        ...Default.args,
+        saker: [sakUnderBehandlingTermin],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([
+                {
+                    fnr: '1',
+                    fornavn: 'Hanne',
+                    etternavn: 'Brokkoli',
+                    fødselsdato: '2024-02-29',
+                    kjønn: 'K',
+                },
+            ]),
+            arbeidsforhold: [],
+        },
+    },
+};
+
+export const HarSakPåTerminSomIkkeSkalKoblesMedMedPDLBarnFødtForSent: Story = {
+    args: {
+        ...Default.args,
+        saker: [sakUnderBehandlingTermin],
+        søkerInfo: {
+            søker: getSøkerinfoMedBarn([
+                {
+                    fnr: '1',
+                    fornavn: 'Hanne',
+                    etternavn: 'Brokkoli',
+                    fødselsdato: '2024-08-10',
+                    kjønn: 'K',
+                },
+            ]),
+            arbeidsforhold: [],
+        },
+    },
 };

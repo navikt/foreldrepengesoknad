@@ -104,12 +104,12 @@ const promiseAction =
 type StoryArgs = {
     mellomlagreSøknadOgNaviger?: () => Promise<void>;
     avbrytSøknad: () => void;
-    gåTilNesteSide: (action: Action) => void;
+    gåTilNesteSide?: (action: Action) => void;
     søkersituasjon: SøkersituasjonFp;
     annenForelder: AnnenForelder;
     barnet: Barn;
-    stønadskonto100: TilgjengeligeStønadskontoerForDekningsgrad;
-    stønadskonto80: TilgjengeligeStønadskontoerForDekningsgrad;
+    stønadskonto100?: TilgjengeligeStønadskontoerForDekningsgrad;
+    stønadskonto80?: TilgjengeligeStønadskontoerForDekningsgrad;
     erAleneOmOmsorg?: boolean;
     annenPartVedtak?: AnnenPartVedtakDTO;
     søker: Søker;
@@ -117,75 +117,65 @@ type StoryArgs = {
     arbeidsforhold: Arbeidsforhold[];
 } & ComponentProps<typeof FordelingSteg>;
 
-type Story = StoryObj<StoryArgs>;
-
-const customRenderer = ({
-    mellomlagreSøknadOgNaviger = promiseAction(),
-    avbrytSøknad = action('button-click'),
-    gåTilNesteSide,
-    søker,
-    søkersituasjon,
-    annenForelder,
-    barnet,
-    stønadskonto100,
-    stønadskonto80,
-    annenPartVedtak,
-    dekningsgrad,
-    arbeidsforhold = [],
-}: StoryArgs) => {
-    initAmplitude();
-
-    const stønadskonto100Input =
-        stønadskonto100 || ({ kontoer: {}, minsteretter: {} } as TilgjengeligeStønadskontoerForDekningsgrad);
-
-    const stønadskonto80Input =
-        stønadskonto80 || ({ kontoer: {}, minsteretter: {} } as TilgjengeligeStønadskontoerForDekningsgrad);
-
-    const restMock = (apiMock: MockAdapter) => {
-        apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, annenPartVedtak);
-        apiMock.onPost(STØNADSKONTO_URL).replyOnce(200, {
-            '80': stønadskonto80Input,
-            '100': stønadskonto100Input,
-        });
-    };
-
-    return (
-        <MemoryRouter initialEntries={[SøknadRoutes.FORDELING]}>
-            <AxiosMock mock={restMock}>
-                <FpApiDataContext>
-                    <FpDataContext
-                        onDispatch={gåTilNesteSide}
-                        initialState={{
-                            [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                            [ContextDataType.OM_BARNET]: barnet,
-                            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                                harHattAndreInntektskilder: false,
-                                harJobbetSomFrilans: false,
-                                harJobbetSomSelvstendigNæringsdrivende: false,
-                            },
-                            [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: { dekningsgrad },
-                        }}
-                    >
-                        <FordelingSteg
-                            arbeidsforhold={arbeidsforhold}
-                            søker={søker}
-                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                            avbrytSøknad={avbrytSøknad}
-                        />
-                    </FpDataContext>
-                </FpApiDataContext>
-            </AxiosMock>
-        </MemoryRouter>
-    );
-};
-
 const meta = {
     title: 'steps/FordelingSteg',
     component: FordelingSteg,
-    render: customRenderer,
+    render: ({
+        gåTilNesteSide,
+        søkersituasjon,
+        annenForelder,
+        barnet,
+        stønadskonto100,
+        stønadskonto80,
+        annenPartVedtak,
+        dekningsgrad,
+        ...rest
+    }) => {
+        initAmplitude();
+
+        const stønadskonto100Input =
+            stønadskonto100 || ({ kontoer: {}, minsteretter: {} } as TilgjengeligeStønadskontoerForDekningsgrad);
+
+        const stønadskonto80Input =
+            stønadskonto80 || ({ kontoer: {}, minsteretter: {} } as TilgjengeligeStønadskontoerForDekningsgrad);
+
+        const restMock = (apiMock: MockAdapter) => {
+            apiMock.onPost(UTTAKSPLAN_ANNEN_URL).replyOnce(200, annenPartVedtak);
+            apiMock.onPost(STØNADSKONTO_URL).replyOnce(200, {
+                '80': stønadskonto80Input,
+                '100': stønadskonto100Input,
+            });
+        };
+
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.FORDELING]}>
+                <AxiosMock mock={restMock}>
+                    <FpApiDataContext>
+                        <FpDataContext
+                            onDispatch={gåTilNesteSide}
+                            initialState={{
+                                [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                                [ContextDataType.OM_BARNET]: barnet,
+                                [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                                    harHattAndreInntektskilder: false,
+                                    harJobbetSomFrilans: false,
+                                    harJobbetSomSelvstendigNæringsdrivende: false,
+                                },
+                                [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                                [ContextDataType.PERIODE_MED_FORELDREPENGER]: { dekningsgrad },
+                            }}
+                        >
+                            <FordelingSteg {...rest} />
+                        </FpDataContext>
+                    </FpApiDataContext>
+                </AxiosMock>
+            </MemoryRouter>
+        );
+    },
 } satisfies Meta<StoryArgs>;
 export default meta;
+
+type Story = StoryObj<typeof meta>;
 
 //ALENEOMSORG
 
@@ -228,6 +218,9 @@ export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
             },
         },
         dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -274,6 +267,9 @@ export const MorAleneomsorgEttBarnPrematurFødsel: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -308,6 +304,9 @@ export const MorAleneomsorgAdopsjonTrillinger: Story = {
             },
         },
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -347,6 +346,9 @@ export const FarMedmorAleneomsorgFødtTvillinger: Story = {
 
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -385,6 +387,9 @@ export const FarMedmorAleneomsorgFødtFireBarnFør1Okt2021: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -423,6 +428,9 @@ export const FarMedmorAleneomsorgFødtTreBarnFørWLB: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -460,6 +468,9 @@ export const FarMedmorAleneomsorgEttBarnTerminEtterWLB: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -502,6 +513,9 @@ export const FarMedmorAleneomsorgPrematurtFødtBarn: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -540,6 +554,9 @@ export const FarMedmorAleneomsorgAdopsjonFireBarn: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -594,6 +611,9 @@ export const MorDeltUttakEttBarnPrematurFødsel: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -646,6 +666,9 @@ export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
         },
         stønadskonto100: undefined,
         dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -694,6 +717,9 @@ export const MorDeltUttakEttBarnTermin: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -747,6 +773,9 @@ export const MorDeltUttakTvillingerFødt: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -796,6 +825,9 @@ export const MorDeltUttakFarSøkteMorsKvoteOgFellesperiode: Story = {
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
         annenPartVedtak: vedtakFar,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -845,6 +877,9 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -898,6 +933,9 @@ export const FarMedmorSøkerDeltUttakTrillingerFødtFørWLB: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -946,6 +984,9 @@ export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -999,6 +1040,9 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtPrematurt: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -1049,6 +1093,9 @@ export const FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode: Story = {
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
         annenPartVedtak: vedtakMor,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -1094,6 +1141,9 @@ export const FarSøkerAdopsjonToBarn: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -1140,6 +1190,9 @@ export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Stor
             },
         },
         dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -1192,6 +1245,9 @@ export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
             },
         },
         dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -1239,6 +1295,9 @@ export const FarMedmorSøkerMorHarRettIEØSAdopsjon: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -1277,6 +1336,9 @@ export const BareMorHarRettTermin: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -1314,6 +1376,9 @@ export const BareMorHarRettAdopsjon: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -1355,6 +1420,9 @@ export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -1397,6 +1465,9 @@ export const BareFarHarRettOgMorErIkkeUførFødtBarn: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -1435,6 +1506,9 @@ export const BareFarHarRettTvillingerFødtFør1Okt2021: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };
 
@@ -1477,5 +1551,8 @@ export const BareFarHarRettAdopsjonMorErUfør: Story = {
         },
         stønadskonto80: undefined,
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        arbeidsforhold: [],
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
     },
 };

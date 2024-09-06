@@ -1,4 +1,4 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 import annenPartVedtak from 'storybookData/storyData/annenPartVedtak/annenPartVedtak.json';
 import storageKvittering from 'storybookData/storyData/kvittering/storage_kvittering.json';
@@ -40,43 +40,47 @@ const søkerinfo = {
     ],
 } as Søkerinfo;
 
-export default {
-    title: 'AppContainer',
-    component: AppContainer,
-};
-
-const Template: StoryFn<{
+type StoryArgs = {
     søkerinfoData: Søkerinfo;
     sakerData: any;
     annenPartVedtakData: any;
     stønadskontoerData: any;
     storageKvitteringData: any;
-}> = ({ søkerinfoData, sakerData, annenPartVedtakData, stønadskontoerData, storageKvitteringData }) => {
-    initAmplitude();
-    const apiMock = new MockAdapter(getAxiosInstance());
-    apiMock.onGet('/rest/sokerinfo').reply(200, søkerinfoData);
-    apiMock.onGet('/rest/innsyn/v2/saker').reply(200, sakerData);
-    apiMock.onGet('/rest/innsyn/v2/annenPartVedtak').reply(200, annenPartVedtakData);
-    apiMock.onGet('/rest/konto').reply(200, stønadskontoerData);
-    apiMock.onGet('/rest/storage/kvittering/foreldrepenger').reply(200, storageKvitteringData);
-    apiMock.onGet('test/rest/konto').replyOnce(200, stønadskontoDeltUttak80);
-    apiMock.onGet('test/rest/konto').replyOnce(200, stønadskontoDeltUttak100);
-
-    apiMock.onPost('/rest/innsyn/v2/annenPartVedtak').replyOnce(200, undefined, RequestStatus.FINISHED);
-    apiMock.onPost('/rest/storage/foreldrepenger').reply(200, {});
-    apiMock.onPost('/rest/soknad').reply(200, {});
-    apiMock.onPost('/rest/sendSøknadUrl').reply(200, {});
-
-    apiMock.onDelete('/rest/storage/foreldrepenger').reply(200, {});
-
-    return <AppContainer />;
 };
 
-export const SøkerErMann = Template.bind({});
-SøkerErMann.args = {
-    søkerinfoData: søkerinfo,
-    sakerData: saker,
-    annenPartVedtakData: annenPartVedtak,
-    stønadskontoerData: stønadskontoer,
-    storageKvitteringData: storageKvittering,
+const meta = {
+    component: AppContainer,
+    render: (props) => {
+        initAmplitude();
+        const apiMock = new MockAdapter(getAxiosInstance());
+        apiMock.onGet('/rest/sokerinfo').reply(200, props.søkerinfoData);
+        apiMock.onGet('/rest/innsyn/v2/saker').reply(200, props.sakerData);
+        apiMock.onGet('/rest/innsyn/v2/annenPartVedtak').reply(200, props.annenPartVedtakData);
+        apiMock.onGet('/rest/konto').reply(200, props.stønadskontoerData);
+        apiMock.onGet('/rest/storage/kvittering/foreldrepenger').reply(200, props.storageKvitteringData);
+        apiMock.onGet('test/rest/konto').replyOnce(200, stønadskontoDeltUttak80);
+        apiMock.onGet('test/rest/konto').replyOnce(200, stønadskontoDeltUttak100);
+
+        apiMock.onPost('/rest/innsyn/v2/annenPartVedtak').replyOnce(200, undefined, RequestStatus.FINISHED);
+        apiMock.onPost('/rest/storage/foreldrepenger').reply(200, {});
+        apiMock.onPost('/rest/soknad').reply(200, {});
+        apiMock.onPost('/rest/sendSøknadUrl').reply(200, {});
+
+        apiMock.onDelete('/rest/storage/foreldrepenger').reply(200, {});
+
+        return <AppContainer />;
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const SøkerErMann: Story = {
+    args: {
+        søkerinfoData: søkerinfo,
+        sakerData: saker,
+        annenPartVedtakData: annenPartVedtak,
+        stønadskontoerData: stønadskontoer,
+        storageKvitteringData: storageKvittering,
+    },
 };
