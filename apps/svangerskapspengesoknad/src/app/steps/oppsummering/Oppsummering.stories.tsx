@@ -1,6 +1,7 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import dayjs from 'dayjs';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
@@ -14,14 +15,7 @@ import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilr
 
 import Oppsummering from './Oppsummering';
 
-const defaultExport = {
-    title: 'steps/Oppsummering',
-    component: Oppsummering,
-};
-
-export default defaultExport;
-
-const søkerinfo = {
+const DEFAULT_SØKERINFO = {
     arbeidsforhold: [
         {
             id: '1669400414-9409-3313-0700-3334116100409',
@@ -92,105 +86,107 @@ const promiseAction =
         return Promise.resolve();
     };
 
-interface Props {
-    mellomlagreSøknadOgNaviger?: () => Promise<void>;
+type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
-    sendSøknad: () => Promise<any>;
-}
+} & ComponentProps<typeof Oppsummering>;
 
-const Template: StoryFn<Props> = ({
-    mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide = action('button-click'),
-    sendSøknad = () => Promise.resolve(),
-}) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
-            <SvpDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.TILRETTELEGGINGER]: [
-                        {
-                            id: '263929546-6215-9868-5127-161910165730101',
-                            arbeidsforhold: {
-                                arbeidsgiverId: '990322244',
-                                type: Arbeidsforholdstype.VIRKSOMHET,
-                                navn: 'Omsorgspartner Vestfold AS',
-                                stillinger: [],
-                                startdato: '2023-01-01',
+const meta = {
+    component: Oppsummering,
+    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
+                <SvpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.TILRETTELEGGINGER]: [
+                            {
+                                id: '263929546-6215-9868-5127-161910165730101',
+                                arbeidsforhold: {
+                                    arbeidsgiverId: '990322244',
+                                    type: Arbeidsforholdstype.VIRKSOMHET,
+                                    navn: 'Omsorgspartner Vestfold AS',
+                                    stillinger: [],
+                                    startdato: '2023-01-01',
+                                },
+                                varierendePerioder: [],
+                                behovForTilretteleggingFom: '2023-01-01',
+                                type: TilretteleggingstypeOptions.DELVIS,
+                                vedlegg: [
+                                    {
+                                        id: 'V134300149934973076055420920289127108',
+                                        file: {} as any,
+                                        filename: 'vedlegg – Kopi (7).png',
+                                        filesize: 7477,
+                                        uploaded: true,
+                                        pending: false,
+                                        type: AttachmentType.TILRETTELEGGING,
+                                        skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
+                                        url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
+                                        uuid: 'Created',
+                                    },
+                                ],
                             },
-                            varierendePerioder: [],
-                            behovForTilretteleggingFom: '2023-01-01',
-                            type: TilretteleggingstypeOptions.DELVIS,
-                            vedlegg: [
+                        ],
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                            harHattArbeidIUtlandet: true,
+                            harJobbetSomFrilans: true,
+                            harJobbetSomSelvstendigNæringsdrivende: true,
+                        },
+                        [ContextDataType.OM_BARNET]: {
+                            erBarnetFødt: false,
+                            termindato: '2024-02-18',
+                            fødselsdato: '2024-02-18',
+                        },
+                        [ContextDataType.UTENLANDSOPPHOLD]: {
+                            skalBoUtenforNorgeNeste12Mnd: false,
+                            harBoddUtenforNorgeSiste12Mnd: false,
+                        },
+                        [ContextDataType.ARBEID_I_UTLANDET]: {
+                            arbeidIUtlandet: [
                                 {
-                                    id: 'V134300149934973076055420920289127108',
-                                    file: {} as any,
-                                    filename: 'vedlegg – Kopi (7).png',
-                                    filesize: 7477,
-                                    uploaded: true,
-                                    pending: false,
-                                    type: AttachmentType.TILRETTELEGGING,
-                                    skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
-                                    url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
-                                    uuid: 'Created',
+                                    arbeidsgiverNavn: 'MUFC',
+                                    fom: '2024-01-01',
+                                    land: 'SE',
+                                    pågående: true,
+                                    tom: '',
                                 },
                             ],
                         },
-                    ],
-                    [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                        harHattArbeidIUtlandet: true,
-                        harJobbetSomFrilans: true,
-                        harJobbetSomSelvstendigNæringsdrivende: true,
-                    },
-                    [ContextDataType.OM_BARNET]: {
-                        erBarnetFødt: false,
-                        termindato: '2024-02-18',
-                        fødselsdato: '2024-02-18',
-                    },
-                    [ContextDataType.UTENLANDSOPPHOLD]: {
-                        skalBoUtenforNorgeNeste12Mnd: false,
-                        harBoddUtenforNorgeSiste12Mnd: false,
-                    },
-                    [ContextDataType.ARBEID_I_UTLANDET]: {
-                        arbeidIUtlandet: [
-                            {
-                                arbeidsgiverNavn: 'MUFC',
-                                fom: '2024-01-01',
-                                land: 'SE',
-                                pågående: true,
-                                tom: '',
-                            },
-                        ],
-                    },
-                    [ContextDataType.FRILANS]: {
-                        jobberFremdelesSomFrilans: false,
-                        oppstart: '2023-01-01',
-                    },
-                    [ContextDataType.EGEN_NÆRING]: {
-                        navnPåNæringen: 'Skitt fiske',
-                        fomDato: dayjs().subtract(5, 'years').format(ISO_DATE_FORMAT),
-                        tomDato: '',
-                        næringstype: Næringstype.FISKER,
-                        pågående: true,
-                        registrertINorge: true,
-                        næringsinntekt: 700000,
-                        organisasjonsnummer: '12132323',
-                        hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
-                        varigEndringDato: '2024-01-01',
-                        varigEndringInntektEtterEndring: '500000',
-                    },
-                }}
-            >
-                <Oppsummering
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={promiseAction()}
-                    søkerInfo={søkerinfo}
-                    sendSøknad={sendSøknad}
-                />
-            </SvpDataContext>
-        </MemoryRouter>
-    );
-};
+                        [ContextDataType.FRILANS]: {
+                            jobberFremdelesSomFrilans: false,
+                            oppstart: '2023-01-01',
+                        },
+                        [ContextDataType.EGEN_NÆRING]: {
+                            navnPåNæringen: 'Skitt fiske',
+                            fomDato: dayjs().subtract(5, 'years').format(ISO_DATE_FORMAT),
+                            tomDato: '',
+                            næringstype: Næringstype.FISKER,
+                            pågående: true,
+                            registrertINorge: true,
+                            næringsinntekt: 700000,
+                            organisasjonsnummer: '12132323',
+                            hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
+                            varigEndringDato: '2024-01-01',
+                            varigEndringInntektEtterEndring: '500000',
+                        },
+                    }}
+                >
+                    <Oppsummering {...rest} />
+                </SvpDataContext>
+            </MemoryRouter>
+        );
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
 
-export const Default = Template.bind({});
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        sendSøknad: () => Promise.resolve(),
+        søkerInfo: DEFAULT_SØKERINFO,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: promiseAction(),
+    },
+};

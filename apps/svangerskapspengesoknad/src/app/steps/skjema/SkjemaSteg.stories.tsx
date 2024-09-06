@@ -1,6 +1,7 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { getAxiosInstance } from '@navikt/fp-api';
@@ -15,13 +16,6 @@ import SkjemaSteg from './SkjemaSteg';
 
 const file1 = new File(['abc'.repeat(100000)], 'Filnavn1.jpg');
 const file2 = new File(['abc'.repeat(500000)], 'Filnavn2.jpg');
-
-const defaultExport = {
-    title: 'steps/SkjemaSteg',
-    component: SkjemaSteg,
-};
-
-export default defaultExport;
 
 const defaultTilrettelegging = {
     id: '990322244',
@@ -38,7 +32,7 @@ const defaultTilrettelegging = {
     vedlegg: [],
 } as Tilrettelegging;
 
-const arbeidsforhold = [
+const DEFAULT_ARBEIDSFORHOLD = [
     {
         arbeidsgiverId: '975326209',
         arbeidsgiverIdType: 'orgnr',
@@ -93,151 +87,155 @@ const promiseAction =
         return Promise.resolve();
     };
 
-interface TilretteleggingStepStoryProps {
-    mellomlagreSøknadOgNaviger?: () => Promise<void>;
-    gåTilNesteSide?: (action: Action) => void;
+type StoryArgs = {
     skalFeileOpplasting: boolean;
-    maxAntallVedlegg: number;
     tilrettelegging: Tilrettelegging[];
-}
+    gåTilNesteSide?: (action: Action) => void;
+} & ComponentProps<typeof SkjemaSteg>;
 
-const Template: StoryFn<TilretteleggingStepStoryProps> = ({
-    mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide = action('button-click'),
-    skalFeileOpplasting,
-    maxAntallVedlegg = 40,
-    tilrettelegging,
-}) => {
-    initAmplitude();
-    const apiMock = new MockAdapter(getAxiosInstance());
-    if (!skalFeileOpplasting) {
-        apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(200); //story
-        apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(200); //test
-    }
-    return (
-        <MemoryRouter initialEntries={[SøknadRoutes.SKJEMA]}>
-            <SvpDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                        harHattArbeidIUtlandet: false,
-                        harJobbetSomFrilans: false,
-                        harJobbetSomSelvstendigNæringsdrivende: false,
+const meta = {
+    component: SkjemaSteg,
+    render: ({ gåTilNesteSide = action('button-click'), skalFeileOpplasting, tilrettelegging, ...rest }) => {
+        initAmplitude();
+        const apiMock = new MockAdapter(getAxiosInstance());
+        if (!skalFeileOpplasting) {
+            apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(200); //story
+            apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(200); //test
+        }
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.SKJEMA]}>
+                <SvpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                            harHattArbeidIUtlandet: false,
+                            harJobbetSomFrilans: false,
+                            harJobbetSomSelvstendigNæringsdrivende: false,
+                        },
+                        [ContextDataType.TILRETTELEGGINGER]: tilrettelegging,
+                        [ContextDataType.VALGT_TILRETTELEGGING_ID]: '990322244',
+                        [ContextDataType.OM_BARNET]: {
+                            erBarnetFødt: false,
+                            termindato: '2024-02-18',
+                            fødselsdato: '2024-02-18',
+                        },
+                    }}
+                >
+                    <SkjemaSteg {...rest} />
+                </SvpDataContext>
+            </MemoryRouter>
+        );
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const SkalIkkeFeileOpplasting: Story = {
+    args: {
+        tilrettelegging: [defaultTilrettelegging],
+        skalFeileOpplasting: false,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: promiseAction(),
+        arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        maxAntallVedlegg: 40,
+    },
+};
+
+export const SkalFeileOpplasting: Story = {
+    args: {
+        ...SkalIkkeFeileOpplasting.args,
+        tilrettelegging: [defaultTilrettelegging],
+        skalFeileOpplasting: true,
+    },
+};
+
+export const MedVedlegg: Story = {
+    args: {
+        ...SkalIkkeFeileOpplasting.args,
+        tilrettelegging: [
+            {
+                ...defaultTilrettelegging,
+                vedlegg: [
+                    {
+                        id: 'V134300149934973076055420920289127108',
+                        filename: file1.name,
+                        filesize: file1.size,
+                        file: file1,
+                        uploaded: true,
+                        pending: false,
+                        type: AttachmentType.TILRETTELEGGING,
+                        skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
+                        url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
+                        uuid: 'Created',
                     },
-                    [ContextDataType.TILRETTELEGGINGER]: tilrettelegging,
-                    [ContextDataType.VALGT_TILRETTELEGGING_ID]: '990322244',
-                    [ContextDataType.OM_BARNET]: {
-                        erBarnetFødt: false,
-                        termindato: '2024-02-18',
-                        fødselsdato: '2024-02-18',
-                    },
-                }}
-            >
-                <SkjemaSteg
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={promiseAction()}
-                    arbeidsforhold={arbeidsforhold}
-                    maxAntallVedlegg={maxAntallVedlegg}
-                />
-            </SvpDataContext>
-        </MemoryRouter>
-    );
-};
-
-export const SkalIkkeFeileOpplasting = Template.bind({});
-SkalIkkeFeileOpplasting.args = {
-    tilrettelegging: [defaultTilrettelegging],
-    skalFeileOpplasting: false,
-};
-
-export const SkalFeileOpplasting = Template.bind({});
-SkalFeileOpplasting.args = {
-    tilrettelegging: [defaultTilrettelegging],
-    skalFeileOpplasting: true,
-};
-
-export const MedVedlegg = Template.bind({});
-MedVedlegg.args = {
-    tilrettelegging: [
-        {
-            ...defaultTilrettelegging,
-            vedlegg: [
-                {
-                    id: 'V134300149934973076055420920289127108',
-                    filename: file1.name,
-                    filesize: file1.size,
-                    file: file1,
-                    uploaded: true,
-                    pending: false,
-                    type: AttachmentType.TILRETTELEGGING,
-                    skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
-                    url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
-                    uuid: 'Created',
-                },
-            ],
-        },
-    ],
-    skalFeileOpplasting: false,
-};
-
-export const MedToTilrettelegginger = Template.bind({});
-MedToTilrettelegginger.args = {
-    tilrettelegging: [defaultTilrettelegging, defaultTilrettelegging],
-    skalFeileOpplasting: false,
-};
-
-export const ErTypeFrilans = Template.bind({});
-ErTypeFrilans.args = {
-    tilrettelegging: [
-        {
-            ...defaultTilrettelegging,
-            arbeidsforhold: {
-                ...defaultTilrettelegging.arbeidsforhold,
-                type: Arbeidsforholdstype.FRILANSER,
+                ],
             },
-        },
-    ],
-    skalFeileOpplasting: false,
+        ],
+    },
 };
 
-export const KanMaxHaToVedlegg = Template.bind({});
-KanMaxHaToVedlegg.args = {
-    tilrettelegging: [
-        {
-            ...defaultTilrettelegging,
-            vedlegg: [
-                {
-                    id: 'V134300149934973076055420920289127108',
-                    filename: file1.name,
-                    filesize: file1.size,
-                    file: file1,
-                    uploaded: true,
-                    pending: false,
-                    type: AttachmentType.TILRETTELEGGING,
-                    skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
-                    url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
-                    uuid: 'Created',
+export const MedToTilrettelegginger: Story = {
+    args: {
+        ...SkalIkkeFeileOpplasting.args,
+        tilrettelegging: [defaultTilrettelegging, defaultTilrettelegging],
+    },
+};
+
+export const ErTypeFrilans: Story = {
+    args: {
+        ...SkalIkkeFeileOpplasting.args,
+        tilrettelegging: [
+            {
+                ...defaultTilrettelegging,
+                arbeidsforhold: {
+                    ...defaultTilrettelegging.arbeidsforhold,
+                    type: Arbeidsforholdstype.FRILANSER,
                 },
-            ],
-        },
-        {
-            ...defaultTilrettelegging,
-            vedlegg: [
-                {
-                    id: 'V134300149934973076055420920289127108',
-                    filename: file2.name,
-                    filesize: file2.size,
-                    file: file2,
-                    uploaded: true,
-                    pending: false,
-                    type: AttachmentType.TILRETTELEGGING,
-                    skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
-                    url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
-                    uuid: 'Created',
-                },
-            ],
-        },
-    ],
-    skalFeileOpplasting: false,
-    maxAntallVedlegg: 2,
+            },
+        ],
+    },
+};
+
+export const KanMaxHaToVedlegg: Story = {
+    args: {
+        ...SkalIkkeFeileOpplasting.args,
+        tilrettelegging: [
+            {
+                ...defaultTilrettelegging,
+                vedlegg: [
+                    {
+                        id: 'V134300149934973076055420920289127108',
+                        filename: file1.name,
+                        filesize: file1.size,
+                        file: file1,
+                        uploaded: true,
+                        pending: false,
+                        type: AttachmentType.TILRETTELEGGING,
+                        skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
+                        url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
+                        uuid: 'Created',
+                    },
+                ],
+            },
+            {
+                ...defaultTilrettelegging,
+                vedlegg: [
+                    {
+                        id: 'V134300149934973076055420920289127108',
+                        filename: file2.name,
+                        filesize: file2.size,
+                        file: file2,
+                        uploaded: true,
+                        pending: false,
+                        type: AttachmentType.TILRETTELEGGING,
+                        skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
+                        url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
+                        uuid: 'Created',
+                    },
+                ],
+            },
+        ],
+        maxAntallVedlegg: 2,
+    },
 };

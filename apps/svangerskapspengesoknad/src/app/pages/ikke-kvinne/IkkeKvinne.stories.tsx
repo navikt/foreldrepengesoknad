@@ -1,16 +1,20 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import '@navikt/ds-css';
 
+import { initAmplitude } from '@navikt/fp-metrics';
+
 import IkkeKvinne from './IkkeKvinne';
 
-export default {
-    title: 'pages/IkkeKvinne',
+const meta = {
     component: IkkeKvinne,
-};
+    render: () => {
+        initAmplitude();
+        return <IkkeKvinne />;
+    },
+} satisfies Meta;
+export default meta;
 
-const Template: StoryFn<any> = () => {
-    return <IkkeKvinne />;
-};
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
+export const Default: Story = {};

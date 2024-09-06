@@ -1,5 +1,6 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -9,14 +10,7 @@ import SøknadRoutes from 'app/appData/routes';
 
 import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
 
-const defaultExport = {
-    title: 'steps/UtenlandsoppholdSteg',
-    component: UtenlandsoppholdSteg,
-};
-
-export default defaultExport;
-
-const arbeidsforhold = [
+const DEFAULT_ARBEIDSFORHOLD = [
     {
         id: '1669400414-9409-3313-0700-3334116100409',
         arbeidsgiverId: '975326209',
@@ -77,27 +71,31 @@ const promiseAction =
         return Promise.resolve();
     };
 
-interface Props {
-    mellomlagreSøknadOgNaviger?: () => Promise<void>;
+type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
-}
+} & ComponentProps<typeof UtenlandsoppholdSteg>;
 
-const Template: StoryFn<Props> = ({
-    mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide = action('button-click'),
-}) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[SøknadRoutes.UTENLANDSOPPHOLD]}>
-            <SvpDataContext onDispatch={gåTilNesteSide}>
-                <UtenlandsoppholdSteg
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={promiseAction()}
-                    arbeidsforhold={arbeidsforhold}
-                />
-            </SvpDataContext>
-        </MemoryRouter>
-    );
+const meta = {
+    component: UtenlandsoppholdSteg,
+    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.UTENLANDSOPPHOLD]}>
+                <SvpDataContext onDispatch={gåTilNesteSide}>
+                    <UtenlandsoppholdSteg {...rest} />
+                </SvpDataContext>
+            </MemoryRouter>
+        );
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: promiseAction(),
+        arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+    },
 };
-
-export const Default = Template.bind({});

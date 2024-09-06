@@ -1,16 +1,10 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
+import { ComponentProps } from 'react';
 
 import { Action, SvpDataContext } from 'app/appData/SvpDataContext';
 
 import Forside from './Forside';
-
-const defaultExport = {
-    title: 'pages/Forside',
-    component: Forside,
-};
-
-export default defaultExport;
 
 const promiseAction =
     () =>
@@ -19,24 +13,30 @@ const promiseAction =
         return Promise.resolve();
     };
 
-const Template: StoryFn<{
-    setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void;
-    mellomlagreSøknadOgNaviger?: () => Promise<void>;
+type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
-}> = ({ setHarGodkjentVilkår, mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
-    return (
-        <SvpDataContext onDispatch={gåTilNesteSide}>
-            <Forside
-                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                setHarGodkjentVilkår={setHarGodkjentVilkår}
-                harGodkjentVilkår={false}
-                onChangeLocale={() => undefined}
-                locale="nb"
-            />
-        </SvpDataContext>
-    );
-};
-export const Default = Template.bind({});
-Default.args = {
-    setHarGodkjentVilkår: action('button-click'),
+} & ComponentProps<typeof Forside>;
+
+const meta = {
+    component: Forside,
+    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+        return (
+            <SvpDataContext onDispatch={gåTilNesteSide}>
+                <Forside {...rest} />
+            </SvpDataContext>
+        );
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        setHarGodkjentVilkår: action('button-click'),
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        harGodkjentVilkår: false,
+        onChangeLocale: action('button-click'),
+        locale: 'nb',
+    },
 };

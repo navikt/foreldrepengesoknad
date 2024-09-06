@@ -1,4 +1,4 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import MockAdapter from 'axios-mock-adapter';
 
 import '@navikt/ds-css';
@@ -73,103 +73,110 @@ const defaultSøkerinfo = {
     ],
 };
 
-export default {
-    title: 'AppContainer',
+type StoryArgs = {
+    søkerinfo: Søkerinfo;
+    mellomlagretData?: SvpDataMapAndMetaData;
+    doLogging?: boolean;
+};
+
+const meta = {
     component: AppContainer,
-};
+    render: ({ søkerinfo, mellomlagretData, doLogging = true }) => {
+        initAmplitude();
+        const apiMock = new MockAdapter(getAxiosInstance());
+        apiMock.onGet('/rest/sokerinfo').reply(() => {
+            if (doLogging) {
+                // eslint-disable-next-line no-console
+                console.log('network request: get /sokerinfo');
+            }
+            return [200, søkerinfo];
+        });
 
-const Template: StoryFn<{ søkerinfo: Søkerinfo; mellomlagretData?: SvpDataMapAndMetaData; doLogging?: boolean }> = ({
-    søkerinfo,
-    mellomlagretData,
-    doLogging = true,
-}) => {
-    initAmplitude();
-    const apiMock = new MockAdapter(getAxiosInstance());
-    apiMock.onGet('/rest/sokerinfo').reply(() => {
-        if (doLogging) {
-            // eslint-disable-next-line no-console
-            console.log('network request: get /sokerinfo');
-        }
-        return [200, søkerinfo];
-    });
+        apiMock.onGet('/rest/storage/svangerskapspenger').reply(() => {
+            if (doLogging) {
+                // eslint-disable-next-line no-console
+                console.log('network request: get /storage/svangerskapspenger');
+            }
+            return [200, mellomlagretData];
+        });
 
-    apiMock.onGet('/rest/storage/svangerskapspenger').reply(() => {
-        if (doLogging) {
-            // eslint-disable-next-line no-console
-            console.log('network request: get /storage/svangerskapspenger');
-        }
-        return [200, mellomlagretData];
-    });
+        apiMock.onPost('rest-api/soknad').reply(() => {
+            if (doLogging) {
+                // eslint-disable-next-line no-console
+                console.log('network request: post rest-api/soknad');
+            }
+            return [200, {}];
+        });
 
-    apiMock.onPost('rest-api/soknad').reply(() => {
-        if (doLogging) {
-            // eslint-disable-next-line no-console
-            console.log('network request: post rest-api/soknad');
-        }
-        return [200, {}];
-    });
+        apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(() => {
+            if (doLogging) {
+                // eslint-disable-next-line no-console
+                console.log('network request: post /storage/svangerskapspenger/vedlegg');
+            }
+            return [200];
+        });
+        apiMock.onPost('/rest/storage/svangerskapspenger').reply(() => {
+            if (doLogging) {
+                // eslint-disable-next-line no-console
+                console.log('network request: post /storage/svangerskapspenger');
+            }
+            return [200];
+        });
 
-    apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(() => {
-        if (doLogging) {
-            // eslint-disable-next-line no-console
-            console.log('network request: post /storage/svangerskapspenger/vedlegg');
-        }
-        return [200];
-    });
-    apiMock.onPost('/rest/storage/svangerskapspenger').reply(() => {
-        if (doLogging) {
-            // eslint-disable-next-line no-console
-            console.log('network request: post /storage/svangerskapspenger');
-        }
-        return [200];
-    });
+        apiMock.onDelete('/rest/storage/svangerskapspenger').reply(() => {
+            if (doLogging) {
+                // eslint-disable-next-line no-console
+                console.log('network request: delete /storage/svangerskapspenger');
+            }
+            return [200];
+        });
 
-    apiMock.onDelete('/rest/storage/svangerskapspenger').reply(() => {
-        if (doLogging) {
-            // eslint-disable-next-line no-console
-            console.log('network request: delete /storage/svangerskapspenger');
-        }
-        return [200];
-    });
+        //story
+        apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(() => {
+            if (doLogging) {
+                // eslint-disable-next-line no-console
+                console.log('network request: post /storage/svangerskapspenger/vedlegg');
+            }
+            return [200];
+        });
+        apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(200, {}); //test
 
-    //story
-    apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(() => {
-        if (doLogging) {
-            // eslint-disable-next-line no-console
-            console.log('network request: post /storage/svangerskapspenger/vedlegg');
-        }
-        return [200];
-    });
-    apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(200, {}); //test
+        return <AppContainer />;
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
 
-    return <AppContainer />;
-};
+type Story = StoryObj<typeof meta>;
 
-export const VisAppKvinneMedArbeid = Template.bind({});
-VisAppKvinneMedArbeid.args = {
-    søkerinfo: defaultSøkerinfo,
-};
-
-export const VisAppKvinneUtenArbeid = Template.bind({});
-VisAppKvinneUtenArbeid.args = {
-    søkerinfo: {
-        ...defaultSøkerinfo,
-        arbeidsforhold: [],
+export const VisAppKvinneMedArbeid: Story = {
+    args: {
+        søkerinfo: defaultSøkerinfo,
     },
 };
 
-export const VisAppMann = Template.bind({});
-VisAppMann.args = {
-    søkerinfo: {
-        ...defaultSøkerinfo,
-        søker: { ...defaultSøkerinfo.søker, kjønn: 'M' },
+export const VisAppKvinneUtenArbeid: Story = {
+    args: {
+        søkerinfo: {
+            ...defaultSøkerinfo,
+            arbeidsforhold: [],
+        },
     },
 };
 
-export const VisAppUmyndig = Template.bind({});
-VisAppUmyndig.args = {
-    søkerinfo: {
-        ...defaultSøkerinfo,
-        søker: { ...defaultSøkerinfo.søker, kjønn: 'K', fødselsdato: '2023-08-30' },
+export const VisAppMann: Story = {
+    args: {
+        søkerinfo: {
+            ...defaultSøkerinfo,
+            søker: { ...defaultSøkerinfo.søker, kjønn: 'M' },
+        },
+    },
+};
+
+export const VisAppUmyndig: Story = {
+    args: {
+        søkerinfo: {
+            ...defaultSøkerinfo,
+            søker: { ...defaultSøkerinfo.søker, kjønn: 'K', fødselsdato: '2023-08-30' },
+        },
     },
 };

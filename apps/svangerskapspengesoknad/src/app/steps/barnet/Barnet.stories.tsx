@@ -1,5 +1,6 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -9,13 +10,7 @@ import SøknadRoutes from 'app/appData/routes';
 
 import Barnet from './Barnet';
 
-const defaultExport = {
-    title: 'steps/Barnet',
-    component: Barnet,
-};
-export default defaultExport;
-
-const arbeidsforhold = [
+const DEFAULT_ARBEIDSFORHOLD = [
     {
         arbeidsgiverId: '975326209',
         arbeidsgiverIdType: 'orgnr',
@@ -70,26 +65,31 @@ const promiseAction =
         return Promise.resolve();
     };
 
-interface Props {
-    mellomlagreSøknadOgNaviger?: () => Promise<void>;
+type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
-}
+} & ComponentProps<typeof Barnet>;
 
-const Template: StoryFn<Props> = ({
-    mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide = action('button-click'),
-}) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[SøknadRoutes.BARNET]}>
-            <SvpDataContext onDispatch={gåTilNesteSide}>
-                <Barnet
-                    arbeidsforhold={arbeidsforhold}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={promiseAction()}
-                />
-            </SvpDataContext>
-        </MemoryRouter>
-    );
+const meta = {
+    component: Barnet,
+    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.BARNET]}>
+                <SvpDataContext onDispatch={gåTilNesteSide}>
+                    <Barnet {...rest} />
+                </SvpDataContext>
+            </MemoryRouter>
+        );
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: promiseAction(),
+    },
 };
-export const Default = Template.bind({});

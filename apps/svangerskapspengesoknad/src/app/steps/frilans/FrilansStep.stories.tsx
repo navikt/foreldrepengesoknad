@@ -1,5 +1,6 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
@@ -11,13 +12,6 @@ import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilr
 
 import FrilansStep from './FrilansStep';
 
-const defaultExport = {
-    title: 'steps/FrilansStep',
-    component: FrilansStep,
-};
-
-export default defaultExport;
-
 const promiseAction =
     () =>
     (...args: any): Promise<any> => {
@@ -25,7 +19,7 @@ const promiseAction =
         return Promise.resolve();
     };
 
-const arbeidsforhold = [
+const DEFAULT_ARBEIDSFORHOLD = [
     {
         id: '1669400414-9409-3313-0700-3334116100409',
         arbeidsgiverId: '975326209',
@@ -79,69 +73,74 @@ const arbeidsforhold = [
     },
 ];
 
-interface Props {
-    mellomlagreSøknadOgNaviger?: () => Promise<void>;
+type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
-}
+} & ComponentProps<typeof FrilansStep>;
 
-const Template: StoryFn<Props> = ({
-    mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide = action('button-click'),
-}) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[SøknadRoutes.FRILANS]}>
-            <SvpDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                        harJobbetSomFrilans: true,
-                        harHattArbeidIUtlandet: false,
-                        harJobbetSomSelvstendigNæringsdrivende: false,
-                    },
-                    [ContextDataType.TILRETTELEGGINGER]: [
-                        {
-                            id: '263929546-6215-9868-5127-161910165730101',
-                            arbeidsforhold: {
-                                arbeidsgiverId: '990322244',
-                                type: Arbeidsforholdstype.VIRKSOMHET,
-                                navn: 'Omsorgspartner Vestfold AS',
-                                stillinger: [],
-                                startdato: '2023-01-01',
-                            },
-                            varierendePerioder: [],
-                            behovForTilretteleggingFom: '2023-01-01',
-                            type: TilretteleggingstypeOptions.DELVIS,
-                            vedlegg: [
-                                {
-                                    id: 'V134300149934973076055420920289127108',
-                                    file: {} as any,
-                                    filename: 'vedlegg – Kopi (7).png',
-                                    filesize: 7477,
-                                    uploaded: true,
-                                    pending: false,
-                                    type: AttachmentType.TILRETTELEGGING,
-                                    skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
-                                    url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
-                                    uuid: 'Created',
-                                },
-                            ],
+const meta = {
+    component: FrilansStep,
+    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.FRILANS]}>
+                <SvpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                            harJobbetSomFrilans: true,
+                            harHattArbeidIUtlandet: false,
+                            harJobbetSomSelvstendigNæringsdrivende: false,
                         },
-                    ],
-                    [ContextDataType.OM_BARNET]: {
-                        erBarnetFødt: false,
-                        termindato: '2024-02-18',
-                        fødselsdato: '2024-02-18',
-                    },
-                }}
-            >
-                <FrilansStep
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={promiseAction()}
-                    arbeidsforhold={arbeidsforhold}
-                />
-            </SvpDataContext>
-        </MemoryRouter>
-    );
+                        [ContextDataType.TILRETTELEGGINGER]: [
+                            {
+                                id: '263929546-6215-9868-5127-161910165730101',
+                                arbeidsforhold: {
+                                    arbeidsgiverId: '990322244',
+                                    type: Arbeidsforholdstype.VIRKSOMHET,
+                                    navn: 'Omsorgspartner Vestfold AS',
+                                    stillinger: [],
+                                    startdato: '2023-01-01',
+                                },
+                                varierendePerioder: [],
+                                behovForTilretteleggingFom: '2023-01-01',
+                                type: TilretteleggingstypeOptions.DELVIS,
+                                vedlegg: [
+                                    {
+                                        id: 'V134300149934973076055420920289127108',
+                                        file: {} as any,
+                                        filename: 'vedlegg – Kopi (7).png',
+                                        filesize: 7477,
+                                        uploaded: true,
+                                        pending: false,
+                                        type: AttachmentType.TILRETTELEGGING,
+                                        skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
+                                        url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
+                                        uuid: 'Created',
+                                    },
+                                ],
+                            },
+                        ],
+                        [ContextDataType.OM_BARNET]: {
+                            erBarnetFødt: false,
+                            termindato: '2024-02-18',
+                            fødselsdato: '2024-02-18',
+                        },
+                    }}
+                >
+                    <FrilansStep {...rest} />
+                </SvpDataContext>
+            </MemoryRouter>
+        );
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: promiseAction(),
+    },
 };
-export const Default = Template.bind({});

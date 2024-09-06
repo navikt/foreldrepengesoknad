@@ -1,5 +1,6 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -17,7 +18,7 @@ const promiseAction =
         return Promise.resolve();
     };
 
-const arbeidsforhold = [
+const DEFAULT_ARBEIDSFORHOLD = [
     {
         id: '1669400414-9409-3313-0700-3334116100409',
         arbeidsgiverId: '975326209',
@@ -76,39 +77,37 @@ const defaultUtenlandsopphold = {
     skalBoUtenforNorgeNeste12Mnd: true,
 } as Utenlandsopphold;
 
-export default {
-    title: 'steps/SenereUtenlandsoppholdSteg',
+type StoryArgs = {
+    utenlandsforhold?: Utenlandsopphold;
+    gåTilNesteSide?: (action: Action) => void;
+} & ComponentProps<typeof SenereUtenlandsoppholdSteg>;
+
+const meta = {
     component: SenereUtenlandsoppholdSteg,
+    render: ({ gåTilNesteSide = action('button-click'), utenlandsforhold = defaultUtenlandsopphold, ...rest }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.SKAL_BO_I_UTLANDET]}>
+                <SvpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.UTENLANDSOPPHOLD]: utenlandsforhold,
+                    }}
+                >
+                    <SenereUtenlandsoppholdSteg {...rest} />
+                </SvpDataContext>
+            </MemoryRouter>
+        );
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+        arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+    },
 };
-
-interface Props {
-    mellomlagreSøknadOgNaviger?: () => Promise<void>;
-    gåTilNesteSide: (action: Action) => void;
-    utenlandsforhold: Utenlandsopphold;
-}
-
-const Template: StoryFn<Props> = ({
-    mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide = action('button-click'),
-    utenlandsforhold = defaultUtenlandsopphold,
-}) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[SøknadRoutes.SKAL_BO_I_UTLANDET]}>
-            <SvpDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsforhold,
-                }}
-            >
-                <SenereUtenlandsoppholdSteg
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={action('button-click')}
-                    arbeidsforhold={arbeidsforhold}
-                />
-            </SvpDataContext>
-        </MemoryRouter>
-    );
-};
-
-export const Default = Template.bind({});

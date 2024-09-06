@@ -1,5 +1,6 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -10,13 +11,6 @@ import SøknadRoutes from 'app/appData/routes';
 import ArbeidIUtlandetStep from '../arbeid-i-utlandet/ArbeidIUtlandetStep';
 import ArbeidIUtlandet from './ArbeidIUtlandetStep';
 
-const defaultExport = {
-    title: 'steps/ArbeidIUtlandet',
-    component: ArbeidIUtlandet,
-};
-
-export default defaultExport;
-
 const promiseAction =
     () =>
     (...args: any): Promise<any> => {
@@ -24,7 +18,7 @@ const promiseAction =
         return Promise.resolve();
     };
 
-const arbeidsforhold = [
+const DEFAULT_ARBEIDSFORHOLD = [
     {
         id: '1669400414-9409-3313-0700-3334116100409',
         arbeidsgiverId: '975326209',
@@ -78,41 +72,45 @@ const arbeidsforhold = [
     },
 ];
 
-interface Props {
-    mellomlagreSøknadOgNaviger?: () => Promise<void>;
+type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
-}
+} & ComponentProps<typeof ArbeidIUtlandet>;
 
-const Template: StoryFn<Props> = ({
-    mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide = action('button-click'),
-}) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[SøknadRoutes.ARBEID_I_UTLANDET]}>
-            <SvpDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                        harHattArbeidIUtlandet: true,
-                        harJobbetSomFrilans: false,
-                        harJobbetSomSelvstendigNæringsdrivende: false,
-                    },
-                    [ContextDataType.OM_BARNET]: {
-                        erBarnetFødt: false,
-                        termindato: '2024-02-18',
-                        fødselsdato: '2024-02-18',
-                    },
-                }}
-            >
-                <ArbeidIUtlandetStep
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={promiseAction()}
-                    arbeidsforhold={arbeidsforhold}
-                />
-            </SvpDataContext>
-        </MemoryRouter>
-    );
+const meta = {
+    component: ArbeidIUtlandet,
+    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.ARBEID_I_UTLANDET]}>
+                <SvpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                            harHattArbeidIUtlandet: true,
+                            harJobbetSomFrilans: false,
+                            harJobbetSomSelvstendigNæringsdrivende: false,
+                        },
+                        [ContextDataType.OM_BARNET]: {
+                            erBarnetFødt: false,
+                            termindato: '2024-02-18',
+                            fødselsdato: '2024-02-18',
+                        },
+                    }}
+                >
+                    <ArbeidIUtlandetStep {...rest} />
+                </SvpDataContext>
+            </MemoryRouter>
+        );
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: promiseAction(),
+    },
 };
-
-export const Default = Template.bind({});

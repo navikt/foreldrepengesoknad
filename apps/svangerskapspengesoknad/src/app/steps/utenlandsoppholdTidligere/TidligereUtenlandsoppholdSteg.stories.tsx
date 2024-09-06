@@ -1,5 +1,6 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -17,12 +18,7 @@ const promiseAction =
         return Promise.resolve();
     };
 
-export default {
-    title: 'steps/TidligereUtenlandsoppholdSteg',
-    component: TidligereUtenlandsoppholdSteg,
-};
-
-const arbeidsforhold = [
+const DEFAULT_ARBEIDSFORHOLD = [
     {
         id: '1669400414-9409-3313-0700-3334116100409',
         arbeidsgiverId: '975326209',
@@ -76,37 +72,44 @@ const arbeidsforhold = [
     },
 ];
 
-interface Props {
-    mellomlagreSøknadOgNaviger?: () => Promise<void>;
-    gåTilNesteSide: (action: Action) => void;
+type StoryArgs = {
     utenlandsopphold?: Utenlandsopphold;
-}
+    gåTilNesteSide?: (action: Action) => void;
+} & ComponentProps<typeof TidligereUtenlandsoppholdSteg>;
 
-const Template: StoryFn<Props> = ({
-    mellomlagreSøknadOgNaviger = promiseAction(),
-    gåTilNesteSide = action('button-click'),
-    utenlandsopphold = {
-        harBoddUtenforNorgeSiste12Mnd: true,
-        skalBoUtenforNorgeNeste12Mnd: false,
+const meta = {
+    component: TidligereUtenlandsoppholdSteg,
+    render: ({
+        gåTilNesteSide = action('button-click'),
+        utenlandsopphold = {
+            harBoddUtenforNorgeSiste12Mnd: true,
+            skalBoUtenforNorgeNeste12Mnd: false,
+        },
+        ...rest
+    }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.HAR_BODD_I_UTLANDET]}>
+                <SvpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                    }}
+                >
+                    <TidligereUtenlandsoppholdSteg {...rest} />
+                </SvpDataContext>
+            </MemoryRouter>
+        );
     },
-}) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[SøknadRoutes.HAR_BODD_I_UTLANDET]}>
-            <SvpDataContext
-                onDispatch={gåTilNesteSide}
-                initialState={{
-                    [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                }}
-            >
-                <TidligereUtenlandsoppholdSteg
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={() => undefined}
-                    arbeidsforhold={arbeidsforhold}
-                />
-            </SvpDataContext>
-        </MemoryRouter>
-    );
-};
+} satisfies Meta<StoryArgs>;
+export default meta;
 
-export const Default = Template.bind({});
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: action('button-click'),
+        arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+    },
+};
