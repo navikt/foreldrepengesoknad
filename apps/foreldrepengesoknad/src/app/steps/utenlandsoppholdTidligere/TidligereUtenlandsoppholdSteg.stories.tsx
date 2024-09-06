@@ -9,6 +9,7 @@ import { initAmplitude } from '@navikt/fp-metrics';
 
 import { Action, ContextDataType, FpDataContext } from 'app/appData/FpDataContext';
 import SøknadRoutes from 'app/appData/routes';
+import { Opphold } from 'app/types/InformasjonOmUtenlandsopphold';
 
 import TidligereUtenlandsoppholdSteg from './TidligereUtenlandsoppholdSteg';
 
@@ -19,13 +20,19 @@ const promiseAction =
         return Promise.resolve();
     };
 
+const defaultUtenlandsopphold = {
+    iNorgeNeste12Mnd: true,
+    iNorgeSiste12Mnd: false,
+};
+
 type StoryArgs = {
+    utenlandsforhold?: Opphold;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof TidligereUtenlandsoppholdSteg>;
 
 const meta = {
     component: TidligereUtenlandsoppholdSteg,
-    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+    render: ({ gåTilNesteSide = action('button-click'), utenlandsforhold = defaultUtenlandsopphold, ...rest }) => {
         initAmplitude();
         const restMock = (apiMock: MockAdapter) => {
             apiMock.onPost('/rest/storage/foreldrepenger').reply(200, undefined);
@@ -36,10 +43,7 @@ const meta = {
                     <FpDataContext
                         onDispatch={gåTilNesteSide}
                         initialState={{
-                            [ContextDataType.UTENLANDSOPPHOLD]: {
-                                iNorgeNeste12Mnd: true,
-                                iNorgeSiste12Mnd: false,
-                            },
+                            [ContextDataType.UTENLANDSOPPHOLD]: utenlandsforhold,
                         }}
                     >
                         <TidligereUtenlandsoppholdSteg {...rest} />

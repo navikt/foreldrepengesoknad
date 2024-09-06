@@ -9,6 +9,7 @@ import { initAmplitude } from '@navikt/fp-metrics';
 
 import { Action, ContextDataType, FpDataContext } from 'app/appData/FpDataContext';
 import SøknadRoutes from 'app/appData/routes';
+import { Opphold } from 'app/types/InformasjonOmUtenlandsopphold';
 
 import SenereUtenlandsoppholdSteg from './SenereUtenlandsoppholdSteg';
 
@@ -25,12 +26,13 @@ const defaultUtenlandsopphold = {
 };
 
 type StoryArgs = {
+    utenlandsforhold?: Opphold;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof SenereUtenlandsoppholdSteg>;
 
 const meta = {
     component: SenereUtenlandsoppholdSteg,
-    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+    render: ({ gåTilNesteSide = action('button-click'), utenlandsforhold = defaultUtenlandsopphold, ...rest }) => {
         initAmplitude();
         const restMock = (apiMock: MockAdapter) => {
             apiMock.onPost('/rest/storage/foreldrepenger').reply(200, undefined);
@@ -41,7 +43,7 @@ const meta = {
                     <FpDataContext
                         onDispatch={gåTilNesteSide}
                         initialState={{
-                            [ContextDataType.UTENLANDSOPPHOLD]: defaultUtenlandsopphold,
+                            [ContextDataType.UTENLANDSOPPHOLD]: utenlandsforhold,
                         }}
                     >
                         <SenereUtenlandsoppholdSteg {...rest} />
