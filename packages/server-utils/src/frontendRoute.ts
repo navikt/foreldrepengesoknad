@@ -1,5 +1,5 @@
 import { fetchDecoratorHtml, injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr/index.js';
-import { addLocalViteServerHandler } from '@navikt/vite-mode';
+import { addViteModeHtmlToResponse } from '@navikt/vite-mode';
 import { Express } from 'express';
 import path from 'node:path';
 
@@ -43,11 +43,12 @@ export const setupAndServeHtml = async (app: Express) => {
 };
 
 const setupViteMode = (app: Express) => {
-    addLocalViteServerHandler(app, {
+    addViteModeHtmlToResponse(app, {
         port: '8080',
         useNonce: false,
         indexFilePath: 'app/bootstrap.tsx',
         mountId: 'app',
+        setCSPHeaders: false,
     });
     app.get('*', async (_, response, next) => {
         const viteModeHtml = response.viteModeHtml;
