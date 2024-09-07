@@ -1,9 +1,17 @@
-import { injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr/index.js';
-import cookieParser from 'cookie-parser';
-import { Express, Response } from 'express';
+import { fetchDecoratorHtml, injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr/index.js';
+import { addLocalViteServerHandler } from '@navikt/vite-mode';
+import { Express } from 'express';
 import path from 'node:path';
 
 import config from './config.js';
+
+const dekoratørProps = {
+    env: config.app.env,
+    params: {
+        simple: true,
+        enforceLogin: false,
+    },
+};
 
 export const setupAndServeHtml = async (app: Express) => {
     // When deployed, the built frontend is copied into the public directory. If running BFF locally the index.html will not exist.
@@ -11,11 +19,13 @@ export const setupAndServeHtml = async (app: Express) => {
 
     // Only add vite-mode to dev environment
     if (config.app.env === 'dev') {
-        addLocalViteServerHandlerWithDecorator(app);
+        setupViteMode(app);
     }
 
-    const html = await injectDecorator(spaFilePath);
-
+    const html = await injectDecoratorServerSide({
+        filePath: spaFilePath,
+        ...dekoratørProps,
+    });
     const renderedHtml = html.replaceAll(
         '{{{APP_SETTINGS}}}',
         JSON.stringify({
@@ -32,44 +42,26 @@ export const setupAndServeHtml = async (app: Express) => {
     });
 };
 
-async function injectDecorator(filePath: string) {
-    return injectDecoratorServerSide({
-        env: config.app.env,
-        filePath,
-        params: {
-            simple: true,
-            enforceLogin: false,
-        },
+const setupViteMode = (app: Express) => {
+    addLocalViteServerHandler(app, {
+        port: '8080',
+        useNonce: false,
+        indexFilePath: 'app/bootstrap.tsx',
+        mountId: 'app',
     });
-}
+    app.get('*', async (_, response, next) => {
+        const viteModeHtml = response.viteModeHtml;
 
-function addLocalViteServerHandlerWithDecorator(app: Express) {
-    const viteDevelopmentServerPath = path.resolve('.', 'vite-dev-server.html');
-
-    app.use(cookieParser());
-    app.get('/vite-on', (_, response) => {
-        setViteCookie(response, true);
-        return response.redirect('/');
-    });
-    app.get('/vite-off', (_, response) => {
-        setViteCookie(response, false);
-        return response.redirect('/');
-    });
-    app.get('*', async (request, response, next) => {
-        const localViteServerIsEnabled = request.cookies['use-local-vite-server'] === 'true';
-        if (localViteServerIsEnabled) {
-            const html = await injectDecorator(viteDevelopmentServerPath);
+        if (viteModeHtml) {
+            const { DECORATOR_HEADER, DECORATOR_STYLES, DECORATOR_SCRIPTS, DECORATOR_FOOTER } =
+                await fetchDecoratorHtml(dekoratørProps);
+            const html = [DECORATOR_HEADER, DECORATOR_STYLES, DECORATOR_SCRIPTS, viteModeHtml, DECORATOR_FOOTER].join(
+                '',
+            );
 
             return response.send(html);
         }
+
         return next();
     });
-}
-
-function setViteCookie(response: Response, cookieValue: boolean) {
-    response.cookie('use-local-vite-server', cookieValue, {
-        httpOnly: false,
-        secure: false,
-        sameSite: 'lax',
-    });
-}
+};
