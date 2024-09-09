@@ -38,8 +38,7 @@ const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale, satser 
         queryFn: () =>
             ky
                 .post(`${Environment.PUBLIC_PATH}/rest/konto`, {
-                    searchParams: STØNADSKONTO_PARAMS,
-                    credentials: 'include',
+                    json: STØNADSKONTO_PARAMS,
                 })
                 .json<TilgjengeligeStønadskontoer>(),
     });
