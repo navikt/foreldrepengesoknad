@@ -139,7 +139,7 @@ const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, 
             </HStack>
             <VStack gap="4">
                 <HvorforHarJegRettPanel fpEllerEsSituasjon={fpEllerEsSituasjon} grunnbeløpet={grunnbeløpet} />
-                <HvorforHarJegRettEsPanel fpEllerEsSituasjon={fpEllerEsSituasjon} grunnbeløpet={grunnbeløpet} />
+                <HvorforHarJegRettEsPanel fpEllerEsSituasjon={fpEllerEsSituasjon} />
             </VStack>
             <HStack>
                 <Button

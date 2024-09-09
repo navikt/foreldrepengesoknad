@@ -5,25 +5,16 @@ import { BodyShort, ExpansionCard, HStack, Heading, List, VStack } from '@navikt
 
 import { links } from '@navikt/fp-constants';
 import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
-import { formatCurrencyWithKr } from '@navikt/fp-utils';
-import { isValidNumber } from '@navikt/fp-validation';
 
 import { FpEllerEsSituasjon } from '../../situasjon/SituasjonSide';
 import KravinfoBoks from '../KravinfoBoks';
 
 interface Props {
     fpEllerEsSituasjon: FpEllerEsSituasjon;
-    grunnbeløpet: number;
 }
 
-const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
-    const { borDuINorge, jobberDuINorge, lønnPerMåned, harHattInntekt } = fpEllerEsSituasjon;
-
-    const minstelønn = grunnbeløpet / 2;
-
-    const årslønn = lønnPerMåned && isValidNumber(lønnPerMåned) ? Number(lønnPerMåned) * 12 : 0;
-
-    const erFlereKrav = harHattInntekt && (borDuINorge || jobberDuINorge);
+const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon }) => {
+    const { borDuINorge, jobberDuINorge } = fpEllerEsSituasjon;
 
     return (
         <ExpansionCard aria-label="" size="small">
@@ -40,41 +31,9 @@ const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerE
             <ExpansionCard.Content>
                 <VStack gap="5">
                     <BodyShort>
-                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKravEs" values={{ erFlereKrav }} />
+                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKravEs" values={{ erFlereKrav: false }} />
                     </BodyShort>
                     <VStack gap="4">
-                        <KravinfoBoks
-                            testId="harIkkeRettEs"
-                            headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåHaInntekt" />}
-                            boxBodyText={
-                                <FormattedMessage
-                                    id="HvorforHarJegRettPanel.DuHarOppgittInntekt"
-                                    values={{ harHatt: harHattInntekt }}
-                                />
-                            }
-                            erOppfylt={!!harHattInntekt}
-                        />
-
-                        <KravinfoBoks
-                            testId="harIkkeRettEs"
-                            headerText={
-                                <FormattedMessage
-                                    id="HvorforHarJegRettPanel.DuMåTeneOver"
-                                    values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
-                                />
-                            }
-                            boxBodyText={
-                                <FormattedMessage
-                                    id="HvorforHarJegRettPanel.DuHarOppgittMånedslønn"
-                                    values={{
-                                        månedslønn: formatCurrencyWithKr(lønnPerMåned),
-                                        minstelønn: formatCurrencyWithKr(minstelønn),
-                                        hvorMye: årslønn > minstelønn,
-                                    }}
-                                />
-                            }
-                            erOppfylt={årslønn > minstelønn}
-                        />
                         <KravinfoBoks
                             testId="harIkkeRettEs"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}

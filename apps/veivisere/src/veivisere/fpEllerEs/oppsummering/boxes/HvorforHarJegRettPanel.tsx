@@ -16,12 +16,10 @@ interface Props {
 }
 
 const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
-    const { borDuINorge, jobberDuINorge, lønnPerMåned, harHattInntekt } = fpEllerEsSituasjon;
+    const { borDuINorge, jobberDuINorge, lønnPerMåned } = fpEllerEsSituasjon;
 
     const minstelønn = grunnbeløpet / 2;
     const årslønn = isValidNumber(lønnPerMåned) ? Number(lønnPerMåned) * 12 : 0;
-
-    const erFlereKrav = harHattInntekt && (borDuINorge || jobberDuINorge);
 
     return (
         <ExpansionCard aria-label="" size="small">
@@ -42,7 +40,7 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
             <ExpansionCard.Content>
                 <VStack gap="5">
                     <BodyShort>
-                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKrav" values={{ erFlereKrav }} />
+                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKrav" values={{ erFlereKrav: true }} />
                     </BodyShort>
                     <VStack gap="4">
                         <KravinfoBoks
