@@ -80,6 +80,20 @@ export const FarKanHaRettTilFp: Story = {
         },
     },
 };
+export const FarKanHaRettTilEs: Story = {
+    args: {
+        satser,
+        fpEllerEsSituasjon: {
+            borDuINorge: true,
+            erIArbeid: true,
+            harHattAndreInntekter: false,
+            harHattInntekt: true,
+            lønnPerMåned: '1000',
+            situasjon: Situasjon.FAR,
+            jobberDuINorge: true,
+        },
+    },
+};
 export const MorHarRettTilEs: Story = {
     args: {
         satser,

@@ -49,6 +49,13 @@ const finnHvemSomHarRett = (fpEllerEsSituasjon: FpEllerEsSituasjon, satser: Sats
     ) {
         return 'morHarRettEs';
     }
+    if (
+        situasjon !== 'mor' &&
+        ((!erLønnOverEllerLik200000 && !erLønnOverEllerLikMinstelønn) || erLønnOverEllerLikMinstelønn) &&
+        (borDuINorge || jobberDuINorge)
+    ) {
+        return 'farEllerMedmorKanHaRettEs';
+    }
     return 'harIkkeRett';
 };
 interface Props {
@@ -74,6 +81,9 @@ const OppsummeringFpEllerEsSide: React.FunctionComponent<Props> = ({ fpEllerEsSi
                         <HarRettFpEllerEs fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
                     )}
                     {hvemHarRett === 'morHarRettEs' && (
+                        <HarRettEs fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
+                    )}
+                    {hvemHarRett === 'farEllerMedmorKanHaRettEs' && (
                         <HarRettEs fpEllerEsSituasjon={fpEllerEsSituasjon} satser={satser} />
                     )}
                     {hvemHarRett === 'harIkkeRett' && (

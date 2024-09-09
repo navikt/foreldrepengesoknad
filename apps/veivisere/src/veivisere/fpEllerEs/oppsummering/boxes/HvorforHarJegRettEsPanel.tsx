@@ -7,6 +7,7 @@ import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import KravinfoBoks from '../KravinfoBoks';
+import KravFarEllerMedmor from './KravFarEllerMedmor';
 
 interface Props {
     fpEllerEsSituasjon: FpEllerEsSituasjon;
@@ -37,20 +38,20 @@ const HvorforHarJegRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSit
                         <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKravEs" values={{ erFlereKrav: false }} />
                     </BodyShort>
                     <VStack gap="4">
-                        {(borDuINorge || jobberDuINorge) && (
-                            <KravinfoBoks
-                                testId="harRettEs"
-                                headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
-                                boxBodyText={
-                                    <FormattedMessage
-                                        id="HvorforHarJegRettPanel.OppgittAtDuBorINorge"
-                                        values={{ borINorge: borDuINorge }}
-                                    />
-                                }
-                                erOppfylt={borDuINorge || jobberDuINorge}
-                            />
-                        )}
+                        <KravinfoBoks
+                            testId="harRettEs"
+                            headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
+                            boxBodyText={
+                                <FormattedMessage
+                                    id="HvorforHarJegRettPanel.OppgittAtDuBorINorge"
+                                    values={{ borINorge: borDuINorge }}
+                                />
+                            }
+                            erOppfylt={borDuINorge || jobberDuINorge}
+                        />
                     </VStack>
+
+                    {fpEllerEsSituasjon.situasjon !== 'mor' && <KravFarEllerMedmor />}
                 </VStack>
             </ExpansionCard.Content>
         </ExpansionCard>
