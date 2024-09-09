@@ -3,7 +3,6 @@ import Environment from 'appData/Environment';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
 import { VeiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
 import dayjs from 'dayjs';
-import ky from 'ky';
 import { FunctionComponent, useState } from 'react';
 import { Navigate, Route, Routes, useBeforeUnload } from 'react-router-dom';
 
@@ -30,21 +29,29 @@ interface Props {
     satser: Satser;
 }
 
+const getStønadskontoer = async () => {
+    const response = await fetch(`${Environment.PUBLIC_PATH}/rest/konto`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        signal: AbortSignal.timeout(30 * 1000),
+        body: JSON.stringify(STØNADSKONTO_PARAMS),
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return (await response.json()) as TilgjengeligeStønadskontoer;
+};
+
 const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale, satser }) => {
     const [arbeidssituasjon, setArbeidssituasjon] = useState<Arbeidssituasjon>();
 
     const stønadskontoerData = useQuery({
         queryKey: ['KONTOER'],
-        queryFn: () =>
-            ky
-                .post(`${Environment.PUBLIC_PATH}/rest/konto`, {
-                    json: STØNADSKONTO_PARAMS,
-                    credentials: 'omit',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                })
-                .json<TilgjengeligeStønadskontoer>(),
+        queryFn: getStønadskontoer,
     });
 
     useBeforeUnload(() => {

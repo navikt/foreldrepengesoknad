@@ -92,9 +92,9 @@ const meta = {
         msw: {
             handlers: [
                 http.post('/rest/konto', async ({ request }) => {
-                    const url = new URL(request.url);
+                    const body = await request.json();
                     const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', {
-                        body: JSON.stringify(Object.fromEntries(url.searchParams)),
+                        body: JSON.stringify(body),
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

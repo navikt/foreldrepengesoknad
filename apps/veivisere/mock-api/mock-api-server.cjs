@@ -40,7 +40,6 @@ app.listen(port, () => {
 
 router.post('/rest/konto', async (req, res) => {
     try {
-        const url = new URL('http://localhost:9001/' + req.url);
         const data = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', {
             method: 'POST',
             headers: {
@@ -48,7 +47,7 @@ router.post('/rest/konto', async (req, res) => {
                 'content-type': 'application/json',
             },
             credentials: 'omit',
-            body: JSON.stringify(Object.fromEntries(url.searchParams)),
+            body: JSON.stringify(req.body),
         });
         const jsonResponse = await data.json();
         res.send(jsonResponse);
