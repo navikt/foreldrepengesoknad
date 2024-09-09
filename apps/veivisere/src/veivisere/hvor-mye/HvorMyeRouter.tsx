@@ -39,6 +39,10 @@ const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale, satser 
             ky
                 .post(`${Environment.PUBLIC_PATH}/rest/konto`, {
                     json: STØNADSKONTO_PARAMS,
+                    credentials: 'omit',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                 })
                 .json<TilgjengeligeStønadskontoer>(),
     });
