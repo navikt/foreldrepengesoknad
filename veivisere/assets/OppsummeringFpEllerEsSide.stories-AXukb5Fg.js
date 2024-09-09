@@ -1,4 +1,4 @@
-import{j as l}from"./Link-CIniHqhq.js";import{i as x,M as J,F as U}from"./useVeiviserNavigator-DeJc5ANv.js";import{S as r}from"./SituasjonSide-Do0vf7ab.js";import{O as I}from"./OppsummeringFpEllerEsSide-QU0BUwMT.js";import"./index-CTjT7uj6.js";import"./Infobox-BvxVUV-n.js";import"./index-BRV0Se7Z.js";import"./NumericField-UQ1TTTDG.js";import"./Responsive-BmPSJYTI.js";import"./index-CYM-y3Gt.js";import"./satserUtils-J29etNm2.js";import"./useControllableState-CxlfoFiD.js";import"./useScrollBehaviour-DZ4iBWJT.js";import"./currencyUtils-Cbm1oTt-.js";import"./VeiviserPage-ClsXRdZc.js";import"./BlueRadioGroup-BWgUsEmf.js";import"./Stroller-DVCQhunZ.js";import"./BabyWrapped-UoG0yrIU.js";import"./ExpansionCard-7VHjuOTa.js";import"./Questionmark-ABuPtnqw.js";import"./Information-CazyjfXt.js";import"./AndreVeivisereLinkPanel-DX-a83_Y.js";import"./MagnifyingGlass-Bk6lEP84.js";const e={engangstønad:[{fom:"01.01.2023",verdi:92648}],grunnbeløp:[{fom:"01.05.2024",verdi:124028}]},sr={title:"fpEllerEs/OppsummeringFpEllerEsSide",component:I,render:T=>(x(),l.jsx(J,{initialEntries:[U.SITUASJON],children:l.jsx(I,{...T})}))},t={args:{satser:e,fpEllerEsSituasjon:{borDuINorge:!0,erIArbeid:!0,harHattAndreInntekter:!0,harHattInntekt:!0,lønnPerMåned:"20000",situasjon:r.MOR,jobberDuINorge:!0}}},n={args:{satser:e,fpEllerEsSituasjon:{borDuINorge:!0,erIArbeid:!0,harHattAndreInntekter:!0,harHattInntekt:!0,lønnPerMåned:"10000",situasjon:r.MOR,jobberDuINorge:!0}}},a={args:{satser:e,fpEllerEsSituasjon:{borDuINorge:!0,erIArbeid:!0,harHattAndreInntekter:!1,harHattInntekt:!0,lønnPerMåned:"10000",situasjon:r.FAR,jobberDuINorge:!0}}},s={args:{satser:e,fpEllerEsSituasjon:{borDuINorge:!0,erIArbeid:!1,harHattAndreInntekter:!1,harHattInntekt:!0,lønnPerMåned:"1000",situasjon:r.MOR,jobberDuINorge:!0}}},o={args:{satser:e,fpEllerEsSituasjon:{borDuINorge:!1,erIArbeid:!0,harHattAndreInntekter:!1,harHattInntekt:!0,lønnPerMåned:"10000",situasjon:r.MOR,jobberDuINorge:!0}}},u={args:{satser:e,fpEllerEsSituasjon:{borDuINorge:!0,erIArbeid:!1,harHattAndreInntekter:!1,harHattInntekt:!0,lønnPerMåned:"0",situasjon:r.FAR,jobberDuINorge:!1}}},i={args:{satser:e,fpEllerEsSituasjon:{borDuINorge:!1,erIArbeid:!0,harHattAndreInntekter:!1,harHattInntekt:!0,lønnPerMåned:"10000",situasjon:r.MOR,jobberDuINorge:!1}}};var p,d,m;t.parameters={...t.parameters,docs:{...(p=t.parameters)==null?void 0:p.docs,source:{originalSource:`{
+import{j as l}from"./Link-CIniHqhq.js";import{i as x,M as J,F as U}from"./useVeiviserNavigator-DeJc5ANv.js";import{S as r}from"./SituasjonSide-Do0vf7ab.js";import{O as I}from"./OppsummeringFpEllerEsSide-CWqPu1r-.js";import"./index-CTjT7uj6.js";import"./Infobox-BvxVUV-n.js";import"./index-BRV0Se7Z.js";import"./NumericField-UQ1TTTDG.js";import"./Responsive-BmPSJYTI.js";import"./index-CYM-y3Gt.js";import"./satserUtils-J29etNm2.js";import"./useControllableState-CxlfoFiD.js";import"./useScrollBehaviour-DZ4iBWJT.js";import"./currencyUtils-Cbm1oTt-.js";import"./VeiviserPage-ClsXRdZc.js";import"./BlueRadioGroup-BWgUsEmf.js";import"./Stroller-DVCQhunZ.js";import"./BabyWrapped-UoG0yrIU.js";import"./ExpansionCard-7VHjuOTa.js";import"./Questionmark-ABuPtnqw.js";import"./Information-CazyjfXt.js";import"./AndreVeivisereLinkPanel-DX-a83_Y.js";import"./MagnifyingGlass-Bk6lEP84.js";const e={engangstønad:[{fom:"01.01.2023",verdi:92648}],grunnbeløp:[{fom:"01.05.2024",verdi:124028}]},sr={title:"fpEllerEs/OppsummeringFpEllerEsSide",component:I,render:T=>(x(),l.jsx(J,{initialEntries:[U.SITUASJON],children:l.jsx(I,{...T})}))},t={args:{satser:e,fpEllerEsSituasjon:{borDuINorge:!0,erIArbeid:!0,harHattAndreInntekter:!0,harHattInntekt:!0,lønnPerMåned:"20000",situasjon:r.MOR,jobberDuINorge:!0}}},n={args:{satser:e,fpEllerEsSituasjon:{borDuINorge:!0,erIArbeid:!0,harHattAndreInntekter:!0,harHattInntekt:!0,lønnPerMåned:"10000",situasjon:r.MOR,jobberDuINorge:!0}}},a={args:{satser:e,fpEllerEsSituasjon:{borDuINorge:!0,erIArbeid:!0,harHattAndreInntekter:!1,harHattInntekt:!0,lønnPerMåned:"10000",situasjon:r.FAR,jobberDuINorge:!0}}},s={args:{satser:e,fpEllerEsSituasjon:{borDuINorge:!0,erIArbeid:!1,harHattAndreInntekter:!1,harHattInntekt:!0,lønnPerMåned:"1000",situasjon:r.MOR,jobberDuINorge:!0}}},o={args:{satser:e,fpEllerEsSituasjon:{borDuINorge:!1,erIArbeid:!0,harHattAndreInntekter:!1,harHattInntekt:!0,lønnPerMåned:"10000",situasjon:r.MOR,jobberDuINorge:!0}}},u={args:{satser:e,fpEllerEsSituasjon:{borDuINorge:!1,erIArbeid:!1,harHattAndreInntekter:!1,harHattInntekt:!0,lønnPerMåned:"0",situasjon:r.FAR,jobberDuINorge:!1}}},i={args:{satser:e,fpEllerEsSituasjon:{borDuINorge:!1,erIArbeid:!0,harHattAndreInntekter:!1,harHattInntekt:!0,lønnPerMåned:"10000",situasjon:r.MOR,jobberDuINorge:!1}}};var p,d,m;t.parameters={...t.parameters,docs:{...(p=t.parameters)==null?void 0:p.docs,source:{originalSource:`{
   args: {
     satser,
     fpEllerEsSituasjon: {
@@ -24,7 +24,7 @@ import{j as l}from"./Link-CIniHqhq.js";import{i as x,M as J,F as U}from"./useVei
       jobberDuINorge: true
     }
   }
-}`,...(j=(b=n.parameters)==null?void 0:b.docs)==null?void 0:j.source}}};var c,E,H;a.parameters={...a.parameters,docs:{...(c=a.parameters)==null?void 0:c.docs,source:{originalSource:`{
+}`,...(j=(b=n.parameters)==null?void 0:b.docs)==null?void 0:j.source}}};var c,E,f;a.parameters={...a.parameters,docs:{...(c=a.parameters)==null?void 0:c.docs,source:{originalSource:`{
   args: {
     satser,
     fpEllerEsSituasjon: {
@@ -37,7 +37,7 @@ import{j as l}from"./Link-CIniHqhq.js";import{i as x,M as J,F as U}from"./useVei
       jobberDuINorge: true
     }
   }
-}`,...(H=(E=a.parameters)==null?void 0:E.docs)==null?void 0:H.source}}};var f,k,M;s.parameters={...s.parameters,docs:{...(f=s.parameters)==null?void 0:f.docs,source:{originalSource:`{
+}`,...(f=(E=a.parameters)==null?void 0:E.docs)==null?void 0:f.source}}};var H,k,M;s.parameters={...s.parameters,docs:{...(H=s.parameters)==null?void 0:H.docs,source:{originalSource:`{
   args: {
     satser,
     fpEllerEsSituasjon: {
@@ -67,7 +67,7 @@ import{j as l}from"./Link-CIniHqhq.js";import{i as x,M as J,F as U}from"./useVei
   args: {
     satser,
     fpEllerEsSituasjon: {
-      borDuINorge: true,
+      borDuINorge: false,
       erIArbeid: false,
       harHattAndreInntekter: false,
       harHattInntekt: true,
