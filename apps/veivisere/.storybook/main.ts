@@ -5,6 +5,7 @@ const config = {
         name: '@storybook/react-vite',
         options: {},
     },
+    staticDirs: ['../../../scripts/mock-service-worker'],
     docs: {
         autodocs: false,
     },
