@@ -1273,10 +1273,9 @@ describe('Fordeling - FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB', () => {
         ).toBeInTheDocument();
         expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
         expect(
-            screen.getByText(
-                'Ofte får fedre permisjon dekket de første to ukene rundt fødsel fra arbeidsgiveren sin.',
-                { exact: false },
-            ),
+            screen.getByText('Mange får dekket permisjon de første to ukene rundt fødsel fra arbeidsgiveren sin.', {
+                exact: false,
+            }),
         ).toBeInTheDocument();
         expect(screen.getByText('Fra termindato')).toBeInTheDocument();
         expect(
@@ -1330,10 +1329,9 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
 
         expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
         expect(
-            screen.getByText(
-                'Ofte får fedre permisjon dekket de første to ukene rundt fødsel fra arbeidsgiveren sin.',
-                { exact: false },
-            ),
+            screen.getByText('Mange får dekket permisjon de første to ukene rundt fødsel fra arbeidsgiveren sin.', {
+                exact: false,
+            }),
         ).toBeInTheDocument();
         expect(screen.getByText('Da barnet ble født')).toBeInTheDocument();
         expect(
