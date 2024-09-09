@@ -1,11 +1,12 @@
+import { useQuery } from '@tanstack/react-query';
 import Environment from 'appData/Environment';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
 import { VeiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
 import dayjs from 'dayjs';
+import ky from 'ky';
 import { FunctionComponent, useState } from 'react';
 import { Navigate, Route, Routes, useBeforeUnload } from 'react-router-dom';
 
-import { getAxiosInstance, usePostRequest } from '@navikt/fp-api';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
@@ -15,19 +16,12 @@ import ArbeidssituasjonSide, { Arbeidssituasjon } from './arbeidssituasjon/Arbei
 import HvorMyeForside from './forside/HvorMyeForside';
 import OppsummeringSide from './oppsummering/OppsummeringSide';
 
-export const veivisereApi = getAxiosInstance();
-
 const STØNADSKONTO_PARAMS = {
     rettighetstype: 'BEGGE_RETT',
     brukerrolle: 'MOR',
     antallBarn: 1,
     fødselsdato: dayjs().format(ISO_DATE_FORMAT),
     morHarUføretrygd: false,
-};
-
-const STØNADSKONTO_OPTIONS = {
-    isSuspended: false,
-    withCredentials: false,
 };
 
 interface Props {
@@ -39,12 +33,16 @@ interface Props {
 const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale, satser }) => {
     const [arbeidssituasjon, setArbeidssituasjon] = useState<Arbeidssituasjon>();
 
-    const requestData = usePostRequest<TilgjengeligeStønadskontoer>(
-        veivisereApi,
-        `${Environment.PUBLIC_PATH}/rest/konto`,
-        STØNADSKONTO_PARAMS,
-        STØNADSKONTO_OPTIONS,
-    );
+    const stønadskontoerData = useQuery({
+        queryKey: ['KONTOER'],
+        queryFn: () =>
+            ky
+                .post(`${Environment.PUBLIC_PATH}/rest/konto`, {
+                    searchParams: STØNADSKONTO_PARAMS,
+                    credentials: 'include',
+                })
+                .json<TilgjengeligeStønadskontoer>(),
+    });
 
     useBeforeUnload(() => {
         logAmplitudeEvent('applikasjon-hendelse', {
@@ -54,7 +52,7 @@ const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale, satser 
         });
     });
 
-    if (requestData.error) {
+    if (stønadskontoerData.error) {
         return <SimpleErrorPage />;
     }
 
@@ -71,13 +69,13 @@ const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale, satser 
                     />
                 }
             />
-            {arbeidssituasjon && requestData.data && (
+            {arbeidssituasjon && stønadskontoerData.data && (
                 <Route
                     path={HvorMyeRoutes.OPPSUMMERING}
                     element={
                         <OppsummeringSide
                             arbeidssituasjon={arbeidssituasjon}
-                            stønadskontoer={requestData.data}
+                            stønadskontoer={stønadskontoerData.data}
                             satser={satser}
                         />
                     }

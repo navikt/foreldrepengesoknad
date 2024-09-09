@@ -1,15 +1,14 @@
+import { useQuery } from '@tanstack/react-query';
 import Environment from 'appData/Environment';
+import ky from 'ky';
 import { FunctionComponent } from 'react';
 
 import { Loader } from '@navikt/ds-react';
 
-import { getAxiosInstance, useRequest } from '@navikt/fp-api';
 import { LocaleAll, Satser } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
 
 import VeiviserRouter from './VeiviserRouter';
-
-export const veivisereApi = getAxiosInstance();
 
 const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -23,7 +22,10 @@ interface Props {
 }
 
 const Veiviser: FunctionComponent<Props> = ({ locale, changeLocale }) => {
-    const satserData = useRequest<Satser>(veivisereApi, `${Environment.PUBLIC_PATH}/rest/satser`);
+    const satserData = useQuery({
+        queryKey: ['SATSER'],
+        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/satser`).json<Satser>(),
+    });
 
     if (satserData.error) {
         return <SimpleErrorPage />;

@@ -2,6 +2,7 @@ import { Preview } from '@storybook/react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
+import { initialize, mswLoader } from 'msw-storybook-addon';
 
 import '@navikt/ds-css';
 
@@ -12,6 +13,14 @@ import enMessages from '../src/intl/messages/en_US.json';
 import nbMessages from '../src/intl/messages/nb_NO.json';
 import nnMessages from '../src/intl/messages/nn_NO.json';
 import '../src/styles/global.css';
+
+// Initialize MSW
+initialize({
+    onUnhandledRequest: 'bypass',
+    serviceWorker: {
+        url: './mockServiceWorker.js',
+    },
+});
 
 const scriptTag = document.createElement('script');
 scriptTag.type = 'text/json';
@@ -65,6 +74,7 @@ const preview: Preview = {
             );
         },
     ],
+    loaders: [mswLoader],
 };
 
 export default preview;
