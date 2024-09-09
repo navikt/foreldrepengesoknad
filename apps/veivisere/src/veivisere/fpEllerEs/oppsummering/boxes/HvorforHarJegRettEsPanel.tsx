@@ -5,21 +5,15 @@ import { FpEllerEsSituasjon } from 'veivisere/fpEllerEs/situasjon/SituasjonSide'
 import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
-import { formatCurrencyWithKr } from '@navikt/fp-utils';
-import { isValidNumber } from '@navikt/fp-validation';
 
 import KravinfoBoks from '../KravinfoBoks';
 
 interface Props {
     fpEllerEsSituasjon: FpEllerEsSituasjon;
-    grunnbeløpet: number;
 }
 
-const HvorforHarJegRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
-    const { borDuINorge, jobberDuINorge, lønnPerMåned, harHattInntekt } = fpEllerEsSituasjon;
-
-    const minstelønn = grunnbeløpet / 2;
-    const årslønn = isValidNumber(lønnPerMåned) ? Number(lønnPerMåned) * 12 : 0;
+const HvorforHarJegRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon }) => {
+    const { borDuINorge, jobberDuINorge, harHattInntekt } = fpEllerEsSituasjon;
 
     const erFlereKrav = harHattInntekt && (borDuINorge || jobberDuINorge);
 
@@ -45,28 +39,6 @@ const HvorforHarJegRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSit
                         <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKravEs" values={{ erFlereKrav }} />
                     </BodyShort>
                     <VStack gap="4">
-                        {årslønn > minstelønn && (
-                            <KravinfoBoks
-                                testId="harRettEs"
-                                headerText={
-                                    <FormattedMessage
-                                        id="HvorforHarJegRettPanel.DuMåTeneOver"
-                                        values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
-                                    />
-                                }
-                                boxBodyText={
-                                    <FormattedMessage
-                                        id="HvorforHarJegRettPanel.DuHarOppgittMånedslønn"
-                                        values={{
-                                            månedslønn: formatCurrencyWithKr(lønnPerMåned),
-                                            minstelønn: formatCurrencyWithKr(minstelønn),
-                                            hvorMye: årslønn > minstelønn,
-                                        }}
-                                    />
-                                }
-                                erOppfylt={årslønn > minstelønn}
-                            />
-                        )}
                         {(borDuINorge || jobberDuINorge) && (
                             <KravinfoBoks
                                 testId="harRettEs"

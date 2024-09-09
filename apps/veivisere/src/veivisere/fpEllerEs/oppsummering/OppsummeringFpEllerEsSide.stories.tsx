@@ -114,7 +114,7 @@ export const FarHarIkkeRett: Story = {
     args: {
         satser,
         fpEllerEsSituasjon: {
-            borDuINorge: true,
+            borDuINorge: false,
             erIArbeid: false,
             harHattAndreInntekter: false,
             harHattInntekt: true,
