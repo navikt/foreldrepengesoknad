@@ -22,8 +22,6 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
     const minstelønn = grunnbeløpet / 2;
     const årslønn = lønnPerMåned && isValidNumber(lønnPerMåned) ? Number(lønnPerMåned) * 12 : 0;
 
-    const erFlereKrav = harHattInntekt && (borDuINorge || jobberDuINorge);
-
     return (
         <ExpansionCard aria-label="" size="small">
             <ExpansionCard.Header>
@@ -39,7 +37,7 @@ const HvorforHarJegIkkeRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsS
             <ExpansionCard.Content>
                 <VStack gap="5">
                     <BodyShort>
-                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKrav" values={{ erFlereKrav }} />
+                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKrav" values={{ erFlereKrav: true }} />
                     </BodyShort>
                     <VStack gap="4">
                         <KravinfoBoks

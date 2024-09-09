@@ -13,9 +13,7 @@ interface Props {
 }
 
 const HvorforHarJegRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon }) => {
-    const { borDuINorge, jobberDuINorge, harHattInntekt } = fpEllerEsSituasjon;
-
-    const erFlereKrav = harHattInntekt && (borDuINorge || jobberDuINorge);
+    const { borDuINorge, jobberDuINorge } = fpEllerEsSituasjon;
 
     return (
         <ExpansionCard aria-label="" size="small">
@@ -36,7 +34,7 @@ const HvorforHarJegRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSit
             <ExpansionCard.Content>
                 <VStack gap="5">
                     <BodyShort>
-                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKravEs" values={{ erFlereKrav }} />
+                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKravEs" values={{ erFlereKrav: false }} />
                     </BodyShort>
                     <VStack gap="4">
                         {(borDuINorge || jobberDuINorge) && (
