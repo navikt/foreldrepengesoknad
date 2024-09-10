@@ -1,10 +1,10 @@
 {
     "app": "foreldrepengeoversikt",
     "autentisering": true,
-    "ingresses": [
-        "https://foreldrepenger.nav.no"
-    ],
+    "redirect_from": "foreldrepenger.nav.no",
+    "ingress": "https://nav.no/oversiktforeldrepenger",
     "env": {
-        "ENV": "prod"
+        "ENV": "prod",
+        "PUBLIC_PATH": "/oversiktforeldrepenger"
     }
 }

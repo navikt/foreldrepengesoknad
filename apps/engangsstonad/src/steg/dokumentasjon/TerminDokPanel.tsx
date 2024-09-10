@@ -10,6 +10,8 @@ import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
+import { AxiosInstanceAPI } from '../../api/AxiosInstance';
+
 dayjs.extend(minMax);
 
 const ukerAaTrekkeFraTerminDato = 18;
@@ -61,7 +63,7 @@ const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAtt
                 skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
                 existingAttachments={attachments}
                 updateAttachments={updateAttachments}
-                saveAttachment={getSaveAttachment('engangsstonad')}
+                saveAttachment={getSaveAttachment(AxiosInstanceAPI(), 'engangsstonad')}
             />
         </>
     );

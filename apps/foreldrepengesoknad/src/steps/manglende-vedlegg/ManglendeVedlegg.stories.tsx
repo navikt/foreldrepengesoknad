@@ -7,11 +7,15 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 
-import { getAxiosInstance } from '@navikt/fp-api';
 import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt/src/types/ArbeidsforholdOgInntekt';
 import { Situasjon, Søkerinfo } from '@navikt/fp-types';
+
+import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
+import { Action, ContextDataType, FpDataContext } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+import { AndreInntektskilder, AnnenInntektType } from 'app/types/AndreInntektskilder';
 
 import ManglendeVedlegg from './ManglendeVedlegg';
 
@@ -115,7 +119,7 @@ const meta = {
     }) => {
         initAmplitude();
 
-        const apiMock = new MockAdapter(getAxiosInstance());
+        const apiMock = new MockAdapter(AxiosInstanceAPI());
         apiMock.onPost('/rest/storage/foreldrepenger/vedlegg').reply(200); //story
         apiMock.onPost('http://localhost:8888/rest/storage/foreldrepenger/vedlegg').reply(200); //test
 

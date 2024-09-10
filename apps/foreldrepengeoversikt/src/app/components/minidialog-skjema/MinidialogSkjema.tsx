@@ -22,6 +22,7 @@ import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';
 
+import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
 import EttersendingDto from 'app/types/EttersendingDTO';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import { Ytelse } from 'app/types/Ytelse';
@@ -175,7 +176,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                             updateAttachments={updateAttachments}
                             attachmentType={AttachmentType.TILBAKEBETALING}
                             skjemanummer={Skjemanummer.TILBAKEBETALING}
-                            saveAttachment={getSaveAttachment(mapYtelse(sakstype))}
+                            saveAttachment={getSaveAttachment(AxiosInstanceAPI(), mapYtelse(sakstype))}
                         />
                     </>
                 )}

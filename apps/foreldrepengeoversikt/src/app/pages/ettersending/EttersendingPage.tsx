@@ -22,6 +22,7 @@ import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
 
+import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
 import { sendEttersending } from 'app/api/api';
 import { EttersendingHeader } from 'app/components/header/Header';
 import ScrollToTop from 'app/components/scroll-to-top/ScrollToTop';
@@ -178,7 +179,7 @@ const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
                         attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                         skjemanummer={type}
                         existingAttachments={vedlegg}
-                        saveAttachment={getSaveAttachment(mapYtelse(sak!.ytelse))}
+                        saveAttachment={getSaveAttachment(AxiosInstanceAPI(), mapYtelse(sak!.ytelse))}
                         skjemanummerTextMap={
                             sak
                                 ? getRelevanteSkjemanummer(sak).reduce(

@@ -15,6 +15,11 @@ import { FileUploader } from '@navikt/fp-ui';
 import { bemUtils } from '@navikt/fp-utils';
 import { PeriodelisteItemHeader } from '@navikt/fp-uttaksplan';
 
+import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
+import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
+import { dateToISOString } from 'app/utils/dateUtils';
+import { addMetadata, lagSendSenereDokument } from 'app/utils/vedleggUtils';
+
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
 import './periode-attachment-uploader.css';
 
@@ -105,7 +110,7 @@ const UttakUploader: FunctionComponent<Props> = ({
 
                 return updateAttachments(attachmentsMedMetadata);
             }}
-            saveAttachment={getSaveAttachment('foreldrepenger')}
+            saveAttachment={getSaveAttachment(AxiosInstanceAPI(), 'foreldrepenger')}
         />
     );
 };

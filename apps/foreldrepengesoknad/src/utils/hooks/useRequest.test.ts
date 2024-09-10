@@ -1,11 +1,11 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
 
-import { getAxiosInstance } from '@navikt/fp-api';
+import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
 
 import { useGetRequest } from './useRequest';
 
-const apiMock = new MockAdapter(getAxiosInstance());
+const apiMock = new MockAdapter(AxiosInstanceAPI());
 
 describe('useGetRequest', () => {
     it('skal hente data frå server', async () => {

@@ -98,7 +98,7 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
     return (
         <ErrorBoundary appName="Foreldrepenger" retryCallback={retryCallback}>
             <FpDataContext initialState={initialState}>
-                <BrowserRouter>
+                <BrowserRouter basename={Environment.PUBLIC_PATH}>
                     <ForeldrepengesøknadRoutes
                         locale={locale}
                         onChangeLocale={onChangeLocale}

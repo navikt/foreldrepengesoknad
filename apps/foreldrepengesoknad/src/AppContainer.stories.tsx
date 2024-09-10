@@ -9,9 +9,10 @@ import stønadskontoer from 'storybookData/stonadskontoer/stønadskontoer.json';
 
 import '@navikt/ds-css';
 
-import { getAxiosInstance } from '@navikt/fp-api';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søkerinfo } from '@navikt/fp-types';
+
+import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
 
 import AppContainer from './AppContainer';
 import { RequestStatus } from './types/RequestState';
@@ -52,7 +53,7 @@ const meta = {
     component: AppContainer,
     render: (props) => {
         initAmplitude();
-        const apiMock = new MockAdapter(getAxiosInstance());
+        const apiMock = new MockAdapter(AxiosInstanceAPI());
         apiMock.onGet('/rest/sokerinfo').reply(200, props.søkerinfoData);
         apiMock.onGet('/rest/innsyn/v2/saker').reply(200, props.sakerData);
         apiMock.onGet('/rest/innsyn/v2/annenPartVedtak').reply(200, props.annenPartVedtakData);

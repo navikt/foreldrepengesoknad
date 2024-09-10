@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
+import Environment from 'appData/Environment';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { StrictMode } from 'react';
@@ -90,7 +91,7 @@ const meta = {
     render: (args) => {
         initAmplitude();
 
-        const axiosInstance = getAxiosInstance();
+        const axiosInstance = getAxiosInstance({ baseUrl: Environment.PUBLIC_PATH });
         const apiMock = new MockAdapter(axiosInstance);
         if (args.brukMocks) {
             apiMock.onPost('/rest/konto').reply(() => {

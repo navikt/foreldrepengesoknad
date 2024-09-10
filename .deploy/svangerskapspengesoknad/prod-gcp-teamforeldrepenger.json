@@ -1,10 +1,10 @@
 {
     "app": "svangerskapspengesoknad",
     "autentisering": true,
-    "ingresses": [
-        "https://svangerskapspengesoknad.nav.no"
-    ],
+    "redirect_from": "svangerskapspengesoknad.nav.no",
+    "ingress": "https://www.nav.no/svangerskapspenger/soknad",
     "env": {
+        "PUBLIC_PATH": "/svangerskapspenger/soknad",
         "INNSYN": "https://foreldrepenger.nav.no",
         "LOG_VALIDATION": false,
         "ENV": "prod"

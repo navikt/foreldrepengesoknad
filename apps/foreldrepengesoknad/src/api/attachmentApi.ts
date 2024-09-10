@@ -1,5 +1,6 @@
-import { getAxiosInstance } from '@navikt/fp-api';
 import { Attachment } from '@navikt/fp-types';
+
+import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
 
 function saveAttachment(attachment: Attachment) {
     const config = {
@@ -13,7 +14,7 @@ function saveAttachment(attachment: Attachment) {
     const formData = new FormData();
     formData.append('id', attachment.id);
     formData.append('vedlegg', attachment.file, attachment.filename);
-    return getAxiosInstance().post('/rest/storage/foreldrepenger/vedlegg', formData, config);
+    return AxiosInstanceAPI().post('/rest/storage/foreldrepenger/vedlegg', formData, config);
 }
 
 const AttachmentApi = { saveAttachment };

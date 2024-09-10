@@ -6,10 +6,18 @@ import { SakerOppslag } from 'types/SakerOppslag';
 import { EndringssøknadForInnsending, Søknad, SøknadForInnsending } from 'types/Søknad';
 import { useGetRequest } from 'utils/hooks/useRequest';
 
-import { getAxiosInstance } from '@navikt/fp-api';
 import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
 import { Attachment, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 
+import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
+import SøknadRoutes from 'app/appData/routes';
+import Fordeling from 'app/types/Fordeling';
+import { Kvittering } from 'app/types/Kvittering';
+import { SakerOppslag } from 'app/types/SakerOppslag';
+import { Søknad } from 'app/types/Søknad';
+import { useGetRequest } from 'app/utils/hooks/useRequest';
+
+import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
 import { storageParser } from './storageParser';
 
 const sendSøknadUrl = '/rest/soknad';
@@ -64,13 +72,13 @@ const useStoredAppState = () => {
 };
 
 const storeAppState = (dataSomSkalMellomlagres: FpMellomlagretData, fnr: string) => {
-    return getAxiosInstance(fnr).post('/rest/storage/foreldrepenger', dataSomSkalMellomlagres, {
+    return AxiosInstanceAPI(fnr).post('/rest/storage/foreldrepenger', dataSomSkalMellomlagres, {
         withCredentials: true,
     });
 };
 
 const getStorageKvittering = (fnr: string): Promise<AxiosResponse<Kvittering>> => {
-    return getAxiosInstance(fnr).get('/rest/storage/kvittering/foreldrepenger', {
+    return AxiosInstanceAPI(fnr).get('/rest/storage/kvittering/foreldrepenger', {
         withCredentials: true,
         timeout: 15 * 1000,
     });
@@ -79,7 +87,7 @@ const getStorageKvittering = (fnr: string): Promise<AxiosResponse<Kvittering>> =
 const sendSøknad = (søknad: SøknadForInnsending | EndringssøknadForInnsending, fnr: string, signal: AbortSignal) => {
     const url = søknad.erEndringssøknad ? sendEndringssøknadUrl : sendSøknadUrl;
 
-    return getAxiosInstance(fnr).post(url, søknad, {
+    return AxiosInstanceAPI(fnr).post(url, søknad, {
         withCredentials: true,
         timeout: 120 * 1000,
         headers: {
@@ -90,7 +98,7 @@ const sendSøknad = (søknad: SøknadForInnsending | EndringssøknadForInnsendin
 };
 
 const deleteMellomlagretSøknad = (fnr?: string, signal?: AbortSignal) => {
-    return getAxiosInstance(fnr).delete('/rest/storage/foreldrepenger', { withCredentials: true, signal });
+    return AxiosInstanceAPI(fnr).delete('/rest/storage/foreldrepenger', { withCredentials: true, signal });
 };
 
 const deleteMellomlagredeVedlegg = (fnr: string, vedlegg: Attachment[], signal: AbortSignal) => {
@@ -101,7 +109,7 @@ const deleteMellomlagredeVedlegg = (fnr: string, vedlegg: Attachment[], signal: 
 
         return result;
     }, []);
-    return getAxiosInstance(fnr).delete('/rest/storage/foreldrepenger/vedlegg', {
+    return AxiosInstanceAPI(fnr).delete('/rest/storage/foreldrepenger/vedlegg', {
         withCredentials: true,
         data: attachmentUUIDs,
         signal,

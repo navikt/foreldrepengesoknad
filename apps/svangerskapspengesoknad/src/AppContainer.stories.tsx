@@ -3,9 +3,10 @@ import MockAdapter from 'axios-mock-adapter';
 
 import '@navikt/ds-css';
 
-import { getAxiosInstance } from '@navikt/fp-api';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søker, Søkerinfo } from '@navikt/fp-types';
+
+import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
 
 import AppContainer from './AppContainer';
 import { SvpDataMapAndMetaData } from './app-data/useMellomlagreSøknad';
@@ -83,7 +84,7 @@ const meta = {
     component: AppContainer,
     render: ({ søkerinfo, mellomlagretData, doLogging = true }) => {
         initAmplitude();
-        const apiMock = new MockAdapter(getAxiosInstance());
+        const apiMock = new MockAdapter(AxiosInstanceAPI());
         apiMock.onGet('/rest/sokerinfo').reply(() => {
             if (doLogging) {
                 // eslint-disable-next-line no-console

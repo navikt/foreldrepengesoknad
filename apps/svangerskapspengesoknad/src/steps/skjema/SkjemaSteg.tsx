@@ -15,6 +15,12 @@ import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
 import { FileUploader, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
+import useStepConfig from 'app/appData/useStepConfig';
+import useSvpNavigator from 'app/appData/useSvpNavigator';
+import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
+
 import Bedriftsbanner from '../Bedriftsbanner';
 
 const MAX_ANTALL_VEDLEGG = 40;
@@ -175,7 +181,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({
                             skjemanummer={Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING}
                             existingAttachments={defaultValues?.vedlegg}
                             updateAttachments={updateAttachments}
-                            saveAttachment={getSaveAttachment('svangerskapspenger')}
+                            saveAttachment={getSaveAttachment(AxiosInstanceAPI(), 'svangerskapspenger')}
                         />
                     </VStack>
                     <StepButtonsHookForm

@@ -26,6 +26,7 @@ scriptTag.type = 'text/json';
 scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
     APP_VERSION: 'test',
+    PUBLIC_PATH: '',
 });
 document.head.appendChild(scriptTag);
 

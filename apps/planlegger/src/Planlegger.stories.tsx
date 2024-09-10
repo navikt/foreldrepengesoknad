@@ -5,13 +5,13 @@ import MockAdapter from 'axios-mock-adapter';
 import { ComponentProps, StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import { getAxiosInstance } from '@navikt/fp-api';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 
 import { PlanleggerDataFetcher } from './Planlegger';
+import { AxiosInstanceAPI } from './api/AxiosInstance';
 import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
@@ -104,7 +104,7 @@ const meta = {
     render: (args) => {
         initAmplitude();
 
-        const axiosInstance = getAxiosInstance();
+        const axiosInstance = AxiosInstanceAPI();
         const apiMock = new MockAdapter(axiosInstance);
         if (args.brukMocks) {
             apiMock.onPost('/rest/konto').reply(() => {

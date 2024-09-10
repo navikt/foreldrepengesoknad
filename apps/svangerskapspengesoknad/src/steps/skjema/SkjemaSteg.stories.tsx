@@ -1,15 +1,19 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
-import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { Action, SvpDataContext } from 'appData/SvpDataContext';
+
 import MockAdapter from 'axios-mock-adapter';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import Tilrettelegging, { Arbeidsforholdstype } from 'types/Tilrettelegging';
+import Tilrettelegging from 'types/Tilrettelegging';
 
-import { getAxiosInstance } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
+
+import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
+import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
+import SøknadRoutes from 'app/appData/routes';
+import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
 
 import SkjemaSteg from './SkjemaSteg';
 
@@ -97,7 +101,7 @@ const meta = {
     component: SkjemaSteg,
     render: ({ gåTilNesteSide = action('button-click'), skalFeileOpplasting, tilrettelegging, ...rest }) => {
         initAmplitude();
-        const apiMock = new MockAdapter(getAxiosInstance());
+        const apiMock = new MockAdapter(AxiosInstanceAPI());
         if (!skalFeileOpplasting) {
             apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(200); //story
             apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(200); //test
