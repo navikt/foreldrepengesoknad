@@ -76,6 +76,7 @@ type StoryArgs = {
 } & ComponentProps<typeof VelgArbeid>;
 
 const meta = {
+    title: 'steps/VelgArbeid',
     component: VelgArbeid,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();

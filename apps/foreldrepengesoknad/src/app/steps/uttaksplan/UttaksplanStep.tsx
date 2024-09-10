@@ -640,6 +640,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                         onCancel={avbrytSøknad}
                         onContinueLater={navigator.fortsettSøknadSenere}
                         steps={stepConfig}
+                        noFieldsRequired
                     >
                         {startStønadsperiodeNyttBarn && (
                             <InfoOmNesteBarn minsterettUkerToTette={minsterettUkerToTette} />

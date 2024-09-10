@@ -31,6 +31,7 @@ type StoryArgs = {
 } & ComponentProps<typeof SenereUtenlandsoppholdSteg>;
 
 const meta = {
+    title: 'steps/SenereUtenlandsoppholdSteg',
     component: SenereUtenlandsoppholdSteg,
     render: ({ gåTilNesteSide = action('button-click'), utenlandsopphold = defaultUtenlandsopphold, ...rest }) => {
         initAmplitude();

@@ -91,6 +91,7 @@ type StoryArgs = {
 } & ComponentProps<typeof Oppsummering>;
 
 const meta = {
+    title: 'steps/Oppsummering',
     component: Oppsummering,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();

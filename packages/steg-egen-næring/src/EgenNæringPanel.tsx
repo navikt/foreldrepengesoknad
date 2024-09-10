@@ -118,13 +118,11 @@ const EgenNæringPanel = <TYPE extends string>({
             steps={stepConfig}
             onContinueLater={onContinueLater}
             onStepChange={onStepChange}
+            someFieldsOptional
         >
             <Form formMethods={formMethods} onSubmit={saveOnNext}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    <BodyShort>
-                        <FormattedMessage id="harValgfrieFelt" />
-                    </BodyShort>
                     <RadioGroup
                         name="næringstype"
                         label={intl.formatMessage({ id: 'egenNæring.næringstype' })}

@@ -78,6 +78,7 @@ type StoryArgs = {
 } & ComponentProps<typeof EgenNæringStep>;
 
 const meta = {
+    title: 'steps/EgenNæringStep',
     component: EgenNæringStep,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();

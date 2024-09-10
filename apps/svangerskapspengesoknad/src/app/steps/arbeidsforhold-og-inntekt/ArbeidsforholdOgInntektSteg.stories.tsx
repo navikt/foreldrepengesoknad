@@ -76,6 +76,7 @@ type StoryArgs = {
 } & ComponentProps<typeof ArbeidsforholdOgInntektSteg>;
 
 const meta = {
+    title: 'steps/ArbeidsforholdOgInntektSteg',
     component: ArbeidsforholdOgInntektSteg,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();

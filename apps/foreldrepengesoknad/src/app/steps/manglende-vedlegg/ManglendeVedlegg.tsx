@@ -190,6 +190,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             onCancel={avbrytSøknad}
             onContinueLater={navigator.fortsettSøknadSenere}
             steps={stepConfig}
+            noFieldsRequired
         >
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">

@@ -45,6 +45,7 @@ type StoryArgs = {
 } & ComponentProps<typeof OppsummeringSteg>;
 
 const meta = {
+    title: 'steg/OppsummeringSteg',
     component: OppsummeringSteg,
     render: ({
         sendSøknad,

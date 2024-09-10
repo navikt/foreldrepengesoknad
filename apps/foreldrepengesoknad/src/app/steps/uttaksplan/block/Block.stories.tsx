@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import Block from './Block';
 
 const meta = {
+    title: 'steps/uttaksplan/Block',
     component: Block,
 } satisfies Meta<typeof Block>;
 export default meta;

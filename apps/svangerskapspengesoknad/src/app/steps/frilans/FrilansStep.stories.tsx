@@ -78,6 +78,7 @@ type StoryArgs = {
 } & ComponentProps<typeof FrilansStep>;
 
 const meta = {
+    title: 'steps/FrilansStep',
     component: FrilansStep,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();

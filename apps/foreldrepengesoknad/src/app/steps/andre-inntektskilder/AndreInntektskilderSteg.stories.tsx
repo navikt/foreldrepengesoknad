@@ -22,6 +22,7 @@ type StoryArgs = {
 } & ComponentProps<typeof AndreInntektskilderSteg>;
 
 const meta = {
+    title: 'steps/AndreInntektskilderSteg',
     component: AndreInntektskilderSteg,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();

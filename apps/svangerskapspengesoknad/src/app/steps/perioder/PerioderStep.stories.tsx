@@ -87,6 +87,7 @@ type StoryArgs = {
 } & ComponentProps<typeof PerioderStep>;
 
 const meta = {
+    title: 'steps/PerioderStep',
     component: PerioderStep,
     render: ({ gåTilNesteSide = action('button-click'), tilrettelegging, barn = DEFAULT_BARN, ...rest }) => {
         initAmplitude();

@@ -103,6 +103,7 @@ type StoryArgs = {
 } & ComponentProps<typeof ManglendeVedlegg>;
 
 const meta = {
+    title: 'steps/ManglendeVedlegg',
     component: ManglendeVedlegg,
     render: ({
         situasjon = 'fødsel',

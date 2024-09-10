@@ -66,6 +66,7 @@ const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavige
             onContinueLater={navigator.fortsettSøknadSenere}
             onStepChange={navigator.goToNextStep}
             steps={stepConfig}
+            noFieldsRequired
         >
             <Form formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
