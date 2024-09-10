@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import DinePersonopplysningerModal from './DinePersonopplysningerModal';
 
 const meta = {
-    title: 'DinePersonopplysningerModal',
+    title: 'pages/forside/DinePersonopplysningerModal',
     component: DinePersonopplysningerModal,
 } satisfies Meta<typeof DinePersonopplysningerModal>;
 export default meta;

@@ -8,10 +8,8 @@ import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 
 import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/FpDataContext';
-import SøknadRoutes from 'app/appData/routes';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import { AnnenInntektType } from 'app/types/AndreInntektskilder';
 
 import AndreInntektskilderFieldArray, { FormValues } from './components/AndreInntektskilderFieldArray';
 
@@ -41,15 +39,6 @@ const AndreInntektskilderSteg: React.FunctionComponent<Props> = ({
 
     const onSubmit = (values: FormValues) => {
         oppdaterAndreInntektskilder(values.andreInntektskilder);
-
-        if (
-            values.andreInntektskilder.some(
-                (i) => i.type === AnnenInntektType.MILITÆRTJENESTE || i.type === AnnenInntektType.SLUTTPAKKE,
-            )
-        ) {
-            return navigator.goToNextStep(SøknadRoutes.DOKUMENTASJON);
-        }
-
         return navigator.goToNextDefaultStep();
     };
 

@@ -50,7 +50,7 @@ describe('<AndreInntektskilderSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.OPPSUMMERING,
+            data: SøknadRoutes.ANNEN_FORELDER,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -102,7 +102,7 @@ describe('<AndreInntektskilderSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.OPPSUMMERING,
+            data: SøknadRoutes.ANNEN_FORELDER,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -207,7 +207,7 @@ describe('<AndreInntektskilderSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.DOKUMENTASJON,
+            data: SøknadRoutes.ANNEN_FORELDER,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -300,7 +300,7 @@ describe('<AndreInntektskilderSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.DOKUMENTASJON,
+            data: SøknadRoutes.ANNEN_FORELDER,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -345,7 +345,7 @@ describe('<AndreInntektskilderSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.DOKUMENTASJON,
+            data: SøknadRoutes.ANNEN_FORELDER,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -477,7 +477,7 @@ describe('<AndreInntektskilderSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.DOKUMENTASJON,
+            data: SøknadRoutes.ANNEN_FORELDER,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

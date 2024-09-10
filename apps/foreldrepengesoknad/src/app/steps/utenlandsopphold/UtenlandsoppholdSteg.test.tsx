@@ -171,7 +171,7 @@ describe('<UtenlandsoppholdSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: SøknadRoutes.UTTAKSPLAN,
+            data: SøknadRoutes.OM_BARNET,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

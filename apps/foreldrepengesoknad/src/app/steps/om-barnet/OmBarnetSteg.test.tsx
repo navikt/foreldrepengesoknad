@@ -62,7 +62,7 @@ describe('<OmBarnetSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.ANNEN_FORELDER,
+            data: SøknadRoutes.UTENLANDSOPPHOLD,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -106,7 +106,7 @@ describe('<OmBarnetSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.ANNEN_FORELDER,
+            data: SøknadRoutes.UTENLANDSOPPHOLD,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -167,7 +167,7 @@ describe('<OmBarnetSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.ANNEN_FORELDER,
+            data: SøknadRoutes.UTENLANDSOPPHOLD,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -209,7 +209,7 @@ describe('<OmBarnetSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.ANNEN_FORELDER,
+            data: SøknadRoutes.UTENLANDSOPPHOLD,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -270,7 +270,7 @@ describe('<OmBarnetSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.ANNEN_FORELDER,
+            data: SøknadRoutes.UTENLANDSOPPHOLD,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -351,7 +351,7 @@ describe('<OmBarnetSteg>', () => {
                 type: 'update',
             });
             expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-                data: SøknadRoutes.ANNEN_FORELDER,
+                data: SøknadRoutes.UTENLANDSOPPHOLD,
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
@@ -518,7 +518,7 @@ describe('<OmBarnetSteg>', () => {
                 type: 'update',
             });
             expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-                data: SøknadRoutes.ANNEN_FORELDER,
+                data: SøknadRoutes.UTENLANDSOPPHOLD,
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
@@ -565,7 +565,7 @@ describe('<OmBarnetSteg>', () => {
                 type: 'update',
             });
             expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-                data: SøknadRoutes.ANNEN_FORELDER,
+                data: SøknadRoutes.UTENLANDSOPPHOLD,
                 key: ContextDataType.APP_ROUTE,
                 type: 'update',
             });
@@ -612,7 +612,7 @@ describe('<OmBarnetSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.ANNEN_FORELDER,
+            data: SøknadRoutes.UTENLANDSOPPHOLD,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
