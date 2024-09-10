@@ -1,6 +1,5 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router-dom';
-import { getAlleYtelser } from 'utils/sakerUtils';
 
 import { bemUtils } from '@navikt/fp-utils';
 
@@ -16,6 +15,7 @@ import TidslinjePage from 'app/pages/tidslinje-page/TidslinjePage';
 import KontaktOss from 'app/sections/kontakt-oss/KontaktOss';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
+import { getAlleYtelser } from 'app/utils/sakerUtils';
 
 import OversiktRoutes from './routes';
 import './routes-wrapper.css';

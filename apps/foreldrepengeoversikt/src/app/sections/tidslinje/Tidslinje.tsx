@@ -2,15 +2,6 @@ import { UseQueryResult } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 import { Link as LinkInternal } from 'react-router-dom';
-import { guid } from 'utils/guid';
-import { getBarnGrupperingFraSak, getFørsteUttaksdagIForeldrepengesaken } from 'utils/sakerUtils';
-import {
-    VENTEÅRSAKER,
-    getAktivTidslinjeStegIndex,
-    getAlleTidslinjehendelser,
-    getHendelserForVisning,
-    getTidslinjehendelseTittel,
-} from 'utils/tidslinjeUtils';
 
 import { ExternalLink } from '@navikt/ds-icons';
 import { BodyShort, Button, Link, ReadMore } from '@navikt/ds-react';
@@ -25,6 +16,15 @@ import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
 import { Ytelse } from 'app/types/Ytelse';
+import { guid } from 'app/utils/guid';
+import { getBarnGrupperingFraSak, getFørsteUttaksdagIForeldrepengesaken } from 'app/utils/sakerUtils';
+import {
+    VENTEÅRSAKER,
+    getAktivTidslinjeStegIndex,
+    getAlleTidslinjehendelser,
+    getHendelserForVisning,
+    getTidslinjehendelseTittel,
+} from 'app/utils/tidslinjeUtils';
 
 import DokumentHendelse from './DokumentHendelse';
 import TidslinjeHendelse from './TidslinjeHendelse';

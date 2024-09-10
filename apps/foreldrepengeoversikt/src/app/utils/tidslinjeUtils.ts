@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
-import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from 'utils/Uttaksdagen';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 import { formatDate } from '@navikt/fp-utils';
@@ -17,6 +16,7 @@ import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
 import { Tilretteleggingstype } from 'app/types/TilretteleggingsperiodeSVP';
 import { Ytelse } from 'app/types/Ytelse';
 import { ÅpenBehandling, ÅpenBehandlingFP, ÅpenBehandlingSVP } from 'app/types/ÅpenBehandling';
+import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from 'app/utils/Uttaksdagen';
 
 import { formaterDato } from './dateUtils';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils';

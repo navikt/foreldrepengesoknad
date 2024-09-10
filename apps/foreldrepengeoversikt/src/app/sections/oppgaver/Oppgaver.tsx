@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
-import { guid } from 'utils/guid';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { minidialogOptions } from 'app/api/api';
 import ContentSection from 'app/components/content-section/ContentSection';
+import { guid } from 'app/utils/guid';
 
 import OppgaveLenkepanel from '../oppgave-lenkepanel/OppgaveLenkepanel';
 

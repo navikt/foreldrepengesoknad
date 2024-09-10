@@ -1,6 +1,5 @@
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
-import { getNavnPåForeldre } from 'utils/personUtils';
 
 import { Next } from '@navikt/ds-icons';
 import { Alert, Link } from '@navikt/ds-react';
@@ -11,6 +10,7 @@ import OversiktRoutes from 'app/routes/routes';
 import { Foreldrepengesak } from 'app/types/Foreldrepengesak';
 import { Periode } from 'app/types/Periode';
 import { RettighetType } from 'app/types/RettighetType';
+import { getNavnPåForeldre } from 'app/utils/personUtils';
 
 import PeriodeListe from '../periode-liste/PeriodeListe';
 import './periodeOversikt.css';

@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { getAlleYtelser, mapSakerDTOToSaker } from 'utils/sakerUtils';
 
 import { hentSakerOptions } from 'app/api/api';
+import { getAlleYtelser, mapSakerDTOToSaker } from 'app/utils/sakerUtils';
 
 export const useGetSelectedSak = () => {
     const params = useParams();

@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { validateFritekstFelt } from 'utils/validationUtils';
 
 import {
     Alert,
@@ -26,6 +25,7 @@ import { formatDate } from '@navikt/fp-utils';
 import EttersendingDto from 'app/types/EttersendingDTO';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import { Ytelse } from 'app/types/Ytelse';
+import { validateFritekstFelt } from 'app/utils/validationUtils';
 
 import ScrollToTop from '../scroll-to-top/ScrollToTop';
 import HvaLeggerNAVVektPå from './hva-legger-nav-vekt-på/HvaLeggerNAVVektPå';

@@ -1,10 +1,10 @@
 import { useIntl } from 'react-intl';
-import { finnTekstForUtsettelseÅrsak } from 'utils/periodeUtils';
 
 import { getUtsettelseFarge } from '@navikt/fp-utils';
 
 import { Forelder } from 'app/types/Forelder';
 import { UtsettelseÅrsakType } from 'app/types/UtsettelseÅrsakType';
+import { finnTekstForUtsettelseÅrsak } from 'app/utils/periodeUtils';
 
 import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';

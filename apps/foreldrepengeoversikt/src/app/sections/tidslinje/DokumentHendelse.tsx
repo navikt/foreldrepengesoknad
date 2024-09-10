@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import { lagUrl } from 'utils/dokumenterUtils';
 
 import { FileContent } from '@navikt/ds-icons';
 import { Link } from '@navikt/ds-react';
@@ -7,6 +6,7 @@ import { Link } from '@navikt/ds-react';
 import { bemUtils } from '@navikt/fp-utils';
 
 import { Dokument } from 'app/types/Dokument';
+import { lagUrl } from 'app/utils/dokumenterUtils';
 
 import './dokument-hendelse.css';
 

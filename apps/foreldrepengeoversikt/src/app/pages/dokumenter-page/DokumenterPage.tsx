@@ -1,8 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { Link, useParams } from 'react-router-dom';
-import { grupperDokumenterPåTidspunkt } from 'utils/dokumenterUtils';
-import { guid } from 'utils/guid';
 
 import { Alert, BodyLong, Heading, LinkPanel, Loader } from '@navikt/ds-react';
 
@@ -17,6 +15,8 @@ import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import { PageRouteLayout } from 'app/routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from 'app/routes/routes';
+import { grupperDokumenterPåTidspunkt } from 'app/utils/dokumenterUtils';
+import { guid } from 'app/utils/guid';
 
 import './dokumenter-page.css';
 

@@ -1,5 +1,4 @@
 import { useIntl } from 'react-intl';
-import { getNavnAnnenForelder } from 'utils/sakerUtils';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
@@ -13,6 +12,7 @@ import OversiktRoutes from 'app/routes/routes';
 import DinPlan from 'app/sections/din-plan/DinPlan';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
+import { getNavnAnnenForelder } from 'app/utils/sakerUtils';
 
 interface Props {
     søkerinfo: SøkerinfoDTO;
