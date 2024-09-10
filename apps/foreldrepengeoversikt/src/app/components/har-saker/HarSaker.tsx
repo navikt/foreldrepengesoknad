@@ -1,5 +1,4 @@
 import { useIntl } from 'react-intl';
-import { GruppertSak } from 'types/GruppertSak';
 import { guid } from 'utils/guid';
 import { getSakTittel } from 'utils/sakerUtils';
 
@@ -8,6 +7,7 @@ import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 import { bemUtils, capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
+import { GruppertSak } from 'app/types/GruppertSak';
 
 import SakLink from '../sak-link/SakLink';
 import './har-saker.css';

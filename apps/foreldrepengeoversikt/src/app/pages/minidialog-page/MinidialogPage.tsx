@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useNavigate, useParams } from 'react-router-dom';
-import EttersendingDto from 'types/EttersendingDTO';
 
 import { Heading, VStack } from '@navikt/ds-react';
 
@@ -16,6 +15,7 @@ import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 import { PageRouteLayout } from 'app/routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from 'app/routes/routes';
+import EttersendingDto from 'app/types/EttersendingDTO';
 
 interface Props {
     fnr: string;

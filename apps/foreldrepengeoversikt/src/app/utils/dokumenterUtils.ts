@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import { Dokument } from 'types/Dokument';
+
+import { Dokument } from 'app/types/Dokument';
 
 export const grupperDokumenterPåTidspunkt = (dokumenter: Dokument[]): Record<string, Dokument[]> => {
     const gruppert: Record<string, Dokument[]> = {};

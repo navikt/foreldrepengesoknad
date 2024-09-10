@@ -1,5 +1,3 @@
-import { Foreldrepengesak } from 'types/Foreldrepengesak';
-import { Periode } from 'types/Periode';
 import {
     Periodene,
     filtrerAnnenPartsUttakNårIkkeSamtidigUttak,
@@ -21,6 +19,8 @@ import { bemUtils } from '@navikt/fp-utils';
 
 import PeriodeOversikt from 'app/components/periode-oversikt/PeriodeOversikt';
 import { NavRoutes } from 'app/routes/routes';
+import { Foreldrepengesak } from 'app/types/Foreldrepengesak';
+import { Periode } from 'app/types/Periode';
 
 import './din-plan.css';
 

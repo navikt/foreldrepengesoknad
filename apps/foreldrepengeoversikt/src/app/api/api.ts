@@ -1,15 +1,16 @@
 import { queryOptions } from '@tanstack/react-query';
 import ky from 'ky';
-import { AnnenPartVedtakDTO } from 'types/AnnenPartVedtakDTO';
-import { Dokument } from 'types/Dokument';
-import EttersendingDto from 'types/EttersendingDTO';
-import { MellomlagredeYtelser } from 'types/MellomlagredeYtelser';
-import { MinidialogInnslag } from 'types/MinidialogInnslag';
-import { SakOppslagDTO } from 'types/SakOppslag';
-import { SøkerinfoDTO } from 'types/SøkerinfoDTO';
-import { Tidslinjehendelse } from 'types/Tidslinjehendelse';
 
 import { Skjemanummer } from '@navikt/fp-constants';
+
+import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
+import { Dokument } from 'app/types/Dokument';
+import EttersendingDto from 'app/types/EttersendingDTO';
+import { MellomlagredeYtelser } from 'app/types/MellomlagredeYtelser';
+import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
+import { SakOppslagDTO } from 'app/types/SakOppslag';
+import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
+import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 
 export const søkerInfoOptions = () =>
     queryOptions({

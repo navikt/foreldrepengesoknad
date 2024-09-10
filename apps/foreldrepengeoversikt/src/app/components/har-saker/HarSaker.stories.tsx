@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 import { MemoryRouter } from 'react-router-dom';
 import saker from 'storybookData/saker/saker.json';
-import { Ytelse } from 'types/Ytelse';
+
+import { Ytelse } from 'app/types/Ytelse';
 
 import HarSaker from './HarSaker';
 

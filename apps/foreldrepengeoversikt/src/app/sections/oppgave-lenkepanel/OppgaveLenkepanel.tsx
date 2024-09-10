@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { MinidialogInnslag } from 'types/MinidialogInnslag';
 
 import { DialogReport } from '@navikt/ds-icons';
 import { LinkPanel } from '@navikt/ds-react';
@@ -7,6 +6,7 @@ import { LinkPanel } from '@navikt/ds-react';
 import { bemUtils, formatDate } from '@navikt/fp-utils';
 
 import OversiktRoutes from 'app/routes/routes';
+import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 
 import './oppgaveLenkepanel.css';
 

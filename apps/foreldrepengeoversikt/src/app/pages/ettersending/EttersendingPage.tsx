@@ -2,10 +2,6 @@ import { useMutation } from '@tanstack/react-query';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Link, useParams } from 'react-router-dom';
-import EttersendingDto from 'types/EttersendingDTO';
-import { Sak } from 'types/Sak';
-import { SakOppslag } from 'types/SakOppslag';
-import { Ytelse } from 'types/Ytelse';
 import { getAlleYtelser } from 'utils/sakerUtils';
 import { getRelevanteSkjemanummer } from 'utils/skjemanummerUtils';
 
@@ -34,6 +30,10 @@ import ScrollToTop from 'app/components/scroll-to-top/ScrollToTop';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import { PageRouteLayout } from 'app/routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from 'app/routes/routes';
+import EttersendingDto from 'app/types/EttersendingDTO';
+import { Sak } from 'app/types/Sak';
+import { SakOppslag } from 'app/types/SakOppslag';
+import { Ytelse } from 'app/types/Ytelse';
 
 import './ettersending-page.css';
 

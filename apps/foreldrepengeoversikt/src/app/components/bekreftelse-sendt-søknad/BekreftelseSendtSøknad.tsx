@@ -1,14 +1,14 @@
 import { CheckmarkIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import Bankkonto from 'types/Bankkonto';
-import { Tidslinjehendelse } from 'types/Tidslinjehendelse';
-import { Ytelse } from 'types/Ytelse';
 
 import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { formatDate, formatTime } from '@navikt/fp-utils';
 
 import DokumentHendelse from 'app/sections/tidslinje/DokumentHendelse';
+import Bankkonto from 'app/types/Bankkonto';
+import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
+import { Ytelse } from 'app/types/Ytelse';
 
 import KontonummerInfo from '../kontonummer-info/KontonummerInfo';
 

@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import { Sak } from 'types/Sak';
-import { Ytelse } from 'types/Ytelse';
 
 import { Heading, LinkPanel, VStack } from '@navikt/ds-react';
 
 import { bemUtils, formatDate } from '@navikt/fp-utils';
+
+import { Sak } from 'app/types/Sak';
+import { Ytelse } from 'app/types/Ytelse';
 
 import StatusTag from '../status-tag/StatusTag';
 import './sak-link.css';

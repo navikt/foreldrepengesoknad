@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react/*';
-import { DokumentType } from 'types/DokumentType';
-import { Tidslinjehendelse } from 'types/Tidslinjehendelse';
+
+import { DokumentType } from 'app/types/DokumentType';
+import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 
 import { Ytelse } from '../../types/Ytelse';
 import BekreftelseSendtSøknad from './BekreftelseSendtSøknad';

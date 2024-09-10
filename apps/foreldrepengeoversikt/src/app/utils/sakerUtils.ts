@@ -1,20 +1,21 @@
 import dayjs from 'dayjs';
 import orderBy from 'lodash/orderBy';
 import { IntlShape } from 'react-intl';
-import { BarnGruppering } from 'types/BarnGruppering';
-import { EngangsstønadSak, EngangsstønadSakDTO } from 'types/EngangsstønadSak';
-import { Familiehendelse } from 'types/Familiehendelse';
-import { Foreldrepengesak, ForeldrepengesakDTO } from 'types/Foreldrepengesak';
-import { GruppertSak } from 'types/GruppertSak';
-import { Person } from 'types/Person';
-import { Sak } from 'types/Sak';
-import { SakOppslag, SakOppslagDTO } from 'types/SakOppslag';
-import { Situasjon } from 'types/Situasjon';
-import { SvangerskapspengeSak, SvangerskapspengeSakDTO } from 'types/SvangerskapspengeSak';
-import { SøkerinfoDTO } from 'types/SøkerinfoDTO';
-import { Ytelse } from 'types/Ytelse';
 
 import { formatDate } from '@navikt/fp-utils';
+
+import { BarnGruppering } from 'app/types/BarnGruppering';
+import { EngangsstønadSak, EngangsstønadSakDTO } from 'app/types/EngangsstønadSak';
+import { Familiehendelse } from 'app/types/Familiehendelse';
+import { Foreldrepengesak, ForeldrepengesakDTO } from 'app/types/Foreldrepengesak';
+import { GruppertSak } from 'app/types/GruppertSak';
+import { Person } from 'app/types/Person';
+import { Sak } from 'app/types/Sak';
+import { SakOppslag, SakOppslagDTO } from 'app/types/SakOppslag';
+import { Situasjon } from 'app/types/Situasjon';
+import { SvangerskapspengeSak, SvangerskapspengeSakDTO } from 'app/types/SvangerskapspengeSak';
+import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
+import { Ytelse } from 'app/types/Ytelse';
 
 import { ISOStringToDate, getErDatoInnenEnDagFraAnnenDato } from './dateUtils';
 import { getLeverPerson } from './personUtils';

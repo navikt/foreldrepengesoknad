@@ -2,8 +2,6 @@ import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
-import { Periode } from 'types/Periode';
-import { PeriodeResultatÅrsak } from 'types/PeriodeResultatÅrsak';
 import { ISOStringToDate, getAntallUttaksdagerITidsperiode, getVarighetString, måned3bokstaver } from 'utils/dateUtils';
 import {
     getOverlappendePeriodeTittel,
@@ -23,6 +21,8 @@ import { bemUtils } from '@navikt/fp-utils';
 
 import StønadskontoIkon from 'app/components/stønadskonto-ikon/StønadskontoIkon';
 import UtsettelseIkon from 'app/components/utsettelse-ikon/UtsettelseIkon';
+import { Periode } from 'app/types/Periode';
+import { PeriodeResultatÅrsak } from 'app/types/PeriodeResultatÅrsak';
 
 import './periodeListeItem.css';
 

@@ -1,11 +1,12 @@
-import { Dokument as DokumentType } from 'types/Dokument';
-import { DokumentType as DokumentTypeEnum } from 'types/DokumentType';
 import { lagUrl } from 'utils/dokumenterUtils';
 
 import { FileContent } from '@navikt/ds-icons';
 import { Detail, HGrid, HStack, Hide, Link, Show, Tag } from '@navikt/ds-react';
 
 import { bemUtils, formatDateExtended } from '@navikt/fp-utils';
+
+import { Dokument as DokumentType } from 'app/types/Dokument';
+import { DokumentType as DokumentTypeEnum } from 'app/types/DokumentType';
 
 import './dokument.css';
 

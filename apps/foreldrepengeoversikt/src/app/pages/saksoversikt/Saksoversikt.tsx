@@ -2,9 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { RedirectSource } from 'types/RedirectSource';
-import { SøkerinfoDTO } from 'types/SøkerinfoDTO';
-import { Ytelse } from 'types/Ytelse';
 import { getNavnAnnenForelder } from 'utils/sakerUtils';
 import { getRelevantNyTidslinjehendelse } from 'utils/tidslinjeUtils';
 
@@ -37,6 +34,9 @@ import OversiktRoutes from 'app/routes/routes';
 import DinPlan from 'app/sections/din-plan/DinPlan';
 import Oppgaver from 'app/sections/oppgaver/Oppgaver';
 import Tidslinje from 'app/sections/tidslinje/Tidslinje';
+import { RedirectSource } from 'app/types/RedirectSource';
+import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
+import { Ytelse } from 'app/types/Ytelse';
 
 interface Props {
     søkerinfo: SøkerinfoDTO;

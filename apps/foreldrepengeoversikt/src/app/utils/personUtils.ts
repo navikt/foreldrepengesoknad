@@ -1,5 +1,5 @@
-import { Foreldrepengesak } from 'types/Foreldrepengesak';
-import { Person } from 'types/Person';
+import { Foreldrepengesak } from 'app/types/Foreldrepengesak';
+import { Person } from 'app/types/Person';
 
 export interface NavnPåForeldre {
     farMedmor: string;

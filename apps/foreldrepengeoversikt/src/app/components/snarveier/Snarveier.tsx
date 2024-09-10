@@ -1,6 +1,4 @@
 import { useIntl } from 'react-intl';
-import { Sak } from 'types/Sak';
-import { Ytelse } from 'types/Ytelse';
 
 import { Heading, LinkPanel } from '@navikt/ds-react';
 
@@ -9,6 +7,8 @@ import { bemUtils } from '@navikt/fp-utils';
 
 import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 import { NavRoutes } from 'app/routes/routes';
+import { Sak } from 'app/types/Sak';
+import { Ytelse } from 'app/types/Ytelse';
 
 import './snarveier.css';
 

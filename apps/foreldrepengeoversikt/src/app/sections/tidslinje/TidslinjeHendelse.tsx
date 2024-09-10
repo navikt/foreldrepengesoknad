@@ -1,13 +1,14 @@
 import { RecordFillIcon, RecordIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import { TidslinjehendelseType } from 'types/TidslinjehendelseType';
 import { formaterDato, formaterTid } from 'utils/dateUtils';
 import { getTidligstDatoForInntektsmelding } from 'utils/tidslinjeUtils';
 
 import { BodyShort, Detail } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
+
+import { TidslinjehendelseType } from 'app/types/TidslinjehendelseType';
 
 import './tidslinje-hendelse.css';
 

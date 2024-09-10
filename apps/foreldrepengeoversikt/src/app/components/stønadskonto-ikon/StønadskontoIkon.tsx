@@ -1,13 +1,14 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
-import { Forelder } from 'types/Forelder';
-import { MorsAktivitet } from 'types/MorsAktivitet';
-import { PeriodeResultat } from 'types/PeriodeResultat';
 import { getStønadskontoForelderNavn } from 'utils/periodeUtils';
 import { NavnPåForeldre } from 'utils/personUtils';
 
 import { StønadskontoType } from '@navikt/fp-constants';
 import { getUttaksperiodeFarge } from '@navikt/fp-utils';
+
+import { Forelder } from 'app/types/Forelder';
+import { MorsAktivitet } from 'app/types/MorsAktivitet';
+import { PeriodeResultat } from 'app/types/PeriodeResultat';
 
 import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
