@@ -98,7 +98,6 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                                 ),
                             ),
                         ]}
-                        maxLength={100}
                     />
                     <Datepicker
                         name={`arbeidIUtlandet.${index}.fom`}

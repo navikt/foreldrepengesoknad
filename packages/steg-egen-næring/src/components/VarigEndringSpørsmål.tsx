@@ -116,8 +116,6 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({
                     <TextArea
                         name="varigEndringBeskrivelse"
                         label={egenNæringVarigEndringBeskrivelseLabel}
-                        minLength={TEXT_INPUT_MIN_LENGTH}
-                        maxLength={TEXT_INPUT_MAX_LENGTH}
                         validate={[
                             isRequired(
                                 intl.formatMessage({ id: 'valideringsfeil.egenNæringVarigEndringBeskrivelse.påkrevd' }),
