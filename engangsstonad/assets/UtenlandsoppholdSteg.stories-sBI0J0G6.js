@@ -1,5 +1,0 @@
-import{i as p,j as o}from"./dateFormValidation-C0UtuBi7.js";import{a as n}from"./chunk-454WOBUV-CM0pFb8Z.js";import{M as c,P as l,E as u,C as d}from"./useEsNavigator-BBqit1Si.js";import{U as e}from"./UtenlandsoppholdSteg-gTQW1RyJ.js";import"./index-CTjT7uj6.js";import"./index-BRV0Se7Z.js";import"./index-CYM-y3Gt.js";import"./v4-CQkTLCs1.js";import"./TidligereUtenlandsoppholdPanel-DPMY5FAd.js";import"./ErrorSummaryHookForm-DuBmz4si.js";const g=()=>(...r)=>(n("button-click")(...r),Promise.resolve()),P={component:e,render:({gåTilNesteSide:r=n("button-click"),mellomlagreOgNaviger:m})=>(p(),o.jsx(c,{initialEntries:[l.UTENLANDSOPPHOLD],children:o.jsx(u,{onDispatch:r,initialState:{[d.SØKERSITUASJON]:{situasjon:"fødsel"}},children:o.jsx(e,{mellomlagreOgNaviger:m})})}))},t={args:{mellomlagreOgNaviger:g()}};var a,s,i;t.parameters={...t.parameters,docs:{...(a=t.parameters)==null?void 0:a.docs,source:{originalSource:`{
-  args: {
-    mellomlagreOgNaviger: promiseAction()
-  }
-}`,...(i=(s=t.parameters)==null?void 0:s.docs)==null?void 0:i.source}}};const U=["Default"];export{t as Default,U as __namedExportsOrder,P as default};
