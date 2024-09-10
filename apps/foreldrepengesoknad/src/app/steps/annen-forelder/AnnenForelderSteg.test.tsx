@@ -79,7 +79,7 @@ describe('<AnnenForelderSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: SøknadRoutes.OM_BARNET,
+            data: SøknadRoutes.ARBEID_OG_INNTEKT,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

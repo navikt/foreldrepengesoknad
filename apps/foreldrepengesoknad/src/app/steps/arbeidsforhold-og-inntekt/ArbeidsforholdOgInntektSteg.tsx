@@ -78,8 +78,7 @@ const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
             return navigator.goToNextStep(SøknadRoutes.ANDRE_INNTEKTER);
         }
 
-        const harDokumentasjonssteg = stepConfig.some((s) => s.id === SøknadRoutes.DOKUMENTASJON);
-        return navigator.goToNextStep(harDokumentasjonssteg ? SøknadRoutes.DOKUMENTASJON : SøknadRoutes.OPPSUMMERING);
+        return navigator.goToNextDefaultStep();
     };
 
     return (
