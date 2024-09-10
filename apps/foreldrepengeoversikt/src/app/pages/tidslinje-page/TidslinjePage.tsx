@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
+import { Sak } from 'types/Sak';
+import { SøkerinfoDTOBarn } from 'types/SøkerinfoDTO';
 
 import { Heading, Loader } from '@navikt/ds-react';
 
@@ -14,8 +16,6 @@ import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 import { PageRouteLayout } from 'app/routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from 'app/routes/routes';
 import Tidslinje from 'app/sections/tidslinje/Tidslinje';
-import { Sak } from 'app/types/Sak';
-import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
 
 import './tidslinje-page.css';
 

@@ -1,9 +1,9 @@
+import Bankkonto from 'types/Bankkonto';
+import { Ytelse } from 'types/Ytelse';
+
 import { Accordion, BodyShort, Detail, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-
-import Bankkonto from 'app/types/Bankkonto';
-import { Ytelse } from 'app/types/Ytelse';
 
 interface Props {
     bankkonto: Bankkonto | undefined;

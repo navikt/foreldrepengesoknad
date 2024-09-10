@@ -3,6 +3,15 @@ import { useQuery } from '@tanstack/react-query';
 import { ReactNode } from 'react';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
+import { Sak } from 'types/Sak';
+import { Ytelse } from 'types/Ytelse';
+import {
+    getFamiliehendelseDato,
+    getSakTittel,
+    grupperSakerPåBarn,
+    mapSakerDTOToSaker,
+    utledFamiliesituasjon,
+} from 'utils/sakerUtils';
 
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
@@ -10,15 +19,6 @@ import { bemUtils } from '@navikt/fp-utils';
 
 import { hentSakerOptions, søkerInfoOptions } from 'app/api/api';
 import { useGetSelectedRoute } from 'app/hooks/useSelectedRoute';
-import { Sak } from 'app/types/Sak';
-import { Ytelse } from 'app/types/Ytelse';
-import {
-    getFamiliehendelseDato,
-    getSakTittel,
-    grupperSakerPåBarn,
-    mapSakerDTOToSaker,
-    utledFamiliesituasjon,
-} from 'app/utils/sakerUtils';
 
 import Breadcrumb from '../breadcrumb/Breadcrumb';
 import StatusTag from '../status-tag/StatusTag';

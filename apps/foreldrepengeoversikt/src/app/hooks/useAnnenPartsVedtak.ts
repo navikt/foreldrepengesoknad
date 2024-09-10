@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
+import { Sak } from 'types/Sak';
+import { Ytelse } from 'types/Ytelse';
+import { getFamiliehendelseDato } from 'utils/sakerUtils';
 
 import { hentAnnenPartsVedtakOptions } from 'app/api/api';
-import { Sak } from 'app/types/Sak';
-import { Ytelse } from 'app/types/Ytelse';
-import { getFamiliehendelseDato } from 'app/utils/sakerUtils';
 
 export function useAnnenPartsVedtak(sak: Sak | undefined) {
     const planErVedtatt = sak?.åpenBehandling === undefined;

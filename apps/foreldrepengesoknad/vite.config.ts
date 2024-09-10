@@ -19,9 +19,13 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            app: path.resolve(__dirname, './src/app'),
-            'utils-test': path.resolve(__dirname, './src/utils-test'),
-            storybookData: path.resolve(__dirname, './src/storybook'),
+            appData: path.resolve(__dirname, './src/appData'),
+            pages: path.resolve(__dirname, './src/pages'),
+            steps: path.resolve(__dirname, './src/steps'),
+            utils: path.resolve(__dirname, './src/utils'),
+            api: path.resolve(__dirname, './src/api'),
+            types: path.resolve(__dirname, './src/types'),
+            storybookData: path.resolve(__dirname, '.storybook/testData'),
         },
     },
     build: {

@@ -2,8 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
-
-import { Ytelse } from 'app/types/Ytelse';
+import { Ytelse } from 'types/Ytelse';
 
 import MinidialogSkjema from './MinidialogSkjema';
 

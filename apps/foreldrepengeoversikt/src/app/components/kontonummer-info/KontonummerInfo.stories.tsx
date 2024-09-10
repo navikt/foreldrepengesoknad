@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react/*';
-
-import { Ytelse } from 'app/types/Ytelse';
+import { Ytelse } from 'types/Ytelse';
 
 import KontonummerInfo from './KontonummerInfo';
 

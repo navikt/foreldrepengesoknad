@@ -1,10 +1,10 @@
+import { Dokument as DokumentType } from 'types/Dokument';
+import { guid } from 'utils/guid';
+
 import { Folder } from '@navikt/ds-icons';
 import { Accordion, BodyShort } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
-
-import { Dokument as DokumentType } from 'app/types/Dokument';
-import { guid } from 'app/utils/guid';
 
 import Dokument from '../dokument/Dokument';
 import './grupperte-dokumenter.css';

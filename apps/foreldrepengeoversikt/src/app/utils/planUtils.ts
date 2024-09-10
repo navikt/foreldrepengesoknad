@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
-
-import { Periode } from 'app/types/Periode';
+import { Periode } from 'types/Periode';
 
 import { Uttaksdagen } from './Uttaksdagen';
 

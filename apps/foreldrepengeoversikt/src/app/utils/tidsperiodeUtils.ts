@@ -1,8 +1,7 @@
 import dayjs from 'dayjs';
+import { Periode } from 'types/Periode';
 
 import { TidsperiodeDate } from '@navikt/fp-types';
-
-import { Periode } from 'app/types/Periode';
 
 import { ISOStringToDate } from './dateUtils';
 

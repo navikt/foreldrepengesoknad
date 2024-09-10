@@ -5,9 +5,9 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import annenPartsVedtak from 'storybookData/annenPartVedtak/annenPartVedtak.json';
 import saker from 'storybookData/saker/saker.json';
 import søkerinfo from 'storybookData/sokerinfo/sokerinfo.json';
+import { SøkerinfoDTO } from 'types/SøkerinfoDTO';
 
 import OversiktRoutes from 'app/routes/routes';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 
 import DinPlanPage from './DinPlanPage';
 

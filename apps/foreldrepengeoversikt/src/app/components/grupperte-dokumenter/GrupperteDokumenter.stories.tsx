@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react/*';
-
-import { DokumentType } from 'app/types/DokumentType';
+import { DokumentType } from 'types/DokumentType';
 
 import GrupperteDokumenter from './GrupperteDokumenter';
 

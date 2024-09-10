@@ -4,13 +4,16 @@
         "baseUrl": "src",
         "jsx": "react-jsx",
         "paths": {
-            "utils-test/*": ["./utils-test/*"],
-            "app/*": ["./app/*"],
-            "storybookData/*": ["storybook/*"]
+            "appData/*": ["appData/*"],
+            "pages/*": ["pages/*"],
+            "steps/*": ["steps/*"],
+            "utils/*": ["utils/*"],
+            "api/*": ["api/*"],
+            "types/*": ["types/*"],
+            "storybookData/*": [".storybook/testData/*"]
         },
-        "rootDir": "src",
         "types": ["vite/client", "node", "@testing-library/jest-dom", "vitest/globals"]
     },
-    "include": ["src/app/**/*", "src/@types", "src/uttaksplan/**/*", "src/uttaksplan-ny/**/*", "src/storybook"],
+    "include": ["src/**/*", "@types", "src/uttaksplan/**/*", "src/uttaksplan-ny/**/*", "storybook/testData/**/*"],
     "exclude": ["src/common/**/*", "node_modules"]
 }

@@ -2,21 +2,9 @@ import { ExclamationmarkTriangleIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
-
-import { BodyShort, Heading, VStack } from '@navikt/ds-react';
-
-import { bemUtils } from '@navikt/fp-utils';
-
-import StønadskontoIkon from 'app/components/stønadskonto-ikon/StønadskontoIkon';
-import UtsettelseIkon from 'app/components/utsettelse-ikon/UtsettelseIkon';
-import { Periode } from 'app/types/Periode';
-import { PeriodeResultatÅrsak } from 'app/types/PeriodeResultatÅrsak';
-import {
-    ISOStringToDate,
-    getAntallUttaksdagerITidsperiode,
-    getVarighetString,
-    måned3bokstaver,
-} from 'app/utils/dateUtils';
+import { Periode } from 'types/Periode';
+import { PeriodeResultatÅrsak } from 'types/PeriodeResultatÅrsak';
+import { ISOStringToDate, getAntallUttaksdagerITidsperiode, getVarighetString, måned3bokstaver } from 'utils/dateUtils';
 import {
     getOverlappendePeriodeTittel,
     getPeriodeForelder,
@@ -26,8 +14,15 @@ import {
     isOverføringsperiode,
     isUtsettelsesperiode,
     isUttaksperiode,
-} from 'app/utils/periodeUtils';
-import { NavnPåForeldre } from 'app/utils/personUtils';
+} from 'utils/periodeUtils';
+import { NavnPåForeldre } from 'utils/personUtils';
+
+import { BodyShort, Heading, VStack } from '@navikt/ds-react';
+
+import { bemUtils } from '@navikt/fp-utils';
+
+import StønadskontoIkon from 'app/components/stønadskonto-ikon/StønadskontoIkon';
+import UtsettelseIkon from 'app/components/utsettelse-ikon/UtsettelseIkon';
 
 import './periodeListeItem.css';
 

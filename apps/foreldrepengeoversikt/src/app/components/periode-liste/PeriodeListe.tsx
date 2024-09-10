@@ -1,12 +1,12 @@
+import { Periode } from 'types/Periode';
+import { guid } from 'utils/guid';
+import { isUttaksperiode } from 'utils/periodeUtils';
+import { NavnPåForeldre } from 'utils/personUtils';
+import { Tidsperioden, getTidsperiode } from 'utils/tidsperiodeUtils';
+
 import { Heading } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
-
-import { Periode } from 'app/types/Periode';
-import { guid } from 'app/utils/guid';
-import { isUttaksperiode } from 'app/utils/periodeUtils';
-import { NavnPåForeldre } from 'app/utils/personUtils';
-import { Tidsperioden, getTidsperiode } from 'app/utils/tidsperiodeUtils';
 
 import PeriodeListeItem from '../periode-liste-item/PeriodeListeItem';
 import './periode-liste.css';

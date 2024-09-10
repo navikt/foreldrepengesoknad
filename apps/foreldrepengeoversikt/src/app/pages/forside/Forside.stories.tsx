@@ -7,9 +7,9 @@ import manglendeVedlegg from 'storybookData/manglendeVedlegg/manglendeVedlegg.js
 import saker from 'storybookData/saker/saker.json';
 import søkerinfo from 'storybookData/sokerinfo/sokerinfo.json';
 import tidslinjeHendelser from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.json';
+import { SøkerinfoDTO } from 'types/SøkerinfoDTO';
 
 import OversiktRoutes from 'app/routes/routes';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 
 import Forside from './Forside';
 

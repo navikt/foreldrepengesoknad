@@ -1,5 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
+import { RedirectSource, UKNOWN_SAKSNUMMER } from 'types/RedirectSource';
+import { SakOppslag } from 'types/SakOppslag';
+import { SøkerinfoDTO } from 'types/SøkerinfoDTO';
+import { getAlleYtelser, grupperSakerPåBarn } from 'utils/sakerUtils';
 
 import { Alert, VStack } from '@navikt/ds-react';
 
@@ -16,10 +20,6 @@ import {
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import { PageRouteLayout } from 'app/routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from 'app/routes/routes';
-import { RedirectSource, UKNOWN_SAKSNUMMER } from 'app/types/RedirectSource';
-import { SakOppslag } from 'app/types/SakOppslag';
-import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
-import { getAlleYtelser, grupperSakerPåBarn } from 'app/utils/sakerUtils';
 
 import './forside.css';
 

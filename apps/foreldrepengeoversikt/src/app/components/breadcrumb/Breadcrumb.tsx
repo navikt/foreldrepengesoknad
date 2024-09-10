@@ -1,5 +1,6 @@
 import { ChevronRightIcon } from '@navikt/aksel-icons';
 import { Link } from 'react-router-dom';
+import { getBreadcrumbs } from 'types/Breadcrumb';
 
 import { Home } from '@navikt/ds-icons';
 import { BodyShort, Link as DSLink } from '@navikt/ds-react';
@@ -8,7 +9,6 @@ import { bemUtils } from '@navikt/fp-utils';
 
 import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 import OversiktRoutes from 'app/routes/routes';
-import { getBreadcrumbs } from 'app/types/Breadcrumb';
 
 import './breadcrumb.css';
 
