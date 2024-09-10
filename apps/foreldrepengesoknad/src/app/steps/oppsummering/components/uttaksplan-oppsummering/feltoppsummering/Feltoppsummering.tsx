@@ -1,6 +1,7 @@
 import * as React from 'react';
-import './feltoppsummering.less';
+
 import InnholdMedLedetekst from '../InnholdMedLedetekst';
+import './feltoppsummering.less';
 
 interface Props {
     feltnavn: string;

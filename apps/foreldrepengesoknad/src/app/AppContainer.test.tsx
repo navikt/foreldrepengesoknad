@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import Api from './api/api';
+
 import AppContainer from './AppContainer';
+import Api from './api/api';
 import { RequestStatus } from './types/RequestState';
 
 describe('<AppContainer>', () => {

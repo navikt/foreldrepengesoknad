@@ -1,5 +1,6 @@
 import { Dispatch, FunctionComponent, SetStateAction } from 'react';
 import { FormattedMessage } from 'react-intl';
+
 import { BodyShort, Button, HStack, Heading, Modal } from '@navikt/ds-react';
 
 interface Props {

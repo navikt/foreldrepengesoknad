@@ -5,15 +5,15 @@ import { Accordion, Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
 import { AnnenForelder, SivilstandType, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
-import { OppsummeringPanel } from '@navikt/fp-steg-oppsummering';
+import { BoIUtlandetOppsummeringspunkt, OppsummeringPanel } from '@navikt/fp-steg-oppsummering';
 import { Søker, Søkerinfo, Søkerrolle } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetData } from 'app/appData/FpDataContext';
+import SøknadRoutes from 'app/appData/routes';
 import useFpNavigator from 'app/appData/useFpNavigator';
 import useStepConfig from 'app/appData/useStepConfig';
-import { NyOppsummering } from 'app/steps/oppsummering/NyOppsummering';
 import { getFamiliehendelsedato, getTermindato } from 'app/utils/barnUtils';
 import { ISOStringToDate } from 'app/utils/dateUtils';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnrString, getNavnPåForeldre } from 'app/utils/personUtils';
@@ -65,6 +65,9 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
 
+    const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+    const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+
     const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
@@ -101,136 +104,130 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
     const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(søker, rolle, annenForelder, barnetErIkkeFødt);
 
     return (
-        <>
-            <NyOppsummering {...props} />
-
-            <ContentWrapper>
-                <Heading size="large">
-                    <FormattedMessage id="søknad.pageheading" />
-                </Heading>
-                <OppsummeringPanel
-                    appName="Foreldrepenger"
-                    stepConfig={stepConfig}
-                    sendSøknad={sendSøknad}
-                    cancelApplication={avbrytSøknad}
-                    goToPreviousStep={navigator.goToPreviousDefaultStep}
-                    onContinueLater={navigator.fortsettSøknadSenere}
-                    ekstraSamtykketekst={ekstraSamtykketekst}
-                >
-                    <VStack gap="10">
-                        <Accordion indent={false}>
-                            <OppsummeringPanel.Punkt tittel="Barnet" hide={erEndringssøknad}>
-                                <BarnOppsummering barn={barn} familiehendelsesdato={familiehendelsesdato!} />
-                            </OppsummeringPanel.Punkt>
-                            <OppsummeringPanel.Punkt tittel="Den andre forelderen" hide={erEndringssøknad}>
-                                <AnnenForelderOppsummering
-                                    annenForelder={annenForelder}
-                                    søkerrolle={søkersituasjon.rolle}
+        <ContentWrapper>
+            <Heading size="large">
+                <FormattedMessage id="søknad.pageheading" />
+            </Heading>
+            <OppsummeringPanel
+                appName="Foreldrepenger"
+                stepConfig={stepConfig}
+                sendSøknad={sendSøknad}
+                cancelApplication={avbrytSøknad}
+                goToPreviousStep={navigator.goToPreviousDefaultStep}
+                onContinueLater={navigator.fortsettSøknadSenere}
+                ekstraSamtykketekst={ekstraSamtykketekst}
+            >
+                <VStack gap="10">
+                    <Accordion indent={false}>
+                        <OppsummeringPanel.Punkt tittel="Barnet" hide={erEndringssøknad}>
+                            <BarnOppsummering barn={barn} familiehendelsesdato={familiehendelsesdato!} />
+                        </OppsummeringPanel.Punkt>
+                        <OppsummeringPanel.Punkt tittel="Den andre forelderen" hide={erEndringssøknad}>
+                            <AnnenForelderOppsummering
+                                annenForelder={annenForelder}
+                                søkerrolle={søkersituasjon.rolle}
+                            />
+                        </OppsummeringPanel.Punkt>
+                        <OppsummeringPanel.Punkt tittel="Bo i utlandet" hide={erEndringssøknad}>
+                            {!erEndringssøknad && (
+                                <BoIUtlandetOppsummeringspunkt
+                                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
+                                    tidligereUtenlandsopphold={
+                                        tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd ?? []
+                                    }
+                                    senereUtenlandsopphold={senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd ?? []}
                                 />
-                            </OppsummeringPanel.Punkt>
-                            {/*<OppsummeringPanel.Punkt tittel="Bo i utlandet" hide={erEndringssøknad}>*/}
-                            {/*    {!erEndringssøknad && (*/}
-                            {/*        <BoIUtlandetOppsummeringspunkt*/}
-                            {/*            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}*/}
-                            {/*            tidligereUtenlandsopphold={tempMappingUtenlandsopphold(*/}
-                            {/*                tidligereUtenlandsopphold?.tidligereOpphold ?? [],*/}
-                            {/*            )}*/}
-                            {/*            senereUtenlandsopphold={tempMappingUtenlandsopphold(*/}
-                            {/*                senereUtenlandsopphold?.senereOpphold ?? [],*/}
-                            {/*            )}*/}
-                            {/*        />*/}
-                            {/*    )}*/}
-                            {/*</OppsummeringPanel.Punkt>*/}
-                            <OppsummeringPanel.Punkt
-                                tittel="Arbeidsforhold og andre inntektskilder"
-                                hide={erEndringssøknad}
-                            >
-                                <ArbeidsforholdOgAndreInntekterOppsummering
-                                    arbeidsforhold={søkerInfo.arbeidsforhold}
-                                    barn={barn}
-                                    søkersituasjon={søkersituasjon}
-                                    arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
-                                    frilans={frilans}
-                                    egenNæring={egenNæring}
-                                    andreInntektskilder={andreInntektskilder}
-                                />
-                            </OppsummeringPanel.Punkt>
-                            <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.uttak' })}>
-                                <UttaksplanOppsummering
-                                    perioder={uttaksplan}
-                                    navnPåForeldre={navnPåForeldre}
-                                    annenForelder={annenForelder}
-                                    erFarEllerMedmor={søkerErFarEllerMedmor}
-                                    registrerteArbeidsforhold={søkerInfo.arbeidsforhold}
-                                    dekningsgrad={periodeMedForeldrepenger.dekningsgrad}
-                                    antallUkerUttaksplan={uttaksplanMetadata.antallUkerIUttaksplan!}
-                                    eksisterendeUttaksplan={eksisterendeSak ? eksisterendeSak.uttaksplan : undefined}
-                                    familiehendelsesdato={familiehendelsesdato!}
-                                    termindato={termindato}
-                                    situasjon={søkersituasjon.situasjon}
-                                    erAleneOmOmsorg={erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false}
-                                    antallBarn={barn.antallBarn}
-                                    ønskerJustertUttakVedFødsel={uttaksplanMetadata.ønskerJustertUttakVedFødsel}
-                                />
-                            </OppsummeringPanel.Punkt>
-                            <OppsummeringPanel.Punkt
-                                hide={vedlegg === undefined || inneholderIkkeVedlegg}
-                                tittel={intl.formatMessage({
-                                    id: manglerDokumentasjon
-                                        ? 'oppsummering.manglerDokumentasjon'
-                                        : 'oppsummering.dokumentasjon',
-                                })}
-                            >
-                                <DokumentasjonOppsummering
-                                    vedlegg={vedlegg!}
-                                    setManglerDokumentasjon={setManglerDokumentasjon}
-                                />
-                            </OppsummeringPanel.Punkt>
-                        </Accordion>
-                        {manglerDokumentasjon && (
-                            <Alert variant="info">
-                                <VStack gap="2">
-                                    <Heading size="small" level="2">
-                                        <FormattedMessage id="oppsummering.manglerDokumentasjon.heading" />
-                                    </Heading>
-                                    <BodyLong>
-                                        <FormattedMessage id="oppsummering.manglerDokumentasjon.content" />
-                                    </BodyLong>
-                                </VStack>
-                            </Alert>
-                        )}
-                        {visInfoboksOmFarskapsportal && (
-                            <Alert variant="info">
-                                <Heading size="small" level="3">
-                                    <FormattedMessage
-                                        id="oppsummering.tekstOmFarskapsportal.overskrift"
-                                        values={{ hvem: søkersituasjon.rolle }}
-                                    />
+                            )}
+                        </OppsummeringPanel.Punkt>
+                        <OppsummeringPanel.Punkt
+                            tittel="Arbeidsforhold og andre inntektskilder"
+                            hide={erEndringssøknad}
+                        >
+                            <ArbeidsforholdOgAndreInntekterOppsummering
+                                arbeidsforhold={søkerInfo.arbeidsforhold}
+                                barn={barn}
+                                søkersituasjon={søkersituasjon}
+                                arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
+                                frilans={frilans}
+                                egenNæring={egenNæring}
+                                andreInntektskilder={andreInntektskilder}
+                            />
+                        </OppsummeringPanel.Punkt>
+                        <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.uttak' })}>
+                            <UttaksplanOppsummering
+                                perioder={uttaksplan}
+                                navnPåForeldre={navnPåForeldre}
+                                annenForelder={annenForelder}
+                                erFarEllerMedmor={søkerErFarEllerMedmor}
+                                registrerteArbeidsforhold={søkerInfo.arbeidsforhold}
+                                dekningsgrad={periodeMedForeldrepenger.dekningsgrad}
+                                antallUkerUttaksplan={uttaksplanMetadata.antallUkerIUttaksplan!}
+                                eksisterendeUttaksplan={eksisterendeSak ? eksisterendeSak.uttaksplan : undefined}
+                                familiehendelsesdato={familiehendelsesdato!}
+                                termindato={termindato}
+                                situasjon={søkersituasjon.situasjon}
+                                erAleneOmOmsorg={erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false}
+                                antallBarn={barn.antallBarn}
+                                ønskerJustertUttakVedFødsel={uttaksplanMetadata.ønskerJustertUttakVedFødsel}
+                            />
+                        </OppsummeringPanel.Punkt>
+                        <OppsummeringPanel.Punkt
+                            hide={vedlegg === undefined || inneholderIkkeVedlegg}
+                            tittel={intl.formatMessage({
+                                id: manglerDokumentasjon
+                                    ? 'oppsummering.manglerDokumentasjon'
+                                    : 'oppsummering.dokumentasjon',
+                            })}
+                        >
+                            <DokumentasjonOppsummering
+                                vedlegg={vedlegg!}
+                                setManglerDokumentasjon={setManglerDokumentasjon}
+                            />
+                        </OppsummeringPanel.Punkt>
+                    </Accordion>
+                    {manglerDokumentasjon && (
+                        <Alert variant="info">
+                            <VStack gap="2">
+                                <Heading size="small" level="2">
+                                    <FormattedMessage id="oppsummering.manglerDokumentasjon.heading" />
                                 </Heading>
-
+                                <BodyLong>
+                                    <FormattedMessage id="oppsummering.manglerDokumentasjon.content" />
+                                </BodyLong>
+                            </VStack>
+                        </Alert>
+                    )}
+                    {visInfoboksOmFarskapsportal && (
+                        <Alert variant="info">
+                            <Heading size="small" level="3">
                                 <FormattedMessage
-                                    id="oppsummering.tekstOmFarskapsportal.far"
-                                    values={{
-                                        hvem: søkersituasjon.rolle,
-                                        a: (msg: any) => (
-                                            <a
-                                                href={links.farskapsportal}
-                                                className="lenke"
-                                                rel="noreferrer"
-                                                target="_blank"
-                                            >
-                                                {msg}
-                                            </a>
-                                        ),
-                                        antallBarn: barn.antallBarn,
-                                    }}
+                                    id="oppsummering.tekstOmFarskapsportal.overskrift"
+                                    values={{ hvem: søkersituasjon.rolle }}
                                 />
-                            </Alert>
-                        )}
-                    </VStack>
-                </OppsummeringPanel>
-            </ContentWrapper>
-        </>
+                            </Heading>
+
+                            <FormattedMessage
+                                id="oppsummering.tekstOmFarskapsportal.far"
+                                values={{
+                                    hvem: søkersituasjon.rolle,
+                                    a: (msg: any) => (
+                                        <a
+                                            href={links.farskapsportal}
+                                            className="lenke"
+                                            rel="noreferrer"
+                                            target="_blank"
+                                        >
+                                            {msg}
+                                        </a>
+                                    ),
+                                    antallBarn: barn.antallBarn,
+                                }}
+                            />
+                        </Alert>
+                    )}
+                </VStack>
+            </OppsummeringPanel>
+        </ContentWrapper>
     );
 };
 

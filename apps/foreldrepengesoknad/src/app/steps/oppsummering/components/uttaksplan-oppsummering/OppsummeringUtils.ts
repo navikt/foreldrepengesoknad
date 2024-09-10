@@ -1,3 +1,5 @@
+import { IntlShape } from 'react-intl';
+
 import {
     Arbeidsform,
     Overføringsperiode,
@@ -6,7 +8,6 @@ import {
     Utsettelsesperiode,
 } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { IntlShape } from 'react-intl';
 
 type MessageValue = string | number | boolean | Date | null | undefined;
 

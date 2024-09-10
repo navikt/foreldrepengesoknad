@@ -1,5 +1,6 @@
-import { Label } from '@navikt/ds-react';
 import { FunctionComponent, ReactNode } from 'react';
+
+import { Label } from '@navikt/ds-react';
 
 interface Props {
     title: string;
