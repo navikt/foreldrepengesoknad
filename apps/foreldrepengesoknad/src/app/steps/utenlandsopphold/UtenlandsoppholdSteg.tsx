@@ -41,8 +41,8 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
 
     const save = (values: Utenlandsopphold) => {
         oppdaterUtenlandsopphold({
-            iNorgeSiste12Mnd: !values.harBoddUtenforNorgeSiste12Mnd,
-            iNorgeNeste12Mnd: !values.skalBoUtenforNorgeNeste12Mnd,
+            harBoddUtenforNorgeSiste12Mnd: values.harBoddUtenforNorgeSiste12Mnd,
+            skalBoUtenforNorgeNeste12Mnd: values.skalBoUtenforNorgeNeste12Mnd,
         });
 
         if (!values.harBoddUtenforNorgeSiste12Mnd) {
@@ -68,8 +68,8 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
                 utenlandsopphold={
                     utenlandsopphold
                         ? {
-                              harBoddUtenforNorgeSiste12Mnd: !utenlandsopphold.iNorgeSiste12Mnd,
-                              skalBoUtenforNorgeNeste12Mnd: !utenlandsopphold.iNorgeNeste12Mnd,
+                              harBoddUtenforNorgeSiste12Mnd: !utenlandsopphold.skalBoUtenforNorgeNeste12Mnd,
+                              skalBoUtenforNorgeNeste12Mnd: !utenlandsopphold.skalBoUtenforNorgeNeste12Mnd,
                           }
                         : undefined
                 }

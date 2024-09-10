@@ -12,13 +12,20 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
-import { Sivilstand, Søker, Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
+import {
+    Sivilstand,
+    Søker,
+    Søkerinfo,
+    SøkersituasjonFp,
+    Utenlandsopphold,
+    UtenlandsoppholdSenere,
+    UtenlandsoppholdTidligere,
+} from '@navikt/fp-types';
 
 import { Action, ContextDataType, FpDataContext } from 'app/appData/FpDataContext';
 import SøknadRoutes from 'app/appData/routes';
 import { AndreInntektskilder } from 'app/types/AndreInntektskilder';
 import { AnnenInntektType } from 'app/types/AnnenInntekt';
-import { Opphold, SenereOpphold, TidligereOpphold } from 'app/types/InformasjonOmUtenlandsopphold';
 import { Næringstype } from 'app/types/Næring';
 
 import Oppsummering from './Oppsummering';
@@ -105,8 +112,8 @@ const defaultAnnenForelder = {
 };
 
 const defaultUtenlandsopphold = {
-    iNorgeNeste12Mnd: true,
-    iNorgeSiste12Mnd: true,
+    harBoddUtenforNorgeSiste12Mnd: false,
+    skalBoUtenforNorgeNeste12Mnd: false,
 };
 
 const defaultUttaksplan = [
@@ -179,9 +186,9 @@ type StoryArgs = {
     søkerinfo?: Søkerinfo;
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelder;
-    utenlandsopphold?: Opphold;
-    utenlandsoppholdSenere?: SenereOpphold;
-    utenlandsoppholdTidligere?: TidligereOpphold;
+    utenlandsopphold?: Utenlandsopphold;
+    utenlandsoppholdSenere?: UtenlandsoppholdSenere;
+    utenlandsoppholdTidligere?: UtenlandsoppholdTidligere;
     barn?: Barn;
     sivilstand?: Sivilstand;
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
@@ -440,8 +447,8 @@ export const MorMedUtenlandsopphold: Story = {
     args: {
         ...Default.args,
         utenlandsopphold: {
-            iNorgeNeste12Mnd: false,
-            iNorgeSiste12Mnd: false,
+            skalBoUtenforNorgeNeste12Mnd: true,
+            harBoddUtenforNorgeSiste12Mnd: true,
         },
         utenlandsoppholdSenere: {
             senereOpphold: [

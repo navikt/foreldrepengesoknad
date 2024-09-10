@@ -86,8 +86,8 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
                 gåTilNesteSide={gåTilNesteSide}
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 utenlandsopphold={{
-                    iNorgeNeste12Mnd: false,
-                    iNorgeSiste12Mnd: false,
+                    skalBoUtenforNorgeNeste12Mnd: true,
+                    harBoddUtenforNorgeSiste12Mnd: true,
                 }}
             />,
         );

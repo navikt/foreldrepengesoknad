@@ -21,8 +21,8 @@ const promiseAction =
     };
 
 const defaultUtenlandsopphold = {
-    iNorgeNeste12Mnd: false,
-    iNorgeSiste12Mnd: true,
+    skalBoUtenforNorgeNeste12Mnd: true,
+    harBoddUtenforNorgeSiste12Mnd: false,
 };
 
 type StoryArgs = {
