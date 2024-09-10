@@ -21,13 +21,7 @@ import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-in
 import { EgenNæring, Næringstype } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
 import { mapUtenlandsOppholdForInnsending } from '@navikt/fp-steg-utenlandsopphold';
-import {
-    LocaleNo,
-    Utenlandsopphold,
-    UtenlandsoppholdPeriode,
-    UtenlandsoppholdSenere,
-    UtenlandsoppholdTidligere,
-} from '@navikt/fp-types';
+import { LocaleNo } from '@navikt/fp-types';
 import { isValidDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
