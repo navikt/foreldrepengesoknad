@@ -19,7 +19,9 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            app: path.resolve(__dirname, './src/app'),
+            appData: path.resolve(__dirname, './src/appData'),
+            types: path.resolve(__dirname, './src/types/'),
+            utils: path.resolve(__dirname, './src/utils/'),
         },
     },
     build: {
