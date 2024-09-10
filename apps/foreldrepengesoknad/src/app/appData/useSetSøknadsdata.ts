@@ -18,8 +18,8 @@ export const useSetSøknadsdata = () => {
             ContextDataType.UTENLANDSOPPHOLD,
             søknad.informasjonOmUtenlandsopphold
                 ? {
-                      iNorgeNeste12Mnd: søknad.informasjonOmUtenlandsopphold.iNorgeNeste12Mnd,
-                      iNorgeSiste12Mnd: søknad.informasjonOmUtenlandsopphold.iNorgeSiste12Mnd,
+                      skalBoUtenforNorgeNeste12Mnd: søknad.informasjonOmUtenlandsopphold.skalBoUtenforNorgeNeste12Mnd,
+                      harBoddUtenforNorgeSiste12Mnd: søknad.informasjonOmUtenlandsopphold.harBoddUtenforNorgeSiste12Mnd,
                   }
                 : undefined,
         );
