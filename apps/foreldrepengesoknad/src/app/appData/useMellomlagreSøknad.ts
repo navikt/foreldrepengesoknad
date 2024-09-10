@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { mapUtenlandsOppholdForInnsending } from '@navikt/fp-steg-utenlandsopphold';
 import { LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import Api, { FpMellomlagretData } from 'app/api/api';
-import { mapUtenlandsOppholdForInnsending, sendErrorMessageToSentry } from 'app/api/apiUtils';
+import { sendErrorMessageToSentry } from 'app/api/apiUtils';
 import { MELLOMLAGRET_VERSJON } from 'app/utils/mellomlagringUtils';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';

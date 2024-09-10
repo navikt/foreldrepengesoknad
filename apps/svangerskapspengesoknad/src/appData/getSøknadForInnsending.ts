@@ -20,6 +20,7 @@ import { AttachmentMetadataType, DATE_4_YEARS_AGO } from '@navikt/fp-constants';
 import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring, Næringstype } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
+import { mapUtenlandsOppholdForInnsending } from '@navikt/fp-steg-utenlandsopphold';
 import {
     LocaleNo,
     Utenlandsopphold,
@@ -48,29 +49,6 @@ const getArbeidsforholdForInnsending = (t: TilretteleggingPeriode | Tilrettelegg
     return {
         id: t.arbeidsforhold.arbeidsgiverId!,
         type: t.arbeidsforhold.type,
-    };
-};
-
-const mapBostedUtlandTilDTO = (utenlandsopphold: UtenlandsoppholdPeriode) => {
-    return {
-        land: utenlandsopphold.landkode,
-        tidsperiode: {
-            fom: utenlandsopphold.fom,
-            tom: utenlandsopphold.tom,
-        },
-    };
-};
-
-const mapUtenlandsOppholdForInnsending = (
-    utenlandsopphold: Utenlandsopphold,
-    senereUtenlandsopphold?: UtenlandsoppholdSenere,
-    tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
-) => {
-    return {
-        iNorgeSiste12Mnd: !utenlandsopphold.harBoddUtenforNorgeSiste12Mnd,
-        iNorgeNeste12Mnd: !utenlandsopphold.skalBoUtenforNorgeNeste12Mnd,
-        tidligereOpphold: (tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd || []).map(mapBostedUtlandTilDTO),
-        senereOpphold: (senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd || []).map(mapBostedUtlandTilDTO),
     };
 };
 
