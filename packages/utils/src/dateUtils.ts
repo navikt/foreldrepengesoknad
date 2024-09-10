@@ -6,6 +6,7 @@ import utc from 'dayjs/plugin/utc';
 
 import {
     DATE_TODAY,
+    DAY_MONTHNAME_YEAR_FORMAT,
     DDMMMMYYY_DATE_FORMAT,
     DDMMM_DATE_FORMAT,
     DDMMYYYY_DATE_FORMAT,
@@ -15,7 +16,6 @@ import {
     TIME_FORMAT,
     WEEKDAY_DDMMMMYYYY_DATE_FORMAT,
 } from '@navikt/fp-constants';
-import { DAY_MONTHNAME_YEAR_FORMAT } from '@navikt/fp-constants/src/dates';
 
 dayjs.extend(isBetween);
 dayjs.extend(isSameOrBefore);
@@ -115,7 +115,22 @@ export const dateIsSameOrBefore = (date: Date | undefined, otherDate: Date | und
     }
     return false;
 };
+
+export const dateStringIsSameOrBefore = (date: string | undefined, otherDate: string | undefined): boolean => {
+    if (date && otherDate) {
+        return dayjs(date).isSameOrBefore(otherDate, 'day');
+    }
+    return false;
+};
+
 export const dateIsSameOrAfter = (date: Date | undefined, otherDate: Date | undefined): boolean => {
+    if (date && otherDate) {
+        return dayjs(date).isSameOrAfter(otherDate, 'day');
+    }
+    return false;
+};
+
+export const dateStringIsSameOrAfter = (date: string | undefined, otherDate: string | undefined): boolean => {
     if (date && otherDate) {
         return dayjs(date).isSameOrAfter(otherDate, 'day');
     }

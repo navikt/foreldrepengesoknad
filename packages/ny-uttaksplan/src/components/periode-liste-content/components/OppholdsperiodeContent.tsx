@@ -4,13 +4,14 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Oppholdsperiode } from '@navikt/fp-common';
-import { Tidsperioden, formatDateExtended } from '@navikt/fp-utils';
+import { NavnPåForeldre } from '@navikt/fp-common';
+import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
 
+import { Planperiode } from '../../../types/Planperiode';
 import { getVarighetString } from '../../../utils/dateUtils';
 
 interface Props {
-    periode: Oppholdsperiode;
+    periode: Planperiode;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
     inneholderKunEnPeriode: boolean;
@@ -38,17 +39,19 @@ const OppholdsperiodeContent: FunctionComponent<Props> = ({
                     ) : (
                         <>
                             <BodyShort weight="semibold">
-                                {formatDateExtended(periode.tidsperiode.fom)} -{' '}
-                                {formatDateExtended(periode.tidsperiode.tom)}
+                                {formatDateExtended(periode.fom)} - {formatDateExtended(periode.tom)}
                             </BodyShort>
                             <BodyShort>
-                                {getVarighetString(Tidsperioden(periode.tidsperiode).getAntallUttaksdager(), intl)}
+                                {getVarighetString(
+                                    TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),
+                                    intl,
+                                )}
                             </BodyShort>
                         </>
                     )}
                 </div>
                 <div style={{ marginLeft: '1rem' }}>
-                    <BodyShort>{`${periode.årsak} for ${navnPåForelder}`}</BodyShort>
+                    <BodyShort>{`${periode.oppholdÅrsak} for ${navnPåForelder}`}</BodyShort>
                 </div>
             </div>
         </div>

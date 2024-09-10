@@ -145,7 +145,10 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
                         showSkeleton={annenPartsVedtakQuery.isLoading}
                         skeletonProps={{ height: '210px', variant: 'rounded' }}
                     >
-                        <DinPlan />
+                        <DinPlan
+                            søkersPerioder={gjeldendeSak.gjeldendeVedtak?.perioder}
+                            annenPartsPerioder={annenPartsVedtakQuery.data?.perioder}
+                        />
                     </ContentSection>
                 )}
             </VStack>

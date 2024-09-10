@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 import { Situasjon, TidsperiodeDate } from '@navikt/fp-common';
-import { Uttaksdagen, getTidsperiode, isValidTidsperiode } from '@navikt/fp-utils';
+import { Uttaksdagen, getTidsperiode, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import uttaksConstants from '../common/uttaksConstants';
 import { andreAugust2022ReglerGjelder } from './dateUtils';
@@ -133,7 +133,7 @@ export const erInnenFørsteSeksUkerFødselFarMedmor = (
         situasjon !== 'fødsel' ||
         !søkerErFarEllerMedmor ||
         tidsperiode === undefined ||
-        isValidTidsperiode(tidsperiode) === false
+        isValidTidsperiodeString(tidsperiode) === false
     ) {
         return false;
     }

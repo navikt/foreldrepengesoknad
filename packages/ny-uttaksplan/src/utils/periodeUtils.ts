@@ -6,77 +6,111 @@ import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import {
     MorsAktivitet,
     NavnPåForeldre,
+    OppholdÅrsakType,
     PeriodeResultat,
     PeriodeResultatÅrsak,
     SaksperiodeNy,
-    TidsperiodeDate,
+    Tidsperiode,
     UtsettelseÅrsakType,
 } from '@navikt/fp-types';
-import { OppholdÅrsakType } from '@navikt/fp-types/src/OppholdÅrsakType';
+import {
+    TidsperiodenString,
+    UttaksdagenString,
+    capitalizeFirstLetter,
+    formatDateIso,
+    getNavnGenitivEierform,
+    isValidTidsperiodeString,
+} from '@navikt/fp-utils';
 
-import { ISOStringToDate, formatDateIso } from './dateUtils';
-import { capitalizeFirstLetter, getNavnGenitivEierform } from './stringUtils';
-import { TidsperiodenNy, getTidsperiodeDate, isValidTidsperiode } from './uttak/Tidsperioden';
-import { UttaksdagenNy } from './uttak/Uttaksdagen';
+import { PeriodeHullType, Planperiode } from '../types/Planperiode';
 
-export const Periodene = (perioder: SaksperiodeNy[]) => ({
+export const Periodene = (perioder: Planperiode[]) => ({
     sort: () => [...perioder].sort(sorterPerioder),
 });
 
-export function sorterPerioder(p1: SaksperiodeNy, p2: SaksperiodeNy) {
-    const t1 = getTidsperiodeDate(p1);
-    const t2 = getTidsperiodeDate(p2);
-    if (isValidTidsperiode(t1) === false || isValidTidsperiode(t2) === false) {
-        return isValidTidsperiode(t1) ? 1 : -1;
+export function sorterPerioder(p1: Planperiode, p2: Planperiode) {
+    const tidsperiode1 = { fom: p1.fom, tom: p1.tom };
+    const tidsperiode2 = { fom: p2.fom, tom: p2.tom };
+
+    if (isValidTidsperiodeString(tidsperiode1) === false || isValidTidsperiodeString(tidsperiode2) === false) {
+        return isValidTidsperiodeString(tidsperiode1) ? 1 : -1;
     }
-    if (dayjs(t1.fom).isSame(t2.fom, 'day')) {
+    if (dayjs(tidsperiode1.fom).isSame(tidsperiode2.fom, 'day')) {
         return 1;
     }
 
-    if (TidsperiodenNy(t2).erOmsluttetAv(t1)) {
+    if (TidsperiodenString(tidsperiode2).erOmsluttetAv(tidsperiode1)) {
         return 1;
     }
 
-    return dayjs(t1.fom).isBefore(t2.fom, 'day') ? -1 : 1;
+    return dayjs(tidsperiode1.fom).isBefore(tidsperiode2.fom, 'day') ? -1 : 1;
 }
 
-export const isUttaksperiode = (periode: SaksperiodeNy) => {
+export const isUttaksperiode = (periode: Planperiode) => {
     return periode.kontoType !== undefined && periode.utsettelseÅrsak === undefined;
 };
 
-export const isForeldrepengerFørFødselPeriode = (periode: SaksperiodeNy) => {
+export const isUttaksperiodeAnnenPart = (periode: Planperiode) => {
+    if (!periode.gjelderAnnenPart) {
+        return false;
+    }
+
+    return periode.kontoType !== undefined && periode.utsettelseÅrsak === undefined;
+};
+
+export const isForeldrepengerFørFødselPeriode = (periode: Planperiode) => {
     return periode.kontoType !== undefined && periode.kontoType === StønadskontoType.ForeldrepengerFørFødsel;
 };
 
-export const isUtsettelsesperiode = (periode: SaksperiodeNy) => {
+export const isUtsettelsesperiode = (periode: Planperiode) => {
     return periode.utsettelseÅrsak !== undefined;
 };
 
-export const isOverføringsperiode = (periode: SaksperiodeNy) => {
+export const isUtsettelsesperiodeAnnenPart = (periode: Planperiode) => {
+    if (!periode.gjelderAnnenPart) {
+        return false;
+    }
+
+    return periode.utsettelseÅrsak !== undefined;
+};
+
+export const isAnnenPartsPeriode = (periode: Planperiode) => {
+    return isUtsettelsesperiodeAnnenPart(periode) || isUttaksperiodeAnnenPart(periode);
+};
+
+export const isOverføringsperiode = (periode: Planperiode) => {
     return periode.overføringÅrsak !== undefined;
 };
 
-export const isOppholdsperiode = (periode: SaksperiodeNy) => {
+export const isOppholdsperiode = (periode: Planperiode) => {
     return periode.oppholdÅrsak !== undefined;
 };
 
-export const isAvslåttPeriode = (periode: SaksperiodeNy) => {
+export const isAvslåttPeriode = (periode: Planperiode) => {
     return periode.resultat && periode.resultat.innvilget !== true;
 };
 
-export const finnTidligerePerioder = (perioder: SaksperiodeNy[]): SaksperiodeNy[] => {
+export const isHull = (periode: Planperiode) => {
+    return periode.periodeHullÅrsak !== undefined && periode.periodeHullÅrsak === PeriodeHullType.TAPTE_DAGER;
+};
+
+export const isPeriodeUtenUttak = (periode: Planperiode) => {
+    return periode.periodeHullÅrsak !== undefined && periode.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK;
+};
+
+export const finnTidligerePerioder = (perioder: Planperiode[]): Planperiode[] => {
     return perioder.filter(({ tom }) => dayjs(tom).isBefore(dayjs(), 'd'));
 };
 
-export const finnNåværendePerioder = (perioder: SaksperiodeNy[]): SaksperiodeNy[] => {
+export const finnNåværendePerioder = (perioder: Planperiode[]): Planperiode[] => {
     return perioder.filter(({ fom, tom }) => dayjs().isBetween(fom, tom, 'd', '[]'));
 };
 
-export const finnFremtidigePerioder = (perioder: SaksperiodeNy[]): SaksperiodeNy[] => {
+export const finnFremtidigePerioder = (perioder: Planperiode[]): Planperiode[] => {
     return perioder.filter(({ fom }) => dayjs(fom).isAfter(dayjs(), 'd'));
 };
 
-export const finnDuplikatePerioderPgaArbeidsforohld = (periode: SaksperiodeNy, perioder: SaksperiodeNy[]) => {
+export const finnDuplikatePerioderPgaArbeidsforohld = (periode: Planperiode, perioder: Planperiode[]) => {
     return perioder
         .filter((p) => periode !== p)
         .filter((p) =>
@@ -88,19 +122,19 @@ export const finnDuplikatePerioderPgaArbeidsforohld = (periode: SaksperiodeNy, p
 };
 
 export const erDuplikatPeriodePgaFlereArbeidsforhold = (
-    periode: SaksperiodeNy,
-    uttaksperiodeDtoListe: SaksperiodeNy[],
+    periode: Planperiode,
+    uttaksperiodeDtoListe: Planperiode[],
 ): boolean => {
     return finnDuplikatePerioderPgaArbeidsforohld(periode, uttaksperiodeDtoListe).length > 0;
 };
 
 export const getFelterForSammenligningAvDuplikatePerioderPgaArbeidsforhold = ({
     ...uttaksperiodeDtoUtenArbeidsgiverInfo
-}: SaksperiodeNy) => {
+}: Planperiode) => {
     return uttaksperiodeDtoUtenArbeidsgiverInfo;
 };
 
-export const gyldigePerioderForVisning = (periode: SaksperiodeNy, erPlanVedtatt: boolean): boolean => {
+export const gyldigePerioderForVisning = (periode: Planperiode, erPlanVedtatt: boolean): boolean => {
     if (!erPlanVedtatt) {
         return true;
     }
@@ -116,9 +150,9 @@ export const gyldigePerioderForVisning = (periode: SaksperiodeNy, erPlanVedtatt:
 };
 
 const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
-    periode: SaksperiodeNy,
+    periode: Planperiode,
     index: number,
-    perioder: SaksperiodeNy[],
+    perioder: Planperiode[],
 ) => {
     const likePerioder = perioder.filter(
         (periode2, index_periode2) =>
@@ -141,9 +175,9 @@ const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
 };
 
 export const getCleanedPlanForVisning = (
-    plan: SaksperiodeNy[] | undefined,
+    plan: Planperiode[] | undefined,
     erPlanVedtatt: boolean,
-): SaksperiodeNy[] | undefined => {
+): Planperiode[] | undefined => {
     if (plan === undefined) {
         return undefined;
     }
@@ -163,23 +197,25 @@ export const getCleanedPlanForVisning = (
     }
 };
 
-const finnNesteMuligeUttaksdag = (dato: Date): Date => {
+const isoStringFormat = 'YYYY-MM-DD';
+
+const finnNesteMuligeUttaksdag = (dato: string): string => {
     const nesteDag = dayjs(dato).add(1, 'day');
-    return nesteDag.isoWeekday() >= 6 ? nesteDag.add(1, 'weeks').startOf('isoWeek').toDate() : nesteDag.toDate();
+    return nesteDag.isoWeekday() >= 6
+        ? nesteDag.add(1, 'weeks').startOf('isoWeek').format(isoStringFormat)
+        : nesteDag.format(isoStringFormat);
 };
 
-export const erSammenhengende = (tidsperiode1: TidsperiodeDate, tidsperiode2: TidsperiodeDate): boolean => {
+export const erSammenhengende = (tidsperiode1: Tidsperiode, tidsperiode2: Tidsperiode): boolean => {
     return (
         finnNesteMuligeUttaksdag(tidsperiode1.tom) === tidsperiode2.fom ||
         dayjs(tidsperiode1.tom).add(1, 'days').isSame(tidsperiode2.fom, 'days')
     );
 };
 
-export const erHullMellomPerioder = (periode: SaksperiodeNy, nestePeriode?: SaksperiodeNy) => {
-    const periodeTidsperiode = { fom: ISOStringToDate(periode.fom)!, tom: ISOStringToDate(periode.tom)! };
-    const nestePeriodeTidsperiode = nestePeriode
-        ? { fom: ISOStringToDate(nestePeriode.fom)!, tom: ISOStringToDate(nestePeriode.tom)! }
-        : undefined;
+export const erHullMellomPerioder = (periode: Planperiode, nestePeriode?: Planperiode) => {
+    const periodeTidsperiode = { fom: periode.fom, tom: periode.tom };
+    const nestePeriodeTidsperiode = nestePeriode ? { fom: nestePeriode.fom, tom: nestePeriode.tom } : undefined;
     return (
         nestePeriodeTidsperiode !== undefined &&
         !erSammenhengende(periodeTidsperiode, nestePeriodeTidsperiode) &&
@@ -329,7 +365,7 @@ export const finnTekstForUtsettelseÅrsak = (intl: IntlShape, utsettelseÅrsak: 
 
 export const getPeriodeTittel = (
     intl: IntlShape,
-    periode: SaksperiodeNy,
+    periode: Planperiode,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
     erAleneOmOmsorg?: boolean,
@@ -389,18 +425,18 @@ export const getPeriodeTittel = (
     return '';
 };
 
-const periodeErInnvilget = (periode: SaksperiodeNy): boolean => !!periode.resultat?.innvilget;
+const periodeErInnvilget = (periode: Planperiode): boolean => !!periode.resultat?.innvilget;
 
 interface SplittetDatoType {
-    dato: Date;
+    dato: string;
     erFom: boolean;
 }
 
-const splittPeriodePåDatoer = (periode: SaksperiodeNy, alleDatoer: SplittetDatoType[]) => {
+const splittPeriodePåDatoer = (periode: Planperiode, alleDatoer: SplittetDatoType[]) => {
     const datoerIPerioden = alleDatoer.filter((datoWrapper) =>
-        TidsperiodenNy(getTidsperiodeDate(periode)).inneholderDato(datoWrapper.dato),
+        TidsperiodenString({ fom: periode.fom, tom: periode.tom }).inneholderDato(datoWrapper.dato),
     );
-    const oppsplittetPeriode: SaksperiodeNy[] = [];
+    const oppsplittetPeriode: Planperiode[] = [];
 
     if (datoerIPerioden.length === 2) {
         return [periode];
@@ -417,35 +453,35 @@ const splittPeriodePåDatoer = (periode: SaksperiodeNy, alleDatoer: SplittetDato
         }
 
         oppsplittetPeriode[index - 1].tom = datoWrapper.erFom
-            ? formatDateIso(UttaksdagenNy(datoWrapper.dato).forrige())
+            ? formatDateIso(UttaksdagenString(datoWrapper.dato).forrige())
             : formatDateIso(datoWrapper.dato);
 
         if (index < datoerIPerioden.length - 1) {
             oppsplittetPeriode.push({
                 ...periode,
-                fom: formatDateIso(datoWrapper.erFom ? datoWrapper.dato : UttaksdagenNy(datoWrapper.dato).neste()),
+                fom: formatDateIso(datoWrapper.erFom ? datoWrapper.dato : UttaksdagenString(datoWrapper.dato).neste()),
                 tom: undefined!,
             });
         }
     });
 
-    return oppsplittetPeriode.filter((p) => isValidTidsperiode(getTidsperiodeDate(p)));
+    return oppsplittetPeriode.filter((p) => isValidTidsperiodeString({ fom: p.fom, tom: p.tom }));
 };
 
-export const normaliserPerioder = (søkersPerioder: SaksperiodeNy[], annenPartsPerioder: SaksperiodeNy[]) => {
+export const normaliserPerioder = (søkersPerioder: Planperiode[], annenPartsPerioder: Planperiode[]) => {
     const perioderTidsperioder: SplittetDatoType[] = søkersPerioder.reduce((res, p) => {
-        res.push({ dato: ISOStringToDate(p.fom)!, erFom: true });
-        res.push({ dato: ISOStringToDate(p.tom)!, erFom: false });
+        res.push({ dato: p.fom, erFom: true });
+        res.push({ dato: p.tom, erFom: false });
         return res;
     }, [] as SplittetDatoType[]);
     const annenPartsUttakTidsperioder = annenPartsPerioder.reduce((res, p) => {
-        res.push({ dato: ISOStringToDate(p.fom)!, erFom: true });
-        res.push({ dato: ISOStringToDate(p.tom)!, erFom: false });
+        res.push({ dato: p.fom, erFom: true });
+        res.push({ dato: p.tom, erFom: false });
         return res;
     }, [] as SplittetDatoType[]);
 
     const alleDatoer = perioderTidsperioder.concat(annenPartsUttakTidsperioder).sort((d1, d2) => {
-        if (d1.dato.getTime() - d2.dato.getTime() === 0) {
+        if (new Date(d1.dato).getTime() - new Date(d2.dato).getTime() === 0) {
             if (!d1.erFom) {
                 return 1;
             }
@@ -454,10 +490,10 @@ export const normaliserPerioder = (søkersPerioder: SaksperiodeNy[], annenPartsP
                 return -1;
             }
         }
-        return d1.dato.getTime() - d2.dato.getTime();
+        return new Date(d1.dato).getTime() - new Date(d2.dato).getTime();
     });
-    const normaliserteEgnePerioder: SaksperiodeNy[] = [];
-    const normaliserteAnnenPartsPerioder: SaksperiodeNy[] = [];
+    const normaliserteEgnePerioder: Planperiode[] = [];
+    const normaliserteAnnenPartsPerioder: Planperiode[] = [];
 
     søkersPerioder.forEach((p) => {
         const oppsplittetPeriode = splittPeriodePåDatoer(p, alleDatoer);
@@ -476,15 +512,15 @@ export const normaliserPerioder = (søkersPerioder: SaksperiodeNy[], annenPartsP
 };
 
 export const filtrerAnnenPartsUttakNårIkkeSamtidigUttak = (
-    annenPartsPerioder: SaksperiodeNy[],
-    søkerensPerioder: SaksperiodeNy[],
-): SaksperiodeNy[] => {
+    annenPartsPerioder: Planperiode[],
+    søkerensPerioder: Planperiode[],
+): Planperiode[] => {
     const filtrerteAnnenPartsPerioder = annenPartsPerioder.filter((periode) => {
         if (!isUttaksperiode(periode)) {
             return true;
         }
         const overlappendeSøkersPeriode = søkerensPerioder.find((p) => {
-            return TidsperiodenNy(getTidsperiodeDate(p)).overlapper(getTidsperiodeDate(periode));
+            return TidsperiodenString({ fom: p.fom, tom: p.tom }).overlapper({ fom: periode.fom, tom: periode.tom });
         });
 
         if (!overlappendeSøkersPeriode) {
@@ -502,12 +538,12 @@ export const filtrerAnnenPartsUttakNårIkkeSamtidigUttak = (
 };
 
 export const leggTilVisningsInfo = (
-    annenPartsPerioder: SaksperiodeNy[],
-    søkerensPerioder: SaksperiodeNy[],
-): SaksperiodeNy[] => {
-    const annenPartsPerioderMedVisningsInfo = annenPartsPerioder.map((periode): SaksperiodeNy => {
+    annenPartsPerioder: Planperiode[],
+    søkerensPerioder: Planperiode[],
+): Planperiode[] => {
+    const annenPartsPerioderMedVisningsInfo = annenPartsPerioder.map((periode): Planperiode => {
         const overlappendeSøkersPeriode = søkerensPerioder.find((p) => {
-            return TidsperiodenNy(getTidsperiodeDate(p)).overlapper(getTidsperiodeDate(periode));
+            return TidsperiodenString({ fom: p.fom, tom: p.tom }).overlapper({ fom: periode.fom, tom: periode.tom });
         });
         const erInnvilgetSamtidigUttak = overlappendeSøkersPeriode?.resultat?.innvilget
             ? periode.samtidigUttak !== undefined || overlappendeSøkersPeriode.samtidigUttak !== undefined
@@ -536,10 +572,10 @@ export const leggTilVisningsInfo = (
     return annenPartsPerioderMedVisningsInfo;
 };
 
-export const getPerioderForVisning = (perioder: SaksperiodeNy[]): SaksperiodeNy[] => {
+export const getPerioderForVisning = (perioder: Planperiode[]): Planperiode[] => {
     //  erAnnenPartsPeriode: boolean
     return perioder
-        .map((periode): SaksperiodeNy => {
+        .map((periode): Planperiode => {
             return {
                 ...periode,
                 // gjelderAnnenPart: erAnnenPartsPeriode,
@@ -547,14 +583,14 @@ export const getPerioderForVisning = (perioder: SaksperiodeNy[]): SaksperiodeNy[
         })
         .filter(
             (p) =>
-                isValidTidsperiode(getTidsperiodeDate(p)) &&
+                isValidTidsperiodeString({ fom: p.fom, tom: p.tom }) &&
                 (isUttaksperiode(p) || isOverføringsperiode(p) || isUtsettelsesperiode(p)),
         );
 };
 
 export const getOverlappendePeriodeTittel = (
-    søkerensPeriode: SaksperiodeNy,
-    overlappendePeriodeAnnenPart: SaksperiodeNy,
+    søkerensPeriode: Planperiode,
+    overlappendePeriodeAnnenPart: Planperiode,
     intl: IntlShape,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
@@ -576,7 +612,7 @@ export const getOverlappendePeriodeTittel = (
 };
 
 export const erAnnenPartsPrematurePeriode = (
-    annenPartsPeriode: SaksperiodeNy,
+    annenPartsPeriode: Planperiode,
     termindato: string | undefined,
 ): boolean => {
     return (
@@ -587,10 +623,7 @@ export const erAnnenPartsPrematurePeriode = (
     );
 };
 
-export const skalAnnenPartsPeriodeVises = (
-    annenPartsPeriode: SaksperiodeNy,
-    termindato: string | undefined,
-): boolean => {
+export const skalAnnenPartsPeriodeVises = (annenPartsPeriode: Planperiode, termindato: string | undefined): boolean => {
     if (annenPartsPeriode.resultat?.innvilget) {
         return true;
     }
@@ -609,4 +642,43 @@ export const getPeriodeForelder = (erFarEllerMedmor: boolean): Forelder => {
     //     return Forelder.farMedmor;
     // }
     return Forelder.mor;
+};
+
+export const getTidsperiodeFromPlanperiode = (periode: Planperiode): Tidsperiode => {
+    return {
+        fom: periode.fom,
+        tom: periode.tom,
+    };
+};
+
+export const getPeriodeId = (planperiode: Planperiode) => {
+    return `${planperiode.fom} - ${planperiode.tom} - ${planperiode.kontoType}`;
+};
+
+export const mapSaksperiodeTilPlanperiode = (
+    saksperioder: SaksperiodeNy[],
+    forelder: Forelder,
+    gjelderAnnenPart: boolean,
+) => {
+    const result: Planperiode[] = [];
+
+    saksperioder.forEach((p) => {
+        const planperiode: Planperiode = {
+            ...p,
+            id: `${p.fom} - ${p.tom} - ${p.kontoType}`,
+            forelder,
+            gjelderAnnenPart,
+        };
+
+        result.push(planperiode);
+    });
+
+    return result;
+};
+
+export const getForelderForPeriode = (søkerErFarEllerMedmor: boolean, gjelderAnnenPart: boolean): Forelder => {
+    if (gjelderAnnenPart) {
+        return søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor;
+    }
+    return søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
 };

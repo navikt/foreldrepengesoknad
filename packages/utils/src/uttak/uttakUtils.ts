@@ -4,13 +4,13 @@ import { Forelder, PeriodeColor, StønadskontoType } from '@navikt/fp-constants'
 import { Oppholdsperiode, Periode, isAvslåttPeriode, isUttaksperiode } from '@navikt/fp-types';
 import { isUttakAnnenPart } from '@navikt/fp-types/src/Periode';
 
-import { UttaksdagenNy } from './Uttaksdagen';
+import { Uttaksdagen } from './Uttaksdagen';
 
 const ANTALL_DAGER_SEKS_UKER = 6 * 7;
 
 export const getSisteUttaksdag6UkerEtterFødsel = (familiehendelsesdato: Date): Date => {
-    const førsteUttaksdagForPeriodeEtterFødsel = UttaksdagenNy(familiehendelsesdato).denneEllerNeste();
-    return UttaksdagenNy(
+    const førsteUttaksdagForPeriodeEtterFødsel = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+    return Uttaksdagen(
         dayjs(førsteUttaksdagForPeriodeEtterFødsel).add(ANTALL_DAGER_SEKS_UKER, 'day').toDate(),
     ).forrige();
 };

@@ -37,4 +37,5 @@ export {
     DATE_1_YEAR_AGO,
     DATE_20_YEARS_AGO,
     DATE_5_MONTHS_AGO,
+    DAY_MONTHNAME_YEAR_FORMAT,
 } from './src/dates';

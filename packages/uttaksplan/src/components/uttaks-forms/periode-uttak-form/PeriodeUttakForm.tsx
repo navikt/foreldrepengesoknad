@@ -20,7 +20,7 @@ import {
     isUttaksperiode,
 } from '@navikt/fp-common';
 import { Stønadskonto } from '@navikt/fp-types';
-import { isValidTidsperiode } from '@navikt/fp-utils';
+import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import ActionLink from '../../../common/action-link/ActionLink';
 import Block from '../../../common/block/Block';
@@ -324,7 +324,10 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 </GuidePanel>
                             </Block>
                         ) : null}
-                        <Block visible={!isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="xl">
+                        <Block
+                            visible={!isValidTidsperiodeString({ fom: values.fom!, tom: values.tom! })}
+                            padBottom="xl"
+                        >
                             <TidsperiodeForm
                                 tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                 familiehendelsesdato={familiehendelsesdato}
@@ -349,7 +352,10 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                                 />
                             )}
 
-                            <Block visible={isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="xl">
+                            <Block
+                                visible={isValidTidsperiodeString({ fom: values.fom!, tom: values.tom! })}
+                                padBottom="xl"
+                            >
                                 <TidsperiodeDisplay
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                     toggleVisTidsperiode={toggleVisTidsperiode}

@@ -3,10 +3,10 @@ import { IntlShape } from 'react-intl';
 
 import { TidsperiodeDate } from '@navikt/fp-types';
 
-import { ISOStringToDate, dateIsSameOrAfter, dateIsSameOrBefore, formaterDatoUtenDag } from '../dateUtils';
+import { dateIsSameOrAfter, dateIsSameOrBefore, formaterDatoUtenDag } from '../dateUtils';
 import { Uttaksdagen } from './Uttaksdagen';
 
-export const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
+const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
 
 export const Tidsperioden = (tidsperiode: TidsperiodeDate) => ({
     erLik: (tidsperiode2: TidsperiodeDate) => erTidsperioderLike(tidsperiode, tidsperiode2),
@@ -88,13 +88,6 @@ export function getTidsperiode(fom: Date, uttaksdager: number): TidsperiodeDate 
         tom: Uttaksdagen(fom).leggTil(uttaksdager - 1),
     };
 }
-
-export const getTidsperiodeDate = (fom: string, tom: string): TidsperiodeDate => {
-    return {
-        fom: ISOStringToDate(fom)!,
-        tom: ISOStringToDate(tom)!,
-    };
-};
 
 export function datoErInnenforTidsperiode(dato: Date, tidsperiode: TidsperiodeDate): boolean {
     const { fom, tom } = tidsperiode;

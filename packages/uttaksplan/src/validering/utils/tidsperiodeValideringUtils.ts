@@ -6,7 +6,7 @@ import {
     UtsettelseFormPeriodeType,
     isForeldrepengerFørFødselUttaksperiode,
 } from '@navikt/fp-common';
-import { Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
+import { Uttaksdagen, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { uttaksdatoer } from '../../utils/uttaksdatoerUtils';
 import { DatoValidatorer, Validator } from './types/validatorTypes';
@@ -95,7 +95,7 @@ export const uttakTidsperiodeErGyldig = (
         ? uttaksperiode.skalIkkeHaUttakFørTermin
         : false;
 
-    if (isValidTidsperiode(tidsperiode) === false && !skalIkkeHaUttak) {
+    if (isValidTidsperiodeString(tidsperiode) === false && !skalIkkeHaUttak) {
         return false;
     }
     const validators = getUttakTidsperiodeValidatorer(
@@ -138,7 +138,7 @@ export const utsettelseTidsperiodeErGyldig = (
 ): boolean => {
     const { tidsperiode } = utsettelesperiode;
 
-    if (isValidTidsperiode(tidsperiode) === false) {
+    if (isValidTidsperiodeString(tidsperiode) === false) {
         return false;
     }
     const validators = getUtsettelseTidsperiodeValidatorer(

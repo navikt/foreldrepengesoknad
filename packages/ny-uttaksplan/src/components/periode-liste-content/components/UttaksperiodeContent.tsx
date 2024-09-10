@@ -4,14 +4,15 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Uttaksperiode } from '@navikt/fp-common';
-import { Tidsperioden, formatDateExtended } from '@navikt/fp-utils';
+import { NavnPåForeldre } from '@navikt/fp-common';
+import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
 
+import { Planperiode } from '../../../types/Planperiode';
 import { getVarighetString } from '../../../utils/dateUtils';
 import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
 
 interface Props {
-    periode: Uttaksperiode;
+    periode: Planperiode;
     inneholderKunEnPeriode: boolean;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
@@ -24,7 +25,7 @@ const UttaksperiodeContent: FunctionComponent<Props> = ({
     erFarEllerMedmor,
 }) => {
     const intl = useIntl();
-    const stønadskontoNavn = getStønadskontoNavn(intl, periode.konto, navnPåForeldre, erFarEllerMedmor);
+    const stønadskontoNavn = getStønadskontoNavn(intl, periode.kontoType!, navnPåForeldre, erFarEllerMedmor);
 
     return (
         <div style={{ marginBottom: '1rem', display: 'flex' }}>
@@ -38,11 +39,13 @@ const UttaksperiodeContent: FunctionComponent<Props> = ({
                     ) : (
                         <>
                             <BodyShort weight="semibold">
-                                {formatDateExtended(periode.tidsperiode.fom)} -{' '}
-                                {formatDateExtended(periode.tidsperiode.tom)}
+                                {formatDateExtended(periode.fom)} - {formatDateExtended(periode.tom)}
                             </BodyShort>
                             <BodyShort>
-                                {getVarighetString(Tidsperioden(periode.tidsperiode).getAntallUttaksdager(), intl)}
+                                {getVarighetString(
+                                    TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),
+                                    intl,
+                                )}
                             </BodyShort>
                         </>
                     )}

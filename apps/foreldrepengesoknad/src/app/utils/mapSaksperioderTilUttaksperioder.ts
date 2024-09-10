@@ -24,7 +24,7 @@ import {
     isInfoPeriode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { Tidsperioden, Uttaksdagen, erUttaksdag, isValidTidsperiode } from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksdagen, erUttaksdag, isValidTidsperiodeString } from '@navikt/fp-utils';
 import {
     Perioden,
     convertTidsperiodeToTidsperiodeDate,
@@ -45,7 +45,7 @@ const harUttaksdager = (periode: Periode): boolean => {
 };
 
 const harGyldigTidsperiode = (periode: Periode): boolean => {
-    return isValidTidsperiode(periode.tidsperiode);
+    return isValidTidsperiodeString(periode.tidsperiode);
 };
 
 const erBeggePeriodePåSammeSideAvFamdato = (forrigePeriode: Periode, periode: Periode, familiehendelsesdato: Date) => {

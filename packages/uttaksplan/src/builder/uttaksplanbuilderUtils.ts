@@ -13,7 +13,7 @@ import {
     isUtsettelseAnnenPart,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { Tidsperioden, Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksdagen, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { Perioden } from '../utils/Perioden';
 import { Periodene, sorterPerioder } from '../utils/Periodene';
@@ -235,7 +235,7 @@ export const getTidsperiodeMellomPerioder = (
 
     const antallDagerIMellomrom = Tidsperioden(tidsperiodeMellomPerioder).getAntallUttaksdager();
 
-    if (isValidTidsperiode(tidsperiodeMellomPerioder) && antallDagerIMellomrom > 0) {
+    if (isValidTidsperiodeString(tidsperiodeMellomPerioder) && antallDagerIMellomrom > 0) {
         return tidsperiodeMellomPerioder;
     }
 
@@ -388,13 +388,13 @@ const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]
         }
     });
 
-    return oppsplittetPeriode.filter((p) => isValidTidsperiode(p.tidsperiode));
+    return oppsplittetPeriode.filter((p) => isValidTidsperiodeString(p.tidsperiode));
 };
 
 // Funksjon som gjør at alle perioder overlapper 1 til 1
 export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode[]) => {
     const perioderTidsperioder: SplittetDatoType[] = perioder
-        .filter((per) => isValidTidsperiode(per.tidsperiode))
+        .filter((per) => isValidTidsperiodeString(per.tidsperiode))
         .reduce((res, p) => {
             res.push({ dato: p.tidsperiode.fom, erFom: true });
             res.push({ dato: p.tidsperiode.tom, erFom: false });

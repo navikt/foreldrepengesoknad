@@ -1,5 +1,5 @@
 import { StønadskontoType, Tidsperiode, TidsperiodeDate } from '@navikt/fp-common';
-import { Tidsperioden, Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksdagen, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { DatepickerLimitationsString, dateToISOString } from '../formik-wrappers';
 import { ISOStringToDate } from './dateUtils';
@@ -61,7 +61,7 @@ export const getDatoavgrensningerForStønadskonto = (
     if (konto === StønadskontoType.ForeldrepengerFørFødsel) {
         return getDatoavgrensningerForForeldrepengerFørFødsel(familiehendelsesdato);
     }
-    if (isValidTidsperiode(tidsperiode) && Tidsperioden(tidsperiode).erFørDato(familiehendelsesdato)) {
+    if (isValidTidsperiodeString(tidsperiode) && Tidsperioden(tidsperiode).erFørDato(familiehendelsesdato)) {
         return getDatoavgrensningerForEkstrauttakFørTermin(familiehendelsesdato, termindato);
     }
 

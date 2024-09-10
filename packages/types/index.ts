@@ -61,3 +61,4 @@ export { UtsettelseÅrsakType } from './src/UtsettelseÅrsakType';
 export { UttakArbeidType } from './src/UttakArbeidType';
 export { MorsAktivitet } from './src/MorsAktivitet';
 export { OverføringÅrsakType } from './src/OverføringÅrsakType';
+export { OppholdÅrsakType } from './src/OppholdÅrsakType';

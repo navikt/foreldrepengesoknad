@@ -7,7 +7,7 @@ import {
     StønadskontoType,
     Uttaksperiode,
 } from '@navikt/fp-common';
-import { Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
+import { Uttaksdagen, getTidsperiodeString } from '@navikt/fp-utils';
 
 import { uttaksplanErBareOpphold, uttaksplanSlutterMedOpphold, uttaksplanStarterMedOpphold } from './Periodene';
 
@@ -18,20 +18,20 @@ const uttakBase: Partial<Uttaksperiode> = {
     type: Periodetype.Uttak,
     konto: StønadskontoType.Fellesperiode,
     gradert: false,
-    tidsperiode: getTidsperiode(førsteUttaksdag, 5),
+    tidsperiode: getTidsperiodeString(førsteUttaksdag, 5),
     forelder: Forelder.farMedmor,
 };
 
 const oppholdsBase: Partial<Oppholdsperiode> = {
     type: Periodetype.Opphold,
     årsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
-    tidsperiode: getTidsperiode(førsteUttaksdag, 5),
+    tidsperiode: getTidsperiodeString(førsteUttaksdag, 5),
     forelder: Forelder.farMedmor,
 };
 
 const infoBase: Partial<InfoPeriode> = {
     type: Periodetype.Info,
-    tidsperiode: getTidsperiode(førsteUttaksdag, 5),
+    tidsperiode: getTidsperiodeString(førsteUttaksdag, 5),
 };
 
 const uttak = uttakBase as Uttaksperiode;

@@ -3,22 +3,25 @@ import { FunctionComponent } from 'react';
 
 import { Accordion } from '@navikt/ds-react';
 
-import { Barn, FamiliehendelseType, Periode, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-common';
-import { isValidTidsperiode } from '@navikt/fp-utils';
+import { Barn, FamiliehendelseType, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-common';
+import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import Permisjonsperiode from '../../types/Permisjonsperiode';
+import { Planperiode } from '../../types/Planperiode';
 import { mapPerioderToPermisjonsperiode } from '../../utils/permisjonsperiodeUtils';
 import PeriodeListeItem from './../periode-liste-item/PeriodeListeItem';
 
 interface Props {
-    perioder: Periode[];
+    perioder: Planperiode[];
     familiehendelsedato: string;
     barn: Barn;
 }
 
 const getIndexOfFørstePeriodeEtterFødsel = (permisjonsperioder: Permisjonsperiode[], familiehendelsesdato: string) => {
     return permisjonsperioder.findIndex(
-        (p) => isValidTidsperiode(p.tidsperiode) && dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'd'),
+        (p) =>
+            isValidTidsperiodeString(p.tidsperiode) &&
+            dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'd'),
     );
 };
 

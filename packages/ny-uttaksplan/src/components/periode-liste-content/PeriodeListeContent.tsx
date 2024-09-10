@@ -3,11 +3,13 @@ import { FunctionComponent } from 'react';
 
 import { BodyShort, Stack } from '@navikt/ds-react';
 
-import { FamiliehendelseType, NavnPåForeldre, Periode, isOppholdsperiode, isUttaksperiode } from '@navikt/fp-common';
+import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
 import Permisjonsperiode from '../../types/Permisjonsperiode';
+import { Planperiode } from '../../types/Planperiode';
+import { isOppholdsperiode, isUttaksperiode } from '../../utils/periodeUtils';
 import FamiliehendelseContent from './components/FamiliehendelseContent';
 import OppholdsperiodeContent from './components/OppholdsperiodeContent';
 import UttaksperiodeContent from './components/UttaksperiodeContent';
@@ -19,7 +21,7 @@ interface Props {
 }
 
 const renderPeriode = (
-    periode: Periode,
+    periode: Planperiode,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
     inneholderKunEnPeriode: boolean,
@@ -68,7 +70,7 @@ const PeriodeListeContent: FunctionComponent<Props> = ({
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
     const skalJobbeIPermisjonsperioden =
         permisjonsperiode.perioder.find((p) => {
-            if (isUttaksperiode(p) && p.gradert) {
+            if (isUttaksperiode(p) && p.gradering !== undefined) {
                 return p;
             }
 

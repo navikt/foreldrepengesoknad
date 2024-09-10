@@ -2,13 +2,13 @@ import { FunctionComponent } from 'react';
 
 import '@navikt/ds-css';
 
-import { AnnenForelder, NavnPåForeldre, Periode } from '@navikt/fp-common';
+import { AnnenForelder, NavnPåForeldre } from '@navikt/fp-common';
 import { Barn, SaksperiodeNy } from '@navikt/fp-types';
 
 import { slåSammenLikePerioder } from './builder/uttaksplanbuilderUtils';
 import PeriodeListe from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
-import { PlanPeriode } from './types/Planperiode';
+import { getForelderForPeriode, mapSaksperiodeTilPlanperiode } from './utils/periodeUtils';
 
 interface Props {
     familiehendelsedato: string;
@@ -29,18 +29,14 @@ const UttaksplanNy: FunctionComponent<Props> = ({
     søkersPerioder,
     annenPartsPerioder,
 }) => {
-    let kombinertUttaksplan: PlanPeriode[] = [];
     let søkersPlan = slåSammenLikePerioder(
-        søkersPerioder,
-        new Date(familiehendelsedato),
+        mapSaksperiodeTilPlanperiode(søkersPerioder, getForelderForPeriode(erFarEllerMedmor, false), false),
+        familiehendelsedato,
         undefined,
-        annenPartsPerioder,
+        annenPartsPerioder
+            ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, getForelderForPeriode(erFarEllerMedmor, true), true)
+            : undefined,
     );
-
-    if (annenPartsPerioder !== undefined) {
-    } else {
-        kombinertUttaksplan = søkersPerioder;
-    }
 
     return (
         <UttaksplanDataContext
@@ -50,11 +46,11 @@ const UttaksplanNy: FunctionComponent<Props> = ({
                 ER_FAR_ELLER_MEDMOR: erFarEllerMedmor,
                 FAMILIEHENDELSEDATO: familiehendelsedato,
                 NAVN_PÅ_FORELDRE: navnPåForeldre,
-                UTTAKSPLAN: kombinertUttaksplan,
+                UTTAKSPLAN: søkersPlan,
             }}
         >
             <div style={{ padding: '2rem 0' }}>
-                <PeriodeListe perioder={kombinertUttaksplan} familiehendelsedato={familiehendelsedato} barn={barn} />
+                <PeriodeListe perioder={søkersPlan} familiehendelsedato={familiehendelsedato} barn={barn} />
             </div>
         </UttaksplanDataContext>
     );

@@ -29,7 +29,7 @@ import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inn
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
 import { Attachment, LocaleNo } from '@navikt/fp-types';
-import { Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
+import { Uttaksdagen, isValidTidsperiodeString } from '@navikt/fp-utils';
 import {
     andreAugust2022ReglerGjelder,
     førsteOktober2021ReglerGjelder,
@@ -304,7 +304,7 @@ const cleanUttaksplan = (
         return { ...periode };
     });
     const cleanedUttaksplan = uttaksplan
-        .filter((periode: Periode) => isValidTidsperiode(periode.tidsperiode))
+        .filter((periode: Periode) => isValidTidsperiodeString(periode.tidsperiode))
         .filter(skalPeriodeSendesInn)
         .map((periode) =>
             annenForelder && isAnnenForelderOppgitt(annenForelder)

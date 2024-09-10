@@ -42,6 +42,30 @@
                             "årsak": "ANNET"
                         },
                         "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2024-04-29",
+                        "tom": "2024-05-06",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2024-05-07",
+                        "tom": "2024-05-15",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false
                     }
                 ]
             },

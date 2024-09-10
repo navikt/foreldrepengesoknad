@@ -4,7 +4,7 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import utc from 'dayjs/plugin/utc';
 import { IntlShape } from 'react-intl';
 
-import { TidsperiodeDate } from '@navikt/fp-common';
+import { Tidsperiode } from '@navikt/fp-types';
 import { isISODateString } from '@navikt/fp-utils';
 
 dayjs.extend(utc);
@@ -53,11 +53,11 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
     return ukerStr;
 };
 
-export const tidperiodeOverlapperDato = (tidsperiode: TidsperiodeDate, dato: string | Date): boolean => {
+export const tidperiodeOverlapperDato = (tidsperiode: Tidsperiode, dato: string | Date): boolean => {
     return dayjs(tidsperiode.fom).isBefore(dato, 'day') && dayjs(tidsperiode.tom).isSameOrAfter(dato, 'day');
 };
 
-export const formaterDatoKompakt = (dato: Date): string => {
+export const formaterDatoKompakt = (dato: string): string => {
     return formaterDato(dato, 'DD.MM.YYYY');
 };
 

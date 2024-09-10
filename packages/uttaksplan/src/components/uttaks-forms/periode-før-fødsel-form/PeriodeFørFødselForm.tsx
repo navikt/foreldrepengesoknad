@@ -2,7 +2,7 @@ import { FunctionComponent, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import { ForeldrepengerFørFødselUttaksperiode, Periode, Situasjon, Utsettelsesperiode } from '@navikt/fp-common';
-import { isValidTidsperiode } from '@navikt/fp-utils';
+import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import Block from '../../../common/block/Block';
 import { ISOStringToDate } from '../../../utils/dateUtils';
@@ -62,7 +62,8 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
                     <>
                         <Block
                             visible={
-                                !isValidTidsperiode(tidsperiode) && visibility.isVisible(PeriodeFørFødselFormField.fom)
+                                !isValidTidsperiodeString(tidsperiode) &&
+                                visibility.isVisible(PeriodeFørFødselFormField.fom)
                             }
                             padBottom="l"
                         >
@@ -86,7 +87,7 @@ const PeriodeFørFødselForm: FunctionComponent<Props> = ({
 
                             <Block
                                 visible={
-                                    isValidTidsperiode(tidsperiode) &&
+                                    isValidTidsperiodeString(tidsperiode) &&
                                     visibility.isVisible(PeriodeFørFødselFormField.fom)
                                 }
                                 padBottom="l"
