@@ -5,7 +5,7 @@ import { LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import Api, { FpMellomlagretData } from 'app/api/api';
-import { sendErrorMessageToSentry } from 'app/api/apiUtils';
+import { mapUtenlandsOppholdForInnsending, sendErrorMessageToSentry } from 'app/api/apiUtils';
 import { MELLOMLAGRET_VERSJON } from 'app/utils/mellomlagringUtils';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
@@ -54,11 +54,7 @@ const mellomlagre = (
             egenNæring,
             andreInntektskilder,
             informasjonOmUtenlandsopphold: utenlandsopphold
-                ? {
-                      ...utenlandsopphold,
-                      senereOpphold: senereUtenlandsopphold?.senereOpphold || [],
-                      tidligereOpphold: tidligereUtenlandsopphold?.tidligereOpphold || [],
-                  }
+                ? mapUtenlandsOppholdForInnsending(utenlandsopphold, senereUtenlandsopphold, tidligereUtenlandsopphold)
                 : undefined,
             erEndringssøknad,
             dekningsgrad: periodeMedForeldrepenger?.dekningsgrad,

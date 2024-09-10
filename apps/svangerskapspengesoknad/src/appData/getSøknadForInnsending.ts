@@ -15,7 +15,6 @@ import Tilrettelegging, {
     TilretteleggingPeriode,
     Tilretteleggingstype,
 } from 'types/Tilrettelegging';
-import { InformasjonOmUtenlandsoppholdDTO, UtenlandsoppholdDTO } from 'types/Utenlandsopphold';
 
 import { AttachmentMetadataType, DATE_4_YEARS_AGO } from '@navikt/fp-constants';
 import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
@@ -52,7 +51,7 @@ const getArbeidsforholdForInnsending = (t: TilretteleggingPeriode | Tilrettelegg
     };
 };
 
-const mapBostedUtlandTilDTO = (utenlandsopphold: UtenlandsoppholdPeriode): UtenlandsoppholdDTO => {
+const mapBostedUtlandTilDTO = (utenlandsopphold: UtenlandsoppholdPeriode) => {
     return {
         land: utenlandsopphold.landkode,
         tidsperiode: {
@@ -66,7 +65,7 @@ const mapUtenlandsOppholdForInnsending = (
     utenlandsopphold: Utenlandsopphold,
     senereUtenlandsopphold?: UtenlandsoppholdSenere,
     tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
-): InformasjonOmUtenlandsoppholdDTO => {
+) => {
     return {
         iNorgeSiste12Mnd: !utenlandsopphold.harBoddUtenforNorgeSiste12Mnd,
         iNorgeNeste12Mnd: !utenlandsopphold.skalBoUtenforNorgeNeste12Mnd,

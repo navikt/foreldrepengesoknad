@@ -6,10 +6,10 @@ import { MemoryRouter } from 'react-router-dom';
 import AxiosMock from 'storybookData/utils/AxiosMock';
 
 import { initAmplitude } from '@navikt/fp-metrics';
+import { Utenlandsopphold } from '@navikt/fp-types';
 
 import { Action, ContextDataType, FpDataContext } from 'app/appData/FpDataContext';
 import SøknadRoutes from 'app/appData/routes';
-import { Opphold } from 'app/types/InformasjonOmUtenlandsopphold';
 
 import SenereUtenlandsoppholdSteg from './SenereUtenlandsoppholdSteg';
 
@@ -26,7 +26,7 @@ const defaultUtenlandsopphold = {
 };
 
 type StoryArgs = {
-    utenlandsopphold?: Opphold;
+    utenlandsopphold?: Utenlandsopphold;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof SenereUtenlandsoppholdSteg>;
 

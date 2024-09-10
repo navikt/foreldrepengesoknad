@@ -28,7 +28,14 @@ import {
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt/src/types/ArbeidsforholdOgInntekt';
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
-import { Attachment, LocaleNo } from '@navikt/fp-types';
+import {
+    Attachment,
+    LocaleNo,
+    Utenlandsopphold,
+    UtenlandsoppholdPeriode,
+    UtenlandsoppholdSenere,
+    UtenlandsoppholdTidligere,
+} from '@navikt/fp-types';
 import { Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
 import {
     andreAugust2022ReglerGjelder,
@@ -438,17 +445,42 @@ export const cleanSøknad = (
         situasjon: søkersituasjon.situasjon,
         annenForelder: annenForelderInnsending,
         uttaksplan: uttaksplanInnsending,
-        informasjonOmUtenlandsopphold: {
-            ...utenlandsopphold,
-            ...(senereUtenlandsopphold || { senereOpphold: [] }),
-            ...(tidligereUtenlandsopphold || { tidligereOpphold: [] }),
-        },
+        informasjonOmUtenlandsopphold: mapUtenlandsOppholdForInnsending(
+            utenlandsopphold,
+            senereUtenlandsopphold,
+            tidligereUtenlandsopphold,
+        ),
         dekningsgrad: periodeMedForeldrepenger.dekningsgrad,
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
         vedlegg: convertAttachmentsMapToArray(vedlegg),
     };
 
     return cleanedSøknad;
+};
+
+// TODO: felles
+export const mapUtenlandsOppholdForInnsending = (
+    utenlandsopphold: Utenlandsopphold,
+    senereUtenlandsopphold?: UtenlandsoppholdSenere,
+    tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
+) => {
+    return {
+        iNorgeSiste12Mnd: !utenlandsopphold.harBoddUtenforNorgeSiste12Mnd,
+        iNorgeNeste12Mnd: !utenlandsopphold.skalBoUtenforNorgeNeste12Mnd,
+        tidligereOpphold: (tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd || []).map(mapBostedUtlandTilDTO),
+        senereOpphold: (senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd || []).map(mapBostedUtlandTilDTO),
+    };
+};
+
+// TODO: felles
+const mapBostedUtlandTilDTO = (utenlandsopphold: UtenlandsoppholdPeriode) => {
+    return {
+        land: utenlandsopphold.landkode,
+        tidsperiode: {
+            fom: utenlandsopphold.fom,
+            tom: utenlandsopphold.tom,
+        },
+    };
 };
 
 const cleanSøker = (

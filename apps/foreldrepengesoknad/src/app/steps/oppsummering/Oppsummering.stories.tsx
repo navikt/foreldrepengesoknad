@@ -451,24 +451,20 @@ export const MorMedUtenlandsopphold: Story = {
             harBoddUtenforNorgeSiste12Mnd: true,
         },
         utenlandsoppholdSenere: {
-            senereOpphold: [
+            utenlandsoppholdNeste12Mnd: [
                 {
-                    land: 'SE',
-                    tidsperiode: {
-                        fom: dayjs().format(ISO_DATE_FORMAT),
-                        tom: dayjs().add(100, 'days').format(ISO_DATE_FORMAT),
-                    },
+                    landkode: 'SE',
+                    fom: dayjs().format(ISO_DATE_FORMAT),
+                    tom: dayjs().add(100, 'days').format(ISO_DATE_FORMAT),
                 },
             ],
         },
         utenlandsoppholdTidligere: {
-            tidligereOpphold: [
+            utenlandsoppholdSiste12Mnd: [
                 {
-                    land: 'SE',
-                    tidsperiode: {
-                        fom: dayjs().subtract(10, 'months').format(ISO_DATE_FORMAT),
-                        tom: dayjs().subtract(1, 'days').format(ISO_DATE_FORMAT),
-                    },
+                    landkode: 'SE',
+                    fom: dayjs().subtract(10, 'months').format(ISO_DATE_FORMAT),
+                    tom: dayjs().subtract(1, 'days').format(ISO_DATE_FORMAT),
                 },
             ],
         },
