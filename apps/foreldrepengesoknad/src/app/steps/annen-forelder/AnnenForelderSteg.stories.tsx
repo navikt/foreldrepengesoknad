@@ -51,6 +51,7 @@ type StoryArgs = {
 } & ComponentProps<typeof AnnenForelderSteg>;
 
 const meta = {
+    title: 'steps/AnnenForelderSteg',
     component: AnnenForelderSteg,
     render: ({
         søkersituasjon = {

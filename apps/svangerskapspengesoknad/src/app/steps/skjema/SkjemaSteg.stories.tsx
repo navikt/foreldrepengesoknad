@@ -94,6 +94,7 @@ type StoryArgs = {
 } & ComponentProps<typeof SkjemaSteg>;
 
 const meta = {
+    title: 'steps/SkjemaSteg',
     component: SkjemaSteg,
     render: ({ gåTilNesteSide = action('button-click'), skalFeileOpplasting, tilrettelegging, ...rest }) => {
         initAmplitude();

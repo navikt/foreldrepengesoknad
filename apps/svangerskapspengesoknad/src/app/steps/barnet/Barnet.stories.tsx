@@ -70,6 +70,7 @@ type StoryArgs = {
 } & ComponentProps<typeof Barnet>;
 
 const meta = {
+    title: 'steps/Barnet',
     component: Barnet,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();

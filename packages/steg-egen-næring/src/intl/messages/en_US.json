@@ -1,6 +1,5 @@
 {
     "valgfritt": "(optional)",
-    "harValgfrieFelt": "All fields must be filled out, except those marked with (optional).",
     "ja": "Yes",
     "nei": "No",
     "valideringsfeil.egenNæringNavn.påkrevd": "You must provide the name of your business.",

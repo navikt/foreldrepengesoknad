@@ -18,6 +18,7 @@ type StoryArgs = {
 } & ComponentProps<typeof Forside>;
 
 const meta = {
+    title: 'pages/Forside',
     component: Forside,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         return (

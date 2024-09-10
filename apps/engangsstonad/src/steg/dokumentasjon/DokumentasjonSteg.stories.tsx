@@ -27,6 +27,7 @@ type StoryArgs = {
 } & ComponentProps<typeof DokumentasjonSteg>;
 
 const meta = {
+    title: 'steg/DokumentasjonSteg',
     component: DokumentasjonSteg,
     render: ({
         gåTilNesteSide = action('button-click'),

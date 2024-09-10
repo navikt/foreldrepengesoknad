@@ -78,6 +78,7 @@ type StoryArgs = {
 } & ComponentProps<typeof OmBarnetSteg>;
 
 const meta = {
+    title: 'steps/OmBarnetSteg',
     component: OmBarnetSteg,
     render: ({
         søkersituasjon = {

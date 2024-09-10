@@ -1,6 +1,7 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
-import { VStack } from '@navikt/ds-react';
+import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
@@ -21,6 +22,8 @@ export interface StepProps<TYPE> {
     pageAriaLabel?: string;
     infoMessage?: React.ReactNode;
     hideHeader?: boolean;
+    someFieldsOptional?: boolean;
+    noFieldsRequired?: boolean;
 }
 
 const Step = <TYPE extends string>({
@@ -34,6 +37,8 @@ const Step = <TYPE extends string>({
     pageAriaLabel,
     infoMessage,
     hideHeader,
+    someFieldsOptional = false,
+    noFieldsRequired = false,
 }: StepProps<TYPE>) => {
     const currentStepIndex = steps.findIndex((s) => s.isSelected);
     if (currentStepIndex === -1) {
@@ -54,6 +59,15 @@ const Step = <TYPE extends string>({
                 <div role="presentation">
                     <ProgressStepper steps={steps} hideHeader={hideHeader} onStepChange={onStepChange} />
                 </div>
+                {!noFieldsRequired && (
+                    <BodyShort>
+                        {someFieldsOptional ? (
+                            <FormattedMessage id="Step.HarValgfrieFelt" />
+                        ) : (
+                            <FormattedMessage id="Step.HarObligatoriskeFelt" />
+                        )}
+                    </BodyShort>
+                )}
                 <section aria-label={`Steg ${currentStepIndex + 1} av ${steps.length}:  ${title}`}>
                     <VStack gap="4">
                         {children}

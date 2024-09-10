@@ -24,6 +24,7 @@ type StoryArgs = {
 } & ComponentProps<typeof SøkersituasjonSteg>;
 
 const meta = {
+    title: 'steps/SøkersituasjonSteg',
     component: SøkersituasjonSteg,
     render: ({ søkersituasjon, gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();

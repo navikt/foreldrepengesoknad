@@ -24,6 +24,7 @@ type StoryArgs = {
 } & ComponentProps<typeof UtenlandsoppholdSteg>;
 
 const meta = {
+    title: 'steps/UtenlandsoppholdSteg',
     component: UtenlandsoppholdSteg,
     render: ({ gåTilNesteSide, ...rest }) => {
         initAmplitude();

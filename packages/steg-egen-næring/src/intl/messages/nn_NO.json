@@ -1,6 +1,5 @@
 {
     "valgfritt": "(valfritt)",
-    "harValgfrieFelt": "Alle felt må fyllast ut, bortsett frå felt markert med (valfritt).",
     "ja": "Ja",
     "nei": "Nei",
     "valideringsfeil.egenNæringNavn.påkrevd": "Du må oppgi namnet på verksemda di.",

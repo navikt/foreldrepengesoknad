@@ -138,6 +138,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
             onStepChange={navigator.goToNextStep}
+            noFieldsRequired
         >
             <Form formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">

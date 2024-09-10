@@ -192,6 +192,7 @@ type StoryArgs = {
 } & ComponentProps<typeof Oppsummering>;
 
 const meta = {
+    title: 'steps/Oppsummering',
     component: Oppsummering,
     render: ({
         søkersituasjon = defaultSøkersituasjon,

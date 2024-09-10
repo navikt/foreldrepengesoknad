@@ -198,6 +198,7 @@ type StoryArgs = {
 } & ComponentProps<typeof Forside>;
 
 const meta = {
+    title: 'pages/Forside',
     component: Forside,
     render: ({ onDispatch, ...rest }) => {
         initAmplitude();

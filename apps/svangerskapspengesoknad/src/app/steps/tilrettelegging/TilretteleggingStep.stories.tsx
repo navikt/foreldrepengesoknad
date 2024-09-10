@@ -74,6 +74,7 @@ type StoryArgs = {
 } & ComponentProps<typeof TilretteleggingStep>;
 
 const meta = {
+    title: 'steps/TilretteleggingStep',
     component: TilretteleggingStep,
     render: ({ gåTilNesteSide = action('button-click'), type, ...rest }) => {
         initAmplitude();

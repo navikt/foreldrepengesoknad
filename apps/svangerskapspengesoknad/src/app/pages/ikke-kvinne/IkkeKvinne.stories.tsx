@@ -7,6 +7,7 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import IkkeKvinne from './IkkeKvinne';
 
 const meta = {
+    title: 'pages/IkkeKvinne',
     component: IkkeKvinne,
     render: () => {
         initAmplitude();

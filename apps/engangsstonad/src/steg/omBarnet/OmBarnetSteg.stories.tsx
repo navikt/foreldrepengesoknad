@@ -23,6 +23,7 @@ type StoryArgs = {
 } & ComponentProps<typeof OmBarnetSteg>;
 
 const meta = {
+    title: 'steg/OmBarnetSteg',
     component: OmBarnetSteg,
     render: ({ søkersituasjon, kjønn, gåTilNesteSide, mellomlagreOgNaviger }) => {
         initAmplitude();

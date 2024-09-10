@@ -13,6 +13,7 @@ type StoryArgs = {
 } & ComponentProps<typeof InfoOmNesteBarn>;
 
 const meta = {
+    title: 'steps/uttaksplan/InfoOmNesteBarn',
     component: InfoOmNesteBarn,
     render: ({ barnFraNesteSak, ...rest }) => {
         return (

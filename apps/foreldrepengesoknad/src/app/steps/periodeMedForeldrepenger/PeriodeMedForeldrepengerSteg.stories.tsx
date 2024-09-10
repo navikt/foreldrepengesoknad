@@ -122,6 +122,7 @@ type StoryArgs = {
 } & ComponentProps<typeof PeriodeMedForeldrepengerSteg>;
 
 const meta = {
+    title: 'steps/PeriodeMedForeldrepengerSteg',
     component: PeriodeMedForeldrepengerSteg,
     render: ({ gåTilNesteSide, søkersituasjon, annenForelder, barnet, stønadskonto, annenPartVedtak, ...rest }) => {
         initAmplitude();
