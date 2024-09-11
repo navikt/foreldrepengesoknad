@@ -26,7 +26,7 @@ export default defineConfig({
         alias: {
             styles: path.resolve(__dirname, './src/styles'),
             types: path.resolve(__dirname, './src/types/'),
-            appData: path.resolve(__dirname, './src/appData/'),
+            appData: path.resolve(__dirname, './src/app-data/'),
         },
     },
     test: {

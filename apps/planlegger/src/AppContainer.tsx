@@ -8,7 +8,7 @@ import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navik
 import { useBeforeUnload, utilsMessages } from '@navikt/fp-utils';
 
 import PlanleggerDataInit from './Planlegger';
-import Environment from './appData/Environment';
+import Environment from './app-data/Environment';
 import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';

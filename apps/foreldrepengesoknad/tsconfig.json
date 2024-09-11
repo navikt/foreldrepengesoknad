@@ -4,7 +4,7 @@
         "baseUrl": "src",
         "jsx": "react-jsx",
         "paths": {
-            "appData/*": ["appData/*"],
+            "appData/*": ["app-data/*"],
             "pages/*": ["pages/*"],
             "steps/*": ["steps/*"],
             "utils/*": ["utils/*"],
@@ -14,6 +14,6 @@
         },
         "types": ["vite/client", "node", "@testing-library/jest-dom", "vitest/globals"]
     },
-    "include": ["src/**/*", "@types", "src/uttaksplan/**/*", "src/uttaksplan-ny/**/*", "storybook/testData/**/*"],
-    "exclude": ["src/common/**/*", "node_modules"]
+    "include": ["src/**/*", "@types", ".storybook/testData/**/*"],
+    "exclude": ["node_modules"]
 }

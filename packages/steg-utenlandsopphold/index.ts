@@ -9,5 +9,5 @@ export const utenlandsoppholdMessages = {
 };
 
 export { default as UtenlandsoppholdPanel } from './src/utenlandsopphold/UtenlandsoppholdPanel';
-export { default as SenereUtenlandsoppholdPanel } from './src/utenlandsoppholdSenere/SenereUtenlandsoppholdPanel';
-export { default as TidligereUtenlandsoppholdPanel } from './src/utenlandsoppholdTidligere/TidligereUtenlandsoppholdPanel';
+export { default as SenereUtenlandsoppholdPanel } from './src/utenlandsopphold-senere/SenereUtenlandsoppholdPanel';
+export { default as TidligereUtenlandsoppholdPanel } from './src/utenlandsopphold-tidligere/TidligereUtenlandsoppholdPanel';

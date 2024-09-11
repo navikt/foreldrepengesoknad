@@ -13,7 +13,7 @@ import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-type
 import { SimpleErrorPage } from '@navikt/fp-ui';
 
 import PlanleggerRouter from './PlanleggerRouter';
-import Environment from './appData/Environment';
+import Environment from './app-data/Environment';
 
 export const planleggerApi = getAxiosInstance();
 
