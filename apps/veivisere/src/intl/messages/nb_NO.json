@@ -115,7 +115,7 @@
     "OppsummeringFpEllerEsSide.SidenDuIkkeJobberINorge": "Du kan ha rett til pengestøtte tilsvarende foreldrepenger i det landet hvor du jobber i. Du må kontakte relevant myndighet i landet du jobber for å finne ut mer.",
     "OppsummeringFpEllerEsSide.DuHarIkkeRett.Folketrygden": "Du har ikke rett til engangsstønad når du ikke er medlem av folketrygden.",
     "OppsummeringFpEllerEsSide.HvaErFp": "Hva er foreldrepenger?",
-    "OppsummeringFpEllerEsSide.BasertPåSvarene": "Basert på den månedlige lønnen du har oppgitt, vil foreldrepengene dine være ca {utbetaling} kroner per måneden før skatt, hvis du tar 100 % foreldrepenger. Antall måneder deles mellom far og mor, og vil variere hvis man velger 100 % eller 80 % foreldrepenger.",
+    "OppsummeringFpEllerEsSide.BasertPåSvarene": "Basert på den månedlige lønnen du har oppgitt, vil foreldrepengene dine være ca {utbetaling} kroner per måned før skatt, hvis du tar 100 % foreldrepenger. Antall måneder deles mellom far og mor, og vil variere hvis man velger 100 % eller 80 % foreldrepenger.",
     "OppsummeringFpEllerEsSide.HvaErFp.KanVelgeMellom": "Du kan velge mellom <b>49 uker med 100 % foreldrepenger eller 59 uker med 80 % foreldrepenger</b>.",
     "OppsummeringFpEllerEsSide.KanOgsåHarRettTilEs": "Når du har rett til foreldrepenger kan du også ha rett til engangsstønad. Vanligvis vil det lønne seg å velge foreldrepenger. Du kan kun velge én av stønadene og du kan ikke ombestemme deg.",
     "OppsummeringFpEllerEsSide.DuFårUtbetaltEs": "Med engangsstønad får du utbetalt en engangssum på {engangsstønad} kroner.",

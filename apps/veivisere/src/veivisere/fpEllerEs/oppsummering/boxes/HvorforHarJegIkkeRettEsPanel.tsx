@@ -1,29 +1,21 @@
 import { QuestionmarkIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, ExpansionCard, HStack, Heading, List, VStack } from '@navikt/ds-react';
+import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
-import { formatCurrencyWithKr } from '@navikt/fp-utils';
-import { isValidNumber } from '@navikt/fp-validation';
+import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { FpEllerEsSituasjon } from '../../situasjon/SituasjonSide';
 import KravinfoBoks from '../KravinfoBoks';
+import KravFarEllerMedmor from './KravFarEllerMedmor';
 
 interface Props {
     fpEllerEsSituasjon: FpEllerEsSituasjon;
-    grunnbeløpet: number;
 }
 
-const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
-    const { borDuINorge, jobberDuINorge, lønnPerMåned, harHattInntekt } = fpEllerEsSituasjon;
-
-    const minstelønn = grunnbeløpet / 2;
-
-    const årslønn = lønnPerMåned && isValidNumber(lønnPerMåned) ? Number(lønnPerMåned) * 12 : 0;
-
-    const erFlereKrav = harHattInntekt && (borDuINorge || jobberDuINorge);
+const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon }) => {
+    const { borDuINorge, jobberDuINorge } = fpEllerEsSituasjon;
 
     return (
         <ExpansionCard aria-label="" size="small">
@@ -40,41 +32,9 @@ const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerE
             <ExpansionCard.Content>
                 <VStack gap="5">
                     <BodyShort>
-                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKravEs" values={{ erFlereKrav }} />
+                        <FormattedMessage id="HvorforHarJegRettPanel.OppfylleKravEs" values={{ erFlereKrav: false }} />
                     </BodyShort>
                     <VStack gap="4">
-                        <KravinfoBoks
-                            testId="harIkkeRettEs"
-                            headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåHaInntekt" />}
-                            boxBodyText={
-                                <FormattedMessage
-                                    id="HvorforHarJegRettPanel.DuHarOppgittInntekt"
-                                    values={{ harHatt: harHattInntekt }}
-                                />
-                            }
-                            erOppfylt={!!harHattInntekt}
-                        />
-
-                        <KravinfoBoks
-                            testId="harIkkeRettEs"
-                            headerText={
-                                <FormattedMessage
-                                    id="HvorforHarJegRettPanel.DuMåTeneOver"
-                                    values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
-                                />
-                            }
-                            boxBodyText={
-                                <FormattedMessage
-                                    id="HvorforHarJegRettPanel.DuHarOppgittMånedslønn"
-                                    values={{
-                                        månedslønn: formatCurrencyWithKr(lønnPerMåned),
-                                        minstelønn: formatCurrencyWithKr(minstelønn),
-                                        hvorMye: årslønn > minstelønn,
-                                    }}
-                                />
-                            }
-                            erOppfylt={årslønn > minstelønn}
-                        />
                         <KravinfoBoks
                             testId="harIkkeRettEs"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
@@ -102,61 +62,7 @@ const HvorforHarJegIkkeRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerE
                             erOppfylt={jobberDuINorge || borDuINorge}
                             jobberINorge={jobberDuINorge}
                         />
-                        {fpEllerEsSituasjon.situasjon !== 'mor' && (
-                            <>
-                                <Heading size="small">
-                                    <FormattedMessage id="HvorforHarJegRettPanel.FarEllerMedmor" />
-                                </Heading>
-                                <Infobox
-                                    icon={
-                                        <QuestionmarkIcon
-                                            height={24}
-                                            width={24}
-                                            color="#020C1CAD"
-                                            fontSize="1.5rem"
-                                            aria-hidden
-                                        />
-                                    }
-                                    color="gray"
-                                >
-                                    <VStack gap="2">
-                                        <BodyShort>
-                                            <FormattedMessage id="HvorforHarJegRettPanel.HvisDuErFarEllerMedmor" />
-                                        </BodyShort>
-                                        <List as="ul">
-                                            <List.Item>
-                                                <FormattedMessage id="HvorforHarJegRettPanel.AdoptererAlene" />
-                                            </List.Item>
-                                            <List.Item>
-                                                <FormattedMessage
-                                                    id="HvorforHarJegRettPanel.OvertarOmsorgMorDød"
-                                                    values={{
-                                                        a: (msg: any) => (
-                                                            <a
-                                                                href="https://lovdata.no/dokument/NL/lov/1981-04-08-7"
-                                                                target="_blank"
-                                                                rel="noreferrer"
-                                                            >
-                                                                {msg}
-                                                            </a>
-                                                        ),
-                                                    }}
-                                                />
-                                            </List.Item>
-                                            <List.Item>
-                                                <FormattedMessage id="HvorforHarJegRettPanel.OvertarOmsorgMorDødFødsel" />
-                                            </List.Item>
-                                            <List.Item>
-                                                <FormattedMessage id="HvorforHarJegRettPanel.Innen56Uker" />
-                                            </List.Item>
-                                        </List>
-                                        <BodyShort>
-                                            <FormattedMessage id="HvorforHarJegRettPanel.DersomEtAvTilfellene" />
-                                        </BodyShort>
-                                    </VStack>
-                                </Infobox>
-                            </>
-                        )}
+                        {fpEllerEsSituasjon.situasjon !== 'mor' && <KravFarEllerMedmor />}
                     </VStack>
                 </VStack>
             </ExpansionCard.Content>

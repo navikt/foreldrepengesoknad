@@ -70,6 +70,7 @@ const OppsummeringPanel = <TYPE extends string>({
             onContinueLater={onContinueLater}
             steps={stepConfig}
             onStepChange={onStepChange}
+            noFieldsRequired
         >
             <VStack gap="10">
                 <VStack gap="3">{children}</VStack>

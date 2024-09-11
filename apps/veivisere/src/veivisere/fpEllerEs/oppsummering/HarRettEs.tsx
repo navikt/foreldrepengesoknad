@@ -72,7 +72,7 @@ const HarRettEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser 
                 </Link>
             </HStack>
             <VStack gap="4">
-                <HvorforHarJegRettEsPanel fpEllerEsSituasjon={fpEllerEsSituasjon} grunnbeløpet={grunnbeløpet} />
+                <HvorforHarJegRettEsPanel fpEllerEsSituasjon={fpEllerEsSituasjon} />
                 <HvorforHarJegIkkeRettPanel fpEllerEsSituasjon={fpEllerEsSituasjon} grunnbeløpet={grunnbeløpet} />
             </VStack>
             <HStack>

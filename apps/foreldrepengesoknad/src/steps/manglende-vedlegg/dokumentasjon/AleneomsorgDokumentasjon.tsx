@@ -1,0 +1,41 @@
+import React from 'react';
+import { useIntl } from 'react-intl';
+import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
+
+import { AnnenForelder, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
+import { Attachment } from '@navikt/fp-types';
+
+import VedleggUploader from '../attachment-uploaders/VedleggUploader';
+
+interface Props {
+    attachments: Attachment[];
+    updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
+    annenForelder: AnnenForelder;
+}
+
+const AleneomsorgDokumentasjon: React.FunctionComponent<Props> = ({
+    attachments,
+    updateAttachments,
+    annenForelder,
+}) => {
+    const intl = useIntl();
+
+    if (!isAnnenForelderOppgitt(annenForelder) || !annenForelder.datoForAleneomsorg) {
+        return null;
+    }
+
+    return (
+        <VedleggUploader
+            attachments={attachments}
+            updateAttachments={updateAttachments(Skjemanummer.DOK_AV_ALENEOMSORG)}
+            skjemanummer={Skjemanummer.DOK_AV_ALENEOMSORG}
+            labelText={intl.formatMessage({ id: 'manglendeVedlegg.aleneomsorg.tittel' })}
+            description={intl.formatMessage({ id: 'manglendeVedlegg.aleneomsorg.description' })}
+            attachmentType={AttachmentType.ALENEOMSORG}
+            metadataType={AttachmentMetadataType.BARN}
+        />
+    );
+};
+
+export default AleneomsorgDokumentasjon;

@@ -12,7 +12,6 @@ export interface Props {
     description?: string;
     onChange?: (value: any) => void;
     autoFocus?: boolean;
-    maxLength?: number;
     disabled?: boolean;
     type?: 'email' | 'password' | 'tel' | 'text' | 'url';
     className?: string;
@@ -30,7 +29,6 @@ const TextField: FunctionComponent<Props> = ({
     onChange,
     description,
     autoFocus,
-    maxLength,
     disabled,
     className,
     style,
@@ -80,7 +78,6 @@ const TextField: FunctionComponent<Props> = ({
             error={customErrorFormatter ? customErrorFormatter(getError(errors, name)) : getError(errors, name)}
             autoFocus={autoFocus || (autofocusWhenEmpty && field.value === undefined)}
             autoComplete="off"
-            maxLength={maxLength}
             disabled={disabled}
             className={className}
             style={style}
