@@ -1,7 +1,6 @@
+import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { FunctionComponent, useEffect } from 'react';
-
-import getAxiosInstance from '../apiInterceptor';
 
 // Legg denne her, sjølv om det er ein test-hjelpar. Denne pakka forvinn snart uansett
 
@@ -10,7 +9,8 @@ interface Props {
     mock: (adapter: MockAdapter) => void;
 }
 
-const apiMock = new MockAdapter(getAxiosInstance());
+const axiosInstance = axios.create({ withCredentials: true });
+const apiMock = new MockAdapter(axiosInstance);
 
 const AxiosMock: FunctionComponent<Props> = ({ children, mock }) => {
     useEffect(() => {
