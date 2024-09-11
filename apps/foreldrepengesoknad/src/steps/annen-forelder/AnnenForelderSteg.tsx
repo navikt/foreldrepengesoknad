@@ -9,7 +9,7 @@ import { replaceInvisibleCharsWithSpace } from 'utils/stringUtils';
 import { VStack } from '@navikt/ds-react';
 
 import { Barn, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Søker, Søkerinfo } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -106,7 +106,7 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søkerInfo, melloml
             onContinueLater={navigator.fortsettSøknadSenere}
             steps={stepConfig}
         >
-            <Form formMethods={formMethods} onSubmit={onSubmit}>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     {skalOppgiPersonalia && (
@@ -129,7 +129,7 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søkerInfo, melloml
                     )}
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

@@ -9,7 +9,7 @@ import { erAdopsjon, erBarnetIkkeFødt } from 'types/OmBarnet';
 
 import { VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Attachment } from '@navikt/fp-types';
 import { ScanDocumentInfo, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -68,7 +68,7 @@ const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavige
             steps={stepConfig}
             noFieldsRequired
         >
-            <Form formMethods={formMethods} onSubmit={lagre}>
+            <RhfForm formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     {erBarnetAdoptert && (
@@ -88,7 +88,7 @@ const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavige
                         isDisabledAndLoading={avventerVedlegg}
                     />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

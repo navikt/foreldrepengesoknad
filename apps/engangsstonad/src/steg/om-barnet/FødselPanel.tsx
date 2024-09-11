@@ -5,7 +5,7 @@ import { Fødsel } from 'types/OmBarnet';
 
 import { Radio } from '@navikt/ds-react';
 
-import { Datepicker, RadioGroup, Select } from '@navikt/fp-form-hooks';
+import { RhfDatepicker, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
 import {
     erI22SvangerskapsukeEllerSenere,
     isAfterOrSameAsSixMonthsAgo,
@@ -29,7 +29,7 @@ const FødselPanel: React.FunctionComponent = () => {
 
     return (
         <>
-            <RadioGroup
+            <RhfRadioGroup
                 name="erBarnetFødt"
                 label={<FormattedMessage id="FødselPanel.Spørsmål.ErBarnetFødt" />}
                 validate={[isRequired(intl.formatMessage({ id: 'FødselPanel.Spørsmål.ErBarnetFødt.Required' }))]}
@@ -40,9 +40,9 @@ const FødselPanel: React.FunctionComponent = () => {
                 <Radio value={false}>
                     <FormattedMessage id="FødselPanel.Radiobutton.Nei" />
                 </Radio>
-            </RadioGroup>
+            </RhfRadioGroup>
             {erBarnetFødt && (
-                <Datepicker
+                <RhfDatepicker
                     name="fødselsdato"
                     label={<FormattedMessage id="FødselPanel.Fødselsdato" />}
                     description={intl.formatMessage({ id: 'FødselPanel.TermindatoFodselsdato.beskrivelse' })}
@@ -61,7 +61,7 @@ const FødselPanel: React.FunctionComponent = () => {
                 />
             )}
             {!erBarnetFødt && (
-                <Datepicker
+                <RhfDatepicker
                     name="termindato"
                     label={<FormattedMessage id="FødselPanel.Termindato" />}
                     description={intl.formatMessage({ id: 'FødselPanel.TermindatoFodselsdato.beskrivelse' })}
@@ -80,7 +80,7 @@ const FødselPanel: React.FunctionComponent = () => {
                 />
             )}
 
-            <RadioGroup
+            <RhfRadioGroup
                 name="antallBarn"
                 label={
                     erBarnetFødt
@@ -105,9 +105,9 @@ const FødselPanel: React.FunctionComponent = () => {
                 <Radio value={3}>
                     <FormattedMessage id="FødselPanel.Radiobutton.Flere" />
                 </Radio>
-            </RadioGroup>
+            </RhfRadioGroup>
             {antallBarn >= 3 && (
-                <Select
+                <RhfSelect
                     name="antallBarnDropDown"
                     label={
                         erBarnetFødt
@@ -129,7 +129,7 @@ const FødselPanel: React.FunctionComponent = () => {
                     <option value="7">7</option>
                     <option value="8">8</option>
                     <option value="9">9</option>
-                </Select>
+                </RhfSelect>
             )}
         </>
     );

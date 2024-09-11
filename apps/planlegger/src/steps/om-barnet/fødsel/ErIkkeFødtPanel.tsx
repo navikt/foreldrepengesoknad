@@ -16,7 +16,7 @@ import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
-import { Datepicker } from '@navikt/fp-form-hooks';
+import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { isLessThanThreeWeeksAgo, isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -61,7 +61,7 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
     return (
         <VStack gap="5">
             <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
-                <Datepicker
+                <RhfDatepicker
                     label={<FormattedMessage id="ErIkkeFødtPanel.Termin" />}
                     name="termindato"
                     minDate={dayjs().subtract(3, 'week').toDate()}

@@ -1,34 +1,36 @@
 import { CSSProperties, FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
-import { TextField as DsTextField } from '@navikt/ds-react';
+import { Select } from '@navikt/ds-react';
 
 import { getError, getValidationRules } from './formUtils';
 
 export interface Props {
     name: string;
     label: string | ReactNode;
-    validate?: Array<(value: string) => any> | Array<(value: number) => any>;
-    description?: string;
-    onChange?: (value: any) => void;
-    autoFocus?: boolean;
-    maxLength?: number;
+    onChange?: (event: any) => void;
+    validate?: Array<(value: string) => any>;
+    children: React.ReactElement[];
+    description?: ReactNode;
     disabled?: boolean;
     className?: string;
     style?: CSSProperties;
+    autofocusWhenEmpty?: boolean;
+    customErrorFormatter?: (error: string | undefined) => ReactNode;
 }
 
-const NumericField: FunctionComponent<Props> = ({
+const RhfSelect: FunctionComponent<Props> = ({
     name,
     label,
     validate = [],
-    onChange,
     description,
-    autoFocus,
-    maxLength,
+    onChange,
     disabled,
     className,
+    children,
     style,
+    autofocusWhenEmpty,
+    customErrorFormatter,
 }) => {
     const {
         formState: { errors },
@@ -42,33 +44,31 @@ const NumericField: FunctionComponent<Props> = ({
     });
 
     const onChangeFn = useCallback(
-        (evt: React.ChangeEvent<HTMLInputElement>) => {
-            field.onChange(evt);
+        (evt: React.ChangeEvent) => {
             if (onChange) {
-                onChange(evt.currentTarget.value);
+                onChange(evt);
             }
+            field.onChange(evt);
         },
         [field, onChange],
     );
 
     return (
-        <DsTextField
+        <Select
             ref={field.ref}
-            value={field.value || ''}
+            value={field.value}
+            className={className}
+            error={customErrorFormatter ? customErrorFormatter(getError(errors, name)) : getError(errors, name)}
             label={label}
             description={description}
-            type="text"
-            inputMode="numeric"
-            error={getError(errors, name)}
-            autoFocus={autoFocus}
-            autoComplete="off"
-            maxLength={maxLength}
             disabled={disabled}
-            className={className}
-            style={style}
             onChange={onChangeFn}
-        />
+            style={style}
+            autoFocus={autofocusWhenEmpty && field.value === undefined}
+        >
+            <option style={{ display: 'none' }} />,{children}
+        </Select>
     );
 };
 
-export default NumericField;
+export default RhfSelect;

@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, VStack } from '@navikt/ds-react';
 
 import { DATE_1_YEAR_FROM_NOW, DATE_TODAY } from '@navikt/fp-constants';
-import { Datepicker, Select } from '@navikt/fp-form-hooks';
+import { RhfDatepicker, RhfSelect } from '@navikt/fp-form-hooks';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { createCountryOptions, formatDate, isSameOrAfterToday } from '@navikt/fp-utils';
 import {
@@ -45,7 +45,7 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index,
 
     return (
         <VStack gap="5" align="start">
-            <Select
+            <RhfSelect
                 name={`utenlandsoppholdNeste12Mnd.${index}.landkode`}
                 label={
                     <FormattedMessage
@@ -65,8 +65,8 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index,
                         {o[1]}
                     </option>
                 ))}
-            </Select>
-            <Datepicker
+            </RhfSelect>
+            <RhfDatepicker
                 name={`utenlandsoppholdNeste12Mnd.${index}.fom`}
                 label={<FormattedMessage id="SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Fraogmed" />}
                 minDate={minDateFom}
@@ -104,7 +104,7 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index,
                 ]}
                 onChange={() => isSubmitted && trigger()}
             />
-            <Datepicker
+            <RhfDatepicker
                 name={`utenlandsoppholdNeste12Mnd.${index}.tom`}
                 label={<FormattedMessage id="SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Tilogmed" />}
                 minDate={minDateTom}

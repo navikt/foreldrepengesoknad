@@ -4,7 +4,7 @@ import { getVarighetString } from 'utils/dateUtils';
 
 import { Radio } from '@navikt/ds-react';
 
-import { RadioGroup } from '@navikt/fp-form-hooks';
+import { RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 const FordelingValg: React.FunctionComponent<Props> = ({ dagerMedFellesperiode }) => {
     const intl = useIntl();
     return (
-        <RadioGroup
+        <RhfRadioGroup
             name="fordelingValg"
             label={<FormattedMessage id="fordeling.fordelingvalg.spørsmål" />}
             description={<FormattedMessage id="fordeling.description.kanEndresSenere" />}
@@ -42,7 +42,7 @@ const FordelingValg: React.FunctionComponent<Props> = ({ dagerMedFellesperiode }
             <Radio value={FellesperiodeFordelingValg.HOPP_OVER_FORDELING}>
                 <FormattedMessage id="fordeling.fordelingsvalg.option.senere" />
             </Radio>
-        </RadioGroup>
+        </RhfRadioGroup>
     );
 };
 

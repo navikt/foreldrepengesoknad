@@ -16,7 +16,7 @@ import isFarEllerMedmor from 'utils/isFarEllerMedmor';
 import { VStack } from '@navikt/ds-react';
 
 import { Barn, Situasjon, Søkerrolle, isFødtBarn, isUfødtBarn } from '@navikt/fp-common';
-import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { SøkerBarn, Søkerinfo } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -153,7 +153,7 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({
             onContinueLater={navigator.fortsettSøknadSenere}
             steps={stepConfig}
         >
-            <Form formMethods={formMethods} onSubmit={onSubmit}>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     {valgteRegistrerteBarn && valgteRegistrerteBarn.length > 0 && (
@@ -177,7 +177,7 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({
                     )}
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

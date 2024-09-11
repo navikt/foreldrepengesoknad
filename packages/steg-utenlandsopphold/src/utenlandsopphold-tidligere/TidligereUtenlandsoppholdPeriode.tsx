@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, VStack } from '@navikt/ds-react';
 
 import { DATE_1_YEAR_AGO, DATE_TODAY } from '@navikt/fp-constants';
-import { Datepicker, Select } from '@navikt/fp-form-hooks';
+import { RhfDatepicker, RhfSelect } from '@navikt/fp-form-hooks';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { createCountryOptions, formatDate, isDateAAfterDateB } from '@navikt/fp-utils';
 import {
@@ -48,7 +48,7 @@ const TidligereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ ind
 
     return (
         <VStack gap="5" align="start">
-            <Select
+            <RhfSelect
                 name={`utenlandsoppholdSiste12Mnd.${index}.landkode`}
                 label={<FormattedMessage id="TidligereUtenlandsoppholdSteg.Spørsmål.HvilketLandHarDuBoddI" />}
                 validate={[
@@ -64,8 +64,8 @@ const TidligereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ ind
                         {o[1]}
                     </option>
                 ))}
-            </Select>
-            <Datepicker
+            </RhfSelect>
+            <RhfDatepicker
                 name={`utenlandsoppholdSiste12Mnd.${index}.fom`}
                 label={<FormattedMessage id="TidligereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Fraogmed" />}
                 minDate={minDateFom}
@@ -104,7 +104,7 @@ const TidligereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ ind
                 onChange={() => isSubmitted && trigger()}
                 defaultMonth={tom ? dayjs(tom).toDate() : undefined}
             />
-            <Datepicker
+            <RhfDatepicker
                 name={`utenlandsoppholdSiste12Mnd.${index}.tom`}
                 label={<FormattedMessage id="TidligereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Tilogmed" />}
                 minDate={minDateTom}

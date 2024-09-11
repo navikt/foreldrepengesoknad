@@ -47,7 +47,7 @@ export interface Props {
     useStrategyAbsolute?: boolean;
 }
 
-const Datepicker: FunctionComponent<Props> = ({
+const RhfDatepicker: FunctionComponent<Props> = ({
     name,
     label,
     description,
@@ -140,4 +140,4 @@ const Datepicker: FunctionComponent<Props> = ({
     );
 };
 
-export default Datepicker;
+export default RhfDatepicker;

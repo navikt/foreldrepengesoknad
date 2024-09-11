@@ -5,7 +5,7 @@ import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder
 
 import { BodyShort, HStack, Radio, VStack } from '@navikt/ds-react';
 
-import { Datepicker, RadioGroup } from '@navikt/fp-form-hooks';
+import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { BluePanel } from '@navikt/fp-ui';
 import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -23,7 +23,7 @@ export const FørstegangstjenestePanel: React.FunctionComponent<Props> = ({ inde
 
     return (
         <VStack gap="10">
-            <RadioGroup
+            <RhfRadioGroup
                 name={`andreInntektskilder.${index}.pågående`}
                 label={<FormattedMessage id="FørstegangstjenestePanel.IFørstegangstjenesteNå" />}
                 validate={[
@@ -38,9 +38,9 @@ export const FørstegangstjenestePanel: React.FunctionComponent<Props> = ({ inde
                 <Radio value={true}>
                     <FormattedMessage id="FørstegangstjenestePanel.RadioButton.Ja" />
                 </Radio>
-            </RadioGroup>
+            </RhfRadioGroup>
             <HStack gap="6">
-                <Datepicker
+                <RhfDatepicker
                     name={`andreInntektskilder.${index}.fom`}
                     label={intl.formatMessage({ id: 'FørstegangstjenestePanel.Fom' })}
                     maxDate={dayjs()}
@@ -57,7 +57,7 @@ export const FørstegangstjenestePanel: React.FunctionComponent<Props> = ({ inde
                     ]}
                 />
                 {inntektskilde.pågående === false && (
-                    <Datepicker
+                    <RhfDatepicker
                         name={`andreInntektskilder.${index}.tom`}
                         label={intl.formatMessage({ id: 'FørstegangstjenestePanel.Tom' })}
                         maxDate={dayjs()}

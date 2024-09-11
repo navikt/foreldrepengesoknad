@@ -1,7 +1,7 @@
 import { CSSProperties, FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
-import { TextField as DsTextField } from '@navikt/ds-react';
+import { TextField } from '@navikt/ds-react';
 
 import { getError, getValidationRules, replaceInvisibleCharsWithSpace } from './formUtils';
 
@@ -21,7 +21,7 @@ export interface Props {
     customErrorFormatter?: (error: string | undefined) => ReactNode;
 }
 
-const TextField: FunctionComponent<Props> = ({
+const RhfTextField: FunctionComponent<Props> = ({
     name,
     label,
     validate = [],
@@ -69,7 +69,7 @@ const TextField: FunctionComponent<Props> = ({
     );
 
     return (
-        <DsTextField
+        <TextField
             ref={field.ref}
             value={field.value || ''}
             label={label}
@@ -86,4 +86,4 @@ const TextField: FunctionComponent<Props> = ({
     );
 };
 
-export default TextField;
+export default RhfTextField;

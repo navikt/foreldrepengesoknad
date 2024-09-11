@@ -54,7 +54,7 @@ interface Props {
     useStrategyAbsolute?: boolean;
 }
 
-const DateRangepicker: FunctionComponent<Props> = ({
+const RhfDateRangepicker: FunctionComponent<Props> = ({
     nameFrom,
     nameTo,
     labelFrom,
@@ -167,4 +167,4 @@ const DateRangepicker: FunctionComponent<Props> = ({
     );
 };
 
-export default DateRangepicker;
+export default RhfDateRangepicker;

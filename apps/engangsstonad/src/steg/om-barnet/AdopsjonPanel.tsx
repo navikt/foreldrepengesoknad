@@ -5,7 +5,7 @@ import { Adopsjon } from 'types/OmBarnet';
 
 import { Radio } from '@navikt/ds-react';
 
-import { Datepicker, RadioGroup, Select } from '@navikt/fp-form-hooks';
+import { RhfDatepicker, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
 import { Kjønn } from '@navikt/fp-types';
 import { isMaxOneYearIntoTheFuture, isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -28,7 +28,7 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
 
     return (
         <>
-            <RadioGroup
+            <RhfRadioGroup
                 name="adopsjonAvEktefellesBarn"
                 label={<FormattedMessage id="AdopsjonPanel.Spørsmål.Stebarnsadopsjon" />}
                 validate={[isRequired(intl.formatMessage({ id: 'AdopsjonPanel.Spørsmål.Required' }))]}
@@ -39,8 +39,8 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
                 <Radio value={false}>
                     <FormattedMessage id="AdopsjonPanel.Nei" />
                 </Radio>
-            </RadioGroup>
-            <Datepicker
+            </RhfRadioGroup>
+            <RhfDatepicker
                 name="adopsjonsdato"
                 label={
                     adopsjonAvEktefellesBarn
@@ -64,7 +64,7 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
                     ),
                 ]}
             />
-            <RadioGroup
+            <RhfRadioGroup
                 name="antallBarn"
                 label={<FormattedMessage id="AdopsjonPanel.Spørsmål.AntallBarnAdoptert" />}
                 description={<FormattedMessage id="AdopsjonPanel.Spørsmål.AntallBarnAdoptert.Beskrivelse" />}
@@ -79,9 +79,9 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
                 <Radio value={3}>
                     <FormattedMessage id="AdopsjonPanel.Radiobutton.Flere" />
                 </Radio>
-            </RadioGroup>
+            </RhfRadioGroup>
             {antallBarn && antallBarn >= 3 && (
-                <Select
+                <RhfSelect
                     name="antallBarnDropDown"
                     label={<FormattedMessage id="AdopsjonPanel.AntallBarn.Omsorgsovertakelse" />}
                     validate={[isRequired(intl.formatMessage({ id: 'AdopsjonPanel.Antallbarndropdown.Required' }))]}
@@ -93,7 +93,7 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
                     <option value="7">7</option>
                     <option value="8">8</option>
                     <option value="9">9</option>
-                </Select>
+                </RhfSelect>
             )}
             <AdopsjonFodselFieldArray
                 adopsjonsdato={adopsjonsdato}
@@ -101,7 +101,7 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
                 antallBarnDropDown={antallBarnDropDown}
             />
             {kjønn === 'M' && adopsjonAvEktefellesBarn === false && (
-                <RadioGroup
+                <RhfRadioGroup
                     name="søkerAdopsjonAlene"
                     label={<FormattedMessage id="AdopsjonPanel.Spørsmål.AdoptererDuAlene" />}
                     validate={[isRequired(intl.formatMessage({ id: 'AdopsjonPanel.AdoptererDuAlene.Required' }))]}
@@ -112,7 +112,7 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
                     <Radio value={false}>
                         <FormattedMessage id="AdopsjonPanel.Nei" />
                     </Radio>
-                </RadioGroup>
+                </RhfRadioGroup>
             )}
         </>
     );

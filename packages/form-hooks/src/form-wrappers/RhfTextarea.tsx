@@ -1,7 +1,9 @@
-import { Textarea } from '@navikt/ds-react';
 import { ChangeEvent, FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
-import { replaceInvisibleCharsWithSpace, getError, getValidationRules } from './formUtils';
+
+import { Textarea } from '@navikt/ds-react';
+
+import { getError, getValidationRules, replaceInvisibleCharsWithSpace } from './formUtils';
 
 export interface Props {
     name: string;
@@ -13,7 +15,7 @@ export interface Props {
     description?: string;
 }
 
-const TextArea: FunctionComponent<Props> = ({
+const RhfTextarea: FunctionComponent<Props> = ({
     name,
     label,
     maxLength,
@@ -58,4 +60,4 @@ const TextArea: FunctionComponent<Props> = ({
     );
 };
 
-export default TextArea;
+export default RhfTextarea;

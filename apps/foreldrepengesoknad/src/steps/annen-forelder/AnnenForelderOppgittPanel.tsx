@@ -8,7 +8,7 @@ import isFarEllerMedmor from 'utils/isFarEllerMedmor';
 import { Alert, BodyLong, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { AnnenForelder, Barn } from '@navikt/fp-common';
-import { Datepicker, RadioGroup } from '@navikt/fp-form-hooks';
+import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { Søker, Søkerrolle } from '@navikt/fp-types';
 import { isAfterOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -36,7 +36,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn
     return (
         <>
             <div>
-                <RadioGroup
+                <RhfRadioGroup
                     name="erAleneOmOmsorg"
                     label={intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg' })}
                     validate={[
@@ -53,7 +53,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn
                     <Radio value={true}>
                         <FormattedMessage id="annenForelder.aleneOmOmsorg.nei" />
                     </Radio>
-                </RadioGroup>
+                </RhfRadioGroup>
                 <ReadMore header={intl.formatMessage({ id: 'annenForelder.aleneOmOmsorg.apneLabel' })}>
                     <VStack gap="4">
                         <BodyLong>
@@ -71,7 +71,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn
                 </Alert>
             )}
             {formValues.erAleneOmOmsorg === true && isFarEllerMedmor(rolle) && (
-                <Datepicker
+                <RhfDatepicker
                     name="datoForAleneomsorg"
                     label={intl.formatMessage({ id: 'annenForelder.datoForAleneomsorg' })}
                     minDate={dayjs(familiehendelsedato).toDate()}
@@ -100,7 +100,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn
             )}
             {formValues.erAleneOmOmsorg !== true && (
                 <div>
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="harRettPåForeldrepengerINorge"
                         label={intl.formatMessage({
                             id: 'annenForelder.harRettPåForeldrepengerINorge',
@@ -115,7 +115,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn
                     >
                         <Radio value={true}>Ja</Radio>
                         <Radio value={false}>Nei</Radio>
-                    </RadioGroup>
+                    </RhfRadioGroup>
                     <ReadMore
                         header={intl.formatMessage({
                             id: 'annenForelder.harRettPåForeldrepengerINorge.veileder.apneLabel',
@@ -139,7 +139,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn
 
             {formValues.erAleneOmOmsorg === false && formValues.harRettPåForeldrepengerINorge === false && (
                 <div>
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="harOppholdtSegIEØS"
                         label={intl.formatMessage({ id: 'annenForelder.harOppholdtSegIEØS' })}
                         validate={[
@@ -152,7 +152,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn
                     >
                         <Radio value={true}>Ja</Radio>
                         <Radio value={false}>Nei</Radio>
-                    </RadioGroup>
+                    </RhfRadioGroup>
                     <ReadMore
                         header={intl.formatMessage({
                             id: 'annenForelder.harOppholdtSegIEØS.veileder.apneLabel',
@@ -164,7 +164,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn
             )}
             {formValues.erAleneOmOmsorg === false && formValues.harOppholdtSegIEØS === true && (
                 <div>
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="harRettPåForeldrepengerIEØS"
                         label={intl.formatMessage({ id: 'annenForelder.harRettPåForeldrepengerIEØS' })}
                         validate={[
@@ -177,7 +177,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn
                     >
                         <Radio value={true}>Ja</Radio>
                         <Radio value={false}>Nei</Radio>
-                    </RadioGroup>
+                    </RhfRadioGroup>
 
                     <ReadMore
                         header={intl.formatMessage({
@@ -198,7 +198,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn
             )}
             {formValues.erAleneOmOmsorg !== true && formValues.harRettPåForeldrepengerINorge !== false && (
                 <>
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="erInformertOmSøknaden"
                         label={intl.formatMessage({
                             id: 'annenForelder.spørsmål.erAnnenForelderInformert',
@@ -219,7 +219,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn
                     >
                         <Radio value={true}>Ja</Radio>
                         <Radio value={false}>Nei</Radio>
-                    </RadioGroup>
+                    </RhfRadioGroup>
                     {formValues.erInformertOmSøknaden === false && (
                         <Alert variant="warning">
                             <FormattedMessage id="annenForelder.erAnnenForelderInformert.veileder" />
@@ -233,7 +233,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn
                 (formValues.harOppholdtSegIEØS === false || formValues.harRettPåForeldrepengerIEØS === false) &&
                 isFarEllerMedmor(rolle) && (
                     <div>
-                        <RadioGroup
+                        <RhfRadioGroup
                             name="erMorUfør"
                             label={intl.formatMessage({ id: 'annenForelder.erMorUfør' })}
                             validate={[
@@ -246,7 +246,7 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn
                         >
                             <Radio value={true}>Ja</Radio>
                             <Radio value={false}>Nei</Radio>
-                        </RadioGroup>
+                        </RhfRadioGroup>
                         <ReadMore
                             header={intl.formatMessage({
                                 id: 'annenForelder.erMorUfør.veileder.apneLabel',

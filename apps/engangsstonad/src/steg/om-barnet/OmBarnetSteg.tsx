@@ -8,7 +8,7 @@ import { OmBarnet } from 'types/OmBarnet';
 
 import { VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Kjønn, Søkersituasjon } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { omitOne } from '@navikt/fp-utils';
@@ -81,7 +81,7 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlagreOgNav
             onStepChange={navigator.goToNextStep}
             steps={stepConfig}
         >
-            <Form formMethods={formMethods} onSubmit={onSubmit}>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     {søkersituasjon?.situasjon === 'adopsjon' && <AdopsjonPanel kjønn={kjønn} />}
@@ -91,7 +91,7 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlagreOgNav
                         saveDataOnPreviousClick={mapOgLagreOmBarnet}
                     />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

@@ -6,7 +6,7 @@ import { FordelingDager, FordelingFargekode } from 'types/FordelingOversikt';
 import { Alert, BodyLong, BodyShort, HStack, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { TextField } from '@navikt/fp-form-hooks';
+import { RhfTextField } from '@navikt/fp-form-hooks';
 import { bemUtils, getNumberFromNumberInputValue } from '@navikt/fp-utils';
 import { isValidInteger, isValidNumberForm } from '@navikt/fp-validation';
 
@@ -141,7 +141,7 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
                         />
                     </BodyLong>
                     <HStack gap="5" align="start">
-                        <TextField
+                        <RhfTextField
                             className={bem.element('textInput')}
                             name="antallUkerFellesperiodeTilSøker"
                             label={<FormattedMessage id="fordeling.antallUker.spørsmål" />}
@@ -157,7 +157,7 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
                             onChange={() => isSubmitted && trigger()}
                         />
                         {!harHeleUkerTilFordeling && (
-                            <TextField
+                            <RhfTextField
                                 className={bem.element('textInput')}
                                 name="antallDagerFellesperiodeTilSøker"
                                 label={<FormattedMessage id="fordeling.antallDager.spørsmål" />}

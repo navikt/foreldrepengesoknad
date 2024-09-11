@@ -10,7 +10,7 @@ import { getKanHaSvpFremTilTreUkerFørTermin } from 'utils/dateUtils';
 
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -88,7 +88,7 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
             onContinueLater={navigator.fortsettSøknadSenere}
             onStepChange={navigator.goToNextStep}
         >
-            <Form formMethods={formMethods} onSubmit={onSubmit}>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     {erFlereTilrettelegginger && <Bedriftsbanner arbeid={valgtTilrettelegging.arbeidsforhold} />}
@@ -112,7 +112,7 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                     />
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

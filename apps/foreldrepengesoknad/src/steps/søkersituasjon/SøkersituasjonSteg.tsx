@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, Kjønn, SøkersituasjonFp } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
@@ -56,10 +56,10 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({
             onContinueLater={navigator.fortsettSøknadSenere}
             steps={stepConfig}
         >
-            <Form formMethods={formMethods} onSubmit={onSubmit}>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="situasjon"
                         label={<FormattedMessage id="søkersituasjon.text.situasjon" />}
                         validate={[
@@ -74,9 +74,9 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({
                         <Radio value="adopsjon">
                             <FormattedMessage id="søkersituasjon.radioButton.adopsjon" />
                         </Radio>
-                    </RadioGroup>
+                    </RhfRadioGroup>
                     {kjønn === 'K' && (
-                        <RadioGroup
+                        <RhfRadioGroup
                             name="rolle"
                             label={<FormattedMessage id="søkersituasjon.text.rolle" />}
                             validate={[
@@ -93,11 +93,11 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({
                             <Radio value="medmor">
                                 <FormattedMessage id="søkersituasjon.radioButton.medmor" />
                             </Radio>
-                        </RadioGroup>
+                        </RhfRadioGroup>
                     )}
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

@@ -11,7 +11,7 @@ import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { BodyShort, Button, Heading, Label, Link, ReadMore, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Checkbox, Form, TextField } from '@navikt/fp-form-hooks';
+import { RhfCheckbox, RhfForm, RhfTextField } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
@@ -92,7 +92,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
             label={intl.formatMessage({ id: 'Tittel' })}
             icon={<WalletIcon height={28} width={28} fontSize="1.5rem" aria-hidden />}
         >
-            <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <BluePanel isDarkBlue={!isCheckboxValgt(formValues)} shouldFadeIn>
                         <Label>
@@ -101,15 +101,15 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                         <BodyShort className={styles.description}>
                             <FormattedMessage id="ArbeidssituasjonSide.VelgAlternativ" />
                         </BodyShort>
-                        <Checkbox
+                        <RhfCheckbox
                             name="erArbeidstakerEllerFrilanser"
                             label={<FormattedMessage id="ArbeidssituasjonSide.ArbeidEllerFrilans" />}
                         />
-                        <Checkbox
+                        <RhfCheckbox
                             name="harUtbetalingFraNav"
                             label={<FormattedMessage id="ArbeidssituasjonSide.UtbetalingNav" />}
                         />
-                        <Checkbox
+                        <RhfCheckbox
                             name="erSelvstendigNæringsdrivende"
                             label={<FormattedMessage id="ArbeidssituasjonSide.SelvstendigNæringsdrivende" />}
                         />
@@ -177,7 +177,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                         )}
 
                                         <VStack gap="4">
-                                            <TextField
+                                            <RhfTextField
                                                 name="lønnMåned1"
                                                 label={capitalizeFirstLetter(
                                                     forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
@@ -189,7 +189,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                                     ),
                                                 ]}
                                             />
-                                            <TextField
+                                            <RhfTextField
                                                 name="lønnMåned2"
                                                 label={capitalizeFirstLetter(
                                                     forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
@@ -201,7 +201,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                                     ),
                                                 ]}
                                             />
-                                            <TextField
+                                            <RhfTextField
                                                 name="lønnMåned3"
                                                 label={capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
                                                 className={styles.widthTextInput}
@@ -276,7 +276,7 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                         </Button>
                     )}
                 </VStack>
-            </Form>
+            </RhfForm>
         </VeiviserPage>
     );
 };

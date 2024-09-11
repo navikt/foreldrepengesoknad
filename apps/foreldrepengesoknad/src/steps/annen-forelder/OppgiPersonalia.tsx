@@ -3,7 +3,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { validateFødselsnummer, validateTextInputField } from 'utils/validationUtil';
 
 import { Barn, isAdoptertStebarn } from '@navikt/fp-common';
-import { Checkbox, Select, TextField } from '@navikt/fp-form-hooks';
+import { RhfCheckbox, RhfSelect, RhfTextField } from '@navikt/fp-form-hooks';
 import { Søkerrolle } from '@navikt/fp-types';
 import { bemUtils, createCountryOptions } from '@navikt/fp-utils';
 import { isRequired } from '@navikt/fp-validation';
@@ -40,11 +40,14 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer
     return (
         <>
             {isAnnenForelderKanIkkeOppgisIncluded(rolle, isAdoptertStebarn(barn)) && (
-                <Checkbox name="kanIkkeOppgis" label={intl.formatMessage({ id: 'annenForelder.spørsmål.kanOppgis' })} />
+                <RhfCheckbox
+                    name="kanIkkeOppgis"
+                    label={intl.formatMessage({ id: 'annenForelder.spørsmål.kanOppgis' })}
+                />
             )}
             {!kanIkkeOppgis && (
                 <>
-                    <TextField
+                    <RhfTextField
                         name="fornavn"
                         label={<FormattedMessage id="annenForelder.spørsmål.fornavn" />}
                         validate={[
@@ -53,7 +56,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer
                         ]}
                         className={bem.block}
                     />
-                    <TextField
+                    <RhfTextField
                         name="etternavn"
                         label={<FormattedMessage id="annenForelder.spørsmål.etternavn" />}
                         validate={[
@@ -67,7 +70,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer
             {!kanIkkeOppgis && (
                 <>
                     <div>
-                        <TextField
+                        <RhfTextField
                             name="fnr"
                             label={intl.formatMessage({ id: 'annenForelder.spørsmål.fnr' }, { navn: fornavn })}
                             validate={[
@@ -81,13 +84,13 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer
                             ]}
                             className={bem.block}
                         />
-                        <Checkbox
+                        <RhfCheckbox
                             name="utenlandskFnr"
                             label={intl.formatMessage({ id: 'annenForelder.spørsmål.utenlandskFnr' })}
                         />
                     </div>
                     {utenlandskFnr && (
-                        <Select
+                        <RhfSelect
                             name="bostedsland"
                             label={intl.formatMessage({ id: 'annenForelder.bostedsland' })}
                             validate={[
@@ -101,7 +104,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer
                                     {o[1]}
                                 </option>
                             ))}
-                        </Select>
+                        </RhfSelect>
                     )}
                 </>
             )}

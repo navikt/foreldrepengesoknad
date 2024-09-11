@@ -8,7 +8,7 @@ import isFarEllerMedmor from 'utils/isFarEllerMedmor';
 import { VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { notEmpty } from '@navikt/fp-validation';
 
 import FellesperiodeFordeling from './fellesperiode-fordeling/FellesperiodeFordeling';
@@ -76,7 +76,7 @@ const FordelingForm: React.FunctionComponent<Props> = ({
         return goToNextDefaultStep();
     };
     return (
-        <Form formMethods={formMethods} onSubmit={onSubmit}>
+        <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="10">
                 <ErrorSummaryHookForm />
                 {søkerDeltUttakINorgeSomMorFørFar && (
@@ -95,7 +95,7 @@ const FordelingForm: React.FunctionComponent<Props> = ({
 
                 <StepButtonsHookForm goToPreviousStep={goToPreviousDefaultStep} />
             </VStack>
-        </Form>
+        </RhfForm>
     );
 };
 

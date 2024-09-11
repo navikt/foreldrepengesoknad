@@ -8,7 +8,7 @@ import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 
 import { BodyLong, VStack } from '@navikt/ds-react';
 
-import { Datepicker } from '@navikt/fp-form-hooks';
+import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import {
     isAfterOrSame,
@@ -47,7 +47,7 @@ const Adopsjon: React.FunctionComponent<Props> = ({
         <>
             <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
                 <VStack gap="8">
-                    <Datepicker
+                    <RhfDatepicker
                         label={<FormattedMessage id="Adopsjon.Overtakelsesdato" values={{ erAlenesøker, flereBarn }} />}
                         name="overtakelsesdato"
                         minDate={dayjs().subtract(6, 'month').toDate()}
@@ -73,7 +73,7 @@ const Adopsjon: React.FunctionComponent<Props> = ({
                             ),
                         ]}
                     />
-                    <Datepicker
+                    <RhfDatepicker
                         label={<FormattedMessage id="Adopsjon.Fødselsdato" values={{ flereBarn }} />}
                         name="fødselsdato"
                         minDate={dayjs().subtract(15, 'years').toDate()}

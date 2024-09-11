@@ -7,12 +7,12 @@ import { Alert, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { DATE_4_YEARS_AGO, DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO } from '@navikt/fp-constants';
 import {
-    Datepicker,
     ErrorSummaryHookForm,
-    Form,
-    RadioGroup,
+    RhfDatepicker,
+    RhfForm,
+    RhfRadioGroup,
+    RhfTextField,
     StepButtonsHookForm,
-    TextField,
 } from '@navikt/fp-form-hooks';
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { AppName } from '@navikt/fp-types';
@@ -120,10 +120,10 @@ const EgenNæringPanel = <TYPE extends string>({
             onStepChange={onStepChange}
             someFieldsOptional
         >
-            <Form formMethods={formMethods} onSubmit={saveOnNext}>
+            <RhfForm formMethods={formMethods} onSubmit={saveOnNext}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="næringstype"
                         label={intl.formatMessage({ id: 'egenNæring.næringstype' })}
                         validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringType.påkrevd' }))]}
@@ -140,8 +140,8 @@ const EgenNæringPanel = <TYPE extends string>({
                         <Radio value={Næringstype.ANNET}>
                             <FormattedMessage id="egenNæring.næringstype.annen" />
                         </Radio>
-                    </RadioGroup>
-                    <TextField
+                    </RhfRadioGroup>
+                    <RhfTextField
                         name="navnPåNæringen"
                         label={navnPåNæringLabel}
                         validate={[
@@ -167,7 +167,7 @@ const EgenNæringPanel = <TYPE extends string>({
                         ]}
                         shouldReplaceInvisibleChars
                     />
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="registrertINorge"
                         label={intl.formatMessage(
                             { id: 'egenNæring.erNæringenRegistrertINorge' },
@@ -187,12 +187,12 @@ const EgenNæringPanel = <TYPE extends string>({
                         <Radio value={false}>
                             <FormattedMessage id="nei" />
                         </Radio>
-                    </RadioGroup>
+                    </RhfRadioGroup>
                     <OrgnummerEllerLand
                         orgNummerErValgfritt={næringsType === Næringstype.FISKER}
                         registrertINorge={registrertINorge}
                     />
-                    <Datepicker
+                    <RhfDatepicker
                         name="fomDato"
                         label={intl.formatMessage(
                             { id: 'egenNæring.næring.fom' },
@@ -216,7 +216,7 @@ const EgenNæringPanel = <TYPE extends string>({
                         showMonthAndYearDropdowns
                     />
 
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="pågående"
                         label={intl.formatMessage(
                             { id: 'egenNæring.næring.pågående' },
@@ -234,10 +234,10 @@ const EgenNæringPanel = <TYPE extends string>({
                         <Radio value={false}>
                             <FormattedMessage id="nei" />
                         </Radio>
-                    </RadioGroup>
+                    </RhfRadioGroup>
 
                     {pågående === false && (
-                        <Datepicker
+                        <RhfDatepicker
                             name="tomDato"
                             label={intl.formatMessage(
                                 { id: 'egenNæring.næring.tom' },
@@ -283,7 +283,7 @@ const EgenNæringPanel = <TYPE extends string>({
                     )}
                     {erNyoppstartet && (
                         <>
-                            <TextField
+                            <RhfTextField
                                 name="næringsinntekt"
                                 label={intl.formatMessage({ id: 'egenNæring.næringsinntekt' })}
                                 description={intl.formatMessage({ id: 'egenNæring.næringsinntekt.description' })}
@@ -310,7 +310,7 @@ const EgenNæringPanel = <TYPE extends string>({
                                     <FormattedMessage id="egenNæring.næringsinntekt.info" />
                                 </BodyShort>
                             </ReadMore>
-                            <RadioGroup
+                            <RhfRadioGroup
                                 name="harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene"
                                 label={intl.formatMessage({ id: 'egenNæring.blittYrkesaktivSiste3År' })}
                                 validate={[
@@ -327,9 +327,9 @@ const EgenNæringPanel = <TYPE extends string>({
                                 <Radio value={false}>
                                     <FormattedMessage id="nei" />
                                 </Radio>
-                            </RadioGroup>
+                            </RhfRadioGroup>
                             {yrkesaktivSiste3År === true && (
-                                <Datepicker
+                                <RhfDatepicker
                                     name="oppstartsdato"
                                     label={intl.formatMessage({ id: 'egenNæring.yrkesaktivDato' })}
                                     validate={[
@@ -352,7 +352,7 @@ const EgenNæringPanel = <TYPE extends string>({
                         saveDataOnPreviousClick={saveOnPrevious}
                     />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

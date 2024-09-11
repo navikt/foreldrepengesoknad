@@ -1,7 +1,7 @@
 import React, { FunctionComponent, ReactElement, ReactNode } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
-import { RadioGroup as DsRadioGroup } from '@navikt/ds-react';
+import { RadioGroup } from '@navikt/ds-react';
 
 import { getError, getValidationRules } from './formUtils';
 
@@ -16,7 +16,7 @@ interface Props {
     customErrorFormatter?: (error: string | undefined) => ReactNode;
 }
 
-const RadioGroup: FunctionComponent<Props> = ({
+const RhfRadioGroup: FunctionComponent<Props> = ({
     label,
     description,
     name,
@@ -37,7 +37,7 @@ const RadioGroup: FunctionComponent<Props> = ({
     });
 
     return (
-        <DsRadioGroup
+        <RadioGroup
             name={name}
             value={field.value !== undefined ? field.value : null}
             legend={label}
@@ -59,8 +59,8 @@ const RadioGroup: FunctionComponent<Props> = ({
                 }
                 return child;
             })}
-        </DsRadioGroup>
+        </RadioGroup>
     );
 };
 
-export default RadioGroup;
+export default RhfRadioGroup;

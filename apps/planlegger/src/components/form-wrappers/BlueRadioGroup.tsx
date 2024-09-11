@@ -2,13 +2,13 @@ import { ComponentProps, FunctionComponent, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { formatError } from 'utils/customErrorFormatter';
 
-import { RadioGroup } from '@navikt/fp-form-hooks';
+import { RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { BluePanel } from '@navikt/fp-ui';
 
 type Props = {
     shouldFadeIn?: boolean;
     shouldAutofocus?: boolean;
-} & ComponentProps<typeof RadioGroup>;
+} & ComponentProps<typeof RhfRadioGroup>;
 
 const BlueRadioGroup: FunctionComponent<Props> = (props) => {
     const formMethods = useFormContext();
@@ -28,9 +28,9 @@ const BlueRadioGroup: FunctionComponent<Props> = (props) => {
 
     return (
         <BluePanel isDarkBlue={value === undefined} shouldFadeIn={props.shouldFadeIn}>
-            <RadioGroup {...props} customErrorFormatter={formatError}>
+            <RhfRadioGroup {...props} customErrorFormatter={formatError}>
                 {props.children}
-            </RadioGroup>
+            </RhfRadioGroup>
         </BluePanel>
     );
 };

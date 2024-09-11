@@ -10,7 +10,7 @@ import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { BodyShort, Button, Heading, Label, List, Radio, ReadMore, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Form, NumericField } from '@navikt/fp-form-hooks';
+import { RhfForm, RhfNumericField } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
@@ -107,7 +107,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
             label={intl.formatMessage({ id: 'FpEllerEs.Tittel' })}
             icon={<StrollerIcon height={36} width={36} fontSize="1.5rem" aria-hidden />}
         >
-            <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="6" style={{ flex: 1 }}>
                     <BlueRadioGroup
                         label={<FormattedMessage id="SituasjonSide.HvemErDu" />}
@@ -231,7 +231,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                     shouldFadeIn
                                 >
                                     <VStack gap="2">
-                                        <NumericField
+                                        <RhfNumericField
                                             name="lønnPerMåned"
                                             onChange={scrollToBottom}
                                             label={<FormattedMessage id="SituasjonSide.LønnFørSkatt" />}
@@ -358,7 +358,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                         </Button>
                     )}
                 </VStack>
-            </Form>
+            </RhfForm>
         </VeiviserPage>
     );
 };
