@@ -11,7 +11,6 @@ import { AnnenInntektType } from 'types/AnnenInntekt';
 import { Opphold, SenereOpphold, TidligereOpphold } from 'types/InformasjonOmUtenlandsopphold';
 import { Næringstype } from 'types/Næring';
 
-import { AxiosMock } from '@navikt/fp-api';
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, Periode } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT, SivilstandType, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -20,6 +19,7 @@ import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
 import { Sivilstand, Søker, Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
 
+import AxiosMock from '../../__mocks__/AxiosMock';
 import Oppsummering from './Oppsummering';
 
 const promiseAction =

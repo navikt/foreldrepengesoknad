@@ -6,9 +6,9 @@ import MockAdapter from 'axios-mock-adapter/types';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { AxiosMock } from '@navikt/fp-api';
 import { initAmplitude } from '@navikt/fp-metrics';
 
+import AxiosMock from '../../__mocks__/AxiosMock';
 import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
 
 const promiseAction =

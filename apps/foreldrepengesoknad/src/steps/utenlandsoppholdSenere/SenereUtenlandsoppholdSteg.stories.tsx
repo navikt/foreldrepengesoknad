@@ -7,9 +7,9 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Opphold } from 'types/InformasjonOmUtenlandsopphold';
 
-import { AxiosMock } from '@navikt/fp-api';
 import { initAmplitude } from '@navikt/fp-metrics';
 
+import AxiosMock from '../../__mocks__/AxiosMock';
 import SenereUtenlandsoppholdSteg from './SenereUtenlandsoppholdSteg';
 
 const promiseAction =

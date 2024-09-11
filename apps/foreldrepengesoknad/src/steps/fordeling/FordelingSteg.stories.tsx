@@ -8,12 +8,12 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { AnnenPartVedtakDTO } from 'types/AnnenPartVedtakDTO';
 
-import { AxiosMock } from '@navikt/fp-api';
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Arbeidsforhold, Søker, SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
+import AxiosMock from '../../__mocks__/AxiosMock';
 import FordelingSteg from './FordelingSteg';
 
 const UTTAKSPLAN_ANNEN_URL = '/rest/innsyn/v2/annenPartVedtak';
