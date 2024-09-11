@@ -4,9 +4,9 @@ import { Route, Routes } from 'react-router-dom';
 
 import { LocaleAll, Satser } from '@navikt/fp-types';
 
-import FpEllerEsRouter from './veivisere/fpEllerEs/FpEllerEsRouter';
-import HvaSkjerNårRouter from './veivisere/hvaSkjerNår/HvaSkjerNårRouter';
-import HvorMyeRouter from './veivisere/hvorMye/HvorMyeRouter';
+import FpEllerEsRouter from './veivisere/fp-eller-es/FpEllerEsRouter';
+import HvaSkjerNårRouter from './veivisere/hva-skjer-når/HvaSkjerNårRouter';
+import HvorMyeRouter from './veivisere/hvor-mye/HvorMyeRouter';
 
 interface Props {
     locale: LocaleAll;

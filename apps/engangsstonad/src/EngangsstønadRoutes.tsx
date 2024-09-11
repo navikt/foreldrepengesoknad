@@ -14,12 +14,12 @@ import { ErrorPage } from '@navikt/fp-ui';
 import { redirect } from '@navikt/fp-utils';
 
 import DokumentasjonSteg from './steg/dokumentasjon/DokumentasjonSteg';
-import OmBarnetSteg from './steg/omBarnet/OmBarnetSteg';
+import OmBarnetSteg from './steg/om-barnet/OmBarnetSteg';
 import OppsummeringSteg from './steg/oppsummering/OppsummeringSteg';
 import SøkersituasjonSteg from './steg/sokersituasjon/SøkersituasjonSteg';
+import SenereUtenlandsoppholdSteg from './steg/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
+import TidligereUtenlandsoppholdSteg from './steg/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
 import UtenlandsoppholdSteg from './steg/utenlandsopphold/UtenlandsoppholdSteg';
-import SenereUtenlandsoppholdSteg from './steg/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
-import TidligereUtenlandsoppholdSteg from './steg/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
 import Velkommen from './velkommen/Velkommen';
 
 export const esApi = getAxiosInstance();

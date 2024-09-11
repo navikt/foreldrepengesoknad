@@ -3,12 +3,12 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import ArbeidssituasjonSteg from 'steps/arbeidssituasjon/ArbeidssituasjonSteg';
 import FordelingSteg from 'steps/fordeling/FordelingSteg';
-import HvemPlanleggerSteg from 'steps/hvemPlanlegger/HvemPlanleggerSteg';
-import HvorLangPeriodeSteg from 'steps/hvorLangPeriode/HvorLangPeriodeSteg';
-import OmBarnetSteg from 'steps/omBarnet/OmBarnetSteg';
-import OmPlanleggerenSteg from 'steps/omPlanleggeren/OmPlanleggerenSteg';
+import HvemPlanleggerSteg from 'steps/hvem-planlegger/HvemPlanleggerSteg';
+import HvorLangPeriodeSteg from 'steps/hvor-lang-periode/HvorLangPeriodeSteg';
+import OmBarnetSteg from 'steps/om-barnet/OmBarnetSteg';
+import OmPlanleggerenSteg from 'steps/om-planleggeren/OmPlanleggerenSteg';
 import OppsummeringSteg from 'steps/oppsummering/OppsummeringSteg';
-import PlanenDeresSteg from 'steps/planenDeres/PlanenDeresSteg';
+import PlanenDeresSteg from 'steps/planen-deres/PlanenDeresSteg';
 
 import { Loader } from '@navikt/ds-react';
 

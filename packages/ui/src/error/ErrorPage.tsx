@@ -6,7 +6,7 @@ import { Alert, BodyShort, Box, Button, HStack, Heading, Label, Link, VStack } f
 import { links } from '@navikt/fp-constants';
 import { AppName } from '@navikt/fp-types';
 
-import ContentWrapper from '../contentWrapper/ContentWrapper';
+import ContentWrapper from '../content-wrapper/ContentWrapper';
 
 export interface Props {
     appName: AppName;

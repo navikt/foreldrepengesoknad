@@ -14,11 +14,11 @@ import FrilansSteg from 'steps/frilans/FrilansSteg';
 import ManglendeVedlegg from 'steps/manglende-vedlegg/ManglendeVedlegg';
 import OmBarnetSteg from 'steps/om-barnet/OmBarnetSteg';
 import Oppsummering from 'steps/oppsummering/Oppsummering';
-import PeriodeMedForeldrepengerSteg from 'steps/periodeMedForeldrepenger/PeriodeMedForeldrepengerSteg';
+import PeriodeMedForeldrepengerSteg from 'steps/periode-med-foreldrepenger/PeriodeMedForeldrepengerSteg';
 import SøkersituasjonSteg from 'steps/søkersituasjon/SøkersituasjonSteg';
+import SenereUtenlandsoppholdSteg from 'steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
+import TidligereUtenlandsoppholdSteg from 'steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
 import UtenlandsoppholdSteg from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
-import SenereUtenlandsoppholdSteg from 'steps/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
-import TidligereUtenlandsoppholdSteg from 'steps/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
 import UttaksplanStep from 'steps/uttaksplan/UttaksplanStep';
 import { Kvittering } from 'types/Kvittering';
 
@@ -27,7 +27,7 @@ import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
 
-import SøknadRoutes, { isRouteAvailable } from './appData/routes';
+import SøknadRoutes, { isRouteAvailable } from './app-data/routes';
 
 const renderSøknadRoutes = (
     harGodkjentVilkår: boolean,
