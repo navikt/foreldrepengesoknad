@@ -8,7 +8,7 @@ import { BluePanel } from '@navikt/fp-ui';
 type Props = {
     shouldFadeIn?: boolean;
     shouldAutofocus?: boolean;
-} & ComponentProps<typeof RadioGroup>;
+} & ComponentProps<typeof RhfRadioGroup>;
 
 const BlueRadioGroup: FunctionComponent<Props> = (props) => {
     const formMethods = useFormContext();

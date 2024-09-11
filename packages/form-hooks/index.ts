@@ -6,7 +6,7 @@ export { default as RhfDateRangepicker } from './src/form-wrappers/RhfDateRangep
 export { default as RhfRadioGroup } from './src/form-wrappers/RhfRadioGroup';
 export { default as RhfSelect } from './src/form-wrappers/RhfSelect';
 export { default as RhfTextField } from './src/form-wrappers/RhfTextField';
-export { default as RhfTextArea } from './src/form-wrappers/RhfTextArea';
+export { default as RhfTextarea } from './src/form-wrappers/RhfTextarea';
 export { default as RhfNumericField } from './src/form-wrappers/RhfNumericField';
 export { default as RhfConfirmationPanel } from './src/form-wrappers/RhfConfirmationPanel';
 export { default as StepButtonsHookForm } from './src/StepButtonsHookForm';

@@ -10,6 +10,7 @@ import BlueRadioGroup from './BlueRadioGroup';
 const meta = {
     title: 'components/BlueRadioGroup',
     component: BlueRadioGroup,
+    render: (args) => <FormWithGreenRadioGroup {...args} />,
 } satisfies Meta<typeof BlueRadioGroup>;
 export default meta;
 
@@ -28,7 +29,6 @@ const FormWithGreenRadioGroup = (args: Story) => {
 };
 
 export const Default: Story = {
-    render: (args) => <FormWithGreenRadioGroup {...args} />,
     args: {
         label: 'Dette er en radioknapp som blir lysere når du trykker på den',
     },

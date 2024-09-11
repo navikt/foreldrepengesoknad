@@ -12,8 +12,8 @@ import RhfDatepicker from './RhfDatepicker';
 import RhfForm from './RhfForm';
 import RhfRadioGroup from './RhfRadioGroup';
 import RhfSelect from './RhfSelect';
-import RhfTextArea from './RhfTextArea';
 import RhfTextField from './RhfTextField';
+import RhfTextarea from './RhfTextarea';
 
 const meta = {
     title: 'FormHooks',
@@ -58,8 +58,8 @@ const meta = {
                             label="Dette er et tekstfelt med preutfyllt verdi"
                             description="Beskrivelse"
                         />
-                        <RhfTextArea name="textarea" label="Dette er et tekstarea" description="beskrivelse" />
-                        <RhfTextArea name="textareapre" label="Dette er et tekstarea som er preutfyllt" />
+                        <RhfTextarea name="textarea" label="Dette er et tekstarea" description="beskrivelse" />
+                        <RhfTextarea name="textareapre" label="Dette er et tekstarea som er preutfyllt" />
                         <RhfCombobox
                             label="Dette er en combobox"
                             name="combobox"

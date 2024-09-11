@@ -17,7 +17,7 @@ import {
     RhfDatepicker,
     RhfForm,
     RhfRadioGroup,
-    RhfTextArea,
+    RhfTextarea,
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
@@ -222,7 +222,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                     {(typeArbeid === Arbeidsforholdstype.FRILANSER ||
                         typeArbeid === Arbeidsforholdstype.SELVSTENDIG) && (
                         <>
-                            <RhfTextArea
+                            <RhfTextarea
                                 name="risikofaktorer"
                                 label={risikofaktorerLabel}
                                 validate={[
@@ -240,7 +240,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                                 description={intl.formatMessage({ id: 'skjema.risikofaktorer.description' })}
                             />
                             <div>
-                                <RhfTextArea
+                                <RhfTextarea
                                     name="tilretteleggingstiltak"
                                     label={labelTiltak}
                                     validate={[

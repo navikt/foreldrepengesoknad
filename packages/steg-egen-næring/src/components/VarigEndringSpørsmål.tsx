@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Radio, ReadMore } from '@navikt/ds-react';
 
 import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
-import { RhfDatepicker, RhfRadioGroup, RhfTextArea, RhfTextField } from '@navikt/fp-form-hooks';
+import { RhfDatepicker, RhfRadioGroup, RhfTextField, RhfTextarea } from '@navikt/fp-form-hooks';
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { AppName } from '@navikt/fp-types';
 import {
@@ -113,7 +113,7 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({
                             ),
                         ]}
                     />
-                    <RhfTextArea
+                    <RhfTextarea
                         name="varigEndringBeskrivelse"
                         label={egenNæringVarigEndringBeskrivelseLabel}
                         validate={[
