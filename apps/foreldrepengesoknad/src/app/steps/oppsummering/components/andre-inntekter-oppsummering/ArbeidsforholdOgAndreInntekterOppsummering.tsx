@@ -28,7 +28,7 @@ interface Props {
     arbeidsforhold: Arbeidsforhold[];
     barn: Barn;
     søkersituasjon: SøkersituasjonFp;
-    arbeidsforholdOgInntekt: ArbeidsforholdOgInntektFp;
+    arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
     frilans?: Frilans;
     egenNæring?: EgenNæring;
     andreInntektskilder?: AndreInntektskilder[];

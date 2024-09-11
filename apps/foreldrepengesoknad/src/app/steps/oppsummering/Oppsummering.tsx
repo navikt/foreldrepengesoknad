@@ -80,7 +80,7 @@ const Oppsummering: FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
 
-    const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
+    const arbeidsforholdOgInntekt = useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const andreInntektskilder = useContextGetData(ContextDataType.ANDRE_INNTEKTSKILDER);
