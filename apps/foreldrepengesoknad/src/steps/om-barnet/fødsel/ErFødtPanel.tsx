@@ -5,7 +5,7 @@ import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
-import { Datepicker } from '@navikt/fp-form-hooks';
+import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { FødtBarn } from '../OmBarnetFormValues';
@@ -25,7 +25,7 @@ const ErFødtPanel: FunctionComponent = () => {
 
     return (
         <>
-            <Datepicker
+            <RhfDatepicker
                 name="termindato"
                 minDate={fødselsdato ? dayjs(fødselsdato).subtract(1, 'months').toDate() : undefined}
                 maxDate={fødselsdato ? dayjs(fødselsdato).add(6, 'months').toDate() : undefined}
@@ -50,7 +50,7 @@ const ErFødtPanel: FunctionComponent = () => {
                 ]}
             />
             {erBarnetFødt && (
-                <Datepicker
+                <RhfDatepicker
                     name="fødselsdatoer.0.dato"
                     label={intl.formatMessage({ id: intlIdFødsel })}
                     minDate={dayjs().subtract(3, 'years').toDate()}

@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
-import { Datepicker } from '@navikt/fp-form-hooks';
+import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { isBeforeToday } from '@navikt/fp-utils';
 import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -58,7 +58,7 @@ const FødselsdatoerFieldArray: React.FunctionComponent<Props> = ({ adopsjonsdat
     return (
         <VStack gap="10">
             {fields.map((field, index) => (
-                <Datepicker
+                <RhfDatepicker
                     key={field.id}
                     name={`fødselsdatoer.${index}.dato`}
                     minDate={dayjs(adopsjonsdato).subtract(15, 'years').toDate()}

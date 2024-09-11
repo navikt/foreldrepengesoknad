@@ -4,7 +4,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Radio, VStack } from '@navikt/ds-react';
 
 import { DATE_20_YEARS_AGO, DATE_TODAY } from '@navikt/fp-constants';
-import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import {
+    ErrorSummaryHookForm,
+    RhfDatepicker,
+    RhfForm,
+    RhfRadioGroup,
+    StepButtonsHookForm,
+} from '@navikt/fp-form-hooks';
 import { ProgressStep, Step } from '@navikt/fp-ui';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -45,10 +51,10 @@ const FrilansPanel = <TYPE extends string>({
             onContinueLater={onContinueLater}
             onStepChange={onStepChange}
         >
-            <Form formMethods={formMethods} onSubmit={saveOnNext}>
+            <RhfForm formMethods={formMethods} onSubmit={saveOnNext}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    <Datepicker
+                    <RhfDatepicker
                         name="oppstart"
                         label={intl.formatMessage({ id: 'FrilansPanel.Oppstart' })}
                         validate={[
@@ -64,7 +70,7 @@ const FrilansPanel = <TYPE extends string>({
                         minDate={DATE_20_YEARS_AGO}
                         showMonthAndYearDropdowns
                     />
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="jobberFremdelesSomFrilans"
                         label={intl.formatMessage({ id: 'FrilansPanel.JobberFremdelesSomFrilans' })}
                         validate={[
@@ -81,13 +87,13 @@ const FrilansPanel = <TYPE extends string>({
                         <Radio value={false}>
                             <FormattedMessage id="FrilansPanel.JobberFremdelesSomFrilans.Nei" />
                         </Radio>
-                    </RadioGroup>
+                    </RhfRadioGroup>
                     <StepButtonsHookForm<Frilans>
                         goToPreviousStep={goToPreviousStep}
                         saveDataOnPreviousClick={saveOnPrevious}
                     />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

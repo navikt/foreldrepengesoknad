@@ -10,7 +10,7 @@ import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'utils/arbei
 
 import { VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { frilansId } from '@navikt/fp-steg-frilans';
 import { Arbeidsforhold } from '@navikt/fp-types';
@@ -93,13 +93,13 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
             onContinueLater={navigator.fortsettSøknadSenere}
             onStepChange={navigator.goToNextStep}
         >
-            <Form formMethods={formMethods} onSubmit={onSubmit}>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     <ArbeidIUtlandetFieldArray />
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

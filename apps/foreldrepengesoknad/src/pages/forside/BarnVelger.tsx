@@ -7,7 +7,7 @@ import { formaterFødselsdatoerPåBarn, formaterNavnPåBarn, getTekstForAntallBa
 import { Radio } from '@navikt/ds-react';
 
 import { DDMMMMYYY_DATE_FORMAT } from '@navikt/fp-constants';
-import { RadioGroup } from '@navikt/fp-form-hooks';
+import { RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { isRequired } from '@navikt/fp-validation';
 
 export enum SelectableBarnOptions {
@@ -114,7 +114,7 @@ const BarnVelger: FunctionComponent<Props> = ({ selectableBarn }) => {
     }
 
     return (
-        <RadioGroup
+        <RhfRadioGroup
             name="valgteBarn"
             label={<FormattedMessage id="velkommen.intro.harSaker.barnVelger.label" />}
             validate={[isRequired(intl.formatMessage({ id: 'steg.footer.spørsmålMåBesvares' }))]}
@@ -133,7 +133,7 @@ const BarnVelger: FunctionComponent<Props> = ({ selectableBarn }) => {
                     />
                 </Radio>,
             )}
-        </RadioGroup>
+        </RhfRadioGroup>
     );
 };
 

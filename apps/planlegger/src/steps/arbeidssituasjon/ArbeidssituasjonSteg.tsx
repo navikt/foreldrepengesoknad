@@ -14,7 +14,7 @@ import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
-import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Satser } from '@navikt/fp-types';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
@@ -74,7 +74,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser }) => {
 
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
-            <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
                         <Heading level="2" size="medium">
@@ -217,7 +217,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser }) => {
                         useSimplifiedTexts
                     />
                 </VStack>
-            </Form>
+            </RhfForm>
         </PlanleggerStepPage>
     );
 };

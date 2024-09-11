@@ -6,7 +6,7 @@ import { useIntl } from 'react-intl';
 
 import { Checkbox, VStack } from '@navikt/ds-react';
 
-import { CheckboxGroup, ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfCheckboxGroup, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -77,10 +77,10 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
             onContinueLater={navigator.fortsettSøknadSenere}
             onStepChange={navigator.goToNextStep}
         >
-            <Form formMethods={formMethods} onSubmit={onSubmit}>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    <CheckboxGroup
+                    <RhfCheckboxGroup
                         name="arbeidMedTilrettelegging"
                         label={intl.formatMessage({ id: 'velgArbeid.hvor' })}
                         validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.tilrettelegging.påkrevd' }))]}
@@ -90,11 +90,11 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
                                 {getOptionNavn(option.arbeidsforhold.type, intl, option.arbeidsforhold.navn)}
                             </Checkbox>
                         ))}
-                    </CheckboxGroup>
+                    </RhfCheckboxGroup>
                     {visInfo && <FlereArbeidsforholdGuidePanel />}
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

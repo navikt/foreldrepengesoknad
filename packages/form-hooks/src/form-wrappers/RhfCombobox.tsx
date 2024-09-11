@@ -15,7 +15,7 @@ export interface Props {
     className?: string;
 }
 
-const Combobox: FunctionComponent<Props> = ({
+const RhfCombobox: FunctionComponent<Props> = ({
     name,
     label,
     validate = [],
@@ -60,4 +60,4 @@ const Combobox: FunctionComponent<Props> = ({
     );
 };
 
-export default Combobox;
+export default RhfCombobox;

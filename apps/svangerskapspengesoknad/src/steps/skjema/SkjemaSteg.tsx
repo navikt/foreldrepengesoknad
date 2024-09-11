@@ -10,7 +10,7 @@ import { VStack } from '@navikt/ds-react';
 
 import { getSaveAttachment } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer, links } from '@navikt/fp-constants';
-import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
 import { FileUploader, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
@@ -139,7 +139,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({
             onStepChange={navigator.goToNextStep}
             noFieldsRequired
         >
-            <Form formMethods={formMethods} onSubmit={onSubmit}>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     {tilrettelegginger.length > 1 && <Bedriftsbanner arbeid={valgtTilrettelegging.arbeidsforhold} />}
@@ -192,7 +192,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({
                         isDisabledAndLoading={avventerVedlegg}
                     />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

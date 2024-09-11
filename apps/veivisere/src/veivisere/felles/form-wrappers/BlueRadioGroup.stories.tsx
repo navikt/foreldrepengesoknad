@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import { Radio } from '@navikt/ds-react';
 
-import { Form } from '@navikt/fp-form-hooks';
+import { RhfForm } from '@navikt/fp-form-hooks';
 
 import BlueRadioGroup from './BlueRadioGroup';
 
@@ -18,12 +18,12 @@ type Story = StoryObj<typeof BlueRadioGroup>;
 const FormWithGreenRadioGroup = (args: Story) => {
     const formMethods = useForm();
     return (
-        <Form formMethods={formMethods}>
+        <RhfForm formMethods={formMethods}>
             <BlueRadioGroup name="test" {...args}>
                 <Radio value="1">test 1</Radio>
                 <Radio value="2">test 2</Radio>
             </BlueRadioGroup>
-        </Form>
+        </RhfForm>
     );
 };
 

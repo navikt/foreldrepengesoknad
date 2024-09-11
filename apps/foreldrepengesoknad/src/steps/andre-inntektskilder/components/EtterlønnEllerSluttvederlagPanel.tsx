@@ -4,7 +4,7 @@ import { AndreInntektskilder } from 'types/AndreInntektskilder';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
-import { DateRangepicker } from '@navikt/fp-form-hooks';
+import { RhfDateRangepicker } from '@navikt/fp-form-hooks';
 import { BluePanel } from '@navikt/fp-ui';
 import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -19,7 +19,7 @@ export const EtterlønnEllerSluttvederlagPanel: React.FunctionComponent<Props> =
     return (
         <VStack gap="10">
             <HStack gap="6">
-                <DateRangepicker
+                <RhfDateRangepicker
                     nameFrom={`andreInntektskilder.${index}.fom`}
                     nameTo={`andreInntektskilder.${index}.tom`}
                     labelFrom={intl.formatMessage({ id: 'EtterlønnEllerSluttvederlagPanel.Fom' })}

@@ -9,7 +9,7 @@ import { getFamiliehendelsedato, getFamiliehendelsedatoDate, getFødselsdato, ge
 import { ISOStringToDate } from 'utils/dateUtils';
 
 import { AnnenForelder, Barn } from '@navikt/fp-common';
-import { Datepicker } from '@navikt/fp-form-hooks';
+import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import { getFørsteUttaksdagForeldrepengerFørFødsel, uttaksplanDatoavgrensninger } from '@navikt/fp-uttaksplan';
 import { isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
@@ -106,7 +106,7 @@ const OppstartDatoInput: React.FunctionComponent<Props> = ({ oppstartValg }) => 
         oppstartValg === OppstartValg.ANNEN_DATO ? 'fordeling.oppstartDato.input' : 'fordeling.oppstartDato.spørsmål';
 
     return (
-        <Datepicker
+        <RhfDatepicker
             name="oppstartDato"
             label={<FormattedMessage id={spørsmålId} />}
             description={intl.formatMessage({ id: 'fordeling.oppstartDato.description' })}

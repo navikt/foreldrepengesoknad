@@ -15,7 +15,7 @@ import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-reac
 
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
-import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -66,7 +66,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
 
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
-            <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
+            <RhfForm formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
                         <Heading level="2" size="medium">
@@ -187,7 +187,7 @@ const OmBarnetSteg: React.FunctionComponent = () => {
                         useSimplifiedTexts
                     />
                 </VStack>
-            </Form>
+            </RhfForm>
         </PlanleggerStepPage>
     );
 };

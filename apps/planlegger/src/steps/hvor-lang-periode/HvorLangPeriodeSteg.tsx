@@ -20,7 +20,7 @@ import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/ut
 import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
@@ -94,7 +94,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
-            <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
                         <Heading size="medium" spacing level="2">
@@ -208,7 +208,7 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         useSimplifiedTexts
                     />
                 </VStack>
-            </Form>
+            </RhfForm>
         </PlanleggerStepPage>
     );
 };

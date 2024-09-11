@@ -9,7 +9,7 @@ export interface OwnProps<FormValues extends FieldValues> {
     shouldUseFlexbox?: boolean;
 }
 
-const Form = <FormValues extends FieldValues>({
+const RhfForm = <FormValues extends FieldValues>({
     formMethods,
     children,
     onSubmit,
@@ -31,4 +31,4 @@ const Form = <FormValues extends FieldValues>({
     );
 };
 
-export default Form;
+export default RhfForm;

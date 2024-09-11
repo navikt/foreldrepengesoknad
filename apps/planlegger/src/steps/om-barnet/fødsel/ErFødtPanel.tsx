@@ -15,7 +15,7 @@ import { formatError } from 'utils/customErrorFormatter';
 import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { DATE_3_YEARS_AGO, ISO_DATE_REGEX } from '@navikt/fp-constants/src/dates';
-import { Datepicker } from '@navikt/fp-form-hooks';
+import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { erI22SvangerskapsukeEllerSenere, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -46,7 +46,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
         <VStack gap="5">
             <BluePanel isDarkBlue={erOmBarnetIkkeOppgittFraFør} shouldFadeIn>
                 <VStack gap="8">
-                    <Datepicker
+                    <RhfDatepicker
                         label={<FormattedMessage id="ErFødtPanel.Fødselsdato" values={{ antallBarn }} />}
                         name="fødselsdato"
                         maxDate={dayjs().toDate()}
@@ -63,7 +63,7 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                         customErrorFormatter={formatError}
                         onChange={scrollToBottom}
                     />
-                    <Datepicker
+                    <RhfDatepicker
                         label={<FormattedMessage id="ErFødtPanel.NårVarTermin" />}
                         name="termindato"
                         maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}

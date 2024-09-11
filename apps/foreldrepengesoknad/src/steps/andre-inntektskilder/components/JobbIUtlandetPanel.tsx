@@ -4,7 +4,7 @@ import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder
 
 import { HStack, Radio, VStack } from '@navikt/ds-react';
 
-import { Datepicker, RadioGroup, Select, TextField } from '@navikt/fp-form-hooks';
+import { RhfDatepicker, RhfRadioGroup, RhfSelect, RhfTextField } from '@navikt/fp-form-hooks';
 import { createCountryOptions } from '@navikt/fp-utils';
 import { isBeforeOrSame, isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -22,7 +22,7 @@ export const JobbIUtlandetPanel: React.FunctionComponent<Props> = ({ index, innt
 
     return (
         <VStack gap="10">
-            <Select
+            <RhfSelect
                 name={`andreInntektskilder.${index}.land`}
                 label={<FormattedMessage id="JobbIUtlandetPanel.LandDuHarJobbet" />}
                 validate={[
@@ -38,13 +38,13 @@ export const JobbIUtlandetPanel: React.FunctionComponent<Props> = ({ index, innt
                         {o[1]}
                     </option>
                 ))}
-            </Select>
-            <TextField
+            </RhfSelect>
+            <RhfTextField
                 name={`andreInntektskilder.${index}.arbeidsgiverNavn`}
                 label={<FormattedMessage id="JobbIUtlandetPanel.NavnPåArbeidsgiver" />}
                 validate={[isRequired(intl.formatMessage({ id: 'JobbIUtlandetPanel.Validering.NavnPåArbeidsgiver' }))]}
             />
-            <RadioGroup
+            <RhfRadioGroup
                 name={`andreInntektskilder.${index}.pågående`}
                 label={<FormattedMessage id="JobbIUtlandetPanel.JobberDuDerNå" />}
                 validate={[isRequired(intl.formatMessage({ id: 'JobbIUtlandetPanel.Validering.JobberDuDerNå' }))]}
@@ -55,9 +55,9 @@ export const JobbIUtlandetPanel: React.FunctionComponent<Props> = ({ index, innt
                 <Radio value={true}>
                     <FormattedMessage id="JobbIUtlandetPanel.RadioButton.Ja" />
                 </Radio>
-            </RadioGroup>
+            </RhfRadioGroup>
             <HStack gap="6">
-                <Datepicker
+                <RhfDatepicker
                     name={`andreInntektskilder.${index}.fom`}
                     label={intl.formatMessage({ id: 'JobbIUtlandetPanel.Fom' })}
                     maxDate={dayjs()}
@@ -74,7 +74,7 @@ export const JobbIUtlandetPanel: React.FunctionComponent<Props> = ({ index, innt
                     ]}
                 />
                 {inntektskilde.pågående === false && (
-                    <Datepicker
+                    <RhfDatepicker
                         name={`andreInntektskilder.${index}.tom`}
                         label={intl.formatMessage({ id: 'JobbIUtlandetPanel.Tom' })}
                         maxDate={dayjs()}

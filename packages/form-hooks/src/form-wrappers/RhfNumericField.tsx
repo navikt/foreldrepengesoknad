@@ -1,36 +1,34 @@
 import { CSSProperties, FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
-import { Select as DsSelect } from '@navikt/ds-react';
+import { TextField } from '@navikt/ds-react';
 
 import { getError, getValidationRules } from './formUtils';
 
 export interface Props {
     name: string;
     label: string | ReactNode;
-    onChange?: (event: any) => void;
-    validate?: Array<(value: string) => any>;
-    children: React.ReactElement[];
-    description?: ReactNode;
+    validate?: Array<(value: string) => any> | Array<(value: number) => any>;
+    description?: string;
+    onChange?: (value: any) => void;
+    autoFocus?: boolean;
+    maxLength?: number;
     disabled?: boolean;
     className?: string;
     style?: CSSProperties;
-    autofocusWhenEmpty?: boolean;
-    customErrorFormatter?: (error: string | undefined) => ReactNode;
 }
 
-const Select: FunctionComponent<Props> = ({
+const RhfNumericField: FunctionComponent<Props> = ({
     name,
     label,
     validate = [],
-    description,
     onChange,
+    description,
+    autoFocus,
+    maxLength,
     disabled,
     className,
-    children,
     style,
-    autofocusWhenEmpty,
-    customErrorFormatter,
 }) => {
     const {
         formState: { errors },
@@ -44,31 +42,33 @@ const Select: FunctionComponent<Props> = ({
     });
 
     const onChangeFn = useCallback(
-        (evt: React.ChangeEvent) => {
-            if (onChange) {
-                onChange(evt);
-            }
+        (evt: React.ChangeEvent<HTMLInputElement>) => {
             field.onChange(evt);
+            if (onChange) {
+                onChange(evt.currentTarget.value);
+            }
         },
         [field, onChange],
     );
 
     return (
-        <DsSelect
+        <TextField
             ref={field.ref}
-            value={field.value}
-            className={className}
-            error={customErrorFormatter ? customErrorFormatter(getError(errors, name)) : getError(errors, name)}
+            value={field.value || ''}
             label={label}
             description={description}
+            type="text"
+            inputMode="numeric"
+            error={getError(errors, name)}
+            autoFocus={autoFocus}
+            autoComplete="off"
+            maxLength={maxLength}
             disabled={disabled}
-            onChange={onChangeFn}
+            className={className}
             style={style}
-            autoFocus={autofocusWhenEmpty && field.value === undefined}
-        >
-            <option style={{ display: 'none' }} />,{children}
-        </DsSelect>
+            onChange={onChangeFn}
+        />
     );
 };
 
-export default Select;
+export default RhfNumericField;

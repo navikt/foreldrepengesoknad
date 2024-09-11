@@ -10,7 +10,7 @@ import useScrollBehaviour from 'utils/useScrollBehaviour';
 import { BodyShort, Button, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { ISO_DATE_REGEX } from '@navikt/fp-constants';
-import { Datepicker, Form } from '@navikt/fp-form-hooks';
+import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { isBeforeTodayOrToday, isValidDate } from '@navikt/fp-validation';
 
@@ -66,7 +66,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
             label={intl.formatMessage({ id: 'HvaSkjerNår.Tittel' })}
             icon={<CalendarIcon height={48} width={48} fontSize="1.5rem" aria-hidden />}
         >
-            <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="6" style={{ flex: 1 }}>
                     <BlueRadioGroup
                         label={<FormattedMessage id="HvaSkjerNår.SituasjonSide.Situasjon" />}
@@ -113,7 +113,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
                         <VStack gap="4">
                             <BluePanel isDarkBlue shouldFadeIn>
                                 <VStack gap="4">
-                                    <Datepicker
+                                    <RhfDatepicker
                                         name="fødselsdato"
                                         label={intl.formatMessage({ id: 'HvaSkjerNår.SituasjonSide.Født' })}
                                         maxDate={dayjs().toDate()}
@@ -139,7 +139,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
                                         ]}
                                     />
 
-                                    <Datepicker
+                                    <RhfDatepicker
                                         name="termindato"
                                         label={intl.formatMessage({ id: 'HvaSkjerNår.SituasjonSide.NårVarTermin' })}
                                         minDate={dayjs(fødselsdato).subtract(1, 'month').toDate()}
@@ -192,7 +192,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
                         <VStack gap="4">
                             <BluePanel isDarkBlue shouldFadeIn>
                                 <VStack gap="4">
-                                    <Datepicker
+                                    <RhfDatepicker
                                         name="termindato"
                                         label={intl.formatMessage({ id: 'HvaSkjerNår.SituasjonSide.NårErTermin' })}
                                         minDate={dayjs().subtract(3, 'weeks').toDate()}
@@ -237,7 +237,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
                             </Button>
                         )}
                 </VStack>
-            </Form>
+            </RhfForm>
         </VeiviserPage>
     );
 };

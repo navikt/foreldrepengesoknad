@@ -14,7 +14,7 @@ import {
 import { Alert, BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 
 import { Søkersituasjon } from '@navikt/fp-common';
-import { Datepicker } from '@navikt/fp-form-hooks';
+import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, Søkerrolle } from '@navikt/fp-types';
 import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -49,7 +49,7 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
         <>
             {søknadGjelderEtNyttBarn && (
                 <VStack gap="2">
-                    <Datepicker
+                    <RhfDatepicker
                         name="termindato"
                         label={intl.formatMessage({ id: 'omBarnet.termindato.termin' })}
                         minDate={date21DaysAgo}
@@ -91,7 +91,7 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
                 </VStack>
             )}
             {søknadGjelderEtNyttBarn && arbeidsforhold.length === 0 && kanSøkePåTermin && (
-                <Datepicker
+                <RhfDatepicker
                     name="terminbekreftelsedato"
                     label={intl.formatMessage({ id: 'omBarnet.terminbekreftelseDato' })}
                     maxDate={dateToday}

@@ -12,7 +12,7 @@ import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
 import { isUtsettelseBarnInnlagt } from '@navikt/fp-common';
 import { Skjemanummer } from '@navikt/fp-constants';
-import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Attachment, Søkerinfo } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
@@ -191,7 +191,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             steps={stepConfig}
             noFieldsRequired
         >
-            <Form formMethods={formMethods} onSubmit={lagre}>
+            <RhfForm formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     <MorInnlagtDokumentasjon
                         attachments={morInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
@@ -330,7 +330,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                     </Alert>
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

@@ -13,12 +13,12 @@ import { getDefaultMonth, getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSva
 import { BodyLong, BodyShort, ExpansionCard, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import {
-    Datepicker,
     ErrorSummaryHookForm,
-    Form,
-    RadioGroup,
+    RhfDatepicker,
+    RhfForm,
+    RhfRadioGroup,
+    RhfTextArea,
     StepButtonsHookForm,
-    TextArea,
 } from '@navikt/fp-form-hooks';
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
@@ -189,11 +189,11 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
             onContinueLater={navigator.fortsettSøknadSenere}
             onStepChange={navigator.goToNextStep}
         >
-            <Form formMethods={formMethods} onSubmit={onSubmit}>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     {erFlereTilrettelegginger && <Bedriftsbanner arbeid={currentTilrettelegging.arbeidsforhold} />}
-                    <Datepicker
+                    <RhfDatepicker
                         name="behovForTilretteleggingFom"
                         label={getLabel(erFlereTilrettelegginger, typeArbeid, intl, true, navnArbeidsgiver)}
                         description={
@@ -222,7 +222,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                     {(typeArbeid === Arbeidsforholdstype.FRILANSER ||
                         typeArbeid === Arbeidsforholdstype.SELVSTENDIG) && (
                         <>
-                            <TextArea
+                            <RhfTextArea
                                 name="risikofaktorer"
                                 label={risikofaktorerLabel}
                                 validate={[
@@ -240,7 +240,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                                 description={intl.formatMessage({ id: 'skjema.risikofaktorer.description' })}
                             />
                             <div>
-                                <TextArea
+                                <RhfTextArea
                                     name="tilretteleggingstiltak"
                                     label={labelTiltak}
                                     validate={[
@@ -269,7 +269,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                         </>
                     )}
                     <div>
-                        <RadioGroup
+                        <RhfRadioGroup
                             name="type"
                             label={getLabel(erFlereTilrettelegginger, typeArbeid, intl, false, navnArbeidsgiver)}
                             description={
@@ -289,7 +289,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                             <Radio value={TilretteleggingstypeOptions.INGEN}>
                                 <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.ingen" />
                             </Radio>
-                        </RadioGroup>
+                        </RhfRadioGroup>
                         <ReadMore
                             header={intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidType.info.tittel' })}
                             onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Bytte_på_stillingsprosent')}
@@ -324,7 +324,7 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                     </ExpansionCard>
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

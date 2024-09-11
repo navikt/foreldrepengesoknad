@@ -12,7 +12,7 @@ import { BodyShort, Link, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { Barn, Dekningsgrad, isAdoptertBarn, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { StønadskontoType, links } from '@navikt/fp-constants';
-import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { Uttaksdagen, capitalizeFirstLetter } from '@navikt/fp-utils';
@@ -128,11 +128,11 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
     const søkerAntallTekst = getSøkerAntallTekst(intl, erDeltUttak);
 
     return (
-        <Form formMethods={formMethods} onSubmit={onSubmit}>
+        <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="10">
                 <ErrorSummaryHookForm />
                 <VStack gap="4">
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="dekningsgrad"
                         description={
                             erDeltUttak ? (
@@ -191,7 +191,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                                 }}
                             />
                         </Radio>
-                    </RadioGroup>
+                    </RhfRadioGroup>
                     <ReadMore
                         header={
                             erDeltUttak ? (
@@ -276,7 +276,7 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
                 )}
                 <StepButtonsHookForm goToPreviousStep={goToPreviousDefaultStep} />
             </VStack>
-        </Form>
+        </RhfForm>
     );
 };
 

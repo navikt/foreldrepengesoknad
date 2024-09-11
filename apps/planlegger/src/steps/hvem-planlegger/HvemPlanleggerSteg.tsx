@@ -10,7 +10,7 @@ import { formatError } from 'utils/customErrorFormatter';
 
 import { BodyShort, Radio, Spacer, VStack } from '@navikt/ds-react';
 
-import { Form, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
+import { RhfForm, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { BluePanel } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired } from '@navikt/fp-validation';
@@ -48,7 +48,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
 
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
-            <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
+            <RhfForm formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
                         <BodyShort>
@@ -88,28 +88,28 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                             <BluePanel isDarkBlue={erHvemPlanleggerIkkeOppgittFraFør} shouldFadeIn>
                                 <VStack gap="10">
                                     {erMorDelAvSøknadenGittType(type) && (
-                                        <TextField
+                                        <RhfTextField
                                             label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Mor' })}
                                             name="navnPåMor"
                                             customErrorFormatter={formatError}
                                         />
                                     )}
                                     {erFarDelAvSøknadenGittType(type) && (
-                                        <TextField
+                                        <RhfTextField
                                             label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
                                             name="navnPåFar"
                                             customErrorFormatter={formatError}
                                         />
                                     )}
                                     {type === Situasjon.MOR_OG_MEDMOR && (
-                                        <TextField
+                                        <RhfTextField
                                             label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Medmor' })}
                                             name="navnPåMedmor"
                                             customErrorFormatter={formatError}
                                         />
                                     )}
                                     {type === Situasjon.FAR_OG_FAR && (
-                                        <TextField
+                                        <RhfTextField
                                             label={intl.formatMessage({ id: 'HvemPlanleggerSteg.Far' })}
                                             name="navnPåMedfar"
                                             customErrorFormatter={formatError}
@@ -122,7 +122,7 @@ const HvemPlanleggerSteg: FunctionComponent = () => {
                     <Spacer />
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} useSimplifiedTexts />
                 </VStack>
-            </Form>
+            </RhfForm>
         </PlanleggerStepPage>
     );
 };

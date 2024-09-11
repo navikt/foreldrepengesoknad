@@ -4,16 +4,16 @@ import { useForm } from 'react-hook-form';
 
 import { Alert, BodyShort, Checkbox as DsCheckbox, HStack, Heading, Label, Radio, VStack } from '@navikt/ds-react';
 
-import Checkbox from './Checkbox';
-import CheckboxGroup from './CheckboxGroup';
-import Combobox from './Combobox';
-import DateRangepicker from './DateRangepicker';
-import Datepicker from './Datepicker';
-import Form from './Form';
-import RadioGroup from './RadioGroup';
-import Select from './Select';
-import TextArea from './TextArea';
-import TextField from './TextField';
+import RhfCheckbox from './RhfCheckbox';
+import RhfCheckboxGroup from './RhfCheckboxGroup';
+import RhfCombobox from './RhfCombobox';
+import RhfDateRangepicker from './RhfDateRangepicker';
+import RhfDatepicker from './RhfDatepicker';
+import RhfForm from './RhfForm';
+import RhfRadioGroup from './RhfRadioGroup';
+import RhfSelect from './RhfSelect';
+import RhfTextArea from './RhfTextArea';
+import RhfTextField from './RhfTextField';
 
 const meta = {
     title: 'FormHooks',
@@ -36,54 +36,57 @@ const meta = {
         const stateVerdier = formMethods.watch();
 
         return (
-            <Form formMethods={formMethods}>
+            <RhfForm formMethods={formMethods}>
                 <HStack justify="space-between">
                     <VStack gap="7" align="start">
-                        <Checkbox name="check" label="Dette er en checkbox" />
-                        <Checkbox name="checkpre" label="Dette er en checkbox som er valgt" />
-                        <CheckboxGroup name="checkpanel" label="Dette er en gruppe med checkboxes">
+                        <RhfCheckbox name="check" label="Dette er en checkbox" />
+                        <RhfCheckbox name="checkpre" label="Dette er en checkbox som er valgt" />
+                        <RhfCheckboxGroup name="checkpanel" label="Dette er en gruppe med checkboxes">
                             <DsCheckbox value="test1">test1</DsCheckbox>
                             <DsCheckbox value="test2">test2</DsCheckbox>
-                        </CheckboxGroup>
-                        <CheckboxGroup name="checkpanelpre" label="Dette er en gruppe med checkboxes som er preutfyllt">
+                        </RhfCheckboxGroup>
+                        <RhfCheckboxGroup
+                            name="checkpanelpre"
+                            label="Dette er en gruppe med checkboxes som er preutfyllt"
+                        >
                             <DsCheckbox value="test1">test1</DsCheckbox>
                             <DsCheckbox value="test2">test2</DsCheckbox>
-                        </CheckboxGroup>
-                        <TextField name="textfield" label="Dette er et tekstfelt" />
-                        <TextField
+                        </RhfCheckboxGroup>
+                        <RhfTextField name="textfield" label="Dette er et tekstfelt" />
+                        <RhfTextField
                             name="textfieldpre"
                             label="Dette er et tekstfelt med preutfyllt verdi"
                             description="Beskrivelse"
                         />
-                        <TextArea name="textarea" label="Dette er et tekstarea" description="beskrivelse" />
-                        <TextArea name="textareapre" label="Dette er et tekstarea som er preutfyllt" />
-                        <Combobox
+                        <RhfTextArea name="textarea" label="Dette er et tekstarea" description="beskrivelse" />
+                        <RhfTextArea name="textareapre" label="Dette er et tekstarea som er preutfyllt" />
+                        <RhfCombobox
                             label="Dette er en combobox"
                             name="combobox"
                             options={['Valg 1', 'Valg 2', 'Tekst 1', 'Tekst 2']}
                         />
-                        <Combobox
+                        <RhfCombobox
                             label="Dette er en combobox der verdi er valgt"
                             name="comboboxPre"
                             options={['Valg 1', 'Valg 2', 'Tekst 1', 'Tekst 2']}
                         />
-                        <RadioGroup
+                        <RhfRadioGroup
                             name="radio"
                             description="Dette er en mer utfyllende tekst"
                             label="Dette er en radioknapp"
                         >
                             <Radio value="verdi1">Verdi 1</Radio>
                             <Radio value="verdi2">Verdi 2</Radio>
-                        </RadioGroup>
-                        <RadioGroup
+                        </RhfRadioGroup>
+                        <RhfRadioGroup
                             name="radiopre"
                             description="Dette er en radioknapp med preutfyllt verdi - beskrivelse"
                             label="Dette er en radioknapp med preutfyllt verdi"
                         >
                             <Radio value={true}>True</Radio>
                             <Radio value={false}>False</Radio>
-                        </RadioGroup>
-                        <Select
+                        </RhfRadioGroup>
+                        <RhfSelect
                             label="Dette er en dropdown"
                             name="testSelectField"
                             description="Dette er en nærmere beskrivelse"
@@ -94,16 +97,16 @@ const meta = {
                             <option value="value2" key="2">
                                 Test 2
                             </option>
-                        </Select>
-                        <Select label="Dette er en dropdown der verdi er valgt" name="testSelectFieldpre">
+                        </RhfSelect>
+                        <RhfSelect label="Dette er en dropdown der verdi er valgt" name="testSelectFieldpre">
                             <option value="value3" key="1">
                                 Test 3
                             </option>
                             <option value="value4" key="2">
                                 Test 4
                             </option>
-                        </Select>
-                        <Datepicker
+                        </RhfSelect>
+                        <RhfDatepicker
                             label="Dette er en datepicker"
                             name="datepickerField"
                             description="Dette er en mer utfyllende tekst"
@@ -111,10 +114,10 @@ const meta = {
                             minDate={dayjs().subtract(10, 'day').toDate()}
                             showMonthAndYearDropdowns
                         />
-                        <Datepicker label="Dette er en datepicker der verdi er valgt" name="datepickerFieldPre" />
+                        <RhfDatepicker label="Dette er en datepicker der verdi er valgt" name="datepickerFieldPre" />
                         <div>
                             <Heading size="small">dateRangepicker</Heading>
-                            <DateRangepicker
+                            <RhfDateRangepicker
                                 nameFrom="dateRangepickerFieldFrom"
                                 nameTo="dateRangepickerFieldTo"
                                 labelFrom="Fom"
@@ -124,7 +127,7 @@ const meta = {
                         </div>
                         <div>
                             <Heading size="small">dateRangepicker med verdi</Heading>
-                            <DateRangepicker
+                            <RhfDateRangepicker
                                 nameFrom="dateRangepickerFieldFromPre"
                                 nameTo="dateRangepickerFieldToPre"
                                 labelFrom="Fom"
@@ -144,7 +147,7 @@ const meta = {
                         </Alert>
                     </div>
                 </HStack>
-            </Form>
+            </RhfForm>
         );
     },
 } satisfies Meta;

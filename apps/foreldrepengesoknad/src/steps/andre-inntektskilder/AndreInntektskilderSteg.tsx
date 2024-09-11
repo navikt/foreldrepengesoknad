@@ -6,7 +6,7 @@ import { useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 
@@ -48,13 +48,13 @@ const AndreInntektskilderSteg: React.FunctionComponent<Props> = ({
             onContinueLater={navigator.fortsettSøknadSenere}
             steps={stepConfig}
         >
-            <Form formMethods={formMethods} onSubmit={onSubmit}>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     <AndreInntektskilderFieldArray />
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

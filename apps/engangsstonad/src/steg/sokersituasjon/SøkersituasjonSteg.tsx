@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Radio, VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Søkersituasjon } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
@@ -45,10 +45,10 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavi
             onStepChange={navigator.goToNextStep}
             steps={stepConfig}
         >
-            <Form formMethods={formMethods} onSubmit={lagre}>
+            <RhfForm formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="situasjon"
                         label={<FormattedMessage id="SøkersituasjonSteg.Situasjon" />}
                         validate={[
@@ -63,13 +63,13 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavi
                         <Radio value="adopsjon">
                             <FormattedMessage id="SøkersituasjonSteg.Adopsjon" />
                         </Radio>
-                    </RadioGroup>
+                    </RhfRadioGroup>
                     <StepButtonsHookForm
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         saveDataOnPreviousClick={oppdaterSøkersituasjon}
                     />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };
