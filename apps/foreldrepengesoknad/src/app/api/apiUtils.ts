@@ -393,7 +393,7 @@ export const cleanSøknad = (
 ): SøknadForInnsending => {
     const annenForelder = notEmpty(hentData(ContextDataType.ANNEN_FORELDER));
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
-    const arbeidsforholdOgInntekt = notEmpty(hentData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
+    const arbeidsforholdOgInntekt = hentData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const frilans = hentData(ContextDataType.FRILANS);
     const egenNæring = hentData(ContextDataType.EGEN_NÆRING);
     const andreInntektskilder = hentData(ContextDataType.ANDRE_INNTEKTSKILDER);
@@ -455,7 +455,7 @@ const cleanSøker = (
     søkersituasjon: Søkersituasjon,
     locale: LocaleNo,
     annenForelder: AnnenForelder,
-    arbeidsforholdOgInntekt: ArbeidsforholdOgInntektFp,
+    arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp,
     frilans?: Frilans,
     egenNæring?: EgenNæring,
     andreInntektskilder?: AndreInntektskilder[],
@@ -470,9 +470,9 @@ const cleanSøker = (
     };
 
     if (
-        arbeidsforholdOgInntekt.harJobbetSomFrilans ||
-        arbeidsforholdOgInntekt.harHattAndreInntektskilder ||
-        arbeidsforholdOgInntekt.harHattAndreInntektskilder
+        arbeidsforholdOgInntekt?.harJobbetSomFrilans ||
+        arbeidsforholdOgInntekt?.harHattAndreInntektskilder ||
+        arbeidsforholdOgInntekt?.harHattAndreInntektskilder
     ) {
         return {
             ...common,
