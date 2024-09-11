@@ -53,9 +53,9 @@ const AppContainer = () => {
     const [locale, setLocale] = useState<LocaleNo>(localeFromSessionStorage);
 
     return (
-        <ErrorBoundary appName="Foreldrepenger" retryCallback={retryCallback}>
-            <FpApiDataContext>
-                <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
+        <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
+            <ErrorBoundary appName="Foreldrepenger" retryCallback={retryCallback}>
+                <FpApiDataContext>
                     <ByttBrowserModal />
                     <Foreldrepengesøknad
                         locale={locale}
@@ -66,9 +66,9 @@ const AppContainer = () => {
                             document.documentElement.setAttribute('lang', activeLocale);
                         }}
                     />
-                </IntlProvider>
-            </FpApiDataContext>
-        </ErrorBoundary>
+                </FpApiDataContext>
+            </ErrorBoundary>
+        </IntlProvider>
     );
 };
 
