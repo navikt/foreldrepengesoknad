@@ -15,9 +15,9 @@ import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
 
-import nbMessages from '../src/app/intl/nb_NO.json';
-import nnMessages from '../src/app/intl/nn_NO.json';
-import '../src/app/styles/app.css';
+import nbMessages from '../src/intl/nb_NO.json';
+import nnMessages from '../src/intl/nn_NO.json';
+import '../src/styles/app.css';
 
 dayjs.locale('nb');
 

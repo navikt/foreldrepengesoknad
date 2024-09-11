@@ -14,7 +14,7 @@ expect.extend(matchers);
 
 window.scrollTo = () => undefined;
 
-vi.mock('./../src/app/Environment.ts', async () => {
+vi.mock('./../src/Environment.ts', async () => {
     return {
         default: {
             APP_VERSION: 'dev',

@@ -19,6 +19,7 @@
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@testing-library/jest-dom": "^6.4.6",
         "@types/react": "^18.3.3",
+        "axios-mock-adapter": "^1.22.0",
         "tsconfig": "workspace:*",
         "typescript": "^5.5.4"
     },
