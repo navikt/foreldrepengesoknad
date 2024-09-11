@@ -116,7 +116,7 @@ export const Default: Story = {
     },
 };
 
-export const BrukerKanIkkeSøkeVedKunNeiSvar: Story = {
+export const BrukerKanSøkeVedKunNeiSvar: Story = {
     args: {
         ...Default.args,
         arbeidsforhold: [],

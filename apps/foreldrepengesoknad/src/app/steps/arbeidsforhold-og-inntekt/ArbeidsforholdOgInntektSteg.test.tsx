@@ -7,7 +7,7 @@ import SøknadRoutes from 'app/appData/routes';
 
 import * as stories from './ArbeidsforholdOgInntektSteg.stories';
 
-const { Default, BrukerKanIkkeSøkeVedKunNeiSvar } = composeStories(stories);
+const { Default, BrukerKanSøkeVedKunNeiSvar } = composeStories(stories);
 
 describe('<ArbeidsforholdOgInntektSteg>', () => {
     it('skal gå til neste steg når informasjon er korrekt', async () => {
@@ -78,7 +78,7 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
         const mellomlagreSøknadOgNaviger = vi.fn();
 
         render(
-            <BrukerKanIkkeSøkeVedKunNeiSvar
+            <BrukerKanSøkeVedKunNeiSvar
                 gåTilNesteSide={gåTilNesteSide}
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
             />,
@@ -94,8 +94,8 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
 
         await userEvent.click(screen.getAllByText('Ja')[2]);
 
-        expect(screen.getByText('Du kan dessverre ikke gå videre i søknaden.')).toBeInTheDocument();
+        expect(screen.queryByText('Du kan dessverre ikke gå videre i søknaden.')).not.toBeInTheDocument();
 
-        expect(screen.queryByText('Neste steg')).not.toBeInTheDocument();
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
     });
 });
