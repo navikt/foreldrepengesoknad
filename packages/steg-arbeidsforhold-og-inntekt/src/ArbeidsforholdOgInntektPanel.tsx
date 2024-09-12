@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { ErrorSummaryHookForm, Form, RadioGroup } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { AppName, Arbeidsforhold } from '@navikt/fp-types';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
@@ -65,7 +65,7 @@ const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
             onContinueLater={onContinueLater}
             onStepChange={onStepChange}
         >
-            <Form
+            <RhfForm
                 formMethods={formMethods}
                 onSubmit={(values) => {
                     setIsSubmitting(true);
@@ -84,7 +84,7 @@ const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                         <ArbeidsforholdInformasjon arbeidsforhold={aktiveArbeidsforhold} />
                     </VStack>
                     <VStack gap="1">
-                        <RadioGroup
+                        <RhfRadioGroup
                             name="harJobbetSomFrilans"
                             label={intl.formatMessage({ id: 'inntektsinformasjon.harDuJobbetSomFrilans' }, { erSvp })}
                             validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.frilans.påkrevd' }))]}
@@ -101,11 +101,11 @@ const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                             <Radio value={true}>
                                 <FormattedMessage id="inntektsinformasjon.ja" />
                             </Radio>
-                        </RadioGroup>
+                        </RhfRadioGroup>
                         <HvemKanVæreFrilanser />
                     </VStack>
                     <VStack gap="1">
-                        <RadioGroup
+                        <RhfRadioGroup
                             name="harJobbetSomSelvstendigNæringsdrivende"
                             label={intl.formatMessage(
                                 {
@@ -131,12 +131,12 @@ const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                             <Radio value={true}>
                                 <FormattedMessage id="inntektsinformasjon.ja" />
                             </Radio>
-                        </RadioGroup>
+                        </RhfRadioGroup>
                         <HvemKanDriveMedEgenNæring />
                     </VStack>
                     {erSvp && (
                         <VStack gap="1">
-                            <RadioGroup
+                            <RhfRadioGroup
                                 name="harHattArbeidIUtlandet"
                                 label={intl.formatMessage({ id: 'inntektsinformasjon.hattArbeidIUtlandet' })}
                                 validate={[
@@ -154,13 +154,13 @@ const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                                 <Radio value={true}>
                                     <FormattedMessage id="inntektsinformasjon.ja" />
                                 </Radio>
-                            </RadioGroup>
+                            </RhfRadioGroup>
                             <InfoOmArbeidIUtlandet />
                         </VStack>
                     )}
                     {!erSvp && (
                         <VStack gap="1">
-                            <RadioGroup
+                            <RhfRadioGroup
                                 name="harHattAndreInntektskilder"
                                 label={intl.formatMessage({ id: 'inntektsinformasjon.hattAndreInntektskilder' })}
                                 validate={[
@@ -175,7 +175,7 @@ const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                                 <Radio value={true}>
                                     <FormattedMessage id="inntektsinformasjon.ja" />
                                 </Radio>
-                            </RadioGroup>
+                            </RhfRadioGroup>
                             <ReadMore
                                 onOpenChange={logAmplitudeEventOnOpen(stønadstype, 'Andre_inntektskilder')}
                                 header={intl.formatMessage({
@@ -192,14 +192,14 @@ const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                         {erSvp && <InfoOmFørstegangstjeneste />}
                         <InfoTilFiskere />
                     </VStack>
-                    {kanIkkeSøke && <BrukerKanIkkeSøke />}
+                    {erSvp && kanIkkeSøke && <BrukerKanIkkeSøke />}
                     <StepButtons
-                        isNextButtonVisible={!kanIkkeSøke}
+                        isNextButtonVisible={!erSvp || (erSvp && !kanIkkeSøke)}
                         isDisabledAndLoading={isSubmitting}
                         goToPreviousStep={goToPreviousStep}
                     />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

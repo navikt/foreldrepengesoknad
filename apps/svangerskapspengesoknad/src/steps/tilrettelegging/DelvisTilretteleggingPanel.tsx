@@ -9,7 +9,7 @@ import { getDefaultMonth, getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSva
 
 import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Datepicker, RadioGroup, TextField } from '@navikt/fp-form-hooks';
+import { RhfDatepicker, RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hooks';
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { tiMånederSidenDato } from '@navikt/fp-utils';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
@@ -59,7 +59,7 @@ const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({ barnet, valgtTil
 
     return (
         <>
-            <RadioGroup
+            <RhfRadioGroup
                 name="delvisTilretteleggingPeriodeType"
                 label={intl.formatMessage({ id: 'tilrettelegging.tilretteleggingPeriodetype.label' })}
                 description={
@@ -75,10 +75,10 @@ const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({ barnet, valgtTil
                 <Radio value={DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER}>
                     <FormattedMessage id="tilrettelegging.tilretteleggingPeriodetype.variert" />
                 </Radio>
-            </RadioGroup>
+            </RhfRadioGroup>
             {delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN && (
                 <div>
-                    <TextField
+                    <RhfTextField
                         name="enPeriodeMedTilretteleggingStillingsprosent"
                         label={intl.formatMessage({ id: 'tilrettelegging.stillingsprosent.label' })}
                         description={
@@ -114,7 +114,7 @@ const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({ barnet, valgtTil
                 </div>
             )}
             {delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN && (
-                <Datepicker
+                <RhfDatepicker
                     name="enPeriodeMedTilretteleggingFom"
                     label={intl.formatMessage({
                         id: 'tilrettelegging.sammePeriodeFremTilTerminFom.label.delvis',
@@ -151,7 +151,7 @@ const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({ barnet, valgtTil
                 />
             )}
             {delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN && (
-                <RadioGroup
+                <RhfRadioGroup
                     name="enPeriodeMedTilretteleggingTomType"
                     label={intl.formatMessage({
                         id: 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.delvis',
@@ -178,11 +178,11 @@ const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({ barnet, valgtTil
                             <FormattedMessage id="perioder.varierende.tomType.dagenFørFødsel" />
                         )}
                     </Radio>
-                </RadioGroup>
+                </RhfRadioGroup>
             )}
             {delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN &&
                 enPeriodeMedTilretteleggingTomType === TilOgMedDatoType.VALGFRI_DATO && (
-                    <Datepicker
+                    <RhfDatepicker
                         name="enPeriodeMedTilretteleggingTilbakeIJobbDato"
                         label={intl.formatMessage({
                             id: 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.delvis',

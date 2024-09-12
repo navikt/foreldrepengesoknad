@@ -8,7 +8,7 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import { Søker, Søkerinfo } from '@navikt/fp-types';
 
 import AppContainer from './AppContainer';
-import { SvpDataMapAndMetaData } from './appData/useMellomlagreSøknad';
+import { SvpDataMapAndMetaData } from './app-data/useMellomlagreSøknad';
 
 const defaultSøkerinfo = {
     søker: {

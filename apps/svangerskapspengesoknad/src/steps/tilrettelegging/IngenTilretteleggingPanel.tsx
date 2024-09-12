@@ -8,7 +8,7 @@ import { getDefaultMonth, getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSva
 
 import { Radio } from '@navikt/ds-react';
 
-import { Datepicker, RadioGroup } from '@navikt/fp-form-hooks';
+import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { tiMånederSidenDato } from '@navikt/fp-utils';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -55,7 +55,7 @@ const IngenTilretteleggingPanel: FunctionComponent<Props> = ({ barnet, valgtTilr
 
     return (
         <>
-            <Datepicker
+            <RhfDatepicker
                 name="enPeriodeMedTilretteleggingFom"
                 label={intl.formatMessage({
                     id: 'tilrettelegging.sammePeriodeFremTilTerminFom.label.ingen',
@@ -88,7 +88,7 @@ const IngenTilretteleggingPanel: FunctionComponent<Props> = ({ barnet, valgtTilr
                 ]}
                 defaultMonth={minDatoPeriodeFom ? getDefaultMonth(minDatoPeriodeFom, maxDatoBehovFom) : undefined}
             />
-            <RadioGroup
+            <RhfRadioGroup
                 name="enPeriodeMedTilretteleggingTomType"
                 label={intl.formatMessage({
                     id: 'tilrettelegging.enPeriodeMedTilretteleggingTomType.label.ingen',
@@ -115,9 +115,9 @@ const IngenTilretteleggingPanel: FunctionComponent<Props> = ({ barnet, valgtTilr
                         <FormattedMessage id="perioder.varierende.tomType.dagenFørFødsel" />
                     )}
                 </Radio>
-            </RadioGroup>
+            </RhfRadioGroup>
             {enPeriodeMedTilretteleggingTomType === TilOgMedDatoType.VALGFRI_DATO && (
-                <Datepicker
+                <RhfDatepicker
                     name="enPeriodeMedTilretteleggingTilbakeIJobbDato"
                     label={intl.formatMessage({
                         id: 'tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato.label.ingen',

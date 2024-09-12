@@ -7,7 +7,7 @@ import { links } from '@navikt/fp-constants';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import ContentWrapper from '../contentWrapper/ContentWrapper';
+import ContentWrapper from '../content-wrapper/ContentWrapper';
 
 export interface Props {
     appnavn: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
