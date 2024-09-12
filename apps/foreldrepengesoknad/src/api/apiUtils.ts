@@ -38,6 +38,7 @@ import {
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt/src/types/ArbeidsforholdOgInntekt';
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
+import { mapUtenlandsOppholdForInnsending } from '@navikt/fp-steg-utenlandsopphold';
 import { Attachment, LocaleNo } from '@navikt/fp-types';
 import { Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
 import {
@@ -437,11 +438,11 @@ export const cleanSøknad = (
         situasjon: søkersituasjon.situasjon,
         annenForelder: annenForelderInnsending,
         uttaksplan: uttaksplanInnsending,
-        informasjonOmUtenlandsopphold: {
-            ...utenlandsopphold,
-            ...(senereUtenlandsopphold || { senereOpphold: [] }),
-            ...(tidligereUtenlandsopphold || { tidligereOpphold: [] }),
-        },
+        informasjonOmUtenlandsopphold: mapUtenlandsOppholdForInnsending(
+            utenlandsopphold,
+            senereUtenlandsopphold,
+            tidligereUtenlandsopphold,
+        ),
         dekningsgrad: periodeMedForeldrepenger.dekningsgrad,
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
         vedlegg: convertAttachmentsMapToArray(vedlegg),

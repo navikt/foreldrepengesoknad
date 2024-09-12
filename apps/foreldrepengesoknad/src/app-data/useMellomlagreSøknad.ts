@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MELLOMLAGRET_VERSJON } from 'utils/mellomlagringUtils';
 
+import { mapUtenlandsOppholdForInnsending } from '@navikt/fp-steg-utenlandsopphold';
 import { LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -53,11 +54,7 @@ const mellomlagre = (
             egenNæring,
             andreInntektskilder,
             informasjonOmUtenlandsopphold: utenlandsopphold
-                ? {
-                      ...utenlandsopphold,
-                      senereOpphold: senereUtenlandsopphold?.senereOpphold || [],
-                      tidligereOpphold: tidligereUtenlandsopphold?.tidligereOpphold || [],
-                  }
+                ? mapUtenlandsOppholdForInnsending(utenlandsopphold, senereUtenlandsopphold, tidligereUtenlandsopphold)
                 : undefined,
             erEndringssøknad,
             dekningsgrad: periodeMedForeldrepenger?.dekningsgrad,

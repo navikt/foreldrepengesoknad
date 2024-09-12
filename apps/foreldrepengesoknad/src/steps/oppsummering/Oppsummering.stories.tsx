@@ -8,7 +8,6 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenInntektType } from 'types/AnnenInntekt';
-import { Opphold, SenereOpphold, TidligereOpphold } from 'types/InformasjonOmUtenlandsopphold';
 import { Næringstype } from 'types/Næring';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, Periode } from '@navikt/fp-common';
@@ -17,7 +16,15 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
-import { Sivilstand, Søker, Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
+import {
+    Sivilstand,
+    Søker,
+    Søkerinfo,
+    SøkersituasjonFp,
+    Utenlandsopphold,
+    UtenlandsoppholdSenere,
+    UtenlandsoppholdTidligere,
+} from '@navikt/fp-types';
 
 import AxiosMock from '../../__mocks__/AxiosMock';
 import Oppsummering from './Oppsummering';
@@ -104,8 +111,8 @@ const defaultAnnenForelder = {
 };
 
 const defaultUtenlandsopphold = {
-    iNorgeNeste12Mnd: true,
-    iNorgeSiste12Mnd: true,
+    harBoddUtenforNorgeSiste12Mnd: false,
+    skalBoUtenforNorgeNeste12Mnd: false,
 };
 
 const defaultUttaksplan = [
@@ -178,9 +185,9 @@ type StoryArgs = {
     søkerinfo?: Søkerinfo;
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelder;
-    utenlandsopphold?: Opphold;
-    utenlandsoppholdSenere?: SenereOpphold;
-    utenlandsoppholdTidligere?: TidligereOpphold;
+    utenlandsopphold?: Utenlandsopphold;
+    utenlandsoppholdSenere?: UtenlandsoppholdSenere;
+    utenlandsoppholdTidligere?: UtenlandsoppholdTidligere;
     barn?: Barn;
     sivilstand?: Sivilstand;
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
@@ -439,28 +446,24 @@ export const MorMedUtenlandsopphold: Story = {
     args: {
         ...Default.args,
         utenlandsopphold: {
-            iNorgeNeste12Mnd: false,
-            iNorgeSiste12Mnd: false,
+            skalBoUtenforNorgeNeste12Mnd: true,
+            harBoddUtenforNorgeSiste12Mnd: true,
         },
         utenlandsoppholdSenere: {
-            senereOpphold: [
+            utenlandsoppholdNeste12Mnd: [
                 {
-                    land: 'SE',
-                    tidsperiode: {
-                        fom: dayjs().format(ISO_DATE_FORMAT),
-                        tom: dayjs().add(100, 'days').format(ISO_DATE_FORMAT),
-                    },
+                    landkode: 'SE',
+                    fom: dayjs().format(ISO_DATE_FORMAT),
+                    tom: dayjs().add(100, 'days').format(ISO_DATE_FORMAT),
                 },
             ],
         },
         utenlandsoppholdTidligere: {
-            tidligereOpphold: [
+            utenlandsoppholdSiste12Mnd: [
                 {
-                    land: 'SE',
-                    tidsperiode: {
-                        fom: dayjs().subtract(10, 'months').format(ISO_DATE_FORMAT),
-                        tom: dayjs().subtract(1, 'days').format(ISO_DATE_FORMAT),
-                    },
+                    landkode: 'SE',
+                    fom: dayjs().subtract(10, 'months').format(ISO_DATE_FORMAT),
+                    tom: dayjs().subtract(1, 'days').format(ISO_DATE_FORMAT),
                 },
             ],
         },

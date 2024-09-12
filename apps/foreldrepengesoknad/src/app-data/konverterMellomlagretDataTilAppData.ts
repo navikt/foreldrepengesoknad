@@ -19,26 +19,26 @@ export const konverterMellomlagretDataTilAppData = (mellomlagretState: FpMelloml
         [ContextDataType.ANDRE_INNTEKTSKILDER]: søknad?.andreInntektskilder,
         [ContextDataType.UTENLANDSOPPHOLD]: søknad?.informasjonOmUtenlandsopphold
             ? {
-                  iNorgeNeste12Mnd: søknad.informasjonOmUtenlandsopphold.iNorgeNeste12Mnd,
-                  iNorgeSiste12Mnd: søknad.informasjonOmUtenlandsopphold.iNorgeSiste12Mnd,
+                  skalBoUtenforNorgeNeste12Mnd: !søknad.informasjonOmUtenlandsopphold.iNorgeNeste12Mnd,
+                  harBoddUtenforNorgeSiste12Mnd: !søknad.informasjonOmUtenlandsopphold.iNorgeSiste12Mnd,
               }
             : undefined,
-        [ContextDataType.UTENLANDSOPPHOLD_SENERE]:
-            søknad?.informasjonOmUtenlandsopphold &&
-            søknad.informasjonOmUtenlandsopphold.senereOpphold &&
-            søknad.informasjonOmUtenlandsopphold.senereOpphold.length > 0
-                ? {
-                      senereOpphold: søknad.informasjonOmUtenlandsopphold.senereOpphold,
-                  }
-                : undefined,
-        [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]:
-            søknad?.informasjonOmUtenlandsopphold &&
-            søknad.informasjonOmUtenlandsopphold.tidligereOpphold &&
-            søknad.informasjonOmUtenlandsopphold.tidligereOpphold.length > 0
-                ? {
-                      tidligereOpphold: søknad.informasjonOmUtenlandsopphold.tidligereOpphold,
-                  }
-                : undefined,
+        [ContextDataType.UTENLANDSOPPHOLD_SENERE]: søknad?.informasjonOmUtenlandsopphold
+            ? {
+                  utenlandsoppholdNeste12Mnd: søknad.informasjonOmUtenlandsopphold.senereOpphold.map((p) => ({
+                      landkode: p.land,
+                      ...p.tidsperiode,
+                  })),
+              }
+            : undefined,
+        [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: søknad?.informasjonOmUtenlandsopphold
+            ? {
+                  utenlandsoppholdSiste12Mnd: søknad.informasjonOmUtenlandsopphold.tidligereOpphold.map((p) => ({
+                      landkode: p.land,
+                      ...p.tidsperiode,
+                  })),
+              }
+            : undefined,
         [ContextDataType.PERIODE_MED_FORELDREPENGER]: søknad?.dekningsgrad
             ? { dekningsgrad: søknad.dekningsgrad }
             : undefined,

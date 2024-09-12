@@ -4,7 +4,6 @@ import useFpNavigator from 'appData/useFpNavigator';
 import useStepConfig from 'appData/useStepConfig';
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Utenlandsopphold as OldUtenlandsOpphold } from 'types/InformasjonOmUtenlandsopphold';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { ISOStringToDate } from 'utils/dateUtils';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnrString, getNavnPåForeldre } from 'utils/personUtils';
@@ -24,15 +23,6 @@ import AnnenForelderOppsummering from './components/annen-forelder-oppsummering/
 import BarnOppsummering from './components/barn-oppsummering/BarnOppsummering';
 import DokumentasjonOppsummering from './components/dokumentasjon-oppsummering/DokumentasjonOppsummering';
 import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
-
-// TODO (TOR) Bruk same typar i dei forskjellige appane
-function tempMappingUtenlandsopphold(utenlandsopphold: OldUtenlandsOpphold[]) {
-    return utenlandsopphold.map((o) => ({
-        fom: o.tidsperiode.fom,
-        tom: o.tidsperiode.tom,
-        landkode: o.land,
-    }));
-}
 
 const skalViseInfoOmFarskapsportal = (
     søker: Søker,
@@ -63,13 +53,8 @@ export interface Props {
     avbrytSøknad: () => void;
 }
 
-const Oppsummering: FunctionComponent<Props> = ({
-    søkerInfo,
-    erEndringssøknad,
-    sendSøknad,
-    avbrytSøknad,
-    mellomlagreSøknadOgNaviger,
-}) => {
+const Oppsummering: FunctionComponent<Props> = (props) => {
+    const { søkerInfo, erEndringssøknad, sendSøknad, avbrytSøknad, mellomlagreSøknadOgNaviger } = props;
     const intl = useIntl();
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
@@ -79,6 +64,9 @@ const Oppsummering: FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
 
+    const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+    const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+
     const arbeidsforholdOgInntekt = useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
@@ -87,8 +75,6 @@ const Oppsummering: FunctionComponent<Props> = ({
     const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
     const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
-    const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
-    const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
     const inneholderIkkeVedlegg = søknadInneholderIngenVedlegg(vedlegg);
@@ -145,12 +131,10 @@ const Oppsummering: FunctionComponent<Props> = ({
                             {!erEndringssøknad && (
                                 <BoIUtlandetOppsummeringspunkt
                                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
-                                    tidligereUtenlandsopphold={tempMappingUtenlandsopphold(
-                                        tidligereUtenlandsopphold?.tidligereOpphold ?? [],
-                                    )}
-                                    senereUtenlandsopphold={tempMappingUtenlandsopphold(
-                                        senereUtenlandsopphold?.senereOpphold ?? [],
-                                    )}
+                                    tidligereUtenlandsopphold={
+                                        tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd ?? []
+                                    }
+                                    senereUtenlandsopphold={senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd ?? []}
                                 />
                             )}
                         </OppsummeringPanel.Punkt>

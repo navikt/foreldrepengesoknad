@@ -51,13 +51,13 @@ const showUtenlandsoppholdStep = (
 ) => {
     if (path === SøknadRoutes.TIDLIGERE_UTENLANDSOPPHOLD) {
         const erValgtOgEtterSteg =
-            getData(ContextDataType.UTENLANDSOPPHOLD)?.iNorgeSiste12Mnd === false &&
+            getData(ContextDataType.UTENLANDSOPPHOLD)?.harBoddUtenforNorgeSiste12Mnd === true &&
             isAfterStep(SøknadRoutes.UTENLANDSOPPHOLD, currentPath);
         return erValgtOgEtterSteg || !!getData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     }
     if (path === SøknadRoutes.SENERE_UTENLANDSOPPHOLD) {
         const erValgtOgEtterSteg =
-            getData(ContextDataType.UTENLANDSOPPHOLD)?.iNorgeNeste12Mnd === false &&
+            getData(ContextDataType.UTENLANDSOPPHOLD)?.skalBoUtenforNorgeNeste12Mnd === true &&
             isAfterStep(SøknadRoutes.UTENLANDSOPPHOLD, currentPath);
         return erValgtOgEtterSteg || !!getData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     }

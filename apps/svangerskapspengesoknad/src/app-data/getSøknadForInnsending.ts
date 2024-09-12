@@ -15,19 +15,13 @@ import Tilrettelegging, {
     TilretteleggingPeriode,
     Tilretteleggingstype,
 } from 'types/Tilrettelegging';
-import { InformasjonOmUtenlandsoppholdDTO, UtenlandsoppholdDTO } from 'types/Utenlandsopphold';
 
 import { AttachmentMetadataType, DATE_4_YEARS_AGO } from '@navikt/fp-constants';
 import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring, Næringstype } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
-import {
-    LocaleNo,
-    Utenlandsopphold,
-    UtenlandsoppholdPeriode,
-    UtenlandsoppholdSenere,
-    UtenlandsoppholdTidligere,
-} from '@navikt/fp-types';
+import { mapUtenlandsOppholdForInnsending } from '@navikt/fp-steg-utenlandsopphold';
+import { LocaleNo } from '@navikt/fp-types';
 import { isValidDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -49,29 +43,6 @@ const getArbeidsforholdForInnsending = (t: TilretteleggingPeriode | Tilrettelegg
     return {
         id: t.arbeidsforhold.arbeidsgiverId!,
         type: t.arbeidsforhold.type,
-    };
-};
-
-const mapBostedUtlandTilDTO = (utenlandsopphold: UtenlandsoppholdPeriode): UtenlandsoppholdDTO => {
-    return {
-        land: utenlandsopphold.landkode,
-        tidsperiode: {
-            fom: utenlandsopphold.fom,
-            tom: utenlandsopphold.tom,
-        },
-    };
-};
-
-const mapUtenlandsOppholdForInnsending = (
-    utenlandsopphold: Utenlandsopphold,
-    senereUtenlandsopphold?: UtenlandsoppholdSenere,
-    tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
-): InformasjonOmUtenlandsoppholdDTO => {
-    return {
-        iNorgeSiste12Mnd: !utenlandsopphold.harBoddUtenforNorgeSiste12Mnd,
-        iNorgeNeste12Mnd: !utenlandsopphold.skalBoUtenforNorgeNeste12Mnd,
-        tidligereOpphold: (tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd || []).map(mapBostedUtlandTilDTO),
-        senereOpphold: (senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd || []).map(mapBostedUtlandTilDTO),
     };
 };
 

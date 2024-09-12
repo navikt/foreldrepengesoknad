@@ -18,8 +18,8 @@ export const useSetSøknadsdata = () => {
             ContextDataType.UTENLANDSOPPHOLD,
             søknad.informasjonOmUtenlandsopphold
                 ? {
-                      iNorgeNeste12Mnd: søknad.informasjonOmUtenlandsopphold.iNorgeNeste12Mnd,
-                      iNorgeSiste12Mnd: søknad.informasjonOmUtenlandsopphold.iNorgeSiste12Mnd,
+                      skalBoUtenforNorgeNeste12Mnd: !søknad.informasjonOmUtenlandsopphold.iNorgeNeste12Mnd,
+                      harBoddUtenforNorgeSiste12Mnd: !søknad.informasjonOmUtenlandsopphold.iNorgeSiste12Mnd,
                   }
                 : undefined,
         );
@@ -27,7 +27,10 @@ export const useSetSøknadsdata = () => {
             ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE,
             søknad.informasjonOmUtenlandsopphold
                 ? {
-                      tidligereOpphold: søknad.informasjonOmUtenlandsopphold.tidligereOpphold,
+                      utenlandsoppholdSiste12Mnd: søknad.informasjonOmUtenlandsopphold.tidligereOpphold.map((p) => ({
+                          landkode: p.land,
+                          ...p.tidsperiode,
+                      })),
                   }
                 : undefined,
         );
@@ -35,7 +38,10 @@ export const useSetSøknadsdata = () => {
             ContextDataType.UTENLANDSOPPHOLD_SENERE,
             søknad.informasjonOmUtenlandsopphold
                 ? {
-                      senereOpphold: søknad.informasjonOmUtenlandsopphold.senereOpphold,
+                      utenlandsoppholdNeste12Mnd: søknad.informasjonOmUtenlandsopphold.tidligereOpphold.map((p) => ({
+                          landkode: p.land,
+                          ...p.tidsperiode,
+                      })),
                   }
                 : undefined,
         );

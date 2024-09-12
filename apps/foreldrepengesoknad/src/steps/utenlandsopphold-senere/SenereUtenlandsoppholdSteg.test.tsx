@@ -6,6 +6,7 @@ import SøknadRoutes from 'appData/routes';
 import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { UtenlandsoppholdSenere } from '@navikt/fp-types';
 
 import * as stories from './SenereUtenlandsoppholdSteg.stories';
 
@@ -37,16 +38,14 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
-                senereOpphold: [
+                utenlandsoppholdNeste12Mnd: [
                     {
-                        land: 'CA',
-                        tidsperiode: {
-                            fom: dayjs().add(1, 'day').format(ISO_DATE_FORMAT),
-                            tom: dayjs().add(20, 'day').format(ISO_DATE_FORMAT),
-                        },
+                        landkode: 'CA',
+                        fom: dayjs().add(1, 'day').format(ISO_DATE_FORMAT),
+                        tom: dayjs().add(20, 'day').format(ISO_DATE_FORMAT),
                     },
                 ],
-            },
+            } satisfies UtenlandsoppholdSenere,
             key: ContextDataType.UTENLANDSOPPHOLD_SENERE,
             type: 'update',
         });
@@ -85,8 +84,8 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
                 gåTilNesteSide={gåTilNesteSide}
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                 utenlandsopphold={{
-                    iNorgeNeste12Mnd: false,
-                    iNorgeSiste12Mnd: false,
+                    skalBoUtenforNorgeNeste12Mnd: true,
+                    harBoddUtenforNorgeSiste12Mnd: true,
                 }}
             />,
         );

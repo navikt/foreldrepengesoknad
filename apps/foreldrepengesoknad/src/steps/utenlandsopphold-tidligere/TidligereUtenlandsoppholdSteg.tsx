@@ -29,31 +29,12 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
     const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const oppdaterTidligereUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
 
-    const lagredeTidligereUtenlandsopphold =
-        tidligereUtenlandsopphold && tidligereUtenlandsopphold.tidligereOpphold.length > 0
-            ? {
-                  utenlandsoppholdSiste12Mnd: tidligereUtenlandsopphold.tidligereOpphold.map((so) => ({
-                      fom: so.tidsperiode.fom,
-                      tom: so.tidsperiode.tom,
-                      landkode: so.land,
-                  })),
-              }
-            : undefined;
-
     const save = (values: UtenlandsoppholdTidligere) => {
-        oppdaterTidligereUtenlandsopphold({
-            tidligereOpphold: values.utenlandsoppholdSiste12Mnd.map((un) => ({
-                land: un.landkode,
-                tidsperiode: {
-                    fom: un.fom,
-                    tom: un.tom,
-                },
-            })),
-        });
+        oppdaterTidligereUtenlandsopphold(values);
 
-        const nesteSide = utenlandsopphold.iNorgeNeste12Mnd
-            ? SøknadRoutes.ARBEID_OG_INNTEKT
-            : SøknadRoutes.SENERE_UTENLANDSOPPHOLD;
+        const nesteSide = utenlandsopphold.skalBoUtenforNorgeNeste12Mnd
+            ? SøknadRoutes.SENERE_UTENLANDSOPPHOLD
+            : SøknadRoutes.ARBEID_OG_INNTEKT;
         return navigator.goToNextStep(nesteSide);
     };
 
@@ -67,7 +48,7 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
                 <FormattedMessage id="søknad.pageheading" />
             </Heading>
             <TidligereUtenlandsoppholdPanel
-                tidligereUtenlandsopphold={lagredeTidligereUtenlandsopphold}
+                tidligereUtenlandsopphold={tidligereUtenlandsopphold}
                 saveOnNext={save}
                 saveOnPrevious={saveOnPrevious}
                 cancelApplication={avbrytSøknad}

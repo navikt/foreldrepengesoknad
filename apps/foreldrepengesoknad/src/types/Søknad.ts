@@ -6,8 +6,7 @@ import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inn
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
 import { Dekningsgrad } from '@navikt/fp-types';
-
-import InformasjonOmUtenlandsopphold from './InformasjonOmUtenlandsopphold';
+import { InformasjonOmUtenlandsoppholdDTO } from '@navikt/fp-types/src/Utenlandsopphold';
 
 export interface Søknad {
     type: 'foreldrepenger';
@@ -19,7 +18,7 @@ export interface Søknad {
     egenNæring: EgenNæring;
     frilans: Frilans;
     andreInntektskilder: AndreInntektskilder[];
-    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
+    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsoppholdDTO;
     erEndringssøknad: boolean;
     dekningsgrad: Dekningsgrad;
     uttaksplan: Periode[];

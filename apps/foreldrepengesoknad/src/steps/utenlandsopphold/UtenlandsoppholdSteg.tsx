@@ -39,10 +39,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
     const oppdaterSenereUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
     const save = (values: Utenlandsopphold) => {
-        oppdaterUtenlandsopphold({
-            iNorgeSiste12Mnd: !values.harBoddUtenforNorgeSiste12Mnd,
-            iNorgeNeste12Mnd: !values.skalBoUtenforNorgeNeste12Mnd,
-        });
+        oppdaterUtenlandsopphold(values);
 
         if (!values.harBoddUtenforNorgeSiste12Mnd) {
             oppdaterTidligereUtenlandsopphold(undefined);
@@ -64,14 +61,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
                 <FormattedMessage id="søknad.pageheading" />
             </Heading>
             <UtenlandsoppholdPanel
-                utenlandsopphold={
-                    utenlandsopphold
-                        ? {
-                              harBoddUtenforNorgeSiste12Mnd: !utenlandsopphold.iNorgeSiste12Mnd,
-                              skalBoUtenforNorgeNeste12Mnd: !utenlandsopphold.iNorgeNeste12Mnd,
-                          }
-                        : undefined
-                }
+                utenlandsopphold={utenlandsopphold}
                 saveOnNext={save}
                 saveOnPrevious={saveOnPrevious}
                 cancelApplication={avbrytSøknad}
