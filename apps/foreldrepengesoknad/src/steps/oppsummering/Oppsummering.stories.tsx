@@ -8,7 +8,6 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenInntektType } from 'types/AnnenInntekt';
-import { Opphold, SenereOpphold, TidligereOpphold } from 'types/InformasjonOmUtenlandsopphold';
 import { Næringstype } from 'types/Næring';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, Periode } from '@navikt/fp-common';

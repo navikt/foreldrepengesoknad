@@ -5,7 +5,6 @@ import SøknadRoutes from 'appData/routes';
 import MockAdapter from 'axios-mock-adapter/types';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { Opphold } from 'types/InformasjonOmUtenlandsopphold';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Utenlandsopphold } from '@navikt/fp-types';
