@@ -12,7 +12,7 @@ import VedleggUploader, { formaterPerioderForVisning } from '../attachment-uploa
 interface Props {
     attachments: Attachment[];
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
-    arbeidsforholdOgInntekt: ArbeidsforholdOgInntektFp;
+    arbeidsforholdOgInntekt: ArbeidsforholdOgInntektFp | undefined;
     andreInntektskilder?: AndreInntektskilder[];
 }
 
@@ -25,7 +25,8 @@ const EtterlønnEllerSluttvederlagDokumentasjon: React.FunctionComponent<Props> 
     const intl = useIntl();
 
     if (
-        arbeidsforholdOgInntekt.harHattAndreInntektskilder === false ||
+        !arbeidsforholdOgInntekt ||
+        (arbeidsforholdOgInntekt && arbeidsforholdOgInntekt.harHattAndreInntektskilder === false) ||
         !andreInntektskilder ||
         !andreInntektskilder.some((i) => i.type === AnnenInntektType.SLUTTPAKKE)
     ) {
