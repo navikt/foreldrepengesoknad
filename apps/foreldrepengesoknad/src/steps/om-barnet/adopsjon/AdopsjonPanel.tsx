@@ -7,7 +7,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyLong, Box, HStack, Radio, VStack } from '@navikt/ds-react';
 
-import { Datepicker, RadioGroup, Select } from '@navikt/fp-form-hooks';
+import { RhfDatepicker, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
 import { førsteOktober2021ReglerGjelder } from '@navikt/fp-uttaksplan';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -34,7 +34,7 @@ const AdopsjonPanel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) =
 
     return (
         <>
-            <RadioGroup
+            <RhfRadioGroup
                 name="adopsjonAvEktefellesBarn"
                 label={intl.formatMessage({ id: 'omBarnet.adopsjonGjelder' })}
                 validate={[
@@ -47,9 +47,9 @@ const AdopsjonPanel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) =
             >
                 <Radio value={true}>Ja</Radio>
                 <Radio value={false}>Nei</Radio>
-            </RadioGroup>
+            </RhfRadioGroup>
             <VStack gap="4">
-                <Datepicker
+                <RhfDatepicker
                     name="adopsjonsdato"
                     label={
                         adopsjonAvEktefellesBarn
@@ -76,7 +76,7 @@ const AdopsjonPanel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) =
             </VStack>
             {søknadGjelderEtNyttBarn && (
                 <>
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="antallBarn"
                         label={intl.formatMessage({ id: 'omBarnet.antallBarn.adopsjon.født' })}
                         validate={[
@@ -96,9 +96,9 @@ const AdopsjonPanel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) =
                         <Radio value={3}>
                             <FormattedMessage id="omBarnet.radiobutton.flere" />
                         </Radio>
-                    </RadioGroup>
+                    </RhfRadioGroup>
                     {antallBarn === 3 && (
-                        <Select name="antallBarnSelect" label="Antall barn">
+                        <RhfSelect name="antallBarnSelect" label="Antall barn">
                             <option value="3">3</option>
                             <option value="4">4</option>
                             <option value="5">5</option>
@@ -106,7 +106,7 @@ const AdopsjonPanel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) =
                             <option value="7">7</option>
                             <option value="8">8</option>
                             <option value="9">9</option>
-                        </Select>
+                        </RhfSelect>
                     )}
                     <FødselsdatoerFieldArray
                         adopsjonsdato={adopsjonsdato}
@@ -117,7 +117,7 @@ const AdopsjonPanel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) =
             )}
             {adopsjonAvEktefellesBarn === false && !førsteOktober2021ReglerGjelder(adopsjonsdato) && (
                 <>
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="adoptertIUtlandet"
                         label={intl.formatMessage({ id: 'omBarnet.adopteresFraUtlandet' })}
                         validate={[
@@ -130,9 +130,9 @@ const AdopsjonPanel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) =
                     >
                         <Radio value={true}>Ja</Radio>
                         <Radio value={false}>Nei</Radio>
-                    </RadioGroup>
+                    </RhfRadioGroup>
                     {adoptertIUtlandet === true && (
-                        <Datepicker
+                        <RhfDatepicker
                             name="ankomstdato"
                             minDate={fødselsdatoer ? dayjs(fødselsdatoer[0].dato).toDate() : undefined}
                             maxDate={dayjs().add(6, 'months').toDate()}

@@ -5,7 +5,7 @@ import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder
 
 import { Button, HStack, Radio, VStack } from '@navikt/ds-react';
 
-import { RadioGroup } from '@navikt/fp-form-hooks';
+import { RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { HorizontalLine } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
@@ -33,7 +33,7 @@ const AndreInntektskilderFieldArray: React.FunctionComponent = () => {
                 const inntektskilde = andreInntektskilder[index];
                 return (
                     <VStack gap="10" key={field.id}>
-                        <RadioGroup
+                        <RhfRadioGroup
                             name={`andreInntektskilder.${index}.type`}
                             label={<FormattedMessage id="AndreInntektskilderStep.HvilkenTypeAnnenInntekskilder" />}
                             validate={[
@@ -49,7 +49,7 @@ const AndreInntektskilderFieldArray: React.FunctionComponent = () => {
                             <Radio value={AnnenInntektType.MILITÆRTJENESTE}>
                                 <FormattedMessage id="AndreInntektskilderStep.RadioButton.Førstegangstjeneste" />
                             </Radio>
-                        </RadioGroup>
+                        </RhfRadioGroup>
                         {inntektskilde.type === AnnenInntektType.JOBB_I_UTLANDET && (
                             <JobbIUtlandetPanel index={index} inntektskilde={inntektskilde} />
                         )}

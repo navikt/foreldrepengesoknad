@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyLong, BodyShort, ExpansionCard, HStack, Heading, Link, Radio, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Utenlandsopphold } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
@@ -45,10 +45,10 @@ const UtenlandsoppholdPanel = <TYPE extends string>({
             onContinueLater={onContinueLater}
             onStepChange={onStepChange}
         >
-            <Form formMethods={formMethods} onSubmit={saveOnNext}>
+            <RhfForm formMethods={formMethods} onSubmit={saveOnNext}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="harBoddUtenforNorgeSiste12Mnd"
                         label={<FormattedMessage id="UtenlandsoppholdSteg.Siste12Måneder.Spørsmål" />}
                         validate={[
@@ -61,8 +61,8 @@ const UtenlandsoppholdPanel = <TYPE extends string>({
                         <Radio value={true}>
                             <FormattedMessage id="UtenlandsoppholdSteg.Siste12MånederInfotekst.Radiobutton.BoddIUtlandet" />
                         </Radio>
-                    </RadioGroup>
-                    <RadioGroup
+                    </RhfRadioGroup>
+                    <RhfRadioGroup
                         name="skalBoUtenforNorgeNeste12Mnd"
                         label={<FormattedMessage id="UtenlandsoppholdSteg.Neste12Måneder.Spørsmål" />}
                         validate={[
@@ -75,7 +75,7 @@ const UtenlandsoppholdPanel = <TYPE extends string>({
                         <Radio value={true}>
                             <FormattedMessage id="UtenlandsoppholdSteg.Neste12MånederInfotekst.Radiobutton.BoddIUtlandet" />
                         </Radio>
-                    </RadioGroup>
+                    </RhfRadioGroup>
                     <ExpansionCard
                         size="small"
                         aria-label={intl.formatMessage({ id: 'UtenlandsoppholdSteg.StotteFraNav' })}
@@ -139,7 +139,7 @@ const UtenlandsoppholdPanel = <TYPE extends string>({
                         saveDataOnPreviousClick={saveOnPrevious}
                     />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

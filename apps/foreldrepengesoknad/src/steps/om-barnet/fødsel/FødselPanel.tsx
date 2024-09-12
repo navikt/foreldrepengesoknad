@@ -6,7 +6,7 @@ import isFarEllerMedmor from 'utils/isFarEllerMedmor';
 import { Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { Søkersituasjon } from '@navikt/fp-common';
-import { RadioGroup, Select } from '@navikt/fp-form-hooks';
+import { RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
@@ -58,7 +58,7 @@ const FødselPanel: FunctionComponent<Props> = ({
             {søknadGjelderEtNyttBarn && (
                 <>
                     <div>
-                        <RadioGroup
+                        <RhfRadioGroup
                             name="erBarnetFødt"
                             label={intl.formatMessage({ id: 'omBarnet.erBarnetFødt' })}
                             validate={[
@@ -71,7 +71,7 @@ const FødselPanel: FunctionComponent<Props> = ({
                         >
                             <Radio value={true}>Ja</Radio>
                             <Radio value={false}>Nei</Radio>
-                        </RadioGroup>
+                        </RhfRadioGroup>
                         {!erFarEllerMedmor && (
                             <ReadMore header={intl.formatMessage({ id: 'omBarnet.erBarnetFødt.readMore.header' })}>
                                 <VStack gap="4">
@@ -83,7 +83,7 @@ const FødselPanel: FunctionComponent<Props> = ({
                             </ReadMore>
                         )}
                     </div>
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="antallBarn"
                         label={finnAntallBarnLabel(intl, søkerErFarMedmor, erBarnetFødt)}
                         validate={[isRequired(finnAntallBarnIsRequired(intl, søkerErFarMedmor, erBarnetFødt))]}
@@ -97,9 +97,9 @@ const FødselPanel: FunctionComponent<Props> = ({
                         <Radio value={3}>
                             <FormattedMessage id="omBarnet.radiobutton.flere" />
                         </Radio>
-                    </RadioGroup>
+                    </RhfRadioGroup>
                     {antallBarn !== undefined && antallBarn === 3 && (
-                        <Select name="antallBarnSelect" label="Antall barn">
+                        <RhfSelect name="antallBarnSelect" label="Antall barn">
                             <option value="3">3</option>
                             <option value="4">4</option>
                             <option value="5">5</option>
@@ -107,7 +107,7 @@ const FødselPanel: FunctionComponent<Props> = ({
                             <option value="7">7</option>
                             <option value="8">8</option>
                             <option value="9">9</option>
-                        </Select>
+                        </RhfSelect>
                     )}
                 </>
             )}

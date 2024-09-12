@@ -9,10 +9,10 @@ import { Uttaksdata } from 'utils/uttakUtils';
 
 import { HStack, VStack } from '@navikt/ds-react';
 
-import AktivitetskravLabel from './calendarLabels/AktivitetskravLabel';
-import AntallUkerFpLabel from './calendarLabels/AntallUkerFpLabel';
-import FamiliehendelseLabel from './calendarLabels/FamiliehendelseLabel';
-import ForeldrepengerLabel from './calendarLabels/ForeldrepengerLabel';
+import AktivitetskravLabel from './calendar-labels/AktivitetskravLabel';
+import AntallUkerFpLabel from './calendar-labels/AntallUkerFpLabel';
+import FamiliehendelseLabel from './calendar-labels/FamiliehendelseLabel';
+import ForeldrepengerLabel from './calendar-labels/ForeldrepengerLabel';
 
 interface Props {
     barnet: OmBarnet;

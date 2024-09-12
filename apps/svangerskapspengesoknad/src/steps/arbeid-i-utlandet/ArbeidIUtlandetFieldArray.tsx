@@ -8,7 +8,7 @@ import { getMinInputTilOgMedValue } from 'utils/validationUtils';
 import { Button, HStack, Radio, VStack } from '@navikt/ds-react';
 
 import { DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO } from '@navikt/fp-constants';
-import { Datepicker, RadioGroup, Select, TextField } from '@navikt/fp-form-hooks';
+import { RhfDatepicker, RhfRadioGroup, RhfSelect, RhfTextField } from '@navikt/fp-form-hooks';
 import { HorizontalLine } from '@navikt/fp-ui';
 import { bemUtils, createCountryOptions } from '@navikt/fp-utils';
 import { femMånederSiden } from '@navikt/fp-utils/src/dateUtils';
@@ -51,7 +51,7 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
             {fields.map((field, index) => (
                 <VStack key={field.id} gap="10">
                     <HStack justify="space-between">
-                        <Select
+                        <RhfSelect
                             name={`arbeidIUtlandet.${index}.land`}
                             style={{ width: 'var(--app-text-input-width)' }}
                             label={intl.formatMessage({ id: 'arbeidIUtlandet.land' })}
@@ -64,7 +64,7 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                                     {o[1]}
                                 </option>
                             ))}
-                        </Select>
+                        </RhfSelect>
                         {index !== 0 && (
                             <Button
                                 className={bem.element('delete')}
@@ -77,7 +77,7 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                             </Button>
                         )}
                     </HStack>
-                    <TextField
+                    <RhfTextField
                         name={`arbeidIUtlandet.${index}.arbeidsgiverNavn`}
                         style={{ width: 'var(--app-text-input-width)' }}
                         label={navnPåArbeidsgiverLabel}
@@ -98,7 +98,7 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                             ),
                         ]}
                     />
-                    <Datepicker
+                    <RhfDatepicker
                         name={`arbeidIUtlandet.${index}.fom`}
                         label={intl.formatMessage({ id: 'arbeidIUtlandet.fom' })}
                         validate={[
@@ -120,7 +120,7 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                         maxDate={dayjs().toDate()}
                         minDate={DATE_20_YEARS_AGO}
                     />
-                    <RadioGroup
+                    <RhfRadioGroup
                         name={`arbeidIUtlandet.${index}.pågående`}
                         label={<FormattedMessage id="ArbeidsforholdOppsummering.næring.pågående" />}
                         validate={[
@@ -129,9 +129,9 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                     >
                         <Radio value={true}>Ja</Radio>
                         <Radio value={false}>Nei</Radio>
-                    </RadioGroup>
+                    </RhfRadioGroup>
                     {alleArbeidIUtlandet![index].pågående === false && (
-                        <Datepicker
+                        <RhfDatepicker
                             name={`arbeidIUtlandet.${index}.tom`}
                             label={intl.formatMessage({ id: 'arbeidIUtlandet.tom' })}
                             description={intl.formatMessage({

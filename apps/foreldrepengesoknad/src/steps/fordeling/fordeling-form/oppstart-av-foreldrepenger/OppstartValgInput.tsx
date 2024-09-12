@@ -12,7 +12,7 @@ import { getKunFarHarRett } from 'utils/personUtils';
 import { Radio } from '@navikt/ds-react';
 
 import { Barn, NavnPåForeldre, isAdoptertAnnetBarn, isFødtBarn } from '@navikt/fp-common';
-import { RadioGroup } from '@navikt/fp-form-hooks';
+import { RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 import { formatDateExtended } from '@navikt/fp-utils';
 import {
@@ -412,7 +412,7 @@ const OppstartValgInput: React.FunctionComponent<Props> = ({
             : 'fordeling.description.kanEndresSenere';
 
     return (
-        <RadioGroup
+        <RhfRadioGroup
             name="oppstartAvForeldrepengerValg"
             label={<FormattedMessage id="fordeling.oppstartValg.spørsmål" />}
             description={<FormattedMessage id={descriptionId} />}
@@ -431,7 +431,7 @@ const OppstartValgInput: React.FunctionComponent<Props> = ({
                     intl,
                 ),
             )}
-        </RadioGroup>
+        </RhfRadioGroup>
     );
 };
 

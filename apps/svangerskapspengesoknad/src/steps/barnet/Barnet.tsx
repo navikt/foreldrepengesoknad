@@ -8,7 +8,13 @@ import { Barn } from 'types/Barn';
 
 import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { Datepicker, ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import {
+    ErrorSummaryHookForm,
+    RhfDatepicker,
+    RhfForm,
+    RhfRadioGroup,
+    StepButtonsHookForm,
+} from '@navikt/fp-form-hooks';
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
@@ -83,11 +89,11 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
             onContinueLater={navigator.fortsettSøknadSenere}
             onStepChange={navigator.goToNextStep}
         >
-            <Form formMethods={formMethods} onSubmit={onSubmit}>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     <div>
-                        <RadioGroup
+                        <RhfRadioGroup
                             name="erBarnetFødt"
                             label={intl.formatMessage({ id: 'barnet.erBarnetFødt' })}
                             validate={[
@@ -104,7 +110,7 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                             <Radio value={false}>
                                 <FormattedMessage id="nei" />
                             </Radio>
-                        </RadioGroup>
+                        </RhfRadioGroup>
                         <ReadMore
                             onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'SVP_tilbake_i_tid')}
                             header={intl.formatMessage({ id: 'barnet.erBarnetFødt.merInfo.tittel' })}
@@ -115,7 +121,7 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                         </ReadMore>
                     </div>
                     {erBarnetFødt && (
-                        <Datepicker
+                        <RhfDatepicker
                             name="fødselsdato"
                             label={intl.formatMessage({ id: 'barnet.fødselsdato' })}
                             validate={[
@@ -140,7 +146,7 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                         />
                     )}
                     <div>
-                        <Datepicker
+                        <RhfDatepicker
                             name="termindato"
                             label={intl.formatMessage({ id: 'barnet.termindato' })}
                             minDate={minDatoTermin}
@@ -181,7 +187,7 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                     </div>
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

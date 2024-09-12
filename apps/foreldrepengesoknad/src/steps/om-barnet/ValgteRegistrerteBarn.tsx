@@ -12,7 +12,7 @@ import {
 
 import { Label, VStack } from '@navikt/ds-react';
 
-import { Datepicker } from '@navikt/fp-form-hooks';
+import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { SøkerBarn } from '@navikt/fp-types';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -62,7 +62,7 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteRegistrer
                 )}
             </VStack>
             {skalInkludereTermindato && (
-                <Datepicker
+                <RhfDatepicker
                     name="termindato"
                     label={intl.formatMessage({ id: 'omBarnet.termindato.født' })}
                     defaultMonth={fødselsdato}

@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Radio, ReadMore } from '@navikt/ds-react';
 
 import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
-import { Datepicker, RadioGroup, TextArea, TextField } from '@navikt/fp-form-hooks';
+import { RhfDatepicker, RhfRadioGroup, RhfTextField, RhfTextarea } from '@navikt/fp-form-hooks';
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { AppName } from '@navikt/fp-types';
 import {
@@ -44,7 +44,7 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({
 
     return (
         <>
-            <RadioGroup
+            <RhfRadioGroup
                 name="hattVarigEndringAvNæringsinntektSiste4Kalenderår"
                 label={intl.formatMessage({ id: 'egenNæring.egenNæringHattVarigEndringDeSiste4Årene' })}
                 validate={[
@@ -59,7 +59,7 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({
                 <Radio value={false}>
                     <FormattedMessage id="nei" />
                 </Radio>
-            </RadioGroup>
+            </RhfRadioGroup>
             <ReadMore
                 onOpenChange={logAmplitudeEventOnOpen(stønadstype, 'Varig_endring')}
                 header={intl.formatMessage({ id: 'egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info.åpneLabel' })}
@@ -70,7 +70,7 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({
             </ReadMore>
             {varigEndring && (
                 <>
-                    <Datepicker
+                    <RhfDatepicker
                         name="varigEndringDato"
                         label={intl.formatMessage({ id: 'egenNæring.egenNæringVarigEndringDato' })}
                         validate={[
@@ -95,7 +95,7 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({
                         maxDate={dayjs()}
                         minDate={egenNæringFom}
                     />
-                    <TextField
+                    <RhfTextField
                         name="varigEndringInntektEtterEndring"
                         label={intl.formatMessage({ id: 'egenNæring.egenNæringVarigEndringInntektEtterEndring' })}
                         description={intl.formatMessage({
@@ -113,7 +113,7 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({
                             ),
                         ]}
                     />
-                    <TextArea
+                    <RhfTextarea
                         name="varigEndringBeskrivelse"
                         label={egenNæringVarigEndringBeskrivelseLabel}
                         validate={[

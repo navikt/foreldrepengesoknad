@@ -17,7 +17,7 @@ import { Alert, BodyShort, Button, GuidePanel, HStack, Heading, VStack } from '@
 
 import { Sak } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
-import { ConfirmationPanel, Form } from '@navikt/fp-form-hooks';
+import { RhfConfirmationPanel, RhfForm } from '@navikt/fp-form-hooks';
 import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ContentWrapper, LanguageToggle } from '@navikt/fp-ui';
 
@@ -164,7 +164,7 @@ const Forside: React.FunctionComponent<Props> = ({
             : intl.formatMessage({ id: 'velkommen.begynnMedSøknad' });
 
     return (
-        <Form formMethods={formMethods} onSubmit={onSubmit}>
+        <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
             <VStack gap="10">
                 <LanguageToggle locale={locale} availableLocales={['nb', 'nn']} toggleLanguage={onChangeLocale} />
                 <ContentWrapper>
@@ -193,7 +193,7 @@ const Forside: React.FunctionComponent<Props> = ({
                         <Alert variant="info">
                             <FormattedMessage id="velkommen.lagring.info" />
                         </Alert>
-                        <ConfirmationPanel
+                        <RhfConfirmationPanel
                             name="harForståttRettigheterOgPlikter"
                             label={intl.formatMessage({ id: 'velkommen.samtykke' })}
                             validate={[
@@ -213,7 +213,7 @@ const Forside: React.FunctionComponent<Props> = ({
                                     <DinePlikter />
                                 </HStack>
                             </VStack>
-                        </ConfirmationPanel>
+                        </RhfConfirmationPanel>
                         <HStack justify="center">
                             <Button type="submit" variant="primary" disabled={isSubmitting} loading={isSubmitting}>
                                 {knapptekst}
@@ -241,7 +241,7 @@ const Forside: React.FunctionComponent<Props> = ({
                     </VStack>
                 </ContentWrapper>
             </VStack>
-        </Form>
+        </RhfForm>
     );
 };
 

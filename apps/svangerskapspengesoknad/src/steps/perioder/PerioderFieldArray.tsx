@@ -14,7 +14,7 @@ import { getOpprinneligStillingsprosent } from 'utils/tilretteleggingUtils';
 
 import { Alert, BodyShort, Button, HStack, Heading, Radio, ReadMore, Tag, VStack } from '@navikt/ds-react';
 
-import { Datepicker, RadioGroup, TextField } from '@navikt/fp-form-hooks';
+import { RhfDatepicker, RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hooks';
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { HorizontalLine } from '@navikt/fp-ui';
 import { bemUtils } from '@navikt/fp-utils';
@@ -131,7 +131,7 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
                                 )}
                             </HStack>
                         </VStack>
-                        <Datepicker
+                        <RhfDatepicker
                             name={`varierendePerioder.${index}.fom`}
                             label={intl.formatMessage({ id: 'perioder.varierende.fom.label' })}
                             minDate={minDatoFom}
@@ -163,7 +163,7 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
                             ]}
                             defaultMonth={getDefaultMonth(minDatoFom, maxDato)}
                         />
-                        <RadioGroup
+                        <RhfRadioGroup
                             name={`varierendePerioder.${index}.tomType`}
                             label={<FormattedMessage id="perioder.varierende.tomType.label" />}
                             validate={[
@@ -190,9 +190,9 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
                                     <FormattedMessage id="perioder.varierende.tomType.dagenFørFødsel" />
                                 )}
                             </Radio>
-                        </RadioGroup>
+                        </RhfRadioGroup>
                         {alleVarierendePerioder[index].tomType === TilOgMedDatoType.VALGFRI_DATO && (
-                            <Datepicker
+                            <RhfDatepicker
                                 name={`varierendePerioder.${index}.tom`}
                                 label={intl.formatMessage({ id: 'perioder.varierende.tom.label' })}
                                 validate={[
@@ -222,7 +222,7 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
                             />
                         )}
                         <div>
-                            <TextField
+                            <RhfTextField
                                 name={`varierendePerioder.${index}.stillingsprosent`}
                                 label={intl.formatMessage({ id: 'perioder.varierende.stillingsprosent.label' })}
                                 className={bem.element('stillingsprosent')}

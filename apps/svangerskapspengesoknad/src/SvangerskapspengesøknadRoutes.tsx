@@ -8,12 +8,12 @@ import { Kvittering, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 import { redirect } from '@navikt/fp-utils';
 
-import Environment from './appData/Environment';
-import { ContextDataType } from './appData/SvpDataContext';
-import SøknadRoutes from './appData/routes';
-import useAvbrytSøknad from './appData/useAvbrytSøknad';
-import useMellomlagreSøknad, { SvpDataMapAndMetaData } from './appData/useMellomlagreSøknad';
-import useSendSøknad from './appData/useSendSøknad';
+import Environment from './app-data/Environment';
+import { ContextDataType } from './app-data/SvpDataContext';
+import SøknadRoutes from './app-data/routes';
+import useAvbrytSøknad from './app-data/useAvbrytSøknad';
+import useMellomlagreSøknad, { SvpDataMapAndMetaData } from './app-data/useMellomlagreSøknad';
+import useSendSøknad from './app-data/useSendSøknad';
 import Forside from './pages/forside/Forside';
 import ArbeidIUtlandetStep from './steps/arbeid-i-utlandet/ArbeidIUtlandetStep';
 import ArbeidsforholdOgInntektSteg from './steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
@@ -24,9 +24,9 @@ import Oppsummering from './steps/oppsummering/Oppsummering';
 import PerioderStep from './steps/perioder/PerioderStep';
 import SkjemaSteg from './steps/skjema/SkjemaSteg';
 import TilretteleggingStep from './steps/tilrettelegging/TilretteleggingStep';
+import SenereUtenlandsoppholdSteg from './steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
+import TidligereUtenlandsoppholdSteg from './steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
 import UtenlandsoppholdSteg from './steps/utenlandsopphold/UtenlandsoppholdSteg';
-import SenereUtenlandsoppholdSteg from './steps/utenlandsoppholdSenere/SenereUtenlandsoppholdSteg';
-import TidligereUtenlandsoppholdSteg from './steps/utenlandsoppholdTidligere/TidligereUtenlandsoppholdSteg';
 import VelgArbeid from './steps/velg-arbeidsforhold/VelgArbeid';
 
 export const Spinner: React.FunctionComponent = () => (

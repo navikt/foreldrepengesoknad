@@ -19,7 +19,7 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            appData: path.resolve(__dirname, './src/appData'),
+            appData: path.resolve(__dirname, './src/app-data'),
             pages: path.resolve(__dirname, './src/pages'),
             steps: path.resolve(__dirname, './src/steps'),
             utils: path.resolve(__dirname, './src/utils'),
