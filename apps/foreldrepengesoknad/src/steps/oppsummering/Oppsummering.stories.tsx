@@ -9,9 +9,10 @@ import { MemoryRouter } from 'react-router-dom';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenInntektType } from 'types/AnnenInntekt';
 import { Næringstype } from 'types/Næring';
+import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, Periode } from '@navikt/fp-common';
-import { ISO_DATE_FORMAT, SivilstandType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, ISO_DATE_FORMAT, SivilstandType, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
@@ -193,6 +194,7 @@ type StoryArgs = {
     frilans?: Frilans;
     egenNæring?: EgenNæring;
     andreInntekter?: AndreInntektskilder[];
+    vedlegg?: VedleggDataType;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof Oppsummering>;
 
@@ -211,6 +213,7 @@ const meta = {
         egenNæring,
         andreInntekter,
         gåTilNesteSide,
+        vedlegg = defaultVedlegg,
         ...rest
     }) => {
         initAmplitude();
@@ -240,7 +243,7 @@ const meta = {
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
                             [ContextDataType.PERIODE_MED_FORELDREPENGER]: Dekningsgrad.HUNDRE_PROSENT,
                             [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
-                            [ContextDataType.VEDLEGG]: defaultVedlegg,
+                            [ContextDataType.VEDLEGG]: vedlegg,
                         }}
                     >
                         <Oppsummering {...rest} />
@@ -577,6 +580,16 @@ export const MorMedAndreInntekterJobbIUtlandet: Story = {
                 arbeidsgiverNavn: 'Statoil',
                 land: 'SE',
             },
+            {
+                type: AnnenInntektType.MILITÆRTJENESTE,
+                pågående: true,
+                fom: '2022-01-01',
+            },
+            {
+                type: AnnenInntektType.SLUTTPAKKE,
+                fom: '2022-01-01',
+                tom: '2023-01-01',
+            },
         ],
         annenForelder: {
             ...defaultAnnenForelder,
@@ -607,6 +620,28 @@ export const MorMedAndreInntekterMilitærtjeneste: Story = {
             erAleneOmOmsorg: false,
         },
         søkerInfo: defaultSøkerinfoMor,
+    },
+};
+
+export const VisVedlegg: Story = {
+    args: {
+        ...Default.args,
+        vedlegg: {
+            ...defaultVedlegg,
+            [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: [
+                {
+                    filename: 'dokumentasjon.pdf',
+                    filesize: 1234,
+                    url: 'test',
+                    id: '1',
+                    file: new File(['abc'.repeat(100000)], 'Filnavn1.jpg'),
+                    pending: false,
+                    uploaded: true,
+                    type: AttachmentType.ALENEOMSORG,
+                    skjemanummer: Skjemanummer.DOK_AV_ALENEOMSORG,
+                },
+            ],
+        },
     },
 };
 

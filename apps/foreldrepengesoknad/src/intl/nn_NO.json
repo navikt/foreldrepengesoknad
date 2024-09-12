@@ -341,6 +341,7 @@
     "manglendeVedlegg.etterlønn.description": "Du har oppgitt at du har mottatt etterlønn eller sluttvederlag. Dokumentasjonen må være fra arbeidsgivaren din og vise inntekta og perioden den gjeld for.",
     "VedleggUploader.Og": "og",
     "VedleggUploader.pågående": "pågående",
+    "Oppsummering.EndreSvar": "Endre svar",
     "oppsummering.barn.søknadenGjelder": "Søknaden gjeld",
     "oppsummering.barn.termindato": "Termindato",
     "oppsummering.barn.fødseldato": "Fødselsdato",
@@ -1115,5 +1116,12 @@
     "FørstegangstjenestePanel.FraOgMedDato.ErIFremtiden": "Frå og med dato må vere før eller lik dagens dato",
     "FørstegangstjenestePanel.FraOgMedDato.FørTilDato": "Du må legge inn ein frå og med dato som er før til og med datoen.",
     "FørstegangstjenestePanel.TilOgMedDato.ErIFremtiden": "Til og med dato må vere før eller lik dagens dato",
-    "backlink.label": "Forrige steg"
+    "backlink.label": "Forrige steg",
+    "BarnOppsummering.tittel": "Barnet",
+    "AnnenForelderOppsummering.tittel": "Den andre forelderen",
+    "AndreInntektskilderOppsummering.AndreInntekter": "Andre inntekter",
+    "DokumentasjonOppsummering.Tittel": "Dokumentasjon",
+    "PeriodeMedForeldrepengerOppsummering.Tittel": "Periode med foreldrepengar",
+    "PeriodeMedForeldrepengerOppsummering.100": "100% foreldrepengar",
+    "PeriodeMedForeldrepengerOppsummering.80": "80% foreldrepengar"
 }

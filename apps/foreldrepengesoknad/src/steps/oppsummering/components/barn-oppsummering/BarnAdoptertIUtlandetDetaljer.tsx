@@ -1,14 +1,12 @@
 import { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { førsteOktober2021ReglerGjelder } from 'utils/dateUtils';
 import { hasValue } from 'utils/validationUtil';
 
-import { BodyShort } from '@navikt/ds-react';
+import { FormSummary } from '@navikt/ds-react';
 
 import { AdoptertAnnetBarn, AdoptertStebarn, isAdoptertStebarn } from '@navikt/fp-common';
 import { formatDate } from '@navikt/fp-utils';
-
-import OppsummeringsPunkt from '../OppsummeringsPunkt';
 
 interface Props {
     barn: AdoptertAnnetBarn | AdoptertStebarn;
@@ -16,23 +14,27 @@ interface Props {
 }
 
 const BarnAdoptertIUtlandetDetaljer: FunctionComponent<Props> = ({ barn, familiehendelsesdato }) => {
-    const intl = useIntl();
-
     if (isAdoptertStebarn(barn) || førsteOktober2021ReglerGjelder(familiehendelsesdato)) {
         return null;
     }
 
     return (
         <>
-            <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.barn.adoptertIUtlandet' })}>
-                <BodyShort>
+            <FormSummary.Answer>
+                <FormSummary.Label>
+                    <FormattedMessage id="oppsummering.barn.adoptertIUtlandet" />
+                </FormSummary.Label>
+                <FormSummary.Value>
                     <FormattedMessage id={barn.adoptertIUtlandet ? 'ja' : 'nei'} />
-                </BodyShort>
-            </OppsummeringsPunkt>
+                </FormSummary.Value>
+            </FormSummary.Answer>
             {hasValue(barn.ankomstdato) && (
-                <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.barn.ankomstdato' })}>
-                    <BodyShort>{formatDate(barn.ankomstdato!)}</BodyShort>
-                </OppsummeringsPunkt>
+                <FormSummary.Answer>
+                    <FormSummary.Label>
+                        <FormattedMessage id="oppsummering.barn.ankomstdato" />
+                    </FormSummary.Label>
+                    <FormSummary.Value>{formatDate(barn.ankomstdato!)}</FormSummary.Value>
+                </FormSummary.Answer>
             )}
         </>
     );

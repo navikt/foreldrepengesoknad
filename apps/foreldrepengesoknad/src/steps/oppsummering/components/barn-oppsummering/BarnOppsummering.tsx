@@ -1,17 +1,17 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
-import { BodyShort, VStack } from '@navikt/ds-react';
+import { FormSummary } from '@navikt/ds-react';
 
 import { Barn, BarnType, isAdoptertAnnetBarn, isAdoptertStebarn, isUfødtBarn } from '@navikt/fp-common';
 import { formatDate } from '@navikt/fp-utils';
 
-import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import BarnAdoptertIUtlandetDetaljer from './BarnAdoptertIUtlandetDetaljer';
 
 interface Props {
     barn: Barn;
     familiehendelsesdato: Date;
+    onVilEndreSvar: () => void;
 }
 
 const getAntallBarnTekst = (antallBarn: number, intl: IntlShape): string => {
@@ -42,33 +42,51 @@ const getTerminEllerFødselsdato = (barn: Barn) => {
     return formatDate(barn.fødselsdatoer[0]);
 };
 
-const BarnOppsummering: FunctionComponent<Props> = ({ barn, familiehendelsesdato }) => {
+const BarnOppsummering: FunctionComponent<Props> = ({ barn, familiehendelsesdato, onVilEndreSvar }) => {
     const intl = useIntl();
 
     return (
-        <VStack gap="4">
-            <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.barn.søknadenGjelder' })}>
-                <BodyShort>{getAntallBarnTekst(barn.antallBarn, intl)}</BodyShort>
-            </OppsummeringsPunkt>
-            <OppsummeringsPunkt title={getTerminEllerFødselTittel(barn.type)}>
-                <BodyShort>{getTerminEllerFødselsdato(barn)}</BodyShort>
-            </OppsummeringsPunkt>
-            {(isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn)) && (
-                <>
-                    <OppsummeringsPunkt
-                        title={intl.formatMessage({ id: 'oppsummering.barn.gjelderSøknadenStebarnsadopsjon' })}
-                    >
-                        <BodyShort>
-                            <FormattedMessage id={barn.type === BarnType.ADOPTERT_STEBARN ? 'ja' : 'nei'} />
-                        </BodyShort>
-                    </OppsummeringsPunkt>
-                    <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.barn.adopsjonsdato' })}>
-                        <BodyShort>{formatDate(barn.adopsjonsdato)}</BodyShort>
-                    </OppsummeringsPunkt>
-                    <BarnAdoptertIUtlandetDetaljer barn={barn} familiehendelsesdato={familiehendelsesdato} />
-                </>
-            )}
-        </VStack>
+        <FormSummary>
+            <FormSummary.Header>
+                <FormSummary.Heading level="2">
+                    <FormattedMessage id="BarnOppsummering.tittel" />
+                </FormSummary.Heading>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="Oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Header>
+            <FormSummary.Answers>
+                <FormSummary.Answer>
+                    <FormSummary.Label>
+                        <FormattedMessage id="oppsummering.barn.søknadenGjelder" />
+                    </FormSummary.Label>
+                    <FormSummary.Value>{getAntallBarnTekst(barn.antallBarn, intl)}</FormSummary.Value>
+                </FormSummary.Answer>
+                <FormSummary.Answer>
+                    <FormSummary.Label>{getTerminEllerFødselTittel(barn.type)}</FormSummary.Label>
+                    <FormSummary.Value>{getTerminEllerFødselsdato(barn)}</FormSummary.Value>
+                </FormSummary.Answer>
+                {(isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn)) && (
+                    <>
+                        <FormSummary.Answer>
+                            <FormSummary.Label>
+                                <FormattedMessage id="oppsummering.barn.gjelderSøknadenStebarnsadopsjon" />
+                            </FormSummary.Label>
+                            <FormSummary.Value>
+                                <FormattedMessage id={barn.type === BarnType.ADOPTERT_STEBARN ? 'ja' : 'nei'} />
+                            </FormSummary.Value>
+                        </FormSummary.Answer>
+                        <FormSummary.Answer>
+                            <FormSummary.Label>
+                                <FormattedMessage id="oppsummering.barn.adopsjonsdato" />
+                            </FormSummary.Label>
+                            <FormSummary.Value>{formatDate(barn.adopsjonsdato)}</FormSummary.Value>
+                        </FormSummary.Answer>
+                        <BarnAdoptertIUtlandetDetaljer barn={barn} familiehendelsesdato={familiehendelsesdato} />
+                    </>
+                )}
+            </FormSummary.Answers>
+        </FormSummary>
     );
 };
 

@@ -18,11 +18,7 @@ interface Props {
     onVilEndreSvar: () => void;
 }
 
-const BoIUtlandetOppsummeringspunkt = ({
-    onVilEndreSvar,
-    tidligereUtenlandsopphold,
-    senereUtenlandsopphold,
-}: Props) => {
+const BoIUtlandetOppsummering = ({ onVilEndreSvar, tidligereUtenlandsopphold, senereUtenlandsopphold }: Props) => {
     return (
         <FormSummary>
             <FormSummary.Header>
@@ -97,4 +93,4 @@ const BoIUtlandetOppsummeringspunkt = ({
     );
 };
 
-export default BoIUtlandetOppsummeringspunkt;
+export default BoIUtlandetOppsummering;

@@ -1,25 +1,52 @@
-import { FunctionComponent } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import AndreInntekterDokumentasjonOppsummering from './components/andre-inntekter/AndreInntekterDokumentasjonOppsummering';
-import BarnDokumentasjonOppsummering from './components/barn/BarnDokumentasjonOppsummering';
-import PeriodeDokumentasjonOppsummering from './components/perioder/PeriodeDokumentasjonOppsummering';
+import { FormSummary, Link, VStack } from '@navikt/ds-react';
 
 interface Props {
-    vedlegg: VedleggDataType;
-    setManglerDokumentasjon: (manglerDokumentajson: boolean) => void;
+    alleVedlegg?: VedleggDataType;
+    onVilEndreSvar: () => Promise<void>;
 }
-const DokumentasjonOppsummering: FunctionComponent<Props> = ({ vedlegg, setManglerDokumentasjon }) => {
+
+export const DokumentasjonOppsummering = ({ alleVedlegg, onVilEndreSvar }: Props) => {
+    if (!alleVedlegg || !Object.values(alleVedlegg).some((v) => v.length > 0)) {
+        return null;
+    }
+
     return (
-        <>
-            <PeriodeDokumentasjonOppsummering vedlegg={vedlegg} setManglerDokumentasjon={setManglerDokumentasjon} />
-            <BarnDokumentasjonOppsummering vedlegg={vedlegg} setManglerDokumentasjon={setManglerDokumentasjon} />
-            <AndreInntekterDokumentasjonOppsummering
-                vedlegg={vedlegg}
-                setManglerDokumentasjon={setManglerDokumentasjon}
-            />
-        </>
+        <FormSummary>
+            <FormSummary.Header>
+                <FormSummary.Heading level="2">
+                    <FormattedMessage id="DokumentasjonOppsummering.Tittel" />
+                </FormSummary.Heading>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="Oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Header>
+            <FormSummary.Answers>
+                {Object.entries(alleVedlegg)
+                    .filter((idOgVedlegg) => idOgVedlegg[1].length > 0)
+                    .map((idOgVedlegg) => (
+                        <FormSummary.Answer key={idOgVedlegg[1][0].id}>
+                            <FormSummary.Label>
+                                <DokumentasjonLabel type={idOgVedlegg[0]} />
+                            </FormSummary.Label>
+                            <FormSummary.Value>
+                                <VStack>
+                                    {idOgVedlegg[1].map((vedlegg) => (
+                                        <Link key={vedlegg.id} href={vedlegg.url} target="_blank">
+                                            {vedlegg.filename}
+                                        </Link>
+                                    ))}
+                                </VStack>
+                            </FormSummary.Value>
+                        </FormSummary.Answer>
+                    ))}
+            </FormSummary.Answers>
+        </FormSummary>
     );
 };
 
-export default DokumentasjonOppsummering;
+function DokumentasjonLabel({ type }: { readonly type: string }) {
+    return type;
+}
