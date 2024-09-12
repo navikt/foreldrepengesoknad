@@ -8,8 +8,6 @@ import { Frilans } from '@navikt/fp-steg-frilans';
 import { Dekningsgrad } from '@navikt/fp-types';
 import { InformasjonOmUtenlandsoppholdDTO } from '@navikt/fp-types/src/Utenlandsopphold';
 
-import InformasjonOmUtenlandsopphold from './InformasjonOmUtenlandsopphold';
-
 export interface Søknad {
     type: 'foreldrepenger';
     harGodkjentVilkår: boolean;
