@@ -17,28 +17,9 @@ export const konverterMellomlagretDataTilAppData = (mellomlagretState: FpMelloml
         [ContextDataType.EGEN_NÆRING]: søknad?.egenNæring,
         [ContextDataType.FRILANS]: søknad?.frilans,
         [ContextDataType.ANDRE_INNTEKTSKILDER]: søknad?.andreInntektskilder,
-        [ContextDataType.UTENLANDSOPPHOLD]: søknad?.informasjonOmUtenlandsopphold
-            ? {
-                  skalBoUtenforNorgeNeste12Mnd: !søknad.informasjonOmUtenlandsopphold.iNorgeNeste12Mnd,
-                  harBoddUtenforNorgeSiste12Mnd: !søknad.informasjonOmUtenlandsopphold.iNorgeSiste12Mnd,
-              }
-            : undefined,
-        [ContextDataType.UTENLANDSOPPHOLD_SENERE]: søknad?.informasjonOmUtenlandsopphold
-            ? {
-                  utenlandsoppholdNeste12Mnd: søknad.informasjonOmUtenlandsopphold.senereOpphold.map((p) => ({
-                      landkode: p.land,
-                      ...p.tidsperiode,
-                  })),
-              }
-            : undefined,
-        [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: søknad?.informasjonOmUtenlandsopphold
-            ? {
-                  utenlandsoppholdSiste12Mnd: søknad.informasjonOmUtenlandsopphold.tidligereOpphold.map((p) => ({
-                      landkode: p.land,
-                      ...p.tidsperiode,
-                  })),
-              }
-            : undefined,
+        [ContextDataType.UTENLANDSOPPHOLD]: søknad?.utenlandsOpphold,
+        [ContextDataType.UTENLANDSOPPHOLD_SENERE]: søknad?.utenlandsoppholdNeste12Mnd,
+        [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: søknad?.utenlandsoppholdSiste12Mnd,
         [ContextDataType.PERIODE_MED_FORELDREPENGER]: søknad?.dekningsgrad
             ? { dekningsgrad: søknad.dekningsgrad }
             : undefined,

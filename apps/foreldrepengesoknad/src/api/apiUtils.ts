@@ -40,6 +40,8 @@ import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
 import { mapUtenlandsOppholdForInnsending } from '@navikt/fp-steg-utenlandsopphold';
 import { Attachment, LocaleNo } from '@navikt/fp-types';
+// TODO: proper export
+import { InformasjonOmUtenlandsoppholdDTO } from '@navikt/fp-types/src/Utenlandsopphold';
 import { Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
 import {
     andreAugust2022ReglerGjelder,
@@ -96,6 +98,9 @@ export interface SøknadForInnsending
         | 'annenForelder'
         | 'uttaksplan'
         | 'arbeidsforholdOgInntekt'
+        | 'utenlandsOpphold'
+        | 'utenlandsoppholdNeste12Mnd'
+        | 'utenlandsoppholdSiste12Mnd'
         | 'egenNæring'
         | 'frilans'
         | 'andreInntektskilder'
@@ -105,6 +110,7 @@ export interface SøknadForInnsending
         | 'vedlegg'
     > {
     barn: BarnForInnsending;
+    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsoppholdDTO;
     annenForelder: AnnenForelderForInnsending;
     uttaksplan: PeriodeForInnsending[];
     søker: SøkerForInnsending;
@@ -399,9 +405,9 @@ export const cleanSøknad = (
     const andreInntektskilder = hentData(ContextDataType.ANDRE_INNTEKTSKILDER);
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const utenlandsopphold = notEmpty(hentData(ContextDataType.UTENLANDSOPPHOLD));
+    const utenlandsoppholdNeste12Mnd = notEmpty(hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE));
+    const utenlandsoppholdSiste12Mnd = notEmpty(hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE));
     const periodeMedForeldrepenger = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-    const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
-    const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN));
     const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
     const eksisterendeSak = hentData(ContextDataType.EKSISTERENDE_SAK);
@@ -440,8 +446,8 @@ export const cleanSøknad = (
         uttaksplan: uttaksplanInnsending,
         informasjonOmUtenlandsopphold: mapUtenlandsOppholdForInnsending(
             utenlandsopphold,
-            senereUtenlandsopphold,
-            tidligereUtenlandsopphold,
+            utenlandsoppholdNeste12Mnd,
+            utenlandsoppholdSiste12Mnd,
         ),
         dekningsgrad: periodeMedForeldrepenger.dekningsgrad,
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,

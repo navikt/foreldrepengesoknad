@@ -5,8 +5,7 @@ import { AnnenForelder, Barn, Periode, Søkersituasjon } from '@navikt/fp-common
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
-import { Dekningsgrad } from '@navikt/fp-types';
-import { InformasjonOmUtenlandsoppholdDTO } from '@navikt/fp-types/src/Utenlandsopphold';
+import { Dekningsgrad, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 
 export interface Søknad {
     type: 'foreldrepenger';
@@ -18,7 +17,9 @@ export interface Søknad {
     egenNæring: EgenNæring;
     frilans: Frilans;
     andreInntektskilder: AndreInntektskilder[];
-    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsoppholdDTO;
+    utenlandsOpphold: Utenlandsopphold;
+    utenlandsoppholdNeste12Mnd: UtenlandsoppholdSenere;
+    utenlandsoppholdSiste12Mnd: UtenlandsoppholdTidligere;
     erEndringssøknad: boolean;
     dekningsgrad: Dekningsgrad;
     uttaksplan: Periode[];

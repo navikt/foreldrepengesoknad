@@ -14,37 +14,9 @@ export const useSetSøknadsdata = () => {
         oppdaterData(ContextDataType.FRILANS, søknad.frilans);
         oppdaterData(ContextDataType.EGEN_NÆRING, søknad.egenNæring);
         oppdaterData(ContextDataType.ANDRE_INNTEKTSKILDER, søknad.andreInntektskilder);
-        oppdaterData(
-            ContextDataType.UTENLANDSOPPHOLD,
-            søknad.informasjonOmUtenlandsopphold
-                ? {
-                      skalBoUtenforNorgeNeste12Mnd: !søknad.informasjonOmUtenlandsopphold.iNorgeNeste12Mnd,
-                      harBoddUtenforNorgeSiste12Mnd: !søknad.informasjonOmUtenlandsopphold.iNorgeSiste12Mnd,
-                  }
-                : undefined,
-        );
-        oppdaterData(
-            ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE,
-            søknad.informasjonOmUtenlandsopphold
-                ? {
-                      utenlandsoppholdSiste12Mnd: søknad.informasjonOmUtenlandsopphold.tidligereOpphold.map((p) => ({
-                          landkode: p.land,
-                          ...p.tidsperiode,
-                      })),
-                  }
-                : undefined,
-        );
-        oppdaterData(
-            ContextDataType.UTENLANDSOPPHOLD_SENERE,
-            søknad.informasjonOmUtenlandsopphold
-                ? {
-                      utenlandsoppholdNeste12Mnd: søknad.informasjonOmUtenlandsopphold.tidligereOpphold.map((p) => ({
-                          landkode: p.land,
-                          ...p.tidsperiode,
-                      })),
-                  }
-                : undefined,
-        );
+        oppdaterData(ContextDataType.UTENLANDSOPPHOLD, søknad.utenlandsOpphold);
+        oppdaterData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE, søknad.utenlandsoppholdSiste12Mnd);
+        oppdaterData(ContextDataType.UTENLANDSOPPHOLD_SENERE, søknad.utenlandsoppholdNeste12Mnd);
         oppdaterData(ContextDataType.PERIODE_MED_FORELDREPENGER, { dekningsgrad: søknad.dekningsgrad });
         oppdaterData(ContextDataType.UTTAKSPLAN, søknad.uttaksplan);
         oppdaterData(ContextDataType.UTTAKSPLAN_METADATA, {
