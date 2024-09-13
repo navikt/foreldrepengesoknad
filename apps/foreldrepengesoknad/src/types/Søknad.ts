@@ -9,12 +9,11 @@ import { Frilans } from '@navikt/fp-steg-frilans';
 import {
     Attachment,
     Dekningsgrad,
+    InformasjonOmUtenlandsoppholdDTO,
     Utenlandsopphold,
     UtenlandsoppholdSenere,
     UtenlandsoppholdTidligere,
 } from '@navikt/fp-types';
-// TODO: proper export
-import { InformasjonOmUtenlandsoppholdDTO } from '@navikt/fp-types/src/Utenlandsopphold';
 
 export interface Søknad {
     type: 'foreldrepenger';
