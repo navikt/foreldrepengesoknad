@@ -6,7 +6,7 @@ import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder
 import { AnnenInntekt } from 'types/AnnenInntekt';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { Næring } from 'types/Næring';
-import { Søknad } from 'types/Søknad';
+import { EndringssøknadForInnsending, SøknadForInnsending } from 'types/Søknad';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getTermindato } from 'utils/barnUtils';
 import { guid } from 'utils/guid';
@@ -21,7 +21,6 @@ import {
     MorsAktivitet,
     Periode,
     Periodetype,
-    Situasjon,
     StønadskontoType,
     Søkerrolle,
     Søkersituasjon,
@@ -40,8 +39,6 @@ import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
 import { mapUtenlandsOppholdForInnsending } from '@navikt/fp-steg-utenlandsopphold';
 import { Attachment, LocaleNo } from '@navikt/fp-types';
-// TODO: proper export
-import { InformasjonOmUtenlandsoppholdDTO } from '@navikt/fp-types/src/Utenlandsopphold';
 import { Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
 import {
     andreAugust2022ReglerGjelder,
@@ -90,48 +87,6 @@ export interface SøkerForInnsending {
     frilansInformasjon?: Frilans;
     andreInntekterSiste10Mnd?: AnnenInntekt[];
 }
-
-export interface SøknadForInnsending
-    extends Omit<
-        Søknad,
-        | 'barn'
-        | 'annenForelder'
-        | 'uttaksplan'
-        | 'arbeidsforholdOgInntekt'
-        | 'utenlandsOpphold'
-        | 'utenlandsoppholdNeste12Mnd'
-        | 'utenlandsoppholdSiste12Mnd'
-        | 'egenNæring'
-        | 'frilans'
-        | 'andreInntektskilder'
-        | 'søkersituasjon'
-        | 'tilleggsopplysninger'
-        | 'manglerDokumentasjon'
-        | 'vedlegg'
-    > {
-    barn: BarnForInnsending;
-    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsoppholdDTO;
-    annenForelder: AnnenForelderForInnsending;
-    uttaksplan: PeriodeForInnsending[];
-    søker: SøkerForInnsending;
-    situasjon: Situasjon;
-    vedlegg: Attachment[];
-}
-
-export type EndringssøknadForInnsending = Pick<
-    SøknadForInnsending,
-    | 'type'
-    | 'saksnummer'
-    | 'erEndringssøknad'
-    | 'uttaksplan'
-    | 'søker'
-    | 'annenForelder'
-    | 'barn'
-    | 'dekningsgrad'
-    | 'situasjon'
-    | 'ønskerJustertUttakVedFødsel'
-    | 'vedlegg'
->;
 
 export const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';

@@ -1,11 +1,20 @@
+import { AnnenForelderForInnsending, BarnForInnsending, PeriodeForInnsending, SøkerForInnsending } from 'api/apiUtils';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { AnnenForelder, Barn, Periode, Søkersituasjon } from '@navikt/fp-common';
+import { AnnenForelder, Barn, Periode, Situasjon, Søkersituasjon } from '@navikt/fp-common';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
-import { Dekningsgrad, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
+import {
+    Attachment,
+    Dekningsgrad,
+    Utenlandsopphold,
+    UtenlandsoppholdSenere,
+    UtenlandsoppholdTidligere,
+} from '@navikt/fp-types';
+// TODO: proper export
+import { InformasjonOmUtenlandsoppholdDTO } from '@navikt/fp-types/src/Utenlandsopphold';
 
 export interface Søknad {
     type: 'foreldrepenger';
@@ -28,3 +37,45 @@ export interface Søknad {
     vedlegg: VedleggDataType;
     manglerDokumentasjon: boolean;
 }
+
+export interface SøknadForInnsending
+    extends Omit<
+        Søknad,
+        | 'barn'
+        | 'annenForelder'
+        | 'uttaksplan'
+        | 'arbeidsforholdOgInntekt'
+        | 'utenlandsOpphold'
+        | 'utenlandsoppholdNeste12Mnd'
+        | 'utenlandsoppholdSiste12Mnd'
+        | 'egenNæring'
+        | 'frilans'
+        | 'andreInntektskilder'
+        | 'søkersituasjon'
+        | 'tilleggsopplysninger'
+        | 'manglerDokumentasjon'
+        | 'vedlegg'
+    > {
+    barn: BarnForInnsending;
+    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsoppholdDTO;
+    annenForelder: AnnenForelderForInnsending;
+    uttaksplan: PeriodeForInnsending[];
+    søker: SøkerForInnsending;
+    situasjon: Situasjon;
+    vedlegg: Attachment[];
+}
+
+export type EndringssøknadForInnsending = Pick<
+    SøknadForInnsending,
+    | 'type'
+    | 'saksnummer'
+    | 'erEndringssøknad'
+    | 'uttaksplan'
+    | 'søker'
+    | 'annenForelder'
+    | 'barn'
+    | 'dekningsgrad'
+    | 'situasjon'
+    | 'ønskerJustertUttakVedFødsel'
+    | 'vedlegg'
+>;
