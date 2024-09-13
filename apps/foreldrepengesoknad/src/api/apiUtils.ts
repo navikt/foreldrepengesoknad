@@ -362,7 +362,7 @@ export const cleanSøknad = (
     const utenlandsopphold = notEmpty(hentData(ContextDataType.UTENLANDSOPPHOLD));
     const utenlandsoppholdNeste12Mnd = notEmpty(hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE));
     const utenlandsoppholdSiste12Mnd = notEmpty(hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE));
-    const periodeMedForeldrepenger = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
+    const dekningsgrad = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN));
     const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
     const eksisterendeSak = hentData(ContextDataType.EKSISTERENDE_SAK);
@@ -404,7 +404,7 @@ export const cleanSøknad = (
             utenlandsoppholdNeste12Mnd,
             utenlandsoppholdSiste12Mnd,
         ),
-        dekningsgrad: periodeMedForeldrepenger.dekningsgrad,
+        dekningsgrad,
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
         vedlegg: convertAttachmentsMapToArray(vedlegg),
     };
@@ -494,7 +494,7 @@ export const cleanEndringssøknad = (
     const frilans = hentData(ContextDataType.FRILANS);
     const egenNæring = hentData(ContextDataType.EGEN_NÆRING);
     const andreInntektskilder = hentData(ContextDataType.ANDRE_INNTEKTSKILDER);
-    const periodeMedForeldrepenger = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
+    const dekningsgrad = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const eksisterendeSak = notEmpty(hentData(ContextDataType.EKSISTERENDE_SAK));
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
@@ -525,7 +525,7 @@ export const cleanEndringssøknad = (
         ),
         annenForelder: cleanAnnenForelder(annenForelder, true),
         barn,
-        dekningsgrad: periodeMedForeldrepenger.dekningsgrad,
+        dekningsgrad,
         situasjon: søkersituasjon.situasjon,
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
         vedlegg: convertAttachmentsMapToArray(vedlegg),

@@ -35,7 +35,7 @@ const mellomlagre = (
     const eksisterendeSak = getDataFromState(ContextDataType.EKSISTERENDE_SAK);
     const uttaksplan = getDataFromState(ContextDataType.UTTAKSPLAN);
     const fordeling = getDataFromState(ContextDataType.FORDELING);
-    const periodeMedForeldrepenger = getDataFromState(ContextDataType.PERIODE_MED_FORELDREPENGER);
+    const dekningsgrad = getDataFromState(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const vedlegg = getDataFromState(ContextDataType.VEDLEGG);
 
     // TODO (TOR) Dropp mapping her og lagre context rått
@@ -57,7 +57,7 @@ const mellomlagre = (
                 ? mapUtenlandsOppholdForInnsending(utenlandsopphold, senereUtenlandsopphold, tidligereUtenlandsopphold)
                 : undefined,
             erEndringssøknad,
-            dekningsgrad: periodeMedForeldrepenger?.dekningsgrad,
+            dekningsgrad,
             uttaksplan,
             vedlegg,
             ønskerJustertUttakVedFødsel: uttaksplanMetadata?.ønskerJustertUttakVedFødsel,
