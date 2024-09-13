@@ -25,7 +25,7 @@ export interface Søknad {
     egenNæring: EgenNæring;
     frilans: Frilans;
     andreInntektskilder: AndreInntektskilder[];
-    utenlandsOpphold: Utenlandsopphold;
+    utenlandsopphold: Utenlandsopphold;
     utenlandsoppholdNeste12Mnd: UtenlandsoppholdSenere;
     utenlandsoppholdSiste12Mnd: UtenlandsoppholdTidligere;
     erEndringssøknad: boolean;
@@ -44,7 +44,7 @@ export interface SøknadForInnsending
         | 'annenForelder'
         | 'uttaksplan'
         | 'arbeidsforholdOgInntekt'
-        | 'utenlandsOpphold'
+        | 'utenlandsopphold'
         | 'utenlandsoppholdNeste12Mnd'
         | 'utenlandsoppholdSiste12Mnd'
         | 'egenNæring'

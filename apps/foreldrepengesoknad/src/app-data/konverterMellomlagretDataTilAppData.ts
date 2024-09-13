@@ -17,7 +17,7 @@ export const konverterMellomlagretDataTilAppData = (mellomlagretState: FpMelloml
         [ContextDataType.EGEN_NÆRING]: søknad?.egenNæring,
         [ContextDataType.FRILANS]: søknad?.frilans,
         [ContextDataType.ANDRE_INNTEKTSKILDER]: søknad?.andreInntektskilder,
-        [ContextDataType.UTENLANDSOPPHOLD]: søknad?.utenlandsOpphold,
+        [ContextDataType.UTENLANDSOPPHOLD]: søknad?.utenlandsopphold,
         [ContextDataType.UTENLANDSOPPHOLD_SENERE]: søknad?.utenlandsoppholdNeste12Mnd,
         [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: søknad?.utenlandsoppholdSiste12Mnd,
         [ContextDataType.PERIODE_MED_FORELDREPENGER]: søknad?.dekningsgrad,

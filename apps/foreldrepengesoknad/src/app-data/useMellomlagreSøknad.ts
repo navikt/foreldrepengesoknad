@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MELLOMLAGRET_VERSJON } from 'utils/mellomlagringUtils';
 
-import { mapUtenlandsOppholdForInnsending } from '@navikt/fp-steg-utenlandsopphold';
 import { LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -53,9 +52,9 @@ const mellomlagre = (
             frilans,
             egenNæring,
             andreInntektskilder,
-            informasjonOmUtenlandsopphold: utenlandsopphold
-                ? mapUtenlandsOppholdForInnsending(utenlandsopphold, senereUtenlandsopphold, tidligereUtenlandsopphold)
-                : undefined,
+            utenlandsopphold,
+            utenlandsoppholdNeste12Mnd: senereUtenlandsopphold,
+            utenlandsoppholdSiste12Mnd: tidligereUtenlandsopphold,
             erEndringssøknad,
             dekningsgrad,
             uttaksplan,
@@ -70,7 +69,7 @@ const mellomlagre = (
         perioderSomSkalSendesInn: uttaksplanMetadata?.perioderSomSkalSendesInn,
         harUttaksplanBlittSlettet: uttaksplanMetadata?.harUttaksplanBlittSlettet,
         annenPartsUttakErLagtTilIPlan: uttaksplanMetadata?.annenPartsUttakErLagtTilIPlan,
-    } as FpMellomlagretData;
+    } satisfies FpMellomlagretData;
 
     return Api.storeAppState(dataSomSkalMellomlagres, fødselsnr);
 };

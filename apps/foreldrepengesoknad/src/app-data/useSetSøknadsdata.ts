@@ -14,7 +14,7 @@ export const useSetSøknadsdata = () => {
         oppdaterData(ContextDataType.FRILANS, søknad.frilans);
         oppdaterData(ContextDataType.EGEN_NÆRING, søknad.egenNæring);
         oppdaterData(ContextDataType.ANDRE_INNTEKTSKILDER, søknad.andreInntektskilder);
-        oppdaterData(ContextDataType.UTENLANDSOPPHOLD, søknad.utenlandsOpphold);
+        oppdaterData(ContextDataType.UTENLANDSOPPHOLD, søknad.utenlandsopphold);
         oppdaterData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE, søknad.utenlandsoppholdSiste12Mnd);
         oppdaterData(ContextDataType.UTENLANDSOPPHOLD_SENERE, søknad.utenlandsoppholdNeste12Mnd);
         oppdaterData(ContextDataType.PERIODE_MED_FORELDREPENGER, søknad.dekningsgrad);

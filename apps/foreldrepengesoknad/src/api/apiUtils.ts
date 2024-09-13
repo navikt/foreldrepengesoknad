@@ -389,7 +389,8 @@ export const cleanSøknad = (
         termindato,
         annenForelder,
     );
-    const cleanedSøknad: SøknadForInnsending = {
+
+    return {
         type: 'foreldrepenger',
         harGodkjentVilkår: true,
         saksnummer: eksisterendeSak?.saksnummer,
@@ -408,8 +409,6 @@ export const cleanSøknad = (
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
         vedlegg: convertAttachmentsMapToArray(vedlegg),
     };
-
-    return cleanedSøknad;
 };
 
 const cleanSøker = (
