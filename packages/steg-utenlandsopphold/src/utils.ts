@@ -23,7 +23,7 @@ export const mapUtenlandsOppholdForInnsending = (
     return {
         iNorgeSiste12Mnd: !utenlandsopphold.harBoddUtenforNorgeSiste12Mnd,
         iNorgeNeste12Mnd: !utenlandsopphold.skalBoUtenforNorgeNeste12Mnd,
-        tidligereOpphold: (tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd || []).map(mapBostedUtlandTilDTO),
-        senereOpphold: (senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd || []).map(mapBostedUtlandTilDTO),
+        tidligereOpphold: (tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd ?? []).map(mapBostedUtlandTilDTO),
+        senereOpphold: (senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd ?? []).map(mapBostedUtlandTilDTO),
     };
 };
