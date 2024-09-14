@@ -65,6 +65,18 @@ const getStateMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaks
         if (type === ContextDataType.UTTAKSPLAN) {
             return uttaksplanInput;
         }
+        if (type === ContextDataType.UTENLANDSOPPHOLD) {
+            return {
+                harBoddUtenforNorgeSiste12Mnd: false,
+                skalBoUtenforNorgeNeste12Mnd: false,
+            };
+        }
+        if (type === ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE) {
+            return [];
+        }
+        if (type === ContextDataType.UTENLANDSOPPHOLD_SENERE) {
+            return [];
+        }
         if (type === ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT) {
             return {
                 harHattAndreInntektskilder: false,
@@ -78,6 +90,7 @@ const getStateMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaks
                 situasjon: 'fødsel',
             };
         }
+
         return {};
     };
 };

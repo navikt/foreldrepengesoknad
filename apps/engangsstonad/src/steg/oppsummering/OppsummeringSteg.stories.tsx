@@ -10,7 +10,7 @@ import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
+import { Utenlandsopphold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
 import OppsummeringSteg from './OppsummeringSteg';
 
@@ -39,8 +39,8 @@ const vedleggDefault = {
 type StoryArgs = {
     omBarnet?: OmBarnet;
     utenlandsopphold?: Utenlandsopphold;
-    tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
-    senereUtenlandsopphold?: UtenlandsoppholdSenere;
+    tidligereUtenlandsopphold?: UtenlandsoppholdPeriode[];
+    senereUtenlandsopphold?: UtenlandsoppholdPeriode[];
     dokumentasjon?: Dokumentasjon;
 } & ComponentProps<typeof OppsummeringSteg>;
 
@@ -175,29 +175,25 @@ export const HarTidligereOgFremtidigeUtenlandsopphold: Story = {
             harBoddUtenforNorgeSiste12Mnd: true,
             skalBoUtenforNorgeNeste12Mnd: true,
         },
-        senereUtenlandsopphold: {
-            utenlandsoppholdNeste12Mnd: [
-                {
-                    fom: dayjs().format(ISO_DATE_FORMAT),
-                    tom: dayjs().add(100, 'day').format(ISO_DATE_FORMAT),
-                    landkode: 'SE',
-                },
-                {
-                    fom: dayjs().add(101, 'day').format(ISO_DATE_FORMAT),
-                    tom: dayjs().add(200, 'day').format(ISO_DATE_FORMAT),
-                    landkode: 'DK',
-                },
-            ],
-        },
-        tidligereUtenlandsopphold: {
-            utenlandsoppholdSiste12Mnd: [
-                {
-                    fom: dayjs().subtract(100, 'day').format(ISO_DATE_FORMAT),
-                    tom: dayjs().format(ISO_DATE_FORMAT),
-                    landkode: 'IS',
-                },
-            ],
-        },
+        senereUtenlandsopphold: [
+            {
+                fom: dayjs().format(ISO_DATE_FORMAT),
+                tom: dayjs().add(100, 'day').format(ISO_DATE_FORMAT),
+                landkode: 'SE',
+            },
+            {
+                fom: dayjs().add(101, 'day').format(ISO_DATE_FORMAT),
+                tom: dayjs().add(200, 'day').format(ISO_DATE_FORMAT),
+                landkode: 'DK',
+            },
+        ],
+        tidligereUtenlandsopphold: [
+            {
+                fom: dayjs().subtract(100, 'day').format(ISO_DATE_FORMAT),
+                tom: dayjs().format(ISO_DATE_FORMAT),
+                landkode: 'IS',
+            },
+        ],
         mellomlagreOgNaviger: promiseAction(),
     },
 };
