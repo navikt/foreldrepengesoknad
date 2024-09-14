@@ -17,6 +17,7 @@ export const Default: Story = {
         goToPreviousStep: action('button-click'),
         onStepChange: action('button-click'),
         saveOnPrevious: action('button-click'),
+        tidligereUtenlandsopphold: [],
         stepConfig: [
             {
                 id: 'UTENLANDSOPPHOLD_PATH',

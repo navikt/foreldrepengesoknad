@@ -48,7 +48,7 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
                 <FormattedMessage id="søknad.pageheading" />
             </Heading>
             <TidligereUtenlandsoppholdPanel
-                tidligereUtenlandsopphold={{ utenlandsoppholdSiste12Mnd: tidligereUtenlandsopphold ?? [] }}
+                tidligereUtenlandsopphold={tidligereUtenlandsopphold ?? []}
                 saveOnNext={save}
                 saveOnPrevious={saveOnPrevious}
                 cancelApplication={avbrytSøknad}
