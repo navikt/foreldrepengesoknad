@@ -78,7 +78,7 @@ const getStateMock = (annenForelderInput: AnnenForelder, barnInput: Barn, uttaks
                 situasjon: 'fødsel',
             };
         }
-        return {};
+        return undefined;
     };
 };
 
