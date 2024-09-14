@@ -57,13 +57,12 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
-    const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
+    const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const oppdaterBarn = notEmpty(useContextSaveData(ContextDataType.OM_BARNET));
 
     const termindato = getTermindato(barn);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const suspendAnnenPartVedtakApiRequest = shouldSuspendAnnenPartVedtakApiRequest(annenForelder);
-    const { dekningsgrad } = periodeMedForeldrepenger;
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const førsteUttaksdagNesteBarnsSak = barnFraNesteSak?.startdatoFørsteStønadsperiode;
     const navnPåForeldre = getNavnPåForeldre(søker, annenForelder, erFarEllerMedmor, intl);

@@ -3,7 +3,6 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import PeriodeMedForeldrepenger from 'types/PeriodeMedForeldrepenger';
 import { getFødselsdato, getTermindato } from 'utils/barnUtils';
 import { førsteJuli2024ReglerGjelder, getVarighetString } from 'utils/dateUtils';
 import { getAntallUker, getAntallUkerFraStønadskontoer } from 'utils/stønadskontoerUtils';
@@ -105,12 +104,12 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
     const periodeMedForeldrepenger = useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const oppdaterPeriodeMedForeldrepenger = useContextSaveData(ContextDataType.PERIODE_MED_FORELDREPENGER);
-    const formMethods = useForm<PeriodeMedForeldrepenger>({
-        defaultValues: periodeMedForeldrepenger,
+    const formMethods = useForm<{ dekningsgrad: Dekningsgrad }>({
+        defaultValues: { dekningsgrad: periodeMedForeldrepenger },
     });
 
-    const onSubmit = (values: PeriodeMedForeldrepenger) => {
-        oppdaterPeriodeMedForeldrepenger(values);
+    const onSubmit = (values: { dekningsgrad: Dekningsgrad }) => {
+        oppdaterPeriodeMedForeldrepenger(values.dekningsgrad);
         return goToNextDefaultStep();
     };
 

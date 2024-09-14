@@ -42,9 +42,7 @@ const DekningsgradValgtAvAnnenPartPanel: React.FunctionComponent<Props> = ({
     const lagre = () => {
         setIsSubmitting(true);
 
-        oppdaterPeriodeMedForeldrepenger({
-            dekningsgrad,
-        });
+        oppdaterPeriodeMedForeldrepenger(dekningsgrad);
 
         return goToNextDefaultStep();
     };

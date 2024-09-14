@@ -239,7 +239,7 @@ const meta = {
                             [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
-                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
+                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: Dekningsgrad.HUNDRE_PROSENT,
                             [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
                             [ContextDataType.VEDLEGG]: defaultVedlegg,
                         }}

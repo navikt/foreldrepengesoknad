@@ -3,33 +3,14 @@ import { AxiosResponse } from 'axios';
 import Fordeling from 'types/Fordeling';
 import { Kvittering } from 'types/Kvittering';
 import { SakerOppslag } from 'types/SakerOppslag';
-import { Søknad } from 'types/Søknad';
+import { EndringssøknadForInnsending, Søknad, SøknadForInnsending } from 'types/Søknad';
 import { useGetRequest } from 'utils/hooks/useRequest';
 
 import { getAxiosInstance } from '@navikt/fp-api';
 import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
-import { Attachment, Dekningsgrad, LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { Attachment, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 
-import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
 import { storageParser } from './storageParser';
-
-export interface TilgjengeligeStønadskontoerParams {
-    antallBarn: string;
-    morHarRettINorge: boolean;
-    farHarRettINorge: boolean;
-    dekningsgrad: Dekningsgrad.HUNDRE_PROSENT | Dekningsgrad.ÅTTI_PROSENT;
-    termindato: string | undefined;
-    fødselsdato: string | undefined;
-    omsorgsovertakelsesdato: string | undefined;
-    morHarAleneomsorg: boolean | undefined;
-    farHarAleneomsorg: boolean | undefined;
-    startdatoUttak: string;
-    minsterett: boolean;
-    erMor: boolean;
-    morHarUføretrygd: boolean;
-    harAnnenForelderTilsvarendeRettEØS: boolean;
-    familieHendelseDatoNesteSak: string | undefined;
-}
 
 const sendSøknadUrl = '/rest/soknad';
 const sendEndringssøknadUrl = '/rest/soknad/endre';

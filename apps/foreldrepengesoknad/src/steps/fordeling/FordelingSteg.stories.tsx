@@ -161,7 +161,7 @@ const meta = {
                                     harJobbetSomSelvstendigNæringsdrivende: false,
                                 },
                                 [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                                [ContextDataType.PERIODE_MED_FORELDREPENGER]: { dekningsgrad },
+                                [ContextDataType.PERIODE_MED_FORELDREPENGER]: dekningsgrad,
                             }}
                         >
                             <FordelingSteg {...rest} />

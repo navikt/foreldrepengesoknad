@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MELLOMLAGRET_VERSJON } from 'utils/mellomlagringUtils';
 
-import { mapUtenlandsOppholdForInnsending } from '@navikt/fp-steg-utenlandsopphold';
 import { LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -35,7 +34,7 @@ const mellomlagre = (
     const eksisterendeSak = getDataFromState(ContextDataType.EKSISTERENDE_SAK);
     const uttaksplan = getDataFromState(ContextDataType.UTTAKSPLAN);
     const fordeling = getDataFromState(ContextDataType.FORDELING);
-    const periodeMedForeldrepenger = getDataFromState(ContextDataType.PERIODE_MED_FORELDREPENGER);
+    const dekningsgrad = getDataFromState(ContextDataType.PERIODE_MED_FORELDREPENGER);
     const vedlegg = getDataFromState(ContextDataType.VEDLEGG);
 
     // TODO (TOR) Dropp mapping her og lagre context rått
@@ -53,11 +52,11 @@ const mellomlagre = (
             frilans,
             egenNæring,
             andreInntektskilder,
-            informasjonOmUtenlandsopphold: utenlandsopphold
-                ? mapUtenlandsOppholdForInnsending(utenlandsopphold, senereUtenlandsopphold, tidligereUtenlandsopphold)
-                : undefined,
+            utenlandsopphold,
+            utenlandsoppholdNeste12Mnd: senereUtenlandsopphold,
+            utenlandsoppholdSiste12Mnd: tidligereUtenlandsopphold,
             erEndringssøknad,
-            dekningsgrad: periodeMedForeldrepenger?.dekningsgrad,
+            dekningsgrad,
             uttaksplan,
             vedlegg,
             ønskerJustertUttakVedFødsel: uttaksplanMetadata?.ønskerJustertUttakVedFødsel,
@@ -70,7 +69,7 @@ const mellomlagre = (
         perioderSomSkalSendesInn: uttaksplanMetadata?.perioderSomSkalSendesInn,
         harUttaksplanBlittSlettet: uttaksplanMetadata?.harUttaksplanBlittSlettet,
         annenPartsUttakErLagtTilIPlan: uttaksplanMetadata?.annenPartsUttakErLagtTilIPlan,
-    } as FpMellomlagretData;
+    } satisfies FpMellomlagretData;
 
     return Api.storeAppState(dataSomSkalMellomlagres, fødselsnr);
 };

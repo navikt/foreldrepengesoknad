@@ -9,6 +9,7 @@ import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inn
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
 import {
+    Dekningsgrad,
     SøkersituasjonFp,
     Utenlandsopphold,
     UtenlandsoppholdSenere,
@@ -16,7 +17,6 @@ import {
 } from '@navikt/fp-types';
 
 import Fordeling from '../types/Fordeling';
-import PeriodeMedForeldrepenger from '../types/PeriodeMedForeldrepenger';
 
 export enum ContextDataType {
     APP_ROUTE = 'APP_ROUTE',
@@ -53,7 +53,7 @@ export type ContextDataMap = {
     [ContextDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;
     [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: UtenlandsoppholdSenere;
     [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: UtenlandsoppholdTidligere;
-    [ContextDataType.PERIODE_MED_FORELDREPENGER]?: PeriodeMedForeldrepenger;
+    [ContextDataType.PERIODE_MED_FORELDREPENGER]?: Dekningsgrad;
     [ContextDataType.FORDELING]?: Fordeling;
     [ContextDataType.UTTAKSPLAN]?: Periode[];
     [ContextDataType.UTTAKSPLAN_METADATA]?: UttaksplanMetaData;
