@@ -6,6 +6,7 @@ import { Path } from 'appData/paths';
 import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
 import * as stories from './TidligereUtenlandsoppholdSteg.stories';
 
@@ -48,20 +49,18 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
 
         expect(nesteStegFn).toHaveBeenCalledTimes(2);
         expect(nesteStegFn).toHaveBeenNthCalledWith(1, {
-            data: {
-                utenlandsoppholdSiste12Mnd: [
-                    {
-                        landkode: 'CA',
-                        fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
-                        tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
-                    },
-                    {
-                        landkode: 'AS',
-                        fom: dayjs().subtract(22, 'day').format(ISO_DATE_FORMAT),
-                        tom: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
-                    },
-                ],
-            },
+            data: [
+                {
+                    landkode: 'CA',
+                    fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
+                    tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
+                },
+                {
+                    landkode: 'AS',
+                    fom: dayjs().subtract(22, 'day').format(ISO_DATE_FORMAT),
+                    tom: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
+                },
+            ] satisfies UtenlandsoppholdPeriode[],
             key: ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE,
             type: 'update',
         });
