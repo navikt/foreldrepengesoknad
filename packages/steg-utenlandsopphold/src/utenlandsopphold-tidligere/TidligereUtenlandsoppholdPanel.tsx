@@ -6,24 +6,28 @@ import { FormattedMessage } from 'react-intl';
 import { Button, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { UtenlandsoppholdPeriode, UtenlandsoppholdTidligere } from '@navikt/fp-types';
+import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { HorizontalLine, ProgressStep, Step } from '@navikt/fp-ui';
 
 import TidligereUtenlandsoppholdPeriode from './TidligereUtenlandsoppholdPeriode';
+
+type UtenlandsoppholdTidligere = {
+    utenlandsoppholdSiste12Mnd: UtenlandsoppholdPeriode[];
+};
 
 const DEFAULT_PERIODE = {
     fom: '',
     tom: '',
     landkode: '',
-} as UtenlandsoppholdPeriode;
+} satisfies UtenlandsoppholdPeriode;
 
 const DEFAULT_FORM_VALUES = {
     utenlandsoppholdSiste12Mnd: [DEFAULT_PERIODE],
-} as UtenlandsoppholdTidligere;
+} satisfies UtenlandsoppholdTidligere;
 
 export interface Props<TYPE> {
     tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
-    saveOnNext: (formValues: UtenlandsoppholdTidligere) => void;
+    saveOnNext: (formValues: UtenlandsoppholdPeriode[]) => void;
     saveOnPrevious: (data: UtenlandsoppholdTidligere | undefined) => void;
     onStepChange?: (id: TYPE) => void;
     cancelApplication: () => void;
@@ -68,7 +72,7 @@ const TidligereUtenlandsoppholdPanel = <TYPE extends string>({
             steps={stepConfig}
             onStepChange={onStepChange}
         >
-            <RhfForm formMethods={formMethods} onSubmit={saveOnNext}>
+            <RhfForm formMethods={formMethods} onSubmit={(values) => saveOnNext(values.utenlandsoppholdSiste12Mnd)}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     <VStack gap="10" align="start">

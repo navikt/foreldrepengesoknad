@@ -6,7 +6,6 @@ import SøknadRoutes from 'appData/routes';
 import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { UtenlandsoppholdSenere } from '@navikt/fp-types';
 
 import * as stories from './SenereUtenlandsoppholdSteg.stories';
 
@@ -45,7 +44,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
                         tom: dayjs().add(20, 'day').format(ISO_DATE_FORMAT),
                     },
                 ],
-            } satisfies UtenlandsoppholdSenere,
+            },
             key: ContextDataType.UTENLANDSOPPHOLD_SENERE,
             type: 'update',
         });

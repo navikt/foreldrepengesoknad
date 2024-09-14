@@ -7,7 +7,7 @@ import { FormattedMessage } from 'react-intl';
 import { Heading } from '@navikt/ds-react';
 
 import { TidligereUtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
-import { Arbeidsforhold, UtenlandsoppholdTidligere } from '@navikt/fp-types';
+import { Arbeidsforhold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -29,7 +29,7 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
     const tidligereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const oppdaterTidligereUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
 
-    const save = (values: UtenlandsoppholdTidligere) => {
+    const save = (values: UtenlandsoppholdPeriode[]) => {
         oppdaterTidligereUtenlandsopphold(values);
 
         const nesteSide = utenlandsopphold.skalBoUtenforNorgeNeste12Mnd
@@ -48,7 +48,7 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
                 <FormattedMessage id="søknad.pageheading" />
             </Heading>
             <TidligereUtenlandsoppholdPanel
-                tidligereUtenlandsopphold={tidligereUtenlandsopphold}
+                tidligereUtenlandsopphold={{ utenlandsoppholdSiste12Mnd: tidligereUtenlandsopphold ?? [] }}
                 saveOnNext={save}
                 saveOnPrevious={saveOnPrevious}
                 cancelApplication={avbrytSøknad}

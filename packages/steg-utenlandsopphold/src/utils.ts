@@ -1,9 +1,4 @@
-import {
-    Utenlandsopphold,
-    UtenlandsoppholdPeriode,
-    UtenlandsoppholdSenere,
-    UtenlandsoppholdTidligere,
-} from '@navikt/fp-types';
+import { Utenlandsopphold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
 const mapBostedUtlandTilDTO = (utenlandsopphold: UtenlandsoppholdPeriode) => {
     return {
@@ -17,13 +12,13 @@ const mapBostedUtlandTilDTO = (utenlandsopphold: UtenlandsoppholdPeriode) => {
 
 export const mapUtenlandsOppholdForInnsending = (
     utenlandsopphold: Utenlandsopphold,
-    senereUtenlandsopphold?: UtenlandsoppholdSenere,
-    tidligereUtenlandsopphold?: UtenlandsoppholdTidligere,
+    senereUtenlandsopphold?: UtenlandsoppholdPeriode[],
+    tidligereUtenlandsopphold?: UtenlandsoppholdPeriode[],
 ) => {
     return {
         iNorgeSiste12Mnd: !utenlandsopphold.harBoddUtenforNorgeSiste12Mnd,
         iNorgeNeste12Mnd: !utenlandsopphold.skalBoUtenforNorgeNeste12Mnd,
-        tidligereOpphold: (tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd ?? []).map(mapBostedUtlandTilDTO),
-        senereOpphold: (senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd ?? []).map(mapBostedUtlandTilDTO),
+        tidligereOpphold: (tidligereUtenlandsopphold ?? []).map(mapBostedUtlandTilDTO),
+        senereOpphold: (senereUtenlandsopphold ?? []).map(mapBostedUtlandTilDTO),
     };
 };

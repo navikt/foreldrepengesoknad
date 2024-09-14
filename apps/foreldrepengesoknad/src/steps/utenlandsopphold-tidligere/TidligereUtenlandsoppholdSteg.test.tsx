@@ -6,7 +6,6 @@ import SøknadRoutes from 'appData/routes';
 import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { UtenlandsoppholdTidligere } from '@navikt/fp-types';
 
 import * as stories from './TidligereUtenlandsoppholdSteg.stories';
 
@@ -45,7 +44,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
                         tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
                     },
                 ],
-            } satisfies UtenlandsoppholdTidligere,
+            },
             key: ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE,
             type: 'update',
         });
@@ -94,7 +93,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
                         tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
                     },
                 ],
-            } satisfies UtenlandsoppholdTidligere,
+            },
             key: ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE,
             type: 'update',
         });
