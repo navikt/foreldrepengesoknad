@@ -67,7 +67,7 @@ spec:
    - name: NODE_ENV
      value: 'production'
 
-{{#if redriect_from}}
+{{#if redirectFrom}}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -81,7 +81,7 @@ metadata:
 spec:
   ingressClassName: nais-ingress
   rules:
-    - host: {{redirect_from}}
+    - host: {{redirectFrom}}
       http:
         paths:
           - path: "/(.*)"
