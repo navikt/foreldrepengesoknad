@@ -1,15 +1,14 @@
 import { Meta, StoryObj } from '@storybook/react';
-import Environment from 'appData/Environment';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { StrictMode } from 'react';
 
-import { getAxiosInstance } from '@navikt/fp-api';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import AppContainer from './AppContainer';
+import { AxiosInstanceAPI } from './api/AxiosInstance';
 
 const kontoer = {
     '100': {
@@ -91,7 +90,7 @@ const meta = {
     render: (args) => {
         initAmplitude();
 
-        const axiosInstance = getAxiosInstance({ baseUrl: Environment.PUBLIC_PATH });
+        const axiosInstance = AxiosInstanceAPI();
         const apiMock = new MockAdapter(axiosInstance);
         if (args.brukMocks) {
             apiMock.onPost('/rest/konto').reply(() => {
