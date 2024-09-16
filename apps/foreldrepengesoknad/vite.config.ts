@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => {
                 storybookData: path.resolve(__dirname, '.storybook/testData'),
             },
         },
-        base: mode === 'development' ? '' : '/foreldrepenger/søknad',
+        base: mode === 'development' ? '' : '/foreldrepenger/soknad',
         build: {
             sourcemap: true,
         },

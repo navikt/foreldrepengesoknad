@@ -2,9 +2,9 @@
     "app": "foreldrepengesoknad",
     "autentisering": true,
     "redirect_from": "foreldrepengesoknad.nav.no",
-    "ingress": "https://www.nav.no/foreldrepenger/søknad",
+    "ingress": "https://www.nav.no/foreldrepenger/soknad",
     "env": {
-        "PUBLIC_PATH": "/foreldrepenger/søknad",
+        "PUBLIC_PATH": "/foreldrepenger/soknad",
         "INNSYN": "https://foreldrepenger.nav.no",
         "ENV": "prod",
         "FEATURE_TEST_1JULI2024_REGLER": "off"

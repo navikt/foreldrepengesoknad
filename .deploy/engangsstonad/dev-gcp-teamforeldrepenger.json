@@ -2,9 +2,9 @@
     "app": "engangsstonad",
     "autentisering": true,
     "redirect_from": "engangsstonad.intern.dev.nav.no",
-    "ingress": "https://www.intern.dev.nav.no/engangsstønad/søknad",
+    "ingress": "https://www.intern.dev.nav.no/engangsstonad/soknad",
     "env": {
-        "PUBLIC_PATH": "/engangsstønad/søknad",
+        "PUBLIC_PATH": "/engangsstonad/soknad",
         "INNSYN": "https://foreldrepenger.intern.dev.nav.no",
         "ENV": "dev"
     }
