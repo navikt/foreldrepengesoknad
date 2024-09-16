@@ -1,0 +1,991 @@
+import{j as n}from"./jsx-runtime-Cw0GR0a5.js";import{u as D,C as v,a as we}from"./FpDataContext-BUlrLNeW.js";import{A as F,i as Be,a as Je,u as xe,o as Ye,p as ze}from"./useFpNavigator-DafGamDo.js";import{g as ne,u as He,R as Ce,S as $e}from"./ErrorSummaryHookForm-BvM45lv_.js";import{u as k,a as re,B as c,M as g,H as We}from"./Label-DlDsESPM.js";import{H as b,E as Xe,g as Ze,q as Qe}from"./barnUtils-CQUJSJjA.js";import{aW as ae,a0 as en,aX as nn,au as rn,h as an,a4 as tn,n as U,aY as mn,aZ as un,b as sn,K as dn}from"./Uttaksplan-DI8KJW-B.js";import{I as te,S as e,g as ln,a as on,b as En,c as pn,d as kn,e as yn,f as Sn,h as gn,i as Tn,j as _n,k as An,l as On,m as Rn,n as jn,o as Nn,p as In,q as cn,r as Ln,s as vn,t as Dn,u as I}from"./AnnenInntekt-CbvEBwlz.js";import{C as Q,d as ee,b as fn}from"./Uttaksdagen-bxFzmdCg.js";import{r as me}from"./index-CTjT7uj6.js";import{A as ie}from"./index-CaYFfnhz.js";import{g as Mn}from"./guid-CsArkN6i.js";import"./apiInterceptor-BUYwhPMO.js";import{V as B}from"./VStack-CrTlUGgl.js";const ue=(r,m)=>a=>{const t={withCredentials:!0,timeout:45e3,headers:{"content-type":"multipart/form-data"}},u=new FormData;return u.append("id",a.id),u.append("vedlegg",a.file,a.filename),r.post(`/rest/storage/${m}/vedlegg`,u,t)};var y=(r=>(r.OMSORGSOVERTAKELSE="omsorgsovertakelse",r.ADOPSJONSVEDTAK="adopsjonsvedtak",r.TERMINBEKREFTELSE="terminbekreftelse",r.FØDSELSATTEST="fødselsattest",r.ANNEN_INNTEKT="anneninntektDokumentasjon",r.UTSETTELSE_SYKDOM="utsettelseSykdomUttaksplan",r.MORS_AKTIVITET_DOKUMENTASJON="morsaktivitetdokumentasjon",r.OVERFØRING_KVOTE="dokumentasjonOverføringAvKvote",r.ALENEOMSORG="dokumentasjonAvAleneomsorg",r.HV_ØVELSE="hvØvelse",r.NAV_TILTAK="navTiltak",r.TILBAKEBETALING="tilbakebetaling",r.TILRETTELEGGING="tilrettelegging",r))(y||{}),f=(r=>(r.BARN="BARN",r.OPPTJENING="OPPTJENING",r.TILRETTELEGGING="TILRETTELEGGING",r.UTTAK="UTTAK",r))(f||{});const Kn=()=>"V".concat(Mn().replace(/-/g,"")),qn=(r,m,a,t,u)=>({id:Kn(),file:r,filename:r.name,filesize:r.size,uploaded:!1,pending:!1,type:m,skjemanummer:a,innsendingsType:t,dokumenterer:u}),se=(r,m,a)=>qn({name:"",size:""},r,m,te.SEND_SENERE,a),P=(r,m)=>({...r,dokumenterer:m}),de=(r,m)=>r.map((a,t)=>{const u=a.tom?Q(a.tom):m.formatMessage({id:"VedleggUploader.pågående"}),i=`${Q(a.fom)}-${u}`;return r.length===1||t===r.length-1?i:t<r.length-2?`${i}, `:`${i} ${m.formatMessage({id:"VedleggUploader.Og"})} `}).join(""),q=({attachments:r,updateAttachments:m,skjemanummer:a,labelText:t,description:u,attachmentType:i,metadataType:d,perioder:s})=>{const{watch:p}=ne(),T=p(a);return me.useEffect(()=>{if(T.length===0){const E=se(i,a),o=P(E,{type:d,perioder:s});m([o])}},[m,T,i,a,d]),n.jsx(ae,{label:t,description:u,attachmentType:i,skjemanummer:a,existingAttachments:r.filter(E=>E.innsendingsType!==te.SEND_SENERE),updateAttachments:E=>{const o=E.map(M=>P(M,{type:d,perioder:s}));return m(o)},saveAttachment:ue(ie(),"foreldrepenger")})};q.__docgenInfo={description:"",methods:[],displayName:"VedleggUploader",props:{attachments:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},description:""},updateAttachments:{required:!0,tsType:{name:"signature",type:"function",raw:"(attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},name:"attachments"}],return:{name:"void"}}},description:""},skjemanummer:{required:!0,tsType:{name:"union",raw:`| Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+| Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+| Skjemanummer.DOK_INNLEGGELSE_BARN
+| Skjemanummer.DOK_INNLEGGELSE_MOR
+| Skjemanummer.DOK_INNLEGGELSE_FAR
+| Skjemanummer.DOK_SYKDOM_MOR
+| Skjemanummer.DOK_SYKDOM_FAR
+| Skjemanummer.DOK_UTDANNING_MOR
+| Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+| Skjemanummer.DOK_ARBEID_MOR
+| Skjemanummer.DOK_AV_ALENEOMSORG
+| Skjemanummer.TERMINBEKREFTELSE
+| Skjemanummer.OMSORGSOVERTAKELSE
+| Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+| Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE`,elements:[{name:"Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM"},{name:"Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET"},{name:"Skjemanummer.DOK_INNLEGGELSE_BARN"},{name:"Skjemanummer.DOK_INNLEGGELSE_MOR"},{name:"Skjemanummer.DOK_INNLEGGELSE_FAR"},{name:"Skjemanummer.DOK_SYKDOM_MOR"},{name:"Skjemanummer.DOK_SYKDOM_FAR"},{name:"Skjemanummer.DOK_UTDANNING_MOR"},{name:"Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR"},{name:"Skjemanummer.DOK_ARBEID_MOR"},{name:"Skjemanummer.DOK_AV_ALENEOMSORG"},{name:"Skjemanummer.TERMINBEKREFTELSE"},{name:"Skjemanummer.OMSORGSOVERTAKELSE"},{name:"Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG"},{name:"Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE"}]},description:""},labelText:{required:!0,tsType:{name:"string"},description:""},description:{required:!1,tsType:{name:"union",raw:"string | React.ReactNode",elements:[{name:"string"},{name:"ReactReactNode",raw:"React.ReactNode"}]},description:""},attachmentType:{required:!0,tsType:{name:"AttachmentType"},description:""},metadataType:{required:!0,tsType:{name:"AttachmentMetadataType"},description:""},perioder:{required:!1,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    fom: string;
+    tom?: string;
+}`,signature:{properties:[{key:"fom",value:{name:"string",required:!0}},{key:"tom",value:{name:"string",required:!1}}]}}],raw:`Array<{
+    fom: string;
+    tom?: string;
+}>`},description:""}}};const le=({attachments:r,updateAttachments:m,annenForelder:a})=>{const t=k();return!en(a)||!a.datoForAleneomsorg?null:n.jsx(q,{attachments:r,updateAttachments:m(e.DOK_AV_ALENEOMSORG),skjemanummer:e.DOK_AV_ALENEOMSORG,labelText:t.formatMessage({id:"manglendeVedlegg.aleneomsorg.tittel"}),description:t.formatMessage({id:"manglendeVedlegg.aleneomsorg.description"}),attachmentType:y.ALENEOMSORG,metadataType:f.BARN})};le.__docgenInfo={description:"",methods:[],displayName:"AleneomsorgDokumentasjon",props:{attachments:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},description:""},updateAttachments:{required:!0,tsType:{name:"signature",type:"function",raw:"(skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"union",raw:`| Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+| Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+| Skjemanummer.DOK_INNLEGGELSE_BARN
+| Skjemanummer.DOK_INNLEGGELSE_MOR
+| Skjemanummer.DOK_INNLEGGELSE_FAR
+| Skjemanummer.DOK_SYKDOM_MOR
+| Skjemanummer.DOK_SYKDOM_FAR
+| Skjemanummer.DOK_UTDANNING_MOR
+| Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+| Skjemanummer.DOK_ARBEID_MOR
+| Skjemanummer.DOK_AV_ALENEOMSORG
+| Skjemanummer.TERMINBEKREFTELSE
+| Skjemanummer.OMSORGSOVERTAKELSE
+| Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+| Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE`,elements:[{name:"Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM"},{name:"Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET"},{name:"Skjemanummer.DOK_INNLEGGELSE_BARN"},{name:"Skjemanummer.DOK_INNLEGGELSE_MOR"},{name:"Skjemanummer.DOK_INNLEGGELSE_FAR"},{name:"Skjemanummer.DOK_SYKDOM_MOR"},{name:"Skjemanummer.DOK_SYKDOM_FAR"},{name:"Skjemanummer.DOK_UTDANNING_MOR"},{name:"Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR"},{name:"Skjemanummer.DOK_ARBEID_MOR"},{name:"Skjemanummer.DOK_AV_ALENEOMSORG"},{name:"Skjemanummer.TERMINBEKREFTELSE"},{name:"Skjemanummer.OMSORGSOVERTAKELSE"},{name:"Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG"},{name:"Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE"}]},name:"skjemanummer"}],return:{name:"signature",type:"function",raw:"(attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},name:"attachments"}],return:{name:"void"}}}}},description:""},annenForelder:{required:!0,tsType:{name:"union",raw:"AnnenForelderIkkeOppgitt | AnnenForelderOppgitt",elements:[{name:"Common"},{name:"AnnenForelderOppgitt"}]},description:""}}};const _=({attachments:r,updateAttachments:m,perioder:a,navnPåForeldre:t,familiehendelsesdato:u,termindato:i,situasjon:d,skjemanummer:s,labelText:p,description:T,attachmentType:E})=>{const o=fn("periode-attachment-uploader"),{watch:M}=ne(),h=M(s);return me.useEffect(()=>{if(h.length===0){const L=se(E,s),G=P(L,{type:f.UTTAK,perioder:a.map(K=>({fom:b(K.tidsperiode.fom),tom:b(K.tidsperiode.tom)}))});m([G])}},[m,a,h,E,s]),n.jsx(ae,{label:p,description:n.jsxs(n.Fragment,{children:[n.jsx(re,{children:T}),a.map(L=>n.jsx("div",{className:o.block,children:n.jsx(nn,{periode:L,erAleneOmOmsorg:!1,erFarEllerMedmor:!0,navnPåForeldre:t,familiehendelsesdato:ee(u).toDate(),termindato:i?ee(i).toDate():void 0,situasjon:d,melding:void 0})},L.id))]}),attachmentType:E,skjemanummer:s,existingAttachments:r,updateAttachments:L=>{const G=L.map(K=>P(K,{type:f.UTTAK,perioder:a.map(A=>({fom:b(A.tidsperiode.fom),tom:b(A.tidsperiode.tom)}))}));return m(G)},saveAttachment:ue(ie(),"foreldrepenger")})};_.__docgenInfo={description:"",methods:[],displayName:"UttakUploader",props:{attachments:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},description:""},updateAttachments:{required:!0,tsType:{name:"signature",type:"function",raw:"(attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},name:"attachments"}],return:{name:"void"}}},description:""},perioder:{required:!0,tsType:{name:"Array",elements:[{name:"union",raw:`| Uttaksperiode
+| Utsettelsesperiode
+| Oppholdsperiode
+| Overføringsperiode
+| PeriodeHull
+| PeriodeUtenUttakUtsettelse
+| PeriodeUtenUttak
+| InfoPeriode`,elements:[{name:"union",raw:"UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode",elements:[{name:"UttaksperiodeBase"},{name:"ForeldrepengerFørFødselUttaksperiode"}]},{name:"Utsettelsesperiode"},{name:"Oppholdsperiode"},{name:"Overføringsperiode"},{name:"PeriodeHull"},{name:"PeriodeUtenUttakUtsettelse"},{name:"PeriodeUtenUttak"},{name:"union",raw:"AvslåttPeriode | UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode",elements:[{name:"AvslåttPeriode"},{name:"UttakAnnenPartInfoPeriode"},{name:"UtsettelseAnnenPartInfoPeriode"}]}]}],raw:"Periode[]"},description:""},navnPåForeldre:{required:!0,tsType:{name:"NavnPåForeldre"},description:""},familiehendelsesdato:{required:!0,tsType:{name:"string"},description:""},termindato:{required:!0,tsType:{name:"union",raw:"string | undefined",elements:[{name:"string"},{name:"undefined"}]},description:""},situasjon:{required:!0,tsType:{name:"union",raw:"'fødsel' | 'adopsjon' | 'omsorgsovertakelse'",elements:[{name:"literal",value:"'fødsel'"},{name:"literal",value:"'adopsjon'"},{name:"literal",value:"'omsorgsovertakelse'"}]},description:""},skjemanummer:{required:!0,tsType:{name:"union",raw:`| Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+| Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+| Skjemanummer.DOK_INNLEGGELSE_BARN
+| Skjemanummer.DOK_INNLEGGELSE_MOR
+| Skjemanummer.DOK_INNLEGGELSE_FAR
+| Skjemanummer.DOK_SYKDOM_MOR
+| Skjemanummer.DOK_SYKDOM_FAR
+| Skjemanummer.DOK_UTDANNING_MOR
+| Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+| Skjemanummer.DOK_ARBEID_MOR
+| Skjemanummer.DOK_AV_ALENEOMSORG
+| Skjemanummer.TERMINBEKREFTELSE
+| Skjemanummer.OMSORGSOVERTAKELSE
+| Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+| Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE`,elements:[{name:"Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM"},{name:"Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET"},{name:"Skjemanummer.DOK_INNLEGGELSE_BARN"},{name:"Skjemanummer.DOK_INNLEGGELSE_MOR"},{name:"Skjemanummer.DOK_INNLEGGELSE_FAR"},{name:"Skjemanummer.DOK_SYKDOM_MOR"},{name:"Skjemanummer.DOK_SYKDOM_FAR"},{name:"Skjemanummer.DOK_UTDANNING_MOR"},{name:"Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR"},{name:"Skjemanummer.DOK_ARBEID_MOR"},{name:"Skjemanummer.DOK_AV_ALENEOMSORG"},{name:"Skjemanummer.TERMINBEKREFTELSE"},{name:"Skjemanummer.OMSORGSOVERTAKELSE"},{name:"Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG"},{name:"Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE"}]},description:""},labelText:{required:!0,tsType:{name:"string"},description:""},description:{required:!0,tsType:{name:"union",raw:"string | React.ReactNode",elements:[{name:"string"},{name:"ReactReactNode",raw:"React.ReactNode"}]},description:""},attachmentType:{required:!0,tsType:{name:"AttachmentType"},description:""}}};const oe=({attachments:r,updateAttachments:m,perioder:a,navnPåForeldre:t,familiehendelsesdato:u,situasjon:i,termindato:d})=>{const s=k();return a.length===0?null:n.jsx(_,{attachments:r,updateAttachments:m(e.DOK_INNLEGGELSE_BARN),perioder:a,navnPåForeldre:t,familiehendelsesdato:u,termindato:d,situasjon:i,skjemanummer:e.DOK_INNLEGGELSE_BARN,labelText:s.formatMessage({id:"manglendeVedlegg.barnInnlagt.label"}),description:s.formatMessage({id:"manglendeVedlegg.barnInnlagt.description"}),attachmentType:y.UTSETTELSE_SYKDOM})};oe.__docgenInfo={description:"",methods:[],displayName:"BarnInnlagtDokumentasjon",props:{attachments:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},description:""},updateAttachments:{required:!0,tsType:{name:"signature",type:"function",raw:"(skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"union",raw:`| Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+| Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+| Skjemanummer.DOK_INNLEGGELSE_BARN
+| Skjemanummer.DOK_INNLEGGELSE_MOR
+| Skjemanummer.DOK_INNLEGGELSE_FAR
+| Skjemanummer.DOK_SYKDOM_MOR
+| Skjemanummer.DOK_SYKDOM_FAR
+| Skjemanummer.DOK_UTDANNING_MOR
+| Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+| Skjemanummer.DOK_ARBEID_MOR
+| Skjemanummer.DOK_AV_ALENEOMSORG
+| Skjemanummer.TERMINBEKREFTELSE
+| Skjemanummer.OMSORGSOVERTAKELSE
+| Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+| Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE`,elements:[{name:"Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM"},{name:"Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET"},{name:"Skjemanummer.DOK_INNLEGGELSE_BARN"},{name:"Skjemanummer.DOK_INNLEGGELSE_MOR"},{name:"Skjemanummer.DOK_INNLEGGELSE_FAR"},{name:"Skjemanummer.DOK_SYKDOM_MOR"},{name:"Skjemanummer.DOK_SYKDOM_FAR"},{name:"Skjemanummer.DOK_UTDANNING_MOR"},{name:"Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR"},{name:"Skjemanummer.DOK_ARBEID_MOR"},{name:"Skjemanummer.DOK_AV_ALENEOMSORG"},{name:"Skjemanummer.TERMINBEKREFTELSE"},{name:"Skjemanummer.OMSORGSOVERTAKELSE"},{name:"Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG"},{name:"Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE"}]},name:"skjemanummer"}],return:{name:"signature",type:"function",raw:"(attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},name:"attachments"}],return:{name:"void"}}}}},description:""},perioder:{required:!0,tsType:{name:"Array",elements:[{name:"union",raw:`| Uttaksperiode
+| Utsettelsesperiode
+| Oppholdsperiode
+| Overføringsperiode
+| PeriodeHull
+| PeriodeUtenUttakUtsettelse
+| PeriodeUtenUttak
+| InfoPeriode`,elements:[{name:"union",raw:"UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode",elements:[{name:"UttaksperiodeBase"},{name:"ForeldrepengerFørFødselUttaksperiode"}]},{name:"Utsettelsesperiode"},{name:"Oppholdsperiode"},{name:"Overføringsperiode"},{name:"PeriodeHull"},{name:"PeriodeUtenUttakUtsettelse"},{name:"PeriodeUtenUttak"},{name:"union",raw:"AvslåttPeriode | UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode",elements:[{name:"AvslåttPeriode"},{name:"UttakAnnenPartInfoPeriode"},{name:"UtsettelseAnnenPartInfoPeriode"}]}]}],raw:"Periode[]"},description:""},navnPåForeldre:{required:!0,tsType:{name:"NavnPåForeldre"},description:""},familiehendelsesdato:{required:!0,tsType:{name:"string"},description:""},termindato:{required:!0,tsType:{name:"union",raw:"string | undefined",elements:[{name:"string"},{name:"undefined"}]},description:""},situasjon:{required:!0,tsType:{name:"union",raw:"'fødsel' | 'adopsjon' | 'omsorgsovertakelse'",elements:[{name:"literal",value:"'fødsel'"},{name:"literal",value:"'adopsjon'"},{name:"literal",value:"'omsorgsovertakelse'"}]},description:""}}};const Ee=({attachments:r,updateAttachments:m,arbeidsforholdOgInntekt:a,andreInntektskilder:t})=>{const u=k();if(!a||a&&a.harHattAndreInntektskilder===!1||!t||!t.some(d=>d.type===F.SLUTTPAKKE))return null;const i=t.filter(d=>d.type===F.SLUTTPAKKE);return n.jsx(q,{attachments:r,updateAttachments:m(e.ETTERLØNN_ELLER_SLUTTVEDERLAG),skjemanummer:e.ETTERLØNN_ELLER_SLUTTVEDERLAG,labelText:u.formatMessage({id:"manglendeVedlegg.etterlønn.tittel"},{perioder:de(i,u),antallPerioder:i.length}),description:u.formatMessage({id:"manglendeVedlegg.etterlønn.description"}),attachmentType:y.ANNEN_INNTEKT,metadataType:f.OPPTJENING,perioder:i})};Ee.__docgenInfo={description:"",methods:[],displayName:"EtterlønnEllerSluttvederlagDokumentasjon",props:{attachments:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},description:""},updateAttachments:{required:!0,tsType:{name:"signature",type:"function",raw:"(skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"union",raw:`| Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+| Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+| Skjemanummer.DOK_INNLEGGELSE_BARN
+| Skjemanummer.DOK_INNLEGGELSE_MOR
+| Skjemanummer.DOK_INNLEGGELSE_FAR
+| Skjemanummer.DOK_SYKDOM_MOR
+| Skjemanummer.DOK_SYKDOM_FAR
+| Skjemanummer.DOK_UTDANNING_MOR
+| Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+| Skjemanummer.DOK_ARBEID_MOR
+| Skjemanummer.DOK_AV_ALENEOMSORG
+| Skjemanummer.TERMINBEKREFTELSE
+| Skjemanummer.OMSORGSOVERTAKELSE
+| Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+| Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE`,elements:[{name:"Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM"},{name:"Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET"},{name:"Skjemanummer.DOK_INNLEGGELSE_BARN"},{name:"Skjemanummer.DOK_INNLEGGELSE_MOR"},{name:"Skjemanummer.DOK_INNLEGGELSE_FAR"},{name:"Skjemanummer.DOK_SYKDOM_MOR"},{name:"Skjemanummer.DOK_SYKDOM_FAR"},{name:"Skjemanummer.DOK_UTDANNING_MOR"},{name:"Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR"},{name:"Skjemanummer.DOK_ARBEID_MOR"},{name:"Skjemanummer.DOK_AV_ALENEOMSORG"},{name:"Skjemanummer.TERMINBEKREFTELSE"},{name:"Skjemanummer.OMSORGSOVERTAKELSE"},{name:"Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG"},{name:"Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE"}]},name:"skjemanummer"}],return:{name:"signature",type:"function",raw:"(attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},name:"attachments"}],return:{name:"void"}}}}},description:""},arbeidsforholdOgInntekt:{required:!0,tsType:{name:"union",raw:"ArbeidsforholdOgInntektFp | undefined",elements:[{name:"intersection",raw:`{
+    harHattAndreInntektskilder: boolean;
+} & ArbeidsforholdOgInntektFelles`,elements:[{name:"signature",type:"object",raw:`{
+    harHattAndreInntektskilder: boolean;
+}`,signature:{properties:[{key:"harHattAndreInntektskilder",value:{name:"boolean",required:!0}}]}},{name:"signature",type:"object",raw:`{
+    harJobbetSomFrilans: boolean;
+    harJobbetSomSelvstendigNæringsdrivende: boolean;
+}`,signature:{properties:[{key:"harJobbetSomFrilans",value:{name:"boolean",required:!0}},{key:"harJobbetSomSelvstendigNæringsdrivende",value:{name:"boolean",required:!0}}]}}]},{name:"undefined"}]},description:""},andreInntektskilder:{required:!1,tsType:{name:"Array",elements:[{name:"union",raw:"SluttpakkeInntekt | MilitærtjenesteInntekt | JobbIUtlandetInntekt",elements:[{name:"SluttpakkeInntekt"},{name:"MilitærtjenesteInntekt"},{name:"JobbIUtlandetInntekt"}]}],raw:"AndreInntektskilder[]"},description:""}}};const pe=({attachments:r,updateAttachments:m,perioder:a,navnPåForeldre:t,familiehendelsesdato:u,situasjon:i,termindato:d,erFarEllerMedmor:s})=>{const p=k();return a.length===0?null:n.jsx(_,{attachments:r,updateAttachments:m(e.DOK_SYKDOM_FAR),perioder:a,navnPåForeldre:t,familiehendelsesdato:u,termindato:d,situasjon:i,skjemanummer:e.DOK_SYKDOM_FAR,labelText:p.formatMessage({id:"manglendeVedlegg.farForSyk.label"},{navn:t.farMedmor,erFarEllerMedmor:s}),description:p.formatMessage({id:"manglendeVedlegg.farForSyk.description"},{navn:t.farMedmor,erFarEllerMedmor:s}),attachmentType:y.UTSETTELSE_SYKDOM})};pe.__docgenInfo={description:"",methods:[],displayName:"FarForSykDokumentasjon",props:{attachments:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},description:""},updateAttachments:{required:!0,tsType:{name:"signature",type:"function",raw:"(skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"union",raw:`| Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+| Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+| Skjemanummer.DOK_INNLEGGELSE_BARN
+| Skjemanummer.DOK_INNLEGGELSE_MOR
+| Skjemanummer.DOK_INNLEGGELSE_FAR
+| Skjemanummer.DOK_SYKDOM_MOR
+| Skjemanummer.DOK_SYKDOM_FAR
+| Skjemanummer.DOK_UTDANNING_MOR
+| Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+| Skjemanummer.DOK_ARBEID_MOR
+| Skjemanummer.DOK_AV_ALENEOMSORG
+| Skjemanummer.TERMINBEKREFTELSE
+| Skjemanummer.OMSORGSOVERTAKELSE
+| Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+| Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE`,elements:[{name:"Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM"},{name:"Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET"},{name:"Skjemanummer.DOK_INNLEGGELSE_BARN"},{name:"Skjemanummer.DOK_INNLEGGELSE_MOR"},{name:"Skjemanummer.DOK_INNLEGGELSE_FAR"},{name:"Skjemanummer.DOK_SYKDOM_MOR"},{name:"Skjemanummer.DOK_SYKDOM_FAR"},{name:"Skjemanummer.DOK_UTDANNING_MOR"},{name:"Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR"},{name:"Skjemanummer.DOK_ARBEID_MOR"},{name:"Skjemanummer.DOK_AV_ALENEOMSORG"},{name:"Skjemanummer.TERMINBEKREFTELSE"},{name:"Skjemanummer.OMSORGSOVERTAKELSE"},{name:"Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG"},{name:"Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE"}]},name:"skjemanummer"}],return:{name:"signature",type:"function",raw:"(attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},name:"attachments"}],return:{name:"void"}}}}},description:""},perioder:{required:!0,tsType:{name:"Array",elements:[{name:"union",raw:`| Uttaksperiode
+| Utsettelsesperiode
+| Oppholdsperiode
+| Overføringsperiode
+| PeriodeHull
+| PeriodeUtenUttakUtsettelse
+| PeriodeUtenUttak
+| InfoPeriode`,elements:[{name:"union",raw:"UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode",elements:[{name:"UttaksperiodeBase"},{name:"ForeldrepengerFørFødselUttaksperiode"}]},{name:"Utsettelsesperiode"},{name:"Oppholdsperiode"},{name:"Overføringsperiode"},{name:"PeriodeHull"},{name:"PeriodeUtenUttakUtsettelse"},{name:"PeriodeUtenUttak"},{name:"union",raw:"AvslåttPeriode | UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode",elements:[{name:"AvslåttPeriode"},{name:"UttakAnnenPartInfoPeriode"},{name:"UtsettelseAnnenPartInfoPeriode"}]}]}],raw:"Periode[]"},description:""},navnPåForeldre:{required:!0,tsType:{name:"NavnPåForeldre"},description:""},familiehendelsesdato:{required:!0,tsType:{name:"string"},description:""},termindato:{required:!0,tsType:{name:"union",raw:"string | undefined",elements:[{name:"string"},{name:"undefined"}]},description:""},situasjon:{required:!0,tsType:{name:"union",raw:"'fødsel' | 'adopsjon' | 'omsorgsovertakelse'",elements:[{name:"literal",value:"'fødsel'"},{name:"literal",value:"'adopsjon'"},{name:"literal",value:"'omsorgsovertakelse'"}]},description:""},erFarEllerMedmor:{required:!0,tsType:{name:"boolean"},description:""}}};const ke=({attachments:r,updateAttachments:m,perioder:a,navnPåForeldre:t,familiehendelsesdato:u,situasjon:i,termindato:d,erFarEllerMedmor:s})=>{const p=k();return a.length===0?null:n.jsx(_,{attachments:r,updateAttachments:m(e.DOK_INNLEGGELSE_FAR),perioder:a,navnPåForeldre:t,familiehendelsesdato:u,termindato:d,situasjon:i,skjemanummer:e.DOK_INNLEGGELSE_FAR,labelText:p.formatMessage({id:"manglendeVedlegg.farInnlagt.label"},{navn:t.farMedmor,erFarEllerMedmor:s}),description:p.formatMessage({id:"manglendeVedlegg.farInnlagt.description"},{navn:t.farMedmor,erFarEllerMedmor:s}),attachmentType:y.UTSETTELSE_SYKDOM})};ke.__docgenInfo={description:"",methods:[],displayName:"FarInnlagtDokumentasjon",props:{attachments:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},description:""},updateAttachments:{required:!0,tsType:{name:"signature",type:"function",raw:"(skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"union",raw:`| Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+| Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+| Skjemanummer.DOK_INNLEGGELSE_BARN
+| Skjemanummer.DOK_INNLEGGELSE_MOR
+| Skjemanummer.DOK_INNLEGGELSE_FAR
+| Skjemanummer.DOK_SYKDOM_MOR
+| Skjemanummer.DOK_SYKDOM_FAR
+| Skjemanummer.DOK_UTDANNING_MOR
+| Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+| Skjemanummer.DOK_ARBEID_MOR
+| Skjemanummer.DOK_AV_ALENEOMSORG
+| Skjemanummer.TERMINBEKREFTELSE
+| Skjemanummer.OMSORGSOVERTAKELSE
+| Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+| Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE`,elements:[{name:"Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM"},{name:"Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET"},{name:"Skjemanummer.DOK_INNLEGGELSE_BARN"},{name:"Skjemanummer.DOK_INNLEGGELSE_MOR"},{name:"Skjemanummer.DOK_INNLEGGELSE_FAR"},{name:"Skjemanummer.DOK_SYKDOM_MOR"},{name:"Skjemanummer.DOK_SYKDOM_FAR"},{name:"Skjemanummer.DOK_UTDANNING_MOR"},{name:"Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR"},{name:"Skjemanummer.DOK_ARBEID_MOR"},{name:"Skjemanummer.DOK_AV_ALENEOMSORG"},{name:"Skjemanummer.TERMINBEKREFTELSE"},{name:"Skjemanummer.OMSORGSOVERTAKELSE"},{name:"Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG"},{name:"Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE"}]},name:"skjemanummer"}],return:{name:"signature",type:"function",raw:"(attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},name:"attachments"}],return:{name:"void"}}}}},description:""},perioder:{required:!0,tsType:{name:"Array",elements:[{name:"union",raw:`| Uttaksperiode
+| Utsettelsesperiode
+| Oppholdsperiode
+| Overføringsperiode
+| PeriodeHull
+| PeriodeUtenUttakUtsettelse
+| PeriodeUtenUttak
+| InfoPeriode`,elements:[{name:"union",raw:"UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode",elements:[{name:"UttaksperiodeBase"},{name:"ForeldrepengerFørFødselUttaksperiode"}]},{name:"Utsettelsesperiode"},{name:"Oppholdsperiode"},{name:"Overføringsperiode"},{name:"PeriodeHull"},{name:"PeriodeUtenUttakUtsettelse"},{name:"PeriodeUtenUttak"},{name:"union",raw:"AvslåttPeriode | UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode",elements:[{name:"AvslåttPeriode"},{name:"UttakAnnenPartInfoPeriode"},{name:"UtsettelseAnnenPartInfoPeriode"}]}]}],raw:"Periode[]"},description:""},navnPåForeldre:{required:!0,tsType:{name:"NavnPåForeldre"},description:""},familiehendelsesdato:{required:!0,tsType:{name:"string"},description:""},termindato:{required:!0,tsType:{name:"union",raw:"string | undefined",elements:[{name:"string"},{name:"undefined"}]},description:""},situasjon:{required:!0,tsType:{name:"union",raw:"'fødsel' | 'adopsjon' | 'omsorgsovertakelse'",elements:[{name:"literal",value:"'fødsel'"},{name:"literal",value:"'adopsjon'"},{name:"literal",value:"'omsorgsovertakelse'"}]},description:""},erFarEllerMedmor:{required:!0,tsType:{name:"boolean"},description:""}}};const ye=({attachments:r,updateAttachments:m,arbeidsforholdOgInntekt:a,andreInntektskilder:t})=>{const u=k();if(!a||a&&!a.harHattAndreInntektskilder||!t||!t.some(d=>d.type===F.MILITÆRTJENESTE))return null;const i=t.filter(d=>d.type===F.MILITÆRTJENESTE);return n.jsx(q,{attachments:r,updateAttachments:m(e.DOK_MILITÆR_SILVIL_TJENESTE),skjemanummer:e.DOK_MILITÆR_SILVIL_TJENESTE,labelText:u.formatMessage({id:"manglendeVedlegg.militær.tittel"},{perioder:de(i,u),antallPerioder:i.length}),description:u.formatMessage({id:"manglendeVedlegg.militær.description"}),attachmentType:y.ANNEN_INNTEKT,metadataType:f.OPPTJENING,perioder:i})};ye.__docgenInfo={description:"",methods:[],displayName:"MilitærEllerSiviltjenesteDokumentasjon",props:{attachments:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},description:""},updateAttachments:{required:!0,tsType:{name:"signature",type:"function",raw:"(skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"union",raw:`| Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+| Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+| Skjemanummer.DOK_INNLEGGELSE_BARN
+| Skjemanummer.DOK_INNLEGGELSE_MOR
+| Skjemanummer.DOK_INNLEGGELSE_FAR
+| Skjemanummer.DOK_SYKDOM_MOR
+| Skjemanummer.DOK_SYKDOM_FAR
+| Skjemanummer.DOK_UTDANNING_MOR
+| Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+| Skjemanummer.DOK_ARBEID_MOR
+| Skjemanummer.DOK_AV_ALENEOMSORG
+| Skjemanummer.TERMINBEKREFTELSE
+| Skjemanummer.OMSORGSOVERTAKELSE
+| Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+| Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE`,elements:[{name:"Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM"},{name:"Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET"},{name:"Skjemanummer.DOK_INNLEGGELSE_BARN"},{name:"Skjemanummer.DOK_INNLEGGELSE_MOR"},{name:"Skjemanummer.DOK_INNLEGGELSE_FAR"},{name:"Skjemanummer.DOK_SYKDOM_MOR"},{name:"Skjemanummer.DOK_SYKDOM_FAR"},{name:"Skjemanummer.DOK_UTDANNING_MOR"},{name:"Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR"},{name:"Skjemanummer.DOK_ARBEID_MOR"},{name:"Skjemanummer.DOK_AV_ALENEOMSORG"},{name:"Skjemanummer.TERMINBEKREFTELSE"},{name:"Skjemanummer.OMSORGSOVERTAKELSE"},{name:"Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG"},{name:"Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE"}]},name:"skjemanummer"}],return:{name:"signature",type:"function",raw:"(attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},name:"attachments"}],return:{name:"void"}}}}},description:""},arbeidsforholdOgInntekt:{required:!0,tsType:{name:"union",raw:"ArbeidsforholdOgInntektFp | undefined",elements:[{name:"intersection",raw:`{
+    harHattAndreInntektskilder: boolean;
+} & ArbeidsforholdOgInntektFelles`,elements:[{name:"signature",type:"object",raw:`{
+    harHattAndreInntektskilder: boolean;
+}`,signature:{properties:[{key:"harHattAndreInntektskilder",value:{name:"boolean",required:!0}}]}},{name:"signature",type:"object",raw:`{
+    harJobbetSomFrilans: boolean;
+    harJobbetSomSelvstendigNæringsdrivende: boolean;
+}`,signature:{properties:[{key:"harJobbetSomFrilans",value:{name:"boolean",required:!0}},{key:"harJobbetSomSelvstendigNæringsdrivende",value:{name:"boolean",required:!0}}]}}]},{name:"undefined"}]},description:""},andreInntektskilder:{required:!1,tsType:{name:"Array",elements:[{name:"union",raw:"SluttpakkeInntekt | MilitærtjenesteInntekt | JobbIUtlandetInntekt",elements:[{name:"SluttpakkeInntekt"},{name:"MilitærtjenesteInntekt"},{name:"JobbIUtlandetInntekt"}]}],raw:"AndreInntektskilder[]"},description:""}}};const Se=({attachments:r,updateAttachments:m,perioder:a,navnPåForeldre:t,familiehendelsesdato:u,situasjon:i,termindato:d,erFarEllerMedmor:s})=>{const p=k();return a.length===0?null:n.jsx(_,{attachments:r,updateAttachments:m(e.DOK_SYKDOM_MOR),perioder:a,navnPåForeldre:t,familiehendelsesdato:u,termindato:d,situasjon:i,skjemanummer:e.DOK_SYKDOM_MOR,labelText:p.formatMessage({id:"manglendeVedlegg.morForSyk.label"},{navn:t.mor,erFarEllerMedmor:s}),description:p.formatMessage({id:"manglendeVedlegg.morForSyk.description"},{navn:t.mor,erFarEllerMedmor:s}),attachmentType:y.UTSETTELSE_SYKDOM})};Se.__docgenInfo={description:"",methods:[],displayName:"MorForSykDokumentasjon",props:{attachments:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},description:""},updateAttachments:{required:!0,tsType:{name:"signature",type:"function",raw:"(skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"union",raw:`| Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+| Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+| Skjemanummer.DOK_INNLEGGELSE_BARN
+| Skjemanummer.DOK_INNLEGGELSE_MOR
+| Skjemanummer.DOK_INNLEGGELSE_FAR
+| Skjemanummer.DOK_SYKDOM_MOR
+| Skjemanummer.DOK_SYKDOM_FAR
+| Skjemanummer.DOK_UTDANNING_MOR
+| Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+| Skjemanummer.DOK_ARBEID_MOR
+| Skjemanummer.DOK_AV_ALENEOMSORG
+| Skjemanummer.TERMINBEKREFTELSE
+| Skjemanummer.OMSORGSOVERTAKELSE
+| Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+| Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE`,elements:[{name:"Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM"},{name:"Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET"},{name:"Skjemanummer.DOK_INNLEGGELSE_BARN"},{name:"Skjemanummer.DOK_INNLEGGELSE_MOR"},{name:"Skjemanummer.DOK_INNLEGGELSE_FAR"},{name:"Skjemanummer.DOK_SYKDOM_MOR"},{name:"Skjemanummer.DOK_SYKDOM_FAR"},{name:"Skjemanummer.DOK_UTDANNING_MOR"},{name:"Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR"},{name:"Skjemanummer.DOK_ARBEID_MOR"},{name:"Skjemanummer.DOK_AV_ALENEOMSORG"},{name:"Skjemanummer.TERMINBEKREFTELSE"},{name:"Skjemanummer.OMSORGSOVERTAKELSE"},{name:"Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG"},{name:"Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE"}]},name:"skjemanummer"}],return:{name:"signature",type:"function",raw:"(attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},name:"attachments"}],return:{name:"void"}}}}},description:""},perioder:{required:!0,tsType:{name:"Array",elements:[{name:"union",raw:`| Uttaksperiode
+| Utsettelsesperiode
+| Oppholdsperiode
+| Overføringsperiode
+| PeriodeHull
+| PeriodeUtenUttakUtsettelse
+| PeriodeUtenUttak
+| InfoPeriode`,elements:[{name:"union",raw:"UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode",elements:[{name:"UttaksperiodeBase"},{name:"ForeldrepengerFørFødselUttaksperiode"}]},{name:"Utsettelsesperiode"},{name:"Oppholdsperiode"},{name:"Overføringsperiode"},{name:"PeriodeHull"},{name:"PeriodeUtenUttakUtsettelse"},{name:"PeriodeUtenUttak"},{name:"union",raw:"AvslåttPeriode | UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode",elements:[{name:"AvslåttPeriode"},{name:"UttakAnnenPartInfoPeriode"},{name:"UtsettelseAnnenPartInfoPeriode"}]}]}],raw:"Periode[]"},description:""},navnPåForeldre:{required:!0,tsType:{name:"NavnPåForeldre"},description:""},familiehendelsesdato:{required:!0,tsType:{name:"string"},description:""},termindato:{required:!0,tsType:{name:"union",raw:"string | undefined",elements:[{name:"string"},{name:"undefined"}]},description:""},situasjon:{required:!0,tsType:{name:"union",raw:"'fødsel' | 'adopsjon' | 'omsorgsovertakelse'",elements:[{name:"literal",value:"'fødsel'"},{name:"literal",value:"'adopsjon'"},{name:"literal",value:"'omsorgsovertakelse'"}]},description:""},erFarEllerMedmor:{required:!0,tsType:{name:"boolean"},description:""}}};const ge=({attachments:r,updateAttachments:m,perioder:a,navnPåForeldre:t,familiehendelsesdato:u,situasjon:i,termindato:d,erFarEllerMedmor:s})=>{const p=k();if(a.length===0)return null;const T=a.find(E=>E.type===rn.Uttak&&E.erMorForSyk===!0&&E.konto===an.Fedrekvote)!==void 0;return n.jsx(_,{attachments:r,updateAttachments:m(e.DOK_INNLEGGELSE_MOR),perioder:a,navnPåForeldre:t,familiehendelsesdato:u,termindato:d,situasjon:i,skjemanummer:e.DOK_INNLEGGELSE_MOR,labelText:T?p.formatMessage({id:"manglendeVedlegg.morInnlagtEllerSyk.label"},{navn:t.mor,erFarEllerMedmor:s}):p.formatMessage({id:"manglendeVedlegg.morInnlagt.label"},{navn:t.mor,erFarEllerMedmor:s}),description:T?p.formatMessage({id:"manglendeVedlegg.morInnlagtEllerSyk.description"},{navn:t.mor,erFarEllerMedmor:s}):p.formatMessage({id:"manglendeVedlegg.morInnlagt.description"},{navn:t.mor,erFarEllerMedmor:s}),attachmentType:y.UTSETTELSE_SYKDOM})};ge.__docgenInfo={description:"",methods:[],displayName:"MorInnlagtDokumentasjon",props:{attachments:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},description:""},updateAttachments:{required:!0,tsType:{name:"signature",type:"function",raw:"(skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"union",raw:`| Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+| Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+| Skjemanummer.DOK_INNLEGGELSE_BARN
+| Skjemanummer.DOK_INNLEGGELSE_MOR
+| Skjemanummer.DOK_INNLEGGELSE_FAR
+| Skjemanummer.DOK_SYKDOM_MOR
+| Skjemanummer.DOK_SYKDOM_FAR
+| Skjemanummer.DOK_UTDANNING_MOR
+| Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+| Skjemanummer.DOK_ARBEID_MOR
+| Skjemanummer.DOK_AV_ALENEOMSORG
+| Skjemanummer.TERMINBEKREFTELSE
+| Skjemanummer.OMSORGSOVERTAKELSE
+| Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+| Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE`,elements:[{name:"Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM"},{name:"Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET"},{name:"Skjemanummer.DOK_INNLEGGELSE_BARN"},{name:"Skjemanummer.DOK_INNLEGGELSE_MOR"},{name:"Skjemanummer.DOK_INNLEGGELSE_FAR"},{name:"Skjemanummer.DOK_SYKDOM_MOR"},{name:"Skjemanummer.DOK_SYKDOM_FAR"},{name:"Skjemanummer.DOK_UTDANNING_MOR"},{name:"Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR"},{name:"Skjemanummer.DOK_ARBEID_MOR"},{name:"Skjemanummer.DOK_AV_ALENEOMSORG"},{name:"Skjemanummer.TERMINBEKREFTELSE"},{name:"Skjemanummer.OMSORGSOVERTAKELSE"},{name:"Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG"},{name:"Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE"}]},name:"skjemanummer"}],return:{name:"signature",type:"function",raw:"(attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},name:"attachments"}],return:{name:"void"}}}}},description:""},perioder:{required:!0,tsType:{name:"Array",elements:[{name:"union",raw:`| Uttaksperiode
+| Utsettelsesperiode
+| Oppholdsperiode
+| Overføringsperiode
+| PeriodeHull
+| PeriodeUtenUttakUtsettelse
+| PeriodeUtenUttak
+| InfoPeriode`,elements:[{name:"union",raw:"UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode",elements:[{name:"UttaksperiodeBase"},{name:"ForeldrepengerFørFødselUttaksperiode"}]},{name:"Utsettelsesperiode"},{name:"Oppholdsperiode"},{name:"Overføringsperiode"},{name:"PeriodeHull"},{name:"PeriodeUtenUttakUtsettelse"},{name:"PeriodeUtenUttak"},{name:"union",raw:"AvslåttPeriode | UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode",elements:[{name:"AvslåttPeriode"},{name:"UttakAnnenPartInfoPeriode"},{name:"UtsettelseAnnenPartInfoPeriode"}]}]}],raw:"Periode[]"},description:""},navnPåForeldre:{required:!0,tsType:{name:"NavnPåForeldre"},description:""},familiehendelsesdato:{required:!0,tsType:{name:"string"},description:""},termindato:{required:!0,tsType:{name:"union",raw:"string | undefined",elements:[{name:"string"},{name:"undefined"}]},description:""},situasjon:{required:!0,tsType:{name:"union",raw:"'fødsel' | 'adopsjon' | 'omsorgsovertakelse'",elements:[{name:"literal",value:"'fødsel'"},{name:"literal",value:"'adopsjon'"},{name:"literal",value:"'omsorgsovertakelse'"}]},description:""},erFarEllerMedmor:{required:!0,tsType:{name:"boolean"},description:""}}};const Te=({attachments:r,updateAttachments:m,perioder:a,navnPåForeldre:t,familiehendelsesdato:u,situasjon:i,termindato:d})=>{const s=k();return a.length===0?null:n.jsx(_,{attachments:r,updateAttachments:m(e.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET),perioder:a,navnPåForeldre:t,familiehendelsesdato:u,termindato:d,situasjon:i,skjemanummer:e.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET,labelText:s.formatMessage({id:"manglendeVedlegg.introduksjonsprogram.tittel"}),description:s.formatMessage({id:"manglendeVedlegg.introduksjonsprogram.description"},{navn:t.mor}),attachmentType:y.MORS_AKTIVITET_DOKUMENTASJON})};Te.__docgenInfo={description:"",methods:[],displayName:"MorIntroduksjonsprogrammetDokumentasjon",props:{attachments:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},description:""},updateAttachments:{required:!0,tsType:{name:"signature",type:"function",raw:"(skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"union",raw:`| Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+| Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+| Skjemanummer.DOK_INNLEGGELSE_BARN
+| Skjemanummer.DOK_INNLEGGELSE_MOR
+| Skjemanummer.DOK_INNLEGGELSE_FAR
+| Skjemanummer.DOK_SYKDOM_MOR
+| Skjemanummer.DOK_SYKDOM_FAR
+| Skjemanummer.DOK_UTDANNING_MOR
+| Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+| Skjemanummer.DOK_ARBEID_MOR
+| Skjemanummer.DOK_AV_ALENEOMSORG
+| Skjemanummer.TERMINBEKREFTELSE
+| Skjemanummer.OMSORGSOVERTAKELSE
+| Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+| Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE`,elements:[{name:"Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM"},{name:"Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET"},{name:"Skjemanummer.DOK_INNLEGGELSE_BARN"},{name:"Skjemanummer.DOK_INNLEGGELSE_MOR"},{name:"Skjemanummer.DOK_INNLEGGELSE_FAR"},{name:"Skjemanummer.DOK_SYKDOM_MOR"},{name:"Skjemanummer.DOK_SYKDOM_FAR"},{name:"Skjemanummer.DOK_UTDANNING_MOR"},{name:"Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR"},{name:"Skjemanummer.DOK_ARBEID_MOR"},{name:"Skjemanummer.DOK_AV_ALENEOMSORG"},{name:"Skjemanummer.TERMINBEKREFTELSE"},{name:"Skjemanummer.OMSORGSOVERTAKELSE"},{name:"Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG"},{name:"Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE"}]},name:"skjemanummer"}],return:{name:"signature",type:"function",raw:"(attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},name:"attachments"}],return:{name:"void"}}}}},description:""},perioder:{required:!0,tsType:{name:"Array",elements:[{name:"union",raw:`| Uttaksperiode
+| Utsettelsesperiode
+| Oppholdsperiode
+| Overføringsperiode
+| PeriodeHull
+| PeriodeUtenUttakUtsettelse
+| PeriodeUtenUttak
+| InfoPeriode`,elements:[{name:"union",raw:"UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode",elements:[{name:"UttaksperiodeBase"},{name:"ForeldrepengerFørFødselUttaksperiode"}]},{name:"Utsettelsesperiode"},{name:"Oppholdsperiode"},{name:"Overføringsperiode"},{name:"PeriodeHull"},{name:"PeriodeUtenUttakUtsettelse"},{name:"PeriodeUtenUttak"},{name:"union",raw:"AvslåttPeriode | UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode",elements:[{name:"AvslåttPeriode"},{name:"UttakAnnenPartInfoPeriode"},{name:"UtsettelseAnnenPartInfoPeriode"}]}]}],raw:"Periode[]"},description:""},navnPåForeldre:{required:!0,tsType:{name:"NavnPåForeldre"},description:""},familiehendelsesdato:{required:!0,tsType:{name:"string"},description:""},termindato:{required:!0,tsType:{name:"union",raw:"string | undefined",elements:[{name:"string"},{name:"undefined"}]},description:""},situasjon:{required:!0,tsType:{name:"union",raw:"'fødsel' | 'adopsjon' | 'omsorgsovertakelse'",elements:[{name:"literal",value:"'fødsel'"},{name:"literal",value:"'adopsjon'"},{name:"literal",value:"'omsorgsovertakelse'"}]},description:""}}};const _e=({attachments:r,updateAttachments:m,perioder:a,navnPåForeldre:t,familiehendelsesdato:u,situasjon:i,termindato:d})=>{const s=k();return a.length===0?null:n.jsx(_,{attachments:r,updateAttachments:m(e.DOK_ARBEID_MOR),perioder:a,navnPåForeldre:t,familiehendelsesdato:u,termindato:d,situasjon:i,skjemanummer:e.DOK_ARBEID_MOR,labelText:s.formatMessage({id:"manglendeVedlegg.morJobber.label"}),description:s.formatMessage({id:"manglendeVedlegg.morJobber.description"},{navn:t.mor}),attachmentType:y.MORS_AKTIVITET_DOKUMENTASJON})};_e.__docgenInfo={description:"",methods:[],displayName:"MorJobberDokumentasjon",props:{attachments:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},description:""},updateAttachments:{required:!0,tsType:{name:"signature",type:"function",raw:"(skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"union",raw:`| Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+| Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+| Skjemanummer.DOK_INNLEGGELSE_BARN
+| Skjemanummer.DOK_INNLEGGELSE_MOR
+| Skjemanummer.DOK_INNLEGGELSE_FAR
+| Skjemanummer.DOK_SYKDOM_MOR
+| Skjemanummer.DOK_SYKDOM_FAR
+| Skjemanummer.DOK_UTDANNING_MOR
+| Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+| Skjemanummer.DOK_ARBEID_MOR
+| Skjemanummer.DOK_AV_ALENEOMSORG
+| Skjemanummer.TERMINBEKREFTELSE
+| Skjemanummer.OMSORGSOVERTAKELSE
+| Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+| Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE`,elements:[{name:"Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM"},{name:"Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET"},{name:"Skjemanummer.DOK_INNLEGGELSE_BARN"},{name:"Skjemanummer.DOK_INNLEGGELSE_MOR"},{name:"Skjemanummer.DOK_INNLEGGELSE_FAR"},{name:"Skjemanummer.DOK_SYKDOM_MOR"},{name:"Skjemanummer.DOK_SYKDOM_FAR"},{name:"Skjemanummer.DOK_UTDANNING_MOR"},{name:"Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR"},{name:"Skjemanummer.DOK_ARBEID_MOR"},{name:"Skjemanummer.DOK_AV_ALENEOMSORG"},{name:"Skjemanummer.TERMINBEKREFTELSE"},{name:"Skjemanummer.OMSORGSOVERTAKELSE"},{name:"Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG"},{name:"Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE"}]},name:"skjemanummer"}],return:{name:"signature",type:"function",raw:"(attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},name:"attachments"}],return:{name:"void"}}}}},description:""},perioder:{required:!0,tsType:{name:"Array",elements:[{name:"union",raw:`| Uttaksperiode
+| Utsettelsesperiode
+| Oppholdsperiode
+| Overføringsperiode
+| PeriodeHull
+| PeriodeUtenUttakUtsettelse
+| PeriodeUtenUttak
+| InfoPeriode`,elements:[{name:"union",raw:"UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode",elements:[{name:"UttaksperiodeBase"},{name:"ForeldrepengerFørFødselUttaksperiode"}]},{name:"Utsettelsesperiode"},{name:"Oppholdsperiode"},{name:"Overføringsperiode"},{name:"PeriodeHull"},{name:"PeriodeUtenUttakUtsettelse"},{name:"PeriodeUtenUttak"},{name:"union",raw:"AvslåttPeriode | UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode",elements:[{name:"AvslåttPeriode"},{name:"UttakAnnenPartInfoPeriode"},{name:"UtsettelseAnnenPartInfoPeriode"}]}]}],raw:"Periode[]"},description:""},navnPåForeldre:{required:!0,tsType:{name:"NavnPåForeldre"},description:""},familiehendelsesdato:{required:!0,tsType:{name:"string"},description:""},termindato:{required:!0,tsType:{name:"union",raw:"string | undefined",elements:[{name:"string"},{name:"undefined"}]},description:""},situasjon:{required:!0,tsType:{name:"union",raw:"'fødsel' | 'adopsjon' | 'omsorgsovertakelse'",elements:[{name:"literal",value:"'fødsel'"},{name:"literal",value:"'adopsjon'"},{name:"literal",value:"'omsorgsovertakelse'"}]},description:""}}};const Ae=({attachments:r,updateAttachments:m,perioder:a,navnPåForeldre:t,familiehendelsesdato:u,situasjon:i,termindato:d})=>{const s=k();return a.length===0?null:n.jsx(_,{attachments:r,updateAttachments:m(e.DOK_UTDANNING_OG_ARBEID_MOR),perioder:a,navnPåForeldre:t,familiehendelsesdato:u,termindato:d,situasjon:i,skjemanummer:e.DOK_UTDANNING_OG_ARBEID_MOR,labelText:s.formatMessage({id:"manglendeVedlegg.studererOgJobber.label"}),description:n.jsxs(n.Fragment,{children:[n.jsx(c,{children:n.jsx(g,{id:"manglendeVedlegg.studererOgJobber.description.tittel",values:{navn:t.mor}})}),n.jsx("ul",{style:{margin:"0",padding:"0.5rem 2.5rem"},children:n.jsxs(B,{gap:"2",children:[n.jsx("li",{children:n.jsx(c,{children:n.jsx(g,{id:"manglendeVedlegg.studerer.description.punkt1"})})}),n.jsx("li",{children:n.jsx(c,{children:n.jsx(g,{id:"manglendeVedlegg.studerer.description.punkt2"})})}),n.jsx("li",{children:n.jsx(c,{children:n.jsx(g,{id:"manglendeVedlegg.studerer.description.punkt3"})})}),n.jsx("li",{children:n.jsx(c,{children:n.jsx(g,{id:"manglendeVedlegg.studerer.description.punkt4"})})})]})})]}),attachmentType:y.MORS_AKTIVITET_DOKUMENTASJON})};Ae.__docgenInfo={description:"",methods:[],displayName:"MorJobberOgStudererDokumentasjon",props:{attachments:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},description:""},updateAttachments:{required:!0,tsType:{name:"signature",type:"function",raw:"(skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"union",raw:`| Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+| Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+| Skjemanummer.DOK_INNLEGGELSE_BARN
+| Skjemanummer.DOK_INNLEGGELSE_MOR
+| Skjemanummer.DOK_INNLEGGELSE_FAR
+| Skjemanummer.DOK_SYKDOM_MOR
+| Skjemanummer.DOK_SYKDOM_FAR
+| Skjemanummer.DOK_UTDANNING_MOR
+| Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+| Skjemanummer.DOK_ARBEID_MOR
+| Skjemanummer.DOK_AV_ALENEOMSORG
+| Skjemanummer.TERMINBEKREFTELSE
+| Skjemanummer.OMSORGSOVERTAKELSE
+| Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+| Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE`,elements:[{name:"Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM"},{name:"Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET"},{name:"Skjemanummer.DOK_INNLEGGELSE_BARN"},{name:"Skjemanummer.DOK_INNLEGGELSE_MOR"},{name:"Skjemanummer.DOK_INNLEGGELSE_FAR"},{name:"Skjemanummer.DOK_SYKDOM_MOR"},{name:"Skjemanummer.DOK_SYKDOM_FAR"},{name:"Skjemanummer.DOK_UTDANNING_MOR"},{name:"Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR"},{name:"Skjemanummer.DOK_ARBEID_MOR"},{name:"Skjemanummer.DOK_AV_ALENEOMSORG"},{name:"Skjemanummer.TERMINBEKREFTELSE"},{name:"Skjemanummer.OMSORGSOVERTAKELSE"},{name:"Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG"},{name:"Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE"}]},name:"skjemanummer"}],return:{name:"signature",type:"function",raw:"(attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},name:"attachments"}],return:{name:"void"}}}}},description:""},perioder:{required:!0,tsType:{name:"Array",elements:[{name:"union",raw:`| Uttaksperiode
+| Utsettelsesperiode
+| Oppholdsperiode
+| Overføringsperiode
+| PeriodeHull
+| PeriodeUtenUttakUtsettelse
+| PeriodeUtenUttak
+| InfoPeriode`,elements:[{name:"union",raw:"UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode",elements:[{name:"UttaksperiodeBase"},{name:"ForeldrepengerFørFødselUttaksperiode"}]},{name:"Utsettelsesperiode"},{name:"Oppholdsperiode"},{name:"Overføringsperiode"},{name:"PeriodeHull"},{name:"PeriodeUtenUttakUtsettelse"},{name:"PeriodeUtenUttak"},{name:"union",raw:"AvslåttPeriode | UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode",elements:[{name:"AvslåttPeriode"},{name:"UttakAnnenPartInfoPeriode"},{name:"UtsettelseAnnenPartInfoPeriode"}]}]}],raw:"Periode[]"},description:""},navnPåForeldre:{required:!0,tsType:{name:"NavnPåForeldre"},description:""},familiehendelsesdato:{required:!0,tsType:{name:"string"},description:""},termindato:{required:!0,tsType:{name:"union",raw:"string | undefined",elements:[{name:"string"},{name:"undefined"}]},description:""},situasjon:{required:!0,tsType:{name:"union",raw:"'fødsel' | 'adopsjon' | 'omsorgsovertakelse'",elements:[{name:"literal",value:"'fødsel'"},{name:"literal",value:"'adopsjon'"},{name:"literal",value:"'omsorgsovertakelse'"}]},description:""}}};const Oe=({attachments:r,updateAttachments:m,perioder:a,navnPåForeldre:t,familiehendelsesdato:u,situasjon:i,termindato:d})=>{const s=k();return a.length===0?null:n.jsx(_,{attachments:r,updateAttachments:m(e.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM),perioder:a,navnPåForeldre:t,familiehendelsesdato:u,termindato:d,situasjon:i,skjemanummer:e.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM,labelText:s.formatMessage({id:"manglendeVedlegg.kvalifiseringsprogram.tittel"}),description:s.formatMessage({id:"manglendeVedlegg.kvalifiseringsprogram.description"},{navn:t.mor}),attachmentType:y.MORS_AKTIVITET_DOKUMENTASJON})};Oe.__docgenInfo={description:"",methods:[],displayName:"MorKvalifiseringsprogrammetDokumentasjon",props:{attachments:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},description:""},updateAttachments:{required:!0,tsType:{name:"signature",type:"function",raw:"(skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"union",raw:`| Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+| Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+| Skjemanummer.DOK_INNLEGGELSE_BARN
+| Skjemanummer.DOK_INNLEGGELSE_MOR
+| Skjemanummer.DOK_INNLEGGELSE_FAR
+| Skjemanummer.DOK_SYKDOM_MOR
+| Skjemanummer.DOK_SYKDOM_FAR
+| Skjemanummer.DOK_UTDANNING_MOR
+| Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+| Skjemanummer.DOK_ARBEID_MOR
+| Skjemanummer.DOK_AV_ALENEOMSORG
+| Skjemanummer.TERMINBEKREFTELSE
+| Skjemanummer.OMSORGSOVERTAKELSE
+| Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+| Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE`,elements:[{name:"Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM"},{name:"Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET"},{name:"Skjemanummer.DOK_INNLEGGELSE_BARN"},{name:"Skjemanummer.DOK_INNLEGGELSE_MOR"},{name:"Skjemanummer.DOK_INNLEGGELSE_FAR"},{name:"Skjemanummer.DOK_SYKDOM_MOR"},{name:"Skjemanummer.DOK_SYKDOM_FAR"},{name:"Skjemanummer.DOK_UTDANNING_MOR"},{name:"Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR"},{name:"Skjemanummer.DOK_ARBEID_MOR"},{name:"Skjemanummer.DOK_AV_ALENEOMSORG"},{name:"Skjemanummer.TERMINBEKREFTELSE"},{name:"Skjemanummer.OMSORGSOVERTAKELSE"},{name:"Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG"},{name:"Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE"}]},name:"skjemanummer"}],return:{name:"signature",type:"function",raw:"(attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},name:"attachments"}],return:{name:"void"}}}}},description:""},perioder:{required:!0,tsType:{name:"Array",elements:[{name:"union",raw:`| Uttaksperiode
+| Utsettelsesperiode
+| Oppholdsperiode
+| Overføringsperiode
+| PeriodeHull
+| PeriodeUtenUttakUtsettelse
+| PeriodeUtenUttak
+| InfoPeriode`,elements:[{name:"union",raw:"UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode",elements:[{name:"UttaksperiodeBase"},{name:"ForeldrepengerFørFødselUttaksperiode"}]},{name:"Utsettelsesperiode"},{name:"Oppholdsperiode"},{name:"Overføringsperiode"},{name:"PeriodeHull"},{name:"PeriodeUtenUttakUtsettelse"},{name:"PeriodeUtenUttak"},{name:"union",raw:"AvslåttPeriode | UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode",elements:[{name:"AvslåttPeriode"},{name:"UttakAnnenPartInfoPeriode"},{name:"UtsettelseAnnenPartInfoPeriode"}]}]}],raw:"Periode[]"},description:""},navnPåForeldre:{required:!0,tsType:{name:"NavnPåForeldre"},description:""},familiehendelsesdato:{required:!0,tsType:{name:"string"},description:""},termindato:{required:!0,tsType:{name:"union",raw:"string | undefined",elements:[{name:"string"},{name:"undefined"}]},description:""},situasjon:{required:!0,tsType:{name:"union",raw:"'fødsel' | 'adopsjon' | 'omsorgsovertakelse'",elements:[{name:"literal",value:"'fødsel'"},{name:"literal",value:"'adopsjon'"},{name:"literal",value:"'omsorgsovertakelse'"}]},description:""}}};const Re=({attachments:r,updateAttachments:m,perioder:a,navnPåForeldre:t,familiehendelsesdato:u,situasjon:i,termindato:d})=>{const s=k();return a.length===0?null:n.jsx(_,{attachments:r,updateAttachments:m(e.DOK_UTDANNING_MOR),perioder:a,navnPåForeldre:t,familiehendelsesdato:u,termindato:d,situasjon:i,skjemanummer:e.DOK_UTDANNING_MOR,labelText:s.formatMessage({id:"manglendeVedlegg.studerer.label"}),description:n.jsxs(n.Fragment,{children:[n.jsx(c,{children:n.jsx(g,{id:"manglendeVedlegg.studerer.description.tittel",values:{navn:t.mor}})}),n.jsx("ul",{style:{margin:"0",padding:"0.5rem 2.5rem"},children:n.jsxs(B,{gap:"2",children:[n.jsx("li",{children:n.jsx(c,{children:n.jsx(g,{id:"manglendeVedlegg.studerer.description.punkt1"})})}),n.jsx("li",{children:n.jsx(c,{children:n.jsx(g,{id:"manglendeVedlegg.studerer.description.punkt2"})})}),n.jsx("li",{children:n.jsx(c,{children:n.jsx(g,{id:"manglendeVedlegg.studerer.description.punkt3"})})}),n.jsx("li",{children:n.jsx(c,{children:n.jsx(g,{id:"manglendeVedlegg.studerer.description.punkt4"})})})]})})]}),attachmentType:y.MORS_AKTIVITET_DOKUMENTASJON})};Re.__docgenInfo={description:"",methods:[],displayName:"MorStudererDokumentasjon",props:{attachments:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},description:""},updateAttachments:{required:!0,tsType:{name:"signature",type:"function",raw:"(skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"union",raw:`| Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+| Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+| Skjemanummer.DOK_INNLEGGELSE_BARN
+| Skjemanummer.DOK_INNLEGGELSE_MOR
+| Skjemanummer.DOK_INNLEGGELSE_FAR
+| Skjemanummer.DOK_SYKDOM_MOR
+| Skjemanummer.DOK_SYKDOM_FAR
+| Skjemanummer.DOK_UTDANNING_MOR
+| Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+| Skjemanummer.DOK_ARBEID_MOR
+| Skjemanummer.DOK_AV_ALENEOMSORG
+| Skjemanummer.TERMINBEKREFTELSE
+| Skjemanummer.OMSORGSOVERTAKELSE
+| Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+| Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE`,elements:[{name:"Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM"},{name:"Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET"},{name:"Skjemanummer.DOK_INNLEGGELSE_BARN"},{name:"Skjemanummer.DOK_INNLEGGELSE_MOR"},{name:"Skjemanummer.DOK_INNLEGGELSE_FAR"},{name:"Skjemanummer.DOK_SYKDOM_MOR"},{name:"Skjemanummer.DOK_SYKDOM_FAR"},{name:"Skjemanummer.DOK_UTDANNING_MOR"},{name:"Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR"},{name:"Skjemanummer.DOK_ARBEID_MOR"},{name:"Skjemanummer.DOK_AV_ALENEOMSORG"},{name:"Skjemanummer.TERMINBEKREFTELSE"},{name:"Skjemanummer.OMSORGSOVERTAKELSE"},{name:"Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG"},{name:"Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE"}]},name:"skjemanummer"}],return:{name:"signature",type:"function",raw:"(attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},name:"attachments"}],return:{name:"void"}}}}},description:""},perioder:{required:!0,tsType:{name:"Array",elements:[{name:"union",raw:`| Uttaksperiode
+| Utsettelsesperiode
+| Oppholdsperiode
+| Overføringsperiode
+| PeriodeHull
+| PeriodeUtenUttakUtsettelse
+| PeriodeUtenUttak
+| InfoPeriode`,elements:[{name:"union",raw:"UttaksperiodeBase | ForeldrepengerFørFødselUttaksperiode",elements:[{name:"UttaksperiodeBase"},{name:"ForeldrepengerFørFødselUttaksperiode"}]},{name:"Utsettelsesperiode"},{name:"Oppholdsperiode"},{name:"Overføringsperiode"},{name:"PeriodeHull"},{name:"PeriodeUtenUttakUtsettelse"},{name:"PeriodeUtenUttak"},{name:"union",raw:"AvslåttPeriode | UttakAnnenPartInfoPeriode | UtsettelseAnnenPartInfoPeriode",elements:[{name:"AvslåttPeriode"},{name:"UttakAnnenPartInfoPeriode"},{name:"UtsettelseAnnenPartInfoPeriode"}]}]}],raw:"Periode[]"},description:""},navnPåForeldre:{required:!0,tsType:{name:"NavnPåForeldre"},description:""},familiehendelsesdato:{required:!0,tsType:{name:"string"},description:""},termindato:{required:!0,tsType:{name:"union",raw:"string | undefined",elements:[{name:"string"},{name:"undefined"}]},description:""},situasjon:{required:!0,tsType:{name:"union",raw:"'fødsel' | 'adopsjon' | 'omsorgsovertakelse'",elements:[{name:"literal",value:"'fødsel'"},{name:"literal",value:"'adopsjon'"},{name:"literal",value:"'omsorgsovertakelse'"}]},description:""}}};const je=({attachments:r,updateAttachments:m,søkersituasjon:a})=>{const t=k();return a.situasjon!=="adopsjon"?null:n.jsx(q,{attachments:r,updateAttachments:m(e.OMSORGSOVERTAKELSE),skjemanummer:e.OMSORGSOVERTAKELSE,labelText:t.formatMessage({id:"manglendeVedlegg.omsorgsovertakelse.tittel"}),description:t.formatMessage({id:"manglendeVedlegg.omsorgsovertakelse.description"}),attachmentType:y.OMSORGSOVERTAKELSE,metadataType:f.BARN})};je.__docgenInfo={description:"",methods:[],displayName:"OmsorgsovertakelseDokumentasjon",props:{attachments:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},description:""},updateAttachments:{required:!0,tsType:{name:"signature",type:"function",raw:"(skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"union",raw:`| Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+| Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+| Skjemanummer.DOK_INNLEGGELSE_BARN
+| Skjemanummer.DOK_INNLEGGELSE_MOR
+| Skjemanummer.DOK_INNLEGGELSE_FAR
+| Skjemanummer.DOK_SYKDOM_MOR
+| Skjemanummer.DOK_SYKDOM_FAR
+| Skjemanummer.DOK_UTDANNING_MOR
+| Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+| Skjemanummer.DOK_ARBEID_MOR
+| Skjemanummer.DOK_AV_ALENEOMSORG
+| Skjemanummer.TERMINBEKREFTELSE
+| Skjemanummer.OMSORGSOVERTAKELSE
+| Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+| Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE`,elements:[{name:"Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM"},{name:"Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET"},{name:"Skjemanummer.DOK_INNLEGGELSE_BARN"},{name:"Skjemanummer.DOK_INNLEGGELSE_MOR"},{name:"Skjemanummer.DOK_INNLEGGELSE_FAR"},{name:"Skjemanummer.DOK_SYKDOM_MOR"},{name:"Skjemanummer.DOK_SYKDOM_FAR"},{name:"Skjemanummer.DOK_UTDANNING_MOR"},{name:"Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR"},{name:"Skjemanummer.DOK_ARBEID_MOR"},{name:"Skjemanummer.DOK_AV_ALENEOMSORG"},{name:"Skjemanummer.TERMINBEKREFTELSE"},{name:"Skjemanummer.OMSORGSOVERTAKELSE"},{name:"Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG"},{name:"Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE"}]},name:"skjemanummer"}],return:{name:"signature",type:"function",raw:"(attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},name:"attachments"}],return:{name:"void"}}}}},description:""},søkersituasjon:{required:!0,tsType:{name:"signature",type:"object",raw:`{
+    situasjon?: Situasjon;
+}`,signature:{properties:[{key:"situasjon",value:{name:"union",raw:"'fødsel' | 'adopsjon' | 'omsorgsovertakelse'",elements:[{name:"literal",value:"'fødsel'"},{name:"literal",value:"'adopsjon'"},{name:"literal",value:"'omsorgsovertakelse'"}],required:!1}}]}},description:""}}};const hn=(r,m)=>Be(r)?m?Xe(m):!1:!0,Ne=({attachments:r,updateAttachments:m,barn:a,rolle:t,arbeidsforhold:u,erFarEllerMedmor:i})=>{const d=k();return!tn(a)||u.length>0&&!i||!hn(t,a.termindato)?null:n.jsx(q,{attachments:r,updateAttachments:m(e.TERMINBEKREFTELSE),skjemanummer:e.TERMINBEKREFTELSE,labelText:d.formatMessage({id:"manglendeVedlegg.terminbekreftelse.tittel"}),description:d.formatMessage({id:i?"manglendeVedlegg.terminbekreftelse.description.farMedmor":"manglendeVedlegg.terminbekreftelse.description"}),attachmentType:y.TERMINBEKREFTELSE,metadataType:f.BARN})};Ne.__docgenInfo={description:"",methods:[],displayName:"TerminbekreftelseDokumentasjon",props:{attachments:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},description:""},updateAttachments:{required:!0,tsType:{name:"signature",type:"function",raw:"(skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"union",raw:`| Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM
+| Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET
+| Skjemanummer.DOK_INNLEGGELSE_BARN
+| Skjemanummer.DOK_INNLEGGELSE_MOR
+| Skjemanummer.DOK_INNLEGGELSE_FAR
+| Skjemanummer.DOK_SYKDOM_MOR
+| Skjemanummer.DOK_SYKDOM_FAR
+| Skjemanummer.DOK_UTDANNING_MOR
+| Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR
+| Skjemanummer.DOK_ARBEID_MOR
+| Skjemanummer.DOK_AV_ALENEOMSORG
+| Skjemanummer.TERMINBEKREFTELSE
+| Skjemanummer.OMSORGSOVERTAKELSE
+| Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG
+| Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE`,elements:[{name:"Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM"},{name:"Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET"},{name:"Skjemanummer.DOK_INNLEGGELSE_BARN"},{name:"Skjemanummer.DOK_INNLEGGELSE_MOR"},{name:"Skjemanummer.DOK_INNLEGGELSE_FAR"},{name:"Skjemanummer.DOK_SYKDOM_MOR"},{name:"Skjemanummer.DOK_SYKDOM_FAR"},{name:"Skjemanummer.DOK_UTDANNING_MOR"},{name:"Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR"},{name:"Skjemanummer.DOK_ARBEID_MOR"},{name:"Skjemanummer.DOK_AV_ALENEOMSORG"},{name:"Skjemanummer.TERMINBEKREFTELSE"},{name:"Skjemanummer.OMSORGSOVERTAKELSE"},{name:"Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG"},{name:"Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE"}]},name:"skjemanummer"}],return:{name:"signature",type:"function",raw:"(attachments: Attachment[]) => void",signature:{arguments:[{type:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    dokumenterer?: AttachmentMetadata;
+    id: string;
+    filename: string;
+    filesize: number;
+    file: File;
+    url?: string;
+    uuid?: string;
+    pending: boolean;
+    uploaded: boolean;
+    type: AttachmentType;
+    skjemanummer: Skjemanummer;
+    innsendingsType?: InnsendingsType;
+    error?: any;
+    beskrivelse?: string;
+}`,signature:{properties:[{key:"dokumenterer",value:{name:"signature",type:"object",raw:`{
+    type: AttachmentMetadataType;
+    perioder?: AttachmentMetadataTidsperiode[];
+    arbeidsforhold?: any;
+}`,signature:{properties:[{key:"type",value:{name:"AttachmentMetadataType",required:!0}},{key:"perioder",value:{name:"Array",elements:[{name:"AttachmentMetadataTidsperiode"}],raw:"AttachmentMetadataTidsperiode[]",required:!1}},{key:"arbeidsforhold",value:{name:"any",required:!1}}]},required:!1}},{key:"id",value:{name:"string",required:!0}},{key:"filename",value:{name:"string",required:!0}},{key:"filesize",value:{name:"number",required:!0}},{key:"file",value:{name:"File",required:!0}},{key:"url",value:{name:"string",required:!1}},{key:"uuid",value:{name:"string",required:!1}},{key:"pending",value:{name:"boolean",required:!0}},{key:"uploaded",value:{name:"boolean",required:!0}},{key:"type",value:{name:"AttachmentType",required:!0}},{key:"skjemanummer",value:{name:"Skjemanummer",required:!0}},{key:"innsendingsType",value:{name:"InnsendingsType",required:!1}},{key:"error",value:{name:"any",required:!1}},{key:"beskrivelse",value:{name:"string",required:!1}}]}}],raw:"Attachment[]"},name:"attachments"}],return:{name:"void"}}}}},description:""},barn:{required:!0,tsType:{name:"union",raw:"FødtBarn | UfødtBarn | AdoptertBarn | AdoptertStebarn | AdoptertAnnetBarn | IkkeUtfyltTypeBarn",elements:[{name:"FødtBarn"},{name:"UfødtBarn"},{name:"AdoptertBarn"},{name:"AdoptertStebarn"},{name:"AdoptertAnnetBarn"},{name:"IkkeUtfyltTypeBarn"}]},description:""},arbeidsforhold:{required:!0,tsType:{name:"Array",elements:[{name:"signature",type:"object",raw:`{
+    arbeidsgiverNavn: string;
+    arbeidsgiverId: string;
+    arbeidsgiverIdType: string;
+    fom: string;
+    tom?: string;
+    stillingsprosent: number;
+}`,signature:{properties:[{key:"arbeidsgiverNavn",value:{name:"string",required:!0}},{key:"arbeidsgiverId",value:{name:"string",required:!0}},{key:"arbeidsgiverIdType",value:{name:"string",required:!0}},{key:"fom",value:{name:"string",required:!0}},{key:"tom",value:{name:"string",required:!1}},{key:"stillingsprosent",value:{name:"number",required:!0}}]}}],raw:"Arbeidsforhold[]"},description:""},rolle:{required:!0,tsType:{name:"union",raw:"'far' | 'medmor' | 'mor'",elements:[{name:"literal",value:"'far'"},{name:"literal",value:"'medmor'"},{name:"literal",value:"'mor'"}]},description:""},erFarEllerMedmor:{required:!0,tsType:{name:"boolean"},description:""}}};const Gn=({mellomlagreSøknadOgNaviger:r,avbrytSøknad:m,søkerInfo:a,erEndringssøknad:t})=>{const u=k(),i=Je(a.arbeidsforhold,r,t),d=xe(a.arbeidsforhold,t),s=U(D(v.UTTAKSPLAN)),p=U(D(v.ANNEN_FORELDER)),T=U(D(v.OM_BARNET)),E=U(D(v.SØKERSITUASJON)),o=D(v.VEDLEGG)||{},M=D(v.UTTAKSPLAN_METADATA),h=D(v.ARBEIDSFORHOLD_OG_INNTEKT),L=D(v.ANDRE_INNTEKTSKILDER),G=we(v.VEDLEGG),K=ln(s,M==null?void 0:M.perioderSomSkalSendesInn,t),A=Ye(E.rolle),O=mn(K,A,p),Ie=on(o),ce=En(o),Le=pn(o),ve=kn(o),De=yn(o),fe=Sn(o),Me=gn(o),Ke=Tn(o),qe=_n(o),he=An(o),Ge=o[e.DOK_AV_ALENEOMSORG]||[],be=o[e.TERMINBEKREFTELSE]||[],Ue=o[e.OMSORGSOVERTAKELSE]||[],Fe=o[e.DOK_MILITÆR_SILVIL_TJENESTE]||[],Pe=o[e.ETTERLØNN_ELLER_SLUTTVEDERLAG]||[],J=O.filter(On),x=O.filter(un),Y=O.filter(Rn),z=O.filter(jn),H=O.filter(Nn),C=O.filter(In),$=O.filter(cn),W=O.filter(Ln),X=O.filter(vn),Z=O.filter(Dn),R=ze(a.søker,p,A,u),j=Ze(T),N=Qe(T),Ve=l=>{const w={...o,[e.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]:X.length?l[e.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]:[],[e.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]:C.length>0?l[e.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]:[],[e.DOK_INNLEGGELSE_MOR]:J.length>0?l[e.DOK_INNLEGGELSE_MOR]:[],[e.DOK_INNLEGGELSE_BARN]:x.length>0?l[e.DOK_INNLEGGELSE_BARN]:[],[e.DOK_INNLEGGELSE_FAR]:z.length>0?l[e.DOK_INNLEGGELSE_FAR]:[],[e.DOK_SYKDOM_MOR]:H.length>0?l[e.DOK_SYKDOM_MOR]:[],[e.DOK_SYKDOM_FAR]:Y.length>0?l[e.DOK_SYKDOM_FAR]:[],[e.DOK_UTDANNING_MOR]:Z.length>0?l[e.DOK_UTDANNING_MOR]:[],[e.DOK_UTDANNING_OG_ARBEID_MOR]:W.length>0?l[e.DOK_UTDANNING_OG_ARBEID_MOR]:[],[e.DOK_ARBEID_MOR]:$.length>0?l[e.DOK_ARBEID_MOR]:[],[e.DOK_AV_ALENEOMSORG]:l[e.DOK_AV_ALENEOMSORG]||[],[e.TERMINBEKREFTELSE]:l[e.TERMINBEKREFTELSE]||[],[e.OMSORGSOVERTAKELSE]:l[e.OMSORGSOVERTAKELSE]||[],[e.DOK_MILITÆR_SILVIL_TJENESTE]:l[e.DOK_MILITÆR_SILVIL_TJENESTE]||[],[e.ETTERLØNN_ELLER_SLUTTVEDERLAG]:l[e.ETTERLØNN_ELLER_SLUTTVEDERLAG]||[]};return G(w),i.goToNextDefaultStep()},V=He({defaultValues:{[e.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]:o[e.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]||[],[e.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]:o[e.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]||[],[e.DOK_INNLEGGELSE_MOR]:o[e.DOK_INNLEGGELSE_MOR]||[],[e.DOK_INNLEGGELSE_BARN]:o[e.DOK_INNLEGGELSE_BARN]||[],[e.DOK_INNLEGGELSE_FAR]:o[e.DOK_INNLEGGELSE_FAR]||[],[e.DOK_SYKDOM_FAR]:o[e.DOK_SYKDOM_FAR]||[],[e.DOK_SYKDOM_MOR]:o[e.DOK_SYKDOM_MOR]||[],[e.DOK_UTDANNING_MOR]:o[e.DOK_UTDANNING_MOR]||[],[e.DOK_UTDANNING_OG_ARBEID_MOR]:o[e.DOK_UTDANNING_OG_ARBEID_MOR]||[],[e.DOK_ARBEID_MOR]:o[e.DOK_ARBEID_MOR]||[],[e.DOK_AV_ALENEOMSORG]:o[e.DOK_AV_ALENEOMSORG]||[],[e.TERMINBEKREFTELSE]:o[e.TERMINBEKREFTELSE]||[],[e.OMSORGSOVERTAKELSE]:o[e.OMSORGSOVERTAKELSE]||[],[e.DOK_MILITÆR_SILVIL_TJENESTE]:o[e.DOK_MILITÆR_SILVIL_TJENESTE]||[],[e.ETTERLØNN_ELLER_SLUTTVEDERLAG]:o[e.ETTERLØNN_ELLER_SLUTTVEDERLAG]||[]}}),S=l=>w=>{V.setValue(l,w,{shouldDirty:!0,shouldTouch:!0}),V.clearErrors(l)};return n.jsx(sn,{bannerTitle:u.formatMessage({id:"søknad.pageheading"}),onCancel:m,onContinueLater:i.fortsettSøknadSenere,steps:d,noFieldsRequired:!0,children:n.jsx(Ce,{formMethods:V,onSubmit:Ve,children:n.jsxs(B,{gap:"10",children:[n.jsx(ge,{attachments:Ie.filter(l=>!I(l)),familiehendelsesdato:j,navnPåForeldre:R,perioder:J,situasjon:E.situasjon,termindato:N,updateAttachments:S,erFarEllerMedmor:A}),n.jsx(Se,{attachments:ce.filter(l=>!I(l)),familiehendelsesdato:j,navnPåForeldre:R,perioder:H,situasjon:E.situasjon,termindato:N,updateAttachments:S,erFarEllerMedmor:A}),n.jsx(ke,{attachments:Le.filter(l=>!I(l)),familiehendelsesdato:j,navnPåForeldre:R,perioder:z,situasjon:E.situasjon,termindato:N,updateAttachments:S,erFarEllerMedmor:A}),n.jsx(pe,{attachments:ve.filter(l=>!I(l)),familiehendelsesdato:j,navnPåForeldre:R,perioder:Y,situasjon:E.situasjon,termindato:N,updateAttachments:S,erFarEllerMedmor:A}),n.jsx(oe,{attachments:De.filter(l=>!I(l)),familiehendelsesdato:j,navnPåForeldre:R,perioder:x,situasjon:E.situasjon,termindato:N,updateAttachments:S}),n.jsx(Re,{attachments:fe.filter(l=>!I(l)),familiehendelsesdato:j,navnPåForeldre:R,perioder:Z,situasjon:E.situasjon,termindato:N,updateAttachments:S}),n.jsx(_e,{attachments:Me.filter(l=>!I(l)),familiehendelsesdato:j,navnPåForeldre:R,perioder:$,situasjon:E.situasjon,termindato:N,updateAttachments:S}),n.jsx(Ae,{attachments:Ke.filter(l=>!I(l)),familiehendelsesdato:j,navnPåForeldre:R,perioder:W,situasjon:E.situasjon,termindato:N,updateAttachments:S}),n.jsx(Te,{attachments:qe.filter(l=>!I(l)),familiehendelsesdato:j,navnPåForeldre:R,perioder:C,situasjon:E.situasjon,termindato:N,updateAttachments:S}),n.jsx(Oe,{attachments:he.filter(l=>!I(l)),familiehendelsesdato:j,navnPåForeldre:R,perioder:X,situasjon:E.situasjon,termindato:N,updateAttachments:S}),n.jsx(le,{attachments:Ge,updateAttachments:S,annenForelder:p}),n.jsx(Ne,{attachments:be,updateAttachments:S,barn:T,arbeidsforhold:a.arbeidsforhold,rolle:E.rolle,erFarEllerMedmor:A}),n.jsx(je,{attachments:Ue,updateAttachments:S,søkersituasjon:E}),n.jsx(Ee,{attachments:Pe,updateAttachments:S,arbeidsforholdOgInntekt:h,andreInntektskilder:L}),n.jsx(ye,{attachments:Fe,updateAttachments:S,arbeidsforholdOgInntekt:h,andreInntektskilder:L}),n.jsxs(dn,{size:"small",variant:"info",children:[n.jsx(We,{level:"2",size:"small",children:n.jsx(g,{id:"manglendeVedlegg.duKanSende.tittel"})}),n.jsx(re,{children:n.jsx(g,{id:"manglendeVedlegg.duKanSende.innhold"})})]}),n.jsx($e,{goToPreviousStep:i.goToPreviousDefaultStep})]})})})};Gn.__docgenInfo={description:"",methods:[],displayName:"ManglendeVedlegg"};export{Gn as M};

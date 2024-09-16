@@ -1,0 +1,1 @@
+var n=(t=>(t.test1Juli2024Regler="FEATURE_TEST_1JULI2024_REGLER",t))(n||{});const r=()=>{const t=document.getElementById("nav:appSettings");if(!t)return{};const e=JSON.parse(t.text);return{APP_VERSION:e.APP_VERSION,INNSYN:e.INNSYN,PUBLIC_PATH:e.PUBLIC_PATH,[n.test1Juli2024Regler]:e[n.test1Juli2024Regler]}},s=r();export{s as E,n as F};

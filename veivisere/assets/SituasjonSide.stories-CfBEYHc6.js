@@ -1,6 +1,0 @@
-import{j as t}from"./Link-CIniHqhq.js";import{i as m,M as n,F as p}from"./useVeiviserNavigator-DC1OSa3P.js";import{a as e}from"./SituasjonSide-snY6eItO.js";import"./index-CTjT7uj6.js";import"./Infobox-Dvf5-g5v.js";import"./index-BRV0Se7Z.js";import"./RhfNumericField-BwGY18jM.js";import"./Responsive-WphEkGs6.js";import"./index-CYM-y3Gt.js";import"./satserUtils-DwZGsrCQ.js";import"./useControllableState-DjKA1xGW.js";import"./useScrollBehaviour-JYGXuUr7.js";import"./currencyUtils-Cbm1oTt-.js";import"./VeiviserPage-CVY2g4Zy.js";import"./BlueRadioGroup-CmWib3Cr.js";import"./Stroller-B2viZarj.js";import"./BabyWrapped-nq5gdtpx.js";const d={engangstønad:[{fom:"01.01.2023",verdi:92648}],grunnbeløp:[{fom:"01.05.2024",verdi:124028}]},L={title:"fpEllerEs/SituasjonSide",component:e,render:a=>(m(),t.jsx(n,{initialEntries:[p.SITUASJON],children:t.jsx(e,{...a})}))},r={args:{satser:d,setFpEllerEsSituasjon:()=>{}}};var o,s,i;r.parameters={...r.parameters,docs:{...(o=r.parameters)==null?void 0:o.docs,source:{originalSource:`{
-  args: {
-    satser: DEFAULT_SATSER,
-    setFpEllerEsSituasjon: () => undefined
-  }
-}`,...(i=(s=r.parameters)==null?void 0:s.docs)==null?void 0:i.source}}};const M=["Default"];export{r as Default,M as __namedExportsOrder,L as default};
