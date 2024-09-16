@@ -1,7 +1,7 @@
 {
     "app": "foreldrepengesoknad",
     "autentisering": true,
-    "redirectFrom": "foreldrepengesoknad.nav.no",
+    "redirectFrom": ["foreldrepengesoknad.nav.no"],
     "ingress": "https://www.nav.no/foreldrepenger/soknad",
     "env": {
         "PUBLIC_PATH": "/foreldrepenger/soknad",

@@ -1,7 +1,7 @@
 {
     "app": "svangerskapspengesoknad",
     "autentisering": true,
-    "redirectFrom": "svangerskapspengesoknad.nav.no",
+    "redirectFrom": ["svangerskapspengesoknad.nav.no"],
     "ingress": "https://www.nav.no/svangerskapspenger/soknad",
     "env": {
         "PUBLIC_PATH": "/svangerskapspenger/soknad",

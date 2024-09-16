@@ -81,6 +81,7 @@ metadata:
 spec:
   ingressClassName: nais-ingress
   rules:
+    {{#each redirectFrom}}
     - host: {{redirectFrom}}
       http:
         paths:
@@ -91,4 +92,5 @@ spec:
                 name: {{app}}
                 port:
                   number: 80
+    {{/each}}
 {{/if}}

@@ -1,7 +1,7 @@
 {
     "app": "engangsstonad",
     "autentisering": true,
-    "redirectFrom": "engangsstonad.intern.dev.nav.no",
+    "redirectFrom": ["engangsstonad.intern.dev.nav.no"],
     "ingress": "https://www.intern.dev.nav.no/engangsstonad/soknad",
     "env": {
         "PUBLIC_PATH": "/engangsstonad/soknad",
