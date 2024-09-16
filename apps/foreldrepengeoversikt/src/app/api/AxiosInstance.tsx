@@ -1,5 +1,5 @@
 import { getAxiosInstance } from '@navikt/fp-api';
 
-import Environment from 'app/appData/Environment';
+import { prefiks_public_path } from 'app/api/api';
 
-export const AxiosInstanceAPI = () => getAxiosInstance({ baseUrl: Environment.PUBLIC_PATH });
+export const AxiosInstanceAPI = () => getAxiosInstance({ baseUrl: prefiks_public_path });
