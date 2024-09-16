@@ -1,7 +1,11 @@
 {
     "app": "foreldrepengeoversikt",
     "autentisering": true,
-    "redirectFrom": ["foreldrepenger.intern.dev.nav.no"],
+    "redirectFrom": [
+        "foreldrepenger.intern.dev.nav.no",
+        "intern.dev.nav.no/svangerskapspenger/oversikt",
+        "intern.dev.nav.no/engangsstonad/oversikt"
+    ],
     "ingress": "https://www.intern.dev.nav.no/foreldrepenger/oversikt",
     "env": {
         "ENV": "dev",
