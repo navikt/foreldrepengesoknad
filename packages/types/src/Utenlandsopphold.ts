@@ -10,14 +10,6 @@ export type UtenlandsoppholdPeriode = {
     landkode: string;
 };
 
-export type UtenlandsoppholdSenere = {
-    utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[];
-};
-
-export type UtenlandsoppholdTidligere = {
-    utenlandsoppholdSiste12Mnd: UtenlandsoppholdPeriode[];
-};
-
 // API representasjon
 type UtenlandsoppholdDTO = {
     land: string;

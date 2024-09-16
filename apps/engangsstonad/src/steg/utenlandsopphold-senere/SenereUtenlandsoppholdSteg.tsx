@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { Heading } from '@navikt/ds-react';
 
 import { SenereUtenlandsoppholdPanel } from '@navikt/fp-steg-utenlandsopphold';
-import { UtenlandsoppholdSenere } from '@navikt/fp-types';
+import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 
 type Props = {
@@ -20,7 +20,7 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagr
     const senereUtenlandsopphold = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const oppdaterSenereUtenlandsopphold = useContextSaveData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
-    const lagre = (formValues: UtenlandsoppholdSenere) => {
+    const lagre = (formValues: UtenlandsoppholdPeriode[]) => {
         oppdaterSenereUtenlandsopphold(formValues);
         return navigator.goToNextDefaultStep();
     };
@@ -31,7 +31,7 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagr
                 <FormattedMessage id="Søknad.Pageheading" />
             </Heading>
             <SenereUtenlandsoppholdPanel
-                senereUtenlandsopphold={senereUtenlandsopphold}
+                senereUtenlandsopphold={senereUtenlandsopphold ?? []}
                 saveOnNext={lagre}
                 saveOnPrevious={oppdaterSenereUtenlandsopphold}
                 onContinueLater={navigator.fortsettSøknadSenere}

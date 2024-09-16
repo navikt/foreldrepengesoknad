@@ -1,30 +1,30 @@
 import { PlusIcon } from '@navikt/aksel-icons';
-import { Fragment, useCallback, useMemo } from 'react';
+import { Fragment, useCallback } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
 import { Button, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { UtenlandsoppholdPeriode, UtenlandsoppholdSenere } from '@navikt/fp-types';
+import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { HorizontalLine, ProgressStep, Step } from '@navikt/fp-ui';
 
 import SenereUtenlandsoppholdPeriode from './SenereUtenlandsoppholdPeriode';
+
+type FormType = {
+    utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[];
+};
 
 const DEFAULT_PERIODE = {
     fom: '',
     tom: '',
     landkode: '',
-} as UtenlandsoppholdPeriode;
-
-const DEFAULT_FORM_VALUES = {
-    utenlandsoppholdNeste12Mnd: [DEFAULT_PERIODE],
-} as UtenlandsoppholdSenere;
+} satisfies UtenlandsoppholdPeriode;
 
 export interface Props<TYPE> {
-    senereUtenlandsopphold?: UtenlandsoppholdSenere;
-    saveOnNext: (formValues: UtenlandsoppholdSenere) => void;
-    saveOnPrevious: (formValues: UtenlandsoppholdSenere | undefined) => void;
+    senereUtenlandsopphold: UtenlandsoppholdPeriode[];
+    saveOnNext: (formValues: UtenlandsoppholdPeriode[]) => void;
+    saveOnPrevious: (formValues: UtenlandsoppholdPeriode[]) => void;
     onStepChange?: (id: TYPE) => void;
     cancelApplication: () => void;
     onContinueLater?: () => void;
@@ -42,9 +42,11 @@ const SenereUtenlandsoppholdPanel = <TYPE extends string>({
     senereUtenlandsopphold,
     stepConfig,
 }: Props<TYPE>) => {
-    const defaultValues = useMemo(() => senereUtenlandsopphold || DEFAULT_FORM_VALUES, [senereUtenlandsopphold]);
-    const formMethods = useForm<UtenlandsoppholdSenere>({
-        defaultValues,
+    const formMethods = useForm<FormType>({
+        defaultValues: {
+            utenlandsoppholdNeste12Mnd:
+                senereUtenlandsopphold.length === 0 ? [DEFAULT_PERIODE] : senereUtenlandsopphold,
+        },
     });
     const { fields, append, remove } = useFieldArray({
         name: 'utenlandsoppholdNeste12Mnd',
@@ -62,7 +64,7 @@ const SenereUtenlandsoppholdPanel = <TYPE extends string>({
             steps={stepConfig}
             onStepChange={onStepChange}
         >
-            <RhfForm formMethods={formMethods} onSubmit={saveOnNext}>
+            <RhfForm formMethods={formMethods} onSubmit={(values) => saveOnNext(values.utenlandsoppholdNeste12Mnd)}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     <VStack gap="10" align="start">
@@ -82,9 +84,9 @@ const SenereUtenlandsoppholdPanel = <TYPE extends string>({
                             <FormattedMessage id="SenereUtenlandsoppholdSteg.Knapp.LeggTilLand" />
                         </Button>
                     </VStack>
-                    <StepButtonsHookForm<UtenlandsoppholdSenere>
+                    <StepButtonsHookForm<FormType>
                         goToPreviousStep={goToPreviousStep}
-                        saveDataOnPreviousClick={saveOnPrevious}
+                        saveDataOnPreviousClick={(values) => saveOnPrevious(values.utenlandsoppholdNeste12Mnd)}
                     />
                 </VStack>
             </RhfForm>

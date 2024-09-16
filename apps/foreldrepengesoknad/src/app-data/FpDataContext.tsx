@@ -8,13 +8,7 @@ import { AnnenForelder, Barn, BarnFraNesteSak, EksisterendeSak, Periode } from '
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
 import { Frilans } from '@navikt/fp-steg-frilans';
-import {
-    Dekningsgrad,
-    SøkersituasjonFp,
-    Utenlandsopphold,
-    UtenlandsoppholdSenere,
-    UtenlandsoppholdTidligere,
-} from '@navikt/fp-types';
+import { Dekningsgrad, SøkersituasjonFp, Utenlandsopphold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
 import Fordeling from '../types/Fordeling';
 
@@ -51,8 +45,8 @@ export type ContextDataMap = {
     [ContextDataType.FRILANS]?: Frilans;
     [ContextDataType.ANDRE_INNTEKTSKILDER]?: AndreInntektskilder[];
     [ContextDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;
-    [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: UtenlandsoppholdSenere;
-    [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: UtenlandsoppholdTidligere;
+    [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: UtenlandsoppholdPeriode[];
+    [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: UtenlandsoppholdPeriode[];
     [ContextDataType.PERIODE_MED_FORELDREPENGER]?: Dekningsgrad;
     [ContextDataType.FORDELING]?: Fordeling;
     [ContextDataType.UTTAKSPLAN]?: Periode[];

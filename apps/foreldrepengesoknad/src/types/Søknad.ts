@@ -11,8 +11,7 @@ import {
     Dekningsgrad,
     InformasjonOmUtenlandsoppholdDTO,
     Utenlandsopphold,
-    UtenlandsoppholdSenere,
-    UtenlandsoppholdTidligere,
+    UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
 
 export interface Søknad {
@@ -26,8 +25,8 @@ export interface Søknad {
     frilans: Frilans;
     andreInntektskilder: AndreInntektskilder[];
     utenlandsopphold: Utenlandsopphold;
-    utenlandsoppholdNeste12Mnd: UtenlandsoppholdSenere;
-    utenlandsoppholdSiste12Mnd: UtenlandsoppholdTidligere;
+    utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[];
+    utenlandsoppholdSiste12Mnd: UtenlandsoppholdPeriode[];
     erEndringssøknad: boolean;
     dekningsgrad: Dekningsgrad;
     uttaksplan: Periode[];

@@ -92,8 +92,8 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                 </FormSummary>
                 <BoIUtlandetOppsummeringspunkt
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
-                    tidligereUtenlandsopphold={utenlandsoppholdTidligere?.utenlandsoppholdSiste12Mnd ?? []}
-                    senereUtenlandsopphold={utenlandsoppholdSenere?.utenlandsoppholdNeste12Mnd ?? []}
+                    tidligereUtenlandsopphold={utenlandsoppholdTidligere ?? []}
+                    senereUtenlandsopphold={utenlandsoppholdSenere ?? []}
                 />
                 <ArbeidsforholdOppsummering
                     arbeidsforhold={aktiveArbeidsforhold}
