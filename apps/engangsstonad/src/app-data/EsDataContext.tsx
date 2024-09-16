@@ -2,7 +2,7 @@ import { FunctionComponent, ReactNode, createContext, useCallback, useContext, u
 import Dokumentasjon from 'types/Dokumentasjon';
 import { OmBarnet } from 'types/OmBarnet';
 
-import { Søkersituasjon, Utenlandsopphold, UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
+import { Søkersituasjon, Utenlandsopphold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
 import { Path } from './paths';
 
@@ -22,8 +22,8 @@ export type ContextDataMap = {
     [ContextDataType.OM_BARNET]?: OmBarnet;
     [ContextDataType.DOKUMENTASJON]?: Dokumentasjon;
     [ContextDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;
-    [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: UtenlandsoppholdSenere;
-    [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: UtenlandsoppholdTidligere;
+    [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: UtenlandsoppholdPeriode[];
+    [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: UtenlandsoppholdPeriode[];
 };
 
 const defaultInitialState = {} as ContextDataMap;

@@ -47,8 +47,8 @@ const OppsummeringSteg = ({ sendSøknad, mellomlagreOgNaviger }: Props) => {
                 />
                 <BoIUtlandetOppsummeringspunkt
                     onVilEndreSvar={() => navigator.goToNextStep(Path.UTENLANDSOPPHOLD)}
-                    tidligereUtenlandsopphold={tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd ?? []}
-                    senereUtenlandsopphold={senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd ?? []}
+                    tidligereUtenlandsopphold={tidligereUtenlandsopphold ?? []}
+                    senereUtenlandsopphold={senereUtenlandsopphold ?? []}
                 />
                 <DokumentasjonOppsummering dokumentasjon={dokumentasjon} onVilEndreSvar={navigator.goToNextStep} />
             </OppsummeringPanel>

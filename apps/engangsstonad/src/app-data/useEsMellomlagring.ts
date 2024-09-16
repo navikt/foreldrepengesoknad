@@ -8,7 +8,7 @@ import { Kvittering, LocaleAll } from '@navikt/fp-types';
 
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './EsDataContext';
 
-export const VERSJON_MELLOMLAGRING = 1;
+export const VERSJON_MELLOMLAGRING = 2;
 
 export type EsDataMapAndMetaData = { version: number; locale: LocaleAll } & ContextDataMap;
 

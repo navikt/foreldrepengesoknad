@@ -131,10 +131,8 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
                             {!erEndringssøknad && (
                                 <BoIUtlandetOppsummeringspunkt
                                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
-                                    tidligereUtenlandsopphold={
-                                        tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd ?? []
-                                    }
-                                    senereUtenlandsopphold={senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd ?? []}
+                                    tidligereUtenlandsopphold={tidligereUtenlandsopphold ?? []}
+                                    senereUtenlandsopphold={senereUtenlandsopphold ?? []}
                                 />
                             )}
                         </OppsummeringPanel.Punkt>

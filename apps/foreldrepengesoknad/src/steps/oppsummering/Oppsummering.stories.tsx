@@ -22,8 +22,7 @@ import {
     Søkerinfo,
     SøkersituasjonFp,
     Utenlandsopphold,
-    UtenlandsoppholdSenere,
-    UtenlandsoppholdTidligere,
+    UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
 
 import AxiosMock from '../../__mocks__/AxiosMock';
@@ -186,8 +185,8 @@ type StoryArgs = {
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelder;
     utenlandsopphold?: Utenlandsopphold;
-    utenlandsoppholdSenere?: UtenlandsoppholdSenere;
-    utenlandsoppholdTidligere?: UtenlandsoppholdTidligere;
+    utenlandsoppholdSenere?: UtenlandsoppholdPeriode[];
+    utenlandsoppholdTidligere?: UtenlandsoppholdPeriode[];
     barn?: Barn;
     sivilstand?: Sivilstand;
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
@@ -449,24 +448,21 @@ export const MorMedUtenlandsopphold: Story = {
             skalBoUtenforNorgeNeste12Mnd: true,
             harBoddUtenforNorgeSiste12Mnd: true,
         },
-        utenlandsoppholdSenere: {
-            utenlandsoppholdNeste12Mnd: [
-                {
-                    landkode: 'SE',
-                    fom: dayjs().format(ISO_DATE_FORMAT),
-                    tom: dayjs().add(100, 'days').format(ISO_DATE_FORMAT),
-                },
-            ],
-        },
-        utenlandsoppholdTidligere: {
-            utenlandsoppholdSiste12Mnd: [
-                {
-                    landkode: 'SE',
-                    fom: dayjs().subtract(10, 'months').format(ISO_DATE_FORMAT),
-                    tom: dayjs().subtract(1, 'days').format(ISO_DATE_FORMAT),
-                },
-            ],
-        },
+        utenlandsoppholdSenere: [
+            {
+                landkode: 'SE',
+                fom: dayjs().format(ISO_DATE_FORMAT),
+                tom: dayjs().add(100, 'days').format(ISO_DATE_FORMAT),
+            },
+        ],
+
+        utenlandsoppholdTidligere: [
+            {
+                landkode: 'SE',
+                fom: dayjs().subtract(10, 'months').format(ISO_DATE_FORMAT),
+                tom: dayjs().subtract(1, 'days').format(ISO_DATE_FORMAT),
+            },
+        ],
     },
 };
 
