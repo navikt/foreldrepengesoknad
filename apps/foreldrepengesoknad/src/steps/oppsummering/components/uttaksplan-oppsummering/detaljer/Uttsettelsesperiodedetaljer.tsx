@@ -5,7 +5,7 @@ import { AnnenForelder, PeriodeUtenUttakUtsettelse, Utsettelsesperiode, Utsettel
 import { Arbeidsforhold } from '@navikt/fp-types';
 
 import { getÅrsakTekst } from '../OppsummeringUtils';
-import Feltoppsummering from '../feltoppsummering/Feltoppsummering';
+import Feltoppsummering from './Feltoppsummering';
 import MorsAktivitetDetaljer from './MorsaktiviteterDetaljer';
 
 interface UtsettelsesperiodedetaljerProps {

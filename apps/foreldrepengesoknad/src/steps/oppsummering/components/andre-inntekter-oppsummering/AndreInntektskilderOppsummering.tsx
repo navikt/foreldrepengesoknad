@@ -26,9 +26,15 @@ export const AndreInntektskilderOppsummering: React.FC<Props> = ({ andreInntekts
                     <FormattedMessage id="Oppsummering.EndreSvar" />
                 </FormSummary.EditLink>
             </FormSummary.Header>
-            {andreInntektskilder.map((annenInntektskilde) => (
+            {andreInntektskilder.map((annenInntektskilde, index) => (
                 <FormSummary.Answers key={`${annenInntektskilde.type}-${annenInntektskilde.fom}`}>
                     <FormSummary.Answer>
+                        <FormSummary.Label>
+                            <FormattedMessage
+                                id="AndreInntektskilderOppsummering.AnnenInntekt"
+                                values={{ number: index + 1 }}
+                            />
+                        </FormSummary.Label>
                         <FormSummary.Value>
                             <FormSummary.Answers>
                                 <Fragment>

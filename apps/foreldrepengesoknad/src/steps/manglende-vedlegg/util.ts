@@ -251,22 +251,6 @@ export const isSendSenereVedlegg = (attachment: Attachment) => {
     return attachment.innsendingsType === InnsendingsType.SEND_SENERE;
 };
 
-export const søknadInneholderIngenVedlegg = (vedlegg: VedleggDataType | undefined) => {
-    let ingenVedlegg = true;
-
-    if (vedlegg === undefined) {
-        return ingenVedlegg;
-    }
-
-    Object.keys(vedlegg).forEach((key: any) => {
-        if ((vedlegg as any)[key] !== undefined && (vedlegg as any)[key].length > 0) {
-            ingenVedlegg = false;
-        }
-    });
-
-    return ingenVedlegg;
-};
-
 export const getRelevantePerioder = (
     perioder: Periode[],
     endringssøknadPerioder: Periode[] | undefined,

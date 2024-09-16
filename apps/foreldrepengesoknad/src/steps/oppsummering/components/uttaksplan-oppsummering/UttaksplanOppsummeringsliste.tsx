@@ -1,25 +1,23 @@
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
+
+import { FormSummary } from '@navikt/ds-react';
 
 import {
     AnnenForelder,
     NavnPåForeldre,
-    Oppholdsperiode,
-    Overføringsperiode,
     Periode,
-    PeriodeUtenUttakUtsettelse,
     Periodetype,
     Situasjon,
     StønadskontoType,
     TidsperiodeDate,
-    Utsettelsesperiode,
     Uttaksperiode,
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
 } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { formatDate } from '@navikt/fp-utils';
+import { capitalizeFirstLetter, formatDateMedUkedagShortMonth } from '@navikt/fp-utils';
 import {
     appendPeriodeNavnHvisUttakRundtFødselFarMedmor,
     finnesPeriodeIOpprinneligPlan,
@@ -30,7 +28,6 @@ import {
 import Overføringsperiodedetaljer from './detaljer/Overføringsperiodedetaljer';
 import Uttaksperiodedetaljer from './detaljer/Uttaksperiodedetaljer';
 import Utsettelsesperiodedetaljer from './detaljer/Uttsettelsesperiodedetaljer';
-import Oppsummeringsliste, { OppsummeringslisteelementProps } from './oppsummeringsliste/Oppsummeringsliste';
 
 interface UttaksplanOppsummeringslisteProps {
     perioder: Periode[];
@@ -81,8 +78,8 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
         const formatertTidsperiode = intl.formatMessage(
             { id: 'tidsintervall' },
             {
-                fom: formatDate(tidsperiode.fom),
-                tom: formatDate(tidsperiode.tom),
+                fom: capitalizeFirstLetter(formatDateMedUkedagShortMonth(tidsperiode.fom)),
+                tom: formatDateMedUkedagShortMonth(tidsperiode.tom),
             },
         );
         if (uttaksperiodeKanJusteresVedFødsel(ønskerJustertUttakVedFødsel, termindato, tidsperiode.fom)) {
@@ -91,107 +88,92 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
         }
         return formatertTidsperiode;
     };
-    const createOppsummeringslisteelementPropsForUttaksperiode = (
-        periode: Uttaksperiode,
-        periodeErNyEllerEndret = true,
-    ): OppsummeringslisteelementProps => {
-        const høyrestiltTekst = isSkalIkkeHaForeldrepengerFørFødselPeriode(periode)
-            ? intl.formatMessage({ id: 'uttaksplan.periodeliste.header.skalIkkeHaUttakFørTermin' })
-            : formatTidsperiode(periode.tidsperiode);
-        return {
-            venstrestiltTekst: getUttaksperiodeNavn(periode),
-            høyrestiltTekst,
-            content: (
-                <Uttaksperiodedetaljer
-                    periode={periode}
-                    registrerteArbeidsforhold={registrerteArbeidsforhold}
-                    periodeErNyEllerEndret={periodeErNyEllerEndret}
-                    søkerErFarEllerMedmor={erFarEllerMedmor}
-                    annenForelder={annenForelder}
-                />
-            ),
-        };
-    };
 
-    const createOppsummeringslisteelementPropsForOppholdsperiode = (
-        periode: Oppholdsperiode,
-    ): OppsummeringslisteelementProps => {
-        return {
-            venstrestiltTekst: getPeriodeTittel(
-                intl,
-                periode,
-                navnPåForeldre,
-                familiehendelsesdato,
-                termindato ? dayjs(termindato).toDate() : undefined,
-                situasjon,
-                erFarEllerMedmor,
-            ),
-            høyrestiltTekst: formatTidsperiode(periode.tidsperiode),
-        };
-    };
+    return (
+        <FormSummary.Value>
+            <FormSummary.Label>
+                <FormattedMessage id="oppsummering.uttak.dine.perioder" />
+            </FormSummary.Label>
+            <FormSummary.Answers>
+                {perioder.map((periode) => {
+                    const periodeErNyEllerEndret = eksisterendeUttaksplan
+                        ? finnesPeriodeIOpprinneligPlan(periode, eksisterendeUttaksplan) === false
+                        : true;
 
-    const createOppsummeringslisteelementPropsForUtsettelsesperiode = (
-        periode: Utsettelsesperiode | PeriodeUtenUttakUtsettelse,
-        periodeErNyEllerEndret: boolean,
-    ): OppsummeringslisteelementProps => {
-        return {
-            venstrestiltTekst: intl.formatMessage({ id: 'oppsummering.utsettelse.pga' }),
-            høyrestiltTekst: formatTidsperiode(periode.tidsperiode),
-            content: (
-                <Utsettelsesperiodedetaljer
-                    periode={periode}
-                    registrerteArbeidsforhold={registrerteArbeidsforhold}
-                    søkerErFarEllerMedmor={erFarEllerMedmor}
-                    annenForelder={annenForelder}
-                    periodeErNyEllerEndret={periodeErNyEllerEndret}
-                />
-            ),
-        };
-    };
-
-    const createOppsummeringslisteelementPropsForOverføringsperiode = (
-        periode: Overføringsperiode,
-    ): OppsummeringslisteelementProps => {
-        const kontonavn = getStønadskontoNavnFromKonto(periode.konto);
-        return {
-            venstrestiltTekst: intl.formatMessage(
-                { id: 'oppsummering.overtakelse.pga' },
-                {
-                    konto: kontonavn,
-                },
-            ),
-            høyrestiltTekst: formatTidsperiode(periode.tidsperiode),
-            content: <Overføringsperiodedetaljer periode={periode} navnPåForeldre={navnPåForeldre} />,
-        };
-    };
-
-    const createOppsummeringslisteelementProps = (periode: Periode) => {
-        const periodeErNyEllerEndret = eksisterendeUttaksplan
-            ? finnesPeriodeIOpprinneligPlan(periode, eksisterendeUttaksplan) === false
-            : true;
-        switch (periode.type) {
-            case Periodetype.Uttak:
-                return createOppsummeringslisteelementPropsForUttaksperiode(periode, periodeErNyEllerEndret);
-            case Periodetype.Utsettelse:
-                return createOppsummeringslisteelementPropsForUtsettelsesperiode(periode, periodeErNyEllerEndret);
-            case Periodetype.Overføring:
-                return createOppsummeringslisteelementPropsForOverføringsperiode(periode);
-            case Periodetype.Opphold:
-                return createOppsummeringslisteelementPropsForOppholdsperiode(periode);
-            default:
-                return null;
-        }
-    };
-
-    const oppsummeringslisteData = (): OppsummeringslisteelementProps[] => {
-        const periodeliste = perioder
-            .map((periode) => createOppsummeringslisteelementProps(periode))
-            .filter((v) => v !== null) as OppsummeringslisteelementProps[];
-
-        return periodeliste;
-    };
-
-    return <Oppsummeringsliste data={oppsummeringslisteData()} />;
+                    if (periode.type === Periodetype.Uttak) {
+                        const tidsperiode = isSkalIkkeHaForeldrepengerFørFødselPeriode(periode)
+                            ? intl.formatMessage({ id: 'uttaksplan.periodeliste.header.skalIkkeHaUttakFørTermin' })
+                            : formatTidsperiode(periode.tidsperiode);
+                        return (
+                            <FormSummary.Answer key={periode.type + tidsperiode}>
+                                <FormSummary.Label>{tidsperiode}</FormSummary.Label>
+                                <FormSummary.Value>
+                                    {getUttaksperiodeNavn(periode)}
+                                    <Uttaksperiodedetaljer
+                                        periode={periode}
+                                        registrerteArbeidsforhold={registrerteArbeidsforhold}
+                                        periodeErNyEllerEndret={periodeErNyEllerEndret}
+                                        søkerErFarEllerMedmor={erFarEllerMedmor}
+                                        annenForelder={annenForelder}
+                                    />
+                                </FormSummary.Value>
+                            </FormSummary.Answer>
+                        );
+                    }
+                    if (periode.type === Periodetype.Utsettelse) {
+                        return (
+                            <FormSummary.Answer key={periode.type + periode.tidsperiode}>
+                                <FormSummary.Label>{formatTidsperiode(periode.tidsperiode)}</FormSummary.Label>
+                                <FormSummary.Value>
+                                    <FormattedMessage id="oppsummering.utsettelse.pga" />
+                                    <Utsettelsesperiodedetaljer
+                                        periode={periode}
+                                        registrerteArbeidsforhold={registrerteArbeidsforhold}
+                                        søkerErFarEllerMedmor={erFarEllerMedmor}
+                                        annenForelder={annenForelder}
+                                        periodeErNyEllerEndret={periodeErNyEllerEndret}
+                                    />
+                                </FormSummary.Value>
+                            </FormSummary.Answer>
+                        );
+                    }
+                    if (periode.type === Periodetype.Overføring) {
+                        return (
+                            <FormSummary.Answer key={periode.type + periode.tidsperiode}>
+                                <FormSummary.Label>{formatTidsperiode(periode.tidsperiode)}</FormSummary.Label>
+                                <FormSummary.Value>
+                                    <FormattedMessage
+                                        id="oppsummering.overtakelse.pga"
+                                        values={{ konto: getStønadskontoNavnFromKonto(periode.konto) }}
+                                    />
+                                    <Overføringsperiodedetaljer periode={periode} navnPåForeldre={navnPåForeldre} />
+                                </FormSummary.Value>
+                            </FormSummary.Answer>
+                        );
+                    }
+                    if (periode.type === Periodetype.Opphold) {
+                        return (
+                            <FormSummary.Answer key={periode.type + periode.tidsperiode}>
+                                <FormSummary.Label>{formatTidsperiode(periode.tidsperiode)}</FormSummary.Label>
+                                <FormSummary.Value>
+                                    {getPeriodeTittel(
+                                        intl,
+                                        periode,
+                                        navnPåForeldre,
+                                        familiehendelsesdato,
+                                        termindato ? dayjs(termindato).toDate() : undefined,
+                                        situasjon,
+                                        erFarEllerMedmor,
+                                    )}
+                                </FormSummary.Value>
+                            </FormSummary.Answer>
+                        );
+                    }
+                    return null;
+                })}
+            </FormSummary.Answers>
+        </FormSummary.Value>
+    );
 };
 
 export default UttaksplanOppsummeringsliste;

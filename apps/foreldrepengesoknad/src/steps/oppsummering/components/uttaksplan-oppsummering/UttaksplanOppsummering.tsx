@@ -1,12 +1,11 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getUkerOgDagerFromDager } from 'utils/dateUtils';
 
-import { BodyShort } from '@navikt/ds-react';
+import { FormSummary } from '@navikt/ds-react';
 
 import { AnnenForelder, Dekningsgrad, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
-import OppsummeringsPunkt from '../OppsummeringsPunkt';
 import UttaksplanOppsummeringsliste from './UttaksplanOppsummeringsliste';
 
 interface Props {
@@ -24,6 +23,7 @@ interface Props {
     antallBarn: number;
     ønskerJustertUttakVedFødsel: boolean | undefined;
     eksisterendeUttaksplan?: Periode[];
+    onVilEndreSvar: () => void;
 }
 
 const UttaksplanOppsummering: React.FunctionComponent<Props> = ({
@@ -31,6 +31,7 @@ const UttaksplanOppsummering: React.FunctionComponent<Props> = ({
     antallUkerUttaksplan,
     ønskerJustertUttakVedFødsel,
     antallBarn,
+    onVilEndreSvar,
     ...rest
 }) => {
     const intl = useIntl();
@@ -71,29 +72,43 @@ const UttaksplanOppsummering: React.FunctionComponent<Props> = ({
     }
 
     return (
-        <>
-            <OppsummeringsPunkt title={intl.formatMessage({ id: 'oppsummering.uttak.dekningsgrad.label' })}>
-                <BodyShort>{dekningsgradTekst}</BodyShort>
-            </OppsummeringsPunkt>
-            <UttaksplanOppsummeringsliste
-                ønskerJustertUttakVedFødsel={ønskerJustertUttakVedFødsel}
-                {...rest}
-            ></UttaksplanOppsummeringsliste>
-            {ønskerJustertUttakVedFødsel !== undefined && (
-                <OppsummeringsPunkt
-                    title={intl.formatMessage(
-                        { id: 'oppsummering.uttak.ønskerAutomatiskJustering.label' },
-                        {
-                            antallBarn,
-                        },
-                    )}
-                >
-                    <BodyShort>
-                        <FormattedMessage id={ønskerJustertUttakVedFødsel ? 'ja' : 'nei'} />
-                    </BodyShort>
-                </OppsummeringsPunkt>
-            )}
-        </>
+        <FormSummary>
+            <FormSummary.Header>
+                <FormSummary.Heading level="2">
+                    <FormattedMessage id="oppsummering.uttak" />
+                </FormSummary.Heading>
+                <FormSummary.EditLink onClick={onVilEndreSvar}>
+                    <FormattedMessage id="Oppsummering.EndreSvar" />
+                </FormSummary.EditLink>
+            </FormSummary.Header>
+            <FormSummary.Answers>
+                <FormSummary.Answer>
+                    <FormSummary.Label>
+                        <FormattedMessage id="oppsummering.uttak.dekningsgrad.label" />
+                    </FormSummary.Label>
+                    <FormSummary.Value>{dekningsgradTekst}</FormSummary.Value>
+                </FormSummary.Answer>
+                <FormSummary.Answer>
+                    <UttaksplanOppsummeringsliste
+                        ønskerJustertUttakVedFødsel={ønskerJustertUttakVedFødsel}
+                        {...rest}
+                    ></UttaksplanOppsummeringsliste>
+                </FormSummary.Answer>
+                {ønskerJustertUttakVedFødsel !== undefined && (
+                    <FormSummary.Answer>
+                        <FormSummary.Label>
+                            <FormattedMessage
+                                id="oppsummering.uttak.ønskerAutomatiskJustering.label"
+                                values={{ antallBarn }}
+                            />
+                        </FormSummary.Label>
+                        <FormSummary.Value>
+                            {ønskerJustertUttakVedFødsel ? <FormattedMessage id="ja" /> : <FormattedMessage id="nei" />}
+                        </FormSummary.Value>
+                    </FormSummary.Answer>
+                )}
+            </FormSummary.Answers>
+        </FormSummary>
     );
 };
 

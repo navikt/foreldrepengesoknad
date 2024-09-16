@@ -6,8 +6,6 @@ import { ConfirmationPanel, VStack } from '@navikt/ds-react';
 import { useAbortSignal } from '@navikt/fp-api';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
 
-import Oppsummeringspunkt from './Oppsummeringspunkt';
-
 const getSamtykkeTekst = (
     intl: IntlShape,
     appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger',
@@ -94,7 +92,5 @@ const OppsummeringPanel = <TYPE extends string>({
         </Step>
     );
 };
-
-OppsummeringPanel.Punkt = Oppsummeringspunkt;
 
 export default OppsummeringPanel;

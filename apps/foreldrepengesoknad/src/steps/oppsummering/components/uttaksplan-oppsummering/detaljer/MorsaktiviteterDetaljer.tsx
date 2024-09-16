@@ -4,7 +4,7 @@ import { IntlShape, useIntl } from 'react-intl';
 import { MorsAktivitet } from '@navikt/fp-common';
 import { assertUnreachable } from '@navikt/fp-validation';
 
-import Feltoppsummering from '../feltoppsummering/Feltoppsummering';
+import Feltoppsummering from './Feltoppsummering';
 
 interface MorsAktivitetDetaljerProps {
     morsAktivitet: MorsAktivitet;

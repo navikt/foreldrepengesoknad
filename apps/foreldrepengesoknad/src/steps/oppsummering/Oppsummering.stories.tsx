@@ -12,7 +12,7 @@ import { Næringstype } from 'types/Næring';
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, Periode } from '@navikt/fp-common';
-import { AttachmentType, ISO_DATE_FORMAT, SivilstandType, Skjemanummer } from '@navikt/fp-constants';
+import { AttachmentType, ISO_DATE_FORMAT, InnsendingsType, SivilstandType, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
@@ -637,8 +637,44 @@ export const VisVedlegg: Story = {
                     file: new File(['abc'.repeat(100000)], 'Filnavn1.jpg'),
                     pending: false,
                     uploaded: true,
-                    type: AttachmentType.ALENEOMSORG,
-                    skjemanummer: Skjemanummer.DOK_AV_ALENEOMSORG,
+                    type: AttachmentType.ANNEN_INNTEKT,
+                    skjemanummer: Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG,
+                },
+            ],
+        },
+    },
+};
+
+export const VisSendInnSenereVedlegg: Story = {
+    args: {
+        ...Default.args,
+        vedlegg: {
+            ...defaultVedlegg,
+            [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: [
+                {
+                    filename: 'dokumentasjon.pdf',
+                    filesize: 1234,
+                    url: 'test',
+                    id: '1',
+                    file: new File(['abc'.repeat(100000)], 'Filnavn1.jpg'),
+                    pending: false,
+                    uploaded: true,
+                    type: AttachmentType.ANNEN_INNTEKT,
+                    skjemanummer: Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE,
+                },
+            ],
+            [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: [
+                {
+                    filename: 'dokumentasjon.pdf',
+                    filesize: 1234,
+                    url: 'test',
+                    id: '1',
+                    file: new File(['abc'.repeat(100000)], 'Filnavn1.jpg'),
+                    pending: false,
+                    uploaded: true,
+                    innsendingsType: InnsendingsType.SEND_SENERE,
+                    type: AttachmentType.ANNEN_INNTEKT,
+                    skjemanummer: Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG,
                 },
             ],
         },

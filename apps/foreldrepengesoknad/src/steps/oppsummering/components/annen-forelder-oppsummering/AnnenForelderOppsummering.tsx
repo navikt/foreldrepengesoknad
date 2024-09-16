@@ -5,6 +5,7 @@ import isFarEllerMedmor from 'utils/isFarEllerMedmor';
 import { FormSummary } from '@navikt/ds-react';
 
 import { AnnenForelder, Søkerrolle, isAnnenForelderIkkeOppgitt, isAnnenForelderOppgitt } from '@navikt/fp-common';
+import { formatDate } from '@navikt/fp-utils';
 
 interface Props {
     annenForelder: AnnenForelder;
@@ -39,89 +40,118 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
                             <FormSummary.Label>
                                 <FormattedMessage id="oppsummering.annenForelder.navn" />
                             </FormSummary.Label>
-                            <FormSummary.Value>{`${annenForelder.fornavn} ${annenForelder.etternavn}`}</FormSummary.Value>
+                            <FormSummary.Value>
+                                {`${annenForelder.fornavn} ${annenForelder.etternavn}, ${annenForelder.fnr || annenForelder.utenlandskFnr}`}
+                            </FormSummary.Value>
                         </FormSummary.Answer>
                         <FormSummary.Answer>
                             <FormSummary.Label>
-                                <FormattedMessage id="oppsummering.annenForelder.fnr" />
-                            </FormSummary.Label>
-                            <FormSummary.Value>{annenForelder.fnr}</FormSummary.Value>
-                        </FormSummary.Answer>
-                        <FormSummary.Answer>
-                            <FormSummary.Label>
-                                {!annenForelder.erAleneOmOmsorg ? (
-                                    <FormattedMessage id="oppsummering.annenForelder.fellesOmsorg.tittel" />
-                                ) : (
-                                    <FormattedMessage id="oppsummering.annenForelder.aleneOmOmsorg.tittel" />
-                                )}
+                                <FormattedMessage id="annenForelder.aleneOmOmsorg" />
                             </FormSummary.Label>
                             <FormSummary.Value>
                                 {annenForelder.erAleneOmOmsorg ? (
-                                    <FormattedMessage id="oppsummering.annenForelder.aleneOmOmsorg.tekst" />
+                                    <FormattedMessage id="ja" />
                                 ) : (
-                                    <FormattedMessage id="oppsummering.annenForelder.fellesOmsorg.tekst" />
+                                    <FormattedMessage id="nei" />
                                 )}
                             </FormSummary.Value>
-                            {!annenForelder.erAleneOmOmsorg && (
-                                <FormSummary.Answer>
-                                    <FormSummary.Label>
-                                        <FormattedMessage
-                                            id="oppsummering.annenForelder.rettPåForeldrepengerINorge"
-                                            values={{ navn: annenForelder.fornavn }}
-                                        />
-                                    </FormSummary.Label>
-                                    <FormSummary.Value>
-                                        <FormattedMessage
-                                            id={annenForelder.harRettPåForeldrepengerINorge ? 'ja' : 'nei'}
-                                        />
-                                    </FormSummary.Value>
-                                </FormSummary.Answer>
-                            )}
-                            {!annenForelder.erAleneOmOmsorg && !annenForelder.harRettPåForeldrepengerINorge && (
-                                <FormSummary.Answer>
-                                    <FormSummary.Label>
-                                        <FormattedMessage
-                                            id="oppsummering.annenForelder.harOppholdtSegIEØS"
-                                            values={{ navn: annenForelder.fornavn }}
-                                        />
-                                    </FormSummary.Label>
-                                    <FormSummary.Value>
-                                        <FormattedMessage id={annenForelder.harOppholdtSegIEØS ? 'ja' : 'nei'} />
-                                    </FormSummary.Value>
-                                </FormSummary.Answer>
-                            )}
-                            {!annenForelder.erAleneOmOmsorg && annenForelder.harOppholdtSegIEØS === true && (
-                                <FormSummary.Answer>
-                                    <FormSummary.Label>
-                                        <FormattedMessage
-                                            id="oppsummering.annenForelder.rettPåForeldrepengerIEØS"
-                                            values={{ navn: annenForelder.fornavn }}
-                                        />
-                                    </FormSummary.Label>
-                                    <FormSummary.Value>
-                                        <FormattedMessage
-                                            id={annenForelder.harRettPåForeldrepengerIEØS ? 'ja' : 'nei'}
-                                        />
-                                    </FormSummary.Value>
-                                </FormSummary.Answer>
-                            )}
-                            {erFarEllerMedmor &&
-                                !annenForelder.erAleneOmOmsorg &&
-                                !annenForelder.harRettPåForeldrepengerINorge &&
-                                !annenForelder.harRettPåForeldrepengerIEØS && (
-                                    <FormSummary.Answer>
-                                        <FormSummary.Label>
-                                            <FormattedMessage
-                                                id="oppsummering.annenForelder.erMorUfør"
-                                                values={{ navn: annenForelder.fornavn }}
-                                            />
-                                        </FormSummary.Label>
-                                        <FormSummary.Value>
-                                            <FormattedMessage id={annenForelder.erMorUfør ? 'ja' : 'nei'} />
-                                        </FormSummary.Value>
-                                    </FormSummary.Answer>
-                                )}
                         </FormSummary.Answer>
+                        {annenForelder.erAleneOmOmsorg && annenForelder.datoForAleneomsorg && (
+                            <FormSummary.Answer>
+                                <FormSummary.Label>
+                                    <FormattedMessage id="annenForelder.datoForAleneomsorg" />
+                                </FormSummary.Label>
+                                <FormSummary.Value>{formatDate(annenForelder.datoForAleneomsorg)}</FormSummary.Value>
+                            </FormSummary.Answer>
+                        )}
+                        {!annenForelder.erAleneOmOmsorg && (
+                            <FormSummary.Answer>
+                                <FormSummary.Label>
+                                    <FormattedMessage id="annenForelder.harRettPåForeldrepengerINorge" />
+                                </FormSummary.Label>
+                                <FormSummary.Value>
+                                    {annenForelder.harRettPåForeldrepengerINorge ? (
+                                        <FormattedMessage id="ja" />
+                                    ) : (
+                                        <FormattedMessage id="nei" />
+                                    )}
+                                </FormSummary.Value>
+                            </FormSummary.Answer>
+                        )}
+                        {!annenForelder.erAleneOmOmsorg && annenForelder.harRettPåForeldrepengerINorge === false && (
+                            <FormSummary.Answer>
+                                <FormSummary.Label>
+                                    <FormattedMessage id="annenForelder.harOppholdtSegIEØS" />
+                                </FormSummary.Label>
+                                <FormSummary.Value>
+                                    {annenForelder.harOppholdtSegIEØS ? (
+                                        <FormattedMessage id="ja" />
+                                    ) : (
+                                        <FormattedMessage id="nei" />
+                                    )}
+                                </FormSummary.Value>
+                            </FormSummary.Answer>
+                        )}
+                        {!annenForelder.erAleneOmOmsorg && annenForelder.harOppholdtSegIEØS && (
+                            <FormSummary.Answer>
+                                <FormSummary.Label>
+                                    <FormattedMessage id="annenForelder.harRettPåForeldrepengerIEØS" />
+                                </FormSummary.Label>
+                                <FormSummary.Value>
+                                    {annenForelder.harRettPåForeldrepengerIEØS ? (
+                                        <FormattedMessage id="ja" />
+                                    ) : (
+                                        <FormattedMessage id="nei" />
+                                    )}
+                                </FormSummary.Value>
+                            </FormSummary.Answer>
+                        )}
+                        {!annenForelder.erAleneOmOmsorg && annenForelder.harOppholdtSegIEØS && (
+                            <FormSummary.Answer>
+                                <FormSummary.Label>
+                                    <FormattedMessage id="annenForelder.harRettPåForeldrepengerIEØS" />
+                                </FormSummary.Label>
+                                <FormSummary.Value>
+                                    {annenForelder.harRettPåForeldrepengerIEØS ? (
+                                        <FormattedMessage id="ja" />
+                                    ) : (
+                                        <FormattedMessage id="nei" />
+                                    )}
+                                </FormSummary.Value>
+                            </FormSummary.Answer>
+                        )}
+                        {!annenForelder.erAleneOmOmsorg && annenForelder.harRettPåForeldrepengerINorge && (
+                            <FormSummary.Answer>
+                                <FormSummary.Label>
+                                    <FormattedMessage id="annenForelder.spørsmål.erAnnenForelderInformert" />
+                                </FormSummary.Label>
+                                <FormSummary.Value>
+                                    {annenForelder.erInformertOmSøknaden ? (
+                                        <FormattedMessage id="ja" />
+                                    ) : (
+                                        <FormattedMessage id="nei" />
+                                    )}
+                                </FormSummary.Value>
+                            </FormSummary.Answer>
+                        )}
+                        {erFarEllerMedmor &&
+                            !annenForelder.erAleneOmOmsorg &&
+                            !annenForelder.harRettPåForeldrepengerINorge === false &&
+                            (annenForelder.harOppholdtSegIEØS === false ||
+                                annenForelder.harRettPåForeldrepengerIEØS === false) && (
+                                <FormSummary.Answer>
+                                    <FormSummary.Label>
+                                        <FormattedMessage id="annenForelder.erMorUfør" />
+                                    </FormSummary.Label>
+                                    <FormSummary.Value>
+                                        {annenForelder.erMorUfør ? (
+                                            <FormattedMessage id="ja" />
+                                        ) : (
+                                            <FormattedMessage id="nei" />
+                                        )}
+                                    </FormSummary.Value>
+                                </FormSummary.Answer>
+                            )}
                     </>
                 )}
             </FormSummary.Answers>

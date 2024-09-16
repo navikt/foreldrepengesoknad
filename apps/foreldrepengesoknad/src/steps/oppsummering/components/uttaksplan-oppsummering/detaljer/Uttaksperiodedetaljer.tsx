@@ -6,7 +6,7 @@ import { MorsAktivitet } from '@navikt/fp-constants';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
 import { getArbeidsformTekst } from '../OppsummeringUtils';
-import Feltoppsummering from '../feltoppsummering/Feltoppsummering';
+import Feltoppsummering from './Feltoppsummering';
 import MorsAktivitetDetaljer from './MorsaktiviteterDetaljer';
 
 interface UttaksperiodedetaljerProps {

@@ -1,49 +1,24 @@
-import { FunctionComponent } from 'react';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { FormSummary } from '@navikt/ds-react';
 
-import { Barn, BarnType, isAdoptertAnnetBarn, isAdoptertStebarn, isUfødtBarn } from '@navikt/fp-common';
-import { formatDate } from '@navikt/fp-utils';
+import { Barn, BarnType } from '@navikt/fp-common';
+import { isAdoptertBarn } from '@navikt/fp-types';
 
-import BarnAdoptertIUtlandetDetaljer from './BarnAdoptertIUtlandetDetaljer';
+import { BarnAdoptertOppsummering } from './BarnAdoptertOppsummering';
+import { BarnFødselOppsummering } from './BarnFødselOppsummering';
 
 interface Props {
     barn: Barn;
-    familiehendelsesdato: Date;
     onVilEndreSvar: () => void;
 }
 
-const getAntallBarnTekst = (antallBarn: number, intl: IntlShape): string => {
-    if (antallBarn === 1) {
-        return intl.formatMessage({ id: 'oppsummering.barn.antallBarn.ettBarn' });
+export const BarnOppsummering = ({ barn, onVilEndreSvar }: Props) => {
+    if (barn.type === BarnType.IKKE_UTFYLT) {
+        return null;
     }
 
-    if (antallBarn === 2) {
-        return intl.formatMessage({ id: 'oppsummering.barn.antallBarn.toBarn' });
-    }
-
-    return intl.formatMessage({ id: 'oppsummering.barn.antallBarn.flere' }, { antallBarn });
-};
-
-const getTerminEllerFødselTittel = (type: BarnType) => {
-    if (type === BarnType.UFØDT) {
-        return 'Termin';
-    }
-
-    return 'Fødselsdato';
-};
-
-const getTerminEllerFødselsdato = (barn: Barn) => {
-    if (isUfødtBarn(barn)) {
-        return formatDate(barn.termindato);
-    }
-
-    return formatDate(barn.fødselsdatoer[0]);
-};
-
-const BarnOppsummering: FunctionComponent<Props> = ({ barn, familiehendelsesdato, onVilEndreSvar }) => {
-    const intl = useIntl();
+    const erBarnetAdoptert = isAdoptertBarn(barn);
 
     return (
         <FormSummary>
@@ -56,38 +31,9 @@ const BarnOppsummering: FunctionComponent<Props> = ({ barn, familiehendelsesdato
                 </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
-                <FormSummary.Answer>
-                    <FormSummary.Label>
-                        <FormattedMessage id="oppsummering.barn.søknadenGjelder" />
-                    </FormSummary.Label>
-                    <FormSummary.Value>{getAntallBarnTekst(barn.antallBarn, intl)}</FormSummary.Value>
-                </FormSummary.Answer>
-                <FormSummary.Answer>
-                    <FormSummary.Label>{getTerminEllerFødselTittel(barn.type)}</FormSummary.Label>
-                    <FormSummary.Value>{getTerminEllerFødselsdato(barn)}</FormSummary.Value>
-                </FormSummary.Answer>
-                {(isAdoptertAnnetBarn(barn) || isAdoptertStebarn(barn)) && (
-                    <>
-                        <FormSummary.Answer>
-                            <FormSummary.Label>
-                                <FormattedMessage id="oppsummering.barn.gjelderSøknadenStebarnsadopsjon" />
-                            </FormSummary.Label>
-                            <FormSummary.Value>
-                                <FormattedMessage id={barn.type === BarnType.ADOPTERT_STEBARN ? 'ja' : 'nei'} />
-                            </FormSummary.Value>
-                        </FormSummary.Answer>
-                        <FormSummary.Answer>
-                            <FormSummary.Label>
-                                <FormattedMessage id="oppsummering.barn.adopsjonsdato" />
-                            </FormSummary.Label>
-                            <FormSummary.Value>{formatDate(barn.adopsjonsdato)}</FormSummary.Value>
-                        </FormSummary.Answer>
-                        <BarnAdoptertIUtlandetDetaljer barn={barn} familiehendelsesdato={familiehendelsesdato} />
-                    </>
-                )}
+                {!erBarnetAdoptert && <BarnFødselOppsummering barn={barn} />}
+                {erBarnetAdoptert && <BarnAdoptertOppsummering barn={barn} />}
             </FormSummary.Answers>
         </FormSummary>
     );
 };
-
-export default BarnOppsummering;
