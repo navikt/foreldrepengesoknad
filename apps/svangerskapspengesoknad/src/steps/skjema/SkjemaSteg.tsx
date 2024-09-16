@@ -15,7 +15,7 @@ import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
 import { FileUploader, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { AxiosInstanceAPI } from '../../app/api/AxiosInstance';
+import { AxiosInstanceAPI } from '../../api/AxiosInstance';
 import Bedriftsbanner from '../Bedriftsbanner';
 
 const MAX_ANTALL_VEDLEGG = 40;

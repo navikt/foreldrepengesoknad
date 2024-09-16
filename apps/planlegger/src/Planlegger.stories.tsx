@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
+import Environment from 'appData/Environment';
 import { PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
@@ -139,7 +140,7 @@ const meta = {
             <StrictMode>
                 <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
                     <ErrorBoundary appName="Foreldrepengeplanlegger" retryCallback={() => undefined}>
-                        <BrowserRouter>
+                        <BrowserRouter basename={Environment.PUBLIC_PATH}>
                             <PlanleggerDataContext initialState={{}}>
                                 <PlanleggerDataFetcher locale="nb" changeLocale={() => undefined} />
                             </PlanleggerDataContext>

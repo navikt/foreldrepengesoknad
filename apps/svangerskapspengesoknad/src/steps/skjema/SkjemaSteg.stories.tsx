@@ -10,7 +10,7 @@ import { Arbeidsforholdstype, Tilrettelegging } from 'types/Tilrettelegging';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import { AxiosInstanceAPI } from '../../app/api/AxiosInstance';
+import { AxiosInstanceAPI } from '../../api/AxiosInstance';
 import SkjemaSteg from './SkjemaSteg';
 
 const file1 = new File(['abc'.repeat(100000)], 'Filnavn1.jpg');
