@@ -1,23 +1,14 @@
+import { AxiosInstanceAPI } from 'api/AxiosInstance';
 import SøknadRoutes from 'appData/routes';
 import { AxiosResponse } from 'axios';
 import Fordeling from 'types/Fordeling';
-import { Kvittering } from 'types/Kvittering';
 import { SakerOppslag } from 'types/SakerOppslag';
 import { EndringssøknadForInnsending, Søknad, SøknadForInnsending } from 'types/Søknad';
 import { useGetRequest } from 'utils/hooks/useRequest';
 
 import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
-import { Attachment, LocaleNo, Søkerinfo } from '@navikt/fp-types';
+import { Attachment, Kvittering, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 
-import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
-import SøknadRoutes from 'app/appData/routes';
-import Fordeling from 'app/types/Fordeling';
-import { Kvittering } from 'app/types/Kvittering';
-import { SakerOppslag } from 'app/types/SakerOppslag';
-import { Søknad } from 'app/types/Søknad';
-import { useGetRequest } from 'app/utils/hooks/useRequest';
-
-import { EndringssøknadForInnsending, SøknadForInnsending } from './apiUtils';
 import { storageParser } from './storageParser';
 
 const sendSøknadUrl = '/rest/soknad';

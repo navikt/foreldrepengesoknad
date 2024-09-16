@@ -1,7 +1,6 @@
+import { AxiosInstanceAPI } from 'api/AxiosInstance';
 import MockAdapter from 'axios-mock-adapter';
 import { FunctionComponent, useEffect } from 'react';
-
-import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
 
 // Denne utgår når me endrar til Tanstack
 

@@ -1,3 +1,4 @@
+import { AxiosInstanceAPI } from 'api/AxiosInstance';
 import dayjs from 'dayjs';
 import React, { FunctionComponent, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -14,11 +15,6 @@ import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { bemUtils } from '@navikt/fp-utils';
 import { PeriodelisteItemHeader } from '@navikt/fp-uttaksplan';
-
-import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
-import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
-import { dateToISOString } from 'app/utils/dateUtils';
-import { addMetadata, lagSendSenereDokument } from 'app/utils/vedleggUtils';
 
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
 import './periode-attachment-uploader.css';

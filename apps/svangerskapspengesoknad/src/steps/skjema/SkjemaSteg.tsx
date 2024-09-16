@@ -4,7 +4,7 @@ import useSvpNavigator from 'appData/useSvpNavigator';
 import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import Tilrettelegging, { Arbeidsforholdstype } from 'types/Tilrettelegging';
+import { Arbeidsforholdstype, Tilrettelegging } from 'types/Tilrettelegging';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -15,12 +15,7 @@ import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
 import { FileUploader, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
-import useStepConfig from 'app/appData/useStepConfig';
-import useSvpNavigator from 'app/appData/useSvpNavigator';
-import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
-
+import { AxiosInstanceAPI } from '../../app/api/AxiosInstance';
 import Bedriftsbanner from '../Bedriftsbanner';
 
 const MAX_ANTALL_VEDLEGG = 40;

@@ -1,8 +1,7 @@
+import { AxiosInstanceAPI } from 'api/AxiosInstance';
 import { AxiosError, AxiosRequestConfig } from 'axios';
 import { useEffect, useState } from 'react';
-
-import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
-import { RequestStatus } from 'app/types/RequestState';
+import { RequestStatus } from 'types/RequestState';
 
 type Options = {
     config?: AxiosRequestConfig;

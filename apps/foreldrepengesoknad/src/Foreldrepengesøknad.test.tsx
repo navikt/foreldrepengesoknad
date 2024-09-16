@@ -1,11 +1,10 @@
 import { render, screen } from '@testing-library/react';
+import { AxiosInstanceAPI } from 'api/AxiosInstance';
 import MockAdapter from 'axios-mock-adapter';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 import { SøkerBarn, Søkerinfo } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
-
-import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
 
 import Foreldrepengesøknad from './Foreldrepengesøknad';
 import Api, { FpMellomlagretData } from './api/api';

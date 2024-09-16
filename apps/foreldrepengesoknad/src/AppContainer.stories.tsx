@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { AxiosInstanceAPI } from 'api/AxiosInstance';
 import MockAdapter from 'axios-mock-adapter';
 import annenPartVedtak from 'storybookData/annenPartVedtak/annenPartVedtak.json';
 import storageKvittering from 'storybookData/kvittering/storage_kvittering.json';
@@ -11,8 +12,6 @@ import '@navikt/ds-css';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søkerinfo } from '@navikt/fp-types';
-
-import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
 
 import AppContainer from './AppContainer';
 import { RequestStatus } from './types/RequestState';

@@ -1,17 +1,15 @@
+import { AxiosInstanceAPI } from 'api/AxiosInstance';
 import React, { FunctionComponent, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { IntlShape } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
+import { addMetadata, lagSendSenereDokument } from 'utils/vedleggUtils';
 
 import { getSaveAttachment } from '@navikt/fp-api';
 import { AttachmentMetadataType, AttachmentType, InnsendingsType } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { formatDateShortYear } from '@navikt/fp-utils';
-
-import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
-import { GyldigeSkjemanummer } from 'app/types/GyldigeSkjemanummer';
-import { addMetadata, lagSendSenereDokument } from 'app/utils/vedleggUtils';
 
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
 
