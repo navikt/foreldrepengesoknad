@@ -5,7 +5,7 @@
     "ingress": "https://www.intern.dev.nav.no/engangsstonad/soknad",
     "env": {
         "PUBLIC_PATH": "/engangsstonad/soknad",
-        "INNSYN": "https://intern.dev.nav.no/foreldrepenger/oversikt",
+        "INNSYN": "https://www.intern.dev.nav.no/foreldrepenger/oversikt",
         "ENV": "dev"
     }
 }

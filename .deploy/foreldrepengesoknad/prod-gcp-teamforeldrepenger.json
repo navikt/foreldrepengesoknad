@@ -5,7 +5,7 @@
     "ingress": "https://www.nav.no/foreldrepenger/soknad",
     "env": {
         "PUBLIC_PATH": "/foreldrepenger/soknad",
-        "INNSYN": "https://nav.no/foreldrepenger/oversikt",
+        "INNSYN": "https://www.nav.no/foreldrepenger/oversikt",
         "ENV": "prod",
         "FEATURE_TEST_1JULI2024_REGLER": "off"
     }

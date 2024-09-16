@@ -5,7 +5,7 @@
     "ingress": "https://www.nav.no/svangerskapspenger/soknad",
     "env": {
         "PUBLIC_PATH": "/svangerskapspenger/soknad",
-        "INNSYN": "https://nav.no/foreldrepenger/oversikt",
+        "INNSYN": "https://www.nav.no/foreldrepenger/oversikt",
         "LOG_VALIDATION": false,
         "ENV": "prod"
     }
