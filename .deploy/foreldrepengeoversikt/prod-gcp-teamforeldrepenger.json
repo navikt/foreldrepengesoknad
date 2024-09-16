@@ -2,9 +2,9 @@
     "app": "foreldrepengeoversikt",
     "autentisering": true,
     "redirect_from": "foreldrepenger.nav.no",
-    "ingress": "https://nav.no/oversiktforeldrepenger",
+    "ingress": "https://nav.no/foreldrepenger/oversikt",
     "env": {
         "ENV": "prod",
-        "PUBLIC_PATH": "/oversiktforeldrepenger"
+        "PUBLIC_PATH": "/foreldrepenger/oversikt"
     }
 }

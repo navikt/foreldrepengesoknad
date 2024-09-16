@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => {
                 },
             },
         ],
-        base: mode === 'development' ? '' : '/oversiktforeldrepenger',
+        base: mode === 'development' ? '' : '/foreldrepenger/oversikt',
         build: {
             sourcemap: true,
         },
