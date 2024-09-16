@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import Environment from 'appData/Environment';
 import { ContextRoutes, HvorMyeRoutes } from 'appData/routes';
 import { VeiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
@@ -5,7 +6,6 @@ import dayjs from 'dayjs';
 import { FunctionComponent, useState } from 'react';
 import { Navigate, Route, Routes, useBeforeUnload } from 'react-router-dom';
 
-import { getAxiosInstance, usePostRequest } from '@navikt/fp-api';
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
@@ -15,8 +15,6 @@ import ArbeidssituasjonSide, { Arbeidssituasjon } from './arbeidssituasjon/Arbei
 import HvorMyeForside from './forside/HvorMyeForside';
 import OppsummeringSide from './oppsummering/OppsummeringSide';
 
-export const veivisereApi = getAxiosInstance();
-
 const STØNADSKONTO_PARAMS = {
     rettighetstype: 'BEGGE_RETT',
     brukerrolle: 'MOR',
@@ -25,26 +23,36 @@ const STØNADSKONTO_PARAMS = {
     morHarUføretrygd: false,
 };
 
-const STØNADSKONTO_OPTIONS = {
-    isSuspended: false,
-    withCredentials: false,
-};
-
 interface Props {
     locale: LocaleAll;
     changeLocale: (locale: LocaleAll) => void;
     satser: Satser;
 }
 
+const getStønadskontoer = async () => {
+    const response = await fetch(`${Environment.PUBLIC_PATH}/rest/konto`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        signal: AbortSignal.timeout(30 * 1000),
+        body: JSON.stringify(STØNADSKONTO_PARAMS),
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return (await response.json()) as TilgjengeligeStønadskontoer;
+};
+
 const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale, satser }) => {
     const [arbeidssituasjon, setArbeidssituasjon] = useState<Arbeidssituasjon>();
 
-    const requestData = usePostRequest<TilgjengeligeStønadskontoer>(
-        veivisereApi,
-        `${Environment.PUBLIC_PATH}/rest/konto`,
-        STØNADSKONTO_PARAMS,
-        STØNADSKONTO_OPTIONS,
-    );
+    const stønadskontoerData = useQuery({
+        queryKey: ['KONTOER'],
+        queryFn: getStønadskontoer,
+    });
 
     useBeforeUnload(() => {
         logAmplitudeEvent('applikasjon-hendelse', {
@@ -54,7 +62,7 @@ const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale, satser 
         });
     });
 
-    if (requestData.error) {
+    if (stønadskontoerData.error) {
         return <SimpleErrorPage />;
     }
 
@@ -71,13 +79,13 @@ const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale, satser 
                     />
                 }
             />
-            {arbeidssituasjon && requestData.data && (
+            {arbeidssituasjon && stønadskontoerData.data && (
                 <Route
                     path={HvorMyeRoutes.OPPSUMMERING}
                     element={
                         <OppsummeringSide
                             arbeidssituasjon={arbeidssituasjon}
-                            stønadskontoer={requestData.data}
+                            stønadskontoer={stønadskontoerData.data}
                             satser={satser}
                         />
                     }

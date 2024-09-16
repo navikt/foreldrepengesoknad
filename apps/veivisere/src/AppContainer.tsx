@@ -1,3 +1,5 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 
@@ -20,6 +22,8 @@ declare global {
         }
     }
 }
+
+const queryClient = new QueryClient();
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: allNbMessages,
@@ -48,7 +52,10 @@ const AppContainer = () => {
                 appName="Foreldrepengeveivisere"
                 customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
             >
-                <Veiviser locale={locale} changeLocale={changeLocale} />
+                <QueryClientProvider client={queryClient}>
+                    <ReactQueryDevtools />
+                    <Veiviser locale={locale} changeLocale={changeLocale} />
+                </QueryClientProvider>
             </ErrorBoundary>
         </IntlProvider>
     );

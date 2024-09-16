@@ -1270,9 +1270,6 @@ importers:
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
-      '@navikt/fp-api':
-        specifier: workspace:*
-        version: link:../../packages/api
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -1297,9 +1294,12 @@ importers:
       '@sentry/browser':
         specifier: ^7.109.0
         version: 7.119.0
-      axios:
-        specifier: ^1.6.8
-        version: 1.7.7
+      '@tanstack/react-query':
+        specifier: 5.54.1
+        version: 5.54.1(react@18.3.1)
+      '@tanstack/react-query-devtools':
+        specifier: ^5.54.1
+        version: 5.54.1(@tanstack/react-query@5.54.1(react@18.3.1))(react@18.3.1)
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -1324,6 +1324,9 @@ importers:
       jsdom:
         specifier: ^25.0.0
         version: 25.0.0
+      ky:
+        specifier: ^1.7.2
+        version: 1.7.2
       morgan:
         specifier: ^1.10.0
         version: 1.10.0
@@ -1400,15 +1403,18 @@ importers:
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.4.44)
-      axios-mock-adapter:
-        specifier: 1.22.0
-        version: 1.22.0(axios@1.7.7)
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
       http-proxy-middleware:
         specifier: 3.0.2
         version: 3.0.2
+      msw:
+        specifier: ^2.3.1
+        version: 2.4.1(typescript@5.5.4)
+      msw-storybook-addon:
+        specifier: ^2.0.3
+        version: 2.0.3(msw@2.4.1(typescript@5.5.4))
       mustache-loader:
         specifier: ^1.4.3
         version: 1.4.3(hogan.js@3.0.2)(webpack@5.94.0)
@@ -6459,18 +6465,10 @@ packages:
   focus-trap@7.5.4:
     resolution: {integrity: sha512-N7kHdlgsO/v+iD/dMoJKtsSqs5Dz/dXZVebRgJw23LDk+jMi/974zyiOYDziY2JPp8xivq9BmUGwIJMiuSBi7w==}
 
-  follow-redirects@1.15.6:
-    resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-
   follow-redirects@1.15.8:
     resolution: {integrity: sha512-xgrmBhBToVKay1q2Tao5LI26B83UhrB/vM1avwVSDzt8rx3rO6AizBAaF46EgksTVr+rFTQaqZZ9MVBfUe4nig==}
     engines: {node: '>=4.0'}
+    deprecated: Browser detection issues fixed in v1.15.9
     peerDependencies:
       debug: '*'
     peerDependenciesMeta:
@@ -12001,7 +11999,7 @@ snapshots:
 
   axios@1.7.7:
     dependencies:
-      follow-redirects: 1.15.6
+      follow-redirects: 1.15.8(debug@4.3.6)
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -13321,8 +13319,6 @@ snapshots:
   focus-trap@7.5.4:
     dependencies:
       tabbable: 6.2.0
-
-  follow-redirects@1.15.6: {}
 
   follow-redirects@1.15.8(debug@4.3.6):
     optionalDependencies:
