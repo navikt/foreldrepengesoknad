@@ -6,10 +6,9 @@ import '@navikt/ds-css';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søker, Søkerinfo } from '@navikt/fp-types';
 
-import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
-
 import AppContainer from './AppContainer';
 import { SvpDataMapAndMetaData } from './app-data/useMellomlagreSøknad';
+import { AxiosInstanceAPI } from './app/api/AxiosInstance';
 
 const defaultSøkerinfo = {
     søker: {

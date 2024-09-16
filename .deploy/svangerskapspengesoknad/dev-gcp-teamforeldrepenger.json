@@ -2,9 +2,9 @@
     "app": "svangerskapspengesoknad",
     "autentisering": true,
     "redirect_from": "svangerskapspengesoknad.intern.dev.nav.no",
-    "ingress": "https://www.intern.dev.nav.no/svangerskapspenger/soknad",
+    "ingress": "https://www.intern.dev.nav.no/svangerskapspenger/søknad",
     "env": {
-        "PUBLIC_PATH": "/svangerskapspenger/soknad",
+        "PUBLIC_PATH": "/svangerskapspenger/søknad",
         "INNSYN": "https://foreldrepenger.intern.dev.nav.no",
         "LOG_VALIDATION": false,
         "ENV": "dev"

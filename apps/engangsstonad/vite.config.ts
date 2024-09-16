@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
                 },
             },
         ],
-        base: mode === 'development' ? '' : '/engangsstonad/soknad',
+        base: mode === 'development' ? '' : '/engangsstønad/søknad',
         build: {
             sourcemap: true,
         },
