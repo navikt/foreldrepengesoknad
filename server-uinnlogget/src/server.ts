@@ -7,7 +7,7 @@ import {
     serverConfig,
     setupActuators,
     setupServerDefaults,
-    setupStaticRoutes,
+    setupStaticRoutes
 } from '@navikt/fp-server-utils';
 
 import { configureReverseProxyApi } from './reverseProxy';

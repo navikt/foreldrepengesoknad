@@ -7,9 +7,9 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { OmBarnet } from 'types/OmBarnet';
 
-import { getAxiosInstance } from '@navikt/fp-api';
 import { initAmplitude } from '@navikt/fp-metrics';
 
+import { AxiosInstanceAPI } from '../../api/AxiosInstance';
 import DokumentasjonSteg from './DokumentasjonSteg';
 
 const promiseAction =
@@ -38,7 +38,7 @@ const meta = {
     }) => {
         initAmplitude();
 
-        const apiMock = new MockAdapter(getAxiosInstance());
+        const apiMock = new MockAdapter(AxiosInstanceAPI());
         if (!skalFeileOpplasting) {
             apiMock.onPost('/rest/storage/engangsstonad/vedlegg').reply(200); //story
             apiMock.onPost('http://localhost:8888/rest/storage/engangsstonad/vedlegg').reply(200); //test

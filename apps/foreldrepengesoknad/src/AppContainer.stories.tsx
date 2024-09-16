@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
+import { AxiosInstanceAPI } from 'api/AxiosInstance';
 import MockAdapter from 'axios-mock-adapter';
 import annenPartVedtak from 'storybookData/annenPartVedtak/annenPartVedtak.json';
 import storageKvittering from 'storybookData/kvittering/storage_kvittering.json';
@@ -9,7 +10,6 @@ import stønadskontoer from 'storybookData/stonadskontoer/stønadskontoer.json';
 
 import '@navikt/ds-css';
 
-import { getAxiosInstance } from '@navikt/fp-api';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søkerinfo } from '@navikt/fp-types';
 
@@ -52,7 +52,7 @@ const meta = {
     component: AppContainer,
     render: (props) => {
         initAmplitude();
-        const apiMock = new MockAdapter(getAxiosInstance());
+        const apiMock = new MockAdapter(AxiosInstanceAPI());
         apiMock.onGet('/rest/sokerinfo').reply(200, props.søkerinfoData);
         apiMock.onGet('/rest/innsyn/v2/saker').reply(200, props.sakerData);
         apiMock.onGet('/rest/innsyn/v2/annenPartVedtak').reply(200, props.annenPartVedtakData);

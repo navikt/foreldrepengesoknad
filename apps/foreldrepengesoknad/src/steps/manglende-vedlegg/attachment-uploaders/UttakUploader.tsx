@@ -1,3 +1,4 @@
+import { AxiosInstanceAPI } from 'api/AxiosInstance';
 import dayjs from 'dayjs';
 import React, { FunctionComponent, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -105,7 +106,7 @@ const UttakUploader: FunctionComponent<Props> = ({
 
                 return updateAttachments(attachmentsMedMetadata);
             }}
-            saveAttachment={getSaveAttachment('foreldrepenger')}
+            saveAttachment={getSaveAttachment(AxiosInstanceAPI(), 'foreldrepenger')}
         />
     );
 };

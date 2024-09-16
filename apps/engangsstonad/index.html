@@ -16,16 +16,12 @@
                 try {
                     window['adrum-start-time'] = new Date().getTime();
                     (function (config) {
-                        if (window.location.href.indexOf('engangsstonad.nav.no') > -1) {
+                        if (window.location.href.startsWith('https://www.nav.no/engangsstonad/soknad') > -1) {
                             config.adrumExtUrlHttps = 'https://jsagent.nav.no';
                             config.beaconUrlHttps = 'https://eumgw.nav.no';
                             config.appKey = 'EUM-AAB-AXB';
-                        } else {
-                            config.adrumExtUrlHttps = 'https://jsagent.adeo.no';
-                            config.beaconUrlHttps = 'https://eumgw.adeo.no';
-                            config.appKey = 'EUM-AAB-AXA';
+                            config.xd = { enable: false };
                         }
-                        config.xd = { enable: false };
                     })(window['adrum-config'] || (window['adrum-config'] = {}));
                 } catch {}
             }

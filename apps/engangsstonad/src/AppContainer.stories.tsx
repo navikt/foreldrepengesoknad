@@ -5,11 +5,11 @@ import { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
 import MockAdapter from 'axios-mock-adapter';
 import { ComponentProps } from 'react';
 
-import { getAxiosInstance } from '@navikt/fp-api';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søker } from '@navikt/fp-types';
 
 import AppContainer from './AppContainer';
+import { AxiosInstanceAPI } from './api/AxiosInstance';
 
 const kvittering = {
     mottattDato: '2019-02-19T13:40:45.115',
@@ -30,9 +30,7 @@ const meta = {
     render: ({ søker, mellomlagretData, doLogging = true }) => {
         initAmplitude();
 
-        const axiosInstance = getAxiosInstance();
-
-        const apiMock = new MockAdapter(axiosInstance);
+        const apiMock = new MockAdapter(AxiosInstanceAPI());
         apiMock.onGet('/rest/personinfo').reply(() => {
             if (doLogging) {
                 // eslint-disable-next-line no-console

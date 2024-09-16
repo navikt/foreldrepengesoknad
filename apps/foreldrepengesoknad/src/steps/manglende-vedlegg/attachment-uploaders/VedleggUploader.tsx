@@ -1,3 +1,4 @@
+import { AxiosInstanceAPI } from 'api/AxiosInstance';
 import React, { FunctionComponent, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { IntlShape } from 'react-intl';
@@ -89,7 +90,7 @@ const VedleggUploader: FunctionComponent<Props> = ({
 
                 return updateAttachments(attachmentsMedMetadata);
             }}
-            saveAttachment={getSaveAttachment('foreldrepenger')}
+            saveAttachment={getSaveAttachment(AxiosInstanceAPI(), 'foreldrepenger')}
         />
     );
 };

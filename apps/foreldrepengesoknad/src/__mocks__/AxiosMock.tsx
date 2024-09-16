@@ -1,7 +1,6 @@
+import { AxiosInstanceAPI } from 'api/AxiosInstance';
 import MockAdapter from 'axios-mock-adapter';
 import { FunctionComponent, useEffect } from 'react';
-
-import { getAxiosInstance } from '@navikt/fp-api';
 
 // Denne utgår når me endrar til Tanstack
 
@@ -10,7 +9,7 @@ interface Props {
     mock: (adapter: MockAdapter) => void;
 }
 
-const apiMock = new MockAdapter(getAxiosInstance());
+const apiMock = new MockAdapter(AxiosInstanceAPI());
 
 const AxiosMock: FunctionComponent<Props> = ({ children, mock }) => {
     useEffect(() => {

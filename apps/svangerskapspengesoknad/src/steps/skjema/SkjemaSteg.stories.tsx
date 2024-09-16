@@ -5,12 +5,12 @@ import SøknadRoutes from 'appData/routes';
 import MockAdapter from 'axios-mock-adapter';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import Tilrettelegging, { Arbeidsforholdstype } from 'types/Tilrettelegging';
+import { Arbeidsforholdstype, Tilrettelegging } from 'types/Tilrettelegging';
 
-import { getAxiosInstance } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 
+import { AxiosInstanceAPI } from '../../app/api/AxiosInstance';
 import SkjemaSteg from './SkjemaSteg';
 
 const file1 = new File(['abc'.repeat(100000)], 'Filnavn1.jpg');
@@ -97,7 +97,7 @@ const meta = {
     component: SkjemaSteg,
     render: ({ gåTilNesteSide = action('button-click'), skalFeileOpplasting, tilrettelegging, ...rest }) => {
         initAmplitude();
-        const apiMock = new MockAdapter(getAxiosInstance());
+        const apiMock = new MockAdapter(AxiosInstanceAPI());
         if (!skalFeileOpplasting) {
             apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(200); //story
             apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(200); //test
