@@ -82,7 +82,7 @@ spec:
   ingressClassName: nais-ingress
   rules:
     {{#each redirectFrom}}
-    - host: {{redirectFrom}}
+    - host: {{this}}
       http:
         paths:
           - path: "/(.*)"
