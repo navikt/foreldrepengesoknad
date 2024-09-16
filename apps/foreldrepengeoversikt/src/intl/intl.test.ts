@@ -2,7 +2,7 @@ import { extract } from '@formatjs/cli-lib';
 import glob from 'fast-glob';
 import fs from 'node:fs';
 
-import nb from './nb_NO.json';
+import nb from './messages/nb_NO.json';
 
 describe('intl foreldrepengeoversikt', () => {
     const regex = /(?<=(intlUtils\(intl,\s'))[^']*/gm;
