@@ -1434,7 +1434,7 @@ importers:
         specifier: ^2.0.5
         version: 2.0.5(@types/node@22.5.3)(jsdom@25.0.0)(less@4.2.0)(sass@1.78.0)(terser@5.31.6)
 
-  apps/veivisere:
+  apps/veiviser-hva-skjer-nar:
     dependencies:
       '@fontsource/source-sans-3':
         specifier: ^5.0.19
@@ -1618,11 +1618,8 @@ importers:
         specifier: ^2.0.5
         version: 2.0.5(@types/node@22.5.3)(jsdom@25.0.0)(less@4.2.0)(sass@1.78.0)(terser@5.31.6)
 
-  apps/veivisere-hvor-mye:
+  apps/veiviser-hvor-mye:
     dependencies:
-      '@fontsource/source-sans-3':
-        specifier: ^5.0.19
-        version: 5.0.21
       '@navikt/aksel-icons':
         specifier: ^6.16.0
         version: 6.16.2
@@ -1665,9 +1662,6 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: ^5.54.1
         version: 5.54.1(@tanstack/react-query@5.54.1(react@18.3.1))(react@18.3.1)
-      classnames:
-        specifier: ^2.5.1
-        version: 2.5.1
       compression:
         specifier: ^1.7.4
         version: 1.7.4
@@ -1701,9 +1695,6 @@ importers:
       react:
         specifier: ^18.3.1
         version: 18.3.1
-      react-document-title:
-        specifier: ^2.0.3
-        version: 2.0.3(react@18.3.1)
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
