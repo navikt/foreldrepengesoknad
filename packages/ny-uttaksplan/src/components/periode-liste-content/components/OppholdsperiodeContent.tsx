@@ -1,6 +1,5 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
@@ -17,12 +16,7 @@ interface Props {
     inneholderKunEnPeriode: boolean;
 }
 
-const OppholdsperiodeContent: FunctionComponent<Props> = ({
-    periode,
-    inneholderKunEnPeriode,
-    erFarEllerMedmor,
-    navnPåForeldre,
-}) => {
+const OppholdsPeriodeContent = ({ periode, inneholderKunEnPeriode, erFarEllerMedmor, navnPåForeldre }: Props) => {
     const intl = useIntl();
 
     const navnPåForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
@@ -35,7 +29,9 @@ const OppholdsperiodeContent: FunctionComponent<Props> = ({
             <div>
                 <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
                     {inneholderKunEnPeriode ? (
-                        <BodyShort weight="semibold">Hele perioden</BodyShort>
+                        <BodyShort weight="semibold">
+                            <FormattedMessage id="uttaksplan.varighet.helePerioden" />
+                        </BodyShort>
                     ) : (
                         <>
                             <BodyShort weight="semibold">
@@ -58,4 +54,7 @@ const OppholdsperiodeContent: FunctionComponent<Props> = ({
     );
 };
 
-export default OppholdsperiodeContent;
+export default OppholdsPeriodeContent;
+
+// import DonaldDuck from 'OppholdsperiodeContent'; // works
+// import { DonaldDuck } from 'OppholdsperiodeContent'; // not works

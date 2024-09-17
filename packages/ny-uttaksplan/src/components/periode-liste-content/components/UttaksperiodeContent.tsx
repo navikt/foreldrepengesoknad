@@ -1,6 +1,6 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
@@ -36,7 +36,9 @@ const UttaksperiodeContent: FunctionComponent<Props> = ({
                 <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
                     {inneholderKunEnPeriode ? (
                         <>
-                            <BodyShort weight="semibold">Hele perioden</BodyShort>
+                            <BodyShort weight="semibold">
+                                <FormattedMessage id="uttaksplan.varighet.helePerioden" />
+                            </BodyShort>
                             <BodyShort>
                                 {getVarighetString(
                                     TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),

@@ -4,6 +4,7 @@ import { FunctionComponent } from 'react';
 import { BodyShort, Stack } from '@navikt/ds-react';
 
 import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
+import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
@@ -11,13 +12,12 @@ import Permisjonsperiode from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import { isOppholdsperiode, isPeriodeUtenUttak, isUttaksperiode } from '../../utils/periodeUtils';
 import FamiliehendelseContent from './components/FamiliehendelseContent';
-import OppholdsperiodeContent from './components/OppholdsperiodeContent';
+import OppholdsPeriodeContent from './components/OppholdsperiodeContent';
 import PeriodeUtenUttakContent from './components/PeriodeUtenUttakContext';
 import UttaksperiodeContent from './components/UttaksperiodeContent';
 
 interface Props {
     permisjonsperiode: Permisjonsperiode;
-    familiehendelseType: FamiliehendelseType | undefined;
     erFamiliehendelse: boolean;
 }
 
@@ -40,7 +40,7 @@ const renderPeriode = (
 
     if (isOppholdsperiode(periode)) {
         return (
-            <OppholdsperiodeContent
+            <OppholdsPeriodeContent
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                 navnPåForeldre={navnPåForeldre}
                 erFarEllerMedmor={erFarEllerMedmor}
@@ -67,11 +67,19 @@ const renderPeriode = (
     );
 };
 
-const PeriodeListeContent: FunctionComponent<Props> = ({
-    permisjonsperiode,
-    familiehendelseType,
-    erFamiliehendelse,
-}) => {
+const getFamiliehendelseType = (barn: Barn) => {
+    if (isUfødtBarn(barn)) {
+        return FamiliehendelseType.TERM;
+    }
+
+    if (isAdoptertBarn(barn)) {
+        return FamiliehendelseType.ADOPSJON;
+    }
+
+    return FamiliehendelseType.FØDSEL;
+};
+
+const PeriodeListeContent: FunctionComponent<Props> = ({ permisjonsperiode, erFamiliehendelse }) => {
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
     const skalJobbeIPermisjonsperioden =
         permisjonsperiode.perioder.find((p) => {
@@ -84,6 +92,8 @@ const PeriodeListeContent: FunctionComponent<Props> = ({
 
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
+    const barn = notEmpty(useContextGetData(UttaksplanContextDataType.BARN));
+    const familiehendelseType = getFamiliehendelseType(barn);
 
     if (erFamiliehendelse && familiehendelseType !== undefined) {
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
@@ -96,7 +106,18 @@ const PeriodeListeContent: FunctionComponent<Props> = ({
                     return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode);
                 })}
             </Stack>
-            {skalJobbeIPermisjonsperioden ? null : (
+            {skalJobbeIPermisjonsperioden ? (
+                <div style={{ margin: '0.5rem 0', display: 'flex' }}>
+                    <div>
+                        <BriefcaseIcon width={24} height={24} />
+                    </div>
+                    <div>
+                        <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
+                            <BodyShort>Du skal jobbe i denne perioden</BodyShort>
+                        </div>
+                    </div>
+                </div>
+            ) : (
                 <div style={{ margin: '0.5rem 0', display: 'flex' }}>
                     <div>
                         <BriefcaseIcon width={24} height={24} />

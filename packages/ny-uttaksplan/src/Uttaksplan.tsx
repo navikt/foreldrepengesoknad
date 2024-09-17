@@ -63,7 +63,7 @@ const UttaksplanNy: FunctionComponent<Props> = ({
             }}
         >
             <div style={{ padding: '2rem 0' }}>
-                <PeriodeListe perioder={komplettPlan} familiehendelsedato={familiehendelsedato} barn={barn} />
+                <PeriodeListe perioder={komplettPlan} />
             </div>
         </UttaksplanDataContext>
     );

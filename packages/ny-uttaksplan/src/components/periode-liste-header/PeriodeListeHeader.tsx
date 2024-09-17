@@ -17,7 +17,6 @@ import './periode-liste-header.css';
 
 interface Props {
     permisjonsperiode: Permisjonsperiode;
-    familiehendelsedato: string;
     erFamiliehendelse?: boolean;
 }
 
@@ -50,16 +49,13 @@ const renderVarighet = (erFamiliehendelse: boolean | undefined, antallDager: num
     return <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>;
 };
 
-const PeriodeListeHeader: FunctionComponent<Props> = ({
-    permisjonsperiode,
-    familiehendelsedato,
-    erFamiliehendelse,
-}) => {
+const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, erFamiliehendelse }) => {
     const intl = useIntl();
     const bem = bemUtils('periode-liste-header');
 
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
+    const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
 
     const periodeFørTermindato = dayjs(familiehendelsedato).isAfter(permisjonsperiode.tidsperiode.tom);
     const { tidsperiode, erUtsettelse, erHull, forelder } = permisjonsperiode;

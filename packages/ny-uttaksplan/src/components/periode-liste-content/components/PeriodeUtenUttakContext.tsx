@@ -1,5 +1,5 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
@@ -22,7 +22,9 @@ export const PeriodeUtenUttakContent = ({ periode }: Props) => {
             </div>
             <div>
                 <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
-                    <BodyShort weight="semibold">Hele perioden</BodyShort>
+                    <BodyShort weight="semibold">
+                        <FormattedMessage id="uttaksplan.varighet.helePerioden" />
+                    </BodyShort>
                     <BodyShort>
                         {getVarighetString(
                             TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),
