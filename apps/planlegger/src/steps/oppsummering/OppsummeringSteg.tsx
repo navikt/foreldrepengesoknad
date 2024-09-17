@@ -8,7 +8,7 @@ import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
-import { Alert, BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
@@ -59,28 +59,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
             <OppsummeringHeader>
                 <VStack gap="10">
                     <VStack gap="5">
-                        {harRettTilForeldrepenger && (
-                            <Alert variant="info">
-                                <BodyShort>
-                                    <FormattedMessage
-                                        id="OppsummeringSteg.InformasjonPlanleggerErUnderUtvikling"
-                                        values={{
-                                            a: (msg: any) => (
-                                                <Link
-                                                    inlineText
-                                                    href={links.søknadForeldrepenger}
-                                                    target="_blank"
-                                                    className="lenke"
-                                                    rel="noreferrer"
-                                                >
-                                                    {msg}
-                                                </Link>
-                                            ),
-                                        }}
-                                    />
-                                </BodyShort>
-                            </Alert>
-                        )}
+                        <ShareDataInfobox erAlenesøker={erAleneforsørger} />
                         {!harRettTilForeldrepenger && (
                             <VStack gap="5">
                                 <Infobox
@@ -133,7 +112,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
                             </VStack>
                         )}
                     </VStack>
-                    <ShareDataInfobox erAlenesøker={erAleneforsørger} />
+
                     <VStack gap="10">
                         <HStack>
                             <Button

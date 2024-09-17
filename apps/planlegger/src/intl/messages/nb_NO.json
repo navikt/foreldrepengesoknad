@@ -143,7 +143,6 @@
     "OppsummeringSteg.Infoboks.BasertPåSvarene": "Basert på svarene {erAleneforsørger, select, true {dine har du ikke} other {deres har ingen av dere}} rett på foreldrepenger.",
     "OppsummeringSteg.Infoboks.Engangsstønad": "Man kan ha rett til engangsstønad, som er en engangssum man får utbetalt. Det kan man finne ut i ",
     "OppsummeringSteg.Infoboks.Engangsstønad.Link": "veiviseren “Foreldrepenger eller engangsstønad”.",
-    "OppsummeringSteg.InformasjonPlanleggerErUnderUtvikling": "Planleggeren er under utvikling og vil få mer funksjonalitet snart! Dersom man ønsker å planlegge mer i detalj og flytte og endre på perioder, kan man bruke <a>søknaden om foreldrepenger</a>.",
     "OppsummeringSteg.Perioden": "Perioden med foreldrepenger",
     "OppsummeringSteg.DereValgte": "Dere valgte {prosent} % i {antallUker} uker{antallDager, select, 0 {} 1 { + {antallDager} dag } other { + {antallDager} dager }} og fordeler fellesperioden med {uker} uker {dager, select, 0 {} 1 {+ {dager} dag } other {+ {dager} dager }}til {hvem} og {uker2} uker{dager2, select, 0 {} 1 { + {dager2} dag} other { + {dager2} dager}} til {hvem2}.",
     "OppsummeringSteg.DereValgteFedreEllerAlene": "{erAlenesøker, select, true {Du} other {Dere}} valgte {prosent} % i {antallUker} uker{antallDager, select, 0 {} 1 { og {antallDager} dag} other { og {antallDager} dager}}.",

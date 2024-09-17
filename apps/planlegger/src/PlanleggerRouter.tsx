@@ -1,6 +1,6 @@
 import { PlanleggerRoutes } from 'appData/routes';
-import { FunctionComponent, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { FunctionComponent } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import ArbeidssituasjonSteg from 'steps/arbeidssituasjon/ArbeidssituasjonSteg';
 import FordelingSteg from 'steps/fordeling/FordelingSteg';
 import HvemPlanleggerSteg from 'steps/hvem-planlegger/HvemPlanleggerSteg';
@@ -22,18 +22,6 @@ interface Props {
 }
 
 const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stønadskontoer, satser }) => {
-    const navigate = useNavigate();
-    const [isFirstLoad, setIsFirstLoad] = useState(true);
-
-    useEffect(() => {
-        setIsFirstLoad(false);
-        navigate('/');
-    }, []);
-
-    if (isFirstLoad) {
-        return null;
-    }
-
     return (
         <Routes>
             <Route path="/" element={<OmPlanleggerenSteg locale={locale} changeLocale={changeLocale} />} />
