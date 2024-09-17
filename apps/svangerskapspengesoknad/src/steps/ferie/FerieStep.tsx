@@ -11,12 +11,17 @@ import Tilrettelegging from 'types/Tilrettelegging';
 
 import { BodyShort, DatePicker, HStack, Heading, Radio, ReadMore, VStack, useRangeDatepicker } from '@navikt/ds-react';
 
-import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
-import { hasMaxValue, hasMinValue, isRequired, isValidNumberForm, notEmpty } from '@navikt/fp-validation';
-
+import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '../../../../../packages/constants';
+import {
+    ErrorSummaryHookForm,
+    RhfForm,
+    RhfRadioGroup,
+    RhfTextField,
+    StepButtonsHookForm,
+} from '../../../../../packages/form-hooks';
+import { Arbeidsforhold } from '../../../../../packages/types';
+import { Step } from '../../../../../packages/ui';
+import { hasMaxValue, hasMinValue, isRequired, isValidNumberForm, notEmpty } from '../../../../../packages/validation';
 import './feriestep.css';
 
 type Props = {

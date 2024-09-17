@@ -4,9 +4,8 @@ import { Action, SvpDataContext } from 'appData/SvpDataContext';
 import SøknadRoutes from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
-import { FerieStep } from 'app/steps/ferie/FerieStep';
+import { initAmplitude } from '../../../../../packages/metrics';
+import { FerieStep } from './FerieStep';
 
 export default {
     title: 'steps/FerieStep',
