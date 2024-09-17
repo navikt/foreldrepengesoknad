@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
             }),
             checker({ typescript: true }),
         ],
-        base: mode === 'development' ? '' : '/foreldrepenger/veiviser-hvor-mye',
+        base: mode === 'development' ? '' : '/foreldrepenger/hvor-mye',
         build: {
             sourcemap: true,
         },

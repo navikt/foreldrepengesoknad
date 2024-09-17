@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
             }),
             checker({ typescript: true }),
         ],
-        base: mode === 'development' ? '' : '/foreldrepenger/veiviser-hva-skjer-nar',
+        base: mode === 'development' ? '' : '/foreldrepenger/hva-skjer-nar',
         build: {
             sourcemap: true,
         },

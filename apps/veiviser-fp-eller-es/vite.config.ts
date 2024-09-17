@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
             }),
             checker({ typescript: true }),
         ],
-        base: mode === 'development' ? '' : '/foreldrepenger/veiviser-fp-eller-es',
+        base: mode === 'development' ? '' : '/foreldrepenger/foreldrepenger-eller-engangsstonad',
         build: {
             sourcemap: true,
         },
