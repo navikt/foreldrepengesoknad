@@ -39,7 +39,7 @@ const OppsummeringHvaSkjerNårSide: React.FunctionComponent<Props> = ({ hvaSkjer
     const { situasjon, fødselsdato, termindato } = hvaSkjerNårSituasjon;
     const erAleneforsørger = situasjon === 'aleneomsorg' || situasjon === 'kunMor' || situasjon === 'kunFarEllerMedmor';
     return (
-        <VeiviserPage ref={ref} label={intl.formatMessage({ id: 'OppsummeringFpEllerEsSide.Oppsummering' })}>
+        <VeiviserPage ref={ref} label={intl.formatMessage({ id: 'OppsummeringHvaSkjerNårSide.Oppsummering' })}>
             <VStack gap="8">
                 <ExpansionCard aria-label="" size="small">
                     <ExpansionCard.Header>

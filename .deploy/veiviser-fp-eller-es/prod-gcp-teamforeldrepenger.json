@@ -1,0 +1,9 @@
+{
+    "app": "veiviser-fp-eller-es",
+    "autentisering": false,
+    "ingress": "https://www.nav.no/foreldrepenger/foreldrepenger-eller-engangsstønad",
+    "env": {
+        "PUBLIC_PATH": "/foreldrepenger/foreldrepenger-eller-engangsstønad",
+        "ENV": "prod"
+    }
+}

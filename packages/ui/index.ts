@@ -34,3 +34,6 @@ export { default as BluePanel } from './src/boxes/BluePanel';
 export { default as Infobox } from './src/boxes/Infobox';
 export { default as IconCircleWrapper } from './src/icon-circle/IconCircleWrapper';
 export { default as ByttBrowserModal } from './src/bytt-browser-modal/ByttBrowserModal';
+export { default as VeiviserPage } from './src/veivisere/VeiviserPage';
+export { default as AndreVeivisereLinkPanel } from './src/veivisere/andre-veivisere/AndreVeivisereLinkPanel';
+export { default as FrontPage } from './src/veivisere/frontpage/FrontPage';

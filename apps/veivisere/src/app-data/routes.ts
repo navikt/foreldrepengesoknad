@@ -1,7 +1,6 @@
 export enum ContextRoutes {
     HVOR_MYE = '/hvor-mye',
     HVA_SKJER = '/hva-skjer',
-    FP_ELLER_ES = '/foreldrepenger-eller-engangsstonad',
 }
 
 export enum HvorMyeRoutes {
@@ -11,12 +10,6 @@ export enum HvorMyeRoutes {
 }
 
 export enum HvaSkjerNårRoutes {
-    OM = '/om',
-    SITUASJON = '/situasjon',
-    OPPSUMMERING = '/oppsummering',
-}
-
-export enum FpEllerEsRoutes {
     OM = '/om',
     SITUASJON = '/situasjon',
     OPPSUMMERING = '/oppsummering',

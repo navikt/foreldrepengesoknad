@@ -4,7 +4,6 @@ import { Route, Routes } from 'react-router-dom';
 
 import { LocaleAll, Satser } from '@navikt/fp-types';
 
-import FpEllerEsRouter from './veivisere/fp-eller-es/FpEllerEsRouter';
 import HvaSkjerNårRouter from './veivisere/hva-skjer-når/HvaSkjerNårRouter';
 import HvorMyeRouter from './veivisere/hvor-mye/HvorMyeRouter';
 
@@ -24,10 +23,6 @@ const VeiviserRouter: FunctionComponent<Props> = ({ locale, changeLocale, satser
             <Route
                 path={ContextRoutes.HVA_SKJER + '/*'}
                 element={<HvaSkjerNårRouter locale={locale} changeLocale={changeLocale} />}
-            />
-            <Route
-                path={ContextRoutes.FP_ELLER_ES + '/*'}
-                element={<FpEllerEsRouter locale={locale} changeLocale={changeLocale} satser={satser} />}
             />
             <Route path="*" element={<div>Veivisere</div>} />
         </Routes>

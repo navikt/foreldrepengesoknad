@@ -48,7 +48,7 @@ const HvaSkjerNårRouter: FunctionComponent<Props> = ({ locale, changeLocale }) 
                 />
             )}
 
-            <Route path="*" element={<Navigate to={ContextRoutes.FP_ELLER_ES} />} />
+            <Route path="*" element={<Navigate to={ContextRoutes.HVA_SKJER} />} />
         </Routes>
     );
 };

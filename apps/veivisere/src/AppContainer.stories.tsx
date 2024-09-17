@@ -138,12 +138,6 @@ export const HvaSkjerNårVeiviser: Story = {
     },
 };
 
-export const FpEllerEsVeiviser: Story = {
-    args: {
-        initialEntries: [ContextRoutes.FP_ELLER_ES],
-    },
-};
-
 export const HvorMyeVeiviserMockaStønadskontoerOgSatser: Story = {
     args: HvorMyeVeiviser.args,
     parameters: {
@@ -158,10 +152,5 @@ export const HvorMyeVeiviserMockaStønadskontoerOgSatser: Story = {
 
 export const HvaSkjerNårVeiviserMockaStønadskontoerOgSatser: Story = {
     args: HvaSkjerNårVeiviser.args,
-    parameters: HvorMyeVeiviserMockaStønadskontoerOgSatser.parameters,
-};
-
-export const FpEllerEsVeiviserMockaStønadskontoerOgSatser: Story = {
-    args: FpEllerEsVeiviser.args,
     parameters: HvorMyeVeiviserMockaStønadskontoerOgSatser.parameters,
 };

@@ -23,6 +23,7 @@ export { overlapperTidsperioder } from './src/tidsperiodeUtils';
 export { redirect } from './src/loginUtils';
 export { default as useDocumentTitle } from './src/hooks/useDocumentTitle';
 export { default as useBeforeUnload } from './src/hooks/useBeforeUnload';
+export { default as useScrollBehaviour } from './src/hooks/useScrollBehaviour';
 export { default as bemUtils } from './src/bemUtils';
 export { trimNumberValue, getFloatFromString, getNumberFromNumberInputValue } from './src/numberUtils';
 export { capitalizeFirstLetter, capitalizeFirstLetterInEveryWordOnly, getNavnGenitivEierform } from './src/stringUtils';
