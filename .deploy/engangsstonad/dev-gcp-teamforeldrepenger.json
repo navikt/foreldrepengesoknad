@@ -1,6 +1,7 @@
 {
     "app": "engangsstonad",
     "autentisering": true,
+    "ingressClassName": "nais-ingress",
     "redirectFrom": "engangsstonad.intern.dev.nav.no",
     "ingress": "https://www.intern.dev.nav.no/engangsstonad/soknad",
     "env": {

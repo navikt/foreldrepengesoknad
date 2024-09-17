@@ -1,6 +1,7 @@
 {
     "app": "svangerskapspengesoknad",
     "autentisering": true,
+    "ingressClassName": "nais-ingress-external",
     "redirectFrom": "svangerskapspengesoknad.nav.no",
     "ingress": "https://www.nav.no/svangerskapspenger/soknad",
     "env": {

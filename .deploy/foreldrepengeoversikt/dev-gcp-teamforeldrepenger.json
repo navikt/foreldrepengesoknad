@@ -1,6 +1,7 @@
 {
     "app": "foreldrepengeoversikt",
     "autentisering": true,
+    "ingressClassName": "nais-ingress",
     "redirectFrom": "foreldrepenger.intern.dev.nav.no",
     "ingress": "https://www.intern.dev.nav.no/foreldrepenger/oversikt",
     "env": {

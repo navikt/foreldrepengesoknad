@@ -1,6 +1,7 @@
 {
     "app": "engangsstonad",
     "autentisering": true,
+    "ingressClassName": "nais-ingress-external",
     "redirectFrom": "engangsstonad.nav.no",
     "ingress": "https://www.nav.no/engangsstonad/soknad",
     "env": {

@@ -1,6 +1,7 @@
 {
     "app": "foreldrepengesoknad",
     "autentisering": true,
+    "ingressClassName": "nais-ingress",
     "redirectFrom": "foreldrepengesoknad.intern.dev.nav.no",
     "ingress": "https://www.intern.dev.nav.no/foreldrepenger/soknad",
     "env": {
