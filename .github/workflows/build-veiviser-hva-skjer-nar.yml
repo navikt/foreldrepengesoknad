@@ -1,4 +1,4 @@
-name: Bygg og deploy Veiviser for hva skjer når i en foreldrepengesøknad
+name: Bygg og deploy Veiviser-hva-skjer-nar
 on:
   workflow_dispatch:
   push:

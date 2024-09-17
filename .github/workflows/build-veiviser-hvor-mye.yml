@@ -1,4 +1,4 @@
-name: Bygg og deploy Veiviser som viser hvor mye du får utbetalt
+name: Bygg og deploy Veiviser-hvor-mye
 on:
   workflow_dispatch:
   push:

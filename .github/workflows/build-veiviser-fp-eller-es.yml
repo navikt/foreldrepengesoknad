@@ -1,4 +1,4 @@
-name: Bygg og deploy Veiviser for valg av foreldrepenger og engangsstønad
+name: Bygg og deploy Veiviser-fp-eller-es
 on:
   workflow_dispatch:
   push:
