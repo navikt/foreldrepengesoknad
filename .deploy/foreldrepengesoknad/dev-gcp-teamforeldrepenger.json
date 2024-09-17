@@ -1,9 +1,11 @@
 {
     "app": "foreldrepengesoknad",
     "autentisering": true,
-    "ingressClassName": "nais-ingress",
-    "redirectFrom": "foreldrepengesoknad.intern.dev.nav.no",
     "ingress": "https://www.intern.dev.nav.no/foreldrepenger/soknad",
+    "redirect": {
+        "host": "foreldrepengesoknad.intern.dev.nav.no",
+        "ingressClassName": "nais-ingress"
+    },
     "env": {
         "PUBLIC_PATH": "/foreldrepenger/soknad",
         "INNSYN": "https://www.intern.dev.nav.no/foreldrepenger/oversikt",
