@@ -1,23 +1,14 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
-import { Action, SvpDataContext } from 'appData/SvpDataContext';
+import { Meta, StoryObj } from '@storybook/react';
+import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
 import SøknadRoutes from 'appData/routes';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { DelivisTilretteleggingPeriodeType } from 'types/DelivisTilretteleggingPeriodeType';
+import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'types/Tilrettelegging';
 
 import { initAmplitude } from '../../../../../packages/metrics';
 import { FerieStep } from './FerieStep';
-
-export default {
-    title: 'steps/FerieStep',
-    component: FerieStep,
-};
-
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
 
 const arbeidsforhold = [
     {
@@ -31,23 +22,56 @@ const arbeidsforhold = [
     },
 ];
 
-interface Props {
-    mellomlagreSøknadOgNaviger?: () => Promise<void>;
-    gåTilNesteSide?: (action: Action) => void;
-}
+const meta = {
+    title: 'steps/FerieStep',
+    component: FerieStep,
+    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[SøknadRoutes.FERIE]}>
+                <SvpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.VALGT_TILRETTELEGGING_ID]: '263929546-6215-9868-5127-161910165730101',
+                        [ContextDataType.TILRETTELEGGINGER]: [
+                            {
+                                id: '263929546-6215-9868-5127-161910165730101',
+                                arbeidsforhold: {
+                                    navn: 'Omsorgspartner Vestfold AS',
+                                    stillinger: [{ fom: '2019-01-01', stillingsprosent: 100 }],
+                                    type: Arbeidsforholdstype.VIRKSOMHET,
+                                },
+                                type: TilretteleggingstypeOptions.DELVIS,
+                                delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
+                            } as Tilrettelegging,
+                        ],
+                    }}
+                >
+                    <FerieStep {...rest} />
+                </SvpDataContext>
+            </MemoryRouter>
+        );
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
 
-const Template: StoryFn<Props> = ({ mellomlagreSøknadOgNaviger = promiseAction(), gåTilNesteSide }) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[SøknadRoutes.FERIE]}>
-            <SvpDataContext onDispatch={gåTilNesteSide} initialState={{}}>
-                <FerieStep
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    avbrytSøknad={promiseAction()}
-                    arbeidsforhold={arbeidsforhold}
-                />
-            </SvpDataContext>
-        </MemoryRouter>
-    );
+const promiseAction =
+    () =>
+    (...args: any): Promise<any> => {
+        action('button-click')(...args);
+        return Promise.resolve();
+    };
+
+type StoryArgs = {
+    gåTilNesteSide?: (action: Action) => void;
+} & ComponentProps<typeof FerieStep>;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        arbeidsforhold,
+        mellomlagreSøknadOgNaviger: promiseAction(),
+        avbrytSøknad: promiseAction(),
+    },
 };
-export const Default = Template.bind({});
