@@ -88,7 +88,6 @@ const meta = {
                             harBoddUtenforNorgeSiste12Mnd: false,
                             skalBoUtenforNorgeNeste12Mnd: false,
                         },
-                        [ContextDataType.FERIE]: [],
                         [ContextDataType.OM_BARNET]: {
                             erBarnetFødt: false,
                             termindato: '2024-02-18',

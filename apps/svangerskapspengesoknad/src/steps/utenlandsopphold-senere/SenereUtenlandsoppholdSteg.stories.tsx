@@ -91,7 +91,6 @@ const meta = {
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
-                        [ContextDataType.FERIE]: [],
                         [ContextDataType.UTENLANDSOPPHOLD]: utenlandsforhold,
                     }}
                 >

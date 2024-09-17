@@ -90,7 +90,6 @@ const meta = {
                             harJobbetSomSelvstendigNæringsdrivende: false,
                         },
                         [ContextDataType.TILRETTELEGGINGER]: [],
-                        [ContextDataType.FERIE]: [],
                         [ContextDataType.OM_BARNET]: {
                             erBarnetFødt: false,
                             termindato: '2024-02-18',
