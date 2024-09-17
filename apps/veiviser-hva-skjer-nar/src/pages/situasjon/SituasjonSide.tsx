@@ -2,7 +2,6 @@ import { BabyWrappedIcon, CalendarIcon, PaperplaneIcon } from '@navikt/aksel-ico
 import { HvaSkjerNårRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
-import BlueRadioGroup from 'pages/BlueRadioGroup';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -14,6 +13,8 @@ import { RhfDatepicker, RhfForm } from '@navikt/fp-form-hooks';
 import { BluePanel, Infobox, VeiviserPage } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils';
 import { isBeforeTodayOrToday, isValidDate } from '@navikt/fp-validation';
+
+import BlueRadioGroup from '../BlueRadioGroup';
 
 export enum Situasjon {
     MOR_OG_FAR = 'morOgFar',
