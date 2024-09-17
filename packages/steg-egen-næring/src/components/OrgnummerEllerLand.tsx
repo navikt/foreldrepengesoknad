@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { Select, TextField } from '@navikt/fp-form-hooks';
+import { RhfSelect, RhfTextField } from '@navikt/fp-form-hooks';
 import { createCountryOptions } from '@navikt/fp-utils';
 import { containsWhiteSpace, erGyldigNorskOrgnummer, isNotEqualValue, isRequired } from '@navikt/fp-validation';
 
@@ -36,14 +36,14 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ orgNummerErValgfritt, re
     return (
         <>
             {registrertINorge && (
-                <TextField
+                <RhfTextField
                     name="organisasjonsnummer"
                     label={orgNrLabel}
                     validate={[validateEgenNæringOrgnr(intl, orgNummerErValgfritt)]}
                 />
             )}
             {registrertINorge === false && (
-                <Select
+                <RhfSelect
                     name="registrertILand"
                     label={intl.formatMessage({ id: 'egenNæring.registrertILand' })}
                     validate={[
@@ -51,12 +51,14 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ orgNummerErValgfritt, re
                         isNotEqualValue(intl.formatMessage({ id: 'valideringsfeil.egenNæringLand.ikkeNorge' }), 'NO'),
                     ]}
                 >
-                    {createCountryOptions().map((o: Record<string, any>) => (
-                        <option key={o[0]} value={o[0]}>
-                            {o[1]}
-                        </option>
-                    ))}
-                </Select>
+                    {createCountryOptions()
+                        .filter((country: Record<string, any>) => country[0] !== 'NO')
+                        .map((o: Record<string, any>) => (
+                            <option key={o[0]} value={o[0]}>
+                                {o[1]}
+                            </option>
+                        ))}
+                </RhfSelect>
             )}
         </>
     );

@@ -1,11 +1,12 @@
+import { IntlShape } from 'react-intl';
+
+import { getFloatFromString } from '@navikt/fp-utils';
+
 import {
-    getFloatFromString,
-    intlUtils,
     samtidigUttakProsentIsMax100,
     stillingsprosentIsLessThan100,
     stillingsprosentIsMoreThan0,
-} from '@navikt/fp-common';
-import { IntlShape } from 'react-intl';
+} from '../../utils/periodeUtils';
 import { hasValueRule } from './regelUtils';
 import { Validator } from './types/validatorTypes';
 
@@ -16,21 +17,21 @@ export const getStillingsprosentRegler = (
 ): Validator[] => {
     const intlKey = 'valideringsfeil.stillingsprosent';
     return [
-        hasValueRule(stillingsprosent, intl ? intlUtils(intl, `${intlKey}.required`) : ''),
+        hasValueRule(stillingsprosent, intl ? intl.formatMessage({ id: `${intlKey}.required` }) : ''),
         {
             test: () => getFloatFromString(stillingsprosent) !== undefined,
-            failText: intl ? intlUtils(intl, `${intlKey}.ugyldigTall`) : '',
+            failText: intl ? intl.formatMessage({ id: `${intlKey}.ugyldigTall` }) : '',
         },
         {
             test: () => stillingsprosentIsMoreThan0(stillingsprosent),
-            failText: intl ? intlUtils(intl, `${intlKey}.under1`) : '',
+            failText: intl ? intl.formatMessage({ id: `${intlKey}.under1` }) : '',
         },
         {
             test: () =>
                 erSamtidigUttak
                     ? samtidigUttakProsentIsMax100(stillingsprosent)
                     : stillingsprosentIsLessThan100(stillingsprosent),
-            failText: intl ? intlUtils(intl, `${intlKey}.over100prosent`) : '',
+            failText: intl ? intl.formatMessage({ id: `${intlKey}.over100prosent` }) : '',
         },
     ];
 };

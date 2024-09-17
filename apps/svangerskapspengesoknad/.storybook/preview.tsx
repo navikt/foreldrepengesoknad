@@ -11,9 +11,9 @@ import { utenlandsoppholdMessages } from '@navikt/fp-steg-utenlandsopphold';
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 
-import nbMessages from '../src/app/intl/nb_NO.json';
-import nnMessages from '../src/app/intl/nn_NO.json';
-import '../src/app/styles/app.css';
+import nbMessages from '../src/intl/nb_NO.json';
+import nnMessages from '../src/intl/nn_NO.json';
+import '../src/styles/app.css';
 
 const scriptTag = document.createElement('script');
 scriptTag.type = 'text/json';
@@ -21,6 +21,7 @@ scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
     LOG_VALIDATION: 'test',
     INNSYN: 'test',
+    PUBLIC_PATH: '',
 });
 document.head.appendChild(scriptTag);
 

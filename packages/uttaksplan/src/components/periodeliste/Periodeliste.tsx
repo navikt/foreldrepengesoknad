@@ -9,22 +9,20 @@ import {
     Arbeidsforhold,
     Barn,
     BarnFraNesteSak,
-    Block,
     NavnPåForeldre,
     Periode,
     PeriodeValidState,
     Situasjon,
     Utsettelsesperiode,
-    bemUtils,
-    formatDate,
     isInfoPeriode,
-    isValidTidsperiode,
 } from '@navikt/fp-common';
-import { getAnnenForelderSamtidigUttakPeriode } from '@navikt/fp-common/src/common/utils/periodeUtils';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { formatDateIso } from '@navikt/fp-utils';
+import { formatDate, formatDateIso, isValidTidsperiode } from '@navikt/fp-utils';
 
+import Block from '../../common/block/Block';
+import { getAnnenForelderSamtidigUttakPeriode } from '../../utils/periodeUtils';
+import planBemUtils from '../../utils/planBemUtils';
 import { VeiledermeldingerPerPeriode } from '../../validering/veilederInfo/types';
 import FamiliehendelsedatoDisplay from '../familiehendelsedato-display/FamiliehendelsedatoDisplay';
 import PeriodelisteItem from './../periodeliste-item/PeriodelisteItem';
@@ -99,7 +97,7 @@ const Periodeliste: FunctionComponent<Props> = ({
     perioderErGyldige,
 }) => {
     const [openPeriodeId, setOpenPeriodeId] = useState<string>(null!);
-    const bem = bemUtils('periodeliste');
+    const bem = planBemUtils('periodeliste');
 
     const toggleIsOpen = (id: string) => {
         if (openPeriodeId === id) {

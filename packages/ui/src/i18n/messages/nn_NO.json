@@ -53,5 +53,9 @@
     "ByttBrowserModal.Tittel": "Du er no logga ut",
     "ByttBrowserModal.Utdatert": "Vi ser du brukar ein utdatert nettlesar",
     "ByttBrowserModal.Ingress": "For å få den beste brukaropplevinga anbefaler me at du byttar til ein moderne nettlesar som støttar moderne webstandarder.",
-    "ByttBrowserModal.Ok": "OK"
+    "ByttBrowserModal.Ok": "OK",
+    "Step.HarValgfrieFelt": "Alle felt må fyllast ut, bortsett frå felt markert med (valfritt).",
+    "Step.HarObligatoriskeFelt": "Alle felt må fyllast ut.",
+    "AndreVeivisereLinkPanel.AndreVeivisere": "Andre vegvisarar:",
+    "FrontPage.Start": "Start"
 }

@@ -1,3 +1,4 @@
+import Environment from 'appData/Environment';
 import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
@@ -57,6 +58,7 @@ dayjs.locale(localeFromSessionStorage);
 const retryCallback = async () => {
     try {
         await deleteData(esApi, '/rest/engangsstonad', 'Feil ved sletting av mellomlagret data');
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
         // Vi bryr oss ikke om feil her. Logges bare i backend
     }
@@ -76,7 +78,7 @@ const AppContainer = () => {
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <ErrorBoundary appName="Engangsstønad" retryCallback={retryCallback}>
-                <BrowserRouter>
+                <BrowserRouter basename={Environment.PUBLIC_PATH}>
                     <Engangsstønad locale={locale} onChangeLocale={changeLocale} />
                 </BrowserRouter>
             </ErrorBoundary>

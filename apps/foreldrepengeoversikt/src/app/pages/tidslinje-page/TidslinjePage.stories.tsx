@@ -2,9 +2,9 @@ import { Meta, StoryObj } from '@storybook/react/*';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import manglendeVedlegg from 'storybook/storyData/manglendeVedlegg/manglendeVedlegg.json';
-import saker from 'storybook/storyData/saker/saker.json';
-import tidslinjeHendelser from 'storybook/storyData/tidslinjeHendelser/tidslinjeHendelser.json';
+import manglendeVedlegg from 'storybookData/manglendeVedlegg/manglendeVedlegg.json';
+import saker from 'storybookData/saker/saker.json';
+import tidslinjeHendelser from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.json';
 
 import OversiktRoutes from 'app/routes/routes';
 
@@ -15,25 +15,13 @@ const queryClient = new QueryClient();
 const meta = {
     title: 'TidslinjePage',
     component: TidslinjePage,
-    render: () => {
+    render: (props) => {
         return (
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter initialEntries={[`/${OversiktRoutes.TIDSLINJEN}/352011079`]}>
                     <Routes>
                         <Route
-                            element={
-                                <TidslinjePage
-                                    søkersBarn={[
-                                        {
-                                            fornavn: 'Olga',
-                                            etternavn: 'Utvikler',
-                                            fnr: '23232424',
-                                            fødselsdato: '2024-01-01',
-                                            kjønn: 'K',
-                                        },
-                                    ]}
-                                />
-                            }
+                            element={<TidslinjePage {...props} />}
                             path={`/${OversiktRoutes.TIDSLINJEN}/:saksnummer`}
                         />
                     </Routes>
@@ -44,7 +32,7 @@ const meta = {
 } satisfies Meta<typeof TidslinjePage>;
 export default meta;
 
-type Story = StoryObj<typeof TidslinjePage>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     parameters: {
@@ -55,5 +43,16 @@ export const Default: Story = {
                 http.get('/rest/historikk/vedlegg', () => HttpResponse.json(manglendeVedlegg)),
             ],
         },
+    },
+    args: {
+        søkersBarn: [
+            {
+                fornavn: 'Olga',
+                etternavn: 'Utvikler',
+                fnr: '23232424',
+                fødselsdato: '2024-01-01',
+                kjønn: 'K',
+            },
+        ],
     },
 };

@@ -2,7 +2,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { PlanleggerRoutes } from 'appData/routes';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
-import BlueRadioGroup from 'components/formWrappers/BlueRadioGroup';
+import BlueRadioGroup from 'components/form-wrappers/BlueRadioGroup';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
@@ -14,8 +14,8 @@ import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
-import { Form, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Satser } from '@navikt/fp-types';
+import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { LocaleAll, Satser } from '@navikt/fp-types';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -26,11 +26,12 @@ import UførInfoboks from './info/UførInfoboks';
 
 interface Props {
     satser: Satser;
+    locale: LocaleAll;
 }
 
-const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser }) => {
+const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser, locale }) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator();
+    const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
 
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
@@ -74,7 +75,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser }) => {
 
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
-            <Form formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
                         <Heading level="2" size="medium">
@@ -217,7 +218,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser }) => {
                         useSimplifiedTexts
                     />
                 </VStack>
-            </Form>
+            </RhfForm>
         </PlanleggerStepPage>
     );
 };

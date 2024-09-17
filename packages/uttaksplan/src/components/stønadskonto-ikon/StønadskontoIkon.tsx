@@ -1,10 +1,11 @@
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
-import { Forelder, NavnPåForeldre, Situasjon, StønadskontoType, getStønadskontoNavn } from '@navikt/fp-common';
+import { Forelder, NavnPåForeldre, Situasjon, StønadskontoType } from '@navikt/fp-common';
 import { StønadskontoType as StønadskontoTypeType } from '@navikt/fp-constants';
 import { getUttaksperiodeFarge } from '@navikt/fp-utils';
 
+import { getStønadskontoNavn } from '../../utils/stønadskontoerUtils';
 import IconBox from '../icon-box/IconBox';
 import UttaksplanIkon, { UttaksplanIkonKeys } from '../uttaksplan-ikon/UttaksplanIkon';
 

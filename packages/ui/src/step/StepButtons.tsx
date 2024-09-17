@@ -10,7 +10,7 @@ interface Props {
     isDisabledAndLoading?: boolean;
     isDisabled?: boolean;
     isLoading?: boolean;
-    isNexButtonVisible?: boolean;
+    isNextButtonVisible?: boolean;
     isSendButton?: boolean;
     useSimplifiedTexts?: boolean;
 }
@@ -21,7 +21,7 @@ const StepButtons: FunctionComponent<Props> = ({
     isDisabledAndLoading = false,
     isDisabled = false,
     isLoading = false,
-    isNexButtonVisible = true,
+    isNextButtonVisible = true,
     isSendButton = false,
     useSimplifiedTexts = false,
 }) => {
@@ -39,7 +39,7 @@ const StepButtons: FunctionComponent<Props> = ({
                     <FormattedMessage id="StepButtons.Forrige" />
                 )}
             </Button>
-            {isNexButtonVisible && (
+            {isNextButtonVisible && (
                 <Button
                     icon={isSendButton ? <PaperplaneIcon aria-hidden /> : undefined}
                     iconPosition="right"

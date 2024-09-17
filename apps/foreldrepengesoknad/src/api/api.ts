@@ -1,0 +1,121 @@
+import { AxiosInstanceAPI } from 'api/AxiosInstance';
+import SøknadRoutes from 'appData/routes';
+import { AxiosResponse } from 'axios';
+import Fordeling from 'types/Fordeling';
+import { SakerOppslag } from 'types/SakerOppslag';
+import { EndringssøknadForInnsending, Søknad, SøknadForInnsending } from 'types/Søknad';
+import { useGetRequest } from 'utils/hooks/useRequest';
+
+import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
+import { Attachment, Kvittering, LocaleNo, Søkerinfo } from '@navikt/fp-types';
+
+import { storageParser } from './storageParser';
+
+const sendSøknadUrl = '/rest/soknad';
+const sendEndringssøknadUrl = '/rest/soknad/endre';
+
+const useSøkerinfo = () => {
+    const { data, error } = useGetRequest<Søkerinfo>('/rest/sokerinfo', { config: { withCredentials: true } });
+
+    return {
+        søkerinfoData: data,
+        søkerinfoError: error,
+    };
+};
+
+const useGetSaker = () => {
+    const { data, error } = useGetRequest<SakerOppslag>('/rest/innsyn/v2/saker', {
+        config: { withCredentials: true },
+    });
+
+    return {
+        sakerData: data,
+        sakerError: error,
+    };
+};
+
+export interface FpMellomlagretData {
+    version: number;
+    locale: LocaleNo;
+    currentRoute: SøknadRoutes;
+    søknad?: Partial<Søknad>;
+    antallUkerIUttaksplan?: number;
+    perioderSomSkalSendesInn?: Periode[];
+    harUttaksplanBlittSlettet?: boolean;
+    søknadGjelderEtNyttBarn?: boolean;
+    fordeling?: Fordeling;
+    eksisterendeSak?: EksisterendeSak;
+    endringstidspunkt?: Date;
+    barnFraNesteSak?: BarnFraNesteSak;
+    annenPartsUttakErLagtTilIPlan?: boolean;
+}
+
+const useStoredAppState = () => {
+    const { data, error, requestStatus } = useGetRequest<FpMellomlagretData>('/rest/storage/foreldrepenger', {
+        config: { transformResponse: storageParser, withCredentials: true },
+    });
+
+    return {
+        storageData: data,
+        storageError: error,
+        storageStatus: requestStatus,
+    };
+};
+
+const storeAppState = (dataSomSkalMellomlagres: FpMellomlagretData, fnr: string) => {
+    return AxiosInstanceAPI(fnr).post('/rest/storage/foreldrepenger', dataSomSkalMellomlagres, {
+        withCredentials: true,
+    });
+};
+
+const getStorageKvittering = (fnr: string): Promise<AxiosResponse<Kvittering>> => {
+    return AxiosInstanceAPI(fnr).get('/rest/storage/kvittering/foreldrepenger', {
+        withCredentials: true,
+        timeout: 15 * 1000,
+    });
+};
+
+const sendSøknad = (søknad: SøknadForInnsending | EndringssøknadForInnsending, fnr: string, signal: AbortSignal) => {
+    const url = søknad.erEndringssøknad ? sendEndringssøknadUrl : sendSøknadUrl;
+
+    return AxiosInstanceAPI(fnr).post(url, søknad, {
+        withCredentials: true,
+        timeout: 120 * 1000,
+        headers: {
+            'content-type': 'application/json;',
+        },
+        signal,
+    });
+};
+
+const deleteMellomlagretSøknad = (fnr?: string, signal?: AbortSignal) => {
+    return AxiosInstanceAPI(fnr).delete('/rest/storage/foreldrepenger', { withCredentials: true, signal });
+};
+
+const deleteMellomlagredeVedlegg = (fnr: string, vedlegg: Attachment[], signal: AbortSignal) => {
+    const attachmentUUIDs = vedlegg.reduce((result: string[], current: Attachment) => {
+        if (current.uuid) {
+            result.push(current.uuid);
+        }
+
+        return result;
+    }, []);
+    return AxiosInstanceAPI(fnr).delete('/rest/storage/foreldrepenger/vedlegg', {
+        withCredentials: true,
+        data: attachmentUUIDs,
+        signal,
+    });
+};
+
+const Api = {
+    storeAppState,
+    getStorageKvittering,
+    useStoredAppState,
+    useSøkerinfo,
+    sendSøknad,
+    useGetSaker,
+    deleteMellomlagretSøknad,
+    deleteMellomlagredeVedlegg,
+};
+
+export default Api;

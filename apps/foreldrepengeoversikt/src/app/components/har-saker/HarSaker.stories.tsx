@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 import { MemoryRouter } from 'react-router-dom';
-import saker from 'storybook/storyData/saker/saker.json';
+import saker from 'storybookData/saker/saker.json';
 
 import { Ytelse } from 'app/types/Ytelse';
 
@@ -19,7 +19,7 @@ const meta = {
 } satisfies Meta<typeof HarSaker>;
 export default meta;
 
-type Story = StoryObj<typeof HarSaker>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {

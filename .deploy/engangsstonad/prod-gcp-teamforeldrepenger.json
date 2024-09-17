@@ -1,11 +1,14 @@
 {
     "app": "engangsstonad",
     "autentisering": true,
-    "ingresses": [
-        "https://engangsstonad.nav.no"
-    ],
+    "ingress": "https://www.nav.no/engangsstonad/soknad",
+    "redirect": {
+        "host": "engangsstonad.nav.no",
+        "ingressClassName": "nais-ingress-external"
+    },
     "env": {
-        "INNSYN": "https://foreldrepenger.nav.no",
+        "PUBLIC_PATH": "/engangsstonad/soknad",
+        "INNSYN": "https://www.nav.no/foreldrepenger/oversikt",
         "ENV": "prod"
     }
 }

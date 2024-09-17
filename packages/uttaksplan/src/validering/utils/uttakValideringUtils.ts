@@ -2,22 +2,21 @@ import {
     AnnenForelder,
     Forelder,
     MorsAktivitet,
-    Situasjon,
-    StønadskontoType,
-    UtsettelseÅrsakType,
     OverføringÅrsakType,
     Periode,
-    Periodene,
-    Uttaksdagen,
-    getTidsperiode,
-    Tidsperioden,
-    erPeriodeFørDato,
-    Utsettelsesperiode,
-    Uttaksperiode,
-    andreAugust2022ReglerGjelder,
     Periodetype,
+    Situasjon,
+    StønadskontoType,
+    Utsettelsesperiode,
+    UtsettelseÅrsakType,
+    Uttaksperiode,
     isPeriodeUtenUttak,
 } from '@navikt/fp-common';
+import { Tidsperioden, Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
+
+import { Periodene } from '../../utils/Periodene';
+import { andreAugust2022ReglerGjelder } from '../../utils/dateUtils';
+import { erPeriodeFørDato } from '../../utils/periodeUtils';
 import { uttaksdatoer } from '../../utils/uttaksdatoerUtils';
 
 const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;

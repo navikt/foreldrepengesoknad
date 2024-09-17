@@ -4,8 +4,10 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Oppholdsperiode, getVarighetString } from '@navikt/fp-common';
+import { NavnPåForeldre, Oppholdsperiode } from '@navikt/fp-common';
 import { Tidsperioden, formatDateExtended } from '@navikt/fp-utils';
+
+import { getVarighetString } from '../../../utils/dateUtils';
 
 interface Props {
     periode: Oppholdsperiode;

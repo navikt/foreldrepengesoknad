@@ -16,6 +16,6 @@ const meta = {
 } satisfies Meta<typeof SeDokumenter>;
 export default meta;
 
-type Story = StoryObj<typeof SeDokumenter>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};

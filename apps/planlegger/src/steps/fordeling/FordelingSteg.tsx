@@ -17,8 +17,8 @@ import { finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort, Heading, Spacer, VStack } from '@navikt/ds-react';
 
-import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { RhfForm, RhfSelect, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -110,11 +110,12 @@ export const finnFellesperiodeFordelingOptionTekst = (
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoer;
+    locale: LocaleAll;
 }
 
-const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
+const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator();
+    const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
 
     const fordeling = useContextGetData(ContextDataType.FORDELING);
@@ -153,7 +154,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
-            <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
+            <RhfForm formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
                         <Heading size="medium" spacing level="2">
@@ -184,7 +185,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             </BodyShort>
                         </Infobox>
                         <BluePanel isDarkBlue={fordeling === undefined}>
-                            <Select
+                            <RhfSelect
                                 name="antallDagerSøker1"
                                 label={
                                     <FormattedMessage
@@ -216,7 +217,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         )}
                                     </option>
                                 ))}
-                            </Select>
+                            </RhfSelect>
                         </BluePanel>
                         {antallDagerSøker1 !== undefined && (
                             <FordelingsdetaljerPanel
@@ -236,7 +237,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         useSimplifiedTexts
                     />
                 </VStack>
-            </Form>
+            </RhfForm>
         </PlanleggerStepPage>
     );
 };

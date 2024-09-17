@@ -1,6 +1,8 @@
+import { Periodetype, StønadskontoType, Søknadsinfo, isUttaksperiode } from '@navikt/fp-common';
+
+import { Periodene } from '../../utils/Periodene';
 import { RegelTestresultat } from '../utils/types/regelTypes';
 import { getInformasjonOmTaptUttakVedUttakEtterSeksUkerFarMedmor } from '../utils/uttakValideringUtils';
-import { isUttaksperiode, Periodene, Periodetype, StønadskontoType, Søknadsinfo } from '@navikt/fp-common';
 
 export function inneholderTapteDagerTest(grunnlag: Søknadsinfo): RegelTestresultat {
     const { perioder, søkerErFarEllerMedmor } = grunnlag;

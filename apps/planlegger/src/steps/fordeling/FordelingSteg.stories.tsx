@@ -45,48 +45,46 @@ type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
     omBarnet: OmBarnet;
     dekningsgrad?: Dekningsgrad;
-    gåTilNesteSide: (action: Action) => void;
+    gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof FordelingSteg>;
-
-type Story = StoryObj<StoryArgs>;
-
-const customRenderer = ({
-    hvemPlanlegger,
-    omBarnet,
-    stønadskontoer = DEFAULT_STØNADSKONTO,
-    gåTilNesteSide = action('button-click'),
-    dekningsgrad = Dekningsgrad.HUNDRE_PROSENT,
-}: StoryArgs) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[PlanleggerRoutes.FORDELING]}>
-            <PlanleggerDataContext
-                initialState={{
-                    [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
-                    [ContextDataType.ARBEIDSSITUASJON]: {
-                        status: Arbeidsstatus.JOBBER,
-                        jobberAnnenPart: true,
-                    },
-                    [ContextDataType.OM_BARNET]: omBarnet,
-                    [ContextDataType.HVOR_LANG_PERIODE]: { dekningsgrad },
-                }}
-                onDispatch={gåTilNesteSide}
-            >
-                <FordelingSteg stønadskontoer={stønadskontoer} />
-            </PlanleggerDataContext>
-        </MemoryRouter>
-    );
-};
 
 const meta = {
     title: 'steg/FordelingSteg',
     component: FordelingSteg,
-    render: customRenderer,
+    render: ({
+        hvemPlanlegger,
+        omBarnet,
+        stønadskontoer,
+        gåTilNesteSide = action('button-click'),
+        dekningsgrad = Dekningsgrad.HUNDRE_PROSENT,
+        locale,
+    }: StoryArgs) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[PlanleggerRoutes.FORDELING]}>
+                <PlanleggerDataContext
+                    initialState={{
+                        [ContextDataType.HVEM_PLANLEGGER]: hvemPlanlegger,
+                        [ContextDataType.ARBEIDSSITUASJON]: {
+                            status: Arbeidsstatus.JOBBER,
+                            jobberAnnenPart: true,
+                        },
+                        [ContextDataType.OM_BARNET]: omBarnet,
+                        [ContextDataType.HVOR_LANG_PERIODE]: { dekningsgrad },
+                    }}
+                    onDispatch={gåTilNesteSide}
+                >
+                    <FordelingSteg stønadskontoer={stønadskontoer} locale={locale} />
+                </PlanleggerDataContext>
+            </MemoryRouter>
+        );
+    },
 } satisfies Meta<StoryArgs>;
 export default meta;
 
 export const FlereForsørgereEttBarn: Story = {
     args: {
+        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -98,11 +96,15 @@ export const FlereForsørgereEttBarn: Story = {
             termindato: '2024-01-01',
             antallBarn: '1',
         },
+        stønadskontoer: DEFAULT_STØNADSKONTO,
     },
 };
 
+type Story = StoryObj<typeof meta>;
+
 export const FlereForsørgereEttBarn80ProsentDekningsgrad: Story = {
     args: {
+        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -115,11 +117,13 @@ export const FlereForsørgereEttBarn80ProsentDekningsgrad: Story = {
             antallBarn: '1',
         },
         dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
+        stønadskontoer: DEFAULT_STØNADSKONTO,
     },
 };
 
 export const FlereForsørgereToBarn: Story = {
     args: {
+        locale: 'nb',
         hvemPlanlegger: {
             navnPåMedmor: 'Esther Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -132,11 +136,13 @@ export const FlereForsørgereToBarn: Story = {
             antallBarn: '2',
         },
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        stønadskontoer: DEFAULT_STØNADSKONTO,
     },
 };
 
 export const FarOgFar: Story = {
     args: {
+        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Petter Pjokk',
             navnPåMedfar: 'Espen Utvikler',
@@ -149,5 +155,6 @@ export const FarOgFar: Story = {
             overtakelsesdato: '2024-01-01',
         },
         dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        stønadskontoer: DEFAULT_STØNADSKONTO,
     },
 };

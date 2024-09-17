@@ -36,7 +36,7 @@ async function injectDecorator(filePath) {
     });
 }
 
-const startServer = async (html) => {
+const startServer = async () => {
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
     server.get('/health/isReady', (req, res) => res.sendStatus(200));
 
@@ -60,6 +60,7 @@ const startServer = async (html) => {
         '{{{APP_SETTINGS}}}',
         JSON.stringify({
             INNSYN: `${process.env.INNSYN}`,
+            PUBLIC_PATH: `${process.env.PUBLIC_PATH}`,
             APP_VERSION: 'Lokal utvikling',
         }),
     );

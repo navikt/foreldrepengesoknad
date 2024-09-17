@@ -4,9 +4,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { ToggleGroup } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
+import planBemUtils from '../../utils/planBemUtils';
 import './planvisning-toggle.css';
 
 export type Visningsmodus = 'liste' | 'kalender';
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const PlanvisningToggle: FunctionComponent<Props> = ({ setVisningsmodus }) => {
-    const bem = bemUtils('planvisning-toggle');
+    const bem = planBemUtils('planvisning-toggle');
 
     const onChangeHandler = (value: Visningsmodus) => {
         logAmplitudeEvent('applikasjon-hendelse', {

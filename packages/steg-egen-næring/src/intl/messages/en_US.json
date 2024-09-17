@@ -1,6 +1,5 @@
 {
     "valgfritt": "(optional)",
-    "harValgfrieFelt": "All fields must be filled out, except those marked with (optional).",
     "ja": "Yes",
     "nei": "No",
     "valideringsfeil.egenNæringNavn.påkrevd": "You must provide the name of your business.",
@@ -71,5 +70,6 @@
     "valideringsfeil.tilOgMedDato.påkrevd": "You must provide an end date.",
     "valideringsfeil.tilOgMedDato.erIFremtiden": "The end date cannot be more than nine months ahead.",
     "valideringsfeil.tilOgMedDato.etterFraDato": "The end date must be the same as or after the start date.",
-    "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} are invalid characters in the field \"{feltNavn}\"."
+    "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} are invalid characters in the field \"{feltNavn}\".",
+    "valideringsfeil.navnPåNæringen.forLang": "\"{feltNavn}\" can consist of a maximum of 100 characters."
 }

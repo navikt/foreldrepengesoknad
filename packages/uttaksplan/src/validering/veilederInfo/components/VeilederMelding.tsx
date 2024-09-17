@@ -1,9 +1,10 @@
-import { VeilederMessage } from '../types';
 import { FormattedMessage } from 'react-intl';
-import { bemUtils } from '@navikt/fp-common';
-import { Alert, Label } from '@navikt/ds-react';
-import { UttaksplanIkonKeys } from '../../../components/uttaksplan-ikon/UttaksplanIkon';
 
+import { Alert, Label } from '@navikt/ds-react';
+
+import { UttaksplanIkonKeys } from '../../../components/uttaksplan-ikon/UttaksplanIkon';
+import planBemUtils from '../../../utils/planBemUtils';
+import { VeilederMessage } from '../types';
 import './veilederMelding.less';
 
 export type VeilederMeldingStil = 'transparent' | 'default';
@@ -64,7 +65,7 @@ const VeilederMelding: React.FunctionComponent<VeilederpanelInnholdContentProps>
     stil = 'default',
     skjulMeldingIkon = false,
 }) => {
-    const bem = bemUtils('veilederMelding');
+    const bem = planBemUtils('veilederMelding');
     return (
         <div className={bem.classNames(bem.block, bem.modifier(stil))}>
             {message.type !== 'normal' ? (

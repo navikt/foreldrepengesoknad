@@ -23,11 +23,13 @@ export { overlapperTidsperioder } from './src/tidsperiodeUtils';
 export { redirect } from './src/loginUtils';
 export { default as useDocumentTitle } from './src/hooks/useDocumentTitle';
 export { default as useBeforeUnload } from './src/hooks/useBeforeUnload';
+export { default as useScrollBehaviour } from './src/hooks/useScrollBehaviour';
 export { default as bemUtils } from './src/bemUtils';
-export { getFloatFromString, getNumberFromNumberInputValue } from './src/numberUtils';
+export { trimNumberValue, getFloatFromString, getNumberFromNumberInputValue } from './src/numberUtils';
 export { capitalizeFirstLetter, capitalizeFirstLetterInEveryWordOnly, getNavnGenitivEierform } from './src/stringUtils';
 export { getFamiliehendelsedato } from './src/barnUtils';
 export { formatCurrencyWithKr, formatCurrency } from './src/currencyUtils';
+export { encodeToBase64, decodeBase64 } from './src/urlEncodingUtils';
 export {
     getBokmålLocale,
     getLocaleForApi,
@@ -40,7 +42,9 @@ export {
     formatDate,
     formatDateIso,
     formatDateExtended,
+    formatDateShortYear,
     formatDateMedUkedag,
+    formatDateShortMonth,
     formatTime,
     dagenFør,
     treUkerSiden,

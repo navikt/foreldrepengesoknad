@@ -16,8 +16,7 @@
         "noEmit": true,
         "jsx": "react-jsx",
         "baseUrl": "src",
-        "noUnusedLocals": true,
-        "types": ["@testing-library/jest-dom", "vitest/globals"]
+        "noUnusedLocals": true
     },
-    "include": ["src/common/**/*", "vitest"]
+    "include": ["src/common/**/*"]
 }

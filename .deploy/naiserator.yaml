@@ -28,9 +28,7 @@ spec:
       enabled: true
       runtime: nodejs
   ingresses:
-  {{#each ingresses as |url|}}
-    - {{url}}
-  {{/each}}
+    - {{ingress}}
   resources:
     limits:
       cpu: 500m
@@ -68,3 +66,29 @@ spec:
      value: {{image}}
    - name: NODE_ENV
      value: 'production'
+
+{{#with redirect}}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{../app}}-redirect
+  namespace: teamforeldrepenger
+  labels:
+    team: teamforeldrepenger
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: {{../ingress}}/$1
+spec:
+  ingressClassName: {{ingressClassName}}
+  rules:
+    - host: {{host}}
+      http:
+        paths:
+          - path: "/(.*)"
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{app}}
+                port:
+                  number: 80
+{{/with}}

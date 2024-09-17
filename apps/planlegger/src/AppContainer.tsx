@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
@@ -8,7 +8,7 @@ import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navik
 import { useBeforeUnload, utilsMessages } from '@navikt/fp-utils';
 
 import PlanleggerDataInit from './Planlegger';
-import Environment from './appData/Environment';
+import Environment from './app-data/Environment';
 import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
@@ -31,13 +31,22 @@ const MESSAGES_GROUPED_BY_LOCALE = {
 };
 
 const initLocale = (): LocaleAll => {
-    const defaultLocale = 'nb';
-    dayjs.locale(defaultLocale);
-    return defaultLocale;
+    const queryString = window.location.search;
+    const languageParam = new URLSearchParams(queryString).get('language');
+    const locale =
+        languageParam === 'nb' || languageParam === 'nn' || languageParam === 'en'
+            ? (languageParam as LocaleAll)
+            : 'nb';
+
+    dayjs.locale(locale);
+    document.documentElement.setAttribute('lang', locale);
+
+    return locale;
 };
 
 const AppContainer = () => {
-    const [locale, setLocale] = useState<LocaleAll>(initLocale());
+    const origLocale = useMemo(() => initLocale(), []);
+    const [locale, setLocale] = useState<LocaleAll>(origLocale);
 
     useBeforeUnload(() => {
         logAmplitudeEvent('applikasjon-hendelse', {

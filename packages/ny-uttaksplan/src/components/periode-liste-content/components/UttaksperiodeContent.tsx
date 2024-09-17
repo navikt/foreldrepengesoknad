@@ -4,8 +4,11 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Uttaksperiode, getStønadskontoNavn, getVarighetString } from '@navikt/fp-common';
+import { NavnPåForeldre, Uttaksperiode } from '@navikt/fp-common';
 import { Tidsperioden, formatDateExtended } from '@navikt/fp-utils';
+
+import { getVarighetString } from '../../../utils/dateUtils';
+import { getStønadskontoNavn } from '../../../utils/stønadskontoerUtils';
 
 interface Props {
     periode: Uttaksperiode;

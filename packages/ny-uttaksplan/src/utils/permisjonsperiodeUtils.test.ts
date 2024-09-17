@@ -1,5 +1,5 @@
 import { Forelder, Periode, Periodetype, StønadskontoType } from '@navikt/fp-common';
-import { dateToISODateString } from '@navikt/fp-formik/src/components/formik-datepicker/dateFormatUtils';
+import { formatDateIso } from '@navikt/fp-utils';
 
 import { mapPerioderToPermisjonsperiode } from './permisjonsperiodeUtils';
 
@@ -72,26 +72,26 @@ describe('Skal gruppere perioder på søker og ikke kvote', () => {
 
         expect(permisjonsperioder[0].forelder).toEqual(Forelder.mor);
         expect(permisjonsperioder[0].tidsperiode).toEqual({
-            fom: dateToISODateString(perioder1[0].tidsperiode.fom),
-            tom: dateToISODateString(perioder1[0].tidsperiode.tom),
+            fom: formatDateIso(perioder1[0].tidsperiode.fom),
+            tom: formatDateIso(perioder1[0].tidsperiode.tom),
         });
 
         expect(permisjonsperioder[1].forelder).toEqual(Forelder.mor);
         expect(permisjonsperioder[1].tidsperiode).toEqual({
-            fom: dateToISODateString(perioder1[1].tidsperiode.fom),
-            tom: dateToISODateString(perioder1[2].tidsperiode.tom),
+            fom: formatDateIso(perioder1[1].tidsperiode.fom),
+            tom: formatDateIso(perioder1[2].tidsperiode.tom),
         });
 
         expect(permisjonsperioder[2].forelder).toEqual(undefined);
         expect(permisjonsperioder[2].tidsperiode).toEqual({
-            fom: dateToISODateString(perioder1[3].tidsperiode.fom),
-            tom: dateToISODateString(perioder1[3].tidsperiode.tom),
+            fom: formatDateIso(perioder1[3].tidsperiode.fom),
+            tom: formatDateIso(perioder1[3].tidsperiode.tom),
         });
 
         expect(permisjonsperioder[3].forelder).toEqual(Forelder.mor);
         expect(permisjonsperioder[3].tidsperiode).toEqual({
-            fom: dateToISODateString(perioder1[4].tidsperiode.fom),
-            tom: dateToISODateString(perioder1[4].tidsperiode.tom),
+            fom: formatDateIso(perioder1[4].tidsperiode.fom),
+            tom: formatDateIso(perioder1[4].tidsperiode.tom),
         });
     });
 });

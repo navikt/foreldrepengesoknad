@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react/*';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import saker from 'storybook/storyData/saker/saker.json';
+import saker from 'storybookData/saker/saker.json';
 
 import OversiktRoutes from 'app/routes/routes';
 
@@ -27,7 +27,7 @@ const meta = {
 } satisfies Meta<typeof Snarveier>;
 export default meta;
 
-type Story = StoryObj<typeof Snarveier>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     parameters: {

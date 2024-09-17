@@ -10,7 +10,7 @@ import { initAmplitude } from '@navikt/fp-metrics';
 
 import ArbeidssituasjonSteg from './ArbeidssituasjonSteg';
 
-const satser = {
+const DEFAULT_SATSER = {
     engangstønad: [
         {
             fom: '01.01.2023',
@@ -38,9 +38,9 @@ type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof ArbeidssituasjonSteg>;
 
-type Story = StoryObj<StoryArgs>;
+type Story = StoryObj<typeof meta>;
 
-const customRenderer = ({ hvemPlanlegger, gåTilNesteSide = action('button-click') }: StoryArgs) => {
+const customRenderer = ({ hvemPlanlegger, gåTilNesteSide = action('button-click'), satser, locale }: StoryArgs) => {
     initAmplitude();
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.ARBEIDSSITUASJON]}>
@@ -56,7 +56,7 @@ const customRenderer = ({ hvemPlanlegger, gåTilNesteSide = action('button-click
                 }}
                 onDispatch={gåTilNesteSide}
             >
-                <ArbeidssituasjonSteg satser={satser} />
+                <ArbeidssituasjonSteg satser={satser} locale={locale} />
             </PlanleggerDataContext>
         </MemoryRouter>
     );
@@ -71,39 +71,47 @@ export default meta;
 
 export const ArbeidssituasjonMorOgFar: Story = {
     args: {
+        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
             type: Situasjon.MOR_OG_FAR,
         },
+        satser: DEFAULT_SATSER,
     },
 };
 
 export const ArbeidssituasjonAleneforsørger: Story = {
     args: {
+        locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             type: Situasjon.MOR,
         },
+        satser: DEFAULT_SATSER,
     },
 };
 
 export const ArbeidssituasjonMorOgMedmor: Story = {
     args: {
+        locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Esther Utvikler',
             navnPåMedmor: 'Klara Utvikler',
             type: Situasjon.MOR_OG_MEDMOR,
         },
+        satser: DEFAULT_SATSER,
     },
 };
 
 export const ArbeidssituasjonFarOgFar: Story = {
     args: {
+        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Anders Utvikler',
             type: Situasjon.FAR_OG_FAR,
         },
+        satser: DEFAULT_SATSER,
     },
 };

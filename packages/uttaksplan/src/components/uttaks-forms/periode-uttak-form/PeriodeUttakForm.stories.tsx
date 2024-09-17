@@ -1,19 +1,8 @@
-import { StoryFn } from '@storybook/react';
-import { PeriodeValidState } from 'Uttaksplan';
-import { Dispatch, SetStateAction } from 'react';
+import { Meta, StoryObj } from '@storybook/react';
 import { IntlShape } from 'react-intl';
 
-import {
-    AnnenForelder,
-    Arbeidsforhold,
-    NavnPåForeldre,
-    Periode,
-    Periodetype,
-    Situasjon,
-    Utsettelsesperiode,
-} from '@navikt/fp-common';
+import { Periode, Periodetype, Situasjon } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
-import { Stønadskonto } from '@navikt/fp-types';
 
 import PeriodeUttakForm from './PeriodeUttakForm';
 
@@ -38,37 +27,13 @@ const stønadskonto100BFHRToBarnEtterWLB = [
 
 const stønadskonto100Aleneomsorg = [{ konto: StønadskontoType.Foreldrepenger, dager: 150 }];
 
-export default {
+const meta = {
     title: 'components/PeriodeUttakForm',
     component: PeriodeUttakForm,
-};
+} satisfies Meta<typeof PeriodeUttakForm>;
+export default meta;
 
-interface Props {
-    periode: Periode;
-    erEndringssøknad: boolean;
-    familiehendelsesdato: Date;
-    stønadskontoer: Stønadskonto[];
-    navnPåForeldre: NavnPåForeldre;
-    annenForelder: AnnenForelder;
-    arbeidsforhold: Arbeidsforhold[];
-    erFarEllerMedmor: boolean;
-    erFlerbarnssøknad: boolean;
-    erAleneOmOmsorg: boolean;
-    erDeltUttak: boolean;
-    situasjon: Situasjon;
-    handleUpdatePeriode: (periode: Periode, familiehendelsedato: Date) => void;
-    handleAddPeriode: (periode: Periode, familiehendelsedato: Date) => void;
-    setNyPeriodeFormIsVisible?: Dispatch<SetStateAction<boolean>>;
-    erMorUfør: boolean;
-    setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
-    termindato: Date | undefined;
-    morHarRett: boolean;
-    antallBarn: number;
-    utsettelserIPlan: Utsettelsesperiode[];
-    isNyPeriode: boolean;
-    intl: IntlShape;
-    isOpen: boolean;
-}
+type Story = StoryObj<typeof meta>;
 
 const defaultInput = {
     periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-09-21') } } as Periode,
@@ -117,207 +82,218 @@ const defaultInput = {
     utsettelserIPlan: [],
     isNyPeriode: true,
     isOpen: true,
-    // intl: intlMock,
+    intl: {} as IntlShape,
 };
 
-const Template: StoryFn<Props> = (args) => {
-    return <PeriodeUttakForm {...args} />;
+export const NyPeriodeForMorEttBarnDeltUttakINorge: Story = {
+    args: defaultInput,
 };
 
-export const NyPeriodeForMorEttBarnDeltUttakINorge = Template.bind({});
-NyPeriodeForMorEttBarnDeltUttakINorge.args = { ...defaultInput };
-
-export const NyPeriodeForMorEttBarnFarHarRettIEØS = Template.bind({});
-NyPeriodeForMorEttBarnFarHarRettIEØS.args = {
-    ...defaultInput,
-    annenForelder: {
-        ...defaultInput.annenForelder,
-        harRettPåForeldrepengerINorge: false,
-        harRettPåForeldrepengerIEØS: true,
+export const NyPeriodeForMorEttBarnFarHarRettIEØS: Story = {
+    args: {
+        ...defaultInput,
+        annenForelder: {
+            ...defaultInput.annenForelder,
+            harRettPåForeldrepengerINorge: false,
+            harRettPåForeldrepengerIEØS: true,
+        },
     },
 };
 
-export const NyPeriodeForFar1BarnDeltUttakINorge = Template.bind({});
-NyPeriodeForFar1BarnDeltUttakINorge.args = {
-    ...defaultInput,
-    erFarEllerMedmor: true,
-    annenForelder: {
-        ...defaultInput.annenForelder,
-        fornavn: 'Vakker',
+export const NyPeriodeForFar1BarnDeltUttakINorge: Story = {
+    args: {
+        ...defaultInput,
+        erFarEllerMedmor: true,
+        annenForelder: {
+            ...defaultInput.annenForelder,
+            fornavn: 'Vakker',
+        },
     },
 };
 
-export const NyPeriodeFørFødselForFar1BarnDeltUttakINorge = Template.bind({});
-NyPeriodeFørFødselForFar1BarnDeltUttakINorge.args = {
-    ...defaultInput,
-    periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-01') } } as Periode,
-    erFarEllerMedmor: true,
-    annenForelder: {
-        ...defaultInput.annenForelder,
-        fornavn: 'Vakker',
+export const NyPeriodeFørFødselForFar1BarnDeltUttakINorge: Story = {
+    args: {
+        ...defaultInput,
+        periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-01') } } as Periode,
+        erFarEllerMedmor: true,
+        annenForelder: {
+            ...defaultInput.annenForelder,
+            fornavn: 'Vakker',
+        },
     },
 };
 
-export const NyPeriodeForFar2BarnDeltUttakINorge = Template.bind({});
-NyPeriodeForFar2BarnDeltUttakINorge.args = {
-    ...defaultInput,
-    erFarEllerMedmor: true,
-    erFlerbarnssøknad: true,
-    antallBarn: 2,
-    annenForelder: {
-        ...defaultInput.annenForelder,
-        fornavn: 'Vakker',
+export const NyPeriodeForFar2BarnDeltUttakINorge: Story = {
+    args: {
+        ...defaultInput,
+        erFarEllerMedmor: true,
+        erFlerbarnssøknad: true,
+        antallBarn: 2,
+        annenForelder: {
+            ...defaultInput.annenForelder,
+            fornavn: 'Vakker',
+        },
     },
 };
 
-export const NyPeriodeRundtFødselForFar2BarnDeltUttakINorge = Template.bind({});
-NyPeriodeRundtFødselForFar2BarnDeltUttakINorge.args = {
-    ...defaultInput,
-    periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-02') } } as Periode,
-    erFarEllerMedmor: true,
-    antallBarn: 2,
-    erFlerbarnssøknad: true,
-    annenForelder: {
-        ...defaultInput.annenForelder,
-        fornavn: 'Vakker',
+export const NyPeriodeRundtFødselForFar2BarnDeltUttakINorge: Story = {
+    args: {
+        ...defaultInput,
+        periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-02') } } as Periode,
+        erFarEllerMedmor: true,
+        antallBarn: 2,
+        erFlerbarnssøknad: true,
+        annenForelder: {
+            ...defaultInput.annenForelder,
+            fornavn: 'Vakker',
+        },
     },
 };
 
-export const NyPeriodeForFarEttBarnMorHarRettIEØS = Template.bind({});
-NyPeriodeForFarEttBarnMorHarRettIEØS.args = {
-    ...defaultInput,
-    erFarEllerMedmor: true,
-    annenForelder: {
-        ...defaultInput.annenForelder,
-        fornavn: 'Vakker',
-        harRettPåForeldrepengerINorge: false,
-        harRettPåForeldrepengerIEØS: true,
+export const NyPeriodeForFarEttBarnMorHarRettIEØS: Story = {
+    args: {
+        ...defaultInput,
+        erFarEllerMedmor: true,
+        annenForelder: {
+            ...defaultInput.annenForelder,
+            fornavn: 'Vakker',
+            harRettPåForeldrepengerINorge: false,
+            harRettPåForeldrepengerIEØS: true,
+        },
     },
 };
 
-export const NyPeriodeForFarEttBarnMorHarRettIEØSSøkerFørste6Uker = Template.bind({});
-NyPeriodeForFarEttBarnMorHarRettIEØSSøkerFørste6Uker.args = {
-    ...defaultInput,
-    periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-02') } } as Periode,
-    erFarEllerMedmor: true,
-    annenForelder: {
-        ...defaultInput.annenForelder,
-        fornavn: 'Vakker',
-        harRettPåForeldrepengerINorge: false,
-        harRettPåForeldrepengerIEØS: true,
+export const NyPeriodeForFarEttBarnMorHarRettIEØSSøkerFørste6Uker: Story = {
+    args: {
+        ...defaultInput,
+        periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-02') } } as Periode,
+        erFarEllerMedmor: true,
+        annenForelder: {
+            ...defaultInput.annenForelder,
+            fornavn: 'Vakker',
+            harRettPåForeldrepengerINorge: false,
+            harRettPåForeldrepengerIEØS: true,
+        },
     },
 };
 
-export const NyPeriodeForFarToBarnMorHarRettIEØS = Template.bind({});
-NyPeriodeForFarToBarnMorHarRettIEØS.args = {
-    ...defaultInput,
-    erFlerbarnssøknad: true,
-    erFarEllerMedmor: true,
-    annenForelder: {
-        ...defaultInput.annenForelder,
-        fornavn: 'Vakker',
-        harRettPåForeldrepengerINorge: false,
-        harRettPåForeldrepengerIEØS: true,
+export const NyPeriodeForFarToBarnMorHarRettIEØS: Story = {
+    args: {
+        ...defaultInput,
+        erFlerbarnssøknad: true,
+        erFarEllerMedmor: true,
+        annenForelder: {
+            ...defaultInput.annenForelder,
+            fornavn: 'Vakker',
+            harRettPåForeldrepengerINorge: false,
+            harRettPåForeldrepengerIEØS: true,
+        },
+        antallBarn: 2,
     },
-    antallBarn: 2,
 };
 
-export const NyPeriodeForBareFarHarRett = Template.bind({});
-NyPeriodeForBareFarHarRett.args = {
-    ...defaultInput,
-    erFarEllerMedmor: true,
-    annenForelder: {
-        ...defaultInput.annenForelder,
-        fornavn: 'Vakker',
-        harRettPåForeldrepengerINorge: false,
-        harRettPåForeldrepengerIEØS: false,
-        erMorUfør: true,
+export const NyPeriodeForBareFarHarRett: Story = {
+    args: {
+        ...defaultInput,
+        erFarEllerMedmor: true,
+        annenForelder: {
+            ...defaultInput.annenForelder,
+            fornavn: 'Vakker',
+            harRettPåForeldrepengerINorge: false,
+            harRettPåForeldrepengerIEØS: false,
+            erMorUfør: true,
+        },
+        antallBarn: 1,
+        erDeltUttak: false,
+        stønadskontoer: stønadskonto100BFHR,
+        morHarRett: false,
     },
-    antallBarn: 1,
-    erDeltUttak: false,
-    stønadskontoer: stønadskonto100BFHR,
-    morHarRett: false,
 };
 
-export const NyPeriodeBFHRToBarnFørWLBMorIkkeUfør = Template.bind({});
-NyPeriodeBFHRToBarnFørWLBMorIkkeUfør.args = {
-    ...defaultInput,
-    periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-01') } } as Periode,
-    familiehendelsesdato: new Date('2022-08-01'),
-    erFarEllerMedmor: true,
-    annenForelder: {
-        ...defaultInput.annenForelder,
-        fornavn: 'Vakker',
-        harRettPåForeldrepengerINorge: false,
-        harRettPåForeldrepengerIEØS: false,
-        erMorUfør: false,
+export const NyPeriodeBFHRToBarnFørWLBMorIkkeUfør: Story = {
+    args: {
+        ...defaultInput,
+        periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-01') } } as Periode,
+        familiehendelsesdato: new Date('2022-08-01'),
+        erFarEllerMedmor: true,
+        annenForelder: {
+            ...defaultInput.annenForelder,
+            fornavn: 'Vakker',
+            harRettPåForeldrepengerINorge: false,
+            harRettPåForeldrepengerIEØS: false,
+            erMorUfør: false,
+        },
+        antallBarn: 2,
+        erDeltUttak: false,
+        stønadskontoer: stønadskonto100BFHRToBarnFørWLB,
+        morHarRett: false,
+        erFlerbarnssøknad: true,
     },
-    antallBarn: 2,
-    erDeltUttak: false,
-    stønadskontoer: stønadskonto100BFHRToBarnFørWLB,
-    morHarRett: false,
-    erFlerbarnssøknad: true,
 };
 
-export const NyPeriodeBFHRToBarnEtterWLBMorIkkeUfør = Template.bind({});
-NyPeriodeBFHRToBarnEtterWLBMorIkkeUfør.args = {
-    ...defaultInput,
-    periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-08') } } as Periode,
-    familiehendelsesdato: new Date('2022-08-05'),
-    erFarEllerMedmor: true,
-    annenForelder: {
-        ...defaultInput.annenForelder,
-        fornavn: 'Vakker',
-        harRettPåForeldrepengerINorge: false,
-        harRettPåForeldrepengerIEØS: false,
-        erMorUfør: false,
+export const NyPeriodeBFHRToBarnEtterWLBMorIkkeUfør: Story = {
+    args: {
+        ...defaultInput,
+        periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-08') } } as Periode,
+        familiehendelsesdato: new Date('2022-08-05'),
+        erFarEllerMedmor: true,
+        annenForelder: {
+            ...defaultInput.annenForelder,
+            fornavn: 'Vakker',
+            harRettPåForeldrepengerINorge: false,
+            harRettPåForeldrepengerIEØS: false,
+            erMorUfør: false,
+        },
+        antallBarn: 2,
+        erDeltUttak: false,
+        stønadskontoer: stønadskonto100BFHRToBarnEtterWLB,
+        morHarRett: false,
+        erFlerbarnssøknad: true,
     },
-    antallBarn: 2,
-    erDeltUttak: false,
-    stønadskontoer: stønadskonto100BFHRToBarnEtterWLB,
-    morHarRett: false,
-    erFlerbarnssøknad: true,
 };
 
-export const NyPeriodeForBareFarHarRettRundtFødsel = Template.bind({});
-NyPeriodeForBareFarHarRettRundtFødsel.args = {
-    ...defaultInput,
-    periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-02') } } as Periode,
-    erFarEllerMedmor: true,
-    annenForelder: {
-        ...defaultInput.annenForelder,
-        fornavn: 'Vakker',
-        harRettPåForeldrepengerINorge: false,
-        harRettPåForeldrepengerIEØS: false,
-        erMorUfør: true,
+export const NyPeriodeForBareFarHarRettRundtFødsel: Story = {
+    args: {
+        ...defaultInput,
+        periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-02') } } as Periode,
+        erFarEllerMedmor: true,
+        annenForelder: {
+            ...defaultInput.annenForelder,
+            fornavn: 'Vakker',
+            harRettPåForeldrepengerINorge: false,
+            harRettPåForeldrepengerIEØS: false,
+            erMorUfør: true,
+        },
+        antallBarn: 1,
+        erDeltUttak: false,
+        stønadskontoer: stønadskonto100BFHR,
+        morHarRett: false,
     },
-    antallBarn: 1,
-    erDeltUttak: false,
-    stønadskontoer: stønadskonto100BFHR,
-    morHarRett: false,
 };
 
-export const NyPeriodeFarAleneomssorg = Template.bind({});
-NyPeriodeFarAleneomssorg.args = {
-    ...defaultInput,
-    periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-02') } } as Periode,
-    erFarEllerMedmor: true,
-    annenForelder: {
-        ...defaultInput.annenForelder,
-        fornavn: 'Vakker',
+export const NyPeriodeFarAleneomssorg: Story = {
+    args: {
+        ...defaultInput,
+        periode: { type: Periodetype.Uttak, tidsperiode: { fom: new Date('2022-08-02') } } as Periode,
+        erFarEllerMedmor: true,
+        annenForelder: {
+            ...defaultInput.annenForelder,
+            fornavn: 'Vakker',
+        },
+        antallBarn: 1,
+        erDeltUttak: false,
+        erAleneOmOmsorg: true,
+        stønadskontoer: stønadskonto100Aleneomsorg,
+        morHarRett: false,
     },
-    antallBarn: 1,
-    erDeltUttak: false,
-    erAleneOmOmsorg: true,
-    stønadskontoer: stønadskonto100Aleneomsorg,
-    morHarRett: false,
 };
 
-export const NyPeriodeMorAleneomssorg = Template.bind({});
-NyPeriodeMorAleneomssorg.args = {
-    ...defaultInput,
-    erDeltUttak: false,
-    erAleneOmOmsorg: true,
-    stønadskontoer: stønadskonto100Aleneomsorg,
-    morHarRett: true,
+export const NyPeriodeMorAleneomssorg: Story = {
+    args: {
+        ...defaultInput,
+        erDeltUttak: false,
+        erAleneOmOmsorg: true,
+        stønadskontoer: stønadskonto100Aleneomsorg,
+        morHarRett: true,
+    },
 };

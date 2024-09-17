@@ -1,39 +1,41 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import StepButtons from './StepButtons';
 
-export default {
-    title: 'step/StepButtons',
+const meta = {
     component: StepButtons,
+} satisfies Meta<typeof StepButtons>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const VisNeste: Story = {
+    args: {
+        isNextButtonVisible: true,
+        isSendButton: false,
+        isDisabledAndLoading: false,
+        goToPreviousStep: action('button-click'),
+    },
 };
 
-const Template: StoryFn<{ isNextButtonVisible?: boolean; isSendButton?: boolean; isDisabledAndLoading?: boolean }> = ({
-    isNextButtonVisible = true,
-    isSendButton = false,
-    isDisabledAndLoading = false,
-}) => (
-    <StepButtons
-        isNexButtonVisible={isNextButtonVisible}
-        goToPreviousStep={action('button-click')}
-        isSendButton={isSendButton}
-        isDisabledAndLoading={isDisabledAndLoading}
-    />
-);
-
-export const SkjulNeste = Template.bind({});
-SkjulNeste.args = {
-    isNextButtonVisible: false,
+export const SkjulNeste: Story = {
+    args: {
+        ...VisNeste.args,
+        isNextButtonVisible: false,
+    },
 };
 
-export const VisNeste = Template.bind({});
-
-export const SendSøknaden = Template.bind({});
-SendSøknaden.args = {
-    isSendButton: true,
+export const SendSøknaden: Story = {
+    args: {
+        ...VisNeste.args,
+        isSendButton: true,
+    },
 };
 
-export const IsDisabledAndLoading = Template.bind({});
-IsDisabledAndLoading.args = {
-    isDisabledAndLoading: true,
+export const IsDisabledAndLoading: Story = {
+    args: {
+        ...VisNeste.args,
+        isDisabledAndLoading: true,
+    },
 };

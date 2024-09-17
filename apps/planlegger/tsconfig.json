@@ -7,7 +7,7 @@
             "styles/*": ["styles/*"],
             "intl/*": ["intl/*"],
             "types/*": ["types/*"],
-            "appData/*": ["appData/*"],
+            "appData/*": ["app-data/*"],
             "utils/*": ["utils/*"]
         },
         "types": ["@testing-library/jest-dom", "vitest/globals", "vite/client"]

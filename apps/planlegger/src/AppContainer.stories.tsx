@@ -1,15 +1,14 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Action } from 'appData/PlanleggerDataContext';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { StrictMode } from 'react';
 
-import { getAxiosInstance } from '@navikt/fp-api';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import AppContainer from './AppContainer';
+import { AxiosInstanceAPI } from './api/AxiosInstance';
 
 const kontoer = {
     '100': {
@@ -88,19 +87,10 @@ const satser = {
 const meta = {
     title: 'AppContainer',
     component: AppContainer,
-} satisfies Meta<typeof AppContainer>;
-export default meta;
-
-type Story = StoryObj<{
-    gåTilNesteSide: (action: Action) => void;
-    brukMocks?: boolean;
-}>;
-
-export const Default: Story = {
     render: (args) => {
         initAmplitude();
 
-        const axiosInstance = getAxiosInstance();
+        const axiosInstance = AxiosInstanceAPI();
         const apiMock = new MockAdapter(axiosInstance);
         if (args.brukMocks) {
             apiMock.onPost('/rest/konto').reply(() => {
@@ -137,4 +127,11 @@ export const Default: Story = {
             </StrictMode>
         );
     },
-};
+} satisfies Meta<{
+    brukMocks?: boolean;
+}>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {};

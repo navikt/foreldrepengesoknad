@@ -1,8 +1,12 @@
-import { Forelder, NavnPåForeldre, hasValue, intlUtils } from '@navikt/fp-common';
 import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
+
+import { Forelder, NavnPåForeldre } from '@navikt/fp-common';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
+
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
-import { capitalizeFirstLetter } from '@navikt/fp-common/src/common/utils/stringUtils';
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 interface Props {
     fieldName: PeriodeUttakFormField;
@@ -15,7 +19,7 @@ const HvemSkalHaUttakSpørsmål: FunctionComponent<Props> = ({ fieldName, navnP�
 
     return (
         <PeriodeUttakFormComponents.RadioGroup
-            legend={intlUtils(intl, 'uttaksplan.hvemSkalHaUttak')}
+            legend={intl.formatMessage({ id: 'uttaksplan.hvemSkalHaUttak' })}
             name={fieldName}
             radios={[
                 {
@@ -33,7 +37,7 @@ const HvemSkalHaUttakSpørsmål: FunctionComponent<Props> = ({ fieldName, navnP�
             ]}
             validate={(value) => {
                 if (!hasValue(value)) {
-                    return intlUtils(intl, 'uttaksplan.validering.hvemSkalHaUttak');
+                    return intl.formatMessage({ id: 'uttaksplan.validering.hvemSkalHaUttak' });
                 }
 
                 return undefined;

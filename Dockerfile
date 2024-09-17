@@ -7,7 +7,7 @@ ARG SERVER="server"
 #########################################
 # PREPARE DEPS FOR BUILD
 #########################################
-FROM --platform=${BUILDPLATFORM} ${NODE_IMG} as prepare
+FROM --platform=${BUILDPLATFORM} ${NODE_IMG} AS prepare
 WORKDIR /usr/src/app
 COPY ["package.json", ".npmrc", "pnpm-lock.yaml", "pnpm-workspace.yaml", "./"]
 COPY packages packages
@@ -21,7 +21,7 @@ RUN find ${SERVER} \! -name "package.json" -mindepth 2 -maxdepth 2 -print | xarg
 #########################################
 # BUILDER IMAGE - INSTALL PACKAGES AND COPY SOURCE
 #########################################
-FROM --platform=${BUILDPLATFORM} ${NODE_IMG} as builder
+FROM --platform=${BUILDPLATFORM} ${NODE_IMG} AS builder
 WORKDIR /usr/src/app
 RUN apk fix \
     && apk add --no-cache --update libc6-compat \
@@ -41,7 +41,7 @@ COPY . .
 #########################################
 # BUILD SERVER
 #########################################
-FROM --platform=${BUILDPLATFORM} builder as server-build
+FROM --platform=${BUILDPLATFORM} builder AS server-build
 ARG SERVER
 WORKDIR /usr/src/app/${SERVER}
 RUN pnpm exec turbo test
@@ -49,7 +49,7 @@ RUN pnpm exec turbo test
 #########################################
 # Client
 #########################################
-FROM --platform=${BUILDPLATFORM} builder as client
+FROM --platform=${BUILDPLATFORM} builder AS client
 ARG APP
 WORKDIR /usr/src/app/apps/${APP}
 RUN pnpm exec turbo test && mv /usr/src/app/apps/${APP}/dist /public
@@ -57,7 +57,7 @@ RUN pnpm exec turbo test && mv /usr/src/app/apps/${APP}/dist /public
 #########################################
 # Server
 #########################################
-FROM ${NODE_IMG} as server
+FROM ${NODE_IMG} AS server
 ARG SERVER
 WORKDIR /usr/src/app
 
@@ -66,7 +66,6 @@ RUN apk fix \
     && rm -rf /var/cache/apk/*
 
 COPY --from=server-build /usr/src/app/${SERVER}/dist ./
-COPY --from=server-build /usr/src/app/${SERVER}/vite-dev-server.html ./vite-dev-server.html
 
 ENTRYPOINT ["/sbin/tini", "--"]
 

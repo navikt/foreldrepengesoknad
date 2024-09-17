@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import {
     Forelder,
     Periode,
-    Tidsperioden,
     isHull,
     isOppholdsperiode,
     isOverføringsperiode,
@@ -12,7 +11,7 @@ import {
     isUttakAnnenPart,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { dateToISOString } from '@navikt/fp-formik';
+import { Tidsperioden, formatDateIso } from '@navikt/fp-utils';
 
 import Permisjonsperiode from '../types/Permisjonsperiode';
 
@@ -109,8 +108,8 @@ export const mapPerioderToPermisjonsperiode = (
             nyPermisjonsperiode = {
                 perioder: [{ ...periode }, { ...nestePeriode }],
                 tidsperiode: {
-                    fom: dateToISOString(periode.tidsperiode.fom),
-                    tom: dateToISOString(periode.tidsperiode.tom),
+                    fom: formatDateIso(periode.tidsperiode.fom),
+                    tom: formatDateIso(periode.tidsperiode.tom),
                 },
                 samtidigUttak: true,
             };
@@ -135,21 +134,21 @@ export const mapPerioderToPermisjonsperiode = (
                     forelder: forelderType,
                     perioder: [{ ...periode }],
                     tidsperiode: {
-                        fom: dateToISOString(periode.tidsperiode.fom),
-                        tom: dateToISOString(periode.tidsperiode.tom),
+                        fom: formatDateIso(periode.tidsperiode.fom),
+                        tom: formatDateIso(periode.tidsperiode.tom),
                     },
                 };
             } else {
                 if (forelderForrigePeriode === periode.forelder && beggePerioderErPåSammeSideAvFamdato) {
                     nyPermisjonsperiode.perioder = [...nyPermisjonsperiode.perioder, { ...periode }];
-                    nyPermisjonsperiode.tidsperiode.tom = dateToISOString(periode.tidsperiode.tom);
+                    nyPermisjonsperiode.tidsperiode.tom = formatDateIso(periode.tidsperiode.tom);
                 } else {
                     nyPermisjonsperiode = {
                         forelder: forelderType,
                         perioder: [{ ...periode }],
                         tidsperiode: {
-                            fom: dateToISOString(periode.tidsperiode.fom),
-                            tom: dateToISOString(periode.tidsperiode.tom),
+                            fom: formatDateIso(periode.tidsperiode.fom),
+                            tom: formatDateIso(periode.tidsperiode.tom),
                         },
                     };
                 }
@@ -167,8 +166,8 @@ export const mapPerioderToPermisjonsperiode = (
             nyPermisjonsperiode = {
                 perioder: [{ ...periode }],
                 tidsperiode: {
-                    fom: dateToISOString(periode.tidsperiode.fom),
-                    tom: dateToISOString(periode.tidsperiode.tom),
+                    fom: formatDateIso(periode.tidsperiode.fom),
+                    tom: formatDateIso(periode.tidsperiode.tom),
                 },
                 erPeriodeUtenUttak: true,
             };
@@ -183,8 +182,8 @@ export const mapPerioderToPermisjonsperiode = (
             nyPermisjonsperiode = {
                 perioder: [{ ...periode }],
                 tidsperiode: {
-                    fom: dateToISOString(periode.tidsperiode.fom),
-                    tom: dateToISOString(periode.tidsperiode.tom),
+                    fom: formatDateIso(periode.tidsperiode.fom),
+                    tom: formatDateIso(periode.tidsperiode.tom),
                 },
                 erUtsettelse: true,
             };
@@ -198,8 +197,8 @@ export const mapPerioderToPermisjonsperiode = (
             nyPermisjonsperiode = {
                 perioder: [{ ...periode }],
                 tidsperiode: {
-                    fom: dateToISOString(periode.tidsperiode.fom),
-                    tom: dateToISOString(periode.tidsperiode.tom),
+                    fom: formatDateIso(periode.tidsperiode.fom),
+                    tom: formatDateIso(periode.tidsperiode.tom),
                 },
                 erHull: true,
             };

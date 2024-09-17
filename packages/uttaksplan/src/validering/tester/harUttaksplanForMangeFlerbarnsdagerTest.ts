@@ -1,5 +1,6 @@
-import { Søknadsinfo, uttaksplanHarForMangeFlerbarnsdager } from '@navikt/fp-common';
+import { Søknadsinfo } from '@navikt/fp-common';
 
+import { uttaksplanHarForMangeFlerbarnsdager } from '../../utils/uttaksplanHarForMangeFlerbarnsuker';
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
 export const harUttaksplanForMangeFlerbarnsdagerTest: RegelTest = (grunnlag: Søknadsinfo): RegelTestresultat => {

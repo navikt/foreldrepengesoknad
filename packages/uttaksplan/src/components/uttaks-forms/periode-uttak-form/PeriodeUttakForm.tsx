@@ -4,12 +4,9 @@ import { FormattedMessage, IntlShape } from 'react-intl';
 import { BodyLong, Button, GuidePanel } from '@navikt/ds-react';
 
 import {
-    ActionLink,
     AnnenForelder,
     Arbeidsforhold,
-    Block,
     Forelder,
-    ISOStringToDate,
     NavnPåForeldre,
     OpprinneligSøkt,
     Periode,
@@ -19,25 +16,28 @@ import {
     StønadskontoType,
     TidsperiodeDate,
     Utsettelsesperiode,
-    andreAugust2022ReglerGjelder,
-    bemUtils,
-    formaterDatoKompakt,
-    getFiltrerteVelgbareStønadskontotyper,
-    getFørsteUttaksdag2UkerFørFødsel,
-    getIsValidStateForPerioder,
-    getSisteUttaksdag6UkerEtterFødsel,
-    getSlettPeriodeTekst,
-    getVelgbareStønadskontotyper,
-    guid,
-    intlUtils,
     isAnnenForelderOppgitt,
     isUttaksperiode,
-    isValidTidsperiode,
-    starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
 } from '@navikt/fp-common';
-import { QuestionVisibility } from '@navikt/fp-formik';
 import { Stønadskonto } from '@navikt/fp-types';
+import { isValidTidsperiode } from '@navikt/fp-utils';
 
+import ActionLink from '../../../common/action-link/ActionLink';
+import Block from '../../../common/block/Block';
+import { QuestionVisibility } from '../../../formik-wrappers';
+import { ISOStringToDate, andreAugust2022ReglerGjelder, formaterDatoKompakt } from '../../../utils/dateUtils';
+import { guid } from '../../../utils/guid';
+import { getIsValidStateForPerioder, getSlettPeriodeTekst } from '../../../utils/periodeUtils';
+import planBemUtils from '../../../utils/planBemUtils';
+import {
+    getFiltrerteVelgbareStønadskontotyper,
+    getVelgbareStønadskontotyper,
+} from '../../../utils/stønadskontoerUtils';
+import {
+    getFørsteUttaksdag2UkerFørFødsel,
+    getSisteUttaksdag6UkerEtterFødsel,
+    starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
+} from '../../../utils/wlbUtils';
 import TidsperiodeDisplay from '../../tidsperiode-display/TidsperiodeDisplay';
 import UttakEndreTidsperiodeSpørsmål from '../../uttak-endre-tidsperiode-spørsmål/UttakEndreTidsperiodeSpørsmål';
 import AktivitetskravSpørsmål from '../spørsmål/aktivitetskrav/AktivitetskravSpørsmål';
@@ -164,7 +164,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
 }) => {
     const [tidsperiodeIsOpen, setTidsperiodeIsOpen] = useState(false);
     const [periodeIsValid, setPeriodeIsValid] = useState(true);
-    const bem = bemUtils('periodeUttakForm');
+    const bem = planBemUtils('periodeUttakForm');
     const toggleVisTidsperiode = () => {
         setTidsperiodeIsOpen(!tidsperiodeIsOpen);
     };
@@ -198,7 +198,7 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
     const navnPåAnnenForelder =
         isAnnenForelderOppgitt(annenForelder) && annenForelder.fornavn !== undefined && annenForelder.fornavn !== ''
             ? annenForelder.fornavn
-            : intlUtils(intl, 'annen.forelder');
+            : intl.formatMessage({ id: 'annen.forelder' });
 
     const startDatoPeriodeRundtFødselFarMedmor =
         erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)

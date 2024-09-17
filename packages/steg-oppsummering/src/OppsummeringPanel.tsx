@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
 import { ConfirmationPanel, VStack } from '@navikt/ds-react';
@@ -32,7 +32,7 @@ export interface Props<TYPE> {
     goToPreviousStep: () => void;
     onStepChange?: (id: TYPE) => void;
     stepConfig: Array<ProgressStep<TYPE>>;
-    children: ReactElement[] | ReactElement;
+    children: ReactNode;
     appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
     ekstraSamtykketekst?: string;
 }
@@ -70,6 +70,7 @@ const OppsummeringPanel = <TYPE extends string>({
             onContinueLater={onContinueLater}
             steps={stepConfig}
             onStepChange={onStepChange}
+            noFieldsRequired
         >
             <VStack gap="10">
                 <VStack gap="3">{children}</VStack>

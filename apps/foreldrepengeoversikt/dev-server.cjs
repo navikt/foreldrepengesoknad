@@ -48,6 +48,7 @@ const startServer = async () => {
         '{{{APP_SETTINGS}}}',
         JSON.stringify({
             APP_VERSION: 'Lokal utvikling',
+            PUBLIC_PATH: `${process.env.PUBLIC_PATH}`,
         }),
     );
 

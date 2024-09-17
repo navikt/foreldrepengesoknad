@@ -13,25 +13,24 @@ import {
     TidsperiodeDate,
     UttakRundtFødselÅrsak,
     Uttaksperiode,
-    convertBooleanOrUndefinedToYesOrNo,
-    convertYesOrNoOrUndefinedToBoolean,
-    getMorsAktivitet,
-    getOppholdsÅrsakFromStønadskonto,
-    getSisteUttaksdag6UkerEtterFødsel,
-    getStønadskontoFromOppholdsårsak,
-    hasValue,
     isOppholdsperiode,
     isOverføringsperiode,
     isUttaksperiode,
-    trimNumberValue,
 } from '@navikt/fp-common';
-import { QuestionVisibility, YesOrNo } from '@navikt/fp-formik';
+import { trimNumberValue } from '@navikt/fp-utils';
 
+import { QuestionVisibility, YesOrNo } from '../../../formik-wrappers';
+import { convertBooleanOrUndefinedToYesOrNo, convertYesOrNoOrUndefinedToBoolean } from '../../../utils/formUtils';
+import { getMorsAktivitet } from '../../../utils/morsAktivitetUtils';
+import { getOppholdsÅrsakFromStønadskonto, getStønadskontoFromOppholdsårsak } from '../../../utils/periodeUtils';
+import { getSisteUttaksdag6UkerEtterFødsel } from '../../../utils/wlbUtils';
 import { PeriodeUttakFormData, PeriodeUttakFormField } from './periodeUttakFormConfig';
 import {
     erSamtidigUttakFarMedmorFørFødselWLB,
     erSamtidigUttakFarMedmorFørFørsteSeksUkerWLB,
 } from './periodeUttakFormQuestionsConfig';
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 const getInitialKonto = (
     erDeltUttak: boolean,

@@ -6,7 +6,7 @@
         "paths": {
             "app/*": ["app/*"],
             "assets/*": ["assets/*"],
-            "storybook/*": ["storybook/*"]
+            "storybookData/*": ["storybook-data/*"]
         },
         "rootDir": "src",
         "types": ["@testing-library/jest-dom", "vite/client", "node", "vitest/globals"]

@@ -12,5 +12,7 @@
     "uttaksplan.stønadskontotype.MØDREKVOTE": "Mors kvote",
     "uttaksplan.stønadskontotype.foreldernavn.kvote": "{navn} kvote",
     "uttaksplan.stønadskontotype.dinKvote": "Din kvote",
-    "uttaksplan.stønadskontotype.undefined": "Ny periode uten kvote"
+    "uttaksplan.stønadskontotype.undefined": "Ny periode uten kvote",
+    "varighet.uker": "{uker, plural, one {# uke} other {# uker}}",
+    "varighet.dager": "{dager, plural, one {# dag} other {# dager}}"
 }

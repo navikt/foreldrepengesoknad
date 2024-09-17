@@ -6,12 +6,19 @@ export const setAxiosLocale = (nextLocale: string) => {
     AxiosInstance.defaults.headers.common['Accept-Language'] = nextLocale;
 };
 
-const getAxiosInstance = (fnr?: string) => {
+interface AxiosEgenskaper {
+    baseUrl?: string;
+    fnr?: string;
+}
+
+const getAxiosInstance = (egenskaper: AxiosEgenskaper) => {
     AxiosInstance.interceptors.request.use((config) => {
         config.timeout = 60 * 1000;
-
-        if (fnr) {
-            config.headers!.fnr = fnr;
+        if (egenskaper.baseUrl) {
+            config.baseURL = egenskaper.baseUrl;
+        }
+        if (egenskaper.fnr) {
+            config.headers!.fnr = egenskaper.fnr;
         }
         return config;
     });

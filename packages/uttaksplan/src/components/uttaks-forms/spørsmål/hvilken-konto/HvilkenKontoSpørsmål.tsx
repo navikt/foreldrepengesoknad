@@ -1,10 +1,13 @@
 import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
-import { NavnPåForeldre, StønadskontoType, getStønadskontoNavn, hasValue, intlUtils } from '@navikt/fp-common';
-import { FormikRadioProp } from '@navikt/fp-formik/src/components/formik-radio-group/FormikRadioGroup';
+import { NavnPåForeldre, StønadskontoType } from '@navikt/fp-common';
 
+import { FormikRadioProp } from '../../../../formik-wrappers/components/formik-radio-group/FormikRadioGroup';
+import { getStønadskontoNavn } from '../../../../utils/stønadskontoerUtils';
 import { PeriodeUttakFormComponents, PeriodeUttakFormField } from '../../periode-uttak-form/periodeUttakFormConfig';
+
+const hasValue = (v: any) => v !== '' && v !== undefined && v !== null;
 
 interface Props {
     velgbareStønadskontoer: StønadskontoType[];
@@ -23,11 +26,14 @@ const getSpørsmålsTekst = (
 ): string => {
     if (erOppholdsperiode) {
         const navnAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
-        return intlUtils(intl, 'uttaksplan.hvilkenKvote.annenForelder', {
-            navnAnnenForelder,
-        });
+        return intl.formatMessage(
+            { id: 'uttaksplan.hvilkenKvote.annenForelder' },
+            {
+                navnAnnenForelder,
+            },
+        );
     } else {
-        return intlUtils(intl, 'uttaksplan.hvilkenKvote');
+        return intl.formatMessage({ id: 'uttaksplan.hvilkenKvote' });
     }
 };
 
@@ -56,7 +62,7 @@ const HvilkenKontoSpørsmål: FunctionComponent<Props> = ({
             legend={legend}
             validate={(value) => {
                 if (!hasValue(value)) {
-                    return intlUtils(intl, 'uttaksplan.validering.hvilkenKonto');
+                    return intl.formatMessage({ id: 'uttaksplan.validering.hvilkenKonto' });
                 }
 
                 return undefined;

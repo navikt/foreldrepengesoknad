@@ -1,5 +1,7 @@
 {
     "uttaksplan.familiehendelsesdato.født": "{antallBarn, plural, one{Barnet} other {Barna}} er født {dato}",
     "uttaksplan.familiehendelsesdato.termin": "Termin {dato}",
-    "uttaksplan.familiehendelsesdato.adopsjon": "{antallBarn, plural, one{Barnet} other {Barna}} er adoptert {dato}"
+    "uttaksplan.familiehendelsesdato.adopsjon": "{antallBarn, plural, one{Barnet} other {Barna}} er adoptert {dato}",
+    "varighet.uker": "{uker, plural, one {# week} other {# weeks}}",
+    "varighet.dager": "{dager, plural, one {# day} other {# days}}"
 }

@@ -2,7 +2,8 @@ import { FunctionComponent } from 'react';
 
 import { Accordion } from '@navikt/ds-react';
 
-import { FamiliehendelseType, bemUtils } from '@navikt/fp-common';
+import { FamiliehendelseType } from '@navikt/fp-common';
+import { bemUtils } from '@navikt/fp-utils';
 
 import Permisjonsperiode from '../../types/Permisjonsperiode';
 import PeriodeListeContent from '../periode-liste-content/PeriodeListeContent';

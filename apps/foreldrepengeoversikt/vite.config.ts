@@ -4,43 +4,43 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 
-export default defineConfig({
-    plugins: [
-        react({
-            include: '**/*.{jsx,tsx}',
-        }),
-        checker({ typescript: true }),
-        {
-            name: 'crossorigin',
-            transformIndexHtml(html) {
-                return html.replace(/<link rel="stylesheet" crossorigin/g, '<link rel="stylesheet" ');
+export default defineConfig(({ mode }) => {
+    return {
+        plugins: [
+            react({
+                include: '**/*.{jsx,tsx}',
+            }),
+            checker({ typescript: true }),
+            {
+                name: 'crossorigin',
+                transformIndexHtml(html) {
+                    return html.replace(/<link rel="stylesheet" crossorigin/g, '<link rel="stylesheet" ');
+                },
+            },
+        ],
+        base: mode === 'development' ? '' : '/foreldrepenger/oversikt',
+        build: {
+            sourcemap: true,
+        },
+        resolve: {
+            alias: {
+                app: path.resolve(__dirname, './src/app'),
+                storybookData: path.resolve(__dirname, './src/storybook-data'),
+                assets: path.resolve(__dirname, './src/assets'),
             },
         },
-    ],
-    build: {
-        sourcemap: true,
-    },
-    resolve: {
-        alias: {
-            app: path.resolve(__dirname, './src/app'),
-            storybook: path.resolve(__dirname, './src/storybook'),
-            assets: path.resolve(__dirname, './src/assets'),
+        server: {
+            port: 8080,
         },
-    },
-    server: {
-        port: 8085,
-    },
-    test: {
-        globals: true,
-        environment: 'jsdom',
-        setupFiles: './vitest/setupTests.ts',
-        deps: {
-            inline: ['@navikt/ds-react'],
+        test: {
+            globals: true,
+            environment: 'jsdom',
+            setupFiles: './vitest/setupTests.ts',
+            coverage: {
+                include: ['src/**/*'],
+                exclude: [],
+            },
+            testTimeout: 10000,
         },
-        coverage: {
-            include: ['src/**/*'],
-            exclude: [],
-        },
-        testTimeout: 10000,
-    },
+    };
 });
