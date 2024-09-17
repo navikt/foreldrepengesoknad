@@ -38,24 +38,6 @@ app.listen(port, () => {
     console.log(`Mock-api listening on port: ${port}`);
 });
 
-router.post('/rest/konto', async (req, res) => {
-    try {
-        const data = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', {
-            method: 'POST',
-            headers: {
-                accept: 'application/json, text/plain, */*',
-                'content-type': 'application/json',
-            },
-            credentials: 'omit',
-            body: JSON.stringify(req.body),
-        });
-        const jsonResponse = await data.json();
-        res.send(jsonResponse);
-    } catch (err) {
-        console.log(err);
-    }
-});
-
 router.get('/rest/satser', async (_req, res) => {
     try {
         const data = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/satser', {
