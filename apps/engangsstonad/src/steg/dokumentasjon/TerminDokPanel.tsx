@@ -5,10 +5,12 @@ import { BarnetErIkkeFødt } from 'types/OmBarnet';
 
 import { getSaveAttachment } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Datepicker } from '@navikt/fp-form-hooks';
+import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
+
+import { AxiosInstanceAPI } from '../../api/AxiosInstance';
 
 dayjs.extend(minMax);
 
@@ -38,7 +40,7 @@ const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAtt
 
     return (
         <>
-            <Datepicker
+            <RhfDatepicker
                 name={`terminbekreftelsedato`}
                 label={<FormattedMessage id="TerminDokPanel.Terminbekreftelsesdato" />}
                 minDate={dayjs(omBarnet.termindato).subtract(18, 'week').subtract(3, 'day').toDate()}
@@ -61,7 +63,7 @@ const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAtt
                 skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
                 existingAttachments={attachments}
                 updateAttachments={updateAttachments}
-                saveAttachment={getSaveAttachment('engangsstonad')}
+                saveAttachment={getSaveAttachment(AxiosInstanceAPI(), 'engangsstonad')}
             />
         </>
     );

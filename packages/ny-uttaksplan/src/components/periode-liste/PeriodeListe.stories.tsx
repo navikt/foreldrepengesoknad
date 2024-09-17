@@ -15,9 +15,7 @@ import PeriodeListe from './PeriodeListe';
 
 type StoryArgs = ComponentProps<typeof PeriodeListe>;
 
-type Story = StoryObj<StoryArgs>;
-
-const customRenderer = ({ perioder, familiehendelsedato }: StoryArgs) => {
+const customRenderer = ({ perioder, familiehendelsedato, barn }: StoryArgs) => {
     return (
         <UttaksplanDataContext
             initialState={{
@@ -29,17 +27,7 @@ const customRenderer = ({ perioder, familiehendelsedato }: StoryArgs) => {
             }}
         >
             <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
-                <PeriodeListe
-                    perioder={perioder}
-                    familiehendelsedato={familiehendelsedato}
-                    barn={{
-                        type: BarnType.FØDT,
-                        antallBarn: 1,
-                        fødselsdatoer: ['2023-08-19'],
-                        termindato: '2023-08-15',
-                        fnr: ['19482356071'],
-                    }}
-                />
+                <PeriodeListe perioder={perioder} familiehendelsedato={familiehendelsedato} barn={barn} />
             </div>
         </UttaksplanDataContext>
     );
@@ -52,10 +40,19 @@ const meta = {
 } satisfies Meta<StoryArgs>;
 export default meta;
 
+type Story = StoryObj<typeof meta>;
+
 export const UttaksperioderMor: Story = {
     name: 'Mor søker',
     args: {
         familiehendelsedato: '2024-04-22',
+        barn: {
+            type: BarnType.FØDT,
+            antallBarn: 1,
+            fødselsdatoer: ['2023-08-19'],
+            termindato: '2023-08-15',
+            fnr: ['19482356071'],
+        },
         perioder: [
             {
                 id: '1',
@@ -127,6 +124,13 @@ export const UttaksperioderMorOgFar: Story = {
     name: 'Mor og far med samtidig uttak',
     args: {
         familiehendelsedato: '2024-04-22',
+        barn: {
+            type: BarnType.FØDT,
+            antallBarn: 1,
+            fødselsdatoer: ['2023-08-19'],
+            termindato: '2023-08-15',
+            fnr: ['19482356071'],
+        },
         perioder: [
             {
                 id: '1',
@@ -198,6 +202,13 @@ export const UttaksperioderFarMorIkkeRett: Story = {
     name: 'Far søker og mor har ikke rett',
     args: {
         familiehendelsedato: '2024-05-01',
+        barn: {
+            type: BarnType.FØDT,
+            antallBarn: 1,
+            fødselsdatoer: ['2023-08-19'],
+            termindato: '2023-08-15',
+            fnr: ['19482356071'],
+        },
         perioder: [
             {
                 id: '1',
@@ -247,6 +258,13 @@ export const UttaksperioderMorOgFarFlerbarnsdager: Story = {
     name: 'Mor og far med flerbarnsdager og samtidig uttak',
     args: {
         familiehendelsedato: '2024-04-22',
+        barn: {
+            type: BarnType.FØDT,
+            antallBarn: 1,
+            fødselsdatoer: ['2023-08-19'],
+            termindato: '2023-08-15',
+            fnr: ['19482356071'],
+        },
         perioder: [
             {
                 id: '1',
@@ -290,6 +308,13 @@ export const UttaksperioderMorIkkeSøktFørsteSeksUker: Story = {
     name: 'Mor har ikke lagt inn uttak første seks uker',
     args: {
         familiehendelsedato: '2024-04-22',
+        barn: {
+            type: BarnType.FØDT,
+            antallBarn: 1,
+            fødselsdatoer: ['2023-08-19'],
+            termindato: '2023-08-15',
+            fnr: ['19482356071'],
+        },
         perioder: [
             {
                 id: '1',
@@ -328,6 +353,13 @@ export const UttaksperioderMorInnlagtFørsteSeksUker: Story = {
     name: 'Mor er innlagt første seks uker',
     args: {
         familiehendelsedato: '2024-04-22',
+        barn: {
+            type: BarnType.FØDT,
+            antallBarn: 1,
+            fødselsdatoer: ['2023-08-19'],
+            termindato: '2023-08-15',
+            fnr: ['19482356071'],
+        },
         perioder: [
             {
                 id: '1',

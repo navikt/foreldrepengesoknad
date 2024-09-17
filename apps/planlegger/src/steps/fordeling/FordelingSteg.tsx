@@ -17,7 +17,7 @@ import { finnUttaksdata } from 'utils/uttakUtils';
 
 import { BodyShort, Heading, Spacer, VStack } from '@navikt/ds-react';
 
-import { Form, Select, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { RhfForm, RhfSelect, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
@@ -153,7 +153,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
 
     return (
         <PlanleggerStepPage ref={ref} steps={stepConfig} goToStep={navigator.goToNextStep}>
-            <Form formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
+            <RhfForm formMethods={formMethods} onSubmit={lagre} shouldUseFlexbox>
                 <VStack gap="10" style={{ flex: 1 }}>
                     <VStack gap="8">
                         <Heading size="medium" spacing level="2">
@@ -184,7 +184,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                             </BodyShort>
                         </Infobox>
                         <BluePanel isDarkBlue={fordeling === undefined}>
-                            <Select
+                            <RhfSelect
                                 name="antallDagerSøker1"
                                 label={
                                     <FormattedMessage
@@ -216,7 +216,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                                         )}
                                     </option>
                                 ))}
-                            </Select>
+                            </RhfSelect>
                         </BluePanel>
                         {antallDagerSøker1 !== undefined && (
                             <FordelingsdetaljerPanel
@@ -236,7 +236,7 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
                         useSimplifiedTexts
                     />
                 </VStack>
-            </Form>
+            </RhfForm>
         </PlanleggerStepPage>
     );
 };

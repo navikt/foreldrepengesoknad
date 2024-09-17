@@ -1,10 +1,11 @@
 {
     "app": "foreldrepengeoversikt",
     "autentisering": true,
-    "ingresses": [
-        "https://foreldrepenger.nav.no"
-    ],
+    "ingressClassName": "nais-ingress-external",
+    "redirectFrom": "foreldrepenger.nav.no",
+    "ingress": "https://www.nav.no/foreldrepenger/oversikt",
     "env": {
-        "ENV": "prod"
+        "ENV": "prod",
+        "PUBLIC_PATH": "/foreldrepenger/oversikt"
     }
 }

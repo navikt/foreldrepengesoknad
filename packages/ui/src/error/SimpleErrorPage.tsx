@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Box, Button, Heading, VStack } from '@navikt/ds-react';
 
-import ContentWrapper from '../contentWrapper/ContentWrapper';
+import ContentWrapper from '../content-wrapper/ContentWrapper';
 
 const defaultRetryCallback = async () => {
     window.location.href = window.location.origin;

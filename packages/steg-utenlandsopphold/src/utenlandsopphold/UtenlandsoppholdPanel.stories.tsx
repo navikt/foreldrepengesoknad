@@ -1,61 +1,34 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
-
-import { Situasjon } from '@navikt/fp-types';
+import { Meta, StoryObj } from '@storybook/react';
 
 import UtenlandsoppholdPanel from './UtenlandsoppholdPanel';
 
-export default {
-    title: 'UtenlandsoppholdPanel',
+const meta = {
     component: UtenlandsoppholdPanel,
-};
+} satisfies Meta<typeof UtenlandsoppholdPanel>;
+export default meta;
 
-const Template: StoryFn<{
-    søkersituasjon: Situasjon;
-    saveOnNext: () => void;
-    saveOnPrevious: () => void;
-    cancelApplication: () => void;
-    goToPreviousStep: () => void;
-    onStepChange: () => void;
-}> = ({ saveOnNext, saveOnPrevious, cancelApplication, goToPreviousStep, onStepChange }) => {
-    return (
-        <UtenlandsoppholdPanel
-            saveOnNext={saveOnNext}
-            saveOnPrevious={saveOnPrevious}
-            onStepChange={onStepChange}
-            cancelApplication={cancelApplication}
-            goToPreviousStep={goToPreviousStep}
-            stepConfig={[
-                {
-                    id: 'BARNET_PATH',
-                    label: 'Barnet',
-                    isSelected: false,
-                },
-                {
-                    id: 'BO_I_UTLANDET_PATH',
-                    label: 'Bo i utlandet',
-                    isSelected: true,
-                },
-            ]}
-            stønadstype="Engangsstønad"
-        />
-    );
-};
+type Story = StoryObj<typeof meta>;
 
-export const ForFødsel = Template.bind({});
-ForFødsel.args = {
-    saveOnNext: action('button-click'),
-    saveOnPrevious: action('button-click'),
-    cancelApplication: action('button-click'),
-    goToPreviousStep: action('button-click'),
-    onStepChange: action('button-click'),
-};
-
-export const ForAdopsjon = Template.bind({});
-ForAdopsjon.args = {
-    saveOnNext: action('button-click'),
-    saveOnPrevious: action('button-click'),
-    cancelApplication: action('button-click'),
-    goToPreviousStep: action('button-click'),
-    onStepChange: action('button-click'),
+export const Default: Story = {
+    args: {
+        saveOnNext: action('button-click'),
+        saveOnPrevious: action('button-click'),
+        cancelApplication: action('button-click'),
+        goToPreviousStep: action('button-click'),
+        onStepChange: action('button-click'),
+        stepConfig: [
+            {
+                id: 'BARNET_PATH',
+                label: 'Barnet',
+                isSelected: false,
+            },
+            {
+                id: 'BO_I_UTLANDET_PATH',
+                label: 'Bo i utlandet',
+                isSelected: true,
+            },
+        ],
+        stønadstype: 'Engangsstønad',
+    },
 };

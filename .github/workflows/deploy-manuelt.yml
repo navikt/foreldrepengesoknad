@@ -28,10 +28,13 @@ on:
 jobs:
   deploy:
     name: Deploy
+    permissions:
+      id-token: write
     uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
     with:
       gar: true
       image: ${{ inputs.image }}
       cluster: ${{ inputs.environment }}-gcp
-      app: /${{ inputs.app }}
+      image_suffix: '/${{ inputs.app }}'
+      deploy_context: '/${{ inputs.app }}'
     secrets: inherit

@@ -1,9 +1,12 @@
 {
     "app": "foreldrepengesoknad",
     "autentisering": true,
-    "ingresses": ["https://foreldrepengesoknad.nav.no"],
+    "ingressClassName": "nais-ingress-external",
+    "redirectFrom": "foreldrepengesoknad.nav.no",
+    "ingress": "https://www.nav.no/foreldrepenger/soknad",
     "env": {
-        "INNSYN": "https://foreldrepenger.nav.no",
+        "PUBLIC_PATH": "/foreldrepenger/soknad",
+        "INNSYN": "https://www.nav.no/foreldrepenger/oversikt",
         "ENV": "prod",
         "FEATURE_TEST_1JULI2024_REGLER": "off"
     }

@@ -1,6 +1,5 @@
 {
     "valgfritt": "(valgfritt)",
-    "harValgfrieFelt": "Alle felt må fylles ut, unntatt felt markert med (valgfritt).",
     "ja": "Ja",
     "nei": "Nei",
     "valideringsfeil.egenNæringNavn.påkrevd": "Du må oppgi navnet på virksomheten din",
@@ -71,5 +70,6 @@
     "valideringsfeil.tilOgMedDato.påkrevd": "Du må oppgi en sluttdato.",
     "valideringsfeil.tilOgMedDato.erIFremtiden": "Sluttdatoen kan ikke være mer enn ni måneder frem i tid.",
     "valideringsfeil.tilOgMedDato.etterFraDato": "Sluttdatoen må være lik eller etter startdatoen.",
-    "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige tegn i feltet \"{feltNavn}\"."
+    "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige tegn i feltet \"{feltNavn}\".",
+    "valideringsfeil.navnPåNæringen.forLang": "\"{feltNavn}\" kan bestå av maksimalt 100 tegn."
 }

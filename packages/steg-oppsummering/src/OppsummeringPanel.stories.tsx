@@ -1,9 +1,7 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import { Accordion } from '@navikt/ds-react';
-
-import { UtenlandsoppholdSenere, UtenlandsoppholdTidligere } from '@navikt/fp-types';
 
 import OppsummeringPanel from './OppsummeringPanel';
 import BoIUtlandetOppsummeringspunkt from './utenlandsopphold/BoIUtlandetOppsummeringspunkt';
@@ -15,69 +13,56 @@ const promiseAction =
         return Promise.resolve();
     };
 
-export default {
-    title: 'OppsummeringPanel',
+const meta = {
     component: OppsummeringPanel,
-};
+} satisfies Meta<typeof OppsummeringPanel>;
+export default meta;
 
-const Template: StoryFn<{
-    sendSøknad: () => Promise<void>;
-    cancelApplication: () => void;
-    onContinueLater: () => void;
-    goToPreviousStep: () => void;
-    onStepChange: () => void;
-    tidligereUtenlandsopphold?: UtenlandsoppholdTidligere;
-    senereUtenlandsopphold?: UtenlandsoppholdSenere;
-}> = ({
-    sendSøknad = promiseAction(),
-    cancelApplication = action('button-click'),
-    onContinueLater = action('button-click'),
-    goToPreviousStep = action('button-click'),
-    onStepChange = action('button-click'),
-    tidligereUtenlandsopphold,
-    senereUtenlandsopphold,
-}) => {
-    return (
-        <OppsummeringPanel
-            sendSøknad={sendSøknad}
-            cancelApplication={cancelApplication}
-            onContinueLater={onContinueLater}
-            onStepChange={onStepChange}
-            goToPreviousStep={goToPreviousStep}
-            stepConfig={[
-                {
-                    id: 'SKAL_BO_I_UTLANDET_PATH',
-                    label: 'Skal bo i utlandet',
-                    isSelected: false,
-                },
-                {
-                    id: 'OPPSUMMERING_PATH',
-                    label: 'Oppsummering',
-                    isSelected: true,
-                },
-            ]}
-            appName="Engangsstønad"
-        >
+type Story = StoryObj<typeof meta>;
+
+export const HarBoddIUtlandetOgFødt: Story = {
+    args: {
+        appName: 'Engangsstønad',
+        sendSøknad: promiseAction(),
+        cancelApplication: action('button-click'),
+        onContinueLater: action('button-click'),
+        goToPreviousStep: action('button-click'),
+        onStepChange: action('button-click'),
+        stepConfig: [
+            {
+                id: 'SKAL_BO_I_UTLANDET_PATH',
+                label: 'Skal bo i utlandet',
+                isSelected: false,
+            },
+            {
+                id: 'OPPSUMMERING_PATH',
+                label: 'Oppsummering',
+                isSelected: true,
+            },
+        ],
+        children: (
             <Accordion indent={false}>
                 <BoIUtlandetOppsummeringspunkt
                     onVilEndreSvar={() => {}}
-                    senereUtenlandsopphold={senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd ?? []}
-                    tidligereUtenlandsopphold={tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd ?? []}
+                    senereUtenlandsopphold={[{ fom: '2022-10-10', tom: '2023-05-05', landkode: 'SE' }]}
+                    tidligereUtenlandsopphold={[{ fom: '2023-06-06', tom: '2023-10-10', landkode: 'DE' }]}
                 />
             </Accordion>
-        </OppsummeringPanel>
-    );
-};
-
-export const HarBoddIUtlandetOgFødt = Template.bind({});
-HarBoddIUtlandetOgFødt.args = {
-    senereUtenlandsopphold: {
-        utenlandsoppholdNeste12Mnd: [{ fom: '2022-10-10', tom: '2023-05-05', landkode: 'SE' }],
-    },
-    tidligereUtenlandsopphold: {
-        utenlandsoppholdSiste12Mnd: [{ fom: '2023-06-06', tom: '2023-10-10', landkode: 'DE' }],
+        ),
     },
 };
 
-export const HarIkkeBoddIUtlandetOgIkkeFødt = Template.bind({});
-HarIkkeBoddIUtlandetOgIkkeFødt.args = {};
+export const HarIkkeBoddIUtlandetOgIkkeFødt: Story = {
+    args: {
+        ...HarBoddIUtlandetOgFødt.args,
+        children: (
+            <Accordion indent={false}>
+                <BoIUtlandetOppsummeringspunkt
+                    onVilEndreSvar={() => {}}
+                    senereUtenlandsopphold={[]}
+                    tidligereUtenlandsopphold={[]}
+                />
+            </Accordion>
+        ),
+    },
+};

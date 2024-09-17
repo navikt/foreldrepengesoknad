@@ -1,7 +1,8 @@
 import { action } from '@storybook/addon-actions';
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Action, EsDataContext } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -15,33 +16,33 @@ const promiseAction =
         return Promise.resolve();
     };
 
-export default {
-    title: 'Velkommen',
+type StoryArgs = {
+    gåTilNesteSide?: (action: Action) => void;
+} & ComponentProps<typeof Velkommen>;
+
+const meta = {
     component: Velkommen,
-};
+    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+        initAmplitude();
+        return (
+            <MemoryRouter initialEntries={[Path.VELKOMMEN]}>
+                <EsDataContext onDispatch={gåTilNesteSide}>
+                    <Velkommen {...rest} />
+                </EsDataContext>
+            </MemoryRouter>
+        );
+    },
+} satisfies Meta<StoryArgs>;
+export default meta;
 
-const Template: StoryFn<{
-    startSøknad: (start: boolean) => void;
-    mellomlagreOgNaviger?: () => Promise<void>;
-    gåTilNesteSide: (action: Action) => void;
-}> = ({ startSøknad, mellomlagreOgNaviger = promiseAction(), gåTilNesteSide }) => {
-    initAmplitude();
-    return (
-        <MemoryRouter initialEntries={[Path.VELKOMMEN]}>
-            <EsDataContext onDispatch={gåTilNesteSide}>
-                <Velkommen
-                    startSøknad={startSøknad}
-                    onChangeLocale={action('button-click')}
-                    locale="nb"
-                    erVelkommen={false}
-                    mellomlagreOgNaviger={mellomlagreOgNaviger}
-                />
-            </EsDataContext>
-        </MemoryRouter>
-    );
-};
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
-Default.args = {
-    startSøknad: action('button-click'),
+export const Default: Story = {
+    args: {
+        startSøknad: action('button-click'),
+        mellomlagreOgNaviger: promiseAction(),
+        onChangeLocale: action('button-click'),
+        locale: 'nb',
+        erVelkommen: false,
+    },
 };

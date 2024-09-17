@@ -6,6 +6,8 @@ import { Loader } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
+import Environment from 'app/appData/Environment';
+
 import { erSakOppdatertOptions, hentSakerOptions, minidialogOptions, søkerInfoOptions } from './api/api';
 import ScrollToTop from './components/scroll-to-top/ScrollToTop';
 import { useGetBackgroundColor } from './hooks/useBackgroundColor';
@@ -64,7 +66,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         <div
             className={classNames(bem.block, backgroundColor === 'white' ? bem.element('white') : bem.element('blue'))}
         >
-            <BrowserRouter>
+            <BrowserRouter basename={Environment.PUBLIC_PATH}>
                 <ScrollToTop />
                 <ForeldrepengeoversiktRoutes søkerinfo={søkerInfoQuery.data} saker={sakerQuery.data ?? defaultSaker} />
             </BrowserRouter>

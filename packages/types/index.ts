@@ -34,10 +34,9 @@ export type {
     Stønadskonto,
 } from './src/TilgjengeligeStønadskontoer';
 export type {
+    InformasjonOmUtenlandsoppholdDTO,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,
-    UtenlandsoppholdSenere,
-    UtenlandsoppholdTidligere,
 } from './src/Utenlandsopphold';
 
 export type { Barn } from './src/Barn';

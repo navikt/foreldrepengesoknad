@@ -334,6 +334,9 @@ importers:
       '@storybook/addon-essentials':
         specifier: 8.2.9
         version: 8.2.9(storybook@8.2.9(@babel/preset-env@7.25.3(@babel/core@7.25.2)))
+      '@storybook/addon-interactions':
+        specifier: 8.2.9
+        version: 8.2.9(@jest/globals@29.7.0)(@types/jest@29.5.12)(jest@29.7.0(@types/node@22.5.4))(storybook@8.2.9(@babel/preset-env@7.25.3(@babel/core@7.25.2)))(vitest@2.0.5(@types/node@22.5.4)(jsdom@25.0.0)(less@4.2.0)(sass@1.78.0)(terser@5.31.3))
       '@storybook/cli':
         specifier: 8.2.9
         version: 8.2.9(@babel/preset-env@7.25.3(@babel/core@7.25.2))
@@ -1273,9 +1276,6 @@ importers:
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
-      '@navikt/fp-api':
-        specifier: workspace:*
-        version: link:../../packages/api
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -1300,9 +1300,12 @@ importers:
       '@sentry/browser':
         specifier: ^7.109.0
         version: 7.118.0
-      axios:
-        specifier: ^1.6.8
-        version: 1.7.3
+      '@tanstack/react-query':
+        specifier: 5.54.1
+        version: 5.54.1(react@18.3.1)
+      '@tanstack/react-query-devtools':
+        specifier: ^5.54.1
+        version: 5.54.1(@tanstack/react-query@5.54.1(react@18.3.1))(react@18.3.1)
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -1327,6 +1330,9 @@ importers:
       jsdom:
         specifier: ^25.0.0
         version: 25.0.0
+      ky:
+        specifier: ^1.7.2
+        version: 1.7.2
       morgan:
         specifier: ^1.10.0
         version: 1.10.0
@@ -1403,15 +1409,18 @@ importers:
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.4.45)
-      axios-mock-adapter:
-        specifier: 1.22.0
-        version: 1.22.0(axios@1.7.3)
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
       http-proxy-middleware:
         specifier: 3.0.2
         version: 3.0.2
+      msw:
+        specifier: ^2.3.1
+        version: 2.3.5(typescript@5.5.4)
+      msw-storybook-addon:
+        specifier: ^2.0.3
+        version: 2.0.3(msw@2.3.5(typescript@5.5.4))
       mustache-loader:
         specifier: ^1.4.3
         version: 1.4.3(hogan.js@3.0.2)(webpack@5.93.0)
@@ -1458,6 +1467,9 @@ importers:
       '@types/react':
         specifier: ^18.3.3
         version: 18.3.3
+      axios-mock-adapter:
+        specifier: ^1.22.0
+        version: 1.22.0(axios@1.7.3)
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -1576,10 +1588,10 @@ importers:
         version: 6.4.8
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
-        version: 14.5.2(@testing-library/dom@10.1.0)
+        version: 14.5.2(@testing-library/dom@10.4.0)
       '@vitejs/plugin-react':
         specifier: ^4.3.1
         version: 4.3.1(vite@5.4.3(@types/node@22.5.4)(less@4.2.0)(sass@1.78.0)(terser@5.31.3))
@@ -1871,16 +1883,13 @@ importers:
       '@navikt/nav-dekoratoren-moduler':
         specifier: 2.1.6
         version: 2.1.6(jsdom@25.0.0)(react@18.3.1)
-      cookie-parser:
-        specifier: 1.4.6
-        version: 1.4.6
+      '@navikt/vite-mode':
+        specifier: 0.11.3
+        version: 0.11.3(express@4.19.2)
       express:
         specifier: 4.19.2
         version: 4.19.2
     devDependencies:
-      '@types/cookie-parser':
-        specifier: 1.4.7
-        version: 1.4.7
       '@types/express':
         specifier: 4.17.21
         version: 4.17.21
@@ -3074,9 +3083,6 @@ importers:
       '@navikt/oasis':
         specifier: 3.4.0
         version: 3.4.0
-      cookie-parser:
-        specifier: 1.4.6
-        version: 1.4.6
       express:
         specifier: 4.19.2
         version: 4.19.2
@@ -3087,9 +3093,6 @@ importers:
       '@navikt/fp-server-utils':
         specifier: workspace:*
         version: link:../packages/server-utils
-      '@types/cookie-parser':
-        specifier: 1.4.7
-        version: 1.4.7
       '@types/express':
         specifier: 4.17.21
         version: 4.17.21
@@ -4361,6 +4364,11 @@ packages:
   '@navikt/oasis@3.4.0':
     resolution: {integrity: sha512-le+J+gE/OeLfqyZFQWDqp/pY6f7lzMpP1ynXnDOWBalmkav9tmWor4g/pqb+Xorm6C6bNCdScmCKDHvNVf+CoQ==, tarball: https://npm.pkg.github.com/download/@navikt/oasis/3.4.0/7a21e6e8c8e6eca00d7e6a5c06f7e8315c0cc71a}
 
+  '@navikt/vite-mode@0.11.3':
+    resolution: {integrity: sha512-kpQbLHeV3MCG8Vtbe0aw3OVRXUFKG4bncKBo8ugWyyopy6z4+HVnKrRvgO1/KhYmLgD4GN3RdhCeDM0glu0aqw==, tarball: https://npm.pkg.github.com/download/@navikt/vite-mode/0.11.3/50c9f1ba5512dff399b7f294c53169d160c7a925}
+    peerDependencies:
+      express: 4.x
+
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -4838,9 +4846,6 @@ packages:
 
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
-
-  '@types/cookie-parser@1.4.7':
-    resolution: {integrity: sha512-Fvuyi354Z+uayxzIGCwYTayFKocfV7TuDYZClCdIP9ckhvAu/ixDtCB6qx2TT0FKjPLf1f3P/J1rgf6lPs64mw==}
 
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
@@ -11361,6 +11366,11 @@ snapshots:
       openid-client: 5.6.5
       prom-client: 15.1.3
 
+  '@navikt/vite-mode@0.11.3(express@4.19.2)':
+    dependencies:
+      cookie-parser: 1.4.6
+      express: 4.19.2
+
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -11908,16 +11918,6 @@ snapshots:
       lodash: 4.17.21
       redent: 3.0.0
 
-  '@testing-library/react@16.0.0(@testing-library/dom@10.1.0)(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@babel/runtime': 7.25.0
-      '@testing-library/dom': 10.1.0
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-    optionalDependencies:
-      '@types/react': 18.3.3
-      '@types/react-dom': 18.3.0
-
   '@testing-library/react@16.0.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.25.0
@@ -11983,10 +11983,6 @@ snapshots:
   '@types/connect@3.4.38':
     dependencies:
       '@types/node': 22.5.4
-
-  '@types/cookie-parser@1.4.7':
-    dependencies:
-      '@types/express': 4.17.21
 
   '@types/cookie@0.6.0': {}
 

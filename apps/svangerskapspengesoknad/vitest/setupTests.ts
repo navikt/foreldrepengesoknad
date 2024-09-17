@@ -10,10 +10,11 @@ expect.extend(matchers);
 
 window.scrollTo = () => undefined;
 
-vi.mock('./../src/app/appData/Environment.ts', async () => {
+vi.mock('./../src/appData/Environment.ts', async () => {
     return {
         default: {
             INNSYN: 'https://foreldrepenger.intern.dev.nav.no',
+            PUBLIC_PATH: '',
         },
     };
 });

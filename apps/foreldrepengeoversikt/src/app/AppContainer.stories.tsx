@@ -31,6 +31,6 @@ const meta = {
 } satisfies Meta<typeof AppContainer>;
 export default meta;
 
-type Story = StoryObj<typeof AppContainer>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};

@@ -59,6 +59,7 @@
         "@navikt/nav-dekoratoren-moduler": "2.1.6",
         "@storybook/addon-actions": "8.2.9",
         "@storybook/addon-essentials": "8.2.9",
+        "@storybook/addon-interactions": "8.2.9",
         "@storybook/cli": "8.2.9",
         "@storybook/react": "8.2.9",
         "@storybook/react-vite": "8.2.9",

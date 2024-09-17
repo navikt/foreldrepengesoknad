@@ -7,7 +7,7 @@
             try {
                 window['adrum-start-time'] = new Date().getTime();
                 (function (config) {
-                    if (window.location.href.indexOf('https://svangerskapspengesoknad.nav.no') > -1) {
+                    if (window.location.href.startsWith('https://www.nav.no/svangerskapspenger/soknad') > -1) {
                         config.adrumExtUrlHttps = 'https://jsagent.nav.no';
                         config.beaconUrlHttps = 'https://eumgw.nav.no';
                         config.appKey = 'EUM-AAB-AXM';
@@ -23,6 +23,6 @@
     </head>
     <body>
         <div id="app"></div>
-        <script type="module" src="/src/app/bootstrap.tsx"></script>
+        <script type="module" src="/src/bootstrap.tsx"></script>
     </body>
 </html>

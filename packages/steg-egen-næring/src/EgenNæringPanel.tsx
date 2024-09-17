@@ -7,12 +7,12 @@ import { Alert, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { DATE_4_YEARS_AGO, DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO } from '@navikt/fp-constants';
 import {
-    Datepicker,
     ErrorSummaryHookForm,
-    Form,
-    RadioGroup,
+    RhfDatepicker,
+    RhfForm,
+    RhfRadioGroup,
+    RhfTextField,
     StepButtonsHookForm,
-    TextField,
 } from '@navikt/fp-form-hooks';
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { AppName } from '@navikt/fp-types';
@@ -110,20 +110,20 @@ const EgenNæringPanel = <TYPE extends string>({
             ? `${navnPåNæringSpm} ${intl.formatMessage({ id: 'valgfritt' })}`
             : navnPåNæringSpm;
 
+    const erNyoppstartet = erVirksomhetRegnetSomNyoppstartet(næringFom);
+
     return (
         <Step
             onCancel={cancelApplication}
             steps={stepConfig}
             onContinueLater={onContinueLater}
             onStepChange={onStepChange}
+            someFieldsOptional
         >
-            <Form formMethods={formMethods} onSubmit={saveOnNext}>
+            <RhfForm formMethods={formMethods} onSubmit={saveOnNext}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    <BodyShort>
-                        <FormattedMessage id="harValgfrieFelt" />
-                    </BodyShort>
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="næringstype"
                         label={intl.formatMessage({ id: 'egenNæring.næringstype' })}
                         validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringType.påkrevd' }))]}
@@ -140,11 +140,10 @@ const EgenNæringPanel = <TYPE extends string>({
                         <Radio value={Næringstype.ANNET}>
                             <FormattedMessage id="egenNæring.næringstype.annen" />
                         </Radio>
-                    </RadioGroup>
-                    <TextField
+                    </RhfRadioGroup>
+                    <RhfTextField
                         name="navnPåNæringen"
                         label={navnPåNæringLabel}
-                        maxLength={100}
                         validate={[
                             validateEgenNæringNavn(intl, næringsType === Næringstype.FISKER),
                             hasLegalChars((ugyldigeTegn: string) =>
@@ -156,10 +155,19 @@ const EgenNæringPanel = <TYPE extends string>({
                                     },
                                 ),
                             ),
+                            hasMaxLength(
+                                intl.formatMessage(
+                                    { id: 'valideringsfeil.navnPåNæringen.forLang' },
+                                    {
+                                        feltNavn: navnPåNæringLabel,
+                                    },
+                                ),
+                                100,
+                            ),
                         ]}
                         shouldReplaceInvisibleChars
                     />
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="registrertINorge"
                         label={intl.formatMessage(
                             { id: 'egenNæring.erNæringenRegistrertINorge' },
@@ -179,12 +187,12 @@ const EgenNæringPanel = <TYPE extends string>({
                         <Radio value={false}>
                             <FormattedMessage id="nei" />
                         </Radio>
-                    </RadioGroup>
+                    </RhfRadioGroup>
                     <OrgnummerEllerLand
                         orgNummerErValgfritt={næringsType === Næringstype.FISKER}
                         registrertINorge={registrertINorge}
                     />
-                    <Datepicker
+                    <RhfDatepicker
                         name="fomDato"
                         label={intl.formatMessage(
                             { id: 'egenNæring.næring.fom' },
@@ -208,7 +216,7 @@ const EgenNæringPanel = <TYPE extends string>({
                         showMonthAndYearDropdowns
                     />
 
-                    <RadioGroup
+                    <RhfRadioGroup
                         name="pågående"
                         label={intl.formatMessage(
                             { id: 'egenNæring.næring.pågående' },
@@ -226,10 +234,10 @@ const EgenNæringPanel = <TYPE extends string>({
                         <Radio value={false}>
                             <FormattedMessage id="nei" />
                         </Radio>
-                    </RadioGroup>
+                    </RhfRadioGroup>
 
                     {pågående === false && (
-                        <Datepicker
+                        <RhfDatepicker
                             name="tomDato"
                             label={intl.formatMessage(
                                 { id: 'egenNæring.næring.tom' },
@@ -265,7 +273,7 @@ const EgenNæringPanel = <TYPE extends string>({
                             showMonthAndYearDropdowns
                         />
                     )}
-                    {!erVirksomhetRegnetSomNyoppstartet(næringFom) && (
+                    {!erNyoppstartet && (
                         <VarigEndringSpørsmål
                             varigEndring={varigEndring}
                             egenNæringFom={næringFom}
@@ -273,58 +281,70 @@ const EgenNæringPanel = <TYPE extends string>({
                             stønadstype={stønadstype}
                         />
                     )}
-                    <TextField
-                        name="næringsinntekt"
-                        label={intl.formatMessage({ id: 'egenNæring.næringsinntekt' })}
-                        description={intl.formatMessage({ id: 'egenNæring.næringsinntekt.description' })}
-                        validate={[
-                            isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringInntekt.påkrevd' })),
-                            hasMaxLength(intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.forLang' }), 9),
-                            isValidNumberForm(
-                                intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.ugyldigFormat' }),
-                            ),
-                            hasMinValue(intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.mindreEnnNull' }), 0),
-                        ]}
-                    />
-                    <ReadMore
-                        onOpenChange={logAmplitudeEventOnOpen(stønadstype, 'Mer_om_næringsresultat')}
-                        header={intl.formatMessage({ id: 'egenNæring.næringsinntekt.info.apneLabel' })}
-                    >
-                        <BodyShort>
-                            <FormattedMessage id="egenNæring.næringsinntekt.info" />
-                        </BodyShort>
-                    </ReadMore>
-                    <RadioGroup
-                        name="harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene"
-                        label={intl.formatMessage({ id: 'egenNæring.blittYrkesaktivSiste3År' })}
-                        validate={[
-                            isRequired(
-                                intl.formatMessage({
-                                    id: 'valideringsfeil.egenNæringBlittYrkesaktivDe3SisteÅrene.påkrevd',
-                                }),
-                            ),
-                        ]}
-                    >
-                        <Radio value={true}>
-                            <FormattedMessage id="ja" />
-                        </Radio>
-                        <Radio value={false}>
-                            <FormattedMessage id="nei" />
-                        </Radio>
-                    </RadioGroup>
-                    {erVirksomhetRegnetSomNyoppstartet(næringFom) && yrkesaktivSiste3År === true && (
-                        <Datepicker
-                            name="oppstartsdato"
-                            label={intl.formatMessage({ id: 'egenNæring.yrkesaktivDato' })}
-                            validate={[
-                                isRequired(intl.formatMessage({ id: 'valideringsfeil.yrkesaktiv.påkrevd' })),
-                                isValidDate(intl.formatMessage({ id: 'valideringsfeil.yrkesaktiv.gyldigDato' })),
-                                isBeforeTodayOrToday(
-                                    intl.formatMessage({ id: 'valideringsfeil.yrkesaktiv.erIFremtiden' }),
-                                ),
-                            ]}
-                            maxDate={dayjs()}
-                        />
+                    {erNyoppstartet && (
+                        <>
+                            <RhfTextField
+                                name="næringsinntekt"
+                                label={intl.formatMessage({ id: 'egenNæring.næringsinntekt' })}
+                                description={intl.formatMessage({ id: 'egenNæring.næringsinntekt.description' })}
+                                validate={[
+                                    isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringInntekt.påkrevd' })),
+                                    hasMaxLength(
+                                        intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.forLang' }),
+                                        9,
+                                    ),
+                                    isValidNumberForm(
+                                        intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.ugyldigFormat' }),
+                                    ),
+                                    hasMinValue(
+                                        intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.mindreEnnNull' }),
+                                        0,
+                                    ),
+                                ]}
+                            />
+                            <ReadMore
+                                onOpenChange={logAmplitudeEventOnOpen(stønadstype, 'Mer_om_næringsresultat')}
+                                header={intl.formatMessage({ id: 'egenNæring.næringsinntekt.info.apneLabel' })}
+                            >
+                                <BodyShort>
+                                    <FormattedMessage id="egenNæring.næringsinntekt.info" />
+                                </BodyShort>
+                            </ReadMore>
+                            <RhfRadioGroup
+                                name="harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene"
+                                label={intl.formatMessage({ id: 'egenNæring.blittYrkesaktivSiste3År' })}
+                                validate={[
+                                    isRequired(
+                                        intl.formatMessage({
+                                            id: 'valideringsfeil.egenNæringBlittYrkesaktivDe3SisteÅrene.påkrevd',
+                                        }),
+                                    ),
+                                ]}
+                            >
+                                <Radio value={true}>
+                                    <FormattedMessage id="ja" />
+                                </Radio>
+                                <Radio value={false}>
+                                    <FormattedMessage id="nei" />
+                                </Radio>
+                            </RhfRadioGroup>
+                            {yrkesaktivSiste3År === true && (
+                                <RhfDatepicker
+                                    name="oppstartsdato"
+                                    label={intl.formatMessage({ id: 'egenNæring.yrkesaktivDato' })}
+                                    validate={[
+                                        isRequired(intl.formatMessage({ id: 'valideringsfeil.yrkesaktiv.påkrevd' })),
+                                        isValidDate(
+                                            intl.formatMessage({ id: 'valideringsfeil.yrkesaktiv.gyldigDato' }),
+                                        ),
+                                        isBeforeTodayOrToday(
+                                            intl.formatMessage({ id: 'valideringsfeil.yrkesaktiv.erIFremtiden' }),
+                                        ),
+                                    ]}
+                                    maxDate={dayjs()}
+                                />
+                            )}
+                        </>
                     )}
                     <Alert variant="info">{intl.formatMessage({ id: 'egenNæring.veileder' })}</Alert>
                     <StepButtonsHookForm<EgenNæring>
@@ -332,7 +352,7 @@ const EgenNæringPanel = <TYPE extends string>({
                         saveDataOnPreviousClick={saveOnPrevious}
                     />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 };

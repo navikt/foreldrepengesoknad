@@ -14,6 +14,7 @@ vi.mock('./../src/appData/Environment.ts', async () => {
     return {
         default: {
             APP_VERSION: 'dev',
+            PUBLIC_PATH: '',
         },
     };
 });

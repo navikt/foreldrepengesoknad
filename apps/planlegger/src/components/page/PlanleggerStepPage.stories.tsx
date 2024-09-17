@@ -9,7 +9,7 @@ const meta = {
 } satisfies Meta<typeof PlanleggerStepPage>;
 export default meta;
 
-type Story = StoryObj<typeof PlanleggerStepPage>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
@@ -17,6 +17,7 @@ export const Default: Story = {
             { id: PlanleggerRoutes.FORDELING, isSelected: true, label: 'Fordeling' },
             { id: PlanleggerRoutes.HVEM_PLANLEGGER, isSelected: false, label: 'Hvem planlegger' },
         ],
+        goToStep: () => undefined,
         children: <div>Steginnhold</div>,
     },
 };

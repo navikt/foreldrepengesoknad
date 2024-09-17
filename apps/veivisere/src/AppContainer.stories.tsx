@@ -1,18 +1,17 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ContextRoutes, HvaSkjerNårRoutes } from 'appData/routes';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
+import { InitialEntry } from 'history';
+import { HttpResponse, http } from 'msw';
 import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { getAxiosInstance } from '@navikt/fp-api';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import AppContainer from './AppContainer';
 
-const kontoer = {
+const STØNADSKONTOER = {
     '100': {
         kontoer: [
             {
@@ -63,7 +62,7 @@ const kontoer = {
     },
 } as TilgjengeligeStønadskontoer;
 
-const satser = {
+const SATSER = {
     engangstønad: [
         {
             fom: '01.01.2023',
@@ -86,87 +85,83 @@ const satser = {
     ],
 };
 
-const doApiMocking = (args: { brukMock?: boolean }) => {
-    const axiosInstance = getAxiosInstance();
-    const apiMock = new MockAdapter(axiosInstance);
-    if (args.brukMock) {
-        apiMock.onPost('/rest/konto').reply(() => {
-            return [200, kontoer];
-        });
-        apiMock.onGet('/rest/satser').reply(() => {
-            return [200, satser];
-        });
-    } else {
-        apiMock.onPost('/rest/konto').reply(async (config) => {
-            const redirectResponse = await axios
-                .create()
-                .post('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', config.data, {
-                    withCredentials: config.withCredentials,
-                    headers: config.headers,
-                    timeout: config.timeout,
-                });
-            return [200, redirectResponse.data];
-        });
-        apiMock.onGet('/rest/satser').reply(async (config) => {
-            const redirectResponse = await axios
-                .create()
-                .get('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/satser', {
-                    headers: config.headers,
-                    timeout: config.timeout,
-                });
-            return [200, redirectResponse.data];
-        });
-    }
-};
-
 const meta = {
     title: 'AppContainer',
     component: AppContainer,
-} satisfies Meta<typeof AppContainer>;
-export default meta;
-
-type Story = StoryObj<{
-    brukMock?: boolean;
-}>;
-
-export const HvorMyeVeiviser: Story = {
-    render: (args) => {
+    parameters: {
+        msw: {
+            handlers: [
+                http.post('/rest/konto', async ({ request }) => {
+                    const body = await request.json();
+                    const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', {
+                        body: JSON.stringify(body),
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    const json = await response.json();
+                    return HttpResponse.json(json);
+                }),
+                http.get('/rest/satser', async () => {
+                    const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/satser');
+                    const json = await response.json();
+                    return HttpResponse.json(json);
+                }),
+            ],
+        },
+    },
+    render: ({ initialEntries }) => {
         initAmplitude();
-        doApiMocking(args);
         return (
             <StrictMode>
-                <MemoryRouter initialEntries={[ContextRoutes.HVOR_MYE]}>
+                <MemoryRouter initialEntries={initialEntries}>
                     <AppContainer />
                 </MemoryRouter>
             </StrictMode>
         );
+    },
+} satisfies Meta<{ initialEntries?: InitialEntry[]; brukMock?: boolean }>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const HvorMyeVeiviser: Story = {
+    args: {
+        initialEntries: [ContextRoutes.HVOR_MYE],
     },
 };
 
 export const HvaSkjerNårVeiviser: Story = {
-    render: (args) => {
-        initAmplitude();
-        doApiMocking(args);
-        return (
-            <StrictMode>
-                <MemoryRouter initialEntries={[ContextRoutes.HVA_SKJER + HvaSkjerNårRoutes.OM]}>
-                    <AppContainer />
-                </MemoryRouter>
-            </StrictMode>
-        );
+    args: {
+        initialEntries: [ContextRoutes.HVA_SKJER + HvaSkjerNårRoutes.OM],
     },
 };
 
 export const FpEllerEsVeiviser: Story = {
-    render: (args) => {
-        initAmplitude();
-        doApiMocking(args);
-        return (
-            <StrictMode>
-                <MemoryRouter initialEntries={[ContextRoutes.FP_ELLER_ES]}>
-                    <AppContainer />
-                </MemoryRouter>
-            </StrictMode>
-        );
+    args: {
+        initialEntries: [ContextRoutes.FP_ELLER_ES],
     },
+};
+
+export const HvorMyeVeiviserMockaStønadskontoerOgSatser: Story = {
+    args: HvorMyeVeiviser.args,
+    parameters: {
+        msw: {
+            handlers: [
+                http.post('/rest/konto', () => HttpResponse.json(STØNADSKONTOER)),
+                http.get('/rest/satser', () => HttpResponse.json(SATSER)),
+            ],
+        },
+    },
+};
+
+export const HvaSkjerNårVeiviserMockaStønadskontoerOgSatser: Story = {
+    args: HvaSkjerNårVeiviser.args,
+    parameters: HvorMyeVeiviserMockaStønadskontoerOgSatser.parameters,
+};
+
+export const FpEllerEsVeiviserMockaStønadskontoerOgSatser: Story = {
+    args: FpEllerEsVeiviser.args,
+    parameters: HvorMyeVeiviserMockaStønadskontoerOgSatser.parameters,
 };

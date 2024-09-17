@@ -1,38 +1,40 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import CheckmarkIkon from '../../common/checkmark-ikon/CheckmarkIkon';
 import Personkort from './Personkort';
 
-export default {
+const meta = {
     title: 'components/Personkort',
     component: Personkort,
+} satisfies Meta<typeof Personkort>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    args: {
+        tittel: 'Dette er en tittel',
+        children: <div>Dette er innholdet</div>,
+    },
 };
 
-const Template: StoryFn<any> = (args) => <Personkort {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-    tittel: 'Dette er en tittel',
-    children: <div>Dette er innholdet</div>,
+export const PersonkortMedIkon: Story = {
+    args: {
+        ...Default.args,
+        ikon: <CheckmarkIkon />,
+    },
 };
 
-export const PersonkortMedIkon = Template.bind({});
-PersonkortMedIkon.args = {
-    tittel: 'Dette er en tittel',
-    children: <div>Dette er innholdet</div>,
-    ikon: <CheckmarkIkon />,
+export const PersonkortMedInvertertTekst: Story = {
+    args: {
+        ...Default.args,
+        invertert: true,
+    },
 };
 
-export const PersonkortMedInvertertTekst = Template.bind({});
-PersonkortMedInvertertTekst.args = {
-    tittel: 'Dette er en tittel',
-    children: <div>Dette er innholdet</div>,
-    invertert: true,
-};
-
-export const PersonkortMedTextAlignBottom = Template.bind({});
-PersonkortMedTextAlignBottom.args = {
-    tittel: 'Dette er en tittel',
-    children: <div>Dette er innholdet</div>,
-    textValign: 'bottom',
+export const PersonkortMedTextAlignBottom: Story = {
+    args: {
+        ...Default.args,
+        textValign: 'bottom',
+    },
 };

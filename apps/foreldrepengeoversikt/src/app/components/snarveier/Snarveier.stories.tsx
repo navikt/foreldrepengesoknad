@@ -27,7 +27,7 @@ const meta = {
 } satisfies Meta<typeof Snarveier>;
 export default meta;
 
-type Story = StoryObj<typeof Snarveier>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     parameters: {

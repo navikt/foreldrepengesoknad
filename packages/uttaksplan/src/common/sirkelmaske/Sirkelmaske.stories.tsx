@@ -1,34 +1,36 @@
-import { StoryFn } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
+
+import { UttaksplanHexColor } from '@navikt/fp-common';
 
 import PengerIkon from '../../common/penger-ikon/PengerIkon';
 import Sirkelmaske from './Sirkelmaske';
 
-export default {
-    title: 'components/Sirkelmaske',
+const meta = {
     component: Sirkelmaske,
+} satisfies Meta<typeof Sirkelmaske>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const InaktivSirkelmaske: Story = {
+    args: {
+        diameter: '3rem',
+        aktiv: false,
+        children: <PengerIkon size={48} />,
+    },
 };
 
-const Template: StoryFn<any> = (args) => (
-    <Sirkelmaske {...args}>
-        <PengerIkon size={48} />
-    </Sirkelmaske>
-);
-
-export const InaktivSirkelmaske = Template.bind({});
-InaktivSirkelmaske.args = {
-    diameter: '3rem',
-    aktiv: false,
+export const AktivSirkelmaske: Story = {
+    args: {
+        ...InaktivSirkelmaske.args,
+        aktiv: true,
+    },
 };
 
-export const AktivSirkelmaske = Template.bind({});
-AktivSirkelmaske.args = {
-    diameter: '3rem',
-    aktiv: true,
-};
-
-export const AktivSirkelmaskeMedBakgrunn = Template.bind({});
-AktivSirkelmaskeMedBakgrunn.args = {
-    diameter: '3rem',
-    aktiv: true,
-    farge: '#0067C5',
+export const AktivSirkelmaskeMedBakgrunn: Story = {
+    args: {
+        ...InaktivSirkelmaske.args,
+        aktiv: true,
+        farge: UttaksplanHexColor.blaa,
+    },
 };

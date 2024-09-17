@@ -1,28 +1,34 @@
-import { StoryFn } from '@storybook/react';
-import Umyndig, { Props } from './Umyndig';
+import { Meta, StoryObj } from '@storybook/react';
+
 import { initAmplitude } from '@navikt/fp-metrics';
 
-export default {
-    title: 'Umyndig',
+import Umyndig from './Umyndig';
+
+const meta = {
     component: Umyndig,
+    render: (props) => {
+        initAmplitude();
+        return <Umyndig {...props} />;
+    },
+} satisfies Meta<typeof Umyndig>;
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const UmyndigForeldrepenger: Story = {
+    args: {
+        appnavn: 'Foreldrepenger',
+    },
 };
 
-const Template: StoryFn<Props> = ({ appnavn }) => {
-    initAmplitude();
-    return <Umyndig appnavn={appnavn} />;
+export const UmyndigEngangsstonad: Story = {
+    args: {
+        appnavn: 'Engangsstønad',
+    },
 };
 
-export const UmyndigForeldrepenger = Template.bind({});
-UmyndigForeldrepenger.args = {
-    appnavn: 'Foreldrepenger',
-};
-
-export const UmyndigEngangsstonad = Template.bind({});
-UmyndigEngangsstonad.args = {
-    appnavn: 'Engangsstønad',
-};
-
-export const UmyndigSvangerskapspenger = Template.bind({});
-UmyndigSvangerskapspenger.args = {
-    appnavn: 'Svangerskapspenger',
+export const UmyndigSvangerskapspenger: Story = {
+    args: {
+        appnavn: 'Svangerskapspenger',
+    },
 };

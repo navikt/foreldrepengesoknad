@@ -8,7 +8,7 @@ const meta = {
 } satisfies Meta<typeof VeiviserPage>;
 export default meta;
 
-type Story = StoryObj<typeof VeiviserPage>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {

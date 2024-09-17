@@ -13,13 +13,13 @@ const queryClient = new QueryClient();
 const meta = {
     title: 'MinidialogPage',
     component: MinidialogPage,
-    render: () => {
+    render: (props) => {
         return (
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/352011079/1111111112`]}>
                     <Routes>
                         <Route
-                            element={<MinidialogPage fnr="12434" />}
+                            element={<MinidialogPage {...props} />}
                             path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer/:oppgaveId`}
                         />
                     </Routes>
@@ -30,7 +30,7 @@ const meta = {
 } satisfies Meta<typeof MinidialogPage>;
 export default meta;
 
-type Story = StoryObj<typeof MinidialogPage>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     parameters: {
@@ -48,5 +48,8 @@ export const Default: Story = {
                 http.get('/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
             ],
         },
+    },
+    args: {
+        fnr: '12434',
     },
 };

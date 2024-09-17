@@ -2,8 +2,8 @@ import React from 'react';
 
 import { HStack, Heading, VStack } from '@navikt/ds-react';
 
-import HorizontalLine from '../horizontalLine/HorizontalLine';
-import IconCircleWrapper, { CircleColor } from '../iconCircle/IconCircleWrapper';
+import HorizontalLine from '../horizontal-line/HorizontalLine';
+import IconCircleWrapper, { CircleColor } from '../icon-circle/IconCircleWrapper';
 import styles from './infobox.module.css';
 
 type InfoboxColor = 'green' | 'blue' | 'gray';

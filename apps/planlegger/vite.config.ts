@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
             alias: {
                 steps: path.resolve(__dirname, './src/steps'),
                 components: path.resolve(__dirname, './src/components'),
-                appData: path.resolve(__dirname, './src/appData'),
+                appData: path.resolve(__dirname, './src/app-data'),
                 types: path.resolve(__dirname, './src/types'),
                 utils: path.resolve(__dirname, './src/utils'),
             },

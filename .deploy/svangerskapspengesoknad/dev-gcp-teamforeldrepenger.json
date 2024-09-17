@@ -1,11 +1,12 @@
 {
     "app": "svangerskapspengesoknad",
     "autentisering": true,
-    "ingresses": [
-        "https://svangerskapspengesoknad.intern.dev.nav.no"
-    ],
+    "ingressClassName": "nais-ingress",
+    "redirectFrom": "svangerskapspengesoknad.intern.dev.nav.no",
+    "ingress": "https://www.intern.dev.nav.no/svangerskapspenger/soknad",
     "env": {
-        "INNSYN": "https://foreldrepenger.intern.dev.nav.no",
+        "PUBLIC_PATH": "/svangerskapspenger/soknad",
+        "INNSYN": "https://www.intern.dev.nav.no/foreldrepenger/oversikt",
         "LOG_VALIDATION": false,
         "ENV": "dev"
     }
