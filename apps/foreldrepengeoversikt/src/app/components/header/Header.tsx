@@ -92,8 +92,8 @@ export function ForsideHeader() {
         <HeaderWrapper>
             <HGrid columns="max-content 1fr" gap="6" align="center">
                 <BabyIkon ytelse={Ytelse.FORELDREPENGER} />
-                <Heading level="1" size="large">
-                    Oversikt over foreldrepengesaker
+                <Heading level="1" size="medium">
+                    Oversikt
                 </Heading>
             </HGrid>
         </HeaderWrapper>
