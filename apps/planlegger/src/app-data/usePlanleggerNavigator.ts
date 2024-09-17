@@ -3,12 +3,15 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { encodeToBase64 } from '@navikt/fp-utils';
 
+import { useContextComplete } from './PlanleggerDataContext';
 import useStepData from './useStepData';
 
-const usePlanleggerNavigator = () => {
+const usePlanleggerNavigator = (locale: string) => {
     const navigate = useNavigate();
     const stepConfig = useStepData();
+    const context = useContextComplete();
 
     const [path, setPath] = useState<PlanleggerRoutes | undefined>();
 
@@ -24,7 +27,7 @@ const usePlanleggerNavigator = () => {
 
     useEffect(() => {
         if (path) {
-            navigate(path);
+            navigate(`${path}?language=${locale}&data=${encodeToBase64(JSON.stringify(context))}`);
         }
     }, [path]);
 
