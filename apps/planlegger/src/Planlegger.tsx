@@ -1,5 +1,6 @@
 import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
 import { FunctionComponent, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
@@ -11,6 +12,7 @@ import { Loader } from '@navikt/ds-react';
 import { usePostRequest, useRequest } from '@navikt/fp-api';
 import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
+import { decodeBase64 } from '@navikt/fp-utils';
 
 import PlanleggerRouter from './PlanleggerRouter';
 import { AxiosInstanceAPI } from './api/AxiosInstance';
@@ -99,8 +101,13 @@ export const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, change
 };
 
 const PlanleggerDataInit: FunctionComponent<Props> = ({ locale, changeLocale }) => {
+    const locations = useLocation();
+
+    const dataParam = new URLSearchParams(locations.search).get('data');
+    const data = dataParam ? JSON.parse(decodeBase64(dataParam)) : undefined;
+
     return (
-        <PlanleggerDataContext>
+        <PlanleggerDataContext initialState={data}>
             <PlanleggerDataFetcher locale={locale} changeLocale={changeLocale} />
         </PlanleggerDataContext>
     );

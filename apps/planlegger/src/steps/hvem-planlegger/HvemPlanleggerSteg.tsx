@@ -11,6 +11,7 @@ import { formatError } from 'utils/customErrorFormatter';
 import { BodyShort, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import { LocaleAll } from '@navikt/fp-types';
 import { BluePanel } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired } from '@navikt/fp-validation';
@@ -25,9 +26,13 @@ const erFarDelAvSøknadenGittType = (type: Situasjon) => {
     return type === Situasjon.MOR_OG_FAR || type === Situasjon.FAR_OG_FAR || type === Situasjon.FAR;
 };
 
-const HvemPlanleggerSteg: FunctionComponent = () => {
+interface Props {
+    locale: LocaleAll;
+}
+
+const HvemPlanleggerSteg: FunctionComponent<Props> = ({ locale }) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator();
+    const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
 
     const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);

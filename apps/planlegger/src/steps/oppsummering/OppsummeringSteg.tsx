@@ -8,15 +8,16 @@ import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
-import { Alert, BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
-import { Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
 
+import ShareDataInfobox from '../../components/boxes/ShareDataInfobox';
 import OppgittInformasjon from './OppgittInformasjon';
 import OppsummeringHarRett from './OppsummeringHarRett';
 import OppsummeringHeader from './OppsummeringHeader';
@@ -27,10 +28,11 @@ import styles from './oppsummeringSteg.module.css';
 interface Props {
     stønadskontoer?: TilgjengeligeStønadskontoer;
     satser: Satser;
+    locale: LocaleAll;
 }
 
-const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser }) => {
-    const navigator = usePlanleggerNavigator();
+const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, locale }) => {
+    const navigator = usePlanleggerNavigator(locale);
 
     useScrollBehaviour();
 
@@ -57,28 +59,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser })
             <OppsummeringHeader>
                 <VStack gap="10">
                     <VStack gap="5">
-                        {harRettTilForeldrepenger && (
-                            <Alert variant="info">
-                                <BodyShort>
-                                    <FormattedMessage
-                                        id="OppsummeringSteg.InformasjonPlanleggerErUnderUtvikling"
-                                        values={{
-                                            a: (msg: any) => (
-                                                <Link
-                                                    inlineText
-                                                    href={links.søknadForeldrepenger}
-                                                    target="_blank"
-                                                    className="lenke"
-                                                    rel="noreferrer"
-                                                >
-                                                    {msg}
-                                                </Link>
-                                            ),
-                                        }}
-                                    />
-                                </BodyShort>
-                            </Alert>
-                        )}
+                        <ShareDataInfobox erAlenesøker={erAleneforsørger} />
                         {!harRettTilForeldrepenger && (
                             <VStack gap="5">
                                 <Infobox

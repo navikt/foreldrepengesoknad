@@ -29,6 +29,7 @@ export { trimNumberValue, getFloatFromString, getNumberFromNumberInputValue } fr
 export { capitalizeFirstLetter, capitalizeFirstLetterInEveryWordOnly, getNavnGenitivEierform } from './src/stringUtils';
 export { getFamiliehendelsedato } from './src/barnUtils';
 export { formatCurrencyWithKr, formatCurrency } from './src/currencyUtils';
+export { encodeToBase64, decodeBase64 } from './src/urlEncodingUtils';
 export {
     getBokmålLocale,
     getLocaleForApi,
