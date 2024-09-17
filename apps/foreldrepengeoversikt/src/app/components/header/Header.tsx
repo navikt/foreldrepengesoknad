@@ -1,4 +1,4 @@
-import { BabyWrappedIcon, PersonPregnantIcon } from '@navikt/aksel-icons';
+import { BabyWrappedIcon, PersonPregnantIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import { ReactNode } from 'react';
 import { useIntl } from 'react-intl';
@@ -51,8 +51,19 @@ function BlueDot() {
     return <div style={{ height: '4px', width: '4px', borderRadius: '50%', background: 'var(--a-deepblue-300)' }} />;
 }
 
-function BabyIkon({ ytelse }: { readonly ytelse: Ytelse }) {
-    const YtelseIkon = ytelse === Ytelse.SVANGERSKAPSPENGER ? PersonPregnantIcon : BabyWrappedIcon;
+function BabyIkon({ ytelse }: { readonly ytelse: Ytelse | undefined }) {
+    const YtelseIkon = (() => {
+        switch (ytelse) {
+            case Ytelse.FORELDREPENGER:
+            case Ytelse.ENGANGSSTØNAD:
+                return BabyWrappedIcon;
+            case Ytelse.SVANGERSKAPSPENGER:
+                return PersonPregnantIcon;
+            default:
+                return StrollerIcon;
+        }
+    })();
+
     return (
         <>
             <Show above="md">
@@ -91,10 +102,15 @@ export function ForsideHeader() {
     return (
         <HeaderWrapper>
             <HGrid columns="max-content 1fr" gap="6" align="center">
-                <BabyIkon ytelse={Ytelse.FORELDREPENGER} />
-                <Heading level="1" size="medium">
-                    Oversikt
-                </Heading>
+                <BabyIkon ytelse={undefined} />
+                <VStack>
+                    <Heading level="1" size="medium">
+                        Oversikt
+                    </Heading>
+                    <Detail textColor="subtle">
+                        Dine saker om foreldrepenger, engangsstønad og svangerskapspenger
+                    </Detail>
+                </VStack>
             </HGrid>
         </HeaderWrapper>
     );
