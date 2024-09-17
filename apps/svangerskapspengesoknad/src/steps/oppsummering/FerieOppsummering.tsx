@@ -1,10 +1,9 @@
+import { ContextDataType, useContextGetData } from 'appData/SvpDataContext';
 import { FormattedMessage } from 'react-intl';
 
 import { FormSummary } from '@navikt/ds-react';
 
 import { formatDate } from '@navikt/fp-utils';
-
-import { ContextDataType, useContextGetData } from 'app/appData/SvpDataContext';
 
 import { JaNeiTekst } from './ArbeidsforholdOppsummering';
 

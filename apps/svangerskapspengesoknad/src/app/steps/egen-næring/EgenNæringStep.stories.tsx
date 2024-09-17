@@ -1,15 +1,13 @@
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
+import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
+import SøknadRoutes from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
+import EgenNæringStep from 'steps/egen-næring/EgenNæringStep';
+import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'types/Tilrettelegging';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
-
-import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
-import SøknadRoutes from 'app/appData/routes';
-import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
-
-import EgenNæringStep from './EgenNæringStep';
 
 const defaultExport = {
     title: 'steps/EgenNæringStep',

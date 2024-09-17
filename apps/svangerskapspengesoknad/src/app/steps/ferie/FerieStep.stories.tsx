@@ -1,11 +1,11 @@
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
+import { Action, SvpDataContext } from 'appData/SvpDataContext';
+import SøknadRoutes from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import { Action, SvpDataContext } from 'app/appData/SvpDataContext';
-import SøknadRoutes from 'app/appData/routes';
 import { FerieStep } from 'app/steps/ferie/FerieStep';
 
 export default {

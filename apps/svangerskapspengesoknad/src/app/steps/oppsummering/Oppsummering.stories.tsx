@@ -1,18 +1,17 @@
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
+import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
+import SøknadRoutes from 'appData/routes';
 import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
+import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'types/Tilrettelegging';
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Næringstype } from '@navikt/fp-steg-egen-naering';
 import { Søker } from '@navikt/fp-types';
 
-import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
-import SøknadRoutes from 'app/appData/routes';
-import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
-
-import Oppsummering from './Oppsummering';
+import Oppsummering from '../../../steps/oppsummering/Oppsummering';
 
 const defaultExport = {
     title: 'steps/Oppsummering',

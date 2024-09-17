@@ -1,17 +1,16 @@
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
+import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
+import SøknadRoutes from 'appData/routes';
 import MockAdapter from 'axios-mock-adapter';
 import { MemoryRouter } from 'react-router-dom';
+import Tilrettelegging, { Arbeidsforholdstype } from 'types/Tilrettelegging';
 
 import { getAxiosInstance } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
-import SøknadRoutes from 'app/appData/routes';
-import Tilrettelegging, { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
-
-import SkjemaSteg from './SkjemaSteg';
+import SkjemaSteg from '../../../steps/skjema/SkjemaSteg';
 
 const file1 = new File(['abc'.repeat(100000)], 'Filnavn1.jpg');
 const file2 = new File(['abc'.repeat(500000)], 'Filnavn2.jpg');

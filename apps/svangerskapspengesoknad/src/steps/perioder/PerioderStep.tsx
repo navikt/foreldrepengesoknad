@@ -5,7 +5,6 @@ import useSvpNavigator from 'appData/useSvpNavigator';
 import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import Tilrettelegging from 'types/Tilrettelegging';
 import { getKanHaSvpFremTilTreUkerFørTermin } from 'utils/dateUtils';
 
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';

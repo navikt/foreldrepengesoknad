@@ -1,16 +1,14 @@
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
+import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
+import SøknadRoutes from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
+import PerioderStep from 'steps/perioder/PerioderStep';
+import { Barn } from 'types/Barn';
+import { DelivisTilretteleggingPeriodeType } from 'types/DelivisTilretteleggingPeriodeType';
+import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'types/Tilrettelegging';
 
 import { initAmplitude } from '@navikt/fp-metrics';
-
-import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
-import SøknadRoutes from 'app/appData/routes';
-import { Barn } from 'app/types/Barn';
-import { DelivisTilretteleggingPeriodeType } from 'app/types/DelivisTilretteleggingPeriodeType';
-import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'app/types/Tilrettelegging';
-
-import PerioderStep from './PerioderStep';
 
 const defaultExport = {
     title: 'steps/PerioderStep',

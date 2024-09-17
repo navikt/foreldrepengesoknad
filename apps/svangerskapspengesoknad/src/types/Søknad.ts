@@ -1,10 +1,9 @@
 import { Attachment } from '@navikt/fp-types';
 import { InformasjonOmUtenlandsoppholdDTO } from '@navikt/fp-types/src/Utenlandsopphold';
 
-import { TidsperiodeDTO } from 'app/types/TidsperiodeDTO';
-
 import { BarnDTO } from './Barn';
 import { SøkerDTO } from './Søker';
+import { TidsperiodeDTO } from './TidsperiodeDTO';
 import { TilretteleggingDTO } from './Tilrettelegging';
 
 export enum Søknadstype {

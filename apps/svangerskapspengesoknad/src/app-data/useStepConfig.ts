@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 import { DelivisTilretteleggingPeriodeType } from 'types/DelivisTilretteleggingPeriodeType';
-import Tilrettelegging, { TilretteleggingstypeOptions } from 'types/Tilrettelegging';
+import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'types/Tilrettelegging';
 import { søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
 
 import { Arbeidsforhold } from '@navikt/fp-types';

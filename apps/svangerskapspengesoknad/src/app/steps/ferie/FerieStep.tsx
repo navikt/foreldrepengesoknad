@@ -1,22 +1,21 @@
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
+import SøknadRoutes from 'appData/routes';
+import useStepConfig from 'appData/useStepConfig';
+import useSvpNavigator from 'appData/useSvpNavigator';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useController, useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { TidsperiodeDTO } from 'types/TidsperiodeDTO';
+import Tilrettelegging from 'types/Tilrettelegging';
 
 import { BodyShort, DatePicker, HStack, Heading, Radio, ReadMore, VStack, useRangeDatepicker } from '@navikt/ds-react';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { ErrorSummaryHookForm, Form, RadioGroup, StepButtonsHookForm, TextField } from '@navikt/fp-form-hooks';
+import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { hasMaxValue, hasMinValue, isRequired, isValidNumberForm, notEmpty } from '@navikt/fp-validation';
-
-import { ContextDataType, useContextGetData, useContextSaveData } from 'app/appData/SvpDataContext';
-import SøknadRoutes from 'app/appData/routes';
-import useStepConfig from 'app/appData/useStepConfig';
-import useSvpNavigator from 'app/appData/useSvpNavigator';
-import { TidsperiodeDTO } from 'app/types/TidsperiodeDTO';
-import Tilrettelegging from 'app/types/Tilrettelegging';
 
 import './feriestep.css';
 
@@ -81,11 +80,11 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
         >
-            <Form formMethods={formMethods} onSubmit={onSubmit}>
+            <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
                     <VStack gap="4">
-                        <RadioGroup
+                        <RhfRadioGroup
                             name="skalHaFerie"
                             label={intl.formatMessage({ id: 'ferie.harDuPlanlagtFerie.label' })}
                             validate={[isRequired(intl.formatMessage({ id: 'ferie.harDuPlanlagtFerie.validering' }))]}
@@ -96,7 +95,7 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
                             <Radio value={false}>
                                 <FormattedMessage id="nei" />
                             </Radio>
-                        </RadioGroup>
+                        </RhfRadioGroup>
                         <ReadMore header={intl.formatMessage({ id: 'ferie.readmore.hvordanPlanlegge.header' })}>
                             <BodyShort>
                                 <FormattedMessage id="ferie.readmore.hvordanPlanlegge.body" />
@@ -106,7 +105,7 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
                     {formMethods.watch('skalHaFerie') && <FeriePerioder />}
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
-            </Form>
+            </RhfForm>
         </Step>
     );
 }
@@ -138,7 +137,7 @@ function FeriePerioder() {
 
     return (
         <VStack gap="4">
-            <TextField
+            <RhfTextField
                 name="antallFeriePerioder"
                 label={intl.formatMessage({ id: 'ferie.antallPerioder.label' })}
                 htmlSize={2}

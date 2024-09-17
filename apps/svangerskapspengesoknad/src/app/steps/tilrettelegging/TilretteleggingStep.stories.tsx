@@ -1,16 +1,15 @@
 import { action } from '@storybook/addon-actions';
 import { StoryFn } from '@storybook/react';
+import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
+import SøknadRoutes from 'appData/routes';
 import dayjs from 'dayjs';
 import { MemoryRouter } from 'react-router-dom';
+import { Arbeidsforholdstype } from 'types/Tilrettelegging';
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import { Action, ContextDataType, SvpDataContext } from 'app/appData/SvpDataContext';
-import SøknadRoutes from 'app/appData/routes';
-import { Arbeidsforholdstype } from 'app/types/Tilrettelegging';
-
-import TilretteleggingStep from './TilretteleggingStep';
+import TilretteleggingStep from '../../../steps/tilrettelegging/TilretteleggingStep';
 
 const defaultExport = {
     title: 'steps/TilretteleggingStep',

@@ -13,8 +13,6 @@ import { ContentWrapper } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { FerieOppsummering } from 'app/steps/oppsummering/FerieOppsummering';
-
 import {
     ArbeidsforholdOppsummering,
     FrilansSummary,
@@ -22,6 +20,7 @@ import {
     SelvstendigNæringsdrivendeSummary,
 } from './ArbeidsforholdOppsummering';
 import { DokumentasjonOppsummering } from './DokumentasjonOppsummering';
+import { FerieOppsummering } from './FerieOppsummering';
 import { PerioderOppsummering } from './PerioderOppsummering';
 
 type Props = {

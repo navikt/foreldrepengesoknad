@@ -1,6 +1,7 @@
 import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
 import { ArbeidIUtlandet } from 'types/ArbeidIUtlandet';
 import { Barn } from 'types/Barn';
+import { TidsperiodeDTO } from 'types/TidsperiodeDTO';
 import Tilrettelegging from 'types/Tilrettelegging';
 
 import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
