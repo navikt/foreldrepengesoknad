@@ -1,7 +1,0 @@
-import{j as t}from"./Link-CIniHqhq.js";import{i as m,M as n,a as p}from"./useVeiviserNavigator-D2Nfjb-a.js";import{A as o}from"./ArbeidssituasjonSide-zSNuI6SL.js";import"./index-CTjT7uj6.js";import"./Infobox-B2ZNGe2W.js";import"./index-BRV0Se7Z.js";import"./RhfNumericField-CSdtAdhY.js";import"./Responsive-jmk0tsBD.js";import"./index-CYM-y3Gt.js";import"./satserUtils-CtRPgsuh.js";import"./useControllableState-BC2O6sBp.js";import"./useScrollBehaviour-BVmSetAy.js";import"./currencyUtils-Cbm1oTt-.js";import"./VeiviserPage-Csw_Aswk.js";import"./HarIkkeRettTilFpInfobox-QgA_Xx0r.js";import"./Kroner-05QUWnFN.js";import"./HøyInntektInfobox-ZuR8YcjK.js";import"./Information-nEuedw-E.js";import"./Wallet-3WZ74nCO.js";const d={engangstønad:[{fom:"01.01.2023",verdi:92648},{fom:"01.01.2021",verdi:90300}],grunnbeløp:[{fom:"01.05.2024",verdi:124028},{fom:"01.05.2023",verdi:118620}]},_={title:"hvorMye/ArbeidssituasjonSide",component:o,render:a=>(m(),t.jsx(n,{initialEntries:[p.ARBEIDSSITUASJON],children:t.jsx(o,{...a})}))},r={args:{setArbeidssituasjon:()=>{},arbeidssituasjon:void 0,satser:d}};var e,i,s;r.parameters={...r.parameters,docs:{...(e=r.parameters)==null?void 0:e.docs,source:{originalSource:`{
-  args: {
-    setArbeidssituasjon: () => undefined,
-    arbeidssituasjon: undefined,
-    satser
-  }
-}`,...(s=(i=r.parameters)==null?void 0:i.docs)==null?void 0:s.source}}};const B=["Default"];export{r as Default,B as __namedExportsOrder,_ as default};

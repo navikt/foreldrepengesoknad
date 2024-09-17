@@ -1,6 +1,0 @@
-import{j as r}from"./VStack-Bypcsavb.js";import{a as p}from"./chunk-454WOBUV-CM0pFb8Z.js";import{M as l,P as c}from"./usePlanleggerNavigator-CxWpgFWI.js";import{P as g}from"./routes-Cp-2uEwO.js";import{i as d}from"./Arbeidssituasjon-DYW0AKuv.js";import{O as t}from"./OmPlanleggerenSteg-eRxlyrLI.js";import"./index-CTjT7uj6.js";import"./v4-CQkTLCs1.js";import"./Label-DrVT6kL1.js";import"./HvemPlanleggerUtils-D1xsqW5u.js";import"./barnetUtils-Dtg6gkcN.js";import"./Infobox-DvorYMl9.js";import"./index-BRV0Se7Z.js";import"./Responsive-CMY18hyE.js";import"./Calendar-CdedEl02.js";const A={title:"steg/OmPlanleggerenSteg",component:t,render:({gåTilNesteSide:i=p("button-click"),locale:m,changeLocale:s})=>(d(),r.jsx(l,{initialEntries:[g.OM_PLANLEGGEREN],children:r.jsx(c,{onDispatch:i,children:r.jsx(t,{locale:m,changeLocale:s})})}))},e={args:{locale:"nb",changeLocale:()=>{}}};var o,a,n;e.parameters={...e.parameters,docs:{...(o=e.parameters)==null?void 0:o.docs,source:{originalSource:`{
-  args: {
-    locale: 'nb',
-    changeLocale: () => undefined
-  }
-}`,...(n=(a=e.parameters)==null?void 0:a.docs)==null?void 0:n.source}}};const G=["Default"];export{e as Default,G as __namedExportsOrder,A as default};
