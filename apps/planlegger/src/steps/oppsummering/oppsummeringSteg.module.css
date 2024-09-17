@@ -21,10 +21,6 @@
     padding: 12px;
 }
 
-.button {
-    width: 200px;
-}
-
 @media (max-width: 768px) {
     .button {
         width: 100%;

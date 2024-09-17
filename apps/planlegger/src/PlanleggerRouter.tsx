@@ -37,24 +37,37 @@ const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stø
     return (
         <Routes>
             <Route path="/" element={<OmPlanleggerenSteg locale={locale} changeLocale={changeLocale} />} />
-            <Route path={PlanleggerRoutes.HVEM_PLANLEGGER} element={<HvemPlanleggerSteg />} />
-            <Route path={PlanleggerRoutes.OM_BARNET} element={<OmBarnetSteg />} />
-            <Route path={PlanleggerRoutes.ARBEIDSSITUASJON} element={<ArbeidssituasjonSteg satser={satser} />} />
+            <Route path={PlanleggerRoutes.HVEM_PLANLEGGER} element={<HvemPlanleggerSteg locale={locale} />} />
+            <Route path={PlanleggerRoutes.OM_BARNET} element={<OmBarnetSteg locale={locale} />} />
+            <Route
+                path={PlanleggerRoutes.ARBEIDSSITUASJON}
+                element={<ArbeidssituasjonSteg satser={satser} locale={locale} />}
+            />
             <Route
                 path={PlanleggerRoutes.HVOR_LANG_PERIODE}
-                element={stønadskontoer ? <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} /> : <Loader />}
+                element={
+                    stønadskontoer ? (
+                        <HvorLangPeriodeSteg stønadskontoer={stønadskontoer} locale={locale} />
+                    ) : (
+                        <Loader />
+                    )
+                }
             />
             <Route
                 path={PlanleggerRoutes.FORDELING}
-                element={stønadskontoer ? <FordelingSteg stønadskontoer={stønadskontoer} /> : <Loader />}
+                element={
+                    stønadskontoer ? <FordelingSteg stønadskontoer={stønadskontoer} locale={locale} /> : <Loader />
+                }
             />
             <Route
                 path={PlanleggerRoutes.PLANEN_DERES}
-                element={stønadskontoer ? <PlanenDeresSteg stønadskontoer={stønadskontoer} /> : <Loader />}
+                element={
+                    stønadskontoer ? <PlanenDeresSteg stønadskontoer={stønadskontoer} locale={locale} /> : <Loader />
+                }
             />
             <Route
                 path={PlanleggerRoutes.OPPSUMMERING}
-                element={<OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} />}
+                element={<OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} locale={locale} />}
             />
             <Route path="*" element={<Navigate to="/" />} />
         </Routes>

@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, LinkIcon, TasklistStartIcon } from '@navikt/aksel-icons';
+import { ArrowLeftIcon, TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import dayjs from 'dayjs';
@@ -12,7 +12,6 @@ import { Alert, BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@n
 
 import { links } from '@navikt/fp-constants';
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
@@ -25,20 +24,6 @@ import OppsummeringHeader from './OppsummeringHeader';
 import HvaSkjerNårIkon from './ikoner/HvaSkjerNårIkon';
 import HvorMyeIkon from './ikoner/HvorMyeIkon';
 import styles from './oppsummeringSteg.module.css';
-
-const copyUrlToClipboard = async () => {
-    logAmplitudeEvent('applikasjon-hendelse', {
-        app: 'planlegger',
-        team: 'foreldrepenger',
-        pageKey: 'copy-url',
-    });
-    try {
-        await navigator.clipboard.writeText(window.location.href);
-    } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error('Failed to copy: ', err);
-    }
-};
 
 interface Props {
     stønadskontoer?: TilgjengeligeStønadskontoer;
@@ -148,19 +133,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
                             </VStack>
                         )}
                     </VStack>
-                    <VStack gap="4">
-                        <ShareDataInfobox />
-                        <HStack justify="center">
-                            <Button
-                                className={styles.button}
-                                variant="primary"
-                                icon={<LinkIcon aria-hidden height={24} width={24} />}
-                                onClick={copyUrlToClipboard}
-                            >
-                                <FormattedMessage id="OppsummeringSteg.KopierUrl" />
-                            </Button>
-                        </HStack>
-                    </VStack>
+                    <ShareDataInfobox erAlenesøker={erAleneforsørger} />
                     <VStack gap="10">
                         <HStack>
                             <Button
