@@ -2,10 +2,10 @@ import { FunctionComponent } from 'react';
 
 import '@navikt/ds-css';
 
-import { AnnenForelder, NavnPåForeldre } from '@navikt/fp-common';
+import { NavnPåForeldre } from '@navikt/fp-common';
 import { Barn, SaksperiodeNy } from '@navikt/fp-types';
 
-import { slåSammenLikePerioder } from './builder/uttaksplanbuilderUtils';
+import { finnOgSettInnHull, slåSammenLikePerioder } from './builder/uttaksplanbuilderUtils';
 import PeriodeListe from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
 import { getForelderForPeriode, mapSaksperiodeTilPlanperiode } from './utils/periodeUtils';
@@ -14,43 +14,56 @@ interface Props {
     familiehendelsedato: string;
     erFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
-    annenForelder: AnnenForelder;
     barn: Barn;
     søkersPerioder: SaksperiodeNy[];
     annenPartsPerioder?: SaksperiodeNy[];
+    gjelderAdopsjon: boolean;
+    bareFarHarRett: boolean;
+    harAktivitetskravIPeriodeUtenUttak: boolean;
+    førsteUttaksdagNesteBarnsSak: string | undefined;
 }
 
 const UttaksplanNy: FunctionComponent<Props> = ({
     familiehendelsedato,
     erFarEllerMedmor,
     navnPåForeldre,
-    annenForelder,
     barn,
     søkersPerioder,
     annenPartsPerioder,
+    gjelderAdopsjon,
+    bareFarHarRett,
+    harAktivitetskravIPeriodeUtenUttak,
+    førsteUttaksdagNesteBarnsSak,
 }) => {
-    let søkersPlan = slåSammenLikePerioder(
-        mapSaksperiodeTilPlanperiode(søkersPerioder, getForelderForPeriode(erFarEllerMedmor, false), false),
+    let komplettPlan = finnOgSettInnHull(
+        slåSammenLikePerioder(
+            mapSaksperiodeTilPlanperiode(søkersPerioder, getForelderForPeriode(erFarEllerMedmor, false), false),
+            familiehendelsedato,
+            førsteUttaksdagNesteBarnsSak,
+            annenPartsPerioder
+                ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, getForelderForPeriode(erFarEllerMedmor, true), true)
+                : undefined,
+        ),
+        harAktivitetskravIPeriodeUtenUttak,
         familiehendelsedato,
-        undefined,
-        annenPartsPerioder
-            ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, getForelderForPeriode(erFarEllerMedmor, true), true)
-            : undefined,
+        gjelderAdopsjon,
+        bareFarHarRett,
+        erFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak,
     );
 
     return (
         <UttaksplanDataContext
             initialState={{
-                ANNEN_FORELDER: annenForelder,
                 BARN: barn,
                 ER_FAR_ELLER_MEDMOR: erFarEllerMedmor,
                 FAMILIEHENDELSEDATO: familiehendelsedato,
                 NAVN_PÅ_FORELDRE: navnPåForeldre,
-                UTTAKSPLAN: søkersPlan,
+                UTTAKSPLAN: komplettPlan,
             }}
         >
             <div style={{ padding: '2rem 0' }}>
-                <PeriodeListe perioder={søkersPlan} familiehendelsedato={familiehendelsedato} barn={barn} />
+                <PeriodeListe perioder={komplettPlan} familiehendelsedato={familiehendelsedato} barn={barn} />
             </div>
         </UttaksplanDataContext>
     );

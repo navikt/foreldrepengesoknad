@@ -35,7 +35,15 @@ const UttaksperiodeContent: FunctionComponent<Props> = ({
             <div>
                 <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
                     {inneholderKunEnPeriode ? (
-                        <BodyShort weight="semibold">Hele perioden</BodyShort>
+                        <>
+                            <BodyShort weight="semibold">Hele perioden</BodyShort>
+                            <BodyShort>
+                                {getVarighetString(
+                                    TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),
+                                    intl,
+                                )}
+                            </BodyShort>
+                        </>
                     ) : (
                         <>
                             <BodyShort weight="semibold">

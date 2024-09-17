@@ -9,9 +9,10 @@ import { notEmpty } from '@navikt/fp-validation';
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
 import Permisjonsperiode from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
-import { isOppholdsperiode, isUttaksperiode } from '../../utils/periodeUtils';
+import { isOppholdsperiode, isPeriodeUtenUttak, isUttaksperiode } from '../../utils/periodeUtils';
 import FamiliehendelseContent from './components/FamiliehendelseContent';
 import OppholdsperiodeContent from './components/OppholdsperiodeContent';
+import PeriodeUtenUttakContent from './components/PeriodeUtenUttakContext';
 import UttaksperiodeContent from './components/UttaksperiodeContent';
 
 interface Props {
@@ -48,6 +49,10 @@ const renderPeriode = (
         );
     }
 
+    if (isPeriodeUtenUttak(periode)) {
+        return <PeriodeUtenUttakContent periode={periode} />;
+    }
+
     return (
         <div style={{ marginBottom: '1rem', display: 'flex' }}>
             <div>
@@ -55,7 +60,7 @@ const renderPeriode = (
             </div>
             <div>
                 <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
-                    <BodyShort weight="semibold">Her skjer det ingenting</BodyShort>
+                    <BodyShort weight="semibold">Ikke implementert</BodyShort>
                 </div>
             </div>
         </div>
