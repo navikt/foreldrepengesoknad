@@ -11,7 +11,7 @@ variable "CACHE_TAG" {
 }
 
 group "default" {
-  targets = ["foreldrepengesoknad", "engangsstonad", "svangerskapspengesoknad", "foreldrepengeoversikt", "planlegger", "veivisere"]
+  targets = ["foreldrepengesoknad", "engangsstonad", "svangerskapspengesoknad", "foreldrepengeoversikt", "planlegger", "veiviser-hvor-mye", "veiviser-fp-eller-es", "veiviser-hva-skjer-nar"]
 }
 
 target "docker-metadata-action" {}
@@ -103,19 +103,53 @@ target "planlegger" {
   }
 }
 
-target "veivisere" {
+target "veiviser-fp-eller-es" {
   inherits = ["docker-metadata-action"]
-  //   tags     = ["ghcr.io/${GITHUB_REPOSITORY}/veivisere:${TAG}"]
+  //   tags     = ["ghcr.io/${GITHUB_REPOSITORY}/veiviser-fp-eller-es:${TAG}"]
   dockerfile = "Dockerfile"
 
-  cache-to = ["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/veivisere/build-cache:${CACHE_TAG},mode=max"]
+  cache-to = ["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/veiviser-fp-eller-es/build-cache:${CACHE_TAG},mode=max"]
   cache-from = [
-    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/veivisere/build-cache:${CACHE_TAG}",
-    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/veivisere/build-cache:master"
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/veiviser-fp-eller-es/build-cache:${CACHE_TAG}",
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/veiviser-fp-eller-es/build-cache:master"
   ]
 
   args = {
-    APP    = "veivisere",
+    APP    = "veiviser-fp-eller-es",
+    SERVER = "server-uinnlogget"
+  }
+}
+
+target "veiviser-hva-skjer-nar" {
+  inherits = ["docker-metadata-action"]
+  //   tags     = ["ghcr.io/${GITHUB_REPOSITORY}/veiviser-hva-skjer-nar:${TAG}"]
+  dockerfile = "Dockerfile"
+
+  cache-to = ["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/veiviser-hva-skjer-nar/build-cache:${CACHE_TAG},mode=max"]
+  cache-from = [
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/veiviser-hva-skjer-nar/build-cache:${CACHE_TAG}",
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/veiviser-hva-skjer-nar/build-cache:master"
+  ]
+
+  args = {
+    APP    = "veiviser-hva-skjer-nar",
+    SERVER = "server-uinnlogget"
+  }
+}
+
+target "veiviser-hvor-mye" {
+  inherits = ["docker-metadata-action"]
+  //   tags     = ["ghcr.io/${GITHUB_REPOSITORY}/veiviser-hvor-mye:${TAG}"]
+  dockerfile = "Dockerfile"
+
+  cache-to = ["type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/veiviser-hvor-mye/build-cache:${CACHE_TAG},mode=max"]
+  cache-from = [
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/veiviser-hvor-mye/build-cache:${CACHE_TAG}",
+    "type=registry,ref=ghcr.io/${GITHUB_REPOSITORY}/veiviser-hvor-mye/build-cache:master"
+  ]
+
+  args = {
+    APP    = "veiviser-hvor-mye",
     SERVER = "server-uinnlogget"
   }
 }

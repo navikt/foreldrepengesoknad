@@ -55,5 +55,7 @@
     "ByttBrowserModal.Ingress": "For å få den beste brukeropplevelsen anbefaler vi at du bytter til en moderne nettleser som støtter moderne webstandarder.",
     "ByttBrowserModal.Ok": "OK",
     "Step.HarValgfrieFelt": "Alle felt må fylles ut, unntatt felt markert med (valgfritt).",
-    "Step.HarObligatoriskeFelt": "Alle felt må fylles ut."
+    "Step.HarObligatoriskeFelt": "Alle felt må fylles ut.",
+    "AndreVeivisereLinkPanel.AndreVeivisere": "Andre veivisere:",
+    "FrontPage.Start": "Start"
 }

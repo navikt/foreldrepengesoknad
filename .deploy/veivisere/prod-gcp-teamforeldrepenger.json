@@ -1,9 +1,0 @@
-{
-    "app": "veivisere",
-    "autentisering": false,
-    "ingress": "https://www.nav.no/foreldrepenger/veivisere",
-    "env": {
-        "PUBLIC_PATH": "/foreldrepenger/veivisere",
-        "ENV": "prod"
-    }
-}
