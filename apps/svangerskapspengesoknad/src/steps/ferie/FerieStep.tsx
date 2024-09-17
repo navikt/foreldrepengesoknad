@@ -68,7 +68,7 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
     });
 
     const onSubmit = (values: FerieFormData) => {
-        values.skalHaFerie ? oppdaterFerie(values.feriePerioder as TidsperiodeDTO[]) : oppdaterFerie([]);
+        oppdaterFerie(values.skalHaFerie ? (values.feriePerioder as TidsperiodeDTO[]) : []);
 
         const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegginger, currentTilrettelegging.id);
         const nextRoute = nesteTilretteleggingId ? SøknadRoutes.SKJEMA : SøknadRoutes.OPPSUMMERING;
