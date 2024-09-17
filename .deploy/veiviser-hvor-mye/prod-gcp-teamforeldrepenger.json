@@ -1,0 +1,9 @@
+{
+    "app": "veiviser-hvor-mye",
+    "autentisering": false,
+    "ingress": "https://www.nav.no/foreldrepenger/hvor-mye",
+    "env": {
+        "PUBLIC_PATH": "/foreldrepenger/hvor-mye",
+        "ENV": "prod"
+    }
+}
