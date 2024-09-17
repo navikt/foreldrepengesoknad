@@ -79,7 +79,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: {{ingress}}/$1
 spec:
-  ingressClassName: nais-ingress
+  ingressClassName: nais-ingress-external
   rules:
     - host: {{redirectFrom}}
       http:
