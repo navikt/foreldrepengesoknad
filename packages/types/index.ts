@@ -19,7 +19,11 @@ export type { DatepickerDateRange } from './src/DatepickerDateRange';
 export type { EgenNæring } from './src/EgenNæring';
 export { Næringstype } from './src/EgenNæring';
 export type { Frilans } from './src/Frilans';
-export type { ArbeidsforholdOgInntekt } from './src/ArbeidsforholdOgInntekt';
+export type {
+    ArbeidsforholdOgInntekt,
+    ArbeidsforholdOgInntektFp,
+    ArbeidsforholdOgInntektSvp,
+} from './src/ArbeidsforholdOgInntekt';
 export { isArbeidsforholdOgInntektFp, isArbeidsforholdOgInntektSvp } from './src/ArbeidsforholdOgInntekt';
 export { isFødtBarn, isUfødtBarn, isAdoptertBarn } from './src/Barn';
 export {

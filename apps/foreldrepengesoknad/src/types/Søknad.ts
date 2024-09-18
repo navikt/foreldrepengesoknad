@@ -3,12 +3,12 @@ import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AnnenForelder, Barn, Periode, Situasjon, Søkersituasjon } from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
-import { EgenNæring } from '@navikt/fp-steg-egen-naering';
-import { Frilans } from '@navikt/fp-steg-frilans';
 import {
+    ArbeidsforholdOgInntektFp,
     Attachment,
     Dekningsgrad,
+    EgenNæring,
+    Frilans,
     InformasjonOmUtenlandsoppholdDTO,
     Utenlandsopphold,
     UtenlandsoppholdPeriode,

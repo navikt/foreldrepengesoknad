@@ -34,11 +34,8 @@ import {
     isFødtBarn,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt/src/types/ArbeidsforholdOgInntekt';
-import { EgenNæring } from '@navikt/fp-steg-egen-naering';
-import { Frilans } from '@navikt/fp-steg-frilans';
 import { mapUtenlandsOppholdForInnsending } from '@navikt/fp-steg-utenlandsopphold';
-import { Attachment, LocaleNo } from '@navikt/fp-types';
+import { ArbeidsforholdOgInntektFp, Attachment, EgenNæring, Frilans, LocaleNo } from '@navikt/fp-types';
 import { Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
 import {
     andreAugust2022ReglerGjelder,

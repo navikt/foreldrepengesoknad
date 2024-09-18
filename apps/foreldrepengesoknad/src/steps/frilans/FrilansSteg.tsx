@@ -6,8 +6,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
 
-import { Frilans, FrilansPanel } from '@navikt/fp-steg-frilans';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { FrilansPanel } from '@navikt/fp-steg-frilans';
+import { Arbeidsforhold, Frilans } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
