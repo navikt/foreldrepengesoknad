@@ -26,6 +26,7 @@ import { BodyLong, BodyShort, Heading, VStack } from '@navikt/ds-react';
 
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { BluePanel, Calendar } from '@navikt/fp-ui';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 interface Props {
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
@@ -75,11 +76,13 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
 
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
+    const fornavnSøker1Genitiv = getNavnGenitivEierform(fornavnSøker1, intl.locale);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
+    const fornavnSøker2Genitiv = fornavnSøker2 ? getNavnGenitivEierform(fornavnSøker2, intl.locale) : undefined;
 
     return (
         <VStack gap="5">
-            {hvemHarRett === 'beggeHarRett' && !erFarOgFar && fornavnSøker2 && (
+            {hvemHarRett === 'beggeHarRett' && !erFarOgFar && fornavnSøker2 && fornavnSøker2Genitiv && (
                 <BluePanel>
                     <Heading level="4" size="small">
                         <FormattedMessage id="OppsummeringSteg.Perioden" />
@@ -104,7 +107,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                         <FormattedMessage
                             id="OppsummeringSteg.Periodene"
                             values={{
-                                hvem: getNavnGenitivEierform(fornavnSøker1, intl.locale),
+                                hvem: capitalizeFirstLetter(fornavnSøker1Genitiv),
                                 fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
                                     day: '2-digit',
                                     month: 'short',
@@ -123,7 +126,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                         <FormattedMessage
                             id="OppsummeringSteg.Periodene"
                             values={{
-                                hvem: getNavnGenitivEierform(fornavnSøker2, intl.locale),
+                                hvem: capitalizeFirstLetter(fornavnSøker2Genitiv),
                                 fom: intl.formatDate(uttaksdata.startdatoPeriode2, {
                                     day: '2-digit',
                                     month: 'short',
