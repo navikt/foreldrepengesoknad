@@ -65,7 +65,7 @@ describe('<ManglendeVedlegg>', () => {
         );
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
-        const fileInput = screen.getByLabelText('Last opp bekreftelse på termindato');
+        const fileInput = screen.getByLabelText('Dokumentasjon av termindato');
         await fireEvent.change(fileInput, {
             target: { files: [file] },
         });

@@ -7,6 +7,7 @@ import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { getErSøkerFarEllerMedmor, getNavnPåForeldre } from 'utils/personUtils';
+import { getRelevantePerioder } from 'utils/uttaksplanInfoUtils';
 
 import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
@@ -45,7 +46,6 @@ import {
     getMorJobberVedlegg,
     getMorKvalprogramVedlegg,
     getMorStudererVedlegg,
-    getRelevantePerioder,
     isPeriodeMedFarForSyk,
     isPeriodeMedFarInnleggelse,
     isPeriodeMedMorForSyk,

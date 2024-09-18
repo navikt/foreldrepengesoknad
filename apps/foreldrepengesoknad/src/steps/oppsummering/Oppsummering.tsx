@@ -7,22 +7,30 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { ISOStringToDate } from 'utils/dateUtils';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnrString, getNavnPåForeldre } from 'utils/personUtils';
+import { getRelevantePerioder } from 'utils/uttaksplanInfoUtils';
 
-import { Accordion, Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
 import { AnnenForelder, SivilstandType, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
 import { links } from '@navikt/fp-constants';
-import { BoIUtlandetOppsummeringspunkt, OppsummeringPanel } from '@navikt/fp-steg-oppsummering';
+import {
+    ArbeidsforholdOppsummering,
+    BoIUtlandetOppsummering,
+    FrilansOppsummering,
+    OppsummeringPanel,
+    SelvstendigNæringsdrivendeOppsummering,
+} from '@navikt/fp-steg-oppsummering';
 import { Søker, Søkerinfo, Søkerrolle } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
+import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { søknadInneholderIngenVedlegg } from '../manglende-vedlegg/util';
-import ArbeidsforholdOgAndreInntekterOppsummering from './components/andre-inntekter-oppsummering/ArbeidsforholdOgAndreInntekterOppsummering';
-import AnnenForelderOppsummering from './components/annen-forelder-oppsummering/AnnenForelderOppsummering';
-import BarnOppsummering from './components/barn-oppsummering/BarnOppsummering';
-import DokumentasjonOppsummering from './components/dokumentasjon-oppsummering/DokumentasjonOppsummering';
-import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
+import { AndreInntektskilderOppsummering } from './andre-inntekter-oppsummering/AndreInntektskilderOppsummering';
+import AnnenForelderOppsummering from './annen-forelder-oppsummering/AnnenForelderOppsummering';
+import { BarnOppsummering } from './barn-oppsummering/BarnOppsummering';
+import { DokumentasjonOppsummering } from './dokumentasjon-oppsummering/DokumentasjonOppsummering';
+import { PeriodeMedForeldrepengerOppsummering } from './periode-med-foreldrepenger/PeriodeMedForeldrepengerOppsummering';
+import UttaksplanOppsummering from './uttaksplan-oppsummering/UttaksplanOppsummering';
 
 const skalViseInfoOmFarskapsportal = (
     søker: Søker,
@@ -77,7 +85,6 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
     const uttaksplanMetadata = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN_METADATA));
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
     const vedlegg = useContextGetData(ContextDataType.VEDLEGG);
-    const inneholderIkkeVedlegg = søknadInneholderIngenVedlegg(vedlegg);
 
     const erAnnenForelderOppgitt = isAnnenForelderOppgitt(annenForelder);
     const søkerErFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
@@ -94,6 +101,18 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
               },
           )
         : '';
+
+    const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
+    const relevantePerioder = getRelevantePerioder(
+        uttaksplan,
+        uttaksplanMetadata?.perioderSomSkalSendesInn,
+        erEndringssøknad,
+    );
+    const uttaksperioderSomManglerVedlegg = perioderSomKreverVedlegg(
+        relevantePerioder,
+        erSøkerFarEllerMedmor,
+        annenForelder,
+    );
 
     const søker = søkerInfo.søker;
     const rolle = søkersituasjon.rolle;
@@ -116,72 +135,69 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
                 onContinueLater={navigator.fortsettSøknadSenere}
                 ekstraSamtykketekst={ekstraSamtykketekst}
             >
-                <VStack gap="10">
-                    <Accordion indent={false}>
-                        <OppsummeringPanel.Punkt tittel="Barnet" hide={erEndringssøknad}>
-                            <BarnOppsummering barn={barn} familiehendelsesdato={familiehendelsesdato!} />
-                        </OppsummeringPanel.Punkt>
-                        <OppsummeringPanel.Punkt tittel="Den andre forelderen" hide={erEndringssøknad}>
-                            <AnnenForelderOppsummering
-                                annenForelder={annenForelder}
-                                søkerrolle={søkersituasjon.rolle}
-                            />
-                        </OppsummeringPanel.Punkt>
-                        <OppsummeringPanel.Punkt tittel="Bo i utlandet" hide={erEndringssøknad}>
-                            {!erEndringssøknad && (
-                                <BoIUtlandetOppsummeringspunkt
-                                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
-                                    tidligereUtenlandsopphold={tidligereUtenlandsopphold ?? []}
-                                    senereUtenlandsopphold={senereUtenlandsopphold ?? []}
-                                />
-                            )}
-                        </OppsummeringPanel.Punkt>
-                        <OppsummeringPanel.Punkt
-                            tittel="Arbeidsforhold og andre inntektskilder"
-                            hide={erEndringssøknad}
-                        >
-                            <ArbeidsforholdOgAndreInntekterOppsummering
-                                arbeidsforhold={søkerInfo.arbeidsforhold}
-                                barn={barn}
-                                søkersituasjon={søkersituasjon}
-                                arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
-                                frilans={frilans}
-                                egenNæring={egenNæring}
-                                andreInntektskilder={andreInntektskilder}
-                            />
-                        </OppsummeringPanel.Punkt>
-                        <OppsummeringPanel.Punkt tittel={intl.formatMessage({ id: 'oppsummering.uttak' })}>
-                            <UttaksplanOppsummering
-                                perioder={uttaksplan}
-                                navnPåForeldre={navnPåForeldre}
-                                annenForelder={annenForelder}
-                                erFarEllerMedmor={søkerErFarEllerMedmor}
-                                registrerteArbeidsforhold={søkerInfo.arbeidsforhold}
-                                dekningsgrad={dekningsgrad}
-                                antallUkerUttaksplan={uttaksplanMetadata.antallUkerIUttaksplan!}
-                                eksisterendeUttaksplan={eksisterendeSak ? eksisterendeSak.uttaksplan : undefined}
-                                familiehendelsesdato={familiehendelsesdato!}
-                                termindato={termindato}
-                                situasjon={søkersituasjon.situasjon}
-                                erAleneOmOmsorg={erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false}
-                                antallBarn={barn.antallBarn}
-                                ønskerJustertUttakVedFødsel={uttaksplanMetadata.ønskerJustertUttakVedFødsel}
-                            />
-                        </OppsummeringPanel.Punkt>
-                        <OppsummeringPanel.Punkt
-                            hide={vedlegg === undefined || inneholderIkkeVedlegg}
-                            tittel={intl.formatMessage({
-                                id: manglerDokumentasjon
-                                    ? 'oppsummering.manglerDokumentasjon'
-                                    : 'oppsummering.dokumentasjon',
-                            })}
-                        >
-                            <DokumentasjonOppsummering
-                                vedlegg={vedlegg!}
-                                setManglerDokumentasjon={setManglerDokumentasjon}
-                            />
-                        </OppsummeringPanel.Punkt>
-                    </Accordion>
+                <BarnOppsummering barn={barn} onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.OM_BARNET)} />
+                <AnnenForelderOppsummering
+                    annenForelder={annenForelder}
+                    søkerrolle={søkersituasjon.rolle}
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ANNEN_FORELDER)}
+                />
+                <>
+                    {!erEndringssøknad && (
+                        <BoIUtlandetOppsummering
+                            onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
+                            tidligereUtenlandsopphold={tidligereUtenlandsopphold ?? []}
+                            senereUtenlandsopphold={senereUtenlandsopphold ?? []}
+                        />
+                    )}
+                </>
+                <ArbeidsforholdOppsummering
+                    arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
+                    arbeidsforhold={søkerInfo.arbeidsforhold}
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ARBEID_OG_INNTEKT)}
+                />
+                <FrilansOppsummering
+                    frilans={frilans}
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.FRILANS)}
+                />
+                <SelvstendigNæringsdrivendeOppsummering
+                    egenNæring={egenNæring}
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.EGEN_NÆRING)}
+                />
+                <AndreInntektskilderOppsummering
+                    andreInntektskilder={andreInntektskilder}
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ANDRE_INNTEKTER)}
+                />
+                <PeriodeMedForeldrepengerOppsummering
+                    dekningsgrad={dekningsgrad}
+                    annenForelder={annenForelder}
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.PERIODE_MED_FORELDREPENGER)}
+                />
+                <UttaksplanOppsummering
+                    perioder={uttaksplan}
+                    navnPåForeldre={navnPåForeldre}
+                    annenForelder={annenForelder}
+                    erFarEllerMedmor={søkerErFarEllerMedmor}
+                    registrerteArbeidsforhold={søkerInfo.arbeidsforhold}
+                    dekningsgrad={dekningsgrad}
+                    antallUkerUttaksplan={uttaksplanMetadata.antallUkerIUttaksplan!}
+                    eksisterendeUttaksplan={eksisterendeSak ? eksisterendeSak.uttaksplan : undefined}
+                    familiehendelsesdato={familiehendelsesdato!}
+                    termindato={termindato}
+                    situasjon={søkersituasjon.situasjon}
+                    erAleneOmOmsorg={erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false}
+                    antallBarn={barn.antallBarn}
+                    ønskerJustertUttakVedFødsel={uttaksplanMetadata.ønskerJustertUttakVedFødsel}
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTTAKSPLAN)}
+                />
+                <DokumentasjonOppsummering
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.DOKUMENTASJON)}
+                    alleVedlegg={vedlegg}
+                    setManglerDokumentasjon={setManglerDokumentasjon}
+                    erSøkerFarEllerMedmor={erSøkerFarEllerMedmor}
+                    navnPåForeldre={navnPåForeldre}
+                    uttaksperioderSomManglerVedlegg={uttaksperioderSomManglerVedlegg}
+                />
+                <>
                     {manglerDokumentasjon && (
                         <Alert variant="info">
                             <VStack gap="2">
@@ -222,7 +238,7 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
                             />
                         </Alert>
                     )}
-                </VStack>
+                </>
             </OppsummeringPanel>
         </ContentWrapper>
     );

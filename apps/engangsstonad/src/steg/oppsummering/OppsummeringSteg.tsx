@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
 
-import { BoIUtlandetOppsummeringspunkt, OppsummeringPanel } from '@navikt/fp-steg-oppsummering';
+import { BoIUtlandetOppsummering, OppsummeringPanel } from '@navikt/fp-steg-oppsummering';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -45,7 +45,7 @@ const OppsummeringSteg = ({ sendSøknad, mellomlagreOgNaviger }: Props) => {
                     omBarnet={omBarnet}
                     onVilEndreSvar={() => navigator.goToNextStep(Path.OM_BARNET)}
                 />
-                <BoIUtlandetOppsummeringspunkt
+                <BoIUtlandetOppsummering
                     onVilEndreSvar={() => navigator.goToNextStep(Path.UTENLANDSOPPHOLD)}
                     tidligereUtenlandsopphold={tidligereUtenlandsopphold ?? []}
                     senereUtenlandsopphold={senereUtenlandsopphold ?? []}

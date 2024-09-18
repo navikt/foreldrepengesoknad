@@ -4,7 +4,8 @@ import userEvent from '@testing-library/user-event';
 
 import * as stories from './OppsummeringPanel.stories';
 
-const { HarBoddIUtlandetOgFødt, HarIkkeBoddIUtlandetOgIkkeFødt } = composeStories(stories);
+const { HarBoddIUtlandetOgFødt, HarIkkeBoddIUtlandetOgIkkeFødt, ArbeidsforholdOgInntektOppsummering } =
+    composeStories(stories);
 
 describe('<OppsummeringSteg>', () => {
     it('skal ha hatt utenlandsopphold for ES og så sende søknad', async () => {
@@ -68,5 +69,14 @@ describe('<OppsummeringSteg>', () => {
 
         expect(onStepChange).toHaveBeenCalledTimes(1);
         expect(onStepChange).toHaveBeenNthCalledWith(1, 'SKAL_BO_I_UTLANDET_PATH');
+    });
+
+    it('skal vise informasjon for selvstendig næringsdrivende og frilans', async () => {
+        render(<ArbeidsforholdOgInntektOppsummering />);
+
+        expect(await screen.findByText('Arbeidsforhold og inntekt')).toBeInTheDocument();
+        expect(screen.getByText('Du er ikke registrert med noen arbeidsforhold.')).toBeInTheDocument();
+        expect(screen.getByText('Arbeid som selvstendig næringsdrivende')).toBeInTheDocument();
+        expect(screen.getByText('Arbeid som frilanser')).toBeInTheDocument();
     });
 });

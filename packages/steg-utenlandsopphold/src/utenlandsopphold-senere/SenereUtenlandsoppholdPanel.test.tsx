@@ -69,20 +69,18 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(saveOnNext).toHaveBeenCalledTimes(1);
-        expect(saveOnNext).toHaveBeenNthCalledWith(1, {
-            utenlandsoppholdNeste12Mnd: [
-                {
-                    landkode: 'CA',
-                    fom: dayjs().add(1, 'day').format(ISO_DATE_FORMAT),
-                    tom: dayjs().add(20, 'day').format(ISO_DATE_FORMAT),
-                },
-                {
-                    landkode: 'AS',
-                    fom: dayjs().add(22, 'day').format(ISO_DATE_FORMAT),
-                    tom: dayjs().add(30, 'day').format(ISO_DATE_FORMAT),
-                },
-            ],
-        });
+        expect(saveOnNext).toHaveBeenNthCalledWith(1, [
+            {
+                landkode: 'CA',
+                fom: dayjs().add(1, 'day').format(ISO_DATE_FORMAT),
+                tom: dayjs().add(20, 'day').format(ISO_DATE_FORMAT),
+            },
+            {
+                landkode: 'AS',
+                fom: dayjs().add(22, 'day').format(ISO_DATE_FORMAT),
+                tom: dayjs().add(30, 'day').format(ISO_DATE_FORMAT),
+            },
+        ]);
     });
 
     it('skal fylle ut to perioder og kryssvalidere', async () => {
@@ -147,15 +145,13 @@ describe('<SenereUtenlandsoppholdPanel>', () => {
         await userEvent.click(screen.getByText('Forrige steg'));
 
         expect(saveOnPrevious).toHaveBeenCalledTimes(1);
-        expect(saveOnPrevious).toHaveBeenNthCalledWith(1, {
-            utenlandsoppholdNeste12Mnd: [
-                {
-                    fom: '',
-                    landkode: 'CA',
-                    tom: '',
-                },
-            ],
-        });
+        expect(saveOnPrevious).toHaveBeenNthCalledWith(1, [
+            {
+                fom: '',
+                landkode: 'CA',
+                tom: '',
+            },
+        ]);
 
         expect(goToPreviousStep).toHaveBeenCalledTimes(1);
     });
