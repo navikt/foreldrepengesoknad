@@ -15,6 +15,13 @@ import {
     isOverføringFarInnlagt,
     isOverføringMorForSyk,
     isOverføringMorInnlagt,
+    isPeriodeUtenUttakMorForSyk,
+    isPeriodeUtenUttakMorInnlagt,
+    isPeriodeUtenUttakMorIntroprogram,
+    isPeriodeUtenUttakMorJobber,
+    isPeriodeUtenUttakMorJobberOgStuderer,
+    isPeriodeUtenUttakMorKvalprogram,
+    isPeriodeUtenUttakMorStuderer,
     isUtsettelseBarnInnlagt,
     isUtsettelseMorForSyk,
     isUtsettelseMorInnlagt,
@@ -37,7 +44,8 @@ export const isPeriodeMedMorInnleggelse = (periode: Periode) => {
         isUttakAvFedrekvoteMorForSyk(periode) ||
         isFellesperiodeMorInnlagt(periode) ||
         isForeldrepengerMedAktivitetskravMorInnlagt(periode) ||
-        isUtsettelseMorInnlagt(periode)
+        isUtsettelseMorInnlagt(periode) ||
+        isPeriodeUtenUttakMorInnlagt(periode)
     );
 };
 
@@ -46,7 +54,8 @@ export const isPeriodeMedMorForSyk = (periode: Periode) => {
         isFellesperiodeMorForSyk(periode) ||
         isUtsettelseMorForSyk(periode) ||
         isOverføringMorForSyk(periode) ||
-        isForeldrepengerMedAktivitetskravMorForSyk(periode)
+        isForeldrepengerMedAktivitetskravMorForSyk(periode) ||
+        isPeriodeUtenUttakMorForSyk(periode)
     );
 };
 
@@ -63,23 +72,23 @@ export const isPeriodeMedBarnInnleggelse = (periode: Periode) => {
 };
 
 export const isPeriodeMedMorStuderer = (periode: Periode) => {
-    return isMorStuderer(periode);
+    return isMorStuderer(periode) || isPeriodeUtenUttakMorStuderer(periode);
 };
 
 export const isPeriodeMedMorJobber = (periode: Periode) => {
-    return isMorJobber(periode);
+    return isMorJobber(periode) || isPeriodeUtenUttakMorJobber(periode);
 };
 
 export const isPeriodeMedMorJobberOgStuderer = (periode: Periode) => {
-    return isMorJobberOgStuderer(periode);
+    return isMorJobberOgStuderer(periode) || isPeriodeUtenUttakMorJobberOgStuderer(periode);
 };
 
 export const isPeriodeMedMorIntroprogram = (periode: Periode) => {
-    return isMorIntroprogram(periode);
+    return isMorIntroprogram(periode) || isPeriodeUtenUttakMorIntroprogram(periode);
 };
 
 export const isPeriodeMedMorKvalprogram = (periode: Periode) => {
-    return isMorKvalprogram(periode);
+    return isMorKvalprogram(periode) || isPeriodeUtenUttakMorKvalprogram(periode);
 };
 
 export const isOmsorgsovertakelseVedlegg = (attachment: Attachment) => {
