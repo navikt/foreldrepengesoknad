@@ -65,7 +65,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
  *
  * Vi ønsker ikke å redirecte til sak dersom bruker allerede er på en underside på saken, eller at bruker navigerer tilbake til forside via breadcrumbs
  */
-function RedirectTilSakHvisDetKunFinnesEn({ saker }: { readonly saker: SakOppslag }) {
+function RedirectTilSakHvisDetKunFinnesEn({ saker }: { saker: SakOppslag }) {
     const navigate = useNavigate();
 
     const alleSaker = getAlleYtelser(saker);
@@ -90,7 +90,7 @@ function RedirectTilSakHvisDetKunFinnesEn({ saker }: { readonly saker: SakOppsla
     return <Outlet />;
 }
 
-export function PageRouteLayout({ header, children }: { readonly header: ReactNode; readonly children: ReactNode }) {
+export function PageRouteLayout({ header, children }: { header: ReactNode; children: ReactNode }) {
     const bem = bemUtils('routesWrapper');
 
     return (

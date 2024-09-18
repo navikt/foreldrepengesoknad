@@ -13,7 +13,7 @@ interface Props {
     dokument: DokumentType;
 }
 
-function DokumentLenke({ dokument }: { readonly dokument: DokumentType }) {
+function DokumentLenke({ dokument }: { dokument: DokumentType }) {
     const url = lagUrl(dokument);
 
     return (
@@ -30,7 +30,7 @@ function DokumentLenke({ dokument }: { readonly dokument: DokumentType }) {
     );
 }
 
-function DokumentAvsender({ dokumentType }: { readonly dokumentType: DokumentTypeEnum }) {
+function DokumentAvsender({ dokumentType }: { dokumentType: DokumentTypeEnum }) {
     const text = (() => {
         switch (dokumentType) {
             case DokumentTypeEnum.ARBEIDSGIVER:

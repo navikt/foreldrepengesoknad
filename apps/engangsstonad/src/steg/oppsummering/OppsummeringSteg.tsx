@@ -14,8 +14,8 @@ import { DokumentasjonOppsummering } from './DokumentasjonOppsummering';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
 
 export interface Props {
-    readonly sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
-    readonly mellomlagreOgNaviger: () => Promise<void>;
+    sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
+    mellomlagreOgNaviger: () => Promise<void>;
 }
 
 const OppsummeringSteg = ({ sendSøknad, mellomlagreOgNaviger }: Props) => {
