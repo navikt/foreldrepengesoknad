@@ -24,8 +24,8 @@ const PlanleggerForside: React.FunctionComponent<Props> = ({ locale, changeLocal
                             <div className={styles.languageToggle}>
                                 <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
                             </div>
-                            <IconCircleWrapper color="darkBlue" size="xl">
-                                <CalendarIcon height={28} width={28} fontSize="1.5rem" aria-hidden />
+                            <IconCircleWrapper color="lightBlue" size="xl">
+                                <CalendarIcon height={44} width={44} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
                             <VStack gap="1" align="center">
                                 <Heading size="large">
@@ -44,8 +44,8 @@ const PlanleggerForside: React.FunctionComponent<Props> = ({ locale, changeLocal
                 <Show above="md">
                     <BlueHeading>
                         <VStack gap="4">
-                            <IconCircleWrapper color="darkBlue" size="xl">
-                                <CalendarIcon height={35} width={35} fontSize="1.5rem" aria-hidden />
+                            <IconCircleWrapper color="lightBlue" size="large">
+                                <CalendarIcon height={30} width={30} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
                             <VStack gap="1">
                                 <Heading size="large">

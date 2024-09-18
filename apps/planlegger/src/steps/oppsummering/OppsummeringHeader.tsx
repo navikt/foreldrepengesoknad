@@ -16,7 +16,7 @@ const OppsummeringHeader: React.FunctionComponent<Props> = ({ children }) => (
                 <Show below="md">
                     <BlueHeading>
                         <HStack gap="4" align="center">
-                            <IconCircleWrapper color="darkBlue" size="large">
+                            <IconCircleWrapper color="lightBlue" size="large">
                                 <CheckmarkIcon height={34} width={34} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
                             <Heading size="medium">
@@ -28,8 +28,8 @@ const OppsummeringHeader: React.FunctionComponent<Props> = ({ children }) => (
                 <Show above="md">
                     <BlueHeading>
                         <HStack gap="4" align="center">
-                            <IconCircleWrapper color="darkBlue" size="xl">
-                                <CheckmarkIcon height={40} width={40} fontSize="1.5rem" aria-hidden />
+                            <IconCircleWrapper color="lightBlue" size="large">
+                                <CheckmarkIcon height={30} width={30} fontSize="1.5rem" aria-hidden />
                             </IconCircleWrapper>
                             <Heading size="medium">
                                 <FormattedMessage id="OppsummeringHeader.Tittel" />
