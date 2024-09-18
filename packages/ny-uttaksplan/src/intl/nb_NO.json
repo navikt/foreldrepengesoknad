@@ -14,9 +14,21 @@
     "uttaksplan.stønadskontotype.dinKvote": "Din kvote",
     "uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttakFellesperiode": "Ny periode utan kvote",
     "uttaksplan.periodeAnnenPart.tittel.gradertEllerSamtidigUttak": "Ny periode utan kvote",
+    "uttaksplan.avslåttPeriode": "Avslått periode",
+    "uttaksplan.avslåttPeriode.utsettelse": "Avslått utsettelse",
+    "uttaksplan.utsettelsesårsak.LOVBESTEMT_FERIE": "Utsettelse på grunn av ferie",
+    "uttaksplan.utsettelsesårsak.ARBEID": "Utsettelse på grunn av heltidsarbeid",
+    "uttaksplan.utsettelsesårsak.SØKER_SYKDOM": "Utsettelse på grunn av sykdom",
+    "uttaksplan.utsettelsesårsak.SØKER_INNLAGT": "Utsettelse på grunn av innleggelse i helseinstitusjon",
+    "uttaksplan.utsettelsesårsak.BARN_INNLAGT": "Utsettelse fordi barnet er innlagt i helseinstitusjon",
+    "uttaksplan.utsettelsesårsak.HV_ØVELSE": "Utsettelse på grunn av øvelse eller tjeneste i Heimevernet",
+    "uttaksplan.utsettelsesårsak.NAV_TILTAK": "Utsettelse på grunn av NAV tiltak som utgjør 100% arbeid",
+    "uttaksplan.utsettelsesårsak.FRI": "Utsettelse",
+    "uttaksplan.utsettelsesårsak.ukjent": "Utsettelse",
     "uttaksplan.stønadskontotype.undefined": "Ny periode uten kvote",
     "uttaksplan.varighet.helePerioden": "Hele perioden",
     "varighet.uker": "{uker, plural, one {# uke} other {# uker}}",
     "varighet.dager": "{dager, plural, one {# dag} other {# dager}}",
-    "varighet.separator--full": " og "
+    "varighet.separator--full": " og ",
+    "varighet.separator--normal": ", "
 }
