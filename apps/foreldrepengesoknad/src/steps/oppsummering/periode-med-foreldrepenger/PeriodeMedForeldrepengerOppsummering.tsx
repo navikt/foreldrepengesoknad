@@ -1,5 +1,4 @@
 import { FormattedMessage } from 'react-intl';
-import PeriodeMedForeldrepenger from 'types/PeriodeMedForeldrepenger';
 
 import { FormSummary } from '@navikt/ds-react';
 
@@ -8,16 +7,12 @@ import { Dekningsgrad } from '@navikt/fp-types';
 
 interface Props {
     onVilEndreSvar: () => void;
-    periodeMedForeldrepenger?: PeriodeMedForeldrepenger;
+    dekningsgrad?: Dekningsgrad;
     annenForelder?: AnnenForelder;
 }
 
-export const PeriodeMedForeldrepengerOppsummering = ({
-    periodeMedForeldrepenger,
-    annenForelder,
-    onVilEndreSvar,
-}: Props) => {
-    if (!periodeMedForeldrepenger || !annenForelder) {
+export const PeriodeMedForeldrepengerOppsummering = ({ dekningsgrad, annenForelder, onVilEndreSvar }: Props) => {
+    if (!dekningsgrad || !annenForelder) {
         return null;
     }
 
@@ -45,7 +40,7 @@ export const PeriodeMedForeldrepengerOppsummering = ({
                         )}
                     </FormSummary.Label>
                     <FormSummary.Value>
-                        {periodeMedForeldrepenger.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? (
+                        {dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? (
                             <FormattedMessage id="PeriodeMedForeldrepengerOppsummering.100" />
                         ) : (
                             <FormattedMessage id="PeriodeMedForeldrepengerOppsummering.80" />

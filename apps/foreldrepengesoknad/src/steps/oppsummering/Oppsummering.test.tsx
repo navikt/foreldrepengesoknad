@@ -86,7 +86,7 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
         expect(
             checkAndGetParentDiv(denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?')).getByText(
-                'Nei',
+                'Ja',
             ),
         ).toBeInTheDocument();
         expect(
@@ -114,7 +114,7 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
         expect(
             checkAndGetParentDiv(denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?')).getByText(
-                'Ja',
+                'Nei',
             ),
         ).toBeInTheDocument();
     });
@@ -132,7 +132,7 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
         expect(
             checkAndGetParentDiv(denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?')).getByText(
-                'Ja',
+                'Nei',
             ),
         ).toBeInTheDocument();
     });
@@ -263,7 +263,7 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
         expect(
             checkAndGetParentDiv(denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?')).getByText(
-                'Nei',
+                'Ja',
             ),
         ).toBeInTheDocument();
         expect(
@@ -302,7 +302,7 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
         expect(
             checkAndGetParentDiv(denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?')).getByText(
-                'Nei',
+                'Ja',
             ),
         ).toBeInTheDocument();
         expect(
@@ -340,7 +340,7 @@ describe('<Oppsummering>', () => {
         ).toBeInTheDocument();
         expect(
             checkAndGetParentDiv(denAndreForelderenDiv.getByText('Er dere sammen om omsorgen for barnet?')).getByText(
-                'Nei',
+                'Ja',
             ),
         ).toBeInTheDocument();
         expect(

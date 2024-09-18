@@ -168,7 +168,7 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ANDRE_INNTEKTER)}
                 />
                 <PeriodeMedForeldrepengerOppsummering
-                    periodeMedForeldrepenger={{ dekningsgrad }}
+                    dekningsgrad={dekningsgrad}
                     annenForelder={annenForelder}
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.PERIODE_MED_FORELDREPENGER)}
                 />
