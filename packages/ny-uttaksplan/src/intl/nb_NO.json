@@ -27,6 +27,7 @@
     "uttaksplan.utsettelsesårsak.ukjent": "Utsettelse",
     "uttaksplan.stønadskontotype.undefined": "Ny periode uten kvote",
     "uttaksplan.varighet.helePerioden": "Hele perioden",
+    "gradering.prosent": "{stillingsprosent}%",
     "varighet.uker": "{uker, plural, one {# uke} other {# uker}}",
     "varighet.dager": "{dager, plural, one {# dag} other {# dager}}",
     "varighet.separator--full": " og ",
