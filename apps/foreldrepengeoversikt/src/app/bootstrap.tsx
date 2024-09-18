@@ -9,6 +9,7 @@ import { createRoot } from 'react-dom/client';
 
 import AppContainer from './AppContainer';
 import { initAmplitude } from './amplitude/amplitude';
+// Viktig at index.css importeres før AppContainer. Det gjør at Aksel sin css laster før vår i de tilfellene vi vil overskrive.
 import './index.css';
 
 dayjs.locale('nb');
