@@ -106,20 +106,6 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
                                 </FormSummary.Value>
                             </FormSummary.Answer>
                         )}
-                        {!annenForelder.erAleneOmOmsorg && annenForelder.harOppholdtSegIEØS && (
-                            <FormSummary.Answer>
-                                <FormSummary.Label>
-                                    <FormattedMessage id="annenForelder.harRettPåForeldrepengerIEØS" />
-                                </FormSummary.Label>
-                                <FormSummary.Value>
-                                    {annenForelder.harRettPåForeldrepengerIEØS ? (
-                                        <FormattedMessage id="ja" />
-                                    ) : (
-                                        <FormattedMessage id="nei" />
-                                    )}
-                                </FormSummary.Value>
-                            </FormSummary.Answer>
-                        )}
                         {!annenForelder.erAleneOmOmsorg && annenForelder.harRettPåForeldrepengerINorge && (
                             <FormSummary.Answer>
                                 <FormSummary.Label>

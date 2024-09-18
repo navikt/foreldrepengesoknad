@@ -250,15 +250,3 @@ export const getMorKvalprogramVedlegg = (vedlegg: VedleggDataType) => {
 export const isSendSenereVedlegg = (attachment: Attachment) => {
     return attachment.innsendingsType === InnsendingsType.SEND_SENERE;
 };
-
-export const getRelevantePerioder = (
-    perioder: Periode[],
-    endringssøknadPerioder: Periode[] | undefined,
-    erEndringssøknad: boolean,
-) => {
-    if (erEndringssøknad && endringssøknadPerioder !== undefined) {
-        return endringssøknadPerioder;
-    }
-
-    return perioder;
-};

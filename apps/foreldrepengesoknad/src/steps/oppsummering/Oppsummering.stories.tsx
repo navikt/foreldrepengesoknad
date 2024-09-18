@@ -12,7 +12,14 @@ import { Næringstype } from 'types/Næring';
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, Periode } from '@navikt/fp-common';
-import { AttachmentType, ISO_DATE_FORMAT, InnsendingsType, SivilstandType, Skjemanummer } from '@navikt/fp-constants';
+import {
+    AttachmentMetadataType,
+    AttachmentType,
+    ISO_DATE_FORMAT,
+    InnsendingsType,
+    SivilstandType,
+    Skjemanummer,
+} from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { EgenNæring } from '@navikt/fp-steg-egen-naering';
@@ -623,22 +630,167 @@ export const MorMedAndreInntekterMilitærtjeneste: Story = {
     },
 };
 
-export const VisVedlegg: Story = {
+const FIL_INFO = {
+    filesize: 1234,
+    url: 'test',
+    id: '1',
+    file: new File(['abc'.repeat(100000)], 'Filnavn1.jpg'),
+    pending: false,
+    uploaded: true,
+};
+
+const FIL_INFO_UTTAK_MED_PERIODE = {
+    ...FIL_INFO,
+    dokumenterer: {
+        type: AttachmentMetadataType.UTTAK,
+        perioder: [
+            {
+                fom: '2024-01-01',
+                tom: '2024-10-01',
+            },
+        ],
+    },
+};
+
+export const VisAlleVedlegg: Story = {
     args: {
         ...Default.args,
         vedlegg: {
             ...defaultVedlegg,
             [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: [
                 {
-                    filename: 'dokumentasjon.pdf',
-                    filesize: 1234,
-                    url: 'test',
-                    id: '1',
-                    file: new File(['abc'.repeat(100000)], 'Filnavn1.jpg'),
-                    pending: false,
-                    uploaded: true,
+                    ...FIL_INFO,
+                    filename: 'etterlønn.pdf',
                     type: AttachmentType.ANNEN_INNTEKT,
                     skjemanummer: Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG,
+                    dokumenterer: {
+                        type: AttachmentMetadataType.OPPTJENING,
+                        perioder: [
+                            {
+                                fom: '2024-01-01',
+                                tom: '2024-10-01',
+                            },
+                        ],
+                    },
+                },
+                {
+                    ...FIL_INFO,
+                    filename: 'etterlønn2.pdf',
+                    type: AttachmentType.ANNEN_INNTEKT,
+                    skjemanummer: Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG,
+                },
+            ],
+            [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: [
+                {
+                    ...FIL_INFO,
+                    filename: 'siviltjeneste.pdf',
+                    type: AttachmentType.ANNEN_INNTEKT,
+                    skjemanummer: Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE,
+                    dokumenterer: {
+                        type: AttachmentMetadataType.OPPTJENING,
+                        perioder: [
+                            {
+                                fom: '2024-01-01',
+                                tom: '2024-10-01',
+                            },
+                        ],
+                    },
+                },
+            ],
+            [Skjemanummer.OMSORGSOVERTAKELSE]: [
+                {
+                    ...FIL_INFO,
+                    filename: 'omsorgsovertakelse.pdf',
+                    type: AttachmentType.OMSORGSOVERTAKELSE,
+                    skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
+                },
+            ],
+            [Skjemanummer.DOK_AV_ALENEOMSORG]: [
+                {
+                    ...FIL_INFO,
+                    filename: 'aleneomsorg.pdf',
+                    type: AttachmentType.ALENEOMSORG,
+                    skjemanummer: Skjemanummer.DOK_AV_ALENEOMSORG,
+                },
+            ],
+            [Skjemanummer.TERMINBEKREFTELSE]: [
+                {
+                    ...FIL_INFO,
+                    filename: 'terminbekreftelse.pdf',
+                    type: AttachmentType.TERMINBEKREFTELSE,
+                    skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
+                },
+            ],
+            [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-deltakelse.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET,
+                },
+            ],
+            [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'kvalifiseringsprogram.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM,
+                },
+            ],
+            [Skjemanummer.DOK_INNLEGGELSE_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'innleggelse-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_INNLEGGELSE_MOR,
+                },
+            ],
+            [Skjemanummer.DOK_INNLEGGELSE_BARN]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'innleggelse-barn.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_INNLEGGELSE_BARN,
+                },
+            ],
+            [Skjemanummer.DOK_INNLEGGELSE_FAR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'innleggelse-far.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_INNLEGGELSE_FAR,
+                },
+            ],
+            [Skjemanummer.DOK_SYKDOM_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'sykdom-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_SYKDOM_MOR,
+                },
+            ],
+            [Skjemanummer.DOK_ARBEID_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-arbeid-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
+                },
+            ],
+            [Skjemanummer.DOK_UTDANNING_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-utdanning-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_UTDANNING_MOR,
+                },
+            ],
+            [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-utdanning-og-arbeid-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR,
                 },
             ],
         },
@@ -649,34 +801,18 @@ export const VisSendInnSenereVedlegg: Story = {
     args: {
         ...Default.args,
         vedlegg: {
-            ...defaultVedlegg,
-            [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: [
-                {
-                    filename: 'dokumentasjon.pdf',
-                    filesize: 1234,
-                    url: 'test',
-                    id: '1',
-                    file: new File(['abc'.repeat(100000)], 'Filnavn1.jpg'),
-                    pending: false,
-                    uploaded: true,
-                    type: AttachmentType.ANNEN_INNTEKT,
-                    skjemanummer: Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE,
-                },
-            ],
-            [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: [
-                {
-                    filename: 'dokumentasjon.pdf',
-                    filesize: 1234,
-                    url: 'test',
-                    id: '1',
-                    file: new File(['abc'.repeat(100000)], 'Filnavn1.jpg'),
-                    pending: false,
-                    uploaded: true,
-                    innsendingsType: InnsendingsType.SEND_SENERE,
-                    type: AttachmentType.ANNEN_INNTEKT,
-                    skjemanummer: Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG,
-                },
-            ],
+            ...(VisAlleVedlegg.args?.vedlegg
+                ? Object.entries(VisAlleVedlegg.args.vedlegg).reduce(
+                      (result, entry) => ({
+                          ...result,
+                          [entry[0]]: entry[1].map((value) => ({
+                              ...value,
+                              innsendingsType: InnsendingsType.SEND_SENERE,
+                          })),
+                      }),
+                      {},
+                  )
+                : {}),
         },
     },
 };

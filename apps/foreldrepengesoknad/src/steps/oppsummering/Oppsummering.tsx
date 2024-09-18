@@ -7,6 +7,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { ISOStringToDate } from 'utils/dateUtils';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnrString, getNavnPåForeldre } from 'utils/personUtils';
+import { getRelevantePerioder } from 'utils/uttaksplanInfoUtils';
 
 import { Alert, BodyLong, Heading, VStack } from '@navikt/ds-react';
 
@@ -21,14 +22,15 @@ import {
 } from '@navikt/fp-steg-oppsummering';
 import { Søker, Søkerinfo, Søkerrolle } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
+import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { AndreInntektskilderOppsummering } from './components/andre-inntekter-oppsummering/AndreInntektskilderOppsummering';
-import AnnenForelderOppsummering from './components/annen-forelder-oppsummering/AnnenForelderOppsummering';
-import { BarnOppsummering } from './components/barn-oppsummering/BarnOppsummering';
-import { DokumentasjonOppsummering } from './components/dokumentasjon-oppsummering/DokumentasjonOppsummering';
-import { PeriodeMedForeldrepengerOppsummering } from './components/periode-med-foreldrepenger/PeriodeMedForeldrepengerOppsummering';
-import UttaksplanOppsummering from './components/uttaksplan-oppsummering/UttaksplanOppsummering';
+import { AndreInntektskilderOppsummering } from './andre-inntekter-oppsummering/AndreInntektskilderOppsummering';
+import AnnenForelderOppsummering from './annen-forelder-oppsummering/AnnenForelderOppsummering';
+import { BarnOppsummering } from './barn-oppsummering/BarnOppsummering';
+import { DokumentasjonOppsummering } from './dokumentasjon-oppsummering/DokumentasjonOppsummering';
+import { PeriodeMedForeldrepengerOppsummering } from './periode-med-foreldrepenger/PeriodeMedForeldrepengerOppsummering';
+import UttaksplanOppsummering from './uttaksplan-oppsummering/UttaksplanOppsummering';
 
 const skalViseInfoOmFarskapsportal = (
     søker: Søker,
@@ -99,6 +101,18 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
               },
           )
         : '';
+
+    const erSøkerFarEllerMedmor = getErSøkerFarEllerMedmor(søkersituasjon.rolle);
+    const relevantePerioder = getRelevantePerioder(
+        uttaksplan,
+        uttaksplanMetadata?.perioderSomSkalSendesInn,
+        erEndringssøknad,
+    );
+    const uttaksperioderSomManglerVedlegg = perioderSomKreverVedlegg(
+        relevantePerioder,
+        erSøkerFarEllerMedmor,
+        annenForelder,
+    );
 
     const søker = søkerInfo.søker;
     const rolle = søkersituasjon.rolle;
@@ -179,6 +193,9 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.DOKUMENTASJON)}
                     alleVedlegg={vedlegg}
                     setManglerDokumentasjon={setManglerDokumentasjon}
+                    erSøkerFarEllerMedmor={erSøkerFarEllerMedmor}
+                    navnPåForeldre={navnPåForeldre}
+                    uttaksperioderSomManglerVedlegg={uttaksperioderSomManglerVedlegg}
                 />
                 <>
                     {manglerDokumentasjon && (

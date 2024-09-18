@@ -4,26 +4,39 @@ import { VedleggDataType } from 'types/VedleggDataType';
 
 import { FormSummary, Link, VStack } from '@navikt/ds-react';
 
+import { NavnPåForeldre, Periode } from '@navikt/fp-common';
 import { InnsendingsType } from '@navikt/fp-constants';
 
-import { getDokumentasjonLabel } from './dokumentasjonUtils';
+import { DokumentasjonLastetOppLabel } from './DokumentasjonLastetOppLabel';
+import { DokumentasjonSendSenereLabel } from './DokumentasjonSendSenereLabel';
 
 interface Props {
     alleVedlegg?: VedleggDataType;
     onVilEndreSvar: () => Promise<void>;
     setManglerDokumentasjon: (manglerDokumentajson: boolean) => void;
+    erSøkerFarEllerMedmor: boolean;
+    navnPåForeldre: NavnPåForeldre;
+    uttaksperioderSomManglerVedlegg: Periode[];
 }
 
-export const DokumentasjonOppsummering = ({ alleVedlegg, onVilEndreSvar, setManglerDokumentasjon }: Props) => {
+export const DokumentasjonOppsummering = ({
+    alleVedlegg,
+    onVilEndreSvar,
+    setManglerDokumentasjon,
+    erSøkerFarEllerMedmor,
+    navnPåForeldre,
+    uttaksperioderSomManglerVedlegg,
+}: Props) => {
     const harVedlegg = alleVedlegg && Object.values(alleVedlegg).some((v) => v.length > 0);
 
+    const harSendSenereDokument =
+        harVedlegg &&
+        Object.values(alleVedlegg)
+            .flatMap((vedlegg) => vedlegg)
+            .find((v) => v.innsendingsType === InnsendingsType.SEND_SENERE);
+
     useEffect(() => {
-        if (
-            harVedlegg &&
-            Object.values(alleVedlegg)
-                .flatMap((vedlegg) => vedlegg)
-                .find((v) => v.innsendingsType === InnsendingsType.SEND_SENERE)
-        ) {
+        if (harSendSenereDokument) {
             setManglerDokumentasjon(true);
         }
     }, []);
@@ -36,7 +49,11 @@ export const DokumentasjonOppsummering = ({ alleVedlegg, onVilEndreSvar, setMang
         <FormSummary>
             <FormSummary.Header>
                 <FormSummary.Heading level="2">
-                    <FormattedMessage id="DokumentasjonOppsummering.Tittel" />
+                    {harSendSenereDokument ? (
+                        <FormattedMessage id="oppsummering.manglerDokumentasjon" />
+                    ) : (
+                        <FormattedMessage id="DokumentasjonOppsummering.Tittel" />
+                    )}
                 </FormSummary.Heading>
                 <FormSummary.EditLink onClick={onVilEndreSvar}>
                     <FormattedMessage id="Oppsummering.EndreSvar" />
@@ -47,7 +64,18 @@ export const DokumentasjonOppsummering = ({ alleVedlegg, onVilEndreSvar, setMang
                     .filter((idOgVedlegg) => idOgVedlegg[1].length > 0)
                     .map((idOgVedlegg) => (
                         <FormSummary.Answer key={idOgVedlegg[1][0].id}>
-                            <FormSummary.Label>{getDokumentasjonLabel(idOgVedlegg[1][0])}</FormSummary.Label>
+                            <FormSummary.Label>
+                                {idOgVedlegg[1][0].innsendingsType === InnsendingsType.SEND_SENERE ? (
+                                    <DokumentasjonSendSenereLabel
+                                        attachment={idOgVedlegg[1][0]}
+                                        erFarEllerMedmor={erSøkerFarEllerMedmor}
+                                        navnPåForeldre={navnPåForeldre}
+                                        uttaksperioderSomManglerVedlegg={uttaksperioderSomManglerVedlegg}
+                                    />
+                                ) : (
+                                    <DokumentasjonLastetOppLabel attachment={idOgVedlegg[1][0]} />
+                                )}
+                            </FormSummary.Label>
                             <FormSummary.Value>
                                 <VStack>
                                     {idOgVedlegg[1]
