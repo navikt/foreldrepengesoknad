@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 
 import { Alert, BodyLong, Heading, LinkPanel, Loader } from '@navikt/ds-react';
 
-import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
+import { useDocumentTitle } from '@navikt/fp-utils';
 
 import { hentDokumenterOptions } from 'app/api/api';
 import Dokument from 'app/components/dokument/Dokument';
@@ -18,10 +18,7 @@ import OversiktRoutes from 'app/routes/routes';
 import { grupperDokumenterPåTidspunkt } from 'app/utils/dokumenterUtils';
 import { guid } from 'app/utils/guid';
 
-import './dokumenter-page.css';
-
 const DokumenterPage: React.FunctionComponent = () => {
-    const bem = bemUtils('dokumenter-page');
     useSetBackgroundColor('blue');
     useSetSelectedRoute(OversiktRoutes.DOKUMENTER);
     const params = useParams();
@@ -40,17 +37,12 @@ const DokumenterPage: React.FunctionComponent = () => {
 
     return (
         <PageRouteLayout header={<DokumenterHeader />}>
-            <LinkPanel
-                as={Link}
-                to={`../${OversiktRoutes.ETTERSEND}`}
-                border={false}
-                className={bem.element('ettersend')}
-            >
+            <LinkPanel as={Link} to={`../${OversiktRoutes.ETTERSEND}`} border={false} className="mb-8 rounded-large">
                 <LinkPanel.Title as="h2">{lastOppDokTittel}</LinkPanel.Title>
             </LinkPanel>
             {!dokumenterQuery.isError && (
                 <>
-                    <div className={bem.element('dokumenter-liste')}>
+                    <div className="bg-white rounded-large p-4 mb-10">
                         {Object.entries(dokumenterGruppertPåTidspunkt).map((dokument) => {
                             const dokumenter = dokument[1];
 
@@ -61,7 +53,7 @@ const DokumenterPage: React.FunctionComponent = () => {
                             }
                         })}
                     </div>
-                    <Alert variant="info" className={bem.element('ikke-alle-dokumenter')}>
+                    <Alert variant="info" className="mb-8">
                         <Heading level="3" size="small">
                             Er det noen dokumenter du savner?
                         </Heading>
