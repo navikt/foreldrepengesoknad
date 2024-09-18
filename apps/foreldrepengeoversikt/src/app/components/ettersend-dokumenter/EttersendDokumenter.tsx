@@ -5,8 +5,6 @@ import { HStack, LinkPanel } from '@navikt/ds-react';
 
 import OversiktRoutes from 'app/routes/routes';
 
-import './ettersend-dokumenter.css';
-
 const EttersendDokumenter = () => {
     return (
         <LinkPanel

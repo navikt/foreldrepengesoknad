@@ -3,8 +3,6 @@ import { FunctionComponent } from 'react';
 
 import { Heading, Skeleton, SkeletonProps } from '@navikt/ds-react';
 
-import './content-section.css';
-
 interface Props {
     children: React.ReactNode;
     heading?: string;
