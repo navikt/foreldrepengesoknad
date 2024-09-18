@@ -135,12 +135,12 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
                         <SeHeleProsessen />
                     </ContentSection>
                 </VStack>
-                <ContentSection className="mb-4 p-0">
+                <section>
                     <SeDokumenter />
-                </ContentSection>
-                <ContentSection className="mb-12 p-0">
+                </section>
+                <section>
                     <EttersendDokumenter />
-                </ContentSection>
+                </section>
                 {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
                     <ContentSection
                         heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
