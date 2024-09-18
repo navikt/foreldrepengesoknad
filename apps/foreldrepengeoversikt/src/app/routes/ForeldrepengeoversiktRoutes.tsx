@@ -1,8 +1,6 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router-dom';
 
-import { bemUtils } from '@navikt/fp-utils';
-
 import Snarveier from 'app/components/snarveier/Snarveier';
 import { default as SakComponent } from 'app/pages/Sak';
 import DinPlanPage from 'app/pages/din-plan-page/DinPlanPage';
@@ -91,12 +89,10 @@ function RedirectTilSakHvisDetKunFinnesEn({ saker }: { saker: SakOppslag }) {
 }
 
 export function PageRouteLayout({ header, children }: { header: ReactNode; children: ReactNode }) {
-    const bem = bemUtils('routesWrapper');
-
     return (
         <>
             {header}
-            <div className={bem.block}>{children}</div>
+            <div className="w-full md:w-[704px] m-auto pb-28">{children}</div>
             {/*Viktig at Snarveier ligger her slik at den har tilgang til saksnummer fra Route da snarveien er dynamiske*/}
             <Snarveier />
         </>
