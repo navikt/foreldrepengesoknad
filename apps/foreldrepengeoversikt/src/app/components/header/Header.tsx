@@ -101,7 +101,7 @@ function BabyIkon({ ytelse }: { readonly ytelse: Ytelse | undefined }) {
 export function ForsideHeader() {
     return (
         <HeaderWrapper>
-            <HGrid columns="max-content 1fr" gap="6" align="center">
+            <HGrid columns="max-content 1fr" gap="6" align="start">
                 <BabyIkon ytelse={undefined} />
                 <VStack>
                     <Heading level="1" size="medium">
@@ -123,7 +123,7 @@ function SaksnummerDetail() {
 
 export function DokumenterHeader() {
     const heading = (
-        <Heading level="1" size="large">
+        <Heading level="1" size="medium">
             Dokumenter
         </Heading>
     );
@@ -152,7 +152,7 @@ export function DokumenterHeader() {
 
 export function EttersendingHeader() {
     const header = (
-        <Heading level="1" size="large">
+        <Heading level="1" size="medium">
             Last opp dokumenter
         </Heading>
     );
@@ -220,7 +220,7 @@ export function DinSakHeader({ sak }: { readonly sak?: Sak }) {
                 <BabyIkon ytelse={sak.ytelse} />
                 <VStack>
                     <HStack gap="6" align="center">
-                        <Heading level="1" size="large">
+                        <Heading level="1" size="medium">
                             Din sak
                         </Heading>
                         <StatusTag sak={sak} className={bem.element('tag')} />
