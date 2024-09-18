@@ -21,10 +21,10 @@ import {
     Skjemanummer,
 } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
-import { EgenNæring } from '@navikt/fp-steg-egen-naering';
-import { Frilans } from '@navikt/fp-steg-frilans';
 import {
+    ArbeidsforholdOgInntektFp,
+    EgenNæring,
+    Frilans,
     Sivilstand,
     Søker,
     Søkerinfo,

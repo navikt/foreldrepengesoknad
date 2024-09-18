@@ -2561,6 +2561,9 @@ importers:
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../types
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../utils-test

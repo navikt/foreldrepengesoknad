@@ -11,9 +11,8 @@ import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'utils/arbei
 import { VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
-import { frilansId } from '@navikt/fp-steg-frilans';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { Arbeidsforhold, ArbeidsforholdOgInntektSvp } from '@navikt/fp-types';
+import { frilansId } from '@navikt/fp-types/src/Frilans';
 import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 

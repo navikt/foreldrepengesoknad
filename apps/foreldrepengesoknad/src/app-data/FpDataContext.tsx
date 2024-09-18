@@ -5,10 +5,15 @@ import { UttaksplanMetaData } from 'types/UttaksplanMetaData';
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AnnenForelder, Barn, BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
-import { EgenNæring } from '@navikt/fp-steg-egen-naering';
-import { Frilans } from '@navikt/fp-steg-frilans';
-import { Dekningsgrad, SøkersituasjonFp, Utenlandsopphold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import {
+    ArbeidsforholdOgInntektFp,
+    Dekningsgrad,
+    EgenNæring,
+    Frilans,
+    SøkersituasjonFp,
+    Utenlandsopphold,
+    UtenlandsoppholdPeriode,
+} from '@navikt/fp-types';
 
 import Fordeling from '../types/Fordeling';
 
