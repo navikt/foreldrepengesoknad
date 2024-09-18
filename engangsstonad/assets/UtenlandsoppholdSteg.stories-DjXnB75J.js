@@ -1,5 +1,0 @@
-import{i as p,j as r}from"./dateFormValidation-Cbu5YQSB.js";import{a as n}from"./chunk-454WOBUV-CM0pFb8Z.js";import{M as l,P as c,E as d,C as u}from"./useEsNavigator-dgVk1PI3.js";import{U as o}from"./UtenlandsoppholdSteg-BRHdztkP.js";import"./index-CTjT7uj6.js";import"./index-BRV0Se7Z.js";import"./index-CYM-y3Gt.js";import"./v4-CQkTLCs1.js";import"./TidligereUtenlandsoppholdPanel-CG8i3J16.js";import"./ErrorSummaryHookForm-PcEcOEo7.js";const g=()=>(...e)=>(n("button-click")(...e),Promise.resolve()),P={title:"steg/UtenlandsoppholdSteg",component:o,render:({gåTilNesteSide:e=n("button-click"),mellomlagreOgNaviger:m})=>(p(),r.jsx(l,{initialEntries:[c.UTENLANDSOPPHOLD],children:r.jsx(d,{onDispatch:e,initialState:{[u.SØKERSITUASJON]:{situasjon:"fødsel"}},children:r.jsx(o,{mellomlagreOgNaviger:m})})}))},t={args:{mellomlagreOgNaviger:g()}};var a,s,i;t.parameters={...t.parameters,docs:{...(a=t.parameters)==null?void 0:a.docs,source:{originalSource:`{
-  args: {
-    mellomlagreOgNaviger: promiseAction()
-  }
-}`,...(i=(s=t.parameters)==null?void 0:s.docs)==null?void 0:i.source}}};const U=["Default"];export{t as Default,U as __namedExportsOrder,P as default};
