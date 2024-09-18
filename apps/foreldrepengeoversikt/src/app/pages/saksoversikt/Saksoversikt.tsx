@@ -121,7 +121,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
                         heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
                         showSkeleton={tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending}
                         skeletonProps={{ height: '250px', variant: 'rounded' }}
-                        marginBottom="small"
+                        className="mb-2"
                     >
                         <Tidslinje
                             sak={gjeldendeSak}
@@ -131,14 +131,14 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
                             søkersBarn={søkerinfo.søker.barn ?? []}
                         />
                     </ContentSection>
-                    <ContentSection padding="none" marginBottom="large">
+                    <ContentSection className="mb-12 p-0">
                         <SeHeleProsessen />
                     </ContentSection>
                 </VStack>
-                <ContentSection padding="none" marginBottom="medium">
+                <ContentSection className="mb-4 p-0">
                     <SeDokumenter />
                 </ContentSection>
-                <ContentSection padding="none" marginBottom="large">
+                <ContentSection className="mb-12 p-0">
                     <EttersendDokumenter />
                 </ContentSection>
                 {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
