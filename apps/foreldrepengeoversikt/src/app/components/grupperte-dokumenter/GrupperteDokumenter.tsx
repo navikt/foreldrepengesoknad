@@ -12,7 +12,7 @@ interface Props {
 
 const GrupperteDokumenter: React.FunctionComponent<Props> = ({ dokumenter }) => {
     return (
-        <Accordion className="mb-4 -mt-4">
+        <Accordion>
             <Accordion.Item>
                 <Accordion.Header
                     style={{
@@ -20,7 +20,6 @@ const GrupperteDokumenter: React.FunctionComponent<Props> = ({ dokumenter }) => 
                         padding: '1rem 0 1rem 1rem',
                         flexDirection: 'row-reverse',
                         justifyContent: 'space-between',
-                        marginBottom: '1rem',
                     }}
                 >
                     <HStack gap="4">

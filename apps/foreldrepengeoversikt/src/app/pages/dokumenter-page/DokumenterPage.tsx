@@ -42,7 +42,7 @@ const DokumenterPage: React.FunctionComponent = () => {
             </LinkPanel>
             {!dokumenterQuery.isError && (
                 <>
-                    <div className="bg-white rounded-large p-4 mb-10">
+                    <div className="bg-white rounded-large p-4 pt-0 pb-12 mb-10">
                         {Object.entries(dokumenterGruppertPåTidspunkt).map((dokument) => {
                             const dokumenter = dokument[1];
 

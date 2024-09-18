@@ -16,7 +16,6 @@ import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { getAlleYtelser } from 'app/utils/sakerUtils';
 
 import OversiktRoutes from './routes';
-import './routes-wrapper.css';
 
 interface Props {
     saker: SakOppslag;

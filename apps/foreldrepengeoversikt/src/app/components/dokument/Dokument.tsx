@@ -1,13 +1,11 @@
 import { FileContent } from '@navikt/ds-icons';
 import { Detail, HGrid, HStack, Hide, Link, Show, Tag } from '@navikt/ds-react';
 
-import { bemUtils, formatDateExtended } from '@navikt/fp-utils';
+import { formatDateExtended } from '@navikt/fp-utils';
 
 import { Dokument as DokumentType } from 'app/types/Dokument';
 import { DokumentType as DokumentTypeEnum } from 'app/types/DokumentType';
 import { lagUrl } from 'app/utils/dokumenterUtils';
-
-import './dokument.css';
 
 interface Props {
     dokument: DokumentType;
@@ -50,11 +48,10 @@ function DokumentAvsender({ dokumentType }: { dokumentType: DokumentTypeEnum }) 
 }
 
 const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
-    const bem = bemUtils('dokument');
     const { type, mottatt } = dokument;
 
     return (
-        <div className={bem.block}>
+        <div className="border-b-2 p-4 pr-0 border-gray-300">
             <Hide above="md" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <HGrid columns={'max-content 1fr'} gap="4">
                     <DokumentLenke dokument={dokument} />
@@ -65,11 +62,11 @@ const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
                 </HStack>
             </Hide>
             <Show above="md">
-                <div className={bem.element('contentWrapper')}>
+                <HGrid columns="max-content 2fr max-content 112px" gap="8" align="center">
                     <DokumentLenke dokument={dokument} />
                     <Detail textColor="subtle">{formatDateExtended(mottatt)}</Detail>
                     <DokumentAvsender dokumentType={type} />
-                </div>
+                </HGrid>
             </Show>
         </div>
     );
