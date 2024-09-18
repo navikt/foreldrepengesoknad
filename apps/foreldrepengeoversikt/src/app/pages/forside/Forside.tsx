@@ -68,7 +68,7 @@ const Forside: React.FunctionComponent<Props> = ({ saker, isFirstRender, søkeri
                         kan vente litt og komme tilbake senere for å se alle detaljene i saken din.
                     </Alert>
                 )}
-                {alleYtelser.length > 0 ? (
+                {alleYtelser.length === 0 ? (
                     <HarSaker grupperteSaker={grupperteSaker} />
                 ) : (
                     <HarIkkeSaker harOppdatertSak={!harIkkeOppdatertSak} />
