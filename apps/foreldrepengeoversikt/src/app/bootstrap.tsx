@@ -7,10 +7,9 @@ import 'dayjs/locale/nn.js';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
-import '@navikt/ds-css';
-
 import AppContainer from './AppContainer';
 import { initAmplitude } from './amplitude/amplitude';
+import './index.css';
 
 dayjs.locale('nb');
 
