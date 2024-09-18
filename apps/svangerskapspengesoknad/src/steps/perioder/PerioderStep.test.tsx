@@ -89,7 +89,7 @@ describe('<Perioder>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.OPPSUMMERING,
+            data: SøknadRoutes.FERIE,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
