@@ -36,7 +36,7 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
     return 'Din sak';
 };
 
-function HeaderWrapper({ children }: { readonly children: ReactNode }) {
+function HeaderWrapper({ children }: { children: ReactNode }) {
     const bem = bemUtils('header');
     const selectedRoute = useGetSelectedRoute();
     return (
@@ -51,7 +51,7 @@ function BlueDot() {
     return <div style={{ height: '4px', width: '4px', borderRadius: '50%', background: 'var(--a-deepblue-300)' }} />;
 }
 
-function BabyIkon({ ytelse }: { readonly ytelse: Ytelse | undefined }) {
+function BabyIkon({ ytelse }: { ytelse: Ytelse | undefined }) {
     const YtelseIkon = (() => {
         switch (ytelse) {
             case Ytelse.FORELDREPENGER:
@@ -174,7 +174,7 @@ export function EttersendingHeader() {
     );
 }
 
-function FamiliehendelseDescription({ sak }: { readonly sak: Sak }) {
+function FamiliehendelseDescription({ sak }: { sak: Sak }) {
     const intl = useIntl();
 
     const søkerinfo = useQuery(søkerInfoOptions()).data;
@@ -207,7 +207,7 @@ function FamiliehendelseDescription({ sak }: { readonly sak: Sak }) {
     );
 }
 
-export function DinSakHeader({ sak }: { readonly sak?: Sak }) {
+export function DinSakHeader({ sak }: { sak?: Sak }) {
     const bem = bemUtils('header');
 
     if (!sak) {

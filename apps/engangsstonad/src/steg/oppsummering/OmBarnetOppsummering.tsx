@@ -10,7 +10,7 @@ interface Props {
     onVilEndreSvar: () => void;
 }
 
-function AntallBarnFormattedText({ omBarnet }: { readonly omBarnet: OmBarnet }) {
+function AntallBarnFormattedText({ omBarnet }: { omBarnet: OmBarnet }) {
     const harAdoptert = erAdopsjon(omBarnet);
 
     if (omBarnet.antallBarn === 1) {
