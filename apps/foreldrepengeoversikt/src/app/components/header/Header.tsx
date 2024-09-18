@@ -1,4 +1,4 @@
-import { BabyWrappedIcon, PersonPregnantIcon } from '@navikt/aksel-icons';
+import { BabyWrappedIcon, PersonPregnantIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import { ReactNode } from 'react';
 import { useIntl } from 'react-intl';
@@ -51,8 +51,19 @@ function BlueDot() {
     return <div style={{ height: '4px', width: '4px', borderRadius: '50%', background: 'var(--a-deepblue-300)' }} />;
 }
 
-function BabyIkon({ ytelse }: { readonly ytelse: Ytelse }) {
-    const YtelseIkon = ytelse === Ytelse.SVANGERSKAPSPENGER ? PersonPregnantIcon : BabyWrappedIcon;
+function BabyIkon({ ytelse }: { readonly ytelse: Ytelse | undefined }) {
+    const YtelseIkon = (() => {
+        switch (ytelse) {
+            case Ytelse.FORELDREPENGER:
+            case Ytelse.ENGANGSSTØNAD:
+                return BabyWrappedIcon;
+            case Ytelse.SVANGERSKAPSPENGER:
+                return PersonPregnantIcon;
+            default:
+                return StrollerIcon;
+        }
+    })();
+
     return (
         <>
             <Show above="md">
@@ -90,11 +101,16 @@ function BabyIkon({ ytelse }: { readonly ytelse: Ytelse }) {
 export function ForsideHeader() {
     return (
         <HeaderWrapper>
-            <HGrid columns="max-content 1fr" gap="6" align="center">
-                <BabyIkon ytelse={Ytelse.FORELDREPENGER} />
-                <Heading level="1" size="large">
-                    Oversikt over foreldrepengesaker
-                </Heading>
+            <HGrid columns="max-content 1fr" gap="6" align="start">
+                <BabyIkon ytelse={undefined} />
+                <VStack>
+                    <Heading level="1" size="medium">
+                        Oversikt
+                    </Heading>
+                    <Detail textColor="subtle">
+                        Dine saker om foreldrepenger, engangsstønad og svangerskapspenger
+                    </Detail>
+                </VStack>
             </HGrid>
         </HeaderWrapper>
     );
@@ -107,7 +123,7 @@ function SaksnummerDetail() {
 
 export function DokumenterHeader() {
     const heading = (
-        <Heading level="1" size="large">
+        <Heading level="1" size="medium">
             Dokumenter
         </Heading>
     );
@@ -136,7 +152,7 @@ export function DokumenterHeader() {
 
 export function EttersendingHeader() {
     const header = (
-        <Heading level="1" size="large">
+        <Heading level="1" size="medium">
             Last opp dokumenter
         </Heading>
     );
@@ -204,7 +220,7 @@ export function DinSakHeader({ sak }: { readonly sak?: Sak }) {
                 <BabyIkon ytelse={sak.ytelse} />
                 <VStack>
                     <HStack gap="6" align="center">
-                        <Heading level="1" size="large">
+                        <Heading level="1" size="medium">
                             Din sak
                         </Heading>
                         <StatusTag sak={sak} className={bem.element('tag')} />
