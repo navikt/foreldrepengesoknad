@@ -50,9 +50,9 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s√
                             </FormSummary.Label>
                             <FormSummary.Value>
                                 {annenForelder.erAleneOmOmsorg ? (
-                                    <FormattedMessage id="ja" />
-                                ) : (
                                     <FormattedMessage id="nei" />
+                                ) : (
+                                    <FormattedMessage id="ja" />
                                 )}
                             </FormSummary.Value>
                         </FormSummary.Answer>
