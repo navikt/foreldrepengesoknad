@@ -1,14 +1,12 @@
 import { Link } from 'react-router-dom';
 
 import { DialogReport } from '@navikt/ds-icons';
-import { LinkPanel } from '@navikt/ds-react';
+import { HStack, LinkPanel } from '@navikt/ds-react';
 
-import { bemUtils, formatDate } from '@navikt/fp-utils';
+import { formatDate } from '@navikt/fp-utils';
 
 import OversiktRoutes from 'app/routes/routes';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
-
-import './oppgaveLenkepanel.css';
 
 interface Props {
     minidialogInnslag: MinidialogInnslag;
@@ -16,25 +14,22 @@ interface Props {
 }
 
 const OppgaveLenkepanel: React.FunctionComponent<Props> = ({ tittel, minidialogInnslag }) => {
-    const bem = bemUtils('oppgave-lenkepanel');
     return (
         <LinkPanel
             as={Link}
             to={`${OversiktRoutes.OPPGAVER}/${minidialogInnslag.dialogId}`}
             border={false}
-            className={bem.element('linkPanel')}
+            className="rounded-large"
         >
-            <div className={bem.element('content')}>
-                <DialogReport className={bem.element('icon')} aria-hidden={true}></DialogReport>
+            <HStack align="center" gap="6">
+                <DialogReport aria-hidden={true}></DialogReport>
                 <div>
-                    <LinkPanel.Title as="h3" className={bem.element('title')}>
+                    <LinkPanel.Title as="h3" className="text-heading-medium">
                         {tittel}
                     </LinkPanel.Title>
-                    <LinkPanel.Description>
-                        <div className={bem.block}>{formatDate(minidialogInnslag.opprettet)}</div>
-                    </LinkPanel.Description>
+                    <LinkPanel.Description>{formatDate(minidialogInnslag.opprettet)}</LinkPanel.Description>
                 </div>
-            </div>
+            </HStack>
         </LinkPanel>
     );
 };
