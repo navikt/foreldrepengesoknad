@@ -1,12 +1,11 @@
 import { Preview } from '@storybook/react';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 
-import '@navikt/ds-css';
+import '../src/app/index.css';
 
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 
-import '../src/app/styles/app.css';
 import nbMessages from '../src/intl/messages/nb_NO.json';
 
 const scriptTag = document.createElement('script');
