@@ -7,10 +7,11 @@ import 'dayjs/locale/nn.js';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
-import AppContainer from './AppContainer';
-import { initAmplitude } from './amplitude/amplitude';
 // Viktig at ds-css importeres før AppContainer. Det gjør at Aksel sin css laster før vår i de tilfellene vi vil overskrive.
 import './index.css';
+
+import AppContainer from './AppContainer';
+import { initAmplitude } from './amplitude/amplitude';
 
 dayjs.locale('nb');
 
