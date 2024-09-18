@@ -20,6 +20,7 @@
         "@navikt/ds-css": "^6.16.2",
         "@navikt/ds-react": "^6.16.2",
         "@navikt/fp-common": "workspace:*",
+        "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
