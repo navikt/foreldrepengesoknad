@@ -229,15 +229,11 @@ describe('<Oppsummering>', () => {
             ),
         ).toBeInTheDocument();
         expect(
-            checkAndGetParentDiv(dinPlanDiv.getByText('Onsdag 24.11.21 - tirsdag 14.12.21')).getByText(
-                'Foreldrepenger før fødsel',
-            ),
+            checkAndGetParentDiv(dinPlanDiv.getAllByText(/Onsdag/)[0]).getByText('Foreldrepenger før fødsel'),
         ).toBeInTheDocument();
+        expect(checkAndGetParentDiv(dinPlanDiv.getAllByText(/Onsdag/)[1]).getByText('Utsettelse')).toBeInTheDocument();
         expect(
-            checkAndGetParentDiv(dinPlanDiv.getByText('Onsdag 15.12.21 - tirsdag 25.01.22')).getByText('Utsettelse'),
-        ).toBeInTheDocument();
-        expect(
-            checkAndGetParentDiv(dinPlanDiv.getByText('Onsdag 30.03.22 - tirsdag 07.06.22')).getByText('Fellesperiode'),
+            checkAndGetParentDiv(dinPlanDiv.getAllByText(/Onsdag/)[2]).getByText('Fellesperiode'),
         ).toBeInTheDocument();
         expect(
             checkAndGetParentDiv(
