@@ -42,8 +42,8 @@ export function FerieOppsummering({ onVilEndreSvar }: { readonly onVilEndreSvar:
                             <FormSummary.Label>Periode med ferie</FormSummary.Label>
                             <FormSummary.Value>
                                 <ul>
-                                    {ferie.map((feriePeriode, index) => (
-                                        <li key={index}>
+                                    {ferie.map((feriePeriode) => (
+                                        <li key={`${feriePeriode.fom}-${feriePeriode.tom}`}>
                                             {formatDate(feriePeriode.fom)} - {formatDate(feriePeriode.tom)}
                                         </li>
                                     ))}
