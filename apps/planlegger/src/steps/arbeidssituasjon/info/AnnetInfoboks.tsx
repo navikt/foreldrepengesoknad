@@ -10,7 +10,7 @@ import { BodyShort, Link } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
 import { Satser } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
-import { formatCurrencyWithKr } from '@navikt/fp-utils';
+import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 
 dayjs.extend(isSameOrAfter);
 
@@ -28,7 +28,7 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
             header={
                 <FormattedMessage
                     id="Arbeidssituasjon.Infoboks.HarIkkeRettTilForeldrepenger"
-                    values={{ erAlenesøker, navn: fornavn }}
+                    values={{ erAlenesøker, navn: capitalizeFirstLetter(fornavn) }}
                 />
             }
             color="green"

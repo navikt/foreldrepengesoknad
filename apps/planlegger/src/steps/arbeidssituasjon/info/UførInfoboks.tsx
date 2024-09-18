@@ -6,6 +6,7 @@ import { BodyShort, Link } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Infobox } from '@navikt/fp-ui';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 interface Props {
     erAlenesøker: boolean;
@@ -18,7 +19,7 @@ const UførInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn }) => 
             header={
                 <FormattedMessage
                     id="Arbeidssituasjon.Infoboks.HarIkkeRettTilForeldrepenger"
-                    values={{ erAlenesøker, navn: fornavn }}
+                    values={{ erAlenesøker, navn: capitalizeFirstLetter(fornavn) }}
                 />
             }
             color="green"
