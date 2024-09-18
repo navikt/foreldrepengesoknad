@@ -131,9 +131,9 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
                             søkersBarn={søkerinfo.søker.barn ?? []}
                         />
                     </ContentSection>
-                    <ContentSection className="mb-12 p-0">
+                    <section className="mb-12">
                         <SeHeleProsessen />
-                    </ContentSection>
+                    </section>
                 </VStack>
                 <section>
                     <SeDokumenter />
