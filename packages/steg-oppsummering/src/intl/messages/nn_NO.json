@@ -40,5 +40,6 @@
     "ArbeidsforholdOppsummering.orgnr": "Kva er organisasjonsnummeret?",
     "LandOppsummering.IDag": "i dag",
     "LandOppsummering.periode": "Frå {fra} til {til}",
-    "EndreSvar": "Endre svar"
+    "EndreSvar": "Endre svar",
+    "ArbeidsforholdFormSummaryValue.arbeidsforhold.periode": "{fom} - {tom}"
 }

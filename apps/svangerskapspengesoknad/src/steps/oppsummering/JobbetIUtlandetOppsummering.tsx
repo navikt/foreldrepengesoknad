@@ -43,7 +43,7 @@ export const JobbetIUtlandetOppsummering = ({ onVilEndreSvar }: Props) => {
                                     </FormSummary.Label>
                                     <FormSummary.Value>
                                         <FormattedMessage
-                                            id="ArbeidsforholdOppsummering.arbeidsforhold.periode"
+                                            id="JobbetIUtlandetOppsummering.arbeidsforhold.periode"
                                             values={{
                                                 fom: formatDate(arbeid.fom),
                                                 tom: arbeid.tom

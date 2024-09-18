@@ -38,7 +38,9 @@
     "ArbeidsforholdOppsummering.næringstype.fiske": "Fiske",
     "ArbeidsforholdOppsummering.næringstype.jordbrukSkogbruk": "Jordbruk",
     "ArbeidsforholdOppsummering.næringstype": "Hvilken type virksomhet har du?",
+    "ArbeidsforholdOppsummering.næringsinntekt": "Hva har du hatt i næringsresultat før skatt de siste 12 månedene?",
     "LandOppsummering.IDag": "i dag",
     "LandOppsummering.periode": "Fra {fra} til {til}",
-    "EndreSvar": "Endre svar"
+    "EndreSvar": "Endre svar",
+    "ArbeidsforholdFormSummaryValue.arbeidsforhold.periode": "{fom} - {tom}"
 }

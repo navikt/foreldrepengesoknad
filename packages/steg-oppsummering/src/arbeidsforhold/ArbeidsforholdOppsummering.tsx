@@ -117,7 +117,7 @@ const ArbeidsforholdFormSummaryValue = ({ arbeidsforhold }: { readonly arbeidsfo
             <FormSummary.Value>
                 Org nr: {arbeidsforhold.arbeidsgiverId},{' '}
                 <FormattedMessage
-                    id="ArbeidsforholdOppsummering.arbeidsforhold.periode"
+                    id="ArbeidsforholdFormSummaryValue.arbeidsforhold.periode"
                     values={{
                         fom: formatDate(arbeidsforhold.fom),
                         tom: arbeidsforhold.tom

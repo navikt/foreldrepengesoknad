@@ -40,5 +40,6 @@
     "ArbeidsforholdOppsummering.næringstype": "What type of business do you have?",
     "LandOppsummering.IDag": "today",
     "LandOppsummering.periode": "From {fra} to {til}",
-    "EndreSvar": "Edit"
+    "EndreSvar": "Edit",
+    "ArbeidsforholdFormSummaryValue.arbeidsforhold.periode": "{fom} - {tom}"
 }
