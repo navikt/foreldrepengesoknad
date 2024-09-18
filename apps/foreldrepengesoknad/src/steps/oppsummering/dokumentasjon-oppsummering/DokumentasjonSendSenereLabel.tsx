@@ -254,7 +254,8 @@ export const DokumentasjonSendSenereLabel = ({
             return (
                 <VStack gap="2">
                     <Label>
-                        <FormattedMessage id="manglendeVedlegg.studerer.label" />
+                        <FormattedMessage id="manglendeVedlegg.studerer.label" />{' '}
+                        <FormattedMessage id="dokumentasjon.mangler" />
                     </Label>
                     <div>
                         <BodyShort>
@@ -294,7 +295,8 @@ export const DokumentasjonSendSenereLabel = ({
             return (
                 <VStack gap="2">
                     <Label>
-                        <FormattedMessage id="manglendeVedlegg.studererOgJobber.label" />
+                        <FormattedMessage id="manglendeVedlegg.studererOgJobber.label" />{' '}
+                        <FormattedMessage id="dokumentasjon.mangler" />
                     </Label>
                     <div>
                         <BodyShort>

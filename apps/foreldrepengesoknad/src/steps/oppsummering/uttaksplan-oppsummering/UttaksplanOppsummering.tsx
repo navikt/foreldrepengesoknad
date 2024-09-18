@@ -89,10 +89,7 @@ const UttaksplanOppsummering: React.FunctionComponent<Props> = ({
                     <FormSummary.Value>{dekningsgradTekst}</FormSummary.Value>
                 </FormSummary.Answer>
                 <FormSummary.Answer>
-                    <UttaksplanOppsummeringsliste
-                        ønskerJustertUttakVedFødsel={ønskerJustertUttakVedFødsel}
-                        {...rest}
-                    ></UttaksplanOppsummeringsliste>
+                    <UttaksplanOppsummeringsliste ønskerJustertUttakVedFødsel={ønskerJustertUttakVedFødsel} {...rest} />
                 </FormSummary.Answer>
                 {ønskerJustertUttakVedFødsel !== undefined && (
                     <FormSummary.Answer>
