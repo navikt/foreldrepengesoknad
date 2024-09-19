@@ -114,12 +114,12 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
         annenForelder,
     );
 
-    const søker = søkerInfo.søker;
-    const rolle = søkersituasjon.rolle;
-
-    const barnetErIkkeFødt = isUfødtBarn(barn);
-
-    const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(søker, rolle, annenForelder, barnetErIkkeFødt);
+    const visInfoboksOmFarskapsportal = skalViseInfoOmFarskapsportal(
+        søkerInfo.søker,
+        søkersituasjon.rolle,
+        annenForelder,
+        isUfødtBarn(barn),
+    );
 
     return (
         <ContentWrapper>
