@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
+import styles from './lenke-panel.module.css';
+
 type Props = {
     tittel: string;
     to: string;
@@ -11,17 +13,14 @@ type Props = {
 };
 export const LenkePanel = ({ to, tittel, undertittel, Ikon }: Props) => {
     return (
-        <Link
-            to={to}
-            className="flex text-text-default shadow-small justify-between items-center rounded-large p-4 bg-white mb-12 w-[50%] hover:bg-deepblue-100 hover:shadow-none"
-        >
+        <Link to={to} className={styles.LenkePanel}>
             <HStack gap="4" align="center">
                 {Ikon && (
                     <Ikon
                         className="p-1 rounded-[50%] bg-deepblue-100 text-icon-info"
                         width={32}
                         height={32}
-                        aria-hidden={true}
+                        aria-hidden
                     />
                 )}
                 <VStack gap="0">

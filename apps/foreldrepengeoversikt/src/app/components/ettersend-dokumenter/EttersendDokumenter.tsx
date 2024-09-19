@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { HStack, LinkPanel } from '@navikt/ds-react';
 
-import { LenkePanel } from 'app/components/LenkePanel';
+import { LenkePanel } from 'app/components/lenke-panel/LenkePanel';
 import OversiktRoutes from 'app/routes/routes';
 
 const EttersendDokumenter = () => {
