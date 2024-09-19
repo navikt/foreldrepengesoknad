@@ -15,11 +15,9 @@ const GrupperteDokumenter: React.FunctionComponent<Props> = ({ dokumenter }) => 
         <Accordion>
             <Accordion.Item>
                 <Accordion.Header
+                    className="flex-row-reverse justify-between p-4 pt-0"
                     style={{
                         boxShadow: 'inset 0 -2px 0 0 rgb(7 26 54 / 21%)',
-                        padding: '1rem 0 1rem 1rem',
-                        flexDirection: 'row-reverse',
-                        justifyContent: 'space-between',
                     }}
                 >
                     <HStack gap="4">

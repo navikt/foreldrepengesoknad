@@ -20,7 +20,7 @@ import { grupperDokumenterPåTidspunkt } from 'app/utils/dokumenterUtils';
 import { guid } from 'app/utils/guid';
 
 const DokumenterPage: React.FunctionComponent = () => {
-    useSetBackgroundColor('blue');
+    useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.DOKUMENTER);
     const params = useParams();
 
@@ -41,7 +41,7 @@ const DokumenterPage: React.FunctionComponent = () => {
             <LenkePanel className="mb-8" tittel={lastOppDokTittel} to={`../${OversiktRoutes.ETTERSEND}`} />
             {!dokumenterQuery.isError && (
                 <>
-                    <div className="bg-white rounded-large p-4 pt-0 pb-12 mb-10">
+                    <div className="mb-10">
                         {Object.entries(dokumenterGruppertPåTidspunkt).map((dokument) => {
                             const dokumenter = dokument[1];
 

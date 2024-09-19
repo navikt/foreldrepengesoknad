@@ -51,7 +51,7 @@ const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
     const { type, mottatt } = dokument;
 
     return (
-        <div className="border-b-2 p-4 pr-0 border-gray-300">
+        <div className="border-b-2 p-4 pr-3 border-gray-300 last:border-none">
             <Hide above="md" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <HGrid columns={'max-content 1fr'} gap="4">
                     <DokumentLenke dokument={dokument} />
