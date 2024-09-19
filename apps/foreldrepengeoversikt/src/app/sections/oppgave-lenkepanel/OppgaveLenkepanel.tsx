@@ -1,36 +1,24 @@
-import { Link } from 'react-router-dom';
-
-import { DialogReport } from '@navikt/ds-icons';
-import { HStack, LinkPanel } from '@navikt/ds-react';
+import { ChatExclamationmarkIcon } from '@navikt/aksel-icons';
 
 import { formatDate } from '@navikt/fp-utils';
 
+import { LenkePanel } from 'app/components/lenke-panel/LenkePanel';
 import OversiktRoutes from 'app/routes/routes';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 
 interface Props {
     minidialogInnslag: MinidialogInnslag;
-    tittel: React.ReactNode | string;
+    tittel: string;
 }
 
 const OppgaveLenkepanel: React.FunctionComponent<Props> = ({ tittel, minidialogInnslag }) => {
     return (
-        <LinkPanel
-            as={Link}
+        <LenkePanel
+            undertittel={formatDate(minidialogInnslag.opprettet)}
+            tittel={tittel}
             to={`${OversiktRoutes.OPPGAVER}/${minidialogInnslag.dialogId}`}
-            border={false}
-            className="rounded-large"
-        >
-            <HStack align="center" gap="6">
-                <DialogReport aria-hidden={true}></DialogReport>
-                <div>
-                    <LinkPanel.Title as="h3" className="text-heading-medium">
-                        {tittel}
-                    </LinkPanel.Title>
-                    <LinkPanel.Description>{formatDate(minidialogInnslag.opprettet)}</LinkPanel.Description>
-                </div>
-            </HStack>
-        </LinkPanel>
+            Ikon={ChatExclamationmarkIcon}
+        />
     );
 };
 

@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-import { Alert, BodyLong, Heading, LinkPanel, Loader } from '@navikt/ds-react';
+import { Alert, BodyLong, Heading, Loader } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
@@ -10,6 +10,7 @@ import { hentDokumenterOptions } from 'app/api/api';
 import Dokument from 'app/components/dokument/Dokument';
 import GrupperteDokumenter from 'app/components/grupperte-dokumenter/GrupperteDokumenter';
 import { DokumenterHeader } from 'app/components/header/Header';
+import { LenkePanel } from 'app/components/lenke-panel/LenkePanel';
 import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
@@ -37,9 +38,7 @@ const DokumenterPage: React.FunctionComponent = () => {
 
     return (
         <PageRouteLayout header={<DokumenterHeader />}>
-            <LinkPanel as={Link} to={`../${OversiktRoutes.ETTERSEND}`} border={false} className="mb-8 rounded-large">
-                <LinkPanel.Title as="h2">{lastOppDokTittel}</LinkPanel.Title>
-            </LinkPanel>
+            <LenkePanel className="mb-8" tittel={lastOppDokTittel} to={`../${OversiktRoutes.ETTERSEND}`} />
             {!dokumenterQuery.isError && (
                 <>
                     <div className="bg-white rounded-large p-4 pt-0 pb-12 mb-10">
