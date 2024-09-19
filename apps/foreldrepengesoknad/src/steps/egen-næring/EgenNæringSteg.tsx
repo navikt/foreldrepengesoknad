@@ -6,8 +6,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
 
-import { EgenNæring, EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
+import { Arbeidsforhold, EgenNæring } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 

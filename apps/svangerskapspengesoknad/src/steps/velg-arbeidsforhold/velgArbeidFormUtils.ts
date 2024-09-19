@@ -4,10 +4,8 @@ import { egenNæringId } from 'types/EgenNæring';
 import Tilrettelegging, { Arbeidsforholdstype } from 'types/Tilrettelegging';
 import { getUnikeArbeidsforhold } from 'utils/arbeidsforholdUtils';
 
-import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
-import { EgenNæring } from '@navikt/fp-steg-egen-naering';
-import { Frilans, frilansId } from '@navikt/fp-steg-frilans';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { Arbeidsforhold, ArbeidsforholdOgInntektSvp, EgenNæring, Frilans } from '@navikt/fp-types';
+import { frilansId } from '@navikt/fp-types/src/Frilans';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 export const getOptionNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?: string) => {

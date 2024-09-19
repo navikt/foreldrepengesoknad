@@ -11,7 +11,7 @@ import {
     StønadskontoType,
     Uttaksperiode,
 } from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt/src/types/ArbeidsforholdOgInntekt';
+import { ArbeidsforholdOgInntektFp } from '@navikt/fp-types';
 
 import { cleanSøknad, getPeriodeVedTidspunkt, getUttaksplanMedFriUtsettelsesperiode } from './apiUtils';
 
