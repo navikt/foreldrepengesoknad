@@ -1,0 +1,7 @@
+import{j as r}from"./jsx-runtime-Cw0GR0a5.js";import{Q as a,a as n}from"./useQuery-D_fvW0PL.js";import{h as p,H as l}from"./index-CQPv6-if.js";import{s as u}from"./saker-C0JViQRW.js";import{O as e}from"./routes-Run26EI7.js";import{S as s}from"./Snarveier-DVwRXHoE.js";import{M as c,R as d,a as f}from"./index-DOF3ycNb.js";import"./index-CTjT7uj6.js";import"./decorators-Bo_HQzC9.js";import"./index-ghK6WsM8.js";import"./links-BegG-28I.js";import"./dates-DUtd6zgH.js";import"./Uttaksdagen-DwtUqmsK.js";import"./useSelectedSak-BWvfacv1.js";import"./api-BmJ5658F.js";import"./sakerUtils-CFuCOq9V.js";import"./_baseIteratee-CNgr-98l.js";import"./_getTag-COHPfPRs.js";import"./Ytelse-7td-ciMh.js";import"./dateUtils-C9nG-ATC.js";import"./Label-BeJqMiuK.js";import"./LinkPanel-8JOQjw2Y.js";import"./ChevronRight-Cbq2_cV6.js";import"./useId-BFxX0aRd.js";const h=new a,b={title:"Snarveier",component:s,render:()=>r.jsx(n,{client:h,children:r.jsx(c,{initialEntries:[`/${e.DIN_PLAN}/352011079`],children:r.jsx(d,{children:r.jsx(f,{element:r.jsx(s,{}),path:`/${e.DIN_PLAN}/:saksnummer`})})})})},t={parameters:{msw:{handlers:[p.get("/rest/innsyn/v2/saker",()=>l.json(u))]}}};var o,m,i;t.parameters={...t.parameters,docs:{...(o=t.parameters)==null?void 0:o.docs,source:{originalSource:`{
+  parameters: {
+    msw: {
+      handlers: [http.get('/rest/innsyn/v2/saker', () => HttpResponse.json(saker))]
+    }
+  }
+}`,...(i=(m=t.parameters)==null?void 0:m.docs)==null?void 0:i.source}}};const z=["Default"];export{t as Default,z as __namedExportsOrder,b as default};
