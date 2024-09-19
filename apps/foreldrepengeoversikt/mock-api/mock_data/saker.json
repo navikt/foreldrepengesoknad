@@ -1,9 +1,9 @@
 {
     "foreldrepenger": [
         {
-            "saksnummer": "352014464",
+            "saksnummer": "352017289",
             "sakAvsluttet": false,
-            "kanSøkeOmEndring": true,
+            "kanSøkeOmEndring": false,
             "sakTilhørerMor": true,
             "gjelderAdopsjon": false,
             "morUføretrygd": false,
@@ -11,45 +11,127 @@
             "ønskerJustertUttakVedFødsel": false,
             "rettighetType": "BEGGE_RETT",
             "annenPart": {
-                "fnr": "14529000325"
+                "fnr": "01470597948"
             },
             "familiehendelse": {
-                "termindato": "2024-03-05",
-                "antallBarn": 1
+                "fødselsdato": "2023-01-16",
+                "termindato": "2023-07-10",
+                "antallBarn": 3
             },
-            "gjeldendeVedtak": {
-                "perioder": [
+            "åpenBehandling": {
+                "tilstand": "UNDER_BEHANDLING",
+                "søknadsperioder": [
                     {
-                        "fom": "2024-02-13",
-                        "tom": "2024-03-04",
-                        "kontoType": "FORELDREPENGER_FØR_FØDSEL",
-                        "resultat": {
-                            "innvilget": true,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "ANNET"
-                        },
+                        "fom": "2023-01-16",
+                        "tom": "2023-04-28",
+                        "kontoType": "MØDREKVOTE",
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2024-03-05",
-                        "tom": "2024-04-15",
-                        "kontoType": "MØDREKVOTE",
-                        "resultat": {
-                            "innvilget": true,
-                            "trekkerMinsterett": true,
-                            "trekkerDager": true,
-                            "årsak": "ANNET"
-                        },
+                        "fom": "2023-05-01",
+                        "tom": "2024-12-27",
+                        "kontoType": "FELLESPERIODE",
+                        "flerbarnsdager": false
+                    }
+                ]
+            },
+            "barn": [
+                {
+                    "fnr": "16412351219"
+                },
+                {
+                    "fnr": "16412358035"
+                },
+                {
+                    "fnr": "16412350778"
+                }
+            ],
+            "dekningsgrad": "HUNDRE",
+            "oppdatertTidspunkt": "2024-09-16T15:10:40.014"
+        },
+        {
+            "saksnummer": "352018196",
+            "sakAvsluttet": false,
+            "kanSøkeOmEndring": false,
+            "sakTilhørerMor": true,
+            "gjelderAdopsjon": false,
+            "morUføretrygd": false,
+            "harAnnenForelderTilsvarendeRettEØS": false,
+            "ønskerJustertUttakVedFødsel": false,
+            "rettighetType": "ALENEOMSORG",
+            "familiehendelse": {
+                "termindato": "2024-11-03",
+                "antallBarn": 1
+            },
+            "åpenBehandling": {
+                "tilstand": "VENT_TIDLIG_SØKNAD",
+                "søknadsperioder": [
+                    {
+                        "fom": "2024-10-14",
+                        "tom": "2024-11-01",
+                        "kontoType": "FORELDREPENGER_FØR_FØDSEL",
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2024-11-04",
+                        "tom": "2024-12-01",
+                        "kontoType": "FORELDREPENGER",
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2024-12-02",
+                        "tom": "2025-09-18",
+                        "kontoType": "FORELDREPENGER",
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2025-09-19",
+                        "tom": "2025-09-19",
+                        "kontoType": "FORELDREPENGER",
                         "flerbarnsdager": false
                     }
                 ]
             },
             "barn": [],
             "dekningsgrad": "HUNDRE",
-            "oppdatertTidspunkt": "2024-02-28T21:19:08.911"
+            "oppdatertTidspunkt": "2024-09-12T14:37:30.666"
         }
     ],
     "engangsstønad": [],
-    "svangerskapspenger": []
+    "svangerskapspenger": [
+        {
+            "saksnummer": "352017891",
+            "familiehendelse": {
+                "termindato": "2024-10-31",
+                "antallBarn": 0
+            },
+            "sakAvsluttet": false,
+            "åpenBehandling": {
+                "tilstand": "UNDER_BEHANDLING",
+                "søknad": {
+                    "arbeidsforhold": [
+                        {
+                            "aktivitet": {
+                                "type": "ORDINÆRT_ARBEID",
+                                "arbeidsgiver": {
+                                    "id": "896929119",
+                                    "type": "ORGANISASJON"
+                                }
+                            },
+                            "behovFrom": "2024-09-01",
+                            "tilrettelegginger": [
+                                {
+                                    "fom": "2024-09-05",
+                                    "tom": "2024-10-09",
+                                    "type": "INGEN"
+                                }
+                            ],
+                            "oppholdsperioder": []
+                        }
+                    ]
+                }
+            },
+            "oppdatertTidspunkt": "2024-09-10T19:35:44.75"
+        }
+    ]
 }
