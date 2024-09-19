@@ -27,7 +27,6 @@ const getHeading = (ytelse: Ytelse) => {
 
 const SakLink: React.FunctionComponent<Props> = ({ sak }) => {
     return (
-        // TODO: sjekk andre steder det blir sånn her konflik
         <LinkPanel as={Link} to={`/sak/${sak.saksnummer}`} className={styles.sakLink}>
             <VStack gap="1">
                 <Heading level="3" size="medium">
