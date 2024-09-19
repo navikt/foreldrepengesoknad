@@ -6,10 +6,9 @@ import { useParams } from 'react-router-dom';
 
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
-
 import { hentSakerOptions, søkerInfoOptions } from 'app/api/api';
 import { useGetSelectedRoute } from 'app/hooks/useSelectedRoute';
+import { LayoutWrapper } from 'app/sections/LayoutWrapper';
 import { Sak } from 'app/types/Sak';
 import { Ytelse } from 'app/types/Ytelse';
 import {
@@ -22,7 +21,6 @@ import {
 
 import Breadcrumb from '../breadcrumb/Breadcrumb';
 import StatusTag from '../status-tag/StatusTag';
-import './header.css';
 
 export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
     if (ytelse === Ytelse.ENGANGSSTØNAD) {
@@ -37,12 +35,11 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
 };
 
 function HeaderWrapper({ children }: { children: ReactNode }) {
-    const bem = bemUtils('header');
     const selectedRoute = useGetSelectedRoute();
     return (
-        <div className={bem.block}>
+        <div className="bg-bg-default border-b-2 border-deepblue-200 pt-4 mb-8">
             <Breadcrumb selectedRoute={selectedRoute} />
-            <div className={bem.element('wrapper')}>{children}</div>
+            <LayoutWrapper className="pt-6 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
         </div>
     );
 }
@@ -208,8 +205,6 @@ function FamiliehendelseDescription({ sak }: { sak: Sak }) {
 }
 
 export function DinSakHeader({ sak }: { sak?: Sak }) {
-    const bem = bemUtils('header');
-
     if (!sak) {
         return null;
     }
@@ -223,7 +218,7 @@ export function DinSakHeader({ sak }: { sak?: Sak }) {
                         <Heading level="1" size="medium">
                             Din sak
                         </Heading>
-                        <StatusTag sak={sak} className={bem.element('tag')} />
+                        <StatusTag sak={sak} />
                     </HStack>
                     <Show above="md">
                         <HStack gap="3" align="center">

@@ -1,24 +1,19 @@
 import { Folder } from '@navikt/ds-icons';
-import { Accordion, BodyShort } from '@navikt/ds-react';
-
-import { bemUtils } from '@navikt/fp-utils';
+import { Accordion, BodyShort, HStack } from '@navikt/ds-react';
 
 import { Dokument as DokumentType } from 'app/types/Dokument';
 import { guid } from 'app/utils/guid';
 
 import Dokument from '../dokument/Dokument';
-import './grupperte-dokumenter.css';
 
 interface Props {
     dokumenter: DokumentType[];
 }
 
 const GrupperteDokumenter: React.FunctionComponent<Props> = ({ dokumenter }) => {
-    const bem = bemUtils('grupperte-dokumenter');
-
     return (
-        <Accordion className={bem.block}>
-            <Accordion.Item className={bem.element('item')}>
+        <Accordion>
+            <Accordion.Item>
                 <Accordion.Header
                     style={{
                         boxShadow: 'inset 0 -2px 0 0 rgb(7 26 54 / 21%)',
@@ -27,12 +22,12 @@ const GrupperteDokumenter: React.FunctionComponent<Props> = ({ dokumenter }) => 
                         justifyContent: 'space-between',
                     }}
                 >
-                    <span className={bem.element('header-content')}>
-                        <Folder className={bem.element('ikon')} aria-hidden={true} />
+                    <HStack gap="4">
+                        <Folder aria-hidden={true} />
                         <BodyShort>{dokumenter.length} dokumenter</BodyShort>
-                    </span>
+                    </HStack>
                 </Accordion.Header>
-                <Accordion.Content className={bem.element('content')}>
+                <Accordion.Content className="ml-12 p-0">
                     {dokumenter.map((dokument) => {
                         return <Dokument key={guid()} dokument={dokument} />;
                     })}

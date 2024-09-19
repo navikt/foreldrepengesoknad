@@ -1,9 +1,10 @@
+import { FilesIcon, FolderFileIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { Alert, VStack } from '@navikt/ds-react';
+import { Alert, HGrid, VStack } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
@@ -15,10 +16,8 @@ import {
 } from 'app/api/api';
 import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import ContentSection from 'app/components/content-section/ContentSection';
-import EttersendDokumenter from 'app/components/ettersend-dokumenter/EttersendDokumenter';
 import { DinSakHeader, getSaksoversiktHeading } from 'app/components/header/Header';
-import SeDokumenter from 'app/components/se-dokumenter/SeDokumenter';
-import SeHeleProsessen from 'app/components/se-hele-prosessen/SeHeleProsessen';
+import { LenkePanel } from 'app/components/lenke-panel/LenkePanel';
 import { useAnnenPartsVedtak } from 'app/hooks/useAnnenPartsVedtak';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import {
@@ -121,7 +120,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
                         heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
                         showSkeleton={tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending}
                         skeletonProps={{ height: '250px', variant: 'rounded' }}
-                        marginBottom="small"
+                        className="mb-2"
                     >
                         <Tidslinje
                             sak={gjeldendeSak}
@@ -131,16 +130,18 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
                             søkersBarn={søkerinfo.søker.barn ?? []}
                         />
                     </ContentSection>
-                    <ContentSection padding="none" marginBottom="large">
-                        <SeHeleProsessen />
-                    </ContentSection>
+                    <section className="mb-12">
+                        <LenkePanel tittel="Se hele prosessen" to={OversiktRoutes.TIDSLINJEN} />
+                    </section>
                 </VStack>
-                <ContentSection padding="none" marginBottom="medium">
-                    <SeDokumenter />
-                </ContentSection>
-                <ContentSection padding="none" marginBottom="large">
-                    <EttersendDokumenter />
-                </ContentSection>
+                <HGrid gap="4" columns={{ sm: 1, md: 2 }}>
+                    <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
+                    <LenkePanel
+                        tittel="Ettersend dokumenter"
+                        to={`${OversiktRoutes.DOKUMENTER}/${OversiktRoutes.ETTERSEND}`}
+                        Ikon={FilesIcon}
+                    />
+                </HGrid>
                 {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
                     <ContentSection
                         heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
