@@ -10,6 +10,7 @@ import Forside from 'app/pages/forside/Forside';
 import MinidialogPage from 'app/pages/minidialog-page/MinidialogPage';
 import Saksoversikt from 'app/pages/saksoversikt/Saksoversikt';
 import TidslinjePage from 'app/pages/tidslinje-page/TidslinjePage';
+import { LayoutWrapper } from 'app/sections/LayoutWrapper';
 import KontaktOss from 'app/sections/kontakt-oss/KontaktOss';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
@@ -91,7 +92,7 @@ export function PageRouteLayout({ header, children }: { header: ReactNode; child
     return (
         <>
             {header}
-            <div className="w-full md:w-[704px] m-auto pb-28">{children}</div>
+            <LayoutWrapper className="md:pb-28 pb-4 pl-4 pr-4">{children}</LayoutWrapper>
             {/*Viktig at Snarveier ligger her slik at den har tilgang til saksnummer fra Route da snarveien er dynamiske*/}
             <Snarveier />
         </>

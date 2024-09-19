@@ -4,11 +4,12 @@ import { Dialog, Send, Telephone } from '@navikt/ds-icons';
 import { BodyShort, HGrid, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { NavRoutes } from 'app/routes/routes';
+import { LayoutWrapper } from 'app/sections/LayoutWrapper';
 
 const KontaktOss: React.FunctionComponent = () => {
     return (
         <div className="bg-white p-8">
-            <div className="w-full md:w-[704px] m-auto">
+            <LayoutWrapper>
                 <Heading size="medium" spacing>
                     <FormattedMessage id="saksoversikt.kontaktOss" />
                 </Heading>
@@ -55,7 +56,7 @@ const KontaktOss: React.FunctionComponent = () => {
                         </Link>
                     </VStack>
                 </HGrid>
-            </div>
+            </LayoutWrapper>
         </div>
     );
 };

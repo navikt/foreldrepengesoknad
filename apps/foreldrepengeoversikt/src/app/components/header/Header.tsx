@@ -8,6 +8,7 @@ import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { hentSakerOptions, søkerInfoOptions } from 'app/api/api';
 import { useGetSelectedRoute } from 'app/hooks/useSelectedRoute';
+import { LayoutWrapper } from 'app/sections/LayoutWrapper';
 import { Sak } from 'app/types/Sak';
 import { Ytelse } from 'app/types/Ytelse';
 import {
@@ -38,7 +39,7 @@ function HeaderWrapper({ children }: { children: ReactNode }) {
     return (
         <div className="bg-bg-default border-b-2 border-deepblue-200 pt-4 mb-8">
             <Breadcrumb selectedRoute={selectedRoute} />
-            <div className="w-full md:w-[704px] m-auto pt-6 pb-6 pl-4 pr-4">{children}</div>
+            <LayoutWrapper className="pt-6 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
         </div>
     );
 }
