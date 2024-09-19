@@ -100,7 +100,7 @@ export const getOmsorgsovertakelseVedlegg = (vedlegg: VedleggDataType) => {
         ? vedlegg[Skjemanummer.OMSORGSOVERTAKELSE]
         : [];
 
-    return omsorgsovertakelseVedlegg;
+    return fjernSendSenereVedlegg(omsorgsovertakelseVedlegg);
 };
 
 export const isAleneOmOmsorgVedlegg = (attachment: Attachment) => {
@@ -112,7 +112,7 @@ export const getAleneOmOmsorgVedlegg = (vedlegg: VedleggDataType) => {
         ? vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG]
         : [];
 
-    return aleneOmOmsorgVedlegg;
+    return fjernSendSenereVedlegg(aleneOmOmsorgVedlegg);
 };
 
 export const isTerminbekreftelseVedlegg = (attachment: Attachment) => {
@@ -124,24 +124,23 @@ export const getTerminbekreftelseVedlegg = (vedlegg: VedleggDataType) => {
         ? vedlegg[Skjemanummer.TERMINBEKREFTELSE]
         : [];
 
-    return terminbekreftelseVedlegg;
+    return fjernSendSenereVedlegg(terminbekreftelseVedlegg);
 };
 
-export const getAndreInntekterVedlegg = (vedlegg: VedleggDataType) => {
-    const andreInntekterVedlegg = [];
+export const getMilitærEllerSiviltjenesteVedlegg = (vedlegg: VedleggDataType) => {
+    const militærEllerSiviltjenesteVedlegg = vedlegg[Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]
+        ? vedlegg[Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]
+        : [];
 
-    const militær = vedlegg[Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE];
-    const etterlønn = vedlegg[Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG];
+    return fjernSendSenereVedlegg(militærEllerSiviltjenesteVedlegg);
+};
 
-    if (militær) {
-        andreInntekterVedlegg.push(...militær);
-    }
+export const getEtterlønnEllerSluttvederlagVedlegg = (vedlegg: VedleggDataType) => {
+    const etterlønnEllerSluttvederlagVedlegg = vedlegg[Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]
+        ? vedlegg[Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]
+        : [];
 
-    if (etterlønn) {
-        andreInntekterVedlegg.push(...etterlønn);
-    }
-
-    return andreInntekterVedlegg;
+    return fjernSendSenereVedlegg(etterlønnEllerSluttvederlagVedlegg);
 };
 
 export const isMilitærVedlegg = (attachment: Attachment) => {
@@ -189,13 +188,13 @@ export const getMorInnlagtVedlegg = (vedlegg: VedleggDataType) => {
         ? vedlegg[Skjemanummer.DOK_INNLEGGELSE_MOR]
         : [];
 
-    return morInnlagtVedlegg;
+    return fjernSendSenereVedlegg(morInnlagtVedlegg);
 };
 
 export const getMorForSykVedlegg = (vedlegg: VedleggDataType) => {
     const morForSykVedlegg = vedlegg[Skjemanummer.DOK_SYKDOM_MOR] ? vedlegg[Skjemanummer.DOK_SYKDOM_MOR] : [];
 
-    return morForSykVedlegg;
+    return fjernSendSenereVedlegg(morForSykVedlegg);
 };
 
 export const getFarInnlagtVedlegg = (vedlegg: VedleggDataType) => {
@@ -203,13 +202,13 @@ export const getFarInnlagtVedlegg = (vedlegg: VedleggDataType) => {
         ? vedlegg[Skjemanummer.DOK_INNLEGGELSE_FAR]
         : [];
 
-    return farInnlagtVedlegg;
+    return fjernSendSenereVedlegg(farInnlagtVedlegg);
 };
 
 export const getFarForSykVedlegg = (vedlegg: VedleggDataType) => {
     const farForSykVedlegg = vedlegg[Skjemanummer.DOK_SYKDOM_FAR] ? vedlegg[Skjemanummer.DOK_SYKDOM_FAR] : [];
 
-    return farForSykVedlegg;
+    return fjernSendSenereVedlegg(farForSykVedlegg);
 };
 
 export const getBarnInnlagtVedlegg = (vedlegg: VedleggDataType) => {
@@ -217,45 +216,49 @@ export const getBarnInnlagtVedlegg = (vedlegg: VedleggDataType) => {
         ? vedlegg[Skjemanummer.DOK_INNLEGGELSE_BARN]
         : [];
 
-    return barnInnlagtVedlegg;
+    return fjernSendSenereVedlegg(barnInnlagtVedlegg);
 };
 
 export const getMorStudererVedlegg = (vedlegg: VedleggDataType) => {
     const morStudererVedlegg = vedlegg[Skjemanummer.DOK_UTDANNING_MOR] ? vedlegg[Skjemanummer.DOK_UTDANNING_MOR] : [];
 
-    return morStudererVedlegg;
+    return fjernSendSenereVedlegg(morStudererVedlegg);
 };
 
 export const getMorJobberVedlegg = (vedlegg: VedleggDataType) => {
     const morJobberVedlegg = vedlegg[Skjemanummer.DOK_ARBEID_MOR] ? vedlegg[Skjemanummer.DOK_ARBEID_MOR] : [];
 
-    return morJobberVedlegg;
+    return fjernSendSenereVedlegg(morJobberVedlegg);
 };
 
 export const getMorJobberOgStudererVedlegg = (vedlegg: VedleggDataType) => {
-    const morJobberVedlegg = vedlegg[Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]
+    const morJobberOgStudererVedlegg = vedlegg[Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]
         ? vedlegg[Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]
         : [];
 
-    return morJobberVedlegg;
+    return fjernSendSenereVedlegg(morJobberOgStudererVedlegg);
 };
 
 export const getMorIntroprogramVedlegg = (vedlegg: VedleggDataType) => {
-    const morJobberVedlegg = vedlegg[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]
+    const morIntroprogramVedlegg = vedlegg[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]
         ? vedlegg[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]
         : [];
 
-    return morJobberVedlegg;
+    return fjernSendSenereVedlegg(morIntroprogramVedlegg);
 };
 
 export const getMorKvalprogramVedlegg = (vedlegg: VedleggDataType) => {
-    const morJobberVedlegg = vedlegg[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]
+    const morKvalprogramVedlegg = vedlegg[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]
         ? vedlegg[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]
         : [];
 
-    return morJobberVedlegg;
+    return fjernSendSenereVedlegg(morKvalprogramVedlegg);
 };
 
 export const isSendSenereVedlegg = (attachment: Attachment) => {
     return attachment.innsendingsType === InnsendingsType.SEND_SENERE;
+};
+
+export const fjernSendSenereVedlegg = (attachments: Attachment[]) => {
+    return attachments.filter((a) => !isSendSenereVedlegg(a));
 };

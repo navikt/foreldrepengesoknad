@@ -36,9 +36,12 @@ import MorStudererDokumentasjon from './dokumentasjon/MorStudererDokumentasjon';
 import OmsorgsovertakelseDokumentasjon from './dokumentasjon/OmsorgsovertakelseDokumentasjon';
 import TerminbekreftelseDokumentasjon from './dokumentasjon/TerminbekreftelseDokumentasjon';
 import {
+    getAleneOmOmsorgVedlegg,
     getBarnInnlagtVedlegg,
+    getEtterlønnEllerSluttvederlagVedlegg,
     getFarForSykVedlegg,
     getFarInnlagtVedlegg,
+    getMilitærEllerSiviltjenesteVedlegg,
     getMorForSykVedlegg,
     getMorInnlagtVedlegg,
     getMorIntroprogramVedlegg,
@@ -46,6 +49,8 @@ import {
     getMorJobberVedlegg,
     getMorKvalprogramVedlegg,
     getMorStudererVedlegg,
+    getOmsorgsovertakelseVedlegg,
+    getTerminbekreftelseVedlegg,
     isPeriodeMedFarForSyk,
     isPeriodeMedFarInnleggelse,
     isPeriodeMedMorForSyk,
@@ -55,7 +60,6 @@ import {
     isPeriodeMedMorJobberOgStuderer,
     isPeriodeMedMorKvalprogram,
     isPeriodeMedMorStuderer,
-    isSendSenereVedlegg,
 } from './util';
 
 type Props = {
@@ -102,11 +106,11 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
     const morJobberOgStudererVedlegg = getMorJobberOgStudererVedlegg(vedlegg);
     const morIntroprogramVedlegg = getMorIntroprogramVedlegg(vedlegg);
     const morKvalprogramVedlegg = getMorKvalprogramVedlegg(vedlegg);
-    const aleneomsorgVedlegg = vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG] || [];
-    const terminbekreftelseVedlegg = vedlegg[Skjemanummer.TERMINBEKREFTELSE] || [];
-    const adopsjonVedlegg = vedlegg[Skjemanummer.OMSORGSOVERTAKELSE] || [];
-    const militærEllerSiviltjenesteVedlegg = vedlegg[Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE] || [];
-    const etterlønnEllerSluttvederlagVedlegg = vedlegg[Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG] || [];
+    const aleneomsorgVedlegg = getAleneOmOmsorgVedlegg(vedlegg);
+    const terminbekreftelseVedlegg = getTerminbekreftelseVedlegg(vedlegg);
+    const adopsjonVedlegg = getOmsorgsovertakelseVedlegg(vedlegg);
+    const militærEllerSiviltjenesteVedlegg = getMilitærEllerSiviltjenesteVedlegg(vedlegg);
+    const etterlønnEllerSluttvederlagVedlegg = getEtterlønnEllerSluttvederlagVedlegg(vedlegg);
 
     const morInnlagtPerioder = perioderSomManglerVedlegg.filter(isPeriodeMedMorInnleggelse);
     const barnInnlagtPerioder = perioderSomManglerVedlegg.filter(isUtsettelseBarnInnlagt);
@@ -158,23 +162,21 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
 
     const formMethods = useForm<ManglendeVedleggFormData>({
         defaultValues: {
-            [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]:
-                vedlegg[Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM] || [],
-            [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]:
-                vedlegg[Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET] || [],
-            [Skjemanummer.DOK_INNLEGGELSE_MOR]: vedlegg[Skjemanummer.DOK_INNLEGGELSE_MOR] || [],
-            [Skjemanummer.DOK_INNLEGGELSE_BARN]: vedlegg[Skjemanummer.DOK_INNLEGGELSE_BARN] || [],
-            [Skjemanummer.DOK_INNLEGGELSE_FAR]: vedlegg[Skjemanummer.DOK_INNLEGGELSE_FAR] || [],
-            [Skjemanummer.DOK_SYKDOM_FAR]: vedlegg[Skjemanummer.DOK_SYKDOM_FAR] || [],
-            [Skjemanummer.DOK_SYKDOM_MOR]: vedlegg[Skjemanummer.DOK_SYKDOM_MOR] || [],
-            [Skjemanummer.DOK_UTDANNING_MOR]: vedlegg[Skjemanummer.DOK_UTDANNING_MOR] || [],
-            [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: vedlegg[Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR] || [],
-            [Skjemanummer.DOK_ARBEID_MOR]: vedlegg[Skjemanummer.DOK_ARBEID_MOR] || [],
-            [Skjemanummer.DOK_AV_ALENEOMSORG]: vedlegg[Skjemanummer.DOK_AV_ALENEOMSORG] || [],
-            [Skjemanummer.TERMINBEKREFTELSE]: vedlegg[Skjemanummer.TERMINBEKREFTELSE] || [],
-            [Skjemanummer.OMSORGSOVERTAKELSE]: vedlegg[Skjemanummer.OMSORGSOVERTAKELSE] || [],
-            [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: vedlegg[Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE] || [],
-            [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: vedlegg[Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG] || [],
+            [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: morKvalprogramVedlegg,
+            [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: morIntroprogramVedlegg,
+            [Skjemanummer.DOK_INNLEGGELSE_MOR]: morInnlagtVedlegg,
+            [Skjemanummer.DOK_INNLEGGELSE_BARN]: barnInnlagtVedlegg,
+            [Skjemanummer.DOK_INNLEGGELSE_FAR]: farInnlagtVedlegg,
+            [Skjemanummer.DOK_SYKDOM_FAR]: farForSykvedlegg,
+            [Skjemanummer.DOK_SYKDOM_MOR]: morForSykVedlegg,
+            [Skjemanummer.DOK_UTDANNING_MOR]: morStudererVedlegg,
+            [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: morJobberOgStudererVedlegg,
+            [Skjemanummer.DOK_ARBEID_MOR]: morJobberVedlegg,
+            [Skjemanummer.DOK_AV_ALENEOMSORG]: aleneomsorgVedlegg,
+            [Skjemanummer.TERMINBEKREFTELSE]: terminbekreftelseVedlegg,
+            [Skjemanummer.OMSORGSOVERTAKELSE]: adopsjonVedlegg,
+            [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: militærEllerSiviltjenesteVedlegg,
+            [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: etterlønnEllerSluttvederlagVedlegg,
         },
     });
 
@@ -194,7 +196,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
             <RhfForm formMethods={formMethods} onSubmit={lagre}>
                 <VStack gap="10">
                     <MorInnlagtDokumentasjon
-                        attachments={morInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        attachments={morInnlagtVedlegg}
                         familiehendelsesdato={familiehendelsesdato}
                         navnPåForeldre={navnPåForeldre}
                         perioder={morInnlagtPerioder}
@@ -204,7 +206,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                         erFarEllerMedmor={erFarEllerMedmor}
                     />
                     <MorForSykDokumentasjon
-                        attachments={morForSykVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        attachments={morForSykVedlegg}
                         familiehendelsesdato={familiehendelsesdato}
                         navnPåForeldre={navnPåForeldre}
                         perioder={morForSykPerioder}
@@ -214,7 +216,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                         erFarEllerMedmor={erFarEllerMedmor}
                     />
                     <FarInnlagtDokumentasjon
-                        attachments={farInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        attachments={farInnlagtVedlegg}
                         familiehendelsesdato={familiehendelsesdato}
                         navnPåForeldre={navnPåForeldre}
                         perioder={farInnlagtPerioder}
@@ -224,7 +226,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                         erFarEllerMedmor={erFarEllerMedmor}
                     />
                     <FarForSykDokumentasjon
-                        attachments={farForSykvedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        attachments={farForSykvedlegg}
                         familiehendelsesdato={familiehendelsesdato}
                         navnPåForeldre={navnPåForeldre}
                         perioder={farForSykPerioder}
@@ -234,7 +236,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                         erFarEllerMedmor={erFarEllerMedmor}
                     />
                     <BarnInnlagtDokumentasjon
-                        attachments={barnInnlagtVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        attachments={barnInnlagtVedlegg}
                         familiehendelsesdato={familiehendelsesdato}
                         navnPåForeldre={navnPåForeldre}
                         perioder={barnInnlagtPerioder}
@@ -243,7 +245,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                         updateAttachments={updateAttachments}
                     />
                     <MorStudererDokumentasjon
-                        attachments={morStudererVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        attachments={morStudererVedlegg}
                         familiehendelsesdato={familiehendelsesdato}
                         navnPåForeldre={navnPåForeldre}
                         perioder={morStudererPerioder}
@@ -252,7 +254,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                         updateAttachments={updateAttachments}
                     />
                     <MorJobberDokumentasjon
-                        attachments={morJobberVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        attachments={morJobberVedlegg}
                         familiehendelsesdato={familiehendelsesdato}
                         navnPåForeldre={navnPåForeldre}
                         perioder={morJobberPerioder}
@@ -261,9 +263,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                         updateAttachments={updateAttachments}
                     />
                     <MorJobberOgStudererDokumentasjon
-                        attachments={morJobberOgStudererVedlegg.filter(
-                            (attachment) => !isSendSenereVedlegg(attachment),
-                        )}
+                        attachments={morJobberOgStudererVedlegg}
                         familiehendelsesdato={familiehendelsesdato}
                         navnPåForeldre={navnPåForeldre}
                         perioder={morJobberOgStudererPerioder}
@@ -272,7 +272,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                         updateAttachments={updateAttachments}
                     />
                     <MorIntroduksjonsprogrammetDokumentasjon
-                        attachments={morIntroprogramVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        attachments={morIntroprogramVedlegg}
                         familiehendelsesdato={familiehendelsesdato}
                         navnPåForeldre={navnPåForeldre}
                         perioder={morIntroPerioder}
@@ -281,7 +281,7 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                         updateAttachments={updateAttachments}
                     />
                     <MorKvalifiseringsprogrammetDokumentasjon
-                        attachments={morKvalprogramVedlegg.filter((attachment) => !isSendSenereVedlegg(attachment))}
+                        attachments={morKvalprogramVedlegg}
                         familiehendelsesdato={familiehendelsesdato}
                         navnPåForeldre={navnPåForeldre}
                         perioder={morKvalPerioder}
