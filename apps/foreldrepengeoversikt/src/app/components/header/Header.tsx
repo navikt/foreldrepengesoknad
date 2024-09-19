@@ -37,7 +37,17 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
 function HeaderWrapper({ children }: { children: ReactNode }) {
     const selectedRoute = useGetSelectedRoute();
     return (
-        <div className="bg-bg-default border-b-2 border-deepblue-200 pt-4 mb-8">
+        <div className={`bg-bg-default border-b-2 border-deepblue-200 pt-4 mb-8`}>
+            <Breadcrumb selectedRoute={selectedRoute} />
+            <LayoutWrapper className="pt-6 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
+        </div>
+    );
+}
+
+function SimpleHeaderWrapper({ children }: { children: ReactNode }) {
+    const selectedRoute = useGetSelectedRoute();
+    return (
+        <div className={`bg-bg-default pt-4`}>
             <Breadcrumb selectedRoute={selectedRoute} />
             <LayoutWrapper className="pt-6 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
         </div>
@@ -119,55 +129,26 @@ function SaksnummerDetail() {
 }
 
 export function DokumenterHeader() {
-    const heading = (
-        <Heading level="1" size="medium">
-            Dokumenter
-        </Heading>
-    );
-
+    const { saksnummer } = useParams();
     return (
-        <HeaderWrapper>
-            <Show above="md">
-                <VStack gap="3">
-                    {heading}
-                    <HStack gap="3" align="center">
-                        <SaksnummerDetail />
-                        <BlueDot />
-                        <Detail textColor="subtle">Dokumenter som du, arbeidsgiver og NAV har sendt</Detail>
-                    </HStack>
-                </VStack>
-            </Show>
-            <Show below="md">
-                <VStack gap="1">
-                    {heading}
-                    <SaksnummerDetail />
-                </VStack>
-            </Show>
-        </HeaderWrapper>
+        <SimpleHeaderWrapper>
+            <Heading level="1" size="medium">
+                Dokumenter
+            </Heading>
+            <Detail textColor="subtle">
+                Dokumenter fra du, arbeidsgiver og NAV som tilhører saken din ({saksnummer})
+            </Detail>
+        </SimpleHeaderWrapper>
     );
 }
 
 export function EttersendingHeader() {
-    const header = (
-        <Heading level="1" size="medium">
-            Last opp dokumenter
-        </Heading>
-    );
     return (
-        <HeaderWrapper>
-            <Show above="md">
-                <VStack gap="3">
-                    {header}
-                    <SaksnummerDetail />
-                </VStack>
-            </Show>
-            <Show below="md">
-                <VStack gap="1">
-                    {header}
-                    <SaksnummerDetail />
-                </VStack>
-            </Show>
-        </HeaderWrapper>
+        <SimpleHeaderWrapper>
+            <Heading level="1" size="medium">
+                Last opp dokumenter
+            </Heading>
+        </SimpleHeaderWrapper>
     );
 }
 
