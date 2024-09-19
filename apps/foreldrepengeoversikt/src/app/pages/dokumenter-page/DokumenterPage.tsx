@@ -1,8 +1,9 @@
+import { ArrowRightIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
-import { Alert, BodyLong, Heading, Loader } from '@navikt/ds-react';
+import { Alert, BodyLong, Button, Heading, Loader } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
@@ -10,7 +11,6 @@ import { hentDokumenterOptions } from 'app/api/api';
 import Dokument from 'app/components/dokument/Dokument';
 import GrupperteDokumenter from 'app/components/grupperte-dokumenter/GrupperteDokumenter';
 import { DokumenterHeader } from 'app/components/header/Header';
-import { LenkePanel } from 'app/components/lenke-panel/LenkePanel';
 import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
@@ -38,7 +38,16 @@ const DokumenterPage: React.FunctionComponent = () => {
 
     return (
         <PageRouteLayout header={<DokumenterHeader />}>
-            <LenkePanel className="mb-8" tittel={lastOppDokTittel} to={`../${OversiktRoutes.ETTERSEND}`} />
+            <Button
+                icon={<ArrowRightIcon aria-hidden />}
+                iconPosition="right"
+                as={Link}
+                variant="primary"
+                className="mb-8"
+                to={`../${OversiktRoutes.ETTERSEND}`}
+            >
+                {lastOppDokTittel}
+            </Button>
             {!dokumenterQuery.isError && (
                 <>
                     <div className="mb-10">
