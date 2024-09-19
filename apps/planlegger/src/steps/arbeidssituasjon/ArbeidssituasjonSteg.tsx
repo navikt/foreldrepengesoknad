@@ -59,7 +59,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser, locale }) => {
         const minstEnJobber = formValues.status === Arbeidsstatus.JOBBER || formValues.jobberAnnenPart;
 
         if (minstEnJobber) {
-            navigator.goToNextStep(PlanleggerRoutes.HVOR_LANG_PERIODE);
+            navigator.goToNextStep(PlanleggerRoutes.HVOR_MYE);
         } else {
             oppdaterFordeling(undefined);
             oppdaterHvorLangPeriode(undefined);

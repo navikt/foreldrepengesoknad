@@ -16,6 +16,7 @@ import { ContextDataMap, ContextDataType, useContextGetAnyData } from './Planleg
 
 const getLabelConfig = (intl: IntlShape): Record<PlanleggerRoutes, string> => ({
     [PlanleggerRoutes.ARBEIDSSITUASJON]: intl.formatMessage({ id: 'ArbeidssituasjonSteg.Tittel' }),
+    [PlanleggerRoutes.HVOR_MYE]: intl.formatMessage({ id: 'HvorMyeSteg.Tittel' }),
     [PlanleggerRoutes.FORDELING]: intl.formatMessage({ id: 'FordelingSteg.Tittel' }),
     [PlanleggerRoutes.HVEM_PLANLEGGER]: intl.formatMessage({ id: 'HvemPlanleggerSteg.HvemPlanlegger' }),
     [PlanleggerRoutes.HVOR_LANG_PERIODE]: intl.formatMessage({ id: 'HvorLangPeriodeSteg.Tittel' }),
@@ -57,8 +58,11 @@ const showHvorLangPeriodeEllerOversiktStep = (
     if (path === PlanleggerRoutes.HVOR_LANG_PERIODE || path === PlanleggerRoutes.PLANEN_DERES) {
         const arbeidssituasjon = getData(ContextDataType.ARBEIDSSITUASJON);
         const omBarnet = getData(ContextDataType.OM_BARNET);
+        const hvorMye = getData(ContextDataType.HVOR_MYE);
         return (
-            erBarnIkkeOppgittEllerYngreEnnTreÅr(omBarnet) && (!arbeidssituasjon || harMinstEnPartJobb(arbeidssituasjon))
+            erBarnIkkeOppgittEllerYngreEnnTreÅr(omBarnet) &&
+            (!arbeidssituasjon || harMinstEnPartJobb(arbeidssituasjon)) &&
+            !hvorMye
         );
     }
     return false;
@@ -71,6 +75,19 @@ const showArbeidssituasjonStep = (
     if (path === PlanleggerRoutes.ARBEIDSSITUASJON) {
         const omBarnet = getData(ContextDataType.OM_BARNET);
         return erBarnIkkeOppgittEllerYngreEnnTreÅr(omBarnet);
+    }
+    return false;
+};
+const showHvorMyeStep = (
+    path: PlanleggerRoutes,
+    getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+) => {
+    if (path === PlanleggerRoutes.HVOR_MYE) {
+        const arbeidssituasjon = getData(ContextDataType.ARBEIDSSITUASJON);
+        const omBarnet = getData(ContextDataType.OM_BARNET);
+        return (
+            erBarnIkkeOppgittEllerYngreEnnTreÅr(omBarnet) && (!arbeidssituasjon || harMinstEnPartJobb(arbeidssituasjon))
+        );
     }
     return false;
 };
@@ -91,6 +108,7 @@ const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
             PATH_ORDER.flatMap((path) =>
                 REQUIRED_APP_STEPS.includes(path) ||
                 showArbeidssituasjonStep(path, getStateData) ||
+                showHvorMyeStep(path, getStateData) ||
                 showFordelingStep(path, getStateData) ||
                 showHvorLangPeriodeEllerOversiktStep(path, getStateData)
                     ? [path]

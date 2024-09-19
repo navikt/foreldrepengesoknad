@@ -5,6 +5,7 @@ import ArbeidssituasjonSteg from 'steps/arbeidssituasjon/ArbeidssituasjonSteg';
 import FordelingSteg from 'steps/fordeling/FordelingSteg';
 import HvemPlanleggerSteg from 'steps/hvem-planlegger/HvemPlanleggerSteg';
 import HvorLangPeriodeSteg from 'steps/hvor-lang-periode/HvorLangPeriodeSteg';
+import HvorMyeSteg from 'steps/hvor-mye/HvorMyeSteg';
 import OmBarnetSteg from 'steps/om-barnet/OmBarnetSteg';
 import OmPlanleggerenSteg from 'steps/om-planleggeren/OmPlanleggerenSteg';
 import OppsummeringSteg from 'steps/oppsummering/OppsummeringSteg';
@@ -31,6 +32,7 @@ const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stø
                 path={PlanleggerRoutes.ARBEIDSSITUASJON}
                 element={<ArbeidssituasjonSteg satser={satser} locale={locale} />}
             />
+            <Route path={PlanleggerRoutes.HVOR_MYE} element={<HvorMyeSteg locale={locale} satser={satser} />} />
             <Route
                 path={PlanleggerRoutes.HVOR_LANG_PERIODE}
                 element={
