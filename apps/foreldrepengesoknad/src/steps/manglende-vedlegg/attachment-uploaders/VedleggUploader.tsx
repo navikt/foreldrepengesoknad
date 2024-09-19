@@ -81,6 +81,7 @@ const VedleggUploader: FunctionComponent<Props> = ({
             skjemanummer={skjemanummer}
             existingAttachments={attachments.filter((a) => a.innsendingsType !== InnsendingsType.SEND_SENERE)}
             updateAttachments={(vedlegg) => {
+                const sendSenere = attachments.filter((a) => a.innsendingsType === InnsendingsType.SEND_SENERE);
                 const attachmentsMedMetadata = vedlegg.map((a) =>
                     addMetadata(a, {
                         type: metadataType,
@@ -88,7 +89,11 @@ const VedleggUploader: FunctionComponent<Props> = ({
                     }),
                 );
 
-                return updateAttachments(attachmentsMedMetadata);
+                if (sendSenere) {
+                    updateAttachments(attachmentsMedMetadata.concat(sendSenere));
+                } else {
+                    updateAttachments(attachmentsMedMetadata);
+                }
             }}
             saveAttachment={getSaveAttachment(AxiosInstanceAPI(), 'foreldrepenger')}
         />
