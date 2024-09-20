@@ -2,6 +2,8 @@ import dayjs from 'dayjs';
 import orderBy from 'lodash/orderBy';
 import { IntlShape } from 'react-intl';
 
+import { BarnType } from '@navikt/fp-constants';
+import { Barn } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 import { BarnGruppering } from 'app/types/BarnGruppering';
@@ -41,6 +43,32 @@ export const getFørsteUttaksdagIForeldrepengesaken = (sak: Foreldrepengesak): D
         return ISOStringToDate(sak.åpenBehandling?.søknadsperioder[0].fom);
     }
     return undefined;
+};
+
+export const getBarnFraSak = (familiehendelse: Familiehendelse, gjelderAdopsjon: boolean): Barn => {
+    if (gjelderAdopsjon) {
+        return {
+            type: BarnType.ADOPTERT_STEBARN,
+            adopsjonsdato: familiehendelse.omsorgsovertakelse!,
+            antallBarn: familiehendelse.antallBarn,
+            fødselsdatoer: [familiehendelse.fødselsdato!],
+        };
+    }
+
+    if (familiehendelse.fødselsdato) {
+        return {
+            type: BarnType.FØDT,
+            fødselsdatoer: [familiehendelse.fødselsdato],
+            termindato: familiehendelse.termindato,
+            antallBarn: familiehendelse.antallBarn,
+        };
+    }
+
+    return {
+        type: BarnType.UFØDT,
+        termindato: familiehendelse.termindato!,
+        antallBarn: familiehendelse.antallBarn,
+    };
 };
 
 export const getBarnGrupperingFraSak = (sak: Sak, registrerteBarn: Person[]): BarnGruppering => {

@@ -69,6 +69,7 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, erFam
         !!permisjonsperiode.samtidigUttak === false &&
         !!permisjonsperiode.erUtsettelse === false;
     const erSamtidigUttak = !!permisjonsperiode.samtidigUttak;
+    const utsettelseÅrsak = erUtsettelse ? permisjonsperiode.perioder[0].utsettelseÅrsak : undefined;
 
     return (
         <div className={bem.block}>
@@ -80,7 +81,7 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, erFam
                             erPeriodeUtenUttak,
                             erSamtidigUttak,
                             erHull,
-                            erUtsettelse,
+                            utsettelseÅrsak,
                             erFamiliehendelse,
                             erFarEllerMedmor,
                             navnPåForeldre,
@@ -111,7 +112,7 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, erFam
                                 erPeriodeUtenUttak,
                                 erSamtidigUttak,
                                 erHull,
-                                erUtsettelse,
+                                utsettelseÅrsak,
                                 erFamiliehendelse,
                                 erFarEllerMedmor,
                                 navnPåForeldre,
@@ -124,7 +125,7 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, erFam
                         erMor,
                         erPeriodeUtenUttak,
                         periodeFørTermindato,
-                        erUtsettelse,
+                        utsettelseÅrsak,
                         erHull,
                         erFamiliehendelse,
                     })}

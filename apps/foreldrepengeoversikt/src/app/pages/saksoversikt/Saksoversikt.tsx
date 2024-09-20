@@ -38,7 +38,7 @@ import { Ytelse } from 'app/types/Ytelse';
 import { getRelevantNyTidslinjehendelse } from 'app/utils/tidslinjeUtils';
 
 import { getNavnPåForeldre } from '../../utils/personUtils';
-import { getFamiliehendelseDato, getNavnAnnenForelder } from '../../utils/sakerUtils';
+import { getNavnAnnenForelder } from '../../utils/sakerUtils';
 
 interface Props {
     søkerinfo: SøkerinfoDTO;
@@ -151,7 +151,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
                         <DinPlan
                             søkersPerioder={gjeldendeSak.gjeldendeVedtak?.perioder}
                             annenPartsPerioder={annenPartsVedtakQuery.data?.perioder}
-                            familiehendelseDato={getFamiliehendelseDato(gjeldendeSak.familiehendelse)}
+                            familiehendelse={gjeldendeSak.familiehendelse}
                             navnPåForeldre={getNavnPåForeldre(
                                 gjeldendeSak,
                                 søkerinfo.søker.fornavn,

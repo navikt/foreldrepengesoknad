@@ -1,15 +1,16 @@
 import { FunctionComponent } from 'react';
 
-import { BarnType } from '@navikt/fp-constants';
 import { NavnPåForeldre, SaksperiodeNy } from '@navikt/fp-types';
 import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 
+import { Familiehendelse } from '../../types/Familiehendelse';
 import { RettighetType } from '../../types/RettighetType';
+import { getBarnFraSak, getFamiliehendelseDato } from '../../utils/sakerUtils';
 
 interface Props {
     søkersPerioder: SaksperiodeNy[] | undefined;
     annenPartsPerioder?: SaksperiodeNy[];
-    familiehendelseDato: string;
+    familiehendelse: Familiehendelse;
     navnPåForeldre: NavnPåForeldre;
     gjelderAdopsjon: boolean;
     sakTilhørerMor: boolean;
@@ -19,7 +20,7 @@ interface Props {
 const DinPlan: FunctionComponent<Props> = ({
     annenPartsPerioder,
     søkersPerioder,
-    familiehendelseDato,
+    familiehendelse,
     navnPåForeldre,
     gjelderAdopsjon,
     sakTilhørerMor,
@@ -31,16 +32,13 @@ const DinPlan: FunctionComponent<Props> = ({
     const morHarRett = sakTilhørerMor && (RettighetType.BEGGE_RETT || RettighetType.BARE_SØKER_RETT);
     const søkerErAleneOmOmsorg = rettighetType === RettighetType.ALENEOMSORG;
     const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !morHarRett && !søkerErAleneOmOmsorg;
+    const familiehendelseDato = getFamiliehendelseDato(familiehendelse);
+    const barn = getBarnFraSak(familiehendelse, gjelderAdopsjon);
 
     return (
         <div>
             <UttaksplanNy
-                barn={{
-                    antallBarn: 1,
-                    fødselsdatoer: ['2024-03-05'],
-                    type: BarnType.FØDT,
-                    termindato: '2024-03-05',
-                }}
+                barn={barn}
                 erFarEllerMedmor={søkerErFarEllerMedmor}
                 familiehendelsedato={familiehendelseDato}
                 navnPåForeldre={navnPåForeldre}
