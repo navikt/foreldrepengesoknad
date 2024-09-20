@@ -5,6 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyShort } from '@navikt/ds-react';
 
 import { Infobox } from '@navikt/fp-ui';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 interface Props {
     erAlenesøker: boolean;
@@ -17,7 +18,7 @@ const JobberInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn }) =>
             header={
                 <FormattedMessage
                     id="Arbeidssituasjon.Jobber.Infoboks.HarRettTilForeldrepenger"
-                    values={{ erAlenesøker, navn: fornavn }}
+                    values={{ erAlenesøker, navn: capitalizeFirstLetter(fornavn) }}
                 />
             }
             color="green"
@@ -27,7 +28,7 @@ const JobberInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn }) =>
             <BodyShort>
                 <FormattedMessage
                     id="Arbeidssituasjon.Jobber.Infoboks.UtIfraInformasjonen"
-                    values={{ erAlenesøker, navn: fornavn }}
+                    values={{ erAlenesøker, navn: capitalizeFirstLetter(fornavn) }}
                 />
             </BodyShort>
         </Infobox>

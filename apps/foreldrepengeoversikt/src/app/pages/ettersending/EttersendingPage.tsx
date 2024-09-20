@@ -20,7 +20,7 @@ import { getSaveAttachment } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
-import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
+import { useDocumentTitle } from '@navikt/fp-utils';
 
 import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
 import { sendEttersending } from 'app/api/api';
@@ -35,8 +35,6 @@ import { SakOppslag } from 'app/types/SakOppslag';
 import { Ytelse } from 'app/types/Ytelse';
 import { getAlleYtelser } from 'app/utils/sakerUtils';
 import { getRelevanteSkjemanummer } from 'app/utils/skjemanummerUtils';
-
-import './ettersending-page.css';
 
 const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad' => {
     if (sakstype === Ytelse.ENGANGSSTØNAD) {
@@ -95,7 +93,7 @@ const konverterSelectVerdi = (selectText: string): Skjemanummer | typeof DEFAULT
 };
 
 type Props = {
-    readonly saker: SakOppslag;
+    saker: SakOppslag;
 };
 
 const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
@@ -105,8 +103,6 @@ const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
     );
     useSetSelectedRoute(OversiktRoutes.ETTERSEND);
     const params = useParams();
-
-    const bem = bemUtils('ettersending-page');
 
     const [type, setType] = useState<Skjemanummer | typeof DEFAULT_OPTION>(DEFAULT_OPTION);
     const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
@@ -166,7 +162,7 @@ const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
                     Les om hvordan du kan ta bilde av dokumenter med mobilen
                 </NAVLink>
                 <Select
-                    className={bem.element('select')}
+                    className="mb-4"
                     label="Hva inneholder dokumentene dine?"
                     onChange={(event) => setType(konverterSelectVerdi(event.target.value))}
                 >

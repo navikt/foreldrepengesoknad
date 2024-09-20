@@ -13,7 +13,7 @@ import { getBreadcrumbs } from 'app/types/Breadcrumb';
 import './breadcrumb.css';
 
 type Props = {
-    readonly selectedRoute: OversiktRoutes;
+    selectedRoute: OversiktRoutes;
 };
 
 const getRoute = (route: string, saksnummer: string | undefined): string => {

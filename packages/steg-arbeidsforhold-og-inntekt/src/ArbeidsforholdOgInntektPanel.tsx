@@ -6,7 +6,7 @@ import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
-import { AppName, Arbeidsforhold } from '@navikt/fp-types';
+import { AppName, Arbeidsforhold, ArbeidsforholdOgInntekt } from '@navikt/fp-types';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
@@ -17,7 +17,6 @@ import HvemKanVæreFrilanser from './components/hvem-kan-være-frilanser/HvemKan
 import InfoOmArbeidIUtlandet from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
 import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
 import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
-import { ArbeidsforholdOgInntekt } from './types/ArbeidsforholdOgInntekt';
 
 interface Props<TYPE> {
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;

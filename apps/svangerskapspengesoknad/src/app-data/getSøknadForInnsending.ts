@@ -17,11 +17,8 @@ import Tilrettelegging, {
 } from 'types/Tilrettelegging';
 
 import { AttachmentMetadataType, DATE_4_YEARS_AGO } from '@navikt/fp-constants';
-import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
-import { EgenNæring, Næringstype } from '@navikt/fp-steg-egen-naering';
-import { Frilans } from '@navikt/fp-steg-frilans';
 import { mapUtenlandsOppholdForInnsending } from '@navikt/fp-steg-utenlandsopphold';
-import { LocaleNo } from '@navikt/fp-types';
+import { ArbeidsforholdOgInntektSvp, EgenNæring, Frilans, LocaleNo, Næringstype } from '@navikt/fp-types';
 import { isValidDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 

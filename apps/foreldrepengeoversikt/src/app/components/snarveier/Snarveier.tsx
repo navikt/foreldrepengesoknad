@@ -1,16 +1,14 @@
+import { ReactNode } from 'react';
 import { useIntl } from 'react-intl';
 
-import { Heading, LinkPanel } from '@navikt/ds-react';
+import { HGrid, Heading, LinkPanel } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { bemUtils } from '@navikt/fp-utils';
 
 import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 import { NavRoutes } from 'app/routes/routes';
 import { Sak } from 'app/types/Sak';
 import { Ytelse } from 'app/types/Ytelse';
-
-import './snarveier.css';
 
 const getLesMerLink = (stønadstype: Ytelse | undefined) => {
     if (stønadstype === Ytelse.FORELDREPENGER) {
@@ -69,8 +67,15 @@ const getSaksbehandlingstidLink = (ytelse: Ytelse | undefined) => {
     return NavRoutes.SAKSBEHANDLINGSTIDER;
 };
 
+const SnarveiLinkPanel = ({ href, children }: { href: string; children: ReactNode }) => {
+    return (
+        <LinkPanel href={href} border={false} className="bg-gray-100 rounded-large p-4 pt-2 pb-2 h-fit">
+            <LinkPanel.Title className="text-lg">{children}</LinkPanel.Title>
+        </LinkPanel>
+    );
+};
+
 const Snarveier: React.FunctionComponent = () => {
-    const bem = bemUtils('snarveier');
     const intl = useIntl();
     const currentSak = useGetSelectedSak();
     const ytelse = currentSak ? currentSak.ytelse : undefined;
@@ -78,58 +83,34 @@ const Snarveier: React.FunctionComponent = () => {
         currentSak !== undefined ? currentSak.ytelse : intl.formatMessage({ id: 'snarveier.pengestøtter' });
     const lesMerLink = getLesMerLink(ytelse);
     return (
-        <div className={bem.block}>
-            <div className={bem.element('wrapper')}>
-                <div className={bem.element('title')}>
-                    <Heading size="medium">{intl.formatMessage({ id: 'saksoversikt.snarveier' })}</Heading>
-                </div>
-                <div className={bem.element('content')}>
-                    <LinkPanel href={lesMerLink} border={false} className={bem.element('linkPanel')}>
-                        <LinkPanel.Title className={bem.element('linkTitle')}>
-                            <div>{intl.formatMessage({ id: 'snarveier.lesMerOm' }, { ytelse: ytelseTekst })}</div>
-                        </LinkPanel.Title>
-                    </LinkPanel>
-                    <LinkPanel
-                        href={getSaksbehandlingstidLink(ytelse)}
-                        border={false}
-                        className={bem.element('linkPanel')}
-                    >
-                        <LinkPanel.Title className={bem.element('linkTitle')}>
-                            <div>{intl.formatMessage({ id: 'snarveier.saksbehandlingstider' })}</div>
-                        </LinkPanel.Title>
-                    </LinkPanel>
-                    <LinkPanel
-                        href={NavRoutes.MELD_FRA_OM_ENDRINGER}
-                        border={false}
-                        className={bem.element('linkPanel')}
-                    >
-                        <LinkPanel.Title className={bem.element('linkTitle')}>
-                            <div>{intl.formatMessage({ id: 'snarveier.endringerIDinSituasjon' })}</div>
-                        </LinkPanel.Title>
-                    </LinkPanel>
+        <div className="bg-white p-8">
+            <div className="w-full md:w-[704px] m-auto">
+                <Heading spacing size="medium">
+                    {intl.formatMessage({ id: 'saksoversikt.snarveier' })}
+                </Heading>
+                <HGrid gap="4" columns={{ sm: 1, md: 2 }}>
+                    <SnarveiLinkPanel href={lesMerLink}>
+                        {intl.formatMessage({ id: 'snarveier.lesMerOm' }, { ytelse: ytelseTekst })}
+                    </SnarveiLinkPanel>
+                    <SnarveiLinkPanel href={getSaksbehandlingstidLink(ytelse)}>
+                        {intl.formatMessage({ id: 'snarveier.saksbehandlingstider' })}
+                    </SnarveiLinkPanel>
+                    <SnarveiLinkPanel href={NavRoutes.MELD_FRA_OM_ENDRINGER}>
+                        {intl.formatMessage({ id: 'snarveier.endringerIDinSituasjon' })}
+                    </SnarveiLinkPanel>
                     {currentSak !== undefined ? (
-                        <LinkPanel
-                            href={getKlageLinkMedSak(ytelse, currentSak)}
-                            border={false}
-                            className={bem.element('linkPanel')}
-                        >
-                            <LinkPanel.Title className={bem.element('linkTitle')}>
-                                <div>{intl.formatMessage({ id: 'snarveier.jegVilKlage' })}</div>
-                            </LinkPanel.Title>
-                        </LinkPanel>
+                        <SnarveiLinkPanel href={getKlageLinkMedSak(ytelse, currentSak)}>
+                            {intl.formatMessage({ id: 'snarveier.jegVilKlage' })}
+                        </SnarveiLinkPanel>
                     ) : (
-                        <LinkPanel href={getKlageLink(ytelse)} border={false} className={bem.element('linkPanel')}>
-                            <LinkPanel.Title className={bem.element('linkTitle')}>
-                                <div>{intl.formatMessage({ id: 'snarveier.slikKlagerDu' })}</div>
-                            </LinkPanel.Title>
-                        </LinkPanel>
+                        <SnarveiLinkPanel href={getKlageLink(ytelse)}>
+                            {intl.formatMessage({ id: 'snarveier.slikKlagerDu' })}
+                        </SnarveiLinkPanel>
                     )}
-                    <LinkPanel href={links.brukerprofil} border={false} className={bem.element('linkPanel')}>
-                        <LinkPanel.Title className={bem.element('linkTitle')}>
-                            <div>{intl.formatMessage({ id: 'snarveier.kontonummer' })}</div>
-                        </LinkPanel.Title>
-                    </LinkPanel>
-                </div>
+                    <SnarveiLinkPanel href={links.brukerprofil}>
+                        {intl.formatMessage({ id: 'snarveier.kontonummer' })}
+                    </SnarveiLinkPanel>
+                </HGrid>
             </div>
         </div>
     );

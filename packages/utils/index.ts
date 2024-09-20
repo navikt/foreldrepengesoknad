@@ -45,6 +45,7 @@ export {
     formatDateShortYear,
     formatDateMedUkedag,
     formatDateShortMonth,
+    formatDateMedUkedagShortMonth,
     formatTime,
     dagenFør,
     treUkerSiden,

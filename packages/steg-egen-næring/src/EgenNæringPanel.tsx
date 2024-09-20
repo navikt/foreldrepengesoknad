@@ -15,7 +15,7 @@ import {
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
-import { AppName } from '@navikt/fp-types';
+import { AppName, EgenNæring, Næringstype } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
 import { femMånederSiden, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
 import {
@@ -32,7 +32,6 @@ import {
 
 import OrgnummerEllerLand from './components/OrgnummerEllerLand';
 import VarigEndringSpørsmål from './components/VarigEndringSpørsmål';
-import { EgenNæring, Næringstype } from './types/egenNæring';
 
 dayjs.extend(minMax);
 

@@ -122,7 +122,7 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
                     />
                     <RhfRadioGroup
                         name={`arbeidIUtlandet.${index}.pågående`}
-                        label={<FormattedMessage id="ArbeidsforholdOppsummering.næring.pågående" />}
+                        label={<FormattedMessage id="ArbeidIUtlandetFieldArray.næring.pågående" />}
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.arbeidIUtlandetPågående.påkrevd' })),
                         ]}

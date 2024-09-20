@@ -4,10 +4,13 @@ import { Barn } from 'types/Barn';
 import { TidsperiodeDTO } from 'types/TidsperiodeDTO';
 import Tilrettelegging from 'types/Tilrettelegging';
 
-import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
-import { EgenNæring } from '@navikt/fp-steg-egen-naering';
-import { Frilans } from '@navikt/fp-steg-frilans';
-import { Utenlandsopphold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import {
+    ArbeidsforholdOgInntektSvp,
+    EgenNæring,
+    Frilans,
+    Utenlandsopphold,
+    UtenlandsoppholdPeriode,
+} from '@navikt/fp-types';
 
 import SøknadRoutes from './routes';
 
