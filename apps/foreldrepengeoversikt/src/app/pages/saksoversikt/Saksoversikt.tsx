@@ -2,9 +2,9 @@ import { FilesIcon, FolderFileIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 
-import { Alert, HGrid, VStack } from '@navikt/ds-react';
+import { Alert, HGrid, Link, VStack } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
@@ -43,6 +43,16 @@ interface Props {
 }
 
 const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRender }) => {
+    const gjeldendeSak = useGetSelectedSak();
+
+    return (
+        <PageRouteLayout header={<DinSakHeader sak={gjeldendeSak} />}>
+            <SaksoversiktInner søkerinfo={søkerinfo} isFirstRender={isFirstRender} />
+        </PageRouteLayout>
+    );
+};
+
+const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRender }) => {
     const intl = useIntl();
     const params = useParams<{ saksnummer: string; redirect?: string }>();
     const navigate = useNavigate();
@@ -91,7 +101,9 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
                     Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du kan
                     vente litt og komme tilbake senere for å se alle detaljene i saken din.
                 </Alert>
-                <Link to={`${OversiktRoutes.HOVEDSIDE}`}>{intl.formatMessage({ id: 'saksoversikt' })}</Link>
+                <Link as={RouterLink} to={`${OversiktRoutes.HOVEDSIDE}`}>
+                    {intl.formatMessage({ id: 'saksoversikt' })}
+                </Link>
             </VStack>
         );
     }
@@ -104,64 +116,62 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
     const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, gjeldendeSak);
 
     return (
-        <PageRouteLayout header={<DinSakHeader sak={gjeldendeSak} />}>
-            <VStack gap="4">
-                {visBekreftelsePåSendtSøknad && (
-                    <BekreftelseSendtSøknad
-                        relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
-                        bankkonto={søkerinfo.søker.bankkonto}
-                        ytelse={gjeldendeSak.ytelse}
-                    />
-                )}
+        <VStack gap="4">
+            {visBekreftelsePåSendtSøknad && (
+                <BekreftelseSendtSøknad
+                    relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
+                    bankkonto={søkerinfo.søker.bankkonto}
+                    ytelse={gjeldendeSak.ytelse}
+                />
+            )}
 
-                <Oppgaver saksnummer={gjeldendeSak.saksnummer} />
-                <VStack gap="1">
-                    <ContentSection
-                        heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
-                        showSkeleton={tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending}
-                        skeletonProps={{ height: '250px', variant: 'rounded' }}
-                        className="mb-2"
-                    >
-                        <Tidslinje
-                            sak={gjeldendeSak}
-                            tidslinjeHendelserQuery={tidslinjeHendelserQuery}
-                            manglendeVedleggQuery={manglendeVedleggQuery}
-                            visHeleTidslinjen={false}
-                            søkersBarn={søkerinfo.søker.barn ?? []}
-                        />
-                    </ContentSection>
-                    <section className="mb-12">
-                        <LenkePanel tittel="Se hele prosessen" to={OversiktRoutes.TIDSLINJEN} />
-                    </section>
-                </VStack>
-                <HGrid gap="4" columns={{ sm: 1, md: 2 }}>
-                    <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
-                    <LenkePanel
-                        tittel="Ettersend dokumenter"
-                        to={`${OversiktRoutes.DOKUMENTER}/${OversiktRoutes.ETTERSEND}`}
-                        Ikon={FilesIcon}
+            <Oppgaver saksnummer={gjeldendeSak.saksnummer} />
+            <VStack gap="1">
+                <ContentSection
+                    heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
+                    showSkeleton={tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending}
+                    skeletonProps={{ height: '250px', variant: 'rounded' }}
+                    className="mb-2"
+                >
+                    <Tidslinje
+                        sak={gjeldendeSak}
+                        tidslinjeHendelserQuery={tidslinjeHendelserQuery}
+                        manglendeVedleggQuery={manglendeVedleggQuery}
+                        visHeleTidslinjen={false}
+                        søkersBarn={søkerinfo.søker.barn ?? []}
                     />
-                </HGrid>
-                {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
-                    <ContentSection
-                        heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
-                        // Fordi annenPartsVedtakQuery kan være et disabled query må man bruke isLoading heller enn isPending:
-                        // https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading
-                        showSkeleton={annenPartsVedtakQuery.isLoading}
-                        skeletonProps={{ height: '210px', variant: 'rounded' }}
-                    >
-                        <DinPlan
-                            sak={gjeldendeSak}
-                            visHelePlanen={false}
-                            navnPåSøker={navnPåSøker}
-                            navnAnnenForelder={navnAnnenForelder}
-                            annenPartsPerioder={annenPartsVedtakQuery.data?.perioder}
-                            termindato={gjeldendeSak.familiehendelse.termindato}
-                        />
-                    </ContentSection>
-                )}
+                </ContentSection>
+                <section className="mb-12">
+                    <LenkePanel tittel="Se hele prosessen" to={OversiktRoutes.TIDSLINJEN} />
+                </section>
             </VStack>
-        </PageRouteLayout>
+            <HGrid gap="4" columns={{ sm: 1, md: 2 }}>
+                <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
+                <LenkePanel
+                    tittel="Ettersend dokumenter"
+                    to={`${OversiktRoutes.DOKUMENTER}/${OversiktRoutes.ETTERSEND}`}
+                    Ikon={FilesIcon}
+                />
+            </HGrid>
+            {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
+                <ContentSection
+                    heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
+                    // Fordi annenPartsVedtakQuery kan være et disabled query må man bruke isLoading heller enn isPending:
+                    // https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading
+                    showSkeleton={annenPartsVedtakQuery.isLoading}
+                    skeletonProps={{ height: '210px', variant: 'rounded' }}
+                >
+                    <DinPlan
+                        sak={gjeldendeSak}
+                        visHelePlanen={false}
+                        navnPåSøker={navnPåSøker}
+                        navnAnnenForelder={navnAnnenForelder}
+                        annenPartsPerioder={annenPartsVedtakQuery.data?.perioder}
+                        termindato={gjeldendeSak.familiehendelse.termindato}
+                    />
+                </ContentSection>
+            )}
+        </VStack>
     );
 };
 
