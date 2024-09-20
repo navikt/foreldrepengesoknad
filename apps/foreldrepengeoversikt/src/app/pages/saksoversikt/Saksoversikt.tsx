@@ -2,9 +2,9 @@ import { FilesIcon, FolderFileIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 
-import { Alert, HGrid, VStack } from '@navikt/ds-react';
+import { Alert, HGrid, Link, VStack } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
@@ -43,6 +43,16 @@ interface Props {
 }
 
 const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRender }) => {
+    const gjeldendeSak = useGetSelectedSak();
+
+    return (
+        <PageRouteLayout header={<DinSakHeader sak={gjeldendeSak} />}>
+            <SaksoversiktInner søkerinfo={søkerinfo} isFirstRender={isFirstRender} />
+        </PageRouteLayout>
+    );
+};
+
+const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRender }) => {
     const intl = useIntl();
     const params = useParams<{ saksnummer: string; redirect?: string }>();
     const navigate = useNavigate();
@@ -91,7 +101,9 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
                     Det ser ut som det tar litt tid å opprette saken din akkurat i dag. Søknaden din er sendt, så du kan
                     vente litt og komme tilbake senere for å se alle detaljene i saken din.
                 </Alert>
-                <Link to={`${OversiktRoutes.HOVEDSIDE}`}>{intl.formatMessage({ id: 'saksoversikt' })}</Link>
+                <Link as={RouterLink} to={`${OversiktRoutes.HOVEDSIDE}`}>
+                    {intl.formatMessage({ id: 'saksoversikt' })}
+                </Link>
             </VStack>
         );
     }
@@ -104,7 +116,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
     const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, gjeldendeSak);
 
     return (
-        <PageRouteLayout header={<DinSakHeader sak={gjeldendeSak} />}>
+        <>
             <VStack gap="4">
                 {visBekreftelsePåSendtSøknad && (
                     <BekreftelseSendtSøknad
@@ -161,7 +173,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
                     </ContentSection>
                 )}
             </VStack>
-        </PageRouteLayout>
+        </>
     );
 };
 
