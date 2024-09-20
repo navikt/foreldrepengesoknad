@@ -10,6 +10,11 @@ import {
 import { hasValueRule } from './regelUtils';
 import { Validator } from './types/validatorTypes';
 
+const getMessage = (intl: IntlShape, messageKey: string) => {
+    // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
+    return intl.formatMessage({ id: messageKey });
+};
+
 export const getStillingsprosentRegler = (
     erSamtidigUttak: boolean,
     stillingsprosent: string,
@@ -17,21 +22,21 @@ export const getStillingsprosentRegler = (
 ): Validator[] => {
     const intlKey = 'valideringsfeil.stillingsprosent';
     return [
-        hasValueRule(stillingsprosent, intl ? intl.formatMessage({ id: `${intlKey}.required` }) : ''),
+        hasValueRule(stillingsprosent, intl ? getMessage(intl, `${intlKey}.required`) : ''),
         {
             test: () => getFloatFromString(stillingsprosent) !== undefined,
-            failText: intl ? intl.formatMessage({ id: `${intlKey}.ugyldigTall` }) : '',
+            failText: intl ? getMessage(intl, `${intlKey}.ugyldigTall`) : '',
         },
         {
             test: () => stillingsprosentIsMoreThan0(stillingsprosent),
-            failText: intl ? intl.formatMessage({ id: `${intlKey}.under1` }) : '',
+            failText: intl ? getMessage(intl, `${intlKey}.under1`) : '',
         },
         {
             test: () =>
                 erSamtidigUttak
                     ? samtidigUttakProsentIsMax100(stillingsprosent)
                     : stillingsprosentIsLessThan100(stillingsprosent),
-            failText: intl ? intl.formatMessage({ id: `${intlKey}.over100prosent` }) : '',
+            failText: intl ? getMessage(intl, `${intlKey}.over100prosent`) : '',
         },
     ];
 };

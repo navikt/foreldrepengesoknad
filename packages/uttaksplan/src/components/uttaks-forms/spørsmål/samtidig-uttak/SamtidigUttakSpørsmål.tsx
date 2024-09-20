@@ -60,6 +60,7 @@ const SamtidigUttakSpørsmål: FunctionComponent<Props> = ({
             <Block visible={samtidigUttakProsentVisible} padBottom="l">
                 <GuidePanel>
                     <FormattedMessage
+                        // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
                         id={samtidigUttakInfoTekst}
                         values={{
                             link: (
