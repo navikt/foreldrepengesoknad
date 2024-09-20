@@ -74,12 +74,10 @@ const DokumenterPage: React.FunctionComponent = () => {
                 </>
             )}
             {dokumenterQuery.isError && (
-                <div style={{ marginBottom: '2rem' }}>
-                    <NoeGikkGalt>
-                        Vi har problemer med å vise informasjon om dine dokumenter akkurat nå. Feilen er hos oss, ikke
-                        hos deg. Prøv igjen senere.
-                    </NoeGikkGalt>
-                </div>
+                <NoeGikkGalt className="mb-8">
+                    Vi har problemer med å vise informasjon om dine dokumenter akkurat nå. Feilen er hos oss, ikke hos
+                    deg. Prøv igjen senere.
+                </NoeGikkGalt>
             )}
         </PageRouteLayout>
     );

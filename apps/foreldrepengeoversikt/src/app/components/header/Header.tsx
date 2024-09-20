@@ -55,7 +55,7 @@ function SimpleHeaderWrapper({ children }: { children: ReactNode }) {
 }
 
 function BlueDot() {
-    return <div style={{ height: '4px', width: '4px', borderRadius: '50%', background: 'var(--a-deepblue-300)' }} />;
+    return <div className="h-[4px] w-[4px] rounded-[50%] bg-deepblue-300" />;
 }
 
 function BabyIkon({ ytelse }: { ytelse: Ytelse | undefined }) {
@@ -74,31 +74,13 @@ function BabyIkon({ ytelse }: { ytelse: Ytelse | undefined }) {
     return (
         <>
             <Show above="md">
-                <div
-                    style={{
-                        width: '60px',
-                        height: '60px',
-                        borderRadius: '50%',
-                        background: 'var(--a-deepblue-100)',
-                        paddingTop: '8px',
-                        paddingLeft: '8px',
-                    }}
-                >
-                    <YtelseIkon fontSize={44} style={{ color: 'var(--a-lightblue-800)' }} />
+                <div className="w-[60px] h-[60px] rounded-full bg-deepblue-100 pt-2 pl-2">
+                    <YtelseIkon fontSize={44} className="text-lightblue-800" />
                 </div>
             </Show>
             <Show below="md">
-                <div
-                    style={{
-                        width: '38px',
-                        height: '38px',
-                        borderRadius: '50%',
-                        background: 'var(--a-deepblue-100)',
-                        paddingTop: '8px',
-                        paddingLeft: '8px',
-                    }}
-                >
-                    <YtelseIkon fontSize={22} style={{ color: 'var(--a-lightblue-800)' }} />
+                <div className="w-[38px] h-[38px] rounded-full bg-deepblue-100 pt-2 pl-2">
+                    <YtelseIkon fontSize={22} className="text-lightblue-800" />
                 </div>
             </Show>
         </>

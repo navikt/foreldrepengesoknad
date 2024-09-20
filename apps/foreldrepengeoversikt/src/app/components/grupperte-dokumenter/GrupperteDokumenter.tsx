@@ -16,6 +16,8 @@ const GrupperteDokumenter: React.FunctionComponent<Props> = ({ dokumenter }) => 
             <Accordion.Item>
                 <Accordion.Header
                     className="flex-row-reverse justify-between p-4 pt-0"
+                    // NOTE: tailwind støtter ikke box-shadows.
+                    // Enten må det være et Aksel-token, eller så må det legges inn i custom config. Tar det derfor i style
                     style={{
                         boxShadow: 'inset 0 -2px 0 0 rgb(7 26 54 / 21%)',
                     }}
