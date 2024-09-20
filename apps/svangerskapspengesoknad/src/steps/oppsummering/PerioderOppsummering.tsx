@@ -10,7 +10,7 @@ import { FormSummary, List } from '@navikt/ds-react';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-export function PerioderOppsummering({ onVilEndreSvar }: { readonly onVilEndreSvar: () => Promise<void> }) {
+export function PerioderOppsummering({ onVilEndreSvar }: { onVilEndreSvar: () => Promise<void> }) {
     return (
         <FormSummary>
             <FormSummary.Header>
@@ -40,22 +40,27 @@ function VirksomhetSummary() {
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const perioder = mapTilretteleggingTilPerioder(tilretteleggingVirksomhet, sisteDagForSvangerskapspenger);
 
-    return tilretteleggingVirksomhet.map((tilrettelegging) => (
-        <FormSummary.Answer key={tilrettelegging.id}>
-            <FormSummary.Label>
-                {capitalizeFirstLetterInEveryWordOnly(tilrettelegging.arbeidsforhold.navn)}
-            </FormSummary.Label>
-            <FormSummary.Value>
-                <FormSummary.Answers>
-                    {perioder.length === 1 ? (
-                        <KunEnPeriode periode={perioder[0]} />
-                    ) : (
-                        <FlerePerioder perioder={perioder} />
-                    )}
-                </FormSummary.Answers>
-            </FormSummary.Value>
-        </FormSummary.Answer>
-    ));
+    return tilretteleggingVirksomhet.map((tilrettelegging) => {
+        const perioderForDenneTilretteleggingen = perioder.filter(
+            (periode) => periode.arbeidsforhold.arbeidsgiverId === tilrettelegging.arbeidsforhold.arbeidsgiverId,
+        );
+        return (
+            <FormSummary.Answer key={tilrettelegging.id}>
+                <FormSummary.Label>
+                    {capitalizeFirstLetterInEveryWordOnly(tilrettelegging.arbeidsforhold.navn)}
+                </FormSummary.Label>
+                <FormSummary.Value>
+                    <FormSummary.Answers>
+                        {perioderForDenneTilretteleggingen.length === 1 ? (
+                            <KunEnPeriode periode={perioderForDenneTilretteleggingen[0]} />
+                        ) : (
+                            <FlerePerioder perioder={perioderForDenneTilretteleggingen} />
+                        )}
+                    </FormSummary.Answers>
+                </FormSummary.Value>
+            </FormSummary.Answer>
+        );
+    });
 }
 
 function FrilansSummary() {
@@ -169,7 +174,7 @@ function SelvstendigNæringsdrivendeSummary() {
     );
 }
 
-function KunEnPeriode({ periode }: { readonly periode: TilretteleggingPeriode }) {
+function KunEnPeriode({ periode }: { periode: TilretteleggingPeriode }) {
     return (
         <>
             <FormSummary.Answer>
@@ -200,7 +205,8 @@ function KunEnPeriode({ periode }: { readonly periode: TilretteleggingPeriode })
     );
 }
 
-function FlerePerioder({ perioder }: { readonly perioder: TilretteleggingPeriode[] }) {
+function FlerePerioder({ perioder }: { perioder: TilretteleggingPeriode[] }) {
+    console.log(perioder);
     return (
         <FormSummary.Answer>
             <FormSummary.Label>
@@ -223,7 +229,7 @@ function FlerePerioder({ perioder }: { readonly perioder: TilretteleggingPeriode
     );
 }
 
-function SvpPeriodeDatoTekst({ periode }: { readonly periode: TilretteleggingPeriode }) {
+function SvpPeriodeDatoTekst({ periode }: { periode: TilretteleggingPeriode }) {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const kanHaSvpFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
@@ -263,8 +269,8 @@ function StillingProsentTekst({
     tilretteleggingstype,
     stillingsprosent,
 }: {
-    readonly stillingsprosent: number;
-    readonly tilretteleggingstype: Tilretteleggingstype;
+    stillingsprosent: number;
+    tilretteleggingstype: Tilretteleggingstype;
 }) {
     if (tilretteleggingstype === Tilretteleggingstype.HEL) {
         return <FormattedMessage id="oppsummering.periode.tilbakeIFullJobb" />;
