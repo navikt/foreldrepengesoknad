@@ -3,10 +3,11 @@ import SøknadRoutes from 'appData/routes';
 import useStepConfig from 'appData/useStepConfig';
 import useSvpNavigator from 'appData/useSvpNavigator';
 import dayjs from 'dayjs';
+import partition from 'lodash/partition';
 import { useEffect } from 'react';
 import { useController, useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { TidsperiodeDTO } from 'types/TidsperiodeDTO';
+import { AvtaltFerie } from 'types/AvtaltFerie';
 import Tilrettelegging from 'types/Tilrettelegging';
 
 import { BodyShort, DatePicker, HStack, Heading, Radio, ReadMore, VStack, useRangeDatepicker } from '@navikt/ds-react';
@@ -38,7 +39,7 @@ const DEFAULT_FERIE_VALUES = {
 
 type FerieFormData = {
     skalHaFerie?: boolean;
-    feriePerioder: Array<Partial<TidsperiodeDTO>>;
+    feriePerioder: Array<Partial<AvtaltFerie>>;
     antallFeriePerioder: number;
 };
 
@@ -48,27 +49,35 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
     const intl = useIntl();
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
-    const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);
-    const eksisterendeSkjemaVerdier = useContextGetData(ContextDataType.FERIE);
 
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const valgtTilretteleggingId = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
     const currentTilrettelegging = notEmpty(tilrettelegginger.find((t) => t.id === valgtTilretteleggingId));
 
+    const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);
+    const [eksisterendeSkjemaVerdier, ferieForAndreArbeidsforhold] = partition(
+        useContextGetData(ContextDataType.FERIE) ?? [],
+        (feriePeriode) => feriePeriode.arbeidsforhold.id === currentTilrettelegging.arbeidsforhold.arbeidsgiverId,
+    );
+    console.log(eksisterendeSkjemaVerdier, ferieForAndreArbeidsforhold);
     const formMethods = useForm<FerieFormData>({
         mode: 'onSubmit',
-        defaultValues: eksisterendeSkjemaVerdier
-            ? {
-                  skalHaFerie: eksisterendeSkjemaVerdier.length > 0,
-                  feriePerioder: eksisterendeSkjemaVerdier,
-                  antallFeriePerioder: eksisterendeSkjemaVerdier.length,
-              }
-            : DEFAULT_FERIE_VALUES,
+        defaultValues:
+            eksisterendeSkjemaVerdier.length > 0
+                ? {
+                      skalHaFerie: eksisterendeSkjemaVerdier.length > 0, //TODO: sjekk denne
+                      feriePerioder: eksisterendeSkjemaVerdier,
+                      antallFeriePerioder: eksisterendeSkjemaVerdier.length,
+                  }
+                : DEFAULT_FERIE_VALUES,
     });
 
     const onSubmit = (values: FerieFormData) => {
-        oppdaterFerie(values.skalHaFerie ? (values.feriePerioder as TidsperiodeDTO[]) : []);
+        const feriePerioderFraSubmit = values.skalHaFerie ? (values.feriePerioder as AvtaltFerie[]) : [];
+        const nyFerieListe = [...feriePerioderFraSubmit, ...ferieForAndreArbeidsforhold];
+        console.log(nyFerieListe);
+        oppdaterFerie(nyFerieListe);
 
         const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegginger, currentTilrettelegging.id);
         const nextRoute = nesteTilretteleggingId ? SøknadRoutes.SKJEMA : SøknadRoutes.OPPSUMMERING;

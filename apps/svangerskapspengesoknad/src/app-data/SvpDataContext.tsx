@@ -1,7 +1,7 @@
 import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
 import { ArbeidIUtlandet } from 'types/ArbeidIUtlandet';
+import { AvtaltFerie } from 'types/AvtaltFerie';
 import { Barn } from 'types/Barn';
-import { TidsperiodeDTO } from 'types/TidsperiodeDTO';
 import Tilrettelegging from 'types/Tilrettelegging';
 
 import {
@@ -40,7 +40,7 @@ export type ContextDataMap = {
     [ContextDataType.ARBEID_I_UTLANDET]?: ArbeidIUtlandet;
     [ContextDataType.EGEN_NÆRING]?: EgenNæring;
     [ContextDataType.TILRETTELEGGINGER]?: Tilrettelegging[];
-    [ContextDataType.FERIE]?: TidsperiodeDTO[];
+    [ContextDataType.FERIE]?: AvtaltFerie[];
     [ContextDataType.VALGT_TILRETTELEGGING_ID]?: string;
 };
 
