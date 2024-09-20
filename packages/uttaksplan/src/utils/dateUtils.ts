@@ -206,6 +206,7 @@ const validateFromDateInRange = ({
     toDate?: Date;
 }): SkjemaelementFeil => {
     if (toDate && date && dayjs(date).isAfter(toDate, 'day')) {
+        // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
         return intl.formatMessage({ id: errorKey });
     }
 
@@ -244,6 +245,7 @@ const validateToDateInRange = ({
     fromDate?: Date;
 }): SkjemaelementFeil => {
     if (fromDate && date && dayjs(date).isBefore(fromDate, 'day')) {
+        // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
         return intl.formatMessage({ id: errorKey });
     }
 

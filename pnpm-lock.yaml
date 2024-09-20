@@ -647,6 +647,9 @@ importers:
         specifier: ^2.88.2
         version: 2.88.2
     devDependencies:
+      '@formatjs/cli-lib':
+        specifier: 6.4.2
+        version: 6.4.2
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -743,6 +746,9 @@ importers:
       eslint:
         specifier: 9.10.0
         version: 9.10.0(jiti@1.21.6)
+      fast-glob:
+        specifier: ^3.3.2
+        version: 3.3.2
       fs-extra:
         specifier: ^11.2.0
         version: 11.2.0
