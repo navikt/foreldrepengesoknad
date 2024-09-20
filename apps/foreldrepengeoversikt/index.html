@@ -12,20 +12,6 @@
             property="og:description"
             content="Her finner du alt om din sak om foreldrepenger, svangerskapspenger eller engangssøknad. Du kan sende inn ny søknad eller ettersende vedlegg"
         />
-        <script charset="UTF-8">
-            try {
-                window['adrum-start-time'] = new Date().getTime();
-                (function (config) {
-                    if (window.location.href.indexOf('foreldrepenger.nav.no') > -1) {
-                        config.adrumExtUrlHttps = 'https://jsagent.nav.no';
-                        config.beaconUrlHttps = 'https://eumgw.nav.no';
-                        config.appKey = 'EUM-AAB-AXR';
-                        config.xd = { enable: false };
-                    }
-                })(window['adrum-config'] || (window['adrum-config'] = {}));
-            } catch {}
-        </script>
-        <script src="https://jsagent.nav.no/adrum/adrum.js"></script>
         <script type="text/json" id="nav:appSettings">{{{APP_SETTINGS}}}</script>
     </head>
     <body>

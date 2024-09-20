@@ -14,32 +14,10 @@ export const useSetSøknadsdata = () => {
         oppdaterData(ContextDataType.FRILANS, søknad.frilans);
         oppdaterData(ContextDataType.EGEN_NÆRING, søknad.egenNæring);
         oppdaterData(ContextDataType.ANDRE_INNTEKTSKILDER, søknad.andreInntektskilder);
-        oppdaterData(
-            ContextDataType.UTENLANDSOPPHOLD,
-            søknad.informasjonOmUtenlandsopphold
-                ? {
-                      iNorgeNeste12Mnd: søknad.informasjonOmUtenlandsopphold.iNorgeNeste12Mnd,
-                      iNorgeSiste12Mnd: søknad.informasjonOmUtenlandsopphold.iNorgeSiste12Mnd,
-                  }
-                : undefined,
-        );
-        oppdaterData(
-            ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE,
-            søknad.informasjonOmUtenlandsopphold
-                ? {
-                      tidligereOpphold: søknad.informasjonOmUtenlandsopphold.tidligereOpphold,
-                  }
-                : undefined,
-        );
-        oppdaterData(
-            ContextDataType.UTENLANDSOPPHOLD_SENERE,
-            søknad.informasjonOmUtenlandsopphold
-                ? {
-                      senereOpphold: søknad.informasjonOmUtenlandsopphold.senereOpphold,
-                  }
-                : undefined,
-        );
-        oppdaterData(ContextDataType.PERIODE_MED_FORELDREPENGER, { dekningsgrad: søknad.dekningsgrad });
+        oppdaterData(ContextDataType.UTENLANDSOPPHOLD, søknad.utenlandsopphold);
+        oppdaterData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE, søknad.utenlandsoppholdSiste12Mnd);
+        oppdaterData(ContextDataType.UTENLANDSOPPHOLD_SENERE, søknad.utenlandsoppholdNeste12Mnd);
+        oppdaterData(ContextDataType.PERIODE_MED_FORELDREPENGER, søknad.dekningsgrad);
         oppdaterData(ContextDataType.UTTAKSPLAN, søknad.uttaksplan);
         oppdaterData(ContextDataType.UTTAKSPLAN_METADATA, {
             ønskerJustertUttakVedFødsel: søknad.ønskerJustertUttakVedFødsel,

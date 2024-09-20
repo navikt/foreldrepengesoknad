@@ -50,6 +50,7 @@ const startServer = async () => {
         JSON.stringify({
             INNSYN: `${process.env.INNSYN}`,
             LOG_VALIDATION: `${process.env.LOG_VALIDATION}`,
+            PUBLIC_PATH: `${process.env.PUBLIC_PATH}`,
         }),
     );
 

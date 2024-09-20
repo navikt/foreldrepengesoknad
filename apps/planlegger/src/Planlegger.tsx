@@ -1,5 +1,6 @@
 import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
 import { FunctionComponent, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
@@ -8,14 +9,15 @@ import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettU
 
 import { Loader } from '@navikt/ds-react';
 
-import { getAxiosInstance, usePostRequest, useRequest } from '@navikt/fp-api';
+import { usePostRequest, useRequest } from '@navikt/fp-api';
 import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
+import { decodeBase64 } from '@navikt/fp-utils';
 
 import PlanleggerRouter from './PlanleggerRouter';
-import Environment from './app-data/Environment';
+import { AxiosInstanceAPI } from './api/AxiosInstance';
 
-export const planleggerApi = getAxiosInstance();
+export const planleggerApi = AxiosInstanceAPI();
 
 const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -76,14 +78,9 @@ export const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, change
         [hvemHarRett],
     );
 
-    const requestData = usePostRequest<TilgjengeligeStønadskontoer>(
-        planleggerApi,
-        `${Environment.PUBLIC_PATH}/rest/konto`,
-        params,
-        options,
-    );
+    const requestData = usePostRequest<TilgjengeligeStønadskontoer>(planleggerApi, '/rest/konto', params, options);
 
-    const satserData = useRequest<Satser>(planleggerApi, `${Environment.PUBLIC_PATH}/rest/satser`);
+    const satserData = useRequest<Satser>(planleggerApi, '/rest/satser');
 
     if (requestData.error || satserData.error) {
         return <SimpleErrorPage retryCallback={() => location.reload()} />;
@@ -104,8 +101,13 @@ export const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, change
 };
 
 const PlanleggerDataInit: FunctionComponent<Props> = ({ locale, changeLocale }) => {
+    const locations = useLocation();
+
+    const dataParam = new URLSearchParams(locations.search).get('data');
+    const data = dataParam ? JSON.parse(decodeBase64(dataParam)) : undefined;
+
     return (
-        <PlanleggerDataContext>
+        <PlanleggerDataContext initialState={data}>
             <PlanleggerDataFetcher locale={locale} changeLocale={changeLocale} />
         </PlanleggerDataContext>
     );

@@ -22,6 +22,8 @@ import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';
 
+import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
+import { prefiks_public_path } from 'app/api/api';
 import EttersendingDto from 'app/types/EttersendingDTO';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import { Ytelse } from 'app/types/Ytelse';
@@ -79,7 +81,9 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
         queryKey: ['minidialog'],
         queryFn: async () => {
             setFetchCounter((prev) => prev + 1);
-            return await fetch(`/rest/minidialog`, { credentials: 'include' }).then((response) => response.json());
+            return await fetch(`${prefiks_public_path}/rest/minidialog`, { credentials: 'include' }).then((response) =>
+                response.json(),
+            );
         },
         refetchInterval: (query) => {
             const data = query.state.data;
@@ -175,7 +179,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                             updateAttachments={updateAttachments}
                             attachmentType={AttachmentType.TILBAKEBETALING}
                             skjemanummer={Skjemanummer.TILBAKEBETALING}
-                            saveAttachment={getSaveAttachment(mapYtelse(sakstype))}
+                            saveAttachment={getSaveAttachment(AxiosInstanceAPI(), mapYtelse(sakstype))}
                         />
                     </>
                 )}

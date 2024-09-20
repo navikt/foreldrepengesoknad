@@ -10,16 +10,16 @@ type ProxyOptions = {
     scope: string;
 };
 
-export const configureReverseProxyApi = (app: Express) => {
+export function configureReverseProxyApi(app: Express) {
     if (!serverConfig.proxy.apiUrl || !serverConfig.proxy.apiScope) {
         throw new Error('Påkrevd miljøvariable SCOPE og URL ikke satt mot API');
     }
-    return addProxyHandler(app, {
-        ingoingUrl: '/rest',
+    addProxyHandler(app, {
+        ingoingUrl: `${serverConfig.app.publicPath}/rest`,
         outgoingUrl: serverConfig.proxy.apiUrl,
         scope: serverConfig.proxy.apiScope,
     });
-};
+}
 
 export function addProxyHandler(server: Express, { ingoingUrl, outgoingUrl, scope }: ProxyOptions) {
     server.use(

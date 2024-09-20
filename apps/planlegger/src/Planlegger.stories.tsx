@@ -1,17 +1,18 @@
 import { Meta, StoryObj } from '@storybook/react';
+import Environment from 'appData/Environment';
 import { PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { ComponentProps, StrictMode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import { getAxiosInstance } from '@navikt/fp-api';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 
 import { PlanleggerDataFetcher } from './Planlegger';
+import { AxiosInstanceAPI } from './api/AxiosInstance';
 import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
@@ -104,7 +105,7 @@ const meta = {
     render: (args) => {
         initAmplitude();
 
-        const axiosInstance = getAxiosInstance();
+        const axiosInstance = AxiosInstanceAPI();
         const apiMock = new MockAdapter(axiosInstance);
         if (args.brukMocks) {
             apiMock.onPost('/rest/konto').reply(() => {
@@ -139,7 +140,7 @@ const meta = {
             <StrictMode>
                 <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
                     <ErrorBoundary appName="Foreldrepengeplanlegger" retryCallback={() => undefined}>
-                        <BrowserRouter>
+                        <BrowserRouter basename={Environment.PUBLIC_PATH}>
                             <PlanleggerDataContext initialState={{}}>
                                 <PlanleggerDataFetcher locale="nb" changeLocale={() => undefined} />
                             </PlanleggerDataContext>

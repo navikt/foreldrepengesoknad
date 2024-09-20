@@ -6,7 +6,7 @@ import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder
 import { AnnenInntekt } from 'types/AnnenInntekt';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { Næring } from 'types/Næring';
-import { Søknad } from 'types/Søknad';
+import { EndringssøknadForInnsending, SøknadForInnsending } from 'types/Søknad';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getTermindato } from 'utils/barnUtils';
 import { guid } from 'utils/guid';
@@ -21,7 +21,6 @@ import {
     MorsAktivitet,
     Periode,
     Periodetype,
-    Situasjon,
     StønadskontoType,
     Søkerrolle,
     Søkersituasjon,
@@ -35,10 +34,8 @@ import {
     isFødtBarn,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt/src/types/ArbeidsforholdOgInntekt';
-import { EgenNæring } from '@navikt/fp-steg-egen-naering';
-import { Frilans } from '@navikt/fp-steg-frilans';
-import { Attachment, LocaleNo } from '@navikt/fp-types';
+import { mapUtenlandsOppholdForInnsending } from '@navikt/fp-steg-utenlandsopphold';
+import { ArbeidsforholdOgInntektFp, Attachment, EgenNæring, Frilans, LocaleNo } from '@navikt/fp-types';
 import { Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
 import {
     andreAugust2022ReglerGjelder,
@@ -87,44 +84,6 @@ export interface SøkerForInnsending {
     frilansInformasjon?: Frilans;
     andreInntekterSiste10Mnd?: AnnenInntekt[];
 }
-
-export interface SøknadForInnsending
-    extends Omit<
-        Søknad,
-        | 'barn'
-        | 'annenForelder'
-        | 'uttaksplan'
-        | 'arbeidsforholdOgInntekt'
-        | 'egenNæring'
-        | 'frilans'
-        | 'andreInntektskilder'
-        | 'søkersituasjon'
-        | 'tilleggsopplysninger'
-        | 'manglerDokumentasjon'
-        | 'vedlegg'
-    > {
-    barn: BarnForInnsending;
-    annenForelder: AnnenForelderForInnsending;
-    uttaksplan: PeriodeForInnsending[];
-    søker: SøkerForInnsending;
-    situasjon: Situasjon;
-    vedlegg: Attachment[];
-}
-
-export type EndringssøknadForInnsending = Pick<
-    SøknadForInnsending,
-    | 'type'
-    | 'saksnummer'
-    | 'erEndringssøknad'
-    | 'uttaksplan'
-    | 'søker'
-    | 'annenForelder'
-    | 'barn'
-    | 'dekningsgrad'
-    | 'situasjon'
-    | 'ønskerJustertUttakVedFødsel'
-    | 'vedlegg'
->;
 
 export const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
@@ -398,9 +357,9 @@ export const cleanSøknad = (
     const andreInntektskilder = hentData(ContextDataType.ANDRE_INNTEKTSKILDER);
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const utenlandsopphold = notEmpty(hentData(ContextDataType.UTENLANDSOPPHOLD));
-    const periodeMedForeldrepenger = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
-    const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
-    const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const utenlandsoppholdNeste12Mnd = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+    const utenlandsoppholdSiste12Mnd = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const dekningsgrad = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplan = notEmpty(hentData(ContextDataType.UTTAKSPLAN));
     const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
     const eksisterendeSak = hentData(ContextDataType.EKSISTERENDE_SAK);
@@ -427,7 +386,8 @@ export const cleanSøknad = (
         termindato,
         annenForelder,
     );
-    const cleanedSøknad: SøknadForInnsending = {
+
+    return {
         type: 'foreldrepenger',
         harGodkjentVilkår: true,
         saksnummer: eksisterendeSak?.saksnummer,
@@ -437,17 +397,15 @@ export const cleanSøknad = (
         situasjon: søkersituasjon.situasjon,
         annenForelder: annenForelderInnsending,
         uttaksplan: uttaksplanInnsending,
-        informasjonOmUtenlandsopphold: {
-            ...utenlandsopphold,
-            ...(senereUtenlandsopphold || { senereOpphold: [] }),
-            ...(tidligereUtenlandsopphold || { tidligereOpphold: [] }),
-        },
-        dekningsgrad: periodeMedForeldrepenger.dekningsgrad,
+        informasjonOmUtenlandsopphold: mapUtenlandsOppholdForInnsending(
+            utenlandsopphold,
+            utenlandsoppholdNeste12Mnd,
+            utenlandsoppholdSiste12Mnd,
+        ),
+        dekningsgrad,
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
         vedlegg: convertAttachmentsMapToArray(vedlegg),
     };
-
-    return cleanedSøknad;
 };
 
 const cleanSøker = (
@@ -532,7 +490,7 @@ export const cleanEndringssøknad = (
     const frilans = hentData(ContextDataType.FRILANS);
     const egenNæring = hentData(ContextDataType.EGEN_NÆRING);
     const andreInntektskilder = hentData(ContextDataType.ANDRE_INNTEKTSKILDER);
-    const periodeMedForeldrepenger = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
+    const dekningsgrad = notEmpty(hentData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const søkersituasjon = notEmpty(hentData(ContextDataType.SØKERSITUASJON));
     const eksisterendeSak = notEmpty(hentData(ContextDataType.EKSISTERENDE_SAK));
     const søkerErFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
@@ -563,7 +521,7 @@ export const cleanEndringssøknad = (
         ),
         annenForelder: cleanAnnenForelder(annenForelder, true),
         barn,
-        dekningsgrad: periodeMedForeldrepenger.dekningsgrad,
+        dekningsgrad,
         situasjon: søkersituasjon.situasjon,
         ønskerJustertUttakVedFødsel: uttaksplanMetadata.ønskerJustertUttakVedFødsel,
         vedlegg: convertAttachmentsMapToArray(vedlegg),

@@ -8,16 +8,30 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenInntektType } from 'types/AnnenInntekt';
-import { Opphold, SenereOpphold, TidligereOpphold } from 'types/InformasjonOmUtenlandsopphold';
 import { Næringstype } from 'types/Næring';
+import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, Periode } from '@navikt/fp-common';
-import { ISO_DATE_FORMAT, SivilstandType, Skjemanummer } from '@navikt/fp-constants';
+import {
+    AttachmentMetadataType,
+    AttachmentType,
+    ISO_DATE_FORMAT,
+    InnsendingsType,
+    SivilstandType,
+    Skjemanummer,
+} from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
-import { EgenNæring } from '@navikt/fp-steg-egen-naering';
-import { Frilans } from '@navikt/fp-steg-frilans';
-import { Sivilstand, Søker, Søkerinfo, SøkersituasjonFp } from '@navikt/fp-types';
+import {
+    ArbeidsforholdOgInntektFp,
+    EgenNæring,
+    Frilans,
+    Sivilstand,
+    Søker,
+    Søkerinfo,
+    SøkersituasjonFp,
+    Utenlandsopphold,
+    UtenlandsoppholdPeriode,
+} from '@navikt/fp-types';
 
 import AxiosMock from '../../__mocks__/AxiosMock';
 import Oppsummering from './Oppsummering';
@@ -104,8 +118,8 @@ const defaultAnnenForelder = {
 };
 
 const defaultUtenlandsopphold = {
-    iNorgeNeste12Mnd: true,
-    iNorgeSiste12Mnd: true,
+    harBoddUtenforNorgeSiste12Mnd: false,
+    skalBoUtenforNorgeNeste12Mnd: false,
 };
 
 const defaultUttaksplan = [
@@ -178,15 +192,16 @@ type StoryArgs = {
     søkerinfo?: Søkerinfo;
     søkersituasjon?: SøkersituasjonFp;
     annenForelder?: AnnenForelder;
-    utenlandsopphold?: Opphold;
-    utenlandsoppholdSenere?: SenereOpphold;
-    utenlandsoppholdTidligere?: TidligereOpphold;
+    utenlandsopphold?: Utenlandsopphold;
+    utenlandsoppholdSenere?: UtenlandsoppholdPeriode[];
+    utenlandsoppholdTidligere?: UtenlandsoppholdPeriode[];
     barn?: Barn;
     sivilstand?: Sivilstand;
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektFp;
     frilans?: Frilans;
     egenNæring?: EgenNæring;
     andreInntekter?: AndreInntektskilder[];
+    vedlegg?: VedleggDataType;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof Oppsummering>;
 
@@ -205,6 +220,7 @@ const meta = {
         egenNæring,
         andreInntekter,
         gåTilNesteSide,
+        vedlegg = defaultVedlegg,
         ...rest
     }) => {
         initAmplitude();
@@ -232,9 +248,9 @@ const meta = {
                             [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
-                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: { dekningsgrad: Dekningsgrad.HUNDRE_PROSENT },
+                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: Dekningsgrad.HUNDRE_PROSENT,
                             [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
-                            [ContextDataType.VEDLEGG]: defaultVedlegg,
+                            [ContextDataType.VEDLEGG]: vedlegg,
                         }}
                     >
                         <Oppsummering {...rest} />
@@ -439,31 +455,24 @@ export const MorMedUtenlandsopphold: Story = {
     args: {
         ...Default.args,
         utenlandsopphold: {
-            iNorgeNeste12Mnd: false,
-            iNorgeSiste12Mnd: false,
+            skalBoUtenforNorgeNeste12Mnd: true,
+            harBoddUtenforNorgeSiste12Mnd: true,
         },
-        utenlandsoppholdSenere: {
-            senereOpphold: [
-                {
-                    land: 'SE',
-                    tidsperiode: {
-                        fom: dayjs().format(ISO_DATE_FORMAT),
-                        tom: dayjs().add(100, 'days').format(ISO_DATE_FORMAT),
-                    },
-                },
-            ],
-        },
-        utenlandsoppholdTidligere: {
-            tidligereOpphold: [
-                {
-                    land: 'SE',
-                    tidsperiode: {
-                        fom: dayjs().subtract(10, 'months').format(ISO_DATE_FORMAT),
-                        tom: dayjs().subtract(1, 'days').format(ISO_DATE_FORMAT),
-                    },
-                },
-            ],
-        },
+        utenlandsoppholdSenere: [
+            {
+                landkode: 'SE',
+                fom: dayjs().format(ISO_DATE_FORMAT),
+                tom: dayjs().add(100, 'days').format(ISO_DATE_FORMAT),
+            },
+        ],
+
+        utenlandsoppholdTidligere: [
+            {
+                landkode: 'SE',
+                fom: dayjs().subtract(10, 'months').format(ISO_DATE_FORMAT),
+                tom: dayjs().subtract(1, 'days').format(ISO_DATE_FORMAT),
+            },
+        ],
     },
 };
 
@@ -578,6 +587,16 @@ export const MorMedAndreInntekterJobbIUtlandet: Story = {
                 arbeidsgiverNavn: 'Statoil',
                 land: 'SE',
             },
+            {
+                type: AnnenInntektType.MILITÆRTJENESTE,
+                pågående: true,
+                fom: '2022-01-01',
+            },
+            {
+                type: AnnenInntektType.SLUTTPAKKE,
+                fom: '2022-01-01',
+                tom: '2023-01-01',
+            },
         ],
         annenForelder: {
             ...defaultAnnenForelder,
@@ -608,6 +627,193 @@ export const MorMedAndreInntekterMilitærtjeneste: Story = {
             erAleneOmOmsorg: false,
         },
         søkerInfo: defaultSøkerinfoMor,
+    },
+};
+
+const FIL_INFO = {
+    filesize: 1234,
+    url: 'test',
+    id: '1',
+    file: new File(['abc'.repeat(100000)], 'Filnavn1.jpg'),
+    pending: false,
+    uploaded: true,
+};
+
+const FIL_INFO_UTTAK_MED_PERIODE = {
+    ...FIL_INFO,
+    dokumenterer: {
+        type: AttachmentMetadataType.UTTAK,
+        perioder: [
+            {
+                fom: '2024-01-01',
+                tom: '2024-10-01',
+            },
+        ],
+    },
+};
+
+export const VisAlleVedlegg: Story = {
+    args: {
+        ...Default.args,
+        vedlegg: {
+            ...defaultVedlegg,
+            [Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG]: [
+                {
+                    ...FIL_INFO,
+                    filename: 'etterlønn.pdf',
+                    type: AttachmentType.ANNEN_INNTEKT,
+                    skjemanummer: Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG,
+                    dokumenterer: {
+                        type: AttachmentMetadataType.OPPTJENING,
+                        perioder: [
+                            {
+                                fom: '2024-01-01',
+                                tom: '2024-10-01',
+                            },
+                        ],
+                    },
+                },
+                {
+                    ...FIL_INFO,
+                    filename: 'etterlønn2.pdf',
+                    type: AttachmentType.ANNEN_INNTEKT,
+                    skjemanummer: Skjemanummer.ETTERLØNN_ELLER_SLUTTVEDERLAG,
+                },
+            ],
+            [Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE]: [
+                {
+                    ...FIL_INFO,
+                    filename: 'siviltjeneste.pdf',
+                    type: AttachmentType.ANNEN_INNTEKT,
+                    skjemanummer: Skjemanummer.DOK_MILITÆR_SILVIL_TJENESTE,
+                    dokumenterer: {
+                        type: AttachmentMetadataType.OPPTJENING,
+                        perioder: [
+                            {
+                                fom: '2024-01-01',
+                                tom: '2024-10-01',
+                            },
+                        ],
+                    },
+                },
+            ],
+            [Skjemanummer.OMSORGSOVERTAKELSE]: [
+                {
+                    ...FIL_INFO,
+                    filename: 'omsorgsovertakelse.pdf',
+                    type: AttachmentType.OMSORGSOVERTAKELSE,
+                    skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
+                },
+            ],
+            [Skjemanummer.DOK_AV_ALENEOMSORG]: [
+                {
+                    ...FIL_INFO,
+                    filename: 'aleneomsorg.pdf',
+                    type: AttachmentType.ALENEOMSORG,
+                    skjemanummer: Skjemanummer.DOK_AV_ALENEOMSORG,
+                },
+            ],
+            [Skjemanummer.TERMINBEKREFTELSE]: [
+                {
+                    ...FIL_INFO,
+                    filename: 'terminbekreftelse.pdf',
+                    type: AttachmentType.TERMINBEKREFTELSE,
+                    skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
+                },
+            ],
+            [Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-deltakelse.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_DELTAKELSE_I_INTRODUKSJONSPROGRAMMET,
+                },
+            ],
+            [Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'kvalifiseringsprogram.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM,
+                },
+            ],
+            [Skjemanummer.DOK_INNLEGGELSE_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'innleggelse-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_INNLEGGELSE_MOR,
+                },
+            ],
+            [Skjemanummer.DOK_INNLEGGELSE_BARN]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'innleggelse-barn.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_INNLEGGELSE_BARN,
+                },
+            ],
+            [Skjemanummer.DOK_INNLEGGELSE_FAR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'innleggelse-far.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_INNLEGGELSE_FAR,
+                },
+            ],
+            [Skjemanummer.DOK_SYKDOM_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'sykdom-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_SYKDOM_MOR,
+                },
+            ],
+            [Skjemanummer.DOK_ARBEID_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-arbeid-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_ARBEID_MOR,
+                },
+            ],
+            [Skjemanummer.DOK_UTDANNING_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-utdanning-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_UTDANNING_MOR,
+                },
+            ],
+            [Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR]: [
+                {
+                    ...FIL_INFO_UTTAK_MED_PERIODE,
+                    filename: 'dok-utdanning-og-arbeid-mor.pdf',
+                    type: AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
+                    skjemanummer: Skjemanummer.DOK_UTDANNING_OG_ARBEID_MOR,
+                },
+            ],
+        },
+    },
+};
+
+export const VisSendInnSenereVedlegg: Story = {
+    args: {
+        ...Default.args,
+        vedlegg: {
+            ...(VisAlleVedlegg.args?.vedlegg
+                ? Object.entries(VisAlleVedlegg.args.vedlegg).reduce(
+                      (result, entry) => ({
+                          ...result,
+                          [entry[0]]: entry[1].map((value) => ({
+                              ...value,
+                              innsendingsType: InnsendingsType.SEND_SENERE,
+                          })),
+                      }),
+                      {},
+                  )
+                : {}),
+        },
     },
 };
 

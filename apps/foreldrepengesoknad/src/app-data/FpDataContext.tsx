@@ -5,14 +5,17 @@ import { UttaksplanMetaData } from 'types/UttaksplanMetaData';
 import { VedleggDataType } from 'types/VedleggDataType';
 
 import { AnnenForelder, Barn, BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
-import { EgenNæring } from '@navikt/fp-steg-egen-naering';
-import { Frilans } from '@navikt/fp-steg-frilans';
-import { SøkersituasjonFp } from '@navikt/fp-types';
+import {
+    ArbeidsforholdOgInntektFp,
+    Dekningsgrad,
+    EgenNæring,
+    Frilans,
+    SøkersituasjonFp,
+    Utenlandsopphold,
+    UtenlandsoppholdPeriode,
+} from '@navikt/fp-types';
 
 import Fordeling from '../types/Fordeling';
-import { Opphold, SenereOpphold, TidligereOpphold } from '../types/InformasjonOmUtenlandsopphold';
-import PeriodeMedForeldrepenger from '../types/PeriodeMedForeldrepenger';
 
 export enum ContextDataType {
     APP_ROUTE = 'APP_ROUTE',
@@ -46,10 +49,10 @@ export type ContextDataMap = {
     [ContextDataType.EGEN_NÆRING]?: EgenNæring;
     [ContextDataType.FRILANS]?: Frilans;
     [ContextDataType.ANDRE_INNTEKTSKILDER]?: AndreInntektskilder[];
-    [ContextDataType.UTENLANDSOPPHOLD]?: Opphold;
-    [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: SenereOpphold;
-    [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: TidligereOpphold;
-    [ContextDataType.PERIODE_MED_FORELDREPENGER]?: PeriodeMedForeldrepenger;
+    [ContextDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;
+    [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: UtenlandsoppholdPeriode[];
+    [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]?: UtenlandsoppholdPeriode[];
+    [ContextDataType.PERIODE_MED_FORELDREPENGER]?: Dekningsgrad;
     [ContextDataType.FORDELING]?: Fordeling;
     [ContextDataType.UTTAKSPLAN]?: Periode[];
     [ContextDataType.UTTAKSPLAN_METADATA]?: UttaksplanMetaData;

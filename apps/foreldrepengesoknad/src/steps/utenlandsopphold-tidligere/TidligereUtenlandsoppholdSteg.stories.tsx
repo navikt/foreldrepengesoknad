@@ -5,9 +5,9 @@ import SøknadRoutes from 'appData/routes';
 import MockAdapter from 'axios-mock-adapter/types';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { Opphold } from 'types/InformasjonOmUtenlandsopphold';
 
 import { initAmplitude } from '@navikt/fp-metrics';
+import { Utenlandsopphold } from '@navikt/fp-types';
 
 import AxiosMock from '../../__mocks__/AxiosMock';
 import TidligereUtenlandsoppholdSteg from './TidligereUtenlandsoppholdSteg';
@@ -20,12 +20,12 @@ const promiseAction =
     };
 
 const defaultUtenlandsopphold = {
-    iNorgeNeste12Mnd: true,
-    iNorgeSiste12Mnd: false,
+    skalBoUtenforNorgeNeste12Mnd: false,
+    harBoddUtenforNorgeSiste12Mnd: true,
 };
 
 type StoryArgs = {
-    utenlandsopphold?: Opphold;
+    utenlandsopphold?: Utenlandsopphold;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof TidligereUtenlandsoppholdSteg>;
 

@@ -1,19 +1,20 @@
+import Environment from 'appData/Environment';
+import { ContextDataType } from 'appData/SvpDataContext';
+import SøknadRoutes from 'appData/routes';
+import useAvbrytSøknad from 'appData/useAvbrytSøknad';
+import useSendSøknad from 'appData/useSendSøknad';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { Loader } from '@navikt/ds-react';
 
-import { ApiAccessError, ApiGeneralError, getAxiosInstance } from '@navikt/fp-api';
+import { ApiAccessError, ApiGeneralError } from '@navikt/fp-api';
 import { Kvittering, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 import { redirect } from '@navikt/fp-utils';
 
-import Environment from './app-data/Environment';
-import { ContextDataType } from './app-data/SvpDataContext';
-import SøknadRoutes from './app-data/routes';
-import useAvbrytSøknad from './app-data/useAvbrytSøknad';
+import { AxiosInstanceAPI } from './api/AxiosInstance';
 import useMellomlagreSøknad, { SvpDataMapAndMetaData } from './app-data/useMellomlagreSøknad';
-import useSendSøknad from './app-data/useSendSøknad';
 import Forside from './pages/forside/Forside';
 import ArbeidIUtlandetStep from './steps/arbeid-i-utlandet/ArbeidIUtlandetStep';
 import ArbeidsforholdOgInntektSteg from './steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
@@ -35,7 +36,7 @@ export const Spinner: React.FunctionComponent = () => (
     </div>
 );
 
-export const svpApi = getAxiosInstance();
+export const svpApi = AxiosInstanceAPI();
 
 export const ApiErrorHandler: React.FunctionComponent<{ error: ApiAccessError | ApiGeneralError }> = ({ error }) => {
     return (

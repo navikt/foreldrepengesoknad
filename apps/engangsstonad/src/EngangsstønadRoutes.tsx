@@ -8,11 +8,12 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { Loader } from '@navikt/ds-react';
 
-import { ApiAccessError, ApiGeneralError, getAxiosInstance } from '@navikt/fp-api';
+import { ApiAccessError, ApiGeneralError } from '@navikt/fp-api';
 import { Kvittering, LocaleAll, Søker } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 import { redirect } from '@navikt/fp-utils';
 
+import { AxiosInstanceAPI } from './api/AxiosInstance';
 import DokumentasjonSteg from './steg/dokumentasjon/DokumentasjonSteg';
 import OmBarnetSteg from './steg/om-barnet/OmBarnetSteg';
 import OppsummeringSteg from './steg/oppsummering/OppsummeringSteg';
@@ -22,7 +23,7 @@ import TidligereUtenlandsoppholdSteg from './steg/utenlandsopphold-tidligere/Tid
 import UtenlandsoppholdSteg from './steg/utenlandsopphold/UtenlandsoppholdSteg';
 import Velkommen from './velkommen/Velkommen';
 
-export const esApi = getAxiosInstance();
+export const esApi = AxiosInstanceAPI();
 
 export const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -47,8 +48,8 @@ const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChange
     const [erVelkommen, setErVelkommen] = useState(false);
     const [kvittering, setKvittering] = useState<Kvittering>();
 
-    const { sendSøknad, errorSendSøknad } = useEsSendSøknad(esApi, locale, setKvittering);
-    const mellomlagreOgNaviger = useEsMellomlagring(esApi, locale, setErVelkommen);
+    const { sendSøknad, errorSendSøknad } = useEsSendSøknad(AxiosInstanceAPI(), locale, setKvittering);
+    const mellomlagreOgNaviger = useEsMellomlagring(AxiosInstanceAPI(), locale, setErVelkommen);
 
     useEffect(() => {
         if (mellomlagretData?.[ContextDataType.CURRENT_PATH]) {

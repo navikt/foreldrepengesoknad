@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
+import { AxiosInstanceAPI } from 'api/AxiosInstance';
 import MockAdapter from 'axios-mock-adapter';
 
-import { getAxiosInstance } from '@navikt/fp-api';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { SøkerBarn, Søkerinfo } from '@navikt/fp-types';
 import { IntlProvider } from '@navikt/fp-ui';
@@ -77,7 +77,7 @@ describe('<Foreldrepengesøknad>', () => {
         vi.spyOn(Api, 'useStoredAppState').mockImplementation(() => storageData);
         vi.spyOn(Api, 'useGetSaker').mockImplementation(() => sakerData);
 
-        const apiMock = new MockAdapter(getAxiosInstance());
+        const apiMock = new MockAdapter(AxiosInstanceAPI());
         apiMock.onPost('/rest/storage/foreldrepenger').reply(200, {});
 
         render(

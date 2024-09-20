@@ -55,5 +55,7 @@
     "ByttBrowserModal.Ingress": "To get the best user experience, we recommend that you switch to a modern browser that supports modern web standards.",
     "ByttBrowserModal.Ok": "OK",
     "Step.HarValgfrieFelt": "All fields must be filled in, except fields marked with (optional).",
-    "Step.HarObligatoriskeFelt": "All fields must be filled in."
+    "Step.HarObligatoriskeFelt": "All fields must be filled in.",
+    "AndreVeivisereLinkPanel.AndreVeivisere": "Other guides:",
+    "FrontPage.Start": "Start"
 }

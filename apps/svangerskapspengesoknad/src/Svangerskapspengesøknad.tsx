@@ -1,3 +1,4 @@
+import Environment from 'appData/Environment';
 import { useIntl } from 'react-intl';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -53,7 +54,7 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
             {!erPersonMyndig ? (
                 <Umyndig appnavn="Svangerskapspenger" />
             ) : (
-                <BrowserRouter>
+                <BrowserRouter basename={Environment.PUBLIC_PATH}>
                     <SvpDataContext initialState={mellomlagretState}>
                         <SvangerskapspengesøknadRoutes
                             locale={locale}

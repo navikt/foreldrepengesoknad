@@ -52,9 +52,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: {
-                dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-            },
+            data: Dekningsgrad.HUNDRE_PROSENT,
             key: ContextDataType.PERIODE_MED_FORELDREPENGER,
             type: 'update',
         });
@@ -92,9 +90,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: {
-                dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
-            },
+            data: Dekningsgrad.ÅTTI_PROSENT,
             key: ContextDataType.PERIODE_MED_FORELDREPENGER,
             type: 'update',
         });
@@ -138,9 +134,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: {
-                dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
-            },
+            data: Dekningsgrad.ÅTTI_PROSENT,
             key: ContextDataType.PERIODE_MED_FORELDREPENGER,
             type: 'update',
         });
@@ -184,9 +178,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: {
-                dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-            },
+            data: Dekningsgrad.HUNDRE_PROSENT,
             key: ContextDataType.PERIODE_MED_FORELDREPENGER,
             type: 'update',
         });
@@ -228,9 +220,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: {
-                dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-            },
+            data: Dekningsgrad.HUNDRE_PROSENT,
             key: ContextDataType.PERIODE_MED_FORELDREPENGER,
             type: 'update',
         });
@@ -272,9 +262,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: {
-                dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-            },
+            data: Dekningsgrad.HUNDRE_PROSENT,
             key: ContextDataType.PERIODE_MED_FORELDREPENGER,
             type: 'update',
         });
@@ -316,9 +304,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: {
-                dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-            },
+            data: Dekningsgrad.HUNDRE_PROSENT,
             key: ContextDataType.PERIODE_MED_FORELDREPENGER,
             type: 'update',
         });
@@ -355,9 +341,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(2);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: {
-                dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
-            },
+            data: Dekningsgrad.HUNDRE_PROSENT,
             key: ContextDataType.PERIODE_MED_FORELDREPENGER,
             type: 'update',
         });

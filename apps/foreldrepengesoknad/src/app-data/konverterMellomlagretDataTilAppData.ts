@@ -17,31 +17,10 @@ export const konverterMellomlagretDataTilAppData = (mellomlagretState: FpMelloml
         [ContextDataType.EGEN_NÆRING]: søknad?.egenNæring,
         [ContextDataType.FRILANS]: søknad?.frilans,
         [ContextDataType.ANDRE_INNTEKTSKILDER]: søknad?.andreInntektskilder,
-        [ContextDataType.UTENLANDSOPPHOLD]: søknad?.informasjonOmUtenlandsopphold
-            ? {
-                  iNorgeNeste12Mnd: søknad.informasjonOmUtenlandsopphold.iNorgeNeste12Mnd,
-                  iNorgeSiste12Mnd: søknad.informasjonOmUtenlandsopphold.iNorgeSiste12Mnd,
-              }
-            : undefined,
-        [ContextDataType.UTENLANDSOPPHOLD_SENERE]:
-            søknad?.informasjonOmUtenlandsopphold &&
-            søknad.informasjonOmUtenlandsopphold.senereOpphold &&
-            søknad.informasjonOmUtenlandsopphold.senereOpphold.length > 0
-                ? {
-                      senereOpphold: søknad.informasjonOmUtenlandsopphold.senereOpphold,
-                  }
-                : undefined,
-        [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]:
-            søknad?.informasjonOmUtenlandsopphold &&
-            søknad.informasjonOmUtenlandsopphold.tidligereOpphold &&
-            søknad.informasjonOmUtenlandsopphold.tidligereOpphold.length > 0
-                ? {
-                      tidligereOpphold: søknad.informasjonOmUtenlandsopphold.tidligereOpphold,
-                  }
-                : undefined,
-        [ContextDataType.PERIODE_MED_FORELDREPENGER]: søknad?.dekningsgrad
-            ? { dekningsgrad: søknad.dekningsgrad }
-            : undefined,
+        [ContextDataType.UTENLANDSOPPHOLD]: søknad?.utenlandsopphold,
+        [ContextDataType.UTENLANDSOPPHOLD_SENERE]: søknad?.utenlandsoppholdNeste12Mnd,
+        [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: søknad?.utenlandsoppholdSiste12Mnd,
+        [ContextDataType.PERIODE_MED_FORELDREPENGER]: søknad?.dekningsgrad,
         [ContextDataType.FORDELING]: mellomlagretState.fordeling,
         [ContextDataType.UTTAKSPLAN]: søknad?.uttaksplan,
         [ContextDataType.UTTAKSPLAN_METADATA]: {

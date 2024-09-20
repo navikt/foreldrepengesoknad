@@ -8,8 +8,7 @@ import { UnikArbeidsforhold } from 'types/Arbeidsforhold';
 import { Stilling } from 'types/Tilrettelegging';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { ArbeidsforholdOgInntektSvp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { Arbeidsforhold, ArbeidsforholdOgInntektSvp } from '@navikt/fp-types';
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isBetween);

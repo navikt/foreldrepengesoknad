@@ -71,20 +71,18 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(saveOnNext).toHaveBeenCalledTimes(1);
-        expect(saveOnNext).toHaveBeenNthCalledWith(1, {
-            utenlandsoppholdSiste12Mnd: [
-                {
-                    landkode: 'CA',
-                    fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
-                    tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
-                },
-                {
-                    landkode: 'AS',
-                    fom: dayjs().subtract(22, 'day').format(ISO_DATE_FORMAT),
-                    tom: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
-                },
-            ],
-        });
+        expect(saveOnNext).toHaveBeenNthCalledWith(1, [
+            {
+                landkode: 'CA',
+                fom: dayjs().subtract(30, 'day').format(ISO_DATE_FORMAT),
+                tom: dayjs().subtract(25, 'day').format(ISO_DATE_FORMAT),
+            },
+            {
+                landkode: 'AS',
+                fom: dayjs().subtract(22, 'day').format(ISO_DATE_FORMAT),
+                tom: dayjs().subtract(10, 'day').format(ISO_DATE_FORMAT),
+            },
+        ]);
     });
 
     it('skal fylle ut to perioder og kryssvalidere', async () => {
@@ -148,15 +146,13 @@ describe('<TidligereUtenlandsoppholdPanel>', () => {
         await userEvent.click(screen.getByText('Forrige steg'));
 
         expect(saveOnPrevious).toHaveBeenCalledTimes(1);
-        expect(saveOnPrevious).toHaveBeenNthCalledWith(1, {
-            utenlandsoppholdSiste12Mnd: [
-                {
-                    fom: '',
-                    landkode: 'CA',
-                    tom: '',
-                },
-            ],
-        });
+        expect(saveOnPrevious).toHaveBeenNthCalledWith(1, [
+            {
+                fom: '',
+                landkode: 'CA',
+                tom: '',
+            },
+        ]);
 
         expect(goToPreviousStep).toHaveBeenCalledTimes(1);
     });

@@ -4,7 +4,7 @@ import useSvpNavigator from 'appData/useSvpNavigator';
 import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import Tilrettelegging, { Arbeidsforholdstype } from 'types/Tilrettelegging';
+import { Arbeidsforholdstype, Tilrettelegging } from 'types/Tilrettelegging';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -15,6 +15,7 @@ import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
 import { FileUploader, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { AxiosInstanceAPI } from '../../api/AxiosInstance';
 import Bedriftsbanner from '../Bedriftsbanner';
 
 const MAX_ANTALL_VEDLEGG = 40;
@@ -175,7 +176,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({
                             skjemanummer={Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING}
                             existingAttachments={defaultValues?.vedlegg}
                             updateAttachments={updateAttachments}
-                            saveAttachment={getSaveAttachment('svangerskapspenger')}
+                            saveAttachment={getSaveAttachment(AxiosInstanceAPI(), 'svangerskapspenger')}
                         />
                     </VStack>
                     <StepButtonsHookForm

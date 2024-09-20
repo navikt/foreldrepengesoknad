@@ -41,6 +41,7 @@ const meta = {
         omBarnet,
         arbeidssituasjon,
         stønadskontoer,
+        locale,
     }) => {
         initAmplitude();
         return (
@@ -55,7 +56,7 @@ const meta = {
                         [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                     }}
                 >
-                    <PlanenDeresSteg stønadskontoer={stønadskontoer} />
+                    <PlanenDeresSteg stønadskontoer={stønadskontoer} locale={locale} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -67,6 +68,7 @@ type Story = StoryObj<typeof meta>;
 
 export const MorOgFarBeggeHarRett: Story = {
     args: {
+        locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Olga Utvikler',
             navnPåFar: 'Espen Utvikler',

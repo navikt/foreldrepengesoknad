@@ -5,6 +5,8 @@ import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 
+import { AxiosInstanceAPI } from '../../api/AxiosInstance';
+
 interface Props {
     attachments?: Attachment[];
     updateAttachments: (attachments: Attachment[], hasPendingUploads: boolean) => void;
@@ -20,7 +22,7 @@ const AdopsjonDokPanel: React.FunctionComponent<Props> = ({ attachments, updateA
             skjemanummer={Skjemanummer.OMSORGSOVERTAKELSE}
             existingAttachments={attachments}
             updateAttachments={updateAttachments}
-            saveAttachment={getSaveAttachment('engangsstonad')}
+            saveAttachment={getSaveAttachment(AxiosInstanceAPI(), 'engangsstonad')}
         />
     );
 };

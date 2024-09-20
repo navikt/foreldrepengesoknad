@@ -22,10 +22,10 @@
     "dependencies": {
         "gh-pages": "6.1.1",
         "glob": "11.0.0",
-        "husky": "9.1.5",
+        "husky": "9.1.6",
         "lint-staged": "15.2.10",
         "shelljs": "0.8.5",
-        "turbo": "^2.0.10"
+        "turbo": "^2.1.2"
     },
     "lint-staged": {
         "apps/**/*.{ts,tsx,js,jsx, css}": "prettier --write",

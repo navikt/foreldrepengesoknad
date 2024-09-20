@@ -1,13 +1,18 @@
+import { AnnenForelderForInnsending, BarnForInnsending, PeriodeForInnsending, SøkerForInnsending } from 'api/apiUtils';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { VedleggDataType } from 'types/VedleggDataType';
 
-import { AnnenForelder, Barn, Periode, Søkersituasjon } from '@navikt/fp-common';
-import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
-import { EgenNæring } from '@navikt/fp-steg-egen-naering';
-import { Frilans } from '@navikt/fp-steg-frilans';
-import { Dekningsgrad } from '@navikt/fp-types';
-
-import InformasjonOmUtenlandsopphold from './InformasjonOmUtenlandsopphold';
+import { AnnenForelder, Barn, Periode, Situasjon, Søkersituasjon } from '@navikt/fp-common';
+import {
+    ArbeidsforholdOgInntektFp,
+    Attachment,
+    Dekningsgrad,
+    EgenNæring,
+    Frilans,
+    InformasjonOmUtenlandsoppholdDTO,
+    Utenlandsopphold,
+    UtenlandsoppholdPeriode,
+} from '@navikt/fp-types';
 
 export interface Søknad {
     type: 'foreldrepenger';
@@ -19,7 +24,9 @@ export interface Søknad {
     egenNæring: EgenNæring;
     frilans: Frilans;
     andreInntektskilder: AndreInntektskilder[];
-    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsopphold;
+    utenlandsopphold: Utenlandsopphold;
+    utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[];
+    utenlandsoppholdSiste12Mnd: UtenlandsoppholdPeriode[];
     erEndringssøknad: boolean;
     dekningsgrad: Dekningsgrad;
     uttaksplan: Periode[];
@@ -28,3 +35,45 @@ export interface Søknad {
     vedlegg: VedleggDataType;
     manglerDokumentasjon: boolean;
 }
+
+export interface SøknadForInnsending
+    extends Omit<
+        Søknad,
+        | 'barn'
+        | 'annenForelder'
+        | 'uttaksplan'
+        | 'arbeidsforholdOgInntekt'
+        | 'utenlandsopphold'
+        | 'utenlandsoppholdNeste12Mnd'
+        | 'utenlandsoppholdSiste12Mnd'
+        | 'egenNæring'
+        | 'frilans'
+        | 'andreInntektskilder'
+        | 'søkersituasjon'
+        | 'tilleggsopplysninger'
+        | 'manglerDokumentasjon'
+        | 'vedlegg'
+    > {
+    barn: BarnForInnsending;
+    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsoppholdDTO;
+    annenForelder: AnnenForelderForInnsending;
+    uttaksplan: PeriodeForInnsending[];
+    søker: SøkerForInnsending;
+    situasjon: Situasjon;
+    vedlegg: Attachment[];
+}
+
+export type EndringssøknadForInnsending = Pick<
+    SøknadForInnsending,
+    | 'type'
+    | 'saksnummer'
+    | 'erEndringssøknad'
+    | 'uttaksplan'
+    | 'søker'
+    | 'annenForelder'
+    | 'barn'
+    | 'dekningsgrad'
+    | 'situasjon'
+    | 'ønskerJustertUttakVedFødsel'
+    | 'vedlegg'
+>;

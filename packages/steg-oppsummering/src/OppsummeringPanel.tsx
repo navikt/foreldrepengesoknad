@@ -1,12 +1,10 @@
-import { ReactElement, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
 import { ConfirmationPanel, VStack } from '@navikt/ds-react';
 
 import { useAbortSignal } from '@navikt/fp-api';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
-
-import Oppsummeringspunkt from './Oppsummeringspunkt';
 
 const getSamtykkeTekst = (
     intl: IntlShape,
@@ -32,7 +30,7 @@ export interface Props<TYPE> {
     goToPreviousStep: () => void;
     onStepChange?: (id: TYPE) => void;
     stepConfig: Array<ProgressStep<TYPE>>;
-    children: ReactElement[] | ReactElement;
+    children: ReactNode;
     appName: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
     ekstraSamtykketekst?: string;
 }
@@ -94,7 +92,5 @@ const OppsummeringPanel = <TYPE extends string>({
         </Step>
     );
 };
-
-OppsummeringPanel.Punkt = Oppsummeringspunkt;
 
 export default OppsummeringPanel;

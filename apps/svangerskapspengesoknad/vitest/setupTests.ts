@@ -14,6 +14,7 @@ vi.mock('./../src/appData/Environment.ts', async () => {
     return {
         default: {
             INNSYN: 'https://foreldrepenger.intern.dev.nav.no',
+            PUBLIC_PATH: '',
         },
     };
 });

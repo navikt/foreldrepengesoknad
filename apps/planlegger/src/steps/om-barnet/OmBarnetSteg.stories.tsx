@@ -2,6 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, PlanleggerDataContext } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
+import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
@@ -12,12 +13,12 @@ import OmBarnetSteg from './OmBarnetSteg';
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;
     gåTilNesteSide?: (action: Action) => void;
-};
+} & ComponentProps<typeof OmBarnetSteg>;
 
 const meta = {
     title: 'steg/OmBarnetSteg',
     component: OmBarnetSteg,
-    render: ({ hvemPlanlegger, gåTilNesteSide = action('button-click') }: StoryArgs) => {
+    render: ({ hvemPlanlegger, gåTilNesteSide = action('button-click'), locale }: StoryArgs) => {
         initAmplitude();
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.OM_BARNET]}>
@@ -27,7 +28,7 @@ const meta = {
                     }}
                     onDispatch={gåTilNesteSide}
                 >
-                    <OmBarnetSteg />
+                    <OmBarnetSteg locale={locale} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -39,6 +40,7 @@ type Story = StoryObj<typeof meta>;
 
 export const FlereForsørgere: Story = {
     args: {
+        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -49,6 +51,7 @@ export const FlereForsørgere: Story = {
 
 export const AleneforsørgerMor: Story = {
     args: {
+        locale: 'nb',
         hvemPlanlegger: {
             navnPåMor: 'Klara Utvikler',
             type: Situasjon.MOR,
@@ -58,6 +61,7 @@ export const AleneforsørgerMor: Story = {
 
 export const AleneforsørgerFar: Story = {
     args: {
+        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             type: Situasjon.FAR,
@@ -66,6 +70,7 @@ export const AleneforsørgerFar: Story = {
 };
 export const FlereForsørgereFarOgFar: Story = {
     args: {
+        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Hugo Utvikler',

@@ -16,15 +16,6 @@ export const Default: Story = {
     },
 };
 
-export const GulMedOverskriftOgRetteHjørne: Story = {
-    args: {
-        children: <div>Dette er innholdet</div>,
-        backgroundColor: 'yellow',
-        cornerStyle: 'square',
-        heading: 'Dette er en overskrift',
-    },
-};
-
 export const VisSkjelett: Story = {
     args: {
         children: <div>Dette er innholdet</div>,

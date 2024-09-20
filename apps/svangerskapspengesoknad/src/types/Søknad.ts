@@ -1,9 +1,9 @@
 import { Attachment } from '@navikt/fp-types';
+import { InformasjonOmUtenlandsoppholdDTO } from '@navikt/fp-types/src/Utenlandsopphold';
 
 import { BarnDTO } from './Barn';
 import { SøkerDTO } from './Søker';
 import { TilretteleggingDTO } from './Tilrettelegging';
-import { InformasjonOmUtenlandsoppholdDTO } from './Utenlandsopphold';
 
 export enum Søknadstype {
     'SVANGERSKAPSPENGER' = 'svangerskapspenger',

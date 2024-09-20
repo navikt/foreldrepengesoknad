@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
 
-import { BoIUtlandetOppsummeringspunkt, OppsummeringPanel } from '@navikt/fp-steg-oppsummering';
+import { BoIUtlandetOppsummering, OppsummeringPanel } from '@navikt/fp-steg-oppsummering';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -14,8 +14,8 @@ import { DokumentasjonOppsummering } from './DokumentasjonOppsummering';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
 
 export interface Props {
-    readonly sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
-    readonly mellomlagreOgNaviger: () => Promise<void>;
+    sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
+    mellomlagreOgNaviger: () => Promise<void>;
 }
 
 const OppsummeringSteg = ({ sendSøknad, mellomlagreOgNaviger }: Props) => {
@@ -45,10 +45,10 @@ const OppsummeringSteg = ({ sendSøknad, mellomlagreOgNaviger }: Props) => {
                     omBarnet={omBarnet}
                     onVilEndreSvar={() => navigator.goToNextStep(Path.OM_BARNET)}
                 />
-                <BoIUtlandetOppsummeringspunkt
+                <BoIUtlandetOppsummering
                     onVilEndreSvar={() => navigator.goToNextStep(Path.UTENLANDSOPPHOLD)}
-                    tidligereUtenlandsopphold={tidligereUtenlandsopphold?.utenlandsoppholdSiste12Mnd ?? []}
-                    senereUtenlandsopphold={senereUtenlandsopphold?.utenlandsoppholdNeste12Mnd ?? []}
+                    tidligereUtenlandsopphold={tidligereUtenlandsopphold ?? []}
+                    senereUtenlandsopphold={senereUtenlandsopphold ?? []}
                 />
                 <DokumentasjonOppsummering dokumentasjon={dokumentasjon} onVilEndreSvar={navigator.goToNextStep} />
             </OppsummeringPanel>

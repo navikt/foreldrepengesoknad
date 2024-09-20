@@ -21,7 +21,7 @@ import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-reac
 
 import { links } from '@navikt/fp-constants';
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -31,11 +31,12 @@ import ValgtDekningsgradInfoboks from './infoboks/ValgtDekningsgradInfoboks';
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoer;
+    locale: LocaleAll;
 }
 
-const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
+const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator();
+    const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
 
     const periode = useContextGetData(ContextDataType.HVOR_LANG_PERIODE);

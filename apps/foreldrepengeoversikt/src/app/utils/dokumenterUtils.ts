@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 
+import { prefiks_public_path } from 'app/api/api';
 import { Dokument } from 'app/types/Dokument';
 
 export const grupperDokumenterPåTidspunkt = (dokumenter: Dokument[]): Record<string, Dokument[]> => {
@@ -21,5 +22,5 @@ export const grupperDokumenterPåTidspunkt = (dokumenter: Dokument[]): Record<st
 export const lagUrl = (dokument: Dokument): string => {
     return dokument.url
         ? dokument.url
-        : `/rest/dokument/hent-dokument/${dokument.journalpostId}/${dokument.dokumentId}`;
+        : `${prefiks_public_path}/rest/dokument/hent-dokument/${dokument.journalpostId}/${dokument.dokumentId}`;
 };

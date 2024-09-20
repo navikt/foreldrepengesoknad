@@ -1,0 +1,19 @@
+.sakLink.sakLink {
+    padding: var(--a-spacing-6) var(--a-spacing-4);
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: var(--a-shadow-small);
+}
+
+.sakLink > :global(.navds-link-panel__content) {
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--a-spacing-2);
+
+    & :global(.navds-tag) {
+        height: fit-content;
+    }
+}

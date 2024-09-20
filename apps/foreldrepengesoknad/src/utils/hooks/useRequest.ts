@@ -1,8 +1,7 @@
+import { AxiosInstanceAPI } from 'api/AxiosInstance';
 import { AxiosError, AxiosRequestConfig } from 'axios';
 import { useEffect, useState } from 'react';
 import { RequestStatus } from 'types/RequestState';
-
-import { getAxiosInstance } from '@navikt/fp-api';
 
 type Options = {
     config?: AxiosRequestConfig;
@@ -19,7 +18,8 @@ export const useGetRequest = <T>(url: string, options: Options = DEFAULT_OPTIONS
     const [data, setData] = useState<T>();
     const [error, setError] = useState<AxiosError<any> | null>(null);
     const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.UNFETCHED);
-    const axiosInstance = options.fnr ? getAxiosInstance(options.fnr) : getAxiosInstance();
+    const fnr = options.fnr ?? undefined;
+    const axiosInstance = AxiosInstanceAPI(fnr);
 
     useEffect(() => {
         if (!options.isSuspended && requestStatus === RequestStatus.UNFETCHED) {
@@ -46,7 +46,8 @@ export const usePostRequest = <T>(url: string, body: any, options: Options = DEF
     const [data, setData] = useState<T>();
     const [error, setError] = useState<AxiosError<any> | null>(null);
     const [requestStatus, setRequestStatus] = useState<RequestStatus>(RequestStatus.UNFETCHED);
-    const axiosInstance = options.fnr ? getAxiosInstance(options.fnr) : getAxiosInstance();
+    const fnr = options.fnr ?? undefined;
+    const axiosInstance = AxiosInstanceAPI(fnr);
 
     useEffect(() => {
         if (!options.isSuspended && requestStatus === RequestStatus.UNFETCHED) {

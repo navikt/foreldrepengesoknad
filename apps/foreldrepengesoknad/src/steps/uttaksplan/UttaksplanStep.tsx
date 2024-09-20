@@ -102,7 +102,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
-    const periodeMedForeldrepenger = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
+    const dekningsgrad = notEmpty(useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER));
     const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN) || EMPTY_PERIOD_ARRAY;
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
@@ -516,12 +516,10 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
 
     const valgteStønadskontoer = useMemo(() => {
         if (stønadskontoer) {
-            return periodeMedForeldrepenger.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-                ? stønadskontoer[100]
-                : stønadskontoer[80];
+            return dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer[100] : stønadskontoer[80];
         }
         return undefined;
-    }, [stønadskontoer, periodeMedForeldrepenger.dekningsgrad]);
+    }, [stønadskontoer, dekningsgrad]);
 
     useEffect(() => {
         if (uttaksplan.length === 0) {
@@ -664,7 +662,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                             erMorUfør={erMorUfør}
                             morHarRett={morHarRett}
                             søkersituasjon={søkersituasjon}
-                            dekningsgrad={periodeMedForeldrepenger.dekningsgrad}
+                            dekningsgrad={dekningsgrad}
                             antallBarn={antallBarn}
                             setUttaksplanErGyldig={setUttaksplanErGyldig}
                             eksisterendeSak={eksisterendeSak}
