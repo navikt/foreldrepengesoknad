@@ -95,6 +95,7 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
 
     const skalHaFerie = formMethods.watch('skalHaFerie');
 
+    // Hvis radio-button valget endret seg vil vi endre "antallFeriePerioder" slik at fieldArray får riktige initielle verdier.
     useEffect(() => {
         if (!skalHaFerie) {
             formMethods.setValue('antallFeriePerioder', 0);
