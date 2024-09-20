@@ -3,7 +3,6 @@ import SøknadRoutes from 'appData/routes';
 import useStepConfig from 'appData/useStepConfig';
 import useSvpNavigator from 'appData/useSvpNavigator';
 import dayjs from 'dayjs';
-import partition from 'lodash/partition';
 import { useEffect } from 'react';
 import { useController, useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -54,22 +53,16 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const valgtTilretteleggingId = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
     const currentTilrettelegging = notEmpty(tilrettelegginger.find((t) => t.id === valgtTilretteleggingId));
+    const arbeidsgiverId = currentTilrettelegging.arbeidsforhold.arbeidsgiverId ?? ''; // TODO: what to do hvis denne er undefined?
 
     const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);
-    const [eksisterendeSkjemaVerdier, ferieForAndreArbeidsforhold] = partition(
-        useContextGetData(ContextDataType.FERIE) ?? [],
-        (feriePeriode) => feriePeriode.arbeidsforhold.id === currentTilrettelegging.arbeidsforhold.arbeidsgiverId,
-    );
+    const ferie = useContextGetData(ContextDataType.FERIE);
+    console.log(ferie);
+    const eksisterendeSkjemaVerdier = ferie?.[arbeidsgiverId];
+
     const formMethods = useForm<FerieFormData>({
         mode: 'onSubmit',
-        defaultValues:
-            eksisterendeSkjemaVerdier.length > 0
-                ? {
-                      skalHaFerie: eksisterendeSkjemaVerdier.length > 0, //TODO: sjekk denne
-                      feriePerioder: eksisterendeSkjemaVerdier,
-                      antallFeriePerioder: eksisterendeSkjemaVerdier.length,
-                  }
-                : DEFAULT_FERIE_VALUES,
+        defaultValues: eksisterendeSkjemaVerdier || DEFAULT_FERIE_VALUES,
     });
 
     const onSubmit = (values: FerieFormData) => {
@@ -77,13 +70,20 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
         const nyeAvtaltFeriePerioder = feriePerioderFraSubmit.map((feriePeriode) => ({
             ...feriePeriode,
             arbeidsforhold: {
-                id: currentTilrettelegging.arbeidsforhold.arbeidsgiverId ?? '', // TODO: når kan denne bli undefined?
+                id: arbeidsgiverId,
                 type: currentTilrettelegging.arbeidsforhold.type,
             },
         }));
-
-        const nyFerieListe = [...nyeAvtaltFeriePerioder, ...ferieForAndreArbeidsforhold];
-        oppdaterFerie(nyFerieListe);
+        const nyeFerieVerdier = {
+            ...ferie,
+            [arbeidsgiverId]: {
+                skalHaFerie: values.skalHaFerie,
+                antallFeriePerioder: values.feriePerioder.length,
+                feriePerioder: nyeAvtaltFeriePerioder,
+            },
+        };
+        console.log(nyeFerieVerdier);
+        oppdaterFerie(nyeFerieVerdier);
 
         const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegginger, currentTilrettelegging.id);
         const nextRoute = nesteTilretteleggingId ? SøknadRoutes.SKJEMA : SøknadRoutes.OPPSUMMERING;
@@ -92,6 +92,16 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
         }
         return navigator.goToNextStep(nextRoute);
     };
+
+    const skalHaFerie = formMethods.watch('skalHaFerie');
+
+    useEffect(() => {
+        if (!skalHaFerie) {
+            formMethods.setValue('antallFeriePerioder', 0);
+        } else {
+            formMethods.setValue('antallFeriePerioder', 1);
+        }
+    }, [skalHaFerie]);
 
     return (
         <Step
@@ -122,7 +132,7 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
                             </BodyShort>
                         </ReadMore>
                     </VStack>
-                    {formMethods.watch('skalHaFerie') && <FeriePerioder />}
+                    {skalHaFerie && <FeriePerioder />}
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
             </RhfForm>

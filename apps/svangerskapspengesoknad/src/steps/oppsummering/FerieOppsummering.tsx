@@ -12,10 +12,12 @@ import { notEmpty } from '../../../../../packages/validation';
 export function FerieOppsummering({ onVilEndreSvar }: { readonly onVilEndreSvar: () => void }) {
     const ferie = useContextGetData(ContextDataType.FERIE);
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
-
+    console.log(ferie);
     if (!ferie) {
         return null;
     }
+
+    const flatFerie = Object.values(ferie).flatMap((p) => p.feriePerioder);
 
     return (
         <FormSummary>
@@ -27,9 +29,9 @@ export function FerieOppsummering({ onVilEndreSvar }: { readonly onVilEndreSvar:
             </FormSummary.Header>
             <FormSummary.Answers>
                 {tilrettelegginger.length > 1 ? (
-                    <FlereArbeidsgivereFerieOppsummering avtaltFerie={ferie} />
+                    <FlereArbeidsgivereFerieOppsummering avtaltFerie={flatFerie} />
                 ) : (
-                    <FeriePeriodeOppsummering avtaltFerie={ferie} />
+                    <FeriePeriodeOppsummering avtaltFerie={flatFerie} />
                 )}
             </FormSummary.Answers>
         </FormSummary>

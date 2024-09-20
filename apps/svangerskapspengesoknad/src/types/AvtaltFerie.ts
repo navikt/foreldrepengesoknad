@@ -8,3 +8,11 @@ export type AvtaltFerie = {
     fom: string;
     tom: string;
 };
+
+export type AvtaltFeriePerArbeidsgiver = {
+    [arbeidsgiverId: string]: {
+        skalHaFerie?: boolean;
+        feriePerioder: AvtaltFerie[];
+        antallFeriePerioder: number;
+    };
+};
