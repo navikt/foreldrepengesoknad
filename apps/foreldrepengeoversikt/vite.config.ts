@@ -18,6 +18,13 @@ export default defineConfig(({ mode }) => {
                 },
             },
         ],
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    api: 'modern-compiler',
+                },
+            },
+        },
         base: mode === 'development' ? '' : '/foreldrepenger/oversikt',
         build: {
             sourcemap: true,
