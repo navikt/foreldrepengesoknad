@@ -15,6 +15,13 @@ export default defineConfig(({ mode }) => {
         build: {
             sourcemap: true,
         },
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    api: 'modern-compiler',
+                },
+            },
+        },
         resolve: {
             alias: {
                 steps: path.resolve(__dirname, './src/steps'),
