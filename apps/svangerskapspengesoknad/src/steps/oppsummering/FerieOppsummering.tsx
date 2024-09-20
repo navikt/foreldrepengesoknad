@@ -3,9 +3,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { FormSummary } from '@navikt/ds-react';
 
+import { JaNeiTekst } from '@navikt/fp-steg-oppsummering';
 import { formatDate } from '@navikt/fp-utils';
-
-import { JaNeiTekst } from './ArbeidsforholdOppsummering';
 
 export function FerieOppsummering({ onVilEndreSvar }: { readonly onVilEndreSvar: () => void }) {
     const ferie = useContextGetData(ContextDataType.FERIE);

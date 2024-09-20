@@ -1,6 +1,8 @@
+import { Arbeidsforholdstype } from 'types/Tilrettelegging';
+
 export type AvtaltFerie = {
     arbeidsforhold: {
-        type: 'virksomhet';
+        type: Arbeidsforholdstype;
         id: string;
     };
     fom: string;

@@ -60,7 +60,6 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
         useContextGetData(ContextDataType.FERIE) ?? [],
         (feriePeriode) => feriePeriode.arbeidsforhold.id === currentTilrettelegging.arbeidsforhold.arbeidsgiverId,
     );
-    console.log(eksisterendeSkjemaVerdier, ferieForAndreArbeidsforhold);
     const formMethods = useForm<FerieFormData>({
         mode: 'onSubmit',
         defaultValues:
@@ -75,8 +74,15 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
 
     const onSubmit = (values: FerieFormData) => {
         const feriePerioderFraSubmit = values.skalHaFerie ? (values.feriePerioder as AvtaltFerie[]) : [];
-        const nyFerieListe = [...feriePerioderFraSubmit, ...ferieForAndreArbeidsforhold];
-        console.log(nyFerieListe);
+        const nyeAvtaltFeriePerioder = feriePerioderFraSubmit.map((feriePeriode) => ({
+            ...feriePeriode,
+            arbeidsforhold: {
+                id: currentTilrettelegging.arbeidsforhold.arbeidsgiverId ?? '', // TODO: når kan denne bli undefined?
+                type: currentTilrettelegging.arbeidsforhold.type,
+            },
+        }));
+
+        const nyFerieListe = [...nyeAvtaltFeriePerioder, ...ferieForAndreArbeidsforhold];
         oppdaterFerie(nyFerieListe);
 
         const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegginger, currentTilrettelegging.id);

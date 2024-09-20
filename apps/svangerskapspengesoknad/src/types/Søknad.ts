@@ -1,9 +1,10 @@
+import { AvtaltFerie } from 'types/AvtaltFerie';
+
 import { Attachment } from '@navikt/fp-types';
 import { InformasjonOmUtenlandsoppholdDTO } from '@navikt/fp-types/src/Utenlandsopphold';
 
 import { BarnDTO } from './Barn';
 import { SøkerDTO } from './Søker';
-import { TidsperiodeDTO } from './TidsperiodeDTO';
 import { TilretteleggingDTO } from './Tilrettelegging';
 
 export enum Søknadstype {
@@ -18,5 +19,5 @@ export interface SøknadDTO {
     tilrettelegging: TilretteleggingDTO[];
     søker: SøkerDTO;
     vedlegg: Attachment[];
-    ferie: TidsperiodeDTO[];
+    ferie: AvtaltFerie[];
 }
