@@ -1,5 +1,7 @@
 .LenkePanel {
-    display: flex;
+    display: grid;
+    gap: var(--a-spacing-5);
+    grid-template-columns: 1fr max-content;
     color: var(--a-text-default);
     box-shadow: var(--a-shadow-small);
     justify-content: space-between;
