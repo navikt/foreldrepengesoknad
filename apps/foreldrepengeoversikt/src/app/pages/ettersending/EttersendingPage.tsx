@@ -26,6 +26,7 @@ import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
 import { sendEttersending } from 'app/api/api';
 import { EttersendingHeader } from 'app/components/header/Header';
 import ScrollToTop from 'app/components/scroll-to-top/ScrollToTop';
+import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import { PageRouteLayout } from 'app/routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from 'app/routes/routes';
@@ -98,6 +99,7 @@ type Props = {
 
 const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
     const intl = useIntl();
+    useSetBackgroundColor('white');
     useDocumentTitle(
         `${intl.formatMessage({ id: 'lastOppDokumenter' })} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`,
     );

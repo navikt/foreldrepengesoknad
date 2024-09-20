@@ -37,7 +37,17 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
 function HeaderWrapper({ children }: { children: ReactNode }) {
     const selectedRoute = useGetSelectedRoute();
     return (
-        <div className="bg-bg-default border-b-2 border-deepblue-200 pt-4 mb-8">
+        <div className={`bg-bg-default border-b-2 border-deepblue-200 pt-4 mb-8`}>
+            <Breadcrumb selectedRoute={selectedRoute} />
+            <LayoutWrapper className="pt-6 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
+        </div>
+    );
+}
+
+function SimpleHeaderWrapper({ children }: { children: ReactNode }) {
+    const selectedRoute = useGetSelectedRoute();
+    return (
+        <div className={`bg-bg-default pt-4`}>
             <Breadcrumb selectedRoute={selectedRoute} />
             <LayoutWrapper className="pt-6 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
         </div>
@@ -45,7 +55,7 @@ function HeaderWrapper({ children }: { children: ReactNode }) {
 }
 
 function BlueDot() {
-    return <div style={{ height: '4px', width: '4px', borderRadius: '50%', background: 'var(--a-deepblue-300)' }} />;
+    return <div className="h-[4px] w-[4px] rounded-[50%] bg-deepblue-300" />;
 }
 
 function BabyIkon({ ytelse }: { ytelse: Ytelse | undefined }) {
@@ -64,31 +74,13 @@ function BabyIkon({ ytelse }: { ytelse: Ytelse | undefined }) {
     return (
         <>
             <Show above="md">
-                <div
-                    style={{
-                        width: '60px',
-                        height: '60px',
-                        borderRadius: '50%',
-                        background: 'var(--a-deepblue-100)',
-                        paddingTop: '8px',
-                        paddingLeft: '8px',
-                    }}
-                >
-                    <YtelseIkon fontSize={44} style={{ color: 'var(--a-lightblue-800)' }} />
+                <div className="w-[60px] h-[60px] rounded-full bg-deepblue-100 pt-2 pl-2">
+                    <YtelseIkon fontSize={44} className="text-lightblue-800" />
                 </div>
             </Show>
             <Show below="md">
-                <div
-                    style={{
-                        width: '38px',
-                        height: '38px',
-                        borderRadius: '50%',
-                        background: 'var(--a-deepblue-100)',
-                        paddingTop: '8px',
-                        paddingLeft: '8px',
-                    }}
-                >
-                    <YtelseIkon fontSize={22} style={{ color: 'var(--a-lightblue-800)' }} />
+                <div className="w-[38px] h-[38px] rounded-full bg-deepblue-100 pt-2 pl-2">
+                    <YtelseIkon fontSize={22} className="text-lightblue-800" />
                 </div>
             </Show>
         </>
@@ -119,55 +111,26 @@ function SaksnummerDetail() {
 }
 
 export function DokumenterHeader() {
-    const heading = (
-        <Heading level="1" size="medium">
-            Dokumenter
-        </Heading>
-    );
-
+    const { saksnummer } = useParams();
     return (
-        <HeaderWrapper>
-            <Show above="md">
-                <VStack gap="3">
-                    {heading}
-                    <HStack gap="3" align="center">
-                        <SaksnummerDetail />
-                        <BlueDot />
-                        <Detail textColor="subtle">Dokumenter som du, arbeidsgiver og NAV har sendt</Detail>
-                    </HStack>
-                </VStack>
-            </Show>
-            <Show below="md">
-                <VStack gap="1">
-                    {heading}
-                    <SaksnummerDetail />
-                </VStack>
-            </Show>
-        </HeaderWrapper>
+        <SimpleHeaderWrapper>
+            <Heading level="1" size="medium">
+                Dokumenter
+            </Heading>
+            <Detail textColor="subtle">
+                Dokumenter fra du, arbeidsgiver og NAV som tilhører saken din ({saksnummer})
+            </Detail>
+        </SimpleHeaderWrapper>
     );
 }
 
 export function EttersendingHeader() {
-    const header = (
-        <Heading level="1" size="medium">
-            Last opp dokumenter
-        </Heading>
-    );
     return (
-        <HeaderWrapper>
-            <Show above="md">
-                <VStack gap="3">
-                    {header}
-                    <SaksnummerDetail />
-                </VStack>
-            </Show>
-            <Show below="md">
-                <VStack gap="1">
-                    {header}
-                    <SaksnummerDetail />
-                </VStack>
-            </Show>
-        </HeaderWrapper>
+        <SimpleHeaderWrapper>
+            <Heading level="1" size="medium">
+                Last opp dokumenter
+            </Heading>
+        </SimpleHeaderWrapper>
     );
 }
 

@@ -45,7 +45,7 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
 
     if (!søkerInfoQuery.data || sakerQuery.isPending) {
         return (
-            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
+            <div className="py-48 px-0 text-center">
                 <Loader type="XXL" />
             </div>
         );
