@@ -116,64 +116,62 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
     const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, gjeldendeSak);
 
     return (
-        <>
-            <VStack gap="4">
-                {visBekreftelsePåSendtSøknad && (
-                    <BekreftelseSendtSøknad
-                        relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
-                        bankkonto={søkerinfo.søker.bankkonto}
-                        ytelse={gjeldendeSak.ytelse}
-                    />
-                )}
+        <VStack gap="4">
+            {visBekreftelsePåSendtSøknad && (
+                <BekreftelseSendtSøknad
+                    relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
+                    bankkonto={søkerinfo.søker.bankkonto}
+                    ytelse={gjeldendeSak.ytelse}
+                />
+            )}
 
-                <Oppgaver saksnummer={gjeldendeSak.saksnummer} />
-                <VStack gap="1">
-                    <ContentSection
-                        heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
-                        showSkeleton={tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending}
-                        skeletonProps={{ height: '250px', variant: 'rounded' }}
-                        className="mb-2"
-                    >
-                        <Tidslinje
-                            sak={gjeldendeSak}
-                            tidslinjeHendelserQuery={tidslinjeHendelserQuery}
-                            manglendeVedleggQuery={manglendeVedleggQuery}
-                            visHeleTidslinjen={false}
-                            søkersBarn={søkerinfo.søker.barn ?? []}
-                        />
-                    </ContentSection>
-                    <section className="mb-12">
-                        <LenkePanel tittel="Se hele prosessen" to={OversiktRoutes.TIDSLINJEN} />
-                    </section>
-                </VStack>
-                <HGrid gap="4" columns={{ sm: 1, md: 2 }}>
-                    <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
-                    <LenkePanel
-                        tittel="Ettersend dokumenter"
-                        to={`${OversiktRoutes.DOKUMENTER}/${OversiktRoutes.ETTERSEND}`}
-                        Ikon={FilesIcon}
+            <Oppgaver saksnummer={gjeldendeSak.saksnummer} />
+            <VStack gap="1">
+                <ContentSection
+                    heading={intl.formatMessage({ id: 'saksoversikt.tidslinje' })}
+                    showSkeleton={tidslinjeHendelserQuery.isPending || manglendeVedleggQuery.isPending}
+                    skeletonProps={{ height: '250px', variant: 'rounded' }}
+                    className="mb-2"
+                >
+                    <Tidslinje
+                        sak={gjeldendeSak}
+                        tidslinjeHendelserQuery={tidslinjeHendelserQuery}
+                        manglendeVedleggQuery={manglendeVedleggQuery}
+                        visHeleTidslinjen={false}
+                        søkersBarn={søkerinfo.søker.barn ?? []}
                     />
-                </HGrid>
-                {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
-                    <ContentSection
-                        heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
-                        // Fordi annenPartsVedtakQuery kan være et disabled query må man bruke isLoading heller enn isPending:
-                        // https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading
-                        showSkeleton={annenPartsVedtakQuery.isLoading}
-                        skeletonProps={{ height: '210px', variant: 'rounded' }}
-                    >
-                        <DinPlan
-                            sak={gjeldendeSak}
-                            visHelePlanen={false}
-                            navnPåSøker={navnPåSøker}
-                            navnAnnenForelder={navnAnnenForelder}
-                            annenPartsPerioder={annenPartsVedtakQuery.data?.perioder}
-                            termindato={gjeldendeSak.familiehendelse.termindato}
-                        />
-                    </ContentSection>
-                )}
+                </ContentSection>
+                <section className="mb-12">
+                    <LenkePanel tittel="Se hele prosessen" to={OversiktRoutes.TIDSLINJEN} />
+                </section>
             </VStack>
-        </>
+            <HGrid gap="4" columns={{ sm: 1, md: 2 }}>
+                <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
+                <LenkePanel
+                    tittel="Ettersend dokumenter"
+                    to={`${OversiktRoutes.DOKUMENTER}/${OversiktRoutes.ETTERSEND}`}
+                    Ikon={FilesIcon}
+                />
+            </HGrid>
+            {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
+                <ContentSection
+                    heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
+                    // Fordi annenPartsVedtakQuery kan være et disabled query må man bruke isLoading heller enn isPending:
+                    // https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading
+                    showSkeleton={annenPartsVedtakQuery.isLoading}
+                    skeletonProps={{ height: '210px', variant: 'rounded' }}
+                >
+                    <DinPlan
+                        sak={gjeldendeSak}
+                        visHelePlanen={false}
+                        navnPåSøker={navnPåSøker}
+                        navnAnnenForelder={navnAnnenForelder}
+                        annenPartsPerioder={annenPartsVedtakQuery.data?.perioder}
+                        termindato={gjeldendeSak.familiehendelse.termindato}
+                    />
+                </ContentSection>
+            )}
+        </VStack>
     );
 };
 
