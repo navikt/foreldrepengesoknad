@@ -9,7 +9,7 @@ import { GruppertSak } from 'app/types/GruppertSak';
 import { guid } from 'app/utils/guid';
 import { getSakTittel } from 'app/utils/sakerUtils';
 
-import SakLink from '../sak-link/SakLink';
+import { SakLink } from '../sak-link/SakLink';
 
 interface Props {
     grupperteSaker: GruppertSak[];

@@ -21,7 +21,7 @@ const getHeading = (ytelse: Ytelse) => {
     }
 };
 
-const SakLink: React.FunctionComponent<Props> = ({ sak }) => {
+export const SakLink: React.FunctionComponent<Props> = ({ sak }) => {
     return (
         <LenkePanel
             tag={<StatusTag sak={sak} />}
@@ -31,5 +31,3 @@ const SakLink: React.FunctionComponent<Props> = ({ sak }) => {
         />
     );
 };
-
-export default SakLink;
