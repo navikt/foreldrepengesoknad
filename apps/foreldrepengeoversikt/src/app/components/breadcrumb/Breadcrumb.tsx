@@ -90,7 +90,7 @@ const getRoute = (route: string, saksnummer: string | undefined): string => {
         return `${sakRoute}/${OversiktRoutes.DOKUMENTER}`;
     }
     if (route === OversiktRoutes.ETTERSEND) {
-        return `${sakRoute}/${OversiktRoutes.DOKUMENTER}/${OversiktRoutes.ETTERSEND}`;
+        return `${sakRoute}/${OversiktRoutes.ETTERSEND}`;
     }
 
     return route;
