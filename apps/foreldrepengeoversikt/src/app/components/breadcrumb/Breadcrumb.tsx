@@ -1,19 +1,82 @@
-import { ChevronRightIcon } from '@navikt/aksel-icons';
-import { Link } from 'react-router-dom';
+import { onBreadcrumbClick, setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
+import { useNavigate } from 'react-router-dom';
 
-import { Home } from '@navikt/ds-icons';
-import { BodyShort, Link as DSLink } from '@navikt/ds-react';
-
-import { bemUtils } from '@navikt/fp-utils';
+import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 import OversiktRoutes from 'app/routes/routes';
-import { getBreadcrumbs } from 'app/types/Breadcrumb';
-
-import './breadcrumb.css';
 
 type Props = {
     selectedRoute: OversiktRoutes;
+};
+
+const minSide = {
+    title: 'Min side',
+    url: 'https://www.nav.no/minside',
+    handleInApp: false,
+};
+
+const hovedside = {
+    title: 'Foreldrepenger',
+    url: OversiktRoutes.HOVEDSIDE,
+    handleInApp: true,
+};
+
+const saksoversikt = {
+    title: 'Din sak',
+    url: OversiktRoutes.SAKSOVERSIKT,
+    handleInApp: true,
+};
+
+const dokumenter = {
+    title: 'Dokumenter',
+    url: OversiktRoutes.DOKUMENTER,
+    handleInApp: true,
+};
+
+const ettersend = {
+    title: 'Last opp',
+    url: OversiktRoutes.ETTERSEND,
+    handleInApp: true,
+};
+
+const tidslinjen = {
+    title: 'Hele prosessen',
+    url: OversiktRoutes.TIDSLINJEN,
+    handleInApp: true,
+};
+
+const dinPlan = {
+    title: 'Søknaden din',
+    url: OversiktRoutes.DIN_PLAN,
+    handleInApp: true,
+};
+
+const oppgaver = {
+    title: 'Din oppgave',
+    url: OversiktRoutes.OPPGAVER,
+    handleInApp: true,
+};
+
+export const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
+    switch (selectedRoute) {
+        case OversiktRoutes.HOVEDSIDE:
+            return [minSide, hovedside];
+        case OversiktRoutes.SAKSOVERSIKT:
+            return [minSide, hovedside, saksoversikt];
+        case OversiktRoutes.DOKUMENTER:
+            return [minSide, hovedside, saksoversikt, dokumenter];
+        case OversiktRoutes.ETTERSEND:
+            return [minSide, hovedside, saksoversikt, dokumenter, ettersend];
+        case OversiktRoutes.TIDSLINJEN:
+            return [minSide, hovedside, saksoversikt, tidslinjen];
+        case OversiktRoutes.DIN_PLAN:
+            return [minSide, hovedside, saksoversikt, dinPlan];
+        case OversiktRoutes.OPPGAVER:
+            return [minSide, hovedside, saksoversikt, oppgaver];
+        default:
+            return assertUnreachable('En rute mangler brødsmulesti');
+    }
 };
 
 const getRoute = (route: string, saksnummer: string | undefined): string => {
@@ -26,54 +89,27 @@ const getRoute = (route: string, saksnummer: string | undefined): string => {
     if (route === OversiktRoutes.DOKUMENTER) {
         return `${sakRoute}/${OversiktRoutes.DOKUMENTER}`;
     }
+    if (route === OversiktRoutes.ETTERSEND) {
+        return `${sakRoute}/${OversiktRoutes.ETTERSEND}`;
+    }
 
     return route;
 };
 
 const Breadcrumb: React.FunctionComponent<Props> = ({ selectedRoute }) => {
-    const bem = bemUtils('breadcrumb');
-    const path = getBreadcrumbs(selectedRoute);
-
+    const breadcrumbs = getBreadcrumbs(selectedRoute);
+    const navigate = useNavigate();
     const sak = useGetSelectedSak();
-    const saksnummer = sak ? sak.saksnummer : undefined;
-    return (
-        <div className={bem.block}>
-            {path.map((p, index) => {
-                const lastBreadcrumb = index === path.length - 1;
-                const erNavHomeLink = p.displayName === 'nav.no';
 
-                if (lastBreadcrumb) {
-                    return (
-                        <BodyShort key={`${p.displayName}-short`} className={bem.element('flex-align')}>
-                            {p.displayName}
-                        </BodyShort>
-                    );
-                }
+    const mappedPaths = breadcrumbs.map((b) => ({ ...b, url: getRoute(b.url, sak?.saksnummer) }));
+    setBreadcrumbs(mappedPaths);
 
-                return (
-                    <div key={`${p.displayName}-content`} className={bem.element('flex-align')}>
-                        {p.isExternalLink ? (
-                            <DSLink key={p.displayName} className={bem.element('link-wrapper')} href={p.route}>
-                                {erNavHomeLink && (
-                                    <Home width="24" height="24" style={{ marginRight: '0.5rem' }} aria-hidden={true} />
-                                )}
-                                <BodyShort>{p.displayName}</BodyShort>
-                            </DSLink>
-                        ) : (
-                            <Link
-                                key={p.displayName}
-                                className={bem.element('link-wrapper')}
-                                to={getRoute(p.route, saksnummer)}
-                            >
-                                <BodyShort>{p.displayName}</BodyShort>
-                            </Link>
-                        )}
-                        {!lastBreadcrumb && <ChevronRightIcon className={bem.element('chevron')} aria-hidden={true} />}
-                    </div>
-                );
-            })}
-        </div>
-    );
+    // Denne trigges for breadcrumbs der handleInApp: true
+    onBreadcrumbClick((breadcrumb) => {
+        navigate(breadcrumb.url);
+    });
+
+    return null;
 };
 
 export default Breadcrumb;
