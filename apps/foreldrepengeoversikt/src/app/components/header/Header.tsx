@@ -37,9 +37,9 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
 function HeaderWrapper({ children }: { children: ReactNode }) {
     const selectedRoute = useGetSelectedRoute();
     return (
-        <div className={`bg-bg-default border-b-2 border-deepblue-200 pt-4 mb-8`}>
+        <div className={`bg-bg-default border-b-2 border-deepblue-200 mb-8`}>
             <Breadcrumb selectedRoute={selectedRoute} />
-            <LayoutWrapper className="pt-6 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
+            <LayoutWrapper className="pt-1 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
         </div>
     );
 }
@@ -47,9 +47,9 @@ function HeaderWrapper({ children }: { children: ReactNode }) {
 function SimpleHeaderWrapper({ children }: { children: ReactNode }) {
     const selectedRoute = useGetSelectedRoute();
     return (
-        <div className={`bg-bg-default pt-4`}>
+        <div className={`bg-bg-default`}>
             <Breadcrumb selectedRoute={selectedRoute} />
-            <LayoutWrapper className="pt-6 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
+            <LayoutWrapper className="pt-1 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
         </div>
     );
 }
