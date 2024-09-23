@@ -147,11 +147,7 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
             </VStack>
             <HGrid gap="4" columns={{ sm: 1, md: 2 }}>
                 <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
-                <LenkePanel
-                    tittel="Ettersend dokumenter"
-                    to={`${OversiktRoutes.DOKUMENTER}/${OversiktRoutes.ETTERSEND}`}
-                    Ikon={FilesIcon}
-                />
+                <LenkePanel tittel="Ettersend dokumenter" to={OversiktRoutes.ETTERSEND} Ikon={FilesIcon} />
             </HGrid>
             {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
                 <ContentSection
