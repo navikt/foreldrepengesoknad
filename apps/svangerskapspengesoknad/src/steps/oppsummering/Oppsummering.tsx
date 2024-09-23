@@ -7,19 +7,20 @@ import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 
 import { FormSummary, Heading } from '@navikt/ds-react';
 
-import { BoIUtlandetOppsummeringspunkt, OppsummeringPanel } from '@navikt/fp-steg-oppsummering';
+import {
+    ArbeidsforholdOppsummering,
+    BoIUtlandetOppsummering,
+    FrilansOppsummering,
+    OppsummeringPanel,
+    SelvstendigNæringsdrivendeOppsummering,
+} from '@navikt/fp-steg-oppsummering';
 import { Søkerinfo } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import {
-    ArbeidsforholdOppsummering,
-    FrilansSummary,
-    JobbetIUtlandetSummary,
-    SelvstendigNæringsdrivendeSummary,
-} from './ArbeidsforholdOppsummering';
 import { DokumentasjonOppsummering } from './DokumentasjonOppsummering';
+import { JobbetIUtlandetOppsummering } from './JobbetIUtlandetOppsummering';
 import { PerioderOppsummering } from './PerioderOppsummering';
 
 type Props = {
@@ -42,6 +43,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const utenlandsoppholdSenere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const utenlandsoppholdTidligere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
 
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
 
@@ -90,18 +92,23 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                         )}
                     </FormSummary.Answers>
                 </FormSummary>
-                <BoIUtlandetOppsummeringspunkt
+                <BoIUtlandetOppsummering
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
                     tidligereUtenlandsopphold={utenlandsoppholdTidligere ?? []}
                     senereUtenlandsopphold={utenlandsoppholdSenere ?? []}
                 />
                 <ArbeidsforholdOppsummering
+                    arbeidsforholdOgInntekt={inntektsinformasjon}
                     arbeidsforhold={aktiveArbeidsforhold}
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.INNTEKTSINFORMASJON)}
                 />
-                <FrilansSummary onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.FRILANS)} />
-                <SelvstendigNæringsdrivendeSummary onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.NÆRING)} />
-                <JobbetIUtlandetSummary onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ARBEID_I_UTLANDET)} />
+                <FrilansOppsummering onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.FRILANS)} />
+                <SelvstendigNæringsdrivendeOppsummering
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.NÆRING)}
+                />
+                <JobbetIUtlandetOppsummering
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ARBEID_I_UTLANDET)}
+                />
                 <DokumentasjonOppsummering
                     tilrettelegginger={tilrettelegginger}
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.SKJEMA)}

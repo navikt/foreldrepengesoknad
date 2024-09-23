@@ -11,10 +11,9 @@ import {
     RhfRadioGroup,
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
+import { Frilans } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
-
-import { Frilans } from './types/Frilans';
 
 export interface Props<TYPE> {
     frilans?: Frilans;

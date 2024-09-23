@@ -1,18 +1,13 @@
 import { Alert } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
-
-import './noe-gikk-galt.css';
-
 interface Props {
     children: React.ReactNode;
+    className?: string;
 }
 
-const NoeGikkGalt: React.FunctionComponent<Props> = ({ children }) => {
-    const bem = bemUtils('noe-gikk-galt');
-
+const NoeGikkGalt: React.FunctionComponent<Props> = ({ children, className }) => {
     return (
-        <Alert className={bem.block} variant="info">
+        <Alert className={className} variant="info">
             {children}
         </Alert>
     );

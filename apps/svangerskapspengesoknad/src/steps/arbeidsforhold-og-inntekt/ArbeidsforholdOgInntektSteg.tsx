@@ -8,13 +8,13 @@ import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'utils/arbei
 
 import { Heading } from '@navikt/ds-react';
 
+import { ArbeidsforholdOgInntektPanel } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import {
+    Arbeidsforhold,
     ArbeidsforholdOgInntekt,
-    ArbeidsforholdOgInntektPanel,
     ArbeidsforholdOgInntektSvp,
     isArbeidsforholdOgInntektSvp,
-} from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
-import { Arbeidsforhold } from '@navikt/fp-types';
+} from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 

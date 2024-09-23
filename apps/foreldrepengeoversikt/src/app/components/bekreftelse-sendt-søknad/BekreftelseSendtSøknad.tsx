@@ -38,27 +38,10 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({ relevantNyTid
     const sendtInfoTekst = getTidspunktTekst(mottattDato);
 
     return (
-        <VStack
-            gap="6"
-            style={{
-                padding: 'var(--a-spacing-6)',
-                background: 'white',
-                borderRadius: '8px',
-                boxShadow: 'var(--a-shadow-xsmall)',
-            }}
-        >
+        <VStack gap="6" className="p-6 bg-white rounded-large shadow-xsmall">
             <HStack gap="4">
-                <div
-                    style={{
-                        width: '52px',
-                        height: '52px',
-                        borderRadius: '50%',
-                        background: 'var(--a-green-100)',
-                        paddingTop: '14px',
-                        paddingLeft: '14px',
-                    }}
-                >
-                    <CheckmarkIcon fontSize={24} style={{ color: 'var(--a-green-800)' }} aria-hidden={true} />
+                <div className="w-[52px] h-[52px] rounded-[50%] bg-green-100 pt-[14px] pl-[14px]">
+                    <CheckmarkIcon fontSize={24} className="text-green-800" aria-hidden={true} />
                 </div>
                 <VStack>
                     <Heading level="2" size="small">
@@ -68,7 +51,7 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({ relevantNyTid
                 </VStack>
             </HStack>
             {relevantDokument && (
-                <ul style={{ padding: 0, margin: 0 }}>
+                <ul className="p-0 m-0">
                     <DokumentHendelse dokument={relevantDokument} key={relevantDokument.url} visesITidslinjen={false} />
                 </ul>
             )}

@@ -47,6 +47,15 @@ const MESSAGES_GROUPED_BY_LOCALE = {
     },
 };
 
+declare global {
+    // eslint-disable-next-line @typescript-eslint/no-namespace
+    namespace FormatjsIntl {
+        interface Message {
+            ids: keyof typeof MESSAGES_GROUPED_BY_LOCALE.nb;
+        }
+    }
+}
+
 dayjs.locale(localeFromSessionStorage);
 
 const AppContainer = () => {

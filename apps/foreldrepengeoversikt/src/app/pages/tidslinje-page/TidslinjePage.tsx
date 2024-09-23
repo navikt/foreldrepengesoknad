@@ -20,10 +20,10 @@ import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
 import './tidslinje-page.css';
 
 type OuterProps = {
-    readonly søkersBarn: SøkerinfoDTOBarn[];
+    søkersBarn: SøkerinfoDTOBarn[];
 };
 type InnerProps = OuterProps & {
-    readonly sak?: Sak;
+    sak?: Sak;
 };
 
 const TidslinjePageInner: React.FunctionComponent<InnerProps> = ({ søkersBarn, sak }) => {

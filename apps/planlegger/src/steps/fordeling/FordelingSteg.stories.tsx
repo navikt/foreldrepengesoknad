@@ -57,6 +57,7 @@ const meta = {
         stønadskontoer,
         gåTilNesteSide = action('button-click'),
         dekningsgrad = Dekningsgrad.HUNDRE_PROSENT,
+        locale,
     }: StoryArgs) => {
         initAmplitude();
         return (
@@ -73,7 +74,7 @@ const meta = {
                     }}
                     onDispatch={gåTilNesteSide}
                 >
-                    <FordelingSteg stønadskontoer={stønadskontoer} />
+                    <FordelingSteg stønadskontoer={stønadskontoer} locale={locale} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -83,6 +84,7 @@ export default meta;
 
 export const FlereForsørgereEttBarn: Story = {
     args: {
+        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -102,6 +104,7 @@ type Story = StoryObj<typeof meta>;
 
 export const FlereForsørgereEttBarn80ProsentDekningsgrad: Story = {
     args: {
+        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -120,6 +123,7 @@ export const FlereForsørgereEttBarn80ProsentDekningsgrad: Story = {
 
 export const FlereForsørgereToBarn: Story = {
     args: {
+        locale: 'nb',
         hvemPlanlegger: {
             navnPåMedmor: 'Esther Utvikler',
             navnPåMor: 'Klara Utvikler',
@@ -138,6 +142,7 @@ export const FlereForsørgereToBarn: Story = {
 
 export const FarOgFar: Story = {
     args: {
+        locale: 'nb',
         hvemPlanlegger: {
             navnPåFar: 'Petter Pjokk',
             navnPåMedfar: 'Espen Utvikler',

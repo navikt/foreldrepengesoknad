@@ -23,7 +23,9 @@ on:
           - engangsstonad
           - svangerskapspengesoknad
           - planlegger
-          - veivisere
+          - veiviser-hva-skjer-nar
+          - veiviser-fp-eller-es
+          - veiviser-hvor-mye
 
 jobs:
   deploy:

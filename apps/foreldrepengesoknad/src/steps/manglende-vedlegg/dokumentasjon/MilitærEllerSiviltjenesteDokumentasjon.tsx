@@ -4,8 +4,7 @@ import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
-import { Attachment } from '@navikt/fp-types';
+import { ArbeidsforholdOgInntektFp, Attachment } from '@navikt/fp-types';
 
 import VedleggUploader, { formaterPerioderForVisning } from '../attachment-uploaders/VedleggUploader';
 

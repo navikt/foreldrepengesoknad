@@ -9,8 +9,7 @@ import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'types/Tilrette
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { Næringstype } from '@navikt/fp-steg-egen-naering';
-import { Søker } from '@navikt/fp-types';
+import { Næringstype, Søker } from '@navikt/fp-types';
 
 import Oppsummering from './Oppsummering';
 

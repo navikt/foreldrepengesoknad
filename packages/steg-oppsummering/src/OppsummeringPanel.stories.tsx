@@ -1,10 +1,15 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
-import { Accordion } from '@navikt/ds-react';
+import { Næringstype } from '@navikt/fp-types';
 
 import OppsummeringPanel from './OppsummeringPanel';
-import BoIUtlandetOppsummeringspunkt from './utenlandsopphold/BoIUtlandetOppsummeringspunkt';
+import {
+    ArbeidsforholdOppsummering,
+    FrilansOppsummering,
+    SelvstendigNæringsdrivendeOppsummering,
+} from './arbeidsforhold/ArbeidsforholdOppsummering';
+import BoIUtlandetOppsummering from './utenlandsopphold/BoIUtlandetOppsummering';
 
 const promiseAction =
     () =>
@@ -41,13 +46,11 @@ export const HarBoddIUtlandetOgFødt: Story = {
             },
         ],
         children: (
-            <Accordion indent={false}>
-                <BoIUtlandetOppsummeringspunkt
-                    onVilEndreSvar={() => {}}
-                    senereUtenlandsopphold={[{ fom: '2022-10-10', tom: '2023-05-05', landkode: 'SE' }]}
-                    tidligereUtenlandsopphold={[{ fom: '2023-06-06', tom: '2023-10-10', landkode: 'DE' }]}
-                />
-            </Accordion>
+            <BoIUtlandetOppsummering
+                onVilEndreSvar={() => {}}
+                senereUtenlandsopphold={[{ fom: '2022-10-10', tom: '2023-05-05', landkode: 'SE' }]}
+                tidligereUtenlandsopphold={[{ fom: '2023-06-06', tom: '2023-10-10', landkode: 'DE' }]}
+            />
         ),
     },
 };
@@ -56,13 +59,61 @@ export const HarIkkeBoddIUtlandetOgIkkeFødt: Story = {
     args: {
         ...HarBoddIUtlandetOgFødt.args,
         children: (
-            <Accordion indent={false}>
-                <BoIUtlandetOppsummeringspunkt
+            <BoIUtlandetOppsummering
+                onVilEndreSvar={() => {}}
+                senereUtenlandsopphold={[]}
+                tidligereUtenlandsopphold={[]}
+            />
+        ),
+    },
+};
+
+export const ArbeidsforholdOgInntektOppsummering: Story = {
+    args: {
+        appName: 'Foreldrepenger',
+        sendSøknad: promiseAction(),
+        cancelApplication: action('button-click'),
+        onContinueLater: action('button-click'),
+        goToPreviousStep: action('button-click'),
+        onStepChange: action('button-click'),
+        stepConfig: [
+            {
+                id: 'OPPSUMMERING_PATH',
+                label: 'Oppsummering',
+                isSelected: true,
+            },
+        ],
+        ekstraSamtykketekst: 'Bla bla bla',
+        children: (
+            <>
+                <ArbeidsforholdOppsummering
+                    arbeidsforhold={[]}
+                    arbeidsforholdOgInntekt={{
+                        harJobbetSomFrilans: true,
+                        harJobbetSomSelvstendigNæringsdrivende: true,
+                        harHattAndreInntektskilder: false,
+                    }}
                     onVilEndreSvar={() => {}}
-                    senereUtenlandsopphold={[]}
-                    tidligereUtenlandsopphold={[]}
                 />
-            </Accordion>
+                <SelvstendigNæringsdrivendeOppsummering
+                    egenNæring={{
+                        navnPåNæringen: 'Fiske',
+                        pågående: false,
+                        fomDato: '2018-01-01',
+                        tomDato: '2021-01-01',
+                        næringstype: Næringstype.FISKER,
+                        registrertILand: 'SE',
+                        registrertINorge: false,
+                        harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
+                        hattVarigEndringAvNæringsinntektSiste4Kalenderår: false,
+                    }}
+                    onVilEndreSvar={() => {}}
+                />
+                <FrilansOppsummering
+                    frilans={{ jobberFremdelesSomFrilans: true, oppstart: '2019-01-01' }}
+                    onVilEndreSvar={() => {}}
+                />
+            </>
         ),
     },
 };

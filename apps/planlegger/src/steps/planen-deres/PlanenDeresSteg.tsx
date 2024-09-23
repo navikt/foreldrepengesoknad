@@ -21,7 +21,7 @@ import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/ut
 
 import { BodyLong, BodyShort, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { Calendar, Infobox, StepButtons } from '@navikt/fp-ui';
 import { useMedia } from '@navikt/fp-utils/src/hooks/useMedia';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
@@ -48,11 +48,12 @@ const finnAntallDagerSøker1 = (
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoer;
+    locale: LocaleAll;
 }
 
-const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer }) => {
+const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator();
+    const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
 
     useScrollBehaviour();

@@ -9,12 +9,8 @@ import isFarEllerMedmor from 'utils/isFarEllerMedmor';
 
 import { Heading } from '@navikt/ds-react';
 
-import {
-    ArbeidsforholdOgInntekt,
-    ArbeidsforholdOgInntektPanel,
-    isArbeidsforholdOgInntektFp,
-} from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { ArbeidsforholdOgInntektPanel } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
+import { Arbeidsforhold, ArbeidsforholdOgInntekt, isArbeidsforholdOgInntektFp } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';

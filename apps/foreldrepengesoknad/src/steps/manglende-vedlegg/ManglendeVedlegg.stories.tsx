@@ -11,8 +11,7 @@ import { AnnenInntektType } from 'types/AnnenInntekt';
 
 import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { ArbeidsforholdOgInntektFp } from '@navikt/fp-steg-arbeidsforhold-og-inntekt/src/types/ArbeidsforholdOgInntekt';
-import { Situasjon, Søkerinfo } from '@navikt/fp-types';
+import { ArbeidsforholdOgInntektFp, Situasjon, Søkerinfo } from '@navikt/fp-types';
 
 import ManglendeVedlegg from './ManglendeVedlegg';
 

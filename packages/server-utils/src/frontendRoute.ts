@@ -26,7 +26,15 @@ export const setupAndServeHtml = async (app: Express) => {
         filePath: spaFilePath,
         ...dekoratørProps,
     });
-    const renderedHtml = html.replaceAll(
+    const renderedHtml = replaceAppSettings(html);
+
+    app.get(/^\/(?!.*dist).*$/, async (_request, response) => {
+        return response.send(renderedHtml);
+    });
+};
+
+const replaceAppSettings = (html: string) => {
+    return html.replaceAll(
         '{{{APP_SETTINGS}}}',
         JSON.stringify({
             LOG_VALIDATION: `${config.app.logValidation}`,
@@ -36,10 +44,6 @@ export const setupAndServeHtml = async (app: Express) => {
             FEATURE_TEST_1JULI2024_REGLER: `${config.app.test1Juli2024Regler}`,
         }),
     );
-
-    app.get(/^\/(?!.*dist).*$/, async (_request, response) => {
-        return response.send(renderedHtml);
-    });
 };
 
 const setupViteMode = (app: Express) => {
@@ -56,9 +60,17 @@ const setupViteMode = (app: Express) => {
         if (viteModeHtml) {
             const { DECORATOR_HEADER, DECORATOR_STYLES, DECORATOR_SCRIPTS, DECORATOR_FOOTER } =
                 await fetchDecoratorHtml(dekoratørProps);
-            const html = [DECORATOR_HEADER, DECORATOR_STYLES, DECORATOR_SCRIPTS, viteModeHtml, DECORATOR_FOOTER].join(
-                '',
-            );
+
+            const appSettingsScript = `<script type="text/json" id="nav:appSettings">{{{APP_SETTINGS}}}</script>`;
+
+            const html = [
+                DECORATOR_HEADER,
+                DECORATOR_STYLES,
+                DECORATOR_SCRIPTS,
+                replaceAppSettings(appSettingsScript),
+                viteModeHtml,
+                DECORATOR_FOOTER,
+            ].join('');
 
             return response.send(html);
         }

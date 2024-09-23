@@ -10,6 +10,7 @@ import { Uttaksdata } from 'utils/uttakUtils';
 import { BodyShort } from '@navikt/ds-react';
 
 import { Infobox } from '@navikt/fp-ui';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 interface Props {
     barnet: OmBarnet;
@@ -69,7 +70,7 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
                 <FormattedMessage
                     id="FordelingsdetaljerPanel.Infoboks.Periode"
                     values={{
-                        hvem: fornavnSøker1,
+                        hvem: capitalizeFirstLetter(fornavnSøker1),
                         fom: intl.formatDate(startdatoPeriode1, { day: 'numeric', month: 'short', year: 'numeric' }),
                         tom: intl.formatDate(sluttdatoPeriode1, { day: 'numeric', month: 'short', year: 'numeric' }),
                         b: (b) => <b>{b}</b>,
@@ -81,7 +82,7 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
                     <FormattedMessage
                         id="FordelingsdetaljerPanel.Infoboks.Periode"
                         values={{
-                            hvem: fornavnSøker2,
+                            hvem: capitalizeFirstLetter(fornavnSøker2),
                             fom: intl.formatDate(startdatoPeriode2, {
                                 day: 'numeric',
                                 month: 'short',

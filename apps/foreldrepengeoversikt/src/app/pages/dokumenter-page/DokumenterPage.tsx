@@ -1,10 +1,11 @@
+import { ArrowRightIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { Link, useParams } from 'react-router-dom';
 
-import { Alert, BodyLong, Heading, LinkPanel, Loader } from '@navikt/ds-react';
+import { Alert, BodyLong, Button, Heading, Loader } from '@navikt/ds-react';
 
-import { bemUtils, useDocumentTitle } from '@navikt/fp-utils';
+import { useDocumentTitle } from '@navikt/fp-utils';
 
 import { hentDokumenterOptions } from 'app/api/api';
 import Dokument from 'app/components/dokument/Dokument';
@@ -18,11 +19,8 @@ import OversiktRoutes from 'app/routes/routes';
 import { grupperDokumenterPåTidspunkt } from 'app/utils/dokumenterUtils';
 import { guid } from 'app/utils/guid';
 
-import './dokumenter-page.css';
-
 const DokumenterPage: React.FunctionComponent = () => {
-    const bem = bemUtils('dokumenter-page');
-    useSetBackgroundColor('blue');
+    useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.DOKUMENTER);
     const params = useParams();
 
@@ -40,17 +38,19 @@ const DokumenterPage: React.FunctionComponent = () => {
 
     return (
         <PageRouteLayout header={<DokumenterHeader />}>
-            <LinkPanel
+            <Button
+                icon={<ArrowRightIcon aria-hidden />}
+                iconPosition="right"
                 as={Link}
+                variant="primary"
+                className="mb-8"
                 to={`../${OversiktRoutes.ETTERSEND}`}
-                border={false}
-                className={bem.element('ettersend')}
             >
-                <LinkPanel.Title as="h2">{lastOppDokTittel}</LinkPanel.Title>
-            </LinkPanel>
+                {lastOppDokTittel}
+            </Button>
             {!dokumenterQuery.isError && (
                 <>
-                    <div className={bem.element('dokumenter-liste')}>
+                    <div className="mb-10">
                         {Object.entries(dokumenterGruppertPåTidspunkt).map((dokument) => {
                             const dokumenter = dokument[1];
 
@@ -61,7 +61,7 @@ const DokumenterPage: React.FunctionComponent = () => {
                             }
                         })}
                     </div>
-                    <Alert variant="info" className={bem.element('ikke-alle-dokumenter')}>
+                    <Alert variant="info" className="mb-8">
                         <Heading level="3" size="small">
                             Er det noen dokumenter du savner?
                         </Heading>
@@ -74,12 +74,10 @@ const DokumenterPage: React.FunctionComponent = () => {
                 </>
             )}
             {dokumenterQuery.isError && (
-                <div style={{ marginBottom: '2rem' }}>
-                    <NoeGikkGalt>
-                        Vi har problemer med å vise informasjon om dine dokumenter akkurat nå. Feilen er hos oss, ikke
-                        hos deg. Prøv igjen senere.
-                    </NoeGikkGalt>
-                </div>
+                <NoeGikkGalt className="mb-8">
+                    Vi har problemer med å vise informasjon om dine dokumenter akkurat nå. Feilen er hos oss, ikke hos
+                    deg. Prøv igjen senere.
+                </NoeGikkGalt>
             )}
         </PageRouteLayout>
     );

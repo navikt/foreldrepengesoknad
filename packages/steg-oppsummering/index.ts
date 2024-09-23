@@ -10,6 +10,8 @@ export const oppsummeringMessages = {
 
 export { default as OppsummeringPanel } from './src/OppsummeringPanel';
 export {
-    default as BoIUtlandetOppsummeringspunkt,
-    HendelseType,
-} from './src/utenlandsopphold/BoIUtlandetOppsummeringspunkt';
+    ArbeidsforholdOppsummering,
+    FrilansOppsummering,
+    SelvstendigNæringsdrivendeOppsummering,
+} from './src/arbeidsforhold/ArbeidsforholdOppsummering';
+export { default as BoIUtlandetOppsummering, HendelseType } from './src/utenlandsopphold/BoIUtlandetOppsummering';

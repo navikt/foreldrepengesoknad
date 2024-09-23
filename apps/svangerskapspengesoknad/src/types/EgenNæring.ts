@@ -1,4 +1,4 @@
-import { EgenNæring, Næringstype } from '@navikt/fp-steg-egen-naering';
+import { EgenNæring, Næringstype } from '@navikt/fp-types';
 
 export const egenNæringId = 'næring';
 

@@ -1,5 +1,4 @@
-import { Frilans } from '@navikt/fp-steg-frilans';
-import { LocaleNo } from '@navikt/fp-types';
+import { Frilans, LocaleNo } from '@navikt/fp-types';
 
 import { ArbeidIUtlandetDTO } from './ArbeidIUtlandet';
 import { EgenNæringDTO } from './EgenNæring';

@@ -15,7 +15,7 @@ import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 import { Heading, Radio, Spacer, VStack } from '@navikt/ds-react';
 
 import { RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Satser } from '@navikt/fp-types';
+import { LocaleAll, Satser } from '@navikt/fp-types';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
@@ -26,11 +26,12 @@ import UførInfoboks from './info/UførInfoboks';
 
 interface Props {
     satser: Satser;
+    locale: LocaleAll;
 }
 
-const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser }) => {
+const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser, locale }) => {
     const intl = useIntl();
-    const navigator = usePlanleggerNavigator();
+    const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
 
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);

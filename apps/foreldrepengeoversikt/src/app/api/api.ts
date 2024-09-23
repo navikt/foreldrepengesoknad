@@ -72,7 +72,13 @@ export const hentAnnenPartsVedtakOptions = (body: AnnenPartsVedtakRequestBody) =
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
-                return (await response.json()) as AnnenPartVedtakDTO;
+                try {
+                    return (await response.json()) as AnnenPartVedtakDTO;
+                } catch {
+                    // Dersom det ikke finnes en annenPart så sender api bare en tom response. Da vil json.parse() feile.
+                    // Men så lenge response er OK så er ikke denne en feil, og vi vil heller ha null tilbake.
+                    return null;
+                }
             } catch (error: any) {
                 // NOTE: inkluderer denne sjekken fordi den fantes før Tanstack refactor. Revurder om den behøves?
                 if (error?.message?.includes('Ugyldig ident')) {

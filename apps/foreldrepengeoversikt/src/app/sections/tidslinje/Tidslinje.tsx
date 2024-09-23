@@ -135,7 +135,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({
                         visHeleTidslinjen={visHeleTidslinjen}
                         erSistePåForsidenMenIkkeSisteIHeleTidslinjen={erSistePåForsidenMenIkkeSisteIHeleTidslinjen}
                     >
-                        <ul style={{ listStyle: 'none', padding: '0' }}>
+                        <ul className="list-none p-0">
                             {hendelse.tidslinjeHendelseType === TidslinjehendelseType.VENT_DOKUMENTASJON &&
                                 manglendeVedleggData &&
                                 manglendeVedleggData.length > 1 && (

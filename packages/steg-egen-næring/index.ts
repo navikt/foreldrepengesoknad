@@ -9,5 +9,3 @@ export const egenNæringMessages = {
 };
 
 export { default as EgenNæringPanel } from './src/EgenNæringPanel';
-export type { EgenNæring } from './src/types/egenNæring';
-export { Næringstype } from './src/types/egenNæring';

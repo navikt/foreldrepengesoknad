@@ -9,5 +9,3 @@ export const frilansMessages = {
 };
 
 export { default as FrilansPanel } from './src/FrilansPanel';
-export type { Frilans } from './src/types/Frilans';
-export { frilansId } from './src/types/Frilans';

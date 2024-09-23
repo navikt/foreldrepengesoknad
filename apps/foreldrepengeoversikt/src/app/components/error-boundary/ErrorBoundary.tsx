@@ -25,9 +25,7 @@ class ErrorBoundary extends Component<any, State> {
 
     render() {
         if (this.state.hasError) {
-            return (
-                <div style={{ padding: '2rem', maxWidth: '704px', margin: '0 auto' }}>{this.state.error?.message}</div>
-            );
+            return <div className="p-8 w-[704px] m-0 ml-auto mr-auto">{this.state.error?.message}</div>;
         }
 
         return this.props.children;

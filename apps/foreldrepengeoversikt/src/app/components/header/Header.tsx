@@ -1,4 +1,4 @@
-import { BabyWrappedIcon, PersonPregnantIcon } from '@navikt/aksel-icons';
+import { BabyWrappedIcon, PersonPregnantIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import { ReactNode } from 'react';
 import { useIntl } from 'react-intl';
@@ -6,10 +6,9 @@ import { useParams } from 'react-router-dom';
 
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
-
 import { hentSakerOptions, søkerInfoOptions } from 'app/api/api';
 import { useGetSelectedRoute } from 'app/hooks/useSelectedRoute';
+import { LayoutWrapper } from 'app/sections/LayoutWrapper';
 import { Sak } from 'app/types/Sak';
 import { Ytelse } from 'app/types/Ytelse';
 import {
@@ -22,7 +21,6 @@ import {
 
 import Breadcrumb from '../breadcrumb/Breadcrumb';
 import StatusTag from '../status-tag/StatusTag';
-import './header.css';
 
 export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
     if (ytelse === Ytelse.ENGANGSSTØNAD) {
@@ -36,51 +34,53 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
     return 'Din sak';
 };
 
-function HeaderWrapper({ children }: { readonly children: ReactNode }) {
-    const bem = bemUtils('header');
+function HeaderWrapper({ children }: { children: ReactNode }) {
     const selectedRoute = useGetSelectedRoute();
     return (
-        <div className={bem.block}>
+        <div className={`bg-bg-default border-b-2 border-deepblue-200 mb-8`}>
             <Breadcrumb selectedRoute={selectedRoute} />
-            <div className={bem.element('wrapper')}>{children}</div>
+            <LayoutWrapper className="pt-1 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
+        </div>
+    );
+}
+
+function SimpleHeaderWrapper({ children }: { children: ReactNode }) {
+    const selectedRoute = useGetSelectedRoute();
+    return (
+        <div className={`bg-bg-default`}>
+            <Breadcrumb selectedRoute={selectedRoute} />
+            <LayoutWrapper className="pt-1 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
         </div>
     );
 }
 
 function BlueDot() {
-    return <div style={{ height: '4px', width: '4px', borderRadius: '50%', background: 'var(--a-deepblue-300)' }} />;
+    return <div className="h-[4px] w-[4px] rounded-[50%] bg-deepblue-300" />;
 }
 
-function BabyIkon({ ytelse }: { readonly ytelse: Ytelse }) {
-    const YtelseIkon = ytelse === Ytelse.SVANGERSKAPSPENGER ? PersonPregnantIcon : BabyWrappedIcon;
+function BabyIkon({ ytelse }: { ytelse: Ytelse | undefined }) {
+    const YtelseIkon = (() => {
+        switch (ytelse) {
+            case Ytelse.FORELDREPENGER:
+            case Ytelse.ENGANGSSTØNAD:
+                return BabyWrappedIcon;
+            case Ytelse.SVANGERSKAPSPENGER:
+                return PersonPregnantIcon;
+            default:
+                return StrollerIcon;
+        }
+    })();
+
     return (
         <>
             <Show above="md">
-                <div
-                    style={{
-                        width: '60px',
-                        height: '60px',
-                        borderRadius: '50%',
-                        background: 'var(--a-deepblue-100)',
-                        paddingTop: '8px',
-                        paddingLeft: '8px',
-                    }}
-                >
-                    <YtelseIkon fontSize={44} style={{ color: 'var(--a-lightblue-800)' }} />
+                <div className="w-[60px] h-[60px] rounded-full bg-deepblue-100 pt-2 pl-2">
+                    <YtelseIkon fontSize={44} className="text-lightblue-800" />
                 </div>
             </Show>
             <Show below="md">
-                <div
-                    style={{
-                        width: '38px',
-                        height: '38px',
-                        borderRadius: '50%',
-                        background: 'var(--a-deepblue-100)',
-                        paddingTop: '8px',
-                        paddingLeft: '8px',
-                    }}
-                >
-                    <YtelseIkon fontSize={22} style={{ color: 'var(--a-lightblue-800)' }} />
+                <div className="w-[38px] h-[38px] rounded-full bg-deepblue-100 pt-2 pl-2">
+                    <YtelseIkon fontSize={22} className="text-lightblue-800" />
                 </div>
             </Show>
         </>
@@ -90,11 +90,16 @@ function BabyIkon({ ytelse }: { readonly ytelse: Ytelse }) {
 export function ForsideHeader() {
     return (
         <HeaderWrapper>
-            <HGrid columns="max-content 1fr" gap="6" align="center">
-                <BabyIkon ytelse={Ytelse.FORELDREPENGER} />
-                <Heading level="1" size="large">
-                    Oversikt over foreldrepengesaker
-                </Heading>
+            <HGrid columns="max-content 1fr" gap="6" align="start">
+                <BabyIkon ytelse={undefined} />
+                <VStack>
+                    <Heading level="1" size="medium">
+                        Oversikt
+                    </Heading>
+                    <Detail textColor="subtle">
+                        Dine saker om foreldrepenger, engangsstønad og svangerskapspenger
+                    </Detail>
+                </VStack>
             </HGrid>
         </HeaderWrapper>
     );
@@ -106,59 +111,30 @@ function SaksnummerDetail() {
 }
 
 export function DokumenterHeader() {
-    const heading = (
-        <Heading level="1" size="large">
-            Dokumenter
-        </Heading>
-    );
-
+    const { saksnummer } = useParams();
     return (
-        <HeaderWrapper>
-            <Show above="md">
-                <VStack gap="3">
-                    {heading}
-                    <HStack gap="3" align="center">
-                        <SaksnummerDetail />
-                        <BlueDot />
-                        <Detail textColor="subtle">Dokumenter som du, arbeidsgiver og NAV har sendt</Detail>
-                    </HStack>
-                </VStack>
-            </Show>
-            <Show below="md">
-                <VStack gap="1">
-                    {heading}
-                    <SaksnummerDetail />
-                </VStack>
-            </Show>
-        </HeaderWrapper>
+        <SimpleHeaderWrapper>
+            <Heading level="1" size="medium">
+                Dokumenter
+            </Heading>
+            <Detail textColor="subtle">
+                Dokumenter fra du, arbeidsgiver og NAV som tilhører saken din ({saksnummer})
+            </Detail>
+        </SimpleHeaderWrapper>
     );
 }
 
 export function EttersendingHeader() {
-    const header = (
-        <Heading level="1" size="large">
-            Last opp dokumenter
-        </Heading>
-    );
     return (
-        <HeaderWrapper>
-            <Show above="md">
-                <VStack gap="3">
-                    {header}
-                    <SaksnummerDetail />
-                </VStack>
-            </Show>
-            <Show below="md">
-                <VStack gap="1">
-                    {header}
-                    <SaksnummerDetail />
-                </VStack>
-            </Show>
-        </HeaderWrapper>
+        <SimpleHeaderWrapper>
+            <Heading level="1" size="medium">
+                Last opp dokumenter
+            </Heading>
+        </SimpleHeaderWrapper>
     );
 }
 
-function FamiliehendelseDescription({ sak }: { readonly sak: Sak }) {
+function FamiliehendelseDescription({ sak }: { sak: Sak }) {
     const intl = useIntl();
 
     const søkerinfo = useQuery(søkerInfoOptions()).data;
@@ -191,9 +167,7 @@ function FamiliehendelseDescription({ sak }: { readonly sak: Sak }) {
     );
 }
 
-export function DinSakHeader({ sak }: { readonly sak?: Sak }) {
-    const bem = bemUtils('header');
-
+export function DinSakHeader({ sak }: { sak?: Sak }) {
     if (!sak) {
         return null;
     }
@@ -204,10 +178,10 @@ export function DinSakHeader({ sak }: { readonly sak?: Sak }) {
                 <BabyIkon ytelse={sak.ytelse} />
                 <VStack>
                     <HStack gap="6" align="center">
-                        <Heading level="1" size="large">
+                        <Heading level="1" size="medium">
                             Din sak
                         </Heading>
-                        <StatusTag sak={sak} className={bem.element('tag')} />
+                        <StatusTag sak={sak} />
                     </HStack>
                     <Show above="md">
                         <HStack gap="3" align="center">

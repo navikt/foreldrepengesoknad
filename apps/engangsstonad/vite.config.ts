@@ -20,6 +20,13 @@ export default defineConfig(({ mode }) => {
                 },
             },
         ],
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    api: 'modern-compiler',
+                },
+            },
+        },
         base: mode === 'development' ? '' : '/engangsstonad/soknad',
         build: {
             sourcemap: true,

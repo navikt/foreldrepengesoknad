@@ -1,41 +1,24 @@
-import { Link } from 'react-router-dom';
+import { ChatExclamationmarkIcon } from '@navikt/aksel-icons';
 
-import { DialogReport } from '@navikt/ds-icons';
-import { LinkPanel } from '@navikt/ds-react';
+import { formatDate } from '@navikt/fp-utils';
 
-import { bemUtils, formatDate } from '@navikt/fp-utils';
-
+import { LenkePanel } from 'app/components/lenke-panel/LenkePanel';
 import OversiktRoutes from 'app/routes/routes';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 
-import './oppgaveLenkepanel.css';
-
 interface Props {
     minidialogInnslag: MinidialogInnslag;
-    tittel: React.ReactNode | string;
+    tittel: string;
 }
 
 const OppgaveLenkepanel: React.FunctionComponent<Props> = ({ tittel, minidialogInnslag }) => {
-    const bem = bemUtils('oppgave-lenkepanel');
     return (
-        <LinkPanel
-            as={Link}
+        <LenkePanel
+            undertittel={formatDate(minidialogInnslag.opprettet)}
+            tittel={tittel}
             to={`${OversiktRoutes.OPPGAVER}/${minidialogInnslag.dialogId}`}
-            border={false}
-            className={bem.element('linkPanel')}
-        >
-            <div className={bem.element('content')}>
-                <DialogReport className={bem.element('icon')} aria-hidden={true}></DialogReport>
-                <div>
-                    <LinkPanel.Title as="h3" className={bem.element('title')}>
-                        {tittel}
-                    </LinkPanel.Title>
-                    <LinkPanel.Description>
-                        <div className={bem.block}>{formatDate(minidialogInnslag.opprettet)}</div>
-                    </LinkPanel.Description>
-                </div>
-            </div>
-        </LinkPanel>
+            Ikon={ChatExclamationmarkIcon}
+        />
     );
 };
 

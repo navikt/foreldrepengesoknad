@@ -24,6 +24,7 @@ const renderOptions = (intl: IntlShape) => {
         )
         .map((aktivitetsid) => (
             <option value={(MorsAktivitet as any)[aktivitetsid]} key={(MorsAktivitet as any)[aktivitetsid]}>
+                {/* @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart */}
                 {intl.formatMessage({ id: `uttaksplan.morsAktivitet.${aktivitetsid}` })}
             </option>
         ));

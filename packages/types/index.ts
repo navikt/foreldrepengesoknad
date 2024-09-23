@@ -18,6 +18,15 @@ export type { Satser } from './src/Satser';
 export type { NavnPåForeldre } from './src/NavnPåForeldre';
 export type { AppName } from './src/AppName';
 export type { DatepickerDateRange } from './src/DatepickerDateRange';
+export type { EgenNæring } from './src/EgenNæring';
+export { Næringstype } from './src/EgenNæring';
+export type { Frilans } from './src/Frilans';
+export type {
+    ArbeidsforholdOgInntekt,
+    ArbeidsforholdOgInntektFp,
+    ArbeidsforholdOgInntektSvp,
+} from './src/ArbeidsforholdOgInntekt';
+export { isArbeidsforholdOgInntektFp, isArbeidsforholdOgInntektSvp } from './src/ArbeidsforholdOgInntekt';
 export { isFødtBarn, isUfødtBarn, isAdoptertBarn } from './src/Barn';
 export {
     isAvslåttPeriode,

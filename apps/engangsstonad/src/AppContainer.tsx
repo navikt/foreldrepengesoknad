@@ -16,27 +16,16 @@ import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
 
-const allNbMessages = {
-    ...nbMessages,
-    ...uiMessages.nb,
-    ...utenlandsoppholdMessages.nb,
-    ...oppsummeringMessages.nb,
-    ...utilsMessages.nb,
-};
-
-declare global {
-    // eslint-disable-next-line @typescript-eslint/no-namespace
-    namespace FormatjsIntl {
-        interface Message {
-            ids: keyof typeof allNbMessages;
-        }
-    }
-}
-
 const localeFromSessionStorage = getLocaleFromSessionStorage();
 
 const MESSAGES_GROUPED_BY_LOCALE = {
-    nb: allNbMessages,
+    nb: {
+        ...nbMessages,
+        ...uiMessages.nb,
+        ...utenlandsoppholdMessages.nb,
+        ...oppsummeringMessages.nb,
+        ...utilsMessages.nb,
+    },
     nn: {
         ...nnMessages,
         ...uiMessages.nn,
@@ -52,6 +41,15 @@ const MESSAGES_GROUPED_BY_LOCALE = {
         ...utilsMessages.en,
     },
 };
+
+declare global {
+    // eslint-disable-next-line @typescript-eslint/no-namespace
+    namespace FormatjsIntl {
+        interface Message {
+            ids: keyof typeof MESSAGES_GROUPED_BY_LOCALE.nb;
+        }
+    }
+}
 
 dayjs.locale(localeFromSessionStorage);
 

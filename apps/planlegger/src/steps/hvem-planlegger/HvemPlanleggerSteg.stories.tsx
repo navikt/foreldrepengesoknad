@@ -16,12 +16,12 @@ type StoryArgs = {
 const meta = {
     title: 'steg/HvemPlanleggerSteg',
     component: HvemPlanleggerSteg,
-    render: ({ gåTilNesteSide = action('button-click') }) => {
+    render: ({ gåTilNesteSide = action('button-click'), locale }) => {
         initAmplitude();
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.HVEM_PLANLEGGER]}>
                 <PlanleggerDataContext onDispatch={gåTilNesteSide}>
-                    <HvemPlanleggerSteg />
+                    <HvemPlanleggerSteg locale={locale} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -31,4 +31,8 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+    args: {
+        locale: 'nb',
+    },
+};
