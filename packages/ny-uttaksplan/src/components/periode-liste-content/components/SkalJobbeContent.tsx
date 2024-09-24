@@ -5,10 +5,11 @@ import { BodyShort } from '@navikt/ds-react';
 interface Props {
     skalJobbeIPermisjonsperioden: boolean;
     erUtsettelse: boolean;
+    erOpphold: boolean;
 }
 
-export const SkalJobbeContent = ({ skalJobbeIPermisjonsperioden, erUtsettelse }: Props) => {
-    if (erUtsettelse || skalJobbeIPermisjonsperioden) {
+export const SkalJobbeContent = ({ skalJobbeIPermisjonsperioden, erUtsettelse, erOpphold }: Props) => {
+    if (erUtsettelse || skalJobbeIPermisjonsperioden || erOpphold) {
         return null;
     }
     return (
