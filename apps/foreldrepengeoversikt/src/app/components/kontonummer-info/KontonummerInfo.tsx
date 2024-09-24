@@ -10,25 +10,16 @@ interface Props {
     ytelse: Ytelse | undefined;
 }
 
-const getKontonummerTittel = (ytelse: Ytelse | undefined) => {
-    if (ytelse === Ytelse.ENGANGSSTØNAD) {
-        return 'KONTONUMMER FOR UTBETALING';
-    }
-    return 'KONTONUMMER';
-};
-
-const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, ytelse }) => {
+export const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, ytelse }) => {
     const harKontonummer = !!bankkonto?.kontonummer && bankkonto?.kontonummer.trim().length > 0;
-    console.log(bankkonto);
-    const kontonummerTittel = getKontonummerTittel(ytelse);
-    const kontonummerTekst = harKontonummer ? bankkonto?.kontonummer : 'Du har ikke kontonummer registrert hos NAV. ';
+    const kontonummerTekst = harKontonummer ? bankkonto?.kontonummer : 'NAV mangler kontonummeret ditt';
     const kontonummerEndreTekst = harKontonummer ? 'Endre kontonummer' : 'Registrer kontonummer';
 
     return (
         <Accordion headingSize="small" size="large">
-            <Accordion.Item title={kontonummerTittel}>
+            <Accordion.Item>
                 <Accordion.Header>
-                    <Detail textColor="subtle">{kontonummerTittel}</Detail>
+                    <Detail textColor="subtle">KONTONUMMER</Detail>
                     <BodyShort size="large" weight="semibold">
                         {kontonummerTekst}
                     </BodyShort>
@@ -90,5 +81,3 @@ const KontonummerInfoTekst = ({ harKontonummer, ytelse }: { harKontonummer: bool
         </BodyLong>
     );
 };
-
-export default KontonummerInfo;
