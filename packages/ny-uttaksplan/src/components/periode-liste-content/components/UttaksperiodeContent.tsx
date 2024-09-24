@@ -24,6 +24,12 @@ const getArbeidsTekst = (arbeidstidprosent: number) => {
     return `Du skal jobbe ${arbeidstidprosent} % og ha ${uttaksprosent} % foreldrepenger`;
 };
 
+const getSamtidigUttakTekst = (samtidiguttaksProsent: number) => {
+    const arbeidstidprosent = 100 - samtidiguttaksProsent;
+
+    return `Du skal jobbe ${arbeidstidprosent} % og ha ${samtidiguttaksProsent} % foreldrepenger`;
+};
+
 const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Planperiode) => {
     if (inneholderKunEnPeriode) {
         return intl.formatMessage({ id: 'uttaksplan.varighet.helePerioden' });
@@ -62,7 +68,7 @@ const UttaksperiodeContent: FunctionComponent<Props> = ({
                         <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>
                     )}
                     {periode.samtidigUttak !== undefined && (
-                        <BodyShort>{getArbeidsTekst(periode.samtidigUttak)}</BodyShort>
+                        <BodyShort>{getSamtidigUttakTekst(periode.samtidigUttak)}</BodyShort>
                     )}
                 </div>
             </div>

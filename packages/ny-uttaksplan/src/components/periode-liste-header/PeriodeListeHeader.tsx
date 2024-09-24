@@ -107,7 +107,7 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, erFam
                     }),
                 )}
             >
-                <BodyShort className={classNames(bem.element('hendelse-wrapper'))}>
+                <div className={classNames(bem.element('hendelse-wrapper'))}>
                     <Show above="md">
                         <BodyShort>
                             {getTekst({
@@ -132,7 +132,7 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, erFam
                         erHull,
                         erFamiliehendelse,
                     })}
-                </BodyShort>
+                </div>
             </div>
         </div>
     );

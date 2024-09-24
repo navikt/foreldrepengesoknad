@@ -36,20 +36,10 @@ const renderPeriode = (
     erFarEllerMedmor: boolean,
     inneholderKunEnPeriode: boolean,
 ) => {
-    if (isUttaksperiode(periode)) {
-        return (
-            <UttaksperiodeContent
-                inneholderKunEnPeriode={inneholderKunEnPeriode}
-                periode={periode}
-                erFarEllerMedmor={erFarEllerMedmor}
-                navnPåForeldre={navnPåForeldre}
-            />
-        );
-    }
-
     if (isOppholdsperiode(periode)) {
         return (
             <OppholdsPeriodeContent
+                key={periode.id}
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                 navnPåForeldre={navnPåForeldre}
                 erFarEllerMedmor={erFarEllerMedmor}
@@ -61,6 +51,7 @@ const renderPeriode = (
     if (isOverføringsperiode(periode)) {
         return (
             <OverføringsperiodeContent
+                key={periode.id}
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                 navnPåForeldre={navnPåForeldre}
                 erFarEllerMedmor={erFarEllerMedmor}
@@ -70,15 +61,27 @@ const renderPeriode = (
     }
 
     if (isPeriodeUtenUttak(periode)) {
-        return <PeriodeUtenUttakContent periode={periode} />;
+        return <PeriodeUtenUttakContent key={periode.id} periode={periode} />;
     }
 
     if (isUtsettelsesperiode(periode)) {
-        return <UtsettelsesPeriodeContent periode={periode} />;
+        return <UtsettelsesPeriodeContent key={periode.id} periode={periode} />;
+    }
+
+    if (isUttaksperiode(periode)) {
+        return (
+            <UttaksperiodeContent
+                key={periode.id}
+                inneholderKunEnPeriode={inneholderKunEnPeriode}
+                periode={periode}
+                erFarEllerMedmor={erFarEllerMedmor}
+                navnPåForeldre={navnPåForeldre}
+            />
+        );
     }
 
     return (
-        <div style={{ marginBottom: '1rem', display: 'flex' }}>
+        <div key={periode.id} style={{ marginBottom: '1rem', display: 'flex' }}>
             <div>
                 <CalendarIcon width={24} height={24} />
             </div>

@@ -1,10 +1,11 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
-import { IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
+import { OverføringÅrsakType } from '@navikt/fp-types';
 import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
 
 import { Planperiode } from '../../../types/Planperiode';
@@ -21,7 +22,7 @@ interface Props {
 const getArbeidsTekst = (arbeidstidprosent: number) => {
     const uttaksprosent = 100 - arbeidstidprosent;
 
-    return `Du skal jobbe ${arbeidstidprosent}% og ha ${uttaksprosent}% foreldrepenger`;
+    return `Du skal jobbe ${arbeidstidprosent} % og ha ${uttaksprosent} % foreldrepenger`;
 };
 
 const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Planperiode) => {
@@ -32,6 +33,45 @@ const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, p
     return `${formatDateExtended(periode.fom)} - ${formatDateExtended(periode.tom)}`;
 };
 
+const getOverføringsTekst = (
+    stønadskontoNavn: string,
+    navnPåAnnenForelder: string,
+    overføringsÅrsak: OverføringÅrsakType | undefined,
+) => {
+    switch (overføringsÅrsak) {
+        case OverføringÅrsakType.sykdomAnnenForelder:
+            return (
+                <FormattedMessage
+                    id="uttaksplan.periodeListeContent.overføring.sykdomAnnenForelder"
+                    values={{ stønadskontoNavn, navnPåAnnenForelder }}
+                />
+            );
+        case OverføringÅrsakType.aleneomsorg:
+            return (
+                <FormattedMessage
+                    id="uttaksplan.periodeListeContent.overføring.aleneomsorg"
+                    values={{ stønadskontoNavn, navnPåAnnenForelder }}
+                />
+            );
+        case OverføringÅrsakType.ikkeRettAnnenForelder:
+            return (
+                <FormattedMessage
+                    id="uttaksplan.periodeListeContent.overføring.ikkeRettAnnenForelder"
+                    values={{ stønadskontoNavn, navnPåAnnenForelder }}
+                />
+            );
+        case OverføringÅrsakType.institusjonsoppholdAnnenForelder:
+            return (
+                <FormattedMessage
+                    id="uttaksplan.periodeListeContent.overføring.institusjonsoppholdAnnenForelder"
+                    values={{ stønadskontoNavn, navnPåAnnenForelder }}
+                />
+            );
+        default:
+            return 'Ingen overføringsårsak oppgitt';
+    }
+};
+
 const OverføringsperiodeContent: FunctionComponent<Props> = ({
     periode,
     inneholderKunEnPeriode,
@@ -40,6 +80,7 @@ const OverføringsperiodeContent: FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const stønadskontoNavn = getStønadskontoNavn(intl, periode.kontoType!, navnPåForeldre, erFarEllerMedmor);
+    const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     return (
         <div style={{ marginBottom: '1rem', display: 'flex' }}>
@@ -57,7 +98,9 @@ const OverføringsperiodeContent: FunctionComponent<Props> = ({
                     </BodyShort>
                 </div>
                 <div style={{ marginLeft: '1rem', paddingTop: '0.25rem' }}>
-                    <BodyShort>{stønadskontoNavn}</BodyShort>
+                    <BodyShort>
+                        {getOverføringsTekst(stønadskontoNavn, navnPåAnnenForelder, periode.overføringÅrsak)}
+                    </BodyShort>
                     {periode.gradering !== undefined && (
                         <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>
                     )}
