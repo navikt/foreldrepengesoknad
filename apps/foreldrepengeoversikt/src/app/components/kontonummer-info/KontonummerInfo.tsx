@@ -44,6 +44,22 @@ export const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, yte
 };
 
 const KontonummerInfoTekst = ({ harKontonummer, ytelse }: { harKontonummer: boolean; ytelse: Ytelse | undefined }) => {
+    if (ytelse === Ytelse.ENGANGSSTØNAD) {
+        if (harKontonummer) {
+            return (
+                <BodyLong size="small">
+                    Dette er kontonummeret NAV kommer til å betale engangsstønaden til, hvis søknaden blir innvilget.
+                    Hvis det er feil kan du endre det.
+                </BodyLong>
+            );
+        } else {
+            return (
+                <BodyLong size="small">
+                    NAV mangler kontonummeret som engangsstønaden vil bli betalt til hvis du får søknaden din innvilget.
+                </BodyLong>
+            );
+        }
+    }
     if (!harKontonummer) {
         return (
             <>
@@ -58,15 +74,8 @@ const KontonummerInfoTekst = ({ harKontonummer, ytelse }: { harKontonummer: bool
             </>
         );
     }
-    if (harKontonummer && ytelse === Ytelse.ENGANGSSTØNAD) {
-        return (
-            <BodyLong size="small">
-                NAV vil utbetale engangsstønaden til dette kontonummeret, hvis søknaden blir innvilget. Hvis
-                kontonummeret er feil kan du endre det.
-            </BodyLong>
-        );
-    }
-    if ((harKontonummer && ytelse === Ytelse.FORELDREPENGER) || ytelse === Ytelse.SVANGERSKAPSPENGER) {
+
+    if (ytelse === Ytelse.FORELDREPENGER || ytelse === Ytelse.SVANGERSKAPSPENGER) {
         return (
             <BodyLong size="small">
                 Arbeidsgiveren din vil opplyse i inntektsmeldingen om de betaler deg eller om du får utbetalt fra NAV.
@@ -74,6 +83,8 @@ const KontonummerInfoTekst = ({ harKontonummer, ytelse }: { harKontonummer: bool
             </BodyLong>
         );
     }
+
+    // Kan kun inntreffe dersom ytelse ikke er tilgjengelig fra saken.
     return (
         <BodyLong size="small">
             NAV vil utbetale til dette kontonummeret, hvis søknaden blir innvilget. Hvis kontonummeret er feil kan du
