@@ -82,7 +82,6 @@ function BabyIkon({ ytelse }: { ytelse: Ytelse | undefined }) {
 }
 
 export function ForsideHeader() {
-    console.log('header');
     return (
         <HeaderWrapper>
             <HGrid columns="max-content 1fr" gap="6" align="start">
