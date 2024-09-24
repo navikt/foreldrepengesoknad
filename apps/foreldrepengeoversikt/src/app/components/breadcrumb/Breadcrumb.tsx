@@ -1,14 +1,11 @@
 import { onBreadcrumbClick, setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import { assertUnreachable } from '@navikt/fp-validation';
 
+import { useGetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import { useGetSelectedSak } from 'app/hooks/useSelectedSak';
 import OversiktRoutes from 'app/routes/routes';
-
-type Props = {
-    selectedRoute: OversiktRoutes;
-};
 
 const minSide = {
     title: 'Min side',
@@ -96,7 +93,8 @@ const getRoute = (route: string, saksnummer: string | undefined): string => {
     return route;
 };
 
-const Breadcrumb: React.FunctionComponent<Props> = ({ selectedRoute }) => {
+export const Breadcrumb = () => {
+    const selectedRoute = useGetSelectedRoute();
     const breadcrumbs = getBreadcrumbs(selectedRoute);
     const navigate = useNavigate();
     const sak = useGetSelectedSak();
@@ -109,7 +107,5 @@ const Breadcrumb: React.FunctionComponent<Props> = ({ selectedRoute }) => {
         navigate(breadcrumb.url);
     });
 
-    return null;
+    return <Outlet />;
 };
-
-export default Breadcrumb;

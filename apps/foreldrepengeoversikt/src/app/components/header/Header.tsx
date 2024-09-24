@@ -7,7 +7,6 @@ import { useParams } from 'react-router-dom';
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { hentSakerOptions, søkerInfoOptions } from 'app/api/api';
-import { useGetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import { LayoutWrapper } from 'app/sections/LayoutWrapper';
 import { Sak } from 'app/types/Sak';
 import { Ytelse } from 'app/types/Ytelse';
@@ -19,7 +18,6 @@ import {
     utledFamiliesituasjon,
 } from 'app/utils/sakerUtils';
 
-import Breadcrumb from '../breadcrumb/Breadcrumb';
 import StatusTag from '../status-tag/StatusTag';
 
 export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
@@ -35,20 +33,16 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
 };
 
 function HeaderWrapper({ children }: { children: ReactNode }) {
-    const selectedRoute = useGetSelectedRoute();
     return (
         <div className={`bg-bg-default border-b-2 border-deepblue-200 mb-8`}>
-            <Breadcrumb selectedRoute={selectedRoute} />
             <LayoutWrapper className="pt-1 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
         </div>
     );
 }
 
 function SimpleHeaderWrapper({ children }: { children: ReactNode }) {
-    const selectedRoute = useGetSelectedRoute();
     return (
         <div className={`bg-bg-default`}>
-            <Breadcrumb selectedRoute={selectedRoute} />
             <LayoutWrapper className="pt-1 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
         </div>
     );
@@ -88,6 +82,7 @@ function BabyIkon({ ytelse }: { ytelse: Ytelse | undefined }) {
 }
 
 export function ForsideHeader() {
+    console.log('header');
     return (
         <HeaderWrapper>
             <HGrid columns="max-content 1fr" gap="6" align="start">
