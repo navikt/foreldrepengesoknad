@@ -5,6 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { BodyLong, HStack } from '@navikt/ds-react';
 
 import { FamiliehendelseType } from '@navikt/fp-common';
+import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 
@@ -13,7 +14,8 @@ interface Props {
 }
 
 const FamiliehendelseContent: FunctionComponent<Props> = ({ familiehendelseType }) => {
-    const erFarEllerMedmor = useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR);
+    const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
+    const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
 
     if (familiehendelseType === FamiliehendelseType.TERM) {
         return (
@@ -21,7 +23,7 @@ const FamiliehendelseContent: FunctionComponent<Props> = ({ familiehendelseType 
                 <div style={{ margin: '1rem', display: 'flex', gap: '1rem' }}>
                     <FormattedMessage
                         id="uttaksplan.periodeListeContent.familiehendelse.termin"
-                        values={{ erFarEllerMedmor }}
+                        values={{ navnMor: navnPåForeldre.mor, erFarEllerMedmor }}
                     />
                 </div>
             </HStack>
@@ -51,13 +53,10 @@ const FamiliehendelseContent: FunctionComponent<Props> = ({ familiehendelseType 
                     }}
                 >
                     <BodyLong>
-                        Mor får 3 uker foreldrepenger som er satt av til å brukes før termin. Hvis barnet blir født før
-                        termin, vil man miste dagene av denne perioden, og starte på mødrekvoten av foreldrepengene den
-                        dagen barnet blir født.
+                        <FormattedMessage id="uttaksplan.periodeListeContent.familiehendelse.fødsel1" />
                     </BodyLong>
                     <BodyLong>
-                        Hvis barnet blir født etter termin vil mor bruke noen dager av fellesperioden før fødselen, men
-                        starter ikke med mødrekvoten før barnet blir født.
+                        <FormattedMessage id="uttaksplan.periodeListeContent.familiehendelse.fødsel2" />
                     </BodyLong>
                 </div>
             </div>

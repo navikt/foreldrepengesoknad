@@ -105,21 +105,11 @@ const getFamiliehendelseType = (barn: Barn) => {
 
 const PeriodeListeContent: FunctionComponent<Props> = ({ permisjonsperiode, erFamiliehendelse }) => {
     const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
-    const skalJobbeIPermisjonsperioden =
-        permisjonsperiode.perioder.find((p) => {
-            if (isUttaksperiode(p) && p.gradering !== undefined) {
-                return p;
-            }
-
-            return undefined;
-        }) !== undefined;
 
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
     const barn = notEmpty(useContextGetData(UttaksplanContextDataType.BARN));
     const familiehendelseType = getFamiliehendelseType(barn);
-    const erUtsettelse = permisjonsperiode.perioder.find((p) => isUtsettelsesperiode(p)) !== undefined;
-    const erOpphold = permisjonsperiode.perioder.find((p) => isOppholdsperiode(p)) !== undefined;
 
     if (erFamiliehendelse && familiehendelseType !== undefined) {
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
@@ -132,11 +122,7 @@ const PeriodeListeContent: FunctionComponent<Props> = ({ permisjonsperiode, erFa
                     return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode);
                 })}
             </Stack>
-            <SkalJobbeContent
-                skalJobbeIPermisjonsperioden={skalJobbeIPermisjonsperioden}
-                erOpphold={erOpphold}
-                erUtsettelse={erUtsettelse}
-            />
+            <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
         </div>
     );
 };
