@@ -8,7 +8,7 @@ import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { RettighetType } from '../../types/RettighetType';
 import { Ytelse } from '../../types/Ytelse';
-import { getBarnFraSak, getFamiliehendelseDato } from '../../utils/sakerUtils';
+import { getBarnFraSak, getFamiliehendelseDato, utledFamiliesituasjon } from '../../utils/sakerUtils';
 
 interface Props {
     annenPartsPerioder?: SaksperiodeNy[];
@@ -42,6 +42,7 @@ const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåForeldre
     const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !morHarRett && !søkerErAleneOmOmsorg;
     const familiehendelseDato = getFamiliehendelseDato(familiehendelse);
     const barn = getBarnFraSak(familiehendelse, gjelderAdopsjon);
+    const familiesituasjon = utledFamiliesituasjon(familiehendelse, gjelderAdopsjon);
 
     return (
         <>
@@ -59,6 +60,7 @@ const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåForeldre
                 søkersPerioder={getRelevantePerioder() || []}
                 gjelderAdopsjon={gjelderAdopsjon}
                 bareFarHarRett={bareFarHarRett}
+                familiesituasjon={familiesituasjon}
                 førsteUttaksdagNesteBarnsSak={undefined}
                 harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
             />

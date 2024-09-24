@@ -1,6 +1,6 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
@@ -24,6 +24,14 @@ const getArbeidsTekst = (arbeidstidprosent: number) => {
     return `Du skal jobbe ${arbeidstidprosent}% og ha ${uttaksprosent}% foreldrepenger`;
 };
 
+const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Planperiode) => {
+    if (inneholderKunEnPeriode) {
+        return intl.formatMessage({ id: 'uttaksplan.varighet.helePerioden' });
+    }
+
+    return `${formatDateExtended(periode.fom)} - ${formatDateExtended(periode.tom)}`;
+};
+
 const UttaksperiodeContent: FunctionComponent<Props> = ({
     periode,
     inneholderKunEnPeriode,
@@ -40,15 +48,7 @@ const UttaksperiodeContent: FunctionComponent<Props> = ({
             </div>
             <div>
                 <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
-                    {inneholderKunEnPeriode ? (
-                        <BodyShort weight="semibold">
-                            <FormattedMessage id="uttaksplan.varighet.helePerioden" />
-                        </BodyShort>
-                    ) : (
-                        <BodyShort weight="semibold">
-                            {formatDateExtended(periode.fom)} - {formatDateExtended(periode.tom)}
-                        </BodyShort>
-                    )}
+                    <BodyShort weight="semibold">{getLengdePåPeriode(intl, inneholderKunEnPeriode, periode)}</BodyShort>
                     <BodyShort>
                         {getVarighetString(
                             TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),
@@ -60,6 +60,9 @@ const UttaksperiodeContent: FunctionComponent<Props> = ({
                     <BodyShort>{stønadskontoNavn}</BodyShort>
                     {periode.gradering !== undefined && (
                         <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>
+                    )}
+                    {periode.samtidigUttak !== undefined && (
+                        <BodyShort>{getArbeidsTekst(periode.samtidigUttak)}</BodyShort>
                     )}
                 </div>
             </div>

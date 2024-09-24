@@ -665,7 +665,7 @@ export const mapSaksperiodeTilPlanperiode = (
     saksperioder.forEach((p) => {
         const planperiode: Planperiode = {
             ...p,
-            id: `${p.fom} - ${p.tom} - ${p.kontoType}`,
+            id: `${p.fom} - ${p.tom} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak}`,
             forelder: getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, p.oppholdÅrsak),
             gjelderAnnenPart,
         };

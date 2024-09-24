@@ -11,22 +11,6 @@ export const SkalJobbeContent = ({ skalJobbeIPermisjonsperioden, erUtsettelse }:
     if (erUtsettelse) {
         return null;
     }
-
-    if (skalJobbeIPermisjonsperioden) {
-        return (
-            <div style={{ margin: '0.5rem 0', display: 'flex' }}>
-                <div>
-                    <BriefcaseIcon width={24} height={24} />
-                </div>
-                <div>
-                    <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
-                        <BodyShort>Du skal jobbe i denne perioden</BodyShort>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
     return (
         <div style={{ margin: '0.5rem 0', display: 'flex' }}>
             <div>
@@ -34,7 +18,11 @@ export const SkalJobbeContent = ({ skalJobbeIPermisjonsperioden, erUtsettelse }:
             </div>
             <div>
                 <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
-                    <BodyShort>Du skal ikke jobbe i denne perioden</BodyShort>
+                    <BodyShort>
+                        {skalJobbeIPermisjonsperioden
+                            ? 'Du skal jobbe i denne perioden'
+                            : 'Du skal ikke jobbe i denne perioden'}
+                    </BodyShort>
                 </div>
             </div>
         </div>

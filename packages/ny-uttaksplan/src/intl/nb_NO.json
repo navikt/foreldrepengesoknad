@@ -33,6 +33,7 @@
     "uttaksplan.oppholdsårsaktype.foreldernavn.far.FELLESPERIODE_ANNEN_FORELDER": "{foreldernavn} tar ut fellesperiode",
     "uttaksplan.oppholdsårsaktype.foreldernavn.far.FEDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten sin",
     "uttaksplan.oppholdsårsaktype.foreldernavn.far.MØDREKVOTE_ANNEN_FORELDER": "{foreldernavn} tar ut kvoten din",
+    "uttaksplan.periodeListeContent.familiehendelse.termin": "Hvis {erFarEllerMedmor, select, true {{mor}} other {du}} føder før termin slettes det som er igjen av ukene før termin, og tiden fram mot opprinnelig termindato tas fra {erFarEllerMedmor, select, true {{mors}} other {din}} kvote. Hvis {erFarEllerMedmor, select, true {{mor}} other {du}} føder etter termin vil {erFarEllerMedmor, select, true {{mor}} other {du}} bruke fra fellesperioden frem til fødsel.",
     "gradering.prosent": "{stillingsprosent}%",
     "varighet.uker": "{uker, plural, one {# uke} other {# uker}}",
     "varighet.dager": "{dager, plural, one {# dag} other {# dager}}",

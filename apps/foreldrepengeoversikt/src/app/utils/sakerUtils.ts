@@ -3,7 +3,7 @@ import orderBy from 'lodash/orderBy';
 import { IntlShape } from 'react-intl';
 
 import { BarnType } from '@navikt/fp-constants';
-import { Barn } from '@navikt/fp-types';
+import { Barn, Familiesituasjon } from '@navikt/fp-types';
 import { formatDate } from '@navikt/fp-utils';
 
 import { BarnGruppering } from 'app/types/BarnGruppering';
@@ -211,7 +211,10 @@ const findRelevantSak = (gruppertSak: GruppertSak, familiehendelsedato: string) 
     return undefined;
 };
 
-export const utledFamiliesituasjon = (familiehendelse: Familiehendelse, gjelderAdopsjon: boolean | undefined) => {
+export const utledFamiliesituasjon = (
+    familiehendelse: Familiehendelse,
+    gjelderAdopsjon: boolean | undefined,
+): Familiesituasjon => {
     if (gjelderAdopsjon) {
         return 'adopsjon';
     }

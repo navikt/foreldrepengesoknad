@@ -70,3 +70,4 @@ export { UttakArbeidType } from './src/UttakArbeidType';
 export { MorsAktivitet } from './src/MorsAktivitet';
 export { OverføringÅrsakType } from './src/OverføringÅrsakType';
 export { OppholdÅrsakType } from './src/OppholdÅrsakType';
+export type { Familiesituasjon } from './src/Familiesituasjon';

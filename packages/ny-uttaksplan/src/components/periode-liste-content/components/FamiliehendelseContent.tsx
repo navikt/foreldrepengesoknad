@@ -1,19 +1,29 @@
 import { InformationSquareIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, HStack } from '@navikt/ds-react';
 
 import { FamiliehendelseType } from '@navikt/fp-common';
+
+import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 
 interface Props {
     familiehendelseType: FamiliehendelseType;
 }
 
 const FamiliehendelseContent: FunctionComponent<Props> = ({ familiehendelseType }) => {
+    const erFarEllerMedmor = useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR);
+
     if (familiehendelseType === FamiliehendelseType.TERM) {
         return (
             <HStack>
-                <div style={{ margin: '1rem', display: 'flex', gap: '1rem' }}>Termin</div>
+                <div style={{ margin: '1rem', display: 'flex', gap: '1rem' }}>
+                    <FormattedMessage
+                        id="uttaksplan.periodeListeContent.familiehendelse.termin"
+                        values={{ erFarEllerMedmor }}
+                    />
+                </div>
             </HStack>
         );
     }

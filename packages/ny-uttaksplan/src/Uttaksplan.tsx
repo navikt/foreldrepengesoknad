@@ -3,7 +3,7 @@ import { FunctionComponent } from 'react';
 import '@navikt/ds-css';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
-import { Barn, SaksperiodeNy } from '@navikt/fp-types';
+import { Barn, Familiesituasjon, SaksperiodeNy } from '@navikt/fp-types';
 
 import { finnOgSettInnHull, slåSammenLikePerioder } from './builder/uttaksplanbuilderUtils';
 import PeriodeListe from './components/periode-liste/PeriodeListe';
@@ -21,6 +21,7 @@ interface Props {
     bareFarHarRett: boolean;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     førsteUttaksdagNesteBarnsSak: string | undefined;
+    familiesituasjon: Familiesituasjon;
 }
 
 const UttaksplanNy: FunctionComponent<Props> = ({
@@ -34,6 +35,7 @@ const UttaksplanNy: FunctionComponent<Props> = ({
     bareFarHarRett,
     harAktivitetskravIPeriodeUtenUttak,
     førsteUttaksdagNesteBarnsSak,
+    familiesituasjon,
 }) => {
     let komplettPlan = finnOgSettInnHull(
         slåSammenLikePerioder(
@@ -58,6 +60,7 @@ const UttaksplanNy: FunctionComponent<Props> = ({
                 FAMILIEHENDELSEDATO: familiehendelsedato,
                 NAVN_PÅ_FORELDRE: navnPåForeldre,
                 UTTAKSPLAN: komplettPlan,
+                FAMILIESITUASJON: familiesituasjon,
             }}
         >
             <div style={{ padding: '2rem 0' }}>

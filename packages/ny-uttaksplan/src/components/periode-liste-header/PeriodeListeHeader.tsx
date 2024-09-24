@@ -56,6 +56,7 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, erFam
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
     const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
+    const familiesituasjon = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIESITUASJON));
 
     const periodeFørTermindato = dayjs(familiehendelsedato).isAfter(permisjonsperiode.tidsperiode.tom);
     const { tidsperiode, erUtsettelse, erHull, forelder } = permisjonsperiode;
@@ -86,6 +87,7 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, erFam
                             erFarEllerMedmor,
                             navnPåForeldre,
                             forelder,
+                            familiesituasjon,
                         })}
                     </BodyShort>
                 </Hide>
@@ -117,6 +119,7 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, erFam
                                 erFarEllerMedmor,
                                 navnPåForeldre,
                                 forelder,
+                                familiesituasjon,
                             })}
                         </BodyShort>
                     </Show>

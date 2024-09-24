@@ -8,7 +8,7 @@ import {
 } from '@navikt/aksel-icons';
 
 import { Forelder, NavnPåForeldre } from '@navikt/fp-common';
-import { UtsettelseÅrsakType } from '@navikt/fp-types';
+import { Familiesituasjon, UtsettelseÅrsakType } from '@navikt/fp-types';
 
 type GetFargeProps = {
     erPeriodeUtenUttak: boolean;
@@ -105,6 +105,7 @@ type GetTekstProps = {
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
     forelder: Forelder | undefined;
+    familiesituasjon: Familiesituasjon;
 };
 
 export const getTekst = ({
@@ -116,12 +117,20 @@ export const getTekst = ({
     navnPåForeldre,
     erFarEllerMedmor,
     forelder,
+    familiesituasjon,
 }: GetTekstProps) => {
     const navnPåForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const erEgenPeriode = erFarEllerMedmor ? forelder === Forelder.farMedmor : forelder == Forelder.mor;
 
     if (erFamiliehendelse) {
-        return 'Fødsel';
+        switch (familiesituasjon) {
+            case 'adopsjon':
+                return 'Omsorgsovertakelse';
+            case 'fødsel':
+                return 'Fødsel';
+            default:
+                return 'Termin';
+        }
     }
 
     if (utsettelseÅrsak !== undefined) {
