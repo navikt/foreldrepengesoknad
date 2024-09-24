@@ -92,7 +92,7 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, erFam
                     </BodyShort>
                 </Hide>
             </div>
-            {renderVarighet(erFamiliehendelse, antallDager, intl)}
+            <div className={bem.element('uker')}>{renderVarighet(erFamiliehendelse, antallDager, intl)}</div>
             <div
                 className={classNames(
                     bem.element('hendelse'),

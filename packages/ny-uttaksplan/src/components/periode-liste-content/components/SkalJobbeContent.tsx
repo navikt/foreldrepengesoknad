@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const SkalJobbeContent = ({ skalJobbeIPermisjonsperioden, erUtsettelse }: Props) => {
-    if (erUtsettelse) {
+    if (erUtsettelse || skalJobbeIPermisjonsperioden) {
         return null;
     }
     return (
@@ -18,11 +18,7 @@ export const SkalJobbeContent = ({ skalJobbeIPermisjonsperioden, erUtsettelse }:
             </div>
             <div>
                 <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
-                    <BodyShort>
-                        {skalJobbeIPermisjonsperioden
-                            ? 'Du skal jobbe i denne perioden'
-                            : 'Du skal ikke jobbe i denne perioden'}
-                    </BodyShort>
+                    <BodyShort>Du skal ikke jobbe i denne perioden</BodyShort>
                 </div>
             </div>
         </div>
