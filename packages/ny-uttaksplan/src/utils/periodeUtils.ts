@@ -657,7 +657,7 @@ export const getPeriodeId = (planperiode: Planperiode) => {
 
 export const mapSaksperiodeTilPlanperiode = (
     saksperioder: SaksperiodeNy[],
-    forelder: Forelder,
+    erFarEllerMedmor: boolean,
     gjelderAnnenPart: boolean,
 ) => {
     const result: Planperiode[] = [];
@@ -666,7 +666,7 @@ export const mapSaksperiodeTilPlanperiode = (
         const planperiode: Planperiode = {
             ...p,
             id: `${p.fom} - ${p.tom} - ${p.kontoType}`,
-            forelder,
+            forelder: getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, p.oppholdÅrsak),
             gjelderAnnenPart,
         };
 
@@ -676,9 +676,14 @@ export const mapSaksperiodeTilPlanperiode = (
     return result;
 };
 
-export const getForelderForPeriode = (søkerErFarEllerMedmor: boolean, gjelderAnnenPart: boolean): Forelder => {
-    if (gjelderAnnenPart) {
+export const getForelderForPeriode = (
+    søkerErFarEllerMedmor: boolean,
+    gjelderAnnenPart: boolean,
+    oppholdsårsak: OppholdÅrsakType | undefined,
+): Forelder => {
+    if (oppholdsårsak || gjelderAnnenPart) {
         return søkerErFarEllerMedmor ? Forelder.mor : Forelder.farMedmor;
     }
+
     return søkerErFarEllerMedmor ? Forelder.farMedmor : Forelder.mor;
 };

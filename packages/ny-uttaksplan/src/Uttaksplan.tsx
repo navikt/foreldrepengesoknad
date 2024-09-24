@@ -8,7 +8,7 @@ import { Barn, SaksperiodeNy } from '@navikt/fp-types';
 import { finnOgSettInnHull, slåSammenLikePerioder } from './builder/uttaksplanbuilderUtils';
 import PeriodeListe from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
-import { getForelderForPeriode, mapSaksperiodeTilPlanperiode } from './utils/periodeUtils';
+import { mapSaksperiodeTilPlanperiode } from './utils/periodeUtils';
 
 interface Props {
     familiehendelsedato: string;
@@ -37,12 +37,10 @@ const UttaksplanNy: FunctionComponent<Props> = ({
 }) => {
     let komplettPlan = finnOgSettInnHull(
         slåSammenLikePerioder(
-            mapSaksperiodeTilPlanperiode(søkersPerioder, getForelderForPeriode(erFarEllerMedmor, false), false),
+            mapSaksperiodeTilPlanperiode(søkersPerioder, erFarEllerMedmor, false),
             familiehendelsedato,
             førsteUttaksdagNesteBarnsSak,
-            annenPartsPerioder
-                ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, getForelderForPeriode(erFarEllerMedmor, true), true)
-                : undefined,
+            annenPartsPerioder ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true) : undefined,
         ),
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsedato,

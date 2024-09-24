@@ -8,6 +8,7 @@ import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
 
 import { Planperiode } from '../../../types/Planperiode';
 import { getVarighetString } from '../../../utils/dateUtils';
+import { getOppholdskontoNavn } from '../../../utils/periodeUtils';
 
 interface Props {
     periode: Planperiode;
@@ -19,7 +20,7 @@ interface Props {
 const OppholdsPeriodeContent = ({ periode, inneholderKunEnPeriode, erFarEllerMedmor, navnPåForeldre }: Props) => {
     const intl = useIntl();
 
-    const navnPåForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     return (
         <div style={{ marginBottom: '1rem', display: 'flex' }}>
@@ -47,7 +48,9 @@ const OppholdsPeriodeContent = ({ periode, inneholderKunEnPeriode, erFarEllerMed
                     )}
                 </div>
                 <div style={{ marginLeft: '1rem' }}>
-                    <BodyShort>{`${periode.oppholdÅrsak} for ${navnPåForelder}`}</BodyShort>
+                    <BodyShort>
+                        {getOppholdskontoNavn(intl, periode.oppholdÅrsak!, navnPåAnnenForelder, !erFarEllerMedmor)}
+                    </BodyShort>
                 </div>
             </div>
         </div>
@@ -55,6 +58,3 @@ const OppholdsPeriodeContent = ({ periode, inneholderKunEnPeriode, erFarEllerMed
 };
 
 export default OppholdsPeriodeContent;
-
-// import DonaldDuck from 'OppholdsperiodeContent'; // works
-// import { DonaldDuck } from 'OppholdsperiodeContent'; // not works
