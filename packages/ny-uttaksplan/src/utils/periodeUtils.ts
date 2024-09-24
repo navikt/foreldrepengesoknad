@@ -661,7 +661,7 @@ export const mapSaksperiodeTilPlanperiode = (
     gjelderAnnenPart: boolean,
 ) => {
     const result: Planperiode[] = [];
-    const saksperioderUtenAvslåttePerioder = saksperioder.filter((p) => p.resultat?.innvilget);
+    const saksperioderUtenAvslåttePerioder = saksperioder.filter((p) => (p.resultat ? p.resultat.trekkerDager : true));
 
     saksperioderUtenAvslåttePerioder.forEach((p) => {
         const planperiode: Planperiode = {
