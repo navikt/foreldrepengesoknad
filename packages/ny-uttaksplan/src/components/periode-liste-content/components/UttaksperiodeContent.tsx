@@ -21,7 +21,7 @@ interface Props {
 const getArbeidsTekst = (arbeidstidprosent: number) => {
     const uttaksprosent = 100 - arbeidstidprosent;
 
-    return `Du skal jobbe ${arbeidstidprosent}% og ha ${uttaksprosent}% foreldrepenger`;
+    return `Du skal jobbe ${arbeidstidprosent} % og ha ${uttaksprosent} % foreldrepenger`;
 };
 
 const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Planperiode) => {
