@@ -16,13 +16,11 @@ export const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, yte
     const kontonummerEndreTekst = harKontonummer ? 'Endre kontonummer' : 'Registrer kontonummer';
 
     return (
-        <Accordion headingSize="small" size="large">
+        <Accordion>
             <Accordion.Item>
                 <Accordion.Header>
                     <Detail textColor="subtle">KONTONUMMER</Detail>
-                    <BodyShort size="large" weight="semibold">
-                        {kontonummerTekst}
-                    </BodyShort>
+                    <BodyShort weight="semibold">{kontonummerTekst}</BodyShort>
                 </Accordion.Header>
                 <Accordion.Content>
                     <VStack gap="4">
