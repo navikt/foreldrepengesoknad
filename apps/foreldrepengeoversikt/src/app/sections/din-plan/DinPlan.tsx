@@ -3,29 +3,29 @@ import { FunctionComponent } from 'react';
 import { NavnPåForeldre, SaksperiodeNy } from '@navikt/fp-types';
 import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 
-import { Familiehendelse } from '../../types/Familiehendelse';
+import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { RettighetType } from '../../types/RettighetType';
+import { Ytelse } from '../../types/Ytelse';
 import { getBarnFraSak, getFamiliehendelseDato } from '../../utils/sakerUtils';
 
 interface Props {
-    søkersPerioder: SaksperiodeNy[] | undefined;
     annenPartsPerioder?: SaksperiodeNy[];
-    familiehendelse: Familiehendelse;
     navnPåForeldre: NavnPåForeldre;
-    gjelderAdopsjon: boolean;
-    sakTilhørerMor: boolean;
-    rettighetType: RettighetType;
 }
 
-const DinPlan: FunctionComponent<Props> = ({
-    annenPartsPerioder,
-    søkersPerioder,
-    familiehendelse,
-    navnPåForeldre,
-    gjelderAdopsjon,
-    sakTilhørerMor,
-    rettighetType,
-}) => {
+const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåForeldre }) => {
+    const gjeldendeSak = useGetSelectedSak();
+
+    if (!gjeldendeSak || gjeldendeSak.ytelse !== Ytelse.FORELDREPENGER) {
+        return null;
+    }
+
+    const søkersPerioder = gjeldendeSak.gjeldendeVedtak?.perioder;
+    const familiehendelse = gjeldendeSak.familiehendelse;
+    const sakTilhørerMor = gjeldendeSak.sakTilhørerMor;
+    const gjelderAdopsjon = gjeldendeSak.gjelderAdopsjon;
+    const rettighetType = gjeldendeSak.rettighetType;
+
     const søkerErFarEllerMedmor = !sakTilhørerMor;
     const bareFarHarRett = rettighetType === RettighetType.BARE_SØKER_RETT && !sakTilhørerMor;
     const erDeltUttak = rettighetType === RettighetType.BEGGE_RETT;

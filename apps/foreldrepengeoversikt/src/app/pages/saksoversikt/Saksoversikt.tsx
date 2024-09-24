@@ -145,28 +145,26 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
                     <LenkePanel tittel="Ettersend dokumenter" to={OversiktRoutes.ETTERSEND} Ikon={FilesIcon} />
                 </HGrid>
                 {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
-                    <ContentSection
-                        heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
-                        // Fordi annenPartsVedtakQuery kan være et disabled query må man bruke isLoading heller enn isPending:
-                        // https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading
-                        showSkeleton={annenPartsVedtakQuery.isLoading}
-                        skeletonProps={{ height: '210px', variant: 'rounded' }}
-                    >
-                        <DinPlan
-                            søkersPerioder={gjeldendeSak.gjeldendeVedtak?.perioder}
-                            annenPartsPerioder={annenPartsVedtakQuery.data?.perioder}
-                            familiehendelse={gjeldendeSak.familiehendelse}
-                            navnPåForeldre={getNavnPåForeldre(
-                                gjeldendeSak,
-                                søkerinfo.søker.fornavn,
-                                getNavnAnnenForelder(søkerinfo, gjeldendeSak),
-                            )}
-                            sakTilhørerMor={gjeldendeSak.sakTilhørerMor}
-                            gjelderAdopsjon={gjeldendeSak.gjelderAdopsjon}
-                            rettighetType={gjeldendeSak.rettighetType}
-                        />
-                    </ContentSection>
+                    <div className="mt-4">
+                        <ContentSection
+                            heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
+                            // Fordi annenPartsVedtakQuery kan være et disabled query må man bruke isLoading heller enn isPending:
+                            // https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading
+                            showSkeleton={annenPartsVedtakQuery.isLoading}
+                            skeletonProps={{ height: '210px', variant: 'rounded' }}
+                        >
+                            <DinPlan
+                                annenPartsPerioder={annenPartsVedtakQuery.data?.perioder}
+                                navnPåForeldre={getNavnPåForeldre(
+                                    gjeldendeSak,
+                                    søkerinfo.søker.fornavn,
+                                    getNavnAnnenForelder(søkerinfo, gjeldendeSak),
+                                )}
+                            />
+                        </ContentSection>
+                    </div>
                 )}
+
                 <section className="mb-12">
                     <LenkePanel tittel="Se hele prosessen" to={OversiktRoutes.TIDSLINJEN} />
                 </section>
