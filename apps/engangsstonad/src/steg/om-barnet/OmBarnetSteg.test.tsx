@@ -217,6 +217,10 @@ describe('<OmBarnetSteg>', () => {
         await userEvent.type(fødselsdato, dayjs().format(DDMMYYYY_DATE_FORMAT));
         fireEvent.blur(fødselsdato);
 
+        const termindato = utils.getByLabelText('Termindato');
+        await userEvent.type(termindato, dayjs().format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(termindato);
+
         await userEvent.click(screen.getByText('Ett barn'));
 
         await userEvent.click(screen.getByText('Neste steg'));
@@ -227,7 +231,7 @@ describe('<OmBarnetSteg>', () => {
                 erBarnetFødt: true,
                 antallBarn: 1,
                 fødselsdato: dayjs().format(ISO_DATE_FORMAT),
-                termindato: undefined,
+                termindato: dayjs().format(ISO_DATE_FORMAT),
             },
             key: ContextDataType.OM_BARNET,
             type: 'update',
@@ -239,7 +243,7 @@ describe('<OmBarnetSteg>', () => {
         });
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
-            data: Path.UTENLANDSOPPHOLD,
+            data: Path.TERMINBEKREFTELSE,
             key: ContextDataType.CURRENT_PATH,
             type: 'update',
         });

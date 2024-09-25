@@ -60,25 +60,23 @@ const FødselPanel: React.FunctionComponent = () => {
                     ]}
                 />
             )}
-            {!erBarnetFødt && (
-                <RhfDatepicker
-                    name="termindato"
-                    label={<FormattedMessage id="FødselPanel.Termindato" />}
-                    description={intl.formatMessage({ id: 'FødselPanel.TermindatoFodselsdato.beskrivelse' })}
-                    minDate={dayjs().subtract(3, 'week').toDate()}
-                    maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
-                    validate={[
-                        isRequired(intl.formatMessage({ id: 'FødselPanel.Termindato.DuMåOppgi' })),
-                        isValidDate(intl.formatMessage({ id: 'FødselPanel.Termindato.Gyldig' })),
-                        isLessThanThreeWeeksAgo(
-                            intl.formatMessage({ id: 'FødselPanel.Termindato.TermindatoKanIkkeVære3UkerFraIdag' }),
-                        ),
-                        erI22SvangerskapsukeEllerSenere(
-                            intl.formatMessage({ id: 'FødselPanel.Termindato.DuMåVæreIUke22' }),
-                        ),
-                    ]}
-                />
-            )}
+            <RhfDatepicker
+                name="termindato"
+                label={<FormattedMessage id="FødselPanel.Termindato" />}
+                description={intl.formatMessage({ id: 'FødselPanel.TermindatoFodselsdato.beskrivelse' })}
+                minDate={dayjs().subtract(3, 'week').toDate()}
+                maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
+                validate={[
+                    isRequired(intl.formatMessage({ id: 'FødselPanel.Termindato.DuMåOppgi' })),
+                    isValidDate(intl.formatMessage({ id: 'FødselPanel.Termindato.Gyldig' })),
+                    isLessThanThreeWeeksAgo(
+                        intl.formatMessage({ id: 'FødselPanel.Termindato.TermindatoKanIkkeVære3UkerFraIdag' }),
+                    ),
+                    erI22SvangerskapsukeEllerSenere(
+                        intl.formatMessage({ id: 'FødselPanel.Termindato.DuMåVæreIUke22' }),
+                    ),
+                ]}
+            />
 
             <RhfRadioGroup
                 name="antallBarn"
