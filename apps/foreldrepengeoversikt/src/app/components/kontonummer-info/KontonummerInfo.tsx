@@ -19,8 +19,10 @@ export const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, yte
         <Accordion>
             <Accordion.Item>
                 <Accordion.Header>
-                    <Detail textColor="subtle">KONTONUMMER</Detail>
-                    <BodyShort weight="semibold">{kontonummerTekst}</BodyShort>
+                    <VStack gap="1">
+                        <Detail textColor="subtle">KONTONUMMER</Detail>
+                        <BodyShort weight="semibold">{kontonummerTekst}</BodyShort>
+                    </VStack>
                 </Accordion.Header>
                 <Accordion.Content>
                     <VStack gap="4">
