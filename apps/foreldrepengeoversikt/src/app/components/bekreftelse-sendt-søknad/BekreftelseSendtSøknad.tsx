@@ -5,12 +5,11 @@ import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { formatDate, formatTime } from '@navikt/fp-utils';
 
+import { KontonummerInfo } from 'app/components/kontonummer-info/KontonummerInfo';
 import DokumentHendelse from 'app/sections/tidslinje/DokumentHendelse';
 import Bankkonto from 'app/types/Bankkonto';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
 import { Ytelse } from 'app/types/Ytelse';
-
-import KontonummerInfo from '../kontonummer-info/KontonummerInfo';
 
 interface Props {
     relevantNyTidslinjehendelse: Tidslinjehendelse | undefined;
