@@ -71,13 +71,7 @@ const showDokumentasjonStep = (
 ): boolean => {
     const omBarnet = getStateData(ContextDataType.OM_BARNET);
     if (path === Path.TERMINBEKREFTELSE && omBarnet && 'erBarnetFødt' in omBarnet) {
-        return isVisible(
-            !omBarnet.erBarnetFødt,
-            ContextDataType.DOKUMENTASJON,
-            Path.OM_BARNET,
-            currentPath,
-            getStateData,
-        );
+        return isVisible(true, ContextDataType.DOKUMENTASJON, Path.OM_BARNET, currentPath, getStateData);
     }
     if (path === Path.ADOPSJONSBEKREFTELSE && omBarnet && 'adopsjonAvEktefellesBarn' in omBarnet) {
         return isVisible(true, ContextDataType.DOKUMENTASJON, Path.OM_BARNET, currentPath, getStateData);
