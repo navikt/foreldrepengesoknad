@@ -17,12 +17,15 @@ interface Props {
 
 const PlanleggerInfo: FunctionComponent<Props> = ({ foreldreSituasjon, forelderVedAleneomsorg, erDeltUttak }) => {
     const intl = useIntl();
-    const tittelKey = erDeltUttak ? 'eksisterendeSak.tittel.deltUttak' : 'eksisterendeSak.tittel.aleneomsorg';
 
     return (
         <InfoBlock>
             <InnholdMedIllustrasjon
-                tittel={intl.formatMessage({ id: tittelKey })}
+                tittel={
+                    erDeltUttak
+                        ? intl.formatMessage({ id: 'eksisterendeSak.tittel.deltUttak' })
+                        : intl.formatMessage({ id: 'eksisterendeSak.tittel.aleneomsorg' })
+                }
                 illustrasjoner={[
                     <SituasjonSirkel
                         key="situasjon"

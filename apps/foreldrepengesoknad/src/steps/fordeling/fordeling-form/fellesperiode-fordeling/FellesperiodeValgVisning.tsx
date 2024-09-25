@@ -48,9 +48,14 @@ const FellesperiodeValgVisning: React.FunctionComponent<Props> = ({
                         const erSøkerensDel =
                             (erFarEllerMedmor && fordeling.fargekode === FordelingFargekode.SØKER_FAR) ||
                             (!erFarEllerMedmor && fordeling.fargekode === FordelingFargekode.SØKER_MOR);
-                        const infoTekstId = erSøkerensDel
-                            ? 'fordeling.fellesperiodeVisning.tilDeg'
-                            : 'fordeling.fellesperiodeVisning.resterende';
+                        const infoTekst = erSøkerensDel ? (
+                            <FormattedMessage id="fordeling.fellesperiodeVisning.tilDeg" values={{ varighetString }} />
+                        ) : (
+                            <FormattedMessage
+                                id="fordeling.fellesperiodeVisning.resterende"
+                                values={{ varighetString }}
+                            />
+                        );
                         return (
                             <div
                                 key={guid()}
@@ -59,11 +64,7 @@ const FellesperiodeValgVisning: React.FunctionComponent<Props> = ({
                                     width: `${width}%`,
                                 }}
                             >
-                                {fordeling.antallDager <= 10 ? (
-                                    varighetString
-                                ) : (
-                                    <FormattedMessage id={infoTekstId} values={{ varighetString }} />
-                                )}
+                                {fordeling.antallDager <= 10 ? varighetString : infoTekst}
                             </div>
                         );
                     })}

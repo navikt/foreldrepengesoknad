@@ -84,6 +84,7 @@
         "request": "^2.88.2"
     },
     "devDependencies": {
+        "@formatjs/cli-lib": "6.4.2",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-form-hooks": "workspace:*",
@@ -118,6 +119,7 @@
         "cross-env": "7.0.3",
         "dotenv": "^16.4.5",
         "eslint": "9.10.0",
+        "fast-glob": "^3.3.2",
         "fs-extra": "^11.2.0",
         "http-proxy-middleware": "3.0.2",
         "less": "^4.2.0",

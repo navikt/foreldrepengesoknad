@@ -1,5 +1,6 @@
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
+
 import { BodyShort, Button, HStack, Heading, Modal } from '@navikt/ds-react';
 
 interface Props {
@@ -32,9 +33,11 @@ const SlettUttaksplanModal: FunctionComponent<Props> = ({
             <Modal.Body>
                 <HStack gap="4">
                     <BodyShort>
+                        {/* @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart */}
                         <FormattedMessage id={innhold1Id} />
                     </BodyShort>
                     <BodyShort>
+                        {/* @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart */}
                         <FormattedMessage id={innhold2Id} />
                     </BodyShort>
                 </HStack>

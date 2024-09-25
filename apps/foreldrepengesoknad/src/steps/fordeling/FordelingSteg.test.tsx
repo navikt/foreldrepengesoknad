@@ -503,6 +503,9 @@ describe('Fordeling - FarMedmorAleneomsorgEttBarnTerminEtterWLB', () => {
                 mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
             />,
         );
+
+        MockDate.set(new Date('2024-09-12'));
+
         expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
         expect(screen.getByText('46 uker til deg')).toBeInTheDocument();
         expect(screen.getByText('Disse ukene kan brukes når som helst før barna fyller 3 år.')).toBeInTheDocument();
@@ -516,6 +519,8 @@ describe('Fordeling - FarMedmorAleneomsorgEttBarnTerminEtterWLB', () => {
         expect(screen.queryByText('På termindato')).not.toBeInTheDocument();
         expect(screen.getByText('På datoen jeg blir alene om omsorgen, 21. september 2024')).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
+
+        MockDate.reset();
     });
 });
 

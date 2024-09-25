@@ -16,6 +16,13 @@ export default defineConfig({
             app: path.resolve(__dirname, './src'),
         },
     },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                api: 'modern-compiler',
+            },
+        },
+    },
     build: {
         sourcemap: true,
     },

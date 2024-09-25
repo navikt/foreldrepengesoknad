@@ -1,8 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 
+import { KontonummerInfo } from 'app/components/kontonummer-info/KontonummerInfo';
 import { Ytelse } from 'app/types/Ytelse';
-
-import KontonummerInfo from './KontonummerInfo';
 
 const meta = {
     title: 'KontonummerInfo',

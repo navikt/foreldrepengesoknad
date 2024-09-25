@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -15,6 +15,31 @@ const erBarnetUnder15årPåAdopsjonsdato = (i18nText: string, adopsjonsdato?: st
     }
     const datoBarnetFyllerFemten = dayjs(fødselsdato).startOf('day').add(15, 'year');
     return dayjs(adopsjonsdato).isBetween(fødselsdato, datoBarnetFyllerFemten, null, '[]') ? undefined : i18nText;
+};
+
+const finnAntallBarnTekst = (antall: number) => {
+    switch (antall) {
+        case 1:
+            return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.1" />;
+        case 2:
+            return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.2" />;
+        case 3:
+            return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.3" />;
+        case 4:
+            return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.4" />;
+        case 5:
+            return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.5" />;
+        case 6:
+            return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.6" />;
+        case 7:
+            return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.7" />;
+        case 8:
+            return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.8" />;
+        case 9:
+            return <FormattedMessage id="omBarnet.fødselsdato.adopsjon.9" />;
+        default:
+            throw new Error('Antall barn ikke supportert: ' + antall);
+    }
 };
 
 export type FormValues = {
@@ -67,7 +92,7 @@ const FødselsdatoerFieldArray: React.FunctionComponent<Props> = ({ adopsjonsdat
                     label={
                         fields.length === 1
                             ? intl.formatMessage({ id: 'omBarnet.fødselsdato' })
-                            : intl.formatMessage({ id: `omBarnet.fødselsdato.adopsjon.${index + 1}` })
+                            : finnAntallBarnTekst(index + 1)
                     }
                     validate={[
                         isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.fødselsdato.duMåOppgi' })),

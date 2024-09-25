@@ -8,7 +8,7 @@ import BekreftelseSendtSøknad from 'app/components/bekreftelse-sendt-søknad/Be
 import HarIkkeSaker from 'app/components/har-ikke-saker/HarIkkeSaker';
 import HarSaker from 'app/components/har-saker/HarSaker';
 import { ForsideHeader } from 'app/components/header/Header';
-import SakLink from 'app/components/sak-link/SakLink';
+import { SakLink } from 'app/components/sak-link/SakLink';
 import {
     useGetRedirectedFromSøknadsnummer,
     useSetRedirectedFromSøknadsnummer,

@@ -267,6 +267,9 @@ importers:
       '@navikt/fp-validation':
         specifier: workspace:*
         version: link:../../packages/validation
+      '@navikt/nav-dekoratoren-moduler':
+        specifier: 2.1.6
+        version: 2.1.6(jsdom@25.0.0)(react@18.3.1)
       '@sentry/browser':
         specifier: ^7.109.0
         version: 7.119.0
@@ -325,9 +328,6 @@ importers:
       '@navikt/fp-utils-test':
         specifier: workspace:*
         version: link:../../packages/utils-test
-      '@navikt/nav-dekoratoren-moduler':
-        specifier: 2.1.6
-        version: 2.1.6(jsdom@25.0.0)(react@18.3.1)
       '@storybook/addon-actions':
         specifier: 8.3.1
         version: 8.3.1(storybook@8.3.1)
@@ -647,6 +647,9 @@ importers:
         specifier: ^2.88.2
         version: 2.88.2
     devDependencies:
+      '@formatjs/cli-lib':
+        specifier: 6.4.2
+        version: 6.4.2
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -743,6 +746,9 @@ importers:
       eslint:
         specifier: 9.10.0
         version: 9.10.0(jiti@1.21.6)
+      fast-glob:
+        specifier: ^3.3.2
+        version: 3.3.2
       fs-extra:
         specifier: ^11.2.0
         version: 11.2.0

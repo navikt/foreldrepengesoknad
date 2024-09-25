@@ -102,13 +102,17 @@ const OppstartDatoInput: React.FunctionComponent<Props> = ({ oppstartValg }) => 
         erAdopsjon,
         familiehendelsesdato,
     );
-    const spørsmålId =
-        oppstartValg === OppstartValg.ANNEN_DATO ? 'fordeling.oppstartDato.input' : 'fordeling.oppstartDato.spørsmål';
 
     return (
         <RhfDatepicker
             name="oppstartDato"
-            label={<FormattedMessage id={spørsmålId} />}
+            label={
+                oppstartValg === OppstartValg.ANNEN_DATO ? (
+                    <FormattedMessage id="fordeling.oppstartDato.input" />
+                ) : (
+                    <FormattedMessage id="fordeling.oppstartDato.spørsmål" />
+                )
+            }
             description={intl.formatMessage({ id: 'fordeling.oppstartDato.description' })}
             minDate={minDato}
             maxDate={maksDato}

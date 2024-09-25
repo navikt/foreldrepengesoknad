@@ -1,8 +1,9 @@
+import { ArrowRightIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
-import { Alert, BodyLong, Heading, Loader } from '@navikt/ds-react';
+import { Alert, BodyLong, Button, Heading, Loader } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
@@ -10,7 +11,6 @@ import { hentDokumenterOptions } from 'app/api/api';
 import Dokument from 'app/components/dokument/Dokument';
 import GrupperteDokumenter from 'app/components/grupperte-dokumenter/GrupperteDokumenter';
 import { DokumenterHeader } from 'app/components/header/Header';
-import { LenkePanel } from 'app/components/lenke-panel/LenkePanel';
 import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
@@ -20,7 +20,7 @@ import { grupperDokumenterPåTidspunkt } from 'app/utils/dokumenterUtils';
 import { guid } from 'app/utils/guid';
 
 const DokumenterPage: React.FunctionComponent = () => {
-    useSetBackgroundColor('blue');
+    useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.DOKUMENTER);
     const params = useParams();
 
@@ -38,10 +38,19 @@ const DokumenterPage: React.FunctionComponent = () => {
 
     return (
         <PageRouteLayout header={<DokumenterHeader />}>
-            <LenkePanel className="mb-8" tittel={lastOppDokTittel} to={`../${OversiktRoutes.ETTERSEND}`} />
+            <Button
+                icon={<ArrowRightIcon aria-hidden />}
+                iconPosition="right"
+                as={Link}
+                variant="primary"
+                className="mb-8"
+                to={`../${OversiktRoutes.ETTERSEND}`}
+            >
+                {lastOppDokTittel}
+            </Button>
             {!dokumenterQuery.isError && (
                 <>
-                    <div className="bg-white rounded-large p-4 pt-0 pb-12 mb-10">
+                    <div className="mb-10">
                         {Object.entries(dokumenterGruppertPåTidspunkt).map((dokument) => {
                             const dokumenter = dokument[1];
 
@@ -65,12 +74,10 @@ const DokumenterPage: React.FunctionComponent = () => {
                 </>
             )}
             {dokumenterQuery.isError && (
-                <div style={{ marginBottom: '2rem' }}>
-                    <NoeGikkGalt>
-                        Vi har problemer med å vise informasjon om dine dokumenter akkurat nå. Feilen er hos oss, ikke
-                        hos deg. Prøv igjen senere.
-                    </NoeGikkGalt>
-                </div>
+                <NoeGikkGalt className="mb-8">
+                    Vi har problemer med å vise informasjon om dine dokumenter akkurat nå. Feilen er hos oss, ikke hos
+                    deg. Prøv igjen senere.
+                </NoeGikkGalt>
             )}
         </PageRouteLayout>
     );
