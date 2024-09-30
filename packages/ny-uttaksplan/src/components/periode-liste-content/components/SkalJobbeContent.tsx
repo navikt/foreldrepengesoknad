@@ -1,4 +1,5 @@
 import { BriefcaseIcon } from '@navikt/aksel-icons';
+import { FormattedMessage } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
@@ -12,6 +13,7 @@ interface Props {
 export const SkalJobbeContent = ({ permisjonsperiode }: Props) => {
     const erUtsettelse = !!permisjonsperiode.erUtsettelse;
     const erPeriodeUtenUttak = !!permisjonsperiode.erPeriodeUtenUttak;
+    const samtidigUttak = !!permisjonsperiode.samtidigUttak;
     const erOpphold = permisjonsperiode.perioder.find((p) => isOppholdsperiode(p)) !== undefined;
     const skalJobbeIPermisjonsperioden =
         permisjonsperiode.perioder.find((p) => {
@@ -22,7 +24,7 @@ export const SkalJobbeContent = ({ permisjonsperiode }: Props) => {
             return undefined;
         }) !== undefined;
 
-    if (erUtsettelse || skalJobbeIPermisjonsperioden || erOpphold || erPeriodeUtenUttak) {
+    if (erUtsettelse || skalJobbeIPermisjonsperioden || erOpphold || erPeriodeUtenUttak || samtidigUttak) {
         return null;
     }
     return (
@@ -32,7 +34,9 @@ export const SkalJobbeContent = ({ permisjonsperiode }: Props) => {
             </div>
             <div>
                 <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
-                    <BodyShort>Du skal ikke jobbe i denne perioden</BodyShort>
+                    <BodyShort>
+                        <FormattedMessage id="uttaksplan.periodeListeContent.skalIkkeJobbe" />
+                    </BodyShort>
                 </div>
             </div>
         </div>

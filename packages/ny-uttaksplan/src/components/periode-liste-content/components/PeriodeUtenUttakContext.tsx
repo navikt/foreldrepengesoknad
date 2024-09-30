@@ -33,7 +33,9 @@ export const PeriodeUtenUttakContent = ({ periode }: Props) => {
                     </BodyShort>
                 </div>
                 <div style={{ marginLeft: '1rem', paddingTop: '0.25rem' }}>
-                    <BodyShort>Du skal ikke ha foreldrepenger</BodyShort>
+                    <BodyShort>
+                        <FormattedMessage id="uttaksplan.periodeListeContent.periodeUtenUttak" />
+                    </BodyShort>
                 </div>
             </div>
         </div>

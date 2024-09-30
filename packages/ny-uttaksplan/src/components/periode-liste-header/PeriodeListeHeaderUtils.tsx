@@ -143,7 +143,7 @@ export const getTekst = ({
                 return 'Barnet er innlagt';
         }
 
-        return 'Du er innlagt';
+        return 'Utsettelse';
     }
 
     if (erHull) {

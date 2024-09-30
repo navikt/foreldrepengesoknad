@@ -40,6 +40,8 @@
     "uttaksplan.periodeListeContent.overføring.aleneomsorg": "Overføring av {stønadskontoNavn} kvote fordi {navnPåAnnenForelder} ikke lenger har omsorg for barnet",
     "uttaksplan.periodeListeContent.overføring.ikkeRettAnnenForelder": "Overføring av {stønadskontoNavn} kvote fordi {navnPåAnnenForelder} har mistet rett på foreldrepenger",
     "uttaksplan.periodeListeContent.overføring.institusjonsoppholdAnnenForelder": "Overføring av {stønadskontoNavn} kvote fordi {navnPåAnnenForelder} er innlagt på helseinstitusjon",
+    "uttaksplan.periodeListeContent.skalIkkeJobbe": "Du skal ikke jobbe i denne perioden",
+    "uttaksplan.periodeListeContent.periodeUtenUttak": "Du skal ikke ha foreldrepenger",
     "gradering.prosent": "{stillingsprosent}%",
     "varighet.uker": "{uker, plural, one {# uke} other {# uker}}",
     "varighet.dager": "{dager, plural, one {# dag} other {# dager}}",
