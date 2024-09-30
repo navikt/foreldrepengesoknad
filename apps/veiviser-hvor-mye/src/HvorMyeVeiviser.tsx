@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import Environment from 'appData/Environment';
 import dayjs from 'dayjs';
-import ky from 'ky';
 import { FunctionComponent } from 'react';
 
 import { Loader } from '@navikt/ds-react';
@@ -43,6 +42,22 @@ const getStønadskontoer = async () => {
     return (await response.json()) as TilgjengeligeStønadskontoer;
 };
 
+const getSatser = async () => {
+    const response = await fetch(`${Environment.PUBLIC_PATH}/rest/satser`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        signal: AbortSignal.timeout(30 * 1000),
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return (await response.json()) as Satser;
+};
+
 interface Props {
     locale: LocaleAll;
     changeLocale: (locale: LocaleAll) => void;
@@ -51,7 +66,7 @@ interface Props {
 export const HvorMyeVeiviser: FunctionComponent<Props> = ({ locale, changeLocale }) => {
     const satserData = useQuery({
         queryKey: ['SATSER'],
-        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/satser`).json<Satser>(),
+        queryFn: getSatser,
     });
 
     const stønadskontoerData = useQuery({
