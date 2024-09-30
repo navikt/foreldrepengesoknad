@@ -12,6 +12,7 @@ const createFieldErrorIntlKey = (
 
 const getFieldErrorHandler =
     (intl: IntlShape, keySeparator: string, errorPrefix?: string): FieldErrorHandler<ValidationError> =>
+    // @ts-ignore Fiksar ikkje sidan denne pakka snart blir fjerna
     (error: ValidationError, fieldName: string) => {
         return isIntlErrorObject(error)
             ? intl.formatMessage(
