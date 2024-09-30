@@ -19,7 +19,7 @@ scriptTag.type = 'text/json';
 scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
     APPRES_CMS_URL: '',
-    PUBLIC_PATH: '',
+    PUBLIC_PATH: 'https://www.nav.no/fp',
 });
 document.head.appendChild(scriptTag);
 
