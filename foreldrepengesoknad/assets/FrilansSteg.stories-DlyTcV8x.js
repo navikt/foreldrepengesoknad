@@ -1,0 +1,7 @@
+import{j as o}from"./jsx-runtime-Cw0GR0a5.js";import{a as m}from"./chunk-D5ZWXAHU-CGElDDNX.js";import{F as l,C as d}from"./FpDataContext-BUlrLNeW.js";import{M as c,S as u}from"./useFpNavigator-DjpLb1Ku.js";import{i as S}from"./Uttaksplan-BAF65u3k.js";import{F as e}from"./FrilansSteg-D6sJt7u3.js";import"./index-CTjT7uj6.js";import"./v4-CQkTLCs1.js";import"./Uttaksdagen-Bz7Ohebv.js";import"./Label-CEor7wE8.js";import"./iframe-DgIPpWnC.js";import"../sb-preview/runtime.js";import"./links-3m11MTct.js";import"./VStack-BNla2fw4.js";import"./index-vZN_Bsf0.js";import"./index-BRV0Se7Z.js";import"./_baseAssignValue-BYq83q8P.js";import"./FrilansPanel-gkanB0AR.js";import"./ErrorSummaryHookForm-BFJKJiRx.js";const i=()=>(...t)=>(m("button-click")(...t),Promise.resolve()),T={title:"steps/FrilansSteg",component:e,render:({gåTilNesteSide:t=m("button-click"),...p})=>(S(),o.jsx(c,{initialEntries:[u.FRILANS],children:o.jsx(l,{onDispatch:t,initialState:{[d.ARBEIDSFORHOLD_OG_INNTEKT]:{harJobbetSomFrilans:!0,harJobbetSomSelvstendigNæringsdrivende:!1,harHattAndreInntektskilder:!1}},children:o.jsx(e,{...p})})}))},r={args:{mellomlagreSøknadOgNaviger:i(),avbrytSøknad:i(),arbeidsforhold:[]}};var a,s,n;r.parameters={...r.parameters,docs:{...(a=r.parameters)==null?void 0:a.docs,source:{originalSource:`{
+  args: {
+    mellomlagreSøknadOgNaviger: promiseAction(),
+    avbrytSøknad: promiseAction(),
+    arbeidsforhold: []
+  }
+}`,...(n=(s=r.parameters)==null?void 0:s.docs)==null?void 0:n.source}}};const H=["Default"];export{r as Default,H as __namedExportsOrder,T as default};
