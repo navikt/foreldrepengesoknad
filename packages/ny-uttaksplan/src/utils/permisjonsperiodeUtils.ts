@@ -128,6 +128,7 @@ export const mapPerioderToPermisjonsperiode = (
                         fom: formatDateIso(periode.fom),
                         tom: formatDateIso(periode.tom),
                     },
+                    samtidigUttak: !!periode.samtidigUttak,
                 };
             } else {
                 if (forelderForrigePeriode === periode.forelder && beggePerioderErPåSammeSideAvFamdato) {
