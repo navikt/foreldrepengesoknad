@@ -25,9 +25,7 @@ const getArbeidsTekst = (arbeidstidprosent: number) => {
 };
 
 const getSamtidigUttakTekst = (samtidiguttaksProsent: number) => {
-    const arbeidstidprosent = 100 - samtidiguttaksProsent;
-
-    return `Du skal jobbe ${arbeidstidprosent} % og ha ${samtidiguttaksProsent} % foreldrepenger`;
+    return `Du skal ha ${samtidiguttaksProsent} % foreldrepenger`;
 };
 
 const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Planperiode) => {
