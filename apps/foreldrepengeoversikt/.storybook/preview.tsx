@@ -1,11 +1,10 @@
 import { Preview } from '@storybook/react';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 
-import '../src/app/index.css';
-
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 
+import '../src/app/index.css';
 import nbMessages from '../src/intl/messages/nb_NO.json';
 
 const scriptTag = document.createElement('script');
@@ -16,20 +15,21 @@ scriptTag.innerHTML = JSON.stringify({
 });
 document.head.appendChild(scriptTag);
 
-// Initialize MSW
-initialize({
-    onUnhandledRequest: 'bypass',
-    serviceWorker: {
-        url: './mockServiceWorker.js',
-    },
-});
-
 const withIntlProvider = getIntlDecorator({
     nb: { ...nbMessages, ...uiMessages.nb },
 });
 
 const preview: Preview = {
     decorators: [withIntlProvider],
+    // beforeAll is available in Storybook 8.2. Else the call would happen outside of the preview object
+    beforeAll: async () => {
+        initialize({
+            onUnhandledRequest: 'bypass',
+            serviceWorker: {
+                url: './mockServiceWorker.js',
+            },
+        });
+    },
     loaders: [mswLoader],
 };
 

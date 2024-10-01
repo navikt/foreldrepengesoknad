@@ -10,7 +10,13 @@ import nbMessages from '../intl/messages/nb_NO.json';
 import Foreldrepengeoversikt from './Foreldrepengeoversikt';
 import ErrorBoundary from './components/error-boundary/ErrorBoundary';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: process.env.NODE_ENV === 'test' ? false : 3,
+        },
+    },
+});
 
 const allNbMessages = { ...nbMessages, ...uiMessages.nb, ...utilsMessages.nb };
 

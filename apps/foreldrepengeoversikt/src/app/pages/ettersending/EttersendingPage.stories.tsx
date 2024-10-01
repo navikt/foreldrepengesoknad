@@ -8,7 +8,13 @@ import { Ytelse } from 'app/types/Ytelse';
 
 import EttersendingPage from './EttersendingPage';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+        },
+    },
+});
 
 const meta = {
     title: 'EttersendingPage',
@@ -35,7 +41,12 @@ type Story = StoryObj<typeof meta>;
 export const SkalIkkeFeileOpplasting: Story = {
     parameters: {
         msw: {
-            handlers: [http.post('/rest/storage/engangsstonad/vedlegg', () => new HttpResponse(null, { status: 200 }))],
+            handlers: [
+                http.post('/rest/storage/engangsstonad/vedlegg', () => {
+                    console.log('test');
+                    return new HttpResponse(null, { status: 200 });
+                }),
+            ],
         },
     },
     args: {
@@ -62,7 +73,12 @@ export const SkalIkkeFeileOpplasting: Story = {
 export const SkalFeileOpplasting: Story = {
     parameters: {
         msw: {
-            handlers: [http.post('/rest/storage/engangsstonad/vedlegg', () => new HttpResponse(null, { status: 400 }))],
+            handlers: [
+                http.post('/rest/storage/engangsstonad/vedlegg', () => {
+                    console.log('test skal feile');
+                    return new HttpResponse(null, { status: 400 });
+                }),
+            ],
         },
     },
     args: SkalIkkeFeileOpplasting.args,
