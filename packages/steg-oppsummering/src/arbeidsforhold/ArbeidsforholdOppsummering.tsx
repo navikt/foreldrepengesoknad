@@ -220,7 +220,7 @@ export const SelvstendigNæringsdrivendeOppsummering: React.FC<SelvstendigNærin
                     <FormSummary.Label>
                         <FormattedMessage id="ArbeidsforholdOppsummering.næring.fom" />
                     </FormSummary.Label>
-                    <FormSummary.Value>{formatDate(egenNæring.fomDato)}</FormSummary.Value>
+                    <FormSummary.Value>{formatDate(egenNæring.fom)}</FormSummary.Value>
                 </FormSummary.Answer>
 
                 <FormSummary.Answer>
@@ -237,7 +237,7 @@ export const SelvstendigNæringsdrivendeOppsummering: React.FC<SelvstendigNærin
                         <FormSummary.Label>
                             <FormattedMessage id="ArbeidsforholdOppsummering.næring.tom" />
                         </FormSummary.Label>
-                        <FormSummary.Value>{formatDate(egenNæring.tomDato)}</FormSummary.Value>
+                        <FormSummary.Value>{formatDate(egenNæring.tom)}</FormSummary.Value>
                     </FormSummary.Answer>
                 )}
 

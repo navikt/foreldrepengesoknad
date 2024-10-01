@@ -97,8 +97,8 @@ const EgenNæringPanel = <TYPE extends string>({
 
     const næringsType = formMethods.watch('næringstype');
     const navnPåNæring = formMethods.watch('navnPåNæringen');
-    const næringFom = formMethods.watch('fomDato');
-    const næringTom = formMethods.watch('tomDato');
+    const næringFom = formMethods.watch('fom');
+    const næringTom = formMethods.watch('tom');
     const registrertINorge = formMethods.watch('registrertINorge');
     const pågående = formMethods.watch('pågående');
     const varigEndring = formMethods.watch('hattVarigEndringAvNæringsinntektSiste4Kalenderår');
@@ -192,7 +192,7 @@ const EgenNæringPanel = <TYPE extends string>({
                         registrertINorge={registrertINorge}
                     />
                     <RhfDatepicker
-                        name="fomDato"
+                        name="fom"
                         label={intl.formatMessage(
                             { id: 'egenNæring.næring.fom' },
                             {
@@ -237,7 +237,7 @@ const EgenNæringPanel = <TYPE extends string>({
 
                     {pågående === false && (
                         <RhfDatepicker
-                            name="tomDato"
+                            name="tom"
                             label={intl.formatMessage(
                                 { id: 'egenNæring.næring.tom' },
                                 {

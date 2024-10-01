@@ -1,7 +1,11 @@
 import { Attachment } from '@navikt/fp-types';
 
 import { ArbeidsforholdDTO } from './Arbeidsforhold';
-import { DelivisTilretteleggingPeriodeType } from './DelivisTilretteleggingPeriodeType';
+
+export enum DelivisTilretteleggingPeriodeType {
+    'SAMMME_PERIODE_FREM_TIL_TERMIN' = 'SAMMME_PERIODE_FREM_TIL_TERMIN',
+    'VARIERTE_PERIODER' = 'VARIERTE_PERIODER',
+}
 
 export enum TilretteleggingstypeOptions {
     'INGEN' = 'ingen',
