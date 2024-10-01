@@ -25,6 +25,7 @@ import {
 import './arbeidIUtlandet.css';
 
 export const NEW_ARBEID_I_UTLANDET = {
+    type: 'ARBEID_I_UTLANDET',
     fom: '',
     tom: '',
     pågående: undefined!,
