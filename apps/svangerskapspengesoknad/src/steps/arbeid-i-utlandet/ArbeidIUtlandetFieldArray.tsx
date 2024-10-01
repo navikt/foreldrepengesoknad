@@ -2,7 +2,7 @@ import { PlusIcon, XMarkIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { ArbeidIUtlandet } from 'types/ArbeidIUtlandet';
+import { ArbeidIUtlandet, ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
 import { getMinInputTilOgMedValue } from 'utils/validationUtils';
 
 import { Button, HStack, Radio, VStack } from '@navikt/ds-react';
@@ -25,6 +25,7 @@ import {
 import './arbeidIUtlandet.css';
 
 export const NEW_ARBEID_I_UTLANDET = {
+    type: ArbeidIUtlandetType.JOBB_I_UTLANDET,
     fom: '',
     tom: '',
     pågående: undefined!,
