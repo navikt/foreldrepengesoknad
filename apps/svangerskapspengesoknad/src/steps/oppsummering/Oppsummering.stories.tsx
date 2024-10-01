@@ -144,6 +144,7 @@ const meta = {
                         [ContextDataType.ARBEID_I_UTLANDET]: {
                             arbeidIUtlandet: [
                                 {
+                                    type: 'ARBEID_I_UTLANDET',
                                     arbeidsgiverNavn: 'MUFC',
                                     fom: '2024-01-01',
                                     land: 'SE',
