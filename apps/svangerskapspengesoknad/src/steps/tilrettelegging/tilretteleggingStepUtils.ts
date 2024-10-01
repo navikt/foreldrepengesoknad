@@ -1,5 +1,9 @@
-import { DelivisTilretteleggingPeriodeType } from 'types/DelivisTilretteleggingPeriodeType';
-import { TilOgMedDatoType, Tilrettelegging, TilretteleggingstypeOptions } from 'types/Tilrettelegging';
+import {
+    DelivisTilretteleggingPeriodeType,
+    TilOgMedDatoType,
+    Tilrettelegging,
+    TilretteleggingstypeOptions,
+} from 'types/Tilrettelegging';
 
 export type TilretteleggingFormData = {
     behovForTilretteleggingFom: string;

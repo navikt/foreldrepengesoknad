@@ -448,8 +448,8 @@ const cleanSøker = (
                       {
                           næringstyper: [egenNæring.næringstype],
                           tidsperiode: {
-                              fom: egenNæring.fomDato,
-                              tom: egenNæring.tomDato,
+                              fom: egenNæring.fom,
+                              tom: egenNæring.tom,
                           },
                           navnPåNæringen: egenNæring.navnPåNæringen!,
                           ...egenNæring,

@@ -3,8 +3,11 @@ import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Barn } from 'types/Barn';
-import { DelivisTilretteleggingPeriodeType } from 'types/DelivisTilretteleggingPeriodeType';
-import Tilrettelegging, { Arbeidsforholdstype, TilOgMedDatoType } from 'types/Tilrettelegging';
+import Tilrettelegging, {
+    Arbeidsforholdstype,
+    DelivisTilretteleggingPeriodeType,
+    TilOgMedDatoType,
+} from 'types/Tilrettelegging';
 import { getDefaultMonth, getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 
 import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';

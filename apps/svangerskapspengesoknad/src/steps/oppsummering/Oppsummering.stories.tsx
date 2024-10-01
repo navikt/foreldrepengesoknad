@@ -158,8 +158,8 @@ const meta = {
                         },
                         [ContextDataType.EGEN_NÆRING]: {
                             navnPåNæringen: 'Skitt fiske',
-                            fomDato: dayjs().subtract(5, 'years').format(ISO_DATE_FORMAT),
-                            tomDato: '',
+                            fom: dayjs().subtract(5, 'years').format(ISO_DATE_FORMAT),
+                            tom: '',
                             næringstype: Næringstype.FISKER,
                             pågående: true,
                             registrertINorge: true,
