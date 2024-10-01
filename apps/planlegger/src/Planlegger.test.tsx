@@ -2,16 +2,18 @@ import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
+import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './Planlegger.stories';
 
-const { Default } = composeStories(stories);
+const { DefaultMockaStønadskontoerOgSatser } = composeStories(stories);
 
 describe('<Planlegger>', () => {
     it('skal gå rett til oppsummering når ingen av foreldrene har rett', async () => {
-        const utils = render(<Default brukMocks />);
+        await applyRequestHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
+        const utils = render(<DefaultMockaStønadskontoerOgSatser />);
 
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Start'));
@@ -64,7 +66,8 @@ describe('<Planlegger>', () => {
     });
 
     it('skal gå rett til oppsummering når barnet er født for mer enn tre år siden', async () => {
-        const utils = render(<Default brukMocks />);
+        await applyRequestHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
+        const utils = render(<DefaultMockaStønadskontoerOgSatser />);
 
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Start'));
@@ -107,7 +110,8 @@ describe('<Planlegger>', () => {
     });
 
     it('skal ikke vise fordelingssteget når far og far og barnet er født', async () => {
-        const utils = render(<Default brukMocks />);
+        await applyRequestHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
+        const utils = render(<DefaultMockaStønadskontoerOgSatser />);
 
         expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Start'));

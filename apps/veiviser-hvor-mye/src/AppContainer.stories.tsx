@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { InitialEntry } from 'history';
 import { HttpResponse, http } from 'msw';
 import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
@@ -120,7 +119,7 @@ const meta = {
             </StrictMode>
         );
     },
-} satisfies Meta<{ initialEntries?: InitialEntry[]; brukMock?: boolean }>;
+} satisfies Meta;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
