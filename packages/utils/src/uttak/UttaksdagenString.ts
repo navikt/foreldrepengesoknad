@@ -42,19 +42,12 @@ function getUttaksdagFørDato(dato: string): string {
     return getUttaksdagTilOgMedDato(dayjs.utc(dato).subtract(24, 'hours').format(isoStringFormat));
 }
 
-/**
- * Sjekker om dato er en ukedag, dersom ikke finner den foregående fredag.
- * Tar hensyn til stilling av klokken ved å gjøre om klokka til kl 12 før antall timer trekkes fra.
- * @param dato
- */
 function getUttaksdagTilOgMedDato(dato: string): string {
-    const date = new Date(dato);
-    const newDate = date ? new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12) : date;
     switch (getUkedag(dato)) {
         case 6:
-            return dayjs.utc(newDate).subtract(24, 'hours').startOf('day').format(isoStringFormat);
+            return dayjs.utc(dato).subtract(24, 'hours').startOf('day').format(isoStringFormat);
         case 7:
-            return dayjs.utc(newDate).subtract(48, 'hours').startOf('day').format(isoStringFormat);
+            return dayjs.utc(dato).subtract(48, 'hours').startOf('day').format(isoStringFormat);
         default:
             return dato;
     }
@@ -64,7 +57,7 @@ function getUttaksdagTilOgMedDato(dato: string): string {
  * @param termin
  */
 function getUttaksdagEtterDato(dato: string): string {
-    return getUttaksdagFraOgMedDato(dayjs.utc(dato).add(24, 'hours').format(isoStringFormat));
+    return getUttaksdagFraOgMedDato(dayjs(dato).add(24, 'hours').format(isoStringFormat));
 }
 
 /**
@@ -73,13 +66,11 @@ function getUttaksdagEtterDato(dato: string): string {
  * @param dato
  */
 function getUttaksdagFraOgMedDato(dato: string): string {
-    const date = new Date(dato);
-    const newDate = date ? new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12) : date;
     switch (getUkedag(dato)) {
         case 6:
-            return dayjs.utc(newDate).add(48, 'hours').startOf('day').format(isoStringFormat);
+            return dayjs.utc(dato).add(48, 'hours').startOf('day').format(isoStringFormat);
         case 7:
-            return dayjs.utc(newDate).add(24, 'hours').startOf('day').format(isoStringFormat);
+            return dayjs.utc(dato).add(24, 'hours').startOf('day').format(isoStringFormat);
         default:
             return dato;
     }
@@ -98,8 +89,7 @@ function leggUttaksdagerTilDato(dato: string, uttaksdager: number): string {
     let dagteller = 0;
     let uttaksdageteller = 0;
     while (uttaksdageteller <= uttaksdager) {
-        const tellerdato = dayjs
-            .utc(dato)
+        const tellerdato = dayjs(dato)
             .add(dagteller++ * 24, 'hours')
             .toDate();
         if (erUttaksdagString(tellerdato)) {
@@ -123,8 +113,7 @@ function trekkUttaksdagerFraDato(dato: string, uttaksdager: number): string {
     let dagteller = 0;
     let uttaksdageteller = 0;
     while (uttaksdageteller < Math.abs(uttaksdager)) {
-        const tellerdato = dayjs
-            .utc(dato)
+        const tellerdato = dayjs(dato)
             .add(--dagteller * 24, 'hours')
             .toDate();
         if (erUttaksdagString(tellerdato)) {
