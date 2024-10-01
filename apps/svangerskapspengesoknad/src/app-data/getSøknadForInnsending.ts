@@ -124,7 +124,7 @@ export const getSøknadForInnsending = (
         egenNæring: hentData(ContextDataType.EGEN_NÆRING),
         andreInntekterSiste10Mnd: hentData(ContextDataType.ARBEID_I_UTLANDET)?.arbeidIUtlandet,
         utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
-        tilretteleggingsbehov: tilretteleggingForInnsending,
+        tilrettelegging: tilretteleggingForInnsending,
         vedlegg: mapVedleggForInnsending(tilrettelegging),
     };
 };

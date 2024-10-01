@@ -12,6 +12,6 @@ export interface SøknadDTO {
     egenNæring: EgenNæring | undefined;
     andreInntekterSiste10Mnd: ArbeidIUtlandetInput[] | undefined;
     utenlandsopphold: UtenlandsoppholdPeriode[] | undefined;
-    tilretteleggingsbehov: TilretteleggingDTO[];
+    tilrettelegging: TilretteleggingDTO[];
     vedlegg: Attachment[];
 }
