@@ -10,9 +10,7 @@ import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'utils/arbei
 import { VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold, ArbeidsforholdOgInntektSvp } from '@navikt/fp-types';
-import { egenNæringId } from '@navikt/fp-types/src/EgenNæring';
-import { frilansId } from '@navikt/fp-types/src/Frilans';
+import { Arbeidsforhold, ArbeidsforholdOgInntektSvp, egenNæringId, frilansId } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 

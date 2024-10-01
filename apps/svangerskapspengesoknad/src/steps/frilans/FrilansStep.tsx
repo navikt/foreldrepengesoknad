@@ -8,9 +8,7 @@ import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'utils/arbei
 import { Heading } from '@navikt/ds-react';
 
 import { FrilansPanel } from '@navikt/fp-steg-frilans';
-import { Arbeidsforhold, ArbeidsforholdOgInntektSvp, Frilans } from '@navikt/fp-types';
-import { egenNæringId } from '@navikt/fp-types/src/EgenNæring';
-import { frilansId } from '@navikt/fp-types/src/Frilans';
+import { Arbeidsforhold, ArbeidsforholdOgInntektSvp, Frilans, egenNæringId, frilansId } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 

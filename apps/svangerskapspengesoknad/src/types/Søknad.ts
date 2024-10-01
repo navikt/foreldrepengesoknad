@@ -5,12 +5,7 @@ import { Attachment, EgenNæring, Frilans, LocaleNo, UtenlandsoppholdPeriode } f
 
 import { TilretteleggingDTO } from './Tilrettelegging';
 
-export enum Søkerrolle {
-    'MOR' = 'mor',
-}
-
 export interface SøknadDTO {
-    rolle: Søkerrolle;
     språkkode: LocaleNo;
     barn: Barn;
     frilans: Frilans | undefined;

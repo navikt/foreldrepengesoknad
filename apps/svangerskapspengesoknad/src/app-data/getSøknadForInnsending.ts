@@ -1,7 +1,7 @@
 import { ArbeidsforholdDTO } from 'types/Arbeidsforhold';
 import { AttachmentDTO } from 'types/AttachmentDTO';
 import { Barn } from 'types/Barn';
-import { Søkerrolle, SøknadDTO } from 'types/Søknad';
+import { SøknadDTO } from 'types/Søknad';
 import Tilrettelegging, {
     Arbeidsforholdstype,
     DelvisTilretteleggingDTO,
@@ -118,7 +118,6 @@ export const getSøknadForInnsending = (
     const tilrettelegging = notEmpty(hentData(ContextDataType.TILRETTELEGGINGER));
     const tilretteleggingForInnsending = mapTilretteleggingerForInnsending(tilrettelegging, barn);
     return {
-        rolle: Søkerrolle.MOR,
         språkkode: locale,
         barn: barn,
         frilans: hentData(ContextDataType.FRILANS),

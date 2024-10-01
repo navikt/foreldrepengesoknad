@@ -3,9 +3,14 @@ import { UnikArbeidsforhold } from 'types/Arbeidsforhold';
 import Tilrettelegging, { Arbeidsforholdstype } from 'types/Tilrettelegging';
 import { getUnikeArbeidsforhold } from 'utils/arbeidsforholdUtils';
 
-import { Arbeidsforhold, ArbeidsforholdOgInntektSvp, EgenNæring, Frilans } from '@navikt/fp-types';
-import { egenNæringId } from '@navikt/fp-types/src/EgenNæring';
-import { frilansId } from '@navikt/fp-types/src/Frilans';
+import {
+    Arbeidsforhold,
+    ArbeidsforholdOgInntektSvp,
+    EgenNæring,
+    Frilans,
+    egenNæringId,
+    frilansId,
+} from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 export const getOptionNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?: string) => {
