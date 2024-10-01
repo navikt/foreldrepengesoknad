@@ -7,7 +7,13 @@ import { Ytelse } from 'app/types/Ytelse';
 
 import MinidialogSkjema from './MinidialogSkjema';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+        },
+    },
+});
 
 const meta = {
     title: 'MinidialogSkjema',
@@ -27,6 +33,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const SkalIkkeFeileOpplasting: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.post('/rest/storage/foreldrepenger/vedlegg', () => new HttpResponse(null, { status: 200 })),
+            ],
+        },
+    },
     args: {
         onSubmit: action('button-click'),
         ettersendelseErSendt: false,

@@ -429,7 +429,7 @@ const cleanSøker = (
     if (
         arbeidsforholdOgInntekt?.harJobbetSomFrilans ||
         arbeidsforholdOgInntekt?.harHattAndreInntektskilder ||
-        arbeidsforholdOgInntekt?.harHattAndreInntektskilder
+        arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende
     ) {
         return {
             ...common,
