@@ -1,3 +1,4 @@
+import { ArbeidIUtlandetInput, ArbeidsIUtlandetDto } from 'types/ArbeidIUtlandet';
 import { ArbeidsforholdDTO } from 'types/Arbeidsforhold';
 import { AttachmentDTO } from 'types/AttachmentDTO';
 import { Barn } from 'types/Barn';
@@ -108,12 +109,24 @@ const mapVedleggForInnsending = (tilrettelegginger: Tilrettelegging[]): Attachme
     return mappedVedlegg.flat(1);
 };
 
+const mapArbeidIUtlandetForInnsending = (arbeid: ArbeidIUtlandetInput): ArbeidsIUtlandetDto => {
+    return {
+        type: 'JOBB_I_UTLANDET',
+        ...arbeid,
+    };
+};
+
 export const getSøknadForInnsending = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     locale: LocaleNo,
 ): SøknadDTO => {
     const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+    const arbeidIUtlandet = hentData(ContextDataType.ARBEID_I_UTLANDET)?.arbeidIUtlandet;
+    const mappedArbeidIUtlandet = arbeidIUtlandet
+        ? arbeidIUtlandet.map((arbeid) => mapArbeidIUtlandetForInnsending(arbeid))
+        : undefined;
+
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
     const tilrettelegging = notEmpty(hentData(ContextDataType.TILRETTELEGGINGER));
     const tilretteleggingForInnsending = mapTilretteleggingerForInnsending(tilrettelegging, barn);
@@ -122,7 +135,7 @@ export const getSøknadForInnsending = (
         barn: barn,
         frilans: hentData(ContextDataType.FRILANS),
         egenNæring: hentData(ContextDataType.EGEN_NÆRING),
-        andreInntekterSiste10Mnd: hentData(ContextDataType.ARBEID_I_UTLANDET)?.arbeidIUtlandet,
+        andreInntekterSiste10Mnd: mappedArbeidIUtlandet,
         utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
         tilrettelegging: tilretteleggingForInnsending,
         vedlegg: mapVedleggForInnsending(tilrettelegging),

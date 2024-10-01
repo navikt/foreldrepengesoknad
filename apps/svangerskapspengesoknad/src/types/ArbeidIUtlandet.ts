@@ -9,3 +9,7 @@ export interface ArbeidIUtlandetInput {
 export interface ArbeidIUtlandet {
     arbeidIUtlandet: ArbeidIUtlandetInput[];
 }
+
+export interface ArbeidsIUtlandetDto extends ArbeidIUtlandetInput {
+    type: string;
+}
