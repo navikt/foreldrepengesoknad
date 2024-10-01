@@ -1,0 +1,5 @@
+import{S as a}from"./ShareDataInfobox-BL19_o1O.js";import"./jsx-runtime-Cw0GR0a5.js";import"./index-CTjT7uj6.js";import"./Label-Cpj7GWrI.js";import"./VStack-CHPVCYB5.js";import"./amplitude-DrrnQp5r.js";import"./VeiviserPage-Bk414iyp.js";import"./index-BRV0Se7Z.js";const d={title:"components/ShareDataInfobox",component:a},r={args:{erAlenesøker:!0}};var e,o,t;r.parameters={...r.parameters,docs:{...(e=r.parameters)==null?void 0:e.docs,source:{originalSource:`{
+  args: {
+    erAlenesøker: true
+  }
+}`,...(t=(o=r.parameters)==null?void 0:o.docs)==null?void 0:t.source}}};const f=["Default"];export{r as Default,f as __namedExportsOrder,d as default};
