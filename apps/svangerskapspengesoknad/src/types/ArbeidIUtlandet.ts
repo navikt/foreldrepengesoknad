@@ -1,5 +1,4 @@
 export interface ArbeidIUtlandetInput {
-    type: string;
     fom: string;
     tom: string | undefined;
     pågående: boolean;
