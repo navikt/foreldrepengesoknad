@@ -5,6 +5,7 @@ import SøknadRoutes from 'appData/routes';
 import dayjs from 'dayjs';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
 import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'types/Tilrettelegging';
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
@@ -144,6 +145,7 @@ const meta = {
                         [ContextDataType.ARBEID_I_UTLANDET]: {
                             arbeidIUtlandet: [
                                 {
+                                    type: ArbeidIUtlandetType.JOBB_I_UTLANDET,
                                     arbeidsgiverNavn: 'MUFC',
                                     fom: '2024-01-01',
                                     land: 'SE',
