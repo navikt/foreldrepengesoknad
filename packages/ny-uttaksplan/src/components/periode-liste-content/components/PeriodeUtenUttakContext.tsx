@@ -10,9 +10,10 @@ import { getVarighetString } from '../../../utils/dateUtils';
 
 interface Props {
     periode: Planperiode;
+    isHull: boolean;
 }
 
-export const PeriodeUtenUttakContent = ({ periode }: Props) => {
+export const PeriodeUtenUttakContent = ({ periode, isHull }: Props) => {
     const intl = useIntl();
 
     return (
@@ -34,7 +35,11 @@ export const PeriodeUtenUttakContent = ({ periode }: Props) => {
                 </div>
                 <div style={{ marginLeft: '1rem', paddingTop: '0.25rem' }}>
                     <BodyShort>
-                        <FormattedMessage id="uttaksplan.periodeListeContent.periodeUtenUttak" />
+                        {isHull ? (
+                            <FormattedMessage id="uttaksplan.periodeListeContent.tapteDager" />
+                        ) : (
+                            <FormattedMessage id="uttaksplan.periodeListeContent.periodeUtenUttak" />
+                        )}
                     </BodyShort>
                 </div>
             </div>

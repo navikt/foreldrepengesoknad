@@ -1,4 +1,3 @@
-import { InformationSquareIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -41,9 +40,6 @@ const FamiliehendelseContent: FunctionComponent<Props> = ({ familiehendelseType 
     return (
         <HStack gap={'4'}>
             <div style={{ display: 'flex' }}>
-                <div>
-                    <InformationSquareIcon width={24} height={24} />
-                </div>
                 <div
                     style={{
                         marginLeft: '1rem',

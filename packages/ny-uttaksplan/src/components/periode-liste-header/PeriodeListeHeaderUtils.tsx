@@ -158,7 +158,7 @@ export const getTekst = ({
         return `Du og ${navnPåForelder} i permisjon`;
     }
 
-    return erEgenPeriode ? 'Du i permisjon' : `${navnPåForelder} i permisjon`;
+    return erEgenPeriode ? 'Du er i permisjon' : `${navnPåForelder} er i permisjon`;
 };
 
 type GetIkonProps = {

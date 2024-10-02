@@ -33,18 +33,6 @@
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2024-09-16",
-                        "tom": "2024-09-27",
-                        "resultat": {
-                            "innvilget": true,
-                            "trekkerMinsterett": false,
-                            "trekkerDager": false,
-                            "årsak": "ANNET"
-                        },
-                        "utsettelseÅrsak": "SØKER_SYKDOM",
-                        "flerbarnsdager": false
-                    },
-                    {
                         "fom": "2024-09-30",
                         "tom": "2024-10-27",
                         "kontoType": "MØDREKVOTE",

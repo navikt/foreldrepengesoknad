@@ -42,6 +42,7 @@
     "uttaksplan.periodeListeContent.overføring.institusjonsoppholdAnnenForelder": "Overføring av {stønadskontoNavn} kvote fordi {navnPåAnnenForelder} er innlagt på helseinstitusjon",
     "uttaksplan.periodeListeContent.skalIkkeJobbe": "Du skal ikke jobbe i denne perioden",
     "uttaksplan.periodeListeContent.periodeUtenUttak": "Du skal ikke ha foreldrepenger",
+    "uttaksplan.periodeListeContent.tapteDager": "Dager du kan tape",
     "gradering.prosent": "{stillingsprosent}%",
     "varighet.uker": "{uker, plural, one {# uke} other {# uker}}",
     "varighet.dager": "{dager, plural, one {# dag} other {# dager}}",

@@ -11,6 +11,7 @@ import { UttaksplanContextDataType, useContextGetData } from '../../context/Utta
 import Permisjonsperiode from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import {
+    isHull,
     isOppholdsperiode,
     isOverføringsperiode,
     isPeriodeUtenUttak,
@@ -60,8 +61,8 @@ const renderPeriode = (
         );
     }
 
-    if (isPeriodeUtenUttak(periode)) {
-        return <PeriodeUtenUttakContent key={periode.id} periode={periode} />;
+    if (isPeriodeUtenUttak(periode) || isHull(periode)) {
+        return <PeriodeUtenUttakContent key={periode.id} periode={periode} isHull={isHull(periode)} />;
     }
 
     if (isUtsettelsesperiode(periode)) {
