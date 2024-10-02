@@ -5,6 +5,7 @@ import { IntlShape, useIntl } from 'react-intl';
 import { BodyShort } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
+import { Forelder } from '@navikt/fp-constants';
 import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
 
 import { Planperiode } from '../../../types/Planperiode';
@@ -24,8 +25,20 @@ const getArbeidsTekst = (arbeidstidprosent: number) => {
     return `Du skal jobbe ${arbeidstidprosent} % og ha ${uttaksprosent} % foreldrepenger`;
 };
 
-const getSamtidigUttakTekst = (samtidiguttaksProsent: number) => {
-    return `Du skal ha ${samtidiguttaksProsent} % foreldrepenger`;
+const getSamtidigUttakTekst = (
+    samtidiguttaksProsent: number,
+    forelderIPerioden: Forelder,
+    erFarEllerMedmor: boolean,
+    navnPåForeldre: NavnPåForeldre,
+) => {
+    const periodenGjelderSøker = erFarEllerMedmor
+        ? forelderIPerioden === Forelder.farMedmor
+        : forelderIPerioden === Forelder.mor;
+    const navnPåAnnenForelderIPerioden = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+
+    return periodenGjelderSøker
+        ? `Du skal ha ${samtidiguttaksProsent} % foreldrepenger`
+        : `${navnPåAnnenForelderIPerioden} skal ha ${samtidiguttaksProsent} % foreldrepenger`;
 };
 
 const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Planperiode) => {
@@ -66,7 +79,14 @@ const UttaksperiodeContent: FunctionComponent<Props> = ({
                         <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>
                     )}
                     {periode.samtidigUttak !== undefined && (
-                        <BodyShort>{getSamtidigUttakTekst(periode.samtidigUttak)}</BodyShort>
+                        <BodyShort>
+                            {getSamtidigUttakTekst(
+                                periode.samtidigUttak,
+                                periode.forelder!,
+                                erFarEllerMedmor,
+                                navnPåForeldre,
+                            )}
+                        </BodyShort>
                     )}
                 </div>
             </div>

@@ -367,7 +367,7 @@ export const settInnAnnenPartsUttak = (
         const overlappendePerioderAnnenPart = Periodene(normaliserteAnnenPartsPerioder).finnOverlappendePerioder(p);
 
         if (overlappendePerioderAnnenPart.length === 0) {
-            if (isUttaksperiode(p) && p.samtidigUttak && initiellMappingFraSaksperioder) {
+            if (isUttaksperiode(p) && p.samtidigUttak !== undefined && initiellMappingFraSaksperioder) {
                 res.push({
                     ...p,
                 });
