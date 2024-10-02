@@ -2,8 +2,9 @@ import { CheckmarkIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { FormattedMessage } from 'react-intl';
 
-import { Accordion, BodyLong, BodyShort, Detail, HStack, Heading, VStack } from '@navikt/ds-react';
+import { Accordion, BodyLong, BodyShort, Detail, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
+import { links } from '@navikt/fp-constants';
 import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
 
 import { KontonummerInfo } from 'app/components/kontonummer-info/KontonummerInfo';
@@ -91,6 +92,10 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({ relevantNyTid
                                     </BodyLong>
                                     <BodyLong size="small">
                                         <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel2" />
+                                        <Link href={links.utbetalingsoversikt}>
+                                            <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel3" />
+                                        </Link>
+                                        <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel4" />
                                     </BodyLong>
                                 </VStack>
                             </Accordion.Content>

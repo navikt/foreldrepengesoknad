@@ -183,5 +183,7 @@
     "BekreftelseSendtSøknad.DuKanTidligstFåSvarDel2": "Når vi har all nødvendig dokumentasjon er forventet saksbehandlingstid 6 uker.",
     "BekreftelseSendtSøknad.NårUtbetalesPengene": "Når utbetales pengene?",
     "BekreftelseSendtSøknad.UtbetalingstidspunktDel1": "Du får vanligvis utbetalt pengene 1 uke etter at søknaden din er innvilget.",
-    "BekreftelseSendtSøknad.UtbetalingstidspunktDel2": "I utbetalingsoversikt på nettisdene til NAV kan du se utbetalingen på kvelden den dagen pengene er utbetalt."
+    "BekreftelseSendtSøknad.UtbetalingstidspunktDel2": "I ",
+    "BekreftelseSendtSøknad.UtbetalingstidspunktDel3": "utbetalingsoversikt",
+    "BekreftelseSendtSøknad.UtbetalingstidspunktDel4": " på nettisdene til NAV kan du se utbetalingen på kvelden den dagen pengene er utbetalt."
 }
