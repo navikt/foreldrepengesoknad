@@ -2,7 +2,7 @@ import { CheckmarkIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import { FormattedMessage } from 'react-intl';
 
-import { Accordion, BodyShort, Detail, HStack, Heading, VStack } from '@navikt/ds-react';
+import { Accordion, BodyLong, BodyShort, Detail, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
 
@@ -59,6 +59,44 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({ relevantNyTid
                 </ul>
             )}
             <Accordion>
+                {ytelse === Ytelse.ENGANGSSTØNAD && (
+                    <>
+                        <Accordion.Item>
+                            <Accordion.Header>
+                                <BodyShort weight="semibold">
+                                    <FormattedMessage id="BekreftelseSendtSøknad.NårDuFårSvar" />
+                                </BodyShort>
+                            </Accordion.Header>
+                            <Accordion.Content>
+                                <VStack gap="2">
+                                    <BodyLong size="small">
+                                        <FormattedMessage id="BekreftelseSendtSøknad.DuKanTidligstFåSvarDel1" />
+                                    </BodyLong>
+                                    <BodyLong size="small">
+                                        <FormattedMessage id="BekreftelseSendtSøknad.DuKanTidligstFåSvarDel2" />
+                                    </BodyLong>
+                                </VStack>
+                            </Accordion.Content>
+                        </Accordion.Item>
+                        <Accordion.Item>
+                            <Accordion.Header>
+                                <BodyShort weight="semibold">
+                                    <FormattedMessage id="BekreftelseSendtSøknad.NårUtbetalesPengene" />
+                                </BodyShort>
+                            </Accordion.Header>
+                            <Accordion.Content>
+                                <VStack gap="2">
+                                    <BodyLong size="small">
+                                        <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel1" />
+                                    </BodyLong>
+                                    <BodyLong size="small">
+                                        <FormattedMessage id="BekreftelseSendtSøknad.UtbetalingstidspunktDel2" />
+                                    </BodyLong>
+                                </VStack>
+                            </Accordion.Content>
+                        </Accordion.Item>
+                    </>
+                )}
                 {ytelse === Ytelse.FORELDREPENGER && (
                     <Accordion.Item>
                         <Accordion.Header>
