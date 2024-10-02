@@ -67,6 +67,7 @@ describe('<ArbeidIUtlandet>', () => {
             data: {
                 arbeidIUtlandet: [
                     {
+                        type: 'JOBB_I_UTLANDET',
                         arbeidsgiverNavn: 'Arbeidsgiver',
                         land: 'UA',
                         pågående: false,
