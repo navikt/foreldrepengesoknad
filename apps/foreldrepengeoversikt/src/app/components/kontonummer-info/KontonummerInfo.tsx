@@ -16,30 +16,28 @@ export const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, yte
     const kontonummerEndreTekst = harKontonummer ? 'Endre kontonummer' : 'Registrer kontonummer';
 
     return (
-        <Accordion>
-            <Accordion.Item>
-                <Accordion.Header>
-                    <VStack gap="1">
-                        <Detail textColor="subtle">KONTONUMMER</Detail>
-                        <BodyShort weight="semibold">{kontonummerTekst}</BodyShort>
-                    </VStack>
-                </Accordion.Header>
-                <Accordion.Content>
-                    <VStack gap="4">
-                        <KontonummerInfoTekst harKontonummer={harKontonummer} ytelse={ytelse} />
-                        <Button
-                            size="small"
-                            className="w-fit no-underline"
-                            variant="secondary"
-                            as={Link}
-                            href={links.brukerprofil}
-                        >
-                            {kontonummerEndreTekst}
-                        </Button>
-                    </VStack>
-                </Accordion.Content>
-            </Accordion.Item>
-        </Accordion>
+        <Accordion.Item>
+            <Accordion.Header>
+                <VStack gap="1">
+                    <Detail textColor="subtle">KONTONUMMER</Detail>
+                    <BodyShort weight="semibold">{kontonummerTekst}</BodyShort>
+                </VStack>
+            </Accordion.Header>
+            <Accordion.Content>
+                <VStack gap="4">
+                    <KontonummerInfoTekst harKontonummer={harKontonummer} ytelse={ytelse} />
+                    <Button
+                        size="small"
+                        className="w-fit no-underline"
+                        variant="secondary"
+                        as={Link}
+                        href={links.brukerprofil}
+                    >
+                        {kontonummerEndreTekst}
+                    </Button>
+                </VStack>
+            </Accordion.Content>
+        </Accordion.Item>
     );
 };
 

@@ -1,4 +1,7 @@
 import { Preview } from '@storybook/react';
+import dayjs from 'dayjs';
+import 'dayjs/locale/nb.js';
+import 'dayjs/locale/nn.js';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 
 import { uiMessages } from '@navikt/fp-ui';
@@ -6,6 +9,8 @@ import { getIntlDecorator } from '@navikt/fp-utils-test';
 
 import '../src/app/index.css';
 import nbMessages from '../src/intl/messages/nb_NO.json';
+
+dayjs.locale('nb');
 
 const scriptTag = document.createElement('script');
 scriptTag.type = 'text/json';
