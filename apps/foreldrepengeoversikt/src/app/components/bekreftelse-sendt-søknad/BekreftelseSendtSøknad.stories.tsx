@@ -14,10 +14,11 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const ForForeldrepenger: Story = {
     args: {
         relevantNyTidslinjehendelse: {
             opprettet: new Date(),
+            tidligstBehandlingsDato: new Date(),
             dokumenter: [
                 {
                     dokumentId: '1',
@@ -25,12 +26,56 @@ export const Default: Story = {
                     journalpostId: '1',
                     mottatt: new Date(),
                     saksnummer: '1212',
-                    tittel: 'Dokumenttittel',
+                    tittel: 'Søknad',
                     url: 'test',
                 },
             ],
         } as Tidslinjehendelse,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: Ytelse.FORELDREPENGER,
+    },
+};
+
+export const ForEngangsstønad: Story = {
+    args: {
+        relevantNyTidslinjehendelse: {
+            opprettet: new Date(),
+            tidligstBehandlingsDato: new Date(),
+            dokumenter: [
+                {
+                    dokumentId: '1',
+                    type: DokumentType.ARBEIDSGIVER,
+                    journalpostId: '1',
+                    mottatt: new Date(),
+                    saksnummer: '1212',
+                    tittel: 'Søknad',
+                    url: 'test',
+                },
+            ],
+        } as Tidslinjehendelse,
+        bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
+        ytelse: Ytelse.ENGANGSSTØNAD,
+    },
+};
+
+export const ForSvangerskapspenger: Story = {
+    args: {
+        relevantNyTidslinjehendelse: {
+            opprettet: new Date(),
+            tidligstBehandlingsDato: new Date(),
+            dokumenter: [
+                {
+                    dokumentId: '1',
+                    type: DokumentType.ARBEIDSGIVER,
+                    journalpostId: '1',
+                    mottatt: new Date(),
+                    saksnummer: '1212',
+                    tittel: 'Søknad',
+                    url: 'test',
+                },
+            ],
+        } as Tidslinjehendelse,
+        bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
+        ytelse: Ytelse.SVANGERSKAPSPENGER,
     },
 };

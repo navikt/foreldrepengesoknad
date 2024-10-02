@@ -1,9 +1,10 @@
 import { CheckmarkIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
+import { FormattedMessage } from 'react-intl';
 
-import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
+import { Accordion, BodyShort, Detail, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { formatDate, formatTime } from '@navikt/fp-utils';
+import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
 
 import { KontonummerInfo } from 'app/components/kontonummer-info/KontonummerInfo';
 import DokumentHendelse from 'app/sections/tidslinje/DokumentHendelse';
@@ -34,6 +35,9 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({ relevantNyTid
         ? relevantNyTidslinjehendelse.dokumenter.find((dok) => dok.tittel.includes('Søknad'))
         : undefined;
     const mottattDato = relevantNyTidslinjehendelse ? relevantNyTidslinjehendelse.opprettet : undefined;
+    const tidligstBehandlingsDato = relevantNyTidslinjehendelse
+        ? relevantNyTidslinjehendelse.tidligstBehandlingsDato
+        : undefined;
     const sendtInfoTekst = getTidspunktTekst(mottattDato);
 
     return (
@@ -54,7 +58,64 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({ relevantNyTid
                     <DokumentHendelse dokument={relevantDokument} key={relevantDokument.url} visesITidslinjen={false} />
                 </ul>
             )}
-            <KontonummerInfo ytelse={ytelse} bankkonto={bankkonto} />
+            <Accordion>
+                {ytelse === Ytelse.FORELDREPENGER && (
+                    <Accordion.Item>
+                        <Accordion.Header>
+                            <VStack gap="1">
+                                <Detail textColor="subtle">
+                                    <FormattedMessage id="BekreftelseSendtSøknad.HuskPå" />
+                                </Detail>
+                                <BodyShort weight="semibold">
+                                    <FormattedMessage id="BekreftelseSendtSøknad.SelvInformere" />
+                                </BodyShort>
+                            </VStack>
+                        </Accordion.Header>
+                        <Accordion.Content>
+                            <FormattedMessage id="BekreftelseSendtSøknad.HuskÅInformere" />
+                        </Accordion.Content>
+                    </Accordion.Item>
+                )}
+                {(ytelse === Ytelse.FORELDREPENGER || ytelse === Ytelse.SVANGERSKAPSPENGER) &&
+                    tidligstBehandlingsDato && (
+                        <Accordion.Item>
+                            <Accordion.Header>
+                                <VStack gap="1">
+                                    <Detail textColor="subtle">
+                                        <FormattedMessage id="BekreftelseSendtSøknad.DuFårTidligstSvar" />
+                                    </Detail>
+                                    <BodyShort weight="semibold">
+                                        {capitalizeFirstLetter(formatDateMedUkedag(tidligstBehandlingsDato))}
+                                    </BodyShort>
+                                </VStack>
+                            </Accordion.Header>
+                            <Accordion.Content>
+                                <FormattedMessage
+                                    id="BekreftelseSendtSøknad.TidligstSvarForklaring"
+                                    values={{ erFp: ytelse === Ytelse.FORELDREPENGER }}
+                                />
+                            </Accordion.Content>
+                        </Accordion.Item>
+                    )}
+                <KontonummerInfo ytelse={ytelse} bankkonto={bankkonto} />
+                {ytelse === Ytelse.FORELDREPENGER && (
+                    <Accordion.Item>
+                        <Accordion.Header>
+                            <VStack gap="1">
+                                <Detail textColor="subtle">
+                                    <FormattedMessage id="BekreftelseSendtSøknad.TilSenere" />
+                                </Detail>
+                                <BodyShort weight="semibold">
+                                    <FormattedMessage id="BekreftelseSendtSøknad.HvisDuVilEndre" />
+                                </BodyShort>
+                            </VStack>
+                        </Accordion.Header>
+                        <Accordion.Content>
+                            <FormattedMessage id="BekreftelseSendtSøknad.SendEndringssøknad" />
+                        </Accordion.Content>
+                    </Accordion.Item>
+                )}
+            </Accordion>
         </VStack>
     );
 };
