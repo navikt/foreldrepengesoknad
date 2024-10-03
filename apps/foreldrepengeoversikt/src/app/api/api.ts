@@ -7,6 +7,7 @@ import Environment from 'app/appData/Environment';
 import { AnnenPartVedtakDTO } from 'app/types/AnnenPartVedtakDTO';
 import { Dokument } from 'app/types/Dokument';
 import EttersendingDto from 'app/types/EttersendingDTO';
+import { IM_DUMMY } from 'app/types/InntektsmeldingDto';
 import { MellomlagredeYtelser } from 'app/types/MellomlagredeYtelser';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import { SakOppslagDTO } from 'app/types/SakOppslag';
@@ -39,6 +40,13 @@ export const hentDokumenterOptions = (saksnummer: string) =>
         queryFn: () =>
             ky.get(`${prefiks_public_path}/rest/dokument/alle`, { searchParams: { saksnummer } }).json<Dokument[]>(),
     });
+
+export const hentInntektsmelding = (saksnummer: string) => {
+    queryOptions({
+        queryKey: ['INNTEKTSMELDING', saksnummer],
+        queryFn: () => IM_DUMMY,
+    });
+};
 
 export const hentMellomlagredeYtelserOptions = () =>
     queryOptions({
