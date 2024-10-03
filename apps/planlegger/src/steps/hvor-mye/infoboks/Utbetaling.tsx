@@ -4,6 +4,7 @@ import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
+import { links } from '@navikt/fp-constants';
 import { Satser } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrency } from '@navikt/fp-utils';
@@ -68,7 +69,11 @@ const Utbetaling: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }) 
                                 id="HvorMyeSteg.NAVDekker"
                                 values={{
                                     grunnbeløpet: formatCurrency(grunnbeløpet * 6),
-                                    a: (msg: any) => <a>{msg}</a>,
+                                    a: (msg: any) => (
+                                        <a href={links.grunnbeløpet} target="_blank">
+                                            {msg}
+                                        </a>
+                                    ),
                                 }}
                             />
                         </BodyShort>

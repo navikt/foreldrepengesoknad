@@ -13,6 +13,7 @@ import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyShort, Heading, Spacer, VStack } from '@navikt/ds-react';
 
+import { links } from '@navikt/fp-constants';
 import { RhfForm, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { LocaleAll, Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
@@ -135,7 +136,13 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
                                 <BodyShort>
                                     <FormattedMessage
                                         id="HvorMyeSteg.MerDetaljert"
-                                        values={{ a: (msg: any) => <a>{msg}</a> }}
+                                        values={{
+                                            a: (msg: any) => (
+                                                <a href={links.hvorMye} target="_blank">
+                                                    {msg}
+                                                </a>
+                                            ),
+                                        }}
                                     />
                                 </BodyShort>
                             </Infobox>
