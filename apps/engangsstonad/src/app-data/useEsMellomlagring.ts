@@ -14,7 +14,7 @@ export type EsDataMapAndMetaData = { version: number; locale: LocaleAll } & Cont
 
 // TODO (TOR) Fiks lokalisering
 const FEIL_VED_INNSENDING =
-    'Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
+    'Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
 const useEsMellomlagring = (esApi: AxiosInstance, locale: LocaleAll, setVelkommen: (erVelkommen: boolean) => void) => {
     const navigate = useNavigate();

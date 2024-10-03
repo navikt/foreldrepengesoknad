@@ -105,7 +105,10 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
                         registrertILand: 'SE',
                         registrertINorge: false,
                         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
-                        hattVarigEndringAvNæringsinntektSiste4Kalenderår: false,
+                        hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
+                        varigEndringBeskrivelse: 'Beskrivelse av varig endring',
+                        varigEndringDato: '2021-01-01',
+                        varigEndringInntektEtterEndring: '10000',
                     }}
                     onVilEndreSvar={() => {}}
                 />

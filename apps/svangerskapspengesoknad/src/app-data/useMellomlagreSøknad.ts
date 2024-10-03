@@ -11,7 +11,7 @@ import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } 
 export const VERSJON_MELLOMLAGRING = 4;
 
 const FEIL_VED_INNSENDING =
-    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
+    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
 export type SvpDataMapAndMetaData = { version: number; locale: LocaleNo } & ContextDataMap;
 
