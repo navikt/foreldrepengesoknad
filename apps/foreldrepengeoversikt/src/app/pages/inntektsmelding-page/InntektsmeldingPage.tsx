@@ -1,9 +1,11 @@
-import { WalletIcon } from '@navikt/aksel-icons';
+import { PersonIcon, SparklesIcon, WalletIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
+import classNames from 'classnames';
 import { ReactNode } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { BodyShort, Heading, VStack } from '@navikt/ds-react';
+import { Office2 } from '@navikt/ds-icons';
+import { BodyShort, HGrid, Heading, VStack } from '@navikt/ds-react';
 
 import { hentInntektsmelding } from 'app/api/api';
 import { InntektsmeldingHeader } from 'app/components/header/Header';
@@ -24,8 +26,9 @@ export const InntektsmeldingPage = () => {
 
     return (
         <PageRouteLayout header={<InntektsmeldingHeader inntektsmelding={inntektsmelding} />}>
-            <div>
+            <HGrid columns={2} gap="4">
                 <InntektsmeldingInfoBlokk
+                    className="col-span-2"
                     size="large"
                     heading={
                         <>
@@ -38,11 +41,51 @@ export const InntektsmeldingPage = () => {
                     Månedsinntekten din har blitt beregnet ut fra gjennomsnittet av inntekten din de siste tre månedene
                     før inntektsmeldingen ble sendt.
                 </InntektsmeldingInfoBlokk>
-                <InntektsmeldingInfoBlokk size="xsmall" heading="Hvordan utbetales foreldrepengene?" Ikon={WalletIcon}>
+                <InntektsmeldingInfoBlokk
+                    className="col-span-2"
+                    size="xsmall"
+                    heading="Hvordan utbetales foreldrepengene?"
+                    Ikon={WalletIcon}
+                >
                     Du får utbetaling direkte fra NAV.
                 </InntektsmeldingInfoBlokk>
+                <InntektsmeldingInfoBlokk
+                    className="col-span-2"
+                    size="xsmall"
+                    heading="Naturalytelser eller “frynsegoder” under permisjonen"
+                    Ikon={SparklesIcon}
+                >
+                    Eventuelle naturalytelser eller “frynsegoder” som du får gjennom din arbeidsgiver vil du beholde
+                    under permisjonen.
+                </InntektsmeldingInfoBlokk>
+                <InntektsmeldingInfoBlokk
+                    size="xsmall"
+                    heading="Din arbeidsgiver"
+                    Ikon={Office2}
+                    className="col-span-2 md:col-span-1"
+                >
+                    <VStack>
+                        {inntektsmelding.arbeidsgiverIdent}
+                        7586 Usikker om vi har dette
+                    </VStack>
+                </InntektsmeldingInfoBlokk>
+                <InntektsmeldingInfoBlokk
+                    size="xsmall"
+                    heading="Innsender"
+                    Ikon={PersonIcon}
+                    className="col-span-2 md:col-span-1"
+                >
+                    <VStack gap="1">
+                        <span>
+                            {inntektsmelding.kontaktpersonNavn}, {inntektsmelding.kontaktpersonNummer}
+                        </span>
+                        <BodyShort>
+                            Det er Navn Navnesen du kan ta kontakt med hvis du ser noe feil i inntektsmeldingen.{' '}
+                        </BodyShort>
+                    </VStack>
+                </InntektsmeldingInfoBlokk>
                 <InntektsmeldingSpørsmålOgSvar />
-            </div>
+            </HGrid>
         </PageRouteLayout>
     );
 };
@@ -52,16 +95,23 @@ const InntektsmeldingInfoBlokk = ({
     Ikon,
     heading,
     children,
+    className,
 }: {
+    className?: string;
     size: 'xsmall' | 'large';
     Ikon: typeof WalletIcon;
     heading: ReactNode;
     children: ReactNode;
 }) => {
     return (
-        <div className="rounded-large p-6 bg-surface-alt-3-subtle flex gap-4 justify-between sm:justify-normal flex-row-reverse sm:flex-row">
+        <div
+            className={classNames(
+                'rounded-large p-6 bg-surface-alt-3-subtle flex gap-4 justify-between sm:justify-normal flex-row-reverse sm:flex-row',
+                className,
+            )}
+        >
             {Ikon && <Ikon className="text-icon-info flex-shrink-0" width={24} height={24} aria-hidden />}
-            <VStack>
+            <VStack gap="1">
                 <Heading level="2" size={size}>
                     {heading}
                 </Heading>
@@ -73,7 +123,7 @@ const InntektsmeldingInfoBlokk = ({
 
 const InntektsmeldingSpørsmålOgSvar = () => {
     return (
-        <VStack gap="2" className="bg-surface-subtle rounded-large p-6 pb-8">
+        <VStack gap="2" className="bg-surface-subtle rounded-large p-6 pb-8 col-span-2">
             <VStack>
                 <Heading level="2" spacing size="small">
                     Hva er en inntektsmelding?
