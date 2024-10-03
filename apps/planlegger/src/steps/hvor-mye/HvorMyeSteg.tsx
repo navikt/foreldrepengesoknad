@@ -138,7 +138,7 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
                                         id="HvorMyeSteg.MerDetaljert"
                                         values={{
                                             a: (msg: any) => (
-                                                <a href={links.hvorMye} target="_blank">
+                                                <a href={links.hvorMye} target="_blank" rel="noreferrer">
                                                     {msg}
                                                 </a>
                                             ),

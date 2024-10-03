@@ -70,7 +70,7 @@ const Utbetaling: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }) 
                                 values={{
                                     grunnbeløpet: formatCurrency(grunnbeløpet * 6),
                                     a: (msg: any) => (
-                                        <a href={links.grunnbeløpet} target="_blank">
+                                        <a href={links.grunnbeløpet} target="_blank" rel="noreferrer">
                                             {msg}
                                         </a>
                                     ),
