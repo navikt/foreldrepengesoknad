@@ -68,15 +68,15 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
                         </Heading>
                         <VStack gap="2">
                             <BluePanel isDarkBlue={true}>
-                                <Heading size="xsmall">
-                                    <FormattedMessage
-                                        id="HvorMyeSteg.Lønn"
-                                        values={{
-                                            hvem: fornavnSøker1,
-                                        }}
-                                    />
-                                </Heading>
                                 <RhfTextField
+                                    label={
+                                        <FormattedMessage
+                                            id="HvorMyeSteg.Lønn"
+                                            values={{
+                                                hvem: fornavnSøker1,
+                                            }}
+                                        />
+                                    }
                                     name="lønnSøker1"
                                     onChange={(lønnSøker1) => oppdaterHvorMye({ ...hvorMye, lønnSøker1 })}
                                 />
@@ -95,13 +95,13 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
                             {!kunEnAvSøkereneHarRett && fornavnSøker2 && (
                                 <>
                                     <BluePanel isDarkBlue={true}>
-                                        <Heading size="xsmall">
-                                            <FormattedMessage
-                                                id="HvorMyeSteg.Lønn"
-                                                values={{ hvem: getFornavnPåSøker2(hvemPlanlegger, intl) }}
-                                            />
-                                        </Heading>
                                         <RhfTextField
+                                            label={
+                                                <FormattedMessage
+                                                    id="HvorMyeSteg.Lønn"
+                                                    values={{ hvem: getFornavnPåSøker2(hvemPlanlegger, intl) }}
+                                                />
+                                            }
                                             name="lønnSøker2"
                                             onChange={(lønnSøker2) => oppdaterHvorMye({ ...hvorMye, lønnSøker2 })}
                                         />

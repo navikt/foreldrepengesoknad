@@ -142,7 +142,10 @@ describe('<Planlegger>', () => {
 
         expect(screen.getAllByText('Hvor mye')).toHaveLength(2);
         expect(screen.getByText('Steg 4 av 7')).toBeInTheDocument();
-        await userEvent.click(screen.getByText(/Hvor mye tjener/));
+        const lønnSøker1 = utils.getByLabelText('Hva tjener Anders ca. i måneden? (valgfritt)');
+        await userEvent.type(lønnSøker1, '50000');
+        const lønnSøker2 = utils.getByLabelText('Hva tjener Espen ca. i måneden? (valgfritt)');
+        await userEvent.type(lønnSøker2, '50000');
         await userEvent.click(screen.getByText('Neste'));
 
         expect(screen.getAllByText('Hvor lenge')).toHaveLength(2);
@@ -171,15 +174,15 @@ describe('<Planlegger>', () => {
         await userEvent.click(screen.getByText('Forrige'));
 
         expect(screen.getAllByText('Arbeidssituasjon')).toHaveLength(2);
-        expect(screen.getByText('Steg 3 av 8')).toBeInTheDocument();
+        expect(screen.getByText('Steg 3 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
         expect(screen.getAllByText('Barnet')).toHaveLength(2);
-        expect(screen.getByText('Steg 2 av 8')).toBeInTheDocument();
+        expect(screen.getByText('Steg 2 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
         expect(screen.getAllByText('Hvem planlegger?')).toHaveLength(2);
-        expect(screen.getByText('Steg 1 av 8')).toBeInTheDocument();
+        expect(screen.getByText('Steg 1 av 7')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
         expect(screen.getByText('Planleggeren består av to deler:')).toBeInTheDocument();

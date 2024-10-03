@@ -48,9 +48,12 @@ describe('<AppContainer>', () => {
         await userEvent.click(screen.getByText('Ja'));
         await userEvent.click(screen.getByText('Neste'));
 
-        expect(screen.getByText('Hvor mye'));
+        expect(screen.getAllByText('Hvor mye')).toHaveLength(2);
         expect(screen.getByText('Steg 4 av 8')).toBeInTheDocument();
-        await userEvent.click(screen.getByText(/Hva tjener/));
+        const lønnMor = utils.getByLabelText('Hva tjener Helga ca. i måneden? (valgfritt)');
+        await userEvent.type(lønnMor, '50000');
+        const lønnFar = utils.getByLabelText('Hva tjener Espen ca. i måneden? (valgfritt)');
+        await userEvent.type(lønnFar, '50000');
         await userEvent.click(screen.getByText('Neste'));
 
         expect(screen.getAllByText('Hvor lenge')).toHaveLength(2);
@@ -82,7 +85,7 @@ describe('<AppContainer>', () => {
         expect(screen.getByText('Steg 5 av 8')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
-        expect(screen.getByText('Hvor mye'));
+        expect(screen.getAllByText('Hvor mye')).toHaveLength(2);
         expect(screen.getByText('Steg 4 av 8')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
