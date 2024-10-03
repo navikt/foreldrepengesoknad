@@ -26,6 +26,7 @@ export const InntektsmeldingPage = () => {
     }
 
     const tjenerOver6G = inntektsmelding.inntektPrMnd * 12 > GRUNNBELØP * 6;
+    const harRefusjon = inntektsmelding.refusjonPrMnd > 0;
 
     return (
         <PageRouteLayout header={<InntektsmeldingHeader inntektsmelding={inntektsmelding} />}>
@@ -60,7 +61,9 @@ export const InntektsmeldingPage = () => {
                     heading="Hvordan utbetales foreldrepengene?"
                     Ikon={WalletIcon}
                 >
-                    Du får utbetaling direkte fra NAV.
+                    {harRefusjon
+                        ? `Du vil få utbetaling direkte fra fra ${inntektsmelding.arbeidsgiverIdent}. NAV betaler da foreldrepenger til ${inntektsmelding.arbeidsgiverIdent}.`
+                        : 'Du får utbetaling direkte fra NAV.'}
                 </InntektsmeldingInfoBlokk>
                 <InntektsmeldingInfoBlokk
                     className="col-span-2"
