@@ -47,6 +47,20 @@ export const hentInntektsmelding = (saksnummer: string) =>
         queryFn: () => IM_DUMMY,
     });
 
+export const hentGrunnbeløpOptions = () =>
+    queryOptions({
+        queryKey: ['GRUNNBELØP_PER_MND'],
+        queryFn: async () => {
+            try {
+                const response = await ky.get('https://g.nav.no/api/v1/grunnbel%C3%B8p').json<{ grunnbeløp: number }>();
+                return response.grunnbeløp;
+            } catch {
+                return Infinity;
+            }
+        },
+        initialData: Infinity,
+    });
+
 export const hentMellomlagredeYtelserOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGREDE_YTELSER'],

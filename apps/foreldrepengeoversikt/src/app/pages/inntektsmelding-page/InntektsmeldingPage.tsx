@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { Office2 } from '@navikt/ds-icons';
 import { BodyShort, HGrid, Heading, VStack } from '@navikt/ds-react';
 
-import { hentInntektsmelding } from 'app/api/api';
+import { hentGrunnbeløpOptions, hentInntektsmelding } from 'app/api/api';
 import { InntektsmeldingHeader } from 'app/components/header/Header';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
@@ -19,10 +19,13 @@ export const InntektsmeldingPage = () => {
     useSetSelectedRoute(OversiktRoutes.INNTEKTSMELDING);
     const params = useParams();
     const inntektsmelding = useQuery(hentInntektsmelding(params.saksnummer!)).data; //TODO: fiks !
+    const GRUNNBELØP = useQuery(hentGrunnbeløpOptions()).data;
 
     if (!inntektsmelding) {
         return null; // TODO: what to do
     }
+
+    const tjenerOver6G = inntektsmelding.inntektPrMnd * 12 > GRUNNBELØP * 6;
 
     return (
         <PageRouteLayout header={<InntektsmeldingHeader inntektsmelding={inntektsmelding} />}>
@@ -38,8 +41,18 @@ export const InntektsmeldingPage = () => {
                     }
                     Ikon={WalletIcon}
                 >
-                    Månedsinntekten din har blitt beregnet ut fra gjennomsnittet av inntekten din de siste tre månedene
-                    før inntektsmeldingen ble sendt.
+                    <VStack gap="2">
+                        <BodyShort>
+                            Månedsinntekten din har blitt beregnet ut fra gjennomsnittet av inntekten din de siste tre
+                            månedene før inntektsmeldingen ble sendt.
+                        </BodyShort>
+                        {tjenerOver6G && (
+                            <BodyShort>
+                                NAV dekker inntekten du har, opptil {GRUNNBELØP * 6} kroner (seks ganger grunnbeløpet).
+                                Siden du tjener mer enn dette vil NAV ikke dekke hele inntekten du har.
+                            </BodyShort>
+                        )}
+                    </VStack>
                 </InntektsmeldingInfoBlokk>
                 <InntektsmeldingInfoBlokk
                     className="col-span-2"
