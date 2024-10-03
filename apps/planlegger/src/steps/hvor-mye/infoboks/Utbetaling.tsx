@@ -22,7 +22,7 @@ const Utbetaling: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }) 
 
     const decimal80 = 80 / 100;
 
-    const getMonthlyPayment = (lønn: number, decimal: number) => Math.round(Math.min(lønn, monthlyMax * decimal));
+    const getMonthlyPayment = (lønn: number, decimal: number) => Math.round(Math.min(lønn, monthlyMax) * decimal);
     const getDailyPayment = (lønn: number, decimal: number) =>
         Math.round(Math.min((lønn * 12) / 260, dailyMax) * decimal);
 
@@ -56,7 +56,6 @@ const Utbetaling: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }) 
                     <FormattedMessage
                         id="HvorMyeSteg.Utregning"
                         values={{
-                            hvem: fornavn,
                             utregning100: formatCurrency(getMonthlyPayment(lønnSøker, 1)),
                             utregning80: formatCurrency(getMonthlyPayment(lønnSøker, decimal80)),
                         }}
