@@ -8,6 +8,7 @@ import DinPlanPage from 'app/pages/din-plan-page/DinPlanPage';
 import DokumenterPage from 'app/pages/dokumenter-page/DokumenterPage';
 import EttersendingPage from 'app/pages/ettersending/EttersendingPage';
 import Forside from 'app/pages/forside/Forside';
+import { InntektsmeldingPage } from 'app/pages/inntektsmelding-page/InntektsmeldingPage';
 import MinidialogPage from 'app/pages/minidialog-page/MinidialogPage';
 import Saksoversikt from 'app/pages/saksoversikt/Saksoversikt';
 import TidslinjePage from 'app/pages/tidslinje-page/TidslinjePage';
@@ -55,6 +56,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
                                 element={<MinidialogPage fnr={søkerinfo.søker.fnr} />}
                             />
                             <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />
+                            <Route path={OversiktRoutes.INNTEKTSMELDING} element={<InntektsmeldingPage />} />
                         </Route>
                         <Route path="*" element={<Navigate to={OversiktRoutes.HOVEDSIDE} />} />
                     </Route>
