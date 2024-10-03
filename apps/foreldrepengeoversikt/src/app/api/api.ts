@@ -41,12 +41,11 @@ export const hentDokumenterOptions = (saksnummer: string) =>
             ky.get(`${prefiks_public_path}/rest/dokument/alle`, { searchParams: { saksnummer } }).json<Dokument[]>(),
     });
 
-export const hentInntektsmelding = (saksnummer: string) => {
+export const hentInntektsmelding = (saksnummer: string) =>
     queryOptions({
         queryKey: ['INNTEKTSMELDING', saksnummer],
         queryFn: () => IM_DUMMY,
     });
-};
 
 export const hentMellomlagredeYtelserOptions = () =>
     queryOptions({

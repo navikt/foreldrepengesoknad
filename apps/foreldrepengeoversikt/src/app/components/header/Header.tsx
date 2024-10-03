@@ -8,6 +8,7 @@ import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { hentSakerOptions, søkerInfoOptions } from 'app/api/api';
 import { LayoutWrapper } from 'app/sections/LayoutWrapper';
+import { InntektsmeldingDto } from 'app/types/InntektsmeldingDto';
 import { Sak } from 'app/types/Sak';
 import { Ytelse } from 'app/types/Ytelse';
 import {
@@ -127,6 +128,17 @@ export function EttersendingHeader() {
         </SimpleHeaderWrapper>
     );
 }
+
+export const InntektsmeldingHeader = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
+    return (
+        <SimpleHeaderWrapper>
+            <Heading level="1" size="medium">
+                Din inntekt rapportert av {inntektsmelding.arbeidsgiverIdent}
+            </Heading>
+            <Detail textColor="subtle">Endret {inntektsmelding.innsendingstidspunkt}</Detail>
+        </SimpleHeaderWrapper>
+    );
+};
 
 function FamiliehendelseDescription({ sak }: { sak: Sak }) {
     const intl = useIntl();
