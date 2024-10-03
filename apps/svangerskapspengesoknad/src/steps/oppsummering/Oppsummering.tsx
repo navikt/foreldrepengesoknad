@@ -20,6 +20,7 @@ import { formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { DokumentasjonOppsummering } from './DokumentasjonOppsummering';
+import { FerieOppsummering } from './FerieOppsummering';
 import { JobbetIUtlandetOppsummering } from './JobbetIUtlandetOppsummering';
 import { PerioderOppsummering } from './PerioderOppsummering';
 
@@ -114,6 +115,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.SKJEMA)}
                 />
                 <PerioderOppsummering onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.TILRETTELEGGING)} />
+                <FerieOppsummering onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.FERIE)} />
             </OppsummeringPanel>
         </ContentWrapper>
     );
