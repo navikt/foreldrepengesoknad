@@ -58,11 +58,8 @@ const showHvorLangPeriodeEllerOversiktStep = (
     if (path === PlanleggerRoutes.HVOR_LANG_PERIODE || path === PlanleggerRoutes.PLANEN_DERES) {
         const arbeidssituasjon = getData(ContextDataType.ARBEIDSSITUASJON);
         const omBarnet = getData(ContextDataType.OM_BARNET);
-        const hvorMye = getData(ContextDataType.HVOR_MYE);
         return (
-            erBarnIkkeOppgittEllerYngreEnnTreÅr(omBarnet) &&
-            (!arbeidssituasjon || harMinstEnPartJobb(arbeidssituasjon)) &&
-            !hvorMye
+            erBarnIkkeOppgittEllerYngreEnnTreÅr(omBarnet) && (!arbeidssituasjon || harMinstEnPartJobb(arbeidssituasjon))
         );
     }
     return false;

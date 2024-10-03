@@ -30,7 +30,7 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
     const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
 
-    const hvorMye = notEmpty(useContextGetData(ContextDataType.HVOR_MYE));
+    const hvorMye = useContextGetData(ContextDataType.HVOR_MYE);
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
@@ -81,7 +81,7 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
                                     onChange={(lønnSøker1) => oppdaterHvorMye({ ...hvorMye, lønnSøker1 })}
                                 />
                             </BluePanel>
-                            {hvorMye.lønnSøker1 && hvorMye.lønnSøker1 !== undefined && (
+                            {hvorMye && hvorMye.lønnSøker1 && hvorMye.lønnSøker1 !== undefined && (
                                 <>
                                     <Utbetaling
                                         lønnSøker={hvorMye.lønnSøker1}
@@ -106,7 +106,7 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
                                             onChange={(lønnSøker2) => oppdaterHvorMye({ ...hvorMye, lønnSøker2 })}
                                         />
                                     </BluePanel>
-                                    {hvorMye.lønnSøker2 && hvorMye.lønnSøker2 !== undefined && (
+                                    {hvorMye && hvorMye.lønnSøker2 && hvorMye.lønnSøker2 !== undefined && (
                                         <>
                                             <Utbetaling
                                                 satser={satser}

@@ -109,7 +109,7 @@ export const AleneforsørgerMor: Story = {
         satser: satser,
 
         hvorMye: {
-            lønnSøker1: 1000,
+            lønnSøker1: undefined,
         },
     },
 };
