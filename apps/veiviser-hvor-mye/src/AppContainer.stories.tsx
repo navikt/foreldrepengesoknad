@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { InitialEntry } from 'history';
 import { HttpResponse, http } from 'msw';
 import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
@@ -90,7 +89,7 @@ const meta = {
     parameters: {
         msw: {
             handlers: [
-                http.post('/rest/konto', async ({ request }) => {
+                http.post('https://www.nav.no/fp/rest/konto', async ({ request }) => {
                     const body = await request.json();
                     const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', {
                         body: JSON.stringify(body),
@@ -102,7 +101,7 @@ const meta = {
                     const json = await response.json();
                     return HttpResponse.json(json);
                 }),
-                http.get('/rest/satser', async () => {
+                http.get('https://www.nav.no/fp/rest/satser', async () => {
                     const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/satser');
                     const json = await response.json();
                     return HttpResponse.json(json);
@@ -120,7 +119,7 @@ const meta = {
             </StrictMode>
         );
     },
-} satisfies Meta<{ initialEntries?: InitialEntry[]; brukMock?: boolean }>;
+} satisfies Meta;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
@@ -131,8 +130,8 @@ export const HvorMyeVeiviserMockaStønadskontoerOgSatser: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post('/rest/konto', () => HttpResponse.json(STØNADSKONTOER)),
-                http.get('/rest/satser', () => HttpResponse.json(SATSER)),
+                http.post('https://www.nav.no/fp/rest/konto', () => HttpResponse.json(STØNADSKONTOER)),
+                http.get('https://www.nav.no/fp/rest/satser', () => HttpResponse.json(SATSER)),
             ],
         },
     },

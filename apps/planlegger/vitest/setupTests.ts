@@ -4,18 +4,12 @@ import { expect } from 'vitest';
 
 import * as globalStorybookConfig from '../.storybook/preview';
 
-setProjectAnnotations(globalStorybookConfig);
+const annotations = setProjectAnnotations(globalStorybookConfig);
+
+// Run Storybook's beforeAll hook
+beforeAll(annotations.beforeAll);
 
 expect.extend(matchers);
 
 window.scrollTo = () => undefined;
 window.HTMLElement.prototype.scrollIntoView = function () {};
-
-vi.mock('./../src/appData/Environment.ts', async () => {
-    return {
-        default: {
-            INNSYN: 'https://foreldrepenger.intern.dev.nav.no',
-            PUBLIC_PATH: '',
-        },
-    };
-});

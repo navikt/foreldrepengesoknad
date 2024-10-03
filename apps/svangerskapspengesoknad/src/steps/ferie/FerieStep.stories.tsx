@@ -4,8 +4,11 @@ import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext'
 import SøknadRoutes from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { DelivisTilretteleggingPeriodeType } from 'types/DelivisTilretteleggingPeriodeType';
-import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'types/Tilrettelegging';
+import Tilrettelegging, {
+    Arbeidsforholdstype,
+    DelivisTilretteleggingPeriodeType,
+    TilretteleggingstypeOptions,
+} from 'types/Tilrettelegging';
 
 import { initAmplitude } from '../../../../../packages/metrics';
 import { FerieStep } from './FerieStep';

@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/browser';
 import { ContextDataMap, ContextDataType } from 'appData/FpDataContext';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
+import { toNumber } from 'lodash';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 import { AnnenInntekt } from 'types/AnnenInntekt';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
@@ -429,7 +430,7 @@ const cleanSøker = (
     if (
         arbeidsforholdOgInntekt?.harJobbetSomFrilans ||
         arbeidsforholdOgInntekt?.harHattAndreInntektskilder ||
-        arbeidsforholdOgInntekt?.harHattAndreInntektskilder
+        arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende
     ) {
         return {
             ...common,
@@ -448,10 +449,20 @@ const cleanSøker = (
                       {
                           næringstyper: [egenNæring.næringstype],
                           tidsperiode: {
-                              fom: egenNæring.fomDato,
-                              tom: egenNæring.tomDato,
+                              fom: egenNæring.fom,
+                              tom: egenNæring.tom,
                           },
                           navnPåNæringen: egenNæring.navnPåNæringen!,
+                          endringAvNæringsinntektInformasjon:
+                              egenNæring.hattVarigEndringAvNæringsinntektSiste4Kalenderår
+                                  ? {
+                                        dato: egenNæring.varigEndringDato!,
+                                        næringsinntektEtterEndring: toNumber(
+                                            egenNæring.varigEndringInntektEtterEndring!,
+                                        ),
+                                        forklaring: egenNæring.varigEndringBeskrivelse!,
+                                    }
+                                  : undefined,
                           ...egenNæring,
                       },
                   ]

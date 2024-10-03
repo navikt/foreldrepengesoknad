@@ -1,23 +1,19 @@
+import { ArbeidIUtlandetInput } from 'types/ArbeidIUtlandet';
 import { AvtaltFerie } from 'types/AvtaltFerie';
+import { Barn } from 'types/Barn';
 
-import { Attachment } from '@navikt/fp-types';
-import { InformasjonOmUtenlandsoppholdDTO } from '@navikt/fp-types/src/Utenlandsopphold';
+import { Attachment, EgenNæring, Frilans, LocaleNo, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
-import { BarnDTO } from './Barn';
-import { SøkerDTO } from './Søker';
 import { TilretteleggingDTO } from './Tilrettelegging';
 
-export enum Søknadstype {
-    'SVANGERSKAPSPENGER' = 'svangerskapspenger',
-}
-
 export interface SøknadDTO {
-    type: Søknadstype;
-    erEndringssøknad: boolean;
-    informasjonOmUtenlandsopphold: InformasjonOmUtenlandsoppholdDTO;
-    barn: BarnDTO;
+    språkkode: LocaleNo;
+    barn: Barn;
+    frilans: Frilans | undefined;
+    egenNæring: EgenNæring | undefined;
+    andreInntekterSiste10Mnd: ArbeidIUtlandetInput[] | undefined;
+    utenlandsopphold: UtenlandsoppholdPeriode[] | undefined;
     tilrettelegging: TilretteleggingDTO[];
-    søker: SøkerDTO;
     vedlegg: Attachment[];
     ferie: AvtaltFerie[];
 }

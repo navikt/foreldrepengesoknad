@@ -1,3 +1,5 @@
+export const egenNæringId = 'næring';
+
 export enum Næringstype {
     FISKER = 'FISKE',
     JORDBRUK = 'JORDBRUK_SKOGBRUK',
@@ -7,10 +9,10 @@ export enum Næringstype {
 
 export type EgenNæring = {
     næringstype: Næringstype;
-    fomDato: string;
-    tomDato: string;
+    fom: string;
+    tom: string;
     næringsinntekt?: number;
-    pågående: boolean;
+    pågående: boolean; // Brukes ikke backend
     navnPåNæringen?: string;
     organisasjonsnummer?: string;
     registrertINorge: boolean;

@@ -21,7 +21,7 @@ interface Props {
     satser: Satser;
 }
 
-const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stønadskontoer, satser }) => {
+export const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stønadskontoer, satser }) => {
     return (
         <Routes>
             <Route path="/" element={<OmPlanleggerenSteg locale={locale} changeLocale={changeLocale} />} />
@@ -61,5 +61,3 @@ const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stø
         </Routes>
     );
 };
-
-export default PlanleggerRouter;

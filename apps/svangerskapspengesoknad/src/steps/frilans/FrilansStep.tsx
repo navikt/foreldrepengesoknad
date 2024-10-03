@@ -3,14 +3,12 @@ import SøknadRoutes from 'appData/routes';
 import useStepConfig from 'appData/useStepConfig';
 import useSvpNavigator from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
-import { egenNæringId } from 'types/EgenNæring';
 import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
 
 import { Heading } from '@navikt/ds-react';
 
 import { FrilansPanel } from '@navikt/fp-steg-frilans';
-import { Arbeidsforhold, ArbeidsforholdOgInntektSvp, Frilans } from '@navikt/fp-types';
-import { frilansId } from '@navikt/fp-types/src/Frilans';
+import { Arbeidsforhold, ArbeidsforholdOgInntektSvp, Frilans, egenNæringId, frilansId } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 

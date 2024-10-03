@@ -2,6 +2,7 @@ export type BarnetErFødt = {
     erBarnetFødt: true;
     antallBarn: number;
     fødselsdato: string;
+    termindato: string;
 };
 
 export type BarnetErIkkeFødt = {

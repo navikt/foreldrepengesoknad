@@ -25,7 +25,7 @@ const useSendSøknad = (svpApi: AxiosInstance, setKvittering: (kvittering: Kvitt
             try {
                 kvittering = await postData<typeof søknadForInnsending, Kvittering>(
                     svpApi,
-                    `/rest/soknad`,
+                    `/rest/soknad/svangerskapspenger`,
                     søknadForInnsending,
                     FEIL_VED_INNSENDING,
                     true,
