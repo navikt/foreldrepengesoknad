@@ -1,4 +1,6 @@
+import { WalletIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
+import { ReactNode } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';
@@ -23,9 +25,49 @@ export const InntektsmeldingPage = () => {
     return (
         <PageRouteLayout header={<InntektsmeldingHeader inntektsmelding={inntektsmelding} />}>
             <div>
+                <InntektsmeldingInfoBlokk
+                    size="large"
+                    heading={
+                        <>
+                            <span className="font-normal">Månedsinntekt før skatt:</span>{' '}
+                            <strong>kr {inntektsmelding.inntektPrMnd}</strong>
+                        </>
+                    }
+                    Ikon={WalletIcon}
+                >
+                    Månedsinntekten din har blitt beregnet ut fra gjennomsnittet av inntekten din de siste tre månedene
+                    før inntektsmeldingen ble sendt.
+                </InntektsmeldingInfoBlokk>
+                <InntektsmeldingInfoBlokk size="xsmall" heading="Hvordan utbetales foreldrepengene?" Ikon={WalletIcon}>
+                    Du får utbetaling direkte fra NAV.
+                </InntektsmeldingInfoBlokk>
                 <InntektsmeldingSpørsmålOgSvar />
             </div>
         </PageRouteLayout>
+    );
+};
+
+const InntektsmeldingInfoBlokk = ({
+    size,
+    Ikon,
+    heading,
+    children,
+}: {
+    size: 'xsmall' | 'large';
+    Ikon: typeof WalletIcon;
+    heading: ReactNode;
+    children: ReactNode;
+}) => {
+    return (
+        <div className="rounded-large p-6 bg-surface-alt-3-subtle flex gap-4 justify-between sm:justify-normal flex-row-reverse sm:flex-row">
+            {Ikon && <Ikon className="text-icon-info flex-shrink-0" width={24} height={24} aria-hidden />}
+            <VStack>
+                <Heading level="2" size={size}>
+                    {heading}
+                </Heading>
+                {children}
+            </VStack>
+        </div>
     );
 };
 
