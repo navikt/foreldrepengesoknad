@@ -5,8 +5,11 @@ import SøknadRoutes from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Barn } from 'types/Barn';
-import { DelivisTilretteleggingPeriodeType } from 'types/DelivisTilretteleggingPeriodeType';
-import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'types/Tilrettelegging';
+import Tilrettelegging, {
+    Arbeidsforholdstype,
+    DelivisTilretteleggingPeriodeType,
+    TilretteleggingstypeOptions,
+} from 'types/Tilrettelegging';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 

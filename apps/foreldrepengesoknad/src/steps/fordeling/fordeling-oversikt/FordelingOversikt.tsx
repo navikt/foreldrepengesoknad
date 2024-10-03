@@ -1,6 +1,6 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { DelInformasjon, FordelingEier } from 'types/FordelingOversikt';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { ISOStringToDate, førsteOktober2021ReglerGjelder } from 'utils/dateUtils';
@@ -20,24 +20,6 @@ import OversiktPerDel from './OversiktPerDel';
 import SammenhengendeUttakInformasjon from './SammenhengendeUttakInformasjon';
 import { getFarTekst, getMorTekst } from './fordelingOversiktUtils';
 import BeggeHarRettGraf from './grafer/begge-har-rett-graf/BeggeHarRettGraf';
-
-export const getFormattedMessage = (id: string, values?: any, link?: string): React.ReactNode => {
-    return (
-        <FormattedMessage
-            id={id}
-            values={{
-                ...values,
-                b: (msg: any) => <b>{msg}</b>,
-                a: (msg: any) =>
-                    link ? (
-                        <a href={link} className="lenke" rel="noreferrer" target="_blank">
-                            {msg}
-                        </a>
-                    ) : undefined,
-            }}
-        />
-    );
-};
 
 interface Props {
     kontoer: TilgjengeligeStønadskontoerForDekningsgrad;

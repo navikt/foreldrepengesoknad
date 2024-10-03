@@ -42,6 +42,7 @@ const getIntlMock = () => {
         {
             locale: 'nb',
             defaultLocale: 'nb',
+            // @ts-ignore FIX
             messages,
         },
         cache,

@@ -406,16 +406,21 @@ const OppstartValgInput: React.FunctionComponent<Props> = ({
     const erFødsel = søkersituasjon.situasjon === 'fødsel';
     const deltUttak = getIsDeltUttak(annenForelder);
     const datoForAleneomsorg = ISOStringToDate(getDatoForAleneomsorg(annenForelder));
-    const descriptionId =
-        erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato) && !erAleneOmOmsorg && !bareFarHarRett
-            ? 'fordeling.oppstartValg.description.fedreWLB'
-            : 'fordeling.description.kanEndresSenere';
 
     return (
         <RhfRadioGroup
             name="oppstartAvForeldrepengerValg"
             label={<FormattedMessage id="fordeling.oppstartValg.spørsmål" />}
-            description={<FormattedMessage id={descriptionId} />}
+            description={
+                erFarEllerMedmor &&
+                andreAugust2022ReglerGjelder(familiehendelsesdato) &&
+                !erAleneOmOmsorg &&
+                !bareFarHarRett ? (
+                    <FormattedMessage id="fordeling.oppstartValg.description.fedreWLB" />
+                ) : (
+                    <FormattedMessage id="fordeling.description.kanEndresSenere" />
+                )
+            }
             validate={[isRequired(intl.formatMessage({ id: 'fordeling.oppstartValg.måOppgis' }))]}
         >
             {oppstartsvalg.map((valg) =>

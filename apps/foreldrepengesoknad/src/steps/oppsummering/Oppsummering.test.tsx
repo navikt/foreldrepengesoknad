@@ -199,14 +199,16 @@ describe('<Oppsummering>', () => {
 
         expect(
             checkAndGetParentDiv(
-                arbeidsforholdOgInntektDiv.getByText('Har du jobbet og hatt inntekt som frilanser de siste 4 ukene?'),
+                arbeidsforholdOgInntektDiv.getByText(
+                    'Har du jobbet og hatt inntekt som frilanser de siste 10 månedene?',
+                ),
             ).getByText('Ja'),
         ).toBeInTheDocument();
 
         expect(
             checkAndGetParentDiv(
                 arbeidsforholdOgInntektDiv.getByText(
-                    'Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste 4 ukene?',
+                    'Har du jobbet og hatt inntekt som selvstendig næringsdrivende de siste 10 månedene?',
                 ),
             ).getByText('Nei'),
         ).toBeInTheDocument();

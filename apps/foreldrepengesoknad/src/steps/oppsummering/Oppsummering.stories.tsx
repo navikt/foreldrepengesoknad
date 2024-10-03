@@ -526,8 +526,8 @@ export const MorMedSelvstendigNæringsdrivende: Story = {
         egenNæring: {
             navnPåNæringen: 'Fiske',
             pågående: false,
-            fomDato: '2018-01-01',
-            tomDato: '2021-01-01',
+            fom: '2018-01-01',
+            tom: '2021-01-01',
             næringstype: Næringstype.FISKER,
             organisasjonsnummer: '123',
             næringsinntekt: 1000000,
@@ -554,8 +554,8 @@ export const MorMedSelvstendigNæringsdrivendeUtenDiverse: Story = {
         egenNæring: {
             navnPåNæringen: 'Fiske',
             pågående: false,
-            fomDato: '2018-01-01',
-            tomDato: '2021-01-01',
+            fom: '2018-01-01',
+            tom: '2021-01-01',
             næringstype: Næringstype.FISKER,
             registrertILand: 'SE',
             registrertINorge: false,

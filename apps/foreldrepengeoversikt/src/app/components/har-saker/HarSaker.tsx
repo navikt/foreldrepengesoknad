@@ -2,22 +2,20 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { bemUtils, capitalizeFirstLetter } from '@navikt/fp-utils';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { GruppertSak } from 'app/types/GruppertSak';
 import { guid } from 'app/utils/guid';
 import { getSakTittel } from 'app/utils/sakerUtils';
 
-import SakLink from '../sak-link/SakLink';
-import './har-saker.css';
+import { SakLink } from '../sak-link/SakLink';
 
 interface Props {
     grupperteSaker: GruppertSak[];
 }
 
 const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker }) => {
-    const bem = bemUtils('har-saker');
     const intl = useIntl();
     useSetBackgroundColor('blue');
 
@@ -32,9 +30,9 @@ const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker }) => {
                     situasjon: gruppering.type,
                 });
                 return (
-                    <div className={bem.block} key={gruppering.familiehendelsedato}>
-                        <HStack className={bem.element('tittel')} gap="2" align="baseline">
-                            <Heading size="small" level="2">
+                    <div key={gruppering.familiehendelsedato}>
+                        <HStack gap="2" align="baseline">
+                            <Heading size="small" level="2" spacing>
                                 {tittel}
                             </Heading>
                             <BodyShort>{capitalizeFirstLetter(undertittel)}</BodyShort>

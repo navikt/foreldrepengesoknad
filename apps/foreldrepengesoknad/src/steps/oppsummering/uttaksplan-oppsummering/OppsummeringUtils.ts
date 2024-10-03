@@ -43,7 +43,10 @@ export const getArbeidsformTekst = (
         arbeidsformerTekster = arbeidsformer
             .filter((arbeidsform) => arbeidsform !== Arbeidsform.arbeidstaker)
             .map((arbeidsform) => {
-                return intl.formatMessage({ id: `oppsummering.uttak.${arbeidsform.toLowerCase()}` });
+                if (arbeidsform === Arbeidsform.selvstendignæringsdrivende) {
+                    return intl.formatMessage({ id: 'oppsummering.uttak.selvstendig_næringsdrivende' });
+                }
+                return intl.formatMessage({ id: 'oppsummering.uttak.frilans' });
             });
     }
 
@@ -56,5 +59,6 @@ export const getÅrsakTekst = (
     messageValues?: { [key: string]: MessageValue },
 ) => {
     const intlKeyPrefix = type === Periodetype.Utsettelse ? 'utsettelsesårsak.' : 'overføringsårsaktype.';
+    //@ts-ignore Fiks dynamisk id
     return intl.formatMessage({ id: `uttaksplan.${intlKeyPrefix + årsak}` }, messageValues);
 };

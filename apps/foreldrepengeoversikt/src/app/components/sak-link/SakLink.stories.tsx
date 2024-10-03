@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react/*';
 import { MemoryRouter } from 'react-router-dom';
 import saker from 'storybookData/saker/saker.json';
 
-import SakLink from './SakLink';
+import { SakLink } from './SakLink';
 
 const meta = {
     title: 'SakLink',

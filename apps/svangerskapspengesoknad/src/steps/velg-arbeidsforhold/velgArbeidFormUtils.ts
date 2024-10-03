@@ -1,11 +1,16 @@
 import { IntlShape } from 'react-intl';
 import { UnikArbeidsforhold } from 'types/Arbeidsforhold';
-import { egenNæringId } from 'types/EgenNæring';
 import Tilrettelegging, { Arbeidsforholdstype } from 'types/Tilrettelegging';
 import { getUnikeArbeidsforhold } from 'utils/arbeidsforholdUtils';
 
-import { Arbeidsforhold, ArbeidsforholdOgInntektSvp, EgenNæring, Frilans } from '@navikt/fp-types';
-import { frilansId } from '@navikt/fp-types/src/Frilans';
+import {
+    Arbeidsforhold,
+    ArbeidsforholdOgInntektSvp,
+    EgenNæring,
+    Frilans,
+    egenNæringId,
+    frilansId,
+} from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 export const getOptionNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?: string) => {
@@ -26,9 +31,9 @@ export const getNæringTilretteleggingOption = (
             arbeidsgiverId: næring.organisasjonsnummer || `${næring.navnPåNæringen}${næring.registrertILand}`,
             type: Arbeidsforholdstype.SELVSTENDIG,
             navn: næring.navnPåNæringen!,
-            startdato: næring.fomDato,
-            sluttdato: næring.tomDato,
-            stillinger: [{ fom: næring.fomDato, tom: næring.tomDato, stillingsprosent: 100 }],
+            startdato: næring.fom,
+            sluttdato: næring.tom,
+            stillinger: [{ fom: næring.fom, tom: næring.tom, stillingsprosent: 100 }],
         },
         vedlegg: næringTilretteleggingFraState?.vedlegg || [],
         behovForTilretteleggingFom: næringTilretteleggingFraState?.behovForTilretteleggingFom || undefined!,

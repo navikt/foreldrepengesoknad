@@ -4,15 +4,13 @@ import useStepConfig from 'appData/useStepConfig';
 import useSvpNavigator from 'appData/useSvpNavigator';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { ArbeidIUtlandet } from 'types/ArbeidIUtlandet';
-import { egenNæringId } from 'types/EgenNæring';
+import { ArbeidIUtlandet, ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
 import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
 
 import { VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold, ArbeidsforholdOgInntektSvp } from '@navikt/fp-types';
-import { frilansId } from '@navikt/fp-types/src/Frilans';
+import { Arbeidsforhold, ArbeidsforholdOgInntektSvp, egenNæringId, frilansId } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -65,7 +63,12 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
 
     const onSubmit = (values: ArbeidIUtlandet) => {
-        oppdaterArbeidIUtlandet(values);
+        oppdaterArbeidIUtlandet({
+            arbeidIUtlandet: values.arbeidIUtlandet.map((v) => ({
+                ...v,
+                type: ArbeidIUtlandetType.JOBB_I_UTLANDET,
+            })),
+        });
 
         const { nextRoute, nextTilretteleggingId } = getNextRouteValgAvArbeidEllerSkjema(
             barnet.termindato,

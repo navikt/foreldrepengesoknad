@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/browser';
+import Environment from 'appData/Environment';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
 import * as countries from 'i18n-iso-countries';
@@ -6,12 +7,13 @@ import * as langNB from 'i18n-iso-countries/langs/nb.json';
 import * as langNN from 'i18n-iso-countries/langs/nn.json';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 
 import '@navikt/ds-css';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import AppContainer from './AppContainer';
+import { AppContainer } from './AppContainer';
 import './styles/global.css';
 
 countries.registerLocale(langNB);
@@ -33,7 +35,9 @@ if (container) {
     const root = createRoot(container);
     root.render(
         <StrictMode>
-            <AppContainer />
+            <BrowserRouter basename={Environment.PUBLIC_PATH}>
+                <AppContainer />
+            </BrowserRouter>
         </StrictMode>,
     );
 }

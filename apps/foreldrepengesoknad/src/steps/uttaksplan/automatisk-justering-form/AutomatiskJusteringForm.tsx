@@ -54,19 +54,21 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({
         perioderMedUttakRundtFødsel[0].konto === StønadskontoType.Fedrekvote &&
         perioderMedUttakRundtFødsel[0].ønskerFlerbarnsdager === true;
 
-    let infoTekstId = '';
+    let infoTekst = undefined;
     if (svarteJaMenFlerePerioderInnen6Uker) {
-        infoTekstId = 'uttaksplan.automatiskJustering.info.hvisFlerePerioder';
+        infoTekst = <FormattedMessage id="uttaksplan.automatiskJustering.info.hvisFlerePerioder" />;
     }
     if (svarteJaMenStarterIkkeLengerPåTermin) {
-        infoTekstId = 'uttaksplan.automatiskJustering.info.hvisIkkeLengerStarterPåTermin';
+        infoTekst = <FormattedMessage id="uttaksplan.automatiskJustering.info.hvisIkkeLengerStarterPåTermin" />;
     }
 
     if (svarteJaMenEndretPeriodenPåTermin) {
-        infoTekstId = 'uttaksplan.automatiskJustering.info.hvisEndretPeriodePåTermin';
+        infoTekst = <FormattedMessage id="uttaksplan.automatiskJustering.info.hvisEndretPeriodePåTermin" />;
     }
     if (svarteJaMenEndretPeriodenTilØnskerFlerbarnsdager) {
-        infoTekstId = 'uttaksplan.automatiskJustering.info.hvisEndretPeriodeTilØnskerFlerbarnsdager';
+        infoTekst = (
+            <FormattedMessage id="uttaksplan.automatiskJustering.info.hvisEndretPeriodeTilØnskerFlerbarnsdager" />
+        );
     }
 
     const handleOnChange = (value: string) => {
@@ -80,11 +82,9 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({
     return (
         <UttaksplanFormComponents.Form includeButtons={false}>
             <div style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
-                {infoTekstId !== '' && (
+                {infoTekst && (
                     <Block padBottom="l">
-                        <Alert variant="info">
-                            <FormattedMessage id={infoTekstId} />
-                        </Alert>
+                        <Alert variant="info">{infoTekst}</Alert>
                     </Block>
                 )}
                 <Block visible={visibility.isVisible(UttaksplanFormField.ønskerAutomatiskJustering)} padBottom="l">

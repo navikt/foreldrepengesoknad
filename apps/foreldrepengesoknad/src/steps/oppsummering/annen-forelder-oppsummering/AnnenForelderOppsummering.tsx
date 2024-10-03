@@ -122,7 +122,7 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
                         )}
                         {erFarEllerMedmor &&
                             !annenForelder.erAleneOmOmsorg &&
-                            !annenForelder.harRettPåForeldrepengerINorge === false &&
+                            annenForelder.harRettPåForeldrepengerINorge === false &&
                             (annenForelder.harOppholdtSegIEØS === false ||
                                 annenForelder.harRettPåForeldrepengerIEØS === false) && (
                                 <FormSummary.Answer>

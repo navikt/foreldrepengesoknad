@@ -46,7 +46,7 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
 
 // TODO (TOR) Fiks lokalisering
 const FEIL_VED_INNSENDING =
-    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
+    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
 const useEsSendSøknad = (
     esApi: AxiosInstance,

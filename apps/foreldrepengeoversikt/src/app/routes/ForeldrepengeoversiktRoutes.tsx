@@ -1,8 +1,7 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router-dom';
 
-import { bemUtils } from '@navikt/fp-utils';
-
+import { Breadcrumb } from 'app/components/breadcrumb/Breadcrumb';
 import Snarveier from 'app/components/snarveier/Snarveier';
 import { default as SakComponent } from 'app/pages/Sak';
 import DinPlanPage from 'app/pages/din-plan-page/DinPlanPage';
@@ -12,13 +11,13 @@ import Forside from 'app/pages/forside/Forside';
 import MinidialogPage from 'app/pages/minidialog-page/MinidialogPage';
 import Saksoversikt from 'app/pages/saksoversikt/Saksoversikt';
 import TidslinjePage from 'app/pages/tidslinje-page/TidslinjePage';
+import { LayoutWrapper } from 'app/sections/LayoutWrapper';
 import KontaktOss from 'app/sections/kontakt-oss/KontaktOss';
 import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { getAlleYtelser } from 'app/utils/sakerUtils';
 
 import OversiktRoutes from './routes';
-import './routes-wrapper.css';
 
 interface Props {
     saker: SakOppslag;
@@ -31,26 +30,34 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
     return (
         <>
             <Routes>
-                <Route element={<RedirectTilSakHvisDetKunFinnesEn saker={saker} />}>
-                    <Route
-                        path={`${OversiktRoutes.HOVEDSIDE}/:redirect?`}
-                        element={<Forside saker={saker} isFirstRender={isFirstRender} søkerinfo={søkerinfo} />}
-                    />
-                    <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer/:redirect?`} element={<SakComponent />}>
-                        <Route index element={<Saksoversikt søkerinfo={søkerinfo} isFirstRender={isFirstRender} />} />
-                        <Route path={OversiktRoutes.DIN_PLAN} element={<DinPlanPage søkerinfo={søkerinfo} />} />
-                        <Route path={OversiktRoutes.DOKUMENTER} element={<DokumenterPage />} />
+                <Route element={<Breadcrumb />}>
+                    <Route element={<RedirectTilSakHvisDetKunFinnesEn saker={saker} />}>
                         <Route
-                            path={OversiktRoutes.TIDSLINJEN}
-                            element={<TidslinjePage søkersBarn={søkerinfo.søker.barn ?? []} />}
+                            path={`${OversiktRoutes.HOVEDSIDE}/:redirect?`}
+                            element={<Forside saker={saker} isFirstRender={isFirstRender} søkerinfo={søkerinfo} />}
                         />
                         <Route
-                            path={`${OversiktRoutes.OPPGAVER}/:oppgaveId`}
-                            element={<MinidialogPage fnr={søkerinfo.søker.fnr} />}
-                        />
-                        <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />
+                            path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer/:redirect?`}
+                            element={<SakComponent />}
+                        >
+                            <Route
+                                index
+                                element={<Saksoversikt søkerinfo={søkerinfo} isFirstRender={isFirstRender} />}
+                            />
+                            <Route path={OversiktRoutes.DIN_PLAN} element={<DinPlanPage søkerinfo={søkerinfo} />} />
+                            <Route path={OversiktRoutes.DOKUMENTER} element={<DokumenterPage />} />
+                            <Route
+                                path={OversiktRoutes.TIDSLINJEN}
+                                element={<TidslinjePage søkersBarn={søkerinfo.søker.barn ?? []} />}
+                            />
+                            <Route
+                                path={`${OversiktRoutes.OPPGAVER}/:oppgaveId`}
+                                element={<MinidialogPage fnr={søkerinfo.søker.fnr} />}
+                            />
+                            <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />
+                        </Route>
+                        <Route path="*" element={<Navigate to={OversiktRoutes.HOVEDSIDE} />} />
                     </Route>
-                    <Route path="*" element={<Navigate to={OversiktRoutes.HOVEDSIDE} />} />
                 </Route>
             </Routes>
             <KontaktOss />
@@ -91,12 +98,10 @@ function RedirectTilSakHvisDetKunFinnesEn({ saker }: { saker: SakOppslag }) {
 }
 
 export function PageRouteLayout({ header, children }: { header: ReactNode; children: ReactNode }) {
-    const bem = bemUtils('routesWrapper');
-
     return (
         <>
             {header}
-            <div className={bem.block}>{children}</div>
+            <LayoutWrapper className="md:pb-28 pb-4 pl-4 pr-4">{children}</LayoutWrapper>
             {/*Viktig at Snarveier ligger her slik at den har tilgang til saksnummer fra Route da snarveien er dynamiske*/}
             <Snarveier />
         </>

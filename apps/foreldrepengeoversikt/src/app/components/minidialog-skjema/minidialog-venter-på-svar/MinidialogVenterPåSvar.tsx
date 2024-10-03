@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Alert, Loader, VStack } from '@navikt/ds-react';
+import { Alert, HStack, Loader, VStack } from '@navikt/ds-react';
 
 import ScrollToTop from 'app/components/scroll-to-top/ScrollToTop';
 
@@ -18,10 +18,10 @@ const MinidialogVenterPåSvar: FunctionComponent<Props> = ({ fetchCounter, allow
             <>
                 <ScrollToTop />
                 <Alert variant="info">
-                    <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
+                    <HStack gap="4" justify="center">
                         <Loader />
                         Svaret ditt registreres i våre systemer.
-                    </div>
+                    </HStack>
                 </Alert>
             </>
         );

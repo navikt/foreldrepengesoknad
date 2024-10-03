@@ -22,8 +22,10 @@ export interface Props {
 
 const getUtsettelseTekst = (intl: IntlShape, årsak: UtsettelseÅrsakType, foreldernavn: string, erMor: boolean) => {
     return erMor
-        ? intl.formatMessage({ id: `uttaksplan.utsettelseårsaktype.foreldernavn.far.${årsak}` }, { foreldernavn })
-        : intl.formatMessage({ id: `uttaksplan.utsettelseårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn });
+        ? // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
+          intl.formatMessage({ id: `uttaksplan.utsettelseårsaktype.foreldernavn.far.${årsak}` }, { foreldernavn })
+        : // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
+          intl.formatMessage({ id: `uttaksplan.utsettelseårsaktype.foreldernavn.mor.${årsak}` }, { foreldernavn });
 };
 
 const PeriodeInfo: FunctionComponent<Props> = ({ periode, navnPåForeldre }) => {

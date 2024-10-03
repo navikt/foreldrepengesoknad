@@ -21,7 +21,10 @@ const Oppgaver: React.FunctionComponent<Props> = ({ saksnummer }) => {
     const intl = useIntl();
     if (aktiveMinidialogerForSakenQuery.isError) {
         return (
-            <ContentSection heading={intl.formatMessage({ id: 'saksoversikt.oppgaver' })} backgroundColor={'yellow'}>
+            <ContentSection
+                heading={intl.formatMessage({ id: 'saksoversikt.oppgaver' })}
+                className="bg-orange-100 border-orange-500 border-2"
+            >
                 <BodyShort>{intl.formatMessage({ id: 'oppgaver.feilVedHentingAvOppgaver' })}</BodyShort>
             </ContentSection>
         );

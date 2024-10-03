@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import { IntlShape } from 'react-intl';
+import React, { ReactNode } from 'react';
+import { FormattedMessage, IntlShape } from 'react-intl';
 import { DelInformasjon, FordelingEier, FordelingFargekode } from 'types/FordelingOversikt';
 import { getErAleneOmOmsorg, getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
@@ -35,8 +36,6 @@ import {
 } from '@navikt/fp-types';
 import { Uttaksdagen, capitalizeFirstLetter, getNavnGenitivEierform } from '@navikt/fp-utils';
 import { getBrukteDager, uttaksConstants } from '@navikt/fp-uttaksplan';
-
-import { getFormattedMessage } from './FordelingOversikt';
 
 export const getHarFåttEllerSkalFå = (barn: Barn, intl: IntlShape) => {
     if (isFødtBarn(barn)) {
@@ -80,15 +79,30 @@ const getHvorLengeDisseUkeneKanBrukesTekst = (
     antallDager: number,
     antallBarn: number,
     intl: IntlShape,
-): React.ReactNode => {
+): ReactNode => {
     if (!førsteOktober2021ReglerGjelder(familiehendelsesdato)) {
         const varighetTekst = getVarighetString(antallDager, intl);
-        return getFormattedMessage('fordeling.hvorLengeAntallUkerKanBrukes.før1okt2021', { varighetTekst });
+        return (
+            <FormattedMessage
+                id="fordeling.hvorLengeAntallUkerKanBrukes.før1okt2021"
+                values={{
+                    varighetTekst,
+                    b: (msg) => <b>{msg}</b>,
+                }}
+            />
+        );
     }
     if (erAdopsjon) {
-        return getFormattedMessage('fordeling.hvorLengeDisseUkeneKanBrukes.adopsjon');
+        return <FormattedMessage id="fordeling.hvorLengeDisseUkeneKanBrukes.adopsjon" />;
     }
-    return getFormattedMessage('fordeling.hvorLengeDisseUkeneKanBrukes.fødsel', { antallBarn });
+    return (
+        <FormattedMessage
+            id="fordeling.hvorLengeDisseUkeneKanBrukes.fødsel"
+            values={{
+                antallBarn,
+            }}
+        />
+    );
 };
 
 export const getFordelingDelTittel = (
@@ -178,12 +192,37 @@ const getMorResterendeDagerTekst = (
     const varighetTekst = getVarighetString(antallDager, intl);
 
     if (!førsteOktober2021ReglerGjelder(familiehendelsesdato)) {
-        return getFormattedMessage('fordeling.info.mor.resterendeUker.før1okt2021', { varighetTekst });
+        return (
+            <FormattedMessage
+                id="fordeling.info.mor.resterendeUker.før1okt2021"
+                values={{
+                    varighetTekst,
+                    b: (msg) => <b>{msg}</b>,
+                }}
+            />
+        );
     }
     if (erAdopsjon) {
-        return getFormattedMessage('fordeling.info.mor.resterendeUker.adopsjon', { varighetTekst });
+        return (
+            <FormattedMessage
+                id="fordeling.info.mor.resterendeUker.adopsjon"
+                values={{
+                    varighetTekst,
+                    b: (msg) => <b>{msg}</b>,
+                }}
+            />
+        );
     }
-    return getFormattedMessage('fordeling.info.mor.resterendeUker.fødsel', { varighetTekst, antallBarn });
+    return (
+        <FormattedMessage
+            id="fordeling.info.mor.resterendeUker.fødsel"
+            values={{
+                varighetTekst,
+                antallBarn,
+                b: (msg) => <b>{msg}</b>,
+            }}
+        />
+    );
 };
 
 const getFellesInfoTekst = (
@@ -197,23 +236,57 @@ const getFellesInfoTekst = (
 ): React.ReactNode => {
     const varighetTekst = getVarighetString(dagerFelles, intl);
     if (!førsteOktober2021ReglerGjelder(familiehendelsesdato)) {
-        return getFormattedMessage(
-            'fordeling.info.felles.før1okt2021',
-            { varighetTekst, morTekst, farTekst },
-            links.hvorLenge,
+        return (
+            <FormattedMessage
+                id="fordeling.info.felles.før1okt2021"
+                values={{
+                    varighetTekst,
+                    morTekst,
+                    farTekst,
+                    b: (msg) => <b>{msg}</b>,
+                    a: (msg) => (
+                        <a href={links.hvorLenge} className="lenke" rel="noreferrer" target="_blank">
+                            {msg}
+                        </a>
+                    ),
+                }}
+            />
         );
     }
     if (erAdopsjon) {
-        return getFormattedMessage(
-            'fordeling.info.felles.adopsjon',
-            { varighetTekst, morTekst, farTekst },
-            links.hvorLenge,
+        return (
+            <FormattedMessage
+                id="fordeling.info.felles.adopsjon"
+                values={{
+                    varighetTekst,
+                    morTekst,
+                    farTekst,
+                    b: (msg) => <b>{msg}</b>,
+                    a: (msg) => (
+                        <a href={links.hvorLenge} className="lenke" rel="noreferrer" target="_blank">
+                            {msg}
+                        </a>
+                    ),
+                }}
+            />
         );
     }
-    return getFormattedMessage(
-        'fordeling.info.felles.fødsel',
-        { varighetTekst, antallBarn, morTekst, farTekst },
-        links.hvorLenge,
+    return (
+        <FormattedMessage
+            id="fordeling.info.felles.fødsel"
+            values={{
+                varighetTekst,
+                antallBarn,
+                morTekst,
+                farTekst,
+                b: (msg) => <b>{msg}</b>,
+                a: (msg) => (
+                    <a href={links.hvorLenge} className="lenke" rel="noreferrer" target="_blank">
+                        {msg}
+                    </a>
+                ),
+            }}
+        />
     );
 };
 
@@ -283,11 +356,15 @@ const getFordelingFelles = (
             : FordelingFargekode.FELLESPERIODE_BRUKT_AV_FAR;
         fordelingDager.push({ antallDager: dagerBruktAvAnnenPart, fargekode: fargekodeAnnenPart });
         fordelingInfo.push(
-            getFormattedMessage('fordeling.info.felles.annenForelder.del1', {
-                varighet: varighetTekstAnnenPart,
-                annenPartNavn,
-                varighetTekst: gjenståendeVarighet,
-            }),
+            <FormattedMessage
+                id="fordeling.info.felles.annenForelder.del1"
+                values={{
+                    varighet: varighetTekstAnnenPart,
+                    annenPartNavn,
+                    varighetTekst: gjenståendeVarighet,
+                    b: (msg) => <b>{msg}</b>,
+                }}
+            />,
         );
     }
     if (gjenståendeDager > 0) {
@@ -297,28 +374,33 @@ const getFordelingFelles = (
     if (annenPartHarKunRettIEØS && annenPartsKvoteDager && annenPartsKvoteDager > 0) {
         const varighetAnnenPart = getVarighetString(annenPartsKvoteDager, intl);
         fordelingInfo.push(
-            getFormattedMessage(
-                'fordeling.info.felles.annenForelder.eøs',
-                {
+            <FormattedMessage
+                id="fordeling.info.felles.annenForelder.eøs"
+                values={{
                     navn: annenPartNavn,
                     varighetAnnenPart,
-                },
-                links.hvorLenge,
-            ),
+                    b: (msg) => <b>{msg}</b>,
+                    a: (msg) => (
+                        <a href={links.hvorLenge} className="lenke" rel="noreferrer" target="_blank">
+                            {msg}
+                        </a>
+                    ),
+                }}
+            />,
         );
     }
 
     if (ekstraDagerPrematur && ekstraDagerPrematur > 0) {
         const varighetTekst = getVarighetString(ekstraDagerPrematur, intl);
         fordelingInfo.push(
-            getFormattedMessage(
-                'fordeling.info.ekstraDagerPrematur.fellesperiode',
-                {
+            <FormattedMessage
+                id="fordeling.info.ekstraDagerPrematur.fellesperiode"
+                values={{
                     varighetTekst,
                     antallBarn,
-                },
-                links.hvorLenge,
-            ),
+                    b: (msg) => <b>{msg}</b>,
+                }}
+            />,
         );
     }
     return {
@@ -338,12 +420,37 @@ const getFordelingTekstFedrekvote = (
 ) => {
     const varighetTekst = getVarighetString(dagerFar, intl);
     if (!førsteOktober2021ReglerGjelder(familiehendelsesdato)) {
-        return getFormattedMessage('fordeling.info.farMedmor.før1okt2021', { varighetTekst });
+        return (
+            <FormattedMessage
+                id="fordeling.info.farMedmor.før1okt2021"
+                values={{
+                    varighetTekst,
+                    b: (msg) => <b>{msg}</b>,
+                }}
+            />
+        );
     }
     if (erAdopsjon) {
-        return getFormattedMessage('fordeling.info.farMedmor.adopsjon', { varighetTekst });
+        return (
+            <FormattedMessage
+                id="fordeling.info.farMedmor.adopsjon"
+                values={{
+                    varighetTekst,
+                    b: (msg) => <b>{msg}</b>,
+                }}
+            />
+        );
     }
-    return getFormattedMessage('fordeling.info.farMedmor.fødsel', { varighetTekst, antallBarn });
+    return (
+        <FormattedMessage
+            id="fordeling.info.farMedmor.fødsel"
+            values={{
+                varighetTekst,
+                antallBarn,
+                b: (msg) => <b>{msg}</b>,
+            }}
+        />
+    );
 };
 
 const getFordelingFedrekvote = (
@@ -373,12 +480,16 @@ const getFordelingFedrekvote = (
         const dinEllerHans = getDinEllerHansTekst(erFarEllerMedmor, intl);
         const morEllerDeg = getDegEllerMorTekst(erFarEllerMedmor, navnMor, intl);
         fordelingInfo.push(
-            getFormattedMessage('fordeling.info.farMedmor.rundtFødsel', {
-                farTekst,
-                farTekstCapitalized: capitalizeFirstLetter(farTekst),
-                morEllerDeg,
-                dinEllerHans,
-            }),
+            <FormattedMessage
+                id="fordeling.info.farMedmor.rundtFødsel"
+                values={{
+                    farTekst,
+                    farTekstCapitalized: capitalizeFirstLetter(farTekst),
+                    morEllerDeg,
+                    dinEllerHans,
+                    b: (msg) => <b>{msg}</b>,
+                }}
+            />,
         );
     }
 
@@ -389,10 +500,14 @@ const getFordelingFedrekvote = (
             fargekode: FordelingFargekode.FEDREKVOTE_BRUKT_AV_MOR,
         });
         fordelingInfo.push(
-            getFormattedMessage('fordeling.info.annenPart.brukteDagerAvDinKvote', {
-                varighetTekst,
-                navnAnnenPart: navnMor,
-            }),
+            <FormattedMessage
+                id="fordeling.info.annenPart.brukteDagerAvDinKvote"
+                values={{
+                    varighetTekst,
+                    navnAnnenPart: navnMor,
+                    b: (msg) => <b>{msg}</b>,
+                }}
+            />,
         );
     }
     fordelingDager.push({ antallDager: gjenståendeDagerTilFar, fargekode: fargekodeFar });
@@ -438,14 +553,28 @@ const getFordelingMor = (
         });
         if (kunMorFårForeldrepenger) {
             fordelingInfo.push(
-                getFormattedMessage('fordeling.info.mor.førFødsel.kunMorFårForeldrepenger', { varighetTekst }),
+                <FormattedMessage
+                    id="fordeling.info.mor.førFødsel.kunMorFårForeldrepenger"
+                    values={{
+                        varighetTekst,
+                        b: (msg) => <b>{msg}</b>,
+                    }}
+                />,
             );
         } else {
             const dinEllerSin = erFarEllerMedmor
                 ? intl.formatMessage({ id: 'sin' })
                 : intl.formatMessage({ id: 'din' });
             fordelingInfo.push(
-                getFormattedMessage('fordeling.info.mor.førFødsel.deltUttak', { varighetTekst, morTekst, dinEllerSin }),
+                <FormattedMessage
+                    id="fordeling.info.mor.førFødsel.deltUttak"
+                    values={{
+                        varighetTekst,
+                        morTekst,
+                        dinEllerSin,
+                        b: (msg) => <b>{msg}</b>,
+                    }}
+                />,
             );
         }
     }
@@ -456,7 +585,15 @@ const getFordelingMor = (
             fargekode,
         });
         fordelingInfo.push(
-            getFormattedMessage('fordeling.info.mor.første6Uker', { morTekst, varighetTekst, antallBarn }),
+            <FormattedMessage
+                id="fordeling.info.mor.første6Uker"
+                values={{
+                    morTekst,
+                    varighetTekst,
+                    antallBarn,
+                    b: (msg) => <b>{msg}</b>,
+                }}
+            />,
         );
     }
 
@@ -467,10 +604,14 @@ const getFordelingMor = (
             fargekode: FordelingFargekode.MØDREKVOTE_BRUKT_AV_FAR,
         });
         fordelingInfo.push(
-            getFormattedMessage('fordeling.info.annenPart.brukteDagerAvDinKvote', {
-                varighetTekst,
-                navnAnnenPart: navnFar,
-            }),
+            <FormattedMessage
+                id="fordeling.info.annenPart.brukteDagerAvDinKvote"
+                values={{
+                    varighetTekst,
+                    navnAnnenPart: navnFar,
+                    b: (msg) => <b>{msg}</b>,
+                }}
+            />,
         );
     }
     if (resterendeDagerMor > 0) {
@@ -491,14 +632,14 @@ const getFordelingMor = (
     if (ekstraDagerPrematur && ekstraDagerPrematur > 0) {
         const varighetTekst = getVarighetString(ekstraDagerPrematur, intl);
         fordelingInfo.push(
-            getFormattedMessage(
-                'fordeling.info.ekstraDagerPrematur.foreldrepenger',
-                {
+            <FormattedMessage
+                id="fordeling.info.ekstraDagerPrematur.foreldrepenger"
+                values={{
                     varighetTekst,
                     antallBarn,
-                },
-                links.hvorLenge,
-            ),
+                    b: (msg) => <b>{msg}</b>,
+                }}
+            />,
         );
     }
     return {
@@ -528,10 +669,14 @@ const getFordelingForeldrepengerFarAleneomsorg = (
     if (ekstraDagerGrunnetPrematurFødsel) {
         const varighetTekst = getVarighetString(ekstraDagerGrunnetPrematurFødsel, intl);
         fordelingInfo.push(
-            getFormattedMessage('fordeling.info.ekstraDagerPrematur.foreldrepenger', {
-                varighetTekst,
-                antallBarn,
-            }),
+            <FormattedMessage
+                id="fordeling.info.ekstraDagerPrematur.foreldrepenger"
+                values={{
+                    varighetTekst,
+                    antallBarn,
+                    b: (msg) => <b>{msg}</b>,
+                }}
+            />,
         );
     }
     return {
@@ -571,10 +716,14 @@ const getFordelingForeldrepengerFar = (
         const varighetTekst = getVarighetString(dagerUtenAktivitetskrav, intl);
         fordelingDager.push({ antallDager: dagerUtenAktivitetskrav, fargekode });
         fordelingInfo.push(
-            getFormattedMessage('fordeling.info.far.utenAktivitetskrav', {
-                varighetTekst,
-                morNavnEierform: getNavnGenitivEierform(morTekst, intl.locale),
-            }),
+            <FormattedMessage
+                id="fordeling.info.far.utenAktivitetskrav"
+                values={{
+                    varighetTekst,
+                    morNavnEierform: getNavnGenitivEierform(morTekst, intl.locale),
+                    b: (msg) => <b>{msg}</b>,
+                }}
+            />,
         );
     }
 
@@ -582,29 +731,45 @@ const getFordelingForeldrepengerFar = (
         const varighetTekst = getVarighetString(dagerMedAktivitetskrav, intl);
         fordelingDager.push({ antallDager: dagerMedAktivitetskrav, fargekode });
         fordelingInfo.push(
-            getFormattedMessage(
-                'fordeling.info.far.medAktivitetskrav',
-                { varighetTekst, morNavn: morTekst },
-                links.hvorLenge,
-            ),
+            <FormattedMessage
+                id="fordeling.info.far.medAktivitetskrav"
+                values={{
+                    varighetTekst,
+                    morNavn: morTekst,
+                    b: (msg) => <b>{msg}</b>,
+                    a: (msg) => (
+                        <a href={links.hvorLenge} className="lenke" rel="noreferrer" target="_blank">
+                            {msg}
+                        </a>
+                    ),
+                }}
+            />,
         );
     }
 
     if (ekstraDagerGrunnetPrematurFødsel && ekstraDagerGrunnetPrematurFødsel > 0) {
         const varighetTekst = getVarighetString(ekstraDagerGrunnetPrematurFødsel, intl);
         fordelingInfo.push(
-            getFormattedMessage('fordeling.info.ekstraDagerPrematur.foreldrepenger', {
-                varighetTekst,
-                antallBarn,
-            }),
+            <FormattedMessage
+                id="fordeling.info.ekstraDagerPrematur.foreldrepenger"
+                values={{
+                    varighetTekst,
+                    antallBarn,
+                    b: (msg) => <b>{msg}</b>,
+                }}
+            />,
         );
     }
 
     fordelingInfo.push(
-        getFormattedMessage('fordeling.info.far.opphold', {
-            morNavn: morTekst,
-            morNavnEierform: getNavnGenitivEierform(morTekst, intl.locale),
-        }),
+        <FormattedMessage
+            id="fordeling.info.far.opphold"
+            values={{
+                morNavn: morTekst,
+                morNavnEierform: getNavnGenitivEierform(morTekst, intl.locale),
+                b: (msg) => <b>{msg}</b>,
+            }}
+        />,
     );
     return {
         eier: FordelingEier.FarMedmor,

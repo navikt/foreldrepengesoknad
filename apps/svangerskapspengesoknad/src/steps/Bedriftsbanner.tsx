@@ -1,4 +1,4 @@
-import { Buldings3Icon } from '@navikt/aksel-icons';
+import { Buildings3Icon } from '@navikt/aksel-icons';
 import { IntlShape, useIntl } from 'react-intl';
 import { ArbeidsforholdForTilrettelegging, Arbeidsforholdstype } from 'types/Tilrettelegging';
 
@@ -35,7 +35,7 @@ const Bedriftsbanner: React.FunctionComponent<Props> = ({ arbeid }) => {
         <div className={bem.block}>
             <HStack gap="5">
                 <div className={bem.element('ikon')}>
-                    <Buldings3Icon aria-hidden={true} height={'24px'} width={'24px'} />
+                    <Buildings3Icon aria-hidden={true} height={'24px'} width={'24px'} />
                 </div>
                 <div className={bem.element('tekst')}>
                     <VStack gap="1">

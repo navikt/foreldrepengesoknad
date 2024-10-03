@@ -99,13 +99,16 @@ export const ArbeidsforholdOgInntektOppsummering: Story = {
                     egenNæring={{
                         navnPåNæringen: 'Fiske',
                         pågående: false,
-                        fomDato: '2018-01-01',
-                        tomDato: '2021-01-01',
+                        fom: '2018-01-01',
+                        tom: '2021-01-01',
                         næringstype: Næringstype.FISKER,
                         registrertILand: 'SE',
                         registrertINorge: false,
                         harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
-                        hattVarigEndringAvNæringsinntektSiste4Kalenderår: false,
+                        hattVarigEndringAvNæringsinntektSiste4Kalenderår: true,
+                        varigEndringBeskrivelse: 'Beskrivelse av varig endring',
+                        varigEndringDato: '2021-01-01',
+                        varigEndringInntektEtterEndring: '10000',
                     }}
                     onVilEndreSvar={() => {}}
                 />

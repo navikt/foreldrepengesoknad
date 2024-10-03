@@ -6,7 +6,7 @@ import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { addMetadata, lagSendSenereDokument } from 'utils/vedleggUtils';
 
 import { getSaveAttachment } from '@navikt/fp-api';
-import { AttachmentMetadataType, AttachmentType, InnsendingsType } from '@navikt/fp-constants';
+import { AttachmentMetadataType, AttachmentType } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { formatDateShortYear } from '@navikt/fp-utils';
@@ -79,7 +79,7 @@ const VedleggUploader: FunctionComponent<Props> = ({
             description={description}
             attachmentType={attachmentType}
             skjemanummer={skjemanummer}
-            existingAttachments={attachments.filter((a) => a.innsendingsType !== InnsendingsType.SEND_SENERE)}
+            existingAttachments={attachments}
             updateAttachments={(vedlegg) => {
                 const attachmentsMedMetadata = vedlegg.map((a) =>
                     addMetadata(a, {
@@ -88,7 +88,7 @@ const VedleggUploader: FunctionComponent<Props> = ({
                     }),
                 );
 
-                return updateAttachments(attachmentsMedMetadata);
+                updateAttachments(attachmentsMedMetadata);
             }}
             saveAttachment={getSaveAttachment(AxiosInstanceAPI(), 'foreldrepenger')}
         />

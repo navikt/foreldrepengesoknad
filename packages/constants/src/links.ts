@@ -62,4 +62,5 @@ export const links = {
     folketrygden:
         'https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden',
     omForeldrepenger: 'https://www.nav.no/foreldrepenger',
+    utbetalingsoversikt: 'https://www.nav.no/utbetalingsoversikt/',
 };

@@ -67,7 +67,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
 
         expect(saveOnNext).toHaveBeenCalledTimes(1);
         expect(saveOnNext).toHaveBeenNthCalledWith(1, {
-            fomDato: '2023-04-30',
+            fom: '2023-04-30',
             harBlittYrkesaktivILøpetAvDeTreSisteFerdigliknedeÅrene: false,
             navnPåNæringen: 'Virksomhetsnavn AS',
             næringsinntekt: '1000',

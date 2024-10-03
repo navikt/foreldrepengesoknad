@@ -12,17 +12,20 @@ const createFieldErrorIntlKey = (
 
 const getFieldErrorHandler =
     (intl: IntlShape, keySeparator: string, errorPrefix?: string): FieldErrorHandler<ValidationError> =>
+    // @ts-ignore Fiksar ikkje sidan denne pakka snart blir fjerna
     (error: ValidationError, fieldName: string) => {
         return isIntlErrorObject(error)
             ? intl.formatMessage(
                   {
+                      // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
                       id: error.keepKeyUnaltered
                           ? error.key
                           : createFieldErrorIntlKey(error.key, fieldName, keySeparator, errorPrefix),
                   },
                   error.values,
               )
-            : intl.formatMessage({ id: createFieldErrorIntlKey(error, fieldName, keySeparator, errorPrefix) });
+            : // @ts-ignore Fiksar ikkje dynamisk kode sidan denne pakka fjernast snart
+              intl.formatMessage({ id: createFieldErrorIntlKey(error, fieldName, keySeparator, errorPrefix) });
     };
 
 const getIntlFormErrorHandler = (intl: IntlShape, errorPrefix?: string): CustomFormErrorHandler<ValidationError> => ({

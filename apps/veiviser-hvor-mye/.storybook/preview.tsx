@@ -14,20 +14,12 @@ import nbMessages from '../src/intl/messages/nb_NO.json';
 import nnMessages from '../src/intl/messages/nn_NO.json';
 import '../src/styles/global.css';
 
-// Initialize MSW
-initialize({
-    onUnhandledRequest: 'bypass',
-    serviceWorker: {
-        url: './mockServiceWorker.js',
-    },
-});
-
 const scriptTag = document.createElement('script');
 scriptTag.type = 'text/json';
 scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
     APPRES_CMS_URL: '',
-    PUBLIC_PATH: '',
+    PUBLIC_PATH: 'https://www.nav.no/fp',
 });
 document.head.appendChild(scriptTag);
 
@@ -74,6 +66,15 @@ const preview: Preview = {
             );
         },
     ],
+    // beforeAll is available in Storybook 8.2. Else the call would happen outside of the preview object
+    beforeAll: async () => {
+        initialize({
+            onUnhandledRequest: 'bypass',
+            serviceWorker: {
+                url: './mockServiceWorker.js',
+            },
+        });
+    },
     loaders: [mswLoader],
 };
 
