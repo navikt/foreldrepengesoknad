@@ -9,7 +9,6 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorMye } from 'types/HvorMye';
 
 import { initAmplitude } from '@navikt/fp-metrics';
-import { Satser } from '@navikt/fp-types';
 
 import HvorMyeSteg from './HvorMyeSteg';
 
@@ -17,11 +16,10 @@ type StoryArgs = {
     hvorMye: HvorMye;
     hvemPlanlegger: HvemPlanlegger;
     arbeidssituasjon?: Arbeidssituasjon;
-    satser: Satser;
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof HvorMyeSteg>;
 
-const satser = {
+const DEFAULT_SATSER = {
     grunnbeløp: [
         {
             fom: '01.05.2024',
@@ -87,8 +85,7 @@ export const FlereForsørgere: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
-        satser: satser,
-
+        satser: DEFAULT_SATSER,
         hvorMye: {
             lønnSøker1: undefined,
             lønnSøker2: undefined,
@@ -106,8 +103,7 @@ export const AleneforsørgerMor: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
         },
-        satser: satser,
-
+        satser: DEFAULT_SATSER,
         hvorMye: {
             lønnSøker1: undefined,
         },
