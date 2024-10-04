@@ -2,7 +2,7 @@ import { isValidNumber } from '../other/numberValidation';
 import { FormValidationResult, isEmpty } from './generalFormValidation';
 
 const integerRegex = /^\s*\d+\s*$/;
-const decimalRegex = /^\d+(.\d{1,2})?$/;
+const decimalRegex = /^\d+(,\d{1,2})?$/;
 
 export const isValidNumberForm =
     (i18nText: string) =>
