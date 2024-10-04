@@ -13,7 +13,7 @@ const validateEgenNæringOrgnr =
         if (!erValgfri && !trimmedOrgNr) {
             return intl.formatMessage({ id: 'valideringsfeil.egenNæringOrgnr.påkrevd' });
         }
-        if (trimmedOrgNr.length > 0 && containsWhiteSpace(trimmedOrgNr)) {
+        if (trimmedOrgNr.length > 0 && containsWhiteSpace(orgnr || '')) {
             return intl.formatMessage({ id: 'valideringsfeil.egenNæringOrgnr.inneholderMellomrom' });
         }
         if (trimmedOrgNr.length > 0 && !erGyldigNorskOrgnummer(trimmedOrgNr)) {
