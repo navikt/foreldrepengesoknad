@@ -51,7 +51,7 @@ const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: Kvittering | (() => never)) => void) => {
+const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: Kvittering) => void) => {
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 

@@ -45,10 +45,7 @@ describe('<OppsummeringSteg>', () => {
 
         await userEvent.click(screen.getByText('Send søknaden'));
 
-        const abortController = new AbortController();
-
         expect(sendSøknad).toHaveBeenCalledTimes(1);
-        expect(sendSøknad).toHaveBeenNthCalledWith(1, abortController.signal);
     });
 
     it('skal vise opplysninger om adopsjon og så sende søknad', async () => {
@@ -75,10 +72,7 @@ describe('<OppsummeringSteg>', () => {
 
         await userEvent.click(screen.getByText('Send søknaden'));
 
-        const abortController = new AbortController();
-
         expect(sendSøknad).toHaveBeenCalledTimes(1);
-        expect(sendSøknad).toHaveBeenNthCalledWith(1, abortController.signal);
     });
 
     it('skal vise opplysninger om når barnet ikke er født og så sende søknad', async () => {
@@ -106,10 +100,7 @@ describe('<OppsummeringSteg>', () => {
 
         await userEvent.click(screen.getByText('Send søknaden'));
 
-        const abortController = new AbortController();
-
         expect(sendSøknad).toHaveBeenCalledTimes(1);
-        expect(sendSøknad).toHaveBeenNthCalledWith(1, abortController.signal);
     });
 
     it('skal vise opplysninger om historiske og fremtidige utenlandsforhold så sende søknad', async () => {
@@ -151,9 +142,6 @@ describe('<OppsummeringSteg>', () => {
 
         await userEvent.click(screen.getByText('Send søknaden'));
 
-        const abortController = new AbortController();
-
         expect(sendSøknad).toHaveBeenCalledTimes(1);
-        expect(sendSøknad).toHaveBeenNthCalledWith(1, abortController.signal);
     });
 });

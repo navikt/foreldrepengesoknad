@@ -54,7 +54,7 @@ export const Terminbekreftelse: Story = {
             handlers: [
                 http.post(
                     'https://es/rest/storage/engangsstonad/vedlegg',
-                    () => new HttpResponse(null, { status: 200 }),
+                    () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
                 ),
             ],
         },
@@ -76,7 +76,7 @@ export const Adopsjonsbekreftelse: Story = {
             handlers: [
                 http.post(
                     'https://es/rest/storage/engangsstonad/vedlegg',
-                    () => new HttpResponse(null, { status: 200 }),
+                    () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
                 ),
             ],
         },

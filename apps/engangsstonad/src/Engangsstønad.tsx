@@ -35,7 +35,7 @@ export const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChang
         return <ApiErrorHandler error={notEmpty(personinfo.error || mellomlagretInfo.error)} />;
     }
 
-    if (!personinfo.data || mellomlagretInfo.isLoading) {
+    if (!personinfo.data || mellomlagretInfo.isPending) {
         return <Spinner />;
     }
 
