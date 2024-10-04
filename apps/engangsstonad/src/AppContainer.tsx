@@ -63,7 +63,7 @@ dayjs.locale(localeFromSessionStorage);
 
 const retryCallback = async () => {
     try {
-        ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/engangsstonad`);
+        await ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/engangsstonad`);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
         // Vi bryr oss ikke om feil her. Logges bare i backend
