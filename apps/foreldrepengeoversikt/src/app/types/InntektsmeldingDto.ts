@@ -19,7 +19,7 @@ type Refusjonsperiode = {
     fom: string;
 };
 
-type AktivNaturalYtelse = Readonly<{
+export type AktivNaturalYtelse = Readonly<{
     periode: { fomDato: string; tomDato: string };
     beloepPerMnd: Beløp;
     type: keyof typeof NaturalytelseType;
@@ -55,7 +55,20 @@ export const NaturalytelseType = {
 
 export const IM_DUMMY = {
     innsendingstidspunkt: '2024-08-08T00:00:00',
-    aktiveNaturalytelser: [],
+    aktiveNaturalytelser: [
+        {
+            periode: { fomDato: '2024-01-09', tomDato: '2024-10-09' },
+            type: 'ELEKTRISK_KOMMUNIKASJON',
+            beloepPerMnd: { verdi: 999 },
+            indexKey: '1',
+        },
+        {
+            periode: { fomDato: '2024-01-11', tomDato: '2024-10-11' },
+            type: 'LOSJI',
+            beloepPerMnd: { verdi: 10 },
+            indexKey: '2',
+        },
+    ],
     arbeidsgiverIdent: '1',
     eksternArbeidsforholdId: 'ARB001-001',
     inntektPrMnd: 120000,

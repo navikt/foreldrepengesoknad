@@ -1,11 +1,14 @@
 import { PersonIcon, SparklesIcon, WalletIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import classNames from 'classnames';
+import dayjs from 'dayjs';
 import { ReactNode } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Office2 } from '@navikt/ds-icons';
 import { BodyShort, HGrid, Heading, VStack } from '@navikt/ds-react';
+
+import { TIDENES_ENDE } from '@navikt/fp-constants';
 
 import { hentGrunnbeløpOptions, hentInntektsmelding } from 'app/api/api';
 import { InntektsmeldingHeader } from 'app/components/header/Header';
@@ -13,6 +16,8 @@ import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
 import { useSetSelectedRoute } from 'app/hooks/useSelectedRoute';
 import { PageRouteLayout } from 'app/routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from 'app/routes/routes';
+import { AktivNaturalYtelse, InntektsmeldingDto } from 'app/types/InntektsmeldingDto';
+import { sorterPerioder } from 'app/utils/periodeUtils';
 
 export const InntektsmeldingPage = () => {
     useSetBackgroundColor('white');
@@ -106,6 +111,12 @@ export const InntektsmeldingPage = () => {
     );
 };
 
+const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
+    const bortfalteNaturalytelser = konverterAktivePerioderTilBortfaltePerioder(inntektsmelding);
+
+    return <div />;
+};
+
 const InntektsmeldingInfoBlokk = ({
     size,
     Ikon,
@@ -162,4 +173,62 @@ const InntektsmeldingSpørsmålOgSvar = () => {
             </VStack>
         </VStack>
     );
+};
+
+/**
+ * Konverterer liste aktive naturalytelser til liste av bortfalte perioder.
+ * Eksempelvis vil disse aktive periodene resultere i denne bortfalte perioden:
+ * Aktiv periode: {fomDato: '0001-01-01', tomDato: '2024-09-04'} og {fomDato: '2024-09-27', tomDato: '9999-12-31'}
+ * bortfalt periode: {fomDato: '2024-09-05', tomDato: '2024-09-26'}
+ *
+ * KOPIERT FRA FP_FRONTEND
+ */
+const konverterAktivePerioderTilBortfaltePerioder = (inntektsmelding: InntektsmeldingDto) => {
+    const gruppertPåType = inntektsmelding.aktiveNaturalytelser.reduce(
+        (prev, value) => {
+            const type = value.type;
+            if (type in prev) {
+                return { ...prev, [type]: [...prev[type], value] };
+            }
+
+            return { ...prev, [type]: [value] };
+        },
+        {} as Record<string, AktivNaturalYtelse[]>,
+    );
+
+    const bortfalteNaturalytelser = {} as Record<string, AktivNaturalYtelse[]>;
+
+    Object.entries(gruppertPåType).map(([key, value]) => {
+        const sortert = value
+            .sort((a, b) =>
+                sorterPerioder(
+                    { fom: a.periode.fomDato, tom: a.periode.tomDato },
+                    { fom: b.periode.fomDato, tom: b.periode.tomDato },
+                ),
+            )
+            .reverse();
+
+        bortfalteNaturalytelser[key] = sortert.flatMap((current, index, array) => {
+            const next = array[index + 1];
+
+            const nyFom = current.periode.tomDato;
+            const nyTom = next?.periode.fomDato;
+
+            if (nyFom === TIDENES_ENDE) {
+                return [];
+            }
+
+            return [
+                {
+                    ...current,
+                    periode: {
+                        fomDato: dayjs(nyFom).add(1),
+                        tomDato: nyTom ? dayjs(nyTom).add(-1) : TIDENES_ENDE,
+                    },
+                },
+            ];
+        });
+    });
+
+    return bortfalteNaturalytelser;
 };
