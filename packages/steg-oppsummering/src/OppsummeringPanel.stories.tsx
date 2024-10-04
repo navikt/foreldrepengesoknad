@@ -11,13 +11,6 @@ import {
 } from './arbeidsforhold/ArbeidsforholdOppsummering';
 import BoIUtlandetOppsummering from './utenlandsopphold/BoIUtlandetOppsummering';
 
-const promiseAction =
-    () =>
-    (...args: any): Promise<any> => {
-        action('button-click')(...args);
-        return Promise.resolve();
-    };
-
 const meta = {
     component: OppsummeringPanel,
 } satisfies Meta<typeof OppsummeringPanel>;
@@ -28,7 +21,7 @@ type Story = StoryObj<typeof meta>;
 export const HarBoddIUtlandetOgFødt: Story = {
     args: {
         appName: 'Engangsstønad',
-        sendSøknad: promiseAction(),
+        sendSøknad: action('button-click'),
         cancelApplication: action('button-click'),
         onContinueLater: action('button-click'),
         goToPreviousStep: action('button-click'),
@@ -71,7 +64,7 @@ export const HarIkkeBoddIUtlandetOgIkkeFødt: Story = {
 export const ArbeidsforholdOgInntektOppsummering: Story = {
     args: {
         appName: 'Foreldrepenger',
-        sendSøknad: promiseAction(),
+        sendSøknad: action('button-click'),
         cancelApplication: action('button-click'),
         onContinueLater: action('button-click'),
         goToPreviousStep: action('button-click'),

@@ -2,14 +2,13 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, EsDataContext } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
-import MockAdapter from 'axios-mock-adapter';
+import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { OmBarnet } from 'types/OmBarnet';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import { AxiosInstanceAPI } from '../../api/AxiosInstance';
 import DokumentasjonSteg from './DokumentasjonSteg';
 
 const promiseAction =
@@ -22,27 +21,14 @@ const promiseAction =
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
     omBarnet: OmBarnet;
-    skalFeileOpplasting?: boolean;
     path: Path;
 } & ComponentProps<typeof DokumentasjonSteg>;
 
 const meta = {
     title: 'steg/DokumentasjonSteg',
     component: DokumentasjonSteg,
-    render: ({
-        gåTilNesteSide = action('button-click'),
-        mellomlagreOgNaviger,
-        omBarnet,
-        skalFeileOpplasting = false,
-        path,
-    }) => {
+    render: ({ gåTilNesteSide = action('button-click'), mellomlagreOgNaviger, omBarnet, path }) => {
         initAmplitude();
-
-        const apiMock = new MockAdapter(AxiosInstanceAPI());
-        if (!skalFeileOpplasting) {
-            apiMock.onPost('/rest/storage/engangsstonad/vedlegg').reply(200); //story
-            apiMock.onPost('http://localhost:8888/rest/storage/engangsstonad/vedlegg').reply(200); //test
-        }
 
         return (
             <MemoryRouter initialEntries={[path]}>
@@ -63,6 +49,16 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Terminbekreftelse: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    'https://es/rest/storage/engangsstonad/vedlegg',
+                    () => new HttpResponse(null, { status: 200 }),
+                ),
+            ],
+        },
+    },
     args: {
         path: Path.TERMINBEKREFTELSE,
         omBarnet: {
@@ -75,6 +71,16 @@ export const Terminbekreftelse: Story = {
 };
 
 export const Adopsjonsbekreftelse: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    'https://es/rest/storage/engangsstonad/vedlegg',
+                    () => new HttpResponse(null, { status: 200 }),
+                ),
+            ],
+        },
+    },
     args: {
         path: Path.ADOPSJONSBEKREFTELSE,
         omBarnet: {
@@ -88,8 +94,17 @@ export const Adopsjonsbekreftelse: Story = {
 };
 
 export const FeilerOpplastinger: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    'https://es/rest/storage/engangsstonad/vedlegg',
+                    () => new HttpResponse(null, { status: 400 }),
+                ),
+            ],
+        },
+    },
     args: {
-        skalFeileOpplasting: true,
         path: Path.ADOPSJONSBEKREFTELSE,
         omBarnet: {
             adopsjonAvEktefellesBarn: true,

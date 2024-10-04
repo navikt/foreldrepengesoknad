@@ -1,56 +1,59 @@
+import { useQuery } from '@tanstack/react-query';
+import Environment from 'appData/Environment';
 import { EsDataContext } from 'appData/EsDataContext';
 import { EsDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
+import ky from 'ky';
 import { useIntl } from 'react-intl';
 
-import { useRequest } from '@navikt/fp-api';
 import { LocaleAll, Søker } from '@navikt/fp-types';
 import { Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import EngangsstønadRoutes, { ApiErrorHandler, Spinner, esApi } from './EngangsstønadRoutes';
+import { ApiErrorHandler, EngangsstønadRoutes, Spinner } from './EngangsstønadRoutes';
 
 interface Props {
     locale: LocaleAll;
     onChangeLocale: (locale: LocaleAll) => void;
 }
 
-const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
+export const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
     const intl = useIntl();
     useDocumentTitle(intl.formatMessage({ id: 'Søknad.Pagetitle' }));
 
-    const { data: søker, error: errorHentSøker } = useRequest<Søker>(esApi, '/rest/personinfo');
+    const personinfo = useQuery({
+        queryKey: ['PERSONINFO'],
+        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/personinfo`).json<Søker>(),
+    });
 
-    const {
-        data: mellomlagretData,
-        loading: loadingMellomlagretData,
-        error: errorMellomlagretData,
-    } = useRequest<EsDataMapAndMetaData>(esApi, '/rest/storage/engangsstonad');
+    const mellomlagretInfo = useQuery({
+        queryKey: ['MELLOMLAGRET_INFO'],
+        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/storage/engangsstonad`).json<EsDataMapAndMetaData>(),
+    });
 
-    if (errorHentSøker || errorMellomlagretData) {
-        return <ApiErrorHandler error={notEmpty(errorHentSøker || errorMellomlagretData)} />;
+    if (personinfo.error || mellomlagretInfo.error) {
+        return <ApiErrorHandler error={notEmpty(personinfo.error || mellomlagretInfo.error)} />;
     }
 
-    if (!søker || loadingMellomlagretData) {
+    if (!personinfo.data || mellomlagretInfo.isLoading) {
         return <Spinner />;
     }
 
-    if (!erMyndig(søker.fødselsdato)) {
+    if (!erMyndig(personinfo.data.fødselsdato)) {
         return <Umyndig appnavn="Engangsstønad" />;
     }
 
-    const mellomlagretState = mellomlagretData?.version === VERSJON_MELLOMLAGRING ? mellomlagretData : undefined;
+    const mellomlagretState =
+        mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING ? mellomlagretInfo.data : undefined;
 
     return (
         <EsDataContext initialState={mellomlagretState}>
             <EngangsstønadRoutes
                 locale={locale}
                 onChangeLocale={onChangeLocale}
-                søker={søker}
+                søker={personinfo.data}
                 mellomlagretData={mellomlagretState}
             />
         </EsDataContext>
     );
 };
-
-export default Engangsstønad;

@@ -1,4 +1,5 @@
 import { Preview } from '@storybook/react';
+import { initialize, mswLoader } from 'msw-storybook-addon';
 import 'styles/globals.css';
 
 import '@navikt/ds-css';
@@ -18,7 +19,7 @@ scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
     APP_VERSION: 'test',
     INNSYN: 'test',
-    PUBLIC_PATH: '',
+    PUBLIC_PATH: 'https://es',
 });
 document.head.appendChild(scriptTag);
 
@@ -46,6 +47,16 @@ export const globalTypes = {
 
 const preview: Preview = {
     decorators: [withIntlProvider],
+    // beforeAll is available in Storybook 8.2. Else the call would happen outside of the preview object
+    beforeAll: async () => {
+        initialize({
+            onUnhandledRequest: 'bypass',
+            serviceWorker: {
+                url: './mockServiceWorker.js',
+            },
+        });
+    },
+    loaders: [mswLoader],
 };
 
 export default preview;

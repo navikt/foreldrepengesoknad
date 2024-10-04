@@ -1,11 +1,10 @@
+import Environment from 'appData/Environment';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { getSaveAttachment } from '@navikt/fp-api';
+import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
-
-import { AxiosInstanceAPI } from '../../api/AxiosInstance';
 
 interface Props {
     attachments?: Attachment[];
@@ -22,7 +21,7 @@ const AdopsjonDokPanel: React.FunctionComponent<Props> = ({ attachments, updateA
             skjemanummer={Skjemanummer.OMSORGSOVERTAKELSE}
             existingAttachments={attachments}
             updateAttachments={updateAttachments}
-            saveAttachment={getSaveAttachment(AxiosInstanceAPI(), 'engangsstonad')}
+            saveAttachment={getSaveAttachmentFetch(Environment.PUBLIC_PATH, 'engangsstonad')}
         />
     );
 };

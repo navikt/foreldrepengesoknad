@@ -6,13 +6,14 @@ import * as langNB from 'i18n-iso-countries/langs/nb.json';
 import * as langNN from 'i18n-iso-countries/langs/nn.json';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import 'styles/globals.css';
 
 import '@navikt/ds-css';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import AppContainer from './AppContainer';
+import { AppContainer } from './AppContainer';
 
 countries.registerLocale(langNB);
 countries.registerLocale(langNN);
@@ -34,7 +35,9 @@ if (container) {
     const root = createRoot(container);
     root.render(
         <StrictMode>
-            <AppContainer />
+            <BrowserRouter basename={Environment.PUBLIC_PATH}>
+                <AppContainer />
+            </BrowserRouter>
         </StrictMode>,
     );
 }

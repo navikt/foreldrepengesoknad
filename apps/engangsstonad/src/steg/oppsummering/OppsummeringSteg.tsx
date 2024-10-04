@@ -14,7 +14,7 @@ import { DokumentasjonOppsummering } from './DokumentasjonOppsummering';
 import OmBarnetOppsummering from './OmBarnetOppsummering';
 
 export interface Props {
-    sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
+    sendSøknad: () => Promise<void>;
     mellomlagreOgNaviger: () => Promise<void>;
 }
 

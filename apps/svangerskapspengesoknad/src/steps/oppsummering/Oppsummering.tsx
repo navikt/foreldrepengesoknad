@@ -24,7 +24,7 @@ import { JobbetIUtlandetOppsummering } from './JobbetIUtlandetOppsummering';
 import { PerioderOppsummering } from './PerioderOppsummering';
 
 type Props = {
-    sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
+    sendSøknad: () => Promise<void>;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
     søkerInfo: Søkerinfo;

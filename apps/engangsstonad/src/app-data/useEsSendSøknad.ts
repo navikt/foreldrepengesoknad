@@ -1,12 +1,14 @@
-import { AxiosInstance } from 'axios';
-import { useCallback, useMemo, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import ky from 'ky';
+import { useMemo } from 'react';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 
-import { ApiAccessError, ApiGeneralError, deleteData, isApiError, postData } from '@navikt/fp-api';
+import { useAbortSignal } from '@navikt/fp-api';
 import { Kvittering, LocaleAll } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
+import Environment from './Environment';
 import { ContextDataType, useContextGetAnyData } from './EsDataContext';
 
 // TODO Vurder om ein heller bør mappa fram og tilbake i barn-komponenten. Er nok bedre å gjera det
@@ -45,74 +47,71 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
 };
 
 // TODO (TOR) Fiks lokalisering
+const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-const useEsSendSøknad = (
-    esApi: AxiosInstance,
-    locale: LocaleAll,
-    setKvittering: (kvittering: Kvittering | (() => never)) => void,
-) => {
+const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: Kvittering | (() => never)) => void) => {
     const hentData = useContextGetAnyData();
+    const { initAbortSignal } = useAbortSignal();
 
-    const [error, setError] = useState<ApiAccessError | ApiGeneralError>();
+    const { mutate: slettMellomlagring } = useMutation({
+        mutationFn: () => ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/engangsstonad`),
+    });
 
-    const sendSøknad = useCallback(
-        async (abortSignal: AbortSignal) => {
-            const omBarnet = notEmpty(hentData(ContextDataType.OM_BARNET));
-            const dokumentasjon = hentData(ContextDataType.DOKUMENTASJON);
-            const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-            const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+    const send = async () => {
+        const omBarnet = notEmpty(hentData(ContextDataType.OM_BARNET));
+        const dokumentasjon = hentData(ContextDataType.DOKUMENTASJON);
+        const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
+        const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
 
-            const søknad = {
-                type: 'engangsstønad',
-                språkkode: locale,
-                barn: mapBarn(omBarnet, dokumentasjon),
-                utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
-                vedlegg:
-                    dokumentasjon?.vedlegg.map((vedlegg) => ({
-                        ...vedlegg,
-                        dokumenterer: {
-                            type: 'barn',
-                        },
-                    })) || [],
-            };
+        const søknad = {
+            type: 'engangsstønad',
+            språkkode: locale,
+            barn: mapBarn(omBarnet, dokumentasjon),
+            utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
+            vedlegg:
+                dokumentasjon?.vedlegg.map((vedlegg) => ({
+                    ...vedlegg,
+                    dokumenterer: {
+                        type: 'barn',
+                    },
+                })) || [],
+        };
 
-            let kvittering;
-            try {
-                kvittering = await postData<typeof søknad, Kvittering>(
-                    esApi,
-                    '/rest/soknad/engangsstonad',
-                    søknad,
-                    FEIL_VED_INNSENDING,
-                    true,
-                    abortSignal,
-                );
-            } catch (postError: unknown) {
-                if (isApiError(postError)) {
-                    setError(postError);
-                } else {
-                    throw new Error('This should never happen');
-                }
-            }
+        const signal = initAbortSignal();
 
-            if (kvittering) {
-                try {
-                    await deleteData(esApi, '/rest/storage/engangsstonad', FEIL_VED_INNSENDING, abortSignal);
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                } catch (deleteError) {
-                    // Vi bryr oss ikke om feil her. Logges bare i backend
-                }
+        const response = await fetch(`${Environment.PUBLIC_PATH}/rest/soknad/engangsstonad`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            signal,
+            body: JSON.stringify(søknad),
+        });
 
-                setKvittering(kvittering);
-            }
-        },
-        [hentData, locale, setKvittering, esApi],
-    );
+        if (signal.aborted || response.status === 401 || response.status === 403) {
+            throw new Error();
+        }
+
+        if (!response.ok) {
+            const jsonResponse = await response.json();
+            const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
+            throw Error(FEIL_VED_INNSENDING + callIdForBruker);
+        }
+
+        slettMellomlagring();
+
+        setKvittering((await response.json()) as Kvittering);
+    };
+
+    const { mutateAsync: sendSøknad, error } = useMutation({
+        mutationFn: () => send(),
+    });
 
     return useMemo(
         () => ({
-            sendSøknad,
+            sendSøknad: () => sendSøknad(),
             errorSendSøknad: error,
         }),
         [sendSøknad, error],
