@@ -73,7 +73,7 @@
     "FødselPanel.Termindato": "Termindato",
     "FødselPanel.Termindato.DuMåOppgi": "Du må oppgi termindato",
     "FødselPanel.Termindato.Gyldig": "Termindato må være en gyldig dato på formatet dd.mm.åååå",
-    "FødselPanel.Termindato.TermindatoKanIkkeVære3UkerFraIdag": "Termindatoen kan ikke være tidligere enn 3 uker fra i dag",
+    "FødselPanel.Termindato.TermindatoKanIkkeVære3UkerFørFødsel": "Termindatoen kan ikke være tidligere enn 3 uker før fødsel",
     "FødselPanel.Termindato.DuMåVæreIUke22": "Du kan tidligst søke når du er i 22. svangerskapsuke",
     "FødselPanel.AntallBarn.Født": "Hvor mange barn har du fått?",
     "FødselPanel.AntallBarn.Termin": "Hvor mange barn venter du?",
