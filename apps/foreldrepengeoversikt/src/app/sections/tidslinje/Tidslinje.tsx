@@ -10,7 +10,6 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import { bemUtils } from '@navikt/fp-utils';
 
 import NoeGikkGalt from 'app/components/noe-gikk-galt/NoeGikkGalt';
-import OversiktRoutes from 'app/routes/routes';
 import { Sak } from 'app/types/Sak';
 import { SøkerinfoDTOBarn } from 'app/types/SøkerinfoDTO';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
@@ -46,7 +45,6 @@ const Tidslinje: React.FunctionComponent<Params> = ({
     manglendeVedleggQuery,
 }) => {
     const intl = useIntl();
-    const sakPath = location.pathname.replace(`/${OversiktRoutes.TIDSLINJEN}`, '');
 
     const bem = bemUtils('tidslinje-hendelse');
     const førsteUttaksdagISaken =
@@ -179,7 +177,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({
                             {hendelse.linkTittel && hendelse.internalUrl && (
                                 <LinkInternal
                                     className={bem.element('medium_font')}
-                                    to={`${sakPath}/${hendelse.internalUrl}`}
+                                    to={`/sak/${sak.saksnummer}/${hendelse.internalUrl}`}
                                 >
                                     <Button>{hendelse.linkTittel}</Button>
                                 </LinkInternal>
