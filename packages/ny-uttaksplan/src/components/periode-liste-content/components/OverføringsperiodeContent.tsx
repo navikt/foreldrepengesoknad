@@ -5,6 +5,7 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BodyShort } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
+import { Forelder } from '@navikt/fp-constants';
 import { OverføringÅrsakType } from '@navikt/fp-types';
 import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
 
@@ -16,7 +17,6 @@ interface Props {
     periode: Planperiode;
     inneholderKunEnPeriode: boolean;
     navnPåForeldre: NavnPåForeldre;
-    erFarEllerMedmor: boolean;
 }
 
 const getArbeidsTekst = (arbeidstidprosent: number) => {
@@ -72,15 +72,16 @@ const getOverføringsTekst = (
     }
 };
 
-const OverføringsperiodeContent: FunctionComponent<Props> = ({
-    periode,
-    inneholderKunEnPeriode,
-    navnPåForeldre,
-    erFarEllerMedmor,
-}) => {
+const OverføringsperiodeContent: FunctionComponent<Props> = ({ periode, inneholderKunEnPeriode, navnPåForeldre }) => {
     const intl = useIntl();
-    const stønadskontoNavn = getStønadskontoNavn(intl, periode.kontoType!, navnPåForeldre, erFarEllerMedmor);
-    const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const { forelder } = periode;
+    const stønadskontoNavn = getStønadskontoNavn(
+        intl,
+        periode.kontoType!,
+        navnPåForeldre,
+        forelder === Forelder.farMedmor,
+    );
+    const navnPåAnnenForelder = forelder === Forelder.farMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     return (
         <div style={{ marginBottom: '1rem', display: 'flex' }}>

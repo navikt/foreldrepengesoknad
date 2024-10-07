@@ -55,7 +55,6 @@ const renderPeriode = (
                 key={periode.id}
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                 navnPåForeldre={navnPåForeldre}
-                erFarEllerMedmor={erFarEllerMedmor}
                 periode={periode}
             />
         );
