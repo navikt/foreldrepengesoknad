@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
-import ky from 'ky';
+import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -40,26 +40,27 @@ const useEsMellomlagring = (locale: LocaleAll, setVelkommen: (erVelkommen: boole
                 if (currentPath) {
                     navigate(currentPath);
 
-                    const response = await fetch(`${Environment.PUBLIC_PATH}/rest/storage/engangsstonad`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
+                    try {
+                        const data = {
                             version: VERSJON_MELLOMLAGRING,
                             locale,
                             ...state,
-                        }),
-                    });
+                        };
+                        await ky.post(`${Environment.PUBLIC_PATH}/rest/storage/engangsstonad`, { json: data });
+                    } catch (error: unknown) {
+                        if (error instanceof HTTPError) {
+                            if (error.response.status === 401 || error.response.status === 403) {
+                                throw error;
+                            }
 
-                    if (response.status === 401 || response.status === 403) {
-                        throw new Error();
-                    }
-
-                    if (!response.ok) {
-                        const jsonResponse = await response.json();
-                        const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
-                        throw Error(FEIL_VED_INNSENDING + callIdForBruker);
+                            const jsonResponse = await error.response.json();
+                            const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
+                            throw Error(FEIL_VED_INNSENDING + callIdForBruker);
+                        }
+                        if (error instanceof Error) {
+                            throw error;
+                        }
+                        throw new Error(String(error));
                     }
                 } else {
                     // Ved avbryt så set ein Path = undefined og må så rydda opp i data her

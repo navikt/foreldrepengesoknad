@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import ky from 'ky';
+import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
 import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
@@ -81,28 +81,30 @@ const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: Kvitter
 
         const signal = initAbortSignal();
 
-        const response = await fetch(`${Environment.PUBLIC_PATH}/rest/soknad/engangsstonad`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            signal,
-            body: JSON.stringify(søknad),
-        });
+        try {
+            const response = await ky.post(`${Environment.PUBLIC_PATH}/rest/soknad/engangsstonad`, {
+                json: søknad,
+                signal,
+            });
 
-        if (signal.aborted || response.status === 401 || response.status === 403) {
-            throw new Error();
+            slettMellomlagring();
+
+            setKvittering((await response.json()) as Kvittering);
+        } catch (error: unknown) {
+            if (error instanceof HTTPError) {
+                if (signal.aborted || error.response.status === 401 || error.response.status === 403) {
+                    throw error;
+                }
+
+                const jsonResponse = await error.response.json();
+                const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
+                throw Error(FEIL_VED_INNSENDING + callIdForBruker);
+            }
+            if (error instanceof Error) {
+                throw error;
+            }
+            throw new Error(String(error));
         }
-
-        if (!response.ok) {
-            const jsonResponse = await response.json();
-            const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
-            throw Error(FEIL_VED_INNSENDING + callIdForBruker);
-        }
-
-        slettMellomlagring();
-
-        setKvittering((await response.json()) as Kvittering);
     };
 
     const { mutateAsync: sendSøknad, error } = useMutation({
