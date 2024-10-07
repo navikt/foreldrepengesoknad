@@ -60,20 +60,7 @@ const getStønadskontoer = async (
         morHarUføretrygd: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
     };
 
-    const response = await fetch(`${Environment.PUBLIC_PATH}/rest/konto`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        signal: AbortSignal.timeout(30 * 1000),
-        body: JSON.stringify(params),
-    });
-
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return (await response.json()) as TilgjengeligeStønadskontoer;
+    return ky.post(`${Environment.PUBLIC_PATH}/rest/konto`, { json: params }).json<TilgjengeligeStønadskontoer>();
 };
 
 interface Props {
