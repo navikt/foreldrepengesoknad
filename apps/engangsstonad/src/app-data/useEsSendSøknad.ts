@@ -87,12 +87,7 @@ const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: Kvitter
                 signal,
             });
 
-            try {
-                slettMellomlagring();
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            } catch (deleteError) {
-                // Vi bryr oss ikke om feil her. Logges bare i backend
-            }
+            slettMellomlagring();
 
             setKvittering((await response.json()) as Kvittering);
         } catch (error: unknown) {
