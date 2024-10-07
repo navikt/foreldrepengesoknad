@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { Kvittering } from 'types/Kvittering';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 
+import { useAbortSignal } from '@navikt/fp-api';
 import { LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -30,10 +31,11 @@ const useSendSøknad = (
     locale: LocaleNo,
 ) => {
     const hentData = useContextGetAnyData();
+    const { initAbortSignal } = useAbortSignal();
 
     const [error, setError] = useState<Error>();
 
-    const sendSøknad = async (abortSignal: AbortSignal) => {
+    const sendSøknad = async () => {
         const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
         const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
 
@@ -50,6 +52,8 @@ const useSendSøknad = (
         if (cleanedSøknad.uttaksplan.length === 0 && cleanedSøknad.erEndringssøknad) {
             setError(new Error('Søknaden din inneholder ingen nye perioder.'));
         }
+
+        const abortSignal = initAbortSignal();
 
         let kvittering;
 

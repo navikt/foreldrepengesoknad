@@ -8,12 +8,10 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { Loader } from '@navikt/ds-react';
 
-import { ApiAccessError, ApiGeneralError } from '@navikt/fp-api';
 import { Kvittering, LocaleAll, Søker } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 import { redirect } from '@navikt/fp-utils';
 
-import { AxiosInstanceAPI } from './api/AxiosInstance';
 import DokumentasjonSteg from './steg/dokumentasjon/DokumentasjonSteg';
 import OmBarnetSteg from './steg/om-barnet/OmBarnetSteg';
 import OppsummeringSteg from './steg/oppsummering/OppsummeringSteg';
@@ -23,15 +21,13 @@ import TidligereUtenlandsoppholdSteg from './steg/utenlandsopphold-tidligere/Tid
 import UtenlandsoppholdSteg from './steg/utenlandsopphold/UtenlandsoppholdSteg';
 import Velkommen from './velkommen/Velkommen';
 
-export const esApi = AxiosInstanceAPI();
-
 export const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
         <Loader size="2xlarge" />
     </div>
 );
 
-export const ApiErrorHandler: React.FunctionComponent<{ error: ApiAccessError | ApiGeneralError }> = ({ error }) => {
+export const ApiErrorHandler = ({ error }: { error: Error }) => {
     return <ErrorPage appName="Engangsstønad" errorMessage={error.message} retryCallback={() => location.reload()} />;
 };
 
@@ -42,14 +38,14 @@ interface Props {
     mellomlagretData?: EsDataMapAndMetaData;
 }
 
-const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChangeLocale, søker, mellomlagretData }) => {
+export const EngangsstønadRoutes = ({ locale, onChangeLocale, søker, mellomlagretData }: Props) => {
     const navigate = useNavigate();
 
     const [erVelkommen, setErVelkommen] = useState(false);
     const [kvittering, setKvittering] = useState<Kvittering>();
 
-    const { sendSøknad, errorSendSøknad } = useEsSendSøknad(AxiosInstanceAPI(), locale, setKvittering);
-    const mellomlagreOgNaviger = useEsMellomlagring(AxiosInstanceAPI(), locale, setErVelkommen);
+    const { sendSøknad, errorSendSøknad } = useEsSendSøknad(locale, setKvittering);
+    const mellomlagreOgNaviger = useEsMellomlagring(locale, setErVelkommen);
 
     useEffect(() => {
         if (mellomlagretData?.[ContextDataType.CURRENT_PATH]) {
@@ -133,5 +129,3 @@ const EngangsstønadRoutes: React.FunctionComponent<Props> = ({ locale, onChange
         </Routes>
     );
 };
-
-export default EngangsstønadRoutes;

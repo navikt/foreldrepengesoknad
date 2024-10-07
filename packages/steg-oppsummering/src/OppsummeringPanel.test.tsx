@@ -41,10 +41,8 @@ describe('<OppsummeringSteg>', () => {
 
         await userEvent.click(screen.getByText('Send søknaden'));
 
-        const abortController = new AbortController();
-
         expect(sendSøknad).toHaveBeenCalledTimes(1);
-        expect(sendSøknad).toHaveBeenNthCalledWith(1, abortController.signal);
+        expect(sendSøknad).toHaveBeenNthCalledWith(1);
     });
 
     it('skal ikke ha hatt utenlandsopphold for ES', async () => {

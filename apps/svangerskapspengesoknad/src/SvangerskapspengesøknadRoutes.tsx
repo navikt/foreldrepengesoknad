@@ -49,7 +49,7 @@ const renderSøknadRoutes = (
     søkerInfo: Søkerinfo,
     mellomlagreSøknadOgNaviger: () => Promise<void>,
     avbrytSøknad: () => Promise<void>,
-    sendSøknad: (abortSignal: AbortSignal) => Promise<void>,
+    sendSøknad: () => Promise<void>,
 ) => {
     if (!harGodkjentVilkår) {
         return <Route path="*" element={<Navigate to={SøknadRoutes.FORSIDE} />} />;

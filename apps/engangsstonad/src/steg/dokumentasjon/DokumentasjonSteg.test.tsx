@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
 import dayjs from 'dayjs';
+import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
@@ -16,6 +17,7 @@ describe('<DokumentasjonSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreOgNaviger = vi.fn();
 
+        await applyRequestHandlers(Terminbekreftelse.parameters.msw);
         const utils = render(
             <Terminbekreftelse gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />,
         );
@@ -55,8 +57,8 @@ describe('<DokumentasjonSteg>', () => {
                         skjemanummer: 'I000141',
                         type: 'terminbekreftelse',
                         uploaded: true,
-                        url: undefined,
-                        uuid: undefined,
+                        url: 'test.com',
+                        uuid: 'uuid-test',
                     }),
                 ],
             },
@@ -77,6 +79,7 @@ describe('<DokumentasjonSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreOgNaviger = vi.fn();
 
+        await applyRequestHandlers(Adopsjonsbekreftelse.parameters.msw);
         render(<Adopsjonsbekreftelse gåTilNesteSide={gåTilNesteSide} mellomlagreOgNaviger={mellomlagreOgNaviger} />);
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
 
@@ -107,8 +110,8 @@ describe('<DokumentasjonSteg>', () => {
                         skjemanummer: 'I000042',
                         type: 'omsorgsovertakelse',
                         uploaded: true,
-                        url: undefined,
-                        uuid: undefined,
+                        url: 'test.com',
+                        uuid: 'uuid-test',
                     }),
                 ],
             },

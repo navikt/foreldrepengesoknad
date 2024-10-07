@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/browser';
 import { AxiosInstance } from 'axios';
 import { useCallback, useMemo, useState } from 'react';
 
-import { ApiAccessError, ApiGeneralError, deleteData, isApiError, postData } from '@navikt/fp-api';
+import { ApiAccessError, ApiGeneralError, deleteData, isApiError, postData, useAbortSignal } from '@navikt/fp-api';
 import { Kvittering, LocaleNo } from '@navikt/fp-types';
 
 import { useContextGetAnyData } from './SvpDataContext';
@@ -13,48 +13,48 @@ export const FEIL_VED_INNSENDING =
 
 const useSendSøknad = (svpApi: AxiosInstance, setKvittering: (kvittering: Kvittering) => void, locale: LocaleNo) => {
     const hentData = useContextGetAnyData();
+    const { initAbortSignal } = useAbortSignal();
 
     const [error, setError] = useState<ApiAccessError | ApiGeneralError>();
 
-    const sendSøknad = useCallback(
-        async (abortSignal: AbortSignal) => {
-            const søknadForInnsending = getSøknadForInnsending(hentData, locale);
+    const sendSøknad = useCallback(async () => {
+        const søknadForInnsending = getSøknadForInnsending(hentData, locale);
 
-            let kvittering;
+        const abortSignal = initAbortSignal();
 
+        let kvittering;
+
+        try {
+            kvittering = await postData<typeof søknadForInnsending, Kvittering>(
+                svpApi,
+                `/rest/soknad/svangerskapspenger`,
+                søknadForInnsending,
+                FEIL_VED_INNSENDING,
+                true,
+                abortSignal,
+            );
+        } catch (postError: unknown) {
+            if (isApiError(postError)) {
+                if (postError instanceof ApiGeneralError) {
+                    Sentry.captureMessage(postError.message);
+                }
+                setError(postError);
+            } else {
+                throw new Error('SendSøknad - This should never happen');
+            }
+        }
+
+        if (kvittering) {
             try {
-                kvittering = await postData<typeof søknadForInnsending, Kvittering>(
-                    svpApi,
-                    `/rest/soknad/svangerskapspenger`,
-                    søknadForInnsending,
-                    FEIL_VED_INNSENDING,
-                    true,
-                    abortSignal,
-                );
-            } catch (postError: unknown) {
-                if (isApiError(postError)) {
-                    if (postError instanceof ApiGeneralError) {
-                        Sentry.captureMessage(postError.message);
-                    }
-                    setError(postError);
-                } else {
-                    throw new Error('SendSøknad - This should never happen');
-                }
+                await deleteData(svpApi, '/rest/storage/svangerskapspenger', FEIL_VED_INNSENDING, abortSignal);
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            } catch (deleteError) {
+                // Vi bryr oss ikke om feil her. Logges bare i backend
             }
 
-            if (kvittering) {
-                try {
-                    await deleteData(svpApi, '/rest/storage/svangerskapspenger', FEIL_VED_INNSENDING, abortSignal);
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                } catch (deleteError) {
-                    // Vi bryr oss ikke om feil her. Logges bare i backend
-                }
-
-                setKvittering(kvittering);
-            }
-        },
-        [hentData, setKvittering, locale, svpApi],
-    );
+            setKvittering(kvittering);
+        }
+    }, [hentData, setKvittering, locale, svpApi]);
 
     return useMemo(
         () => ({
