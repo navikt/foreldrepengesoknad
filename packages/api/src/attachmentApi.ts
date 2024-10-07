@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+import ky from 'ky';
 
 import { Attachment } from '@navikt/fp-types';
 
@@ -27,20 +28,11 @@ export const getSaveAttachmentFetch =
         formData.append('id', attachment.id);
         formData.append('vedlegg', attachment.file, attachment.filename);
 
-        const response = await fetch(`${publicPath}/rest/storage/${type}/vedlegg`, {
-            method: 'POST',
-            body: formData,
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.text();
+        const response = await ky.post(`${publicPath}/rest/storage/${type}/vedlegg`, { json: formData });
         return {
             headers: {
                 location: response.headers.get('Location'),
             },
-            data,
+            data: await response.text(),
         };
     };
