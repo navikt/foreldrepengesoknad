@@ -28,7 +28,9 @@ export const getSaveAttachmentFetch =
         formData.append('id', attachment.id);
         formData.append('vedlegg', attachment.file, attachment.filename);
 
-        const response = await ky.post(`${publicPath}/rest/storage/${type}/vedlegg`, { json: formData });
+        const response = await ky.post(`${publicPath}/rest/storage/${type}/vedlegg`, {
+            body: formData,
+        });
         return {
             headers: {
                 location: response.headers.get('Location'),
