@@ -153,4 +153,22 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Dere valgte 100 % i 46 uker.')).toBeInTheDocument();
         expect(screen.getByText('24. okt. 2024 – 10. sep. 2025')).toBeInTheDocument();
     });
+    it('skal vise info om hvor mye-steget der det er flere forsørgere og begge har rett til foreldrepenger - fødsel', async () => {
+        render(<FlereForsørgereHundreProsentTermin />);
+
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+
+        expect(screen.getAllByText('Hvor mye?')).toHaveLength(2);
+        expect(
+            screen.getByText(
+                'Klara vil få rundt 2 308 kr per dag hvis dere velger 100 % foreldrepenger eller 1 846 kr per dag med 80 %.',
+            ),
+        ).toBeInTheDocument();
+
+        expect(
+            screen.getByText(
+                'Espen vil få rundt 2 862 kr per dag hvis dere velger 100 % foreldrepenger eller 2 289 kr per dag med 80 %.',
+            ),
+        ).toBeInTheDocument();
+    });
 });

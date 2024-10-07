@@ -17,7 +17,8 @@ import { links } from '@navikt/fp-constants';
 import { RhfForm, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { LocaleAll, Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
-import { notEmpty } from '@navikt/fp-validation';
+import { isValidNumberForm, notEmpty } from '@navikt/fp-validation';
+import { formatValue } from '@navikt/fp-validation/src/form/numberFormValidation';
 
 import Utbetaling from './infoboks/Utbetaling';
 
@@ -48,15 +49,7 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
 
     const onSubmit = (formValues: HvorMye) => {
         oppdaterHvorMye(formValues);
-        const lønnSøker1 = formValues.lønnSøker1;
-        const lønnSøker2 = formValues.lønnSøker2;
-
-        if (lønnSøker1 !== undefined && lønnSøker2 !== undefined) {
-            navigator.goToNextStep(PlanleggerRoutes.HVOR_LANG_PERIODE);
-        }
-        if (lønnSøker1 !== undefined && !lønnSøker2) {
-            navigator.goToNextStep(PlanleggerRoutes.HVOR_LANG_PERIODE);
-        }
+        navigator.goToNextStep(PlanleggerRoutes.HVOR_LANG_PERIODE);
     };
 
     return (
@@ -80,45 +73,40 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
                                     }
                                     name="lønnSøker1"
                                     onChange={(lønnSøker1) => oppdaterHvorMye({ ...hvorMye, lønnSøker1 })}
+                                    validate={[isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' }))]}
                                 />
                             </BluePanel>
-                            {hvorMye && hvorMye.lønnSøker1 && hvorMye.lønnSøker1 !== undefined && (
-                                <>
-                                    <Utbetaling
-                                        lønnSøker={hvorMye.lønnSøker1}
-                                        satser={satser}
-                                        fornavn={fornavnSøker1}
-                                    />
-                                </>
+                            {hvorMye?.lønnSøker1 && hvorMye.lønnSøker1 !== undefined && (
+                                <Utbetaling lønnSøker={hvorMye.lønnSøker1} satser={satser} fornavn={fornavnSøker1} />
                             )}
                         </VStack>
-                        <VStack gap="2">
-                            {!kunEnAvSøkereneHarRett && fornavnSøker2 && (
-                                <>
-                                    <BluePanel isDarkBlue={true}>
-                                        <RhfTextField
-                                            label={
-                                                <FormattedMessage
-                                                    id="HvorMyeSteg.Lønn"
-                                                    values={{ hvem: getFornavnPåSøker2(hvemPlanlegger, intl) }}
-                                                />
-                                            }
-                                            name="lønnSøker2"
-                                            onChange={(lønnSøker2) => oppdaterHvorMye({ ...hvorMye, lønnSøker2 })}
-                                        />
-                                    </BluePanel>
-                                    {hvorMye && hvorMye.lønnSøker2 && hvorMye.lønnSøker2 !== undefined && (
-                                        <>
-                                            <Utbetaling
-                                                satser={satser}
-                                                lønnSøker={hvorMye.lønnSøker2}
-                                                fornavn={fornavnSøker2}
+                        {!kunEnAvSøkereneHarRett && fornavnSøker2 && (
+                            <VStack gap="2">
+                                <BluePanel isDarkBlue={true}>
+                                    <RhfTextField
+                                        label={
+                                            <FormattedMessage
+                                                id="HvorMyeSteg.Lønn"
+                                                values={{ hvem: getFornavnPåSøker2(hvemPlanlegger, intl) }}
                                             />
-                                        </>
-                                    )}
-                                </>
-                            )}
-                        </VStack>
+                                        }
+                                        name="lønnSøker2"
+                                        onChange={(lønnSøker2) => oppdaterHvorMye({ ...hvorMye, lønnSøker2 })}
+                                        validate={[
+                                            isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' })),
+                                            formatValue,
+                                        ]}
+                                    />
+                                </BluePanel>
+                                {hvorMye?.lønnSøker2 && hvorMye.lønnSøker2 !== undefined && (
+                                    <Utbetaling
+                                        satser={satser}
+                                        lønnSøker={hvorMye.lønnSøker2}
+                                        fornavn={fornavnSøker2}
+                                    />
+                                )}
+                            </VStack>
+                        )}
                         <VStack gap="2">
                             <Infobox
                                 header={<FormattedMessage id="HvorMyeSteg.ViteMer" values={{ erAleneforsørger }} />}
@@ -146,7 +134,7 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
                                     />
                                 </BodyShort>
                             </Infobox>
-                        </VStack>{' '}
+                        </VStack>
                     </VStack>
 
                     <Spacer />

@@ -226,5 +226,6 @@
     "OmÅTilpassePlanen.PermisjonSamtidig.Tekst": "Both parents can be at home simultaneously with up to 150 % parental benefit. {erAdopsjon, select, true {This is possible} other {This is possible from week 7 after birth,}} if one parent uses the joint period while the other uses their own quota.",
     "OmÅTilpassePlanen.ToUkerRundtFødsel": "Two weeks around birth",
     "OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst": "Often {hvem}s have leave covered for the first two weeks after birth by their employer. If not, the {hvem} can use parental benefit in these two weeks.",
-    "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "If the {hvem} is not taking parental benefit, you can add a period without parental benefit, where one, for example, receives holiday pay from the employer."
+    "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "If the {hvem} is not taking parental benefit, you can add a period without parental benefit, where one, for example, receives holiday pay from the employer.",
+    "Validering.ValidNumber": "Du har skrevet inn noe som ikke er et tall."
 }
