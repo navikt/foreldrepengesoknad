@@ -21,6 +21,7 @@ const getLabelConfig = (intl: IntlShape): Record<PlanleggerRoutes, string> => ({
     [PlanleggerRoutes.HVEM_PLANLEGGER]: intl.formatMessage({ id: 'HvemPlanleggerSteg.HvemPlanlegger' }),
     [PlanleggerRoutes.HVOR_LANG_PERIODE]: intl.formatMessage({ id: 'HvorLangPeriodeSteg.Tittel' }),
     [PlanleggerRoutes.OM_BARNET]: intl.formatMessage({ id: 'OmBarnetSteg.Tittel' }),
+    [PlanleggerRoutes.BARNEHAGEPLASS]: intl.formatMessage({ id: 'BarnehageplassSteg.Tittel' }),
     [PlanleggerRoutes.OM_PLANLEGGEREN]: intl.formatMessage({ id: 'OmPlanleggerenSteg.Ingress' }),
     [PlanleggerRoutes.PLANEN_DERES]: intl.formatMessage({ id: 'PlanenDeresSteg.Tittel' }),
     [PlanleggerRoutes.OPPSUMMERING]: intl.formatMessage({ id: 'OppsummeringHeader.Tittel' }),
