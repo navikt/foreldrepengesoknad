@@ -1,1 +1,0 @@
-import{n as e}from"./validation-4HO0J-zV.js";import"./dateFormValidation-BCNomYDE.js";const a=r=>`${Number(r).toLocaleString("nb-NO")} kr`,u=r=>`${Number(r).toLocaleString("nb-NO").replace(/,|\s/g," ")}`,m=r=>e(r.grunnbeløp[0]).verdi;export{u as a,a as b,m as f};
