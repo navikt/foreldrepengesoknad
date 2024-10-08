@@ -62,6 +62,11 @@ describe('useStepData', () => {
                     label: 'Arbeidssituasjon',
                 },
                 {
+                    id: '/hvor-mye',
+                    isSelected: false,
+                    label: 'Hvor mye',
+                },
+                {
                     id: '/hvor-lenge',
                     isSelected: false,
                     label: 'Hvor lenge',
@@ -114,6 +119,11 @@ describe('useStepData', () => {
                     id: '/arbeidssituasjon',
                     isSelected: false,
                     label: 'Arbeidssituasjon',
+                },
+                {
+                    id: '/hvor-mye',
+                    isSelected: false,
+                    label: 'Hvor mye',
                 },
                 {
                     id: '/hvor-lenge',
@@ -213,6 +223,11 @@ describe('useStepData', () => {
                     label: 'Arbeidssituasjon',
                 },
                 {
+                    id: '/hvor-mye',
+                    isSelected: false,
+                    label: 'Hvor mye',
+                },
+                {
                     id: '/hvor-lenge',
                     isSelected: false,
                     label: 'Hvor lenge',
@@ -276,6 +291,11 @@ describe('useStepData', () => {
                     label: 'Arbeidssituasjon',
                 },
                 {
+                    id: '/hvor-mye',
+                    isSelected: false,
+                    label: 'Hvor mye',
+                },
+                {
                     id: '/hvor-lenge',
                     isSelected: false,
                     label: 'Hvor lenge',
@@ -331,6 +351,11 @@ describe('useStepData', () => {
                     id: '/arbeidssituasjon',
                     isSelected: false,
                     label: 'Arbeidssituasjon',
+                },
+                {
+                    id: '/hvor-mye',
+                    isSelected: false,
+                    label: 'Hvor mye',
                 },
                 {
                     id: '/hvor-lenge',
@@ -389,6 +414,11 @@ describe('useStepData', () => {
                     id: '/arbeidssituasjon',
                     isSelected: false,
                     label: 'Arbeidssituasjon',
+                },
+                {
+                    id: '/hvor-mye',
+                    isSelected: false,
+                    label: 'Hvor mye',
                 },
                 {
                     id: '/hvor-lenge',

@@ -4,6 +4,7 @@ export enum PlanleggerRoutes {
     OM_BARNET = '/om-barnet',
     // BARNEHAGEPLASS = '/barnehageplass',
     ARBEIDSSITUASJON = '/arbeidssituasjon',
+    HVOR_MYE = '/hvor-mye',
     HVOR_LANG_PERIODE = '/hvor-lenge',
     FORDELING = '/fordeling',
     PLANEN_DERES = '/planen-deres',
@@ -16,6 +17,7 @@ export const PATH_ORDER = [
     PlanleggerRoutes.OM_BARNET,
     // PlanleggerRoutes.BARNEHAGEPLASS,
     PlanleggerRoutes.ARBEIDSSITUASJON,
+    PlanleggerRoutes.HVOR_MYE,
     PlanleggerRoutes.HVOR_LANG_PERIODE,
     PlanleggerRoutes.FORDELING,
     PlanleggerRoutes.PLANEN_DERES,
@@ -25,6 +27,5 @@ export const PATH_ORDER = [
 export const REQUIRED_APP_STEPS = [
     PlanleggerRoutes.HVEM_PLANLEGGER,
     PlanleggerRoutes.OM_BARNET,
-    // PlanleggerRoutes.BARNEHAGEPLASS,
     PlanleggerRoutes.OPPSUMMERING,
 ];
