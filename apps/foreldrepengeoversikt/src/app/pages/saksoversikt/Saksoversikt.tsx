@@ -140,14 +140,22 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
                         søkersBarn={søkerinfo.søker.barn ?? []}
                     />
                 </ContentSection>
-                <HGrid gap="4" columns={{ sm: 1, md: 2 }}>
+                <section className="mb-12">
+                    <LenkePanel tittel="Se hele prosessen" to={OversiktRoutes.TIDSLINJEN} />
+                </section>
+                <HGrid gap="4" columns={{ sm: 1, md: 2 }} className="mb-12">
                     <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
                     <LenkePanel tittel="Ettersend dokumenter" to={OversiktRoutes.ETTERSEND} Ikon={FilesIcon} />
                 </HGrid>
+
                 {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
-                    <div className="mt-4">
+                    <div>
                         <ContentSection
-                            heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
+                            heading={
+                                !!gjeldendeSak.gjeldendeVedtak?.perioder
+                                    ? intl.formatMessage({ id: 'saksoversikt.dinPlan.vedtatt' })
+                                    : intl.formatMessage({ id: 'saksoversikt.dinPlan.søktOm' })
+                            }
                             // Fordi annenPartsVedtakQuery kan være et disabled query må man bruke isLoading heller enn isPending:
                             // https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading
                             showSkeleton={annenPartsVedtakQuery.isLoading}
@@ -164,10 +172,6 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
                         </ContentSection>
                     </div>
                 )}
-
-                <section className="mb-12">
-                    <LenkePanel tittel="Se hele prosessen" to={OversiktRoutes.TIDSLINJEN} />
-                </section>
             </VStack>
         </VStack>
     );

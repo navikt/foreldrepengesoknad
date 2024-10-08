@@ -1,7 +1,5 @@
 import { FunctionComponent } from 'react';
 
-import { BodyLong } from '@navikt/ds-react';
-
 import { NavnPåForeldre, SaksperiodeNy } from '@navikt/fp-types';
 import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 
@@ -33,7 +31,6 @@ const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåForeldre
         return søkersPerioder ?? perioderSomErSøktOm;
     };
 
-    const erPlanVedtatt = !!søkersPerioder;
     const søkerErFarEllerMedmor = !sakTilhørerMor;
     const bareFarHarRett = rettighetType === RettighetType.BARE_SØKER_RETT && !sakTilhørerMor;
     const erDeltUttak = rettighetType === RettighetType.BEGGE_RETT;
@@ -45,26 +42,19 @@ const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåForeldre
     const familiesituasjon = utledFamiliesituasjon(familiehendelse, gjelderAdopsjon);
 
     return (
-        <>
-            <div className="pt-4">
-                {erPlanVedtatt && <BodyLong>Du har fått vedtatt planen nedenfor.</BodyLong>}
-                {!erPlanVedtatt && <BodyLong>Du har søkt om planen nedenfor.</BodyLong>}
-                {!erPlanVedtatt && <BodyLong>Planen er ikke vedtatt av NAV ennå.</BodyLong>}
-            </div>
-            <UttaksplanNy
-                barn={barn}
-                erFarEllerMedmor={søkerErFarEllerMedmor}
-                familiehendelsedato={familiehendelseDato}
-                navnPåForeldre={navnPåForeldre}
-                annenPartsPerioder={annenPartsPerioder}
-                søkersPerioder={getRelevantePerioder() || []}
-                gjelderAdopsjon={gjelderAdopsjon}
-                bareFarHarRett={bareFarHarRett}
-                familiesituasjon={familiesituasjon}
-                førsteUttaksdagNesteBarnsSak={undefined}
-                harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
-            />
-        </>
+        <UttaksplanNy
+            barn={barn}
+            erFarEllerMedmor={søkerErFarEllerMedmor}
+            familiehendelsedato={familiehendelseDato}
+            navnPåForeldre={navnPåForeldre}
+            annenPartsPerioder={annenPartsPerioder}
+            søkersPerioder={getRelevantePerioder() || []}
+            gjelderAdopsjon={gjelderAdopsjon}
+            bareFarHarRett={bareFarHarRett}
+            familiesituasjon={familiesituasjon}
+            førsteUttaksdagNesteBarnsSak={undefined}
+            harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
+        />
     );
 };
 
