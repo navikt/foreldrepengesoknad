@@ -40,6 +40,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser, locale }) => {
     const oppdaterArbeidssituasjon = useContextSaveData(ContextDataType.ARBEIDSSITUASJON);
     const oppdaterFordeling = useContextSaveData(ContextDataType.FORDELING);
     const oppdaterHvorLangPeriode = useContextSaveData(ContextDataType.HVOR_LANG_PERIODE);
+    const oppdaterHvorMye = useContextSaveData(ContextDataType.HVOR_MYE);
 
     const formMethods = useForm<Arbeidssituasjon>({
         defaultValues: arbeidssituasjon,
@@ -61,6 +62,7 @@ const ArbeidssituasjonSteg: FunctionComponent<Props> = ({ satser, locale }) => {
         if (minstEnJobber) {
             navigator.goToNextStep(PlanleggerRoutes.HVOR_MYE);
         } else {
+            oppdaterHvorMye(undefined);
             oppdaterFordeling(undefined);
             oppdaterHvorLangPeriode(undefined);
             navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);

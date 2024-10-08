@@ -18,7 +18,6 @@ import { RhfForm, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hook
 import { LocaleAll, Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { isValidNumberForm, notEmpty } from '@navikt/fp-validation';
-import { formatValue } from '@navikt/fp-validation/src/form/numberFormValidation';
 
 import Utbetaling from './infoboks/Utbetaling';
 
@@ -78,7 +77,7 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
                                     validate={[isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' }))]}
                                 />
                             </BluePanel>
-                            {lønnSøker1 && lønnSøker1 !== undefined && (
+                            {lønnSøker1 && (
                                 <Utbetaling lønnSøker={lønnSøker1} satser={satser} fornavn={fornavnSøker1} />
                             )}
                         </VStack>
@@ -95,11 +94,10 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
                                         name="lønnSøker2"
                                         validate={[
                                             isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' })),
-                                            formatValue,
                                         ]}
                                     />
                                 </BluePanel>
-                                {lønnSøker2 && lønnSøker2 !== undefined && (
+                                {lønnSøker2 && (
                                     <Utbetaling satser={satser} lønnSøker={lønnSøker2} fornavn={fornavnSøker2} />
                                 )}
                             </VStack>
