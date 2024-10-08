@@ -6,7 +6,9 @@ import { BodyShort } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { Forelder } from '@navikt/fp-constants';
+import { MorsAktivitet } from '@navikt/fp-types';
 import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
+import { assertUnreachable } from '@navikt/fp-validation';
 
 import { Planperiode } from '../../../types/Planperiode';
 import { getVarighetString } from '../../../utils/dateUtils';
@@ -49,6 +51,31 @@ const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, p
     return `${formatDateExtended(periode.fom)} - ${formatDateExtended(periode.tom)}`;
 };
 
+const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet): string => {
+    switch (aktivitet) {
+        case MorsAktivitet.Arbeid:
+            return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.Arbeid' });
+        case MorsAktivitet.ArbeidOgUtdanning:
+            return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.ArbeidOgUtdanning' });
+        case MorsAktivitet.Innlagt:
+            return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.Innlagt' });
+        case MorsAktivitet.Introduksjonsprogrammet:
+            return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.Introduksjonsprogrammet' });
+        case MorsAktivitet.Kvalifiseringsprogrammet:
+            return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.Kvalifiseringsprogrammet' });
+        case MorsAktivitet.TrengerHjelp:
+            return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.TrengerHjelp' });
+        case MorsAktivitet.Uføre:
+            return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.Uføre' });
+        case MorsAktivitet.Utdanning:
+            return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.Utdanning' });
+        case MorsAktivitet.IkkeOppgitt:
+            return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.UtenAktivitetsKrav' });
+        default:
+            return assertUnreachable('Mor har ingen aktivitet');
+    }
+};
+
 const UttaksperiodeContent: FunctionComponent<Props> = ({
     periode,
     inneholderKunEnPeriode,
@@ -59,7 +86,7 @@ const UttaksperiodeContent: FunctionComponent<Props> = ({
     const stønadskontoNavn = getStønadskontoNavn(intl, periode.kontoType!, navnPåForeldre, erFarEllerMedmor);
 
     return (
-        <div style={{ marginBottom: '1rem', display: 'flex' }}>
+        <div style={{ marginBottom: '2rem', display: 'flex' }}>
             <div>
                 <CalendarIcon width={24} height={24} />
             </div>
@@ -75,6 +102,9 @@ const UttaksperiodeContent: FunctionComponent<Props> = ({
                 </div>
                 <div style={{ marginLeft: '1rem', paddingTop: '0.25rem' }}>
                     <BodyShort>{stønadskontoNavn}</BodyShort>
+                    {periode.morsAktivitet !== undefined && (
+                        <BodyShort>{getMorsAktivitetTekst(intl, periode.morsAktivitet)}</BodyShort>
+                    )}
                     {periode.gradering !== undefined && (
                         <BodyShort>{getArbeidsTekst(periode.gradering.arbeidstidprosent)}</BodyShort>
                     )}
