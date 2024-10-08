@@ -1,0 +1,6 @@
+import{j as e}from"./jsx-runtime-Cw0GR0a5.js";import{a as p}from"./chunk-D5ZWXAHU-CGElDDNX.js";import{M as l,P as c}from"./usePlanleggerNavigator-ykRWW_nA.js";import{P as g}from"./routes-CNSEBeeI.js";import{i as d}from"./amplitude-DHAkK6DW.js";import{O as t}from"./OmPlanleggerenSteg-DbK-WVko.js";import"./index-CTjT7uj6.js";import"./v4-CQkTLCs1.js";import"./Label-BZeSnhnH.js";import"./VStack-CHPVCYB5.js";import"./Arbeidssituasjon-i2z_eSVB.js";import"./HvemPlanleggerUtils-D1xsqW5u.js";import"./barnetUtils-Dtg6gkcN.js";import"./VeiviserPage-RPc-Ebv7.js";import"./index-BRV0Se7Z.js";import"./Responsive-C8snjzxo.js";import"./ArrowRight-BxFWJcl5.js";const N={title:"steg/OmPlanleggerenSteg",component:t,render:({gåTilNesteSide:n=p("button-click"),locale:m,changeLocale:s})=>(d(),e.jsx(l,{initialEntries:[g.OM_PLANLEGGEREN],children:e.jsx(c,{onDispatch:n,children:e.jsx(t,{locale:m,changeLocale:s})})}))},r={args:{locale:"nb",changeLocale:()=>{}}};var o,a,i;r.parameters={...r.parameters,docs:{...(o=r.parameters)==null?void 0:o.docs,source:{originalSource:`{
+  args: {
+    locale: 'nb',
+    changeLocale: () => undefined
+  }
+}`,...(i=(a=r.parameters)==null?void 0:a.docs)==null?void 0:i.source}}};const k=["Default"];export{r as Default,k as __namedExportsOrder,N as default};
