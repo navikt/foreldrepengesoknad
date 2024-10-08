@@ -1,14 +1,13 @@
 import { Meta, StoryObj } from '@storybook/react';
-import MockAdapter from 'axios-mock-adapter';
+import { HttpResponse, http } from 'msw';
+import { MemoryRouter } from 'react-router-dom';
 
 import '@navikt/ds-css';
 
 import { initAmplitude } from '@navikt/fp-metrics';
-import { Søker, Søkerinfo } from '@navikt/fp-types';
+import { Søker } from '@navikt/fp-types';
 
 import AppContainer from './AppContainer';
-import { AxiosInstanceAPI } from './api/AxiosInstance';
-import { SvpDataMapAndMetaData } from './app-data/useMellomlagreSøknad';
 
 const defaultSøkerinfo = {
     søker: {
@@ -73,110 +72,87 @@ const defaultSøkerinfo = {
     ],
 };
 
-type StoryArgs = {
-    søkerinfo: Søkerinfo;
-    mellomlagretData?: SvpDataMapAndMetaData;
-    doLogging?: boolean;
+const KVITTERING = {
+    mottattDato: '2019-02-19T13:40:45.115',
+    referanseId: '3959c880-83d2-4f01-b107-035fa7693758',
+    leveranseStatus: 'PÅ_VENT',
+    journalId: '439772941',
 };
+
+const HANDLERS = [
+    http.post('https://svp/rest/soknad/svangerskapspenger', () => HttpResponse.json(KVITTERING)),
+    http.post('https://svp/rest/storage/svangerskapspenger/vedlegg', () => new HttpResponse(null, { status: 200 })),
+    http.post('https://svp/rest/storage/svangerskapspenger', () => new HttpResponse(null, { status: 200 })),
+    http.get('https://svp/rest/storage/svangerskapspenger', () => new HttpResponse(null, { status: 200 })),
+    http.delete('https://svp/rest/storage/svangerskapspenger', () => new HttpResponse(null, { status: 200 })),
+];
 
 const meta = {
     component: AppContainer,
-    render: ({ søkerinfo, mellomlagretData, doLogging = true }) => {
+    render: () => {
         initAmplitude();
-        const apiMock = new MockAdapter(AxiosInstanceAPI());
-        apiMock.onGet('/rest/sokerinfo').reply(() => {
-            if (doLogging) {
-                // eslint-disable-next-line no-console
-                console.log('network request: get /sokerinfo');
-            }
-            return [200, søkerinfo];
-        });
-
-        apiMock.onGet('/rest/storage/svangerskapspenger').reply(() => {
-            if (doLogging) {
-                // eslint-disable-next-line no-console
-                console.log('network request: get /storage/svangerskapspenger');
-            }
-            return [200, mellomlagretData];
-        });
-
-        apiMock.onPost('rest-api/soknad').reply(() => {
-            if (doLogging) {
-                // eslint-disable-next-line no-console
-                console.log('network request: post rest-api/soknad');
-            }
-            return [200, {}];
-        });
-
-        apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(() => {
-            if (doLogging) {
-                // eslint-disable-next-line no-console
-                console.log('network request: post /storage/svangerskapspenger/vedlegg');
-            }
-            return [200];
-        });
-        apiMock.onPost('/rest/storage/svangerskapspenger').reply(() => {
-            if (doLogging) {
-                // eslint-disable-next-line no-console
-                console.log('network request: post /storage/svangerskapspenger');
-            }
-            return [200];
-        });
-
-        apiMock.onDelete('/rest/storage/svangerskapspenger').reply(() => {
-            if (doLogging) {
-                // eslint-disable-next-line no-console
-                console.log('network request: delete /storage/svangerskapspenger');
-            }
-            return [200];
-        });
-
-        //story
-        apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(() => {
-            if (doLogging) {
-                // eslint-disable-next-line no-console
-                console.log('network request: post /storage/svangerskapspenger/vedlegg');
-            }
-            return [200];
-        });
-        apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(200, {}); //test
-
-        return <AppContainer />;
+        return (
+            <MemoryRouter>
+                <AppContainer />
+            </MemoryRouter>
+        );
     },
-} satisfies Meta<StoryArgs>;
+} satisfies Meta;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const VisAppKvinneMedArbeid: Story = {
-    args: {
-        søkerinfo: defaultSøkerinfo,
+    parameters: {
+        msw: {
+            handlers: HANDLERS.concat([
+                http.get('https://svp/rest/sokerinfo', () => HttpResponse.json(defaultSøkerinfo)),
+            ]),
+        },
     },
 };
 
 export const VisAppKvinneUtenArbeid: Story = {
-    args: {
-        søkerinfo: {
-            ...defaultSøkerinfo,
-            arbeidsforhold: [],
+    parameters: {
+        msw: {
+            handlers: HANDLERS.concat([
+                http.get('https://svp/rest/sokerinfo', () =>
+                    HttpResponse.json({
+                        ...defaultSøkerinfo,
+                        arbeidsforhold: [],
+                    }),
+                ),
+            ]),
         },
     },
 };
 
 export const VisAppMann: Story = {
-    args: {
-        søkerinfo: {
-            ...defaultSøkerinfo,
-            søker: { ...defaultSøkerinfo.søker, kjønn: 'M' },
+    parameters: {
+        msw: {
+            handlers: HANDLERS.concat([
+                http.get('https://svp/rest/sokerinfo', () =>
+                    HttpResponse.json({
+                        ...defaultSøkerinfo,
+                        søker: { ...defaultSøkerinfo.søker, kjønn: 'M' },
+                    }),
+                ),
+            ]),
         },
     },
 };
 
 export const VisAppUmyndig: Story = {
-    args: {
-        søkerinfo: {
-            ...defaultSøkerinfo,
-            søker: { ...defaultSøkerinfo.søker, kjønn: 'K', fødselsdato: '2023-08-30' },
+    parameters: {
+        msw: {
+            handlers: HANDLERS.concat([
+                http.get('https://svp/rest/sokerinfo', () =>
+                    HttpResponse.json({
+                        ...defaultSøkerinfo,
+                        søker: { ...defaultSøkerinfo.søker, kjønn: 'K', fødselsdato: '2023-08-30' },
+                    }),
+                ),
+            ]),
         },
     },
 };

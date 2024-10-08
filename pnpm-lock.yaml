@@ -1056,12 +1056,15 @@ importers:
       '@sentry/browser':
         specifier: ^7.109.0
         version: 7.119.0
+      '@tanstack/react-query':
+        specifier: 5.56.2
+        version: 5.56.2(react@18.3.1)
+      '@tanstack/react-query-devtools':
+        specifier: ^5.58.0
+        version: 5.58.0(@tanstack/react-query@5.56.2(react@18.3.1))(react@18.3.1)
       amplitude-js:
         specifier: ^8.21.9
         version: 8.21.9
-      axios:
-        specifier: ^1.6.8
-        version: 1.7.7
       bytes:
         specifier: ^3.1.2
         version: 3.1.2
@@ -1086,6 +1089,9 @@ importers:
       jsdom:
         specifier: 25.0.1
         version: 25.0.1
+      ky:
+        specifier: ^1.7.2
+        version: 1.7.2
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1231,9 +1237,6 @@ importers:
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.4.47)
-      axios-mock-adapter:
-        specifier: 1.22.0
-        version: 1.22.0(axios@1.7.7)
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -1258,6 +1261,12 @@ importers:
       mockdate:
         specifier: ^3.0.5
         version: 3.0.5
+      msw:
+        specifier: ^2.4.9
+        version: 2.4.9(typescript@5.6.2)
+      msw-storybook-addon:
+        specifier: ^2.0.3
+        version: 2.0.3(msw@2.4.9(typescript@5.6.2))
       multer:
         specifier: ^1.4.5-lts.1
         version: 1.4.5-lts.1
