@@ -152,7 +152,7 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
                     <div>
                         <ContentSection
                             heading={
-                                !!gjeldendeSak.gjeldendeVedtak?.perioder
+                                gjeldendeSak.gjeldendeVedtak?.perioder
                                     ? intl.formatMessage({ id: 'saksoversikt.dinPlan.vedtatt' })
                                     : intl.formatMessage({ id: 'saksoversikt.dinPlan.søktOm' })
                             }
