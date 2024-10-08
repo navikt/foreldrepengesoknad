@@ -87,8 +87,8 @@ export const FlereForsørgere: Story = {
         },
         satser: DEFAULT_SATSER,
         hvorMye: {
-            lønnSøker1: 1000,
-            lønnSøker2: 70000,
+            lønnSøker1: undefined,
+            lønnSøker2: undefined,
         },
     },
 };
@@ -105,7 +105,7 @@ export const AleneforsørgerMor: Story = {
         },
         satser: DEFAULT_SATSER,
         hvorMye: {
-            lønnSøker1: 5000,
+            lønnSøker1: undefined,
         },
     },
 };

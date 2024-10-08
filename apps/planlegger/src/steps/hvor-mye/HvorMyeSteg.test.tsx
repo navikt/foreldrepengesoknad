@@ -14,15 +14,15 @@ describe('<HvorMyeSteg>', () => {
 
         expect(await screen.findAllByText('Hvor mye')).toHaveLength(2);
 
-        const morLønn = utils.getAllByLabelText('Hva tjener Klara ca. i måneden? (valgfritt)')[0];
+        const morLønn = utils.getByLabelText('Hva tjener Klara ca. i måneden? (valgfritt)');
         await userEvent.type(morLønn, '1000');
-        const farLønn = utils.getAllByLabelText('Hva tjener Espen ca. i måneden? (valgfritt)')[1];
+        const farLønn = utils.getByLabelText('Hva tjener Espen ca. i måneden? (valgfritt)');
         await userEvent.type(farLønn, '70000');
 
         await userEvent.click(screen.getByText('Neste'));
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: { lønnSøker1: 1000, lønnSøker2: 70000 },
+            data: { lønnSøker1: '1000', lønnSøker2: '70000' },
             key: ContextDataType.HVOR_MYE,
             type: 'update',
         });

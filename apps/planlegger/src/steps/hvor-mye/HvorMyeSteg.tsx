@@ -45,7 +45,10 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
 
     const oppdaterHvorMye = useContextSaveData(ContextDataType.HVOR_MYE);
 
-    const formMethods = useForm<HvorMye>({ defaultValues: useContextGetData(ContextDataType.HVOR_MYE) });
+    const formMethods = useForm<HvorMye>({ defaultValues: hvorMye });
+
+    const lønnSøker1 = formMethods.watch('lønnSøker1');
+    const lønnSøker2 = formMethods.watch('lønnSøker2');
 
     const onSubmit = (formValues: HvorMye) => {
         oppdaterHvorMye(formValues);
@@ -72,12 +75,11 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
                                         />
                                     }
                                     name="lønnSøker1"
-                                    onChange={(lønnSøker1) => oppdaterHvorMye({ ...hvorMye, lønnSøker1 })}
                                     validate={[isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' }))]}
                                 />
                             </BluePanel>
-                            {hvorMye?.lønnSøker1 && hvorMye.lønnSøker1 !== undefined && (
-                                <Utbetaling lønnSøker={hvorMye.lønnSøker1} satser={satser} fornavn={fornavnSøker1} />
+                            {lønnSøker1 && lønnSøker1 !== undefined && (
+                                <Utbetaling lønnSøker={lønnSøker1} satser={satser} fornavn={fornavnSøker1} />
                             )}
                         </VStack>
                         {!kunEnAvSøkereneHarRett && fornavnSøker2 && (
@@ -91,19 +93,14 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
                                             />
                                         }
                                         name="lønnSøker2"
-                                        onChange={(lønnSøker2) => oppdaterHvorMye({ ...hvorMye, lønnSøker2 })}
                                         validate={[
                                             isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' })),
                                             formatValue,
                                         ]}
                                     />
                                 </BluePanel>
-                                {hvorMye?.lønnSøker2 && hvorMye.lønnSøker2 !== undefined && (
-                                    <Utbetaling
-                                        satser={satser}
-                                        lønnSøker={hvorMye.lønnSøker2}
-                                        fornavn={fornavnSøker2}
-                                    />
+                                {lønnSøker2 && lønnSøker2 !== undefined && (
+                                    <Utbetaling satser={satser} lønnSøker={lønnSøker2} fornavn={fornavnSøker2} />
                                 )}
                             </VStack>
                         )}
