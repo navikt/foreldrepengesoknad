@@ -1,17 +1,21 @@
-import { AxiosInstance } from 'axios';
-import { useCallback } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import ky from 'ky';
 import { useNavigate } from 'react-router-dom';
 
-import { deleteData } from '@navikt/fp-api';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
+import Environment from './Environment';
 import { useContextReset } from './SvpDataContext';
 
-const useAvbrytSøknad = (svpApi: AxiosInstance, setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void) => {
+const useAvbrytSøknad = (setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void) => {
     const navigate = useNavigate();
     const reset = useContextReset();
 
-    const avbrytSøknadHandler = useCallback(async () => {
+    const { mutate: slettMellomlagring } = useMutation({
+        mutationFn: () => ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/svangerskapspenger`),
+    });
+
+    const avbrytSøknadHandler = async () => {
         logAmplitudeEvent('applikasjon-hendelse', {
             app: 'svangerskapspengesoknad',
             team: 'foreldrepenger',
@@ -22,15 +26,10 @@ const useAvbrytSøknad = (svpApi: AxiosInstance, setHarGodkjentVilkår: (harGodk
 
         setHarGodkjentVilkår(false);
 
-        try {
-            await deleteData(svpApi, '/rest/storage/svangerskapspenger', 'Feil ved sletting av mellomlagret data');
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (error) {
-            // Vi bryr oss ikke om feil her. Logges bare i backend
-        }
+        slettMellomlagring();
 
         navigate('/');
-    }, [navigate, setHarGodkjentVilkår, reset, svpApi]);
+    };
 
     return avbrytSøknadHandler;
 };
