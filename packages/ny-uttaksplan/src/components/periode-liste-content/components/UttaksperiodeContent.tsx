@@ -51,7 +51,7 @@ const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, p
     return `${formatDateExtended(periode.fom)} - ${formatDateExtended(periode.tom)}`;
 };
 
-const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet): string => {
+export const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet): string => {
     switch (aktivitet) {
         case MorsAktivitet.Arbeid:
             return intl.formatMessage({ id: 'uttaksplan.periodeListeContent.morsAktivitet.Arbeid' });

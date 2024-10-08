@@ -3,11 +3,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
+import { UtsettelseÅrsakType } from '@navikt/fp-types';
 import { TidsperiodenString } from '@navikt/fp-utils';
 
 import { Planperiode } from '../../../types/Planperiode';
 import { getVarighetString } from '../../../utils/dateUtils';
 import { finnTekstForUtsettelseÅrsak } from '../../../utils/periodeUtils';
+import { getMorsAktivitetTekst } from './UttaksperiodeContent';
 
 interface Props {
     periode: Planperiode;
@@ -39,7 +41,12 @@ export const UtsettelsesPeriodeContent = ({ periode }: Props) => {
                     </BodyShort>
                 </div>
                 <div style={{ marginLeft: '1rem', paddingTop: '0.25rem' }}>
-                    <BodyShort>{finnTekstForUtsettelseÅrsak(intl, utsettelseÅrsak)}</BodyShort>
+                    {periode.morsAktivitet !== undefined && (
+                        <BodyShort>{getMorsAktivitetTekst(intl, periode.morsAktivitet)}</BodyShort>
+                    )}
+                    {periode.utsettelseÅrsak !== UtsettelseÅrsakType.Fri && (
+                        <BodyShort>{finnTekstForUtsettelseÅrsak(intl, utsettelseÅrsak)}</BodyShort>
+                    )}
                 </div>
             </div>
         </div>

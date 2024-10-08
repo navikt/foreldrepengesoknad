@@ -1,6 +1,7 @@
 import {
     BabyWrappedFillIcon,
     BandageFillIcon,
+    BriefcaseFillIcon,
     CloudFillIcon,
     HeartFillIcon,
     InformationSquareFillIcon,
@@ -141,6 +142,16 @@ export const getTekst = ({
                 return 'Du er syk';
             case UtsettelseÅrsakType.InstitusjonBarnet:
                 return 'Barnet er innlagt';
+            case UtsettelseÅrsakType.Arbeid:
+                return 'Utsettelse grunnet arbeid';
+            case UtsettelseÅrsakType.Ferie:
+                return 'Utsettelse grunnet ferie';
+            case UtsettelseÅrsakType.HvØvelse:
+                return 'Utsettelse grunnet heimvernsøvelse';
+            case UtsettelseÅrsakType.NavTiltak:
+                return 'Utsettelse grunnet NAV tiltak';
+            case UtsettelseÅrsakType.Fri:
+                return 'Periode uten uttak';
         }
 
         return 'Utsettelse';
@@ -215,6 +226,23 @@ export const getIkon = ({
     }
 
     if (utsettelseÅrsak !== undefined) {
+        if (utsettelseÅrsak === UtsettelseÅrsakType.Arbeid || utsettelseÅrsak === UtsettelseÅrsakType.Fri) {
+            return (
+                <BriefcaseFillIcon
+                    className={getIkonFarge({
+                        bem,
+                        erMor,
+                        erPeriodeUtenUttak,
+                        erUtsettelse: utsettelseÅrsak !== undefined,
+                        erHull,
+                        erFamiliehendelse,
+                    })}
+                    width={24}
+                    height={24}
+                />
+            );
+        }
+
         return (
             <BandageFillIcon
                 className={getIkonFarge({
