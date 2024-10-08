@@ -72,7 +72,15 @@ const defaultSøkerinfo = {
     ],
 };
 
+const KVITTERING = {
+    mottattDato: '2019-02-19T13:40:45.115',
+    referanseId: '3959c880-83d2-4f01-b107-035fa7693758',
+    leveranseStatus: 'PÅ_VENT',
+    journalId: '439772941',
+};
+
 const HANDLERS = [
+    http.post('https://svp/rest/soknad/svangerskapspenger', () => HttpResponse.json(KVITTERING)),
     http.post('https://svp/rest/storage/svangerskapspenger/vedlegg', () => new HttpResponse(null, { status: 200 })),
     http.post('https://svp/rest/storage/svangerskapspenger', () => new HttpResponse(null, { status: 200 })),
     http.get('https://svp/rest/storage/svangerskapspenger', () => new HttpResponse(null, { status: 200 })),
