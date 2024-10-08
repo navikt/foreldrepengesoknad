@@ -234,5 +234,5 @@
     "OmÅTilpassePlanen.ToUkerRundtFødsel": "Two weeks around birth",
     "OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst": "Often {hvem}s have leave covered for the first two weeks after birth by their employer. If not, the {hvem} can use parental benefit in these two weeks.",
     "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "If the {hvem} is not taking parental benefit, you can add a period without parental benefit, where one, for example, receives holiday pay from the employer.",
-    "Validering.ValidNumber": "Du har skrevet inn noe som ikke er et tall."
+    "Validering.ValidNumber": "You have written something that is not a number. Spaces, periods, and commas are not allowed."
 }

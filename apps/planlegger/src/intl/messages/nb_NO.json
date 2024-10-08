@@ -234,5 +234,5 @@
     "OmÅTilpassePlanen.ToUkerRundtFødsel": "To uker rundt fødsel",
     "OmÅTilpassePlanen.ToUkerRundtFødsel.Tekst": "Ofte får {hvem, select, far {fedre} other {medmor}} permisjon dekket de første to ukene etter fødsel fra arbeidsgiveren sin. Hvis man ikke får dette kan en bruke foreldrepenger i disse to ukene.",
     "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "Hvis {hvem} ikke skal ha foreldrepenger kan man legge til periode uten foreldrepenger, hvor man for eksempel får feriepenger fra arbeidsgiver.",
-    "Validering.ValidNumber": "Du har skrevet inn noe som ikke er et tall."
+    "Validering.ValidNumber": "Du har skrevet inn noe som ikke er et tall. Mellomrom, punktum og komma er ikke tillatt."
 }
