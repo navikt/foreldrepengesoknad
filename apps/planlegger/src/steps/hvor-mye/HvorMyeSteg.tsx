@@ -11,7 +11,7 @@ import { HvorMye } from 'types/HvorMye';
 import { erAlenesøker, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
-import { BodyShort, Heading, Spacer, VStack } from '@navikt/ds-react';
+import { BodyShort, Heading, Link, Spacer, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { RhfForm, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
@@ -66,12 +66,21 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
                             <BluePanel isDarkBlue={true}>
                                 <RhfTextField
                                     label={
-                                        <FormattedMessage
-                                            id="HvorMyeSteg.Lønn"
-                                            values={{
-                                                hvem: fornavnSøker1,
-                                            }}
-                                        />
+                                        hvemHarRett === 'kunSøker2HarRett' ? (
+                                            <FormattedMessage
+                                                id="HvorMyeSteg.Lønn"
+                                                values={{
+                                                    hvem: fornavnSøker2,
+                                                }}
+                                            />
+                                        ) : (
+                                            <FormattedMessage
+                                                id="HvorMyeSteg.Lønn"
+                                                values={{
+                                                    hvem: fornavnSøker1,
+                                                }}
+                                            />
+                                        )
                                     }
                                     name="lønnSøker1"
                                     validate={[isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' }))]}
@@ -121,9 +130,9 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
                                         id="HvorMyeSteg.MerDetaljert"
                                         values={{
                                             a: (msg: any) => (
-                                                <a href={links.hvorMye} target="_blank" rel="noreferrer">
+                                                <Link href={links.hvorMye} target="_blank" rel="noreferrer" inlineText>
                                                     {msg}
-                                                </a>
+                                                </Link>
                                             ),
                                         }}
                                     />

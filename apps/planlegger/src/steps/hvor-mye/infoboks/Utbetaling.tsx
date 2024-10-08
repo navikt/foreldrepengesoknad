@@ -1,8 +1,9 @@
+import { WalletIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
-import { BodyShort, VStack } from '@navikt/ds-react';
+import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Satser } from '@navikt/fp-types';
@@ -52,8 +53,9 @@ const Utbetaling: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }) 
                     )
                 }
                 color="green"
+                icon={<WalletIcon height={24} width={24} color="#7F8900" fontSize="1.5rem" aria-hidden />}
             >
-                <BodyShort>
+                <BodyShort spacing>
                     <FormattedMessage
                         id="HvorMyeSteg.Utregning"
                         values={{
@@ -64,15 +66,15 @@ const Utbetaling: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }) 
                 </BodyShort>
                 {lønnSøker > monthlyMax && (
                     <>
-                        <BodyShort>
+                        <BodyShort spacing>
                             <FormattedMessage
                                 id="HvorMyeSteg.NAVDekker"
                                 values={{
                                     grunnbeløpet: formatCurrency(grunnbeløpet * 6),
                                     a: (msg: any) => (
-                                        <a href={links.grunnbeløpet} target="_blank" rel="noreferrer">
+                                        <Link href={links.grunnbeløpet} target="_blank" rel="noreferrer" inlineText>
                                             {msg}
-                                        </a>
+                                        </Link>
                                     ),
                                 }}
                             />
