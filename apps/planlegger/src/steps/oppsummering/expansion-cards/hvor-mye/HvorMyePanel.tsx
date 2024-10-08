@@ -35,7 +35,7 @@ const HvorMyePanel: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }
     return (
         <VStack gap="10">
             <BluePanel>
-                <>
+                <VStack gap="2">
                     <Heading size="small" level="4">
                         <FormattedMessage
                             id="HvorMyeOppsummering.DuVilFå"
@@ -94,7 +94,7 @@ const HvorMyePanel: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }
                             }}
                         />
                     </BodyLong>
-                </>
+                </VStack>
             </BluePanel>
         </VStack>
     );
