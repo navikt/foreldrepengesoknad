@@ -1,4 +1,4 @@
-import { AxiosInstanceAPI } from 'api/AxiosInstance';
+import Environment from 'Environment';
 import dayjs from 'dayjs';
 import React, { FunctionComponent, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -8,7 +8,7 @@ import { addMetadata, lagSendSenereDokument } from 'utils/vedleggUtils';
 
 import { BodyLong } from '@navikt/ds-react';
 
-import { getSaveAttachment } from '@navikt/fp-api';
+import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
@@ -106,7 +106,7 @@ const UttakUploader: FunctionComponent<Props> = ({
 
                 return updateAttachments(attachmentsMedMetadata);
             }}
-            saveAttachment={getSaveAttachment(AxiosInstanceAPI(), 'foreldrepenger')}
+            saveAttachment={getSaveAttachmentFetch(Environment.PUBLIC_PATH, 'foreldrepenger')}
         />
     );
 };

@@ -1,9 +1,8 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
-import { AxiosInstanceAPI } from 'api/AxiosInstance';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import SøknadRoutes from 'appData/routes';
-import MockAdapter from 'axios-mock-adapter';
+import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
@@ -104,6 +103,16 @@ type StoryArgs = {
 const meta = {
     title: 'steps/ManglendeVedlegg',
     component: ManglendeVedlegg,
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    'https://fp/rest/storage/foreldrepenger/vedlegg',
+                    () => new HttpResponse(null, { status: 200 }),
+                ),
+            ],
+        },
+    },
     render: ({
         situasjon = 'fødsel',
         annenForelder = defaultAnnenForelder,
@@ -114,10 +123,6 @@ const meta = {
         ...rest
     }) => {
         initAmplitude();
-
-        const apiMock = new MockAdapter(AxiosInstanceAPI());
-        apiMock.onPost('/rest/storage/foreldrepenger/vedlegg').reply(200); //story
-        apiMock.onPost('http://localhost:8888/rest/storage/foreldrepenger/vedlegg').reply(200); //test
 
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.DOKUMENTASJON]}>

@@ -1,13 +1,8 @@
-import Api from 'api/api';
-import {
-    FEIL_VED_INNSENDING,
-    UKJENT_UUID,
-    getErrorCallId,
-    getSøknadsdataForInnsending,
-    sendErrorMessageToSentry,
-} from 'api/apiUtils';
-import { AxiosError } from 'axios';
-import { useState } from 'react';
+import * as Sentry from '@sentry/browser';
+import { useMutation } from '@tanstack/react-query';
+import Environment from 'Environment';
+import { FEIL_VED_INNSENDING, UKJENT_UUID, getSøknadsdataForInnsending } from 'api/apiUtils';
+import ky, { HTTPError } from 'ky';
 import { Kvittering } from 'types/Kvittering';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 
@@ -16,13 +11,6 @@ import { LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './FpDataContext';
-
-export const isAxiosError = (candidate: unknown): candidate is AxiosError<any> => {
-    if (candidate && typeof candidate === 'object' && 'isAxiosError' in candidate) {
-        return true;
-    }
-    return false;
-};
 
 const useSendSøknad = (
     fødselsnr: string,
@@ -33,9 +21,11 @@ const useSendSøknad = (
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
-    const [error, setError] = useState<Error>();
+    const { mutate: slettMellomlagring } = useMutation({
+        mutationFn: () => ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/foreldrepenger`),
+    });
 
-    const sendSøknad = async () => {
+    const send = async () => {
         const uttaksplanMetadata = notEmpty(hentData(ContextDataType.UTTAKSPLAN_METADATA));
         const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
 
@@ -48,39 +38,48 @@ const useSendSøknad = (
             uttaksplanMetadata.endringstidspunkt,
         );
 
-        //TODO (TOR) Denne bør vel håndterast på eit tidligare tidspunkt?
+        //TODO (TOR) Denne må håndterast i uttaksplan-steget
         if (cleanedSøknad.uttaksplan.length === 0 && cleanedSøknad.erEndringssøknad) {
-            setError(new Error('Søknaden din inneholder ingen nye perioder.'));
+            throw new Error('Søknaden din inneholder ingen nye perioder.');
         }
 
         const abortSignal = initAbortSignal();
 
-        let kvittering;
-
         try {
-            const response = await Api.sendSøknad(cleanedSøknad, fødselsnr, abortSignal);
-            kvittering = response.data;
-        } catch (postError: unknown) {
-            if (isAxiosError(postError)) {
-                sendErrorMessageToSentry(postError);
-                const submitErrorCallId = getErrorCallId(postError);
-                const callIdForBruker =
-                    submitErrorCallId !== UKJENT_UUID ? submitErrorCallId.slice(0, 8) : submitErrorCallId;
-                setError(new Error(FEIL_VED_INNSENDING + callIdForBruker));
-            } else {
-                setError(new Error(String(postError)));
+            const url = cleanedSøknad.erEndringssøknad ? '/rest/soknad/endre' : '/rest/soknad';
+            const response = await ky.post(`${Environment.PUBLIC_PATH}${url}`, {
+                json: cleanedSøknad,
+                signal: abortSignal,
+                timeout: 120 * 1000,
+                headers: {
+                    fnr: fødselsnr,
+                },
+            });
+
+            slettMellomlagring();
+
+            setKvittering((await response.json()) as Kvittering);
+        } catch (error: unknown) {
+            if (error instanceof HTTPError) {
+                if (abortSignal.aborted || error.response.status === 401 || error.response.status === 403) {
+                    throw error;
+                }
+
+                const jsonResponse = await error.response.json();
+                const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
+                Sentry.captureMessage(FEIL_VED_INNSENDING + callIdForBruker);
+                throw Error(FEIL_VED_INNSENDING + callIdForBruker);
             }
+            if (error instanceof Error) {
+                throw error;
+            }
+            throw new Error(String(error));
         }
-
-        try {
-            await Api.deleteMellomlagretSøknad(fødselsnr, abortSignal);
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (deleteError) {
-            // Vi bryr oss ikke om feil her. Logges bare i backend
-        }
-
-        setKvittering(kvittering);
     };
+
+    const { mutateAsync: sendSøknad, error } = useMutation({
+        mutationFn: () => send(),
+    });
 
     return { sendSøknad, errorSendSøknad: error };
 };
