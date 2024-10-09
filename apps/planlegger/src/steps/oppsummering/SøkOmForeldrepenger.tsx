@@ -1,10 +1,11 @@
-import { BookmarkIcon, LinkIcon } from '@navikt/aksel-icons';
+import { BookmarkIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
-import { BodyShort, Button, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, HStack, Link, VStack } from '@navikt/ds-react';
 
+import { links } from '@navikt/fp-constants';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { Infobox } from '@navikt/fp-ui';
 
@@ -48,7 +49,9 @@ const SøkOmForeldrepenger: React.FunctionComponent<Props> = ({ erAlenesøker, b
                 </BodyShort>
                 <HStack>
                     <Button variant="primary" onClick={copyUrlToClipboard}>
-                        <FormattedMessage id="OppsummeringSteg.KopierUrl" />
+                        <Link href={links.søknadForeldrepenger} target="_blank">
+                            <FormattedMessage id="SøkOmForeldrepenger.Søk" />
+                        </Link>
                     </Button>
                 </HStack>
             </VStack>

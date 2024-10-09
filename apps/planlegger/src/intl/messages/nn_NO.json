@@ -238,5 +238,6 @@
     "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "Om {hvem} ikkje skal ha foreldrepengar, kan ein legge til periode utan foreldrepengar, der ein til dømes får feriepengar frå arbeidsgjevaren.",
     "Validering.ValidNumber": "Du har skrive noko som ikkje er eit tal. Mellomrom, punktum og komma er ikkje tillate.",
     "SøkOmForeldrepenger.Tittel": "Søk om foreldrepengar!",
-    "SøkOmForeldrepenger.BasertPå": "Berekna på {erAdopsjon, select, true {overtakingsdatoen} other {{erFødt, select, true {fødselsdatoen} other {terminen}}}} kan {erAlenesøker, select, true {du} other {de}} søkje om foreldrepengar no."
+    "SøkOmForeldrepenger.BasertPå": "Berekna på {erAdopsjon, select, true {overtakingsdatoen} other {{erFødt, select, true {fødselsdatoen} other {terminen}}}} kan {erAlenesøker, select, true {du} other {de}} søkje om foreldrepengar no.",
+    "SøkOmForeldrepenger.Søk": "Søk om foreldrepengar"
 }

@@ -238,5 +238,6 @@
     "OmÅTilpassePlanen.LeggeTilFerie.TekstFar": "If the {hvem} is not taking parental benefit, you can add a period without parental benefit, where one, for example, receives holiday pay from the employer.",
     "Validering.ValidNumber": "You have written something that is not a number. Spaces, periods, and commas are not allowed.",
     "SøkOmForeldrepenger.Tittel": "Apply for parental benefit!",
-    "SøkOmForeldrepenger.BasertPå": "Estimated on the {erAdopsjon, select, true {date for taking over the care} other {{erFødt, select, true {date of birth} other {due date}}}} you can now apply for parental benefit."
+    "SøkOmForeldrepenger.BasertPå": "Estimated on the {erAdopsjon, select, true {date for taking over the care} other {{erFødt, select, true {date of birth} other {due date}}}} you can now apply for parental benefit.",
+    "SøkOmForeldrepenger.Søk": "Apply for parental benefit"
 }
