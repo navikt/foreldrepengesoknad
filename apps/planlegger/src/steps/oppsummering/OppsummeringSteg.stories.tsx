@@ -112,7 +112,7 @@ export const FlereForsørgereHundreProsentTermin: Story = {
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: false,
-            termindato: '2024-07-24',
+            termindato: '2025-07-24',
             antallBarn: '1',
         },
         arbeidssituasjon: {

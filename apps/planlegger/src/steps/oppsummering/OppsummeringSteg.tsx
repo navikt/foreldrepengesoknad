@@ -20,7 +20,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import ShareDataInfobox from '../../components/boxes/ShareDataInfobox';
 import OppsummeringHeader from './OppsummeringHeader';
 import SøkOmForeldrepenger from './SøkOmForeldrepenger';
-import BarnehageplassOppsummering from './expansion-cards/BarnehageplassOppsummering';
+import BarnehageplassOppsummering, { getFamiliehendelsedato } from './expansion-cards/BarnehageplassOppsummering';
 import OppgittInformasjon from './expansion-cards/OppgittInformasjon';
 import OppsummeringHarRett from './expansion-cards/OppsummeringHarRett';
 import HvorMyeOppsummering from './expansion-cards/hvor-mye/HvorMyeOppsummering';
@@ -57,6 +57,8 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
     const hvemHarRett = arbeidssituasjon ? utledHvemSomHarRett(arbeidssituasjon) : 'ingenHarRett';
 
     const harRettTilForeldrepenger = !erBarnetFødtForMerEnnTreÅrSiden && hvemHarRett !== 'ingenHarRett';
+    const familiehendelsesdato = getFamiliehendelsedato(barnet);
+    const svangerskapsuke22EllerSenere = dayjs().add(18, 'weeks').add(3, 'days').toDate();
 
     return (
         <>
@@ -117,7 +119,10 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
                             </VStack>
                         )}
                         <ShareDataInfobox erAlenesøker={erAleneforsørger} />
-                        <SøkOmForeldrepenger erAlenesøker={erAleneforsørger} barnet={barnet} />
+                        {harRettTilForeldrepenger &&
+                            dayjs(familiehendelsesdato).isBefore(svangerskapsuke22EllerSenere) && (
+                                <SøkOmForeldrepenger erAlenesøker={erAleneforsørger} barnet={barnet} />
+                            )}
                     </VStack>
 
                     <VStack gap="10">

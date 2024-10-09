@@ -1,27 +1,12 @@
-import { BookmarkIcon } from '@navikt/aksel-icons';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { TasklistStartIcon } from '@navikt/aksel-icons';
+import { FormattedMessage } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
 import { BodyShort, Button, HStack, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { Infobox } from '@navikt/fp-ui';
-
-const copyUrlToClipboard = async () => {
-    logAmplitudeEvent('applikasjon-hendelse', {
-        app: 'planlegger',
-        team: 'foreldrepenger',
-        pageKey: 'copy-url',
-    });
-    try {
-        await navigator.clipboard.writeText(window.location.href);
-    } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error('Failed to copy: ', err);
-    }
-};
 
 interface Props {
     erAlenesøker: boolean;
@@ -29,12 +14,11 @@ interface Props {
 }
 
 const SøkOmForeldrepenger: React.FunctionComponent<Props> = ({ erAlenesøker, barnet }) => {
-    const intl = useIntl();
     return (
         <Infobox
             header={<FormattedMessage id="SøkOmForeldrepenger.Tittel" values={{ erAlenesøker }} />}
             color="gray"
-            icon={<BookmarkIcon aria-hidden height={24} width={24} />}
+            icon={<TasklistStartIcon aria-hidden height={24} width={24} />}
         >
             <VStack gap="4">
                 <BodyShort>
@@ -48,11 +32,11 @@ const SøkOmForeldrepenger: React.FunctionComponent<Props> = ({ erAlenesøker, b
                     />
                 </BodyShort>
                 <HStack>
-                    <Button variant="primary" onClick={copyUrlToClipboard}>
-                        <Link href={links.søknadForeldrepenger} target="_blank">
+                    <Link href={links.søknadForeldrepenger} target="_blank" rel="noreferrer">
+                        <Button variant="primary">
                             <FormattedMessage id="SøkOmForeldrepenger.Søk" />
-                        </Link>
-                    </Button>
+                        </Button>
+                    </Link>
                 </HStack>
             </VStack>
         </Infobox>
