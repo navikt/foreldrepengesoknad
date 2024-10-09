@@ -11,7 +11,7 @@ describe('<BarnehageplassSteg>', () => {
     it('skal vise barnehageplass i august', async () => {
         render(<FlereForsørgereBarnTerminDesemberStartAugustOmToÅr />);
 
-        expect(await screen.findByText('Barnehageplass')).toBeInTheDocument();
+        expect(await screen.findAllByText('Barnehageplass')).toHaveLength(2);
 
         expect(screen.getByText('Dere har rett på barnehageplass fra august 2026')).toBeInTheDocument();
     });

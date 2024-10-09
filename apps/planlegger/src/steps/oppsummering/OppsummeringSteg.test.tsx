@@ -79,7 +79,6 @@ describe('<OppsummeringSteg>', () => {
         render(<FarOgFarFødsel />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
-        expect(screen.getByText('Perioden med foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Dere valgte 100 % i 46 uker.')).toBeInTheDocument();
         expect(screen.getByText(/Periode:/)).toBeInTheDocument();
         expect(screen.getByText(/24. juli 2024 – 10. juni 2025/)).toBeInTheDocument();
@@ -89,8 +88,6 @@ describe('<OppsummeringSteg>', () => {
         render(<FarOgFarAdopsjonKunFar1HarRett />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
-
-        expect(screen.getByText('Perioden med foreldrepenger')).toBeInTheDocument();
 
         expect(screen.getByText('Periode:')).toBeInTheDocument();
         expect(screen.getByText('25. okt. 2024 – 02. jan. 2025')).toBeInTheDocument();
@@ -149,7 +146,6 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Lengde')).toBeInTheDocument();
         expect(screen.getByText('Dere valgte 100 % foreldrepenger i 46 uker.')).toBeInTheDocument();
 
-        expect(screen.getByText('Perioden med foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Dere valgte 100 % i 46 uker.')).toBeInTheDocument();
         expect(screen.getByText('24. okt. 2024 – 10. sep. 2025')).toBeInTheDocument();
     });

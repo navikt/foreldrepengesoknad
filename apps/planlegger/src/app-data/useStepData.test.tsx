@@ -57,6 +57,11 @@ describe('useStepData', () => {
                     label: 'Barnet',
                 },
                 {
+                    id: '/barnehageplass',
+                    isSelected: false,
+                    label: 'Barnehageplass',
+                },
+                {
                     id: '/arbeidssituasjon',
                     isSelected: false,
                     label: 'Arbeidssituasjon',
@@ -114,6 +119,11 @@ describe('useStepData', () => {
                     id: '/om-barnet',
                     isSelected: false,
                     label: 'Barnet',
+                },
+                {
+                    id: '/barnehageplass',
+                    isSelected: false,
+                    label: 'Barnehageplass',
                 },
                 {
                     id: '/arbeidssituasjon',
@@ -175,6 +185,11 @@ describe('useStepData', () => {
                     label: 'Barnet',
                 },
                 {
+                    id: '/barnehageplass',
+                    isSelected: false,
+                    label: 'Barnehageplass',
+                },
+                {
                     id: '/oppsummering',
                     isSelected: true,
                     label: 'Oppsummering',
@@ -216,6 +231,11 @@ describe('useStepData', () => {
                     id: '/om-barnet',
                     isSelected: false,
                     label: 'Barnet',
+                },
+                {
+                    id: '/barnehageplass',
+                    isSelected: false,
+                    label: 'Barnehageplass',
                 },
                 {
                     id: '/arbeidssituasjon',
@@ -286,6 +306,11 @@ describe('useStepData', () => {
                     label: 'Barnet',
                 },
                 {
+                    id: '/barnehageplass',
+                    isSelected: false,
+                    label: 'Barnehageplass',
+                },
+                {
                     id: '/arbeidssituasjon',
                     isSelected: false,
                     label: 'Arbeidssituasjon',
@@ -346,6 +371,11 @@ describe('useStepData', () => {
                     id: '/om-barnet',
                     isSelected: false,
                     label: 'Barnet',
+                },
+                {
+                    id: '/barnehageplass',
+                    isSelected: false,
+                    label: 'Barnehageplass',
                 },
                 {
                     id: '/arbeidssituasjon',
@@ -411,6 +441,11 @@ describe('useStepData', () => {
                     label: 'Barnet',
                 },
                 {
+                    id: '/barnehageplass',
+                    isSelected: false,
+                    label: 'Barnehageplass',
+                },
+                {
                     id: '/arbeidssituasjon',
                     isSelected: false,
                     label: 'Arbeidssituasjon',
@@ -472,6 +507,11 @@ describe('useStepData', () => {
                     id: '/om-barnet',
                     isSelected: false,
                     label: 'Barnet',
+                },
+                {
+                    id: '/barnehageplass',
+                    isSelected: false,
+                    label: 'Barnehageplass',
                 },
                 {
                     id: '/arbeidssituasjon',
