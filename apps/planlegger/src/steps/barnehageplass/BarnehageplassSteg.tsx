@@ -24,7 +24,7 @@ export const barnehagestartDato = (barnet: OmBarnet) => {
     if (erFødt || erIkkeFødt || erAdoptert) {
         const dato = erAdoptert || erFødt ? barnet.fødselsdato : barnet.termindato;
 
-        if (dayjs(dato).month() < 8) return dayjs(dato).month(7).add(1, 'year').format('MMMM YYYY');
+        if (dayjs(dato).month() < 8) return dayjs(dato).month(7).add(1, 'year').format('YYYY-MM-DD');
 
         if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) return dayjs(dato).add(1, 'year').format('MMMM YYYY');
 

@@ -26,6 +26,7 @@ import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
+import Barnehagestart from './infoboks/Barnehagestart';
 import NårBareEnPartHarRettInfoboks from './infoboks/NårBareEnPartHarRettInfoboks';
 import ValgtDekningsgradInfoboks from './infoboks/ValgtDekningsgradInfoboks';
 
@@ -189,17 +190,26 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                             </Radio>
                         </BlueRadioGroup>
                         {valgtStønadskonto && (
-                            <ValgtDekningsgradInfoboks
-                                key={valgtDekningsgrad}
-                                barnet={barnet}
-                                hvemPlanlegger={hvemPlanlegger}
-                                arbeidssituasjon={arbeidssituasjon}
-                                valgtStønadskonto={valgtStønadskonto}
-                                uttaksdata100={uttaksdata100}
-                                uttaksdata80={uttaksdata80}
-                                valgtDekningsgrad={valgtDekningsgrad}
-                                antallUkerOgDager={antallUkerOgDager}
-                            />
+                            <VStack gap="2">
+                                <ValgtDekningsgradInfoboks
+                                    key={valgtDekningsgrad}
+                                    barnet={barnet}
+                                    hvemPlanlegger={hvemPlanlegger}
+                                    arbeidssituasjon={arbeidssituasjon}
+                                    valgtStønadskonto={valgtStønadskonto}
+                                    uttaksdata100={uttaksdata100}
+                                    uttaksdata80={uttaksdata80}
+                                    valgtDekningsgrad={valgtDekningsgrad}
+                                    antallUkerOgDager={antallUkerOgDager}
+                                />
+                                <Barnehagestart
+                                    barnet={barnet}
+                                    hvemPlanlegger={hvemPlanlegger}
+                                    uttaksdata100={uttaksdata100}
+                                    uttaksdata80={uttaksdata80}
+                                    valgtDekningsgrad={valgtDekningsgrad}
+                                />
+                            </VStack>
                         )}
                     </VStack>
                     <Spacer />
