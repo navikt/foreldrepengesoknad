@@ -1,13 +1,11 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { OmBarnet } from 'types/Barnet';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
-import { erBarnetAdoptert } from 'utils/barnetUtils';
 import { Uttaksdata, findMonthsAndWeeksAndDaysBetween } from 'utils/uttakUtils';
 
 import { BodyShort } from '@navikt/ds-react';
@@ -29,8 +27,8 @@ const Barnehagestart: FunctionComponent<Props> = ({
     uttaksdata80,
     valgtDekningsgrad,
 }) => {
+    const intl = useIntl();
     const antallBarn = barnet.antallBarn;
-    const erAdopsjon = erBarnetAdoptert(barnet);
 
     const sluttdatoSøker1 =
         valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT
@@ -44,14 +42,9 @@ const Barnehagestart: FunctionComponent<Props> = ({
 
     const sluttdato = sluttdatoSøker2 ? sluttdatoSøker2 : sluttdatoSøker1;
     const barnehagestart = barnehagestartDato(barnet);
-    console.log('barnehagestart', barnehagestart);
-    console.log('sluttdato', sluttdato);
-    console.log('termindato', !erAdopsjon ? barnet.termindato : barnet.fødselsdato);
+
     const antallMånederOgUkerTilBarnehagestart =
         sluttdato && barnehagestart ? findMonthsAndWeeksAndDaysBetween(sluttdato, barnehagestart) : undefined;
-    console.log('antallUkerTilOvers', antallMånederOgUkerTilBarnehagestart?.uker);
-    console.log('antallMånederTilOvers', antallMånederOgUkerTilBarnehagestart?.måneder);
-    console.log('antallDagerTilOvers', antallMånederOgUkerTilBarnehagestart?.dager);
 
     return (
         <Infobox
@@ -80,7 +73,10 @@ const Barnehagestart: FunctionComponent<Props> = ({
                         values={{
                             antallBarn,
                             erAlenesøker: erAlenesøker(hvemPlanlegger),
-                            barnehagestartdato: dayjs(barnehagestart).format('D. MMMM YYYY'),
+                            barnehagestartdato: intl.formatDate(barnehagestart, {
+                                month: 'long',
+                                year: 'numeric',
+                            }),
                             uker: antallMånederOgUkerTilBarnehagestart?.dager,
                         }}
                     />
@@ -92,7 +88,10 @@ const Barnehagestart: FunctionComponent<Props> = ({
                         values={{
                             antallBarn,
                             erAlenesøker: erAlenesøker(hvemPlanlegger),
-                            barnehagestartdato: dayjs(barnehagestart).format('D. MMMM YYYY'),
+                            barnehagestartdato: intl.formatDate(barnehagestart, {
+                                month: 'long',
+                                year: 'numeric',
+                            }),
                             måneder: antallMånederOgUkerTilBarnehagestart?.måneder,
                             uker: antallMånederOgUkerTilBarnehagestart?.uker,
                         }}

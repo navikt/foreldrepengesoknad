@@ -101,6 +101,10 @@ export const FlereForsørgereEttBarnKunMorHarRett: Story = {
 export const FlereForsørgereToBarn: Story = {
     args: {
         ...FlereForsørgereEttBarnKunMorHarRett.args,
+        omBarnet: {
+            ...FlereForsørgereEttBarnKunMorHarRett.args.omBarnet,
+            antallBarn: '2',
+        },
         hvemPlanlegger: {
             navnPåMedmor: 'Esther Utvikler',
             navnPåMor: 'Klara Utvikler',

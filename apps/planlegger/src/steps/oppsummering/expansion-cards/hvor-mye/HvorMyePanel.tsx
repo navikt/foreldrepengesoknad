@@ -36,7 +36,7 @@ const HvorMyePanel: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }
         <VStack gap="10">
             <BluePanel>
                 <VStack gap="2">
-                    <Heading size="small" level="4">
+                    <Heading size="xsmall" level="4">
                         <FormattedMessage
                             id="HvorMyeOppsummering.DuVilFå"
                             values={{
@@ -65,7 +65,12 @@ const HvorMyePanel: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }
                                     values={{
                                         maksInntekt: formatCurrency(annualMax),
                                         a: (msg: any) => (
-                                            <a href={links.grunnbeløpet} target="_blank" rel="noreferrer">
+                                            <a
+                                                href={links.grunnbeløpet}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="lenke"
+                                            >
                                                 {msg}
                                             </a>
                                         ),

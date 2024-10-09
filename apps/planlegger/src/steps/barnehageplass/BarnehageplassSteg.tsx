@@ -4,7 +4,7 @@ import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
@@ -24,7 +24,7 @@ export const barnehagestartDato = (barnet: OmBarnet) => {
     if (erFødt || erIkkeFødt || erAdoptert) {
         const dato = erAdoptert || erFødt ? barnet.fødselsdato : barnet.termindato;
 
-        if (dayjs(dato).month() < 8) return dayjs(dato).month(7).add(1, 'year').format('YYYY-MM-DD');
+        if (dayjs(dato).month() < 8) return dayjs(dato).month(7).add(1, 'year').format('MMMM YYYY');
 
         if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) return dayjs(dato).add(1, 'year').format('MMMM YYYY');
 
@@ -39,6 +39,7 @@ interface Props {
 }
 
 const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale }) => {
+    const intl = useIntl();
     const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
 
@@ -57,7 +58,7 @@ const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale }) => {
                 <Heading size="large">
                     <FormattedMessage id="BarnehageplassSteg.Tittel" />
                 </Heading>
-                <VStack gap="10">
+                <VStack gap="5">
                     <BodyLong>
                         <FormattedMessage id="Barnehageplass.KommuneTekstDeg" values={{ erAlenesøker }} />
                     </BodyLong>
@@ -66,7 +67,10 @@ const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale }) => {
                             <FormattedMessage
                                 id="Barnehageplass.DatoTittel"
                                 values={{
-                                    dato: barnehagestartDato(barnet),
+                                    dato: intl.formatDate(barnehagestartDato(barnet), {
+                                        month: 'long',
+                                        year: 'numeric',
+                                    }),
                                     erAlenesøker,
                                 }}
                             />
