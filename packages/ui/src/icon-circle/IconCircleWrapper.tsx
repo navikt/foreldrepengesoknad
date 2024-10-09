@@ -13,7 +13,7 @@ const getColor = (color: CircleColor): string => {
         return styles.gray;
     }
     if (color === 'blue') {
-        return styles.lightBlue;
+        return styles.blue;
     }
     if (color === 'lightBlue') {
         return styles.lightBlue;

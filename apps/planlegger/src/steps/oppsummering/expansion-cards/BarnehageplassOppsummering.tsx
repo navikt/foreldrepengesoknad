@@ -9,11 +9,11 @@ import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 
-import { BodyShort, ExpansionCard, HStack, Link, VStack } from '@navikt/ds-react';
+import { BodyShort, ExpansionCard, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
+import { BluePanel, IconCircleWrapper, Infobox } from '@navikt/fp-ui';
 
 const onToggleExpansionCard = (open: boolean) => {
     if (open) {
@@ -60,46 +60,55 @@ const BarnehageplassOppsummering: FunctionComponent<Props> = ({ hvemPlanlegger, 
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
                     <VStack gap="2">
-                        <Infobox
-                            header={
-                                <FormattedMessage
-                                    id="BarnehageplassOppsummering.KanHaPlass"
-                                    values={{
-                                        erAlenesøker,
-                                        barnehagestartdato: intl.formatDate(barnehagestartdato, {
-                                            month: 'long',
-                                            year: 'numeric',
-                                        }),
-                                    }}
-                                />
-                            }
-                            color="blue"
-                            icon={
-                                <BabyWrappedIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />
-                            }
-                        >
-                            <BodyShort>
-                                <FormattedMessage
-                                    id="BarnehageplassOppsummering.Beregnet"
-                                    values={{
-                                        erAlenesøker,
-                                        familiehendelsesdato,
-                                        antallBarn,
-                                        erFødt: erBarnetFødt(barnet),
-                                        a: (msg) => (
-                                            <Link
-                                                href={links.barnehageloven}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className="lenke"
-                                            >
-                                                {msg}
-                                            </Link>
-                                        ),
-                                    }}
-                                />
-                            </BodyShort>
-                        </Infobox>
+                        <BluePanel>
+                            <VStack gap="2">
+                                <HStack justify="space-between" wrap={false}>
+                                    <Heading size="xsmall" level="4">
+                                        <FormattedMessage
+                                            id="BarnehageplassOppsummering.KanHaPlass"
+                                            values={{
+                                                erAlenesøker,
+                                                barnehagestartdato: intl.formatDate(barnehagestartdato, {
+                                                    month: 'long',
+                                                    year: 'numeric',
+                                                }),
+                                            }}
+                                        />
+                                    </Heading>
+                                    <IconCircleWrapper size="medium" color="blue">
+                                        <BabyWrappedIcon
+                                            height={24}
+                                            width={24}
+                                            color="#236B7D"
+                                            fontSize="1.5rem"
+                                            aria-hidden
+                                        />
+                                    </IconCircleWrapper>
+                                </HStack>
+
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="BarnehageplassOppsummering.Beregnet"
+                                        values={{
+                                            erAlenesøker,
+                                            familiehendelsesdato,
+                                            antallBarn,
+                                            erFødt: erBarnetFødt(barnet),
+                                            a: (msg) => (
+                                                <Link
+                                                    href={links.barnehageloven}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="lenke"
+                                                >
+                                                    {msg}
+                                                </Link>
+                                            ),
+                                        }}
+                                    />
+                                </BodyShort>
+                            </VStack>
+                        </BluePanel>
                         <Infobox
                             header={<FormattedMessage id="BarnehageplassOppsummering.ManKanFå" />}
                             color="gray"
