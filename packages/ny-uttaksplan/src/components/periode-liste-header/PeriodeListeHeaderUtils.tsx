@@ -151,7 +151,7 @@ export const getTekst = ({
             case UtsettelseÅrsakType.NavTiltak:
                 return 'Utsettelse grunnet NAV tiltak';
             case UtsettelseÅrsakType.Fri:
-                return 'Periode uten uttak';
+                return 'Uten foreldrepenger';
         }
 
         return 'Utsettelse';

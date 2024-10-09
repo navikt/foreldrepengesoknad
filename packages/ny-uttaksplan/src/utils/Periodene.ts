@@ -28,7 +28,6 @@ export const Periodene = (perioder: Planperiode[]) => ({
     getOverføringer: () => getOverføringer(perioder),
     getHull: () => getHull(perioder),
     getHullOgInfoOgPerioderUtenUttak: () => getHullOgInfoOgPerioderUtenUttak(perioder),
-    // getInfoperioder: () => getInfoperioder(perioder),
     getUtsettelser: () => getUtsettelser(perioder),
     getPerioderEtterFamiliehendelsesdato: (dato: Date) => getPerioderEtterFamiliehendelsesdato(perioder, dato),
     getPerioderFørFamiliehendelsesdato: (dato: Date) => getPerioderFørFamiliehendelsesdato(perioder, dato),
@@ -50,7 +49,6 @@ export const Periodene = (perioder: Planperiode[]) => ({
     finnPåfølgendePeriode: (periode: Planperiode) => finnPåfølgendePeriode(perioder, periode),
     forskyvPerioder: (uttaksdager: number) => forskyvPerioder(perioder, uttaksdager),
     sort: () => [...perioder].sort(sorterPerioder),
-    // finnSisteInfoperiode: () => finnSisteInfoperiode(perioder),
 });
 
 export function sorterPerioder(p1: Planperiode, p2: Planperiode) {
@@ -63,10 +61,6 @@ export function sorterPerioder(p1: Planperiode, p2: Planperiode) {
         }
         return isValidTidsperiodeString(tidsperiodeP1) ? 1 : -1;
     }
-
-    // if (dayjs(tidsperiodeP1.fom).isSame(tidsperiodeP2.fom, 'day')) {
-    //     return isInfoPeriode(p1) ? -1 : 1;
-    // }
 
     if (TidsperiodenString(tidsperiodeP2).erOmsluttetAv(tidsperiodeP1)) {
         return 1;
@@ -98,10 +92,6 @@ function getHull(perioder: Planperiode[]): Planperiode[] {
 function getHullOgInfoOgPerioderUtenUttak(perioder: Planperiode[]) {
     return perioder.filter((periode) => isHull(periode) || isPeriodeUtenUttak(periode));
 }
-
-// function getInfoperioder(perioder: PlanPeriode[]): InfoPeriode[] {
-//     return perioder.filter((periode) => isInfoPeriode(periode)) as InfoPeriode[];
-// }
 
 function getOpphold(perioder: Planperiode[]) {
     return perioder.filter((periode) => isOppholdsperiode(periode));
@@ -179,12 +169,7 @@ function forskyvPerioder(perioder: Planperiode[], uttaksdager: number): Planperi
             return result;
         }
 
-        if (
-            // isInfoPeriode(periode) ||
-            isHull(periode) ||
-            isPeriodeUtenUttak(periode)
-            // isPeriodeUtenUttakUtsettelse(periode)
-        ) {
+        if (isHull(periode) || isPeriodeUtenUttak(periode)) {
             const dagerIPerioden = Perioden(periode).getAntallUttaksdager();
 
             if (dagerIPerioden > uttaksdagerCurrent) {
@@ -271,13 +256,7 @@ function getFørsteUttaksdag(perioder: Planperiode[]): string | undefined {
 
 function getFørsteUttaksdagEksluderInfoperioderOgFrittUttak(perioder: Planperiode[]): string | undefined {
     const førstePeriode = perioder
-        .filter(
-            (p) =>
-                p.fom !== undefined &&
-                // !isInfoPeriode(p) &&
-                !isPeriodeUtenUttak(p),
-            // !isPeriodeUtenUttakUtsettelse(p),
-        )
+        .filter((p) => p.fom !== undefined && !isPeriodeUtenUttak(p))
         .sort(sorterPerioder)
         .shift();
     if (førstePeriode) {
@@ -296,7 +275,8 @@ function getForeldrepengerFørTermin(perioder: Planperiode[]): Planperiode | und
     const periode: Planperiode | undefined = perioder.find(
         (p) => isUttaksperiode(p) && p.kontoType === StønadskontoType.ForeldrepengerFørFødsel,
     );
-    return periode ? periode : undefined;
+
+    return periode;
 }
 
 function getFørsteUttaksdagEtterSistePeriode(perioder: Planperiode[]): string | undefined {
@@ -305,23 +285,6 @@ function getFørsteUttaksdagEtterSistePeriode(perioder: Planperiode[]): string |
     }
     return UttaksdagenString(perioder[perioder.length - 1].tom).neste();
 }
-
-// function finnSisteInfoperiode(perioder: PlanPeriode[]) {
-//     return perioder
-//         .filter((p) => isInfoPeriode(p))
-//         .sort(sorterPerioder)
-//         .reverse()[0];
-// }
-
-// export const uttaksplanErBareOpphold = (perioder: PlanPeriode[]): boolean => {
-//     const perioderUtenInfoPerioder = perioder.filter((p) => !isInfoPeriode(p));
-
-//     if (perioderUtenInfoPerioder.length === 0) {
-//         return false;
-//     }
-
-//     return perioderUtenInfoPerioder.every((periode) => periode.type === Periodetype.Opphold);
-// };
 
 export const uttaksplanErBareForeldrepengerFørFødsel = (perioder: Planperiode[]): boolean => {
     const perioderUtenInfoPerioderEllerHull = perioder.filter((p) => !isHull(p));
@@ -334,17 +297,3 @@ export const uttaksplanErBareForeldrepengerFørFødsel = (perioder: Planperiode[
         (periode) => isUttaksperiode(periode) && periode.kontoType === StønadskontoType.ForeldrepengerFørFødsel,
     );
 };
-
-// export const uttaksplanSlutterMedOpphold = (perioder: PlanPeriode[]): boolean => {
-//     return (
-//         perioder
-//             .filter((p) => !isInfoPeriode(p))
-//             .slice()
-//             .reverse()
-//             .findIndex((periode) => periode.type === Periodetype.Opphold) === 0
-//     );
-// };
-
-// export const uttaksplanStarterMedOpphold = (perioder: PlanPeriode[]): boolean => {
-//     return perioder.filter((p) => !isInfoPeriode(p)).findIndex((periode) => periode.type === Periodetype.Opphold) === 0;
-// };
