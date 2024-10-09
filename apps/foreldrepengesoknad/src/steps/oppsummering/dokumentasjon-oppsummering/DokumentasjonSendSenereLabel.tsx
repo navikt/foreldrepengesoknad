@@ -245,7 +245,7 @@ export const DokumentasjonSendSenereLabel = ({
                     bodyLabel={
                         <FormattedMessage
                             id="manglendeVedlegg.morJobber.description"
-                            values={{ navn: navnPåForeldre.farMedmor }}
+                            values={{ navn: navnPåForeldre.mor }}
                         />
                     }
                 />

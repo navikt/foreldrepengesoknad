@@ -1,64 +1,67 @@
 import * as Sentry from '@sentry/browser';
-import { AxiosInstance } from 'axios';
-import { useCallback, useMemo, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import ky, { HTTPError } from 'ky';
+import { useMemo } from 'react';
 
-import { ApiAccessError, ApiGeneralError, deleteData, isApiError, postData } from '@navikt/fp-api';
+import { useAbortSignal } from '@navikt/fp-api';
 import { Kvittering, LocaleNo } from '@navikt/fp-types';
 
+import Environment from './Environment';
 import { useContextGetAnyData } from './SvpDataContext';
 import { getSøknadForInnsending } from './getSøknadForInnsending';
 
+const UKJENT_UUID = 'ukjent uuid';
 export const FEIL_VED_INNSENDING =
-    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
+    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-const useSendSøknad = (svpApi: AxiosInstance, setKvittering: (kvittering: Kvittering) => void, locale: LocaleNo) => {
+const useSendSøknad = (setKvittering: (kvittering: Kvittering) => void, locale: LocaleNo) => {
     const hentData = useContextGetAnyData();
+    const { initAbortSignal } = useAbortSignal();
 
-    const [error, setError] = useState<ApiAccessError | ApiGeneralError>();
+    const { mutate: slettMellomlagring } = useMutation({
+        mutationFn: () => ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/svangerskapspenger`),
+    });
 
-    const sendSøknad = useCallback(
-        async (abortSignal: AbortSignal) => {
-            const søknadForInnsending = getSøknadForInnsending(hentData, locale);
+    const send = async () => {
+        const søknadForInnsending = getSøknadForInnsending(hentData, locale);
 
-            let kvittering;
+        const signal = initAbortSignal();
 
-            try {
-                kvittering = await postData<typeof søknadForInnsending, Kvittering>(
-                    svpApi,
-                    `/rest/soknad`,
-                    søknadForInnsending,
-                    FEIL_VED_INNSENDING,
-                    true,
-                    abortSignal,
-                );
-            } catch (postError: unknown) {
-                if (isApiError(postError)) {
-                    if (postError instanceof ApiGeneralError) {
-                        Sentry.captureMessage(postError.message);
-                    }
-                    setError(postError);
-                } else {
-                    throw new Error('SendSøknad - This should never happen');
-                }
-            }
+        try {
+            const response = await ky.post(`${Environment.PUBLIC_PATH}/rest/soknad/svangerskapspenger`, {
+                json: søknadForInnsending,
+                signal,
+            });
 
-            if (kvittering) {
-                try {
-                    await deleteData(svpApi, '/rest/storage/svangerskapspenger', FEIL_VED_INNSENDING, abortSignal);
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                } catch (deleteError) {
-                    // Vi bryr oss ikke om feil her. Logges bare i backend
+            slettMellomlagring();
+
+            setKvittering((await response.json()) as Kvittering);
+        } catch (error: unknown) {
+            if (error instanceof HTTPError) {
+                Sentry.captureMessage(error.message);
+
+                if (signal.aborted || error.response.status === 401 || error.response.status === 403) {
+                    throw error;
                 }
 
-                setKvittering(kvittering);
+                const jsonResponse = await error.response.json();
+                const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
+                throw Error(FEIL_VED_INNSENDING + callIdForBruker);
             }
-        },
-        [hentData, setKvittering, locale, svpApi],
-    );
+            if (error instanceof Error) {
+                throw error;
+            }
+            throw new Error(String(error));
+        }
+    };
+
+    const { mutateAsync: sendSøknad, error } = useMutation({
+        mutationFn: () => send(),
+    });
 
     return useMemo(
         () => ({
-            sendSøknad,
+            sendSøknad: () => sendSøknad(),
             errorSendSøknad: error,
         }),
         [sendSøknad, error],

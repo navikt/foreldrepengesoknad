@@ -67,6 +67,12 @@ export const isLessThanThreeWeeksAgo =
         return dayjs(date).isBefore(DATO_FOR_3_UKER_SIDEN) ? i18nText : null;
     };
 
+export const isLessThanThreeWeeksBeforeFødsel =
+    (i18nText: string, fødselsdato: string) =>
+    (date: string): FormValidationResult => {
+        return dayjs(date).isBefore(dayjs(fødselsdato).startOf('day').subtract(21, 'days')) ? i18nText : null;
+    };
+
 export const erI22SvangerskapsukeEllerSenere =
     (i18nText: string) =>
     (date: string): FormValidationResult =>

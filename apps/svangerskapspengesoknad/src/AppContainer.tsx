@@ -1,7 +1,10 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import Environment from 'appData/Environment';
 import dayjs from 'dayjs';
+import ky from 'ky';
 import { FunctionComponent, useState } from 'react';
 
-import { deleteData } from '@navikt/fp-api';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
@@ -12,7 +15,6 @@ import { ByttBrowserModal, ErrorBoundary, IntlProvider, uiMessages } from '@navi
 import { getLocaleFromSessionStorage, setLocaleInSessionStorage, utilsMessages } from '@navikt/fp-utils';
 
 import Svangerskapspengesøknad from './Svangerskapspengesøknad';
-import { svpApi } from './SvangerskapspengesøknadRoutes';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
 
@@ -46,6 +48,14 @@ declare global {
     }
 }
 
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: process.env.NODE_ENV === 'test' ? false : 3,
+        },
+    },
+});
+
 const localeFromSessionStorage = getLocaleFromSessionStorage<LocaleNo>();
 
 const MESSAGES_GROUPED_BY_LOCALE = {
@@ -57,7 +67,7 @@ dayjs.locale(localeFromSessionStorage);
 
 const retryCallback = async () => {
     try {
-        await deleteData(svpApi, '/rest/storage/svangerskapspenger', 'Feil ved sletting av mellomlagret data');
+        await ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/svangerskapspenger`);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
         // Vi bryr oss ikke om feil her. Logges bare i backend
@@ -73,14 +83,17 @@ const AppContainer: FunctionComponent = () => {
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <ErrorBoundary appName="Svangerskapspenger" retryCallback={retryCallback}>
                 <ByttBrowserModal />
-                <Svangerskapspengesøknad
-                    locale={locale}
-                    onChangeLocale={(activeLocale: LocaleNo) => {
-                        setLocaleInSessionStorage(activeLocale);
-                        setLocale(activeLocale);
-                        document.documentElement.setAttribute('lang', activeLocale);
-                    }}
-                />
+                <QueryClientProvider client={queryClient}>
+                    <ReactQueryDevtools />
+                    <Svangerskapspengesøknad
+                        locale={locale}
+                        onChangeLocale={(activeLocale: LocaleNo) => {
+                            setLocaleInSessionStorage(activeLocale);
+                            setLocale(activeLocale);
+                            document.documentElement.setAttribute('lang', activeLocale);
+                        }}
+                    />
+                </QueryClientProvider>
             </ErrorBoundary>
         </IntlProvider>
     );

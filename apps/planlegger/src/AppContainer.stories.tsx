@@ -1,16 +1,15 @@
 import { Meta, StoryObj } from '@storybook/react';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
+import { HttpResponse, http } from 'msw';
 import { StrictMode } from 'react';
+import { MemoryRouter } from 'react-router-dom';
 
 import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
-import AppContainer from './AppContainer';
-import { AxiosInstanceAPI } from './api/AxiosInstance';
+import { AppContainer } from './AppContainer';
 
-const kontoer = {
+const STØNADSKONTOER = {
     '100': {
         kontoer: [
             {
@@ -61,7 +60,7 @@ const kontoer = {
     },
 } as TilgjengeligeStønadskontoer;
 
-const satser = {
+const SATSER = {
     engangstønad: [
         {
             fom: '01.01.2023',
@@ -87,51 +86,54 @@ const satser = {
 const meta = {
     title: 'AppContainer',
     component: AppContainer,
-    render: (args) => {
+    parameters: {
+        msw: {
+            handlers: [
+                http.post('https://pl/rest/konto', async ({ request }) => {
+                    const body = await request.json();
+                    const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', {
+                        body: JSON.stringify(body),
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    const json = await response.json();
+                    return HttpResponse.json(json);
+                }),
+                http.get('https://pl/rest/satser', async () => {
+                    const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/satser');
+                    const json = await response.json();
+                    return HttpResponse.json(json);
+                }),
+            ],
+        },
+    },
+    render: () => {
         initAmplitude();
-
-        const axiosInstance = AxiosInstanceAPI();
-        const apiMock = new MockAdapter(axiosInstance);
-        if (args.brukMocks) {
-            apiMock.onPost('/rest/konto').reply(() => {
-                return [200, kontoer];
-            });
-            apiMock.onGet('/rest/satser').reply(() => {
-                return [200, satser];
-            });
-        } else {
-            apiMock.onPost('/rest/konto').reply(async (config) => {
-                const redirectResponse = await axios
-                    .create()
-                    .post('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', config.data, {
-                        withCredentials: config.withCredentials,
-                        headers: config.headers,
-                        timeout: config.timeout,
-                    });
-                return [200, redirectResponse.data];
-            });
-            apiMock.onGet('/rest/satser').reply(async (config) => {
-                const redirectResponse = await axios
-                    .create()
-                    .get('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/satser', {
-                        headers: config.headers,
-                        timeout: config.timeout,
-                    });
-                return [200, redirectResponse.data];
-            });
-        }
-
         return (
             <StrictMode>
-                <AppContainer />
+                <MemoryRouter>
+                    <AppContainer />
+                </MemoryRouter>
             </StrictMode>
         );
     },
-} satisfies Meta<{
-    brukMocks?: boolean;
-}>;
+} satisfies Meta;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+export const DefaultMockaStønadskontoerOgSatser: Story = {
+    ...Default,
+    parameters: {
+        msw: {
+            handlers: [
+                http.post('https://pl/rest/konto', () => HttpResponse.json(STØNADSKONTOER)),
+                http.get('https://pl/rest/satser', () => HttpResponse.json(SATSER)),
+            ],
+        },
+    },
+};

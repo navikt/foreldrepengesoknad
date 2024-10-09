@@ -59,7 +59,7 @@ describe('<EgenNæringSteg>', () => {
                 organisasjonsnummer: '997519485',
                 pågående: true,
                 registrertINorge: true,
-                fomDato: '2023-04-30',
+                fom: '2023-04-30',
             },
             key: ContextDataType.EGEN_NÆRING,
             type: 'update',

@@ -4,6 +4,7 @@ import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
+import { HvorMye } from 'types/HvorMye';
 
 export enum ContextDataType {
     HVEM_PLANLEGGER = 'HVEM_PLANLEGGER',
@@ -11,12 +12,14 @@ export enum ContextDataType {
     ARBEIDSSITUASJON = 'ARBEIDSSITUASJON',
     HVOR_LANG_PERIODE = 'HVOR_LANG_PERIODE',
     FORDELING = 'FORDELING',
+    HVOR_MYE = 'HVOR_MYE',
 }
 
 export type ContextDataMap = {
     [ContextDataType.HVEM_PLANLEGGER]?: HvemPlanlegger;
     [ContextDataType.OM_BARNET]?: OmBarnet;
     [ContextDataType.ARBEIDSSITUASJON]?: Arbeidssituasjon;
+    [ContextDataType.HVOR_MYE]?: HvorMye;
     [ContextDataType.HVOR_LANG_PERIODE]?: HvorLangPeriode;
     [ContextDataType.FORDELING]?: Fordeling;
 };

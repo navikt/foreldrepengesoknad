@@ -30,14 +30,14 @@ importers:
   apps/engangsstonad:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.0.0
-        version: 7.0.1
+        specifier: ^7.1.0
+        version: 7.2.0
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-react':
-        specifier: ^7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-api':
         specifier: workspace:*
         version: link:../../packages/api
@@ -71,9 +71,12 @@ importers:
       '@sentry/browser':
         specifier: ^7.109.0
         version: 7.119.0
-      axios:
-        specifier: ^1.6.8
-        version: 1.7.7
+      '@tanstack/react-query':
+        specifier: 5.56.2
+        version: 5.56.2(react@18.3.1)
+      '@tanstack/react-query-devtools':
+        specifier: ^5.58.0
+        version: 5.59.3(@tanstack/react-query@5.56.2(react@18.3.1))(react@18.3.1)
       compression:
         specifier: ^1.7.4
         version: 1.7.4
@@ -93,8 +96,11 @@ importers:
         specifier: ^7.12.0
         version: 7.12.0
       jsdom:
-        specifier: ^25.0.0
-        version: 25.0.0
+        specifier: ^25.0.1
+        version: 25.0.1
+      ky:
+        specifier: ^1.7.2
+        version: 1.7.2
       morgan:
         specifier: ^1.10.0
         version: 1.10.0
@@ -114,7 +120,7 @@ importers:
         specifier: 7.53.0
         version: 7.53.0(react@18.3.1)
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
       react-router-dom:
         specifier: ^6.26.2
@@ -134,22 +140,22 @@ importers:
         version: link:../../packages/utils-test
       '@navikt/nav-dekoratoren-moduler':
         specifier: 2.1.6
-        version: 2.1.6(jsdom@25.0.0)(react@18.3.1)
+        version: 2.1.6(jsdom@25.0.1)(react@18.3.1)
       '@storybook/addon-actions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-essentials':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/cli':
-        specifier: 8.3.1
-        version: 8.3.1(@babel/preset-env@7.25.4(@babel/core@7.25.2))
+        specifier: 8.3.4
+        version: 8.3.4(@babel/preset-env@7.25.4(@babel/core@7.25.2))
       '@storybook/react':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@storybook/react-vite':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -158,7 +164,7 @@ importers:
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
@@ -166,8 +172,8 @@ importers:
         specifier: ^4.3.0
         version: 4.3.0(prettier@3.3.3)
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@types/react-document-title':
         specifier: ^2.0.9
         version: 2.0.9
@@ -178,20 +184,17 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.4.47)
-      axios-mock-adapter:
-        specifier: 1.22.0
-        version: 1.22.0(axios@1.7.7)
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
       eslint:
-        specifier: 9.10.0
-        version: 9.10.0(jiti@1.21.6)
+        specifier: 9.11.1
+        version: 9.11.1(jiti@1.21.6)
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -201,6 +204,12 @@ importers:
       less:
         specifier: ^4.2.0
         version: 4.2.0
+      msw:
+        specifier: ^2.4.9
+        version: 2.4.9(typescript@5.6.2)
+      msw-storybook-addon:
+        specifier: ^2.0.3
+        version: 2.0.3(msw@2.4.9(typescript@5.6.2))
       multer:
         specifier: 1.4.5-lts.1
         version: 1.4.5-lts.1
@@ -208,8 +217,8 @@ importers:
         specifier: ^1.4.3
         version: 1.4.3(hogan.js@3.0.2)(webpack@5.94.0(esbuild@0.23.1))
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -217,14 +226,14 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0(jiti@1.21.6))(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0))
+        version: 0.8.0(eslint@9.11.1(jiti@1.21.6))(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   apps/foreldrepengeoversikt:
     dependencies:
@@ -235,20 +244,20 @@ importers:
         specifier: ^11.2.12
         version: 11.2.14
       '@navikt/aksel-icons':
-        specifier: ^7.0.0
-        version: 7.0.1
+        specifier: ^7.1.0
+        version: 7.2.0
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-icons':
         specifier: ^3.4.3
-        version: 3.4.3(@types/react@18.3.8)(react@18.3.1)
+        version: 3.4.3(@types/react@18.3.11)(react@18.3.1)
       '@navikt/ds-react':
-        specifier: ^7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/ds-tailwind':
-        specifier: 7.0.0
-        version: 7.0.0
+        specifier: 7.1.0
+        version: 7.1.0
       '@navikt/fp-api':
         specifier: workspace:*
         version: link:../../packages/api
@@ -272,7 +281,7 @@ importers:
         version: link:../../packages/validation
       '@navikt/nav-dekoratoren-moduler':
         specifier: 2.1.6
-        version: 2.1.6(jsdom@25.0.0)(react@18.3.1)
+        version: 2.1.6(jsdom@25.0.1)(react@18.3.1)
       '@sentry/browser':
         specifier: ^7.109.0
         version: 7.119.0
@@ -280,8 +289,8 @@ importers:
         specifier: 5.56.2
         version: 5.56.2(react@18.3.1)
       '@tanstack/react-query-devtools':
-        specifier: ^5.56.2
-        version: 5.56.2(@tanstack/react-query@5.56.2(react@18.3.1))(react@18.3.1)
+        specifier: ^5.58.0
+        version: 5.59.3(@tanstack/react-query@5.56.2(react@18.3.1))(react@18.3.1)
       amplitude-js:
         specifier: ^8.21.9
         version: 8.21.9
@@ -301,8 +310,8 @@ importers:
         specifier: ^1.2.5
         version: 1.2.5
       jotai:
-        specifier: ^2.7.2
-        version: 2.10.0(@types/react@18.3.8)(react@18.3.1)
+        specifier: ^2.10.0
+        version: 2.10.0(@types/react@18.3.11)(react@18.3.1)
       ky:
         specifier: ^1.7.2
         version: 1.7.2
@@ -316,7 +325,7 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
       react-router-dom:
         specifier: ^6.26.2
@@ -332,23 +341,23 @@ importers:
         specifier: workspace:*
         version: link:../../packages/utils-test
       '@storybook/addon-actions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-essentials':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/addon-interactions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/cli':
-        specifier: 8.3.1
-        version: 8.3.1(@babel/preset-env@7.25.4(@babel/core@7.25.2))
+        specifier: 8.3.4
+        version: 8.3.4(@babel/preset-env@7.25.4(@babel/core@7.25.2))
       '@storybook/react':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@storybook/react-vite':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -357,7 +366,7 @@ importers:
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
@@ -371,14 +380,14 @@ importers:
         specifier: ^21.1.6
         version: 21.1.7
       '@types/lodash':
-        specifier: ^4.17.0
-        version: 4.17.7
+        specifier: ^4.17.9
+        version: 4.17.10
       '@types/node':
-        specifier: ^22.5.5
-        version: 22.5.5
+        specifier: ^22.7.4
+        version: 22.7.5
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
@@ -386,8 +395,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.4.47)
@@ -401,8 +410,8 @@ importers:
         specifier: ^16.4.5
         version: 16.4.5
       eslint:
-        specifier: 9.10.0
-        version: 9.10.0(jiti@1.21.6)
+        specifier: 9.11.1
+        version: 9.11.1(jiti@1.21.6)
       express:
         specifier: ^4.21.0
         version: 4.21.0
@@ -413,13 +422,13 @@ importers:
         specifier: 3.0.2
         version: 3.0.2
       jsdom:
-        specifier: ^25.0.0
-        version: 25.0.0
+        specifier: ^25.0.1
+        version: 25.0.1
       morgan:
         specifier: ^1.10.0
         version: 1.10.0
       msw:
-        specifier: ^2.4.8
+        specifier: ^2.4.9
         version: 2.4.9(typescript@5.6.2)
       msw-storybook-addon:
         specifier: ^2.0.2
@@ -437,11 +446,11 @@ importers:
         specifier: ^3.3.3
         version: 3.3.3
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       tailwindcss:
-        specifier: 3.4.11
-        version: 3.4.11
+        specifier: 3.4.13
+        version: 3.4.13
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -449,14 +458,14 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0(jiti@1.21.6))(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0))
+        version: 0.8.0(eslint@9.11.1(jiti@1.21.6))(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   apps/foreldrepengesoknad:
     dependencies:
@@ -476,14 +485,14 @@ importers:
         specifier: ^11.2.12
         version: 11.2.14
       '@navikt/aksel-icons':
-        specifier: ^7.0.0
-        version: 7.0.1
+        specifier: ^7.1.0
+        version: 7.2.0
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-react':
-        specifier: ^7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fnrvalidator':
         specifier: ^1.3.0
         version: 1.3.0
@@ -584,8 +593,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       jsdom:
-        specifier: ^25.0.0
-        version: 25.0.0
+        specifier: ^25.0.1
+        version: 25.0.1
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -629,7 +638,7 @@ importers:
         specifier: 7.53.0
         version: 7.53.0(react@18.3.1)
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
       react-modal:
         specifier: ^3.16.1
@@ -661,22 +670,22 @@ importers:
         version: link:../../packages/utils-test
       '@navikt/nav-dekoratoren-moduler':
         specifier: 2.1.6
-        version: 2.1.6(jsdom@25.0.0)(react@18.3.1)
+        version: 2.1.6(jsdom@25.0.1)(react@18.3.1)
       '@storybook/addon-actions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-essentials':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/cli':
-        specifier: 8.3.1
-        version: 8.3.1(@babel/preset-env@7.25.4(@babel/core@7.25.2))
+        specifier: 8.3.4
+        version: 8.3.4(@babel/preset-env@7.25.4(@babel/core@7.25.2))
       '@storybook/react':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@storybook/react-vite':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -685,7 +694,7 @@ importers:
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
@@ -699,8 +708,8 @@ importers:
         specifier: ^3.1.4
         version: 3.1.4
       '@types/lodash':
-        specifier: ^4.17.0
-        version: 4.17.7
+        specifier: ^4.17.9
+        version: 4.17.10
       '@types/lodash.groupby':
         specifier: ^4.6.9
         version: 4.6.9
@@ -708,11 +717,11 @@ importers:
         specifier: ^4.1.9
         version: 4.1.9
       '@types/node':
-        specifier: ^22.5.5
-        version: 22.5.5
+        specifier: ^22.7.4
+        version: 22.7.5
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@types/react-aria-menubutton':
         specifier: ^6.2.14
         version: 6.2.14
@@ -732,8 +741,8 @@ importers:
         specifier: ^4.4.10
         version: 4.4.11
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.4.47)
@@ -747,8 +756,8 @@ importers:
         specifier: ^16.4.5
         version: 16.4.5
       eslint:
-        specifier: 9.10.0
-        version: 9.10.0(jiti@1.21.6)
+        specifier: 9.11.1
+        version: 9.11.1(jiti@1.21.6)
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -777,8 +786,8 @@ importers:
         specifier: ^1.1293.1
         version: 1.1293.1
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -786,14 +795,14 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0(jiti@1.21.6))(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0))
+        version: 0.8.0(eslint@9.11.1(jiti@1.21.6))(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   apps/planlegger:
     dependencies:
@@ -801,20 +810,17 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0
       '@navikt/aksel-icons':
-        specifier: ^7.0.0
-        version: 7.0.1
+        specifier: ^7.1.0
+        version: 7.2.0
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-react':
-        specifier: ^7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
-      '@navikt/fp-api':
-        specifier: workspace:*
-        version: link:../../packages/api
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../../packages/constants
@@ -839,9 +845,12 @@ importers:
       '@sentry/browser':
         specifier: ^7.109.0
         version: 7.119.0
-      axios:
-        specifier: ^1.6.8
-        version: 1.7.7
+      '@tanstack/react-query':
+        specifier: 5.56.2
+        version: 5.56.2(react@18.3.1)
+      '@tanstack/react-query-devtools':
+        specifier: ^5.58.0
+        version: 5.59.3(@tanstack/react-query@5.56.2(react@18.3.1))(react@18.3.1)
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -864,8 +873,11 @@ importers:
         specifier: ^7.12.0
         version: 7.12.0
       jsdom:
-        specifier: ^25.0.0
-        version: 25.0.0
+        specifier: ^25.0.1
+        version: 25.0.1
+      ky:
+        specifier: ^1.7.2
+        version: 1.7.2
       morgan:
         specifier: ^1.10.0
         version: 1.10.0
@@ -885,7 +897,7 @@ importers:
         specifier: 7.53.0
         version: 7.53.0(react@18.3.1)
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
       react-router-dom:
         specifier: ^6.26.2
@@ -902,22 +914,22 @@ importers:
         version: link:../../packages/utils-test
       '@navikt/nav-dekoratoren-moduler':
         specifier: 2.1.6
-        version: 2.1.6(jsdom@25.0.0)(react@18.3.1)
+        version: 2.1.6(jsdom@25.0.1)(react@18.3.1)
       '@storybook/addon-actions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-essentials':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/cli':
-        specifier: 8.3.1
-        version: 8.3.1(@babel/preset-env@7.25.4(@babel/core@7.25.2))
+        specifier: 8.3.4
+        version: 8.3.4(@babel/preset-env@7.25.4(@babel/core@7.25.2))
       '@storybook/react':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@storybook/react-vite':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -926,13 +938,13 @@ importers:
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
@@ -940,26 +952,29 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.4.47)
-      axios-mock-adapter:
-        specifier: 1.22.0
-        version: 1.22.0(axios@1.7.7)
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
       http-proxy-middleware:
         specifier: 3.0.2
         version: 3.0.2
+      msw:
+        specifier: ^2.4.9
+        version: 2.4.9(typescript@5.6.2)
+      msw-storybook-addon:
+        specifier: ^2.0.3
+        version: 2.0.3(msw@2.4.9(typescript@5.6.2))
       mustache-loader:
         specifier: ^1.4.3
         version: 1.4.3(hogan.js@3.0.2)(webpack@5.94.0)
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -967,14 +982,14 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        version: 0.8.0(eslint@9.11.1)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   apps/svangerskapspengesoknad:
     dependencies:
@@ -991,17 +1006,17 @@ importers:
         specifier: ^11.2.12
         version: 11.2.14
       '@navikt/aksel-icons':
-        specifier: ^7.0.0
-        version: 7.0.1
+        specifier: ^7.1.0
+        version: 7.2.0
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-datepicker':
         specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@7.0.0)(@navikt/ds-react@7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(date-fns@3.6.0)(dayjs@1.11.13)(react-day-picker@8.10.0(date-fns@3.6.0)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(uuid@10.0.0)
+        version: 4.2.0(@navikt/ds-css@7.1.0)(@navikt/ds-react@7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(date-fns@3.6.0)(dayjs@1.11.13)(react-day-picker@8.10.0(date-fns@3.6.0)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(uuid@10.0.0)
       '@navikt/ds-react':
-        specifier: ^7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fnrvalidator':
         specifier: ^1.3.0
         version: 1.3.0
@@ -1044,12 +1059,15 @@ importers:
       '@sentry/browser':
         specifier: ^7.109.0
         version: 7.119.0
+      '@tanstack/react-query':
+        specifier: 5.56.2
+        version: 5.56.2(react@18.3.1)
+      '@tanstack/react-query-devtools':
+        specifier: ^5.58.0
+        version: 5.59.3(@tanstack/react-query@5.56.2(react@18.3.1))(react@18.3.1)
       amplitude-js:
         specifier: ^8.21.9
         version: 8.21.9
-      axios:
-        specifier: ^1.6.8
-        version: 1.7.7
       bytes:
         specifier: ^3.1.2
         version: 3.1.2
@@ -1072,8 +1090,11 @@ importers:
         specifier: ^7.12.0
         version: 7.12.0
       jsdom:
-        specifier: 25.0.0
-        version: 25.0.0
+        specifier: 25.0.1
+        version: 25.0.1
+      ky:
+        specifier: ^1.7.2
+        version: 1.7.2
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1111,7 +1132,7 @@ importers:
         specifier: 7.53.0
         version: 7.53.0(react@18.3.1)
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
       react-modal:
         specifier: ^3.16.1
@@ -1146,25 +1167,25 @@ importers:
         version: link:../../packages/utils-test
       '@navikt/nav-dekoratoren-moduler':
         specifier: 2.1.6
-        version: 2.1.6(jsdom@25.0.0)(react@18.3.1)
+        version: 2.1.6(jsdom@25.0.1)(react@18.3.1)
       '@storybook/addon-actions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-essentials':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/builder-vite':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@storybook/cli':
-        specifier: 8.3.1
-        version: 8.3.1(@babel/preset-env@7.25.4(@babel/core@7.25.2))
+        specifier: 8.3.4
+        version: 8.3.4(@babel/preset-env@7.25.4(@babel/core@7.25.2))
       '@storybook/react':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@storybook/react-vite':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -1173,7 +1194,7 @@ importers:
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
@@ -1187,11 +1208,11 @@ importers:
         specifier: ^3.1.4
         version: 3.1.4
       '@types/lodash':
-        specifier: ^4.17.0
-        version: 4.17.7
+        specifier: ^4.17.9
+        version: 4.17.10
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@types/react-aria-menubutton':
         specifier: ^6.2.14
         version: 6.2.14
@@ -1211,17 +1232,14 @@ importers:
         specifier: ^4.4.10
         version: 4.4.11
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       acorn:
         specifier: ^8.11.3
         version: 8.12.1
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.4.47)
-      axios-mock-adapter:
-        specifier: 1.22.0
-        version: 1.22.0(axios@1.7.7)
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -1229,8 +1247,8 @@ importers:
         specifier: ^16.4.5
         version: 16.4.5
       eslint:
-        specifier: 9.10.0
-        version: 9.10.0(jiti@1.21.6)
+        specifier: 9.11.1
+        version: 9.11.1(jiti@1.21.6)
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -1246,6 +1264,12 @@ importers:
       mockdate:
         specifier: ^3.0.5
         version: 3.0.5
+      msw:
+        specifier: ^2.4.9
+        version: 2.4.9(typescript@5.6.2)
+      msw-storybook-addon:
+        specifier: ^2.0.3
+        version: 2.0.3(msw@2.4.9(typescript@5.6.2))
       multer:
         specifier: ^1.4.5-lts.1
         version: 1.4.5-lts.1
@@ -1256,8 +1280,8 @@ importers:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -1265,26 +1289,26 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0(jiti@1.21.6))(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0))
+        version: 0.8.0(eslint@9.11.1(jiti@1.21.6))(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   apps/veiviser-fp-eller-es:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.0.0
-        version: 7.0.1
+        specifier: ^7.1.0
+        version: 7.2.0
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-react':
-        specifier: ^7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -1316,8 +1340,8 @@ importers:
         specifier: 5.56.2
         version: 5.56.2(react@18.3.1)
       '@tanstack/react-query-devtools':
-        specifier: ^5.56.2
-        version: 5.56.2(@tanstack/react-query@5.56.2(react@18.3.1))(react@18.3.1)
+        specifier: ^5.58.0
+        version: 5.59.3(@tanstack/react-query@5.56.2(react@18.3.1))(react@18.3.1)
       compression:
         specifier: ^1.7.4
         version: 1.7.4
@@ -1337,8 +1361,8 @@ importers:
         specifier: ^7.12.0
         version: 7.12.0
       jsdom:
-        specifier: ^25.0.0
-        version: 25.0.0
+        specifier: ^25.0.1
+        version: 25.0.1
       ky:
         specifier: ^1.7.2
         version: 1.7.2
@@ -1358,7 +1382,7 @@ importers:
         specifier: 7.53.0
         version: 7.53.0(react@18.3.1)
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
       react-router-dom:
         specifier: ^6.26.2
@@ -1374,20 +1398,20 @@ importers:
         specifier: workspace:*
         version: link:../../packages/utils-test
       '@storybook/addon-actions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-essentials':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/cli':
-        specifier: 8.3.1
-        version: 8.3.1(@babel/preset-env@7.25.4(@babel/core@7.25.2))
+        specifier: 8.3.4
+        version: 8.3.4(@babel/preset-env@7.25.4(@babel/core@7.25.2))
       '@storybook/react':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@storybook/react-vite':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -1396,13 +1420,13 @@ importers:
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
@@ -1410,8 +1434,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.4.47)
@@ -1422,7 +1446,7 @@ importers:
         specifier: 3.0.2
         version: 3.0.2
       msw:
-        specifier: ^2.4.8
+        specifier: ^2.4.9
         version: 2.4.9(typescript@5.6.2)
       msw-storybook-addon:
         specifier: ^2.0.3
@@ -1434,8 +1458,8 @@ importers:
         specifier: ^3.3.3
         version: 3.3.3
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -1443,14 +1467,14 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        version: 0.8.0(eslint@9.11.1)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   apps/veiviser-hva-skjer-nar:
     dependencies:
@@ -1458,14 +1482,14 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0
       '@navikt/aksel-icons':
-        specifier: ^7.0.0
-        version: 7.0.1
+        specifier: ^7.1.0
+        version: 7.2.0
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-react':
-        specifier: ^7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -1497,8 +1521,8 @@ importers:
         specifier: 5.56.2
         version: 5.56.2(react@18.3.1)
       '@tanstack/react-query-devtools':
-        specifier: ^5.56.2
-        version: 5.56.2(@tanstack/react-query@5.56.2(react@18.3.1))(react@18.3.1)
+        specifier: ^5.58.0
+        version: 5.59.3(@tanstack/react-query@5.56.2(react@18.3.1))(react@18.3.1)
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -1521,8 +1545,8 @@ importers:
         specifier: ^7.12.0
         version: 7.12.0
       jsdom:
-        specifier: ^25.0.0
-        version: 25.0.0
+        specifier: ^25.0.1
+        version: 25.0.1
       ky:
         specifier: ^1.7.2
         version: 1.7.2
@@ -1545,7 +1569,7 @@ importers:
         specifier: 7.53.0
         version: 7.53.0(react@18.3.1)
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
       react-router-dom:
         specifier: ^6.26.2
@@ -1561,20 +1585,20 @@ importers:
         specifier: workspace:*
         version: link:../../packages/utils-test
       '@storybook/addon-actions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-essentials':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/cli':
-        specifier: 8.3.1
-        version: 8.3.1(@babel/preset-env@7.25.4(@babel/core@7.25.2))
+        specifier: 8.3.4
+        version: 8.3.4(@babel/preset-env@7.25.4(@babel/core@7.25.2))
       '@storybook/react':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@storybook/react-vite':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -1583,13 +1607,13 @@ importers:
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
@@ -1597,8 +1621,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.4.47)
@@ -1609,7 +1633,7 @@ importers:
         specifier: 3.0.2
         version: 3.0.2
       msw:
-        specifier: ^2.4.8
+        specifier: ^2.4.9
         version: 2.4.9(typescript@5.6.2)
       msw-storybook-addon:
         specifier: ^2.0.3
@@ -1618,8 +1642,8 @@ importers:
         specifier: ^1.4.3
         version: 1.4.3(hogan.js@3.0.2)(webpack@5.94.0)
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -1627,26 +1651,26 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        version: 0.8.0(eslint@9.11.1)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   apps/veiviser-hvor-mye:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.0.0
-        version: 7.0.1
+        specifier: ^7.1.0
+        version: 7.2.0
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-react':
-        specifier: ^7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -1678,8 +1702,8 @@ importers:
         specifier: 5.56.2
         version: 5.56.2(react@18.3.1)
       '@tanstack/react-query-devtools':
-        specifier: ^5.56.2
-        version: 5.56.2(@tanstack/react-query@5.56.2(react@18.3.1))(react@18.3.1)
+        specifier: ^5.58.0
+        version: 5.59.3(@tanstack/react-query@5.56.2(react@18.3.1))(react@18.3.1)
       compression:
         specifier: ^1.7.4
         version: 1.7.4
@@ -1699,8 +1723,8 @@ importers:
         specifier: ^7.12.0
         version: 7.12.0
       jsdom:
-        specifier: ^25.0.0
-        version: 25.0.0
+        specifier: ^25.0.1
+        version: 25.0.1
       ky:
         specifier: ^1.7.2
         version: 1.7.2
@@ -1720,7 +1744,7 @@ importers:
         specifier: 7.53.0
         version: 7.53.0(react@18.3.1)
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
       react-router-dom:
         specifier: ^6.26.2
@@ -1736,20 +1760,20 @@ importers:
         specifier: workspace:*
         version: link:../../packages/utils-test
       '@storybook/addon-actions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-essentials':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/cli':
-        specifier: 8.3.1
-        version: 8.3.1(@babel/preset-env@7.25.4(@babel/core@7.25.2))
+        specifier: 8.3.4
+        version: 8.3.4(@babel/preset-env@7.25.4(@babel/core@7.25.2))
       '@storybook/react':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@storybook/react-vite':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -1758,13 +1782,13 @@ importers:
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
@@ -1772,8 +1796,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.4.47)
@@ -1784,7 +1808,7 @@ importers:
         specifier: 3.0.2
         version: 3.0.2
       msw:
-        specifier: ^2.4.8
+        specifier: ^2.4.9
         version: 2.4.9(typescript@5.6.2)
       msw-storybook-addon:
         specifier: ^2.0.3
@@ -1793,8 +1817,8 @@ importers:
         specifier: ^1.4.3
         version: 1.4.3(hogan.js@3.0.2)(webpack@5.94.0)
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -1802,14 +1826,14 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        version: 0.8.0(eslint@9.11.1)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   packages/api:
     dependencies:
@@ -1819,6 +1843,9 @@ importers:
       axios:
         specifier: ^1.6.8
         version: 1.7.7
+      ky:
+        specifier: ^1.7.2
+        version: 1.7.2
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -1833,8 +1860,8 @@ importers:
         specifier: ^6.4.6
         version: 6.5.0
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       axios-mock-adapter:
         specifier: ^1.22.0
         version: 1.22.0(axios@1.7.7)
@@ -1864,23 +1891,23 @@ importers:
   packages/eslint-config-custom:
     dependencies:
       '@eslint/js':
-        specifier: 9.10.0
-        version: 9.10.0
+        specifier: 9.11.1
+        version: 9.11.1
       eslint:
-        specifier: 9.10.0
-        version: 9.10.0(jiti@1.21.6)
+        specifier: 9.11.1
+        version: 9.11.1(jiti@1.21.6)
       eslint-config-prettier:
         specifier: 9.1.0
-        version: 9.1.0(eslint@9.10.0(jiti@1.21.6))
+        version: 9.1.0(eslint@9.11.1(jiti@1.21.6))
       eslint-plugin-jsx-a11y:
         specifier: 6.10.0
-        version: 6.10.0(eslint@9.10.0(jiti@1.21.6))
+        version: 6.10.0(eslint@9.11.1(jiti@1.21.6))
       eslint-plugin-react:
-        specifier: 7.36.1
-        version: 7.36.1(eslint@9.10.0(jiti@1.21.6))
+        specifier: 7.37.0
+        version: 7.37.0(eslint@9.11.1(jiti@1.21.6))
       eslint-plugin-vitest:
         specifier: 0.5.4
-        version: 0.5.4(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5)(vitest@2.1.1)
+        version: 0.5.4(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5)(vitest@2.1.1)
       globals:
         specifier: 15.9.0
         version: 15.9.0
@@ -1888,8 +1915,8 @@ importers:
         specifier: 5.4.5
         version: 5.4.5
       typescript-eslint:
-        specifier: 8.6.0
-        version: 8.6.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5)
+        specifier: 8.7.0
+        version: 8.7.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5)
 
   packages/form-hooks:
     dependencies:
@@ -1897,14 +1924,14 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.53.0(react@18.3.1))(react@18.3.1)
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-icons':
         specifier: 3.4.3
-        version: 3.4.3(@types/react@18.3.8)(react@18.3.1)
+        version: 3.4.3(@types/react@18.3.11)(react@18.3.1)
       '@navikt/ds-react':
-        specifier: ^7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -1912,8 +1939,8 @@ importers:
         specifier: workspace:*
         version: link:../ui
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
@@ -1937,38 +1964,38 @@ importers:
         specifier: ^1.0.3
         version: 1.0.3
       '@storybook/addon-essentials':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/addon-interactions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-links':
-        specifier: 8.3.1
-        version: 8.3.1(react@18.3.1)(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(react@18.3.1)(storybook@8.3.4)
       '@storybook/builder-vite':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@storybook/react':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       storybook-react-intl:
         specifier: ^3.0.1
         version: 3.1.1(react-intl@6.7.0(react@18.3.1)(typescript@5.6.2))
@@ -1979,26 +2006,26 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        version: 0.8.0(eslint@9.11.1)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   packages/fp-common:
     dependencies:
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-icons':
         specifier: 3.4.3
-        version: 3.4.3(@types/react@18.3.8)(react@18.3.1)
+        version: 3.4.3(@types/react@18.3.11)(react@18.3.1)
       '@navikt/ds-react':
-        specifier: ^7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fnrvalidator':
         specifier: ^1.3.0
         version: 1.3.0
@@ -2009,11 +2036,11 @@ importers:
         specifier: workspace:*
         version: link:../utils
       '@types/node':
-        specifier: ^22.5.5
-        version: 22.5.5
+        specifier: ^22.7.4
+        version: 22.7.5
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
@@ -2057,7 +2084,7 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
       react-modal:
         specifier: ^3.16.1
@@ -2083,13 +2110,13 @@ importers:
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/bytes':
         specifier: ^3.1.4
         version: 3.1.4
       '@types/lodash':
-        specifier: ^4.17.0
-        version: 4.17.7
+        specifier: ^4.17.9
+        version: 4.17.10
       '@types/react-aria-menubutton':
         specifier: ^6.2.14
         version: 6.2.14
@@ -2097,8 +2124,8 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       copyfiles:
         specifier: ^2.4.1
         version: 2.4.1
@@ -2106,8 +2133,8 @@ importers:
         specifier: ^7.0.3
         version: 7.0.3
       eslint:
-        specifier: 9.10.0
-        version: 9.10.0(jiti@1.21.6)
+        specifier: 9.11.1
+        version: 9.11.1(jiti@1.21.6)
       less:
         specifier: ^4.2.0
         version: 4.2.0
@@ -2118,14 +2145,14 @@ importers:
         specifier: ^4.1.5
         version: 4.1.5
       sass:
-        specifier: ^1.79.1
-        version: 1.79.3
+        specifier: ^1.79.4
+        version: 1.79.4
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0(jiti@1.21.6))(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0))
+        version: 0.8.0(eslint@9.11.1(jiti@1.21.6))(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
 
   packages/metrics:
     dependencies:
@@ -2143,11 +2170,11 @@ importers:
         specifier: ^8.16.5
         version: 8.16.5
       '@types/node':
-        specifier: ^22.5.5
-        version: 22.5.5
+        specifier: ^22.7.4
+        version: 22.7.5
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -2158,14 +2185,14 @@ importers:
   packages/ny-uttaksplan:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.0.0
-        version: 7.0.1
+        specifier: ^7.1.0
+        version: 7.2.0
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-react':
-        specifier: ^7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-common':
         specifier: workspace:*
         version: link:../fp-common
@@ -2185,8 +2212,8 @@ importers:
         specifier: workspace:*
         version: link:../validation
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -2200,7 +2227,7 @@ importers:
         specifier: ^18.2.0
         version: 18.3.1
       react-intl:
-        specifier: ^6.6.4
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
       typescript:
         specifier: 5.6.2
@@ -2210,11 +2237,11 @@ importers:
         specifier: workspace:*
         version: link:../eslint-config-custom
       '@storybook/addon-viewport':
-        specifier: ^8.3.1
-        version: 8.3.2(storybook@8.3.1)
+        specifier: ^8.3.4
+        version: 8.3.5(storybook@8.3.4)
       '@storybook/react':
-        specifier: ^8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: ^8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@testing-library/jest-dom':
         specifier: ^6.4.2
         version: 6.5.0
@@ -2222,8 +2249,8 @@ importers:
         specifier: ^4.17.0
         version: 4.17.7
       '@vitejs/plugin-react':
-        specifier: ^4.2.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       mockdate:
         specifier: ^3.0.5
         version: 3.0.5
@@ -2234,26 +2261,26 @@ importers:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        version: 0.8.0(eslint@9.11.1)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   packages/server-utils:
     dependencies:
       '@navikt/nav-dekoratoren-moduler':
         specifier: 2.1.6
-        version: 2.1.6(jsdom@25.0.0)(react@18.3.1)
+        version: 2.1.6(jsdom@25.0.1)(react@18.3.1)
       '@navikt/vite-mode':
         specifier: 0.11.3
         version: 0.11.3(express@4.21.0)
@@ -2268,8 +2295,8 @@ importers:
         specifier: ^1.9.9
         version: 1.9.9
       '@types/node':
-        specifier: ^22.5.5
-        version: 22.5.5
+        specifier: ^22.7.4
+        version: 22.7.5
       '@vercel/ncc':
         specifier: 0.38.1
         version: 0.38.1
@@ -2277,26 +2304,26 @@ importers:
         specifier: ^1.6.8
         version: 1.7.7
       eslint:
-        specifier: 9.10.0
-        version: 9.10.0(jiti@1.21.6)
+        specifier: 9.11.1
+        version: 9.11.1(jiti@1.21.6)
       eslint-config-prettier:
         specifier: 9.1.0
-        version: 9.1.0(eslint@9.10.0(jiti@1.21.6))
+        version: 9.1.0(eslint@9.11.1(jiti@1.21.6))
       eslint-plugin-import:
         specifier: 2.30.0
-        version: 2.30.0(eslint@9.10.0(jiti@1.21.6))
+        version: 2.30.0(eslint@9.11.1(jiti@1.21.6))
       eslint-plugin-prettier:
         specifier: 5.2.1
-        version: 5.2.1(eslint-config-prettier@9.1.0(eslint@9.10.0(jiti@1.21.6)))(eslint@9.10.0(jiti@1.21.6))(prettier@3.3.3)
+        version: 5.2.1(eslint-config-prettier@9.1.0(eslint@9.11.1(jiti@1.21.6)))(eslint@9.11.1(jiti@1.21.6))(prettier@3.3.3)
       eslint-plugin-react:
-        specifier: 7.36.1
-        version: 7.36.1(eslint@9.10.0(jiti@1.21.6))
+        specifier: 7.37.0
+        version: 7.37.0(eslint@9.11.1(jiti@1.21.6))
       eslint-plugin-simple-import-sort:
         specifier: 12.1.1
-        version: 12.1.1(eslint@9.10.0(jiti@1.21.6))
+        version: 12.1.1(eslint@9.11.1(jiti@1.21.6))
       eslint-plugin-unicorn:
         specifier: 51.0.1
-        version: 51.0.1(eslint@9.10.0(jiti@1.21.6))
+        version: 51.0.1(eslint@9.11.1(jiti@1.21.6))
       morgan:
         specifier: ^1.10.0
         version: 1.10.0
@@ -2316,11 +2343,11 @@ importers:
   packages/steg-arbeidsforhold-og-inntekt:
     dependencies:
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-react':
-        specifier: 7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2358,7 +2385,7 @@ importers:
         specifier: 7.53.0
         version: 7.53.0(react@18.3.1)
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
     devDependencies:
       '@formatjs/cli-lib':
@@ -2371,44 +2398,44 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@storybook/addon-actions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-essentials':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/addon-interactions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-links':
-        specifier: 8.3.1
-        version: 8.3.1(react@18.3.1)(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(react@18.3.1)(storybook@8.3.4)
       '@storybook/builder-vite':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@storybook/react':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       storybook-react-intl:
         specifier: ^3.0.1
         version: 3.1.1(react-intl@6.7.0(react@18.3.1)(typescript@5.6.2))
@@ -2419,23 +2446,23 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        version: 0.8.0(eslint@9.11.1)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   packages/steg-egen-næring:
     dependencies:
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-react':
-        specifier: 7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2473,7 +2500,7 @@ importers:
         specifier: 7.53.0
         version: 7.53.0(react@18.3.1)
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
     devDependencies:
       '@formatjs/cli-lib':
@@ -2486,44 +2513,44 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@storybook/addon-actions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-essentials':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/addon-interactions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-links':
-        specifier: 8.3.1
-        version: 8.3.1(react@18.3.1)(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(react@18.3.1)(storybook@8.3.4)
       '@storybook/builder-vite':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@storybook/react':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       storybook-react-intl:
         specifier: ^3.0.1
         version: 3.1.1(react-intl@6.7.0(react@18.3.1)(typescript@5.6.2))
@@ -2534,23 +2561,23 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        version: 0.8.0(eslint@9.11.1)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   packages/steg-frilans:
     dependencies:
       '@navikt/ds-css':
-        specifier: 7.0.0
-        version: 7.0.0
+        specifier: 7.1.0
+        version: 7.1.0
       '@navikt/ds-react':
-        specifier: 7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2579,7 +2606,7 @@ importers:
         specifier: 7.53.0
         version: 7.53.0(react@18.3.1)
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
     devDependencies:
       '@formatjs/cli-lib':
@@ -2595,44 +2622,44 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@storybook/addon-actions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-essentials':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/addon-interactions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-links':
-        specifier: 8.3.1
-        version: 8.3.1(react@18.3.1)(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(react@18.3.1)(storybook@8.3.4)
       '@storybook/builder-vite':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@storybook/react':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       storybook-react-intl:
         specifier: ^3.0.1
         version: 3.1.1(react-intl@6.7.0(react@18.3.1)(typescript@5.6.2))
@@ -2643,23 +2670,23 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        version: 0.8.0(eslint@9.11.1)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   packages/steg-oppsummering:
     dependencies:
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-react':
-        specifier: ^7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-api':
         specifier: workspace:*
         version: link:../api
@@ -2688,7 +2715,7 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
     devDependencies:
       '@formatjs/cli-lib':
@@ -2701,44 +2728,44 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@storybook/addon-actions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-essentials':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/addon-interactions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-links':
-        specifier: 8.3.1
-        version: 8.3.1(react@18.3.1)(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(react@18.3.1)(storybook@8.3.4)
       '@storybook/builder-vite':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@storybook/react':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       storybook-react-intl:
         specifier: ^3.0.1
         version: 3.1.1(react-intl@6.7.0(react@18.3.1)(typescript@5.6.2))
@@ -2749,26 +2776,26 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        version: 0.8.0(eslint@9.11.1)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   packages/steg-utenlandsopphold:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.0.0
-        version: 7.0.1
+        specifier: ^7.1.0
+        version: 7.2.0
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-react':
-        specifier: ^7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2803,7 +2830,7 @@ importers:
         specifier: 7.53.0
         version: 7.53.0(react@18.3.1)
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
     devDependencies:
       '@formatjs/cli-lib':
@@ -2816,44 +2843,44 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@storybook/addon-actions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-essentials':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/addon-interactions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-links':
-        specifier: 8.3.1
-        version: 8.3.1(react@18.3.1)(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(react@18.3.1)(storybook@8.3.4)
       '@storybook/builder-vite':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@storybook/react':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       storybook-react-intl:
         specifier: ^3.0.1
         version: 3.1.1(react-intl@6.7.0(react@18.3.1)(typescript@5.6.2))
@@ -2864,14 +2891,14 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        version: 0.8.0(eslint@9.11.1)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   packages/tsconfig: {}
 
@@ -2888,14 +2915,14 @@ importers:
   packages/ui:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.0.0
-        version: 7.0.1
+        specifier: ^7.1.0
+        version: 7.2.0
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-react':
-        specifier: ^7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2933,7 +2960,7 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
     devDependencies:
       '@formatjs/cli-lib':
@@ -2946,29 +2973,29 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@storybook/addon-actions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-essentials':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/addon-interactions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-links':
-        specifier: 8.3.1
-        version: 8.3.1(react@18.3.1)(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(react@18.3.1)(storybook@8.3.4)
       '@storybook/builder-vite':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@storybook/react':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
@@ -2976,20 +3003,20 @@ importers:
         specifier: ^3.1.4
         version: 3.1.4
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@types/react-aria-menubutton':
         specifier: ^6.2.14
         version: 6.2.14
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       storybook-react-intl:
         specifier: ^3.0.1
         version: 3.1.1(react-intl@6.7.0(react@18.3.1)(typescript@5.6.2))
@@ -3000,14 +3027,14 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        version: 0.8.0(eslint@9.11.1)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   packages/utils:
     dependencies:
@@ -3036,7 +3063,7 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
     devDependencies:
       '@formatjs/cli-lib':
@@ -3050,13 +3077,13 @@ importers:
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -3067,20 +3094,20 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        version: 0.8.0(eslint@9.11.1)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   packages/utils-test:
     dependencies:
       '@storybook/react-vite':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -3091,7 +3118,7 @@ importers:
         specifier: 7.53.0
         version: 7.53.0(react@18.3.1)
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
     devDependencies:
       '@navikt/eslint-config-fp-selvbetjening':
@@ -3102,19 +3129,19 @@ importers:
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -3122,26 +3149,26 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        version: 0.8.0(eslint@9.11.1)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   packages/uttaksplan:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.0.0
-        version: 7.0.1
+        specifier: ^7.1.0
+        version: 7.2.0
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-react':
-        specifier: ^7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fnrvalidator':
         specifier: 1.3.0
         version: 1.3.0
@@ -3167,8 +3194,8 @@ importers:
         specifier: workspace:*
         version: link:../uttaksplan-kalender
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -3206,7 +3233,7 @@ importers:
         specifier: 3.2.2
         version: 3.2.2
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
       react-to-pdf:
         specifier: 1.0.1
@@ -3228,32 +3255,32 @@ importers:
         specifier: workspace:*
         version: link:../constants
       '@storybook/addon-essentials':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/addon-interactions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-links':
-        specifier: 8.3.1
-        version: 8.3.1(react@18.3.1)(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(react@18.3.1)(storybook@8.3.4)
       '@storybook/builder-vite':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@storybook/react':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@testing-library/jest-dom':
         specifier: ^6.4.6
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
       '@types/lodash':
-        specifier: ^4.17.0
-        version: 4.17.7
+        specifier: ^4.17.9
+        version: 4.17.10
       '@types/lodash.debounce':
         specifier: ^4.0.9
         version: 4.0.9
@@ -3264,8 +3291,8 @@ importers:
         specifier: 10.0.0
         version: 10.0.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -3279,8 +3306,8 @@ importers:
         specifier: ^0.12.7
         version: 0.12.7
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       storybook-react-intl:
         specifier: ^3.0.1
         version: 3.1.1(react-intl@6.7.0(react@18.3.1)(typescript@5.6.2))
@@ -3288,26 +3315,26 @@ importers:
         specifier: workspace:*
         version: link:../tsconfig
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        version: 0.8.0(eslint@9.11.1)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   packages/uttaksplan-kalender:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.0.0
-        version: 7.0.1
+        specifier: ^7.1.0
+        version: 7.2.0
       '@navikt/ds-css':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^7.1.0
+        version: 7.1.0
       '@navikt/ds-react':
-        specifier: ^7.0.0
-        version: 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.1.0
+        version: 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -3327,8 +3354,8 @@ importers:
         specifier: workspace:*
         version: link:../utils-test
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       dayjs:
         specifier: ^1.11.12
         version: 1.11.13
@@ -3336,7 +3363,7 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1
       react-intl:
-        specifier: ^6.6.8
+        specifier: ^6.7.0
         version: 6.7.0(react@18.3.1)(typescript@5.6.2)
       react-to-pdf:
         specifier: 1.0.1
@@ -3349,23 +3376,23 @@ importers:
         specifier: workspace:*
         version: link:../eslint-config-custom
       '@storybook/addon-essentials':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/addon-interactions':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)
       '@storybook/addon-links':
-        specifier: 8.3.1
-        version: 8.3.1(react@18.3.1)(storybook@8.3.1)
+        specifier: 8.3.4
+        version: 8.3.4(react@18.3.1)(storybook@8.3.4)
       '@storybook/builder-vite':
-        specifier: 8.3.1
-        version: 8.3.1(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@storybook/react':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       '@storybook/react-vite':
-        specifier: 8.3.1
-        version: 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: 8.3.4
+        version: 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -3374,13 +3401,13 @@ importers:
         version: 6.5.0
       '@testing-library/react':
         specifier: ^16.0.0
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^4.3.0
         version: 4.3.0(prettier@3.3.3)
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -3388,8 +3415,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       storybook:
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 8.3.4
+        version: 8.3.4
       storybook-react-intl:
         specifier: ^3.0.1
         version: 3.1.1(react-intl@6.7.0(react@18.3.1)(typescript@5.6.2))
@@ -3400,14 +3427,14 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.6
-        version: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.10.0)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+        version: 0.8.0(eslint@9.11.1)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       vitest:
         specifier: ^2.1.1
-        version: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+        version: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
 
   packages/validation:
     dependencies:
@@ -3434,8 +3461,8 @@ importers:
         specifier: ^3.1.4
         version: 3.1.4
       '@types/react':
-        specifier: ^18.3.7
-        version: 18.3.8
+        specifier: ^18.3.10
+        version: 18.3.11
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -3447,7 +3474,7 @@ importers:
     dependencies:
       '@navikt/nav-dekoratoren-moduler':
         specifier: 2.1.6
-        version: 2.1.6(jsdom@25.0.0)(react@18.3.1)
+        version: 2.1.6(jsdom@25.0.1)(react@18.3.1)
       '@navikt/oasis':
         specifier: 3.4.0
         version: 3.4.0
@@ -3468,8 +3495,8 @@ importers:
         specifier: ^1.9.9
         version: 1.9.9
       '@types/node':
-        specifier: ^22.5.5
-        version: 22.5.5
+        specifier: ^22.7.4
+        version: 22.7.5
       '@vercel/ncc':
         specifier: 0.38.1
         version: 0.38.1
@@ -3496,7 +3523,7 @@ importers:
     dependencies:
       '@navikt/nav-dekoratoren-moduler':
         specifier: 2.1.6
-        version: 2.1.6(jsdom@25.0.0)(react@18.3.1)
+        version: 2.1.6(jsdom@25.0.1)(react@18.3.1)
       express:
         specifier: 4.21.0
         version: 4.21.0
@@ -3514,8 +3541,8 @@ importers:
         specifier: ^1.9.9
         version: 1.9.9
       '@types/node':
-        specifier: ^22.5.5
-        version: 22.5.5
+        specifier: ^22.7.4
+        version: 22.7.5
       '@vercel/ncc':
         specifier: 0.38.1
         version: 0.38.1
@@ -4546,6 +4573,10 @@ packages:
     resolution: {integrity: sha512-fTxvnS1sRMu3+JjXwJG0j/i4RT9u4qJ+lqS/yCGap4lH4zZGzQ7tu+xZqQmcMZq5OBZDL4QRxQzRjkWcGt8IVw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
+  '@eslint/core@0.6.0':
+    resolution: {integrity: sha512-8I2Q8ykA4J0x0o7cg67FPVnehcqWTBehu/lmY+bolPFHGjh49YzGBMXTvpqVgEbBdvNCSxj6iFgiIyHzf03lzg==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
   '@eslint/eslintrc@2.1.4':
     resolution: {integrity: sha512-269Z39MS6wVJtsoUl10L60WdkhJVdPG24Q4eZTH3nnF6lpvSShEK3wQjDX9JRWAUPvPh7COouPpU9IrqaZFvtQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -4554,16 +4585,16 @@ packages:
     resolution: {integrity: sha512-4Bfj15dVJdoy3RfZmmo86RK1Fwzn6SstsvK9JS+BaVKqC6QQQQyXekNaC+g+LKNgkQ+2VhGAzm6hO40AhMR3zQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@eslint/js@9.10.0':
-    resolution: {integrity: sha512-fuXtbiP5GWIn8Fz+LWoOMVf/Jxm+aajZYkhi6CuEm4SxymFM+eUWzbO9qXT+L0iCkL5+KGYMCSGxo686H19S1g==}
+  '@eslint/js@9.11.1':
+    resolution: {integrity: sha512-/qu+TWz8WwPWc7/HcIJKi+c+MOm46GdVaSlTTQcaqaL53+GsoA6MxWp5PtTx48qbSP7ylM1Kn7nhvkugfJvRSA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@eslint/object-schema@2.1.4':
     resolution: {integrity: sha512-BsWiH1yFGjXXS2yvrf5LyuoSIIbPrGUWob917o+BTKuZ7qJdxX8aJLRxs1fS9n6r7vESrq1OUqb68dANcFXuQQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@eslint/plugin-kit@0.1.0':
-    resolution: {integrity: sha512-autAXT203ixhqei9xt+qkYOvY8l6LAFIdT2UXc/RPNeUVfqRF1BV94GTJyVPFKT8nFM6MyVJhjLj9E8JWvf5zQ==}
+  '@eslint/plugin-kit@0.2.0':
+    resolution: {integrity: sha512-vH9PiIMMwvhCx31Af3HiGzsVNULDbyVkHXwlemn/B0TFj/00ho3y55efXrUZTfQipxoHC5u4xq6zblww1zm1Ig==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@floating-ui/core@1.6.8':
@@ -4711,8 +4742,8 @@ packages:
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
 
-  '@joshwooding/vite-plugin-react-docgen-typescript@0.3.1':
-    resolution: {integrity: sha512-pdoMZ9QaPnVlSM+SdU/wgg0nyD/8wQ7y90ttO2CMCyrrm7RxveYIJ5eNfjPaoMFqW41LZra7QO9j+xV4Y18Glw==}
+  '@joshwooding/vite-plugin-react-docgen-typescript@0.3.0':
+    resolution: {integrity: sha512-2D6y7fNvFmsLmRt6UCOFJPvFoPMJGT0Uh1Wg0RaigUp7kdQPs6yYn8Dmx6GZkOH/NW0yMTwRz/p0SRMMRo50vA==}
     peerDependencies:
       typescript: '>= 4.3.x'
       vite: ^3.0.0 || ^4.0.0 || ^5.0.0
@@ -4751,11 +4782,11 @@ packages:
     resolution: {integrity: sha512-PFfqpHplKa7KMdoQdj5td03uG05VK2Ng1dG0sP4pT9h0dGSX2v9txYt/AnrzPb/vAmfyBBC0NQV7VaBEX+efgQ==}
     engines: {node: '>=18'}
 
-  '@navikt/aksel-icons@7.0.1':
-    resolution: {integrity: sha512-5atdxy8VCgGTG5t1j5niaR/xLH9Z/sghvVQdeUjEOqF/6FQYbYsQdwGWa3UCkExWQk6n1yHuj2mFbM756adZfg==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/7.0.1/e577737bb8025322cbe3a147cd33ad0e1ce35732}
+  '@navikt/aksel-icons@7.2.0':
+    resolution: {integrity: sha512-r6K+kbhKEh383fknY28JyFyI5WFU2D7oh0VhV5FDYlcXeZwZ9u1x8FBaOeXJbJE/8KYaiexufG2Ghp96eUv5fw==}
 
-  '@navikt/ds-css@7.0.0':
-    resolution: {integrity: sha512-r14w4f5IZdsWvw9r+DnKMi1//fO8f1M1ORZ9NlKginG+bT3GfbLsA6Cv7BCgjSW8ORyROk2BunBqIQNNar5EyA==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/7.0.0/24c8994367516a16e383a49d6940e34472ec9413}
+  '@navikt/ds-css@7.1.0':
+    resolution: {integrity: sha512-Qlf3fl/EpAs5bvfIICbPWQwmQEHQf/uowN6ggNXJ5o4jcQafY02AwztNTujb0B4zfVdCqbLhjBet+9Ttvd9/MA==}
 
   '@navikt/ds-datepicker@4.2.0':
     resolution: {integrity: sha512-Fn2mKpuGuhmf0P8/R9PwH5BaTDzZBNsK/P/TJPuoRGBqRsMVUpEfunOh2HoXQT/8OhDWTy6nWqtxdf41FWQm2A==, tarball: https://npm.pkg.github.com/download/@navikt/ds-datepicker/4.2.0/301fb6bd6c8eea705a3601e95cad2a104dce9959}
@@ -4774,18 +4805,24 @@ packages:
     peerDependencies:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
-  '@navikt/ds-react@7.0.0':
-    resolution: {integrity: sha512-njeyF6J4aC/mrZ5bypfvIIY1pSWOCaQSsBluxDhmTNOewKnqSI3+D4S3S3To/sMccjC8MVBGBjotXVlMPrIQxg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/7.0.0/6bea7efb224bee86c8695f0e576365dd84af6d5d}
+  '@navikt/ds-react@7.1.0':
+    resolution: {integrity: sha512-xhmVRIIaR+rs8PIdXqRHVT6WueC4yjuCx9V2qCDN8C1mDausWDRZMRjTEVO+CXNrwUN1pBMTrEPGkCgps5F0xQ==}
     peerDependencies:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
-  '@navikt/ds-tailwind@7.0.0':
-    resolution: {integrity: sha512-siFtDzFsPECDO0ZGTgUhvpLaBQTxpGNjoDpI4p+68pfJNoUoU4bmD4IMN4q1unJCXMOhzG0tgRVST8VXlhYzIQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/7.0.0/4c52cadcf6396250dee613fb5156ee2fd184880c}
+  '@navikt/ds-tailwind@7.1.0':
+    resolution: {integrity: sha512-ShRe363AMUWt+N6nWo/SnUnSLFKadf8ji7aLjb+81ZHGlvRcJsf002IBSvR6h0FTxZUaTA4XXlaHiGs2TQuhjA==}
 
-  '@navikt/ds-tokens@7.0.1':
-    resolution: {integrity: sha512-aMi9G/vIwqAQRX2fwnFehmzNnEfMjuTkzc55nVR50fw0QKa0NXgjuAnIYZGLdNmE4y+fvxCx1uOY+cUBccqFQQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/7.0.1/476acfd2558df6284de7915317e227afbe3176c0}
+  '@navikt/ds-tokens@7.2.0':
+    resolution: {integrity: sha512-0eayYxv8zwgpP6/C9QFgTkUTgqbhxuYPifNvDYBfYE3CjTsBpp/LCAaAjbskhpAMa4z/Wb34DPGWO3UTD9Uzbg==}
 
   '@navikt/fnrvalidator@1.3.0':
     resolution: {integrity: sha512-k1MEZ8xwxtmY570gB+BF38kr9Xta1KIcx0yUExHQZWIsD1PNGSVagoriRTxqGyyTTkt4ajk1Z18WPfWX7rtpgQ==, tarball: https://npm.pkg.github.com/download/@navikt/fnrvalidator/1.3.0/8cea6bae592f772d07efebe9a5ab7179552e1d6f}
@@ -4986,92 +5023,92 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  '@storybook/addon-actions@8.3.1':
-    resolution: {integrity: sha512-f00NxBNBcsMHqtwsOpRbZKrNMLdUjnSg1G6zYdVxAG7NwxzgpqPZm37I36ebFmgz/WO2XQ3ihxzfV2IKFuiZ6g==}
+  '@storybook/addon-actions@8.3.4':
+    resolution: {integrity: sha512-1y0yD3upKcyzNwwA6loAGW2cRDqExwl4oAT7GJQA4tmabI+fNwmANSgU/ezLvvSUf4Qo0eJHg2Zcn8y+Apq2eA==}
     peerDependencies:
-      storybook: ^8.3.1
+      storybook: ^8.3.4
 
-  '@storybook/addon-backgrounds@8.3.1':
-    resolution: {integrity: sha512-HPQElHIi5SMWJTOimYt27QaiPrrwTprVShVfq3gQKpUcDJhT4qMpI3Bn3JCtthPlXlUA+miZcNdNRTIc2XzhSA==}
+  '@storybook/addon-backgrounds@8.3.4':
+    resolution: {integrity: sha512-o3nl7cN3x8erJNxLEv8YptanEQAnbqnaseOAsvSC6/nnSAcRYBSs3BvekKvo4CcpS2mxn7F5NJTBFYnCXzy8EA==}
     peerDependencies:
-      storybook: ^8.3.1
+      storybook: ^8.3.4
 
-  '@storybook/addon-controls@8.3.1':
-    resolution: {integrity: sha512-zqVNRGQ2GS1ReDZ6YTAl+pLmnrOWwE3OUsByRfzHCYlmO55TxYi92HBTSbAXyWRKyqVUKH69PmbKGukc83aX2Q==}
+  '@storybook/addon-controls@8.3.4':
+    resolution: {integrity: sha512-qQcaK6dczsb6wXkzGZKOjUYNA7FfKBewRv6NvoVKYY6LfhllGOkmUAtYpdtQG8adsZWTSoZaAOJS2vP2uM67lw==}
     peerDependencies:
-      storybook: ^8.3.1
+      storybook: ^8.3.4
 
-  '@storybook/addon-docs@8.3.1':
-    resolution: {integrity: sha512-8ES7ThajpKDoMheAthnDDg/lXUsIxzV+EdHuE4WnRoiw+25XfYr9WIEuEpytRz/drouJhunOgOJV0kCPxZ3XgQ==}
+  '@storybook/addon-docs@8.3.4':
+    resolution: {integrity: sha512-TWauhqF/gJgfwPuWeM6KM3LwC+ErCOM+K2z16w3vgao9s67sij8lnrdAoQ0hjA+kw2/KAdCakFS6FyciG81qog==}
     peerDependencies:
-      storybook: ^8.3.1
+      storybook: ^8.3.4
 
-  '@storybook/addon-essentials@8.3.1':
-    resolution: {integrity: sha512-5dNlKKJveBYqe1OT4dSE7V7ZjhULWnL238oeHz6wabjfL/l7W9MgLke5mxir4xSaAKf5sOg+QFK+RSmYYih4pg==}
+  '@storybook/addon-essentials@8.3.4':
+    resolution: {integrity: sha512-C3+3hpmSn/8zdx5sXEP0eE6zMzxgRosHVZYfe9nBcMiEDp6UKVUyHVetWxEULOEgN46ysjcpllZ0bUkRYxi2IQ==}
     peerDependencies:
-      storybook: ^8.3.1
+      storybook: ^8.3.4
 
-  '@storybook/addon-highlight@8.3.1':
-    resolution: {integrity: sha512-hEB4O1a76SGEJypjPwjvBT8e9+pWptAD6VY995gtsOrMLaV0213DJV8aEGJRXhELEk2sr8WUaoYhzxxtgD97KA==}
+  '@storybook/addon-highlight@8.3.4':
+    resolution: {integrity: sha512-rxZTeuZyZ7RnU+xmRhS01COFLbGnVEmlUNxBw8ArsrTEZKW5PbKpIxNLTj9F0zdH8H0MfryJGP+Aadcm0oHWlw==}
     peerDependencies:
-      storybook: ^8.3.1
+      storybook: ^8.3.4
 
-  '@storybook/addon-interactions@8.3.1':
-    resolution: {integrity: sha512-EQiemx7ZvI9r4WrWmKB7hvoh9XO+YJh61LNEBLrdnSnRITJKGFrJtqnfuSrvQXWxFVi6U1PtSqDzCV8z0IwK2g==}
+  '@storybook/addon-interactions@8.3.4':
+    resolution: {integrity: sha512-ORxqe35wUmF7EDHo45mdDHiju3Ryk2pZ1vO9PyvW6ZItNlHt/IxAr7T/TysGejZ/eTBg6tMZR3ExGky3lTg/CQ==}
     peerDependencies:
-      storybook: ^8.3.1
+      storybook: ^8.3.4
 
-  '@storybook/addon-links@8.3.1':
-    resolution: {integrity: sha512-xhd1cXpHKn9mr87ImcEOV+YexDZcITzxFQoW2m5ocGkMyVFotK6NjOk/f9xsZAGIp4T7axsdEmwFNSovHgw91A==}
+  '@storybook/addon-links@8.3.4':
+    resolution: {integrity: sha512-R1DjARmxRIKJDGIG6uxmQ1yFNyoQbb+QIPUFjgWCak8+AdLJbC7W+Esvo9F5hQfh6czyy0piiM3qj5hpQJVh3A==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
-      storybook: ^8.3.1
+      storybook: ^8.3.4
     peerDependenciesMeta:
       react:
         optional: true
 
-  '@storybook/addon-measure@8.3.1':
-    resolution: {integrity: sha512-XL7Rph0K0vggVcY7mxGws9SNzLJlCvzrPJdz1xZBKBLLd0fdpbR5Y+1oP1w/7qhZ9Xrg44VRVs4yUzCYUeK2OQ==}
+  '@storybook/addon-measure@8.3.4':
+    resolution: {integrity: sha512-IJ6WKEbqmG+r7sukFjo+bVmPB2Zry04sylGx/OGyOh7zIhhqAqpwOwMHP0uQrc3tLNnUM6qB/o83UyYX79ql+A==}
     peerDependencies:
-      storybook: ^8.3.1
+      storybook: ^8.3.4
 
-  '@storybook/addon-outline@8.3.1':
-    resolution: {integrity: sha512-bpxiffkMjWbrVAmbonzkGaTQp3zCECOP5B4Uw0oRfH7YVZgUsj1brRjVsMvBB1bwDP/ijj46X12OcZjqVEJP5Q==}
+  '@storybook/addon-outline@8.3.4':
+    resolution: {integrity: sha512-kRRJTTLKM8gMfeh/e83djN5XLlc0hFtr9zKWxuZxaXt9Hmr+9tH/PRFtVK/S4SgqnBDoXk49Wgv6raiwj5/e3A==}
     peerDependencies:
-      storybook: ^8.3.1
+      storybook: ^8.3.4
 
-  '@storybook/addon-toolbars@8.3.1':
-    resolution: {integrity: sha512-bjlQP9a56O4OCI4g9tDNm51frBcHaFpHma3MJ1vg302oj/XOQrec/am2sA0E6L1l4Hih2PkRYTamo3+GmQRJug==}
+  '@storybook/addon-toolbars@8.3.4':
+    resolution: {integrity: sha512-Km1YciVIxqluDbd1xmHjANNFyMonEOtnA6e4MrnBnC9XkPXSigeFlj0JvxyI/zjBsLBoFRmQiwq55W6l3hQ9sA==}
     peerDependencies:
-      storybook: ^8.3.1
+      storybook: ^8.3.4
 
-  '@storybook/addon-viewport@8.3.1':
-    resolution: {integrity: sha512-Z0Ls3ThjOx56KE4I5ampOtfK7G4/AAa0bOoaFq7+bLOomXMtZsC3yyXyrm5YQ6ZHmeP2XaXmOe52HDsvq+ko2Q==}
+  '@storybook/addon-viewport@8.3.4':
+    resolution: {integrity: sha512-fU4LdXSSqIOLbCEh2leq/tZUYlFliXZBWr/+igQHdUoU7HY8RIImXqVUaR9wlCaTb48WezAWT60vJtwNijyIiQ==}
     peerDependencies:
-      storybook: ^8.3.1
+      storybook: ^8.3.4
 
-  '@storybook/addon-viewport@8.3.2':
-    resolution: {integrity: sha512-AyXpQ2ntpRoNfOWPnaUX4CTWSj163ncgzcoUyBRWL/yiu/PcMK4tlQ141mWwoamAcXEVDK40Q0vWmRwZ06C2gw==}
+  '@storybook/addon-viewport@8.3.5':
+    resolution: {integrity: sha512-FSWydoPiVWFXEittG7O1YgvuaqoU9Vb+qoq9XfP/hvQHHMDcMZvC40JaV8AnJeTXaM7ngIjcn9XDEfGbFfOzXw==}
     peerDependencies:
-      storybook: ^8.3.2
+      storybook: ^8.3.5
 
-  '@storybook/blocks@8.3.1':
-    resolution: {integrity: sha512-/wNLRVWR/edzHQAFvSW68VxHYmBcfXpL/XdO46I5Z1X/tXUd0rtgGZmliQ2jZ242FqxcT8guqqFGehbeYUns5w==}
+  '@storybook/blocks@8.3.4':
+    resolution: {integrity: sha512-1g4aCrd5CcN+pVhF2ATu9ZRVvAIgBMb2yF9KkCuTpdvqKDuDNK3sGb0CxjS7jp3LOvyjJr9laTOQsz8v8MQc5A==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
-      storybook: ^8.3.1
+      storybook: ^8.3.4
     peerDependenciesMeta:
       react:
         optional: true
       react-dom:
         optional: true
 
-  '@storybook/builder-vite@8.3.1':
-    resolution: {integrity: sha512-IxfgIuQo9R+zcwoBE85PkCSKWGbPVStJgm1VHO/mixIdZExanbAhDS+L21nAZCelTvcsObTN76BN953v2LjVGg==}
+  '@storybook/builder-vite@8.3.4':
+    resolution: {integrity: sha512-Sa6SZ7LeHpkrnuvua8P8MR8e8a+MPKbyMmr9TqCCy8Ud/t4AM4kHY3JpJGtrgeK9l43fBnBwfdZYoRl5J6oWeA==}
     peerDependencies:
       '@preact/preset-vite': '*'
-      storybook: ^8.3.1
+      storybook: ^8.3.4
       typescript: '>= 4.3.x'
       vite: ^4.0.0 || ^5.0.0
       vite-plugin-glimmerx: '*'
@@ -5083,25 +5120,25 @@ packages:
       vite-plugin-glimmerx:
         optional: true
 
-  '@storybook/cli@8.3.1':
-    resolution: {integrity: sha512-Qy7r/+GJ/JHhmm4B6IL8FS98t/kN+UCtLEU894/B41JkLPLGdMgi3T8qMKgDC2B4NhDykFGpxSeQuSJHzOB4wQ==}
+  '@storybook/cli@8.3.4':
+    resolution: {integrity: sha512-VzyY/CFLlrYmtIZpvSU5+7BejHzSy6AidrmUML1ZzNj0+F3FUU4XA6nFs+/zLBwYON+mE3p3iOpJu3iQpQK9Qw==}
     hasBin: true
 
-  '@storybook/codemod@8.3.1':
-    resolution: {integrity: sha512-frdij7TBsYxQEn57mRdebNTRcakBBDBFcs46H/Zmz6AgDhb0tGTXIp718L+RMRA/Tw1g+Sr4ZuhBnFkB3Zq+Ng==}
+  '@storybook/codemod@8.3.4':
+    resolution: {integrity: sha512-w3nYKsIooevVSnX7+uC7yTLbPtMBvwKIB0jF897baHCxvFr80JhP49oM/KWfZMnwcAni21ZGitO57O6dYIn1Rg==}
 
-  '@storybook/components@8.3.2':
-    resolution: {integrity: sha512-yB/ETNTNVZi8xvVsTMWvtiI4APRj2zzAa3nHyQO0X+DC4jjysT9D1ruL6jZJ/2DHMp7A9U6v2if83dby/kszfg==}
+  '@storybook/components@8.3.5':
+    resolution: {integrity: sha512-Rq28YogakD3FO4F8KwAtGpo1g3t4V/gfCLqTQ8B6oQUFoxLqegkWk/DlwCzvoJndXuQJfdSyM6+r1JcA4Nql5A==}
     peerDependencies:
-      storybook: ^8.3.2
+      storybook: ^8.3.5
 
-  '@storybook/core@8.3.1':
-    resolution: {integrity: sha512-L8YTtUipcBvl4F8jFNnXU3NM1hnLwZ3Ge2l+SRVKUGoAZzdf/I8O/0eOeZ+3LM3PvDn8bC9x+qjhNyDgtT+ieQ==}
+  '@storybook/core@8.3.4':
+    resolution: {integrity: sha512-4PZB91JJpuKfcjeOR2LXj3ABaPLLSd2P/SfYOKNCygrDstsQa/yay3/yN5Z9yi1cIG84KRr6/sUW+0x8HsGLPg==}
 
-  '@storybook/csf-plugin@8.3.1':
-    resolution: {integrity: sha512-K3JWJf79+BkJAbOnAns5KGQ9h0NCqWht/1B05frj9LuAD/U+0sikpByiC2QvJ+qtX4fODhqjRYvrv2jgP8o3mA==}
+  '@storybook/csf-plugin@8.3.4':
+    resolution: {integrity: sha512-ZMFWYxeTN4GxCn8dyIH4roECyLDy29yv/QKM+pHM3AC5Ny2HWI35SohWao4fGBAFxPQFbR5hPN8xa6ofHPSSTg==}
     peerDependencies:
-      storybook: ^8.3.1
+      storybook: ^8.3.4
 
   '@storybook/csf@0.1.11':
     resolution: {integrity: sha512-dHYFQH3mA+EtnCkHXzicbLgsvzYjcDJ1JWsogbItZogkPHgSJM/Wr71uMkcvw8v9mmCyP4NpXJuu6bPoVsOnzg==}
@@ -5116,45 +5153,45 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
 
-  '@storybook/instrumenter@8.3.1':
-    resolution: {integrity: sha512-TtECvALgEPLafdy+YHXz2+xBPobiSMHj532nS7tkqxD9aRD1+Ocy6pWWNaP9+iiWWnHIWlTQ0M/7UEoCxV+Ksg==}
+  '@storybook/instrumenter@8.3.4':
+    resolution: {integrity: sha512-jVhfNOPekOyJmta0BTkQl9Z6rgRbFHlc0eV4z1oSrzaawSlc9TFzAeDCtCP57vg3FuBX8ydDYAvyZ7s4xPpLyg==}
     peerDependencies:
-      storybook: ^8.3.1
+      storybook: ^8.3.4
 
-  '@storybook/manager-api@8.3.2':
-    resolution: {integrity: sha512-8FuwE3BGsLPF0H154+1X/4krSbvmH5xu5YmaVTVDV8DRPlBeRIlNV0HDiZfBvftF4EB7fRYolzghXQplHIX8Fg==}
+  '@storybook/manager-api@8.3.5':
+    resolution: {integrity: sha512-fEQoKKi7h7pzh2z9RfuzatJxubrsfL/CB99fNXQ0wshMSY/7O4ckd18pK4fzG9ErnCtLAO9qsim4N/4eQC+/8Q==}
     peerDependencies:
-      storybook: ^8.3.2
+      storybook: ^8.3.5
 
-  '@storybook/preview-api@8.3.2':
-    resolution: {integrity: sha512-bZvqahrS5oXkiVmqt9rPhlpo/xYLKT7QUWKKIDBRJDp+1mYbQhgsP5NhjUtUdaC+HSofAFzJmVFmixyquYsoGw==}
+  '@storybook/preview-api@8.3.5':
+    resolution: {integrity: sha512-VPqpudE8pmjTLvdNJoW/2//nqElDgUOmIn3QxbbCmdZTHDg5tFtxuqwdlNfArF0TxvTSBDIulXt/Q6K56TAfTg==}
     peerDependencies:
-      storybook: ^8.3.2
+      storybook: ^8.3.5
 
-  '@storybook/react-dom-shim@8.3.1':
-    resolution: {integrity: sha512-nHMhXkt3FAm8c08QTTU70vpYhsAu65RpCv/uhYZ89H5OWvmLFHn36iJQPzlpWFtJHJ5+bAV/bfgNODR3BV1gRg==}
+  '@storybook/react-dom-shim@8.3.4':
+    resolution: {integrity: sha512-L4llDvjaAzqPx6h4ddZMh36wPr75PrI2S8bXy+flLqAeVRYnRt4WNKGuxqH0t0U6MwId9+vlCZ13JBfFuY7eQQ==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
-      storybook: ^8.3.1
+      storybook: ^8.3.4
 
-  '@storybook/react-vite@8.3.1':
-    resolution: {integrity: sha512-WjLnYzaiLHCv09UnnMfjJL9RnjmReXbPpRs3VklH87UH8L6j4WLHw7JAEItnyS6ugTxFjcpEg1P1ud4D8c75nA==}
+  '@storybook/react-vite@8.3.4':
+    resolution: {integrity: sha512-0Xm8eTH+jQ7SV4moLkPN4G6U2IDrqXPXUqsZdXaccepIMcD4G75foQFm2LOrFJuY+IMySPspKeTqf8OLskPppw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
-      storybook: ^8.3.1
+      storybook: ^8.3.4
       vite: ^4.0.0 || ^5.0.0
 
-  '@storybook/react@8.3.1':
-    resolution: {integrity: sha512-uxr5o5TzUHB1vFMgdayxatDTYUYWJxDse4hcpr+D2E5QMrMCKBk/KRYgJtnPhmEBASoT40lcZvYmEWnP973KWA==}
+  '@storybook/react@8.3.4':
+    resolution: {integrity: sha512-PA7iQL4/9X2/iLrv+AUPNtlhTHJWhDao9gQIT1Hef39FtFk+TU9lZGbv+g29R1H9V3cHP5162nG2aTu395kmbA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
-      '@storybook/test': 8.3.1
+      '@storybook/test': 8.3.4
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
-      storybook: ^8.3.1
+      storybook: ^8.3.4
       typescript: '>= 4.2.x'
     peerDependenciesMeta:
       '@storybook/test':
@@ -5162,26 +5199,26 @@ packages:
       typescript:
         optional: true
 
-  '@storybook/test@8.3.1':
-    resolution: {integrity: sha512-/ZZFZHr+jsO7oBrLFrrCkgkJrh1/AgHBqO8QR0zdTiR0NK0vo2l9v9FXat/VFhSaYTIpVU/NQdNKiPGTKIfAVw==}
+  '@storybook/test@8.3.4':
+    resolution: {integrity: sha512-HRiUenitln8QPHu6DEWUg9s9cEoiGN79lMykzXzw9shaUvdEIhWCsh82YKtmB3GJPj6qcc6dZL/Aio8srxyGAg==}
     peerDependencies:
-      storybook: ^8.3.1
+      storybook: ^8.3.4
 
-  '@storybook/theming@8.3.2':
-    resolution: {integrity: sha512-JXAVc08Tlbu4GTTMGNmwUy69lShqSpJixAJc4bvWTnNAtPTRltiNJCg/KJ0GauEyRFk8ZR2Ha4KhN3DB1felNQ==}
+  '@storybook/theming@8.3.5':
+    resolution: {integrity: sha512-9HmDDyC691oqfg4RziIM9ElsS2HITaxmH7n/yeUPtuirkPdAQzqOzhvH/Sa0qOhifzs8VjR+Gd/a/ZQ+S38r7w==}
     peerDependencies:
-      storybook: ^8.3.2
+      storybook: ^8.3.5
 
   '@tanstack/query-core@5.56.2':
     resolution: {integrity: sha512-gor0RI3/R5rVV3gXfddh1MM+hgl0Z4G7tj6Xxpq6p2I03NGPaJ8dITY9Gz05zYYb/EJq9vPas/T4wn9EaDPd4Q==}
 
-  '@tanstack/query-devtools@5.56.1':
-    resolution: {integrity: sha512-xnp9jq/9dHfSCDmmf+A5DjbIjYqbnnUL2ToqlaaviUQGRTapXQ8J+GxusYUu1IG0vZMaWdiVUA4HRGGZYAUU+A==}
+  '@tanstack/query-devtools@5.58.0':
+    resolution: {integrity: sha512-iFdQEFXaYYxqgrv63ots+65FGI+tNp5ZS5PdMU1DWisxk3fez5HG3FyVlbUva+RdYS5hSLbxZ9aw3yEs97GNTw==}
 
-  '@tanstack/react-query-devtools@5.56.2':
-    resolution: {integrity: sha512-7nINJtRZZVwhTTyDdMIcSaXo+EHMLYJu1S2e6FskvvD5prx87LlAXXWZDfU24Qm4HjshEtM5lS3HIOszNGblcw==}
+  '@tanstack/react-query-devtools@5.59.3':
+    resolution: {integrity: sha512-lUwbN5amqM4M0XcUvF2isJoQwPdqyRQiXEUFGYrudpPOBSwkTqFVI6utB3eYm3JCwIVqcr5quibLPcq5QY8sww==}
     peerDependencies:
-      '@tanstack/react-query': ^5.56.2
+      '@tanstack/react-query': ^5.59.3
       react: ^18 || ^19
 
   '@tanstack/react-query@5.56.2':
@@ -5326,6 +5363,9 @@ packages:
   '@types/lodash.throttle@4.1.9':
     resolution: {integrity: sha512-PCPVfpfueguWZQB7pJQK890F2scYKoDUL3iM522AptHWn7d5NQmeS/LTEHIcLr5PaTzl3dK2Z0xSUHHTHwaL5g==}
 
+  '@types/lodash@4.17.10':
+    resolution: {integrity: sha512-YpS0zzoduEhuOWjAotS6A5AVCva7X4lVlYLF0FYHAY9sdraBfnatttHItlWeZdGhuEkf+OzMNg2ZYAx8t+52uQ==}
+
   '@types/lodash@4.17.7':
     resolution: {integrity: sha512-8wTvZawATi/lsmNu10/j2hk1KEP0IvjubqPE3cu1Xz7xfXXt5oCq3SNUz4fMIP4XGF9Ky+Ue2tBA3hcS7LSBlA==}
 
@@ -5347,8 +5387,8 @@ packages:
   '@types/node@17.0.45':
     resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
 
-  '@types/node@22.5.5':
-    resolution: {integrity: sha512-Xjs4y5UPO/CLdzpgR6GirZJx36yScjh73+2NlLlkFRSoQN8B0DpfXPdZGnvVmLRLOsqDpOfTNv7D9trgGhmOIA==}
+  '@types/node@22.7.5':
+    resolution: {integrity: sha512-jML7s2NAzMWc//QSJ1a3prpk78cOPchGvXJsC3C6R6PSMoooztvRVQEz89gmBTBY1SPMaqo5teB4uNHPdetShQ==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -5392,8 +5432,8 @@ packages:
   '@types/react-transition-group@4.4.11':
     resolution: {integrity: sha512-RM05tAniPZ5DZPzzNFP+DmrcOdD0efDUxMy3145oljWSl3x9ZV5vhme98gTxFrj2lhXvmGNnUiuDyJgY9IKkNA==}
 
-  '@types/react@18.3.8':
-    resolution: {integrity: sha512-syBUrW3/XpnW4WJ41Pft+I+aPoDVbrBVQGEnbD7NijDGlVC+8gV/XKRY+7vMDlfPpbwYt0l1vd/Sj8bJGMbs9Q==}
+  '@types/react@18.3.11':
+    resolution: {integrity: sha512-r6QZ069rFTjrEYgFdOck1gK7FLVsgJE7tTz0pQBczlBNUhBNk0MQH4UbnFSwjpQLMkLzgqvBBa+qGpLje16eTQ==}
 
   '@types/resolve@1.20.6':
     resolution: {integrity: sha512-A4STmOXPhMUtHH+S6ymgE2GiBSMqf4oTvcQZMcHzokuTLVYzXTB8ttjcgxOVaAp2lGwEdzZ0J+cRbbeevQj1UQ==}
@@ -5428,8 +5468,8 @@ packages:
   '@types/wrap-ansi@3.0.0':
     resolution: {integrity: sha512-ltIpx+kM7g/MLRZfkbL7EsCEjfzCcScLpkg37eXEtx5kmrAKBkTJwd1GIAjDSL8wTpM6Hzn5YO4pSb91BEwu1g==}
 
-  '@typescript-eslint/eslint-plugin@8.6.0':
-    resolution: {integrity: sha512-UOaz/wFowmoh2G6Mr9gw60B1mm0MzUtm6Ic8G2yM1Le6gyj5Loi/N+O5mocugRGY+8OeeKmkMmbxNqUCq3B4Sg==}
+  '@typescript-eslint/eslint-plugin@8.7.0':
+    resolution: {integrity: sha512-RIHOoznhA3CCfSTFiB6kBGLQtB/sox+pJ6jeFu6FxJvqL8qRxq/FfGO/UhsGgQM9oGdXkV4xUgli+dt26biB6A==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       '@typescript-eslint/parser': ^8.0.0 || ^8.0.0-alpha.0
@@ -5439,8 +5479,8 @@ packages:
       typescript:
         optional: true
 
-  '@typescript-eslint/parser@8.6.0':
-    resolution: {integrity: sha512-eQcbCuA2Vmw45iGfcyG4y6rS7BhWfz9MQuk409WD47qMM+bKCGQWXxvoOs1DUp+T7UBMTtRTVT+kXr7Sh4O9Ow==}
+  '@typescript-eslint/parser@8.7.0':
+    resolution: {integrity: sha512-lN0btVpj2unxHlNYLI//BQ7nzbMJYBVQX5+pbNXvGYazdlgYonMn4AhhHifQ+J4fGRYA/m1DjaQjx+fDetqBOQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
@@ -5453,12 +5493,12 @@ packages:
     resolution: {integrity: sha512-jjhdIE/FPF2B7Z1uzc6i3oWKbGcHb87Qw7AWj6jmEqNOfDFbJWtjt/XfwCpvNkpGWlcJaog5vTR+VV8+w9JflA==}
     engines: {node: ^18.18.0 || >=20.0.0}
 
-  '@typescript-eslint/scope-manager@8.6.0':
-    resolution: {integrity: sha512-ZuoutoS5y9UOxKvpc/GkvF4cuEmpokda4wRg64JEia27wX+PysIE9q+lzDtlHHgblwUWwo5/Qn+/WyTUvDwBHw==}
+  '@typescript-eslint/scope-manager@8.7.0':
+    resolution: {integrity: sha512-87rC0k3ZlDOuz82zzXRtQ7Akv3GKhHs0ti4YcbAJtaomllXoSO8hi7Ix3ccEvCd824dy9aIX+j3d2UMAfCtVpg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@typescript-eslint/type-utils@8.6.0':
-    resolution: {integrity: sha512-dtePl4gsuenXVwC7dVNlb4mGDcKjDT/Ropsk4za/ouMBPplCLyznIaR+W65mvCvsyS97dymoBRrioEXI7k0XIg==}
+  '@typescript-eslint/type-utils@8.7.0':
+    resolution: {integrity: sha512-tl0N0Mj3hMSkEYhLkjREp54OSb/FI6qyCzfiiclvJvOqre6hsZTGSnHtmFLDU8TIM62G7ygEa1bI08lcuRwEnQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       typescript: '*'
@@ -5470,8 +5510,8 @@ packages:
     resolution: {integrity: sha512-iZqi+Ds1y4EDYUtlOOC+aUmxnE9xS/yCigkjA7XpTKV6nCBd3Hp/PRGGmdwnfkV2ThMyYldP1wRpm/id99spTQ==}
     engines: {node: ^18.18.0 || >=20.0.0}
 
-  '@typescript-eslint/types@8.6.0':
-    resolution: {integrity: sha512-rojqFZGd4MQxw33SrOy09qIDS8WEldM8JWtKQLAjf/X5mGSeEFh5ixQlxssMNyPslVIk9yzWqXCsV2eFhYrYUw==}
+  '@typescript-eslint/types@8.7.0':
+    resolution: {integrity: sha512-LLt4BLHFwSfASHSF2K29SZ+ZCsbQOM+LuarPjRUuHm+Qd09hSe3GCeaQbcCr+Mik+0QFRmep/FyZBO6fJ64U3w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@typescript-eslint/typescript-estree@7.18.0':
@@ -5483,8 +5523,8 @@ packages:
       typescript:
         optional: true
 
-  '@typescript-eslint/typescript-estree@8.6.0':
-    resolution: {integrity: sha512-MOVAzsKJIPIlLK239l5s06YXjNqpKTVhBVDnqUumQJja5+Y94V3+4VUFRA0G60y2jNnTVwRCkhyGQpavfsbq/g==}
+  '@typescript-eslint/typescript-estree@8.7.0':
+    resolution: {integrity: sha512-MC8nmcGHsmfAKxwnluTQpNqceniT8SteVwd2voYlmiSWGOtjvGXdPl17dYu2797GVscK30Z04WRM28CrKS9WOg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       typescript: '*'
@@ -5498,8 +5538,8 @@ packages:
     peerDependencies:
       eslint: ^8.56.0
 
-  '@typescript-eslint/utils@8.6.0':
-    resolution: {integrity: sha512-eNp9cWnYf36NaOVjkEUznf6fEgVy1TWpE0o52e4wtojjBx7D1UV2WAWGzR+8Y5lVFtpMLPwNbC67T83DWSph4A==}
+  '@typescript-eslint/utils@8.7.0':
+    resolution: {integrity: sha512-ZbdUdwsl2X/s3CiyAu3gOlfQzpbuG3nTWKPoIvAu1pu5r8viiJvv2NPN2AqArL35NCYtw/lrPPfM4gxrMLNLPw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
@@ -5508,8 +5548,8 @@ packages:
     resolution: {integrity: sha512-cDF0/Gf81QpY3xYyJKDV14Zwdmid5+uuENhjH2EqFaF0ni+yAyq/LzMaIJdhNJXZI7uLzwIlA+V7oWoyn6Curg==}
     engines: {node: ^18.18.0 || >=20.0.0}
 
-  '@typescript-eslint/visitor-keys@8.6.0':
-    resolution: {integrity: sha512-wapVFfZg9H0qOYh4grNVQiMklJGluQrOUiOhYRrQWhx7BY/+I1IYb8BczWNbbUpO+pqy0rDciv3lQH5E1bCLrg==}
+  '@typescript-eslint/visitor-keys@8.7.0':
+    resolution: {integrity: sha512-b1tx0orFCCh/THWPQa2ZwWzvOeyzzp36vkJYOpVg0u8UVOIsfVrnuC9FqAw9gRKn+rG2VmWQ/zDJZzkxUnj/XQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@ungap/structured-clone@1.2.0':
@@ -5519,8 +5559,8 @@ packages:
     resolution: {integrity: sha512-IBBb+iI2NLu4VQn3Vwldyi2QwaXt5+hTyh58ggAMoCGE6DJmPvwL3KPBWcJl1m9LYPChBLE980Jw+CS4Wokqxw==}
     hasBin: true
 
-  '@vitejs/plugin-react@4.3.1':
-    resolution: {integrity: sha512-m/V2syj5CuVnaxcUJOQRel/Wr31FFXRFlnOoq1TVtkCxsY5veGMTEmpWHndrhB2U8ScHtCQB1e+4hWYExQc6Lg==}
+  '@vitejs/plugin-react@4.3.2':
+    resolution: {integrity: sha512-hieu+o05v4glEBucTcKMK3dlES0OeJlD9YVOAPraVMOInBCwzumaIFiUjr4bHK7NPgnAHgiskUoceKercrN8vg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0
@@ -6217,8 +6257,8 @@ packages:
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
 
-  create-storybook@8.3.1:
-    resolution: {integrity: sha512-nZvhC9UioJeYxh3i8qWwiuQSh832EuQnoxiLm9duNEvI75SjTcWMvqyFUkw7ov8Zibkbs9fXKp0AZrMhR+BGxw==}
+  create-storybook@8.3.4:
+    resolution: {integrity: sha512-jlvKWfa9FkU90XurpfGxO/TxYgdp3YIvBipVmkx4B9zlcCElQdcQ7i8VZ/OrzAd7VUU1S9tii6uzWPsPwwLVBw==}
     hasBin: true
 
   cross-env@7.0.3:
@@ -6774,8 +6814,8 @@ packages:
       eslint-config-prettier:
         optional: true
 
-  eslint-plugin-react@7.36.1:
-    resolution: {integrity: sha512-/qwbqNXZoq+VP30s1d4Nc1C5GTxjJQjk4Jzs4Wq2qzxFM7dSmuG2UkIjg2USMLh3A/aVcUNrK7v0J5U1XEGGwA==}
+  eslint-plugin-react@7.37.0:
+    resolution: {integrity: sha512-IHBePmfWH5lKhJnJ7WB1V+v/GolbB0rjS8XYVCSQCZKaQCAUhMoVoOEn1Ef8Z8Wf0a7l8KTJvuZg5/e4qrZ6nA==}
     engines: {node: '>=4'}
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7
@@ -6820,8 +6860,8 @@ packages:
     resolution: {integrity: sha512-OtIRv/2GyiF6o/d8K7MYKKbXrOUBIK6SfkIRM4Z0dY3w+LiQ0vy3F57m0Z71bjbyeiWFiHJ8brqnmE6H6/jEuw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  eslint@9.10.0:
-    resolution: {integrity: sha512-Y4D0IgtBZfOcOUAIQTSXBKoNGfY0REGqHJG6+Q81vNippW5YlKjHFj4soMxamKK1NXHUWuBZTLdU3Km+L/pcHw==}
+  eslint@9.11.1:
+    resolution: {integrity: sha512-MobhYKIoAO1s1e4VUrgx1l1Sk2JBR/Gqjjgw8+mfgoLE2xwsHur4gdfTxyTgShrhvdVFTaJSgMiQBl1jv/AWxg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     hasBin: true
     peerDependencies:
@@ -7684,8 +7724,8 @@ packages:
     resolution: {integrity: sha512-Hicd6JK5Njt2QB6XYFS7ok9e37O8AYk3jTcppG4YVQnYjOemymvTcmc7OWsmq/Qqj5TdRFO5/x/tIPmBeRtGHg==}
     engines: {node: '>=12.0.0'}
 
-  jsdom@25.0.0:
-    resolution: {integrity: sha512-OhoFVT59T7aEq75TVw9xxEfkXgacpqAhQaYgP9y/fDqWQCMB/b1H66RfmPm/MaeaAIU9nDwMOVTlPN51+ao6CQ==}
+  jsdom@25.0.1:
+    resolution: {integrity: sha512-8i7LzZj7BF8uplX+ZyOlIz86V6TAsSs+np6m1kpW9u0JWi4z/1t+FzcK1aek+ybTnAC4KhBL4uXCNT0wcUIeCw==}
     engines: {node: '>=18'}
     peerDependencies:
       canvas: ^2.11.2
@@ -8975,8 +9015,8 @@ packages:
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  sass@1.79.3:
-    resolution: {integrity: sha512-m7dZxh0W9EZ3cw50Me5GOuYm/tVAJAn91SUnohLRo9cXBixGUOdvmryN+dXpwR831bhoY3Zv7rEFt85PUwTmzA==}
+  sass@1.79.4:
+    resolution: {integrity: sha512-K0QDSNPXgyqO4GZq2HO5Q70TLxTH6cIT59RdoCHMivrC8rqzaTw5ab9prjz9KUN1El4FLXrBXJhik61JR4HcGg==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -9179,8 +9219,8 @@ packages:
     peerDependencies:
       react-intl: ^5.24.0 || ^6.0.0
 
-  storybook@8.3.1:
-    resolution: {integrity: sha512-CYqt5KOpaTgb8OczNo2+EtMi8YNDPi4vNVebVlLDOroWxyulb8I7MIOH9gALczcIOb+TZUArPztjoa8rkXTaDQ==}
+  storybook@8.3.4:
+    resolution: {integrity: sha512-nzvuK5TsEgJwcWGLGgafabBOxKn37lfJVv7ZoUVPgJIjk2mNRyJDFwYRJzUZaD37eiR/c/lQ6MoaeqlGwiXoxw==}
     hasBin: true
 
   streamsearch@1.1.0:
@@ -9317,8 +9357,8 @@ packages:
   tabbable@6.2.0:
     resolution: {integrity: sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==}
 
-  tailwindcss@3.4.11:
-    resolution: {integrity: sha512-qhEuBcLemjSJk5ajccN9xJFtM/h0AVCPaA6C92jNP+M2J8kX+eMJHI7R2HFKUvvAsMpcfLILMCFYSeDwpMmlUg==}
+  tailwindcss@3.4.13:
+    resolution: {integrity: sha512-KqjHOJKogOUt5Bs752ykCeiwvi0fKVkr5oqsFNt/8px/tA8scFPIlkygsf6jXrfCqGHz7VflA6+yytWuM+XhFw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -9407,6 +9447,13 @@ packages:
     resolution: {integrity: sha512-n1cw8k1k0x4pgA2+9XrOkFydTerNcJ1zWCO5Nn9scWHTD+5tp8dghT2x1uduQePZTZgd3Tupf+x9BxJjeJi77Q==}
     engines: {node: '>=14.0.0'}
 
+  tldts-core@6.1.50:
+    resolution: {integrity: sha512-na2EcZqmdA2iV9zHV7OHQDxxdciEpxrjbkp+aHmZgnZKHzoElLajP59np5/4+sare9fQBfixgvXKx8ev1d7ytw==}
+
+  tldts@6.1.50:
+    resolution: {integrity: sha512-q9GOap6q3KCsLMdOjXhWU5jVZ8/1dIib898JBRLsN+tBhENpBDcAVQbE0epADOjw11FhQQy9AcbqKGBQPUfTQA==}
+    hasBin: true
+
   to-fast-properties@2.0.0:
     resolution: {integrity: sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==}
     engines: {node: '>=4'}
@@ -9426,6 +9473,10 @@ packages:
   tough-cookie@4.1.4:
     resolution: {integrity: sha512-Loo5UUvLD9ScZ6jh8beX1T6sO1w2/MpCRpEP7V280GKMVUQ0Jzar2U3UJPsrdbziLEMMhu3Ujnq//rhiFuIeag==}
     engines: {node: '>=6'}
+
+  tough-cookie@5.0.0:
+    resolution: {integrity: sha512-FRKsF7cz96xIIeMZ82ehjC3xW2E+O2+v11udrDYewUbszngYhsGa8z6YUMMzO9QJZzzyd0nGGXnML/TReX6W8Q==}
+    engines: {node: '>=16'}
 
   tr46@5.0.0:
     resolution: {integrity: sha512-tk2G5R2KRwBd+ZN0zaEXpmzdKyOYksXwywulIX95MBODjSzMIuQnQ3m8JxgbhnL1LeVo7lqQKsYa1O3Htl7K5g==}
@@ -9557,8 +9608,8 @@ packages:
   typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
 
-  typescript-eslint@8.6.0:
-    resolution: {integrity: sha512-eEhhlxCEpCd4helh3AO1hk0UP2MvbRi9CtIAJTVPQjuSXOOO2jsEacNi4UdcJzZJbeuVg1gMhtZ8UYb+NFYPrA==}
+  typescript-eslint@8.7.0:
+    resolution: {integrity: sha512-nEHbEYJyHwsuf7c3V3RS7Saq+1+la3i0ieR3qP0yjqWSzVmh8Drp47uOl9LjbPANac4S7EFSqvcYIKXUUwIfIQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       typescript: '*'
@@ -9738,8 +9789,8 @@ packages:
       vue-tsc:
         optional: true
 
-  vite@5.4.7:
-    resolution: {integrity: sha512-5l2zxqMEPVENgvzTuBpHer2awaetimj2BGkhBPdnwKbPNOlHsODU+oiazEZzLK7KhAnOrO+XGYJYn4ZlUhDtDQ==}
+  vite@5.4.8:
+    resolution: {integrity: sha512-FqrItQ4DT1NC4zCUqMB4c4AZORMKIa0m8/URVCZ77OZ/QSNeJ54bU1vrFADbDsuwfIPcgknRkmqakQcgnL4GiQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -11055,14 +11106,14 @@ snapshots:
   '@esbuild/win32-x64@0.23.1':
     optional: true
 
-  '@eslint-community/eslint-utils@4.4.0(eslint@9.10.0(jiti@1.21.6))':
+  '@eslint-community/eslint-utils@4.4.0(eslint@9.11.1(jiti@1.21.6))':
     dependencies:
-      eslint: 9.10.0(jiti@1.21.6)
+      eslint: 9.11.1(jiti@1.21.6)
       eslint-visitor-keys: 3.4.3
 
-  '@eslint-community/eslint-utils@4.4.0(eslint@9.10.0)':
+  '@eslint-community/eslint-utils@4.4.0(eslint@9.11.1)':
     dependencies:
-      eslint: 9.10.0
+      eslint: 9.11.1
       eslint-visitor-keys: 3.4.3
     optional: true
 
@@ -11075,6 +11126,8 @@ snapshots:
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
+
+  '@eslint/core@0.6.0': {}
 
   '@eslint/eslintrc@2.1.4':
     dependencies:
@@ -11104,11 +11157,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@eslint/js@9.10.0': {}
+  '@eslint/js@9.11.1': {}
 
   '@eslint/object-schema@2.1.4': {}
 
-  '@eslint/plugin-kit@0.1.0':
+  '@eslint/plugin-kit@0.2.0':
     dependencies:
       levn: 0.4.1
 
@@ -11262,7 +11315,7 @@ snapshots:
       '@inquirer/figures': 1.0.6
       '@inquirer/type': 2.0.0
       '@types/mute-stream': 0.0.4
-      '@types/node': 22.5.5
+      '@types/node': 22.7.5
       '@types/wrap-ansi': 3.0.0
       ansi-escapes: 4.3.2
       cli-width: 4.1.0
@@ -11291,13 +11344,13 @@ snapshots:
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
 
-  '@joshwooding/vite-plugin-react-docgen-typescript@0.3.1(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))':
+  '@joshwooding/vite-plugin-react-docgen-typescript@0.3.0(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))':
     dependencies:
       glob: 7.2.3
       glob-promise: 4.2.2(glob@7.2.3)
       magic-string: 0.27.0
       react-docgen-typescript: 2.2.2(typescript@5.6.2)
-      vite: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+      vite: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
     optionalDependencies:
       typescript: 5.6.2
 
@@ -11323,10 +11376,10 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@mdx-js/react@3.0.1(@types/react@18.3.8)(react@18.3.1)':
+  '@mdx-js/react@3.0.1(@types/react@18.3.11)(react@18.3.1)':
     dependencies:
       '@types/mdx': 2.0.13
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
       react: 18.3.1
 
   '@mswjs/interceptors@0.35.8':
@@ -11338,14 +11391,14 @@ snapshots:
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
 
-  '@navikt/aksel-icons@7.0.1': {}
+  '@navikt/aksel-icons@7.2.0': {}
 
-  '@navikt/ds-css@7.0.0': {}
+  '@navikt/ds-css@7.1.0': {}
 
-  '@navikt/ds-datepicker@4.2.0(@navikt/ds-css@7.0.0)(@navikt/ds-react@7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(date-fns@3.6.0)(dayjs@1.11.13)(react-day-picker@8.10.0(date-fns@3.6.0)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(uuid@10.0.0)':
+  '@navikt/ds-datepicker@4.2.0(@navikt/ds-css@7.1.0)(@navikt/ds-react@7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(date-fns@3.6.0)(dayjs@1.11.13)(react-day-picker@8.10.0(date-fns@3.6.0)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(uuid@10.0.0)':
     dependencies:
-      '@navikt/ds-css': 7.0.0
-      '@navikt/ds-react': 7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@navikt/ds-css': 7.1.0
+      '@navikt/ds-react': 7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       classnames: 2.5.1
       date-fns: 3.6.0
       dayjs: 1.11.13
@@ -11357,36 +11410,38 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
-  '@navikt/ds-icons@3.4.3(@types/react@18.3.8)(react@18.3.1)':
+  '@navikt/ds-icons@3.4.3(@types/react@18.3.11)(react@18.3.1)':
     dependencies:
-      '@types/react': 18.3.8
       react: 18.3.1
+    optionalDependencies:
+      '@types/react': 18.3.11
 
-  '@navikt/ds-react@7.0.0(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@navikt/ds-react@7.1.0(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@floating-ui/react': 0.25.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@floating-ui/react-dom': 2.1.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@navikt/aksel-icons': 7.0.1
-      '@navikt/ds-tokens': 7.0.1
-      '@types/react': 18.3.8
+      '@navikt/aksel-icons': 7.2.0
+      '@navikt/ds-tokens': 7.2.0
       clsx: 2.1.1
       date-fns: 3.6.0
       react: 18.3.1
       react-day-picker: 8.10.0(date-fns@3.6.0)(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.11
     transitivePeerDependencies:
       - react-dom
 
-  '@navikt/ds-tailwind@7.0.0': {}
+  '@navikt/ds-tailwind@7.1.0': {}
 
-  '@navikt/ds-tokens@7.0.1': {}
+  '@navikt/ds-tokens@7.2.0': {}
 
   '@navikt/fnrvalidator@1.3.0': {}
 
-  '@navikt/nav-dekoratoren-moduler@2.1.6(jsdom@25.0.0)(react@18.3.1)':
+  '@navikt/nav-dekoratoren-moduler@2.1.6(jsdom@25.0.1)(react@18.3.1)':
     dependencies:
       csp-header: 5.2.1
       html-react-parser: 3.0.16(react@18.3.1)
-      jsdom: 25.0.0
+      jsdom: 25.0.1
       node-cache: 5.1.2
       react: 18.3.1
 
@@ -11560,119 +11615,119 @@ snapshots:
 
   '@snyk/protect@1.1293.1': {}
 
-  '@storybook/addon-actions@8.3.1(storybook@8.3.1)':
+  '@storybook/addon-actions@8.3.4(storybook@8.3.4)':
     dependencies:
       '@storybook/global': 5.0.0
       '@types/uuid': 9.0.8
       dequal: 2.0.3
       polished: 4.3.1
-      storybook: 8.3.1
+      storybook: 8.3.4
       uuid: 9.0.1
 
-  '@storybook/addon-backgrounds@8.3.1(storybook@8.3.1)':
+  '@storybook/addon-backgrounds@8.3.4(storybook@8.3.4)':
     dependencies:
       '@storybook/global': 5.0.0
       memoizerific: 1.11.3
-      storybook: 8.3.1
+      storybook: 8.3.4
       ts-dedent: 2.2.0
 
-  '@storybook/addon-controls@8.3.1(storybook@8.3.1)':
+  '@storybook/addon-controls@8.3.4(storybook@8.3.4)':
     dependencies:
       '@storybook/global': 5.0.0
       dequal: 2.0.3
       lodash: 4.17.21
-      storybook: 8.3.1
+      storybook: 8.3.4
       ts-dedent: 2.2.0
 
-  '@storybook/addon-docs@8.3.1(storybook@8.3.1)':
+  '@storybook/addon-docs@8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)':
     dependencies:
-      '@mdx-js/react': 3.0.1(@types/react@18.3.8)(react@18.3.1)
-      '@storybook/blocks': 8.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)
-      '@storybook/csf-plugin': 8.3.1(storybook@8.3.1)
+      '@mdx-js/react': 3.0.1(@types/react@18.3.11)(react@18.3.1)
+      '@storybook/blocks': 8.3.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)
+      '@storybook/csf-plugin': 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@storybook/global': 5.0.0
-      '@storybook/react-dom-shim': 8.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)
-      '@types/react': 18.3.8
+      '@storybook/react-dom-shim': 8.3.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)
+      '@types/react': 18.3.11
       fs-extra: 11.2.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       rehype-external-links: 3.0.0
       rehype-slug: 6.0.0
-      storybook: 8.3.1
+      storybook: 8.3.4
       ts-dedent: 2.2.0
     transitivePeerDependencies:
       - webpack-sources
 
-  '@storybook/addon-essentials@8.3.1(storybook@8.3.1)':
+  '@storybook/addon-essentials@8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)':
     dependencies:
-      '@storybook/addon-actions': 8.3.1(storybook@8.3.1)
-      '@storybook/addon-backgrounds': 8.3.1(storybook@8.3.1)
-      '@storybook/addon-controls': 8.3.1(storybook@8.3.1)
-      '@storybook/addon-docs': 8.3.1(storybook@8.3.1)
-      '@storybook/addon-highlight': 8.3.1(storybook@8.3.1)
-      '@storybook/addon-measure': 8.3.1(storybook@8.3.1)
-      '@storybook/addon-outline': 8.3.1(storybook@8.3.1)
-      '@storybook/addon-toolbars': 8.3.1(storybook@8.3.1)
-      '@storybook/addon-viewport': 8.3.1(storybook@8.3.1)
-      storybook: 8.3.1
+      '@storybook/addon-actions': 8.3.4(storybook@8.3.4)
+      '@storybook/addon-backgrounds': 8.3.4(storybook@8.3.4)
+      '@storybook/addon-controls': 8.3.4(storybook@8.3.4)
+      '@storybook/addon-docs': 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
+      '@storybook/addon-highlight': 8.3.4(storybook@8.3.4)
+      '@storybook/addon-measure': 8.3.4(storybook@8.3.4)
+      '@storybook/addon-outline': 8.3.4(storybook@8.3.4)
+      '@storybook/addon-toolbars': 8.3.4(storybook@8.3.4)
+      '@storybook/addon-viewport': 8.3.4(storybook@8.3.4)
+      storybook: 8.3.4
       ts-dedent: 2.2.0
     transitivePeerDependencies:
       - webpack-sources
 
-  '@storybook/addon-highlight@8.3.1(storybook@8.3.1)':
+  '@storybook/addon-highlight@8.3.4(storybook@8.3.4)':
     dependencies:
       '@storybook/global': 5.0.0
-      storybook: 8.3.1
+      storybook: 8.3.4
 
-  '@storybook/addon-interactions@8.3.1(storybook@8.3.1)':
+  '@storybook/addon-interactions@8.3.4(storybook@8.3.4)':
     dependencies:
       '@storybook/global': 5.0.0
-      '@storybook/instrumenter': 8.3.1(storybook@8.3.1)
-      '@storybook/test': 8.3.1(storybook@8.3.1)
+      '@storybook/instrumenter': 8.3.4(storybook@8.3.4)
+      '@storybook/test': 8.3.4(storybook@8.3.4)
       polished: 4.3.1
-      storybook: 8.3.1
+      storybook: 8.3.4
       ts-dedent: 2.2.0
 
-  '@storybook/addon-links@8.3.1(react@18.3.1)(storybook@8.3.1)':
+  '@storybook/addon-links@8.3.4(react@18.3.1)(storybook@8.3.4)':
     dependencies:
       '@storybook/csf': 0.1.11
       '@storybook/global': 5.0.0
-      storybook: 8.3.1
+      storybook: 8.3.4
       ts-dedent: 2.2.0
     optionalDependencies:
       react: 18.3.1
 
-  '@storybook/addon-measure@8.3.1(storybook@8.3.1)':
+  '@storybook/addon-measure@8.3.4(storybook@8.3.4)':
     dependencies:
       '@storybook/global': 5.0.0
-      storybook: 8.3.1
+      storybook: 8.3.4
       tiny-invariant: 1.3.3
 
-  '@storybook/addon-outline@8.3.1(storybook@8.3.1)':
+  '@storybook/addon-outline@8.3.4(storybook@8.3.4)':
     dependencies:
       '@storybook/global': 5.0.0
-      storybook: 8.3.1
+      storybook: 8.3.4
       ts-dedent: 2.2.0
 
-  '@storybook/addon-toolbars@8.3.1(storybook@8.3.1)':
+  '@storybook/addon-toolbars@8.3.4(storybook@8.3.4)':
     dependencies:
-      storybook: 8.3.1
+      storybook: 8.3.4
 
-  '@storybook/addon-viewport@8.3.1(storybook@8.3.1)':
-    dependencies:
-      memoizerific: 1.11.3
-      storybook: 8.3.1
-
-  '@storybook/addon-viewport@8.3.2(storybook@8.3.1)':
+  '@storybook/addon-viewport@8.3.4(storybook@8.3.4)':
     dependencies:
       memoizerific: 1.11.3
-      storybook: 8.3.1
+      storybook: 8.3.4
 
-  '@storybook/blocks@8.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)':
+  '@storybook/addon-viewport@8.3.5(storybook@8.3.4)':
+    dependencies:
+      memoizerific: 1.11.3
+      storybook: 8.3.4
+
+  '@storybook/blocks@8.3.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)':
     dependencies:
       '@storybook/csf': 0.1.11
       '@storybook/global': 5.0.0
       '@storybook/icons': 1.2.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@types/lodash': 4.17.7
+      '@types/lodash': 4.17.10
       color-convert: 2.0.1
       dequal: 2.0.3
       lodash: 4.17.21
@@ -11680,7 +11735,7 @@ snapshots:
       memoizerific: 1.11.3
       polished: 4.3.1
       react-colorful: 5.6.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      storybook: 8.3.1
+      storybook: 8.3.4
       telejson: 7.2.0
       ts-dedent: 2.2.0
       util-deprecate: 1.0.2
@@ -11688,9 +11743,9 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@storybook/builder-vite@8.3.1(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))':
+  '@storybook/builder-vite@8.3.4(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)':
     dependencies:
-      '@storybook/csf-plugin': 8.3.1(storybook@8.3.1)
+      '@storybook/csf-plugin': 8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)
       '@types/find-cache-dir': 3.2.1
       browser-assert: 1.2.1
       es-module-lexer: 1.5.4
@@ -11698,24 +11753,24 @@ snapshots:
       find-cache-dir: 3.3.2
       fs-extra: 11.2.0
       magic-string: 0.30.11
-      storybook: 8.3.1
+      storybook: 8.3.4
       ts-dedent: 2.2.0
-      vite: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+      vite: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
     optionalDependencies:
       typescript: 5.6.2
     transitivePeerDependencies:
       - supports-color
       - webpack-sources
 
-  '@storybook/cli@8.3.1(@babel/preset-env@7.25.4(@babel/core@7.25.2))':
+  '@storybook/cli@8.3.4(@babel/preset-env@7.25.4(@babel/core@7.25.2))':
     dependencies:
       '@babel/core': 7.25.2
       '@babel/types': 7.25.6
-      '@storybook/codemod': 8.3.1
+      '@storybook/codemod': 8.3.4
       '@types/semver': 7.5.8
       chalk: 4.1.2
       commander: 12.1.0
-      create-storybook: 8.3.1
+      create-storybook: 8.3.4
       cross-spawn: 7.0.3
       envinfo: 7.14.0
       fd-package-json: 1.2.0
@@ -11728,7 +11783,7 @@ snapshots:
       leven: 3.1.0
       prompts: 2.4.2
       semver: 7.6.3
-      storybook: 8.3.1
+      storybook: 8.3.4
       tiny-invariant: 1.3.3
       ts-dedent: 2.2.0
     transitivePeerDependencies:
@@ -11737,12 +11792,12 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@storybook/codemod@8.3.1':
+  '@storybook/codemod@8.3.4':
     dependencies:
       '@babel/core': 7.25.2
       '@babel/preset-env': 7.25.4(@babel/core@7.25.2)
       '@babel/types': 7.25.6
-      '@storybook/core': 8.3.1
+      '@storybook/core': 8.3.4
       '@storybook/csf': 0.1.11
       '@types/cross-spawn': 6.0.6
       cross-spawn: 7.0.3
@@ -11757,11 +11812,11 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@storybook/components@8.3.2(storybook@8.3.1)':
+  '@storybook/components@8.3.5(storybook@8.3.4)':
     dependencies:
-      storybook: 8.3.1
+      storybook: 8.3.4
 
-  '@storybook/core@8.3.1':
+  '@storybook/core@8.3.4':
     dependencies:
       '@storybook/csf': 0.1.11
       '@types/express': 4.17.21
@@ -11781,10 +11836,10 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@storybook/csf-plugin@8.3.1(storybook@8.3.1)':
+  '@storybook/csf-plugin@8.3.4(storybook@8.3.4)(webpack-sources@3.2.3)':
     dependencies:
-      storybook: 8.3.1
-      unplugin: 1.14.1
+      storybook: 8.3.4
+      unplugin: 1.14.1(webpack-sources@3.2.3)
     transitivePeerDependencies:
       - webpack-sources
 
@@ -11799,42 +11854,42 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@storybook/instrumenter@8.3.1(storybook@8.3.1)':
+  '@storybook/instrumenter@8.3.4(storybook@8.3.4)':
     dependencies:
       '@storybook/global': 5.0.0
       '@vitest/utils': 2.1.1
-      storybook: 8.3.1
+      storybook: 8.3.4
       util: 0.12.5
 
-  '@storybook/manager-api@8.3.2(storybook@8.3.1)':
+  '@storybook/manager-api@8.3.5(storybook@8.3.4)':
     dependencies:
-      storybook: 8.3.1
+      storybook: 8.3.4
 
-  '@storybook/preview-api@8.3.2(storybook@8.3.1)':
+  '@storybook/preview-api@8.3.5(storybook@8.3.4)':
     dependencies:
-      storybook: 8.3.1
+      storybook: 8.3.4
 
-  '@storybook/react-dom-shim@8.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)':
+  '@storybook/react-dom-shim@8.3.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)':
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      storybook: 8.3.1
+      storybook: 8.3.4
 
-  '@storybook/react-vite@8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))':
+  '@storybook/react-vite@8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.22.4)(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)':
     dependencies:
-      '@joshwooding/vite-plugin-react-docgen-typescript': 0.3.1(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+      '@joshwooding/vite-plugin-react-docgen-typescript': 0.3.0(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       '@rollup/pluginutils': 5.1.1(rollup@4.22.4)
-      '@storybook/builder-vite': 8.3.1(storybook@8.3.1)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
-      '@storybook/react': 8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)
+      '@storybook/builder-vite': 8.3.4(storybook@8.3.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))(webpack-sources@3.2.3)
+      '@storybook/react': 8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)
       find-up: 5.0.0
       magic-string: 0.30.11
       react: 18.3.1
       react-docgen: 7.0.3
       react-dom: 18.3.1(react@18.3.1)
       resolve: 1.22.8
-      storybook: 8.3.1
+      storybook: 8.3.4
       tsconfig-paths: 4.2.0
-      vite: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+      vite: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
     transitivePeerDependencies:
       - '@preact/preset-vite'
       - '@storybook/test'
@@ -11844,17 +11899,17 @@ snapshots:
       - vite-plugin-glimmerx
       - webpack-sources
 
-  '@storybook/react@8.3.1(@storybook/test@8.3.1(storybook@8.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)(typescript@5.6.2)':
+  '@storybook/react@8.3.4(@storybook/test@8.3.4(storybook@8.3.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)(typescript@5.6.2)':
     dependencies:
-      '@storybook/components': 8.3.2(storybook@8.3.1)
+      '@storybook/components': 8.3.5(storybook@8.3.4)
       '@storybook/global': 5.0.0
-      '@storybook/manager-api': 8.3.2(storybook@8.3.1)
-      '@storybook/preview-api': 8.3.2(storybook@8.3.1)
-      '@storybook/react-dom-shim': 8.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.1)
-      '@storybook/theming': 8.3.2(storybook@8.3.1)
+      '@storybook/manager-api': 8.3.5(storybook@8.3.4)
+      '@storybook/preview-api': 8.3.5(storybook@8.3.4)
+      '@storybook/react-dom-shim': 8.3.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.4)
+      '@storybook/theming': 8.3.5(storybook@8.3.4)
       '@types/escodegen': 0.0.6
       '@types/estree': 0.0.51
-      '@types/node': 22.5.5
+      '@types/node': 22.7.5
       acorn: 7.4.1
       acorn-jsx: 5.3.2(acorn@7.4.1)
       acorn-walk: 7.2.0
@@ -11865,38 +11920,38 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       react-element-to-jsx-string: 15.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       semver: 7.6.3
-      storybook: 8.3.1
+      storybook: 8.3.4
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       util-deprecate: 1.0.2
     optionalDependencies:
-      '@storybook/test': 8.3.1(storybook@8.3.1)
+      '@storybook/test': 8.3.4(storybook@8.3.4)
       typescript: 5.6.2
 
-  '@storybook/test@8.3.1(storybook@8.3.1)':
+  '@storybook/test@8.3.4(storybook@8.3.4)':
     dependencies:
       '@storybook/csf': 0.1.11
       '@storybook/global': 5.0.0
-      '@storybook/instrumenter': 8.3.1(storybook@8.3.1)
+      '@storybook/instrumenter': 8.3.4(storybook@8.3.4)
       '@testing-library/dom': 10.4.0
       '@testing-library/jest-dom': 6.5.0
       '@testing-library/user-event': 14.5.2(@testing-library/dom@10.4.0)
       '@vitest/expect': 2.0.5
       '@vitest/spy': 2.0.5
-      storybook: 8.3.1
+      storybook: 8.3.4
       util: 0.12.5
 
-  '@storybook/theming@8.3.2(storybook@8.3.1)':
+  '@storybook/theming@8.3.5(storybook@8.3.4)':
     dependencies:
-      storybook: 8.3.1
+      storybook: 8.3.4
 
   '@tanstack/query-core@5.56.2': {}
 
-  '@tanstack/query-devtools@5.56.1': {}
+  '@tanstack/query-devtools@5.58.0': {}
 
-  '@tanstack/react-query-devtools@5.56.2(@tanstack/react-query@5.56.2(react@18.3.1))(react@18.3.1)':
+  '@tanstack/react-query-devtools@5.59.3(@tanstack/react-query@5.56.2(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@tanstack/query-devtools': 5.56.1
+      '@tanstack/query-devtools': 5.58.0
       '@tanstack/react-query': 5.56.2(react@18.3.1)
       react: 18.3.1
 
@@ -11926,14 +11981,14 @@ snapshots:
       lodash: 4.17.21
       redent: 3.0.0
 
-  '@testing-library/react@16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@testing-library/react@16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.25.6
       '@testing-library/dom': 10.4.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
       '@types/react-dom': 18.3.0
 
   '@testing-library/user-event@14.5.2(@testing-library/dom@10.4.0)':
@@ -11980,19 +12035,19 @@ snapshots:
   '@types/body-parser@1.19.5':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 22.5.5
+      '@types/node': 22.7.5
 
   '@types/bytes@3.1.4': {}
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 22.5.5
+      '@types/node': 22.7.5
 
   '@types/cookie@0.6.0': {}
 
   '@types/cross-spawn@6.0.6':
     dependencies:
-      '@types/node': 22.5.5
+      '@types/node': 22.7.5
 
   '@types/doctrine@0.0.9': {}
 
@@ -12006,7 +12061,7 @@ snapshots:
 
   '@types/express-serve-static-core@4.19.5':
     dependencies:
-      '@types/node': 22.5.5
+      '@types/node': 22.7.5
       '@types/qs': 6.9.16
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
@@ -12022,12 +12077,12 @@ snapshots:
 
   '@types/fs-extra@9.0.13':
     dependencies:
-      '@types/node': 22.5.5
+      '@types/node': 22.7.5
 
   '@types/glob@7.2.0':
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 22.5.5
+      '@types/node': 22.7.5
 
   '@types/hast@3.0.4':
     dependencies:
@@ -12037,18 +12092,18 @@ snapshots:
 
   '@types/hoist-non-react-statics@3.3.5':
     dependencies:
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
       hoist-non-react-statics: 3.3.2
 
   '@types/http-errors@2.0.4': {}
 
   '@types/http-proxy@1.17.15':
     dependencies:
-      '@types/node': 22.5.5
+      '@types/node': 22.7.5
 
   '@types/jsdom@21.1.7':
     dependencies:
-      '@types/node': 22.5.5
+      '@types/node': 22.7.5
       '@types/tough-cookie': 4.0.5
       parse5: 7.1.2
 
@@ -12060,15 +12115,17 @@ snapshots:
 
   '@types/lodash.debounce@4.0.9':
     dependencies:
-      '@types/lodash': 4.17.7
+      '@types/lodash': 4.17.10
 
   '@types/lodash.groupby@4.6.9':
     dependencies:
-      '@types/lodash': 4.17.7
+      '@types/lodash': 4.17.10
 
   '@types/lodash.throttle@4.1.9':
     dependencies:
-      '@types/lodash': 4.17.7
+      '@types/lodash': 4.17.10
+
+  '@types/lodash@4.17.10': {}
 
   '@types/lodash@4.17.7': {}
 
@@ -12080,15 +12137,15 @@ snapshots:
 
   '@types/morgan@1.9.9':
     dependencies:
-      '@types/node': 22.5.5
+      '@types/node': 22.7.5
 
   '@types/mute-stream@0.0.4':
     dependencies:
-      '@types/node': 22.5.5
+      '@types/node': 22.7.5
 
   '@types/node@17.0.45': {}
 
-  '@types/node@22.5.5':
+  '@types/node@22.7.5':
     dependencies:
       undici-types: 6.19.8
 
@@ -12105,44 +12162,44 @@ snapshots:
 
   '@types/react-aria-menubutton@6.2.14':
     dependencies:
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
 
   '@types/react-collapse@5.0.4':
     dependencies:
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
 
   '@types/react-document-title@2.0.9':
     dependencies:
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
 
   '@types/react-dom@18.3.0':
     dependencies:
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
 
   '@types/react-modal@3.16.3':
     dependencies:
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
 
   '@types/react-router-dom@5.3.3':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
       '@types/react-router': 5.1.20
 
   '@types/react-router@5.1.20':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
 
   '@types/react-scroll@1.8.10':
     dependencies:
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
 
   '@types/react-transition-group@4.4.11':
     dependencies:
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
 
-  '@types/react@18.3.8':
+  '@types/react@18.3.11':
     dependencies:
       '@types/prop-types': 15.7.13
       csstype: 3.1.3
@@ -12154,12 +12211,12 @@ snapshots:
   '@types/send@0.17.4':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 22.5.5
+      '@types/node': 22.7.5
 
   '@types/serve-static@1.15.7':
     dependencies:
       '@types/http-errors': 2.0.4
-      '@types/node': 22.5.5
+      '@types/node': 22.7.5
       '@types/send': 0.17.4
 
   '@types/statuses@2.0.5': {}
@@ -12176,15 +12233,15 @@ snapshots:
 
   '@types/wrap-ansi@3.0.0': {}
 
-  '@typescript-eslint/eslint-plugin@8.6.0(@typescript-eslint/parser@8.6.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5))(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5)':
+  '@typescript-eslint/eslint-plugin@8.7.0(@typescript-eslint/parser@8.7.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5))(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5)':
     dependencies:
       '@eslint-community/regexpp': 4.11.1
-      '@typescript-eslint/parser': 8.6.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5)
-      '@typescript-eslint/scope-manager': 8.6.0
-      '@typescript-eslint/type-utils': 8.6.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5)
-      '@typescript-eslint/utils': 8.6.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5)
-      '@typescript-eslint/visitor-keys': 8.6.0
-      eslint: 9.10.0(jiti@1.21.6)
+      '@typescript-eslint/parser': 8.7.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5)
+      '@typescript-eslint/scope-manager': 8.7.0
+      '@typescript-eslint/type-utils': 8.7.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5)
+      '@typescript-eslint/utils': 8.7.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5)
+      '@typescript-eslint/visitor-keys': 8.7.0
+      eslint: 9.11.1(jiti@1.21.6)
       graphemer: 1.4.0
       ignore: 5.3.2
       natural-compare: 1.4.0
@@ -12194,14 +12251,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@8.6.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5)':
+  '@typescript-eslint/parser@8.7.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5)':
     dependencies:
-      '@typescript-eslint/scope-manager': 8.6.0
-      '@typescript-eslint/types': 8.6.0
-      '@typescript-eslint/typescript-estree': 8.6.0(typescript@5.4.5)
-      '@typescript-eslint/visitor-keys': 8.6.0
+      '@typescript-eslint/scope-manager': 8.7.0
+      '@typescript-eslint/types': 8.7.0
+      '@typescript-eslint/typescript-estree': 8.7.0(typescript@5.4.5)
+      '@typescript-eslint/visitor-keys': 8.7.0
       debug: 4.3.7
-      eslint: 9.10.0(jiti@1.21.6)
+      eslint: 9.11.1(jiti@1.21.6)
     optionalDependencies:
       typescript: 5.4.5
     transitivePeerDependencies:
@@ -12212,15 +12269,15 @@ snapshots:
       '@typescript-eslint/types': 7.18.0
       '@typescript-eslint/visitor-keys': 7.18.0
 
-  '@typescript-eslint/scope-manager@8.6.0':
+  '@typescript-eslint/scope-manager@8.7.0':
     dependencies:
-      '@typescript-eslint/types': 8.6.0
-      '@typescript-eslint/visitor-keys': 8.6.0
+      '@typescript-eslint/types': 8.7.0
+      '@typescript-eslint/visitor-keys': 8.7.0
 
-  '@typescript-eslint/type-utils@8.6.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5)':
+  '@typescript-eslint/type-utils@8.7.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5)':
     dependencies:
-      '@typescript-eslint/typescript-estree': 8.6.0(typescript@5.4.5)
-      '@typescript-eslint/utils': 8.6.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5)
+      '@typescript-eslint/typescript-estree': 8.7.0(typescript@5.4.5)
+      '@typescript-eslint/utils': 8.7.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5)
       debug: 4.3.7
       ts-api-utils: 1.3.0(typescript@5.4.5)
     optionalDependencies:
@@ -12231,7 +12288,7 @@ snapshots:
 
   '@typescript-eslint/types@7.18.0': {}
 
-  '@typescript-eslint/types@8.6.0': {}
+  '@typescript-eslint/types@8.7.0': {}
 
   '@typescript-eslint/typescript-estree@7.18.0(typescript@5.4.5)':
     dependencies:
@@ -12248,10 +12305,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/typescript-estree@8.6.0(typescript@5.4.5)':
+  '@typescript-eslint/typescript-estree@8.7.0(typescript@5.4.5)':
     dependencies:
-      '@typescript-eslint/types': 8.6.0
-      '@typescript-eslint/visitor-keys': 8.6.0
+      '@typescript-eslint/types': 8.7.0
+      '@typescript-eslint/visitor-keys': 8.7.0
       debug: 4.3.7
       fast-glob: 3.3.2
       is-glob: 4.0.3
@@ -12263,24 +12320,24 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@7.18.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5)':
+  '@typescript-eslint/utils@7.18.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5)':
     dependencies:
-      '@eslint-community/eslint-utils': 4.4.0(eslint@9.10.0(jiti@1.21.6))
+      '@eslint-community/eslint-utils': 4.4.0(eslint@9.11.1(jiti@1.21.6))
       '@typescript-eslint/scope-manager': 7.18.0
       '@typescript-eslint/types': 7.18.0
       '@typescript-eslint/typescript-estree': 7.18.0(typescript@5.4.5)
-      eslint: 9.10.0(jiti@1.21.6)
+      eslint: 9.11.1(jiti@1.21.6)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  '@typescript-eslint/utils@8.6.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5)':
+  '@typescript-eslint/utils@8.7.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5)':
     dependencies:
-      '@eslint-community/eslint-utils': 4.4.0(eslint@9.10.0(jiti@1.21.6))
-      '@typescript-eslint/scope-manager': 8.6.0
-      '@typescript-eslint/types': 8.6.0
-      '@typescript-eslint/typescript-estree': 8.6.0(typescript@5.4.5)
-      eslint: 9.10.0(jiti@1.21.6)
+      '@eslint-community/eslint-utils': 4.4.0(eslint@9.11.1(jiti@1.21.6))
+      '@typescript-eslint/scope-manager': 8.7.0
+      '@typescript-eslint/types': 8.7.0
+      '@typescript-eslint/typescript-estree': 8.7.0(typescript@5.4.5)
+      eslint: 9.11.1(jiti@1.21.6)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -12290,23 +12347,23 @@ snapshots:
       '@typescript-eslint/types': 7.18.0
       eslint-visitor-keys: 3.4.3
 
-  '@typescript-eslint/visitor-keys@8.6.0':
+  '@typescript-eslint/visitor-keys@8.7.0':
     dependencies:
-      '@typescript-eslint/types': 8.6.0
+      '@typescript-eslint/types': 8.7.0
       eslint-visitor-keys: 3.4.3
 
   '@ungap/structured-clone@1.2.0': {}
 
   '@vercel/ncc@0.38.1': {}
 
-  '@vitejs/plugin-react@4.3.1(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))':
+  '@vitejs/plugin-react@4.3.2(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))':
     dependencies:
       '@babel/core': 7.25.2
       '@babel/plugin-transform-react-jsx-self': 7.24.7(@babel/core@7.25.2)
       '@babel/plugin-transform-react-jsx-source': 7.24.7(@babel/core@7.25.2)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.2
-      vite: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+      vite: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -12324,14 +12381,14 @@ snapshots:
       chai: 5.1.1
       tinyrainbow: 1.2.0
 
-  '@vitest/mocker@2.1.1(@vitest/spy@2.1.1)(msw@2.4.9(typescript@5.6.2))(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))':
+  '@vitest/mocker@2.1.1(@vitest/spy@2.1.1)(msw@2.4.9(typescript@5.6.2))(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))':
     dependencies:
       '@vitest/spy': 2.1.1
       estree-walker: 3.0.3
       magic-string: 0.30.11
     optionalDependencies:
       msw: 2.4.9(typescript@5.6.2)
-      vite: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+      vite: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
 
   '@vitest/pretty-format@2.0.5':
     dependencies:
@@ -13077,7 +13134,7 @@ snapshots:
 
   core-util-is@1.0.3: {}
 
-  create-storybook@8.3.1:
+  create-storybook@8.3.4:
     dependencies:
       '@types/semver': 7.5.8
       chalk: 4.1.2
@@ -13090,7 +13147,7 @@ snapshots:
       prettier: 3.3.3
       prompts: 2.4.2
       semver: 7.6.3
-      storybook: 8.3.1
+      storybook: 8.3.4
       tiny-invariant: 1.3.3
       ts-dedent: 2.2.0
     transitivePeerDependencies:
@@ -13637,9 +13694,9 @@ snapshots:
     optionalDependencies:
       source-map: 0.6.1
 
-  eslint-config-prettier@9.1.0(eslint@9.10.0(jiti@1.21.6)):
+  eslint-config-prettier@9.1.0(eslint@9.11.1(jiti@1.21.6)):
     dependencies:
-      eslint: 9.10.0(jiti@1.21.6)
+      eslint: 9.11.1(jiti@1.21.6)
 
   eslint-import-resolver-node@0.3.9:
     dependencies:
@@ -13649,16 +13706,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.11.0(eslint-import-resolver-node@0.3.9)(eslint@9.10.0(jiti@1.21.6)):
+  eslint-module-utils@2.11.0(eslint-import-resolver-node@0.3.9)(eslint@9.11.1(jiti@1.21.6)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
-      eslint: 9.10.0(jiti@1.21.6)
+      eslint: 9.11.1(jiti@1.21.6)
       eslint-import-resolver-node: 0.3.9
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.30.0(eslint@9.10.0(jiti@1.21.6)):
+  eslint-plugin-import@2.30.0(eslint@9.11.1(jiti@1.21.6)):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
@@ -13667,9 +13724,9 @@ snapshots:
       array.prototype.flatmap: 1.3.2
       debug: 3.2.7
       doctrine: 2.1.0
-      eslint: 9.10.0(jiti@1.21.6)
+      eslint: 9.11.1(jiti@1.21.6)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.11.0(eslint-import-resolver-node@0.3.9)(eslint@9.10.0(jiti@1.21.6))
+      eslint-module-utils: 2.11.0(eslint-import-resolver-node@0.3.9)(eslint@9.11.1(jiti@1.21.6))
       hasown: 2.0.2
       is-core-module: 2.15.1
       is-glob: 4.0.3
@@ -13684,7 +13741,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-jsx-a11y@6.10.0(eslint@9.10.0(jiti@1.21.6)):
+  eslint-plugin-jsx-a11y@6.10.0(eslint@9.11.1(jiti@1.21.6)):
     dependencies:
       aria-query: 5.1.3
       array-includes: 3.1.8
@@ -13695,7 +13752,7 @@ snapshots:
       damerau-levenshtein: 1.0.8
       emoji-regex: 9.2.2
       es-iterator-helpers: 1.0.19
-      eslint: 9.10.0(jiti@1.21.6)
+      eslint: 9.11.1(jiti@1.21.6)
       hasown: 2.0.2
       jsx-ast-utils: 3.3.5
       language-tags: 1.0.9
@@ -13704,16 +13761,16 @@ snapshots:
       safe-regex-test: 1.0.3
       string.prototype.includes: 2.0.0
 
-  eslint-plugin-prettier@5.2.1(eslint-config-prettier@9.1.0(eslint@9.10.0(jiti@1.21.6)))(eslint@9.10.0(jiti@1.21.6))(prettier@3.3.3):
+  eslint-plugin-prettier@5.2.1(eslint-config-prettier@9.1.0(eslint@9.11.1(jiti@1.21.6)))(eslint@9.11.1(jiti@1.21.6))(prettier@3.3.3):
     dependencies:
-      eslint: 9.10.0(jiti@1.21.6)
+      eslint: 9.11.1(jiti@1.21.6)
       prettier: 3.3.3
       prettier-linter-helpers: 1.0.0
       synckit: 0.9.1
     optionalDependencies:
-      eslint-config-prettier: 9.1.0(eslint@9.10.0(jiti@1.21.6))
+      eslint-config-prettier: 9.1.0(eslint@9.11.1(jiti@1.21.6))
 
-  eslint-plugin-react@7.36.1(eslint@9.10.0(jiti@1.21.6)):
+  eslint-plugin-react@7.37.0(eslint@9.11.1(jiti@1.21.6)):
     dependencies:
       array-includes: 3.1.8
       array.prototype.findlast: 1.2.5
@@ -13721,7 +13778,7 @@ snapshots:
       array.prototype.tosorted: 1.1.4
       doctrine: 2.1.0
       es-iterator-helpers: 1.0.19
-      eslint: 9.10.0(jiti@1.21.6)
+      eslint: 9.11.1(jiti@1.21.6)
       estraverse: 5.3.0
       hasown: 2.0.2
       jsx-ast-utils: 3.3.5
@@ -13735,19 +13792,19 @@ snapshots:
       string.prototype.matchall: 4.0.11
       string.prototype.repeat: 1.0.0
 
-  eslint-plugin-simple-import-sort@12.1.1(eslint@9.10.0(jiti@1.21.6)):
+  eslint-plugin-simple-import-sort@12.1.1(eslint@9.11.1(jiti@1.21.6)):
     dependencies:
-      eslint: 9.10.0(jiti@1.21.6)
+      eslint: 9.11.1(jiti@1.21.6)
 
-  eslint-plugin-unicorn@51.0.1(eslint@9.10.0(jiti@1.21.6)):
+  eslint-plugin-unicorn@51.0.1(eslint@9.11.1(jiti@1.21.6)):
     dependencies:
       '@babel/helper-validator-identifier': 7.24.7
-      '@eslint-community/eslint-utils': 4.4.0(eslint@9.10.0(jiti@1.21.6))
+      '@eslint-community/eslint-utils': 4.4.0(eslint@9.11.1(jiti@1.21.6))
       '@eslint/eslintrc': 2.1.4
       ci-info: 4.0.0
       clean-regexp: 1.0.0
       core-js-compat: 3.38.1
-      eslint: 9.10.0(jiti@1.21.6)
+      eslint: 9.11.1(jiti@1.21.6)
       esquery: 1.6.0
       indent-string: 4.0.0
       is-builtin-module: 3.2.1
@@ -13761,12 +13818,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-vitest@0.5.4(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5)(vitest@2.1.1):
+  eslint-plugin-vitest@0.5.4(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5)(vitest@2.1.1):
     dependencies:
-      '@typescript-eslint/utils': 7.18.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5)
-      eslint: 9.10.0(jiti@1.21.6)
+      '@typescript-eslint/utils': 7.18.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5)
+      eslint: 9.11.1(jiti@1.21.6)
     optionalDependencies:
-      vitest: 2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0)
+      vitest: 2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -13785,17 +13842,20 @@ snapshots:
 
   eslint-visitor-keys@4.0.0: {}
 
-  eslint@9.10.0:
+  eslint@9.11.1:
     dependencies:
-      '@eslint-community/eslint-utils': 4.4.0(eslint@9.10.0)
+      '@eslint-community/eslint-utils': 4.4.0(eslint@9.11.1)
       '@eslint-community/regexpp': 4.11.1
       '@eslint/config-array': 0.18.0
+      '@eslint/core': 0.6.0
       '@eslint/eslintrc': 3.1.0
-      '@eslint/js': 9.10.0
-      '@eslint/plugin-kit': 0.1.0
+      '@eslint/js': 9.11.1
+      '@eslint/plugin-kit': 0.2.0
       '@humanwhocodes/module-importer': 1.0.1
       '@humanwhocodes/retry': 0.3.0
       '@nodelib/fs.walk': 1.2.8
+      '@types/estree': 1.0.6
+      '@types/json-schema': 7.0.15
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
@@ -13825,17 +13885,20 @@ snapshots:
       - supports-color
     optional: true
 
-  eslint@9.10.0(jiti@1.21.6):
+  eslint@9.11.1(jiti@1.21.6):
     dependencies:
-      '@eslint-community/eslint-utils': 4.4.0(eslint@9.10.0(jiti@1.21.6))
+      '@eslint-community/eslint-utils': 4.4.0(eslint@9.11.1(jiti@1.21.6))
       '@eslint-community/regexpp': 4.11.1
       '@eslint/config-array': 0.18.0
+      '@eslint/core': 0.6.0
       '@eslint/eslintrc': 3.1.0
-      '@eslint/js': 9.10.0
-      '@eslint/plugin-kit': 0.1.0
+      '@eslint/js': 9.11.1
+      '@eslint/plugin-kit': 0.2.0
       '@humanwhocodes/module-importer': 1.0.1
       '@humanwhocodes/retry': 0.3.0
       '@nodelib/fs.walk': 1.2.8
+      '@types/estree': 1.0.6
+      '@types/json-schema': 7.0.15
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
@@ -14724,7 +14787,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 22.5.5
+      '@types/node': 22.7.5
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -14734,9 +14797,9 @@ snapshots:
 
   jose@5.9.3: {}
 
-  jotai@2.10.0(@types/react@18.3.8)(react@18.3.1):
+  jotai@2.10.0(@types/react@18.3.11)(react@18.3.1):
     optionalDependencies:
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
       react: 18.3.1
 
   js-tokens@4.0.0: {}
@@ -14776,7 +14839,7 @@ snapshots:
 
   jsdoc-type-pratt-parser@4.1.0: {}
 
-  jsdom@25.0.0:
+  jsdom@25.0.1:
     dependencies:
       cssstyle: 4.1.0
       data-urls: 5.0.0
@@ -14791,7 +14854,7 @@ snapshots:
       rrweb-cssom: 0.7.1
       saxes: 6.0.0
       symbol-tree: 3.2.4
-      tough-cookie: 4.1.4
+      tough-cookie: 5.0.0
       w3c-xmlserializer: 5.0.0
       webidl-conversions: 7.0.0
       whatwg-encoding: 3.1.1
@@ -15826,7 +15889,7 @@ snapshots:
       '@formatjs/intl-displaynames': 6.6.8
       '@formatjs/intl-listformat': 7.5.7
       '@types/hoist-non-react-statics': 3.3.5
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
       hoist-non-react-statics: 3.3.2
       intl-messageformat: 10.5.14
       react: 18.3.1
@@ -16180,7 +16243,7 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sass@1.79.3:
+  sass@1.79.4:
     dependencies:
       chokidar: 4.0.1
       immutable: 4.3.7
@@ -16393,9 +16456,9 @@ snapshots:
       react-intl: 6.7.0(react@18.3.1)(typescript@5.6.2)
       storybook-i18n: 3.1.1
 
-  storybook@8.3.1:
+  storybook@8.3.4:
     dependencies:
-      '@storybook/core': 8.3.1
+      '@storybook/core': 8.3.4
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -16558,7 +16621,7 @@ snapshots:
 
   tabbable@6.2.0: {}
 
-  tailwindcss@3.4.11:
+  tailwindcss@3.4.13:
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -16672,6 +16735,12 @@ snapshots:
 
   tinyspy@3.0.2: {}
 
+  tldts-core@6.1.50: {}
+
+  tldts@6.1.50:
+    dependencies:
+      tldts-core: 6.1.50
+
   to-fast-properties@2.0.0: {}
 
   to-regex-range@5.0.1:
@@ -16691,6 +16760,10 @@ snapshots:
       punycode: 2.3.1
       universalify: 0.2.0
       url-parse: 1.5.10
+
+  tough-cookie@5.0.0:
+    dependencies:
+      tldts: 6.1.50
 
   tr46@5.0.0:
     dependencies:
@@ -16815,11 +16888,11 @@ snapshots:
 
   typedarray@0.0.6: {}
 
-  typescript-eslint@8.6.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5):
+  typescript-eslint@8.7.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.6.0(@typescript-eslint/parser@8.6.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5))(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5)
-      '@typescript-eslint/parser': 8.6.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5)
-      '@typescript-eslint/utils': 8.6.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.4.5)
+      '@typescript-eslint/eslint-plugin': 8.7.0(@typescript-eslint/parser@8.7.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5))(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5)
+      '@typescript-eslint/parser': 8.7.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5)
+      '@typescript-eslint/utils': 8.7.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.4.5)
     optionalDependencies:
       typescript: 5.4.5
     transitivePeerDependencies:
@@ -16880,10 +16953,12 @@ snapshots:
 
   unpipe@1.0.0: {}
 
-  unplugin@1.14.1:
+  unplugin@1.14.1(webpack-sources@3.2.3):
     dependencies:
       acorn: 8.12.1
       webpack-virtual-modules: 0.6.2
+    optionalDependencies:
+      webpack-sources: 3.2.3
 
   untildify@4.0.0: {}
 
@@ -16943,12 +17018,12 @@ snapshots:
       core-util-is: 1.0.2
       extsprintf: 1.3.0
 
-  vite-node@2.1.1(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0):
+  vite-node@2.1.1(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0):
     dependencies:
       cac: 6.7.14
       debug: 4.3.7
       pathe: 1.1.2
-      vite: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+      vite: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -16960,7 +17035,7 @@ snapshots:
       - supports-color
       - terser
 
-  vite-plugin-checker@0.8.0(eslint@9.10.0(jiti@1.21.6))(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)):
+  vite-plugin-checker@0.8.0(eslint@9.11.1(jiti@1.21.6))(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)):
     dependencies:
       '@babel/code-frame': 7.24.7
       ansi-escapes: 4.3.2
@@ -16972,17 +17047,17 @@ snapshots:
       npm-run-path: 4.0.1
       strip-ansi: 6.0.1
       tiny-invariant: 1.3.3
-      vite: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+      vite: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vscode-languageclient: 7.0.0
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.12
       vscode-uri: 3.0.8
     optionalDependencies:
-      eslint: 9.10.0(jiti@1.21.6)
+      eslint: 9.11.1(jiti@1.21.6)
       optionator: 0.9.4
       typescript: 5.6.2
 
-  vite-plugin-checker@0.8.0(eslint@9.10.0)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)):
+  vite-plugin-checker@0.8.0(eslint@9.11.1)(optionator@0.9.4)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)):
     dependencies:
       '@babel/code-frame': 7.24.7
       ansi-escapes: 4.3.2
@@ -16994,32 +17069,32 @@ snapshots:
       npm-run-path: 4.0.1
       strip-ansi: 6.0.1
       tiny-invariant: 1.3.3
-      vite: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+      vite: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       vscode-languageclient: 7.0.0
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.12
       vscode-uri: 3.0.8
     optionalDependencies:
-      eslint: 9.10.0
+      eslint: 9.11.1
       optionator: 0.9.4
       typescript: 5.6.2
 
-  vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0):
+  vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.4.47
       rollup: 4.22.4
     optionalDependencies:
-      '@types/node': 22.5.5
+      '@types/node': 22.7.5
       fsevents: 2.3.3
       less: 4.2.0
-      sass: 1.79.3
+      sass: 1.79.4
       terser: 5.33.0
 
-  vitest@2.1.1(@types/node@22.5.5)(jsdom@25.0.0)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.3)(terser@5.33.0):
+  vitest@2.1.1(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.9(typescript@5.6.2))(sass@1.79.4)(terser@5.33.0):
     dependencies:
       '@vitest/expect': 2.1.1
-      '@vitest/mocker': 2.1.1(@vitest/spy@2.1.1)(msw@2.4.9(typescript@5.6.2))(vite@5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3))
+      '@vitest/mocker': 2.1.1(@vitest/spy@2.1.1)(msw@2.4.9(typescript@5.6.2))(vite@5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0))
       '@vitest/pretty-format': 2.1.1
       '@vitest/runner': 2.1.1
       '@vitest/snapshot': 2.1.1
@@ -17034,12 +17109,12 @@ snapshots:
       tinyexec: 0.3.0
       tinypool: 1.0.1
       tinyrainbow: 1.2.0
-      vite: 5.4.7(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
-      vite-node: 2.1.1(@types/node@22.5.5)(less@4.2.0)(sass@1.79.3)(terser@5.33.0)
+      vite: 5.4.8(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
+      vite-node: 2.1.1(@types/node@22.7.5)(less@4.2.0)(sass@1.79.4)(terser@5.33.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 22.5.5
-      jsdom: 25.0.0
+      '@types/node': 22.7.5
+      jsdom: 25.0.1
     transitivePeerDependencies:
       - less
       - lightningcss

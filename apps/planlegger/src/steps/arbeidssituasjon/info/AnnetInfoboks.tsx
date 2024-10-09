@@ -5,7 +5,7 @@ import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
-import { BodyShort, Link } from '@navikt/ds-react';
+import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Satser } from '@navikt/fp-types';
@@ -35,46 +35,54 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
             icon={<CircleSlashIcon height={24} width={24} color="#020C1CAD" fontSize="1.5rem" aria-hidden />}
             shouldFadeIn
         >
-            <BodyShort>
-                <FormattedMessage
-                    id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett"
-                    values={{ minsteInntekt: formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2) }}
-                />
-            </BodyShort>
-            {!erSøker2 && !erFarOgFar && (
+            <VStack gap="2">
                 <BodyShort>
                     <FormattedMessage
-                        id="Arbeidssituasjon.Ingen.Infoboks.Engangsstønad"
+                        id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett"
+                        values={{ minsteInntekt: formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2) }}
+                    />
+                </BodyShort>
+                {!erSøker2 && !erFarOgFar && (
+                    <BodyShort>
+                        <FormattedMessage
+                            id="Arbeidssituasjon.Ingen.Infoboks.Engangsstønad"
+                            values={{
+                                a: (msg: any) => (
+                                    <Link
+                                        inlineText
+                                        href={links.veiviser}
+                                        className="lenke"
+                                        rel="noreferrer"
+                                        target="_blank"
+                                    >
+                                        {msg}
+                                    </Link>
+                                ),
+                                navn: capitalizeFirstLetter(fornavn),
+                                erAlenesøker,
+                            }}
+                        />
+                    </BodyShort>
+                )}
+                <BodyShort>
+                    <FormattedMessage
+                        id="Arbeidssituasjon.Ingen.Infoboks.NoenUtbetalinger"
                         values={{
                             a: (msg: any) => (
                                 <Link
                                     inlineText
-                                    href={links.veiviser}
-                                    className="lenke"
-                                    rel="noreferrer"
+                                    href={links.foreldrepengerOpptjening}
                                     target="_blank"
+                                    rel="noreferrer"
+                                    className="lenke"
                                 >
                                     {msg}
                                 </Link>
                             ),
-                            navn: fornavn,
-                            erAlenesøker,
                         }}
                     />
                 </BodyShort>
-            )}
-            <BodyShort>
-                <FormattedMessage
-                    id="Arbeidssituasjon.Ingen.Infoboks.NoenUtbetalinger"
-                    values={{
-                        a: (msg: any) => (
-                            <Link inlineText href={links.foreldrepengerOpptjening} target="_blank">
-                                {msg}
-                            </Link>
-                        ),
-                    }}
-                />
-            </BodyShort>
+            </VStack>
         </Infobox>
     );
 };

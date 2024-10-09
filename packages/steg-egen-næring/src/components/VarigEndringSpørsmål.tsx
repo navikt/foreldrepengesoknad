@@ -38,9 +38,6 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({
     stønadstype,
 }) => {
     const intl = useIntl();
-    const egenNæringVarigEndringBeskrivelseLabel = intl.formatMessage({
-        id: 'egenNæring.varigEndringBeskrivelse.label',
-    });
 
     return (
         <>
@@ -115,7 +112,7 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({
                     />
                     <RhfTextarea
                         name="varigEndringBeskrivelse"
-                        label={egenNæringVarigEndringBeskrivelseLabel}
+                        label={intl.formatMessage({ id: 'egenNæring.varigEndringBeskrivelse.label' })}
                         validate={[
                             isRequired(
                                 intl.formatMessage({ id: 'valideringsfeil.egenNæringVarigEndringBeskrivelse.påkrevd' }),

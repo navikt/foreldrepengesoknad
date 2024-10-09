@@ -1,14 +1,14 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
-import { BrowserRouter } from 'react-router-dom';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
 import { useBeforeUnload, utilsMessages } from '@navikt/fp-utils';
 
-import PlanleggerDataInit from './Planlegger';
-import Environment from './app-data/Environment';
+import { PlanleggerDataInit } from './Planlegger';
 import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
@@ -23,6 +23,14 @@ declare global {
         }
     }
 }
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: process.env.NODE_ENV === 'test' ? false : 3,
+        },
+    },
+});
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: allNbMessages,
@@ -44,7 +52,7 @@ const initLocale = (): LocaleAll => {
     return locale;
 };
 
-const AppContainer = () => {
+export const AppContainer = () => {
     const origLocale = useMemo(() => initLocale(), []);
     const [locale, setLocale] = useState<LocaleAll>(origLocale);
 
@@ -68,12 +76,11 @@ const AppContainer = () => {
                 appName="Foreldrepengeplanlegger"
                 customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
             >
-                <BrowserRouter basename={Environment.PUBLIC_PATH}>
+                <QueryClientProvider client={queryClient}>
+                    <ReactQueryDevtools />
                     <PlanleggerDataInit locale={locale} changeLocale={changeLocale} />
-                </BrowserRouter>
+                </QueryClientProvider>
             </ErrorBoundary>
         </IntlProvider>
     );
 };
-
-export default AppContainer;

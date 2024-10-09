@@ -2,6 +2,7 @@ import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import dayjs from 'dayjs';
+import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
 
@@ -11,7 +12,8 @@ const { SøkerErKvinne } = composeStories(stories);
 
 describe('<AppContainer>', () => {
     it('skal gå raskeste vei gjennom applikasjonen og så tilbake', async () => {
-        const utils = render(<SøkerErKvinne doLogging={false} />);
+        await applyRequestHandlers(SøkerErKvinne.parameters.msw);
+        const utils = render(<SøkerErKvinne />);
 
         expect(await screen.findByText('Søknad om engangsstønad')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja, jeg har forstått mine plikter.'));

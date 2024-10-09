@@ -1,137 +1,108 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
-import { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
-import MockAdapter from 'axios-mock-adapter';
-import { ComponentProps } from 'react';
+import { VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
+import { HttpResponse, http } from 'msw';
+import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
-import { Søker } from '@navikt/fp-types';
 
-import AppContainer from './AppContainer';
-import { AxiosInstanceAPI } from './api/AxiosInstance';
+import { AppContainer } from './AppContainer';
 
-const kvittering = {
+const KVITTERING = {
     mottattDato: '2019-02-19T13:40:45.115',
     referanseId: '3959c880-83d2-4f01-b107-035fa7693758',
     leveranseStatus: 'PÅ_VENT',
     journalId: '439772941',
 };
 
-type StoryArgs = {
-    søker: Søker;
-    mellomlagretData?: EsDataMapAndMetaData;
-    doLogging?: boolean;
-} & ComponentProps<typeof AppContainer>;
+const DEFAULT_PERSONINFO = {
+    fnr: '11111111111',
+    fornavn: 'Henrikke',
+    etternavn: 'Ibsen',
+    kjønn: 'K',
+    fødselsdato: '1979-01-28',
+    bankkonto: {
+        kontonummer: '49875234987',
+        banknavn: 'Storebank',
+    },
+    barn: [],
+};
+
+const HANDLERS = [
+    http.post('https://es/rest/soknad/engangsstonad', () => HttpResponse.json(KVITTERING)),
+    http.post('https://es/rest/storage/engangsstonad', () => new HttpResponse(null, { status: 200 })),
+    http.delete('https://es/rest/storage/engangsstonad', () => new HttpResponse(null, { status: 200 })),
+    http.post('https://es/rest/storage/engangsstonad/vedlegg', () => new HttpResponse(null, { status: 200 })),
+];
 
 const meta = {
     title: 'Applikasjon - Engangsstønad (AppContainer)',
     component: AppContainer,
-    render: ({ søker, mellomlagretData, doLogging = true }) => {
+    render: () => {
         initAmplitude();
-
-        const apiMock = new MockAdapter(AxiosInstanceAPI());
-        apiMock.onGet('/rest/personinfo').reply(() => {
-            if (doLogging) {
-                // eslint-disable-next-line no-console
-                console.log('network request: get /personinfo');
-            }
-            return [200, søker];
-        });
-        apiMock.onGet('/rest/storage/engangsstonad').reply(() => {
-            if (doLogging) {
-                // eslint-disable-next-line no-console
-                console.log('network request: get /storage/engangstonad');
-            }
-            return [200, mellomlagretData];
-        });
-        apiMock.onPost('/rest/soknad/engangsstonad').reply(() => {
-            if (doLogging) {
-                // eslint-disable-next-line no-console
-                console.log('network request: post /soknad/engangsstonad');
-            }
-            return [200, kvittering];
-        });
-        apiMock.onPost('/rest/storage/engangsstonad').reply(() => {
-            if (doLogging) {
-                // eslint-disable-next-line no-console
-                console.log('network request: post /storage/engangstonad');
-            }
-            return [200];
-        });
-        apiMock.onDelete('/rest/storage/engangsstonad').reply(() => {
-            if (doLogging) {
-                // eslint-disable-next-line no-console
-                console.log('network request: delete /storage/engangstonad');
-            }
-            return [200];
-        });
-
-        apiMock.onPost('/rest/storage/engangsstonad/vedlegg').reply(200); //story
-        apiMock.onPost('/rest/storage/engangsstonad/vedlegg').reply(200); //test
-
-        return <AppContainer />;
+        return (
+            <MemoryRouter>
+                <AppContainer />
+            </MemoryRouter>
+        );
     },
-} satisfies Meta<StoryArgs>;
+} satisfies Meta;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const SøkerErKvinne: Story = {
-    args: {
-        søker: {
-            fnr: '11111111111',
-            fornavn: 'Henrikke',
-            etternavn: 'Ibsen',
-            kjønn: 'K',
-            fødselsdato: '1979-01-28',
-            bankkonto: {
-                kontonummer: '49875234987',
-                banknavn: 'Storebank',
-            },
-            barn: [],
+    parameters: {
+        msw: {
+            handlers: HANDLERS.concat([
+                http.get('https://es/rest/personinfo', () => HttpResponse.json(DEFAULT_PERSONINFO)),
+                http.get('https://es/rest/storage/engangsstonad', () => new HttpResponse(null, { status: 200 })),
+            ]),
         },
     },
 };
 
 export const SøkerErKvinneMedMellomlagretData: Story = {
-    args: {
-        mellomlagretData: {
-            version: 1,
-            locale: 'nb',
-            [ContextDataType.SØKERSITUASJON]: {
-                situasjon: 'fødsel',
-            },
-            [ContextDataType.CURRENT_PATH]: Path.SØKERSITUASJON,
-        },
-        søker: {
-            fnr: '11111111111',
-            fornavn: 'Henrikke',
-            etternavn: 'Ibsen',
-            kjønn: 'K',
-            fødselsdato: '1979-01-28',
-            bankkonto: {
-                kontonummer: '49875234987',
-                banknavn: 'Storebank',
-            },
-            barn: [],
+    parameters: {
+        msw: {
+            handlers: HANDLERS.concat([
+                http.get('https://es/rest/personinfo', () => HttpResponse.json(DEFAULT_PERSONINFO)),
+                http.get('https://es/rest/storage/engangsstonad', () =>
+                    HttpResponse.json({
+                        version: VERSJON_MELLOMLAGRING,
+                        locale: 'nb',
+                        [ContextDataType.SØKERSITUASJON]: {
+                            situasjon: 'fødsel',
+                        },
+                        [ContextDataType.CURRENT_PATH]: Path.SØKERSITUASJON,
+                    }),
+                ),
+            ]),
         },
     },
 };
 
 export const SøkerErMann: Story = {
-    args: {
-        søker: {
-            fnr: '1231111111',
-            fornavn: 'Espen',
-            etternavn: 'Utvikler',
-            kjønn: 'M',
-            fødselsdato: '1979-01-28',
-            bankkonto: {
-                kontonummer: '49875234987',
-                banknavn: 'Storebank',
-            },
-            barn: [],
+    parameters: {
+        msw: {
+            handlers: HANDLERS.concat([
+                http.get('https://es/rest/personinfo', () =>
+                    HttpResponse.json({
+                        fnr: '1231111111',
+                        fornavn: 'Espen',
+                        etternavn: 'Utvikler',
+                        kjønn: 'M',
+                        fødselsdato: '1979-01-28',
+                        bankkonto: {
+                            kontonummer: '49875234987',
+                            banknavn: 'Storebank',
+                        },
+                        barn: [],
+                    }),
+                ),
+                http.get('https://es/rest/storage/engangsstonad', () => new HttpResponse(null, { status: 200 })),
+            ]),
         },
     },
 };

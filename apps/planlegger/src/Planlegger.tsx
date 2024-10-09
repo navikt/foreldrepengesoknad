@@ -1,7 +1,9 @@
+import { useQuery } from '@tanstack/react-query';
+import Environment from 'appData/Environment';
 import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
-import { FunctionComponent, useMemo } from 'react';
+import ky from 'ky';
 import { useLocation } from 'react-router-dom';
-import { Arbeidsstatus } from 'types/Arbeidssituasjon';
+import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
@@ -9,15 +11,11 @@ import { HvemHarRett, harMorRett, utledHvemSomHarRett } from 'utils/hvemHarRettU
 
 import { Loader } from '@navikt/ds-react';
 
-import { usePostRequest, useRequest } from '@navikt/fp-api';
 import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { SimpleErrorPage } from '@navikt/fp-ui';
 import { decodeBase64 } from '@navikt/fp-utils';
 
-import PlanleggerRouter from './PlanleggerRouter';
-import { AxiosInstanceAPI } from './api/AxiosInstance';
-
-export const planleggerApi = AxiosInstanceAPI();
+import { PlanleggerRouter } from './PlanleggerRouter';
 
 const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -42,47 +40,53 @@ const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHar
     return 'BARE_SØKER_RETT';
 };
 
+const getStønadskontoer = async (
+    omBarnet?: OmBarnet,
+    arbeidssituasjon?: Arbeidssituasjon,
+    hvemPlanlegger?: HvemPlanlegger,
+) => {
+    const hvemHarRett = arbeidssituasjon ? utledHvemSomHarRett(arbeidssituasjon) : undefined;
+
+    const params = {
+        rettighetstype:
+            hvemPlanlegger && hvemHarRett && omBarnet
+                ? finnRettighetstype(hvemPlanlegger, hvemHarRett, omBarnet)
+                : undefined,
+        brukerrolle: hvemPlanlegger && hvemHarRett ? finnBrukerRolle(hvemPlanlegger, hvemHarRett) : undefined,
+        antallBarn: omBarnet?.antallBarn,
+        fødselsdato: omBarnet && erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined,
+        termindato: omBarnet && erBarnetUFødt(omBarnet) ? omBarnet.termindato : undefined,
+        omsorgsovertakelseDato: omBarnet && erBarnetAdoptert(omBarnet) ? omBarnet.overtakelsesdato : undefined,
+        morHarUføretrygd: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
+    };
+
+    return ky.post(`${Environment.PUBLIC_PATH}/rest/konto`, { json: params }).json<TilgjengeligeStønadskontoer>();
+};
+
 interface Props {
     locale: LocaleAll;
     changeLocale: (locale: LocaleAll) => void;
 }
 
-export const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, changeLocale }) => {
+export const PlanleggerDataFetcher = ({ locale, changeLocale }: Props) => {
     const omBarnet = useContextGetData(ContextDataType.OM_BARNET);
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
     const hvemPlanlegger = useContextGetData(ContextDataType.HVEM_PLANLEGGER);
 
     const hvemHarRett = arbeidssituasjon ? utledHvemSomHarRett(arbeidssituasjon) : undefined;
 
-    const params = useMemo(
-        () => ({
-            rettighetstype:
-                hvemPlanlegger && hvemHarRett && omBarnet
-                    ? finnRettighetstype(hvemPlanlegger, hvemHarRett, omBarnet)
-                    : undefined,
-            brukerrolle: hvemPlanlegger && hvemHarRett ? finnBrukerRolle(hvemPlanlegger, hvemHarRett) : undefined,
-            antallBarn: omBarnet?.antallBarn,
-            fødselsdato: omBarnet && erBarnetFødt(omBarnet) ? omBarnet.fødselsdato : undefined,
-            termindato: omBarnet && erBarnetUFødt(omBarnet) ? omBarnet.termindato : undefined,
-            omsorgsovertakelseDato: omBarnet && erBarnetAdoptert(omBarnet) ? omBarnet.overtakelsesdato : undefined,
-            morHarUføretrygd: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
-        }),
-        [omBarnet, arbeidssituasjon, hvemPlanlegger, hvemHarRett],
-    );
+    const satserData = useQuery({
+        queryKey: ['SATSER'],
+        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/satser`).json<Satser>(),
+    });
 
-    const options = useMemo(
-        () => ({
-            isSuspended: hvemHarRett === undefined || hvemHarRett === 'ingenHarRett',
-            withCredentials: false,
-        }),
-        [hvemHarRett],
-    );
+    const stønadskontoerData = useQuery({
+        queryKey: ['KONTOER', omBarnet, arbeidssituasjon, hvemPlanlegger],
+        queryFn: () => getStønadskontoer(omBarnet, arbeidssituasjon, hvemPlanlegger),
+        enabled: hvemHarRett !== undefined && hvemHarRett !== 'ingenHarRett',
+    });
 
-    const requestData = usePostRequest<TilgjengeligeStønadskontoer>(planleggerApi, '/rest/konto', params, options);
-
-    const satserData = useRequest<Satser>(planleggerApi, '/rest/satser');
-
-    if (requestData.error || satserData.error) {
+    if (stønadskontoerData.error || satserData.error) {
         return <SimpleErrorPage retryCallback={() => location.reload()} />;
     }
 
@@ -94,13 +98,13 @@ export const PlanleggerDataFetcher: FunctionComponent<Props> = ({ locale, change
         <PlanleggerRouter
             locale={locale}
             changeLocale={changeLocale}
-            stønadskontoer={requestData.data}
+            stønadskontoer={stønadskontoerData.data}
             satser={satserData.data}
         />
     );
 };
 
-const PlanleggerDataInit: FunctionComponent<Props> = ({ locale, changeLocale }) => {
+export const PlanleggerDataInit = ({ locale, changeLocale }: Props) => {
     const locations = useLocation();
 
     const dataParam = new URLSearchParams(locations.search).get('data');
@@ -112,5 +116,3 @@ const PlanleggerDataInit: FunctionComponent<Props> = ({ locale, changeLocale }) 
         </PlanleggerDataContext>
     );
 };
-
-export default PlanleggerDataInit;

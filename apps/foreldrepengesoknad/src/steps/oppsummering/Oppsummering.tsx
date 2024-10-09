@@ -56,7 +56,7 @@ const skalViseInfoOmFarskapsportal = (
 export interface Props {
     søkerInfo: Søkerinfo;
     erEndringssøknad: boolean;
-    sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
+    sendSøknad: () => Promise<void>;
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => void;
 }

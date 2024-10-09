@@ -1,0 +1,66 @@
+import { SackKronerIcon } from '@navikt/aksel-icons';
+import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
+import { FunctionComponent } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+
+import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
+
+import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { Satser } from '@navikt/fp-types';
+import { IconCircleWrapper } from '@navikt/fp-ui';
+import { notEmpty } from '@navikt/fp-validation';
+
+import HvorMyePanel from './HvorMyePanel';
+
+const onToggleExpansionCard = (open: boolean) => {
+    if (open) {
+        logAmplitudeEvent('applikasjon-hendelse', {
+            app: 'planlegger',
+            team: 'foreldrepenger',
+            pageKey: 'toggle-oppgitt-informasjon',
+        });
+    }
+};
+
+interface Props {
+    satser: Satser;
+}
+
+const HvorMyeOppsummering: FunctionComponent<Props> = ({ satser }) => {
+    const intl = useIntl();
+
+    const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
+    const hvorMye = notEmpty(useContextGetData(ContextDataType.HVOR_MYE));
+
+    const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
+    const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
+    return (
+        <VStack gap="10">
+            {hvorMye.lønnSøker1 && (
+                <ExpansionCard aria-label="" onToggle={onToggleExpansionCard} size="small">
+                    <ExpansionCard.Header>
+                        <HStack gap="6" align="center" wrap={false}>
+                            <IconCircleWrapper size="medium" color="lightBlue">
+                                <SackKronerIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
+                            </IconCircleWrapper>
+                            <ExpansionCard.Title size="small">
+                                <FormattedMessage id="HvorMyeOppsummering.Tittel" />
+                            </ExpansionCard.Title>
+                        </HStack>
+                    </ExpansionCard.Header>
+                    <ExpansionCard.Content>
+                        <VStack gap="2">
+                            <HvorMyePanel satser={satser} fornavn={fornavnSøker1} lønnSøker={hvorMye.lønnSøker1} />
+                            {hvorMye?.lønnSøker2 && hvorMye.lønnSøker2 !== undefined && fornavnSøker2 && (
+                                <HvorMyePanel satser={satser} fornavn={fornavnSøker2} lønnSøker={hvorMye.lønnSøker2} />
+                            )}
+                        </VStack>
+                    </ExpansionCard.Content>
+                </ExpansionCard>
+            )}
+        </VStack>
+    );
+};
+
+export default HvorMyeOppsummering;

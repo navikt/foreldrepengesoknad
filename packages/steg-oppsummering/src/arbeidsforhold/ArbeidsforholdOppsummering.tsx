@@ -9,7 +9,6 @@ import {
     Frilans,
     Næringstype,
     isArbeidsforholdOgInntektFp,
-    isArbeidsforholdOgInntektSvp,
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
@@ -27,6 +26,8 @@ export const ArbeidsforholdOppsummering: React.FC<ArbeidsforholdOppsummeringProp
     if (!arbeidsforholdOgInntekt) {
         return null;
     }
+
+    const erForeldrepenger = isArbeidsforholdOgInntektFp(arbeidsforholdOgInntekt);
 
     return (
         <FormSummary>
@@ -61,7 +62,12 @@ export const ArbeidsforholdOppsummering: React.FC<ArbeidsforholdOppsummeringProp
                 </FormSummary.Answer>
                 <FormSummary.Answer>
                     <FormSummary.Label>
-                        <FormattedMessage id="ArbeidsforholdOppsummering.HarDuJobbetSomFrilans" />
+                        {erForeldrepenger && (
+                            <FormattedMessage id="ArbeidsforholdOppsummering.HarDuJobbetSomFrilansFp" />
+                        )}
+                        {!erForeldrepenger && (
+                            <FormattedMessage id="ArbeidsforholdOppsummering.HarDuJobbetSomFrilans" />
+                        )}
                     </FormSummary.Label>
                     <FormSummary.Value>
                         <JaNeiTekst ja={arbeidsforholdOgInntekt.harJobbetSomFrilans} />
@@ -70,13 +76,18 @@ export const ArbeidsforholdOppsummering: React.FC<ArbeidsforholdOppsummeringProp
 
                 <FormSummary.Answer>
                     <FormSummary.Label>
-                        <FormattedMessage id="ArbeidsforholdOppsummering.HarJobbetSomSelvstendigNæringsdrivende" />
+                        {erForeldrepenger && (
+                            <FormattedMessage id="ArbeidsforholdOppsummering.HarJobbetSomSelvstendigNæringsdrivendeFp" />
+                        )}
+                        {!erForeldrepenger && (
+                            <FormattedMessage id="ArbeidsforholdOppsummering.HarJobbetSomSelvstendigNæringsdrivende" />
+                        )}
                     </FormSummary.Label>
                     <FormSummary.Value>
                         <JaNeiTekst ja={arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende} />
                     </FormSummary.Value>
                 </FormSummary.Answer>
-                {isArbeidsforholdOgInntektSvp(arbeidsforholdOgInntekt) && (
+                {!erForeldrepenger && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
                             <FormattedMessage id="ArbeidsforholdOppsummering.HarHattArbeidIUtlandet" />
@@ -86,7 +97,7 @@ export const ArbeidsforholdOppsummering: React.FC<ArbeidsforholdOppsummeringProp
                         </FormSummary.Value>
                     </FormSummary.Answer>
                 )}
-                {isArbeidsforholdOgInntektFp(arbeidsforholdOgInntekt) && (
+                {erForeldrepenger && (
                     <FormSummary.Answer>
                         <FormSummary.Label>
                             <FormattedMessage id="ArbeidsforholdOppsummering.HarHattAndreInntektskilder" />
@@ -209,7 +220,7 @@ export const SelvstendigNæringsdrivendeOppsummering: React.FC<SelvstendigNærin
                     <FormSummary.Label>
                         <FormattedMessage id="ArbeidsforholdOppsummering.næring.fom" />
                     </FormSummary.Label>
-                    <FormSummary.Value>{formatDate(egenNæring.fomDato)}</FormSummary.Value>
+                    <FormSummary.Value>{formatDate(egenNæring.fom)}</FormSummary.Value>
                 </FormSummary.Answer>
 
                 <FormSummary.Answer>
@@ -226,7 +237,7 @@ export const SelvstendigNæringsdrivendeOppsummering: React.FC<SelvstendigNærin
                         <FormSummary.Label>
                             <FormattedMessage id="ArbeidsforholdOppsummering.næring.tom" />
                         </FormSummary.Label>
-                        <FormSummary.Value>{formatDate(egenNæring.tomDato)}</FormSummary.Value>
+                        <FormSummary.Value>{formatDate(egenNæring.tom)}</FormSummary.Value>
                     </FormSummary.Answer>
                 )}
 
@@ -234,7 +245,7 @@ export const SelvstendigNæringsdrivendeOppsummering: React.FC<SelvstendigNærin
                     <FormSummary.Label>
                         <FormattedMessage id="ArbeidsforholdOppsummering.næringsinntekt" />
                     </FormSummary.Label>
-                    <FormSummary.Value>{egenNæring.næringsinntekt}</FormSummary.Value>
+                    <FormSummary.Value>{egenNæring.næringsinntekt || '-'}</FormSummary.Value>
                 </FormSummary.Answer>
 
                 <FormSummary.Answer>
@@ -253,6 +264,39 @@ export const SelvstendigNæringsdrivendeOppsummering: React.FC<SelvstendigNærin
                         </FormSummary.Label>
                         <FormSummary.Value>{formatDate(egenNæring.oppstartsdato)}</FormSummary.Value>
                     </FormSummary.Answer>
+                )}
+
+                <FormSummary.Answer>
+                    <FormSummary.Label>
+                        <FormattedMessage id="ArbeidsforholdOppsummering.egenNæringHattVarigEndringDeSiste4Årene" />
+                    </FormSummary.Label>
+                    <FormSummary.Value>
+                        {<JaNeiTekst ja={egenNæring.hattVarigEndringAvNæringsinntektSiste4Kalenderår || false} />}
+                    </FormSummary.Value>
+                </FormSummary.Answer>
+
+                {egenNæring.hattVarigEndringAvNæringsinntektSiste4Kalenderår && egenNæring.varigEndringDato && (
+                    <>
+                        <FormSummary.Answer>
+                            <FormSummary.Label>
+                                <FormattedMessage id="ArbeidsforholdOppsummering.egenNæringVarigEndringDato" />
+                            </FormSummary.Label>
+                            <FormSummary.Value>{formatDate(egenNæring.varigEndringDato)}</FormSummary.Value>
+                        </FormSummary.Answer>
+
+                        <FormSummary.Answer>
+                            <FormSummary.Label>
+                                <FormattedMessage id="ArbeidsforholdOppsummering.egenNæringVarigEndringInntektEtterEndring" />
+                            </FormSummary.Label>
+                            <FormSummary.Value>{egenNæring.varigEndringInntektEtterEndring}</FormSummary.Value>
+                        </FormSummary.Answer>
+                        <FormSummary.Answer>
+                            <FormSummary.Label>
+                                <FormattedMessage id="ArbeidsforholdOppsummering.varigEndringBeskrivelse.label" />
+                            </FormSummary.Label>
+                            <FormSummary.Value>{egenNæring.varigEndringBeskrivelse}</FormSummary.Value>
+                        </FormSummary.Answer>
+                    </>
                 )}
             </FormSummary.Answers>
         </FormSummary>

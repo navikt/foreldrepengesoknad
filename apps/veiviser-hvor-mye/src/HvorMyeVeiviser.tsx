@@ -26,23 +26,6 @@ const STØNADSKONTO_PARAMS = {
     morHarUføretrygd: false,
 };
 
-const getStønadskontoer = async () => {
-    const response = await fetch(`${Environment.PUBLIC_PATH}/rest/konto`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        signal: AbortSignal.timeout(30 * 1000),
-        body: JSON.stringify(STØNADSKONTO_PARAMS),
-    });
-
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return (await response.json()) as TilgjengeligeStønadskontoer;
-};
-
 interface Props {
     locale: LocaleAll;
     changeLocale: (locale: LocaleAll) => void;
@@ -56,14 +39,19 @@ export const HvorMyeVeiviser: FunctionComponent<Props> = ({ locale, changeLocale
 
     const stønadskontoerData = useQuery({
         queryKey: ['KONTOER'],
-        queryFn: getStønadskontoer,
+        queryFn: () =>
+            ky
+                .post(`${Environment.PUBLIC_PATH}/rest/konto`, {
+                    json: STØNADSKONTO_PARAMS,
+                })
+                .json<TilgjengeligeStønadskontoer>(),
     });
 
     if (satserData.error || stønadskontoerData.error) {
         return <SimpleErrorPage />;
     }
 
-    if (!satserData.data) {
+    if (!satserData.data || !stønadskontoerData.data) {
         return <Spinner />;
     }
 

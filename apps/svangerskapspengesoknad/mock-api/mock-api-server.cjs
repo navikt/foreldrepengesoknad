@@ -28,7 +28,7 @@ router.get(['/rest/sokerinfo'], (_req, res) => {
     res.send(MockStorage.getSokerInfo());
 });
 
-router.post('/rest/soknad', (_req, res) => {
+router.post('/rest/soknad/svangerskapspenger', (_req, res) => {
     return res.send(MockStorage.getSoknadSendt());
 });
 
