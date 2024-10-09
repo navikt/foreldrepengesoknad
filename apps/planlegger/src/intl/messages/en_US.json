@@ -34,6 +34,7 @@
     "Arbeidssituasjon.Forelder.Required": "You must answer if you have worked 6 of the last 10 months and earned more than {minsteInntekt} last year before proceeding.",
     "HvorMyeSteg.Tittel": "How much",
     "HvorMyeSteg.Lønn": "How much do {hvem} earn per month, approximately? (optional)",
+    "HvorMyeSteg.LønnBeskrivelse": "Provide gross salary",
     "HvorMyeSteg.ViteMer": "Would you like to know more about how much one can receive as a single parent?",
     "HvorMyeSteg.MerDetaljert": "A more detailed calculation of how much one can receive in parental benefits can be obtained through the guide <a>How much? (opens in a new tab).</a>",
     "HvorMyeSteg.VilFå": "{hvem} will receive around {utregning100} NOK per day if you choose 100% parental benefits or {utregning80} NOK per day with 80%",
