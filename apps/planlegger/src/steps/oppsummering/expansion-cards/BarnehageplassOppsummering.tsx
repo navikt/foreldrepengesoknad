@@ -1,5 +1,4 @@
-import { BabyWrappedIcon, TeddyBearIcon } from '@navikt/aksel-icons';
-import { InformationIcon } from '@navikt/aksel-icons';
+import { BabyWrappedIcon, InformationIcon, TeddyBearIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
