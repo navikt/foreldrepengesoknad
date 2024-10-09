@@ -84,6 +84,7 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
                                     }
                                     name="lønnSøker1"
                                     validate={[isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' }))]}
+                                    description={intl.formatMessage({ id: 'HvorMyeSteg.LønnBeskrivelse' })}
                                 />
                             </BluePanel>
                             {lønnSøker1 && (
@@ -104,6 +105,7 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
                                         validate={[
                                             isValidNumberForm(intl.formatMessage({ id: 'Validering.ValidNumber' })),
                                         ]}
+                                        description={intl.formatMessage({ id: 'HvorMyeSteg.LønnBeskrivelse' })}
                                     />
                                 </BluePanel>
                                 {lønnSøker2 && (
