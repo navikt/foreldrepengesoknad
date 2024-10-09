@@ -34,6 +34,7 @@
     "Arbeidssituasjon.Forelder.Required": "Du må svare på om du har jobba 6 av dei siste 10 månadene og tent meir enn {minsteInntekt} det siste året før du går vidare.",
     "HvorMyeSteg.Tittel": "Kor mykje",
     "HvorMyeSteg.Lønn": "Kva tener {hvem} ca. i månaden? (valfritt)",
+    "HvorMyeSteg.LønnBeskrivelse": "Oppgi lønn før skatt",
     "HvorMyeSteg.ViteMer": "Vil {erAleneforsørger, select, tru {du} other {de}} vita meir om kor mykje ein kan få?",
     "HvorMyeSteg.MerDetaljert": "Meir detaljert utrekning av kor mykje ein kan få i foreldrepengar kan ein få gjennom vegvisaren <a>Kor mykje? (blir opna i ny fane).</a>",
     "HvorMyeSteg.VilFå": "{hvem} vil få rundt {utregning100} kr per dag viss de vel 100 % foreldrepengar eller {utregning80} kr per dag med 80 %",
