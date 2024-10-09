@@ -1,6 +1,4 @@
-import { BabyWrappedIcon } from '@navikt/aksel-icons';
-import { TeddyBearIcon } from '@navikt/aksel-icons';
-import dayjs from 'dayjs';
+import { BabyWrappedIcon, TeddyBearIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
@@ -25,13 +23,11 @@ const onToggleExpansionCard = (open: boolean) => {
     }
 };
 
-const getFamiliehendelsedato = (barnet: OmBarnet) => {
+export const getFamiliehendelsedato = (barnet: OmBarnet) => {
     if (erBarnetAdoptert(barnet)) {
-        return dayjs(barnet.overtakelsesdato).format('DD.MM.YYYY');
+        return barnet.overtakelsesdato;
     }
-    return erBarnetUFødt(barnet)
-        ? dayjs(barnet.termindato).format('DD.MM.YYYY')
-        : dayjs(barnet.fødselsdato).format('DD.MM.YYYY');
+    return erBarnetUFødt(barnet) ? barnet.termindato : barnet.fødselsdato;
 };
 interface Props {
     hvemPlanlegger: HvemPlanlegger;
@@ -41,8 +37,6 @@ interface Props {
 const BarnehageplassOppsummering: FunctionComponent<Props> = ({ hvemPlanlegger, barnet }) => {
     const intl = useIntl();
     const erAlenesøker = erAlene(hvemPlanlegger);
-    const barnehagestartdato = barnehagestartDato(barnet);
-    const familiehendelsesdato = getFamiliehendelsedato(barnet);
     const antallBarn = barnet.antallBarn;
 
     return (
@@ -68,7 +62,7 @@ const BarnehageplassOppsummering: FunctionComponent<Props> = ({ hvemPlanlegger, 
                                             id="BarnehageplassOppsummering.KanHaPlass"
                                             values={{
                                                 erAlenesøker,
-                                                barnehagestartdato: intl.formatDate(barnehagestartdato, {
+                                                barnehagestartdato: intl.formatDate(barnehagestartDato(barnet), {
                                                     month: 'long',
                                                     year: 'numeric',
                                                 }),
@@ -91,7 +85,11 @@ const BarnehageplassOppsummering: FunctionComponent<Props> = ({ hvemPlanlegger, 
                                         id="BarnehageplassOppsummering.Beregnet"
                                         values={{
                                             erAlenesøker,
-                                            familiehendelsesdato,
+                                            familiehendelsesdato: intl.formatDate(getFamiliehendelsedato(barnet), {
+                                                day: '2-digit',
+                                                month: '2-digit',
+                                                year: 'numeric',
+                                            }),
                                             antallBarn,
                                             erFødt: erBarnetFødt(barnet),
                                             a: (msg) => (
@@ -104,6 +102,7 @@ const BarnehageplassOppsummering: FunctionComponent<Props> = ({ hvemPlanlegger, 
                                                     {msg}
                                                 </Link>
                                             ),
+                                            erAdopsjon: erBarnetAdoptert(barnet),
                                         }}
                                     />
                                 </BodyShort>

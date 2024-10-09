@@ -9,7 +9,6 @@ import { HvorMye } from 'types/HvorMye';
 export enum ContextDataType {
     HVEM_PLANLEGGER = 'HVEM_PLANLEGGER',
     OM_BARNET = 'OM_BARNET',
-    BARNEHAGEPLASS = 'BARNEHAGEPLASS',
     ARBEIDSSITUASJON = 'ARBEIDSSITUASJON',
     HVOR_LANG_PERIODE = 'HVOR_LANG_PERIODE',
     FORDELING = 'FORDELING',
@@ -19,7 +18,6 @@ export enum ContextDataType {
 export type ContextDataMap = {
     [ContextDataType.HVEM_PLANLEGGER]?: HvemPlanlegger;
     [ContextDataType.OM_BARNET]?: OmBarnet;
-    [ContextDataType.BARNEHAGEPLASS]?: OmBarnet;
     [ContextDataType.ARBEIDSSITUASJON]?: Arbeidssituasjon;
     [ContextDataType.HVOR_MYE]?: HvorMye;
     [ContextDataType.HVOR_LANG_PERIODE]?: HvorLangPeriode;

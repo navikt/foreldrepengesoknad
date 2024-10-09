@@ -5,13 +5,14 @@ import useStepData from 'appData/useStepData';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { getFamiliehendelsedato } from 'steps/oppsummering/expansion-cards/BarnehageplassOppsummering';
 import { OmBarnet } from 'types/Barnet';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 
 import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
 
-import { DDMMYYYY_DATE_FORMAT, links } from '@navikt/fp-constants';
+import { links } from '@navikt/fp-constants';
 import { LocaleAll } from '@navikt/fp-types';
 import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
@@ -48,9 +49,7 @@ const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale }) => {
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const erAlenesøker = erAlene(hvemPlanlegger);
-    const erFødt = erBarnetFødt(barnet);
-    const erIkkeFødt = erBarnetUFødt(barnet);
-    const erAdoptert = erBarnetAdoptert(barnet);
+    const antallBarn = barnet.antallBarn;
 
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
@@ -60,7 +59,7 @@ const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale }) => {
                 </Heading>
                 <VStack gap="5">
                     <BodyLong>
-                        <FormattedMessage id="Barnehageplass.KommuneTekstDeg" values={{ erAlenesøker }} />
+                        <FormattedMessage id="Barnehageplass.KommuneTekstDeg" values={{ erAlenesøker, antallBarn }} />
                     </BodyLong>
                     <Infobox
                         header={
@@ -79,48 +78,31 @@ const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale }) => {
                         icon={<BabyWrappedIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />}
                     >
                         <BodyLong>
-                            {(erFødt || erAdoptert) && (
-                                <FormattedMessage
-                                    id="Barnehageplass.DatoTekst"
-                                    values={{
-                                        a: (msg: any) => (
-                                            <Link
-                                                inlineText
-                                                href={links.barnehageloven}
-                                                className="lenke"
-                                                rel="noreferrer"
-                                                target="_blank"
-                                            >
-                                                {msg}
-                                            </Link>
-                                        ),
-                                        dato: dayjs(barnet.fødselsdato).format(DDMMYYYY_DATE_FORMAT),
-                                        antallBarn: barnet.antallBarn,
-                                        erAlenesøker,
-                                    }}
-                                />
-                            )}
-                            {erIkkeFødt && (
-                                <FormattedMessage
-                                    id="Barnehageplass.DatoTekstTermin"
-                                    values={{
-                                        a: (msg: any) => (
-                                            <Link
-                                                inlineText
-                                                href={links.barnehageloven}
-                                                className="lenke"
-                                                rel="noreferrer"
-                                                target="_blank"
-                                            >
-                                                {msg}
-                                            </Link>
-                                        ),
-                                        dato: dayjs(barnet.termindato).format(DDMMYYYY_DATE_FORMAT),
-                                        antallBarn: barnet.antallBarn,
-                                        erAlenesøker,
-                                    }}
-                                />
-                            )}
+                            <FormattedMessage
+                                id="Barnehageplass.DatoTekst"
+                                values={{
+                                    a: (msg) => (
+                                        <Link
+                                            inlineText
+                                            href={links.barnehageloven}
+                                            className="lenke"
+                                            rel="noreferrer"
+                                            target="_blank"
+                                        >
+                                            {msg}
+                                        </Link>
+                                    ),
+                                    dato: intl.formatDate(getFamiliehendelsedato(barnet), {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric',
+                                    }),
+                                    antallBarn,
+                                    erAlenesøker,
+                                    erFødt: erBarnetFødt(barnet),
+                                    erAdopsjon: erBarnetAdoptert(barnet),
+                                }}
+                            />
                         </BodyLong>
                     </Infobox>
                     <Infobox
