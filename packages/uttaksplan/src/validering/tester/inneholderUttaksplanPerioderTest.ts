@@ -5,7 +5,7 @@ import {
     isPeriodeUtenUttak,
     isSkalIkkeHaForeldrepengerFørFødselPeriode,
 } from '@navikt/fp-common';
-import { isValidTidsperiode } from '@navikt/fp-utils';
+import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { RegelTest, RegelTestresultat } from '../utils/types/regelTypes';
 
@@ -20,6 +20,6 @@ export const inneholderUttaksplanPerioderTest: RegelTest = (grunnlag: Søknadsin
                         !isHull(p) &&
                         !isSkalIkkeHaForeldrepengerFørFødselPeriode(p),
                 )
-                .filter((periode) => isValidTidsperiode(periode.tidsperiode)).length > 0,
+                .filter((periode) => isValidTidsperiodeString(periode.tidsperiode)).length > 0,
     };
 };

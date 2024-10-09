@@ -1,15 +1,29 @@
 {
     "søker": {
-        "fnr": "03519319259",
-        "fornavn": "Stridlynt",
-        "etternavn": "September",
+        "fnr": "11469634436",
+        "fornavn": "Eksakt",
+        "etternavn": "Tournure",
         "kjønn": "K",
-        "fødselsdato": "1993-11-03",
+        "fødselsdato": "1996-06-11",
         "bankkonto": {
             "kontonummer": "",
             "banknavn": ""
         },
-        "barn": [],
+        "barn": [
+            {
+                "fnr": "16492452800",
+                "fornavn": "Uinspirert",
+                "etternavn": "Lensmann",
+                "kjønn": "K",
+                "fødselsdato": "2024-09-16",
+                "annenForelder": {
+                    "fnr": "06499640380",
+                    "fornavn": "Ung",
+                    "etternavn": "Turbin",
+                    "fødselsdato": "1996-09-06"
+                }
+            }
+        ],
         "sivilstand": {
             "type": "GIFT"
         }

@@ -676,7 +676,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                             termindato={termindato ? dayjs(termindato).toDate() : undefined}
                             barn={barn}
                             visAutomatiskJusteringForm={visAutomatiskJusteringForm}
-                            perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
                             barnFraNesteSak={barnFraNesteSak}
                             familiehendelsesdatoNesteSak={familieHendelseDatoNesteSak}
                             førsteUttaksdagNesteBarnsSak={førsteUttaksdagNesteBarnsSak}

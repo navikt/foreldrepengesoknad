@@ -1,6 +1,7 @@
+import { SaksperiodeNy } from '@navikt/fp-types';
+
 import { Dekningsgrad } from './Dekningsgrad';
 import { Familiehendelse } from './Familiehendelse';
-import { Periode } from './Periode';
 import PersonFnrDTO from './PersonFnrDTO';
 import { RettighetType } from './RettighetType';
 import { Ytelse } from './Ytelse';
@@ -20,7 +21,7 @@ export interface ForeldrepengesakDTO {
     annenPart: PersonFnrDTO;
     familiehendelse: Familiehendelse;
     gjeldendeVedtak?: {
-        perioder: Periode[];
+        perioder: SaksperiodeNy[];
     };
     barn: PersonFnrDTO[];
     dekningsgrad: Dekningsgrad;

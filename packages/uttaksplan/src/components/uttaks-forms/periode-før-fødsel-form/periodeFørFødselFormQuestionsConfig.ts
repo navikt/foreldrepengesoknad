@@ -1,4 +1,4 @@
-import { isValidTidsperiode } from '@navikt/fp-utils';
+import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { QuestionConfig, Questions } from '../../../formik-wrappers';
 import { PeriodeFørFødselFormData, PeriodeFørFødselFormField } from './periodeFørFødselFormConfig';
@@ -18,7 +18,7 @@ const PeriodeFørFødselFormConfig: QuestionConfig<PeriodeFørFødselFormData, P
         isAnswered: () => true,
         isIncluded: () => true,
         visibilityFilter: ({ fom, tom, skalIkkeHaUttakFørTermin }) =>
-            skalIkkeHaUttakFørTermin ? true : isValidTidsperiode({ fom, tom }),
+            skalIkkeHaUttakFørTermin ? true : isValidTidsperiodeString({ fom, tom }),
     },
 };
 

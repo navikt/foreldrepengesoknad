@@ -1,46 +1,37 @@
 import dayjs from 'dayjs';
 
+import { StønadskontoType } from '@navikt/fp-common';
 import {
-    Forelder,
-    ForeldrepengerFørFødselUttaksperiode,
-    InfoPeriode,
-    Oppholdsperiode,
-    Overføringsperiode,
-    Periode,
-    PeriodeHull,
-    PeriodeUtenUttak,
-    Periodetype,
-    StønadskontoType,
-    Utsettelsesperiode,
-    Uttaksperiode,
-    isForeldrepengerFørFødselUttaksperiode,
+    TidsperiodenString,
+    UttaksdagenString,
+    datoErInnenforTidsperiodeString,
+    isValidTidsperiodeString,
+} from '@navikt/fp-utils';
+
+import { Planperiode } from '../types/Planperiode';
+import { Perioden } from './Perioden';
+import {
+    getTidsperiodeFromPlanperiode,
+    isForeldrepengerFørFødselPeriode,
     isHull,
-    isInfoPeriode,
     isOppholdsperiode,
     isOverføringsperiode,
     isPeriodeUtenUttak,
-    isPeriodeUtenUttakUtsettelse,
-    isUtsettelsePgaFerie,
     isUtsettelsesperiode,
     isUttaksperiode,
-} from '@navikt/fp-common';
-import { Tidsperioden, Uttaksdagen, datoErInnenforTidsperiode, isValidTidsperiode } from '@navikt/fp-utils';
+} from './periodeUtils';
 
-import { Perioden } from './Perioden';
-
-export const Periodene = (perioder: Periode[]) => ({
+export const Periodene = (perioder: Planperiode[]) => ({
     getPeriode: (id: string) => getPeriode(perioder, id),
     getOpphold: () => getOpphold(perioder),
     getUttak: () => getUttaksperioder(perioder),
     getOverføringer: () => getOverføringer(perioder),
     getHull: () => getHull(perioder),
     getHullOgInfoOgPerioderUtenUttak: () => getHullOgInfoOgPerioderUtenUttak(perioder),
-    getInfoperioder: () => getInfoperioder(perioder),
     getUtsettelser: () => getUtsettelser(perioder),
     getPerioderEtterFamiliehendelsesdato: (dato: Date) => getPerioderEtterFamiliehendelsesdato(perioder, dato),
     getPerioderFørFamiliehendelsesdato: (dato: Date) => getPerioderFørFamiliehendelsesdato(perioder, dato),
     getPerioderMedUgyldigTidsperiode: () => getPeriodeMedUgyldigTidsperiode(perioder),
-    getPerioderMedFerieForForelder: (forelder: Forelder) => getPerioderMedFerieForForelder(perioder, forelder),
     getFørstePerioderEtterFamiliehendelsesdato: (dato: Date) =>
         getFørstePeriodeEtterFamiliehendelsesdato(perioder, dato),
     getForeldrepengerFørTermin: () => getForeldrepengerFørTermin(perioder),
@@ -49,133 +40,121 @@ export const Periodene = (perioder: Periode[]) => ({
     getFørsteUttaksdagEksluderInfoperioderOgFrittUttak: () =>
         getFørsteUttaksdagEksluderInfoperioderOgFrittUttak(perioder),
     getAntallUttaksdager: () => getAntallUttaksdager(perioder),
-    getAntallFeriedager: (forelder?: Forelder) => getAntallFeriedager(perioder, forelder),
-    finnOverlappendePerioder: (periode: Periode) => finnOverlappendePerioder(perioder, periode),
+    finnOverlappendePerioder: (periode: Planperiode) => finnOverlappendePerioder(perioder, periode),
     finnPeriodeMedDato: (dato: Date) => finnPeriodeMedDato(perioder, dato),
     finnFørstePeriodeEtterDato: (dato: Date) => finnFørstePeriodeEtterDato(perioder, dato),
-    finnAlleForegåendePerioder: (periode: Periode) => finnPerioderFørPeriode(perioder, periode),
-    finnAllePåfølgendePerioder: (periode: Periode) => finnPerioderEtterPeriode(perioder, periode),
-    finnDenForegåendePerioden: (periode: Periode) => finnForrigePeriode(perioder, periode),
-    finnPåfølgendePeriode: (periode: Periode) => finnPåfølgendePeriode(perioder, periode),
+    finnAlleForegåendePerioder: (periode: Planperiode) => finnPerioderFørPeriode(perioder, periode),
+    finnAllePåfølgendePerioder: (periode: Planperiode) => finnPerioderEtterPeriode(perioder, periode),
+    finnDenForegåendePerioden: (periode: Planperiode) => finnForrigePeriode(perioder, periode),
+    finnPåfølgendePeriode: (periode: Planperiode) => finnPåfølgendePeriode(perioder, periode),
     forskyvPerioder: (uttaksdager: number) => forskyvPerioder(perioder, uttaksdager),
     sort: () => [...perioder].sort(sorterPerioder),
-    finnSisteInfoperiode: () => finnSisteInfoperiode(perioder),
 });
 
-export function sorterPerioder(p1: Periode, p2: Periode) {
-    if (isValidTidsperiode(p1.tidsperiode) === false || isValidTidsperiode(p2.tidsperiode) === false) {
-        if (isForeldrepengerFørFødselUttaksperiode(p1) && p1.skalIkkeHaUttakFørTermin) {
+export function sorterPerioder(p1: Planperiode, p2: Planperiode) {
+    const tidsperiodeP1 = getTidsperiodeFromPlanperiode(p1);
+    const tidsperiodeP2 = getTidsperiodeFromPlanperiode(p2);
+
+    if (isValidTidsperiodeString(tidsperiodeP1) === false || isValidTidsperiodeString(tidsperiodeP2) === false) {
+        if (isForeldrepengerFørFødselPeriode(p1) && p1.skalIkkeHaUttakFørTermin) {
             return -1;
         }
-        return isValidTidsperiode(p1.tidsperiode) ? 1 : -1;
-    }
-    if (dayjs(p1.tidsperiode.fom).isSame(p2.tidsperiode.fom, 'day')) {
-        return isInfoPeriode(p1) ? -1 : 1;
+        return isValidTidsperiodeString(tidsperiodeP1) ? 1 : -1;
     }
 
-    if (Tidsperioden(p2.tidsperiode).erOmsluttetAv(p1.tidsperiode)) {
+    if (TidsperiodenString(tidsperiodeP2).erOmsluttetAv(tidsperiodeP1)) {
         return 1;
     }
 
-    return dayjs(p1.tidsperiode.fom).isBefore(p2.tidsperiode.fom, 'day') ? -1 : 1;
+    return dayjs(tidsperiodeP1.fom).isBefore(tidsperiodeP2.fom, 'day') ? -1 : 1;
 }
 
-function getPeriode(perioder: Periode[], id: string): Periode | undefined {
+function getPeriode(perioder: Planperiode[], id: string): Planperiode | undefined {
     return perioder.find((p) => p.id === id);
 }
 
-function getUttaksperioder(perioder: Periode[]): Uttaksperiode[] {
-    return perioder.filter((periode) => isUttaksperiode(periode)) as Uttaksperiode[];
+function getUttaksperioder(perioder: Planperiode[]) {
+    return perioder.filter((periode) => isUttaksperiode(periode));
 }
 
-function getUtsettelser(perioder: Periode[]): Utsettelsesperiode[] {
-    return perioder.filter((periode) => isUtsettelsesperiode(periode)) as Utsettelsesperiode[];
+function getUtsettelser(perioder: Planperiode[]) {
+    return perioder.filter((periode) => isUtsettelsesperiode(periode));
 }
 
-function getFerieUtsettelser(perioder: Periode[]): Utsettelsesperiode[] {
-    return perioder.filter((periode) => isUtsettelsePgaFerie(periode)) as Utsettelsesperiode[];
+function getOverføringer(perioder: Planperiode[]) {
+    return perioder.filter((periode) => isOverføringsperiode(periode));
 }
 
-function getOverføringer(perioder: Periode[]): Overføringsperiode[] {
-    return perioder.filter((periode) => isOverføringsperiode(periode)) as Overføringsperiode[];
+function getHull(perioder: Planperiode[]): Planperiode[] {
+    return perioder.filter((periode) => isHull(periode));
 }
 
-function getHull(perioder: Periode[]): PeriodeHull[] {
-    return perioder.filter((periode) => isHull(periode)) as PeriodeHull[];
+function getHullOgInfoOgPerioderUtenUttak(perioder: Planperiode[]) {
+    return perioder.filter((periode) => isHull(periode) || isPeriodeUtenUttak(periode));
 }
 
-function getHullOgInfoOgPerioderUtenUttak(perioder: Periode[]): Array<PeriodeHull | InfoPeriode | PeriodeUtenUttak> {
-    return perioder.filter(
-        (periode) => isHull(periode) || isInfoPeriode(periode) || isPeriodeUtenUttak(periode),
-    ) as Array<PeriodeHull | InfoPeriode | PeriodeUtenUttak>;
+function getOpphold(perioder: Planperiode[]) {
+    return perioder.filter((periode) => isOppholdsperiode(periode));
 }
 
-function getInfoperioder(perioder: Periode[]): InfoPeriode[] {
-    return perioder.filter((periode) => isInfoPeriode(periode)) as InfoPeriode[];
-}
-
-function getOpphold(perioder: Periode[]): Oppholdsperiode[] {
-    return perioder.filter((periode) => isOppholdsperiode(periode)) as Oppholdsperiode[];
-}
-
-function finnOverlappendePerioder(perioder: Periode[], periode: Periode): Periode[] {
+function finnOverlappendePerioder(perioder: Planperiode[], periode: Planperiode): Planperiode[] {
     return perioder.filter((p) => {
-        if (p.id === periode.id || !isValidTidsperiode(periode.tidsperiode)) {
+        if (p.id === periode.id || !isValidTidsperiodeString({ fom: periode.fom, tom: periode.tom })) {
             return false;
         }
-        const { fom, tom } = p.tidsperiode;
+        const { fom, tom } = p;
         if (!fom || !tom) {
             return false;
         }
         const fomEllerTomErInnenforTidsperiode =
-            datoErInnenforTidsperiode(fom, periode.tidsperiode) || datoErInnenforTidsperiode(tom, periode.tidsperiode);
+            datoErInnenforTidsperiodeString(fom, { fom: periode.fom, tom: periode.tom }) ||
+            datoErInnenforTidsperiodeString(tom, { fom: periode.fom, tom: periode.tom });
 
         const fomTomOmkranserTidsperiode =
-            dayjs(periode.tidsperiode.fom).isSameOrAfter(fom, 'day') &&
-            dayjs(periode.tidsperiode.tom).isSameOrBefore(tom, 'day');
+            dayjs(periode.fom).isSameOrAfter(fom, 'day') && dayjs(periode.tom).isSameOrBefore(tom, 'day');
 
         return fomEllerTomErInnenforTidsperiode || fomTomOmkranserTidsperiode;
     });
 }
 
-function finnPeriodeMedDato(perioder: Periode[], dato: Date): Periode | undefined {
+function finnPeriodeMedDato(perioder: Planperiode[], dato: Date): Planperiode | undefined {
     return perioder.find((periode) => {
-        return dayjs(dato).isBetween(periode.tidsperiode.fom, periode.tidsperiode.tom, 'day', '[]');
+        return dayjs(dato).isBetween(periode.fom, periode.tom, 'day', '[]');
     });
 }
 
-function finnFørstePeriodeEtterDato(perioder: Periode[], dato: Date): Periode | undefined {
+function finnFørstePeriodeEtterDato(perioder: Planperiode[], dato: Date): Planperiode | undefined {
     return perioder.find((periode) => {
-        return dayjs(periode.tidsperiode.fom).isAfter(dato, 'day');
+        return dayjs(periode.fom).isAfter(dato, 'day');
     });
 }
 
-function finnPerioderFørPeriode(perioder: Periode[], periode: Periode): Periode[] {
-    return perioder.filter((p) => dayjs(p.tidsperiode.tom).isBefore(periode.tidsperiode.fom, 'day'));
+function finnPerioderFørPeriode(perioder: Planperiode[], periode: Planperiode): Planperiode[] {
+    return perioder.filter((p) => dayjs(p.tom).isBefore(periode.fom, 'day'));
 }
 
-function finnPerioderEtterPeriode(perioder: Periode[], periode: Periode): Periode[] {
-    return perioder.filter((p) => dayjs(p.tidsperiode.fom).isAfter(periode.tidsperiode.tom, 'day'));
+function finnPerioderEtterPeriode(perioder: Planperiode[], periode: Planperiode): Planperiode[] {
+    return perioder.filter((p) => dayjs(p.fom).isAfter(periode.tom, 'day'));
 }
 
-function finnForrigePeriode(perioder: Periode[], periode: Periode): Periode | undefined {
+function finnForrigePeriode(perioder: Planperiode[], periode: Planperiode): Planperiode | undefined {
     const foregåendePerioder = finnPerioderFørPeriode(perioder, periode);
     if (foregåendePerioder.length > 0) {
         return foregåendePerioder.pop();
     }
     return undefined;
 }
-function finnPåfølgendePeriode(perioder: Periode[], periode: Periode): Periode | undefined {
+function finnPåfølgendePeriode(perioder: Planperiode[], periode: Planperiode): Planperiode | undefined {
     const påfølgendePerioder = finnPerioderEtterPeriode(perioder, periode);
     if (påfølgendePerioder.length > 0) {
         return påfølgendePerioder[0];
     }
     return undefined;
 }
-function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
+function forskyvPerioder(perioder: Planperiode[], uttaksdager: number): Planperiode[] {
     let uttaksdagerCurrent = uttaksdager;
 
-    return perioder.reduce((result: Periode[], periode: Periode) => {
+    return perioder.reduce((result: Planperiode[], periode: Planperiode) => {
         if (isUtsettelsesperiode(periode)) {
             result.push(periode);
 
@@ -190,24 +169,17 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
             return result;
         }
 
-        if (
-            isInfoPeriode(periode) ||
-            isHull(periode) ||
-            isPeriodeUtenUttak(periode) ||
-            isPeriodeUtenUttakUtsettelse(periode)
-        ) {
+        if (isHull(periode) || isPeriodeUtenUttak(periode)) {
             const dagerIPerioden = Perioden(periode).getAntallUttaksdager();
 
             if (dagerIPerioden > uttaksdagerCurrent) {
-                const forskyvetStartdato = Uttaksdagen(Uttaksdagen(periode.tidsperiode.fom).denneEllerNeste()).leggTil(
+                const forskyvetStartdato = UttaksdagenString(UttaksdagenString(periode.fom).denneEllerNeste()).leggTil(
                     uttaksdagerCurrent,
                 );
-                const justertPeriode: Periode = {
+                const justertPeriode: Planperiode = {
                     ...periode,
-                    tidsperiode: {
-                        fom: forskyvetStartdato,
-                        tom: periode.tidsperiode.tom,
-                    },
+                    fom: forskyvetStartdato,
+                    tom: periode.tom,
                 };
 
                 uttaksdagerCurrent = 0;
@@ -228,151 +200,100 @@ function forskyvPerioder(perioder: Periode[], uttaksdager: number): Periode[] {
     }, []);
 }
 
-function forskyvPeriode(periode: Periode, uttaksdager: number): Periode {
+function forskyvPeriode(periode: Planperiode, uttaksdager: number): Planperiode {
     if (uttaksdager === 0) {
         return periode;
     }
 
-    const forskyvetStartdato = Uttaksdagen(Uttaksdagen(periode.tidsperiode.fom).denneEllerNeste()).leggTil(uttaksdager);
+    const forskyvetStartdato = UttaksdagenString(UttaksdagenString(periode.fom).denneEllerNeste()).leggTil(uttaksdager);
     return Perioden(periode).setStartdato(forskyvetStartdato);
 }
 
-function getPerioderFørFamiliehendelsesdato(perioder: Periode[], familiehendelsesdato: Date) {
+function getPerioderFørFamiliehendelsesdato(perioder: Planperiode[], familiehendelsesdato: Date) {
     return perioder.filter(
         (periode) =>
-            isForeldrepengerFørFødselUttaksperiode(periode) ||
-            (isValidTidsperiode(periode.tidsperiode) &&
-                dayjs(periode.tidsperiode.fom).isBefore(familiehendelsesdato, 'day')),
+            isForeldrepengerFørFødselPeriode(periode) ||
+            (isValidTidsperiodeString({ fom: periode.fom, tom: periode.tom }) &&
+                dayjs(periode.fom).isBefore(familiehendelsesdato, 'day')),
     );
 }
 
-function getPerioderEtterFamiliehendelsesdato(perioder: Periode[], familiehendelsesdato: Date) {
+function getPerioderEtterFamiliehendelsesdato(perioder: Planperiode[], familiehendelsesdato: Date) {
     return perioder.filter(
         (periode) =>
-            isValidTidsperiode(periode.tidsperiode) &&
-            dayjs(periode.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'day') &&
-            isForeldrepengerFørFødselUttaksperiode(periode) === false,
+            isValidTidsperiodeString({ fom: periode.fom, tom: periode.tom }) &&
+            dayjs(periode.fom).isSameOrAfter(familiehendelsesdato, 'day') &&
+            isForeldrepengerFørFødselPeriode(periode) === false,
     );
 }
 
 function getFørstePeriodeEtterFamiliehendelsesdato(
-    perioder: Periode[],
+    perioder: Planperiode[],
     familiehendelsesdato: Date,
-): Periode | undefined {
+): Planperiode | undefined {
     const aktuellePerioder = getPerioderEtterFamiliehendelsesdato(perioder, familiehendelsesdato).sort(sorterPerioder);
     return aktuellePerioder.length > 0 ? aktuellePerioder[0] : undefined;
 }
 
-function getPeriodeMedUgyldigTidsperiode(perioder: Periode[]) {
+function getPeriodeMedUgyldigTidsperiode(perioder: Planperiode[]) {
     return perioder.filter(
         (periode) =>
-            isValidTidsperiode(periode.tidsperiode) === false &&
-            isForeldrepengerFørFødselUttaksperiode(periode) === false,
+            isValidTidsperiodeString({ fom: periode.fom, tom: periode.tom }) === false &&
+            isForeldrepengerFørFødselPeriode(periode) === false,
     );
 }
 
-function getFørsteUttaksdag(perioder: Periode[]): Date | undefined {
+function getFørsteUttaksdag(perioder: Planperiode[]): string | undefined {
     const førstePeriode = perioder
-        .filter((p) => p.tidsperiode.fom !== undefined)
+        .filter((p) => p.fom !== undefined)
         .sort(sorterPerioder)
         .shift();
     if (førstePeriode) {
-        return førstePeriode.tidsperiode.fom;
+        return førstePeriode.fom;
     }
     return undefined;
 }
 
-function getFørsteUttaksdagEksluderInfoperioderOgFrittUttak(perioder: Periode[]): Date | undefined {
+function getFørsteUttaksdagEksluderInfoperioderOgFrittUttak(perioder: Planperiode[]): string | undefined {
     const førstePeriode = perioder
-        .filter(
-            (p) =>
-                p.tidsperiode.fom !== undefined &&
-                !isInfoPeriode(p) &&
-                !isPeriodeUtenUttak(p) &&
-                !isPeriodeUtenUttakUtsettelse(p),
-        )
+        .filter((p) => p.fom !== undefined && !isPeriodeUtenUttak(p))
         .sort(sorterPerioder)
         .shift();
     if (førstePeriode) {
-        return førstePeriode.tidsperiode.fom;
+        return førstePeriode.fom;
     }
     return undefined;
 }
 
-function getAntallUttaksdager(perioder: Periode[]): number {
+function getAntallUttaksdager(perioder: Planperiode[]): number {
     return perioder.reduce((dager, periode) => {
         return dager + Perioden(periode).getAntallUttaksdager();
     }, 0);
 }
 
-function getAntallFeriedager(perioder: Periode[], forelder?: Forelder): number {
-    return getFerieUtsettelser(perioder)
-        .filter((p) => (isValidTidsperiode(p.tidsperiode) && forelder ? p.forelder === forelder : true))
-        .map((p) => Tidsperioden(p.tidsperiode).getAntallUttaksdager())
-        .reduce((tot, curr) => tot + curr, 0);
-}
-
-function getPerioderMedFerieForForelder(perioder: Periode[], forelder: Forelder): Periode[] {
-    return perioder.filter((periode) => erPeriodeMedFerieForForelder(periode, forelder));
-}
-
-function getForeldrepengerFørTermin(perioder: Periode[]): ForeldrepengerFørFødselUttaksperiode | undefined {
-    const periode: Periode | undefined = perioder.find(
-        (p) => isUttaksperiode(p) && p.konto === StønadskontoType.ForeldrepengerFørFødsel,
+function getForeldrepengerFørTermin(perioder: Planperiode[]): Planperiode | undefined {
+    const periode: Planperiode | undefined = perioder.find(
+        (p) => isUttaksperiode(p) && p.kontoType === StønadskontoType.ForeldrepengerFørFødsel,
     );
-    return periode ? (periode as ForeldrepengerFørFødselUttaksperiode) : undefined;
+
+    return periode;
 }
 
-function getFørsteUttaksdagEtterSistePeriode(perioder: Periode[]): Date | undefined {
+function getFørsteUttaksdagEtterSistePeriode(perioder: Planperiode[]): string | undefined {
     if (perioder.length === 0) {
         return undefined;
     }
-    return Uttaksdagen(perioder[perioder.length - 1].tidsperiode.tom).neste();
+    return UttaksdagenString(perioder[perioder.length - 1].tom).neste();
 }
 
-export const erPeriodeMedFerieForForelder = (periode: Periode, forelder: Forelder): boolean => {
-    return isUtsettelsePgaFerie(periode) && periode.forelder === forelder;
-};
-
-function finnSisteInfoperiode(perioder: Periode[]) {
-    return perioder
-        .filter((p) => isInfoPeriode(p))
-        .sort(sorterPerioder)
-        .reverse()[0];
-}
-
-export const uttaksplanErBareOpphold = (perioder: Periode[]): boolean => {
-    const perioderUtenInfoPerioder = perioder.filter((p) => !isInfoPeriode(p));
-
-    if (perioderUtenInfoPerioder.length === 0) {
-        return false;
-    }
-
-    return perioderUtenInfoPerioder.every((periode) => periode.type === Periodetype.Opphold);
-};
-
-export const uttaksplanErBareForeldrepengerFørFødsel = (perioder: Periode[]): boolean => {
-    const perioderUtenInfoPerioderEllerHull = perioder.filter((p) => !isInfoPeriode(p) && !isHull(p));
+export const uttaksplanErBareForeldrepengerFørFødsel = (perioder: Planperiode[]): boolean => {
+    const perioderUtenInfoPerioderEllerHull = perioder.filter((p) => !isHull(p));
 
     if (perioderUtenInfoPerioderEllerHull.length === 0) {
         return false;
     }
 
     return perioderUtenInfoPerioderEllerHull.every(
-        (periode) => periode.type === Periodetype.Uttak && periode.konto === StønadskontoType.ForeldrepengerFørFødsel,
+        (periode) => isUttaksperiode(periode) && periode.kontoType === StønadskontoType.ForeldrepengerFørFødsel,
     );
-};
-
-export const uttaksplanSlutterMedOpphold = (perioder: Periode[]): boolean => {
-    return (
-        perioder
-            .filter((p) => !isInfoPeriode(p))
-            .slice()
-            .reverse()
-            .findIndex((periode) => periode.type === Periodetype.Opphold) === 0
-    );
-};
-
-export const uttaksplanStarterMedOpphold = (perioder: Periode[]): boolean => {
-    return perioder.filter((p) => !isInfoPeriode(p)).findIndex((periode) => periode.type === Periodetype.Opphold) === 0;
 };

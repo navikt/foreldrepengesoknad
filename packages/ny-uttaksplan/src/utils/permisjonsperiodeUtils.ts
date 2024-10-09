@@ -1,33 +1,29 @@
 import dayjs from 'dayjs';
 
+import { Forelder } from '@navikt/fp-constants';
+import { TidsperiodenString, formatDateIso } from '@navikt/fp-utils';
+
+import Permisjonsperiode from '../types/Permisjonsperiode';
+import { Planperiode } from '../types/Planperiode';
 import {
-    Forelder,
-    Periode,
     isHull,
     isOppholdsperiode,
     isOverføringsperiode,
     isPeriodeUtenUttak,
     isUtsettelsesperiode,
-    isUttakAnnenPart,
     isUttaksperiode,
-} from '@navikt/fp-common';
-import { Tidsperioden, formatDateIso } from '@navikt/fp-utils';
-
-import Permisjonsperiode from '../types/Permisjonsperiode';
+} from './periodeUtils';
 
 const beggePerioderFørFamiliehendelsedato = (
     permisjonsperiode: Permisjonsperiode | undefined,
-    periode: Periode | undefined,
+    periode: Planperiode | undefined,
     famdato: string,
 ) => {
     if (!periode || !permisjonsperiode) {
         return false;
     }
 
-    if (
-        dayjs(permisjonsperiode.tidsperiode.tom).isBefore(famdato) &&
-        dayjs(periode.tidsperiode.tom).isBefore(famdato)
-    ) {
+    if (dayjs(permisjonsperiode.tidsperiode.tom).isBefore(famdato) && dayjs(periode.tom).isBefore(famdato)) {
         return true;
     }
 
@@ -36,17 +32,14 @@ const beggePerioderFørFamiliehendelsedato = (
 
 const beggePerioderEtterFamiliehendelsedato = (
     permisjonsperiode: Permisjonsperiode | undefined,
-    periode: Periode | undefined,
+    periode: Planperiode | undefined,
     famdato: string,
 ) => {
     if (!periode || !permisjonsperiode) {
         return false;
     }
 
-    if (
-        dayjs(permisjonsperiode.tidsperiode.fom).isSameOrAfter(famdato) &&
-        dayjs(periode.tidsperiode.fom).isSameOrAfter(famdato)
-    ) {
+    if (dayjs(permisjonsperiode.tidsperiode.fom).isSameOrAfter(famdato) && dayjs(periode.fom).isSameOrAfter(famdato)) {
         return true;
     }
 
@@ -55,7 +48,7 @@ const beggePerioderEtterFamiliehendelsedato = (
 
 const beggePerioderFørEllerEtterFamiliehendelsedato = (
     permisjonsperiode: Permisjonsperiode | undefined,
-    periode: Periode | undefined,
+    periode: Planperiode | undefined,
     famdato: string,
 ) => {
     return (
@@ -65,7 +58,7 @@ const beggePerioderFørEllerEtterFamiliehendelsedato = (
 };
 
 export const mapPerioderToPermisjonsperiode = (
-    perioder: Periode[],
+    perioder: Planperiode[],
     familiehendelsesdato: string,
 ): Permisjonsperiode[] => {
     const permisjonsPerioder: Permisjonsperiode[] = [];
@@ -101,15 +94,18 @@ export const mapPerioderToPermisjonsperiode = (
         );
 
         if (nestePeriode !== undefined) {
-            erSamtidigUttak = Tidsperioden(periode.tidsperiode).erLik(nestePeriode.tidsperiode);
+            erSamtidigUttak = TidsperiodenString({ fom: periode.fom, tom: periode.tom }).erLik({
+                fom: nestePeriode.fom,
+                tom: nestePeriode.tom,
+            });
         }
 
         if (erSamtidigUttak && nestePeriode !== undefined) {
             nyPermisjonsperiode = {
                 perioder: [{ ...periode }, { ...nestePeriode }],
                 tidsperiode: {
-                    fom: formatDateIso(periode.tidsperiode.fom),
-                    tom: formatDateIso(periode.tidsperiode.tom),
+                    fom: formatDateIso(periode.fom),
+                    tom: formatDateIso(periode.tom),
                 },
                 samtidigUttak: true,
             };
@@ -121,12 +117,7 @@ export const mapPerioderToPermisjonsperiode = (
             return;
         }
 
-        if (
-            isUttaksperiode(periode) ||
-            isUttakAnnenPart(periode) ||
-            isOverføringsperiode(periode) ||
-            isOppholdsperiode(periode)
-        ) {
+        if (isUttaksperiode(periode) || isOverføringsperiode(periode) || isOppholdsperiode(periode)) {
             const forelderType = periode.forelder;
 
             if (!nyPermisjonsperiode) {
@@ -134,21 +125,22 @@ export const mapPerioderToPermisjonsperiode = (
                     forelder: forelderType,
                     perioder: [{ ...periode }],
                     tidsperiode: {
-                        fom: formatDateIso(periode.tidsperiode.fom),
-                        tom: formatDateIso(periode.tidsperiode.tom),
+                        fom: formatDateIso(periode.fom),
+                        tom: formatDateIso(periode.tom),
                     },
+                    samtidigUttak: !!periode.samtidigUttak,
                 };
             } else {
                 if (forelderForrigePeriode === periode.forelder && beggePerioderErPåSammeSideAvFamdato) {
                     nyPermisjonsperiode.perioder = [...nyPermisjonsperiode.perioder, { ...periode }];
-                    nyPermisjonsperiode.tidsperiode.tom = formatDateIso(periode.tidsperiode.tom);
+                    nyPermisjonsperiode.tidsperiode.tom = formatDateIso(periode.tom);
                 } else {
                     nyPermisjonsperiode = {
                         forelder: forelderType,
                         perioder: [{ ...periode }],
                         tidsperiode: {
-                            fom: formatDateIso(periode.tidsperiode.fom),
-                            tom: formatDateIso(periode.tidsperiode.tom),
+                            fom: formatDateIso(periode.fom),
+                            tom: formatDateIso(periode.tom),
                         },
                     };
                 }
@@ -166,8 +158,8 @@ export const mapPerioderToPermisjonsperiode = (
             nyPermisjonsperiode = {
                 perioder: [{ ...periode }],
                 tidsperiode: {
-                    fom: formatDateIso(periode.tidsperiode.fom),
-                    tom: formatDateIso(periode.tidsperiode.tom),
+                    fom: formatDateIso(periode.fom),
+                    tom: formatDateIso(periode.tom),
                 },
                 erPeriodeUtenUttak: true,
             };
@@ -182,8 +174,8 @@ export const mapPerioderToPermisjonsperiode = (
             nyPermisjonsperiode = {
                 perioder: [{ ...periode }],
                 tidsperiode: {
-                    fom: formatDateIso(periode.tidsperiode.fom),
-                    tom: formatDateIso(periode.tidsperiode.tom),
+                    fom: formatDateIso(periode.fom),
+                    tom: formatDateIso(periode.tom),
                 },
                 erUtsettelse: true,
             };
@@ -197,8 +189,8 @@ export const mapPerioderToPermisjonsperiode = (
             nyPermisjonsperiode = {
                 perioder: [{ ...periode }],
                 tidsperiode: {
-                    fom: formatDateIso(periode.tidsperiode.fom),
-                    tom: formatDateIso(periode.tidsperiode.tom),
+                    fom: formatDateIso(periode.fom),
+                    tom: formatDateIso(periode.tom),
                 },
                 erHull: true,
             };

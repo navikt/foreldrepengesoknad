@@ -1,126 +1,60 @@
-import { Edit } from '@navikt/ds-icons';
-import { BodyLong, Button, Link } from '@navikt/ds-react';
+import { FunctionComponent } from 'react';
 
-import { bemUtils } from '@navikt/fp-utils';
+import { NavnPåForeldre, SaksperiodeNy } from '@navikt/fp-types';
+import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 
-import PeriodeOversikt from 'app/components/periode-oversikt/PeriodeOversikt';
-import { NavRoutes } from 'app/routes/routes';
-import { Foreldrepengesak } from 'app/types/Foreldrepengesak';
-import { Periode } from 'app/types/Periode';
-import {
-    Periodene,
-    filtrerAnnenPartsUttakNårIkkeSamtidigUttak,
-    finnFremtidigePerioder,
-    finnNåværendePerioder,
-    finnTidligerePerioder,
-    getCleanedPlanForVisning,
-    getPerioderForVisning,
-    leggTilVisningsInfo,
-    normaliserPerioder,
-    skalAnnenPartsPeriodeVises,
-} from 'app/utils/periodeUtils';
-import { slåSammenLikePerioder } from 'app/utils/planUtils';
-
-import './din-plan.css';
+import { useGetSelectedSak } from '../../hooks/useSelectedSak';
+import { RettighetType } from '../../types/RettighetType';
+import { Ytelse } from '../../types/Ytelse';
+import { getBarnFraSak, getFamiliehendelseDato, utledFamiliesituasjon } from '../../utils/sakerUtils';
 
 interface Props {
-    annenPartsPerioder: Periode[] | undefined;
-    navnAnnenForelder: string;
-    navnPåSøker: string;
-    sak: Foreldrepengesak;
-    visHelePlanen: boolean;
-    termindato: string | undefined;
+    annenPartsPerioder?: SaksperiodeNy[];
+    navnPåForeldre: NavnPåForeldre;
 }
 
-const DinPlan: React.FunctionComponent<Props> = ({
-    annenPartsPerioder,
-    sak,
-    visHelePlanen,
-    navnPåSøker,
-    navnAnnenForelder,
-    termindato,
-}) => {
-    const bem = bemUtils('din-plan');
+const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåForeldre }) => {
+    const gjeldendeSak = useGetSelectedSak();
 
-    let vedtattUttaksplan = undefined;
-    let søktePerioder = undefined;
-    if (sak.gjeldendeVedtak) {
-        vedtattUttaksplan = slåSammenLikePerioder(sak.gjeldendeVedtak.perioder);
+    if (!gjeldendeSak || gjeldendeSak.ytelse !== Ytelse.FORELDREPENGER) {
+        return null;
     }
 
-    if (sak.åpenBehandling?.søknadsperioder) {
-        søktePerioder = slåSammenLikePerioder(sak.åpenBehandling.søknadsperioder);
-    }
-    const erUttaksplanVedtatt = !!vedtattUttaksplan;
-    const annenPartsPerioderForVisning =
-        annenPartsPerioder !== undefined
-            ? getPerioderForVisning(
-                  slåSammenLikePerioder(annenPartsPerioder).filter((p) => skalAnnenPartsPeriodeVises(p, termindato)),
-                  true,
-              )
-            : undefined;
-    let annenPartsPlan: Periode[] = [];
-    let søkersPlan = erUttaksplanVedtatt ? vedtattUttaksplan : søktePerioder;
-    if (søkersPlan && annenPartsPerioderForVisning) {
-        const { normaliserteEgnePerioder, normaliserteAnnenPartsPerioder } = normaliserPerioder(
-            søkersPlan,
-            annenPartsPerioderForVisning,
-        );
-        søkersPlan = normaliserteEgnePerioder;
-        const filtrerteAnnenPartsPerioder = filtrerAnnenPartsUttakNårIkkeSamtidigUttak(
-            normaliserteAnnenPartsPerioder,
-            søkersPlan,
-        );
-        annenPartsPlan = leggTilVisningsInfo(filtrerteAnnenPartsPerioder, søkersPlan);
-    }
-    const annenPartsPlanUtenOverlapp = annenPartsPlan ? annenPartsPlan.filter((p) => p.visIPlan) : [];
-    const annenPartsOverlappendePerioder = annenPartsPlan ? annenPartsPlan.filter((p) => !p.visIPlan) : [];
-    const allePerioderForVisning = søkersPlan
-        ? Periodene(søkersPlan.concat(annenPartsPlanUtenOverlapp)).sort()
-        : annenPartsPlan;
-    const filtrertPlan = getCleanedPlanForVisning(allePerioderForVisning, erUttaksplanVedtatt);
-    const tidligerePerioder = filtrertPlan ? finnTidligerePerioder(filtrertPlan) : undefined;
-    const nåværendePerioder = filtrertPlan ? finnNåværendePerioder(filtrertPlan) : undefined;
-    const fremtidligePerioder = filtrertPlan ? finnFremtidigePerioder(filtrertPlan) : undefined;
-    const kunTidligerePerioderFinnes =
-        (nåværendePerioder === undefined || nåværendePerioder.length === 0) &&
-        (fremtidligePerioder === undefined || fremtidligePerioder.length === 0);
-    let tekstForVedtattPlan = '';
-    if (visHelePlanen || !kunTidligerePerioderFinnes) {
-        tekstForVedtattPlan = 'Du har fått vedtatt planen nedenfor.';
-    }
+    const søkersPerioder = gjeldendeSak.gjeldendeVedtak?.perioder;
+    const perioderSomErSøktOm = gjeldendeSak.åpenBehandling?.søknadsperioder;
+    const familiehendelse = gjeldendeSak.familiehendelse;
+    const sakTilhørerMor = gjeldendeSak.sakTilhørerMor;
+    const gjelderAdopsjon = gjeldendeSak.gjelderAdopsjon;
+    const rettighetType = gjeldendeSak.rettighetType;
+
+    const getRelevantePerioder = () => {
+        return søkersPerioder ?? perioderSomErSøktOm;
+    };
+
+    const søkerErFarEllerMedmor = !sakTilhørerMor;
+    const bareFarHarRett = rettighetType === RettighetType.BARE_SØKER_RETT && !sakTilhørerMor;
+    const erDeltUttak = rettighetType === RettighetType.BEGGE_RETT;
+    const morHarRett = sakTilhørerMor && (RettighetType.BEGGE_RETT || RettighetType.BARE_SØKER_RETT);
+    const søkerErAleneOmOmsorg = rettighetType === RettighetType.ALENEOMSORG;
+    const harAktivitetskravIPeriodeUtenUttak = !erDeltUttak && !morHarRett && !søkerErAleneOmOmsorg;
+    const familiehendelseDato = getFamiliehendelseDato(familiehendelse);
+    const barn = getBarnFraSak(familiehendelse, gjelderAdopsjon);
+    const familiesituasjon = utledFamiliesituasjon(familiehendelse, gjelderAdopsjon);
 
     return (
-        <>
-            <div className={bem.element('header')}>
-                <div className={bem.element('header-tekst')}>
-                    {erUttaksplanVedtatt && <BodyLong> {tekstForVedtattPlan} </BodyLong>}
-                    {!erUttaksplanVedtatt && <BodyLong> Du har søkt om planen nedenfor. </BodyLong>}
-                    {!erUttaksplanVedtatt && <BodyLong> Planen er ikke vedtatt av NAV ennå. </BodyLong>}
-                </div>
-                {(visHelePlanen || !kunTidligerePerioderFinnes) && (
-                    <Button
-                        as={Link}
-                        href={NavRoutes.FORELDREPENGESOKNAD}
-                        variant="secondary"
-                        icon={<Edit aria-hidden />}
-                        iconPosition="right"
-                    >
-                        Endre plan
-                    </Button>
-                )}
-            </div>
-            <PeriodeOversikt
-                tidligerePerioder={tidligerePerioder}
-                nåværendePerioder={nåværendePerioder}
-                fremtidigePerioder={fremtidligePerioder}
-                sak={sak}
-                visHelePlanen={visHelePlanen}
-                navnPåSøker={navnPåSøker}
-                navnAnnenForelder={navnAnnenForelder}
-                overlappendePerioderAnnenPart={annenPartsOverlappendePerioder}
-            />
-        </>
+        <UttaksplanNy
+            barn={barn}
+            erFarEllerMedmor={søkerErFarEllerMedmor}
+            familiehendelsedato={familiehendelseDato}
+            navnPåForeldre={navnPåForeldre}
+            annenPartsPerioder={annenPartsPerioder}
+            søkersPerioder={getRelevantePerioder() || []}
+            gjelderAdopsjon={gjelderAdopsjon}
+            bareFarHarRett={bareFarHarRett}
+            familiesituasjon={familiesituasjon}
+            førsteUttaksdagNesteBarnsSak={undefined}
+            harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
+        />
     );
 };
 

@@ -3,41 +3,32 @@ import { FunctionComponent } from 'react';
 
 import { Accordion } from '@navikt/ds-react';
 
-import { Barn, FamiliehendelseType, Periode, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-common';
-import { isValidTidsperiode } from '@navikt/fp-utils';
+import { isValidTidsperiodeString } from '@navikt/fp-utils';
+import { notEmpty } from '@navikt/fp-validation';
 
+import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
 import Permisjonsperiode from '../../types/Permisjonsperiode';
+import { Planperiode } from '../../types/Planperiode';
 import { mapPerioderToPermisjonsperiode } from '../../utils/permisjonsperiodeUtils';
 import PeriodeListeItem from './../periode-liste-item/PeriodeListeItem';
 
 interface Props {
-    perioder: Periode[];
-    familiehendelsedato: string;
-    barn: Barn;
+    perioder: Planperiode[];
 }
 
 const getIndexOfFørstePeriodeEtterFødsel = (permisjonsperioder: Permisjonsperiode[], familiehendelsesdato: string) => {
     return permisjonsperioder.findIndex(
-        (p) => isValidTidsperiode(p.tidsperiode) && dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'd'),
+        (p) =>
+            isValidTidsperiodeString(p.tidsperiode) &&
+            dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'd'),
     );
 };
 
-const getFamiliehendelseType = (barn: Barn) => {
-    if (isUfødtBarn(barn)) {
-        return FamiliehendelseType.TERM;
-    }
+const PeriodeListe: FunctionComponent<Props> = ({ perioder }) => {
+    const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
 
-    if (isAdoptertBarn(barn)) {
-        return FamiliehendelseType.ADOPSJON;
-    }
-
-    return FamiliehendelseType.FØDSEL;
-};
-
-const PeriodeListe: FunctionComponent<Props> = ({ perioder, familiehendelsedato, barn }) => {
     const permisjonsperioder = mapPerioderToPermisjonsperiode(perioder, familiehendelsedato);
     const indexOfFørstePeriodeEtterFødsel = getIndexOfFørstePeriodeEtterFødsel(permisjonsperioder, familiehendelsedato);
-    const familiehendelseType = getFamiliehendelseType(barn);
 
     return (
         <div>
@@ -46,14 +37,9 @@ const PeriodeListe: FunctionComponent<Props> = ({ perioder, familiehendelsedato,
                     return (
                         <>
                             {indexOfFørstePeriodeEtterFødsel === index ? (
-                                <PeriodeListeItem
-                                    permisjonsperiode={p}
-                                    familiehendelsedato={familiehendelsedato}
-                                    erFamiliehendelse={true}
-                                    familiehendelseType={familiehendelseType}
-                                />
+                                <PeriodeListeItem permisjonsperiode={p} erFamiliehendelse={true} />
                             ) : null}
-                            <PeriodeListeItem permisjonsperiode={p} familiehendelsedato={familiehendelsedato} />
+                            <PeriodeListeItem permisjonsperiode={p} />
                         </>
                     );
                 })}

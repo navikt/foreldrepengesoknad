@@ -34,8 +34,10 @@ import Tidslinje from 'app/sections/tidslinje/Tidslinje';
 import { RedirectSource } from 'app/types/RedirectSource';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
-import { getNavnAnnenForelder } from 'app/utils/sakerUtils';
 import { getRelevantNyTidslinjehendelse } from 'app/utils/tidslinjeUtils';
+
+import { getNavnPåForeldre } from '../../utils/personUtils';
+import { getNavnAnnenForelder } from '../../utils/sakerUtils';
 
 interface Props {
     søkerinfo: SøkerinfoDTO;
@@ -112,9 +114,6 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
         return <Alert variant="warning">{`Vi finner ingen sak med saksnummer: ${params.saksnummer}.`}</Alert>;
     }
 
-    const navnPåSøker = søkerinfo.søker.fornavn;
-    const navnAnnenForelder = getNavnAnnenForelder(søkerinfo, gjeldendeSak);
-
     return (
         <VStack gap="4">
             {visBekreftelsePåSendtSøknad && (
@@ -144,29 +143,36 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
                 <section className="mb-12">
                     <LenkePanel tittel="Se hele prosessen" to={OversiktRoutes.TIDSLINJEN} />
                 </section>
+                <HGrid gap="4" columns={{ sm: 1, md: 2 }} className="mb-12">
+                    <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
+                    <LenkePanel tittel="Ettersend dokumenter" to={OversiktRoutes.ETTERSEND} Ikon={FilesIcon} />
+                </HGrid>
+
+                {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
+                    <div>
+                        <ContentSection
+                            heading={
+                                gjeldendeSak.gjeldendeVedtak?.perioder
+                                    ? intl.formatMessage({ id: 'saksoversikt.dinPlan.vedtatt' })
+                                    : intl.formatMessage({ id: 'saksoversikt.dinPlan.søktOm' })
+                            }
+                            // Fordi annenPartsVedtakQuery kan være et disabled query må man bruke isLoading heller enn isPending:
+                            // https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading
+                            showSkeleton={annenPartsVedtakQuery.isLoading}
+                            skeletonProps={{ height: '210px', variant: 'rounded' }}
+                        >
+                            <DinPlan
+                                annenPartsPerioder={annenPartsVedtakQuery.data?.perioder}
+                                navnPåForeldre={getNavnPåForeldre(
+                                    gjeldendeSak,
+                                    søkerinfo.søker.fornavn,
+                                    getNavnAnnenForelder(søkerinfo, gjeldendeSak),
+                                )}
+                            />
+                        </ContentSection>
+                    </div>
+                )}
             </VStack>
-            <HGrid gap="4" columns={{ sm: 1, md: 2 }}>
-                <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
-                <LenkePanel tittel="Ettersend dokumenter" to={OversiktRoutes.ETTERSEND} Ikon={FilesIcon} />
-            </HGrid>
-            {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
-                <ContentSection
-                    heading={intl.formatMessage({ id: 'saksoversikt.dinPlan' })}
-                    // Fordi annenPartsVedtakQuery kan være et disabled query må man bruke isLoading heller enn isPending:
-                    // https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading
-                    showSkeleton={annenPartsVedtakQuery.isLoading}
-                    skeletonProps={{ height: '210px', variant: 'rounded' }}
-                >
-                    <DinPlan
-                        sak={gjeldendeSak}
-                        visHelePlanen={false}
-                        navnPåSøker={navnPåSøker}
-                        navnAnnenForelder={navnAnnenForelder}
-                        annenPartsPerioder={annenPartsVedtakQuery.data?.perioder}
-                        termindato={gjeldendeSak.familiehendelse.termindato}
-                    />
-                </ContentSection>
-            )}
         </VStack>
     );
 };

@@ -1,5 +1,5 @@
 import { UtsettelseÅrsakType } from '@navikt/fp-common';
-import { isValidTidsperiode } from '@navikt/fp-utils';
+import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { QuestionConfig, Questions } from '../../../formik-wrappers';
 import { PeriodeUtsettelseFormData, PeriodeUtsettelseFormField } from './periodeUtsettelseFormConfig';
@@ -25,7 +25,7 @@ const PeriodeUtsettelseFormConfig: QuestionConfig<PeriodeUtsettelseFormConfigPay
     [PeriodeUtsettelseFormField.årsak]: {
         isAnswered: ({ values }) => hasValue(values.årsak),
         isIncluded: () => true,
-        visibilityFilter: ({ values }) => isValidTidsperiode({ fom: values.fom, tom: values.tom }),
+        visibilityFilter: ({ values }) => isValidTidsperiodeString({ fom: values.fom, tom: values.tom }),
     },
     [PeriodeUtsettelseFormField.bekrefterArbeidIPerioden]: {
         isAnswered: ({ values }) =>

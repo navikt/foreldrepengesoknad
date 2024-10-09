@@ -18,7 +18,7 @@ import {
 } from '@navikt/fp-common';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { formatDate, formatDateIso, isValidTidsperiode } from '@navikt/fp-utils';
+import { formatDate, formatDateIso, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import Block from '../../common/block/Block';
 import { getAnnenForelderSamtidigUttakPeriode } from '../../utils/periodeUtils';
@@ -58,7 +58,9 @@ interface Props {
 
 const getIndexOfFørstePeriodeEtterFødsel = (uttaksplan: Periode[], familiehendelsesdato: Date) => {
     return uttaksplan.findIndex(
-        (p) => isValidTidsperiode(p.tidsperiode) && dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'd'),
+        (p) =>
+            isValidTidsperiodeString(p.tidsperiode) &&
+            dayjs(p.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'd'),
     );
 };
 

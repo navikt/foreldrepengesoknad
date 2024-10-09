@@ -1,10 +1,11 @@
+import { SaksperiodeNy } from '@navikt/fp-types';
+
 import { BehandlingTilstand } from './BehandlingTilstand';
-import { Periode } from './Periode';
 import { SøknadSVP } from './SøknadSVP';
 
 export interface ÅpenBehandlingFP {
     tilstand: BehandlingTilstand;
-    søknadsperioder?: Periode[];
+    søknadsperioder?: SaksperiodeNy[];
 }
 
 export interface ÅpenBehandlingSVP {

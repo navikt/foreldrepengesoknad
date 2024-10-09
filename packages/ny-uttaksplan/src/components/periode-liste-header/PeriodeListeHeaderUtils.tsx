@@ -1,6 +1,7 @@
 import {
     BabyWrappedFillIcon,
     BandageFillIcon,
+    BriefcaseFillIcon,
     CloudFillIcon,
     HeartFillIcon,
     InformationSquareFillIcon,
@@ -8,6 +9,7 @@ import {
 } from '@navikt/aksel-icons';
 
 import { Forelder, NavnPåForeldre } from '@navikt/fp-common';
+import { Familiesituasjon, UtsettelseÅrsakType } from '@navikt/fp-types';
 
 type GetFargeProps = {
     erPeriodeUtenUttak: boolean;
@@ -99,32 +101,60 @@ type GetTekstProps = {
     erPeriodeUtenUttak: boolean;
     erSamtidigUttak: boolean;
     erHull: boolean | undefined;
-    erUtsettelse: boolean | undefined;
+    utsettelseÅrsak: UtsettelseÅrsakType | undefined;
     erFamiliehendelse: boolean | undefined;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
     forelder: Forelder | undefined;
+    familiesituasjon: Familiesituasjon;
 };
 
 export const getTekst = ({
     erPeriodeUtenUttak,
     erSamtidigUttak,
     erHull,
-    erUtsettelse,
+    utsettelseÅrsak,
     erFamiliehendelse,
     navnPåForeldre,
     erFarEllerMedmor,
     forelder,
+    familiesituasjon,
 }: GetTekstProps) => {
     const navnPåForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     const erEgenPeriode = erFarEllerMedmor ? forelder === Forelder.farMedmor : forelder == Forelder.mor;
 
     if (erFamiliehendelse) {
-        return 'Fødsel';
+        switch (familiesituasjon) {
+            case 'adopsjon':
+                return 'Omsorgsovertakelse';
+            case 'fødsel':
+                return 'Fødsel';
+            default:
+                return 'Termin';
+        }
     }
 
-    if (erUtsettelse) {
-        return 'Du er innlagt';
+    if (utsettelseÅrsak !== undefined) {
+        switch (utsettelseÅrsak) {
+            case UtsettelseÅrsakType.InstitusjonSøker:
+                return 'Du er innlagt';
+            case UtsettelseÅrsakType.Sykdom:
+                return 'Du er syk';
+            case UtsettelseÅrsakType.InstitusjonBarnet:
+                return 'Barnet er innlagt';
+            case UtsettelseÅrsakType.Arbeid:
+                return 'Utsettelse grunnet arbeid';
+            case UtsettelseÅrsakType.Ferie:
+                return 'Utsettelse grunnet ferie';
+            case UtsettelseÅrsakType.HvØvelse:
+                return 'Utsettelse grunnet heimvernsøvelse';
+            case UtsettelseÅrsakType.NavTiltak:
+                return 'Utsettelse grunnet NAV tiltak';
+            case UtsettelseÅrsakType.Fri:
+                return 'Uten foreldrepenger';
+        }
+
+        return 'Utsettelse';
     }
 
     if (erHull) {
@@ -146,7 +176,7 @@ type GetIkonProps = {
     periodeFørTermindato: boolean;
     erPeriodeUtenUttak: boolean;
     erMor: boolean;
-    erUtsettelse: boolean | undefined;
+    utsettelseÅrsak: UtsettelseÅrsakType | undefined;
     erHull: boolean | undefined;
     erFamiliehendelse: boolean | undefined;
     bem: any;
@@ -157,14 +187,21 @@ export const getIkon = ({
     periodeFørTermindato,
     erMor,
     bem,
-    erUtsettelse,
+    utsettelseÅrsak,
     erHull,
     erFamiliehendelse,
 }: GetIkonProps) => {
     if (erFamiliehendelse) {
         return (
             <HeartFillIcon
-                className={getIkonFarge({ bem, erMor, erPeriodeUtenUttak, erUtsettelse, erHull, erFamiliehendelse })}
+                className={getIkonFarge({
+                    bem,
+                    erMor,
+                    erPeriodeUtenUttak,
+                    erUtsettelse: utsettelseÅrsak !== undefined,
+                    erHull,
+                    erFamiliehendelse,
+                })}
                 width={24}
                 height={24}
             />
@@ -174,17 +211,48 @@ export const getIkon = ({
     if (erHull) {
         return (
             <InformationSquareFillIcon
-                className={getIkonFarge({ bem, erMor, erPeriodeUtenUttak, erUtsettelse, erHull, erFamiliehendelse })}
+                className={getIkonFarge({
+                    bem,
+                    erMor,
+                    erPeriodeUtenUttak,
+                    erUtsettelse: utsettelseÅrsak !== undefined,
+                    erHull,
+                    erFamiliehendelse,
+                })}
                 width={24}
                 height={24}
             />
         );
     }
 
-    if (erUtsettelse) {
+    if (utsettelseÅrsak !== undefined) {
+        if (utsettelseÅrsak === UtsettelseÅrsakType.Arbeid || utsettelseÅrsak === UtsettelseÅrsakType.Fri) {
+            return (
+                <BriefcaseFillIcon
+                    className={getIkonFarge({
+                        bem,
+                        erMor,
+                        erPeriodeUtenUttak,
+                        erUtsettelse: utsettelseÅrsak !== undefined,
+                        erHull,
+                        erFamiliehendelse,
+                    })}
+                    width={24}
+                    height={24}
+                />
+            );
+        }
+
         return (
             <BandageFillIcon
-                className={getIkonFarge({ bem, erMor, erPeriodeUtenUttak, erUtsettelse, erHull, erFamiliehendelse })}
+                className={getIkonFarge({
+                    bem,
+                    erMor,
+                    erPeriodeUtenUttak,
+                    erUtsettelse: utsettelseÅrsak !== undefined,
+                    erHull,
+                    erFamiliehendelse,
+                })}
                 width={24}
                 height={24}
             />
@@ -194,7 +262,14 @@ export const getIkon = ({
     if (periodeFørTermindato) {
         return (
             <PersonPregnantFillIcon
-                className={getIkonFarge({ bem, erMor, erPeriodeUtenUttak, erUtsettelse, erHull, erFamiliehendelse })}
+                className={getIkonFarge({
+                    bem,
+                    erMor,
+                    erPeriodeUtenUttak,
+                    erUtsettelse: utsettelseÅrsak !== undefined,
+                    erHull,
+                    erFamiliehendelse,
+                })}
                 width={24}
                 height={24}
             />
@@ -204,7 +279,14 @@ export const getIkon = ({
     if (erPeriodeUtenUttak) {
         return (
             <CloudFillIcon
-                className={getIkonFarge({ bem, erMor, erPeriodeUtenUttak, erUtsettelse, erHull, erFamiliehendelse })}
+                className={getIkonFarge({
+                    bem,
+                    erMor,
+                    erPeriodeUtenUttak,
+                    erUtsettelse: utsettelseÅrsak !== undefined,
+                    erHull,
+                    erFamiliehendelse,
+                })}
                 width={24}
                 height={24}
             />
@@ -213,7 +295,14 @@ export const getIkon = ({
 
     return (
         <BabyWrappedFillIcon
-            className={getIkonFarge({ bem, erMor, erPeriodeUtenUttak, erUtsettelse, erHull, erFamiliehendelse })}
+            className={getIkonFarge({
+                bem,
+                erMor,
+                erPeriodeUtenUttak,
+                erUtsettelse: utsettelseÅrsak !== undefined,
+                erHull,
+                erFamiliehendelse,
+            })}
             width={24}
             height={24}
         />

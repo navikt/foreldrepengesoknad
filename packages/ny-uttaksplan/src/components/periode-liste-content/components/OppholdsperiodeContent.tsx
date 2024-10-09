@@ -1,30 +1,34 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { NavnPåForeldre, Oppholdsperiode } from '@navikt/fp-common';
-import { Tidsperioden, formatDateExtended } from '@navikt/fp-utils';
+import { NavnPåForeldre } from '@navikt/fp-common';
+import { TidsperiodenString, formatDateExtended } from '@navikt/fp-utils';
 
+import { Planperiode } from '../../../types/Planperiode';
 import { getVarighetString } from '../../../utils/dateUtils';
+import { getOppholdskontoNavn } from '../../../utils/periodeUtils';
 
 interface Props {
-    periode: Oppholdsperiode;
+    periode: Planperiode;
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
     inneholderKunEnPeriode: boolean;
 }
 
-const OppholdsperiodeContent: FunctionComponent<Props> = ({
-    periode,
-    inneholderKunEnPeriode,
-    erFarEllerMedmor,
-    navnPåForeldre,
-}) => {
+const getLengdePåPeriode = (intl: IntlShape, inneholderKunEnPeriode: boolean, periode: Planperiode) => {
+    if (inneholderKunEnPeriode) {
+        return intl.formatMessage({ id: 'uttaksplan.varighet.helePerioden' });
+    }
+
+    return `${formatDateExtended(periode.fom)} - ${formatDateExtended(periode.tom)}`;
+};
+
+const OppholdsPeriodeContent = ({ periode, inneholderKunEnPeriode, erFarEllerMedmor, navnPåForeldre }: Props) => {
     const intl = useIntl();
 
-    const navnPåForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
+    const navnPåAnnenForelder = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
 
     return (
         <div style={{ marginBottom: '1rem', display: 'flex' }}>
@@ -33,26 +37,22 @@ const OppholdsperiodeContent: FunctionComponent<Props> = ({
             </div>
             <div>
                 <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
-                    {inneholderKunEnPeriode ? (
-                        <BodyShort weight="semibold">Hele perioden</BodyShort>
-                    ) : (
-                        <>
-                            <BodyShort weight="semibold">
-                                {formatDateExtended(periode.tidsperiode.fom)} -{' '}
-                                {formatDateExtended(periode.tidsperiode.tom)}
-                            </BodyShort>
-                            <BodyShort>
-                                {getVarighetString(Tidsperioden(periode.tidsperiode).getAntallUttaksdager(), intl)}
-                            </BodyShort>
-                        </>
-                    )}
+                    <BodyShort weight="semibold">{getLengdePåPeriode(intl, inneholderKunEnPeriode, periode)}</BodyShort>
+                    <BodyShort>
+                        {getVarighetString(
+                            TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),
+                            intl,
+                        )}
+                    </BodyShort>
                 </div>
                 <div style={{ marginLeft: '1rem' }}>
-                    <BodyShort>{`${periode.årsak} for ${navnPåForelder}`}</BodyShort>
+                    <BodyShort>
+                        {getOppholdskontoNavn(intl, periode.oppholdÅrsak!, navnPåAnnenForelder, !erFarEllerMedmor)}
+                    </BodyShort>
                 </div>
             </div>
         </div>
     );
 };
 
-export default OppholdsperiodeContent;
+export default OppholdsPeriodeContent;

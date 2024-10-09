@@ -86,8 +86,13 @@ const getRoute = (route: string, saksnummer: string | undefined): string => {
     if (route === OversiktRoutes.DOKUMENTER) {
         return `${sakRoute}/${OversiktRoutes.DOKUMENTER}`;
     }
+
     if (route === OversiktRoutes.ETTERSEND) {
         return `${sakRoute}/${OversiktRoutes.ETTERSEND}`;
+    }
+
+    if (route === OversiktRoutes.TIDSLINJEN) {
+        return `${sakRoute}/${OversiktRoutes.TIDSLINJEN}`;
     }
 
     return route;

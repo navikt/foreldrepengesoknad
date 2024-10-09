@@ -4,7 +4,6 @@ import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-ro
 import { Breadcrumb } from 'app/components/breadcrumb/Breadcrumb';
 import Snarveier from 'app/components/snarveier/Snarveier';
 import { default as SakComponent } from 'app/pages/Sak';
-import DinPlanPage from 'app/pages/din-plan-page/DinPlanPage';
 import DokumenterPage from 'app/pages/dokumenter-page/DokumenterPage';
 import EttersendingPage from 'app/pages/ettersending/EttersendingPage';
 import Forside from 'app/pages/forside/Forside';
@@ -44,7 +43,6 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
                                 index
                                 element={<Saksoversikt søkerinfo={søkerinfo} isFirstRender={isFirstRender} />}
                             />
-                            <Route path={OversiktRoutes.DIN_PLAN} element={<DinPlanPage søkerinfo={søkerinfo} />} />
                             <Route path={OversiktRoutes.DOKUMENTER} element={<DokumenterPage />} />
                             <Route
                                 path={OversiktRoutes.TIDSLINJEN}

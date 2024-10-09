@@ -11,7 +11,7 @@ import {
     Situasjon,
     Utsettelsesperiode,
 } from '@navikt/fp-common';
-import { Tidsperioden, isValidTidsperiode } from '@navikt/fp-utils';
+import { Tidsperioden, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import ActionLink from '../../../common/action-link/ActionLink';
 import Block from '../../../common/block/Block';
@@ -135,7 +135,10 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                 const periodenErKunHelligdager = antallHelligdager === antallUttaksdager;
                 return (
                     <>
-                        <Block visible={!isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="xl">
+                        <Block
+                            visible={!isValidTidsperiodeString({ fom: values.fom!, tom: values.tom! })}
+                            padBottom="xl"
+                        >
                             <TidsperiodeForm
                                 tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                 familiehendelsesdato={familiehendelsesdato}
@@ -160,7 +163,10 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                 />
                             )}
 
-                            <Block visible={isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="xl">
+                            <Block
+                                visible={isValidTidsperiodeString({ fom: values.fom!, tom: values.tom! })}
+                                padBottom="xl"
+                            >
                                 <TidsperiodeDisplay
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                     toggleVisTidsperiode={toggleVisTidsperiode}

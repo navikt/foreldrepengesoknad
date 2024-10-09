@@ -1,20 +1,19 @@
-import { Periode } from '@navikt/fp-common';
-
+import { Planperiode } from '../types/Planperiode';
 import { leggTilPeriode } from './leggTilPeriode';
 import { slettPeriode } from './slettPeriode';
 import { slåSammenLikePerioder } from './uttaksplanbuilderUtils';
 
 interface OppdaterPeriodeParams {
-    perioder: Periode[];
-    endretPeriode: Periode;
-    originalPeriode: Periode;
-    familiehendelsesdato: Date;
+    perioder: Planperiode[];
+    endretPeriode: Planperiode;
+    originalPeriode: Planperiode;
+    familiehendelsesdato: string;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     erAdopsjon: boolean;
     bareFarHarRett: boolean;
     erFarEllerMedmor: boolean;
-    annenPartsUttak: Periode[] | undefined;
-    førsteUttaksdagNesteBarnsSak: Date | undefined;
+    annenPartsUttak: Planperiode[] | undefined;
+    førsteUttaksdagNesteBarnsSak: string | undefined;
 }
 
 export const oppdaterPeriode = ({
@@ -28,7 +27,7 @@ export const oppdaterPeriode = ({
     erFarEllerMedmor,
     annenPartsUttak,
     førsteUttaksdagNesteBarnsSak,
-}: OppdaterPeriodeParams): Periode[] => {
+}: OppdaterPeriodeParams): Planperiode[] => {
     const perioderSlettetEndretPeriode = slåSammenLikePerioder(
         slettPeriode({
             perioder,
