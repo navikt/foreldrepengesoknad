@@ -1,5 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import SøknadRoutes from 'appData/routes';
 import { HttpResponse, http } from 'msw';
@@ -90,6 +91,14 @@ const søkerInfoMann = {
     fødselsdato: '1972-06-07',
 } as Søker;
 
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+        },
+    },
+});
+
 const promiseAction =
     () =>
     (...args: any): Promise<any> => {
@@ -117,24 +126,26 @@ const meta = {
         initAmplitude();
 
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.FORDELING]}>
-                <FpDataContext
-                    onDispatch={gåTilNesteSide}
-                    initialState={{
-                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                        [ContextDataType.OM_BARNET]: barnet,
-                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                            harHattAndreInntektskilder: false,
-                            harJobbetSomFrilans: false,
-                            harJobbetSomSelvstendigNæringsdrivende: false,
-                        },
-                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                        [ContextDataType.PERIODE_MED_FORELDREPENGER]: dekningsgrad,
-                    }}
-                >
-                    <FordelingSteg {...rest} />
-                </FpDataContext>
-            </MemoryRouter>
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter initialEntries={[SøknadRoutes.FORDELING]}>
+                    <FpDataContext
+                        onDispatch={gåTilNesteSide}
+                        initialState={{
+                            [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                            [ContextDataType.OM_BARNET]: barnet,
+                            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                                harHattAndreInntektskilder: false,
+                                harJobbetSomFrilans: false,
+                                harJobbetSomSelvstendigNæringsdrivende: false,
+                            },
+                            [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: dekningsgrad,
+                        }}
+                    >
+                        <FordelingSteg {...rest} />
+                    </FpDataContext>
+                </MemoryRouter>
+            </QueryClientProvider>
         );
     },
 } satisfies Meta<StoryArgs>;
@@ -144,14 +155,14 @@ type Story = StoryObj<typeof meta>;
 
 //ALENEOMSORG
 
-const DEFAULT_STØNADSKONTO = { kontoer: {}, minsteretter: {} } as TilgjengeligeStønadskontoerForDekningsgrad;
+const DEFAULT_STØNADSKONTO = { kontoer: [{}], minsteretter: {} } as TilgjengeligeStønadskontoerForDekningsgrad;
 
 export const MorAleneomsorgDekning80EttBarnFør1Okt2021: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': {
                             kontoer: [
@@ -206,8 +217,8 @@ export const MorAleneomsorgEttBarnPrematurFødsel: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -266,8 +277,8 @@ export const MorAleneomsorgAdopsjonTrillinger: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -314,8 +325,8 @@ export const FarMedmorAleneomsorgFødtTvillinger: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -366,8 +377,8 @@ export const FarMedmorAleneomsorgFødtFireBarnFør1Okt2021: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -418,8 +429,8 @@ export const FarMedmorAleneomsorgFødtTreBarnFørWLB: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -470,8 +481,8 @@ export const FarMedmorAleneomsorgEttBarnTerminEtterWLB: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -521,8 +532,8 @@ export const FarMedmorAleneomsorgPrematurtFødtBarn: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -577,8 +588,8 @@ export const FarMedmorAleneomsorgAdopsjonFireBarn: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -630,8 +641,8 @@ export const MorDeltUttakEttBarnPrematurFødsel: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(undefined, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -697,8 +708,8 @@ export const MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': {
                             kontoer: [
@@ -763,8 +774,8 @@ export const MorDeltUttakEttBarnTermin: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -825,8 +836,8 @@ export const MorDeltUttakTvillingerFødt: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -892,8 +903,8 @@ export const MorDeltUttakFarSøkteMorsKvoteOgFellesperiode: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => HttpResponse.json(vedtakFar)),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => HttpResponse.json(vedtakFar)),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -954,8 +965,8 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -1017,8 +1028,8 @@ export const FarMedmorSøkerDeltUttakTrillingerFødtFørWLB: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -1084,8 +1095,8 @@ export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -1146,8 +1157,8 @@ export const FarMedmorSøkerDeltUttakEttBarnFødtPrematurt: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -1213,8 +1224,8 @@ export const FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => HttpResponse.json(vedtakMor)),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => HttpResponse.json(vedtakMor)),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -1276,8 +1287,8 @@ export const FarSøkerAdopsjonToBarn: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -1335,8 +1346,8 @@ export const MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80: Stor
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': {
                             kontoer: [
@@ -1397,8 +1408,8 @@ export const MorSøkerFarHarRettIEØSTerminDekningsgrad80: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': {
                             kontoer: [
@@ -1461,8 +1472,8 @@ export const FarMedmorSøkerMorHarRettIEØSAdopsjon: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -1524,8 +1535,8 @@ export const BareMorHarRettTermin: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -1574,8 +1585,8 @@ export const BareMorHarRettAdopsjon: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -1625,8 +1636,8 @@ export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -1680,8 +1691,8 @@ export const BareFarHarRettOgMorErIkkeUførFødtBarn: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -1736,8 +1747,8 @@ export const BareFarHarRettTvillingerFødtFør1Okt2021: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {
@@ -1788,8 +1799,8 @@ export const BareFarHarRettAdopsjonMorErUfør: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': DEFAULT_STØNADSKONTO,
                         '100': {

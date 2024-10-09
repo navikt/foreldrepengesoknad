@@ -1,4 +1,3 @@
-import Environment from 'Environment';
 import React, { FunctionComponent, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { IntlShape } from 'react-intl';
@@ -11,6 +10,7 @@ import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { formatDateShortYear } from '@navikt/fp-utils';
 
+import Environment from '../../../Environment';
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
 
 type Perioder = Array<{

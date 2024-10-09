@@ -1,5 +1,4 @@
 import * as Sentry from '@sentry/browser';
-import Environment from 'Environment';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +10,7 @@ import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
 import { LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
+import Environment from '../Environment';
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
 import SøknadRoutes from './routes';
 

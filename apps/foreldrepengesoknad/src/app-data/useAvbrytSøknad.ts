@@ -1,11 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
-import Environment from 'Environment';
 import ky from 'ky';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
+import Environment from '../Environment';
 import { useContextReset } from './FpDataContext';
 
 export const useAvbrytSøknad = (

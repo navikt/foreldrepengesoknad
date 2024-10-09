@@ -50,7 +50,6 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
     const annenPartVedtakQuery = useQuery(
         annenPartVedtakOptions(annenPartVedtakParams, !suspendAnnenPartVedtakApiRequest),
     );
-
     const suspendStønadskontoApiRequests = suspendAnnenPartVedtakApiRequest ? false : annenPartVedtakQuery.isPending;
 
     const stønadskontoParams = getStønadskontoParams(
@@ -68,6 +67,14 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
     const visAnnenPartsValg = annenPartVedtakQuery.data && annenPartVedtakQuery.data.perioder.length > 0;
     const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && !annenPartVedtakQuery.data;
 
+    if (tilgjengeligeStønadskontoerQuery.isPending) {
+        return (
+            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
+                <Loader size="2xlarge" />
+            </div>
+        );
+    }
+
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
@@ -75,11 +82,6 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
             onContinueLater={navigator.fortsettSøknadSenere}
             steps={stepConfig}
         >
-            {!tilgjengeligeStønadskontoerQuery.data && (
-                <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-                    <Loader size="2xlarge" />
-                </div>
-            )}
             {tilgjengeligeStønadskontoerQuery.data && (
                 <>
                     {vis1Juli2024Info && (

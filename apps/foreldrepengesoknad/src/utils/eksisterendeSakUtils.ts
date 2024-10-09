@@ -168,7 +168,12 @@ export const mapAnnenPartsEksisterendeSakFromDTO = (
     familiehendelsesdato: string,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
 ): EksisterendeSak | undefined => {
-    if (eksisterendeSakAnnenPart === undefined || eksisterendeSakAnnenPart === null) {
+    if (
+        eksisterendeSakAnnenPart === undefined ||
+        eksisterendeSakAnnenPart === null ||
+        //@ts-ignore Dette skjer i Storybook av ein eller annan grunn. Ser ut som ein bug i chrome da logging av variabel gir undefined
+        eksisterendeSakAnnenPart === ''
+    ) {
         return undefined;
     }
     const erAnnenPartsSak = true;

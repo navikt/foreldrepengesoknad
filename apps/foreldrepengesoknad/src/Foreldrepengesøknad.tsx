@@ -5,7 +5,6 @@ import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { BrowserRouter } from 'react-router-dom';
 import { SakerOppslag } from 'types/SakerOppslag';
 
 import { Loader } from '@navikt/ds-react';
@@ -49,19 +48,19 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
 
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
 
-    const søkerinfo = useQuery({
+    const søkerinfoQuery = useQuery({
         queryKey: ['SØKERINFO'],
         queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/sokerinfo`).json<Søkerinfo>(),
     });
 
-    const saker = useQuery({
+    const sakerQuery = useQuery({
         queryKey: ['SAKER'],
         queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/innsyn/v2/saker`).json<SakerOppslag>(),
     });
 
-    const mellomlagretInfo = useQuery({
+    const mellomlagretInfoQuery = useQuery({
         queryKey: ['MELLOMLAGRET_INFO'],
-        queryFn: async () => await ky.get(`${Environment.PUBLIC_PATH}/rest/storage/foreldrepenger`).text(),
+        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/storage/foreldrepenger`).text(),
         select: (text: string) => {
             // TODO (TOR) Ta vekk parsing her etter at ny uttaksplan (og rydding av andre Date i context) er gjort
             return storageParser(text) as FpMellomlagretData;
@@ -71,30 +70,30 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
     const [kvittering, setKvittering] = useState<Kvittering>();
 
     useEffect(() => {
-        if (søkerinfo.error) {
-            Sentry.captureMessage(søkerinfo.error.message);
+        if (søkerinfoQuery.error) {
+            Sentry.captureMessage(søkerinfoQuery.error.message);
             throw new Error(
                 `Vi klarte ikke å hente informasjon om deg. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
             );
         }
-        if (saker.error) {
-            Sentry.captureMessage(saker.error.message);
+        if (sakerQuery.error) {
+            Sentry.captureMessage(sakerQuery.error.message);
             throw new Error(
                 `Vi klarte ikke å hente informasjon om sakene dine. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
             );
         }
-    }, [søkerinfo.error, saker.error]);
+    }, [søkerinfoQuery.error, sakerQuery.error]);
 
-    const applyStorage = mellomlagretInfo.data !== undefined && shouldApplyStorage(mellomlagretInfo.data);
+    const applyStorage = mellomlagretInfoQuery.data !== undefined && shouldApplyStorage(mellomlagretInfoQuery.data);
 
     // TODO (TOR) Dropp mapping her og dytt mellomlagra data inn i context rått
-    const initialState = applyStorage ? konverterMellomlagretDataTilAppData(mellomlagretInfo.data) : undefined;
+    const initialState = applyStorage ? konverterMellomlagretDataTilAppData(mellomlagretInfoQuery.data) : undefined;
 
     useEffect(() => {
-        if (mellomlagretInfo.data?.locale && mellomlagretInfo.data.locale !== locale) {
-            onChangeLocale(mellomlagretInfo.data.locale);
+        if (mellomlagretInfoQuery.data?.locale && mellomlagretInfoQuery.data.locale !== locale) {
+            onChangeLocale(mellomlagretInfoQuery.data.locale);
         }
-    }, [mellomlagretInfo.data]);
+    }, [mellomlagretInfoQuery.data]);
 
     if (kvittering) {
         if (Environment.INNSYN) {
@@ -108,28 +107,28 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
         return <div>Redirected to Innsyn</div>;
     }
 
-    if (!saker.data || !søkerinfo.data || mellomlagretInfo.isPending) {
+    if (!sakerQuery.data || !søkerinfoQuery.data || mellomlagretInfoQuery.isPending) {
         return <Spinner />;
     }
 
     return (
         <ErrorBoundary appName="Foreldrepenger" retryCallback={retryCallback}>
             <FpDataContext initialState={initialState}>
-                <BrowserRouter basename={Environment.PUBLIC_PATH}>
-                    <ForeldrepengesøknadRoutes
-                        locale={locale}
-                        onChangeLocale={onChangeLocale}
-                        søkerInfo={søkerinfo.data}
-                        saker={saker.data.foreldrepenger}
-                        currentRoute={applyStorage ? mellomlagretInfo.data.currentRoute : SøknadRoutes.VELKOMMEN}
-                        lagretErEndringssøknad={applyStorage ? mellomlagretInfo.data.søknad?.erEndringssøknad : false}
-                        lagretHarGodkjentVilkår={applyStorage ? mellomlagretInfo.data.søknad?.harGodkjentVilkår : false}
-                        lagretSøknadGjelderNyttBarn={
-                            applyStorage ? mellomlagretInfo.data.søknadGjelderEtNyttBarn : false
-                        }
-                        setKvittering={setKvittering}
-                    />
-                </BrowserRouter>
+                <ForeldrepengesøknadRoutes
+                    locale={locale}
+                    onChangeLocale={onChangeLocale}
+                    søkerInfo={søkerinfoQuery.data}
+                    saker={sakerQuery.data.foreldrepenger}
+                    currentRoute={applyStorage ? mellomlagretInfoQuery.data.currentRoute : SøknadRoutes.VELKOMMEN}
+                    lagretErEndringssøknad={applyStorage ? mellomlagretInfoQuery.data.søknad?.erEndringssøknad : false}
+                    lagretHarGodkjentVilkår={
+                        applyStorage ? mellomlagretInfoQuery.data.søknad?.harGodkjentVilkår : false
+                    }
+                    lagretSøknadGjelderNyttBarn={
+                        applyStorage ? mellomlagretInfoQuery.data.søknadGjelderEtNyttBarn : false
+                    }
+                    setKvittering={setKvittering}
+                />
             </FpDataContext>
         </ErrorBoundary>
     );

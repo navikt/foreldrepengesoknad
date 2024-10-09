@@ -1,6 +1,5 @@
 import * as Sentry from '@sentry/browser';
 import { useMutation } from '@tanstack/react-query';
-import Environment from 'Environment';
 import { FEIL_VED_INNSENDING, UKJENT_UUID, getSøknadsdataForInnsending } from 'api/apiUtils';
 import ky, { HTTPError } from 'ky';
 import { Kvittering } from 'types/Kvittering';
@@ -10,6 +9,7 @@ import { useAbortSignal } from '@navikt/fp-api';
 import { LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
+import Environment from '../Environment';
 import { ContextDataType, useContextGetAnyData } from './FpDataContext';
 
 const useSendSøknad = (

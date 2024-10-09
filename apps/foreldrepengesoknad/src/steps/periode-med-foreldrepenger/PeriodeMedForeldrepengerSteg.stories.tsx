@@ -1,5 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import SøknadRoutes from 'appData/routes';
 import { HttpResponse, http } from 'msw';
@@ -104,6 +105,14 @@ const fellesProps = {
     avbrytSøknad: action('button-click'),
 };
 
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+        },
+    },
+});
+
 type StoryArgs = {
     søkersituasjon: SøkersituasjonFp;
     annenForelder: AnnenForelder;
@@ -117,23 +126,25 @@ const meta = {
     render: ({ gåTilNesteSide, søkersituasjon, annenForelder, barnet, ...rest }) => {
         initAmplitude();
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.PERIODE_MED_FORELDREPENGER]}>
-                <FpDataContext
-                    onDispatch={gåTilNesteSide}
-                    initialState={{
-                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                        [ContextDataType.OM_BARNET]: barnet,
-                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                            harHattAndreInntektskilder: false,
-                            harJobbetSomFrilans: false,
-                            harJobbetSomSelvstendigNæringsdrivende: false,
-                        },
-                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                    }}
-                >
-                    <PeriodeMedForeldrepengerSteg {...rest} />
-                </FpDataContext>
-            </MemoryRouter>
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter initialEntries={[SøknadRoutes.PERIODE_MED_FORELDREPENGER]}>
+                    <FpDataContext
+                        onDispatch={gåTilNesteSide}
+                        initialState={{
+                            [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                            [ContextDataType.OM_BARNET]: barnet,
+                            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                                harHattAndreInntektskilder: false,
+                                harJobbetSomFrilans: false,
+                                harJobbetSomSelvstendigNæringsdrivende: false,
+                            },
+                            [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                        }}
+                    >
+                        <PeriodeMedForeldrepengerSteg {...rest} />
+                    </FpDataContext>
+                </MemoryRouter>
+            </QueryClientProvider>
         );
     },
 } satisfies Meta<StoryArgs>;
@@ -145,8 +156,8 @@ export const FarEllerMedmorAleneomsorgFødsel: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': STØNADSKONTO_80,
                         '100': STØNADSKONTO_100,
@@ -177,8 +188,8 @@ export const FarEllerMedmorFødselOgMorHarIkkeRett: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': {
                             ...STØNADSKONTO_80,
@@ -300,8 +311,8 @@ export const MorSøkerAdopsjonMedAleneomsorg: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '100': {
                             ...STØNADSKONTO_100,
@@ -444,8 +455,8 @@ export const MorFødselDeltUttakPrematurFødsel: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '100': { ...STØNADSKONTO_100, tillegg: { prematur: 43, flerbarn: 0 } },
                         '80': { ...STØNADSKONTO_80, tillegg: { prematur: 43, flerbarn: 0 } },
@@ -481,8 +492,8 @@ export const MorAleneomsorgPrematurFødsel: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '100': {
                             ...STØNADSKONTO_100,
@@ -563,8 +574,8 @@ export const MorFødselMedTvillingFlerbarnsuker: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '100': {
                             ...STØNADSKONTO_100,
@@ -641,8 +652,8 @@ export const MorFødselAleneomsorgMedTrillingFlerbarnsuker: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () => new HttpResponse(null, { status: 200 })),
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '100': {
                             ...STØNADSKONTO_100,
@@ -714,13 +725,13 @@ export const FarEllerMedmorSøkerOgMorHarLagetUttaksplan: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () =>
                     HttpResponse.json({
                         perioder: [uttaksperiode],
                         dekningsgrad: DekningsgradDTO.HUNDRE_PROSENT,
                     }),
                 ),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': STØNADSKONTO_80,
                         '100': STØNADSKONTO_100,
@@ -779,13 +790,13 @@ export const MorMedTermin1Juli2024OgFarsSøknad: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get(UTTAKSPLAN_ANNEN_URL, () =>
+                http.post(UTTAKSPLAN_ANNEN_URL, () =>
                     HttpResponse.json({
                         perioder: [uttaksperiode],
                         dekningsgrad: DekningsgradDTO.ÅTTI_PROSENT,
                     }),
                 ),
-                http.get(STØNADSKONTO_URL, () =>
+                http.post(STØNADSKONTO_URL, () =>
                     HttpResponse.json({
                         '80': STØNADSKONTO_80,
                         '100': STØNADSKONTO_100,
