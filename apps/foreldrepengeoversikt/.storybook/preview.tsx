@@ -16,7 +16,7 @@ const scriptTag = document.createElement('script');
 scriptTag.type = 'text/json';
 scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
-    PUBLIC_PATH: '',
+    PUBLIC_PATH: 'https://oversikt',
 });
 document.head.appendChild(scriptTag);
 

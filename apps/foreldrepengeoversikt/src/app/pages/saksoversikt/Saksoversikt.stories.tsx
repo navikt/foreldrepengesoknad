@@ -17,21 +17,28 @@ import Saksoversikt from './Saksoversikt';
 
 const queryClient = new QueryClient();
 
+type StoryArgs = {
+    søkerinfo: SøkerinfoDTO;
+};
+
 const meta = {
     title: 'Saksoversikt',
-    component: Saksoversikt,
     render: (props) => {
+        const isFirstRender = useRef(false);
         return (
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter initialEntries={[`/${OversiktRoutes.DIN_PLAN}/352011079`]}>
                     <Routes>
-                        <Route element={<Saksoversikt {...props} />} path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer`} />
+                        <Route
+                            element={<Saksoversikt {...props} isFirstRender={isFirstRender} />}
+                            path={`/${OversiktRoutes.DIN_PLAN}/:saksnummer`}
+                        />
                     </Routes>
                 </MemoryRouter>
             </QueryClientProvider>
         );
     },
-} satisfies Meta<typeof Saksoversikt>;
+} satisfies Meta<StoryArgs>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
@@ -40,17 +47,16 @@ export const Default: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get('/rest/dokument/alle', () => HttpResponse.json(dokumenter)),
-                http.get('/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
-                http.get('/rest/innsyn/tidslinje', () => HttpResponse.json(tidslinjeHendelser)),
-                http.get('/rest/historikk/vedlegg', () => HttpResponse.json(manglendeVedlegg)),
-                http.get('/rest/innsyn/v2/saker/oppdatert', () => HttpResponse.json(true)),
-                http.post('/rest/innsyn/v2/annenPartVedtak', () => HttpResponse.json(annenPartsVedtak)),
+                http.get('https://oversikt/rest/dokument/alle', () => HttpResponse.json(dokumenter)),
+                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
+                http.get('https://oversikt/rest/innsyn/tidslinje', () => HttpResponse.json(tidslinjeHendelser)),
+                http.get('https://oversikt/rest/historikk/vedlegg', () => HttpResponse.json(manglendeVedlegg)),
+                http.get('https://oversikt/rest/innsyn/v2/saker/oppdatert', () => HttpResponse.json(true)),
+                http.post('https://oversikt/rest/innsyn/v2/annenPartVedtak', () => HttpResponse.json(annenPartsVedtak)),
             ],
         },
     },
     args: {
         søkerinfo: søkerinfo as SøkerinfoDTO,
-        isFirstRender: useRef(false),
     },
 };

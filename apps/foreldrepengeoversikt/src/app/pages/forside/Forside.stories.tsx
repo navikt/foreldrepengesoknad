@@ -9,27 +9,36 @@ import søkerinfo from 'storybookData/sokerinfo/sokerinfo.json';
 import tidslinjeHendelser from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.json';
 
 import OversiktRoutes from 'app/routes/routes';
+import { SakOppslag } from 'app/types/SakOppslag';
 import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 
 import Forside from './Forside';
 
 const queryClient = new QueryClient();
 
+type StoryArgs = {
+    saker: SakOppslag;
+    søkerinfo: SøkerinfoDTO;
+};
+
 const meta = {
     title: 'Forside',
-    component: Forside,
     render: (props) => {
+        const isFirstRender = useRef(false);
         return (
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter initialEntries={[`/${OversiktRoutes.TIDSLINJEN}/352011079`]}>
                     <Routes>
-                        <Route element={<Forside {...props} />} path={`/${OversiktRoutes.TIDSLINJEN}/:saksnummer`} />
+                        <Route
+                            element={<Forside {...props} isFirstRender={isFirstRender} />}
+                            path={`/${OversiktRoutes.TIDSLINJEN}/:saksnummer`}
+                        />
                     </Routes>
                 </MemoryRouter>
             </QueryClientProvider>
         );
     },
-} satisfies Meta<typeof Forside>;
+} satisfies Meta<StoryArgs>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
@@ -38,16 +47,15 @@ export const Default: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get('/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
-                http.get('/rest/innsyn/tidslinje', () => HttpResponse.json(tidslinjeHendelser)),
-                http.get('/rest/historikk/vedlegg', () => HttpResponse.json(manglendeVedlegg)),
+                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
+                http.get('https://oversikt/rest/innsyn/tidslinje', () => HttpResponse.json(tidslinjeHendelser)),
+                http.get('https://oversikt/rest/historikk/vedlegg', () => HttpResponse.json(manglendeVedlegg)),
             ],
         },
     },
     args: {
         // @ts-ignore Er backend og frontend-typar like her? Fiks!
         saker,
-        isFirstRender: useRef(false),
         søkerinfo: søkerinfo as SøkerinfoDTO,
     },
 };

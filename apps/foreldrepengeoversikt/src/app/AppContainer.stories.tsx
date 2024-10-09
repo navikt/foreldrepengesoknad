@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 import { HttpResponse, http } from 'msw';
+import { MemoryRouter } from 'react-router-dom';
 import annenPartsVedtak from 'storybookData/annenPartVedtak/annenPartVedtak.json';
 import dokumenter from 'storybookData/dokumenter/dokumenter.json';
 import manglendeVedlegg from 'storybookData/manglendeVedlegg/manglendeVedlegg.json';
@@ -13,18 +14,25 @@ import AppContainer from './AppContainer';
 const meta = {
     title: 'AppContainer',
     component: AppContainer,
+    render: () => {
+        return (
+            <MemoryRouter>
+                <AppContainer />
+            </MemoryRouter>
+        );
+    },
     parameters: {
         msw: {
             handlers: [
-                http.get('/rest/innsyn/v2/saker/oppdatert', () => HttpResponse.json(true)),
-                http.get('/rest/minidialog', () => HttpResponse.json(miniDialog)),
-                http.get('/rest/sokerinfo', () => HttpResponse.json(søkerinfo)),
-                http.get('/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
-                http.get('/rest/historikk/vedlegg', () => HttpResponse.json(manglendeVedlegg)),
-                http.post('/rest/innsyn/v2/annenPartVedtak', () => HttpResponse.json(annenPartsVedtak)),
-                http.get('/rest/innsyn/tidslinje', () => HttpResponse.json(tidslinjeHendelser)),
-                http.get('/rest/dokument/alle', () => HttpResponse.json(dokumenter)),
-                http.post('/rest/storage/foreldrepenger/vedlegg', () => HttpResponse.json({})),
+                http.get('https://oversikt/rest/innsyn/v2/saker/oppdatert', () => HttpResponse.json(true)),
+                http.get('https://oversikt/rest/minidialog', () => HttpResponse.json(miniDialog)),
+                http.get('https://oversikt/rest/sokerinfo', () => HttpResponse.json(søkerinfo)),
+                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
+                http.get('https://oversikt/rest/historikk/vedlegg', () => HttpResponse.json(manglendeVedlegg)),
+                http.post('https://oversikt/rest/innsyn/v2/annenPartVedtak', () => HttpResponse.json(annenPartsVedtak)),
+                http.get('https://oversikt/rest/innsyn/tidslinje', () => HttpResponse.json(tidslinjeHendelser)),
+                http.get('https://oversikt/rest/dokument/alle', () => HttpResponse.json(dokumenter)),
+                http.post('https://oversikt/rest/storage/foreldrepenger/vedlegg', () => HttpResponse.json({})),
             ],
         },
     },

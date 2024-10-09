@@ -3,7 +3,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
-import { setAxiosLocale } from '@navikt/fp-api';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
@@ -81,7 +80,6 @@ const AppContainer = () => {
                         onChangeLocale={(activeLocale: LocaleNo) => {
                             setLocaleInSessionStorage(activeLocale);
                             setLocale(activeLocale);
-                            setAxiosLocale(activeLocale);
                             document.documentElement.setAttribute('lang', activeLocale);
                         }}
                     />

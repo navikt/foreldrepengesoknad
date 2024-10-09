@@ -1,9 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { BrowserRouter } from 'react-router-dom';
 
 import { Loader } from '@navikt/ds-react';
-
-import Environment from 'app/appData/Environment';
 
 import { erSakOppdatertOptions, hentSakerOptions, minidialogOptions, søkerInfoOptions } from './api/api';
 import ScrollToTop from './components/scroll-to-top/ScrollToTop';
@@ -59,10 +56,8 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
 
     return (
         <div className={backgroundColor === 'white' ? 'bg-white' : 'bg-deepblue-50'}>
-            <BrowserRouter basename={Environment.PUBLIC_PATH}>
-                <ScrollToTop />
-                <ForeldrepengeoversiktRoutes søkerinfo={søkerInfoQuery.data} saker={sakerQuery.data ?? defaultSaker} />
-            </BrowserRouter>
+            <ScrollToTop />
+            <ForeldrepengeoversiktRoutes søkerinfo={søkerInfoQuery.data} saker={sakerQuery.data ?? defaultSaker} />
         </div>
     );
 };

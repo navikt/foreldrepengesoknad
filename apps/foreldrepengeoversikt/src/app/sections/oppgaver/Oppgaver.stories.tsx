@@ -28,7 +28,7 @@ export const Default: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get('/rest/minidialog', () =>
+                http.get('https://oversikt/rest/minidialog', () =>
                     HttpResponse.json([
                         {
                             saksnr: '352011079',
@@ -48,7 +48,7 @@ export const Default: Story = {
 export const FeilIMinidialogApiKall: Story = {
     parameters: {
         msw: {
-            handlers: [http.get('/rest/minidialog', () => new HttpResponse(null, { status: 400 }))],
+            handlers: [http.get('https://oversikt/rest/minidialog', () => new HttpResponse(null, { status: 400 }))],
         },
     },
     args: {
