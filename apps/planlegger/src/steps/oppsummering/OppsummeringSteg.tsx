@@ -19,6 +19,7 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import ShareDataInfobox from '../../components/boxes/ShareDataInfobox';
 import OppsummeringHeader from './OppsummeringHeader';
+import BarnehageplassOppsummering from './expansion-cards/BarnehageplassOppsummering';
 import OppgittInformasjon from './expansion-cards/OppgittInformasjon';
 import OppsummeringHarRett from './expansion-cards/OppsummeringHarRett';
 import HvorMyeOppsummering from './expansion-cards/hvor-mye/HvorMyeOppsummering';
@@ -90,7 +91,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
                             </VStack>
                         )}
                         {stønadskontoer && valgtStønadskonto && hvorLangPeriode && arbeidssituasjon && (
-                            <VStack gap="5">
+                            <VStack gap="2">
                                 {harRettTilForeldrepenger && (
                                     <OppsummeringHarRett
                                         valgtStønadskonto={valgtStønadskonto}
@@ -102,6 +103,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
                                     />
                                 )}
                                 {hvorMye && <HvorMyeOppsummering satser={satser} />}
+                                <BarnehageplassOppsummering hvemPlanlegger={hvemPlanlegger} barnet={barnet} />
                                 <OppgittInformasjon
                                     stønadskontoer={stønadskontoer}
                                     barnet={barnet}

@@ -116,8 +116,8 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                 <ExpansionCard.Content>
                     <VStack gap="2">
                         <BluePanel>
-                            <>
-                                <Heading size="small" level="4">
+                            <VStack gap="2">
+                                <Heading size="xsmall" level="4">
                                     <FormattedMessage id="OppgittInformasjon.Barnet.Tittel" values={{ antallBarn }} />
                                 </Heading>
 
@@ -178,11 +178,11 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                         />
                                     </BodyLong>
                                 )}
-                            </>
+                            </VStack>
                         </BluePanel>
                         <BluePanel>
-                            <>
-                                <Heading size="small" level="4">
+                            <VStack gap="2">
+                                <Heading size="xsmall" level="4">
                                     <FormattedMessage id="OppgittInformasjon.Arbeid.Tittel" />
                                 </Heading>
                                 {erAlenesøker && (
@@ -266,16 +266,16 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                         )}
                                     </>
                                 )}
-                            </>
+                            </VStack>
                         </BluePanel>
                         <BluePanel>
-                            <Heading size="small" level="4">
-                                <FormattedMessage
-                                    id="OppgittInformasjon.LengdeOgFordeling"
-                                    values={{ kunEnPartSkalHa: hvemHarRett !== 'beggeHarRett' }}
-                                />
-                            </Heading>
-                            <VStack gap="5">
+                            <VStack gap="2">
+                                <Heading size="xsmall" level="4">
+                                    <FormattedMessage
+                                        id="OppgittInformasjon.LengdeOgFordeling"
+                                        values={{ kunEnPartSkalHa: hvemHarRett !== 'beggeHarRett' }}
+                                    />
+                                </Heading>
                                 <BodyLong>
                                     {!erFarOgFarFødsel && (
                                         <FormattedMessage

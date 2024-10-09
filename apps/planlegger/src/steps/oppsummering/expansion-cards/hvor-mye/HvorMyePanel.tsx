@@ -1,14 +1,15 @@
+import { WalletIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
-import { BodyLong, Heading, VStack } from '@navikt/ds-react';
+import { BodyLong, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Satser } from '@navikt/fp-types';
-import { BluePanel } from '@navikt/fp-ui';
+import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrency } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -36,17 +37,22 @@ const HvorMyePanel: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }
         <VStack gap="10">
             <BluePanel>
                 <VStack gap="2">
-                    <Heading size="small" level="4">
-                        <FormattedMessage
-                            id="HvorMyeOppsummering.DuVilFå"
-                            values={{
-                                hvem: capitalizeFirstLetter(fornavn),
-                                erAlenesøker,
-                                utbetaling100: formatCurrency(getDailyPayment(lønnSøker, 1)),
-                                utbetaling80: formatCurrency(getDailyPayment(lønnSøker, decimal80)),
-                            }}
-                        />
-                    </Heading>
+                    <HStack justify="space-between" wrap={false}>
+                        <Heading size="xsmall" level="4">
+                            <FormattedMessage
+                                id="HvorMyeOppsummering.DuVilFå"
+                                values={{
+                                    hvem: capitalizeFirstLetter(fornavn),
+                                    erAlenesøker,
+                                    utbetaling100: formatCurrency(getDailyPayment(lønnSøker, 1)),
+                                    utbetaling80: formatCurrency(getDailyPayment(lønnSøker, decimal80)),
+                                }}
+                            />
+                        </Heading>
+                        <IconCircleWrapper size="medium" color="blue">
+                            <WalletIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />
+                        </IconCircleWrapper>
+                    </HStack>
 
                     <BodyLong>
                         <FormattedMessage
@@ -65,7 +71,12 @@ const HvorMyePanel: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }
                                     values={{
                                         maksInntekt: formatCurrency(annualMax),
                                         a: (msg: any) => (
-                                            <a href={links.grunnbeløpet} target="_blank" rel="noreferrer">
+                                            <a
+                                                href={links.grunnbeløpet}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="lenke"
+                                            >
                                                 {msg}
                                             </a>
                                         ),

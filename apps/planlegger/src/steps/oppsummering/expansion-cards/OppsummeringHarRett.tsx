@@ -23,7 +23,7 @@ import {
 } from 'utils/stønadskontoerUtils';
 import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
 
-import { BodyLong, BodyShort, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
@@ -112,44 +112,45 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                     <VStack gap="5">
                         {hvemHarRett === 'beggeHarRett' && !erFarOgFar && fornavnSøker2 && fornavnSøker2Genitiv && (
                             <BluePanel>
-                                <Heading level="4" size="small">
-                                    <FormattedMessage id="OppsummeringSteg.Perioden" />
-                                </Heading>
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="OppsummeringSteg.DereValgte"
-                                        values={{
-                                            prosent: hvorLangPeriode.dekningsgrad,
-                                            antallUker: ukerOgDagerMedForeldrepenger.uker,
-                                            antallDager: ukerOgDagerMedForeldrepenger.dager,
-                                            hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
-                                            hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
-                                            uker: antallUkerOgDagerFellesperiodeSøker1?.uker || 0,
-                                            dager: antallUkerOgDagerFellesperiodeSøker1?.dager || 0,
-                                            uker2: antallUkerOgDagerFellesperiodeSøker2?.uker || 0,
-                                            dager2: antallUkerOgDagerFellesperiodeSøker2?.dager || 0,
-                                        }}
-                                    />
-                                </BodyLong>
-                                <BodyLong>
-                                    <FormattedMessage
-                                        id="OppsummeringSteg.Periodene"
-                                        values={{
-                                            hvem: capitalizeFirstLetter(fornavnSøker1Genitiv),
-                                            fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
-                                                day: '2-digit',
-                                                month: 'short',
-                                                year: 'numeric',
-                                            }),
-                                            tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
-                                                day: '2-digit',
-                                                month: 'short',
-                                                year: 'numeric',
-                                            }),
-                                            b: (msg: any) => <b>{msg}</b>,
-                                        }}
-                                    />
-                                </BodyLong>
+                                <VStack gap="2">
+                                    <BodyLong>
+                                        <FormattedMessage
+                                            id="OppsummeringSteg.DereValgte"
+                                            values={{
+                                                prosent: hvorLangPeriode.dekningsgrad,
+                                                antallUker: ukerOgDagerMedForeldrepenger.uker,
+                                                antallDager: ukerOgDagerMedForeldrepenger.dager,
+                                                hvem: getFornavnPåSøker1(hvemPlanlegger, intl),
+                                                hvem2: getFornavnPåSøker2(hvemPlanlegger, intl),
+                                                uker: antallUkerOgDagerFellesperiodeSøker1?.uker || 0,
+                                                dager: antallUkerOgDagerFellesperiodeSøker1?.dager || 0,
+                                                uker2: antallUkerOgDagerFellesperiodeSøker2?.uker || 0,
+                                                dager2: antallUkerOgDagerFellesperiodeSøker2?.dager || 0,
+                                            }}
+                                        />
+                                    </BodyLong>
+
+                                    <BodyLong>
+                                        <FormattedMessage
+                                            id="OppsummeringSteg.Periodene"
+                                            values={{
+                                                hvem: capitalizeFirstLetter(fornavnSøker1Genitiv),
+                                                fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
+                                                    day: '2-digit',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                }),
+                                                tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
+                                                    day: '2-digit',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                }),
+                                                b: (msg: any) => <b>{msg}</b>,
+                                            }}
+                                        />
+                                    </BodyLong>
+                                </VStack>
+
                                 <BodyLong>
                                     <FormattedMessage
                                         id="OppsummeringSteg.Periodene"
@@ -174,9 +175,6 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                         {(erAlenesøker(hvemPlanlegger) || erFarOgFar) && (
                             <BluePanel>
                                 <VStack gap="2">
-                                    <Heading level="4" size="small">
-                                        <FormattedMessage id="OppsummeringSteg.Perioden" />
-                                    </Heading>
                                     <BodyShort>
                                         <FormattedMessage
                                             id="OppsummeringSteg.DereValgteFedreEllerAlene"
@@ -212,9 +210,6 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                         {hvemHarRett === 'kunSøker2HarRett' && !erFarOgFar && fornavnSøker2 && (
                             <BluePanel>
                                 <VStack gap="2">
-                                    <Heading level="4" size="small">
-                                        <FormattedMessage id="OppsummeringSteg.Perioden" />
-                                    </Heading>
                                     <BodyShort>
                                         <FormattedMessage
                                             id="OppsummeringSteg.DereValgteAktivitetskrav"

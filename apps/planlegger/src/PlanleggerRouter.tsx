@@ -2,6 +2,7 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { FunctionComponent } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import ArbeidssituasjonSteg from 'steps/arbeidssituasjon/ArbeidssituasjonSteg';
+import BarnehageplassSteg from 'steps/barnehageplass/BarnehageplassSteg';
 import FordelingSteg from 'steps/fordeling/FordelingSteg';
 import HvemPlanleggerSteg from 'steps/hvem-planlegger/HvemPlanleggerSteg';
 import HvorLangPeriodeSteg from 'steps/hvor-lang-periode/HvorLangPeriodeSteg';
@@ -28,6 +29,7 @@ export const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocal
             <Route path="/" element={<OmPlanleggerenSteg locale={locale} changeLocale={changeLocale} />} />
             <Route path={PlanleggerRoutes.HVEM_PLANLEGGER} element={<HvemPlanleggerSteg locale={locale} />} />
             <Route path={PlanleggerRoutes.OM_BARNET} element={<OmBarnetSteg locale={locale} />} />
+            <Route path={PlanleggerRoutes.BARNEHAGEPLASS} element={<BarnehageplassSteg locale={locale} />} />
             <Route
                 path={PlanleggerRoutes.ARBEIDSSITUASJON}
                 element={<ArbeidssituasjonSteg satser={satser} locale={locale} />}
