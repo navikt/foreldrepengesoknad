@@ -1,0 +1,116 @@
+import { onBreadcrumbClick, setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
+import { Outlet, useNavigate } from 'react-router-dom';
+
+import { assertUnreachable } from '@navikt/fp-validation';
+
+import { useGetSelectedRoute } from './../../hooks/useSelectedRoute';
+import { useGetSelectedSak } from './../../hooks/useSelectedSak';
+import OversiktRoutes from './../../routes/routes';
+
+const minSide = {
+    title: 'Min side',
+    url: 'https://www.nav.no/minside',
+    handleInApp: false,
+};
+
+const hovedside = {
+    title: 'Foreldrepenger',
+    url: OversiktRoutes.HOVEDSIDE,
+    handleInApp: true,
+};
+
+const saksoversikt = {
+    title: 'Din sak',
+    url: OversiktRoutes.SAKSOVERSIKT,
+    handleInApp: true,
+};
+
+const dokumenter = {
+    title: 'Dokumenter',
+    url: OversiktRoutes.DOKUMENTER,
+    handleInApp: true,
+};
+
+const ettersend = {
+    title: 'Last opp',
+    url: OversiktRoutes.ETTERSEND,
+    handleInApp: true,
+};
+
+const tidslinjen = {
+    title: 'Hele prosessen',
+    url: OversiktRoutes.TIDSLINJEN,
+    handleInApp: true,
+};
+
+const dinPlan = {
+    title: 'Søknaden din',
+    url: OversiktRoutes.DIN_PLAN,
+    handleInApp: true,
+};
+
+const oppgaver = {
+    title: 'Din oppgave',
+    url: OversiktRoutes.OPPGAVER,
+    handleInApp: true,
+};
+
+export const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
+    switch (selectedRoute) {
+        case OversiktRoutes.HOVEDSIDE:
+            return [minSide, hovedside];
+        case OversiktRoutes.SAKSOVERSIKT:
+            return [minSide, hovedside, saksoversikt];
+        case OversiktRoutes.DOKUMENTER:
+            return [minSide, hovedside, saksoversikt, dokumenter];
+        case OversiktRoutes.ETTERSEND:
+            return [minSide, hovedside, saksoversikt, dokumenter, ettersend];
+        case OversiktRoutes.TIDSLINJEN:
+            return [minSide, hovedside, saksoversikt, tidslinjen];
+        case OversiktRoutes.DIN_PLAN:
+            return [minSide, hovedside, saksoversikt, dinPlan];
+        case OversiktRoutes.OPPGAVER:
+            return [minSide, hovedside, saksoversikt, oppgaver];
+        default:
+            return assertUnreachable('En rute mangler brødsmulesti');
+    }
+};
+
+const getRoute = (route: string, saksnummer: string | undefined): string => {
+    const sakRoute = `${OversiktRoutes.SAKSOVERSIKT}/${saksnummer}`;
+
+    if (route === OversiktRoutes.SAKSOVERSIKT && saksnummer) {
+        return sakRoute;
+    }
+
+    if (route === OversiktRoutes.DOKUMENTER) {
+        return `${sakRoute}/${OversiktRoutes.DOKUMENTER}`;
+    }
+
+    if (route === OversiktRoutes.ETTERSEND) {
+        return `${sakRoute}/${OversiktRoutes.ETTERSEND}`;
+    }
+
+    if (route === OversiktRoutes.TIDSLINJEN) {
+        return `${sakRoute}/${OversiktRoutes.TIDSLINJEN}`;
+    }
+
+    return route;
+};
+
+export const Breadcrumb = () => {
+    const selectedRoute = useGetSelectedRoute();
+    const breadcrumbs = getBreadcrumbs(selectedRoute);
+    const navigate = useNavigate();
+    const sak = useGetSelectedSak();
+
+    const mappedPaths = breadcrumbs.map((b) => ({ ...b, url: getRoute(b.url, sak?.saksnummer) }));
+    setBreadcrumbs(mappedPaths);
+
+    // Denne trigges for breadcrumbs der handleInApp: true
+    onBreadcrumbClick((breadcrumb) => {
+        navigate(breadcrumb.url);
+    });
+
+    return <Outlet />;
+};
