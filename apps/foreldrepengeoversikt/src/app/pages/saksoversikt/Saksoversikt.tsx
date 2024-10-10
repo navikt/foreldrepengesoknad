@@ -1,4 +1,4 @@
-import { FilesIcon, FolderFileIcon } from '@navikt/aksel-icons';
+import { FilesIcon, FolderFileIcon, PencilIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useIntl } from 'react-intl';
@@ -155,6 +155,7 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
                 <HGrid gap="4" columns={{ sm: 1, md: 2 }} className="mb-12">
                     <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
                     <LenkePanel tittel="Ettersend dokumenter" to={OversiktRoutes.ETTERSEND} Ikon={FilesIcon} />
+                    <LenkePanel tittel="Endre planen din" to="https://nav.no/foreldrepenger/soknad" Ikon={PencilIcon} />
                 </HGrid>
 
                 {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (
