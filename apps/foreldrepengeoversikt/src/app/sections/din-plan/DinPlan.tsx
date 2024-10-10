@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { Button } from '@navikt/ds-react';
 
 import { NavnPåForeldre, SaksperiodeNy } from '@navikt/fp-types';
+import { useMedia } from '@navikt/fp-utils';
 import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
@@ -43,11 +44,13 @@ const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåForeldre
     const familiehendelseDato = getFamiliehendelseDato(familiehendelse);
     const barn = getBarnFraSak(familiehendelse, gjelderAdopsjon);
     const familiesituasjon = utledFamiliesituasjon(familiehendelse, gjelderAdopsjon);
+    const isDesktop = useMedia('screen and (min-width: 768px)');
 
     return (
         <>
             <Button
                 className="mt-4"
+                size={isDesktop ? 'small' : 'medium'}
                 variant="secondary"
                 onClick={() => (window.location.href = 'https://www.nav.no/foreldrepenger/soknad')}
             >
