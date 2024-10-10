@@ -33,6 +33,30 @@ export const ForForeldrepenger: Story = {
         } as Tidslinjehendelse,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: Ytelse.FORELDREPENGER,
+        harMinstEttArbeidsforhold: true,
+    },
+};
+
+export const ForForeldrepengerNårEnIkkeHarArbeidsforhold: Story = {
+    args: {
+        relevantNyTidslinjehendelse: {
+            opprettet: new Date(),
+            tidligstBehandlingsDato: new Date(),
+            dokumenter: [
+                {
+                    dokumentId: '1',
+                    type: DokumentType.ARBEIDSGIVER,
+                    journalpostId: '1',
+                    mottatt: new Date(),
+                    saksnummer: '1212',
+                    tittel: 'Søknad',
+                    url: 'test',
+                },
+            ],
+        } as Tidslinjehendelse,
+        bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
+        ytelse: Ytelse.FORELDREPENGER,
+        harMinstEttArbeidsforhold: false,
     },
 };
 
@@ -54,6 +78,7 @@ export const ForForeldrepengerUtenTidligsteBehandlingsdato: Story = {
         } as Tidslinjehendelse,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: Ytelse.FORELDREPENGER,
+        harMinstEttArbeidsforhold: true,
     },
 };
 
@@ -76,6 +101,7 @@ export const ForEngangsstønad: Story = {
         } as Tidslinjehendelse,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: Ytelse.ENGANGSSTØNAD,
+        harMinstEttArbeidsforhold: true,
     },
 };
 
@@ -98,6 +124,7 @@ export const ForSvangerskapspenger: Story = {
         } as Tidslinjehendelse,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: Ytelse.SVANGERSKAPSPENGER,
+        harMinstEttArbeidsforhold: true,
     },
 };
 
@@ -119,5 +146,6 @@ export const ForSvangerskapspengerUtenTidligsteBehandlingsdato: Story = {
         } as Tidslinjehendelse,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: Ytelse.SVANGERSKAPSPENGER,
+        harMinstEttArbeidsforhold: true,
     },
 };

@@ -5,9 +5,10 @@ import { Sak } from 'app/types/Sak';
 
 interface Props {
     sak: Sak;
+    harMinstEttArbeidsforhold: boolean;
 }
 
-const StatusTag: React.FunctionComponent<Props> = ({ sak }) => {
+const StatusTag: React.FunctionComponent<Props> = ({ sak, harMinstEttArbeidsforhold }) => {
     if (sak.åpenBehandling) {
         if (!sak.sakAvsluttet) {
             if (sak.åpenBehandling.tilstand === BehandlingTilstand.UNDER_BEHANDLING) {
@@ -19,9 +20,13 @@ const StatusTag: React.FunctionComponent<Props> = ({ sak }) => {
             }
 
             if (sak.åpenBehandling.tilstand === BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING) {
-                return (
+                return harMinstEttArbeidsforhold ? (
                     <Tag variant="warning-moderate" size="xsmall">
                         Venter på inntektsmelding fra arbeidsgiver
+                    </Tag>
+                ) : (
+                    <Tag variant="info-filled" size="xsmall">
+                        Venter på behandling
                     </Tag>
                 );
             }

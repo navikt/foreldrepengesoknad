@@ -13,9 +13,10 @@ import { SakLink } from '../sak-link/SakLink';
 
 interface Props {
     grupperteSaker: GruppertSak[];
+    harMinstEttArbeidsforhold: boolean;
 }
 
-const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker }) => {
+const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker, harMinstEttArbeidsforhold }) => {
     const intl = useIntl();
     useSetBackgroundColor('blue');
 
@@ -39,7 +40,13 @@ const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker }) => {
                         </HStack>
                         <VStack gap="2">
                             {gruppering.saker.map((sak) => {
-                                return <SakLink key={guid()} sak={sak} />;
+                                return (
+                                    <SakLink
+                                        key={guid()}
+                                        sak={sak}
+                                        harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
+                                    />
+                                );
                             })}
                         </VStack>
                     </div>
