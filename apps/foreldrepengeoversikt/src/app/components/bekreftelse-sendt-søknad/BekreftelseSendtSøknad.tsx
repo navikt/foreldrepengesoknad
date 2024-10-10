@@ -17,6 +17,7 @@ interface Props {
     relevantNyTidslinjehendelse: Tidslinjehendelse | undefined;
     bankkonto: Bankkonto | undefined;
     ytelse: Ytelse | undefined;
+    harMinstEttArbeidsforhold: boolean;
 }
 
 const getTidspunktTekst = (mottattDato: Date | undefined): string | undefined => {
@@ -31,7 +32,12 @@ const getTidspunktTekst = (mottattDato: Date | undefined): string | undefined =>
     return `Sendt ${formatDate(mottattDato)} kl. ${formatTime(mottattDato)}`;
 };
 
-const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({ relevantNyTidslinjehendelse, bankkonto, ytelse }) => {
+const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({
+    relevantNyTidslinjehendelse,
+    bankkonto,
+    ytelse,
+    harMinstEttArbeidsforhold,
+}) => {
     const relevantDokument = relevantNyTidslinjehendelse?.dokumenter
         ? relevantNyTidslinjehendelse.dokumenter.find((dok) => dok.tittel.includes('Søknad'))
         : undefined;
@@ -102,7 +108,7 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({ relevantNyTid
                         </Accordion.Item>
                     </>
                 )}
-                {ytelse === Ytelse.FORELDREPENGER && (
+                {ytelse === Ytelse.FORELDREPENGER && harMinstEttArbeidsforhold && (
                     <Accordion.Item>
                         <Accordion.Header>
                             <VStack gap="1">
@@ -146,7 +152,11 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({ relevantNyTid
                         </Accordion.Content>
                     </Accordion.Item>
                 )}
-                <KontonummerInfo ytelse={ytelse} bankkonto={bankkonto} />
+                <KontonummerInfo
+                    ytelse={ytelse}
+                    bankkonto={bankkonto}
+                    harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
+                />
                 {ytelse === Ytelse.FORELDREPENGER && (
                     <Accordion.Item>
                         <Accordion.Header>

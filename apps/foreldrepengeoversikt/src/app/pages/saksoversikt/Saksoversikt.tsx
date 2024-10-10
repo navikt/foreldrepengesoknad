@@ -89,6 +89,9 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
     const nettoppSendtInnSøknad =
         redirectedFromSøknadsnummer === params.saksnummer || relevantNyTidslinjehendelse !== undefined;
     const visBekreftelsePåSendtSøknad = nettoppSendtInnSøknad && gjeldendeSak?.åpenBehandling !== undefined;
+
+    const harMinstEttArbeidsforhold = !!søkerinfo?.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
+
     if (harIkkeOppdatertSak) {
         return (
             <VStack gap="2">
@@ -97,6 +100,7 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
                         relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
                         bankkonto={søkerinfo.søker.bankkonto}
                         ytelse={undefined}
+                        harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
                     />
                 )}
                 <Alert variant="warning">
@@ -121,6 +125,7 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
                     relevantNyTidslinjehendelse={relevantNyTidslinjehendelse}
                     bankkonto={søkerinfo.søker.bankkonto}
                     ytelse={gjeldendeSak.ytelse}
+                    harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
                 />
             )}
 

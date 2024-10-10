@@ -33,6 +33,14 @@ export const ForForeldrepenger: Story = {
         } as Tidslinjehendelse,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: Ytelse.FORELDREPENGER,
+        harMinstEttArbeidsforhold: true,
+    },
+};
+
+export const ForForeldrepengerNårEnIkkeHarArbeidsforhold: Story = {
+    args: {
+        ...ForForeldrepenger.args,
+        harMinstEttArbeidsforhold: false,
     },
 };
 
@@ -54,6 +62,7 @@ export const ForForeldrepengerUtenTidligsteBehandlingsdato: Story = {
         } as Tidslinjehendelse,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: Ytelse.FORELDREPENGER,
+        harMinstEttArbeidsforhold: true,
     },
 };
 
@@ -76,6 +85,7 @@ export const ForEngangsstønad: Story = {
         } as Tidslinjehendelse,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: Ytelse.ENGANGSSTØNAD,
+        harMinstEttArbeidsforhold: true,
     },
 };
 
@@ -98,6 +108,14 @@ export const ForSvangerskapspenger: Story = {
         } as Tidslinjehendelse,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: Ytelse.SVANGERSKAPSPENGER,
+        harMinstEttArbeidsforhold: true,
+    },
+};
+
+export const ForSvangerskapspengerUtenArbeidsforhold: Story = {
+    args: {
+        ...ForSvangerskapspenger.args,
+        harMinstEttArbeidsforhold: false,
     },
 };
 
@@ -119,5 +137,6 @@ export const ForSvangerskapspengerUtenTidligsteBehandlingsdato: Story = {
         } as Tidslinjehendelse,
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: Ytelse.SVANGERSKAPSPENGER,
+        harMinstEttArbeidsforhold: true,
     },
 };

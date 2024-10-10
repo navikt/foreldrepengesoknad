@@ -52,6 +52,8 @@ const Forside: React.FunctionComponent<Props> = ({ saker, isFirstRender, søkeri
             ? saker.svangerskapspenger[0]
             : undefined;
 
+    const harMinstEttArbeidsforhold = !!søkerinfo?.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
+
     return (
         <PageRouteLayout header={<ForsideHeader />}>
             <VStack gap="10">
@@ -60,6 +62,7 @@ const Forside: React.FunctionComponent<Props> = ({ saker, isFirstRender, søkeri
                         relevantNyTidslinjehendelse={undefined}
                         bankkonto={søkerinfo.søker.bankkonto}
                         ytelse={undefined}
+                        harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
                     />
                 )}
                 {harIkkeOppdatertSak && (
@@ -69,11 +72,13 @@ const Forside: React.FunctionComponent<Props> = ({ saker, isFirstRender, søkeri
                     </Alert>
                 )}
                 {alleYtelser.length > 0 ? (
-                    <HarSaker grupperteSaker={grupperteSaker} />
+                    <HarSaker grupperteSaker={grupperteSaker} harMinstEttArbeidsforhold={harMinstEttArbeidsforhold} />
                 ) : (
                     <HarIkkeSaker harOppdatertSak={!harIkkeOppdatertSak} />
                 )}
-                {avslåttSvangerskapspengesak && <SakLink sak={avslåttSvangerskapspengesak} />}
+                {avslåttSvangerskapspengesak && (
+                    <SakLink sak={avslåttSvangerskapspengesak} harMinstEttArbeidsforhold={harMinstEttArbeidsforhold} />
+                )}
             </VStack>
         </PageRouteLayout>
     );

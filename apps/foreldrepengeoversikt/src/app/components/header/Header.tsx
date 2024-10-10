@@ -9,6 +9,7 @@ import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 import { hentSakerOptions, søkerInfoOptions } from 'app/api/api';
 import { LayoutWrapper } from 'app/sections/LayoutWrapper';
 import { Sak } from 'app/types/Sak';
+import { SøkerinfoDTO } from 'app/types/SøkerinfoDTO';
 import { Ytelse } from 'app/types/Ytelse';
 import {
     getFamiliehendelseDato,
@@ -128,10 +129,9 @@ export function EttersendingHeader() {
     );
 }
 
-function FamiliehendelseDescription({ sak }: { sak: Sak }) {
+function FamiliehendelseDescription({ sak, søkerinfo }: { sak: Sak; søkerinfo?: SøkerinfoDTO }) {
     const intl = useIntl();
 
-    const søkerinfo = useQuery(søkerInfoOptions()).data;
     const saker = useQuery({
         ...hentSakerOptions(),
         select: mapSakerDTOToSaker,
@@ -162,9 +162,13 @@ function FamiliehendelseDescription({ sak }: { sak: Sak }) {
 }
 
 export function DinSakHeader({ sak }: { sak?: Sak }) {
+    const søkerinfo = useQuery(søkerInfoOptions()).data;
+
     if (!sak) {
         return null;
     }
+
+    const harMinstEttArbeidsforhold = !!søkerinfo?.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
 
     return (
         <HeaderWrapper>
@@ -175,7 +179,7 @@ export function DinSakHeader({ sak }: { sak?: Sak }) {
                         <Heading level="1" size="medium">
                             Din sak
                         </Heading>
-                        <StatusTag sak={sak} />
+                        <StatusTag sak={sak} harMinstEttArbeidsforhold={harMinstEttArbeidsforhold} />
                     </HStack>
                     <Show above="md">
                         <HStack gap="3" align="center">
@@ -184,7 +188,7 @@ export function DinSakHeader({ sak }: { sak?: Sak }) {
                             <SaksnummerDetail />
 
                             <BlueDot />
-                            <FamiliehendelseDescription sak={sak} />
+                            <FamiliehendelseDescription sak={sak} søkerinfo={søkerinfo} />
                         </HStack>
                     </Show>
                     <Show below="md">
@@ -194,7 +198,7 @@ export function DinSakHeader({ sak }: { sak?: Sak }) {
                                 <BlueDot />
                                 <SaksnummerDetail />
                             </HStack>
-                            <FamiliehendelseDescription sak={sak} />
+                            <FamiliehendelseDescription sak={sak} søkerinfo={søkerinfo} />
                         </VStack>
                     </Show>
                 </VStack>

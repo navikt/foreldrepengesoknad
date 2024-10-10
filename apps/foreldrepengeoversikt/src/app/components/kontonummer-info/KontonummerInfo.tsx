@@ -1,3 +1,5 @@
+import { FormattedMessage } from 'react-intl';
+
 import { Accordion, BodyLong, BodyShort, Button, Detail, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
@@ -8,9 +10,10 @@ import { Ytelse } from 'app/types/Ytelse';
 interface Props {
     bankkonto: Bankkonto | undefined;
     ytelse: Ytelse | undefined;
+    harMinstEttArbeidsforhold: boolean;
 }
 
-export const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, ytelse }) => {
+export const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, ytelse, harMinstEttArbeidsforhold }) => {
     const harKontonummer = !!bankkonto?.kontonummer && bankkonto?.kontonummer.trim().length > 0;
     const kontonummerTekst = harKontonummer ? bankkonto?.kontonummer : 'NAV mangler kontonummeret ditt';
     const kontonummerEndreTekst = harKontonummer ? 'Endre kontonummer' : 'Registrer kontonummer';
@@ -25,7 +28,11 @@ export const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, yte
             </Accordion.Header>
             <Accordion.Content>
                 <VStack gap="4">
-                    <KontonummerInfoTekst harKontonummer={harKontonummer} ytelse={ytelse} />
+                    <KontonummerInfoTekst
+                        harKontonummer={harKontonummer}
+                        ytelse={ytelse}
+                        harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
+                    />
                     <Button
                         size="small"
                         className="w-fit no-underline"
@@ -41,19 +48,24 @@ export const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, yte
     );
 };
 
-const KontonummerInfoTekst = ({ harKontonummer, ytelse }: { harKontonummer: boolean; ytelse: Ytelse | undefined }) => {
-    if (ytelse === Ytelse.ENGANGSSTØNAD) {
+interface KontonummerInfoTekstProps {
+    harKontonummer: boolean;
+    ytelse: Ytelse | undefined;
+    harMinstEttArbeidsforhold: boolean;
+}
+
+const KontonummerInfoTekst = ({ harKontonummer, ytelse, harMinstEttArbeidsforhold }: KontonummerInfoTekstProps) => {
+    if (ytelse === Ytelse.ENGANGSSTØNAD || !harMinstEttArbeidsforhold) {
         if (harKontonummer) {
             return (
                 <BodyLong size="small">
-                    Dette er kontonummeret NAV kommer til å betale engangsstønaden til, hvis søknaden blir innvilget.
-                    Hvis det er feil kan du endre det.
+                    <FormattedMessage id="KontonummerInfoTekst.NavUtbetaling" values={{ ytelse }} />
                 </BodyLong>
             );
         } else {
             return (
                 <BodyLong size="small">
-                    NAV mangler kontonummeret som engangsstønaden vil bli betalt til hvis du får søknaden din innvilget.
+                    <FormattedMessage id="KontonummerInfoTekst.Mangler" values={{ ytelse }} />
                 </BodyLong>
             );
         }

@@ -8,6 +8,7 @@ import StatusTag from '../status-tag/StatusTag';
 
 interface Props {
     sak: Sak;
+    harMinstEttArbeidsforhold: boolean;
 }
 
 const getHeading = (ytelse: Ytelse) => {
@@ -21,10 +22,10 @@ const getHeading = (ytelse: Ytelse) => {
     }
 };
 
-export const SakLink: React.FunctionComponent<Props> = ({ sak }) => {
+export const SakLink: React.FunctionComponent<Props> = ({ sak, harMinstEttArbeidsforhold }) => {
     return (
         <LenkePanel
-            tag={<StatusTag sak={sak} />}
+            tag={<StatusTag sak={sak} harMinstEttArbeidsforhold={harMinstEttArbeidsforhold} />}
             undertittel={`Sist oppdatert ${formatDate(sak.oppdatertTidspunkt)}`}
             tittel={getHeading(sak.ytelse)}
             to={`/sak/${sak.saksnummer}`}
