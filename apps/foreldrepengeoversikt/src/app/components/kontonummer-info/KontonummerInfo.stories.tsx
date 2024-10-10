@@ -11,13 +11,25 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const ForForeldrepenger: Story = {
     args: {
         bankkonto: {
             kontonummer: '1212123132',
             banknavn: 'Luster Sparebank',
         },
         ytelse: Ytelse.FORELDREPENGER,
+        harMinstEttArbeidsforhold: true,
+    },
+};
+
+export const ForForeldrepengerUtenArbeidsforhold: Story = {
+    args: {
+        bankkonto: {
+            kontonummer: '1212123132',
+            banknavn: 'Luster Sparebank',
+        },
+        ytelse: Ytelse.FORELDREPENGER,
+        harMinstEttArbeidsforhold: false,
     },
 };
 
@@ -28,6 +40,7 @@ export const ForEngangsstønad: Story = {
             banknavn: 'Luster Sparebank',
         },
         ytelse: Ytelse.ENGANGSSTØNAD,
+        harMinstEttArbeidsforhold: true,
     },
 };
 
@@ -38,6 +51,18 @@ export const ForSvangerskapspenger: Story = {
             banknavn: 'Luster Sparebank',
         },
         ytelse: Ytelse.SVANGERSKAPSPENGER,
+        harMinstEttArbeidsforhold: true,
+    },
+};
+
+export const ForSvangerskapspengerUtenArbeidsforhold: Story = {
+    args: {
+        bankkonto: {
+            kontonummer: '1212123132',
+            banknavn: 'Luster Sparebank',
+        },
+        ytelse: Ytelse.SVANGERSKAPSPENGER,
+        harMinstEttArbeidsforhold: false,
     },
 };
 
@@ -45,5 +70,6 @@ export const HarIkkeKontonr: Story = {
     args: {
         ytelse: Ytelse.ENGANGSSTØNAD,
         bankkonto: undefined,
+        harMinstEttArbeidsforhold: true,
     },
 };

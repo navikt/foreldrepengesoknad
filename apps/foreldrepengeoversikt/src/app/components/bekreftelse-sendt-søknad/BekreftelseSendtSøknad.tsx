@@ -152,7 +152,11 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({
                         </Accordion.Content>
                     </Accordion.Item>
                 )}
-                <KontonummerInfo ytelse={ytelse} bankkonto={bankkonto} />
+                <KontonummerInfo
+                    ytelse={ytelse}
+                    bankkonto={bankkonto}
+                    harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
+                />
                 {ytelse === Ytelse.FORELDREPENGER && (
                     <Accordion.Item>
                         <Accordion.Header>

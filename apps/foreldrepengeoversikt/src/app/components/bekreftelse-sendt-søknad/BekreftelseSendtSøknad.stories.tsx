@@ -39,23 +39,7 @@ export const ForForeldrepenger: Story = {
 
 export const ForForeldrepengerNårEnIkkeHarArbeidsforhold: Story = {
     args: {
-        relevantNyTidslinjehendelse: {
-            opprettet: new Date(),
-            tidligstBehandlingsDato: new Date(),
-            dokumenter: [
-                {
-                    dokumentId: '1',
-                    type: DokumentType.ARBEIDSGIVER,
-                    journalpostId: '1',
-                    mottatt: new Date(),
-                    saksnummer: '1212',
-                    tittel: 'Søknad',
-                    url: 'test',
-                },
-            ],
-        } as Tidslinjehendelse,
-        bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
-        ytelse: Ytelse.FORELDREPENGER,
+        ...ForForeldrepenger.args,
         harMinstEttArbeidsforhold: false,
     },
 };
@@ -125,6 +109,13 @@ export const ForSvangerskapspenger: Story = {
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: Ytelse.SVANGERSKAPSPENGER,
         harMinstEttArbeidsforhold: true,
+    },
+};
+
+export const ForSvangerskapspengerUtenArbeidsforhold: Story = {
+    args: {
+        ...ForSvangerskapspenger.args,
+        harMinstEttArbeidsforhold: false,
     },
 };
 
