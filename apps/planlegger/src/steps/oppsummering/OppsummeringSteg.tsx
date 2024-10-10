@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
-import { erBarnetFødt } from 'utils/barnetUtils';
+import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
@@ -19,7 +19,8 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import ShareDataInfobox from '../../components/boxes/ShareDataInfobox';
 import OppsummeringHeader from './OppsummeringHeader';
-import BarnehageplassOppsummering from './expansion-cards/BarnehageplassOppsummering';
+import SøkOmForeldrepenger from './SøkOmForeldrepenger';
+import BarnehageplassOppsummering, { getFamiliehendelsedato } from './expansion-cards/BarnehageplassOppsummering';
 import OppgittInformasjon from './expansion-cards/OppgittInformasjon';
 import OppsummeringHarRett from './expansion-cards/OppsummeringHarRett';
 import HvorMyeOppsummering from './expansion-cards/hvor-mye/HvorMyeOppsummering';
@@ -56,6 +57,9 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
     const hvemHarRett = arbeidssituasjon ? utledHvemSomHarRett(arbeidssituasjon) : 'ingenHarRett';
 
     const harRettTilForeldrepenger = !erBarnetFødtForMerEnnTreÅrSiden && hvemHarRett !== 'ingenHarRett';
+    const familiehendelsedato = getFamiliehendelsedato(barnet);
+    const svangerskapsuke22EllerSenere = dayjs().add(18, 'weeks').add(3, 'days').toDate();
+    const erAdoptert = erBarnetAdoptert(barnet);
 
     return (
         <>
@@ -116,6 +120,11 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
                             </VStack>
                         )}
                         <ShareDataInfobox erAlenesøker={erAleneforsørger} />
+                        {((harRettTilForeldrepenger &&
+                            dayjs(familiehendelsedato).isBefore(svangerskapsuke22EllerSenere)) ||
+                            (harRettTilForeldrepenger && erAdoptert)) && (
+                            <SøkOmForeldrepenger erAlenesøker={erAleneforsørger} barnet={barnet} />
+                        )}
                     </VStack>
 
                     <VStack gap="10">
