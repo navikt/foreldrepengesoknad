@@ -19,6 +19,7 @@ interface Props {
 
 const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåForeldre }) => {
     const gjeldendeSak = useGetSelectedSak();
+    const isDesktop = useMedia('screen and (min-width: 768px)');
 
     if (!gjeldendeSak || gjeldendeSak.ytelse !== Ytelse.FORELDREPENGER) {
         return null;
@@ -44,7 +45,6 @@ const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåForeldre
     const familiehendelseDato = getFamiliehendelseDato(familiehendelse);
     const barn = getBarnFraSak(familiehendelse, gjelderAdopsjon);
     const familiesituasjon = utledFamiliesituasjon(familiehendelse, gjelderAdopsjon);
-    const isDesktop = useMedia('screen and (min-width: 768px)');
 
     return (
         <>
