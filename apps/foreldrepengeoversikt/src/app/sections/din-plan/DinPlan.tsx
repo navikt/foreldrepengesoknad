@@ -1,4 +1,7 @@
 import { FunctionComponent } from 'react';
+import { FormattedMessage } from 'react-intl';
+
+import { Button } from '@navikt/ds-react';
 
 import { NavnPåForeldre, SaksperiodeNy } from '@navikt/fp-types';
 import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
@@ -42,19 +45,28 @@ const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåForeldre
     const familiesituasjon = utledFamiliesituasjon(familiehendelse, gjelderAdopsjon);
 
     return (
-        <UttaksplanNy
-            barn={barn}
-            erFarEllerMedmor={søkerErFarEllerMedmor}
-            familiehendelsedato={familiehendelseDato}
-            navnPåForeldre={navnPåForeldre}
-            annenPartsPerioder={annenPartsPerioder}
-            søkersPerioder={getRelevantePerioder() || []}
-            gjelderAdopsjon={gjelderAdopsjon}
-            bareFarHarRett={bareFarHarRett}
-            familiesituasjon={familiesituasjon}
-            førsteUttaksdagNesteBarnsSak={undefined}
-            harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
-        />
+        <>
+            <Button
+                className="mt-4"
+                variant="secondary"
+                onClick={() => (window.location.href = 'https://www.nav.no/foreldrepenger/soknad')}
+            >
+                <FormattedMessage id="DinPlan.EndrePlan" />
+            </Button>
+            <UttaksplanNy
+                barn={barn}
+                erFarEllerMedmor={søkerErFarEllerMedmor}
+                familiehendelsedato={familiehendelseDato}
+                navnPåForeldre={navnPåForeldre}
+                annenPartsPerioder={annenPartsPerioder}
+                søkersPerioder={getRelevantePerioder() || []}
+                gjelderAdopsjon={gjelderAdopsjon}
+                bareFarHarRett={bareFarHarRett}
+                familiesituasjon={familiesituasjon}
+                førsteUttaksdagNesteBarnsSak={undefined}
+                harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
+            />
+        </>
     );
 };
 

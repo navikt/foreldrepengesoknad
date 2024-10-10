@@ -162,5 +162,6 @@
     "BekreftelseSendtSøknad.UtbetalingstidspunktDel4": " på nettisdene til NAV kan du se utbetalingen på kvelden den dagen pengene er utbetalt.",
     "BekreftelseSendtSøknad.SendDok": "Send dokumentasjon",
     "KontonummerInfoTekst.NavUtbetaling": "Dette er kontonummeret NAV kommer til å betale {ytelse, select, foreldrepenger {foreldrepengene} svangerskapspenger {svangerskapspengene} other {engangsstønaden}} til, hvis søknaden blir innvilget. Hvis det er feil kan du endre det.",
-    "KontonummerInfoTekst.Mangler": "NAV mangler kontonummeret som {ytelse, select, foreldrepenger {foreldrepengene} svangerskapspenger {svangerskapspengene} other {engangsstønaden}} vil bli betalt til hvis du får søknaden din innvilget."
+    "KontonummerInfoTekst.Mangler": "NAV mangler kontonummeret som {ytelse, select, foreldrepenger {foreldrepengene} svangerskapspenger {svangerskapspengene} other {engangsstønaden}} vil bli betalt til hvis du får søknaden din innvilget.",
+    "DinPlan.EndrePlan": "Endre planen"
 }

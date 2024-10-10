@@ -77,7 +77,7 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, erFam
     const utsettelseÅrsak = erUtsettelse ? permisjonsperiode.perioder[0].utsettelseÅrsak : undefined;
     const erPermisjonsperiodeTilbakeITid = dayjs(
         erFamiliehendelse ? permisjonsperiode.tidsperiode.fom : permisjonsperiode.tidsperiode.tom,
-    ).isBefore(new Date('2025-04-30'));
+    ).isBefore(new Date());
 
     return (
         <div className={bem.block} style={{ opacity: erPermisjonsperiodeTilbakeITid ? '75%' : undefined }}>
