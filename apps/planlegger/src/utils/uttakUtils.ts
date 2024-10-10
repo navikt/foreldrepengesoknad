@@ -281,7 +281,15 @@ export const finnUttaksdata = (
         : finnEnsligUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, hvemHarRett);
 };
 
+export type UttakUker = {
+    uker: number;
+};
 export type UttakUkerOgDager = {
+    uker: number;
+    dager: number;
+};
+export type UttakMånederOgUkerOgDager = {
+    måneder: number;
     uker: number;
     dager: number;
 };
@@ -298,10 +306,22 @@ const calcBusinessDays = (startDate: Date, endDate: Date) => {
     return count;
 };
 
+export const findWeeksBetween = (startDate: string, endDate: string): UttakUker => {
+    const totalDays = calcBusinessDays(dayjs(startDate).toDate(), dayjs(endDate).toDate());
+    const weeks = Math.floor(totalDays / 5);
+    return { uker: weeks };
+};
 export const findDaysAndWeeksBetween = (startDate: string, endDate: string): UttakUkerOgDager => {
     const totalDays = calcBusinessDays(dayjs(startDate).toDate(), dayjs(endDate).toDate());
     const weeks = Math.floor(totalDays / 5);
     return { uker: weeks, dager: totalDays - weeks * 5 };
+};
+
+export const findMonthsAndWeeksAndDaysBetween = (startDate: string, endDate: string): UttakMånederOgUkerOgDager => {
+    const totalDays = calcBusinessDays(dayjs(startDate).toDate(), dayjs(endDate).toDate());
+    const weeks = Math.floor(totalDays / 5);
+    const months = Math.floor(weeks / 4);
+    return { måneder: months, uker: weeks - months * 4, dager: totalDays };
 };
 
 export const finnAntallUkerOgDagerMedForeldrepenger = (uttaksdata: Uttaksdata): UttakUkerOgDager => {

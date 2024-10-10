@@ -76,7 +76,7 @@ export const FlereForsørgereBarnFødtSeptemberStartSeptember: Story = {
     },
 };
 
-export const AleneforsørgerBarnFødtJanuarStartAugust: Story = {
+export const AleneforsørgerToBarnFødtJanuarStartAugust: Story = {
     args: {
         locale: 'nb',
         hvemPlanlegger: {
@@ -88,7 +88,7 @@ export const AleneforsørgerBarnFødtJanuarStartAugust: Story = {
             erFødsel: true,
             fødselsdato: '2024-01-01',
             termindato: '2023-08-01',
-            antallBarn: '1',
+            antallBarn: '2',
         },
     },
 };
