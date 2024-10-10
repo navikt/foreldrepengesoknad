@@ -1,11 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { AxiosInstanceAPI } from 'api/AxiosInstance';
-import MockAdapter from 'axios-mock-adapter';
+import { HttpResponse, http } from 'msw';
+import { MemoryRouter } from 'react-router-dom';
 import annenPartVedtak from 'storybookData/annenPartVedtak/annenPartVedtak.json';
 import storageKvittering from 'storybookData/kvittering/storage_kvittering.json';
 import saker from 'storybookData/saker/saker.json';
-import stønadskontoDeltUttak80 from 'storybookData/stonadskontoer/stønadskontoDeltUttak80.json';
-import stønadskontoDeltUttak100 from 'storybookData/stonadskontoer/stønadskontoDeltUttak100.json';
 import stønadskontoer from 'storybookData/stonadskontoer/stønadskontoer.json';
 
 import '@navikt/ds-css';
@@ -14,7 +12,6 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import { Søkerinfo } from '@navikt/fp-types';
 
 import AppContainer from './AppContainer';
-import { RequestStatus } from './types/RequestState';
 
 const søkerinfo = {
     søker: {
@@ -40,47 +37,44 @@ const søkerinfo = {
     ],
 } as Søkerinfo;
 
-type StoryArgs = {
-    søkerinfoData: Søkerinfo;
-    sakerData: any;
-    annenPartVedtakData: any;
-    stønadskontoerData: any;
-    storageKvitteringData: any;
-};
-
 const meta = {
     component: AppContainer,
-    render: (props) => {
-        initAmplitude();
-        const apiMock = new MockAdapter(AxiosInstanceAPI());
-        apiMock.onGet('/rest/sokerinfo').reply(200, props.søkerinfoData);
-        apiMock.onGet('/rest/innsyn/v2/saker').reply(200, props.sakerData);
-        apiMock.onGet('/rest/innsyn/v2/annenPartVedtak').reply(200, props.annenPartVedtakData);
-        apiMock.onGet('/rest/konto').reply(200, props.stønadskontoerData);
-        apiMock.onGet('/rest/storage/kvittering/foreldrepenger').reply(200, props.storageKvitteringData);
-        apiMock.onGet('test/rest/konto').replyOnce(200, stønadskontoDeltUttak80);
-        apiMock.onGet('test/rest/konto').replyOnce(200, stønadskontoDeltUttak100);
-
-        apiMock.onPost('/rest/innsyn/v2/annenPartVedtak').replyOnce(200, undefined, RequestStatus.FINISHED);
-        apiMock.onPost('/rest/storage/foreldrepenger').reply(200, {});
-        apiMock.onPost('/rest/soknad').reply(200, {});
-        apiMock.onPost('/rest/sendSøknadUrl').reply(200, {});
-
-        apiMock.onDelete('/rest/storage/foreldrepenger').reply(200, {});
-
-        return <AppContainer />;
+    parameters: {
+        msw: {
+            handlers: [
+                http.get('https://fp/rest/sokerinfo', () => HttpResponse.json(søkerinfo)),
+                http.get('https://fp/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
+                http.post('https://fp/rest/innsyn/v2/annenPartVedtak', () => HttpResponse.json(annenPartVedtak)),
+                http.post('https://fp/rest/konto', () =>
+                    HttpResponse.json({ 80: stønadskontoer, 100: stønadskontoer }),
+                ),
+                http.get('https://fp/rest/storage/kvittering/foreldrepenger', () =>
+                    HttpResponse.json(storageKvittering),
+                ),
+                http.get('https://fp/rest/foreldrepenger', () => HttpResponse.json(storageKvittering)),
+                http.post('https://fp/rest/innsyn/v2/annenPartVedtak', () => new HttpResponse(null, { status: 200 })),
+                http.get('https://fp/rest/storage/foreldrepenger', () => new HttpResponse(null, { status: 200 })),
+                http.post('https://fp/rest/storage/foreldrepenger', () => new HttpResponse(null, { status: 200 })),
+                http.post('https://fp/rest/soknad', () => new HttpResponse(null, { status: 200 })),
+                http.delete('https://fp/rest/storage/foreldrepenger', () => new HttpResponse(null, { status: 200 })),
+                http.post(
+                    'https://fp/rest/storage/foreldrepenger/vedlegg',
+                    () => new HttpResponse(null, { status: 200 }),
+                ),
+            ],
+        },
     },
-} satisfies Meta<StoryArgs>;
+    render: () => {
+        initAmplitude();
+        return (
+            <MemoryRouter>
+                <AppContainer />
+            </MemoryRouter>
+        );
+    },
+} satisfies Meta;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const SøkerErMann: Story = {
-    args: {
-        søkerinfoData: søkerinfo,
-        sakerData: saker,
-        annenPartVedtakData: annenPartVedtak,
-        stønadskontoerData: stønadskontoer,
-        storageKvitteringData: storageKvittering,
-    },
-};
+export const SøkerErMann: Story = {};

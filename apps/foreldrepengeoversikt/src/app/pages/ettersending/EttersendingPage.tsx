@@ -16,14 +16,14 @@ import {
     VStack,
 } from '@navikt/ds-react';
 
-import { getSaveAttachment } from '@navikt/fp-api';
+import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
 import { sendEttersending } from 'app/api/api';
+import Environment from 'app/appData/Environment';
 import { EttersendingHeader } from 'app/components/header/Header';
 import ScrollToTop from 'app/components/scroll-to-top/ScrollToTop';
 import { useSetBackgroundColor } from 'app/hooks/useBackgroundColor';
@@ -177,7 +177,7 @@ const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
                         attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                         skjemanummer={type}
                         existingAttachments={vedlegg}
-                        saveAttachment={getSaveAttachment(AxiosInstanceAPI(), mapYtelse(sak!.ytelse))}
+                        saveAttachment={getSaveAttachmentFetch(Environment.PUBLIC_PATH, mapYtelse(sak!.ytelse))}
                         skjemanummerTextMap={
                             sak
                                 ? getRelevanteSkjemanummer(sak).reduce(

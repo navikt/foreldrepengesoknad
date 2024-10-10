@@ -1,6 +1,5 @@
-import { FpMellomlagretData } from 'api/api';
-
 import { ContextDataMap, ContextDataType } from './FpDataContext';
+import { FpMellomlagretData } from './useMellomlagreSøknad';
 
 // TODO (TOR) Reduser mappingbehov. Målbilde: Form-verdiar === mellomlagra data === lagra søknad
 export const konverterMellomlagretDataTilAppData = (mellomlagretState: FpMellomlagretData): ContextDataMap => {

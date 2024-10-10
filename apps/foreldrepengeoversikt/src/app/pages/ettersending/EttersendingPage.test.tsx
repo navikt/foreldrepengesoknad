@@ -16,7 +16,7 @@ vi.mock('react-router-dom', async () => {
 });
 
 describe('<EttersendingPage>', () => {
-    it.skip('skal laste opp dokument uten feil', async () => {
+    it('skal laste opp dokument uten feil', async () => {
         await applyRequestHandlers(SkalIkkeFeileOpplasting.parameters.msw);
         const utils = render(<SkalIkkeFeileOpplasting />);
 
@@ -59,9 +59,8 @@ describe('<EttersendingPage>', () => {
             target: { files: { item: () => file, length: 1, 0: file } },
         });
 
-        //TODO (TOR) Må få lagring av vedlegg over på Tanstack før dette fungerar
-        // expect(await screen.findByText('Vedlegg med feil')).toBeInTheDocument();
-        // expect(screen.getByText('hello.png')).toBeInTheDocument();
-        // expect(screen.getByText('Ops noe gikk galt prøv igjen')).toBeInTheDocument();
+        expect(await screen.findByText('Vedlegg med feil')).toBeInTheDocument();
+        expect(screen.getByText('hello.png')).toBeInTheDocument();
+        expect(screen.getByText('Ops noe gikk galt prøv igjen')).toBeInTheDocument();
     });
 });

@@ -38,9 +38,9 @@ export const Default: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get('/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
-                http.get('/rest/innsyn/tidslinje', () => HttpResponse.json(tidslinjeHendelser)),
-                http.get('/rest/historikk/vedlegg', () => HttpResponse.json(manglendeVedlegg)),
+                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
+                http.get('https://oversikt/rest/innsyn/tidslinje', () => HttpResponse.json(tidslinjeHendelser)),
+                http.get('https://oversikt/rest/historikk/vedlegg', () => HttpResponse.json(manglendeVedlegg)),
             ],
         },
     },

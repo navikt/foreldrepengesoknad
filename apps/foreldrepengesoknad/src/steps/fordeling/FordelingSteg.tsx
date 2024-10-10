@@ -1,15 +1,14 @@
-import { FpApiDataType } from 'api/context/FpApiDataContext';
-import { useApiPostData } from 'api/context/useFpApiData';
+import { useQuery } from '@tanstack/react-query';
 import getStønadskontoParams, {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'api/getStønadskontoParams';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
+import { annenPartVedtakOptions, tilgjengeligeStønadskontoerOptions } from 'appData/api';
 import useFpNavigator from 'appData/useFpNavigator';
 import useStepConfig from 'appData/useStepConfig';
 import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { RequestStatus } from 'types/RequestState';
 import {
     getAnnenPartVedtakParam,
     getIsDeltUttak,
@@ -70,38 +69,43 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
     const navnFarMedmor = navnPåForeldre.farMedmor;
     const deltUttak = getIsDeltUttak(annenForelder);
 
-    const { data: annenPartsVedtak, requestStatus: statusAnnenPartVedtak } = useApiPostData(
-        FpApiDataType.ANNEN_PART_VEDTAK,
-        getAnnenPartVedtakParam(annenForelder, barn),
-        suspendAnnenPartVedtakApiRequest,
+    const annenPartVedtakParams = getAnnenPartVedtakParam(annenForelder, barn);
+    const annenPartsVedtakQuery = useQuery(
+        annenPartVedtakOptions(annenPartVedtakParams, !suspendAnnenPartVedtakApiRequest),
     );
 
-    const suspendStønadskontoApiRequests = suspendAnnenPartVedtakApiRequest
-        ? false
-        : statusAnnenPartVedtak !== RequestStatus.FINISHED;
+    const suspendStønadskontoApiRequests = suspendAnnenPartVedtakApiRequest ? false : annenPartsVedtakQuery.isPending;
 
-    const { data: tilgjengeligeStønadskontoer } = useApiPostData(
-        FpApiDataType.STØNADSKONTOER,
-        getStønadskontoParams(barn, annenForelder, søkersituasjon, barnFraNesteSak, annenPartsVedtak, eksisterendeSak),
-        suspendStønadskontoApiRequests,
+    const stønadskontoParams = getStønadskontoParams(
+        barn,
+        annenForelder,
+        søkersituasjon,
+        barnFraNesteSak,
+        annenPartsVedtakQuery.data,
+        eksisterendeSak,
+    );
+    const tilgjengeligeStønadskontoerQuery = useQuery(
+        tilgjengeligeStønadskontoerOptions(stønadskontoParams, !suspendStønadskontoApiRequests),
     );
 
     const eksisterendeVedtakAnnenPart = useMemo(
         () =>
             mapAnnenPartsEksisterendeSakFromDTO(
-                annenPartsVedtak,
+                annenPartsVedtakQuery.data,
                 barn,
                 erFarEllerMedmor,
                 familiehendelsesdato,
                 førsteUttaksdagNesteBarnsSak,
             ),
-        [annenPartsVedtak, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak],
+        [annenPartsVedtakQuery.data, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak],
     );
 
-    const minsterett = tilgjengeligeStønadskontoer ? tilgjengeligeStønadskontoer[dekningsgrad].minsteretter : undefined;
+    const minsterett = tilgjengeligeStønadskontoerQuery.data
+        ? tilgjengeligeStønadskontoerQuery.data[dekningsgrad].minsteretter
+        : undefined;
 
-    const valgtStønadskonto = tilgjengeligeStønadskontoer
-        ? tilgjengeligeStønadskontoer[getDekningsgradFromString(dekningsgrad)]
+    const valgtStønadskonto = tilgjengeligeStønadskontoerQuery.data
+        ? tilgjengeligeStønadskontoerQuery.data[getDekningsgradFromString(dekningsgrad)]
         : undefined;
 
     const fordelingScenario =
@@ -152,7 +156,7 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
         }
     }, [erFarEllerMedmor, saksgrunnlagsAntallBarn, barn, oppdaterBarn, saksgrunnlagsTermindato]);
 
-    if (!valgtStønadskonto || (statusAnnenPartVedtak !== RequestStatus.FINISHED && !suspendAnnenPartVedtakApiRequest)) {
+    if (!valgtStønadskonto || (annenPartsVedtakQuery.isPending && !suspendAnnenPartVedtakApiRequest)) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
                 <Loader size="2xlarge" />
