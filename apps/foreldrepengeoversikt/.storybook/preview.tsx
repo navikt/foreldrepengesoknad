@@ -7,7 +7,7 @@ import { initialize, mswLoader } from 'msw-storybook-addon';
 import { uiMessages } from '@navikt/fp-ui';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
 
-import '../src/app/index.css';
+import '../src/index.css';
 import nbMessages from '../src/intl/messages/nb_NO.json';
 
 dayjs.locale('nb');
