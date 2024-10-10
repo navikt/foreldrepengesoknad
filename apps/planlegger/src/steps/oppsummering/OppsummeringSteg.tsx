@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
-import { erBarnetFødt } from 'utils/barnetUtils';
+import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
@@ -59,6 +59,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
     const harRettTilForeldrepenger = !erBarnetFødtForMerEnnTreÅrSiden && hvemHarRett !== 'ingenHarRett';
     const familiehendelsesdato = getFamiliehendelsedato(barnet);
     const svangerskapsuke22EllerSenere = dayjs().add(18, 'weeks').add(3, 'days').toDate();
+    const erAdoptert = erBarnetAdoptert(barnet);
 
     return (
         <>
@@ -119,10 +120,11 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
                             </VStack>
                         )}
                         <ShareDataInfobox erAlenesøker={erAleneforsørger} />
-                        {harRettTilForeldrepenger &&
-                            dayjs(familiehendelsesdato).isBefore(svangerskapsuke22EllerSenere) && (
-                                <SøkOmForeldrepenger erAlenesøker={erAleneforsørger} barnet={barnet} />
-                            )}
+                        {((harRettTilForeldrepenger &&
+                            dayjs(familiehendelsesdato).isBefore(svangerskapsuke22EllerSenere)) ||
+                            (harRettTilForeldrepenger && erAdoptert)) && (
+                            <SøkOmForeldrepenger erAlenesøker={erAleneforsørger} barnet={barnet} />
+                        )}
                     </VStack>
 
                     <VStack gap="10">
