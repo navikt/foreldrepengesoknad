@@ -101,6 +101,8 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
                         bankkonto={søkerinfo.søker.bankkonto}
                         ytelse={undefined}
                         harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
+                        manglendeVedlegg={manglendeVedleggQuery.data}
+                        saksnummer={params.saksnummer}
                     />
                 )}
                 <Alert variant="warning">
@@ -126,6 +128,8 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
                     bankkonto={søkerinfo.søker.bankkonto}
                     ytelse={gjeldendeSak.ytelse}
                     harMinstEttArbeidsforhold={harMinstEttArbeidsforhold}
+                    manglendeVedlegg={manglendeVedleggQuery.data}
+                    saksnummer={params.saksnummer}
                 />
             )}
 

@@ -1,13 +1,15 @@
 import { CheckmarkIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Link as LinkInternal } from 'react-router-dom';
 
-import { Accordion, BodyLong, BodyShort, Detail, HStack, Heading, Link, VStack } from '@navikt/ds-react';
+import { Accordion, BodyLong, BodyShort, Button, Detail, HStack, Heading, Link, List, VStack } from '@navikt/ds-react';
 
-import { links } from '@navikt/fp-constants';
+import { Skjemanummer, links } from '@navikt/fp-constants';
 import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
 
 import { KontonummerInfo } from 'app/components/kontonummer-info/KontonummerInfo';
+import OversiktRoutes from 'app/routes/routes';
 import DokumentHendelse from 'app/sections/tidslinje/DokumentHendelse';
 import Bankkonto from 'app/types/Bankkonto';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
@@ -18,6 +20,8 @@ interface Props {
     bankkonto: Bankkonto | undefined;
     ytelse: Ytelse | undefined;
     harMinstEttArbeidsforhold: boolean;
+    manglendeVedlegg?: Skjemanummer[];
+    saksnummer?: string;
 }
 
 const getTidspunktTekst = (mottattDato: Date | undefined): string | undefined => {
@@ -37,7 +41,11 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({
     bankkonto,
     ytelse,
     harMinstEttArbeidsforhold,
+    manglendeVedlegg,
+    saksnummer,
 }) => {
+    const intl = useIntl();
+
     const relevantDokument = relevantNyTidslinjehendelse?.dokumenter
         ? relevantNyTidslinjehendelse.dokumenter.find((dok) => dok.tittel.includes('Søknad'))
         : undefined;
@@ -66,6 +74,41 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({
                 </ul>
             )}
             <Accordion>
+                {manglendeVedlegg && manglendeVedlegg.length > 0 && (
+                    <Accordion.Item>
+                        <Accordion.Header>
+                            <VStack gap="1">
+                                <Detail textColor="subtle">
+                                    <FormattedMessage id="BekreftelseSendtSøknad.HuskPå" />
+                                </Detail>
+                                <BodyShort weight="semibold">
+                                    <FormattedMessage id="BekreftelseSendtSøknad.ManglendeDokumentasjon" />
+                                </BodyShort>
+                            </VStack>
+                        </Accordion.Header>
+                        <Accordion.Content>
+                            <VStack gap="2">
+                                <BodyLong>
+                                    <FormattedMessage id="BekreftelseSendtSøknad.ManglendeDokumentasjonDetaljer" />
+                                </BodyLong>
+                                <List description={intl.formatMessage({ id: 'BekreftelseSendtSøknad.DokSomMangler' })}>
+                                    {manglendeVedlegg.map((skjemanummer) => (
+                                        <List.Item key={skjemanummer}>
+                                            <FormattedMessage id={`ettersendelse.${skjemanummer}`} />
+                                        </List.Item>
+                                    ))}
+                                </List>
+                                {saksnummer && (
+                                    <LinkInternal to={`/sak/${saksnummer}/${OversiktRoutes.ETTERSEND}`}>
+                                        <Button variant="secondary" size="small">
+                                            <FormattedMessage id="BekreftelseSendtSøknad.SendDok" />
+                                        </Button>
+                                    </LinkInternal>
+                                )}
+                            </VStack>
+                        </Accordion.Content>
+                    </Accordion.Item>
+                )}
                 {ytelse === Ytelse.ENGANGSSTØNAD && (
                     <>
                         <Accordion.Item>

@@ -1,4 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react/*';
+import { MemoryRouter } from 'react-router-dom';
+
+import { Skjemanummer } from '@navikt/fp-constants';
 
 import { DokumentType } from 'app/types/DokumentType';
 import { Tidslinjehendelse } from 'app/types/Tidslinjehendelse';
@@ -9,6 +12,11 @@ import BekreftelseSendtSøknad from './BekreftelseSendtSøknad';
 const meta = {
     title: 'BekreftelseSendtSøknad',
     component: BekreftelseSendtSøknad,
+    render: (props) => (
+        <MemoryRouter>
+            <BekreftelseSendtSøknad {...props} />
+        </MemoryRouter>
+    ),
 } satisfies Meta<typeof BekreftelseSendtSøknad>;
 export default meta;
 
@@ -41,6 +49,14 @@ export const ForForeldrepengerNårEnIkkeHarArbeidsforhold: Story = {
     args: {
         ...ForForeldrepenger.args,
         harMinstEttArbeidsforhold: false,
+    },
+};
+
+export const ForForeldrepengerManglerDokumentasjon: Story = {
+    args: {
+        ...ForForeldrepenger.args,
+        manglendeVedlegg: [Skjemanummer.HV_ØVELSE, Skjemanummer.NAV_TILTAK],
+        saksnummer: '12345',
     },
 };
 
@@ -86,6 +102,14 @@ export const ForEngangsstønad: Story = {
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: Ytelse.ENGANGSSTØNAD,
         harMinstEttArbeidsforhold: true,
+    },
+};
+
+export const ForEngangsstønadManglerDokumentasjon: Story = {
+    args: {
+        ...ForEngangsstønad.args,
+        manglendeVedlegg: [Skjemanummer.DEPRECATED_TERMINBEKREFTELSE, Skjemanummer.NAV_TILTAK],
+        saksnummer: '12345',
     },
 };
 
@@ -138,5 +162,13 @@ export const ForSvangerskapspengerUtenTidligsteBehandlingsdato: Story = {
         bankkonto: { kontonummer: '1212224', banknavn: 'Luster Sparebank' },
         ytelse: Ytelse.SVANGERSKAPSPENGER,
         harMinstEttArbeidsforhold: true,
+    },
+};
+
+export const ForSvangerskapspengerManglerDokumentasjon: Story = {
+    args: {
+        ...ForSvangerskapspenger.args,
+        manglendeVedlegg: [Skjemanummer.DOK_UTDANNING_MOR, Skjemanummer.TERMINBEKREFTELSE],
+        saksnummer: '12345',
     },
 };
