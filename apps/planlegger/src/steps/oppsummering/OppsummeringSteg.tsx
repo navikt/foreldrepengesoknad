@@ -57,7 +57,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
     const hvemHarRett = arbeidssituasjon ? utledHvemSomHarRett(arbeidssituasjon) : 'ingenHarRett';
 
     const harRettTilForeldrepenger = !erBarnetFødtForMerEnnTreÅrSiden && hvemHarRett !== 'ingenHarRett';
-    const familiehendelsesdato = getFamiliehendelsedato(barnet);
+    const familiehendelsedato = getFamiliehendelsedato(barnet);
     const svangerskapsuke22EllerSenere = dayjs().add(18, 'weeks').add(3, 'days').toDate();
     const erAdoptert = erBarnetAdoptert(barnet);
 
@@ -121,7 +121,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
                         )}
                         <ShareDataInfobox erAlenesøker={erAleneforsørger} />
                         {((harRettTilForeldrepenger &&
-                            dayjs(familiehendelsesdato).isBefore(svangerskapsuke22EllerSenere)) ||
+                            dayjs(familiehendelsedato).isBefore(svangerskapsuke22EllerSenere)) ||
                             (harRettTilForeldrepenger && erAdoptert)) && (
                             <SøkOmForeldrepenger erAlenesøker={erAleneforsørger} barnet={barnet} />
                         )}
