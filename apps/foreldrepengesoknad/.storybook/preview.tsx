@@ -2,6 +2,7 @@ import { Preview } from '@storybook/react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
+import { initialize, mswLoader } from 'msw-storybook-addon';
 import React from 'react';
 
 import '@navikt/ds-css';
@@ -26,7 +27,7 @@ scriptTag.type = 'text/json';
 scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
     APP_VERSION: 'test',
-    PUBLIC_PATH: '',
+    PUBLIC_PATH: 'https://fp',
 });
 document.head.appendChild(scriptTag);
 
@@ -77,6 +78,16 @@ const preview: Preview = {
             </div>
         ),
     ],
+    // beforeAll is available in Storybook 8.2. Else the call would happen outside of the preview object
+    beforeAll: async () => {
+        initialize({
+            onUnhandledRequest: 'bypass',
+            serviceWorker: {
+                url: './mockServiceWorker.js',
+            },
+        });
+    },
+    loaders: [mswLoader],
 };
 
 export default preview;

@@ -1,12 +1,11 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { FpApiDataType } from 'api/context/FpApiDataContext';
-import { useApiPostData } from 'api/context/useFpApiData';
+import { useQuery } from '@tanstack/react-query';
 import getStønadskontoParams from 'api/getStønadskontoParams';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
+import { annenPartVedtakOptions, tilgjengeligeStønadskontoerOptions } from 'appData/api';
 import useFpNavigator from 'appData/useFpNavigator';
 import useStepConfig from 'appData/useStepConfig';
 import { useIntl } from 'react-intl';
-import { RequestStatus } from 'types/RequestState';
 import { getAnnenPartVedtakParam, shouldSuspendAnnenPartVedtakApiRequest } from 'utils/annenForelderUtils';
 import { getVis1Juli2024Info } from 'utils/dateUtils';
 import { getKjønnFromFnr } from 'utils/personUtils';
@@ -47,24 +46,34 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
     const eksisterendeSak = useContextGetData(ContextDataType.EKSISTERENDE_SAK);
     const suspendAnnenPartVedtakApiRequest = shouldSuspendAnnenPartVedtakApiRequest(annenForelder);
 
-    const { data: annenPartsVedtak, requestStatus: statusAnnenPartVedtak } = useApiPostData(
-        FpApiDataType.ANNEN_PART_VEDTAK,
-        getAnnenPartVedtakParam(annenForelder, barn),
-        suspendAnnenPartVedtakApiRequest,
+    const annenPartVedtakParams = getAnnenPartVedtakParam(annenForelder, barn);
+    const annenPartVedtakQuery = useQuery(
+        annenPartVedtakOptions(annenPartVedtakParams, !suspendAnnenPartVedtakApiRequest),
+    );
+    const suspendStønadskontoApiRequests = suspendAnnenPartVedtakApiRequest ? false : annenPartVedtakQuery.isPending;
+
+    const stønadskontoParams = getStønadskontoParams(
+        barn,
+        annenForelder,
+        søkersituasjon,
+        barnFraNesteSak,
+        annenPartVedtakQuery.data,
+        eksisterendeSak,
+    );
+    const tilgjengeligeStønadskontoerQuery = useQuery(
+        tilgjengeligeStønadskontoerOptions(stønadskontoParams, !suspendStønadskontoApiRequests),
     );
 
-    const suspendStønadskontoApiRequests = suspendAnnenPartVedtakApiRequest
-        ? false
-        : statusAnnenPartVedtak !== RequestStatus.FINISHED;
+    const visAnnenPartsValg = annenPartVedtakQuery.data && annenPartVedtakQuery.data.perioder.length > 0;
+    const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && !annenPartVedtakQuery.data;
 
-    const { data: tilgjengeligeStønadskontoer } = useApiPostData(
-        FpApiDataType.STØNADSKONTOER,
-        getStønadskontoParams(barn, annenForelder, søkersituasjon, barnFraNesteSak, annenPartsVedtak, eksisterendeSak),
-        suspendStønadskontoApiRequests,
-    );
-
-    const visAnnenPartsValg = annenPartsVedtak && annenPartsVedtak.perioder.length > 0;
-    const vis1Juli2024Info = getVis1Juli2024Info(barn, annenForelder) && !annenPartsVedtak;
+    if (tilgjengeligeStønadskontoerQuery.isPending) {
+        return (
+            <div style={{ textAlign: 'center', padding: '12rem 0' }}>
+                <Loader size="2xlarge" />
+            </div>
+        );
+    }
 
     return (
         <Step
@@ -73,12 +82,7 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
             onContinueLater={navigator.fortsettSøknadSenere}
             steps={stepConfig}
         >
-            {!tilgjengeligeStønadskontoer && (
-                <div style={{ textAlign: 'center', padding: '12rem 0' }}>
-                    <Loader size="2xlarge" />
-                </div>
-            )}
-            {tilgjengeligeStønadskontoer && (
+            {tilgjengeligeStønadskontoerQuery.data && (
                 <>
                     {vis1Juli2024Info && (
                         <Box padding="4" background="surface-alt-3-subtle" style={{ marginBottom: '2rem' }}>
@@ -97,13 +101,13 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
                             fornavnAnnenForelder={annenForelder.fornavn}
                             kjønnAnnenForelder={getKjønnFromFnr(annenForelder)}
                             dekningsgrad={
-                                annenPartsVedtak.dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT
+                                annenPartVedtakQuery.data.dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT
                                     ? Dekningsgrad.HUNDRE_PROSENT
                                     : Dekningsgrad.ÅTTI_PROSENT
                             }
                             valgtStønadskonto={
-                                tilgjengeligeStønadskontoer[
-                                    annenPartsVedtak.dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT
+                                tilgjengeligeStønadskontoerQuery.data[
+                                    annenPartVedtakQuery.data.dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT
                                         ? Dekningsgrad.HUNDRE_PROSENT
                                         : Dekningsgrad.ÅTTI_PROSENT
                                 ]
@@ -116,8 +120,8 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
                             goToNextDefaultStep={navigator.goToNextDefaultStep}
                             barn={barn}
                             søkersituasjon={søkersituasjon}
-                            stønadskonto100={tilgjengeligeStønadskontoer[Dekningsgrad.HUNDRE_PROSENT]}
-                            stønadskonto80={tilgjengeligeStønadskontoer[Dekningsgrad.ÅTTI_PROSENT]}
+                            stønadskonto100={tilgjengeligeStønadskontoerQuery.data[Dekningsgrad.HUNDRE_PROSENT]}
+                            stønadskonto80={tilgjengeligeStønadskontoerQuery.data[Dekningsgrad.ÅTTI_PROSENT]}
                         />
                     )}
                 </>

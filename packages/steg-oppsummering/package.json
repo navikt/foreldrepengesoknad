@@ -16,7 +16,6 @@
     "dependencies": {
         "@navikt/ds-css": "^7.1.0",
         "@navikt/ds-react": "^7.1.0",
-        "@navikt/fp-api": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",

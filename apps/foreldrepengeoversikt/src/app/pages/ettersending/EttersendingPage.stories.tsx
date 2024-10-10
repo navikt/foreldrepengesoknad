@@ -42,8 +42,7 @@ export const SkalIkkeFeileOpplasting: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post('/rest/storage/engangsstonad/vedlegg', () => {
-                    console.log('test');
+                http.post('https://oversikt/rest/storage/engangsstonad/vedlegg', () => {
                     return new HttpResponse(null, { status: 200 });
                 }),
             ],
@@ -74,8 +73,7 @@ export const SkalFeileOpplasting: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post('/rest/storage/engangsstonad/vedlegg', () => {
-                    console.log('test skal feile');
+                http.post('https://oversikt/rest/storage/engangsstonad/vedlegg', () => {
                     return new HttpResponse(null, { status: 400 });
                 }),
             ],

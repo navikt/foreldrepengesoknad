@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import SøknadRoutes from 'appData/routes';
 import MockDate from 'mockdate';
+import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import { Dekningsgrad } from '@navikt/fp-types';
 
@@ -29,6 +30,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
     it('skal søke som far eller medmor og ha aleneomsorg', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
+        await applyRequestHandlers(FarEllerMedmorAleneomsorgFødsel.parameters.msw);
         render(
             <FarEllerMedmorAleneomsorgFødsel
                 gåTilNesteSide={gåTilNesteSide}
@@ -67,6 +69,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        await applyRequestHandlers(FarEllerMedmorFødselBeggeHarRett.parameters.msw);
         render(
             <FarEllerMedmorFødselBeggeHarRett
                 gåTilNesteSide={gåTilNesteSide}
@@ -105,6 +108,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        await applyRequestHandlers(MorSøkerAdopsjonMedAleneomsorg.parameters.msw);
         render(
             <MorSøkerAdopsjonMedAleneomsorg
                 gåTilNesteSide={gåTilNesteSide}
@@ -149,6 +153,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        await applyRequestHandlers(MorSøkerAdopsjonMedDeltUttak.parameters.msw);
         render(
             <MorSøkerAdopsjonMedDeltUttak
                 gåTilNesteSide={gåTilNesteSide}
@@ -193,6 +198,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        await applyRequestHandlers(MorFødselDeltUttakPrematurFødsel.parameters.msw);
         render(
             <MorFødselDeltUttakPrematurFødsel
                 gåTilNesteSide={gåTilNesteSide}
@@ -235,6 +241,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        await applyRequestHandlers(MorFødselMedTvillingFlerbarnsuker.parameters.msw);
         render(
             <MorFødselMedTvillingFlerbarnsuker
                 gåTilNesteSide={gåTilNesteSide}
@@ -277,6 +284,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        await applyRequestHandlers(MorFødselAleneomsorgMedTrillingFlerbarnsuker.parameters.msw);
         render(
             <MorFødselAleneomsorgMedTrillingFlerbarnsuker
                 gåTilNesteSide={gåTilNesteSide}
@@ -319,6 +327,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        await applyRequestHandlers(FarEllerMedmorSøkerOgMorHarLagetUttaksplan.parameters.msw);
         render(
             <FarEllerMedmorSøkerOgMorHarLagetUttaksplan
                 gåTilNesteSide={gåTilNesteSide}
@@ -358,6 +367,8 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             MockDate.set(new Date('2024-06-30'));
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
+
+            await applyRequestHandlers(FarMedMorMedTermin1Juli2024.parameters.msw);
             render(
                 <FarMedMorMedTermin1Juli2024
                     gåTilNesteSide={gåTilNesteSide}
@@ -377,6 +388,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         MockDate.set(new Date('2024-07-01'));
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
+        await applyRequestHandlers(FarMedMorMedTermin1Juli2024.parameters.msw);
         render(
             <FarMedMorMedTermin1Juli2024
                 gåTilNesteSide={gåTilNesteSide}
@@ -398,6 +410,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             MockDate.set(new Date('2024-06-30'));
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
+            await applyRequestHandlers(MorMedTermin1Juli2024OgFarsSøknad.parameters.msw);
             render(
                 <MorMedTermin1Juli2024OgFarsSøknad
                     gåTilNesteSide={gåTilNesteSide}
@@ -420,6 +433,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             MockDate.set(new Date('2024-07-01'));
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
+            await applyRequestHandlers(MorMedTermin1Juli2024OgFarsSøknad.parameters.msw);
             render(
                 <MorMedTermin1Juli2024OgFarsSøknad
                     gåTilNesteSide={gåTilNesteSide}
@@ -440,6 +454,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
         MockDate.set(new Date('2024-06-30'));
+        await applyRequestHandlers(MorFødselBeggeHarRettFødselFør1Juli2024.parameters.msw);
         render(
             <MorFødselBeggeHarRettFødselFør1Juli2024
                 gåTilNesteSide={gåTilNesteSide}
@@ -468,6 +483,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
         MockDate.set(new Date('2024-07-01'));
+        await applyRequestHandlers(MorFødselBeggeHarRettFødselFør1Juli2024.parameters.msw);
         render(
             <MorFødselBeggeHarRettFødselFør1Juli2024
                 gåTilNesteSide={gåTilNesteSide}
@@ -491,6 +507,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         MockDate.reset();
     });
+
     it(
         'Skal vise info om at det er lite forskjell på 80% og 100% dekningsgrad for barn med termin før 1.juli 2024,' +
             ' hvis dato er etter 1. juli 2024',
@@ -498,6 +515,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
             MockDate.set(new Date('2024-07-01'));
+            await applyRequestHandlers(FarEllerMedmorFødselBeggeHarRettTerminFør1Juli2024.parameters.msw);
             render(
                 <FarEllerMedmorFødselBeggeHarRettTerminFør1Juli2024
                     gåTilNesteSide={gåTilNesteSide}
@@ -522,10 +540,12 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             MockDate.reset();
         },
     );
+
     it('Skal vise info om forskjell på 80% og 100% dekningsgrad for barn med adopsjonsdato etter 1.juli 2024, hvis dato er før 1. juli 2024', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
         MockDate.set(new Date('2024-06-30'));
+        await applyRequestHandlers(MorBeggeHarRettAdopsjonEtter1Juli2024.parameters.msw);
         render(
             <MorBeggeHarRettAdopsjonEtter1Juli2024
                 gåTilNesteSide={gåTilNesteSide}
@@ -549,6 +569,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
 
         MockDate.reset();
     });
+
     it(
         'Skal vise info om at det er lite forskjell på 80% og 100% dekningsgrad for barn med adopsjonsdato' +
             ' etter 1.juli 2024, hvis dato er etter 1. juli 2024.',
@@ -556,6 +577,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
             const gåTilNesteSide = vi.fn();
             const mellomlagreSøknadOgNaviger = vi.fn();
             MockDate.set(new Date('2024-07-01'));
+            await applyRequestHandlers(MorBeggeHarRettAdopsjonEtter1Juli2024.parameters.msw);
             render(
                 <MorBeggeHarRettAdopsjonEtter1Juli2024
                     gåTilNesteSide={gåTilNesteSide}

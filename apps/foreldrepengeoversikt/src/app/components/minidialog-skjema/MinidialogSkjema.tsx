@@ -16,14 +16,14 @@ import {
     VStack,
 } from '@navikt/ds-react';
 
-import { getSaveAttachment } from '@navikt/fp-api';
+import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';
 
-import { AxiosInstanceAPI } from 'app/api/AxiosInstance';
 import { prefiks_public_path } from 'app/api/api';
+import Environment from 'app/appData/Environment';
 import EttersendingDto from 'app/types/EttersendingDTO';
 import { MinidialogInnslag } from 'app/types/MinidialogInnslag';
 import { Ytelse } from 'app/types/Ytelse';
@@ -179,7 +179,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                             updateAttachments={updateAttachments}
                             attachmentType={AttachmentType.TILBAKEBETALING}
                             skjemanummer={Skjemanummer.TILBAKEBETALING}
-                            saveAttachment={getSaveAttachment(AxiosInstanceAPI(), mapYtelse(sakstype))}
+                            saveAttachment={getSaveAttachmentFetch(Environment.PUBLIC_PATH, mapYtelse(sakstype))}
                         />
                     </>
                 )}

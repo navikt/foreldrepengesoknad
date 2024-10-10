@@ -6,9 +6,11 @@ import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 
 import AppContainer from './AppContainer';
 import { initAmplitude } from './amplitude/amplitude';
+import Environment from './appData/Environment';
 // Viktig at ds-css importeres før AppContainer. Det gjør at Aksel+tailwind sin css laster før vår i de tilfellene vi vil overskrive.
 import './index.css';
 
@@ -28,7 +30,9 @@ if (container) {
     const root = createRoot(container);
     root.render(
         <StrictMode>
-            <AppContainer />
+            <BrowserRouter basename={Environment.PUBLIC_PATH}>
+                <AppContainer />
+            </BrowserRouter>
         </StrictMode>,
     );
 }

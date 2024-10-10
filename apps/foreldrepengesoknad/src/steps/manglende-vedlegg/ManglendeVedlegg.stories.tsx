@@ -1,9 +1,9 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
-import { AxiosInstanceAPI } from 'api/AxiosInstance';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import SøknadRoutes from 'appData/routes';
-import MockAdapter from 'axios-mock-adapter';
+import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
@@ -92,6 +92,14 @@ const defaultArbeidsforholdOgInntekt = {
     harJobbetSomSelvstendigNæringsdrivende: false,
 };
 
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+        },
+    },
+});
+
 type StoryArgs = {
     situasjon?: Situasjon;
     annenForelder?: AnnenForelder;
@@ -104,6 +112,16 @@ type StoryArgs = {
 const meta = {
     title: 'steps/ManglendeVedlegg',
     component: ManglendeVedlegg,
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    'https://fp/rest/storage/foreldrepenger/vedlegg',
+                    () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
+                ),
+            ],
+        },
+    },
     render: ({
         situasjon = 'fødsel',
         annenForelder = defaultAnnenForelder,
@@ -115,29 +133,27 @@ const meta = {
     }) => {
         initAmplitude();
 
-        const apiMock = new MockAdapter(AxiosInstanceAPI());
-        apiMock.onPost('/rest/storage/foreldrepenger/vedlegg').reply(200); //story
-        apiMock.onPost('http://localhost:8888/rest/storage/foreldrepenger/vedlegg').reply(200); //test
-
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.DOKUMENTASJON]}>
-                <FpDataContext
-                    onDispatch={gåTilNesteSide}
-                    initialState={{
-                        [ContextDataType.UTTAKSPLAN]: [],
-                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                        [ContextDataType.OM_BARNET]: barn,
-                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
-                        [ContextDataType.ANDRE_INNTEKTSKILDER]: annenInntekt,
-                        [ContextDataType.SØKERSITUASJON]: {
-                            rolle: 'mor',
-                            situasjon: situasjon,
-                        },
-                    }}
-                >
-                    <ManglendeVedlegg {...rest} />
-                </FpDataContext>
-            </MemoryRouter>
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter initialEntries={[SøknadRoutes.DOKUMENTASJON]}>
+                    <FpDataContext
+                        onDispatch={gåTilNesteSide}
+                        initialState={{
+                            [ContextDataType.UTTAKSPLAN]: [],
+                            [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                            [ContextDataType.OM_BARNET]: barn,
+                            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
+                            [ContextDataType.ANDRE_INNTEKTSKILDER]: annenInntekt,
+                            [ContextDataType.SØKERSITUASJON]: {
+                                rolle: 'mor',
+                                situasjon: situasjon,
+                            },
+                        }}
+                    >
+                        <ManglendeVedlegg {...rest} />
+                    </FpDataContext>
+                </MemoryRouter>
+            </QueryClientProvider>
         );
     },
 } satisfies Meta<StoryArgs>;

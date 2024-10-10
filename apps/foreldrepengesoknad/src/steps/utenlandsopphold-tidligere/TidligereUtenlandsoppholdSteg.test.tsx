@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import SøknadRoutes from 'appData/routes';
 import dayjs from 'dayjs';
+import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
@@ -17,6 +18,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        await applyRequestHandlers(Default.parameters.msw);
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);
@@ -58,6 +60,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        await applyRequestHandlers(Default.parameters.msw);
         render(
             <Default
                 gåTilNesteSide={gåTilNesteSide}
@@ -105,6 +108,7 @@ describe('<TidligereUtenlandsoppholdSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        await applyRequestHandlers(Default.parameters.msw);
         render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
 
         expect(await screen.findAllByText('Har bodd i utlandet')).toHaveLength(2);

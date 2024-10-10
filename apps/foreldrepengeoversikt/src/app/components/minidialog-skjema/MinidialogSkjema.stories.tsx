@@ -36,7 +36,10 @@ export const SkalIkkeFeileOpplasting: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post('/rest/storage/foreldrepenger/vedlegg', () => new HttpResponse(null, { status: 200 })),
+                http.post(
+                    'https://oversikt/rest/storage/foreldrepenger/vedlegg',
+                    () => new HttpResponse(null, { status: 200 }),
+                ),
             ],
         },
     },
@@ -58,7 +61,10 @@ export const SkalFeileOpplasting: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post('/rest/storage/foreldrepenger/vedlegg', () => new HttpResponse(null, { status: 400 })),
+                http.post(
+                    'https://oversikt/rest/storage/foreldrepenger/vedlegg',
+                    () => new HttpResponse(null, { status: 400 }),
+                ),
             ],
         },
     },

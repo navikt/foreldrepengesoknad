@@ -36,7 +36,7 @@ export const Default: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get('/rest/minidialog', () =>
+                http.get('https://oversikt/rest/minidialog', () =>
                     HttpResponse.json([
                         {
                             saksnr: '352011079',
@@ -45,7 +45,7 @@ export const Default: Story = {
                         },
                     ]),
                 ),
-                http.get('/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
+                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
             ],
         },
     },
