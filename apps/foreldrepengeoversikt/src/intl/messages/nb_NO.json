@@ -142,6 +142,9 @@
     "tidslinje.navVenterPå": "Du må sende inn {dokumentasjon}",
     "BekreftelseSendtSøknad.HuskPå": "HUSK PÅ",
     "BekreftelseSendtSøknad.SelvInformere": "Du må selv informere arbeidsgiveren din om når du er borte",
+    "BekreftelseSendtSøknad.ManglendeDokumentasjon": "Du må sende all dokumentasjon før søknaden kan behandles",
+    "BekreftelseSendtSøknad.ManglendeDokumentasjonDetaljer": "Du mangler dokumentasjon å sende oss som vi trenger for å behandle saken din. Dokumentasjonen kan lastes opp her under din sak. Etter dokumentasjonen er sendt tar det vanligvis rundt fire uker før saken er behandlet.",
+    "BekreftelseSendtSøknad.DokSomMangler": "Dokumentasjon som mangler:",
     "BekreftelseSendtSøknad.HuskÅInformere": "Husk å informere arbeidsgiveren din om hvor lenge du skal være borte fra jobb, og om du er helt eller delvis borte i permisjonen. Arbeidsgiveren din får ikke vite dette av NAV. Endrer du planen for permisjonen, må du også huske å gi beskjed til arbeidsgiveren.",
     "BekreftelseSendtSøknad.TilSenere": "TIL SENERE",
     "BekreftelseSendtSøknad.HvisDuVilEndre": "Hvis du vil gjøre endringer i planen din",
@@ -157,6 +160,7 @@
     "BekreftelseSendtSøknad.UtbetalingstidspunktDel2": "I ",
     "BekreftelseSendtSøknad.UtbetalingstidspunktDel3": "utbetalingsoversikt",
     "BekreftelseSendtSøknad.UtbetalingstidspunktDel4": " på nettisdene til NAV kan du se utbetalingen på kvelden den dagen pengene er utbetalt.",
+    "BekreftelseSendtSøknad.SendDok": "Send dokumentasjon",
     "KontonummerInfoTekst.NavUtbetaling": "Dette er kontonummeret NAV kommer til å betale {ytelse, select, foreldrepenger {foreldrepengene} svangerskapspenger {svangerskapspengene} other {engangsstønaden}} til, hvis søknaden blir innvilget. Hvis det er feil kan du endre det.",
     "KontonummerInfoTekst.Mangler": "NAV mangler kontonummeret som {ytelse, select, foreldrepenger {foreldrepengene} svangerskapspenger {svangerskapspengene} other {engangsstønaden}} vil bli betalt til hvis du får søknaden din innvilget."
 }
