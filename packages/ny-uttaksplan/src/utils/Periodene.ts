@@ -297,3 +297,27 @@ export const uttaksplanErBareForeldrepengerFørFødsel = (perioder: Planperiode[
         (periode) => isUttaksperiode(periode) && periode.kontoType === StønadskontoType.ForeldrepengerFørFødsel,
     );
 };
+
+export const uttaksplanErBareOpphold = (perioder: Planperiode[]): boolean => {
+    const perioderUtenInfoPerioder = perioder.filter((p) => !p.gjelderAnnenPart);
+
+    if (perioderUtenInfoPerioder.length === 0) {
+        return false;
+    }
+
+    return perioderUtenInfoPerioder.every((periode) => periode.oppholdÅrsak !== undefined);
+};
+
+export const uttaksplanSlutterMedOpphold = (perioder: Planperiode[]): boolean => {
+    return (
+        perioder
+            .filter((p) => !p.gjelderAnnenPart)
+            .slice()
+            .reverse()
+            .findIndex((periode) => periode.oppholdÅrsak !== undefined) === 0
+    );
+};
+
+export const uttaksplanStarterMedOpphold = (perioder: Planperiode[]): boolean => {
+    return perioder.filter((p) => !p.gjelderAnnenPart).findIndex((periode) => periode.oppholdÅrsak !== undefined) === 0;
+};

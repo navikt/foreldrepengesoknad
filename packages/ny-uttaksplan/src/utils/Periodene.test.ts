@@ -1,42 +1,43 @@
-import {
-    Forelder,
-    InfoPeriode,
-    Oppholdsperiode,
-    OppholdÅrsakType,
-    Periodetype,
-    StønadskontoType,
-    Uttaksperiode,
-} from '@navikt/fp-common';
-import { Uttaksdagen, getTidsperiodeString } from '@navikt/fp-utils';
+import { Forelder, StønadskontoType } from '@navikt/fp-constants';
+import { OppholdÅrsakType } from '@navikt/fp-types';
+import { UttaksdagenString, dateToISOString, getTidsperiodeString } from '@navikt/fp-utils';
 
+import { PeriodeHullType, Planperiode } from '../types/Planperiode';
 import { uttaksplanErBareOpphold, uttaksplanSlutterMedOpphold, uttaksplanStarterMedOpphold } from './Periodene';
 
-const familiehendelsesdato = new Date();
-const førsteUttaksdag = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
+const familiehendelsesdato = dateToISOString(new Date());
+const førsteUttaksdag = UttaksdagenString(familiehendelsesdato).denneEllerNeste();
+const førsteUttaksdagTidsperiode = getTidsperiodeString(førsteUttaksdag, 5);
 
-const uttakBase: Partial<Uttaksperiode> = {
-    type: Periodetype.Uttak,
-    konto: StønadskontoType.Fellesperiode,
-    gradert: false,
-    tidsperiode: getTidsperiodeString(førsteUttaksdag, 5),
+const uttakBase: Planperiode = {
     forelder: Forelder.farMedmor,
+    kontoType: StønadskontoType.Fellesperiode,
+    fom: førsteUttaksdagTidsperiode.tom,
+    tom: førsteUttaksdagTidsperiode.fom,
+    id: '1',
+    gjelderAnnenPart: false,
 };
 
-const oppholdsBase: Partial<Oppholdsperiode> = {
-    type: Periodetype.Opphold,
-    årsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
-    tidsperiode: getTidsperiodeString(førsteUttaksdag, 5),
+const oppholdsBase: Planperiode = {
+    id: '2',
+    oppholdÅrsak: OppholdÅrsakType.UttakMødrekvoteAnnenForelder,
+    fom: førsteUttaksdagTidsperiode.fom,
+    tom: førsteUttaksdagTidsperiode.tom,
     forelder: Forelder.farMedmor,
+    gjelderAnnenPart: false,
 };
 
-const infoBase: Partial<InfoPeriode> = {
-    type: Periodetype.Info,
-    tidsperiode: getTidsperiodeString(førsteUttaksdag, 5),
+const infoBase: Planperiode = {
+    fom: førsteUttaksdagTidsperiode.fom,
+    tom: førsteUttaksdagTidsperiode.tom,
+    gjelderAnnenPart: false,
+    periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
+    id: '3',
 };
 
-const uttak = uttakBase as Uttaksperiode;
-const opphold = oppholdsBase as Oppholdsperiode;
-const info = infoBase as InfoPeriode;
+const uttak = uttakBase;
+const opphold = oppholdsBase;
+const info = infoBase;
 
 describe('Periodene - uttaksplan er bare opphold', () => {
     it('skal ikke godta en plan med bare opphold', () => {

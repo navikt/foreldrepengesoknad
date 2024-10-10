@@ -57,7 +57,7 @@ const UttaksplanNy: FunctionComponent<Props> = ({
         annenPartsPlanperioder,
     );
 
-    let komplettPlan = finnOgSettInnHull(
+    const komplettPlan = finnOgSettInnHull(
         annenPartsPlanperioder
             ? settInnAnnenPartsUttak(
                   søkersPlanperioder,

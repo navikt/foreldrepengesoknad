@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
-import { Periode, StønadskontoType, Uttaksperiode } from '@navikt/fp-common';
-import { TidsperiodenString, Uttaksdagen, UttaksdagenString } from '@navikt/fp-utils';
+import { StønadskontoType } from '@navikt/fp-constants';
+import { TidsperiodenString, UttaksdagenString } from '@navikt/fp-utils';
 
 import { Planperiode } from '../types/Planperiode';
 import { Periodene, sorterPerioder } from '../utils/Periodene';
@@ -26,26 +26,23 @@ export const splittPeriodePåDato = (periode: Planperiode, dato: string): Planpe
     return [periodeFørDato, periodeFraOgMedDato];
 };
 
-export const splittUttaksperiodePåFamiliehendelsesdato = (periode: Uttaksperiode, famDato: Date): Uttaksperiode[] => {
-    const periodeFørFamDato: Periode = {
+export const splittUttaksperiodePåFamiliehendelsesdato = (periode: Planperiode, famDato: string): Planperiode[] => {
+    const periodeFørFamDato: Planperiode = {
         ...periode,
-        konto: periode.konto == StønadskontoType.Foreldrepenger ? StønadskontoType.AktivitetsfriKvote : periode.konto,
-        morsAktivitetIPerioden:
-            periode.konto == StønadskontoType.Foreldrepenger ? undefined : periode.morsAktivitetIPerioden,
-        erMorForSyk: periode.konto == StønadskontoType.Foreldrepenger ? undefined : periode.erMorForSyk,
-        tidsperiode: {
-            fom: periode.tidsperiode.fom,
-            tom: Uttaksdagen(famDato).forrige(),
-        },
+        kontoType:
+            periode.kontoType == StønadskontoType.Foreldrepenger
+                ? StønadskontoType.AktivitetsfriKvote
+                : periode.kontoType,
+        morsAktivitet: periode.kontoType == StønadskontoType.Foreldrepenger ? undefined : periode.morsAktivitet,
+        fom: periode.fom,
+        tom: UttaksdagenString(famDato).forrige(),
     };
 
-    const periodeFraOgMedFamDato: Periode = {
+    const periodeFraOgMedFamDato: Planperiode = {
         ...periode,
         id: guid(),
-        tidsperiode: {
-            fom: Uttaksdagen(periodeFørFamDato.tidsperiode.tom).neste(),
-            tom: periode.tidsperiode.tom,
-        },
+        fom: UttaksdagenString(periodeFørFamDato.tom).neste(),
+        tom: periode.tom,
     };
 
     return [periodeFørFamDato, periodeFraOgMedFamDato];
