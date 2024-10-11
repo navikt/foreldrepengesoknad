@@ -26,35 +26,33 @@ const RegistrertePersonalia: React.FunctionComponent<Props> = ({
     visEtternavn,
 }: Props) => {
     return (
-        <>
-            <Infobox
-                color="blue"
-                header={
-                    <>
-                        {altTekstHvisUkjentNavn ??
-                            formaterNavn(person.fornavn, person.etternavn, visEtternavn, person.mellomnavn)}
-                    </>
-                }
-                icon={<BabyWrappedIcon height={24} width={24} color="#005B82" />}
-            >
-                {fødselsnummerForVisning !== undefined && (
-                    <BodyShort>
-                        <FormattedMessage
-                            id="registrertePersonalia.fødselsnummer"
-                            values={{ fnr: fødselsnummerForVisning }}
-                        />
-                    </BodyShort>
-                )}
-                {!altTekstHvisUkjentNavn && fødselsdatoForVisning !== undefined && (
-                    <BodyShort>
-                        <FormattedMessage
-                            id="registrertePersonalia.fødselsdato"
-                            values={{ fødselsdato: fødselsdatoForVisning }}
-                        />
-                    </BodyShort>
-                )}
-            </Infobox>
-        </>
+        <Infobox
+            color="blue"
+            header={
+                <>
+                    {altTekstHvisUkjentNavn ??
+                        formaterNavn(person.fornavn, person.etternavn, visEtternavn, person.mellomnavn)}
+                </>
+            }
+            icon={<BabyWrappedIcon height={24} width={24} color="#005B82" />}
+        >
+            {fødselsnummerForVisning !== undefined && (
+                <BodyShort>
+                    <FormattedMessage
+                        id="registrertePersonalia.fødselsnummer"
+                        values={{ fnr: fødselsnummerForVisning }}
+                    />
+                </BodyShort>
+            )}
+            {!altTekstHvisUkjentNavn && fødselsdatoForVisning !== undefined && (
+                <BodyShort>
+                    <FormattedMessage
+                        id="registrertePersonalia.fødselsdato"
+                        values={{ fødselsdato: fødselsdatoForVisning }}
+                    />
+                </BodyShort>
+            )}
+        </Infobox>
     );
 };
 
