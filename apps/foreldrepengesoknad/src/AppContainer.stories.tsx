@@ -52,7 +52,6 @@ const meta = {
                     HttpResponse.json(storageKvittering),
                 ),
                 http.get('https://fp/rest/foreldrepenger', () => HttpResponse.json(storageKvittering)),
-                http.post('https://fp/rest/innsyn/v2/annenPartVedtak', () => new HttpResponse(null, { status: 200 })),
                 http.get('https://fp/rest/storage/foreldrepenger', () => new HttpResponse(null, { status: 200 })),
                 http.post('https://fp/rest/storage/foreldrepenger', () => new HttpResponse(null, { status: 200 })),
                 http.post('https://fp/rest/soknad', () => new HttpResponse(null, { status: 200 })),
