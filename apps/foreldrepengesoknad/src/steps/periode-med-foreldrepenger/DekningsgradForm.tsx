@@ -59,12 +59,6 @@ const getRadioBeskrivelse = (
     return undefined;
 };
 
-const getSøkerAntallTekst = (intl: IntlShape, erDeltUttak: boolean) => {
-    return erDeltUttak
-        ? intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.dere' })
-        : intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.du' });
-};
-
 type Props = {
     goToPreviousDefaultStep: () => Promise<void>;
     goToNextDefaultStep: () => Promise<void>;
@@ -124,7 +118,9 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
     const sisteDag100Prosent = finnSisteDagMedForeldrepenger(stønadskonto100, barn);
     const sisteDag80Prosent = finnSisteDagMedForeldrepenger(stønadskonto80, barn);
 
-    const søkerAntallTekst = getSøkerAntallTekst(intl, erDeltUttak);
+    const søkerAntallTekst = erDeltUttak
+        ? intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.dere' })
+        : intl.formatMessage({ id: 'uttaksplaninfo.Uker.soker.du' });
 
     return (
         <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
