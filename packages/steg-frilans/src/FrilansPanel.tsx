@@ -24,7 +24,6 @@ export interface Props<TYPE> {
     onStepChange?: (id: TYPE) => void;
     goToPreviousStep: () => void;
     stepConfig: Array<ProgressStep<TYPE>>;
-    stønadstype: 'Engangsstønad' | 'Foreldrepenger' | 'Svangerskapspenger';
 }
 
 const FrilansPanel = <TYPE extends string>({
