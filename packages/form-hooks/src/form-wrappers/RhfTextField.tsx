@@ -50,19 +50,14 @@ const RhfTextField: FunctionComponent<Props> = ({
 
     const onChangeFn = useCallback(
         (evt: React.ChangeEvent<HTMLInputElement>) => {
-            // TODO (TOR) Skriv dette penare etterkvart som shouldReplaceInvisibleChars blir verifisert OK
-            if (shouldReplaceInvisibleChars) {
-                const parsedValues =
-                    evt.currentTarget.value !== '' ? replaceInvisibleCharsWithSpace(evt.currentTarget.value) : null;
-                field.onChange(parsedValues);
-                if (onChange) {
-                    onChange(parsedValues);
-                }
-            } else {
-                field.onChange(evt);
-                if (onChange) {
-                    onChange(evt.currentTarget.value);
-                }
+            const parsedValues = shouldReplaceInvisibleChars
+                ? replaceInvisibleCharsWithSpace(evt.currentTarget.value)
+                : evt.currentTarget.value;
+
+            field.onChange(parsedValues);
+
+            if (onChange) {
+                onChange(parsedValues);
             }
         },
         [field, onChange, shouldReplaceInvisibleChars],
