@@ -4,9 +4,7 @@
         "baseUrl": "src",
         "jsx": "react-jsx",
         "paths": {
-            "app/*": ["app/*"],
-            "assets/*": ["assets/*"],
-            "storybookData/*": ["storybook-data/*"]
+            "storybookData/*": ["./../.storybook/storybook-data/*"]
         },
         "rootDir": "src",
         "types": ["@testing-library/jest-dom", "vite/client", "node", "vitest/globals"]

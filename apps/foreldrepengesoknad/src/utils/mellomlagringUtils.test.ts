@@ -1,5 +1,5 @@
-import { FpMellomlagretData } from 'api/api';
 import SøknadRoutes from 'appData/routes';
+import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 
 import { MELLOMLAGRET_VERSJON, shouldApplyStorage } from './mellomlagringUtils';
 

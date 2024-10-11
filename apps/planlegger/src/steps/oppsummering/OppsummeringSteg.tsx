@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
-import { erBarnetFødt } from 'utils/barnetUtils';
+import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 
 import { BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
@@ -18,9 +18,12 @@ import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviou
 import { notEmpty } from '@navikt/fp-validation';
 
 import ShareDataInfobox from '../../components/boxes/ShareDataInfobox';
-import OppgittInformasjon from './OppgittInformasjon';
-import OppsummeringHarRett from './OppsummeringHarRett';
 import OppsummeringHeader from './OppsummeringHeader';
+import SøkOmForeldrepenger from './SøkOmForeldrepenger';
+import BarnehageplassOppsummering, { getFamiliehendelsedato } from './expansion-cards/BarnehageplassOppsummering';
+import OppgittInformasjon from './expansion-cards/OppgittInformasjon';
+import OppsummeringHarRett from './expansion-cards/OppsummeringHarRett';
+import HvorMyeOppsummering from './expansion-cards/hvor-mye/HvorMyeOppsummering';
 import HvaSkjerNårIkon from './ikoner/HvaSkjerNårIkon';
 import HvorMyeIkon from './ikoner/HvorMyeIkon';
 import styles from './oppsummeringSteg.module.css';
@@ -41,6 +44,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
     const hvorLangPeriode = useContextGetData(ContextDataType.HVOR_LANG_PERIODE);
     const arbeidssituasjon = useContextGetData(ContextDataType.ARBEIDSSITUASJON);
     const fordeling = useContextGetData(ContextDataType.FORDELING);
+    const hvorMye = useContextGetData(ContextDataType.HVOR_MYE);
 
     const erAleneforsørger = erAlenesøker(hvemPlanlegger);
 
@@ -53,13 +57,15 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
     const hvemHarRett = arbeidssituasjon ? utledHvemSomHarRett(arbeidssituasjon) : 'ingenHarRett';
 
     const harRettTilForeldrepenger = !erBarnetFødtForMerEnnTreÅrSiden && hvemHarRett !== 'ingenHarRett';
+    const familiehendelsedato = getFamiliehendelsedato(barnet);
+    const svangerskapsuke22EllerSenere = dayjs().add(18, 'weeks').add(3, 'days').toDate();
+    const erAdoptert = erBarnetAdoptert(barnet);
 
     return (
         <>
             <OppsummeringHeader>
                 <VStack gap="10">
                     <VStack gap="5">
-                        <ShareDataInfobox erAlenesøker={erAleneforsørger} />
                         {!harRettTilForeldrepenger && (
                             <VStack gap="5">
                                 <Infobox
@@ -89,16 +95,7 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
                             </VStack>
                         )}
                         {stønadskontoer && valgtStønadskonto && hvorLangPeriode && arbeidssituasjon && (
-                            <VStack gap="5">
-                                <OppgittInformasjon
-                                    stønadskontoer={stønadskontoer}
-                                    barnet={barnet}
-                                    hvemPlanlegger={hvemPlanlegger}
-                                    arbeidssituasjon={arbeidssituasjon}
-                                    hvorLangPeriode={hvorLangPeriode}
-                                    fordeling={fordeling}
-                                    satser={satser}
-                                />
+                            <VStack gap="2">
                                 {harRettTilForeldrepenger && (
                                     <OppsummeringHarRett
                                         valgtStønadskonto={valgtStønadskonto}
@@ -109,7 +106,24 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
                                         fordeling={fordeling}
                                     />
                                 )}
+                                {hvorMye && <HvorMyeOppsummering satser={satser} />}
+                                <BarnehageplassOppsummering hvemPlanlegger={hvemPlanlegger} barnet={barnet} />
+                                <OppgittInformasjon
+                                    stønadskontoer={stønadskontoer}
+                                    barnet={barnet}
+                                    hvemPlanlegger={hvemPlanlegger}
+                                    arbeidssituasjon={arbeidssituasjon}
+                                    hvorLangPeriode={hvorLangPeriode}
+                                    fordeling={fordeling}
+                                    satser={satser}
+                                />
                             </VStack>
+                        )}
+                        <ShareDataInfobox erAlenesøker={erAleneforsørger} />
+                        {((harRettTilForeldrepenger &&
+                            dayjs(familiehendelsedato).isBefore(svangerskapsuke22EllerSenere)) ||
+                            (harRettTilForeldrepenger && erAdoptert)) && (
+                            <SøkOmForeldrepenger erAlenesøker={erAleneforsørger} barnet={barnet} />
                         )}
                     </VStack>
 

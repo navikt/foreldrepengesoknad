@@ -31,9 +31,7 @@ export default defineConfig(({ mode }) => {
         },
         resolve: {
             alias: {
-                app: path.resolve(__dirname, './src/app'),
-                storybookData: path.resolve(__dirname, './src/storybook-data'),
-                assets: path.resolve(__dirname, './src/assets'),
+                storybookData: path.resolve(__dirname, './.storybook/storybook-data'),
             },
         },
         server: {

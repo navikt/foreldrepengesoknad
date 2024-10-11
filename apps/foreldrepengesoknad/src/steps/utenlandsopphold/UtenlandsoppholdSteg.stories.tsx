@@ -2,13 +2,11 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import SøknadRoutes from 'appData/routes';
-import MockAdapter from 'axios-mock-adapter/types';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import AxiosMock from '../../__mocks__/AxiosMock';
 import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
 
 const promiseAction =
@@ -27,24 +25,19 @@ const meta = {
     component: UtenlandsoppholdSteg,
     render: ({ gåTilNesteSide, ...rest }) => {
         initAmplitude();
-        const restMock = (apiMock: MockAdapter) => {
-            apiMock.onPost('/rest/storage/foreldrepenger').reply(200, undefined);
-        };
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.UTENLANDSOPPHOLD]}>
-                <AxiosMock mock={restMock}>
-                    <FpDataContext
-                        onDispatch={gåTilNesteSide}
-                        initialState={{
-                            [ContextDataType.SØKERSITUASJON]: {
-                                situasjon: 'fødsel',
-                                rolle: 'mor',
-                            },
-                        }}
-                    >
-                        <UtenlandsoppholdSteg {...rest} />
-                    </FpDataContext>
-                </AxiosMock>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.SØKERSITUASJON]: {
+                            situasjon: 'fødsel',
+                            rolle: 'mor',
+                        },
+                    }}
+                >
+                    <UtenlandsoppholdSteg {...rest} />
+                </FpDataContext>
             </MemoryRouter>
         );
     },

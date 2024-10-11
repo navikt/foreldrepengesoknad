@@ -3,15 +3,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Button } from '@navikt/ds-react';
 
-import {
-    Arbeidsforhold,
-    NavnPåForeldre,
-    Periode,
-    PeriodeValidState,
-    Situasjon,
-    Utsettelsesperiode,
-} from '@navikt/fp-common';
-import { Tidsperioden, isValidTidsperiode } from '@navikt/fp-utils';
+import { NavnPåForeldre, Periode, PeriodeValidState, Situasjon, Utsettelsesperiode } from '@navikt/fp-common';
+import { Tidsperioden, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import ActionLink from '../../../common/action-link/ActionLink';
 import Block from '../../../common/block/Block';
@@ -58,7 +51,6 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
     erMorUfør: boolean;
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
-    arbeidsforhold: Arbeidsforhold[];
     situasjon: Situasjon;
     utsettelserIPlan: Utsettelsesperiode[];
     setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
@@ -135,7 +127,10 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                 const periodenErKunHelligdager = antallHelligdager === antallUttaksdager;
                 return (
                     <>
-                        <Block visible={!isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="xl">
+                        <Block
+                            visible={!isValidTidsperiodeString({ fom: values.fom!, tom: values.tom! })}
+                            padBottom="xl"
+                        >
                             <TidsperiodeForm
                                 tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                 familiehendelsesdato={familiehendelsesdato}
@@ -160,7 +155,10 @@ const PeriodeUtsettelseForm: FunctionComponent<Props> = ({
                                 />
                             )}
 
-                            <Block visible={isValidTidsperiode({ fom: values.fom!, tom: values.tom! })} padBottom="xl">
+                            <Block
+                                visible={isValidTidsperiodeString({ fom: values.fom!, tom: values.tom! })}
+                                padBottom="xl"
+                            >
                                 <TidsperiodeDisplay
                                     tidsperiode={{ fom: values.fom!, tom: values.tom! }}
                                     toggleVisTidsperiode={toggleVisTidsperiode}

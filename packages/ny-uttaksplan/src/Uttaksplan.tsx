@@ -2,42 +2,92 @@ import { FunctionComponent } from 'react';
 
 import '@navikt/ds-css';
 
-import { AnnenForelder, NavnPåForeldre, Periode } from '@navikt/fp-common';
-import { Barn } from '@navikt/fp-types';
+import { NavnPåForeldre } from '@navikt/fp-common';
+import { Barn, Familiesituasjon, SaksperiodeNy } from '@navikt/fp-types';
 
+import { finnOgSettInnHull, settInnAnnenPartsUttak, slåSammenLikePerioder } from './builder/uttaksplanbuilderUtils';
 import PeriodeListe from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
+import { mapSaksperiodeTilPlanperiode } from './utils/periodeUtils';
 
 interface Props {
-    uttaksplan: Periode[];
     familiehendelsedato: string;
     erFarEllerMedmor: boolean;
     navnPåForeldre: NavnPåForeldre;
-    annenForelder: AnnenForelder;
     barn: Barn;
+    søkersPerioder: SaksperiodeNy[];
+    annenPartsPerioder?: SaksperiodeNy[];
+    gjelderAdopsjon: boolean;
+    bareFarHarRett: boolean;
+    harAktivitetskravIPeriodeUtenUttak: boolean;
+    førsteUttaksdagNesteBarnsSak: string | undefined;
+    familiesituasjon: Familiesituasjon;
 }
 
 const UttaksplanNy: FunctionComponent<Props> = ({
-    uttaksplan,
     familiehendelsedato,
     erFarEllerMedmor,
     navnPåForeldre,
-    annenForelder,
     barn,
+    søkersPerioder,
+    annenPartsPerioder,
+    gjelderAdopsjon,
+    bareFarHarRett,
+    harAktivitetskravIPeriodeUtenUttak,
+    førsteUttaksdagNesteBarnsSak,
+    familiesituasjon,
 }) => {
+    const søkersPlanperioder = finnOgSettInnHull(
+        mapSaksperiodeTilPlanperiode(søkersPerioder, erFarEllerMedmor, false),
+        harAktivitetskravIPeriodeUtenUttak,
+        familiehendelsedato,
+        gjelderAdopsjon,
+        bareFarHarRett,
+        erFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak,
+    );
+    const annenPartsPlanperioder = annenPartsPerioder
+        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true)
+        : undefined;
+
+    const planMedLikePerioderSlåttSammen = slåSammenLikePerioder(
+        søkersPlanperioder,
+        familiehendelsedato,
+        førsteUttaksdagNesteBarnsSak,
+        annenPartsPlanperioder,
+    );
+
+    const komplettPlan = finnOgSettInnHull(
+        annenPartsPlanperioder
+            ? settInnAnnenPartsUttak(
+                  søkersPlanperioder,
+                  annenPartsPlanperioder,
+                  familiehendelsedato,
+                  førsteUttaksdagNesteBarnsSak,
+                  true,
+              )
+            : planMedLikePerioderSlåttSammen,
+        harAktivitetskravIPeriodeUtenUttak,
+        familiehendelsedato,
+        gjelderAdopsjon,
+        bareFarHarRett,
+        erFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak,
+    );
+
     return (
         <UttaksplanDataContext
             initialState={{
-                ANNEN_FORELDER: annenForelder,
                 BARN: barn,
                 ER_FAR_ELLER_MEDMOR: erFarEllerMedmor,
                 FAMILIEHENDELSEDATO: familiehendelsedato,
                 NAVN_PÅ_FORELDRE: navnPåForeldre,
-                UTTAKSPLAN: uttaksplan,
+                UTTAKSPLAN: komplettPlan,
+                FAMILIESITUASJON: familiesituasjon,
             }}
         >
             <div style={{ padding: '2rem 0' }}>
-                <PeriodeListe perioder={uttaksplan} familiehendelsedato={familiehendelsedato} barn={barn} />
+                <PeriodeListe perioder={komplettPlan} />
             </div>
         </UttaksplanDataContext>
     );

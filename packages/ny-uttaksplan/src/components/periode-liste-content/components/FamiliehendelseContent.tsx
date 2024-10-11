@@ -1,19 +1,30 @@
-import { InformationSquareIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, HStack } from '@navikt/ds-react';
 
 import { FamiliehendelseType } from '@navikt/fp-common';
+import { notEmpty } from '@navikt/fp-validation';
+
+import { UttaksplanContextDataType, useContextGetData } from '../../../context/UttaksplanDataContext';
 
 interface Props {
     familiehendelseType: FamiliehendelseType;
 }
 
 const FamiliehendelseContent: FunctionComponent<Props> = ({ familiehendelseType }) => {
+    const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
+    const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
+
     if (familiehendelseType === FamiliehendelseType.TERM) {
         return (
             <HStack>
-                <div style={{ margin: '1rem', display: 'flex', gap: '1rem' }}>Termin</div>
+                <div style={{ margin: '1rem', display: 'flex', gap: '1rem' }}>
+                    <FormattedMessage
+                        id="uttaksplan.periodeListeContent.familiehendelse.termin"
+                        values={{ navnMor: navnPåForeldre.mor, erFarEllerMedmor }}
+                    />
+                </div>
             </HStack>
         );
     }
@@ -29,9 +40,6 @@ const FamiliehendelseContent: FunctionComponent<Props> = ({ familiehendelseType 
     return (
         <HStack gap={'4'}>
             <div style={{ display: 'flex' }}>
-                <div>
-                    <InformationSquareIcon width={24} height={24} />
-                </div>
                 <div
                     style={{
                         marginLeft: '1rem',
@@ -41,13 +49,10 @@ const FamiliehendelseContent: FunctionComponent<Props> = ({ familiehendelseType 
                     }}
                 >
                     <BodyLong>
-                        Mor får 3 uker foreldrepenger som er satt av til å brukes før termin. Hvis barnet blir født før
-                        termin, vil man miste dagene av denne perioden, og starte på mødrekvoten av foreldrepengene den
-                        dagen barnet blir født.
+                        <FormattedMessage id="uttaksplan.periodeListeContent.familiehendelse.fødsel1" />
                     </BodyLong>
                     <BodyLong>
-                        Hvis barnet blir født etter termin vil mor bruke noen dager av fellesperioden før fødselen, men
-                        starter ikke med mødrekvoten før barnet blir født.
+                        <FormattedMessage id="uttaksplan.periodeListeContent.familiehendelse.fødsel2" />
                     </BodyLong>
                 </div>
             </div>

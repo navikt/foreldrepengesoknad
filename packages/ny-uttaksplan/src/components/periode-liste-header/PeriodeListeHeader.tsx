@@ -17,16 +17,19 @@ import './periode-liste-header.css';
 
 interface Props {
     permisjonsperiode: Permisjonsperiode;
-    familiehendelsedato: string;
     erFamiliehendelse?: boolean;
 }
 
-const renderPeriode = (permisjonsperiode: Permisjonsperiode, erFamiliehendelse: boolean | undefined) => {
+const renderPeriode = (
+    permisjonsperiode: Permisjonsperiode,
+    erFamiliehendelse: boolean | undefined,
+    familiehendelsedato: string,
+) => {
     if (erFamiliehendelse) {
         return (
             <div>
                 <Heading size="xsmall" as="p">
-                    {formatDateShortMonth(permisjonsperiode.tidsperiode.fom)}
+                    {formatDateShortMonth(familiehendelsedato)}
                 </Heading>
             </div>
         );
@@ -50,16 +53,14 @@ const renderVarighet = (erFamiliehendelse: boolean | undefined, antallDager: num
     return <BodyShort>{getVarighetString(antallDager, intl)}</BodyShort>;
 };
 
-const PeriodeListeHeader: FunctionComponent<Props> = ({
-    permisjonsperiode,
-    familiehendelsedato,
-    erFamiliehendelse,
-}) => {
+const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, erFamiliehendelse }) => {
     const intl = useIntl();
     const bem = bemUtils('periode-liste-header');
 
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
+    const familiehendelsedato = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIEHENDELSEDATO));
+    const familiesituasjon = notEmpty(useContextGetData(UttaksplanContextDataType.FAMILIESITUASJON));
 
     const periodeFørTermindato = dayjs(familiehendelsedato).isAfter(permisjonsperiode.tidsperiode.tom);
     const { tidsperiode, erUtsettelse, erHull, forelder } = permisjonsperiode;
@@ -73,27 +74,32 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({
         !!permisjonsperiode.samtidigUttak === false &&
         !!permisjonsperiode.erUtsettelse === false;
     const erSamtidigUttak = !!permisjonsperiode.samtidigUttak;
+    const utsettelseÅrsak = erUtsettelse ? permisjonsperiode.perioder[0].utsettelseÅrsak : undefined;
+    const erPermisjonsperiodeTilbakeITid = dayjs(
+        erFamiliehendelse ? permisjonsperiode.tidsperiode.fom : permisjonsperiode.tidsperiode.tom,
+    ).isBefore(new Date());
 
     return (
-        <div className={bem.block}>
+        <div className={bem.block} style={{ opacity: erPermisjonsperiodeTilbakeITid ? '75%' : undefined }}>
             <div className={bem.element('dato')}>
-                {renderPeriode(permisjonsperiode, erFamiliehendelse)}
+                {renderPeriode(permisjonsperiode, erFamiliehendelse, familiehendelsedato)}
                 <Hide above="md">
                     <BodyShort>
                         {getTekst({
                             erPeriodeUtenUttak,
                             erSamtidigUttak,
                             erHull,
-                            erUtsettelse,
+                            utsettelseÅrsak,
                             erFamiliehendelse,
                             erFarEllerMedmor,
                             navnPåForeldre,
                             forelder,
+                            familiesituasjon,
                         })}
                     </BodyShort>
                 </Hide>
             </div>
-            {renderVarighet(erFamiliehendelse, antallDager, intl)}
+            <div className={bem.element('uker')}>{renderVarighet(erFamiliehendelse, antallDager, intl)}</div>
             <div
                 className={classNames(
                     bem.element('hendelse'),
@@ -108,18 +114,19 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({
                     }),
                 )}
             >
-                <BodyShort className={classNames(bem.element('hendelse-wrapper'))}>
+                <div className={classNames(bem.element('hendelse-wrapper'))}>
                     <Show above="md">
                         <BodyShort>
                             {getTekst({
                                 erPeriodeUtenUttak,
                                 erSamtidigUttak,
                                 erHull,
-                                erUtsettelse,
+                                utsettelseÅrsak,
                                 erFamiliehendelse,
                                 erFarEllerMedmor,
                                 navnPåForeldre,
                                 forelder,
+                                familiesituasjon,
                             })}
                         </BodyShort>
                     </Show>
@@ -128,11 +135,11 @@ const PeriodeListeHeader: FunctionComponent<Props> = ({
                         erMor,
                         erPeriodeUtenUttak,
                         periodeFørTermindato,
-                        erUtsettelse,
+                        utsettelseÅrsak,
                         erHull,
                         erFamiliehendelse,
                     })}
-                </BodyShort>
+                </div>
             </div>
         </div>
     );

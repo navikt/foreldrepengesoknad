@@ -8,12 +8,10 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { Loader } from '@navikt/ds-react';
 
-import { ApiAccessError, ApiGeneralError } from '@navikt/fp-api';
 import { Kvittering, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 import { redirect } from '@navikt/fp-utils';
 
-import { AxiosInstanceAPI } from './api/AxiosInstance';
 import useMellomlagreSøknad, { SvpDataMapAndMetaData } from './app-data/useMellomlagreSøknad';
 import Forside from './pages/forside/Forside';
 import ArbeidIUtlandetStep from './steps/arbeid-i-utlandet/ArbeidIUtlandetStep';
@@ -36,9 +34,7 @@ export const Spinner: React.FunctionComponent = () => (
     </div>
 );
 
-export const svpApi = AxiosInstanceAPI();
-
-export const ApiErrorHandler: React.FunctionComponent<{ error: ApiAccessError | ApiGeneralError }> = ({ error }) => {
+export const ApiErrorHandler: React.FunctionComponent<{ error: Error }> = ({ error }) => {
     return (
         <ErrorPage appName="Svangerskapspenger" errorMessage={error.message} retryCallback={() => location.reload()} />
     );
@@ -49,7 +45,7 @@ const renderSøknadRoutes = (
     søkerInfo: Søkerinfo,
     mellomlagreSøknadOgNaviger: () => Promise<void>,
     avbrytSøknad: () => Promise<void>,
-    sendSøknad: (abortSignal: AbortSignal) => Promise<void>,
+    sendSøknad: () => Promise<void>,
 ) => {
     if (!harGodkjentVilkår) {
         return <Route path="*" element={<Navigate to={SøknadRoutes.FORSIDE} />} />;
@@ -209,9 +205,9 @@ const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({
     const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(false);
     const [kvittering, setKvittering] = useState<Kvittering>();
 
-    const { sendSøknad, errorSendSøknad } = useSendSøknad(svpApi, setKvittering, locale);
-    const mellomlagreOgNaviger = useMellomlagreSøknad(svpApi, locale, setHarGodkjentVilkår);
-    const avbrytSøknad = useAvbrytSøknad(svpApi, setHarGodkjentVilkår);
+    const { sendSøknad, errorSendSøknad } = useSendSøknad(setKvittering, locale);
+    const mellomlagreOgNaviger = useMellomlagreSøknad(locale, setHarGodkjentVilkår);
+    const avbrytSøknad = useAvbrytSøknad(setHarGodkjentVilkår);
 
     useEffect(() => {
         if (mellomlagretData?.[ContextDataType.APP_ROUTE]) {

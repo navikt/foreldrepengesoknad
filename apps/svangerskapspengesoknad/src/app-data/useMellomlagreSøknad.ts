@@ -1,25 +1,23 @@
 import * as Sentry from '@sentry/browser';
-import { AxiosInstance } from 'axios';
+import { useMutation } from '@tanstack/react-query';
+import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { ApiAccessError, ApiGeneralError, deleteData, postData } from '@navikt/fp-api';
-import { Kvittering, LocaleNo } from '@navikt/fp-types';
+import { LocaleNo } from '@navikt/fp-types';
 
+import Environment from './Environment';
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
 export const VERSJON_MELLOMLAGRING = 4;
 
+const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
-    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
+    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
 export type SvpDataMapAndMetaData = { version: number; locale: LocaleNo } & ContextDataMap;
 
-const useMellomlagreSøknad = (
-    svpApi: AxiosInstance,
-    locale: LocaleNo,
-    setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void,
-) => {
+const useMellomlagreSøknad = (locale: LocaleNo, setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void) => {
     const navigate = useNavigate();
     const state = useContextComplete();
     const resetState = useContextReset();
@@ -27,6 +25,10 @@ const useMellomlagreSøknad = (
     const [skalMellomlagre, setSkalMellomlagre] = useState(false);
 
     const promiseRef = useRef<() => void>();
+
+    const { mutate: slettMellomlagring } = useMutation({
+        mutationFn: () => ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/svangerskapspenger`),
+    });
 
     useEffect(() => {
         if (skalMellomlagre) {
@@ -37,23 +39,35 @@ const useMellomlagreSøknad = (
                 if (currentPath) {
                     navigate(currentPath);
 
-                    await postData<SvpDataMapAndMetaData, Kvittering>(
-                        svpApi,
-                        '/rest/storage/svangerskapspenger',
-                        {
+                    try {
+                        const data = {
                             version: VERSJON_MELLOMLAGRING,
                             locale,
                             ...state,
-                        },
-                        FEIL_VED_INNSENDING,
-                    );
+                        } as SvpDataMapAndMetaData;
+                        await ky.post(`${Environment.PUBLIC_PATH}/rest/storage/svangerskapspenger`, { json: data });
+                    } catch (error: unknown) {
+                        if (error instanceof HTTPError) {
+                            if (error.response.status === 401 || error.response.status === 403) {
+                                throw error;
+                            }
+
+                            const jsonResponse = await error.response.json();
+                            const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
+                            throw Error(FEIL_VED_INNSENDING + callIdForBruker);
+                        }
+                        if (error instanceof Error) {
+                            throw error;
+                        }
+                        throw new Error(String(error));
+                    }
                 } else {
                     setHarGodkjentVilkår(false);
                     resetState();
                     navigate('/');
 
                     // Ved avbryt så set ein Path = undefined og må så rydda opp i data her
-                    await deleteData(svpApi, '/rest/storage/svangerskapspenger', FEIL_VED_INNSENDING);
+                    slettMellomlagring();
                 }
 
                 if (promiseRef.current) {
@@ -61,7 +75,7 @@ const useMellomlagreSøknad = (
                 }
             };
 
-            lagreEllerSlett().catch((error: ApiAccessError | ApiGeneralError) => {
+            lagreEllerSlett().catch((error: Error) => {
                 Sentry.captureMessage(error.message);
 
                 if (promiseRef.current) {

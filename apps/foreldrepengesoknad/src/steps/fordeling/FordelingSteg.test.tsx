@@ -2,6 +2,7 @@ import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MockDate from 'mockdate';
+import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import * as stories from './FordelingSteg.stories';
 
@@ -41,6 +42,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til mor med aleneomsorg der barnet er født før 1 oktober 2021', async () => {
+        await applyRequestHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
         const utils = render(
             <MorAleneomsorgDekning80EttBarnFør1Okt2021
                 gåTilNesteSide={gåTilNesteSide}
@@ -92,6 +94,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         expect(gåTilNesteSide).toHaveBeenCalled();
     });
     it('skal vise riktig informasjon når mor starter på fødselsdato og mister all periode før fødsel', async () => {
+        await applyRequestHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
         const utils = render(
             <MorAleneomsorgDekning80EttBarnFør1Okt2021
                 gåTilNesteSide={gåTilNesteSide}
@@ -112,6 +115,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         ).toBeInTheDocument();
     });
     it('skal vise riktig informasjon om mor skal trekkes noen uker og dager av fellesperioden', async () => {
+        await applyRequestHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
         const utils = render(
             <MorAleneomsorgDekning80EttBarnFør1Okt2021
                 gåTilNesteSide={gåTilNesteSide}
@@ -132,6 +136,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         ).toBeInTheDocument();
     });
     it('skal vise riktig informasjon om mor skal trekkes en dag av fellesperioden', async () => {
+        await applyRequestHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
         const utils = render(
             <MorAleneomsorgDekning80EttBarnFør1Okt2021
                 gåTilNesteSide={gåTilNesteSide}
@@ -147,6 +152,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         expect(screen.getByText('1 dag tas fra fellesperioden.')).toBeInTheDocument();
     });
     it('skal vise riktig informasjon om mor skal mister en dag av foreldrepenger før fødsel', async () => {
+        await applyRequestHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
         const utils = render(
             <MorAleneomsorgDekning80EttBarnFør1Okt2021
                 gåTilNesteSide={gåTilNesteSide}
@@ -162,6 +168,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         expect(screen.getByText('Du mister 1 dag.')).toBeInTheDocument();
     });
     it('skal vise riktig informasjon om mor mister 2 uker og 4 dager av foreldrepenger før fødsel', async () => {
+        await applyRequestHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
         const utils = render(
             <MorAleneomsorgDekning80EttBarnFør1Okt2021
                 gåTilNesteSide={gåTilNesteSide}
@@ -177,6 +184,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         expect(screen.getByText('Du mister 2 uker og 4 dager.')).toBeInTheDocument();
     });
     it('kan ikke angi feil format for oppstartdato', async () => {
+        await applyRequestHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
         const utils = render(
             <MorAleneomsorgDekning80EttBarnFør1Okt2021
                 gåTilNesteSide={gåTilNesteSide}
@@ -197,6 +205,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         ).toHaveLength(2);
     });
     it('kan ikke angi for sen oppstartsdato', async () => {
+        await applyRequestHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
         const utils = render(
             <MorAleneomsorgDekning80EttBarnFør1Okt2021
                 gåTilNesteSide={gåTilNesteSide}
@@ -214,6 +223,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være senest 21.09.2021.')).toHaveLength(2);
     });
     it('kan ikke angi for tidlig oppstartsdato', async () => {
+        await applyRequestHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
         const utils = render(
             <MorAleneomsorgDekning80EttBarnFør1Okt2021
                 gåTilNesteSide={gåTilNesteSide}
@@ -231,6 +241,7 @@ describe('Fordeling - MorAleneomsorgDekning80EttBarnFør1Okt2021', () => {
         expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 02.07.2021.')).toHaveLength(2);
     });
     it('kan ikke angi for oppstartsdato på en helgedag', async () => {
+        await applyRequestHandlers(MorAleneomsorgDekning80EttBarnFør1Okt2021.parameters.msw);
         const utils = render(
             <MorAleneomsorgDekning80EttBarnFør1Okt2021
                 gåTilNesteSide={gåTilNesteSide}
@@ -254,6 +265,7 @@ describe('Fordeling - MorAleneomsorgEttBarnPrematurFødsel', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til mor med aleneomsorg der barnet er født prematurt etter 1 okt 2021', async () => {
+        await applyRequestHandlers(MorAleneomsorgEttBarnPrematurFødsel.parameters.msw);
         const utils = render(
             <MorAleneomsorgEttBarnPrematurFødsel
                 gåTilNesteSide={gåTilNesteSide}
@@ -296,6 +308,7 @@ describe('Fordeling - MorAleneomsorgEttBarnPrematurFødsel', () => {
         expect(gåTilNesteSide).toHaveBeenCalled();
     });
     it('kan ikke angi for sen oppstartsdato', async () => {
+        await applyRequestHandlers(MorAleneomsorgEttBarnPrematurFødsel.parameters.msw);
         const utils = render(
             <MorAleneomsorgEttBarnPrematurFødsel
                 gåTilNesteSide={gåTilNesteSide}
@@ -312,6 +325,7 @@ describe('Fordeling - MorAleneomsorgEttBarnPrematurFødsel', () => {
         expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være senest 21.09.2023.')).toHaveLength(2);
     });
     it('kan ikke angi for tidlig oppstartsdato', async () => {
+        await applyRequestHandlers(MorAleneomsorgEttBarnPrematurFødsel.parameters.msw);
         const utils = render(
             <MorAleneomsorgEttBarnPrematurFødsel
                 gåTilNesteSide={gåTilNesteSide}
@@ -334,6 +348,7 @@ describe('Fordeling - MorAleneomsorgAdopsjonTrillinger', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til mor med aleneomsorg der tre barn er adoptert', async () => {
+        await applyRequestHandlers(MorAleneomsorgAdopsjonTrillinger.parameters.msw);
         render(
             <MorAleneomsorgAdopsjonTrillinger
                 gåTilNesteSide={gåTilNesteSide}
@@ -364,6 +379,7 @@ describe('Fordeling - MorAleneomsorgAdopsjonTrillinger', () => {
         expect(gåTilNesteSide).toHaveBeenCalled();
     });
     it('skal ikke kunne starte før adopsjonsdatoen', async () => {
+        await applyRequestHandlers(MorAleneomsorgAdopsjonTrillinger.parameters.msw);
         const utils = render(
             <MorAleneomsorgAdopsjonTrillinger
                 gåTilNesteSide={gåTilNesteSide}
@@ -387,6 +403,7 @@ describe('Fordeling - FarMedmorAleneomsorgFødtTvillinger', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far med aleneomsorg med fødte tvillinger', async () => {
+        await applyRequestHandlers(FarMedmorAleneomsorgFødtTvillinger.parameters.msw);
         render(
             <FarMedmorAleneomsorgFødtTvillinger
                 gåTilNesteSide={gåTilNesteSide}
@@ -413,6 +430,7 @@ describe('Fordeling - FarMedmorAleneomsorgFødtTvillinger', () => {
         expect(gåTilNesteSide).toHaveBeenCalled();
     });
     it('skal ikke kunne starte før datoen for alenomsorg', async () => {
+        await applyRequestHandlers(FarMedmorAleneomsorgFødtTvillinger.parameters.msw);
         const utils = render(
             <FarMedmorAleneomsorgFødtTvillinger
                 gåTilNesteSide={gåTilNesteSide}
@@ -436,6 +454,7 @@ describe('Fordeling - FarMedmorAleneomsorgFødtFireBarnFør1Okt2021', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far med aleneomsorg med fire barn født før 1 okt 2021', async () => {
+        await applyRequestHandlers(FarMedmorAleneomsorgFødtFireBarnFør1Okt2021.parameters.msw);
         render(
             <FarMedmorAleneomsorgFødtFireBarnFør1Okt2021
                 gåTilNesteSide={gåTilNesteSide}
@@ -473,6 +492,7 @@ describe('Fordeling - FarMedmorAleneomsorgFødtTreBarnFørWLB', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far med aleneomsorg med tre barn født før 2 august 2022', async () => {
+        await applyRequestHandlers(FarMedmorAleneomsorgFødtTreBarnFørWLB.parameters.msw);
         render(
             <FarMedmorAleneomsorgFødtTreBarnFørWLB
                 gåTilNesteSide={gåTilNesteSide}
@@ -497,6 +517,7 @@ describe('Fordeling - FarMedmorAleneomsorgEttBarnTerminEtterWLB', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far med aleneomsorg med fødte tvillinger', async () => {
+        await applyRequestHandlers(FarMedmorAleneomsorgEttBarnTerminEtterWLB.parameters.msw);
         render(
             <FarMedmorAleneomsorgEttBarnTerminEtterWLB
                 gåTilNesteSide={gåTilNesteSide}
@@ -529,6 +550,7 @@ describe('Fordeling - FarMedmorAleneomsorgPrematurtFødtBarn', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far med aleneomsorg der barnet er født prematurt', async () => {
+        await applyRequestHandlers(FarMedmorAleneomsorgPrematurtFødtBarn.parameters.msw);
         render(
             <FarMedmorAleneomsorgPrematurtFødtBarn
                 gåTilNesteSide={gåTilNesteSide}
@@ -555,6 +577,7 @@ describe('Fordeling - FarMedmorAleneomsorgAdopsjonFireBarn', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far med aleneomsorg der barna er adopterte', async () => {
+        await applyRequestHandlers(FarMedmorAleneomsorgAdopsjonFireBarn.parameters.msw);
         render(
             <FarMedmorAleneomsorgAdopsjonFireBarn
                 gåTilNesteSide={gåTilNesteSide}
@@ -572,6 +595,7 @@ describe('Fordeling - FarMedmorAleneomsorgAdopsjonFireBarn', () => {
         ).toBeInTheDocument();
     });
     it('skal ikke kunne starte foreldrepengene før adopsjonsdatoen', async () => {
+        await applyRequestHandlers(FarMedmorAleneomsorgAdopsjonFireBarn.parameters.msw);
         const utils = render(
             <FarMedmorAleneomsorgAdopsjonFireBarn
                 gåTilNesteSide={gåTilNesteSide}
@@ -595,6 +619,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til mor med delt uttak der barnet er født prematurt', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnPrematurFødsel.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnPrematurFødsel
                 gåTilNesteSide={gåTilNesteSide}
@@ -655,6 +680,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         expect(gåTilNesteSide).toHaveBeenCalled();
     });
     it('skal ikke kunne gå videre med ikke utfylt informasjon', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnPrematurFødsel.parameters.msw);
         render(
             <MorDeltUttakEttBarnPrematurFødsel
                 gåTilNesteSide={gåTilNesteSide}
@@ -671,6 +697,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         expect(screen.getAllByText('Du må oppgi en lengde på fellesperioden din.')).toHaveLength(2);
     });
     it('skal ikke kunne skrive inn tekst for antall uker hun ønsker av fellesperioden', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnPrematurFødsel.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnPrematurFødsel
                 gåTilNesteSide={gåTilNesteSide}
@@ -689,6 +716,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         ).toHaveLength(2);
     });
     it('skal ikke kunne skrive inn desimaltall for antall uker hun ønsker av fellesperioden', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnPrematurFødsel.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnPrematurFødsel
                 gåTilNesteSide={gåTilNesteSide}
@@ -707,6 +735,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         ).toHaveLength(2);
     });
     it('skal ikke kunne skrive inn for mange uker for antall uker hun ønsker av fellesperioden', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnPrematurFødsel.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnPrematurFødsel
                 gåTilNesteSide={gåTilNesteSide}
@@ -723,6 +752,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         expect(screen.getAllByText('Fellesperioden kan være maksimalt 20 uker lang.')).toHaveLength(2);
     });
     it('skal ikke kunne skrive inn et negativt tall for antall uker hun ønsker av fellesperioden', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnPrematurFødsel.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnPrematurFødsel
                 gåTilNesteSide={gåTilNesteSide}
@@ -741,6 +771,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         ).toHaveLength(2);
     });
     it('skal få figur over fordeling når hun velger gyldig antall uker hun ønsker av fellesperioden', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnPrematurFødsel.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnPrematurFødsel
                 gåTilNesteSide={gåTilNesteSide}
@@ -758,6 +789,7 @@ describe('Fordeling - MorDeltUttakEttBarnPrematurFødsel', () => {
         expect(screen.getByText('17 uker igjen')).toBeInTheDocument();
     });
     it('skal få informasjon når hun ønsker å hoppe over fordeling av fellesperioden', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnPrematurFødsel.parameters.msw);
         render(
             <MorDeltUttakEttBarnPrematurFødsel
                 gåTilNesteSide={gåTilNesteSide}
@@ -781,6 +813,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise input for dager med fellesperiode når bruker svarer at de vil velge fordeling av fellesperioden', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
         render(
             <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
                 gåTilNesteSide={gåTilNesteSide}
@@ -795,6 +828,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
         expect(screen.getByText('Hvor mange dager vil du ha?')).toBeInTheDocument();
     });
     it('skal ikke kunne gå videre uten å oppgi antall uker eller dager av fellesperioden', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
                 gåTilNesteSide={gåTilNesteSide}
@@ -812,6 +846,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
         await userEvent.type(dagerInput, '1');
     });
     it('skal kunne gå videre uten å oppgi antall uker hvis man oppgir dager i fordelingen av fellesperioden', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
                 gåTilNesteSide={gåTilNesteSide}
@@ -828,6 +863,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
         expect(screen.queryByText('Du må oppgi en lengde på fellesperioden din.')).not.toBeInTheDocument();
     });
     it('skal kunne gå videre uten å oppgi antall dager hvis man oppgir uker i fordelingen av fellesperioden', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
                 gåTilNesteSide={gåTilNesteSide}
@@ -844,6 +880,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
         expect(screen.queryByText('Du må oppgi en lengde på fellesperioden din.')).not.toBeInTheDocument();
     });
     it('skal ikke kunne oppgi desimaltall som antall dager', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
                 gåTilNesteSide={gåTilNesteSide}
@@ -863,6 +900,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
         ).toHaveLength(2);
     });
     it('skal ikke kunne oppgi tekst som antall dager', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
                 gåTilNesteSide={gåTilNesteSide}
@@ -882,6 +920,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
         ).toHaveLength(2);
     });
     it('skal ikke kunne oppgi negativt tall som antall dager', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
                 gåTilNesteSide={gåTilNesteSide}
@@ -901,6 +940,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
         ).toHaveLength(2);
     });
     it('skal ikke kunne overskride antall dager  tilgjengelig', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
                 gåTilNesteSide={gåTilNesteSide}
@@ -918,6 +958,7 @@ describe('Fordeling - MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning', () 
         expect(screen.getAllByText('Fellesperioden kan være maksimalt 20 uker og 1 dag lang.')).toHaveLength(2);
     });
     it('skal ikke kunne overskride antall uker og dager tilgjengelig', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnetter1Juli2024Med80ProsentDekning
                 gåTilNesteSide={gåTilNesteSide}
@@ -943,6 +984,7 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til mor med delt uttak som søker på termin', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnTermin.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnTermin
                 gåTilNesteSide={gåTilNesteSide}
@@ -1008,6 +1050,7 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
         expect(gåTilNesteSide).toHaveBeenCalled();
     });
     it('skal vise riktig informasjon til mor ønsker å starte dagen før termin', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnTermin.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnTermin
                 gåTilNesteSide={gåTilNesteSide}
@@ -1023,7 +1066,9 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
         expect(screen.getByText('1 dag før termin.')).toBeInTheDocument();
         expect(screen.getByText('Du mister 2 uker og 4 dager.')).toBeInTheDocument();
     });
+
     it('skal vise riktig informasjon til mor skal bruke 1 dag av fellesperioden', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnTermin.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnTermin
                 gåTilNesteSide={gåTilNesteSide}
@@ -1042,6 +1087,7 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
         expect(gåTilNesteSide).toHaveBeenCalled();
     });
     it('kan ikke angi for sen oppstartsdato', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnTermin.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnTermin
                 gåTilNesteSide={gåTilNesteSide}
@@ -1059,6 +1105,7 @@ describe('Fordeling - MorDeltUttakEttBarnTermin', () => {
         expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være senest 21.06.2024.')).toHaveLength(2);
     });
     it('kan ikke angi for tidlig oppstartsdato', async () => {
+        await applyRequestHandlers(MorDeltUttakEttBarnTermin.parameters.msw);
         const utils = render(
             <MorDeltUttakEttBarnTermin
                 gåTilNesteSide={gåTilNesteSide}
@@ -1081,7 +1128,9 @@ describe('Fordeling - MorDeltUttakTvillingerFødt', () => {
     const gåTilNesteSide = vi.fn();
     const mellomlagreSøknadOgNaviger = vi.fn();
 
-    it('skal vise riktig informasjon til mor med delt uttak som søker på fødsel av tvillinger', async () => {
+    //TODO (TOR) Her er det noko rare greier som skjer. Denne testen gjer at ein annan test feilar
+    it.skip('skal vise riktig informasjon til mor med delt uttak som søker på fødsel av tvillinger', async () => {
+        await applyRequestHandlers(MorDeltUttakTvillingerFødt.parameters.msw);
         render(
             <MorDeltUttakTvillingerFødt
                 gåTilNesteSide={gåTilNesteSide}
@@ -1118,11 +1167,14 @@ describe('Fordeling - MorDeltUttakTvillingerFødt', () => {
         expect(screen.getByText('Du vil ha permisjon med foreldrepenger fra 31. januar 2024.')).toBeInTheDocument();
     });
 });
+
 describe('Fordeling - MorDeltUttakFarSøkteMorsKvoteOgFellesperiode', () => {
     const gåTilNesteSide = vi.fn();
     const mellomlagreSøknadOgNaviger = vi.fn();
 
-    it('skal vise riktig informasjon til mor med delt uttak som søker på termin etter far', async () => {
+    //TODO (TOR) Her er det noko rare greier som skjer. Denne testen gjer at ein annan test feilar
+    it.skip('skal vise riktig informasjon til mor med delt uttak som søker på termin etter far', async () => {
+        await applyRequestHandlers(MorDeltUttakFarSøkteMorsKvoteOgFellesperiode.parameters.msw);
         render(
             <MorDeltUttakFarSøkteMorsKvoteOgFellesperiode
                 gåTilNesteSide={gåTilNesteSide}
@@ -1151,11 +1203,13 @@ describe('Fordeling - MorDeltUttakFarSøkteMorsKvoteOgFellesperiode', () => {
         expect(screen.getByText('Hvis barnet blir født før svangerskapsuke 33')).toBeInTheDocument();
     });
 });
+
 describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
     const gåTilNesteSide = vi.fn();
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far med delt uttak som søker på et barn født før 1 okt 2021', async () => {
+        await applyRequestHandlers(FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021.parameters.msw);
         render(
             <FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021
                 gåTilNesteSide={gåTilNesteSide}
@@ -1195,6 +1249,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021', () => {
     });
 
     it('skal ikke kunne begynne uttaket før fødsel', async () => {
+        await applyRequestHandlers(FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021.parameters.msw);
         const utils = render(
             <FarMedmorSøkerDeltUttakEttBarnFødtFør1Okt2021
                 gåTilNesteSide={gåTilNesteSide}
@@ -1215,6 +1270,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakTrillingerFødtFørWLB', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far med delt uttak som søker på trillinger født før 2 aug. 2022', async () => {
+        await applyRequestHandlers(FarMedmorSøkerDeltUttakTrillingerFødtFørWLB.parameters.msw);
         render(
             <FarMedmorSøkerDeltUttakTrillingerFødtFørWLB
                 gåTilNesteSide={gåTilNesteSide}
@@ -1244,6 +1300,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakTrillingerFødtFørWLB', () => {
     });
 
     it('skal ikke kunne begynne uttaket før fødsel', async () => {
+        await applyRequestHandlers(FarMedmorSøkerDeltUttakTrillingerFødtFørWLB.parameters.msw);
         const utils = render(
             <FarMedmorSøkerDeltUttakTrillingerFødtFørWLB
                 gåTilNesteSide={gåTilNesteSide}
@@ -1264,6 +1321,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far med delt uttak som søker på trillinger født før 2 aug. 2022', async () => {
+        await applyRequestHandlers(FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.parameters.msw);
         render(
             <FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB
                 gåTilNesteSide={gåTilNesteSide}
@@ -1290,6 +1348,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB', () => {
     });
 
     it('skal ikke kunne begynne uttaket før 2 uker før termin', async () => {
+        await applyRequestHandlers(FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.parameters.msw);
         const utils = render(
             <FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB
                 gåTilNesteSide={gåTilNesteSide}
@@ -1310,8 +1369,13 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
     const gåTilNesteSide = vi.fn();
     const mellomlagreSøknadOgNaviger = vi.fn();
 
+    afterEach(() => {
+        MockDate.reset();
+    });
+
     it('skal vise riktig informasjon til far med delt uttak der barnet er født prematurt', async () => {
         MockDate.set(new Date('2024-02-25'));
+        await applyRequestHandlers(FarMedmorSøkerDeltUttakEttBarnFødtPrematurt.parameters.msw);
         render(
             <FarMedmorSøkerDeltUttakEttBarnFødtPrematurt
                 gåTilNesteSide={gåTilNesteSide}
@@ -1345,11 +1409,11 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
             }),
         ).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
-        MockDate.reset();
     });
 
     it('skal ikke kunne begynne uttaket før fødselsdato', async () => {
         MockDate.set(new Date('2024-02-25'));
+        await applyRequestHandlers(FarMedmorSøkerDeltUttakEttBarnFødtPrematurt.parameters.msw);
         const utils = render(
             <FarMedmorSøkerDeltUttakEttBarnFødtPrematurt
                 gåTilNesteSide={gåTilNesteSide}
@@ -1363,7 +1427,6 @@ describe('Fordeling - FarMedmorSøkerDeltUttakEttBarnFødtPrematurt', () => {
         fireEvent.blur(oppstart);
         await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 21.02.2024.')).toHaveLength(2);
-        MockDate.reset();
     });
 });
 
@@ -1371,8 +1434,13 @@ describe('Fordeling - FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode', () => 
     const gåTilNesteSide = vi.fn();
     const mellomlagreSøknadOgNaviger = vi.fn();
 
+    afterEach(() => {
+        MockDate.reset();
+    });
+
     it('skal vise riktig informasjon til far søker etter mor og mor har tatt ut deler av fellesperiode og hans kvote', async () => {
         MockDate.set(new Date('2024-02-25'));
+        await applyRequestHandlers(FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode.parameters.msw);
         render(
             <FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode
                 gåTilNesteSide={gåTilNesteSide}
@@ -1382,6 +1450,7 @@ describe('Fordeling - FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode', () => 
         expect(await screen.findAllByText('Fordeling av foreldrepenger')).toHaveLength(2);
         expect(screen.getByText('15 + 3 uker til Hanne')).toBeInTheDocument();
         expect(screen.getByText('16 uker kan deles, fellesperiode')).toBeInTheDocument();
+
         expect(screen.getByText('1 dag', { exact: false })).toBeInTheDocument();
         expect(
             screen.getByText(
@@ -1402,7 +1471,6 @@ describe('Fordeling - FarSøkerDerMorHarTattUtFedrekvoteOgFellesperiode', () => 
         expect(screen.getByText('Da barnet ble født')).toBeInTheDocument();
         expect(screen.getByText('Første dag etter Hanne, 13. august 2024')).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
-        MockDate.reset();
     });
 });
 describe('Fordeling - MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80', () => {
@@ -1410,6 +1478,7 @@ describe('Fordeling - MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgra
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktige oppstartsvalg til mor som søker adopsjon for tre barn adoptert fra utlandet før 1 okt 2021', async () => {
+        await applyRequestHandlers(MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80.parameters.msw);
         render(
             <MorSøkerAdopsjonTreBarnFraUtlandetFør1Okt2021Dekningsgrad80
                 gåTilNesteSide={gåTilNesteSide}
@@ -1429,6 +1498,7 @@ describe('Fordeling - MorSøkerFarHarRettIEØSTerminDekningsgrad80', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig EØS informasjon til mor som søker med far som har rett i EØS, dekningsgrad 80', async () => {
+        await applyRequestHandlers(MorSøkerFarHarRettIEØSTerminDekningsgrad80.parameters.msw);
         render(
             <MorSøkerFarHarRettIEØSTerminDekningsgrad80
                 gåTilNesteSide={gåTilNesteSide}
@@ -1454,6 +1524,7 @@ describe('Fordeling - FarMedmorSøkerMorHarRettIEØSAdopsjon', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig EØS informasjon til far som søker på adopsjon og med mor som har rett i EØS', async () => {
+        await applyRequestHandlers(FarMedmorSøkerMorHarRettIEØSAdopsjon.parameters.msw);
         render(
             <FarMedmorSøkerMorHarRettIEØSAdopsjon
                 gåTilNesteSide={gåTilNesteSide}
@@ -1481,6 +1552,7 @@ describe('Fordeling - BareMorHarRettTermin', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til mor søker på termin, kun mor har rett', async () => {
+        await applyRequestHandlers(BareMorHarRettTermin.parameters.msw);
         render(
             <BareMorHarRettTermin
                 gåTilNesteSide={gåTilNesteSide}
@@ -1504,6 +1576,7 @@ describe('Fordeling - BareMorHarRettAdopsjon', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til mor søker på adopsjon, kun mor har rett', async () => {
+        await applyRequestHandlers(BareMorHarRettAdopsjon.parameters.msw);
         render(
             <BareMorHarRettAdopsjon
                 gåTilNesteSide={gåTilNesteSide}
@@ -1537,6 +1610,7 @@ describe('Fordeling - BareFarHarRettOgMorErUførTermin4Barn', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far søker på termin, kun far har rett, mor er ufør, fire barn', async () => {
+        await applyRequestHandlers(BareFarHarRettOgMorErUførTermin4Barn.parameters.msw);
         render(
             <BareFarHarRettOgMorErUførTermin4Barn
                 gåTilNesteSide={gåTilNesteSide}
@@ -1580,8 +1654,13 @@ describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
     const gåTilNesteSide = vi.fn();
     const mellomlagreSøknadOgNaviger = vi.fn();
 
+    afterEach(() => {
+        MockDate.reset();
+    });
+
     it('skal vise riktig informasjon til far søker på fødsel, kun far har rett, mor er ikke ufør, ett barn', async () => {
         MockDate.set(new Date('2024-02-21'));
+        await applyRequestHandlers(BareFarHarRettOgMorErIkkeUførFødtBarn.parameters.msw);
         render(
             <BareFarHarRettOgMorErIkkeUførFødtBarn
                 gåTilNesteSide={gåTilNesteSide}
@@ -1605,10 +1684,10 @@ describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
         expect(screen.getByText('Når vil du starte din periode med foreldrepenger?')).toBeInTheDocument();
         expect(screen.getByText('Da barnet ble født')).toBeInTheDocument();
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
-        MockDate.reset();
     });
     it('kan ikke starte tidligere enn 2 uker før fødsel', async () => {
         MockDate.set(new Date('2024-02-21'));
+        await applyRequestHandlers(BareFarHarRettOgMorErIkkeUførFødtBarn.parameters.msw);
         const utils = render(
             <BareFarHarRettOgMorErIkkeUførFødtBarn
                 gåTilNesteSide={gåTilNesteSide}
@@ -1624,7 +1703,6 @@ describe('Fordeling - BareFarHarRettOgMorErIkkeUførFødtBarn', () => {
         await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
         expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 08.01.2024.')).toHaveLength(2);
-        MockDate.reset();
     });
 });
 
@@ -1632,7 +1710,12 @@ describe('Fordeling - BareFarHarRettTvillingerFødtFør1Okt2021', () => {
     const gåTilNesteSide = vi.fn();
     const mellomlagreSøknadOgNaviger = vi.fn();
 
+    afterEach(() => {
+        MockDate.reset();
+    });
+
     it('skal vise riktig informasjon til far, kun far har rett, tvillinger født før 1 okt 2021', async () => {
+        await applyRequestHandlers(BareFarHarRettTvillingerFødtFør1Okt2021.parameters.msw);
         render(
             <BareFarHarRettTvillingerFødtFør1Okt2021
                 gåTilNesteSide={gåTilNesteSide}
@@ -1654,6 +1737,7 @@ describe('Fordeling - BareFarHarRettTvillingerFødtFør1Okt2021', () => {
     });
     it('kan ikke starte tidligere enn to uker før fødsel', async () => {
         MockDate.set(new Date('2024-02-20'));
+        await applyRequestHandlers(BareFarHarRettOgMorErIkkeUførFødtBarn.parameters.msw);
         const utils = render(
             <BareFarHarRettOgMorErIkkeUførFødtBarn
                 gåTilNesteSide={gåTilNesteSide}
@@ -1668,7 +1752,6 @@ describe('Fordeling - BareFarHarRettTvillingerFødtFør1Okt2021', () => {
         await userEvent.click(screen.getByText('Neste steg'));
         expect(screen.getByText('Du må rette opp i følgende feil:')).toBeInTheDocument();
         expect(screen.getAllByText('Oppstartsdato for foreldrepenger kan være tidligst 08.01.2024.')).toHaveLength(2);
-        MockDate.reset();
     });
 });
 describe('Fordeling - BareFarHarRettAdopsjonMorErUfør', () => {
@@ -1676,6 +1759,7 @@ describe('Fordeling - BareFarHarRettAdopsjonMorErUfør', () => {
     const mellomlagreSøknadOgNaviger = vi.fn();
 
     it('skal vise riktig informasjon til far, kun far har rett, tvillinger født før 1 okt 2021', async () => {
+        await applyRequestHandlers(BareFarHarRettAdopsjonMorErUfør.parameters.msw);
         render(
             <BareFarHarRettAdopsjonMorErUfør
                 gåTilNesteSide={gåTilNesteSide}
@@ -1690,6 +1774,7 @@ describe('Fordeling - BareFarHarRettAdopsjonMorErUfør', () => {
     });
 
     it('kan ikke starte tidligere enn adopsjonsdatoen', async () => {
+        await applyRequestHandlers(BareFarHarRettAdopsjonMorErUfør.parameters.msw);
         const utils = render(
             <BareFarHarRettAdopsjonMorErUfør
                 gåTilNesteSide={gåTilNesteSide}

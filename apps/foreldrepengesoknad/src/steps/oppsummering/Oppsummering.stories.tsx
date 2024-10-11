@@ -2,8 +2,8 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import SøknadRoutes from 'appData/routes';
-import MockAdapter from 'axios-mock-adapter/types';
 import dayjs from 'dayjs';
+import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { AndreInntektskilder } from 'types/AndreInntektskilder';
@@ -33,7 +33,6 @@ import {
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
 
-import AxiosMock from '../../__mocks__/AxiosMock';
 import Oppsummering from './Oppsummering';
 
 const promiseAction =
@@ -208,6 +207,13 @@ type StoryArgs = {
 const meta = {
     title: 'steps/Oppsummering',
     component: Oppsummering,
+    parameters: {
+        msw: {
+            handlers: [
+                http.post('https://fp/rest/storage/foreldrepenger', () => new HttpResponse(null, { status: 200 })),
+            ],
+        },
+    },
     render: ({
         søkersituasjon = defaultSøkersituasjon,
         annenForelder = defaultAnnenForelder,
@@ -224,38 +230,33 @@ const meta = {
         ...rest
     }) => {
         initAmplitude();
-        const restMock = (apiMock: MockAdapter) => {
-            apiMock.onPost('/rest/storage/foreldrepenger').reply(200, undefined);
-        };
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
-                <AxiosMock mock={restMock}>
-                    <FpDataContext
-                        onDispatch={gåTilNesteSide}
-                        initialState={{
-                            [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
-                            [ContextDataType.FRILANS]: frilans,
-                            [ContextDataType.EGEN_NÆRING]: egenNæring,
-                            [ContextDataType.ANDRE_INNTEKTSKILDER]: andreInntekter,
-                            [ContextDataType.ANNEN_FORELDER]: annenForelder,
-                            [ContextDataType.SØKERSITUASJON]: søkersituasjon,
-                            [ContextDataType.UTTAKSPLAN_METADATA]: {
-                                ønskerJustertUttakVedFødsel: false,
-                                harUttaksplanBlittSlettet: false,
-                                antallUkerIUttaksplan: 1,
-                            },
-                            [ContextDataType.OM_BARNET]: barn,
-                            [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                            [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
-                            [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
-                            [ContextDataType.PERIODE_MED_FORELDREPENGER]: Dekningsgrad.HUNDRE_PROSENT,
-                            [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
-                            [ContextDataType.VEDLEGG]: vedlegg,
-                        }}
-                    >
-                        <Oppsummering {...rest} />
-                    </FpDataContext>
-                </AxiosMock>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
+                        [ContextDataType.FRILANS]: frilans,
+                        [ContextDataType.EGEN_NÆRING]: egenNæring,
+                        [ContextDataType.ANDRE_INNTEKTSKILDER]: andreInntekter,
+                        [ContextDataType.ANNEN_FORELDER]: annenForelder,
+                        [ContextDataType.SØKERSITUASJON]: søkersituasjon,
+                        [ContextDataType.UTTAKSPLAN_METADATA]: {
+                            ønskerJustertUttakVedFødsel: false,
+                            harUttaksplanBlittSlettet: false,
+                            antallUkerIUttaksplan: 1,
+                        },
+                        [ContextDataType.OM_BARNET]: barn,
+                        [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                        [ContextDataType.UTENLANDSOPPHOLD_SENERE]: utenlandsoppholdSenere,
+                        [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: utenlandsoppholdTidligere,
+                        [ContextDataType.PERIODE_MED_FORELDREPENGER]: Dekningsgrad.HUNDRE_PROSENT,
+                        [ContextDataType.UTTAKSPLAN]: defaultUttaksplan,
+                        [ContextDataType.VEDLEGG]: vedlegg,
+                    }}
+                >
+                    <Oppsummering {...rest} />
+                </FpDataContext>
             </MemoryRouter>
         );
     },

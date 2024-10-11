@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 
-import { formatDate } from './../dateUtils';
+import { formatDate } from '../dateUtils';
 import { Tidsperioden } from './Tidsperioden';
 
 dayjs.extend(isoWeek);

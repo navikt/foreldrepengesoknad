@@ -34,6 +34,7 @@
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
+        "@navikt/fp-uttaksplan-ny": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
         "@navikt/nav-dekoratoren-moduler": "2.1.6",
         "@sentry/browser": "^7.109.0",

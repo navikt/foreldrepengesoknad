@@ -1,8 +1,12 @@
-import { sendErrorMessageToSentry } from 'api/apiUtils';
-import { FpApiDataType } from 'api/context/FpApiDataContext';
-import { useApiPostData } from 'api/context/useFpApiData';
+import * as Sentry from '@sentry/browser';
+import { useQuery } from '@tanstack/react-query';
 import getStønadskontoParams, { getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter } from 'api/getStønadskontoParams';
 import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
+import {
+    annenPartVedtakOptions,
+    nesteSakAnnenPartVedtakOptions,
+    tilgjengeligeStønadskontoerOptions,
+} from 'appData/api';
 import SøknadRoutes from 'appData/routes';
 import useFpNavigator from 'appData/useFpNavigator';
 import useStepConfig from 'appData/useStepConfig';
@@ -12,7 +16,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'steps/uttaksplan/UttaksplanFormConfig';
 import InfoOmNesteBarn from 'steps/uttaksplan/components/info-om-neste-barn/InfoOmNesteBarn';
-import { RequestStatus } from 'types/RequestState';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getErMorUfør } from 'utils/annenForelderUtils';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
@@ -184,30 +187,27 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         initialRender.current = false;
     }, [debouncedState, mellomlagreSøknadOgNaviger]);
 
-    const {
-        data: eksisterendeSakAnnenPartData,
-        requestStatus: eksisterendeSakAnnenPartRequestStatus,
-        error: eksisterendeSakAnnenPartError,
-    } = useApiPostData(
-        FpApiDataType.ANNEN_PART_VEDTAK,
-        {
-            annenPartFødselsnummer: annenForelderFnr,
-            barnFødselsnummer: barnFnr,
-            familiehendelse: familiehendelsesdato,
-        },
-        eksisterendeSakAnnenPartRequestIsSuspended,
+    const annenPartVedtakQuery = useQuery(
+        annenPartVedtakOptions(
+            {
+                annenPartFødselsnummer: annenForelderFnr,
+                barnFødselsnummer: barnFnr,
+                familiehendelse: familiehendelsesdato,
+            },
+            !eksisterendeSakAnnenPartRequestIsSuspended,
+        ),
     );
 
     const eksisterendeVedtakAnnenPart = useMemo(
         () =>
             mapAnnenPartsEksisterendeSakFromDTO(
-                eksisterendeSakAnnenPartData,
+                annenPartVedtakQuery.data,
                 barn,
                 erFarEllerMedmor,
                 familiehendelsesdato,
                 førsteUttaksdagNesteBarnsSak,
             ),
-        [eksisterendeSakAnnenPartData, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak],
+        [annenPartVedtakQuery.data, barn, erFarEllerMedmor, familiehendelsesdato, førsteUttaksdagNesteBarnsSak],
     );
 
     const goToPreviousStep = () => {
@@ -253,24 +253,20 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     const nesteBarnsSakAnnenPartRequestIsSuspended =
         !annenForelderFnrNesteSak ||
         (førsteBarnFraNesteSakFnr === undefined && familieHendelseDatoNesteSak === undefined) ||
-        (!eksisterendeSakAnnenPartRequestIsSuspended &&
-            eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED);
+        (!eksisterendeSakAnnenPartRequestIsSuspended && annenPartVedtakQuery.isPending);
 
-    const {
-        data: nesteSakAnnenPartData,
-        requestStatus: nesteSakAnnenPartRequestStatus,
-        error: nesteSakAnnenPartError,
-    } = useApiPostData(
-        FpApiDataType.NESTE_SAK_ANNEN_PART_VEDTAK,
-        {
-            annenPartFødselsnummer: annenForelderFnrNesteSak,
-            barnFødselsnummer: førsteBarnFraNesteSakFnr,
-            familiehendelse: dateToISOString(familieHendelseDatoNesteSak),
-        },
-        nesteBarnsSakAnnenPartRequestIsSuspended,
+    const nesteSakAnnenPartVedtakQuery = useQuery(
+        nesteSakAnnenPartVedtakOptions(
+            {
+                annenPartFødselsnummer: annenForelderFnrNesteSak,
+                barnFødselsnummer: førsteBarnFraNesteSakFnr,
+                familiehendelse: dateToISOString(familieHendelseDatoNesteSak),
+            },
+            !nesteBarnsSakAnnenPartRequestIsSuspended,
+        ),
     );
 
-    const førsteUttaksdagAnnenPart = getStartdatoFørstePeriodeAnnenPart(nesteSakAnnenPartData);
+    const førsteUttaksdagAnnenPart = getStartdatoFørstePeriodeAnnenPart(nesteSakAnnenPartVedtakQuery.data);
 
     useEffect(() => {
         if (
@@ -471,22 +467,19 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         rolle,
     );
     const kontoRequestIsSuspended =
-        (eksisterendeSakAnnenPartRequestIsSuspended
-            ? false
-            : eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED) ||
-        (nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED);
+        (eksisterendeSakAnnenPartRequestIsSuspended ? false : annenPartVedtakQuery.isPending) ||
+        (nesteBarnsSakAnnenPartRequestIsSuspended ? false : nesteSakAnnenPartVedtakQuery.isPending);
 
-    const { data: stønadskontoer, error: tilgjengeligeStønadskontoerError } = useApiPostData(
-        FpApiDataType.STØNADSKONTOER,
-        getStønadskontoParams(
-            barn,
-            annenForelder,
-            søkersituasjon,
-            barnFraNesteSak,
-            eksisterendeSakAnnenPartData,
-            eksisterendeSak,
-        ),
-        kontoRequestIsSuspended,
+    const stønadskontoParams = getStønadskontoParams(
+        barn,
+        annenForelder,
+        søkersituasjon,
+        barnFraNesteSak,
+        annenPartVedtakQuery.data,
+        eksisterendeSak,
+    );
+    const tilgjengeligeStønadskontoerQuery = useQuery(
+        tilgjengeligeStønadskontoerOptions(stønadskontoParams, !kontoRequestIsSuspended),
     );
 
     const handleOnPlanChange = (nyPlan: Periode[]) => {
@@ -515,11 +508,13 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     };
 
     const valgteStønadskontoer = useMemo(() => {
-        if (stønadskontoer) {
-            return dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskontoer[100] : stønadskontoer[80];
+        if (tilgjengeligeStønadskontoerQuery.data) {
+            return dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
+                ? tilgjengeligeStønadskontoerQuery.data[100]
+                : tilgjengeligeStønadskontoerQuery.data[80];
         }
         return undefined;
-    }, [stønadskontoer, dekningsgrad]);
+    }, [tilgjengeligeStønadskontoerQuery.data, dekningsgrad]);
 
     useEffect(() => {
         if (uttaksplan.length === 0) {
@@ -547,34 +542,33 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     }, [erEndringssøknad, eksisterendeVedtakAnnenPart, eksisterendeSak, oppdaterEksisterendeSak]);
 
     useEffect(() => {
-        if (tilgjengeligeStønadskontoerError) {
-            sendErrorMessageToSentry(tilgjengeligeStønadskontoerError);
+        if (tilgjengeligeStønadskontoerQuery.error) {
+            Sentry.captureMessage(tilgjengeligeStønadskontoerQuery.error.message);
             throw new Error(
                 `Vi klarte ikke å hente opp stønadskontoer. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
             );
         }
-        if (eksisterendeSakAnnenPartError) {
-            sendErrorMessageToSentry(eksisterendeSakAnnenPartError);
+        if (annenPartVedtakQuery.error) {
+            Sentry.captureMessage(annenPartVedtakQuery.error.message);
             throw new Error(
                 `Vi klarte ikke å hente informasjon om saken til annen forelder. Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.`,
             );
         }
 
-        if (nesteSakAnnenPartError) {
-            sendErrorMessageToSentry(nesteSakAnnenPartError);
+        if (nesteSakAnnenPartVedtakQuery.error) {
+            Sentry.captureMessage(nesteSakAnnenPartVedtakQuery.error.message);
             throw new Error(
                 'Vi klarte ikke å hente informasjon om saken til annen forelder for neste barn. ' +
                     'Prøv igjen om noen minutter og hvis problemet vedvarer kontakt brukerstøtte.',
             );
         }
-    }, [tilgjengeligeStønadskontoerError, eksisterendeSakAnnenPartError, nesteSakAnnenPartError]);
+    }, [tilgjengeligeStønadskontoerQuery.error, annenPartVedtakQuery.error, nesteSakAnnenPartVedtakQuery.error]);
 
     if (
         !harPlanForslagIFørstegangssøknad ||
-        !stønadskontoer ||
-        (eksisterendeSakAnnenPartRequestStatus !== RequestStatus.FINISHED &&
-            !eksisterendeSakAnnenPartRequestIsSuspended) ||
-        (nesteSakAnnenPartRequestStatus !== RequestStatus.FINISHED && !nesteBarnsSakAnnenPartRequestIsSuspended)
+        !tilgjengeligeStønadskontoerQuery.data ||
+        (annenPartVedtakQuery.isPending && !eksisterendeSakAnnenPartRequestIsSuspended) ||
+        (nesteSakAnnenPartVedtakQuery.isPending && !nesteBarnsSakAnnenPartRequestIsSuspended)
     ) {
         return (
             <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -584,7 +578,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
     }
 
     const minsterettUkerToTette = getAntallUkerMinsterett(
-        stønadskontoer[Dekningsgrad.HUNDRE_PROSENT].minsteretter.toTette,
+        tilgjengeligeStønadskontoerQuery.data[Dekningsgrad.HUNDRE_PROSENT].minsteretter.toTette,
     );
 
     const erTomEndringssøknad =
@@ -676,7 +670,6 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                             termindato={termindato ? dayjs(termindato).toDate() : undefined}
                             barn={barn}
                             visAutomatiskJusteringForm={visAutomatiskJusteringForm}
-                            perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
                             barnFraNesteSak={barnFraNesteSak}
                             familiehendelsesdatoNesteSak={familieHendelseDatoNesteSak}
                             førsteUttaksdagNesteBarnsSak={førsteUttaksdagNesteBarnsSak}

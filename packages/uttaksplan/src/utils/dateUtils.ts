@@ -26,7 +26,9 @@ export const måned3bokstaver = (dato: Dayjs): string => {
     return dato.format('MMM').substr(0, 3);
 };
 
-export const formaterDato = (dato: string | Date | undefined, datoformat?: string): string => {
+type DateType = string | Date | undefined;
+
+export const formaterDato = (dato: DateType, datoformat?: string): string => {
     return dayjs(dato).format(datoformat ?? 'dddd D. MMMM YYYY');
 };
 
@@ -150,8 +152,8 @@ export const convertTidsperiodeToTidsperiodeDate = (tidsperiode: Tidsperiode): T
 };
 
 export const getToTetteReglerGjelder = (
-    familiehendelsesdato: string | Date | undefined,
-    familiehendelsesdatoNesteBarn: string | Date | undefined,
+    familiehendelsesdato: DateType,
+    familiehendelsesdatoNesteBarn: DateType,
 ): boolean => {
     if (familiehendelsesdato === undefined || familiehendelsesdatoNesteBarn === undefined) {
         return false;

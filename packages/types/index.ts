@@ -13,7 +13,9 @@ export type { Søker, SøkerBarn, SøkerAnnenForelder } from './src/Søker';
 export type { Arbeidsforhold } from './src/Arbeidsforhold';
 export type { Søkerinfo } from './src/Søkerinfo';
 export type { TidsperiodeDate } from './src/TidsperiodeDate';
+export type { Tidsperiode } from './src/Tidsperiode';
 export type { Satser } from './src/Satser';
+export type { NavnPåForeldre } from './src/NavnPåForeldre';
 export type { AppName } from './src/AppName';
 export type { DatepickerDateRange } from './src/DatepickerDateRange';
 export type { EgenNæring } from './src/EgenNæring';
@@ -57,3 +59,16 @@ export type {
     Uttaksperiode,
     Oppholdsperiode,
 } from './src/Periode';
+export type { PeriodeResultat } from './src/PeriodeResultat';
+export { PeriodeResultatÅrsak } from './src/PeriodeResultatÅrsak';
+export type { SaksperiodeNy } from './src/SaksperiodeNy';
+export type { Gradering } from './src/Gradering';
+export type { Aktivitet } from './src/Aktivitet';
+export type { ArbeidsgiverInfo } from './src/ArbeidsgiverInfo';
+export { ArbeidsgiverInfoType } from './src/ArbeidsgiverInfoType';
+export { UtsettelseÅrsakType } from './src/UtsettelseÅrsakType';
+export { UttakArbeidType } from './src/UttakArbeidType';
+export { MorsAktivitet } from './src/MorsAktivitet';
+export { OverføringÅrsakType } from './src/OverføringÅrsakType';
+export { OppholdÅrsakType } from './src/OppholdÅrsakType';
+export type { Familiesituasjon } from './src/Familiesituasjon';

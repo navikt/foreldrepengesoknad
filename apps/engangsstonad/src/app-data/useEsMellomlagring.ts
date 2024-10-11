@@ -1,11 +1,12 @@
 import * as Sentry from '@sentry/browser';
-import { AxiosInstance } from 'axios';
+import { useMutation } from '@tanstack/react-query';
+import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { ApiAccessError, ApiGeneralError, deleteData, postData } from '@navikt/fp-api';
-import { Kvittering, LocaleAll } from '@navikt/fp-types';
+import { LocaleAll } from '@navikt/fp-types';
 
+import Environment from './Environment';
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './EsDataContext';
 
 export const VERSJON_MELLOMLAGRING = 2;
@@ -13,10 +14,11 @@ export const VERSJON_MELLOMLAGRING = 2;
 export type EsDataMapAndMetaData = { version: number; locale: LocaleAll } & ContextDataMap;
 
 // TODO (TOR) Fiks lokalisering
+const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
-    'Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
+    'Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-const useEsMellomlagring = (esApi: AxiosInstance, locale: LocaleAll, setVelkommen: (erVelkommen: boolean) => void) => {
+const useEsMellomlagring = (locale: LocaleAll, setVelkommen: (erVelkommen: boolean) => void) => {
     const navigate = useNavigate();
     const state = useContextComplete();
     const resetState = useContextReset();
@@ -24,6 +26,10 @@ const useEsMellomlagring = (esApi: AxiosInstance, locale: LocaleAll, setVelkomme
     const [skalMellomlagre, setSkalMellomlagre] = useState(false);
 
     const promiseRef = useRef<() => void>();
+
+    const { mutate: slettMellomlagring } = useMutation({
+        mutationFn: () => ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/engangsstonad`),
+    });
 
     useEffect(() => {
         if (skalMellomlagre) {
@@ -34,19 +40,31 @@ const useEsMellomlagring = (esApi: AxiosInstance, locale: LocaleAll, setVelkomme
                 if (currentPath) {
                     navigate(currentPath);
 
-                    await postData<EsDataMapAndMetaData, Kvittering>(
-                        esApi,
-                        '/rest/storage/engangsstonad',
-                        {
+                    try {
+                        const data = {
                             version: VERSJON_MELLOMLAGRING,
                             locale,
                             ...state,
-                        },
-                        FEIL_VED_INNSENDING,
-                    );
+                        };
+                        await ky.post(`${Environment.PUBLIC_PATH}/rest/storage/engangsstonad`, { json: data });
+                    } catch (error: unknown) {
+                        if (error instanceof HTTPError) {
+                            if (error.response.status === 401 || error.response.status === 403) {
+                                throw error;
+                            }
+
+                            const jsonResponse = await error.response.json();
+                            const callIdForBruker = jsonResponse?.uuid ? jsonResponse?.uuid.slice(0, 8) : UKJENT_UUID;
+                            throw Error(FEIL_VED_INNSENDING + callIdForBruker);
+                        }
+                        if (error instanceof Error) {
+                            throw error;
+                        }
+                        throw new Error(String(error));
+                    }
                 } else {
                     // Ved avbryt så set ein Path = undefined og må så rydda opp i data her
-                    await deleteData(esApi, '/rest/storage/engangsstonad', FEIL_VED_INNSENDING);
+                    slettMellomlagring();
 
                     setVelkommen(false);
                     resetState();
@@ -58,7 +76,7 @@ const useEsMellomlagring = (esApi: AxiosInstance, locale: LocaleAll, setVelkomme
                 }
             };
 
-            lagreEllerSlett().catch((error: ApiAccessError | ApiGeneralError) => {
+            lagreEllerSlett().catch((error: Error) => {
                 Sentry.captureMessage(error.message);
 
                 if (promiseRef.current) {

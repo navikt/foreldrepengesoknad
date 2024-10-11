@@ -1,5 +1,5 @@
-import { Periode, isInfoPeriodeAnnenPart } from '@navikt/fp-common';
-
+import { Planperiode } from '../types/Planperiode';
+import { isAnnenPartsPeriode } from '../utils/periodeUtils';
 import { leggTilPeriode } from './leggTilPeriode';
 import { oppdaterPeriode } from './oppdaterPeriode';
 import { slettPeriode } from './slettPeriode';
@@ -11,15 +11,15 @@ import {
 } from './uttaksplanbuilderUtils';
 
 const leggTilPeriodeOgBuild = (
-    perioder: Periode[],
-    nyPeriode: Periode,
-    familiehendelsesdato: Date,
+    perioder: Planperiode[],
+    nyPeriode: Planperiode,
+    familiehendelsesdato: string,
     harAktivitetskravIPeriodeUtenUttak: boolean,
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
     erFarEllerMedmor: boolean,
-    annenPartsUttak: Periode[] | undefined,
-    førsteUttaksdagNesteBarnsSak: Date | undefined,
+    annenPartsUttak: Planperiode[] | undefined,
+    førsteUttaksdagNesteBarnsSak: string | undefined,
 ) => {
     let nyePerioder = slåSammenLikePerioder(
         leggTilPeriode({
@@ -56,15 +56,15 @@ const leggTilPeriodeOgBuild = (
 };
 
 const oppdaterPeriodeOgBuild = (
-    endretPeriode: Periode,
-    perioder: Periode[],
-    familiehendelsesdato: Date,
+    endretPeriode: Planperiode,
+    perioder: Planperiode[],
+    familiehendelsesdato: string,
     harAktivitetskravIPeriodeUtenUttak: boolean,
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
     erFarEllerMedmor: boolean,
-    annenPartsUttak: Periode[] | undefined,
-    førsteUttaksdagNesteBarnsSak: Date | undefined,
+    annenPartsUttak: Planperiode[] | undefined,
+    førsteUttaksdagNesteBarnsSak: string | undefined,
 ) => {
     const originalPeriode = perioder.find((p) => p.id === endretPeriode.id)!;
 
@@ -113,15 +113,15 @@ const oppdaterPeriodeOgBuild = (
 };
 
 const slettPeriodeOgBuild = (
-    perioder: Periode[],
-    slettetPeriode: Periode,
-    familiehendelsesdato: Date,
+    perioder: Planperiode[],
+    slettetPeriode: Planperiode,
+    familiehendelsesdato: string,
     harAktivitetskravIPeriodeUtenUttak: boolean,
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
     erFarEllerMedmor: boolean,
-    annenPartsUttak: Periode[] | undefined,
-    førsteUttaksdagNesteBarnsSak: Date | undefined,
+    annenPartsUttak: Planperiode[] | undefined,
+    førsteUttaksdagNesteBarnsSak: string | undefined,
 ) => {
     let nyePerioder = fjernUnødvendigeHull(
         slåSammenLikePerioder(
@@ -169,22 +169,22 @@ const slettPeriodeOgBuild = (
     );
 };
 
-const getAnnenPartsUttak = (perioder: Periode[]): Periode[] => {
-    return perioder.filter((p) => isInfoPeriodeAnnenPart(p));
+const getAnnenPartsUttak = (perioder: Planperiode[]): Planperiode[] => {
+    return perioder.filter((p) => isAnnenPartsPeriode(p));
 };
 
 const Uttaksplanbuilder = (
-    perioder: Periode[],
-    familiehendelsesdato: Date,
+    perioder: Planperiode[],
+    familiehendelsesdato: string,
     harAktivitetskravIPeriodeUtenUttak: boolean,
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
     erFarEllerMedmor: boolean,
-    førsteUttaksdagNesteBarnsSak: Date | undefined,
-    opprinneligPlan?: Periode[],
+    førsteUttaksdagNesteBarnsSak: string | undefined,
+    opprinneligPlan?: Planperiode[],
 ) => {
     const perioderUtenAnnenPart = finnOgSettInnHull(
-        perioder.filter((p) => !isInfoPeriodeAnnenPart(p)),
+        perioder.filter((p) => !isAnnenPartsPeriode(p)),
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsesdato,
         erAdopsjon,
@@ -192,14 +192,14 @@ const Uttaksplanbuilder = (
         erFarEllerMedmor,
         førsteUttaksdagNesteBarnsSak,
     );
-    let annenPartsUttak: Periode[] | undefined = undefined;
+    let annenPartsUttak: Planperiode[] | undefined = undefined;
 
     if (opprinneligPlan) {
         annenPartsUttak = getAnnenPartsUttak(opprinneligPlan);
     }
 
     return {
-        leggTilPeriode: (nyPeriode: Periode) =>
+        leggTilPeriode: (nyPeriode: Planperiode) =>
             leggTilPeriodeOgBuild(
                 perioder,
                 nyPeriode,
@@ -211,8 +211,8 @@ const Uttaksplanbuilder = (
                 annenPartsUttak,
                 førsteUttaksdagNesteBarnsSak,
             ),
-        leggTilPerioder: (nyePerioder: Periode[]) => {
-            let resultat: Periode[] = [];
+        leggTilPerioder: (nyePerioder: Planperiode[]) => {
+            let resultat: Planperiode[] = [];
             nyePerioder.forEach((periode, index) => {
                 if (index === 0) {
                     resultat = leggTilPeriodeOgBuild(
@@ -244,7 +244,7 @@ const Uttaksplanbuilder = (
             });
             return resultat;
         },
-        oppdaterPeriode: (endretPeriode: Periode) =>
+        oppdaterPeriode: (endretPeriode: Planperiode) =>
             oppdaterPeriodeOgBuild(
                 endretPeriode,
                 perioderUtenAnnenPart,
@@ -256,8 +256,8 @@ const Uttaksplanbuilder = (
                 annenPartsUttak,
                 førsteUttaksdagNesteBarnsSak,
             ),
-        oppdaterPerioder: (oppdatertePerioder: Periode[]) => {
-            let resultat: Periode[] = [];
+        oppdaterPerioder: (oppdatertePerioder: Planperiode[]) => {
+            let resultat: Planperiode[] = [];
             oppdatertePerioder.forEach((endretPeriode, index) => {
                 if (index === 0) {
                     resultat = oppdaterPeriodeOgBuild(
@@ -288,7 +288,7 @@ const Uttaksplanbuilder = (
             });
             return resultat;
         },
-        slettPeriode: (slettetPeriode: Periode) =>
+        slettPeriode: (slettetPeriode: Planperiode) =>
             slettPeriodeOgBuild(
                 perioderUtenAnnenPart,
                 slettetPeriode,

@@ -1,35 +1,20 @@
+import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
+import { applyRequestHandlers } from 'msw-storybook-addon';
 
-import AppContainer from './AppContainer';
-import Api from './api/api';
-import { RequestStatus } from './types/RequestState';
+import * as stories from './AppContainer.stories';
+
+const { SøkerErMann } = composeStories(stories);
 
 describe('<AppContainer>', () => {
-    afterEach(() => {
-        vi.clearAllMocks();
+    it('skal vise forside', async () => {
+        await applyRequestHandlers(SøkerErMann.parameters.msw);
+        render(<SøkerErMann />);
+
+        expect(await screen.findByText('Søknad om foreldrepenger')).toBeInTheDocument();
+
+        //TODO (TOR) Test navigering gjennom app
     });
 
-    it('skal returnere spinner når data blir hentet', () => {
-        vi.spyOn(Api, 'useSøkerinfo').mockImplementationOnce(() => ({
-            søkerinfoData: undefined,
-            søkerinfoError: null,
-        }));
-        vi.spyOn(Api, 'useGetSaker').mockImplementationOnce(() => ({
-            sakerData: undefined,
-            sakerError: null,
-        }));
-        vi.spyOn(Api, 'useStoredAppState').mockImplementationOnce(() => ({
-            storageData: undefined,
-            storageError: null,
-            storageStatus: RequestStatus.UNFETCHED,
-        }));
-
-        render(
-            <div id="app">
-                <AppContainer />
-            </div>,
-        );
-
-        expect(screen.getByText('venter...')).toBeInTheDocument();
-    });
+    //TODO (TOR) Test Søker er kvinne
 });

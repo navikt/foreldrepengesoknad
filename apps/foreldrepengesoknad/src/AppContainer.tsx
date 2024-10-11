@@ -1,7 +1,8 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
-import { setAxiosLocale } from '@navikt/fp-api';
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
 import { frilansMessages } from '@navikt/fp-steg-frilans';
@@ -14,7 +15,6 @@ import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender';
 
 import Foreldrepengesøknad, { retryCallback } from './Foreldrepengesøknad';
-import { FpApiDataContext } from './api/context/FpApiDataContext';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
 
@@ -56,6 +56,14 @@ declare global {
     }
 }
 
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: process.env.NODE_ENV === 'test' ? false : 3,
+        },
+    },
+});
+
 dayjs.locale(localeFromSessionStorage);
 
 const AppContainer = () => {
@@ -64,18 +72,18 @@ const AppContainer = () => {
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <ErrorBoundary appName="Foreldrepenger" retryCallback={retryCallback}>
-                <FpApiDataContext>
-                    <ByttBrowserModal />
+                <ByttBrowserModal />
+                <QueryClientProvider client={queryClient}>
+                    <ReactQueryDevtools />
                     <Foreldrepengesøknad
                         locale={locale}
                         onChangeLocale={(activeLocale: LocaleNo) => {
                             setLocaleInSessionStorage(activeLocale);
                             setLocale(activeLocale);
-                            setAxiosLocale(activeLocale);
                             document.documentElement.setAttribute('lang', activeLocale);
                         }}
                     />
-                </FpApiDataContext>
+                </QueryClientProvider>
             </ErrorBoundary>
         </IntlProvider>
     );

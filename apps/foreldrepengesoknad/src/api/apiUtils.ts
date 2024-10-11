@@ -1,6 +1,4 @@
-import * as Sentry from '@sentry/browser';
 import { ContextDataMap, ContextDataType } from 'appData/FpDataContext';
-import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import { toNumber } from 'lodash';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
@@ -87,7 +85,7 @@ export interface SøkerForInnsending {
 }
 
 export const FEIL_VED_INNSENDING =
-    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil id: ';
+    'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
 export const UKJENT_UUID = 'ukjent uuid';
 
@@ -539,38 +537,4 @@ export const cleanEndringssøknad = (
     };
 
     return cleanedSøknad;
-};
-
-const hideNumbersAndTrim = (tekst: string): string => {
-    return tekst.replace(/\d/g, '*').slice(0, 250) + '...';
-};
-
-export const sendErrorMessageToSentry = (error: AxiosError<any>) => {
-    const errorCallId = getErrorCallId(error) + '. ';
-    const errorTimestamp = getErrorTimestamp(error) + '. ';
-
-    let errorString = errorCallId + errorTimestamp;
-
-    const errorMessages = error.request?.data?.messages ?? error.response?.data?.messages;
-    const isErrorMessageArray = Array.isArray(errorMessages);
-
-    if (isErrorMessageArray && errorMessages.length > 0) {
-        errorString = errorString + hideNumbersAndTrim(errorMessages[0]);
-    }
-    if (!isErrorMessageArray && errorMessages) {
-        errorString = errorString + hideNumbersAndTrim(errorMessages);
-    }
-    if (error.message) {
-        errorString = errorString + error.message;
-    }
-
-    Sentry.captureMessage(errorString);
-};
-
-export const getErrorCallId = (error: AxiosError<any>): string => {
-    return error.response?.data?.uuid ? error.response.data.uuid : UKJENT_UUID;
-};
-
-export const getErrorTimestamp = (error: AxiosError<any>): string => {
-    return error.response?.data?.timestamp ? error.response.data.timestamp : '';
 };

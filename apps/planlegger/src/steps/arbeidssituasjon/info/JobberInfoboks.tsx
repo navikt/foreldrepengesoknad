@@ -28,7 +28,7 @@ const JobberInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn }) =>
             <BodyShort>
                 <FormattedMessage
                     id="Arbeidssituasjon.Jobber.Infoboks.UtIfraInformasjonen"
-                    values={{ erAlenesøker, navn: capitalizeFirstLetter(fornavn) }}
+                    values={{ erAlenesøker, navn: fornavn }}
                 />
             </BodyShort>
         </Infobox>

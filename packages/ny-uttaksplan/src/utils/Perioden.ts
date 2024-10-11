@@ -1,40 +1,43 @@
 import dayjs from 'dayjs';
 
-import { Periode, Periodetype, isForeldrepengerFørFødselUttaksperiode } from '@navikt/fp-common';
-import { Tidsperioden, Uttaksdagen, getTidsperiode } from '@navikt/fp-utils';
+import { TidsperiodenString, UttaksdagenString, getTidsperiodeString } from '@navikt/fp-utils';
 
+import { Planperiode } from '../types/Planperiode';
 import { formaterDatoKompakt } from './dateUtils';
+import { isForeldrepengerFørFødselPeriode, isUtsettelsesperiode } from './periodeUtils';
 
-export const Perioden = (periode: Periode) => ({
-    setStartdato: (fom: Date) => flyttPeriode(periode, fom),
-    setUttaksdager: (uttaksdager: number) =>
-        (periode.tidsperiode = getTidsperiode(periode.tidsperiode.fom, uttaksdager)),
-    getAntallUttaksdager: () => Tidsperioden(periode.tidsperiode).getAntallUttaksdager(),
-    erLik: (periode2: Periode, inkluderTidsperiode = false, inkluderUtsettelser = false) =>
+export const Perioden = (periode: Planperiode) => ({
+    setStartdato: (fom: string) => flyttPeriode(periode, fom),
+    setUttaksdager: (uttaksdager: number) => {
+        const tidsperiode = getTidsperiodeString(periode.fom, uttaksdager);
+        periode.fom = tidsperiode.fom;
+        periode.tom = tidsperiode.tom;
+    },
+    getAntallUttaksdager: () => TidsperiodenString({ fom: periode.fom, tom: periode.tom }).getAntallUttaksdager(),
+    erLik: (periode2: Planperiode, inkluderTidsperiode = false, inkluderUtsettelser = false) =>
         erPerioderLike(periode, periode2, inkluderTidsperiode, inkluderUtsettelser),
-    erSammenhengende: (periode2: Periode) => erPerioderSammenhengende(periode, periode2),
-    starterFør: (dato: Date) => dayjs(periode.tidsperiode.fom).isBefore(dato, 'day'),
-    slutterEtter: (dato: Date) => dayjs(periode.tidsperiode.tom).isAfter(dato, 'day'),
-    slutterSammeDagEllerEtter: (dato: Date) => dayjs(periode.tidsperiode.tom).isSameOrAfter(dato, 'day'),
+    erSammenhengende: (periode2: Planperiode) => erPerioderSammenhengende(periode, periode2),
+    starterFør: (dato: Date) => dayjs(periode.fom).isBefore(dato, 'day'),
+    slutterEtter: (dato: Date) => dayjs(periode.tom).isAfter(dato, 'day'),
+    slutterSammeDagEllerEtter: (dato: Date) => dayjs(periode.tom).isSameOrAfter(dato, 'day'),
 });
 
-function erPerioderSammenhengende(p1: Periode, p2: Periode) {
-    const p1NesteUttaksdato = Uttaksdagen(dayjs(p1.tidsperiode.tom).toDate()).neste();
-    const p2Startdato = p2.tidsperiode.fom;
+function erPerioderSammenhengende(p1: Planperiode, p2: Planperiode) {
+    const p1NesteUttaksdato = UttaksdagenString(p1.tom).neste();
+    const p2Startdato = p2.fom;
     return dayjs(p1NesteUttaksdato).isSame(p2Startdato, 'day');
 }
 
-function erPerioderLike(p1: Periode, p2: Periode, inkluderTidsperiode = false, inkluderUtsettelser = false) {
-    if (p1.type !== p2.type) {
+function erPerioderLike(p1: Planperiode, p2: Planperiode, inkluderTidsperiode = false, inkluderUtsettelser = false) {
+    if (inkluderUtsettelser === false && (isUtsettelsesperiode(p1) || isUtsettelsesperiode(p2))) {
         return false;
     }
-    if (inkluderUtsettelser === false && (p1.type === Periodetype.Utsettelse || p2.type === Periodetype.Utsettelse)) {
-        return false;
-    }
-    if (p1.type === Periodetype.Hull && p2.type === Periodetype.Hull) {
+
+    if (p1.periodeHullÅrsak !== undefined && p2.periodeHullÅrsak !== undefined) {
         return true;
     }
-    if (isForeldrepengerFørFødselUttaksperiode(p1) && isForeldrepengerFørFødselUttaksperiode(p2)) {
+
+    if (isForeldrepengerFørFødselPeriode(p1) && isForeldrepengerFørFødselPeriode(p2)) {
         const fff1 = getPeriodeFootprint(
             { ...p1, skalIkkeHaUttakFørTermin: p1.skalIkkeHaUttakFørTermin || false },
             inkluderTidsperiode,
@@ -47,36 +50,33 @@ function erPerioderLike(p1: Periode, p2: Periode, inkluderTidsperiode = false, i
     }
     const k1 = getPeriodeFootprint(p1, inkluderTidsperiode);
     const k2 = getPeriodeFootprint(p2, inkluderTidsperiode);
+
     return k1 === k2;
 }
 
-function getPeriodeFootprint(periode: Periode, inkluderTidsperiode = false) {
+function getPeriodeFootprint(periode: Planperiode, inkluderTidsperiode = false) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { tidsperiode, id, ...rest } = periode;
-    const sortedPeriode: any = {};
+    const { fom, tom, id, ...rest } = periode;
+    const sortedPeriode = {} as any;
     Object.keys(rest)
         .sort((a, b) => a.localeCompare(b))
         .filter((key) => (rest as any)[key] !== undefined)
         .forEach((key) => {
             sortedPeriode[key] = (rest as any)[key];
         });
-    if (inkluderTidsperiode && tidsperiode) {
-        sortedPeriode.tidsperiode = {
-            fom: tidsperiode.fom ? formaterDatoKompakt(tidsperiode.fom) : undefined,
-            tom: tidsperiode.tom ? formaterDatoKompakt(tidsperiode.tom) : undefined,
-        };
+    if (inkluderTidsperiode) {
+        sortedPeriode.fom = fom ? formaterDatoKompakt(fom) : undefined;
+        sortedPeriode.tom = tom ? formaterDatoKompakt(tom) : undefined;
     }
     return JSON.stringify({ ...sortedPeriode });
 }
 
-function flyttPeriode(periode: Periode, fom: Date): Periode {
-    const { tidsperiode } = periode;
+function flyttPeriode(periode: Planperiode, fom: string): Planperiode {
+    const nyTidsperiode = TidsperiodenString({ fom: periode.fom, tom: periode.tom }).setStartdato(fom);
 
     return {
         ...periode,
-        tidsperiode: Tidsperioden({
-            fom: tidsperiode.fom,
-            tom: tidsperiode.tom,
-        }).setStartdato(fom),
+        fom: nyTidsperiode.fom,
+        tom: nyTidsperiode.tom,
     };
 }

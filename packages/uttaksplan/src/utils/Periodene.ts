@@ -24,7 +24,7 @@ import {
     isUtsettelsesperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { Tidsperioden, Uttaksdagen, datoErInnenforTidsperiode, isValidTidsperiode } from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksdagen, datoErInnenforTidsperiode, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { Perioden } from './Perioden';
 import { finnAntallDagerÅTrekke } from './uttaksPlanStatus';
@@ -64,11 +64,11 @@ export const Periodene = (perioder: Periode[]) => ({
 });
 
 export function sorterPerioder(p1: Periode, p2: Periode) {
-    if (isValidTidsperiode(p1.tidsperiode) === false || isValidTidsperiode(p2.tidsperiode) === false) {
+    if (isValidTidsperiodeString(p1.tidsperiode) === false || isValidTidsperiodeString(p2.tidsperiode) === false) {
         if (isForeldrepengerFørFødselUttaksperiode(p1) && p1.skalIkkeHaUttakFørTermin) {
             return -1;
         }
-        return isValidTidsperiode(p1.tidsperiode) ? 1 : -1;
+        return isValidTidsperiodeString(p1.tidsperiode) ? 1 : -1;
     }
     if (dayjs(p1.tidsperiode.fom).isSame(p2.tidsperiode.fom, 'day')) {
         return isInfoPeriode(p1) ? -1 : 1;
@@ -121,7 +121,7 @@ function getOpphold(perioder: Periode[]): Oppholdsperiode[] {
 
 function finnOverlappendePerioder(perioder: Periode[], periode: Periode): Periode[] {
     return perioder.filter((p) => {
-        if (p.id === periode.id || !isValidTidsperiode(periode.tidsperiode)) {
+        if (p.id === periode.id || !isValidTidsperiodeString(periode.tidsperiode)) {
             return false;
         }
         const { fom, tom } = p.tidsperiode;
@@ -242,7 +242,7 @@ function getPerioderFørFamiliehendelsesdato(perioder: Periode[], familiehendels
     return perioder.filter(
         (periode) =>
             isForeldrepengerFørFødselUttaksperiode(periode) ||
-            (isValidTidsperiode(periode.tidsperiode) &&
+            (isValidTidsperiodeString(periode.tidsperiode) &&
                 dayjs(periode.tidsperiode.fom).isBefore(familiehendelsesdato, 'day')),
     );
 }
@@ -250,7 +250,7 @@ function getPerioderFørFamiliehendelsesdato(perioder: Periode[], familiehendels
 function getPerioderEtterFamiliehendelsesdato(perioder: Periode[], familiehendelsesdato: Date) {
     return perioder.filter(
         (periode) =>
-            isValidTidsperiode(periode.tidsperiode) &&
+            isValidTidsperiodeString(periode.tidsperiode) &&
             dayjs(periode.tidsperiode.fom).isSameOrAfter(familiehendelsesdato, 'day') &&
             isForeldrepengerFørFødselUttaksperiode(periode) === false,
     );
@@ -267,7 +267,7 @@ function getFørstePeriodeEtterFamiliehendelsesdato(
 function getPeriodeMedUgyldigTidsperiode(perioder: Periode[]) {
     return perioder.filter(
         (periode) =>
-            isValidTidsperiode(periode.tidsperiode) === false &&
+            isValidTidsperiodeString(periode.tidsperiode) === false &&
             isForeldrepengerFørFødselUttaksperiode(periode) === false,
     );
 }
@@ -308,7 +308,7 @@ function getAntallUttaksdager(perioder: Periode[]): number {
 
 function getAntallFeriedager(perioder: Periode[], forelder?: Forelder): number {
     return getFerieUtsettelser(perioder)
-        .filter((p) => (isValidTidsperiode(p.tidsperiode) && forelder ? p.forelder === forelder : true))
+        .filter((p) => (isValidTidsperiodeString(p.tidsperiode) && forelder ? p.forelder === forelder : true))
         .map((p) => Tidsperioden(p.tidsperiode).getAntallUttaksdager())
         .reduce((tot, curr) => tot + curr, 0);
 }

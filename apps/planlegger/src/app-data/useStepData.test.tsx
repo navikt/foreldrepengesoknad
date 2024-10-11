@@ -57,9 +57,19 @@ describe('useStepData', () => {
                     label: 'Barnet',
                 },
                 {
+                    id: '/barnehageplass',
+                    isSelected: false,
+                    label: 'Barnehageplass',
+                },
+                {
                     id: '/arbeidssituasjon',
                     isSelected: false,
                     label: 'Arbeidssituasjon',
+                },
+                {
+                    id: '/hvor-mye',
+                    isSelected: false,
+                    label: 'Hvor mye',
                 },
                 {
                     id: '/hvor-lenge',
@@ -111,9 +121,19 @@ describe('useStepData', () => {
                     label: 'Barnet',
                 },
                 {
+                    id: '/barnehageplass',
+                    isSelected: false,
+                    label: 'Barnehageplass',
+                },
+                {
                     id: '/arbeidssituasjon',
                     isSelected: false,
                     label: 'Arbeidssituasjon',
+                },
+                {
+                    id: '/hvor-mye',
+                    isSelected: false,
+                    label: 'Hvor mye',
                 },
                 {
                     id: '/hvor-lenge',
@@ -165,6 +185,11 @@ describe('useStepData', () => {
                     label: 'Barnet',
                 },
                 {
+                    id: '/barnehageplass',
+                    isSelected: false,
+                    label: 'Barnehageplass',
+                },
+                {
                     id: '/oppsummering',
                     isSelected: true,
                     label: 'Oppsummering',
@@ -208,9 +233,19 @@ describe('useStepData', () => {
                     label: 'Barnet',
                 },
                 {
+                    id: '/barnehageplass',
+                    isSelected: false,
+                    label: 'Barnehageplass',
+                },
+                {
                     id: '/arbeidssituasjon',
                     isSelected: false,
                     label: 'Arbeidssituasjon',
+                },
+                {
+                    id: '/hvor-mye',
+                    isSelected: false,
+                    label: 'Hvor mye',
                 },
                 {
                     id: '/hvor-lenge',
@@ -271,9 +306,19 @@ describe('useStepData', () => {
                     label: 'Barnet',
                 },
                 {
+                    id: '/barnehageplass',
+                    isSelected: false,
+                    label: 'Barnehageplass',
+                },
+                {
                     id: '/arbeidssituasjon',
                     isSelected: false,
                     label: 'Arbeidssituasjon',
+                },
+                {
+                    id: '/hvor-mye',
+                    isSelected: false,
+                    label: 'Hvor mye',
                 },
                 {
                     id: '/hvor-lenge',
@@ -328,9 +373,19 @@ describe('useStepData', () => {
                     label: 'Barnet',
                 },
                 {
+                    id: '/barnehageplass',
+                    isSelected: false,
+                    label: 'Barnehageplass',
+                },
+                {
                     id: '/arbeidssituasjon',
                     isSelected: false,
                     label: 'Arbeidssituasjon',
+                },
+                {
+                    id: '/hvor-mye',
+                    isSelected: false,
+                    label: 'Hvor mye',
                 },
                 {
                     id: '/hvor-lenge',
@@ -386,9 +441,19 @@ describe('useStepData', () => {
                     label: 'Barnet',
                 },
                 {
+                    id: '/barnehageplass',
+                    isSelected: false,
+                    label: 'Barnehageplass',
+                },
+                {
                     id: '/arbeidssituasjon',
                     isSelected: false,
                     label: 'Arbeidssituasjon',
+                },
+                {
+                    id: '/hvor-mye',
+                    isSelected: false,
+                    label: 'Hvor mye',
                 },
                 {
                     id: '/hvor-lenge',
@@ -442,6 +507,11 @@ describe('useStepData', () => {
                     id: '/om-barnet',
                     isSelected: false,
                     label: 'Barnet',
+                },
+                {
+                    id: '/barnehageplass',
+                    isSelected: false,
+                    label: 'Barnehageplass',
                 },
                 {
                     id: '/arbeidssituasjon',

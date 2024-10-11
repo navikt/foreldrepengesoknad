@@ -1,14 +1,14 @@
+import { useQuery } from '@tanstack/react-query';
 import Environment from 'appData/Environment';
+import ky from 'ky';
 import { useIntl } from 'react-intl';
-import { BrowserRouter } from 'react-router-dom';
 
-import { useRequest } from '@navikt/fp-api';
 import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import SvangerskapspengesøknadRoutes, { ApiErrorHandler, Spinner, svpApi } from './SvangerskapspengesøknadRoutes';
+import SvangerskapspengesøknadRoutes, { ApiErrorHandler, Spinner } from './SvangerskapspengesøknadRoutes';
 import { SvpDataContext } from './app-data/SvpDataContext';
 import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from './app-data/useMellomlagreSøknad';
 import IkkeKvinne from './pages/ikke-kvinne/IkkeKvinne';
@@ -23,47 +23,49 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
     const intl = useIntl();
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
 
-    const { data: søkerinfoData, error: søkerinfoError } = useRequest<Søkerinfo>(svpApi, '/rest/sokerinfo');
+    const søkerinfo = useQuery({
+        queryKey: ['SOKERINFO'],
+        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/sokerinfo`).json<Søkerinfo>(),
+    });
 
-    const {
-        data: mellomlagretData,
-        loading: loadingMellomlagretData,
-        error: errorMellomlagretData,
-    } = useRequest<SvpDataMapAndMetaData>(svpApi, '/rest/storage/svangerskapspenger');
+    const mellomlagretInfo = useQuery({
+        queryKey: ['MELLOMLAGRET_INFO'],
+        queryFn: () =>
+            ky.get(`${Environment.PUBLIC_PATH}/rest/storage/svangerskapspenger`).json<SvpDataMapAndMetaData>(),
+    });
 
-    if (søkerinfoError || errorMellomlagretData) {
-        return <ApiErrorHandler error={notEmpty(søkerinfoError || errorMellomlagretData)} />;
+    if (søkerinfo.error || mellomlagretInfo.error) {
+        return <ApiErrorHandler error={notEmpty(søkerinfo.error || mellomlagretInfo.error)} />;
     }
 
-    if (!søkerinfoData || loadingMellomlagretData) {
+    if (!søkerinfo.data || mellomlagretInfo.isPending) {
         return <Spinner />;
     }
 
-    const erPersonKvinne = søkerinfoData.søker.kjønn === 'K';
+    const erPersonKvinne = søkerinfo.data.søker.kjønn === 'K';
 
     if (!erPersonKvinne) {
         return <IkkeKvinne />;
     }
 
-    const erPersonMyndig = erMyndig(søkerinfoData.søker.fødselsdato);
+    const erPersonMyndig = erMyndig(søkerinfo.data.søker.fødselsdato);
 
-    const mellomlagretState = mellomlagretData?.version === VERSJON_MELLOMLAGRING ? mellomlagretData : undefined;
+    const mellomlagretState =
+        mellomlagretInfo.data?.version === VERSJON_MELLOMLAGRING ? mellomlagretInfo.data : undefined;
 
     return (
         <div>
             {!erPersonMyndig ? (
                 <Umyndig appnavn="Svangerskapspenger" />
             ) : (
-                <BrowserRouter basename={Environment.PUBLIC_PATH}>
-                    <SvpDataContext initialState={mellomlagretState}>
-                        <SvangerskapspengesøknadRoutes
-                            locale={locale}
-                            onChangeLocale={onChangeLocale}
-                            søkerInfo={søkerinfoData}
-                            mellomlagretData={mellomlagretState}
-                        />
-                    </SvpDataContext>
-                </BrowserRouter>
+                <SvpDataContext initialState={mellomlagretState}>
+                    <SvangerskapspengesøknadRoutes
+                        locale={locale}
+                        onChangeLocale={onChangeLocale}
+                        søkerInfo={søkerinfo.data}
+                        mellomlagretData={mellomlagretState}
+                    />
+                </SvpDataContext>
             )}
         </div>
     );

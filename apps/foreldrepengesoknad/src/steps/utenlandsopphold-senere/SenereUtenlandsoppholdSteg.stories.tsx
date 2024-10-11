@@ -2,14 +2,13 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import SøknadRoutes from 'appData/routes';
-import MockAdapter from 'axios-mock-adapter/types';
+import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Utenlandsopphold } from '@navikt/fp-types';
 
-import AxiosMock from '../../__mocks__/AxiosMock';
 import SenereUtenlandsoppholdSteg from './SenereUtenlandsoppholdSteg';
 
 const promiseAction =
@@ -32,23 +31,25 @@ type StoryArgs = {
 const meta = {
     title: 'steps/SenereUtenlandsoppholdSteg',
     component: SenereUtenlandsoppholdSteg,
+    parameters: {
+        msw: {
+            handlers: [
+                http.post('https://fp/rest/storage/foreldrepenger', () => new HttpResponse(null, { status: 200 })),
+            ],
+        },
+    },
     render: ({ gåTilNesteSide = action('button-click'), utenlandsopphold = defaultUtenlandsopphold, ...rest }) => {
         initAmplitude();
-        const restMock = (apiMock: MockAdapter) => {
-            apiMock.onPost('/rest/storage/foreldrepenger').reply(200, undefined);
-        };
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.SENERE_UTENLANDSOPPHOLD]}>
-                <AxiosMock mock={restMock}>
-                    <FpDataContext
-                        onDispatch={gåTilNesteSide}
-                        initialState={{
-                            [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
-                        }}
-                    >
-                        <SenereUtenlandsoppholdSteg {...rest} />
-                    </FpDataContext>
-                </AxiosMock>
+                <FpDataContext
+                    onDispatch={gåTilNesteSide}
+                    initialState={{
+                        [ContextDataType.UTENLANDSOPPHOLD]: utenlandsopphold,
+                    }}
+                >
+                    <SenereUtenlandsoppholdSteg {...rest} />
+                </FpDataContext>
             </MemoryRouter>
         );
     },

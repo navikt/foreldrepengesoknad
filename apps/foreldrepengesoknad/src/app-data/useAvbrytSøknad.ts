@@ -1,9 +1,11 @@
-import Api from 'api/api';
+import { useMutation } from '@tanstack/react-query';
+import ky from 'ky';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
+import Environment from '../Environment';
 import { useContextReset } from './FpDataContext';
 
 export const useAvbrytSøknad = (
@@ -14,6 +16,10 @@ export const useAvbrytSøknad = (
 ) => {
     const navigate = useNavigate();
     const reset = useContextReset();
+
+    const { mutate: slettMellomlagring } = useMutation({
+        mutationFn: () => ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/foreldrepenger`),
+    });
 
     const avbrytSøknadHandler = useCallback(async () => {
         logAmplitudeEvent('applikasjon-hendelse', {
@@ -28,12 +34,7 @@ export const useAvbrytSøknad = (
         setHarGodkjentVilkår(false);
         setSøknadGjelderNyttBarn(undefined);
 
-        try {
-            await Api.deleteMellomlagretSøknad(fødselsnr);
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (error) {
-            // Vi bryr oss ikke om feil her. Logges bare i backend
-        }
+        slettMellomlagring();
 
         navigate('/');
     }, [fødselsnr, navigate, reset, setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn]);

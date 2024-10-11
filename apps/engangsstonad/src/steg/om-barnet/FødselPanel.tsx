@@ -10,10 +10,10 @@ import {
     erI22SvangerskapsukeEllerSenere,
     isAfterOrSameAsSixMonthsAgo,
     isBeforeTodayOrToday,
-    isLessThanThreeWeeksAgo,
     isRequired,
     isValidDate,
 } from '@navikt/fp-validation';
+import { isLessThanThreeWeeksBeforeFødsel } from '@navikt/fp-validation/src/form/dateFormValidation';
 
 export type FormValues = {
     antallBarnDropDown?: string;
@@ -26,6 +26,7 @@ const FødselPanel: React.FunctionComponent = () => {
 
     const erBarnetFødt = watch('erBarnetFødt');
     const antallBarn = watch('antallBarn');
+    const fødselsdato = watch('fødselsdato');
 
     return (
         <>
@@ -64,13 +65,14 @@ const FødselPanel: React.FunctionComponent = () => {
                 name="termindato"
                 label={<FormattedMessage id="FødselPanel.Termindato" />}
                 description={intl.formatMessage({ id: 'FødselPanel.TermindatoFodselsdato.beskrivelse' })}
-                minDate={dayjs().subtract(3, 'week').toDate()}
+                minDate={dayjs(fødselsdato).subtract(3, 'week').toDate()}
                 maxDate={dayjs().add(18, 'weeks').add(3, 'days').toDate()}
                 validate={[
                     isRequired(intl.formatMessage({ id: 'FødselPanel.Termindato.DuMåOppgi' })),
                     isValidDate(intl.formatMessage({ id: 'FødselPanel.Termindato.Gyldig' })),
-                    isLessThanThreeWeeksAgo(
-                        intl.formatMessage({ id: 'FødselPanel.Termindato.TermindatoKanIkkeVære3UkerFraIdag' }),
+                    isLessThanThreeWeeksBeforeFødsel(
+                        intl.formatMessage({ id: 'FødselPanel.Termindato.TermindatoKanIkkeVære3UkerFørFødsel' }),
+                        fødselsdato,
                     ),
                     erI22SvangerskapsukeEllerSenere(
                         intl.formatMessage({ id: 'FødselPanel.Termindato.DuMåVæreIUke22' }),

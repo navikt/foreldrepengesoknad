@@ -1,82 +1,118 @@
-import { BriefcaseIcon, CalendarIcon } from '@navikt/aksel-icons';
+import { CalendarIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
 
 import { BodyShort, Stack } from '@navikt/ds-react';
 
-import { FamiliehendelseType, NavnPåForeldre, Periode, isOppholdsperiode, isUttaksperiode } from '@navikt/fp-common';
+import { FamiliehendelseType, NavnPåForeldre } from '@navikt/fp-common';
+import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
 import Permisjonsperiode from '../../types/Permisjonsperiode';
+import { Planperiode } from '../../types/Planperiode';
+import {
+    isHull,
+    isOppholdsperiode,
+    isOverføringsperiode,
+    isPeriodeUtenUttak,
+    isUtsettelsesperiode,
+    isUttaksperiode,
+} from '../../utils/periodeUtils';
 import FamiliehendelseContent from './components/FamiliehendelseContent';
-import OppholdsperiodeContent from './components/OppholdsperiodeContent';
+import OppholdsPeriodeContent from './components/OppholdsperiodeContent';
+import OverføringsperiodeContent from './components/OverføringsperiodeContent';
+import PeriodeUtenUttakContent from './components/PeriodeUtenUttakContext';
+import { SkalJobbeContent } from './components/SkalJobbeContent';
+import UtsettelsesPeriodeContent from './components/UtsettelsesPeriodeContent';
 import UttaksperiodeContent from './components/UttaksperiodeContent';
 
 interface Props {
     permisjonsperiode: Permisjonsperiode;
-    familiehendelseType: FamiliehendelseType | undefined;
     erFamiliehendelse: boolean;
 }
 
 const renderPeriode = (
-    periode: Periode,
+    periode: Planperiode,
     navnPåForeldre: NavnPåForeldre,
     erFarEllerMedmor: boolean,
     inneholderKunEnPeriode: boolean,
 ) => {
-    if (isUttaksperiode(periode)) {
+    if (isOppholdsperiode(periode)) {
         return (
-            <UttaksperiodeContent
+            <OppholdsPeriodeContent
+                key={periode.id}
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
-                periode={periode}
-                erFarEllerMedmor={erFarEllerMedmor}
                 navnPåForeldre={navnPåForeldre}
+                erFarEllerMedmor={erFarEllerMedmor}
+                periode={periode}
             />
         );
     }
 
-    if (isOppholdsperiode(periode)) {
+    if (isOverføringsperiode(periode)) {
         return (
-            <OppholdsperiodeContent
+            <OverføringsperiodeContent
+                key={periode.id}
                 inneholderKunEnPeriode={inneholderKunEnPeriode}
                 navnPåForeldre={navnPåForeldre}
-                erFarEllerMedmor={erFarEllerMedmor}
                 periode={periode}
+            />
+        );
+    }
+
+    if (isPeriodeUtenUttak(periode) || isHull(periode)) {
+        return <PeriodeUtenUttakContent key={periode.id} periode={periode} isHull={isHull(periode)} />;
+    }
+
+    if (isUtsettelsesperiode(periode)) {
+        return <UtsettelsesPeriodeContent key={periode.id} periode={periode} />;
+    }
+
+    if (isUttaksperiode(periode)) {
+        return (
+            <UttaksperiodeContent
+                key={periode.id}
+                inneholderKunEnPeriode={inneholderKunEnPeriode}
+                periode={periode}
+                erFarEllerMedmor={erFarEllerMedmor}
+                navnPåForeldre={navnPåForeldre}
             />
         );
     }
 
     return (
-        <div style={{ marginBottom: '1rem', display: 'flex' }}>
+        <div key={periode.id} style={{ marginBottom: '1rem', display: 'flex' }}>
             <div>
                 <CalendarIcon width={24} height={24} />
             </div>
             <div>
                 <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
-                    <BodyShort weight="semibold">Her skjer det ingenting</BodyShort>
+                    <BodyShort weight="semibold">Ikke implementert</BodyShort>
                 </div>
             </div>
         </div>
     );
 };
 
-const PeriodeListeContent: FunctionComponent<Props> = ({
-    permisjonsperiode,
-    familiehendelseType,
-    erFamiliehendelse,
-}) => {
-    const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
-    const skalJobbeIPermisjonsperioden =
-        permisjonsperiode.perioder.find((p) => {
-            if (isUttaksperiode(p) && p.gradert) {
-                return p;
-            }
+const getFamiliehendelseType = (barn: Barn) => {
+    if (isUfødtBarn(barn)) {
+        return FamiliehendelseType.TERM;
+    }
 
-            return undefined;
-        }) !== undefined;
+    if (isAdoptertBarn(barn)) {
+        return FamiliehendelseType.ADOPSJON;
+    }
+
+    return FamiliehendelseType.FØDSEL;
+};
+
+const PeriodeListeContent: FunctionComponent<Props> = ({ permisjonsperiode, erFamiliehendelse }) => {
+    const inneholderKunEnPeriode = permisjonsperiode.perioder.length === 1;
 
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));
+    const barn = notEmpty(useContextGetData(UttaksplanContextDataType.BARN));
+    const familiehendelseType = getFamiliehendelseType(barn);
 
     if (erFamiliehendelse && familiehendelseType !== undefined) {
         return <FamiliehendelseContent familiehendelseType={familiehendelseType} />;
@@ -89,18 +125,7 @@ const PeriodeListeContent: FunctionComponent<Props> = ({
                     return renderPeriode(periode, navnPåForeldre, erFarEllerMedmor, inneholderKunEnPeriode);
                 })}
             </Stack>
-            {skalJobbeIPermisjonsperioden ? null : (
-                <div style={{ margin: '0.5rem 0', display: 'flex' }}>
-                    <div>
-                        <BriefcaseIcon width={24} height={24} />
-                    </div>
-                    <div>
-                        <div style={{ display: 'flex', marginLeft: '1rem', gap: '1rem' }}>
-                            <BodyShort>Du skal ikke jobbe i denne perioden</BodyShort>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <SkalJobbeContent permisjonsperiode={permisjonsperiode} />
         </div>
     );
 };

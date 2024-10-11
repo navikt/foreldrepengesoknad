@@ -1,6 +1,7 @@
 import '@formatjs/intl-pluralrules/locale-data/nb';
 import '@formatjs/intl-pluralrules/polyfill';
 import * as Sentry from '@sentry/browser';
+import Environment from 'appData/Environment';
 import dayjs from 'dayjs';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
@@ -9,6 +10,7 @@ import * as langNB from 'i18n-iso-countries/langs/nb.json';
 import * as langNN from 'i18n-iso-countries/langs/nn.json';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 
 import '@navikt/ds-css';
 
@@ -35,7 +37,9 @@ if (container) {
     const root = createRoot(container);
     root.render(
         <StrictMode>
-            <AppContainer />
+            <BrowserRouter basename={Environment.PUBLIC_PATH}>
+                <AppContainer />
+            </BrowserRouter>
         </StrictMode>,
     );
 }

@@ -1,3 +1,4 @@
+import Environment from 'appData/Environment';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
 import useStepConfig from 'appData/useStepConfig';
 import useSvpNavigator from 'appData/useSvpNavigator';
@@ -8,14 +9,13 @@ import { Arbeidsforholdstype, Tilrettelegging } from 'types/Tilrettelegging';
 
 import { VStack } from '@navikt/ds-react';
 
-import { getSaveAttachment } from '@navikt/fp-api';
+import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer, links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
 import { FileUploader, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { AxiosInstanceAPI } from '../../api/AxiosInstance';
 import Bedriftsbanner from '../Bedriftsbanner';
 
 const MAX_ANTALL_VEDLEGG = 40;
@@ -176,7 +176,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({
                             skjemanummer={Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING}
                             existingAttachments={defaultValues?.vedlegg}
                             updateAttachments={updateAttachments}
-                            saveAttachment={getSaveAttachment(AxiosInstanceAPI(), 'svangerskapspenger')}
+                            saveAttachment={getSaveAttachmentFetch(Environment.PUBLIC_PATH, 'svangerskapspenger')}
                         />
                     </VStack>
                     <StepButtonsHookForm

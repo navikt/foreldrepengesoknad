@@ -29,6 +29,5 @@ export const Default: Story = {
                 isSelected: true,
             },
         ],
-        stønadstype: 'Svangerskapspenger',
     },
 };
