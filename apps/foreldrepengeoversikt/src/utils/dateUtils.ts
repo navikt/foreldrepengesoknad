@@ -11,7 +11,9 @@ dayjs.extend(isoWeek);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isBetween);
 
-export const formaterDato = (dato: string | Date | undefined, datoformat?: string): string => {
+type DateType = string | Date | undefined;
+
+export const formaterDato = (dato: DateType, datoformat?: string): string => {
     return dayjs(dato).format(datoformat || 'dddd D. MMMM YYYY');
 };
 

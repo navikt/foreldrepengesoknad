@@ -40,7 +40,7 @@ const Barnehagestart: FunctionComponent<Props> = ({
             ? uttaksdata100.sluttdatoPeriode2
             : uttaksdata80.sluttdatoPeriode2;
 
-    const sluttdato = sluttdatoSøker2 ? sluttdatoSøker2 : sluttdatoSøker1;
+    const sluttdato = sluttdatoSøker2 ?? sluttdatoSøker1;
     const barnehagestart = barnehagestartDato(barnet);
 
     const antallMånederOgUkerTilBarnehagestart =

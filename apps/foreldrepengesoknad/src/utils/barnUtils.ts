@@ -26,10 +26,9 @@ export const getFamiliehendelsedatoDate = (barn: Barn): Date => {
     return ISOStringToDate(familiehendelse)!;
 };
 
-const barnFødselsdatoLikSakFødselsdato = (
-    fødselsdatoer: string[] | undefined,
-    regBarnFødselsdato: string | Date | undefined,
-) => {
+type DateType = string | Date | undefined;
+
+const barnFødselsdatoLikSakFødselsdato = (fødselsdatoer: string[] | undefined, regBarnFødselsdato: DateType) => {
     return fødselsdatoer !== undefined && regBarnFødselsdato !== undefined
         ? fødselsdatoer.find((fødselsdato) => dayjs(fødselsdato).isSame(regBarnFødselsdato)) !== undefined
         : false;

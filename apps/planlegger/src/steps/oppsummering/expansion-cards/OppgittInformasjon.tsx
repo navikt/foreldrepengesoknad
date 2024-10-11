@@ -228,9 +228,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
                                                     <FormattedMessage
                                                         id="OppgittInformasjon.ArbeidssituasjonAnnenPart"
                                                         values={{
-                                                            navn: denAndreFaren
-                                                                ? denAndreFaren
-                                                                : capitalizeFirstLetter(fornavn2),
+                                                            navn: denAndreFaren ?? capitalizeFirstLetter(fornavn2),
                                                             arbeidssituasjon: arbeidssituasjon.jobberAnnenPart,
                                                             minsteInntekt,
                                                         }}
