@@ -56,7 +56,6 @@ const FrilansSteg: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
                 onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
-                stønadstype="Svangerskapspenger"
             />
         </ContentWrapper>
     );
