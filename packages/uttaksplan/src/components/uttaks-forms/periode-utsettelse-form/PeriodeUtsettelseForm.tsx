@@ -3,14 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { Button } from '@navikt/ds-react';
 
-import {
-    Arbeidsforhold,
-    NavnPåForeldre,
-    Periode,
-    PeriodeValidState,
-    Situasjon,
-    Utsettelsesperiode,
-} from '@navikt/fp-common';
+import { NavnPåForeldre, Periode, PeriodeValidState, Situasjon, Utsettelsesperiode } from '@navikt/fp-common';
 import { Tidsperioden, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import ActionLink from '../../../common/action-link/ActionLink';
@@ -58,7 +51,6 @@ interface Props {
     navnPåForeldre: NavnPåForeldre;
     erMorUfør: boolean;
     søkerErFarEllerMedmorOgKunDeHarRett: boolean;
-    arbeidsforhold: Arbeidsforhold[];
     situasjon: Situasjon;
     utsettelserIPlan: Utsettelsesperiode[];
     setPerioderErGyldige: React.Dispatch<React.SetStateAction<PeriodeValidState[]>>;
