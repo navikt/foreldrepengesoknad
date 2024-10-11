@@ -32,7 +32,6 @@ export default defineConfig(({ mode }) => {
         resolve: {
             alias: {
                 storybookData: path.resolve(__dirname, './.storybook/storybook-data'),
-                assets: path.resolve(__dirname, './src/assets'),
             },
         },
         server: {

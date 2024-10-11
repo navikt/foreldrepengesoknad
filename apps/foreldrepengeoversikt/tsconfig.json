@@ -4,7 +4,6 @@
         "baseUrl": "src",
         "jsx": "react-jsx",
         "paths": {
-            "assets/*": ["assets/*"],
             "storybookData/*": ["./../.storybook/storybook-data/*"]
         },
         "rootDir": "src",
