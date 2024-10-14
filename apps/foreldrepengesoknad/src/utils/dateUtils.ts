@@ -133,7 +133,7 @@ export const getRelevantFamiliehendelseDato = (
     }
 };
 
-export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boolean => {
+export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: string | Date): boolean => {
     const førsteOktober2021 = new Date('2021-10-01');
 
     return (
