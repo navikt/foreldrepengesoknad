@@ -40,7 +40,7 @@
     "valideringsfeil.egenNæringType.påkrevd": "Du må oppgi type verksemd du har.",
     "valideringsfeil.egenNæringLand.ikkeNorge": "Du svarte at verksemda ikkje er registrert i Noreg og kan derfor ikkje oppgi Noreg som landet der næringa er registert.",
     "valideringsfeil.egenNæringRegistrertINorge.påkrevd": "Du må oppgi om verksemda er registrert i Noreg.",
-    "valideringsfeil.næringsinntekt.ugyldigFormat": "Næringsinntekt kan berre bestå av tal.",
+    "valideringsfeil.næringsinntekt.ugyldigFormat": "Næringsinntekt må vere eit heiltall.",
     "valideringsfeil.næringsinntekt.forLang": "Næringsinntekt kan bestå av maksimalt 9 siffer.",
     "valideringsfeil.næringsinntekt.mindreEnnNull": "Næringsinntekt må vere eit tal som er større eller lik 0.",
     "valideringsfeil.varigEndringInntekt.mindreEnnNull": "Næringsinntekta di etter endring må vere eit tal som er større eller lik 0.",

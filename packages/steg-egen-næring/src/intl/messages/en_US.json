@@ -40,7 +40,7 @@
     "valideringsfeil.egenNæringLand.ikkeNorge": "You answered that the business is not registered in Norway and therefore cannot specify Norway as the country where the business is registered.",
     "valideringsfeil.egenNæringType.påkrevd": "You must specify the type of business you have.",
     "valideringsfeil.egenNæringRegistrertINorge.påkrevd": "You must specify if the business is registered in Norway.",
-    "valideringsfeil.næringsinntekt.ugyldigFormat": "Business income can only consist of numbers.",
+    "valideringsfeil.næringsinntekt.ugyldigFormat": "Business income must be an integer.",
     "valideringsfeil.næringsinntekt.forLang": "Business income can contain a maximum of 9 digits.",
     "valideringsfeil.næringsinntekt.mindreEnnNull": "Business income must be a number that is greater than or equal to 0.",
     "valideringsfeil.varigEndringInntekt.mindreEnnNull": "Your business income after the change must be a number that is greater than or equal to 0.",
