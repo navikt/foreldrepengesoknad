@@ -30,6 +30,7 @@ const ErFødtPanel: FunctionComponent = () => {
                 minDate={fødselsdato ? dayjs(fødselsdato).subtract(1, 'months').toDate() : undefined}
                 maxDate={fødselsdato ? dayjs(fødselsdato).add(6, 'months').toDate() : undefined}
                 label={intl.formatMessage({ id: 'omBarnet.termindato.født' })}
+                useStrategyAbsolute
                 validate={[
                     isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.duMåOppgi' })),
                     isValidDate(intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.ugyldigDatoFormat' })),
@@ -55,6 +56,7 @@ const ErFødtPanel: FunctionComponent = () => {
                     label={intl.formatMessage({ id: intlIdFødsel })}
                     minDate={dayjs().subtract(3, 'years').toDate()}
                     maxDate={dayjs().toDate()}
+                    useStrategyAbsolute
                     validate={[
                         isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.fødselsdato.duMåOppgi' })),
                         isValidDate(

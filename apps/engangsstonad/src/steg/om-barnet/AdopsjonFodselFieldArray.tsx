@@ -58,6 +58,7 @@ const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
                     name={`fødselsdatoer.${index}.dato`}
                     minDate={dayjs().subtract(15, 'year').toDate()}
                     maxDate={dayjs().toDate()}
+                    useStrategyAbsolute
                     label={
                         fields.length === 1
                             ? intl.formatMessage({ id: 'AdopsjonFodselFieldArray.Fødselsdato' })
