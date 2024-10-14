@@ -34,7 +34,7 @@ import {
 import { getAntallUker, getAntallUkerMinsterett } from 'utils/stønadskontoerUtils';
 import { getPerioderSomSkalSendesInn } from 'utils/submitUtils';
 
-import { Alert, Button, Loader } from '@navikt/ds-react';
+import { Alert, Button, Loader, VStack } from '@navikt/ds-react';
 
 import {
     Dekningsgrad,
@@ -68,7 +68,6 @@ import {
     getKanPerioderRundtFødselAutomatiskJusteres,
     getKanSøkersituasjonAutomatiskJustereRundtFødsel,
 } from './automatisk-justering-form/automatiskJusteringUtils';
-import Block from './block/Block';
 import StepButtonWrapper from './components/StepButtonWrapper';
 import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { lagUttaksplanForslag } from './lagUttaksplanForslag';
@@ -631,80 +630,74 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                         {startStønadsperiodeNyttBarn && (
                             <InfoOmNesteBarn minsterettUkerToTette={minsterettUkerToTette} />
                         )}
-                        <Uttaksplan
-                            foreldreSituasjon={foreldreSituasjon}
-                            forelderVedAleneomsorg={forelderVedAleneomsorg}
-                            erDeltUttak={erDeltUttak}
-                            uttaksplan={uttaksplan}
-                            familiehendelsesdato={familiehendelsesdato}
-                            handleOnPlanChange={handleOnPlanChange}
-                            stønadskontoer={valgteStønadskontoer!}
-                            navnPåForeldre={navnPåForeldre}
-                            annenForelder={annenForelder}
-                            arbeidsforhold={getAktiveArbeidsforhold(
-                                søkerInfo.arbeidsforhold,
-                                erAdopsjon,
-                                erFarEllerMedmor,
-                                ISOStringToDate(familiehendelsesdato),
-                            )}
-                            erEndringssøknad={erEndringssøknad}
-                            erFarEllerMedmor={erFarEllerMedmor}
-                            erFlerbarnssøknad={erFlerbarnssøknad}
-                            erAleneOmOmsorg={søkerErAleneOmOmsorg}
-                            harMidlertidigOmsorg={harMidlertidigOmsorg}
-                            situasjon={situasjon}
-                            erMorUfør={erMorUfør}
-                            morHarRett={morHarRett}
-                            søkersituasjon={søkersituasjon}
-                            dekningsgrad={dekningsgrad}
-                            antallBarn={antallBarn}
-                            setUttaksplanErGyldig={setUttaksplanErGyldig}
-                            eksisterendeSak={eksisterendeSak}
-                            perioderSomSkalSendesInn={perioderSomSkalSendesInn}
-                            harKomplettUttaksplan={harKomplettUttaksplan}
-                            opprinneligPlan={
-                                uttaksplanMetadata?.harUttaksplanBlittSlettet ? undefined : opprinneligPlan
-                            }
-                            handleSlettUttaksplan={handleSlettUttaksplan}
-                            handleResetUttaksplan={handleResetUttaksplan}
-                            termindato={termindato ? dayjs(termindato).toDate() : undefined}
-                            barn={barn}
-                            visAutomatiskJusteringForm={visAutomatiskJusteringForm}
-                            barnFraNesteSak={barnFraNesteSak}
-                            familiehendelsesdatoNesteSak={familieHendelseDatoNesteSak}
-                            førsteUttaksdagNesteBarnsSak={førsteUttaksdagNesteBarnsSak}
-                            minsterettUkerToTette={minsterettUkerToTette}
-                        />
-                        {visAutomatiskJusteringForm && (
-                            <Block padBottom="l">
+                        <VStack gap="2">
+                            <Uttaksplan
+                                foreldreSituasjon={foreldreSituasjon}
+                                forelderVedAleneomsorg={forelderVedAleneomsorg}
+                                erDeltUttak={erDeltUttak}
+                                uttaksplan={uttaksplan}
+                                familiehendelsesdato={familiehendelsesdato}
+                                handleOnPlanChange={handleOnPlanChange}
+                                stønadskontoer={valgteStønadskontoer!}
+                                navnPåForeldre={navnPåForeldre}
+                                annenForelder={annenForelder}
+                                arbeidsforhold={getAktiveArbeidsforhold(
+                                    søkerInfo.arbeidsforhold,
+                                    erAdopsjon,
+                                    erFarEllerMedmor,
+                                    ISOStringToDate(familiehendelsesdato),
+                                )}
+                                erEndringssøknad={erEndringssøknad}
+                                erFarEllerMedmor={erFarEllerMedmor}
+                                erFlerbarnssøknad={erFlerbarnssøknad}
+                                erAleneOmOmsorg={søkerErAleneOmOmsorg}
+                                harMidlertidigOmsorg={harMidlertidigOmsorg}
+                                situasjon={situasjon}
+                                erMorUfør={erMorUfør}
+                                morHarRett={morHarRett}
+                                søkersituasjon={søkersituasjon}
+                                dekningsgrad={dekningsgrad}
+                                antallBarn={antallBarn}
+                                setUttaksplanErGyldig={setUttaksplanErGyldig}
+                                eksisterendeSak={eksisterendeSak}
+                                perioderSomSkalSendesInn={perioderSomSkalSendesInn}
+                                harKomplettUttaksplan={harKomplettUttaksplan}
+                                opprinneligPlan={
+                                    uttaksplanMetadata?.harUttaksplanBlittSlettet ? undefined : opprinneligPlan
+                                }
+                                handleSlettUttaksplan={handleSlettUttaksplan}
+                                handleResetUttaksplan={handleResetUttaksplan}
+                                termindato={termindato ? dayjs(termindato).toDate() : undefined}
+                                barn={barn}
+                                visAutomatiskJusteringForm={visAutomatiskJusteringForm}
+                                barnFraNesteSak={barnFraNesteSak}
+                                familiehendelsesdatoNesteSak={familieHendelseDatoNesteSak}
+                                førsteUttaksdagNesteBarnsSak={førsteUttaksdagNesteBarnsSak}
+                                minsterettUkerToTette={minsterettUkerToTette}
+                            />
+                            {visAutomatiskJusteringForm && (
                                 <AutomatiskJusteringForm
                                     termindato={termindato ? dayjs(termindato).toDate() : undefined!}
                                     perioderMedUttakRundtFødsel={perioderMedUttakRundtFødsel}
                                     antallBarn={barn.antallBarn}
                                     visibility={visibility}
                                 />
-                            </Block>
-                        )}
-                        <VilDuGåTilbakeModal
-                            isOpen={gåTilbakeIsOpen}
-                            setIsOpen={setGåTilbakeIsOpen}
-                            goToPreviousStep={goToPreviousStep}
-                        />
-                        {!uttaksplanErGyldig && submitIsClicked && (
-                            <Block textAlignCenter={true} padBottom="l">
+                            )}
+                            <VilDuGåTilbakeModal
+                                isOpen={gåTilbakeIsOpen}
+                                setIsOpen={setGåTilbakeIsOpen}
+                                goToPreviousStep={goToPreviousStep}
+                            />
+                            {!uttaksplanErGyldig && submitIsClicked && (
                                 <Alert variant="error">
                                     <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidere" />
                                 </Alert>
-                            </Block>
-                        )}
-                        {erTomEndringssøknad && submitIsClicked && (
-                            <Block textAlignCenter={true} padBottom="l">
+                            )}
+                            {erTomEndringssøknad && submitIsClicked && (
                                 <Alert variant="error">
                                     <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidereEndringssøknad" />
                                 </Alert>
-                            </Block>
-                        )}
-                        <Block textAlignCenter={true} padBottom="l">
+                            )}
                             <StepButtonWrapper singleButton={true}>
                                 {!erEndringssøknad && (
                                     <Button
@@ -730,7 +723,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                                     <FormattedMessage id="søknad.gåVidere" />
                                 </Button>
                             </StepButtonWrapper>
-                        </Block>
+                        </VStack>
                     </Step>
                 );
             }}
