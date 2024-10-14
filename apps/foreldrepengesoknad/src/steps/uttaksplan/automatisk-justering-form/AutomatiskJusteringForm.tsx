@@ -5,13 +5,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'steps/uttaksplan/UttaksplanFormConfig';
 import { mapUttaksplanFormValueToState } from 'steps/uttaksplan/UttaksplanFormUtils';
 
-import { Alert } from '@navikt/ds-react';
+import { Alert, VStack } from '@navikt/ds-react';
 
 import { Periode, StønadskontoType, isOverføringsperiode, isUttaksperiode } from '@navikt/fp-common';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { QuestionVisibility, YesOrNo } from '@navikt/fp-uttaksplan';
-
-import Block from '../block/Block';
 
 interface Props {
     termindato: Date;
@@ -82,30 +80,28 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({
     return (
         <UttaksplanFormComponents.Form includeButtons={false}>
             <div style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
-                {infoTekst && (
-                    <Block padBottom="l">
-                        <Alert variant="info">{infoTekst}</Alert>
-                    </Block>
-                )}
-                <Block visible={visibility.isVisible(UttaksplanFormField.ønskerAutomatiskJustering)} padBottom="l">
-                    <UttaksplanFormComponents.YesOrNoQuestion
-                        name={UttaksplanFormField.ønskerAutomatiskJustering}
-                        legend={intl.formatMessage(
-                            { id: 'uttaksplan.automatiskJustering.spørsmål' },
-                            {
-                                antallBarn,
-                            },
-                        )}
-                        validate={(value: YesOrNo) => {
-                            if (value === YesOrNo.UNANSWERED) {
-                                return intl.formatMessage({ id: 'uttaksplan.automatiskJustering.svar.påkrevd' });
-                            }
+                <VStack gap="2">
+                    {infoTekst && <Alert variant="info">{infoTekst}</Alert>}
+                    {visibility.isVisible(UttaksplanFormField.ønskerAutomatiskJustering) && (
+                        <UttaksplanFormComponents.YesOrNoQuestion
+                            name={UttaksplanFormField.ønskerAutomatiskJustering}
+                            legend={intl.formatMessage(
+                                { id: 'uttaksplan.automatiskJustering.spørsmål' },
+                                {
+                                    antallBarn,
+                                },
+                            )}
+                            validate={(value: YesOrNo) => {
+                                if (value === YesOrNo.UNANSWERED) {
+                                    return intl.formatMessage({ id: 'uttaksplan.automatiskJustering.svar.påkrevd' });
+                                }
 
-                            return undefined;
-                        }}
-                        afterOnChange={(value: string) => handleOnChange(value)}
-                    />
-                </Block>
+                                return undefined;
+                            }}
+                            afterOnChange={(value: string) => handleOnChange(value)}
+                        />
+                    )}
+                </VStack>
             </div>
         </UttaksplanFormComponents.Form>
     );
