@@ -295,7 +295,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const utsettelserIPlan = uttaksplan.filter((p) => isUtsettelsesperiode(p)) as Utsettelsesperiode[];
     const navnAnnenPart = erFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor;
     return (
-        <>
+        <div>
             <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
             {visningsmodus === 'liste' && (
                 <>
@@ -374,7 +374,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
                 onClose={handleResetUttaksplanModalClose}
                 handleResetUttaksplanModalBekreft={handleResetUttaksplanModalBekreft}
             />
-        </>
+        </div>
     );
 };
 
