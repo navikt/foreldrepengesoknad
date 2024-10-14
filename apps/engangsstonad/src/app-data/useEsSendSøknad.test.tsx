@@ -154,7 +154,7 @@ describe('useEsSendSøknad', () => {
         };
 
         const { result } = renderHook(() => useEsSendSøknad('nb', setKvittering), {
-            wrapper: getWrapper(omBarnetErFødt, undefined),
+            wrapper: getWrapper(omBarnetErFødt),
         });
 
         result.current.sendSøknad();

@@ -4,7 +4,7 @@ import { FormattedMessage, IntlShape } from 'react-intl';
 import { DelInformasjon, FordelingEier, FordelingFargekode } from 'types/FordelingOversikt';
 import { getErAleneOmOmsorg, getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
-import { ISOStringToDate, førsteOktober2021ReglerGjelder, getVarighetString } from 'utils/dateUtils';
+import { førsteOktober2021ReglerGjelder, getVarighetString } from 'utils/dateUtils';
 import isFarEllerMedmor from 'utils/isFarEllerMedmor';
 import {
     getAntallUkerAktivitetsfriKvote,
@@ -53,28 +53,8 @@ export const getHarFåttEllerSkalFå = (barn: Barn, intl: IntlShape) => {
     throw Error('Ukjent type barn');
 };
 
-export const getDegEllerMorTekst = (erFarEllerMedmor: boolean, navnMor: string, intl: IntlShape): string => {
-    return erFarEllerMedmor ? navnMor : intl.formatMessage({ id: 'deg' });
-};
-
-export const getDuEllerDereTekst = (deltUttak: boolean, intl: IntlShape): string => {
-    return deltUttak ? intl.formatMessage({ id: 'dere' }) : intl.formatMessage({ id: 'du' });
-};
-
-export const getDinEllerFarGenitivEierformTekst = (
-    erFarEllerMedmor: boolean,
-    navnFar: string,
-    intl: IntlShape,
-): string => {
-    return erFarEllerMedmor ? intl.formatMessage({ id: 'din' }) : getNavnGenitivEierform(navnFar, intl.locale);
-};
-
-export const getDegEllerSegTekst = (erFarEllerMedmor: boolean, intl: IntlShape) => {
-    return erFarEllerMedmor ? intl.formatMessage({ id: 'seg' }) : intl.formatMessage({ id: 'deg' });
-};
-
 const getHvorLengeDisseUkeneKanBrukesTekst = (
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
     erAdopsjon: boolean,
     antallDager: number,
     antallBarn: number,
@@ -178,13 +158,9 @@ export const getFordelingDelTittel = (
     }
 };
 
-export const getFordelingShadowClass = (erUthevet: boolean): string => {
-    return erUthevet ? 'shadow' : 'no-shadow';
-};
-
 const getMorResterendeDagerTekst = (
     antallDager: number,
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
     erAdopsjon: boolean,
     antallBarn: number,
     intl: IntlShape,
@@ -227,7 +203,7 @@ const getMorResterendeDagerTekst = (
 
 const getFellesInfoTekst = (
     dagerFelles: number,
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
     erAdopsjon: boolean,
     antallBarn: number,
     morTekst: string,
@@ -294,15 +270,17 @@ const getAntallDagerSøkerensKvoteBruktAvAnnenPart = (
     uttaksplanAnnenPart: Periode[] | undefined,
     kontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     erFarEllerMedmor: boolean,
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
 ): number => {
     if (uttaksplanAnnenPart === undefined || uttaksplanAnnenPart.length === 0) {
         return 0;
     }
     if (erFarEllerMedmor) {
-        return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato).mor.dagerAnnenForeldersKvote;
+        return getBrukteDager(kontoer, uttaksplanAnnenPart, dayjs(familiehendelsesdato).toDate()).mor
+            .dagerAnnenForeldersKvote;
     } else {
-        return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato).farMedmor.dagerAnnenForeldersKvote;
+        return getBrukteDager(kontoer, uttaksplanAnnenPart, dayjs(familiehendelsesdato).toDate()).farMedmor
+            .dagerAnnenForeldersKvote;
     }
 };
 
@@ -310,29 +288,32 @@ const getAntallDagerFellesperiodeBruktAvAnnenPart = (
     uttaksplanAnnenPart: Periode[] | undefined,
     kontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     erFarEllerMedmor: boolean,
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
 ): number => {
     if (uttaksplanAnnenPart === undefined || uttaksplanAnnenPart.length === 0) {
         return 0;
     }
     if (erFarEllerMedmor) {
-        return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato).mor.dagerFellesperiode;
+        return getBrukteDager(kontoer, uttaksplanAnnenPart, dayjs(familiehendelsesdato).toDate()).mor
+            .dagerFellesperiode;
     } else {
-        return getBrukteDager(kontoer, uttaksplanAnnenPart, familiehendelsesdato).farMedmor.dagerFellesperiode;
+        return getBrukteDager(kontoer, uttaksplanAnnenPart, dayjs(familiehendelsesdato).toDate()).farMedmor
+            .dagerFellesperiode;
     }
 };
 
 const getFordelingFelles = (
-    dagerFelles: number,
+    kontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     søkersituasjon: SøkersituasjonFp,
     barn: Barn,
     navnPåForeldre: NavnPåForeldre,
     intl: IntlShape,
-    ekstraDagerPrematur: number | undefined,
     annenPartHarKunRettIEØS?: boolean,
     annenPartsKvoteDager?: number,
     dagerBruktAvAnnenPart?: number,
 ): DelInformasjon => {
+    const dagerFelles = getAntallUkerFellesperiode(kontoer) * 5;
+    const ekstraDagerPrematur = kontoer.tillegg?.prematur;
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const navnMor = navnPåForeldre.mor;
@@ -340,7 +321,7 @@ const getFordelingFelles = (
     const annenPartNavn = erFarEllerMedmor ? navnMor : navnFarMedmor;
     const morTekst = getMorTekst(erFarEllerMedmor, navnMor, intl);
     const farTekst = getFarTekst(erFarEllerMedmor, navnFarMedmor, intl);
-    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
     const antallBarn = barn.antallBarn;
     const fordelingDager = [];
     const fordelingInfo = [
@@ -414,7 +395,7 @@ const getFordelingFelles = (
 const getFordelingTekstFedrekvote = (
     dagerFar: number,
     erAdopsjon: boolean,
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
     antallBarn: number,
     intl: IntlShape,
 ) => {
@@ -468,7 +449,7 @@ const getFordelingFedrekvote = (
     const navnFarMedmor = navnPåForeldre.farMedmor;
     const farTekst = getFarTekst(erFarEllerMedmor, navnFarMedmor, intl);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
-    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
     const antallBarn = barn.antallBarn;
     const fargekodeFar = erFarEllerMedmor ? FordelingFargekode.SØKER_FAR : FordelingFargekode.ANNEN_PART_FAR;
     const gjenståendeDagerTilFar = dagerFarsKvoteBruktAvMor ? dagerFar - dagerFarsKvoteBruktAvMor : dagerFar;
@@ -477,8 +458,8 @@ const getFordelingFedrekvote = (
     ];
 
     if (dagerRundtFødsel > 0) {
-        const dinEllerHans = getDinEllerHansTekst(erFarEllerMedmor, intl);
-        const morEllerDeg = getDegEllerMorTekst(erFarEllerMedmor, navnMor, intl);
+        const dinEllerHans = erFarEllerMedmor ? intl.formatMessage({ id: 'din' }) : intl.formatMessage({ id: 'hans' });
+        const morEllerDeg = erFarEllerMedmor ? navnMor : intl.formatMessage({ id: 'deg' });
         fordelingInfo.push(
             <FormattedMessage
                 id="fordeling.info.farMedmor.rundtFødsel"
@@ -520,8 +501,7 @@ const getFordelingFedrekvote = (
 };
 
 const getFordelingMor = (
-    dagerMødrekvote: number,
-    dagerFørFødsel: number,
+    kontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     barn: Barn,
     ekstraDagerPrematur: number | undefined,
     kunMorFårForeldrepenger: boolean,
@@ -530,6 +510,11 @@ const getFordelingMor = (
     intl: IntlShape,
     dagerMorsKvoteBruktAvFar?: number,
 ): DelInformasjon => {
+    const dagerFørFødsel = getAntallUkerForeldrepengerFørFødsel(kontoer) * 5;
+    const dagerMødrekvote = kunMorFårForeldrepenger
+        ? getAntallUkerForeldrepenger(kontoer) * 5
+        : getAntallUkerMødrekvote(kontoer) * 5;
+
     const fordelingDager = [];
     const fordelingInfo = [];
     const navnMor = navnPåForeldre.mor;
@@ -537,7 +522,7 @@ const getFordelingMor = (
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const erAdopsjon = søkersituasjon.situasjon === 'adopsjon';
     const morTekst = getMorTekst(erFarEllerMedmor, navnMor, intl);
-    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
     const antallBarn = barn.antallBarn;
     const antallDagerMor = dagerMødrekvote + dagerFørFødsel;
     const dagerRettEtterFødsel = erAdopsjon ? 0 : uttaksConstants.ANTALL_UKER_MØDREKVOTE_ETTER_FØDSEL * 5;
@@ -659,7 +644,7 @@ const getFordelingForeldrepengerFarAleneomsorg = (
 ) => {
     const fordelingDager = [];
     const fordelingInfo = [];
-    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
     const antallBarn = barn.antallBarn;
     const fargekode = FordelingFargekode.SØKER_FAR;
     fordelingDager.push({ antallDager, fargekode });
@@ -688,22 +673,24 @@ const getFordelingForeldrepengerFarAleneomsorg = (
 };
 
 const getFordelingForeldrepengerFar = (
-    dagerForeldrepenger: number,
-    dagerUtenAktivitetskrav: number,
+    kontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     erAleneOmsorg: boolean,
     erAdopsjon: boolean,
     barn: Barn,
-    ekstraDagerGrunnetPrematurFødsel: number | undefined,
     morTekst: string,
     intl: IntlShape,
 ): DelInformasjon => {
+    const ekstraDagerGrunnetPrematurFødsel = kontoer.tillegg?.prematur;
+    const dagerForeldrepenger = getAntallUkerForeldrepenger(kontoer) * 5;
+    const dagerUtenAktivitetskrav = getAntallUkerAktivitetsfriKvote(kontoer) * 5;
+    const dagerTotalt = dagerForeldrepenger + dagerUtenAktivitetskrav;
     const fordelingDager = [];
     const fordelingInfo = [];
     const fargekode = FordelingFargekode.SØKER_FAR;
     const antallBarn = barn.antallBarn;
     if (erAleneOmsorg) {
         return getFordelingForeldrepengerFarAleneomsorg(
-            dagerForeldrepenger,
+            dagerTotalt,
             erAdopsjon,
             barn,
             ekstraDagerGrunnetPrematurFødsel,
@@ -711,7 +698,7 @@ const getFordelingForeldrepengerFar = (
         );
     }
 
-    const dagerMedAktivitetskrav = dagerForeldrepenger - dagerUtenAktivitetskrav;
+    const dagerMedAktivitetskrav = dagerTotalt - dagerUtenAktivitetskrav;
     if (dagerUtenAktivitetskrav > 0) {
         const varighetTekst = getVarighetString(dagerUtenAktivitetskrav, intl);
         fordelingDager.push({ antallDager: dagerUtenAktivitetskrav, fargekode });
@@ -773,14 +760,10 @@ const getFordelingForeldrepengerFar = (
     );
     return {
         eier: FordelingEier.FarMedmor,
-        sumDager: dagerForeldrepenger,
+        sumDager: dagerTotalt,
         fordelingDager,
         fordelingInfo,
     };
-};
-
-const getDinEllerHansTekst = (erFarEllerMedmor: boolean, intl: IntlShape) => {
-    return erFarEllerMedmor ? intl.formatMessage({ id: 'din' }) : intl.formatMessage({ id: 'hans' });
 };
 
 export const getMorTekst = (erFarEllerMedmor: boolean, navnMor: string, intl: IntlShape) => {
@@ -811,10 +794,9 @@ export const getFordelingFraKontoer = (
     const oppgittAnnenForelder = isAnnenForelderOppgitt(annenForelder) ? annenForelder : undefined;
     const annenPartHarKunRettIEØS = !!oppgittAnnenForelder?.harRettPåForeldrepengerIEØS;
     const erAleneomsorg = getErAleneOmOmsorg(annenForelder);
-    const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
+    const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const fordelingsinformasjon = [];
-    const dagerFørFødsel = getAntallUkerForeldrepengerFørFødsel(kontoer) * 5;
     const dagerMødrekvote = getAntallUkerMødrekvote(kontoer) * 5;
     const dagerFedrekvote = getAntallUkerFedrekvote(kontoer) * 5;
     const dagerFellesperiode = getAntallUkerFellesperiode(kontoer) * 5;
@@ -846,8 +828,7 @@ export const getFordelingFraKontoer = (
                   familiehendelsesdato,
               );
         const fordelingMor = getFordelingMor(
-            dagerMødrekvote,
-            dagerFørFødsel,
+            kontoer,
             barn,
             ekstraDagerPrematurSomSkalVisesIMorsDel,
             false,
@@ -862,12 +843,11 @@ export const getFordelingFraKontoer = (
     if (dagerFellesperiode > 0) {
         const annenPartsKvoteDager = erFarEllerMedmor ? dagerMødrekvote : dagerFedrekvote;
         const fordelingFelles = getFordelingFelles(
-            dagerFellesperiode,
+            kontoer,
             søkersituasjon,
             barn,
             navnPåForeldre,
             intl,
-            ekstraDagerPrematur,
             annenPartHarKunRettIEØS,
             annenPartsKvoteDager,
             dagerFellesperiodeBruktAvAnnenPart,
@@ -897,29 +877,9 @@ export const getFordelingFraKontoer = (
     }
 
     if (dagerForeldrepenger > 0) {
-        const dagerUtenAktivitetskrav = getAntallUkerAktivitetsfriKvote(kontoer) * 5;
-        const dagerTotalt = dagerForeldrepenger + dagerUtenAktivitetskrav;
         const fordeling = erFarEllerMedmor
-            ? getFordelingForeldrepengerFar(
-                  dagerTotalt,
-                  dagerUtenAktivitetskrav,
-                  erAleneomsorg,
-                  erAdopsjon,
-                  barn,
-                  ekstraDagerPrematur,
-                  morTekst,
-                  intl,
-              )
-            : getFordelingMor(
-                  dagerForeldrepenger,
-                  dagerFørFødsel,
-                  barn,
-                  ekstraDagerPrematur,
-                  true,
-                  søkersituasjon,
-                  navnPåForeldre,
-                  intl,
-              );
+            ? getFordelingForeldrepengerFar(kontoer, erAleneomsorg, erAdopsjon, barn, morTekst, intl)
+            : getFordelingMor(kontoer, barn, ekstraDagerPrematur, true, søkersituasjon, navnPåForeldre, intl);
         fordelingsinformasjon.push(fordeling);
     }
     if (erFarEllerMedmor && annenPartHarKunRettIEØS) {

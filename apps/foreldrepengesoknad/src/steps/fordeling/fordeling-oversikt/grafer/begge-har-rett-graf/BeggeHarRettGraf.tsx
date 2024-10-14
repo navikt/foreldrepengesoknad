@@ -9,7 +9,7 @@ import { BodyShort } from '@navikt/ds-react';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { bemUtils, capitalizeFirstLetter } from '@navikt/fp-utils';
 
-import { getBeggeHarRettGrafFordeling, getFordelingShadowClass } from '../../fordelingOversiktUtils';
+import { getBeggeHarRettGrafFordeling } from '../../fordelingOversiktUtils';
 import './../graf.css';
 import FamiliehendelseVisning from './FamiliehendelseVisning';
 
@@ -70,7 +70,7 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
                 const indexForFamiliehendelse = erAdopsjon ? 0 : 1;
                 const finalWidth = index === indexForFamiliehendelse ? width + famiHendelseFieldWidth : width;
                 const erUthevet = currentUthevet === fordeling.eier;
-                const shadowClass = getFordelingShadowClass(erUthevet);
+                const shadowClass = erUthevet ? 'shadow' : 'no-shadow';
                 const rowClass = getRowClass(fordelingList.length, index);
 
                 const handleOnMouseEnter = () => {
