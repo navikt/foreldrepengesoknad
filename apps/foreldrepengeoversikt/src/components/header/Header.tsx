@@ -6,6 +6,8 @@ import { useParams } from 'react-router-dom';
 
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
+import { formatDateMedUkedag } from '@navikt/fp-utils';
+
 import { InntektsmeldingDto } from '../../types/InntektsmeldingDto';
 import StatusTag from '../status-tag/StatusTag';
 import { hentSakerOptions, søkerInfoOptions } from './../../api/api';
@@ -133,9 +135,9 @@ export const InntektsmeldingHeader = ({ inntektsmelding }: { inntektsmelding: In
     return (
         <SimpleHeaderWrapper>
             <Heading level="1" size="medium">
-                Din inntekt rapportert av {inntektsmelding.arbeidsgiverIdent}
+                Din inntekt rapportert av {inntektsmelding.arbeidsgiverNavn}
             </Heading>
-            <Detail textColor="subtle">Endret {inntektsmelding.innsendingstidspunkt}</Detail>
+            <Detail textColor="subtle">Endret {formatDateMedUkedag(inntektsmelding.innsendingstidspunkt)}</Detail>
         </SimpleHeaderWrapper>
     );
 };

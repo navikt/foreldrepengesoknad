@@ -7,7 +7,7 @@ import Environment from '../appData/Environment';
 import { AnnenPartVedtakDTO } from '../types/AnnenPartVedtakDTO';
 import { Dokument } from '../types/Dokument';
 import EttersendingDto from '../types/EttersendingDTO';
-import { IM_DUMMY, InntektsmeldingDto } from '../types/InntektsmeldingDto';
+import { InntektsmeldingDto } from '../types/InntektsmeldingDto';
 import { MellomlagredeYtelser } from '../types/MellomlagredeYtelser';
 import { MinidialogInnslag } from '../types/MinidialogInnslag';
 import { SakOppslagDTO } from '../types/SakOppslag';

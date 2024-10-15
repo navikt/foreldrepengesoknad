@@ -1,32 +1,27 @@
 export type InntektsmeldingDto = {
     inntektPrMnd: number;
     refusjonPrMnd: number;
-    arbeidsgiverIdent: string;
+    arbeidsgiverNavn: string;
     journalpostId: string;
     kontaktpersonNavn: string;
     kontaktpersonNummer: string;
     motattDato: string;
     innsendingstidspunkt: string;
     startDatoPermisjon: string;
-    aktiveNaturalytelser: AktivNaturalYtelse[];
+    bortfalteNaturalytelser: BortfaltNaturalytelse[];
     refusjonsperioder: Refusjonsperiode[];
 };
 
 type Refusjonsperiode = {
-    refusjonsbeløp: Beløp;
-    indexKey: string;
-    fom: string;
+    refusjonsbeløp: number;
+    fomDato: string;
 };
 
-export type AktivNaturalYtelse = Readonly<{
-    periode: { fomDato: string; tomDato: string };
-    beloepPerMnd: Beløp;
+export type BortfaltNaturalytelse = {
+    fomDato: string;
+    tomDato: string;
+    beloepPerMnd: number;
     type: keyof typeof NaturalytelseType;
-    indexKey: string;
-}>;
-
-type Beløp = {
-    verdi: number;
 };
 
 export const NaturalytelseType = {
@@ -51,42 +46,3 @@ export const NaturalytelseType = {
     INNBETALING_TIL_UTENLANDSK_PENSJONSORDNING: 'Innbetaling utenlandsk pensjonsordning',
     UDEFINERT: 'Ikke definert',
 };
-
-export const IM_DUMMY = {
-    innsendingstidspunkt: '2024-08-08T00:00:00',
-    aktiveNaturalytelser: [
-        {
-            periode: { fomDato: '2024-01-09', tomDato: '2024-10-09' },
-            type: 'ELEKTRISK_KOMMUNIKASJON',
-            beloepPerMnd: { verdi: 999 },
-            indexKey: '1',
-        },
-        {
-            periode: { fomDato: '2024-01-11', tomDato: '2024-10-11' },
-            type: 'LOSJI',
-            beloepPerMnd: { verdi: 10 },
-            indexKey: '2',
-        },
-    ],
-    arbeidsgiverIdent: '1',
-    eksternArbeidsforholdId: 'ARB001-001',
-    inntektPrMnd: 120000,
-    internArbeidsforholdId: '8ff2c608-6bab-4f83-9732-d26f8c89aa84',
-    kontaktpersonNavn: 'Corpolarsen',
-    kontaktpersonNummer: '41925090',
-    motattDato: '2021-12-06',
-    refusjonPrMnd: 20000,
-    startDatoPermisjon: '2024-10-10',
-    refusjonsperioder: [
-        {
-            refusjonsbeløp: { verdi: 5000 },
-            indexKey: '1',
-            fom: '2024-01-10',
-        },
-        {
-            refusjonsbeløp: { verdi: 3000 },
-            indexKey: '2',
-            fom: '2024-01-09',
-        },
-    ],
-} satisfies InntektsmeldingDto;

@@ -5,7 +5,9 @@ import { ReactNode } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Office2 } from '@navikt/ds-icons';
-import { BodyShort, HGrid, Heading, VStack } from '@navikt/ds-react';
+import { BodyShort, HGrid, Heading, List, VStack } from '@navikt/ds-react';
+
+import { formatDate } from '@navikt/fp-utils';
 
 import { hentGrunnbeløpOptions, hentInntektsmelding } from '../../api/api';
 import { InntektsmeldingHeader } from '../../components/header/Header';
@@ -13,13 +15,14 @@ import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from '../../routes/routes';
+import { BortfaltNaturalytelse, InntektsmeldingDto } from '../../types/InntektsmeldingDto';
 
 export const InntektsmeldingPage = () => {
     useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.INNTEKTSMELDING);
     const params = useParams();
     const inntektsmeldinger = useQuery(hentInntektsmelding(params.saksnummer!)).data; //TODO: fiks !
-    const inntektsmelding = inntektsmeldinger?.find((i) => i.journalpostId === '101555605');
+    const inntektsmelding = inntektsmeldinger?.find((i) => i.journalpostId === '101555602');
     const GRUNNBELØP = useQuery(hentGrunnbeløpOptions()).data;
 
     if (!inntektsmelding) {
@@ -63,7 +66,7 @@ export const InntektsmeldingPage = () => {
                     Ikon={WalletIcon}
                 >
                     {harRefusjon
-                        ? `Du vil få utbetaling direkte fra fra ${inntektsmelding.arbeidsgiverIdent}. NAV betaler da foreldrepenger til ${inntektsmelding.arbeidsgiverIdent}.`
+                        ? `Du vil få utbetaling direkte fra fra ${inntektsmelding.arbeidsgiverNavn}. NAV betaler da foreldrepenger til ${inntektsmelding.arbeidsgiverNavn}.`
                         : 'Du får utbetaling direkte fra NAV.'}
                 </InntektsmeldingInfoBlokk>
                 <InntektsmeldingInfoBlokk
@@ -72,8 +75,7 @@ export const InntektsmeldingPage = () => {
                     heading="Naturalytelser eller “frynsegoder” under permisjonen"
                     Ikon={SparklesIcon}
                 >
-                    Eventuelle naturalytelser eller “frynsegoder” som du får gjennom din arbeidsgiver vil du beholde
-                    under permisjonen.
+                    <NaturalytelserInfo inntektsmelding={inntektsmelding} />
                 </InntektsmeldingInfoBlokk>
                 <InntektsmeldingInfoBlokk
                     size="xsmall"
@@ -81,10 +83,7 @@ export const InntektsmeldingPage = () => {
                     Ikon={Office2}
                     className="col-span-2 md:col-span-1"
                 >
-                    <VStack>
-                        {inntektsmelding.arbeidsgiverIdent}
-                        7586 Usikker om vi har dette
-                    </VStack>
+                    <VStack>{inntektsmelding.arbeidsgiverNavn}</VStack>
                 </InntektsmeldingInfoBlokk>
                 <InntektsmeldingInfoBlokk
                     size="xsmall"
@@ -108,11 +107,33 @@ export const InntektsmeldingPage = () => {
     );
 };
 
-// const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
-//     const bortfalteNaturalytelser = konverterAktivePerioderTilBortfaltePerioder(inntektsmelding);
-//
-//     return <div />;
-// };
+const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
+    if (inntektsmelding.bortfalteNaturalytelser.length === 0) {
+        return 'Eventuelle naturalytelser eller “frynsegoder” som du får gjennom din arbeidsgiver vil du beholde under permisjonen.';
+    }
+
+    if (inntektsmelding.bortfalteNaturalytelser.length === 1) {
+        return <BortfaltNaturalytelseTekst bortfaltNaturalytelse={inntektsmelding.bortfalteNaturalytelser[0]} />;
+    }
+
+    return (
+        <List>
+            {inntektsmelding.bortfalteNaturalytelser.map((n) => (
+                <List.Item key={Object.values(n).join('-')}>
+                    <BortfaltNaturalytelseTekst bortfaltNaturalytelse={n} />
+                </List.Item>
+            ))}
+        </List>
+    );
+};
+
+const BortfaltNaturalytelseTekst = ({ bortfaltNaturalytelse }: { bortfaltNaturalytelse: BortfaltNaturalytelse }) => {
+    if (bortfaltNaturalytelse.tomDato === '9999-12-31') {
+        return `${formatDate(bortfaltNaturalytelse.fomDato)} får du ikke lenger ${NaturalytelseType[bortfaltNaturalytelse.type]} til en verdi av ${bortfaltNaturalytelse.beloepPerMnd} kr.`;
+    }
+
+    return `Mellom ${formatDate(bortfaltNaturalytelse.fomDato)} og ${formatDate(bortfaltNaturalytelse.tomDato)} får du ikke lenger ${NaturalytelseType[bortfaltNaturalytelse.type]} til en verdi av ${bortfaltNaturalytelse.beloepPerMnd} kr.`;
+};
 
 const InntektsmeldingInfoBlokk = ({
     size,
@@ -172,60 +193,25 @@ const InntektsmeldingSpørsmålOgSvar = () => {
     );
 };
 
-/**
- * Konverterer liste aktive naturalytelser til liste av bortfalte perioder.
- * Eksempelvis vil disse aktive periodene resultere i denne bortfalte perioden:
- * Aktiv periode: {fomDato: '0001-01-01', tomDato: '2024-09-04'} og {fomDato: '2024-09-27', tomDato: '9999-12-31'}
- * bortfalt periode: {fomDato: '2024-09-05', tomDato: '2024-09-26'}
- *
- * KOPIERT FRA FP_FRONTEND
- */
-// const konverterAktivePerioderTilBortfaltePerioder = (inntektsmelding: InntektsmeldingDto) => {
-//     const gruppertPåType = inntektsmelding.aktiveNaturalytelser.reduce(
-//         (prev, value) => {
-//             const type = value.type;
-//             if (type in prev) {
-//                 return { ...prev, [type]: [...prev[type], value] };
-//             }
-//
-//             return { ...prev, [type]: [value] };
-//         },
-//         {} as Record<string, AktivNaturalYtelse[]>,
-//     );
-//
-//     const bortfalteNaturalytelser = {} as Record<string, AktivNaturalYtelse[]>;
-//
-//     Object.entries(gruppertPåType).map(([key, value]) => {
-//         const sortert = value
-//             .sort((a, b) =>
-//                 sorterPerioder(
-//                     { fom: a.periode.fomDato, tom: a.periode.tomDato },
-//                     { fom: b.periode.fomDato, tom: b.periode.tomDato },
-//                 ),
-//             )
-//             .reverse();
-//
-//         bortfalteNaturalytelser[key] = sortert.flatMap((current, index, array) => {
-//             const next = array[index + 1];
-//
-//             const nyFom = current.periode.tomDato;
-//             const nyTom = next?.periode.fomDato;
-//
-//             if (nyFom === TIDENES_ENDE) {
-//                 return [];
-//             }
-//
-//             return [
-//                 {
-//                     ...current,
-//                     periode: {
-//                         fomDato: dayjs(nyFom).add(1),
-//                         tomDato: nyTom ? dayjs(nyTom).add(-1) : TIDENES_ENDE,
-//                     },
-//                 },
-//             ];
-//         });
-//     });
-//
-//     return bortfalteNaturalytelser;
-// };
+const NaturalytelseType = {
+    ELEKTRISK_KOMMUNIKASJON: 'Elektrisk kommunikasjon',
+    AKSJER_GRUNNFONDSBEVIS_TIL_UNDERKURS: 'Aksjer grunnfondsbevis til underkurs',
+    LOSJI: 'Losji',
+    KOST_DØGN: 'Kostpenger døgnsats',
+    BESØKSREISER_HJEMMET_ANNET: 'Besøksreiser hjemmet annet',
+    KOSTBESPARELSE_I_HJEMMET: 'Kostbesparelser i hjemmet',
+    RENTEFORDEL_LÅN: 'Rentefordel lån',
+    BIL: 'Bil',
+    KOST_DAGER: 'Kostpenger dager',
+    BOLIG: 'Bolig',
+    SKATTEPLIKTIG_DEL_FORSIKRINGER: 'Skattepliktig del forsikringer',
+    FRI_TRANSPORT: 'Fri transport',
+    OPSJONER: 'Opsjoner',
+    TILSKUDD_BARNEHAGEPLASS: 'Tilskudd barnehageplass',
+    ANNET: 'Annet',
+    BEDRIFTSBARNEHAGEPLASS: 'Bedriftsbarnehageplass',
+    YRKEBIL_TJENESTLIGBEHOV_KILOMETER: 'Yrkesbil tjenesteligbehov kilometer',
+    YRKEBIL_TJENESTLIGBEHOV_LISTEPRIS: 'Yrkesbil tjenesteligbehov listepris',
+    INNBETALING_TIL_UTENLANDSK_PENSJONSORDNING: 'Innbetaling utenlandsk pensjonsordning',
+    UDEFINERT: 'Ikke definert',
+};
