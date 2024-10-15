@@ -24,12 +24,12 @@ export const barnehagestartDato = (barnet: OmBarnet) => {
     const dato = erAdoptert || erFødt ? barnet.fødselsdato : barnet.termindato;
 
     if (dayjs(dato).month() < 8) {
-        return dayjs(dato).month(7).add(1, 'year').format(ISO_DATE_FORMAT);
+        return dayjs(dato).month(7).add(1, 'year').startOf('month').format(ISO_DATE_FORMAT);
     }
     if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) {
-        return dayjs(dato).add(1, 'year').format(ISO_DATE_FORMAT);
+        return dayjs(dato).add(1, 'year').startOf('month').format(ISO_DATE_FORMAT);
     }
-    return dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').format(ISO_DATE_FORMAT);
+    return dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').startOf('month').format(ISO_DATE_FORMAT);
 };
 
 interface Props {

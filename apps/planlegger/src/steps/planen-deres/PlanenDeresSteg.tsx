@@ -6,7 +6,6 @@ import CalendarLabels from 'components/labels/CalendarLabels';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import {
     finnFellesperiodeFordelingOptionTekst,
     getFellesperiodefordelingSelectOptions,
@@ -22,7 +21,6 @@ import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/ut
 
 import { BodyLong, BodyShort, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { PeriodeColor } from '@navikt/fp-constants';
 import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { Calendar, Infobox, StepButtons } from '@navikt/fp-ui';
 import { useMedia } from '@navikt/fp-utils/src/hooks/useMedia';
@@ -107,11 +105,6 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
         arbeidssituasjon,
         fordeling?.antallDagerSøker1,
     );
-
-    const barnehageplassdato = barnehagestartDato(barnet);
-    const perioder = uttaksperioder.concat([
-        { fom: barnehageplassdato, tom: barnehageplassdato, color: PeriodeColor.PURPLE },
-    ]);
 
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
@@ -218,7 +211,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                             hvemHarRett={hvemHarRett}
                         />
                         <div className={styles.calendar}>
-                            <Calendar periods={perioder} />
+                            <Calendar periods={uttaksperioder} />
                         </div>
                     </VStack>
                     <VStack gap="1">

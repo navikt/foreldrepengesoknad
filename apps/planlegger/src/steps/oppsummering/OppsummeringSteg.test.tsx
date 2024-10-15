@@ -90,7 +90,7 @@ describe('<OppsummeringSteg>', () => {
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
         expect(screen.getByText('Periode:')).toBeInTheDocument();
-        expect(screen.getByText('25. okt. 2024 – 02. jan. 2025')).toBeInTheDocument();
+        expect(screen.getByText('14. okt. 2024 – 18. juli 2025')).toBeInTheDocument();
         expect(screen.getByText('Uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Med aktivitetskrav')).toBeInTheDocument();
     });
