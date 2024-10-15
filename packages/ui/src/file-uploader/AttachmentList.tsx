@@ -1,6 +1,6 @@
 import { useIntl } from 'react-intl';
 
-import { FileObject, Heading, UNSAFE_FileUpload, VStack } from '@navikt/ds-react';
+import { FileObject, FileUpload, Heading, VStack } from '@navikt/ds-react';
 
 import { FileUploaderAttachment } from './typer/FileUploaderAttachment';
 
@@ -26,7 +26,7 @@ const AttachmentList: React.FunctionComponent<Props> = ({
             </Heading>
             <VStack gap="3">
                 {attachments.map((attachment) => (
-                    <UNSAFE_FileUpload.Item
+                    <FileUpload.Item
                         key={attachment.attachmentData.id}
                         file={attachment.fileObject.file}
                         button={{

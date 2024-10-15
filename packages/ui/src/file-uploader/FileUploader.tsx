@@ -1,7 +1,7 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
-import { BodyShort, FileObject, FileRejected, FileRejectionReason, UNSAFE_FileUpload, VStack } from '@navikt/ds-react';
+import { BodyShort, FileObject, FileRejected, FileRejectionReason, FileUpload, VStack } from '@navikt/ds-react';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
@@ -181,7 +181,7 @@ const FileUploader: React.FunctionComponent<Props> = ({
 
     return (
         <VStack gap="6">
-            <UNSAFE_FileUpload.Dropzone
+            <FileUpload.Dropzone
                 label={label}
                 description={
                     <VStack gap="2">
