@@ -37,6 +37,10 @@ const findDayColor = (year: number, month: number, day: number, periods: Period[
         return PeriodeColor.PINK;
     }
 
+    if (period?.color === PeriodeColor.PURPLE) {
+        return PeriodeColor.PURPLE;
+    }
+
     if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
         return PeriodeColor.GRAY;
     }
@@ -57,6 +61,7 @@ const isFirstDay = (date: Dayjs, day: number, periods: Period[]) => {
 
 const isLastDay = (date: Dayjs, day: number, periods: Period[]) => {
     const pinkPeriod = periods.find((p) => p.color === PeriodeColor.PINK);
+    const purplePeriod = periods.find((p) => p.color === PeriodeColor.PURPLE);
     return (
         date.isoWeekday() === 7 ||
         date.isoWeekday() === 5 ||
