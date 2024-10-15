@@ -1,7 +1,8 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router-dom';
 
-// import { InntektsmeldingPage } from '../pages/inntektsmelding-page/InntektsmeldingPage';
+import { InntektsmeldingPage } from '../pages/inntektsmelding-page/InntektsmeldingPage';
+import { LayoutWrapper } from '../sections/LayoutWrapper';
 import { Breadcrumb } from './../components/breadcrumb/Breadcrumb';
 import Snarveier from './../components/snarveier/Snarveier';
 import { default as SakComponent } from './../pages/Sak';
@@ -11,7 +12,6 @@ import Forside from './../pages/forside/Forside';
 import MinidialogPage from './../pages/minidialog-page/MinidialogPage';
 import Saksoversikt from './../pages/saksoversikt/Saksoversikt';
 import TidslinjePage from './../pages/tidslinje-page/TidslinjePage';
-import { LayoutWrapper } from './../sections/LayoutWrapper';
 import KontaktOss from './../sections/kontakt-oss/KontaktOss';
 import { SakOppslag } from './../types/SakOppslag';
 import { SøkerinfoDTO } from './../types/SøkerinfoDTO';
@@ -53,7 +53,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
                                 element={<MinidialogPage fnr={søkerinfo.søker.fnr} />}
                             />
                             <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />
-                            {/*<Route path={OversiktRoutes.INNTEKTSMELDING} element={<InntektsmeldingPage />} />*/}
+                            <Route path={OversiktRoutes.INNTEKTSMELDING} element={<InntektsmeldingPage />} />
                         </Route>
                         <Route path="*" element={<Navigate to={OversiktRoutes.HOVEDSIDE} />} />
                     </Route>

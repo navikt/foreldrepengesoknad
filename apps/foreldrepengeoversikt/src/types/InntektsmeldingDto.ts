@@ -2,8 +2,7 @@ export type InntektsmeldingDto = {
     inntektPrMnd: number;
     refusjonPrMnd: number;
     arbeidsgiverIdent: string;
-    eksternArbeidsforholdId: string;
-    internArbeidsforholdId: string;
+    journalpostId: string;
     kontaktpersonNavn: string;
     kontaktpersonNummer: string;
     motattDato: string;

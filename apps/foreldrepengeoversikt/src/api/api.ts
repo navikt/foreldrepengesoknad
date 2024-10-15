@@ -7,7 +7,7 @@ import Environment from '../appData/Environment';
 import { AnnenPartVedtakDTO } from '../types/AnnenPartVedtakDTO';
 import { Dokument } from '../types/Dokument';
 import EttersendingDto from '../types/EttersendingDTO';
-import { IM_DUMMY } from '../types/InntektsmeldingDto';
+import { IM_DUMMY, InntektsmeldingDto } from '../types/InntektsmeldingDto';
 import { MellomlagredeYtelser } from '../types/MellomlagredeYtelser';
 import { MinidialogInnslag } from '../types/MinidialogInnslag';
 import { SakOppslagDTO } from '../types/SakOppslag';
@@ -44,7 +44,10 @@ export const hentDokumenterOptions = (saksnummer: string) =>
 export const hentInntektsmelding = (saksnummer: string) =>
     queryOptions({
         queryKey: ['INNTEKTSMELDING', saksnummer],
-        queryFn: () => IM_DUMMY,
+        queryFn: () =>
+            ky
+                .get(`${prefiks_public_path}/rest/innsyn/inntektsmeldinger`, { searchParams: { saksnummer } })
+                .json<InntektsmeldingDto[]>(),
     });
 
 export const hentGrunnbeløpOptions = () =>

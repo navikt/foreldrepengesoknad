@@ -1,27 +1,25 @@
 import { PersonIcon, SparklesIcon, WalletIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
-import { hentGrunnbeløpOptions, hentInntektsmelding } from 'api/api';
 import classNames from 'classnames';
-import { InntektsmeldingHeader } from 'components/header/Header';
-import dayjs from 'dayjs';
-import { useSetBackgroundColor } from 'hooks/useBackgroundColor';
-import { useSetSelectedRoute } from 'hooks/useSelectedRoute';
 import { ReactNode } from 'react';
 import { useParams } from 'react-router-dom';
-import { PageRouteLayout } from 'routes/ForeldrepengeoversiktRoutes';
-import OversiktRoutes from 'routes/routes';
-import { AktivNaturalYtelse, InntektsmeldingDto } from 'types/InntektsmeldingDto';
 
 import { Office2 } from '@navikt/ds-icons';
 import { BodyShort, HGrid, Heading, VStack } from '@navikt/ds-react';
 
-import { TIDENES_ENDE } from '../../../../../packages/constants';
+import { hentGrunnbeløpOptions, hentInntektsmelding } from '../../api/api';
+import { InntektsmeldingHeader } from '../../components/header/Header';
+import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
+import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
+import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
+import OversiktRoutes from '../../routes/routes';
 
 export const InntektsmeldingPage = () => {
     useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.INNTEKTSMELDING);
     const params = useParams();
-    const inntektsmelding = useQuery(hentInntektsmelding(params.saksnummer!)).data; //TODO: fiks !
+    const inntektsmeldinger = useQuery(hentInntektsmelding(params.saksnummer!)).data; //TODO: fiks !
+    const inntektsmelding = inntektsmeldinger?.find((i) => i.journalpostId === '101555605');
     const GRUNNBELØP = useQuery(hentGrunnbeløpOptions()).data;
 
     if (!inntektsmelding) {
@@ -99,7 +97,8 @@ export const InntektsmeldingPage = () => {
                             {inntektsmelding.kontaktpersonNavn}, {inntektsmelding.kontaktpersonNummer}
                         </span>
                         <BodyShort>
-                            Det er Navn Navnesen du kan ta kontakt med hvis du ser noe feil i inntektsmeldingen.{' '}
+                            Det er {inntektsmelding.kontaktpersonNavn} du kan ta kontakt med hvis du ser noe feil i
+                            inntektsmeldingen.{' '}
                         </BodyShort>
                     </VStack>
                 </InntektsmeldingInfoBlokk>
