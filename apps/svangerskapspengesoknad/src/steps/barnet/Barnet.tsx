@@ -151,6 +151,7 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
                             label={intl.formatMessage({ id: 'barnet.termindato' })}
                             minDate={minDatoTermin}
                             maxDate={niMånederFremITid(new Date())}
+                            useStrategyAbsolute
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'valideringsfeil.barnet.termindato.duMåOppgi' })),
                                 isValidDate(

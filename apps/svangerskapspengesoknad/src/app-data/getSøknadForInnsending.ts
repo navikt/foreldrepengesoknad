@@ -112,8 +112,8 @@ export const getSøknadForInnsending = (
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     locale: LocaleNo,
 ): SøknadDTO => {
-    const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-    const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+    const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
+    const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
     const tilrettelegging = notEmpty(hentData(ContextDataType.TILRETTELEGGINGER));
     const tilretteleggingForInnsending = mapTilretteleggingerForInnsending(tilrettelegging, barn);

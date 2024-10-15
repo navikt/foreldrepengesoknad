@@ -5,13 +5,10 @@ import { getVarighetString } from 'utils/dateUtils';
 
 import { Alert, VStack } from '@navikt/ds-react';
 
+import { getNavnGenitivEierform } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import {
-    getDegEllerMorTekst,
-    getDinEllerFarGenitivEierformTekst,
-    getHarFåttEllerSkalFå,
-} from './fordelingOversiktUtils';
+import { getHarFåttEllerSkalFå } from './fordelingOversiktUtils';
 
 interface Props {
     flerbarnsDager: number;
@@ -44,8 +41,10 @@ const FlerbarnsdagerInformasjon: React.FunctionComponent<Props> = ({
     const varighetTekst = getVarighetString(flerbarnsDager, intl);
     const barnTekst = getBarnTekst(antallBarn, erAdopsjon, intl);
     const harFåttEllerSkalFå = getHarFåttEllerSkalFå(barn, intl);
-    const degEllerMor = getDegEllerMorTekst(erFarEllerMedmor, morTekst, intl);
-    const dinEllerFarSin = getDinEllerFarGenitivEierformTekst(erFarEllerMedmor, farTekst, intl);
+    const degEllerMor = erFarEllerMedmor ? morTekst : intl.formatMessage({ id: 'deg' });
+    const dinEllerFarSin = erFarEllerMedmor
+        ? intl.formatMessage({ id: 'din' })
+        : getNavnGenitivEierform(farTekst, intl.locale);
     return (
         <Alert variant="info" style={{ paddingBottom: '2rem', marginTop: '1.5rem' }}>
             <VStack gap="3">
