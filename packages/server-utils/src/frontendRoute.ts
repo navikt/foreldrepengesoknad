@@ -18,7 +18,7 @@ export const setupAndServeHtml = async (app: Express) => {
     const spaFilePath = path.resolve('./public', 'index.html');
 
     // Only add vite-mode to dev environment
-    if (config.app.env === 'dev') {
+    if (config.app.env !== 'prod') {
         setupViteMode(app);
     }
 
@@ -48,7 +48,7 @@ const replaceAppSettings = (html: string) => {
 
 const setupViteMode = (app: Express) => {
     addViteModeHtmlToResponse(app, {
-        port: '8080',
+        port: '9070',
         useNonce: false,
         indexFilePath: 'src/bootstrap.tsx',
         mountId: 'app',
