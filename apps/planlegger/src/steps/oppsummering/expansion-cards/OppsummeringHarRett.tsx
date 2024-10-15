@@ -2,6 +2,7 @@ import { CalendarIcon } from '@navikt/aksel-icons';
 import CalendarLabels from 'components/labels/CalendarLabels';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
@@ -25,6 +26,7 @@ import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/ut
 
 import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
+import { PeriodeColor } from '@navikt/fp-constants';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { BluePanel, Calendar, IconCircleWrapper } from '@navikt/fp-ui';
@@ -91,6 +93,11 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
     const fornavnSøker1Genitiv = getNavnGenitivEierform(fornavnSøker1, intl.locale);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
     const fornavnSøker2Genitiv = fornavnSøker2 ? getNavnGenitivEierform(fornavnSøker2, intl.locale) : undefined;
+
+    const barnehageplassdato = barnehagestartDato(barnet);
+    const perioder = uttaksperioder.concat([
+        { fom: barnehageplassdato, tom: barnehageplassdato, color: PeriodeColor.PURPLE },
+    ]);
 
     return (
         <VStack gap="10">
@@ -195,7 +202,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                                     month: 'short',
                                                     year: 'numeric',
                                                 }),
-                                                tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
+                                                tom: intl.formatDate(uttaksdata.sluttdatoPeriode2, {
                                                     day: '2-digit',
                                                     month: 'short',
                                                     year: 'numeric',
@@ -274,7 +281,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             barnet={barnet}
                             hvemHarRett={hvemHarRett}
                         />
-                        <Calendar periods={uttaksperioder} useSmallerWidth />
+                        <Calendar periods={perioder} useSmallerWidth />
                     </VStack>
                 </ExpansionCard.Content>
             </ExpansionCard>

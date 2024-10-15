@@ -21,11 +21,15 @@ export type Period = {
     srText?: string;
 };
 
-const findDayColor = (year: number, month: number, day: number, periods: Period[]) => {
+const findDayColor = (
+    year: number,
+    month: number,
+    day: number,
+    periods: Period[],
+    fomFirstPeriod: string,
+    tomLastPeriod: string,
+) => {
     const date = dayjs().year(year).month(month).date(day);
-
-    const fomFirstPeriod = periods[0].fom;
-    const tomLastPeriod = periods[periods.length - 1].tom;
 
     if (date.isBefore(fomFirstPeriod, 'day') || date.isAfter(tomLastPeriod, 'day')) {
         return PeriodeColor.NONE;
@@ -61,7 +65,6 @@ const isFirstDay = (date: Dayjs, day: number, periods: Period[]) => {
 
 const isLastDay = (date: Dayjs, day: number, periods: Period[]) => {
     const pinkPeriod = periods.find((p) => p.color === PeriodeColor.PINK);
-    const purplePeriod = periods.find((p) => p.color === PeriodeColor.PURPLE);
     return (
         date.isoWeekday() === 7 ||
         date.isoWeekday() === 5 ||
@@ -117,7 +120,9 @@ interface Props {
 }
 
 const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }) => {
-    const months = findMonths(periods[0].fom, periods[periods.length - 1].tom);
+    const fom = periods.reduce((acc, period) => (dayjs(period.fom).isBefore(acc) ? period.fom : acc), periods[0].fom);
+    const tom = periods.reduce((acc, period) => (dayjs(period.tom).isAfter(acc) ? period.tom : acc), periods[0].tom);
+    const months = findMonths(fom, tom);
     return (
         <>
             {periods.some((period) => period.srText) && (
@@ -145,7 +150,14 @@ const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }
                                 <Day
                                     key={monthData.year + monthData.month + day}
                                     day={day + 1}
-                                    periodeColor={findDayColor(monthData.year, monthData.month, day + 1, periods)}
+                                    periodeColor={findDayColor(
+                                        monthData.year,
+                                        monthData.month,
+                                        day + 1,
+                                        periods,
+                                        fom,
+                                        tom,
+                                    )}
                                     dayType={findDayType(monthData.year, monthData.month, day + 1, periods)}
                                 />
                             ),
