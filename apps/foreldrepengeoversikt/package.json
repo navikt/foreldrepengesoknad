@@ -6,6 +6,7 @@
     "repository": "https://github.com/navikt/foreldrepengeoversikt",
     "scripts": {
         "build": "vite build",
+        "build:development": "vite build --mode development",
         "test": "vitest run",
         "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "lint:tsc": "tsc --noEmit",

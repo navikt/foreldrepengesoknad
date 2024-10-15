@@ -109,11 +109,11 @@ export const InntektsmeldingPage = () => {
     );
 };
 
-const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
-    const bortfalteNaturalytelser = konverterAktivePerioderTilBortfaltePerioder(inntektsmelding);
-
-    return <div />;
-};
+// const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
+//     const bortfalteNaturalytelser = konverterAktivePerioderTilBortfaltePerioder(inntektsmelding);
+//
+//     return <div />;
+// };
 
 const InntektsmeldingInfoBlokk = ({
     size,
@@ -181,52 +181,52 @@ const InntektsmeldingSpørsmålOgSvar = () => {
  *
  * KOPIERT FRA FP_FRONTEND
  */
-const konverterAktivePerioderTilBortfaltePerioder = (inntektsmelding: InntektsmeldingDto) => {
-    const gruppertPåType = inntektsmelding.aktiveNaturalytelser.reduce(
-        (prev, value) => {
-            const type = value.type;
-            if (type in prev) {
-                return { ...prev, [type]: [...prev[type], value] };
-            }
-
-            return { ...prev, [type]: [value] };
-        },
-        {} as Record<string, AktivNaturalYtelse[]>,
-    );
-
-    const bortfalteNaturalytelser = {} as Record<string, AktivNaturalYtelse[]>;
-
-    Object.entries(gruppertPåType).map(([key, value]) => {
-        const sortert = value
-            .sort((a, b) =>
-                sorterPerioder(
-                    { fom: a.periode.fomDato, tom: a.periode.tomDato },
-                    { fom: b.periode.fomDato, tom: b.periode.tomDato },
-                ),
-            )
-            .reverse();
-
-        bortfalteNaturalytelser[key] = sortert.flatMap((current, index, array) => {
-            const next = array[index + 1];
-
-            const nyFom = current.periode.tomDato;
-            const nyTom = next?.periode.fomDato;
-
-            if (nyFom === TIDENES_ENDE) {
-                return [];
-            }
-
-            return [
-                {
-                    ...current,
-                    periode: {
-                        fomDato: dayjs(nyFom).add(1),
-                        tomDato: nyTom ? dayjs(nyTom).add(-1) : TIDENES_ENDE,
-                    },
-                },
-            ];
-        });
-    });
-
-    return bortfalteNaturalytelser;
-};
+// const konverterAktivePerioderTilBortfaltePerioder = (inntektsmelding: InntektsmeldingDto) => {
+//     const gruppertPåType = inntektsmelding.aktiveNaturalytelser.reduce(
+//         (prev, value) => {
+//             const type = value.type;
+//             if (type in prev) {
+//                 return { ...prev, [type]: [...prev[type], value] };
+//             }
+//
+//             return { ...prev, [type]: [value] };
+//         },
+//         {} as Record<string, AktivNaturalYtelse[]>,
+//     );
+//
+//     const bortfalteNaturalytelser = {} as Record<string, AktivNaturalYtelse[]>;
+//
+//     Object.entries(gruppertPåType).map(([key, value]) => {
+//         const sortert = value
+//             .sort((a, b) =>
+//                 sorterPerioder(
+//                     { fom: a.periode.fomDato, tom: a.periode.tomDato },
+//                     { fom: b.periode.fomDato, tom: b.periode.tomDato },
+//                 ),
+//             )
+//             .reverse();
+//
+//         bortfalteNaturalytelser[key] = sortert.flatMap((current, index, array) => {
+//             const next = array[index + 1];
+//
+//             const nyFom = current.periode.tomDato;
+//             const nyTom = next?.periode.fomDato;
+//
+//             if (nyFom === TIDENES_ENDE) {
+//                 return [];
+//             }
+//
+//             return [
+//                 {
+//                     ...current,
+//                     periode: {
+//                         fomDato: dayjs(nyFom).add(1),
+//                         tomDato: nyTom ? dayjs(nyTom).add(-1) : TIDENES_ENDE,
+//                     },
+//                 },
+//             ];
+//         });
+//     });
+//
+//     return bortfalteNaturalytelser;
+// };

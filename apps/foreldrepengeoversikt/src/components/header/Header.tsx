@@ -6,8 +6,7 @@ import { useParams } from 'react-router-dom';
 
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
-import { InntektsmeldingDto } from 'app/types/InntektsmeldingDto';
-
+import { InntektsmeldingDto } from '../../types/InntektsmeldingDto';
 import StatusTag from '../status-tag/StatusTag';
 import { hentSakerOptions, søkerInfoOptions } from './../../api/api';
 import { LayoutWrapper } from './../../sections/LayoutWrapper';
