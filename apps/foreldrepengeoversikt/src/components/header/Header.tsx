@@ -8,20 +8,20 @@ import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
 import { formatDateMedUkedag } from '@navikt/fp-utils';
 
+import { hentSakerOptions, søkerInfoOptions } from '../../api/api';
+import { LayoutWrapper } from '../../sections/LayoutWrapper';
 import { InntektsmeldingDto } from '../../types/InntektsmeldingDto';
-import StatusTag from '../status-tag/StatusTag';
-import { hentSakerOptions, søkerInfoOptions } from './../../api/api';
-import { LayoutWrapper } from './../../sections/LayoutWrapper';
-import { Sak } from './../../types/Sak';
-import { SøkerinfoDTO } from './../../types/SøkerinfoDTO';
-import { Ytelse } from './../../types/Ytelse';
+import { Sak } from '../../types/Sak';
+import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
+import { Ytelse } from '../../types/Ytelse';
 import {
     getFamiliehendelseDato,
     getSakTittel,
     grupperSakerPåBarn,
     mapSakerDTOToSaker,
     utledFamiliesituasjon,
-} from './../../utils/sakerUtils';
+} from '../../utils/sakerUtils';
+import StatusTag from '../status-tag/StatusTag';
 
 export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
     if (ytelse === Ytelse.ENGANGSSTØNAD) {
