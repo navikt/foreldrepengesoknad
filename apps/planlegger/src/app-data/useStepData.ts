@@ -85,7 +85,7 @@ const showBarnehageplassStep = (
 ) => {
     if (path === PlanleggerRoutes.BARNEHAGEPLASS) {
         const omBarnet = getData(ContextDataType.OM_BARNET);
-        return erBarnetIkkeAdoptert(omBarnet);
+        return erBarnetIkkeAdoptert(omBarnet) && erBarnIkkeOppgittEllerYngreEnnTreÅr(omBarnet);
     }
     return false;
 };

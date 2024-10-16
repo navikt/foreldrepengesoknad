@@ -104,8 +104,12 @@ const erFarAlenesøkerOgHarRett = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: 
     hvemHarRett === 'kunSøker1HarRett' && hvemPlanlegger.type === Situasjon.FAR;
 
 export const leggTilBarnehageplassKalenderPerioder = (uttaksperioder: Period[], barnet: OmBarnet) => {
-    const barnehageplassdato = barnehagestartDato(barnet);
+    const erAdoptert = erBarnetAdoptert(barnet);
+    if (erAdoptert) {
+        return uttaksperioder;
+    }
 
+    const barnehageplassdato = barnehagestartDato(barnet);
     const barnehageperiode = { fom: barnehageplassdato, tom: barnehageplassdato, color: PeriodeColor.PURPLE };
     const res = uttaksperioder.reduce((acc, uttaksperiode) => {
         if (dayjs(barnehageperiode.fom).isBetween(uttaksperiode.fom, uttaksperiode.tom, 'day', '[]')) {

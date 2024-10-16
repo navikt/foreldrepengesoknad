@@ -69,7 +69,7 @@ const CalendarLabels: FunctionComponent<Props> = ({ barnet, uttaksdata, hvemPlan
                         />
                     )}
                     <FamiliehendelseLabel barnet={barnet} />
-                    <BarnehageplassLabel barnet={barnet} />
+                    {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
                 </HStack>
             )}
             {skalViseAktivitetskravLabels && (
@@ -87,14 +87,14 @@ const CalendarLabels: FunctionComponent<Props> = ({ barnet, uttaksdata, hvemPlan
                         sluttdato={sluttdatoPeriode2}
                     />
                     <FamiliehendelseLabel barnet={barnet} />
-                    <BarnehageplassLabel barnet={barnet} />
+                    {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
                 </HStack>
             )}
             {erFarOgFarOgFødsel && (
                 <HStack gap="2">
                     <ForeldrepengerLabel startdato={startdatoPeriode1} sluttdato={sluttdatoPeriode1} />
                     <FamiliehendelseLabel barnet={barnet} />
-                    <BarnehageplassLabel barnet={barnet} />
+                    {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
                 </HStack>
             )}
         </VStack>

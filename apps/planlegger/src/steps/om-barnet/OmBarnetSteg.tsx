@@ -51,8 +51,7 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ locale }) => {
 
         if (erBarnetFødt(formValues) && dayjs(formValues.fødselsdato).isBefore(DATE_3_YEARS_AGO)) {
             navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);
-        }
-        if (erBarnetAdoptert(formValues)) {
+        } else if (erBarnetAdoptert(formValues)) {
             navigator.goToNextStep(PlanleggerRoutes.ARBEIDSSITUASJON);
         } else {
             navigator.goToNextStep(PlanleggerRoutes.BARNEHAGEPLASS);
