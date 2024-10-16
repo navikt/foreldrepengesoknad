@@ -672,7 +672,7 @@ export const mapSaksperiodeTilPlanperiode = (
             const planperiodeFør: Planperiode = {
                 ...p,
                 fom: p.fom,
-                tom: familiehendelsedato,
+                tom: UttaksdagenString(familiehendelsedato).forrige(),
                 id: `${p.fom} - ${familiehendelsedato} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak}`,
                 forelder: getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, p.oppholdÅrsak),
                 gjelderAnnenPart,
@@ -680,7 +680,7 @@ export const mapSaksperiodeTilPlanperiode = (
 
             const planperiodeEtter: Planperiode = {
                 ...p,
-                fom: familiehendelsedato,
+                fom: UttaksdagenString(familiehendelsedato).denneEllerNeste(),
                 tom: p.tom,
                 id: `${familiehendelsedato} - ${p.tom} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak}`,
                 forelder: getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, p.oppholdÅrsak),
