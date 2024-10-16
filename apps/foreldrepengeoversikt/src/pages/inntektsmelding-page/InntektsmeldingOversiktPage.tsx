@@ -4,6 +4,8 @@ import { Navigate, useParams } from 'react-router-dom';
 
 import { VStack } from '@navikt/ds-react';
 
+import { formaterDatoUtenDag } from '@navikt/fp-utils';
+
 import { hentInntektsmelding } from '../../api/api';
 import { InntektsmeldingOversiktHeader } from '../../components/header/Header';
 import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
@@ -34,6 +36,7 @@ export const InntektsmeldingOversiktPage = () => {
                     <LenkePanel
                         key={im.journalpostId}
                         tittel={im.arbeidsgiverNavn}
+                        undertittel={`Sendt ${formaterDatoUtenDag(im.mottattTidspunkt)}`}
                         to={`${OversiktRoutes.INNTEKTSMELDING}/${im.journalpostId}`}
                         Ikon={Buildings3Icon}
                     />
