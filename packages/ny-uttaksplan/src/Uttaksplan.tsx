@@ -38,7 +38,7 @@ const UttaksplanNy: FunctionComponent<Props> = ({
     familiesituasjon,
 }) => {
     const søkersPlanperioder = finnOgSettInnHull(
-        mapSaksperiodeTilPlanperiode(søkersPerioder, erFarEllerMedmor, false),
+        mapSaksperiodeTilPlanperiode(søkersPerioder, erFarEllerMedmor, false, familiehendelsedato),
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsedato,
         gjelderAdopsjon,
@@ -47,7 +47,7 @@ const UttaksplanNy: FunctionComponent<Props> = ({
         førsteUttaksdagNesteBarnsSak,
     );
     const annenPartsPlanperioder = annenPartsPerioder
-        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true)
+        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato)
         : undefined;
 
     const planMedLikePerioderSlåttSammen = slåSammenLikePerioder(
