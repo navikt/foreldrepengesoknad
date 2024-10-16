@@ -7,7 +7,12 @@ import { useParams } from 'react-router-dom';
 import { Office2 } from '@navikt/ds-icons';
 import { BodyShort, HGrid, Heading, List, VStack } from '@navikt/ds-react';
 
-import { capitalizeFirstLetterInEveryWordOnly, formatCurrency, formatDate } from '@navikt/fp-utils';
+import {
+    capitalizeFirstLetterInEveryWordOnly,
+    formatCurrency,
+    formatCurrencyWithKr,
+    formatDate,
+} from '@navikt/fp-utils';
 
 import { hentGrunnbeløpOptions, hentInntektsmelding } from '../../api/api';
 import { InntektsmeldingHeader } from '../../components/header/Header';
@@ -105,11 +110,33 @@ export const InntektsmeldingPage = () => {
 };
 
 const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
-    const harRefusjon = inntektsmelding.refusjonPrMnd !== undefined;
+    // TODO: case der refusjonPrMdn er null, men har refusjonsperioder
+    const arbeidsgiver = capitalizeFirstLetterInEveryWordOnly(inntektsmelding.arbeidsgiverNavn);
 
-    // {harRefusjon
-    //     ? `Du vil få utbetaling direkte fra fra ${capitalizeFirstLetterInEveryWordOnly(inntektsmelding.arbeidsgiverNavn)}. NAV betaler da foreldrepenger til ${capitalizeFirstLetterInEveryWordOnly(inntektsmelding.arbeidsgiverNavn)}.`
-    //     : 'Du får utbetaling direkte fra NAV.'}
+    if (inntektsmelding.refusjonPrMnd === null) {
+        return 'Du får utbetaling direkte fra NAV.';
+    }
+
+    if (inntektsmelding.refusjonsperioder.length === 0) {
+        return `Du vil få utbetaling direkte fra ${arbeidsgiver}. NAV betaler da foreldrepenger til ${arbeidsgiver}.`;
+    }
+
+    // TODO: vise beløp? og hvis beløp over 6G?
+    const førsteRefusjonsPeriode = inntektsmelding.refusjonsperioder[0];
+    return (
+        <VStack>
+            <span>
+                Frem til {formatDate(førsteRefusjonsPeriode.fomDato)} får du utbetalt{' '}
+                {formatCurrencyWithKr(inntektsmelding.refusjonPrMnd)} fra {arbeidsgiver}
+            </span>
+            {inntektsmelding.refusjonsperioder.map((r) => (
+                <span key={r.fomDato}>
+                    Fra {formatDate(r.fomDato)} får du utbetalt {formatCurrencyWithKr(r.refusjonsbeløpMnd)} direkte fra{' '}
+                    {arbeidsgiver}
+                </span>
+            ))}
+        </VStack>
+    );
 };
 
 const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {

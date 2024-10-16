@@ -1,7 +1,7 @@
 export type InntektsmeldingDto = {
     erAktiv: boolean;
     inntektPrMnd: number;
-    refusjonPrMnd?: number;
+    refusjonPrMnd: number | null;
     arbeidsgiverNavn: string;
     journalpostId: string;
     kontaktpersonNavn: string;
@@ -14,7 +14,7 @@ export type InntektsmeldingDto = {
 };
 
 type Refusjonsperiode = {
-    refusjonsbeløp: number;
+    refusjonsbeløpMnd: number;
     fomDato: string;
 };
 
