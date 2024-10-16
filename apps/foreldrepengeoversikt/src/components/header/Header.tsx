@@ -142,6 +142,16 @@ export const InntektsmeldingHeader = ({ inntektsmelding }: { inntektsmelding: In
     );
 };
 
+export const InntektsmeldingOversiktHeader = () => {
+    return (
+        <SimpleHeaderWrapper>
+            <Heading level="1" size="medium">
+                Inntekt rapportert av dine arbeidsgivere
+            </Heading>
+        </SimpleHeaderWrapper>
+    );
+};
+
 function FamiliehendelseDescription({ sak, søkerinfo }: { sak: Sak; søkerinfo?: SøkerinfoDTO }) {
     const intl = useIntl();
 

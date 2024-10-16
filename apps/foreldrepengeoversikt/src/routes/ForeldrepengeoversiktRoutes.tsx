@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router-dom';
 
+import { InntektsmeldingOversiktPage } from '../pages/inntektsmelding-page/InntektsmeldingOversiktPage';
 import { InntektsmeldingPage } from '../pages/inntektsmelding-page/InntektsmeldingPage';
 import { LayoutWrapper } from '../sections/LayoutWrapper';
 import { Breadcrumb } from './../components/breadcrumb/Breadcrumb';
@@ -53,6 +54,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
                                 element={<MinidialogPage fnr={søkerinfo.søker.fnr} />}
                             />
                             <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />
+                            <Route path={OversiktRoutes.INNTEKTSMELDING} element={<InntektsmeldingOversiktPage />} />
                             <Route
                                 path={`${OversiktRoutes.INNTEKTSMELDING}/:journalpostId`}
                                 element={<InntektsmeldingPage />}
