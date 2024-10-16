@@ -7,7 +7,7 @@ import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 import { erBarnetFødt } from 'utils/barnetUtils';
 import { Uttaksdata } from 'utils/uttakUtils';
 
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { Infobox } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
@@ -43,40 +43,50 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
             shouldFadeIn
             color="green"
         >
-            <BodyShort>
-                {erFødsel && (
+            <VStack gap="2">
+                <BodyShort>
+                    {erFødsel && (
+                        <FormattedMessage
+                            id="FordelingsdetaljerPanel.Infoboks.HvisBarnet"
+                            values={{
+                                erFødt,
+                                dato: dato,
+                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
+                                erFlereBarn: antallBarn !== '1',
+                            }}
+                        />
+                    )}
+                    {!erFødsel && (
+                        <FormattedMessage
+                            id="FordelingsdetaljerPanel.Infoboks.HvisAdopsjon"
+                            values={{
+                                antallBarn,
+                                dato: dato,
+                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
+                            }}
+                        />
+                    )}
+                </BodyShort>
+                <BodyShort>
                     <FormattedMessage
-                        id="FordelingsdetaljerPanel.Infoboks.HvisBarnet"
+                        id="FordelingsdetaljerPanel.Infoboks.Periode"
                         values={{
-                            erFødt,
-                            dato: dato,
-                            erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                            erFlereBarn: antallBarn !== '1',
+                            hvem: capitalizeFirstLetter(fornavnSøker1),
+                            fom: intl.formatDate(startdatoPeriode1, {
+                                day: 'numeric',
+                                month: 'short',
+                                year: 'numeric',
+                            }),
+                            tom: intl.formatDate(sluttdatoPeriode1, {
+                                day: 'numeric',
+                                month: 'short',
+                                year: 'numeric',
+                            }),
+                            b: (b) => <b>{b}</b>,
                         }}
                     />
-                )}
-                {!erFødsel && (
-                    <FormattedMessage
-                        id="FordelingsdetaljerPanel.Infoboks.HvisAdopsjon"
-                        values={{
-                            antallBarn,
-                            dato: dato,
-                            erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                        }}
-                    />
-                )}
-            </BodyShort>
-            <BodyShort>
-                <FormattedMessage
-                    id="FordelingsdetaljerPanel.Infoboks.Periode"
-                    values={{
-                        hvem: capitalizeFirstLetter(fornavnSøker1),
-                        fom: intl.formatDate(startdatoPeriode1, { day: 'numeric', month: 'short', year: 'numeric' }),
-                        tom: intl.formatDate(sluttdatoPeriode1, { day: 'numeric', month: 'short', year: 'numeric' }),
-                        b: (b) => <b>{b}</b>,
-                    }}
-                />
-            </BodyShort>
+                </BodyShort>
+            </VStack>
             {fornavnSøker2 && sluttdatoPeriode2 && (
                 <BodyShort>
                     <FormattedMessage
