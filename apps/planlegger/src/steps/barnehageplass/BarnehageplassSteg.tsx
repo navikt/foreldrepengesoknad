@@ -8,7 +8,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { getFamiliehendelsedato } from 'steps/oppsummering/expansion-cards/BarnehageplassOppsummering';
 import { OmBarnet } from 'types/Barnet';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
-import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
+import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { Uttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
@@ -20,20 +20,21 @@ import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviou
 import { notEmpty } from '@navikt/fp-validation';
 
 export const barnehagestartDato = (barnet: OmBarnet) => {
-    const erFødt = erBarnetFødt(barnet);
-    const erIkkeFødt = erBarnetUFødt(barnet);
-    const erAdoptert = erBarnetAdoptert(barnet);
-    const dato = erAdoptert ? dayjs(barnet.overtakelsesdato) : dayjs(erFødt ? barnet.fødselsdato : barnet.termindato);
-    if (erFødt || erIkkeFødt) {
-        if (dayjs(dato).month() < 8) {
-            return dayjs(dato).month(7).add(1, 'year').startOf('month').format(ISO_DATE_FORMAT);
-        }
-        if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) {
-            return dayjs(dato).add(1, 'year').startOf('month').format(ISO_DATE_FORMAT);
-        }
-        return dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').startOf('month').format(ISO_DATE_FORMAT);
+    const dato = erBarnetAdoptert(barnet) ? barnet.fødselsdato : barnet.termindato;
+
+    if (dayjs(dato).month() < 8) {
+        return dayjs(dato).month(7).add(1, 'year').endOf('month').isoWeekday(5).format(ISO_DATE_FORMAT);
     }
-    return dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').startOf('month').format(ISO_DATE_FORMAT);
+    if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) {
+        return dayjs(dato).add(1, 'year').endOf('month').isoWeekday(5).format(ISO_DATE_FORMAT);
+    }
+    return dayjs(dato)
+        .startOf('year')
+        .add(2, 'year')
+        .add(7, 'months')
+        .endOf('month')
+        .isoWeekday(5)
+        .format(ISO_DATE_FORMAT);
 };
 
 interface Props {
