@@ -20,6 +20,7 @@ import OversiktRoutes from '../../routes/routes';
 export const InntektsmeldingPage = () => {
     useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.INNTEKTSMELDING);
+
     const params = useParams();
     const inntektsmeldinger = useQuery(hentInntektsmelding(params.saksnummer!)).data; //TODO: fiks !
     const inntektsmelding = inntektsmeldinger?.find((i) => i.journalpostId === params.journalpostId);
