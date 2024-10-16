@@ -1,4 +1,5 @@
 export type InntektsmeldingDto = {
+    erAktiv: boolean;
     inntektPrMnd: number;
     refusjonPrMnd?: number;
     arbeidsgiverNavn: string;

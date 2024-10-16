@@ -53,7 +53,10 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
                                 element={<MinidialogPage fnr={søkerinfo.søker.fnr} />}
                             />
                             <Route path={OversiktRoutes.ETTERSEND} element={<EttersendingPage saker={saker} />} />
-                            <Route path={OversiktRoutes.INNTEKTSMELDING} element={<InntektsmeldingPage />} />
+                            <Route
+                                path={`${OversiktRoutes.INNTEKTSMELDING}/:journalpostId`}
+                                element={<InntektsmeldingPage />}
+                            />
                         </Route>
                         <Route path="*" element={<Navigate to={OversiktRoutes.HOVEDSIDE} />} />
                     </Route>

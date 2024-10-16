@@ -22,7 +22,7 @@ export const InntektsmeldingPage = () => {
     useSetSelectedRoute(OversiktRoutes.INNTEKTSMELDING);
     const params = useParams();
     const inntektsmeldinger = useQuery(hentInntektsmelding(params.saksnummer!)).data; //TODO: fiks !
-    const inntektsmelding = inntektsmeldinger?.find((i) => i.journalpostId === '101555602');
+    const inntektsmelding = inntektsmeldinger?.find((i) => i.journalpostId === params.journalpostId);
     const GRUNNBELØP = useQuery(hentGrunnbeløpOptions()).data;
 
     if (!inntektsmelding) {
@@ -30,7 +30,6 @@ export const InntektsmeldingPage = () => {
     }
 
     const tjenerOver6G = inntektsmelding.inntektPrMnd * 12 > GRUNNBELØP * 6;
-    const harRefusjon = inntektsmelding.refusjonPrMnd !== undefined;
 
     return (
         <PageRouteLayout header={<InntektsmeldingHeader inntektsmelding={inntektsmelding} />}>
@@ -65,9 +64,7 @@ export const InntektsmeldingPage = () => {
                     heading="Hvordan utbetales foreldrepengene?"
                     Ikon={WalletIcon}
                 >
-                    {harRefusjon
-                        ? `Du vil få utbetaling direkte fra fra ${inntektsmelding.arbeidsgiverNavn}. NAV betaler da foreldrepenger til ${inntektsmelding.arbeidsgiverNavn}.`
-                        : 'Du får utbetaling direkte fra NAV.'}
+                    <HvordanUtbetalesPengene inntektsmelding={inntektsmelding} />
                 </InntektsmeldingInfoBlokk>
                 <InntektsmeldingInfoBlokk
                     className="col-span-2"
@@ -105,6 +102,14 @@ export const InntektsmeldingPage = () => {
             </HGrid>
         </PageRouteLayout>
     );
+};
+
+const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
+    const harRefusjon = inntektsmelding.refusjonPrMnd !== undefined;
+
+    // {harRefusjon
+    //     ? `Du vil få utbetaling direkte fra fra ${capitalizeFirstLetterInEveryWordOnly(inntektsmelding.arbeidsgiverNavn)}. NAV betaler da foreldrepenger til ${capitalizeFirstLetterInEveryWordOnly(inntektsmelding.arbeidsgiverNavn)}.`
+    //     : 'Du får utbetaling direkte fra NAV.'}
 };
 
 const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
