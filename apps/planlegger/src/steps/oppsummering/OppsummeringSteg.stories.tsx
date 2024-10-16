@@ -246,7 +246,7 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
             erFødsel: false,
             termindato: '2024-07-24',
             antallBarn: '1',
-            overtakelsesdato: '2024-10-24',
+            overtakelsesdato: '2024-10-13',
             fødselsdato: '2024-07-24',
         },
         arbeidssituasjon: {
@@ -254,6 +254,39 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
             jobberAnnenPart: false,
         },
         stønadskontoer: MorOgFarKunFarHarRett.args?.stønadskontoer,
+    },
+};
+export const FarOgFarAdopsjonBeggeHarRett: Story = {
+    args: {
+        locale: 'nb',
+        satser: DEFAULT_SATSER,
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMedfar: 'Anders Utvikler',
+            type: Situasjon.FAR_OG_FAR,
+        },
+        fordeling: {
+            antallDagerSøker1: 25,
+        },
+        hvorMye: {
+            lønnSøker1: 1000,
+            lønnSøker2: 70000,
+        },
+        hvorLangPeriode: {
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        },
+        omBarnet: {
+            erFødsel: false,
+            erBarnetFødt: false,
+            fødselsdato: '2024-07-24',
+            antallBarn: '1',
+            overtakelsesdato: '2024-10-13',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: true,
+        },
+        stønadskontoer: FlereForsørgereHundreProsentTermin.args?.stønadskontoer,
     },
 };
 
@@ -279,7 +312,7 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
             erBarnetFødt: true,
             termindato: '2024-07-10',
             antallBarn: '2',
-            fødselsdato: '2024-08-10',
+            fødselsdato: '2024-08-15',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,

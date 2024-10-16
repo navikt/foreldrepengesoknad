@@ -11,6 +11,7 @@ import { HStack, VStack } from '@navikt/ds-react';
 
 import AktivitetskravLabel from './calendar-labels/AktivitetskravLabel';
 import AntallUkerFpLabel from './calendar-labels/AntallUkerFpLabel';
+import BarnehageplassLabel from './calendar-labels/BarnehageplassLabel';
 import FamiliehendelseLabel from './calendar-labels/FamiliehendelseLabel';
 import ForeldrepengerLabel from './calendar-labels/ForeldrepengerLabel';
 
@@ -68,6 +69,7 @@ const CalendarLabels: FunctionComponent<Props> = ({ barnet, uttaksdata, hvemPlan
                         />
                     )}
                     <FamiliehendelseLabel barnet={barnet} />
+                    {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
                 </HStack>
             )}
             {skalViseAktivitetskravLabels && (
@@ -85,12 +87,14 @@ const CalendarLabels: FunctionComponent<Props> = ({ barnet, uttaksdata, hvemPlan
                         sluttdato={sluttdatoPeriode2}
                     />
                     <FamiliehendelseLabel barnet={barnet} />
+                    {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
                 </HStack>
             )}
             {erFarOgFarOgFødsel && (
                 <HStack gap="2">
                     <ForeldrepengerLabel startdato={startdatoPeriode1} sluttdato={sluttdatoPeriode1} />
                     <FamiliehendelseLabel barnet={barnet} />
+                    {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
                 </HStack>
             )}
         </VStack>

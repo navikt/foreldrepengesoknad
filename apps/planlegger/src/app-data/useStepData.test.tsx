@@ -185,11 +185,6 @@ describe('useStepData', () => {
                     label: 'Barnet',
                 },
                 {
-                    id: '/barnehageplass',
-                    isSelected: false,
-                    label: 'Barnehageplass',
-                },
-                {
                     id: '/oppsummering',
                     isSelected: true,
                     label: 'Oppsummering',
@@ -236,6 +231,73 @@ describe('useStepData', () => {
                     id: '/barnehageplass',
                     isSelected: false,
                     label: 'Barnehageplass',
+                },
+                {
+                    id: '/arbeidssituasjon',
+                    isSelected: false,
+                    label: 'Arbeidssituasjon',
+                },
+                {
+                    id: '/hvor-mye',
+                    isSelected: false,
+                    label: 'Hvor mye',
+                },
+                {
+                    id: '/hvor-lenge',
+                    isSelected: false,
+                    label: 'Hvor lenge',
+                },
+                {
+                    id: '/fordeling',
+                    isSelected: false,
+                    label: 'Fordeling',
+                },
+                {
+                    id: '/planen-deres',
+                    isSelected: false,
+                    label: 'Planen',
+                },
+                {
+                    id: '/oppsummering',
+                    isSelected: true,
+                    label: 'Oppsummering',
+                },
+            ]),
+        );
+    });
+    it('skal ikke vise barnehageplass-steg når barnet er adoptert', async () => {
+        const barnet = {
+            antallBarn: '1',
+            erBarnetFødt: true,
+            erFødsel: false,
+            overtakelsesdato: dayjs().format(ISO_DATE_FORMAT),
+            fødselsdato: dayjs().format(ISO_DATE_FORMAT),
+        };
+        const hvemPlanlegger = {
+            type: Situasjon.MOR_OG_FAR,
+            navnPåMor: 'Helga Utvikler',
+            navnPåFar: 'Espen Utvikler',
+        };
+        const arbeidssituasjon = {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: true,
+        };
+
+        const { result } = renderHook(() => useStepData(), {
+            wrapper: getWrapper(PlanleggerRoutes.OPPSUMMERING, barnet, hvemPlanlegger, arbeidssituasjon),
+        });
+
+        await waitFor(() =>
+            expect(result.current).toEqual([
+                {
+                    id: '/hvem-planlegger',
+                    isSelected: false,
+                    label: 'Hvem planlegger?',
+                },
+                {
+                    id: '/om-barnet',
+                    isSelected: false,
+                    label: 'Barnet',
                 },
                 {
                     id: '/arbeidssituasjon',
