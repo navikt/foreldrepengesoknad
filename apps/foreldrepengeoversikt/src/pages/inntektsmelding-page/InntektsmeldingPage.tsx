@@ -7,12 +7,7 @@ import { useParams } from 'react-router-dom';
 import { Office2 } from '@navikt/ds-icons';
 import { BodyShort, HGrid, Heading, List, VStack } from '@navikt/ds-react';
 
-import {
-    capitalizeFirstLetterInEveryWordOnly,
-    formatCurrency,
-    formatCurrencyWithKr,
-    formatDate,
-} from '@navikt/fp-utils';
+import { capitalizeFirstLetterInEveryWordOnly, formatCurrency, formatDate } from '@navikt/fp-utils';
 
 import { hentGrunnbeløpOptions, hentInntektsmelding } from '../../api/api';
 import { InntektsmeldingHeader } from '../../components/header/Header';
@@ -35,7 +30,7 @@ export const InntektsmeldingPage = () => {
     }
 
     const tjenerOver6G = inntektsmelding.inntektPrMnd * 12 > GRUNNBELØP * 6;
-    const harRefusjon = inntektsmelding.refusjonPrMnd > 0;
+    const harRefusjon = inntektsmelding.refusjonPrMnd !== undefined;
 
     return (
         <PageRouteLayout header={<InntektsmeldingHeader inntektsmelding={inntektsmelding} />}>
