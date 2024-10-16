@@ -7,20 +7,15 @@ import { useParams } from 'react-router-dom';
 import { Office2 } from '@navikt/ds-icons';
 import { BodyShort, HGrid, Heading, List, VStack } from '@navikt/ds-react';
 
-import {
-    capitalizeFirstLetterInEveryWordOnly,
-    formatCurrency,
-    formatCurrencyWithKr,
-    formatDate,
-} from '@navikt/fp-utils';
+import { formatCurrency, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
 import { hentGrunnbeløpOptions, hentInntektsmelding } from '../../api/api';
+import { InntektsmeldingDto, Naturalytelsetype } from '../../api/zodSchemas';
 import { InntektsmeldingHeader } from '../../components/header/Header';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from '../../routes/routes';
-import { BortfaltNaturalytelse, InntektsmeldingDto } from '../../types/InntektsmeldingDto';
 
 export const InntektsmeldingPage = () => {
     useSetBackgroundColor('white');
@@ -85,7 +80,7 @@ export const InntektsmeldingPage = () => {
                     Ikon={Office2}
                     className="col-span-2 md:col-span-1"
                 >
-                    <VStack>{capitalizeFirstLetterInEveryWordOnly(inntektsmelding.arbeidsgiverNavn)}</VStack>
+                    <VStack>{inntektsmelding.arbeidsgiverNavn}</VStack>
                 </InntektsmeldingInfoBlokk>
                 <InntektsmeldingInfoBlokk
                     size="xsmall"
@@ -110,29 +105,28 @@ export const InntektsmeldingPage = () => {
 };
 
 const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
+    const { refusjonsperioder, refusjonPrMnd, arbeidsgiverNavn } = inntektsmelding;
     // TODO: case der refusjonPrMdn er null, men har refusjonsperioder
-    const arbeidsgiver = capitalizeFirstLetterInEveryWordOnly(inntektsmelding.arbeidsgiverNavn);
-
-    if (inntektsmelding.refusjonPrMnd === null) {
+    if (refusjonPrMnd === null) {
         return 'Du får utbetaling direkte fra NAV.';
     }
 
-    if (inntektsmelding.refusjonsperioder.length === 0) {
-        return `Du vil få utbetaling direkte fra ${arbeidsgiver}. NAV betaler da foreldrepenger til ${arbeidsgiver}.`;
+    if (refusjonsperioder.length === 0) {
+        return `Du vil få utbetaling direkte fra ${arbeidsgiverNavn}. NAV betaler da foreldrepenger til ${arbeidsgiverNavn}.`;
     }
 
     // TODO: vise beløp? og hvis beløp over 6G?
-    const førsteRefusjonsPeriode = inntektsmelding.refusjonsperioder[0];
+    const førsteRefusjonsPeriode = refusjonsperioder[0];
     return (
         <VStack>
             <span>
                 Frem til {formatDate(førsteRefusjonsPeriode.fomDato)} får du utbetalt{' '}
-                {formatCurrencyWithKr(inntektsmelding.refusjonPrMnd)} fra {arbeidsgiver}
+                {formatCurrencyWithKr(refusjonPrMnd)} fra {arbeidsgiverNavn}
             </span>
-            {inntektsmelding.refusjonsperioder.map((r) => (
+            {refusjonsperioder.map((r) => (
                 <span key={r.fomDato}>
                     Fra {formatDate(r.fomDato)} får du utbetalt {formatCurrencyWithKr(r.refusjonsbeløpMnd)} direkte fra{' '}
-                    {arbeidsgiver}
+                    {arbeidsgiverNavn}
                 </span>
             ))}
         </VStack>
@@ -159,7 +153,11 @@ const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: Inntektsmeld
     );
 };
 
-const BortfaltNaturalytelseTekst = ({ bortfaltNaturalytelse }: { bortfaltNaturalytelse: BortfaltNaturalytelse }) => {
+const BortfaltNaturalytelseTekst = ({
+    bortfaltNaturalytelse,
+}: {
+    bortfaltNaturalytelse: InntektsmeldingDto['bortfalteNaturalytelser'][0];
+}) => {
     if (bortfaltNaturalytelse.tomDato === '9999-12-31') {
         return `${formatDate(bortfaltNaturalytelse.fomDato)} får du ikke lenger ${NaturalytelseType[bortfaltNaturalytelse.type]} til en verdi av ${formatCurrency(bortfaltNaturalytelse.beloepPerMnd)} kr.`;
     }
@@ -245,5 +243,4 @@ const NaturalytelseType = {
     YRKEBIL_TJENESTLIGBEHOV_KILOMETER: 'Yrkesbil tjenesteligbehov kilometer',
     YRKEBIL_TJENESTLIGBEHOV_LISTEPRIS: 'Yrkesbil tjenesteligbehov listepris',
     INNBETALING_TIL_UTENLANDSK_PENSJONSORDNING: 'Innbetaling utenlandsk pensjonsordning',
-    UDEFINERT: 'Ikke definert',
-};
+} satisfies Record<Naturalytelsetype, string>;

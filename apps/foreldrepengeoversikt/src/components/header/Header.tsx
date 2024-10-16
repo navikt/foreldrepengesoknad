@@ -9,8 +9,8 @@ import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 import { capitalizeFirstLetterInEveryWordOnly, formatDateMedUkedag } from '@navikt/fp-utils';
 
 import { hentSakerOptions, søkerInfoOptions } from '../../api/api';
+import { InntektsmeldingDto } from '../../api/zodSchemas';
 import { LayoutWrapper } from '../../sections/LayoutWrapper';
-import { InntektsmeldingDto } from '../../types/InntektsmeldingDto';
 import { Sak } from '../../types/Sak';
 import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
 import { Ytelse } from '../../types/Ytelse';

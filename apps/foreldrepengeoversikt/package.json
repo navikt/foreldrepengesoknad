@@ -53,7 +53,8 @@
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-intl": "^6.8.0",
-        "react-router-dom": "^6.27.0"
+        "react-router-dom": "^6.27.0",
+        "zod": "^3.23.8"
     },
     "devDependencies": {
         "@formatjs/cli-lib": "6.4.5",
