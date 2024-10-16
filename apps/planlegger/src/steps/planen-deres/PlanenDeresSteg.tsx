@@ -17,16 +17,18 @@ import { erAlenesøker, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
-import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
+import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata, getFamiliehendelsedato } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
+import { BarnType, StønadskontoType } from '@navikt/fp-constants';
 import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { Calendar, Infobox, StepButtons } from '@navikt/fp-ui';
 import { useMedia } from '@navikt/fp-utils/src/hooks/useMedia';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { UttaksplanNy } from '../../../../../packages/ny-uttaksplan/src';
 import styles from './planenDeresSteg.module.css';
 import OmÅTilpassePlanen from './tilpasse-planen/OmÅTilpassePlanen';
 import UforutsetteEndringer from './uforutsette-endringer/UforutsetteEndringer';
@@ -95,6 +97,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
 
     const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata100);
     const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata80);
+    const familiehendelsedato = getFamiliehendelsedato(barnet);
 
     const erAleneforsørger = erAlenesøker(hvemPlanlegger);
 
@@ -200,6 +203,42 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                     </VStack>
 
                     <VStack gap="5">
+                        <UttaksplanNy
+                            familiehendelsedato={familiehendelsedato}
+                            bareFarHarRett={false}
+                            erFarEllerMedmor={false}
+                            familiesituasjon="fødsel"
+                            gjelderAdopsjon={false}
+                            navnPåForeldre={{
+                                farMedmor: 'Far',
+                                mor: 'Mor',
+                            }}
+                            førsteUttaksdagNesteBarnsSak={undefined}
+                            harAktivitetskravIPeriodeUtenUttak={false}
+                            søkersPerioder={uttaksperioder.filter((p) => {
+                                if (p.kontoType === StønadskontoType.Mødrekvote) {
+                                    return true;
+                                }
+
+                                return false;
+                            })}
+                            annenPartsPerioder={uttaksperioder.filter((p) => {
+                                if (p.kontoType === StønadskontoType.Fedrekvote) {
+                                    return true;
+                                }
+
+                                return false;
+                            })}
+                            barn={{
+                                antallBarn: 1,
+                                type: BarnType.FØDT,
+                                fødselsdatoer: [familiehendelsedato],
+                                termindato: familiehendelsedato,
+                            }}
+                        />
+                    </VStack>
+
+                    <VStack gap="5">
                         <CalendarLabels
                             uttaksdata={
                                 hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
@@ -211,7 +250,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                             hvemHarRett={hvemHarRett}
                         />
                         <div className={styles.calendar}>
-                            <Calendar periods={uttaksperioder} />
+                            <Calendar periods={uttaksperioder} familiehendelsedato={familiehendelsedato} />
                         </div>
                     </VStack>
                     <VStack gap="1">

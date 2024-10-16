@@ -91,6 +91,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
     const fornavnSøker1Genitiv = getNavnGenitivEierform(fornavnSøker1, intl.locale);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
     const fornavnSøker2Genitiv = fornavnSøker2 ? getNavnGenitivEierform(fornavnSøker2, intl.locale) : undefined;
+    const { familiehendelsedato } = uttaksdata;
 
     return (
         <VStack gap="10">
@@ -274,7 +275,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             barnet={barnet}
                             hvemHarRett={hvemHarRett}
                         />
-                        <Calendar periods={uttaksperioder} useSmallerWidth />
+                        <Calendar periods={uttaksperioder} familiehendelsedato={familiehendelsedato} useSmallerWidth />
                     </VStack>
                 </ExpansionCard.Content>
             </ExpansionCard>

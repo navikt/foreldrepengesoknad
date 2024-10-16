@@ -3,26 +3,20 @@ import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
-import { ISO_DATE_FORMAT, PeriodeColor } from '@navikt/fp-constants';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { Period } from '@navikt/fp-ui';
+import { ISO_DATE_FORMAT, StønadskontoType } from '@navikt/fp-constants';
+import { SaksperiodeNy, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import { erMorDelAvSøknaden } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert } from './barnetUtils';
 import { HvemHarRett, utledHvemSomHarRett } from './hvemHarRettUtils';
 import { finnUttaksdata } from './uttakUtils';
 
-const finnPerioderForKunFarHarRett = (familiehendelsedato: string, sluttdatoPeriode1: string): Period[] => {
+const finnPerioderForKunFarHarRett = (familiehendelsedato: string, sluttdatoPeriode1: string): SaksperiodeNy[] => {
     return [
-        {
-            fom: familiehendelsedato,
-            tom: familiehendelsedato,
-            color: PeriodeColor.PINK,
-        },
         {
             fom: dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT),
             tom: sluttdatoPeriode1,
-            color: PeriodeColor.BLUE,
+            kontoType: StønadskontoType.Foreldrepenger,
         },
     ];
 };
@@ -34,33 +28,28 @@ const finnPerioderForBeggeHarRettEllerKunMorHarRett = (
     familiehendelsedato: string,
     startdatoPeriode2?: string,
     sluttdatoPeriode2?: string,
-): Period[] => {
-    const perioder = [] as Period[];
+): SaksperiodeNy[] => {
+    const perioder = [] as SaksperiodeNy[];
 
     if (!erAdoptert) {
         perioder.push({
             fom: startdatoPeriode1,
             tom: dayjs(familiehendelsedato).subtract(1, 'day').format(ISO_DATE_FORMAT),
-            color: PeriodeColor.BLUE,
+            kontoType: StønadskontoType.ForeldrepengerFørFødsel,
         });
     }
 
     perioder.push({
         fom: familiehendelsedato,
-        tom: familiehendelsedato,
-        color: PeriodeColor.PINK,
-    });
-    perioder.push({
-        fom: dayjs(familiehendelsedato).add(1, 'day').format(ISO_DATE_FORMAT),
         tom: sluttdatoPeriode1,
-        color: PeriodeColor.BLUE,
+        kontoType: StønadskontoType.Mødrekvote,
     });
 
     if (startdatoPeriode2 && sluttdatoPeriode2) {
         perioder.push({
             fom: startdatoPeriode2,
             tom: sluttdatoPeriode2,
-            color: PeriodeColor.LIGHTGREEN,
+            kontoType: StønadskontoType.Fedrekvote,
         });
     }
 
@@ -70,25 +59,19 @@ const finnPerioderForBeggeHarRettEllerKunMorHarRett = (
 const finnPerioderOppdeltIAktivitetskrav = (
     startdatoPeriode1: string,
     sluttdatoPeriode1: string,
-    familiehendelsedato: string,
     startdatoPeriode2: string,
     sluttdatoPeriode2: string,
-) => {
+): SaksperiodeNy[] => {
     return [
-        {
-            fom: familiehendelsedato,
-            tom: familiehendelsedato,
-            color: PeriodeColor.PINK,
-        },
         {
             fom: startdatoPeriode1,
             tom: sluttdatoPeriode1,
-            color: PeriodeColor.BLUE,
+            kontoType: StønadskontoType.AktivitetsfriKvote,
         },
         {
             fom: startdatoPeriode2,
             tom: sluttdatoPeriode2,
-            color: PeriodeColor.LIGHTGREEN,
+            kontoType: StønadskontoType.Foreldrepenger,
         },
     ];
 };
@@ -108,7 +91,7 @@ export const lagKalenderPerioder = (
     hvemPlanlegger: HvemPlanlegger,
     arbeidssituasjon: Arbeidssituasjon,
     antallUkerFellesperiodeSøker1?: number,
-): Period[] => {
+): SaksperiodeNy[] => {
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
     const { startdatoPeriode1, sluttdatoPeriode1, familiehendelsedato, startdatoPeriode2, sluttdatoPeriode2 } =
@@ -152,7 +135,6 @@ export const lagKalenderPerioder = (
         return finnPerioderOppdeltIAktivitetskrav(
             startdatoPeriode1,
             sluttdatoPeriode1,
-            familiehendelsedato,
             startdatoPeriode2,
             sluttdatoPeriode2,
         );

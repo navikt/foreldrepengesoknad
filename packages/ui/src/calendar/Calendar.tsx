@@ -5,7 +5,8 @@ import { FunctionComponent } from 'react';
 
 import { HGrid } from '@navikt/ds-react';
 
-import { PeriodeColor } from '@navikt/fp-constants';
+import { PeriodeColor, StønadskontoType } from '@navikt/fp-constants';
+import { SaksperiodeNy } from '@navikt/fp-types';
 
 import Day, { DayType } from './Day';
 import Month from './Month';
@@ -14,14 +15,20 @@ import styles from './calendar.module.css';
 dayjs.extend(isoWeek);
 dayjs.extend(isBetween);
 
-export type Period = {
-    fom: string;
-    tom: string;
-    color: PeriodeColor;
-    srText?: string;
-};
+// export type Period = {
+//     fom: string;
+//     tom: string;
+//     color: PeriodeColor;
+//     srText?: string;
+// };
 
-const findDayColor = (year: number, month: number, day: number, periods: Period[]) => {
+const findDayColor = (
+    year: number,
+    month: number,
+    day: number,
+    periods: SaksperiodeNy[],
+    familiehendelsedato: string,
+) => {
     const date = dayjs().year(year).month(month).date(day);
 
     const fomFirstPeriod = periods[0].fom;
@@ -33,7 +40,7 @@ const findDayColor = (year: number, month: number, day: number, periods: Period[
 
     const period = periods.find((p) => date.isBetween(p.fom, p.tom, 'day', '[]'));
 
-    if (period?.color === PeriodeColor.PINK) {
+    if (date.isSame(familiehendelsedato)) {
         return PeriodeColor.PINK;
     }
 
@@ -41,35 +48,43 @@ const findDayColor = (year: number, month: number, day: number, periods: Period[
         return PeriodeColor.GRAY;
     }
 
-    return period?.color || PeriodeColor.NONE;
+    return period?.kontoType === StønadskontoType.Fedrekvote ? PeriodeColor.GREEN : PeriodeColor.BLUE;
 };
 
-const isFirstDay = (date: Dayjs, day: number, periods: Period[]) => {
-    const pinkPeriod = periods.find((p) => p.color === PeriodeColor.PINK);
+const isFirstDay = (date: Dayjs, day: number, periods: SaksperiodeNy[], familiehendelsedato: string) => {
+    const pinkPeriod = date.isSame(familiehendelsedato);
+
     return (
         date.isoWeekday() === 6 ||
         date.isoWeekday() === 1 ||
         day === 1 ||
         periods.some((period) => date.isSame(period.fom, 'day')) ||
-        (pinkPeriod && dayjs(pinkPeriod.fom).isSame(date.subtract(1, 'day'), 'day'))
+        pinkPeriod
     );
 };
 
-const isLastDay = (date: Dayjs, day: number, periods: Period[]) => {
-    const pinkPeriod = periods.find((p) => p.color === PeriodeColor.PINK);
+const isLastDay = (date: Dayjs, day: number, periods: SaksperiodeNy[], familiehendelsedato: string) => {
+    const pinkPeriod = date.isSame(familiehendelsedato);
+
     return (
         date.isoWeekday() === 7 ||
         date.isoWeekday() === 5 ||
         day === date.daysInMonth() ||
         periods.some((period) => date.isSame(period.tom, 'day')) ||
-        (pinkPeriod && dayjs(pinkPeriod.fom).isSame(date.add(1, 'day'), 'day'))
+        pinkPeriod
     );
 };
 
-const findDayType = (year: number, month: number, day: number, periods: Period[]) => {
+const findDayType = (
+    year: number,
+    month: number,
+    day: number,
+    periods: SaksperiodeNy[],
+    familiehendelsedato: string,
+) => {
     const date = dayjs().year(year).month(month).date(day);
-    const firstDay = isFirstDay(date, day, periods);
-    const lastDay = isLastDay(date, day, periods);
+    const firstDay = isFirstDay(date, day, periods, familiehendelsedato);
+    const lastDay = isLastDay(date, day, periods, familiehendelsedato);
 
     if (firstDay && lastDay) {
         return DayType.FIRST_AND_LAST_DAY;
@@ -107,22 +122,23 @@ const findMonths = (firstDate: string, lastDate: string): Array<{ month: number;
 };
 
 interface Props {
-    periods: Period[];
+    periods: SaksperiodeNy[];
     useSmallerWidth?: boolean;
+    familiehendelsedato: string;
 }
 
-const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }) => {
+const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false, familiehendelsedato }) => {
     const months = findMonths(periods[0].fom, periods[periods.length - 1].tom);
     return (
         <>
-            {periods.some((period) => period.srText) && (
+            {/* {periods.some((period) => period.srText) && (
                 <div className={styles.srOnly}>
                     {periods
                         .filter((periode) => periode.srText)
                         .map((period) => period.srText)
                         .toString()}
                 </div>
-            )}
+            )} */}
             <HGrid
                 gap={{ xs: '2', sm: '4', md: '8' }}
                 className={useSmallerWidth ? styles.gridColumnsSmall : styles.gridColumnsWide}
@@ -140,8 +156,20 @@ const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }
                                 <Day
                                     key={monthData.year + monthData.month + day}
                                     day={day + 1}
-                                    periodeColor={findDayColor(monthData.year, monthData.month, day + 1, periods)}
-                                    dayType={findDayType(monthData.year, monthData.month, day + 1, periods)}
+                                    periodeColor={findDayColor(
+                                        monthData.year,
+                                        monthData.month,
+                                        day + 1,
+                                        periods,
+                                        familiehendelsedato,
+                                    )}
+                                    dayType={findDayType(
+                                        monthData.year,
+                                        monthData.month,
+                                        day + 1,
+                                        periods,
+                                        familiehendelsedato,
+                                    )}
                                 />
                             ),
                         )}
