@@ -7,7 +7,7 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Situasjon } from 'types/HvemPlanlegger';
 import { erFlereSøkere } from 'utils/HvemPlanleggerUtils';
-import { erBarnetFødt } from 'utils/barnetUtils';
+import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
 import { DATE_3_YEARS_AGO } from '@navikt/fp-constants/src/dates';
 import { ProgressStep } from '@navikt/fp-ui';
@@ -29,6 +29,8 @@ const getLabelConfig = (intl: IntlShape): Record<PlanleggerRoutes, string> => ({
 
 const erBarnIkkeOppgittEllerYngreEnnTreÅr = (omBarnet?: OmBarnet) =>
     !omBarnet || !(erBarnetFødt(omBarnet) && dayjs(omBarnet.fødselsdato).isBefore(DATE_3_YEARS_AGO));
+
+const erBarnetIkkeAdoptert = (omBarnet?: OmBarnet) => !omBarnet || !erBarnetAdoptert(omBarnet);
 
 const harMinstEnPartJobb = (arbeidssituasjon: Arbeidssituasjon) =>
     arbeidssituasjon?.status === Arbeidsstatus.JOBBER || arbeidssituasjon?.jobberAnnenPart;
@@ -76,6 +78,18 @@ const showArbeidssituasjonStep = (
     }
     return false;
 };
+
+const showBarnehageplassStep = (
+    path: PlanleggerRoutes,
+    getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+) => {
+    if (path === PlanleggerRoutes.BARNEHAGEPLASS) {
+        const omBarnet = getData(ContextDataType.OM_BARNET);
+        return erBarnetIkkeAdoptert(omBarnet);
+    }
+    return false;
+};
+
 const showHvorMyeStep = (
     path: PlanleggerRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
@@ -106,6 +120,7 @@ const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
             PATH_ORDER.flatMap((path) =>
                 REQUIRED_APP_STEPS.includes(path) ||
                 showArbeidssituasjonStep(path, getStateData) ||
+                showBarnehageplassStep(path, getStateData) ||
                 showHvorMyeStep(path, getStateData) ||
                 showFordelingStep(path, getStateData) ||
                 showHvorLangPeriodeEllerOversiktStep(path, getStateData)
