@@ -37,7 +37,7 @@ export const InntektsmeldingOversiktPage = () => {
                         key={im.journalpostId}
                         tittel={im.arbeidsgiverNavn}
                         undertittel={`Sendt ${formaterDatoUtenDag(im.mottattTidspunkt)}`}
-                        to={`${OversiktRoutes.INNTEKTSMELDING}/${im.journalpostId}`}
+                        to={im.journalpostId}
                         Ikon={Buildings3Icon}
                     />
                 ))}
