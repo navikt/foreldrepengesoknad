@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
-import { formatDateMedUkedag } from '@navikt/fp-utils';
+import { capitalizeFirstLetterInEveryWordOnly, formatDateMedUkedag } from '@navikt/fp-utils';
 
 import { hentSakerOptions, søkerInfoOptions } from '../../api/api';
 import { LayoutWrapper } from '../../sections/LayoutWrapper';
@@ -135,7 +135,7 @@ export const InntektsmeldingHeader = ({ inntektsmelding }: { inntektsmelding: In
     return (
         <SimpleHeaderWrapper>
             <Heading level="1" size="medium">
-                Din inntekt rapportert av {inntektsmelding.arbeidsgiverNavn}
+                Din inntekt rapportert av {capitalizeFirstLetterInEveryWordOnly(inntektsmelding.arbeidsgiverNavn)}
             </Heading>
             <Detail textColor="subtle">Endret {formatDateMedUkedag(inntektsmelding.innsendingstidspunkt)}</Detail>
         </SimpleHeaderWrapper>

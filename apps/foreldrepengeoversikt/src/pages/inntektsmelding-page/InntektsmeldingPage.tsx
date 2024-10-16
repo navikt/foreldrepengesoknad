@@ -7,7 +7,12 @@ import { useParams } from 'react-router-dom';
 import { Office2 } from '@navikt/ds-icons';
 import { BodyShort, HGrid, Heading, List, VStack } from '@navikt/ds-react';
 
-import { formatDate } from '@navikt/fp-utils';
+import {
+    capitalizeFirstLetterInEveryWordOnly,
+    formatCurrency,
+    formatCurrencyWithKr,
+    formatDate,
+} from '@navikt/fp-utils';
 
 import { hentGrunnbeløpOptions, hentInntektsmelding } from '../../api/api';
 import { InntektsmeldingHeader } from '../../components/header/Header';
@@ -41,7 +46,7 @@ export const InntektsmeldingPage = () => {
                     heading={
                         <>
                             <span className="font-normal">Månedsinntekt før skatt:</span>{' '}
-                            <strong>kr {inntektsmelding.inntektPrMnd}</strong>
+                            <strong>kr {formatCurrency(inntektsmelding.inntektPrMnd)}</strong>
                         </>
                     }
                     Ikon={WalletIcon}
@@ -83,7 +88,7 @@ export const InntektsmeldingPage = () => {
                     Ikon={Office2}
                     className="col-span-2 md:col-span-1"
                 >
-                    <VStack>{inntektsmelding.arbeidsgiverNavn}</VStack>
+                    <VStack>{capitalizeFirstLetterInEveryWordOnly(inntektsmelding.arbeidsgiverNavn)}</VStack>
                 </InntektsmeldingInfoBlokk>
                 <InntektsmeldingInfoBlokk
                     size="xsmall"
@@ -129,10 +134,10 @@ const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: Inntektsmeld
 
 const BortfaltNaturalytelseTekst = ({ bortfaltNaturalytelse }: { bortfaltNaturalytelse: BortfaltNaturalytelse }) => {
     if (bortfaltNaturalytelse.tomDato === '9999-12-31') {
-        return `${formatDate(bortfaltNaturalytelse.fomDato)} får du ikke lenger ${NaturalytelseType[bortfaltNaturalytelse.type]} til en verdi av ${bortfaltNaturalytelse.beloepPerMnd} kr.`;
+        return `${formatDate(bortfaltNaturalytelse.fomDato)} får du ikke lenger ${NaturalytelseType[bortfaltNaturalytelse.type]} til en verdi av ${formatCurrency(bortfaltNaturalytelse.beloepPerMnd)} kr.`;
     }
 
-    return `Mellom ${formatDate(bortfaltNaturalytelse.fomDato)} og ${formatDate(bortfaltNaturalytelse.tomDato)} får du ikke lenger ${NaturalytelseType[bortfaltNaturalytelse.type]} til en verdi av ${bortfaltNaturalytelse.beloepPerMnd} kr.`;
+    return `Mellom ${formatDate(bortfaltNaturalytelse.fomDato)} og ${formatDate(bortfaltNaturalytelse.tomDato)} får du ikke lenger ${NaturalytelseType[bortfaltNaturalytelse.type]} til en verdi av ${formatCurrency(bortfaltNaturalytelse.beloepPerMnd)} kr.`;
 };
 
 const InntektsmeldingInfoBlokk = ({
