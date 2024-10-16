@@ -8,7 +8,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { getFamiliehendelsedato } from 'steps/oppsummering/expansion-cards/BarnehageplassOppsummering';
 import { OmBarnet } from 'types/Barnet';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
-import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
+import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
+import { Uttaksdata } from 'utils/uttakUtils';
 
 import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
 
@@ -20,23 +21,27 @@ import { notEmpty } from '@navikt/fp-validation';
 
 export const barnehagestartDato = (barnet: OmBarnet) => {
     const erFødt = erBarnetFødt(barnet);
+    const erIkkeFødt = erBarnetUFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
-    const dato = erAdoptert || erFødt ? barnet.fødselsdato : barnet.termindato;
-
-    if (dayjs(dato).month() < 8) {
-        return dayjs(dato).month(7).add(1, 'year').startOf('month').format(ISO_DATE_FORMAT);
-    }
-    if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) {
-        return dayjs(dato).add(1, 'year').startOf('month').format(ISO_DATE_FORMAT);
+    const dato = erAdoptert ? dayjs(barnet.overtakelsesdato) : dayjs(erFødt ? barnet.fødselsdato : barnet.termindato);
+    if (erFødt || erIkkeFødt) {
+        if (dayjs(dato).month() < 8) {
+            return dayjs(dato).month(7).add(1, 'year').startOf('month').format(ISO_DATE_FORMAT);
+        }
+        if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) {
+            return dayjs(dato).add(1, 'year').startOf('month').format(ISO_DATE_FORMAT);
+        }
+        return dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').startOf('month').format(ISO_DATE_FORMAT);
     }
     return dayjs(dato).startOf('year').add(2, 'year').add(7, 'months').startOf('month').format(ISO_DATE_FORMAT);
 };
 
 interface Props {
     locale: LocaleAll;
+    uttaksdata?: Uttaksdata;
 }
 
-const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale }) => {
+const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale, uttaksdata }) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
@@ -47,6 +52,7 @@ const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale }) => {
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const erAlenesøker = erAlene(hvemPlanlegger);
     const antallBarn = barnet.antallBarn;
+    const sluttdato = uttaksdata?.sluttdatoPeriode2 ? uttaksdata.sluttdatoPeriode2 : uttaksdata?.sluttdatoPeriode1;
 
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
@@ -60,16 +66,29 @@ const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale }) => {
                     </BodyLong>
                     <Infobox
                         header={
-                            <FormattedMessage
-                                id="Barnehageplass.DatoTittel"
-                                values={{
-                                    dato: intl.formatDate(barnehagestartDato(barnet), {
-                                        month: 'long',
-                                        year: 'numeric',
-                                    }),
-                                    erAlenesøker,
-                                }}
-                            />
+                            erBarnetAdoptert(barnet) ? (
+                                <FormattedMessage
+                                    id="Barnehageplass.DatoTittel"
+                                    values={{
+                                        dato: intl.formatDate(sluttdato, {
+                                            month: 'long',
+                                            year: 'numeric',
+                                        }),
+                                        erAlenesøker,
+                                    }}
+                                />
+                            ) : (
+                                <FormattedMessage
+                                    id="Barnehageplass.DatoTittel"
+                                    values={{
+                                        dato: intl.formatDate(barnehagestartDato(barnet), {
+                                            month: 'long',
+                                            year: 'numeric',
+                                        }),
+                                        erAlenesøker,
+                                    }}
+                                />
+                            )
                         }
                         color="blue"
                         icon={<BabyWrappedIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />}
