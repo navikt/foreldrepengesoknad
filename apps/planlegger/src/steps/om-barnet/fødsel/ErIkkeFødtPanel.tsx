@@ -88,29 +88,31 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                     shouldFadeIn
                     color="green"
                 >
-                    <BodyShort>
-                        <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" />
-                    </BodyShort>
+                    <VStack gap="2">
+                        <BodyShort>
+                            <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" />
+                        </BodyShort>
 
-                    <BodyShort>
-                        <FormattedMessage
-                            id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
-                            values={{
-                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                            }}
-                        />
-                    </BodyShort>
-                    {erFarDelAvSøknaden(hvemPlanlegger) && (
                         <BodyShort>
                             <FormattedMessage
-                                id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
+                                id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
                                 values={{
-                                    erFar: erFarMedISøknaden,
-                                    hvem: finnSøker2Tekst(intl, hvemPlanlegger),
+                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
                                 }}
                             />
                         </BodyShort>
-                    )}
+                        {erFarDelAvSøknaden(hvemPlanlegger) && (
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
+                                    values={{
+                                        erFar: erFarMedISøknaden,
+                                        hvem: finnSøker2Tekst(intl, hvemPlanlegger),
+                                    }}
+                                />
+                            </BodyShort>
+                        )}
+                    </VStack>
                 </Infobox>
             )}
 
@@ -128,60 +130,62 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                         shouldFadeIn
                         color="green"
                     >
-                        <BodyShort>
-                            <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
+                        <VStack gap="2">
+                            <BodyShort>
+                                <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
 
-                            {erFedre || erFar ? (
-                                <FormattedMessage
-                                    id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
-                                    values={{
-                                        erMorDelAvSøknaden: false,
-                                    }}
-                                />
-                            ) : (
-                                <FormattedMessage
-                                    id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
-                                    values={{
-                                        erMorDelAvSøknaden: true,
-                                    }}
-                                />
-                            )}
-                        </BodyShort>
-                        {!erFedre && (
-                            <>
-                                <BodyShort>
-                                    {hvemPlanlegger.type === Situasjon.MOR && (
-                                        <FormattedMessage
-                                            id="ErIkkeFødtPanel.UnderTreMndTilTermin"
-                                            values={{ erAlenesøker }}
-                                        />
+                                {erFedre || erFar ? (
+                                    <FormattedMessage
+                                        id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                        values={{
+                                            erMorDelAvSøknaden: false,
+                                        }}
+                                    />
+                                ) : (
+                                    <FormattedMessage
+                                        id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                        values={{
+                                            erMorDelAvSøknaden: true,
+                                        }}
+                                    />
+                                )}
+                            </BodyShort>
+                            {!erFedre && (
+                                <>
+                                    <BodyShort>
+                                        {hvemPlanlegger.type === Situasjon.MOR && (
+                                            <FormattedMessage
+                                                id="ErIkkeFødtPanel.UnderTreMndTilTermin"
+                                                values={{ erAlenesøker }}
+                                            />
+                                        )}
+                                    </BodyShort>
+                                    {!erAlenesøker && (
+                                        <BodyShort>
+                                            <FormattedMessage
+                                                id="ErIkkeFødtPanel.UnderTreMndTilTermin"
+                                                values={{
+                                                    erAlenesøker,
+                                                    navn: getFornavnPåSøker1(hvemPlanlegger, intl),
+                                                }}
+                                            />
+                                        </BodyShort>
                                     )}
-                                </BodyShort>
-                                {!erAlenesøker && (
-                                    <BodyShort>
-                                        <FormattedMessage
-                                            id="ErIkkeFødtPanel.UnderTreMndTilTermin"
-                                            values={{
-                                                erAlenesøker,
-                                                navn: getFornavnPåSøker1(hvemPlanlegger, intl),
-                                            }}
-                                        />
-                                    </BodyShort>
-                                )}
-                                {(!erAlenesøker || hvemPlanlegger.type === Situasjon.FAR) && (
-                                    <BodyShort>
-                                        <FormattedMessage
-                                            id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
-                                            values={{
-                                                erAlenesøker,
-                                                erFar: erFarMedISøknaden,
-                                                hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                            }}
-                                        />
-                                    </BodyShort>
-                                )}
-                            </>
-                        )}
+                                    {(!erAlenesøker || hvemPlanlegger.type === Situasjon.FAR) && (
+                                        <BodyShort>
+                                            <FormattedMessage
+                                                id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
+                                                values={{
+                                                    erAlenesøker,
+                                                    erFar: erFarMedISøknaden,
+                                                    hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                                }}
+                                            />
+                                        </BodyShort>
+                                    )}
+                                </>
+                            )}
+                        </VStack>
                     </Infobox>
                 )}
             {/* kan søke fra datoSvangerskapsuke22 */}
@@ -204,37 +208,39 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
                         shouldFadeIn
                         color="green"
                     >
-                        <BodyShort>
-                            <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
-                        </BodyShort>
-                        <BodyShort>
-                            {!erFedre ? (
-                                <FormattedMessage
-                                    id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
-                                    values={{
-                                        erMorDelAvSøknaden: true,
-                                    }}
-                                />
-                            ) : (
-                                <FormattedMessage
-                                    id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
-                                    values={{
-                                        erMorDelAvSøknaden: false,
-                                    }}
-                                />
-                            )}
-                        </BodyShort>
-                        {erFarDelAvSøknaden(hvemPlanlegger) && !erFedre && (
+                        <VStack gap="2">
                             <BodyShort>
-                                <FormattedMessage
-                                    id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
-                                    values={{
-                                        erFar: erFarMedISøknaden,
-                                        hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
-                                    }}
-                                />
+                                <FormattedMessage id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.kanSøke" />
                             </BodyShort>
-                        )}
+                            <BodyShort>
+                                {!erFedre ? (
+                                    <FormattedMessage
+                                        id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                        values={{
+                                            erMorDelAvSøknaden: true,
+                                        }}
+                                    />
+                                ) : (
+                                    <FormattedMessage
+                                        id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
+                                        values={{
+                                            erMorDelAvSøknaden: false,
+                                        }}
+                                    />
+                                )}
+                            </BodyShort>
+                            {erFarDelAvSøknaden(hvemPlanlegger) && !erFedre && (
+                                <BodyShort>
+                                    <FormattedMessage
+                                        id="ErIkkeFødtPanel.ForeldrepengerInfoTekst.toFørsteUkerDekket"
+                                        values={{
+                                            erFar: erFarMedISøknaden,
+                                            hvem: finnAnnenPartTekst(intl, hvemPlanlegger),
+                                        }}
+                                    />
+                                </BodyShort>
+                            )}
+                        </VStack>
                     </Infobox>
                 )}
         </VStack>

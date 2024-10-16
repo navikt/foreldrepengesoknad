@@ -89,29 +89,31 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                     shouldFadeIn
                     color="green"
                 >
-                    <BodyShort>
-                        <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" />
-                    </BodyShort>
+                    <VStack gap="2">
+                        <BodyShort>
+                            <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" />
+                        </BodyShort>
 
-                    <BodyShort>
-                        <FormattedMessage
-                            id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
-                            values={{
-                                erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
-                            }}
-                        />
-                    </BodyShort>
-                    {erFarDelAvSøknaden(hvemPlanlegger) && (
                         <BodyShort>
                             <FormattedMessage
-                                id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
+                                id="ErFødtPanel.Født.InfoboksTekst.NAVanbefaler"
                                 values={{
-                                    erFar,
-                                    hvem: finnSøker2Tekst(intl, hvemPlanlegger),
+                                    erMorDelAvSøknaden: erMorDelAvSøknaden(hvemPlanlegger),
                                 }}
                             />
                         </BodyShort>
-                    )}
+                        {erFarDelAvSøknaden(hvemPlanlegger) && (
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="ErFødtPanel.Født.InfoboksTekst.toFørsteUkerDekket"
+                                    values={{
+                                        erFar,
+                                        hvem: finnSøker2Tekst(intl, hvemPlanlegger),
+                                    }}
+                                />
+                            </BodyShort>
+                        )}
+                    </VStack>
                 </Infobox>
             )}
             {fødselsdato !== undefined &&
@@ -128,15 +130,20 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
                         shouldFadeIn
                         color="green"
                     >
-                        <BodyShort>
-                            <FormattedMessage
-                                id="ErFødtPanel.Født.InfoboksTekst.EldreEnnTreÅr"
-                                values={{ antallBarn }}
-                            />
-                        </BodyShort>
-                        <BodyShort>
-                            <FormattedMessage id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid" values={{ erFar }} />
-                        </BodyShort>
+                        <VStack gap="2">
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="ErFødtPanel.Født.InfoboksTekst.EldreEnnTreÅr"
+                                    values={{ antallBarn }}
+                                />
+                            </BodyShort>
+                            <BodyShort>
+                                <FormattedMessage
+                                    id="ErFødtPanel.Født.Infoboks.ManKanSøkeTilbakeITid"
+                                    values={{ erFar }}
+                                />
+                            </BodyShort>
+                        </VStack>
                     </Infobox>
                 )}
         </VStack>

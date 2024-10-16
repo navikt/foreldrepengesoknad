@@ -14,7 +14,7 @@ import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { LocaleAll } from '@navikt/fp-types';
-import { Infobox, StepButtons } from '@navikt/fp-ui';
+import { IconCircleWrapper, Infobox, StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -53,8 +53,8 @@ const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale }) => {
 
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
-            <VStack gap="10">
-                <Heading size="large">
+            <VStack gap="8">
+                <Heading size="medium">
                     <FormattedMessage id="BarnehageplassSteg.Tittel" />
                 </Heading>
                 <VStack gap="5">
@@ -75,7 +75,11 @@ const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale }) => {
                             />
                         }
                         color="blue"
-                        icon={<BabyWrappedIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />}
+                        icon={
+                            <IconCircleWrapper color="lightBlue" size="medium">
+                                <BabyWrappedIcon height={24} width={24} color="#236B7D" fontSize="1.5rem" aria-hidden />
+                            </IconCircleWrapper>
+                        }
                     >
                         <BodyLong>
                             <FormattedMessage
