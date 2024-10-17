@@ -116,7 +116,7 @@ const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: Inntekt
             {refusjonsperioder.map((r) => (
                 <span key={r.fomDato}>
                     Fra {formatDate(r.fomDato)} får du utbetalt {formatCurrencyWithKr(r.refusjonsbeløpMnd)} direkte fra{' '}
-                    {arbeidsgiverNavn}
+                    {r.refusjonsbeløpMnd === 0 ? 'NAV' : arbeidsgiverNavn}
                 </span>
             ))}
         </VStack>
