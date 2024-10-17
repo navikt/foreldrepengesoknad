@@ -1,0 +1,22 @@
+[
+    {
+        "versjon": 2,
+        "erAktiv": true,
+        "stillingsprosent": 100.00,
+        "inntektPrMnd": 40000.00,
+        "refusjonPrMnd": 4000.00,
+        "arbeidsgiverNavn": "Laksinor",
+        "journalpostId": "1017115920",
+        "mottattTidspunkt": "2024-10-17T00:00:00",
+        "startDatoPermisjon": "2024-08-01",
+        "bortfalteNaturalytelser": [
+            {
+                "fomDato": "2024-09-10",
+                "tomDato": "9999-12-31",
+                "beløpPerMnd": 998.00,
+                "type": "FRI_TRANSPORT"
+            }
+        ],
+        "refusjonsperioder": []
+    }
+]

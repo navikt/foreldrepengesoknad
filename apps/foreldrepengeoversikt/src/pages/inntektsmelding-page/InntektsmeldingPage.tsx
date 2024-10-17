@@ -53,8 +53,8 @@ export const InntektsmeldingPage = () => {
                         </BodyShort>
                         {tjenerOver6G && (
                             <BodyShort>
-                                NAV dekker inntekten du har, opptil {GRUNNBELØP * 6} kroner (seks ganger grunnbeløpet).
-                                Siden du tjener mer enn dette vil NAV ikke dekke hele inntekten du har.
+                                NAV dekker inntekten du har, opptil {formatCurrencyWithKr(GRUNNBELØP * 6)} (seks ganger
+                                grunnbeløpet). Siden du tjener mer enn dette vil NAV ikke dekke hele inntekten du har.
                             </BodyShort>
                         )}
                     </VStack>

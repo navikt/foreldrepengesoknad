@@ -2,7 +2,10 @@ import { Meta, StoryObj } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import im1 from 'storybookData/inntektsmeldinger/im1.json';
+import enBortfaltNaturalytelse from 'storybookData/inntektsmeldinger/enBortfaltNaturalytelse.json';
+import flereBortfalteNaturalytelser from 'storybookData/inntektsmeldinger/flereBortfalteNaturalytelser.json';
+import medRefusjon from 'storybookData/inntektsmeldinger/medRefusjon.json';
+import utenRefusjon from 'storybookData/inntektsmeldinger/utenRefusjon.json';
 import saker from 'storybookData/saker/saker.json';
 
 import OversiktRoutes from '../../routes/routes';
@@ -37,11 +40,51 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const EnBortfaltNaturalytelse: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get('https://oversikt/rest/innsyn/inntektsmeldinger', () => HttpResponse.json(im1)),
+                http.get('https://oversikt/rest/innsyn/inntektsmeldinger', () =>
+                    HttpResponse.json(enBortfaltNaturalytelse),
+                ),
+                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
+            ],
+        },
+    },
+    args: {},
+};
+
+export const FlereBortfalteNaturalytelser: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get('https://oversikt/rest/innsyn/inntektsmeldinger', () =>
+                    HttpResponse.json(flereBortfalteNaturalytelser),
+                ),
+                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
+            ],
+        },
+    },
+    args: {},
+};
+
+export const UtenRefusjon: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get('https://oversikt/rest/innsyn/inntektsmeldinger', () => HttpResponse.json(utenRefusjon)),
+                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
+            ],
+        },
+    },
+    args: {},
+};
+
+export const MedRefusjon: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get('https://oversikt/rest/innsyn/inntektsmeldinger', () => HttpResponse.json(medRefusjon)),
                 http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
             ],
         },
