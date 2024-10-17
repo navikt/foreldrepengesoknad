@@ -9,22 +9,22 @@ import { BodyShort, Button, Link, ReadMore } from '@navikt/ds-react';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { bemUtils } from '@navikt/fp-utils';
 
-import NoeGikkGalt from './../../components/noe-gikk-galt/NoeGikkGalt';
-import { Sak } from './../../types/Sak';
-import { SøkerinfoDTOBarn } from './../../types/SøkerinfoDTO';
-import { Tidslinjehendelse } from './../../types/Tidslinjehendelse';
-import { TidslinjehendelseType } from './../../types/TidslinjehendelseType';
-import { Ytelse } from './../../types/Ytelse';
-import { guid } from './../../utils/guid';
-import { getBarnGrupperingFraSak, getFørsteUttaksdagIForeldrepengesaken } from './../../utils/sakerUtils';
+import { Sak } from '../../types/Sak';
+import { SøkerinfoDTOBarn } from '../../types/SøkerinfoDTO';
+import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
+import { TidslinjehendelseType } from '../../types/TidslinjehendelseType';
+import { Ytelse } from '../../types/Ytelse';
+import { guid } from '../../utils/guid';
+import { getBarnGrupperingFraSak, getFørsteUttaksdagIForeldrepengesaken } from '../../utils/sakerUtils';
 import {
     VENTEÅRSAKER,
     getAktivTidslinjeStegIndex,
     getAlleTidslinjehendelser,
     getHendelserForVisning,
     getTidslinjehendelseTittel,
-} from './../../utils/tidslinjeUtils';
-import DokumentHendelse from './DokumentHendelse';
+} from '../../utils/tidslinjeUtils';
+import NoeGikkGalt from './../../components/noe-gikk-galt/NoeGikkGalt';
+import { DokumentHendelse, InntektsmeldingDokumentHendelse } from './DokumentHendelse';
 import TidslinjeHendelse from './TidslinjeHendelse';
 import './tidslinje-hendelse.css';
 
@@ -102,6 +102,15 @@ const Tidslinje: React.FunctionComponent<Params> = ({
             {hendelserForVisning.map((hendelse, index) => {
                 const isActiveStep = index === aktivtStegIndex;
                 const alleDokumenter = hendelse.dokumenter.map((dokument) => {
+                    if (hendelse.tidslinjeHendelseType === TidslinjehendelseType.INNTEKTSMELDING) {
+                        return (
+                            <InntektsmeldingDokumentHendelse
+                                key={dokument.journalpostId}
+                                dokument={{ ...dokument, tittel: 'Inntektsmelding' }}
+                                visesITidslinjen={true}
+                            />
+                        );
+                    }
                     return <DokumentHendelse dokument={dokument} key={dokument.url} visesITidslinjen={true} />;
                 });
                 const visKlokkeslett =

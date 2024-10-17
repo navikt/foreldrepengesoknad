@@ -96,7 +96,7 @@ export const InntektsmeldingPage = () => {
                 >
                     <VStack gap="1">
                         <span>
-                            {inntektsmelding.kontaktpersonNavn}, {inntektsmelding.kontaktpersonNummer}
+                            {inntektsmelding.kontaktpersonNavn}, {inntektsmelding.kontaktpersonTelefonNummer}
                         </span>
                         <BodyShort>
                             Det er {inntektsmelding.kontaktpersonNavn} du kan ta kontakt med hvis du ser noe feil i
@@ -113,7 +113,7 @@ export const InntektsmeldingPage = () => {
 const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
     const { refusjonsperioder, refusjonPrMnd, arbeidsgiverNavn } = inntektsmelding;
     // TODO: case der refusjonPrMdn er null, men har refusjonsperioder
-    if (refusjonPrMnd === null) {
+    if (refusjonPrMnd === undefined) {
         return 'Du får utbetaling direkte fra NAV.';
     }
 
@@ -165,10 +165,10 @@ const BortfaltNaturalytelseTekst = ({
     bortfaltNaturalytelse: InntektsmeldingDto['bortfalteNaturalytelser'][0];
 }) => {
     if (bortfaltNaturalytelse.tomDato === '9999-12-31') {
-        return `${formatDate(bortfaltNaturalytelse.fomDato)} får du ikke lenger ${NaturalytelseType[bortfaltNaturalytelse.type]} til en verdi av ${formatCurrency(bortfaltNaturalytelse.beloepPerMnd)} kr.`;
+        return `${formatDate(bortfaltNaturalytelse.fomDato)} får du ikke lenger ${NaturalytelseType[bortfaltNaturalytelse.type]} til en verdi av ${formatCurrency(bortfaltNaturalytelse.beløpPerMnd)} kr.`;
     }
 
-    return `Mellom ${formatDate(bortfaltNaturalytelse.fomDato)} og ${formatDate(bortfaltNaturalytelse.tomDato)} får du ikke lenger ${NaturalytelseType[bortfaltNaturalytelse.type]} til en verdi av ${formatCurrency(bortfaltNaturalytelse.beloepPerMnd)} kr.`;
+    return `Mellom ${formatDate(bortfaltNaturalytelse.fomDato)} og ${formatDate(bortfaltNaturalytelse.tomDato)} får du ikke lenger ${NaturalytelseType[bortfaltNaturalytelse.type]} til en verdi av ${formatCurrency(bortfaltNaturalytelse.beløpPerMnd)} kr.`;
 };
 
 const InntektsmeldingInfoBlokk = ({

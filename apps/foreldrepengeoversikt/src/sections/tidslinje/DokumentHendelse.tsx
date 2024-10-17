@@ -1,12 +1,14 @@
 import classNames from 'classnames';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 
 import { FileContent } from '@navikt/ds-icons';
 import { Link } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import { Dokument } from './../../types/Dokument';
-import { lagUrl } from './../../utils/dokumenterUtils';
+import Routes from '../../routes/routes';
+import { Dokument } from '../../types/Dokument';
+import { lagUrl } from '../../utils/dokumenterUtils';
 import './dokument-hendelse.css';
 
 interface Props {
@@ -14,7 +16,7 @@ interface Props {
     visesITidslinjen: boolean;
 }
 
-const DokumentHendelse: React.FunctionComponent<Props> = ({ dokument, visesITidslinjen }) => {
+export const DokumentHendelse: React.FunctionComponent<Props> = ({ dokument, visesITidslinjen }) => {
     const bem = bemUtils('dokument-hendelse');
     const { tittel } = dokument;
     const url = lagUrl(dokument);
@@ -29,4 +31,21 @@ const DokumentHendelse: React.FunctionComponent<Props> = ({ dokument, visesITids
     );
 };
 
-export default DokumentHendelse;
+export const InntektsmeldingDokumentHendelse = ({ dokument, visesITidslinjen }: Props) => {
+    const { saksnummer } = useParams();
+    const bem = bemUtils('dokument-hendelse');
+    const { tittel } = dokument;
+
+    return (
+        <li className={classNames(`${bem.block} ${visesITidslinjen ? bem.modifier('medium') : bem.modifier('large')}`)}>
+            <FileContent className={bem.element('ikon')} aria-hidden={true} />
+            <Link
+                as={RouterLink}
+                to={`${Routes.SAKSOVERSIKT}/${saksnummer}/${Routes.INNTEKTSMELDING}/${dokument.journalpostId}`}
+                className={bem.element('ikon')}
+            >
+                {tittel}
+            </Link>
+        </li>
+    );
+};

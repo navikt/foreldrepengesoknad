@@ -31,8 +31,7 @@ export const InntektsmeldingDtoSchema = z.object({
     arbeidsgiverNavn: z.string(),
     journalpostId: z.string(),
     kontaktpersonNavn: z.string(),
-    kontaktpersonNummer: z.string(),
-    innsendingstidspunkt: z.string(),
+    kontaktpersonTelefonNummer: z.string(),
     mottattTidspunkt: z.string(),
     startDatoPermisjon: z.string(), //TODO: gjelder svp??
     refusjonsperioder: z.array(
@@ -45,7 +44,7 @@ export const InntektsmeldingDtoSchema = z.object({
         z.object({
             fomDato: z.string(),
             tomDato: z.string(),
-            beloepPerMnd: z.number(),
+            beløpPerMnd: z.number(),
             type: NaturalytelseTypeSchema,
         }),
     ),
