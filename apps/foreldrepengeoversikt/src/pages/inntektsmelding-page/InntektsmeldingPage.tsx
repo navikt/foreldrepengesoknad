@@ -1,4 +1,4 @@
-import { PersonIcon, SparklesIcon, WalletIcon } from '@navikt/aksel-icons';
+import { SparklesIcon, WalletIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import classNames from 'classnames';
 import { ReactNode } from 'react';
@@ -79,29 +79,13 @@ export const InntektsmeldingPage = () => {
                     size="xsmall"
                     heading="Din arbeidsgiver"
                     Ikon={Office2}
-                    className="col-span-2 md:col-span-1"
+                    className="col-span-2"
                 >
                     <VStack>
                         <span>{inntektsmelding.arbeidsgiverNavn}</span>
                         {inntektsmelding.stillingsprosent !== undefined && (
                             <span>Din stillingsprosent: {inntektsmelding.stillingsprosent}%</span>
                         )}
-                    </VStack>
-                </InntektsmeldingInfoBlokk>
-                <InntektsmeldingInfoBlokk
-                    size="xsmall"
-                    heading="Innsender"
-                    Ikon={PersonIcon}
-                    className="col-span-2 md:col-span-1"
-                >
-                    <VStack gap="1">
-                        <span>
-                            {inntektsmelding.kontaktpersonNavn}, {inntektsmelding.kontaktpersonTelefonNummer}
-                        </span>
-                        <BodyShort>
-                            Det er {inntektsmelding.kontaktpersonNavn} du kan ta kontakt med hvis du ser noe feil i
-                            inntektsmeldingen.{' '}
-                        </BodyShort>
                     </VStack>
                 </InntektsmeldingInfoBlokk>
                 <InntektsmeldingSpørsmålOgSvar />

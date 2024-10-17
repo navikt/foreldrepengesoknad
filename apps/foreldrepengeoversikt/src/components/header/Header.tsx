@@ -137,7 +137,7 @@ export const InntektsmeldingHeader = ({ inntektsmelding }: { inntektsmelding: In
             <Heading level="1" size="medium">
                 Din inntekt rapportert av {capitalizeFirstLetterInEveryWordOnly(inntektsmelding.arbeidsgiverNavn)}
             </Heading>
-            <Detail textColor="subtle">Endret {formatDateMedUkedag(inntektsmelding.innsendingstidspunkt)}</Detail>
+            <Detail textColor="subtle">Endret {formatDateMedUkedag(inntektsmelding.mottattTidspunkt)}</Detail>
         </SimpleHeaderWrapper>
     );
 };
