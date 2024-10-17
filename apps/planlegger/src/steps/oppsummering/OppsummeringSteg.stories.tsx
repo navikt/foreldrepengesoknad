@@ -214,7 +214,7 @@ export const FarOgFarFødsel: Story = {
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: false,
-            termindato: '2024-07-24',
+            termindato: '2024-11-24',
             antallBarn: '1',
         },
         arbeidssituasjon: {
@@ -441,8 +441,8 @@ export const KunMorHarRett: Story = {
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: true,
-            termindato: '2024-07-01',
-            fødselsdato: '2024-07-01',
+            termindato: '2024-12-01',
+            fødselsdato: '2024-12-01',
             antallBarn: '1',
         },
         hvorMye: {
