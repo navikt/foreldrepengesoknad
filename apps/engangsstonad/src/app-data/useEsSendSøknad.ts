@@ -29,6 +29,7 @@ const mapBarn = (omBarnet: OmBarnet, dokumentasjon?: Dokumentasjon) => {
             type: 'fødsel',
             antallBarn: omBarnet.antallBarn,
             fødselsdato: omBarnet.fødselsdato,
+            termindato: omBarnet.termindato,
             vedleggreferanser: [],
         };
     }
