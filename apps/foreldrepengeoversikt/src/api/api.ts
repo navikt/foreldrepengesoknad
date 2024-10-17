@@ -57,10 +57,13 @@ export const hentInntektsmelding = (saksnummer: string) =>
                 throw new Error('Responsen fra serveren matchet ikke forventet format');
             }
 
-            return parsedJson.data.map((im) => ({
-                ...im,
-                arbeidsgiverNavn: capitalizeFirstLetterInEveryWordOnly(im.arbeidsgiverNavn) ?? '',
-            }));
+            // Versjon 1 kan ikke brukes og skal ignoreres.
+            return parsedJson.data
+                .filter((im) => im.versjon >= 2)
+                .map((im) => ({
+                    ...im,
+                    arbeidsgiverNavn: capitalizeFirstLetterInEveryWordOnly(im.arbeidsgiverNavn) ?? '',
+                }));
         },
     });
 
