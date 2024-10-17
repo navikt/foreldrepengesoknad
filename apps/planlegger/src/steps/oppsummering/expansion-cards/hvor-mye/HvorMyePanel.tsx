@@ -38,7 +38,7 @@ const HvorMyePanel: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }
             <BluePanel>
                 <VStack gap="2">
                     <HStack justify="space-between" wrap={false}>
-                        <Heading size="xsmall" level="4">
+                        <Heading size="xsmall" level="4" spacing>
                             <FormattedMessage
                                 id="HvorMyeOppsummering.DuVilFå"
                                 values={{

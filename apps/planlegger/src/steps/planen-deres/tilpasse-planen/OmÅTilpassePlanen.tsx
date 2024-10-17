@@ -12,6 +12,7 @@ import { BodyLong, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
+import Barnehageplass from './Barnehageplass';
 import DeFørsteSeksUkene from './DeFørsteSeksUkene';
 import FørTermin from './FørTermin';
 import JobbeSamtidig from './JobbeSamtidig';
@@ -78,6 +79,7 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
                                     arbeidssituasjon={arbeidssituasjon}
                                 />
                             )}
+                            <Barnehageplass />
 
                             {kunFarSøker2EllerMedmorHarRett && <ToUkerRundtFødsel hvemPlanlegger={hvemPlanlegger} />}
 
@@ -90,6 +92,8 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
                     )}
                     {erBarnetAdoptert(barnet) && (
                         <>
+                            <Barnehageplass />
+
                             <LeggeTilFerie hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} />
 
                             <JobbeSamtidig />

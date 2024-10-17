@@ -99,19 +99,21 @@ const Adopsjon: React.FunctionComponent<Props> = ({
                     shouldFadeIn
                     color="green"
                 >
-                    <BodyLong>
-                        <FormattedMessage id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekst" />
-                    </BodyLong>
-                    <BodyLong>
-                        <FormattedMessage
-                            id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekstDel2Deg"
-                            values={{
-                                erAlenesøker,
-                                erFarEllerMedmor,
-                                hvem: finnSøker2Tekst(intl, hvemPlanlegger),
-                            }}
-                        />
-                    </BodyLong>
+                    <VStack gap="2">
+                        <BodyLong>
+                            <FormattedMessage id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekst" />
+                        </BodyLong>
+                        <BodyLong>
+                            <FormattedMessage
+                                id="OmBarnetSteg.Adopsjon.ForeldrepengerInfoTekstDel2Deg"
+                                values={{
+                                    erAlenesøker,
+                                    erFarEllerMedmor,
+                                    hvem: finnSøker2Tekst(intl, hvemPlanlegger),
+                                }}
+                            />
+                        </BodyLong>
+                    </VStack>
                 </Infobox>
             )}
         </>

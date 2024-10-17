@@ -106,17 +106,12 @@ describe('<Planlegger>', () => {
         expect(screen.getByText('Ingen av dere har rett til foreldrepenger')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Tilbake til spørsmålene'));
 
-        // TODO Fiks denne: Skal ikke gå tilbake til barnehageplass
-        expect(screen.getAllByText('Barnehageplass')).toHaveLength(2);
-        expect(screen.getByText('Steg 3 av 4')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Forrige'));
-
         expect(screen.getAllByText('Barnet')).toHaveLength(2);
-        expect(screen.getByText('Steg 2 av 4')).toBeInTheDocument();
+        expect(screen.getByText('Steg 2 av 3')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
         expect(screen.getAllByText('Hvem planlegger?')).toHaveLength(2);
-        expect(screen.getByText('Steg 1 av 4')).toBeInTheDocument();
+        expect(screen.getByText('Steg 1 av 3')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
         expect(screen.getByText('Planleggeren består av to deler:')).toBeInTheDocument();
@@ -199,7 +194,103 @@ describe('<Planlegger>', () => {
         expect(screen.getByText('Steg 4 av 8')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 
-        expect(screen.getAllByText('Baarnehageplass')).toHaveLength(2);
+        expect(screen.getAllByText('Barnehageplass')).toHaveLength(2);
+        expect(screen.getByText('Steg 3 av 8')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Forrige'));
+
+        expect(screen.getAllByText('Barnet')).toHaveLength(2);
+        expect(screen.getByText('Steg 2 av 8')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Forrige'));
+
+        expect(screen.getAllByText('Hvem planlegger?')).toHaveLength(2);
+        expect(screen.getByText('Steg 1 av 8')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Forrige'));
+
+        expect(screen.getByText('Planleggeren består av to deler:')).toBeInTheDocument();
+    });
+
+    it('skal ikke vise barnehageplass-steget når adopsjon', async () => {
+        await applyRequestHandlers(DefaultMockaStønadskontoerOgSatser.parameters.msw);
+        const utils = render(<DefaultMockaStønadskontoerOgSatser />);
+
+        expect(await screen.findByText('Planleggeren består av to deler:')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Start'));
+
+        expect(screen.getAllByText('Hvem planlegger?')).toHaveLength(2);
+        expect(screen.getByText('Steg 1 av 9')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Mor og far'));
+        const morNavn = utils.getByLabelText('Hva heter mor? (valgfritt)');
+        await userEvent.type(morNavn, 'Klara');
+        const farNavn = utils.getByLabelText('Hva heter far? (valgfritt)');
+        await userEvent.type(farNavn, 'Espen');
+        await userEvent.click(screen.getByText('Neste'));
+
+        expect(screen.getAllByText('Barnet')).toHaveLength(2);
+        expect(screen.getByText('Steg 2 av 9')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Adopsjon'));
+        await userEvent.click(screen.getByText('Ett'));
+        const overtakelse = utils.getByLabelText('Når tar dere over omsorgen for barnet?');
+        await userEvent.type(overtakelse, dayjs().subtract(20, 'day').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(overtakelse);
+        const fødselsdato = utils.getByLabelText('Når ble barnet født?');
+        await userEvent.type(fødselsdato, dayjs().subtract(20, 'day').format(DDMMYYYY_DATE_FORMAT));
+        fireEvent.blur(fødselsdato);
+
+        await userEvent.click(screen.getByText('Neste'));
+
+        expect(screen.getAllByText('Arbeidssituasjon')).toHaveLength(2);
+        expect(screen.getByText('Steg 3 av 8')).toBeInTheDocument();
+        await userEvent.click(
+            screen.getByText('Har jobbet 6 av de siste 10 månedene og har tjent mer enn 62 014 kr det siste året'),
+        );
+        await userEvent.click(screen.getByText('Ja'));
+        await userEvent.click(screen.getByText('Neste'));
+
+        expect(screen.getAllByText('Hvor mye')).toHaveLength(2);
+        expect(screen.getByText('Steg 4 av 8')).toBeInTheDocument();
+        const lønnSøker1 = utils.getByLabelText('Hva tjener Klara ca. i måneden? (valgfritt)');
+        await userEvent.type(lønnSøker1, '50000');
+        const lønnSøker2 = utils.getByLabelText('Hva tjener Espen ca. i måneden? (valgfritt)');
+        await userEvent.type(lønnSøker2, '50000');
+        await userEvent.click(screen.getByText('Neste'));
+
+        expect(screen.getAllByText('Hvor lenge')).toHaveLength(2);
+        expect(screen.getByText('Steg 5 av 8')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('100 % utbetaling over 49 uker'));
+        await userEvent.click(screen.getByText('Neste'));
+
+        expect(screen.getAllByText('Fordeling')).toHaveLength(2);
+        expect(screen.getByText('Steg 6 av 8')).toBeInTheDocument();
+        await userEvent.selectOptions(
+            utils.getByLabelText('Hvordan vil dere fordele 16 uker med fellesperiode?'),
+            '45',
+        );
+        await userEvent.click(screen.getByText('Neste'));
+
+        expect(screen.getByText('Planen deres')).toBeInTheDocument();
+        expect(screen.getByText('Steg 7 av 8')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Neste'));
+
+        expect(screen.getAllByText('Oppsummering')).toHaveLength(2);
+        await userEvent.click(screen.getByText('Tilbake til spørsmålene'));
+
+        expect(screen.getByText('Planen deres')).toBeInTheDocument();
+        expect(screen.getByText('Steg 7 av 8')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Forrige'));
+
+        expect(screen.getAllByText('Fordeling')).toHaveLength(2);
+        expect(screen.getByText('Steg 6 av 8')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Forrige'));
+
+        expect(screen.getAllByText('Hvor lenge')).toHaveLength(2);
+        expect(screen.getByText('Steg 5 av 8')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Forrige'));
+
+        expect(screen.getAllByText('Hvor mye')).toHaveLength(2);
+        expect(screen.getByText('Steg 4 av 8')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Forrige'));
+
+        expect(screen.getAllByText('Arbeidssituasjon')).toHaveLength(2);
         expect(screen.getByText('Steg 3 av 8')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Forrige'));
 

@@ -31,6 +31,8 @@ export const getSirkel = (color: PeriodeColor) => {
             return <div className={styles.greenStripedCircle} />;
         case PeriodeColor.GRAY:
             return <div className={styles.grayCircle} />;
+        case PeriodeColor.PURPLE:
+            return <div className={styles.purpleCircle} />;
         default:
             return null;
     }
@@ -48,6 +50,7 @@ const PANEL_STYLE = {
     [PeriodeColor.GREENSTRIPED]: styles.greenPanel,
     [PeriodeColor.GRAY]: styles.grayPanel,
     [PeriodeColor.PINK]: styles.pinkPanel,
+    [PeriodeColor.PURPLE]: styles.purlpePanel,
     [PeriodeColor.BLACK]: styles.grayPanel,
     [PeriodeColor.GREENOUTLINE]: styles.greenOutlinePanel,
     [PeriodeColor.BLUEOUTLINE]: styles.blueOutlinePanel,

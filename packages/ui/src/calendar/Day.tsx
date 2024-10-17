@@ -15,6 +15,7 @@ const DAY_STYLE = {
     [PeriodeColor.LIGHTGREEN]: styles.lightgreenDay,
     [PeriodeColor.GRAY]: styles.grayDay,
     [PeriodeColor.PINK]: styles.pinkDay,
+    [PeriodeColor.PURPLE]: styles.purpleDay,
     [PeriodeColor.BLACK]: styles.blackDay,
     [PeriodeColor.BLUEOUTLINE]: styles.blueOutlineDay,
     [PeriodeColor.GREENOUTLINE]: styles.greenOutlineDay,

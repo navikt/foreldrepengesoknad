@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { erAlenesøker as erAlene, erFarOgFar } from 'utils/HvemPlanleggerUtils';
-import { erBarnetFødt } from 'utils/barnetUtils';
+import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 
 import { BodyShort, Heading, Link, Radio, Spacer, VStack } from '@navikt/ds-react';
 
@@ -51,6 +51,8 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ locale }) => {
 
         if (erBarnetFødt(formValues) && dayjs(formValues.fødselsdato).isBefore(DATE_3_YEARS_AGO)) {
             navigator.goToNextStep(PlanleggerRoutes.OPPSUMMERING);
+        } else if (erBarnetAdoptert(formValues)) {
+            navigator.goToNextStep(PlanleggerRoutes.ARBEIDSSITUASJON);
         } else {
             navigator.goToNextStep(PlanleggerRoutes.BARNEHAGEPLASS);
         }

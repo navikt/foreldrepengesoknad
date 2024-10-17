@@ -659,19 +659,46 @@ export const mapSaksperiodeTilPlanperiode = (
     saksperioder: SaksperiodeNy[],
     erFarEllerMedmor: boolean,
     gjelderAnnenPart: boolean,
+    familiehendelsedato: string,
 ) => {
     const result: Planperiode[] = [];
     const saksperioderUtenAvslåttePerioder = saksperioder.filter((p) => (p.resultat ? p.resultat.innvilget : true));
 
     saksperioderUtenAvslåttePerioder.forEach((p) => {
-        const planperiode: Planperiode = {
-            ...p,
-            id: `${p.fom} - ${p.tom} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak}`,
-            forelder: getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, p.oppholdÅrsak),
-            gjelderAnnenPart,
-        };
+        const tidsperiodenKrysserFamdato =
+            dayjs(p.fom).isBefore(familiehendelsedato) && dayjs(p.tom).isAfter(familiehendelsedato);
 
-        result.push(planperiode);
+        if (tidsperiodenKrysserFamdato) {
+            const planperiodeFør: Planperiode = {
+                ...p,
+                fom: p.fom,
+                tom: UttaksdagenString(familiehendelsedato).forrige(),
+                id: `${p.fom} - ${familiehendelsedato} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak}`,
+                forelder: getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, p.oppholdÅrsak),
+                gjelderAnnenPart,
+            };
+
+            const planperiodeEtter: Planperiode = {
+                ...p,
+                fom: UttaksdagenString(familiehendelsedato).denneEllerNeste(),
+                tom: p.tom,
+                id: `${familiehendelsedato} - ${p.tom} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak}`,
+                forelder: getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, p.oppholdÅrsak),
+                gjelderAnnenPart,
+            };
+
+            result.push(planperiodeFør);
+            result.push(planperiodeEtter);
+        } else {
+            const planperiode: Planperiode = {
+                ...p,
+                id: `${p.fom} - ${p.tom} - ${p.kontoType || p.oppholdÅrsak || p.utsettelseÅrsak || p.overføringÅrsak}`,
+                forelder: getForelderForPeriode(erFarEllerMedmor, gjelderAnnenPart, p.oppholdÅrsak),
+                gjelderAnnenPart,
+            };
+
+            result.push(planperiode);
+        }
     });
 
     return result;
