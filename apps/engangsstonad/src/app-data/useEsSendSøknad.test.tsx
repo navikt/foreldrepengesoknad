@@ -169,6 +169,7 @@ describe('useEsSendSøknad', () => {
                     barn: {
                         type: 'fødsel',
                         fødselsdato: '2024-01-01',
+                        termindato: '2024-01-01',
                         antallBarn: 1,
                         vedleggreferanser: [],
                     },
