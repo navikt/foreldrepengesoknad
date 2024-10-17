@@ -102,7 +102,7 @@ const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: Inntekt
     }
 
     if (refusjonsperioder.length === 0) {
-        return `Du vil få utbetaling direkte fra ${arbeidsgiverNavn}. NAV betaler da foreldrepenger til ${arbeidsgiverNavn}.`;
+        return `Du vil få utbetaling fra ${arbeidsgiverNavn}. NAV betaler da foreldrepenger til ${arbeidsgiverNavn}.`;
     }
 
     // TODO: vise beløp? og hvis beløp over 6G?
@@ -110,13 +110,12 @@ const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: Inntekt
     return (
         <VStack>
             <span>
-                Frem til {formatDate(førsteRefusjonsPeriode.fomDato)} får du utbetalt{' '}
-                {formatCurrencyWithKr(refusjonPrMnd)} fra {arbeidsgiverNavn}
+                Frem til {formatDate(førsteRefusjonsPeriode.fomDato)} får du utbetalt fra {arbeidsgiverNavn}
             </span>
             {refusjonsperioder.map((r) => (
                 <span key={r.fomDato}>
-                    Fra {formatDate(r.fomDato)} får du utbetalt {formatCurrencyWithKr(r.refusjonsbeløpMnd)} direkte fra{' '}
-                    {r.refusjonsbeløpMnd === 0 ? 'NAV' : arbeidsgiverNavn}
+                    Fra {formatDate(r.fomDato)} får du utbetalt{' '}
+                    {r.refusjonsbeløpMnd === 0 ? 'direkte fra NAV' : `fra ${arbeidsgiverNavn}`}
                 </span>
             ))}
         </VStack>
