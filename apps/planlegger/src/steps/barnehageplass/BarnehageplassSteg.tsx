@@ -9,7 +9,7 @@ import { getFamiliehendelsedato } from 'steps/oppsummering/expansion-cards/Barne
 import { OmBarnet } from 'types/Barnet';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
-import { Uttaksdata } from 'utils/uttakUtils';
+import { Uttaksdata, getUttaksdagTilOgMedDato } from 'utils/uttakUtils';
 
 import { BodyLong, Heading, Link, VStack } from '@navikt/ds-react';
 
@@ -23,18 +23,24 @@ export const barnehagestartDato = (barnet: OmBarnet) => {
     const dato = erBarnetAdoptert(barnet) ? barnet.fødselsdato : barnet.termindato;
 
     if (dayjs(dato).month() < 8) {
-        return dayjs(dato).month(7).add(1, 'year').endOf('month').isoWeekday(5).format(ISO_DATE_FORMAT);
+        return getUttaksdagTilOgMedDato(
+            dayjs(dato).month(7).add(1, 'year').endOf('week').endOf('month').format(ISO_DATE_FORMAT),
+        );
     }
     if (dayjs(dato).month() >= 8 && dayjs(dato).month() < 11) {
-        return dayjs(dato).add(1, 'year').endOf('month').isoWeekday(5).format(ISO_DATE_FORMAT);
+        return getUttaksdagTilOgMedDato(
+            dayjs(dato).add(1, 'year').endOf('week').endOf('month').format(ISO_DATE_FORMAT),
+        );
     }
-    return dayjs(dato)
-        .startOf('year')
-        .add(2, 'year')
-        .add(7, 'months')
-        .endOf('month')
-        .isoWeekday(5)
-        .format(ISO_DATE_FORMAT);
+    return getUttaksdagTilOgMedDato(
+        dayjs(dato)
+            .startOf('year')
+            .add(2, 'year')
+            .add(7, 'months')
+            .endOf('week')
+            .endOf('month')
+            .format(ISO_DATE_FORMAT),
+    );
 };
 
 interface Props {
