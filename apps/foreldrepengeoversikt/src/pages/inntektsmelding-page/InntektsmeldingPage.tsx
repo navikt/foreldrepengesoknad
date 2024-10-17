@@ -81,7 +81,12 @@ export const InntektsmeldingPage = () => {
                     Ikon={Office2}
                     className="col-span-2 md:col-span-1"
                 >
-                    <VStack>{inntektsmelding.arbeidsgiverNavn}</VStack>
+                    <VStack>
+                        <span>{inntektsmelding.arbeidsgiverNavn}</span>
+                        {inntektsmelding.stillingsprosent !== undefined && (
+                            <span>Din stillingsprosent: {inntektsmelding.stillingsprosent}%</span>
+                        )}
+                    </VStack>
                 </InntektsmeldingInfoBlokk>
                 <InntektsmeldingInfoBlokk
                     size="xsmall"
