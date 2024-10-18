@@ -133,7 +133,7 @@ export const SkjemaSteg: FunctionComponent<Props> = ({
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    {valgteArbeidsforhold && Object.keys(valgteArbeidsforhold.arbeidMedTilrettelegging).length > 1 && (
+                    {valgteArbeidsforhold && valgteArbeidsforhold.length > 1 && (
                         <Bedriftsbanner arbeidsforholdType={typeArbeidsgiver} arbeidsforholdNavn={navnArbeidsgiver} />
                     )}
                     <VStack gap="4">
@@ -170,13 +170,10 @@ export const SkjemaSteg: FunctionComponent<Props> = ({
                     <StepButtonsHookForm
                         goToPreviousStep={() => {
                             if (valgteArbeidsforhold) {
-                                const indexForrige =
-                                    valgteArbeidsforhold.arbeidMedTilrettelegging.findIndex((id) => id === valgtId) - 1;
+                                const indexForrige = valgteArbeidsforhold.findIndex((id) => id === valgtId) - 1;
 
                                 oppdaterValgtTilretteleggingId(
-                                    indexForrige < 0
-                                        ? undefined
-                                        : valgteArbeidsforhold.arbeidMedTilrettelegging[indexForrige - 1],
+                                    indexForrige < 0 ? undefined : valgteArbeidsforhold[indexForrige - 1],
                                 );
                             }
 

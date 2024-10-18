@@ -5,7 +5,7 @@ import useSvpNavigator from 'appData/useSvpNavigator';
 import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { TilretteleggingPerioder } from 'types/Tilrettelegging';
+import { PeriodeMedVariasjon } from 'types/Tilrettelegging';
 import { getKanHaSvpFremTilTreUkerFørTermin } from 'utils/dateUtils';
 import {
     getArbeidsgiverNavnForTilrettelegging,
@@ -22,6 +22,10 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import Bedriftsbanner from '../Bedriftsbanner';
 import { NEW_PERIODE, PerioderFieldArray } from './PerioderFieldArray';
+
+type TilretteleggingPerioderFormValues = {
+    varierendePerioder: PeriodeMedVariasjon[];
+};
 
 export interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -57,8 +61,11 @@ export const PerioderStep: FunctionComponent<Props> = ({
     const navnArbeidsgiver = getArbeidsgiverNavnForTilrettelegging(intl, valgtTilretteleggingId, arbeidsforhold);
     const valgtTilrettelegging = tilrettelegginger[valgtTilretteleggingId];
 
-    const onSubmit = (values: TilretteleggingPerioder) => {
-        oppdaterTilretteleggingerPerioder({ ...tilretteleggingerPerioder, [valgtTilretteleggingId]: values });
+    const onSubmit = (values: TilretteleggingPerioderFormValues) => {
+        oppdaterTilretteleggingerPerioder({
+            ...tilretteleggingerPerioder,
+            [valgtTilretteleggingId]: values.varierendePerioder,
+        });
 
         const nesteTilretteleggingId = getNesteTilretteleggingId(valgtTilretteleggingId, valgteArbeidsforhold);
         if (nesteTilretteleggingId) {
@@ -68,9 +75,9 @@ export const PerioderStep: FunctionComponent<Props> = ({
         return navigator.goToNextStep(nesteTilretteleggingId ? SøknadRoutes.SKJEMA : SøknadRoutes.OPPSUMMERING);
     };
 
-    const formMethods = useForm<TilretteleggingPerioder>({
+    const formMethods = useForm<TilretteleggingPerioderFormValues>({
         shouldUnregister: true,
-        defaultValues: tilretteleggingerPerioder?.[valgtTilretteleggingId] ?? { varierendePerioder: [NEW_PERIODE] },
+        defaultValues: { varierendePerioder: tilretteleggingerPerioder?.[valgtTilretteleggingId] ?? [NEW_PERIODE] },
     });
 
     return (
@@ -84,7 +91,7 @@ export const PerioderStep: FunctionComponent<Props> = ({
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    {!!valgteArbeidsforhold && valgteArbeidsforhold.arbeidMedTilrettelegging.length > 1 && (
+                    {!!valgteArbeidsforhold && valgteArbeidsforhold.length > 1 && (
                         <Bedriftsbanner arbeidsforholdType={typeArbeidsgiver} arbeidsforholdNavn={navnArbeidsgiver} />
                     )}
                     <div>

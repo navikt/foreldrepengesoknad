@@ -1,7 +1,7 @@
 import { AttachmentDTO } from 'types/AttachmentDTO';
 import { Barn } from 'types/Barn';
 import { SøknadDTO } from 'types/Søknad';
-import { DelvisTilrettelegging, IngenTilrettelegging, TilretteleggingPerioder } from 'types/Tilrettelegging';
+import { DelvisTilrettelegging, IngenTilrettelegging, PeriodeMedVariasjon } from 'types/Tilrettelegging';
 import { TilretteleggingDTO } from 'types/TilretteleggingDto';
 import { getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import {
@@ -21,7 +21,7 @@ const finnTilretteleggingsbehov = (
     alleArbeidsforhold: Arbeidsforhold[],
     barn: Barn,
     tilrettelegginger: Record<string, DelvisTilrettelegging | IngenTilrettelegging>,
-    tilretteleggingerPerioder?: Record<string, TilretteleggingPerioder>,
+    tilretteleggingerPerioder?: Record<string, PeriodeMedVariasjon[]>,
     egenNæring?: EgenNæring,
     frilans?: Frilans,
 ): TilretteleggingDTO[] => {
@@ -29,7 +29,7 @@ const finnTilretteleggingsbehov = (
 
     return Object.keys(tilrettelegginger).map((tilretteleggingId) => {
         const tilrettelegging = tilrettelegginger[tilretteleggingId];
-        const perioder = tilretteleggingerPerioder?.[tilretteleggingId]?.varierendePerioder;
+        const perioder = tilretteleggingerPerioder?.[tilretteleggingId];
 
         const stillinger = getArbeidsgiverStillingerForTilrettelegging(
             barn.termindato,

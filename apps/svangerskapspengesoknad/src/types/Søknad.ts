@@ -1,8 +1,9 @@
 import { ArbeidIUtlandetInput } from 'types/ArbeidIUtlandet';
 import { Barn } from 'types/Barn';
 
-import { Attachment, EgenNæring, Frilans, LocaleNo, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { EgenNæring, Frilans, LocaleNo, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
+import { AttachmentDTO } from './AttachmentDTO';
 import { TilretteleggingDTO } from './TilretteleggingDto';
 
 export interface SøknadDTO {
@@ -13,5 +14,5 @@ export interface SøknadDTO {
     andreInntekterSiste10Mnd: ArbeidIUtlandetInput[] | undefined;
     utenlandsopphold: UtenlandsoppholdPeriode[] | undefined;
     tilretteleggingsbehov: TilretteleggingDTO[];
-    vedlegg: Attachment[];
+    vedlegg: AttachmentDTO[];
 }

@@ -4,7 +4,6 @@ import useSvpNavigator from 'appData/useSvpNavigator';
 import { useTilretteleggingerHelper } from 'appData/useTilretteleggingerHelper';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { ValgteArbeidsforhold } from 'types/ValgteArbeidsforhold';
 
 import { Checkbox, VStack } from '@navikt/ds-react';
 
@@ -15,6 +14,10 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 
 import FlereArbeidsforholdGuidePanel from './FlereArbeidsforholdGuidePanel';
 import { getOptionNavn, mapArbeidsforholdToVelgArbeidOptions } from './velgArbeidFormUtils';
+
+type VelgArbeidForm = {
+    arbeidMedTilrettelegging: string[];
+};
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -46,11 +49,11 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
         egenNæring,
     );
 
-    const onSubmit = (formValues: ValgteArbeidsforhold) => {
-        oppdaterValgteArbeidsforhold(formValues);
+    const onSubmit = (formValues: VelgArbeidForm) => {
+        oppdaterValgteArbeidsforhold(formValues.arbeidMedTilrettelegging);
 
-        if (valgteArbeidsforhold?.arbeidMedTilrettelegging && tilrettelegginger) {
-            const valgSomSkalFjernes = valgteArbeidsforhold.arbeidMedTilrettelegging.filter(
+        if (valgteArbeidsforhold && tilrettelegginger) {
+            const valgSomSkalFjernes = valgteArbeidsforhold.filter(
                 (x) => !formValues.arbeidMedTilrettelegging.includes(x),
             );
             fjernTilrettelegginger(valgSomSkalFjernes);
@@ -59,8 +62,8 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
         return navigator.goToNextDefaultStep();
     };
 
-    const formMethods = useForm<ValgteArbeidsforhold>({
-        defaultValues: valgteArbeidsforhold,
+    const formMethods = useForm<VelgArbeidForm>({
+        defaultValues: valgteArbeidsforhold ? { arbeidMedTilrettelegging: valgteArbeidsforhold } : undefined,
     });
 
     const arbeidMedTilrettelegging = formMethods.watch('arbeidMedTilrettelegging');

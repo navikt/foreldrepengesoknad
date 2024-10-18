@@ -1,8 +1,7 @@
 import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
 import { ArbeidIUtlandet } from 'types/ArbeidIUtlandet';
 import { Barn } from 'types/Barn';
-import { DelvisTilrettelegging, IngenTilrettelegging, TilretteleggingPerioder } from 'types/Tilrettelegging';
-import { ValgteArbeidsforhold } from 'types/ValgteArbeidsforhold';
+import { DelvisTilrettelegging, IngenTilrettelegging, PeriodeMedVariasjon } from 'types/Tilrettelegging';
 
 import {
     ArbeidsforholdOgInntektSvp,
@@ -42,10 +41,10 @@ export type ContextDataMap = {
     [ContextDataType.FRILANS]?: Frilans;
     [ContextDataType.ARBEID_I_UTLANDET]?: ArbeidIUtlandet;
     [ContextDataType.EGEN_NÆRING]?: EgenNæring;
-    [ContextDataType.VALGTE_ARBEIDSFORHOLD]?: ValgteArbeidsforhold;
+    [ContextDataType.VALGTE_ARBEIDSFORHOLD]?: string[];
     [ContextDataType.TILRETTELEGGINGER_VEDLEGG]?: Record<string, Attachment[]>;
     [ContextDataType.TILRETTELEGGINGER]?: Record<string, DelvisTilrettelegging | IngenTilrettelegging>;
-    [ContextDataType.TILRETTELEGGINGER_PERIODER]?: Record<string, TilretteleggingPerioder>;
+    [ContextDataType.TILRETTELEGGINGER_PERIODER]?: Record<string, PeriodeMedVariasjon[]>;
     [ContextDataType.VALGT_TILRETTELEGGING_ID]?: string;
 };
 

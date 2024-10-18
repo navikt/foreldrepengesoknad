@@ -58,7 +58,7 @@ function VirksomhetSummary({ alleArbeidsforhold }: { readonly alleArbeidsforhold
 
     return tilretteleggingIder.map((tilretteleggingId) => {
         const tilrettelegging = tilrettelegginger[tilretteleggingId];
-        const perioder = tilretteleggingerPerioder?.[tilretteleggingId]?.varierendePerioder;
+        const perioder = tilretteleggingerPerioder?.[tilretteleggingId];
 
         const arbeidsforhold = alleArbeidsforhold.find((a) => a.arbeidsgiverId === tilretteleggingId);
         const stillinger = getArbeidsgiverStillingerForTilrettelegging(
@@ -109,13 +109,13 @@ function FrilansSummary() {
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
 
     const perioder =
-        tilretteleggingerPerioder && tilretteleggingerPerioder[FRILANS_ID]?.varierendePerioder?.length > 0
+        tilretteleggingerPerioder && tilretteleggingerPerioder[FRILANS_ID]?.length > 0
             ? tilretteleggingerPerioder[FRILANS_ID]
             : undefined;
 
     const stillinger = [{ fom: frilans.oppstart, stillingsprosent: 100 }];
     const mappedPerioder = perioder
-        ? mapFlereTilretteleggingPerioder(perioder.varierendePerioder, sisteDagForSvangerskapspenger, stillinger)
+        ? mapFlereTilretteleggingPerioder(perioder, sisteDagForSvangerskapspenger, stillinger)
         : mapEnTilretteleggingPeriode(frilansTilrettelegging, sisteDagForSvangerskapspenger, stillinger);
 
     return (
@@ -177,13 +177,13 @@ function SelvstendigNæringsdrivendeSummary() {
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
 
     const perioder =
-        tilretteleggingerPerioder && tilretteleggingerPerioder[FRILANS_ID]?.varierendePerioder?.length > 0
+        tilretteleggingerPerioder && tilretteleggingerPerioder[FRILANS_ID]?.length > 0
             ? tilretteleggingerPerioder[FRILANS_ID]
             : undefined;
 
     const stillinger = [{ fom: egenNæring.fom, tom: egenNæring.tom, stillingsprosent: 100 }];
     const mappedPerioder = perioder
-        ? mapFlereTilretteleggingPerioder(perioder.varierendePerioder, sisteDagForSvangerskapspenger, stillinger)
+        ? mapFlereTilretteleggingPerioder(perioder, sisteDagForSvangerskapspenger, stillinger)
         : mapEnTilretteleggingPeriode(tilretteleggingMedSN, sisteDagForSvangerskapspenger, stillinger);
 
     return (
