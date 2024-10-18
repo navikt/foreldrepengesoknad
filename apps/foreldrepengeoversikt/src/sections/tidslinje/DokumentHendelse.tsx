@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import classNames from 'classnames';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 
@@ -6,6 +7,7 @@ import { Link } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
+import { hentInntektsmelding } from '../../api/api';
 import Routes from '../../routes/routes';
 import { Dokument } from '../../types/Dokument';
 import { lagUrl } from '../../utils/dokumenterUtils';
@@ -36,6 +38,10 @@ export const InntektsmeldingDokumentHendelse = ({ dokument, visesITidslinjen }: 
     const bem = bemUtils('dokument-hendelse');
     const { tittel } = dokument;
 
+    const arbeidsgiverNavn = (useQuery(hentInntektsmelding(saksnummer!)).data ?? []).find(
+        (im) => im.journalpostId === dokument.journalpostId,
+    )?.arbeidsgiverNavn;
+
     return (
         <li className={classNames(`${bem.block} ${visesITidslinjen ? bem.modifier('medium') : bem.modifier('large')}`)}>
             <FileContent className={bem.element('ikon')} aria-hidden={true} />
@@ -45,6 +51,7 @@ export const InntektsmeldingDokumentHendelse = ({ dokument, visesITidslinjen }: 
                 className={bem.element('ikon')}
             >
                 {tittel}
+                {arbeidsgiverNavn ? ` for ${arbeidsgiverNavn}` : ''}
             </Link>
         </li>
     );
