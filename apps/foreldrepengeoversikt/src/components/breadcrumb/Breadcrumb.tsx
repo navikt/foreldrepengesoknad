@@ -62,7 +62,6 @@ const inntektsmelding = {
 };
 
 export const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
-    console.log(selectedRoute);
     switch (selectedRoute) {
         case OversiktRoutes.HOVEDSIDE:
             return [minSide, hovedside];

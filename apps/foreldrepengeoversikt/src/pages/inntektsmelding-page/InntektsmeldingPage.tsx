@@ -48,8 +48,8 @@ export const InntektsmeldingPage = () => {
                 >
                     <VStack gap="2">
                         <BodyShort>
-                            Månedsinntekten din har blitt beregnet ut fra gjennomsnittet av inntekten din de siste tre
-                            månedene før inntektsmeldingen ble sendt.
+                            Månedsinntekten din blir som regel beregnet ut fra gjennomsnittet av inntekten din de siste
+                            tre månedene før du skal ut i permisjon
                         </BodyShort>
                         {tjenerOver6G && (
                             <BodyShort>
