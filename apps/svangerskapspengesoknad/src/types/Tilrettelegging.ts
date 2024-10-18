@@ -7,11 +7,6 @@ export enum DelivisTilretteleggingPeriodeType {
     'VARIERTE_PERIODER' = 'VARIERTE_PERIODER',
 }
 
-export enum TilretteleggingstypeOptions {
-    'INGEN' = 'ingen',
-    'DELVIS' = 'delvis',
-}
-
 export enum Tilretteleggingstype {
     'INGEN' = 'ingen',
     'DELVIS' = 'delvis',
@@ -45,30 +40,49 @@ export enum TilOgMedDatoType {
     SISTE_DAG_MED_SVP = 'SISTE_DAG_MED_SVP',
 }
 
-export interface TilretteleggingPeriode {
+export type TilretteleggingPeriode = {
     type: Tilretteleggingstype;
-    behovForTilretteleggingFom: string;
     fom: string;
-    tom: string;
-    stillingsprosent: number;
-    arbeidsforhold: ArbeidsforholdForTilrettelegging;
-    risikofaktorer?: string;
-    tilretteleggingstiltak?: string;
-}
+    stillingsprosent?: number;
+};
 
 export interface PeriodeMedVariasjon {
-    type: TilretteleggingstypeOptions;
+    type: Tilretteleggingstype;
     tomType: TilOgMedDatoType;
     fom: string;
     tom?: string;
     stillingsprosent: string;
 }
 
+export type TilretteleggingPerioder = {
+    varierendePerioder: PeriodeMedVariasjon[];
+};
+
+export type TilretteleggingNew = {
+    behovForTilretteleggingFom: string;
+    risikofaktorer?: string;
+    tilretteleggingstiltak?: string;
+    enPeriodeMedTilretteleggingTomType: TilOgMedDatoType;
+    enPeriodeMedTilretteleggingTilbakeIJobbDato?: string;
+};
+
+export type DelvisTilrettelegging = {
+    type: Tilretteleggingstype.DELVIS;
+    delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType;
+    enPeriodeMedTilretteleggingStillingsprosent?: string;
+    enPeriodeMedTilretteleggingFom?: string;
+} & TilretteleggingNew;
+
+export type IngenTilrettelegging = {
+    type: Tilretteleggingstype.INGEN;
+    enPeriodeMedTilretteleggingFom: string;
+} & TilretteleggingNew;
+
 export interface Tilrettelegging {
     id: string;
     behovForTilretteleggingFom: string;
     arbeidsforhold: ArbeidsforholdForTilrettelegging;
-    type: TilretteleggingstypeOptions;
+    type: Tilretteleggingstype;
     enPeriodeMedTilretteleggingFom?: string;
     enPeriodeMedTilretteleggingStillingsprosent?: string;
     enPeriodeMedTilretteleggingTomType?: TilOgMedDatoType;

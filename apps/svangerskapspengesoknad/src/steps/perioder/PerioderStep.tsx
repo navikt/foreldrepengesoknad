@@ -5,8 +5,13 @@ import useSvpNavigator from 'appData/useSvpNavigator';
 import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import Tilrettelegging from 'types/Tilrettelegging';
+import { TilretteleggingPerioder } from 'types/Tilrettelegging';
 import { getKanHaSvpFremTilTreUkerFørTermin } from 'utils/dateUtils';
+import {
+    getArbeidsgiverNavnForTilrettelegging,
+    getNesteTilretteleggingId,
+    getTypeArbeidForTilrettelegging,
+} from 'utils/tilretteleggingUtils';
 
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';
 
@@ -16,22 +21,7 @@ import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import Bedriftsbanner from '../Bedriftsbanner';
-import PerioderFieldArray, { NEW_PERIODE, PerioderFormData } from './PerioderFieldArray';
-import { mapPerioderFormDataToState } from './perioderStepUtils';
-
-const getNesteTilretteleggingId = (
-    tilretteleggingBehov: Tilrettelegging[],
-    currentTilretteleggingId: string | undefined,
-): string | undefined => {
-    if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
-        return tilretteleggingBehov[0].id;
-    }
-    const nesteTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) + 1;
-    if (nesteTilretteleggingIndex === tilretteleggingBehov.length) {
-        return undefined;
-    }
-    return tilretteleggingBehov[nesteTilretteleggingIndex].id;
-};
+import { NEW_PERIODE, PerioderFieldArray } from './PerioderFieldArray';
 
 export interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -39,29 +29,38 @@ export interface Props {
     arbeidsforhold: Arbeidsforhold[];
 }
 
-const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }) => {
+export const PerioderStep: FunctionComponent<Props> = ({
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    arbeidsforhold,
+}) => {
     const intl = useIntl();
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
+    const tilretteleggingerPerioder = useContextGetData(ContextDataType.TILRETTELEGGINGER_PERIODER);
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
-    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
+    const frilans = useContextGetData(ContextDataType.FRILANS);
+    const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
+
     const vti = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
     const [valgtTilretteleggingId] = useState(vti); //For å unngå oppdatering ved neste
 
-    const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
+    const oppdaterTilretteleggingerPerioder = useContextSaveData(ContextDataType.TILRETTELEGGINGER_PERIODER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
 
-    const valgtTilrettelegging = notEmpty(tilrettelegginger.find((t) => t.id === valgtTilretteleggingId));
-    const erFlereTilrettelegginger = tilrettelegginger.length > 1;
+    const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barnet);
 
-    const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
+    const typeArbeidsgiver = getTypeArbeidForTilrettelegging(valgtTilretteleggingId, arbeidsforhold);
+    const navnArbeidsgiver = getArbeidsgiverNavnForTilrettelegging(intl, valgtTilretteleggingId, arbeidsforhold);
+    const valgtTilrettelegging = tilrettelegginger[valgtTilretteleggingId];
 
-    const onSubmit = (values: PerioderFormData) => {
-        const mappedTilrettelegging = mapPerioderFormDataToState(valgtTilretteleggingId, values, tilrettelegginger);
-        oppdaterTilrettelegginger(mappedTilrettelegging);
+    const onSubmit = (values: TilretteleggingPerioder) => {
+        oppdaterTilretteleggingerPerioder({ ...tilretteleggingerPerioder, [valgtTilretteleggingId]: values });
 
-        const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegginger, valgtTilretteleggingId);
+        const nesteTilretteleggingId = getNesteTilretteleggingId(valgtTilretteleggingId, valgteArbeidsforhold);
         if (nesteTilretteleggingId) {
             oppdaterValgtTilretteleggingId(nesteTilretteleggingId);
         }
@@ -69,15 +68,9 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
         return navigator.goToNextStep(nesteTilretteleggingId ? SøknadRoutes.SKJEMA : SøknadRoutes.OPPSUMMERING);
     };
 
-    // TODO (TOR) Denne typen er ikkje heilt korrekt for forma. Forma har ingen 'type' i periodane
-    const formMethods = useForm<PerioderFormData>({
+    const formMethods = useForm<TilretteleggingPerioder>({
         shouldUnregister: true,
-        defaultValues: {
-            varierendePerioder:
-                valgtTilrettelegging.varierendePerioder && valgtTilrettelegging.varierendePerioder.length > 0
-                    ? valgtTilrettelegging.varierendePerioder
-                    : [NEW_PERIODE],
-        },
+        defaultValues: tilretteleggingerPerioder?.[valgtTilretteleggingId] ?? { varierendePerioder: [NEW_PERIODE] },
     });
 
     return (
@@ -91,24 +84,29 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    {erFlereTilrettelegginger && <Bedriftsbanner arbeid={valgtTilrettelegging.arbeidsforhold} />}
+                    {!!valgteArbeidsforhold && valgteArbeidsforhold.arbeidMedTilrettelegging.length > 1 && (
+                        <Bedriftsbanner arbeidsforholdType={typeArbeidsgiver} arbeidsforholdNavn={navnArbeidsgiver} />
+                    )}
                     <div>
                         <Heading size="small">
                             <FormattedMessage id="perioder.varierende.heading"></FormattedMessage>
                         </Heading>
                         <BodyShort>
                             {kanHaSVPFremTilTreUkerFørTermin ? (
-                                <FormattedMessage id="perioder.varierende.description.termin"></FormattedMessage>
+                                <FormattedMessage id="perioder.varierende.description.termin" />
                             ) : (
-                                <FormattedMessage id="perioder.varierende.description.fødsel"></FormattedMessage>
+                                <FormattedMessage id="perioder.varierende.description.fødsel" />
                             )}
                         </BodyShort>
                     </div>
                     <PerioderFieldArray
                         valgtTilretteleggingId={valgtTilretteleggingId}
-                        barn={barn}
-                        tilrettelegginger={tilrettelegginger}
+                        barn={barnet}
                         kanHaSVPFremTilTreUkerFørTermin={kanHaSVPFremTilTreUkerFørTermin}
+                        arbeidsforhold={arbeidsforhold}
+                        egenNæring={egenNæring}
+                        frilans={frilans}
+                        behovForTilretteleggingFom={valgtTilrettelegging.behovForTilretteleggingFom}
                     />
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
@@ -116,5 +114,3 @@ const PerioderStep: FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
         </Step>
     );
 };
-
-export default PerioderStep;

@@ -4,18 +4,25 @@ import { Fragment } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Barn } from 'types/Barn';
-import Tilrettelegging, {
+import {
     PeriodeMedVariasjon,
     TilOgMedDatoType,
-    TilretteleggingstypeOptions,
+    TilretteleggingPerioder,
+    Tilretteleggingstype,
 } from 'types/Tilrettelegging';
 import { getDefaultMonth, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
-import { getOpprinneligStillingsprosent } from 'utils/tilretteleggingUtils';
+import {
+    getArbeidsgiverNavnForTilrettelegging,
+    getArbeidsgiverStillingerForTilrettelegging,
+    getOpprinneligStillingsprosent,
+    getPeriodeForTilrettelegging,
+} from 'utils/tilretteleggingUtils';
 
 import { Alert, BodyShort, Button, HStack, Heading, Radio, ReadMore, Tag, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hooks';
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
+import { Arbeidsforhold, EgenNæring, Frilans } from '@navikt/fp-types';
 import { HorizontalLine } from '@navikt/fp-ui';
 import { bemUtils } from '@navikt/fp-utils';
 import { isAfterOrSame, isBeforeOrSame, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
@@ -35,12 +42,8 @@ import {
     validateStillingsprosentPåPerioder,
 } from './perioderValidation';
 
-export type PerioderFormData = {
-    varierendePerioder: PeriodeMedVariasjon[];
-};
-
 export const NEW_PERIODE = {
-    type: TilretteleggingstypeOptions.DELVIS,
+    type: Tilretteleggingstype.DELVIS,
     fom: '',
     tom: '',
     stillingsprosent: '',
@@ -48,22 +51,46 @@ export const NEW_PERIODE = {
 } as PeriodeMedVariasjon;
 
 interface Props {
-    tilrettelegginger: Tilrettelegging[];
     barn: Barn;
     valgtTilretteleggingId: string;
     kanHaSVPFremTilTreUkerFørTermin: boolean;
+    behovForTilretteleggingFom: string;
+    arbeidsforhold: Arbeidsforhold[];
+    egenNæring?: EgenNæring;
+    frilans?: Frilans;
 }
 
-const PerioderFieldArray: React.FunctionComponent<Props> = ({
-    tilrettelegginger,
+export const PerioderFieldArray: React.FunctionComponent<Props> = ({
     barn,
     valgtTilretteleggingId,
     kanHaSVPFremTilTreUkerFørTermin,
+    behovForTilretteleggingFom,
+    arbeidsforhold,
+    egenNæring,
+    frilans,
 }) => {
     const bem = bemUtils('perioderStep');
     const intl = useIntl();
 
-    const formMethods = useFormContext<PerioderFormData>();
+    const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
+
+    const navnArbeidsgiver = getArbeidsgiverNavnForTilrettelegging(intl, valgtTilretteleggingId, arbeidsforhold);
+    const stillinger = getArbeidsgiverStillingerForTilrettelegging(
+        barn.termindato,
+        valgtTilretteleggingId,
+        arbeidsforhold,
+        egenNæring,
+        frilans,
+    );
+    const periode = getPeriodeForTilrettelegging(
+        barn.termindato,
+        valgtTilretteleggingId,
+        arbeidsforhold,
+        egenNæring,
+        frilans,
+    );
+
+    const formMethods = useFormContext<TilretteleggingPerioder>();
     const { fields, append, remove } = useFieldArray({
         name: 'varierendePerioder',
         control: formMethods.control,
@@ -71,19 +98,11 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
 
     const alleVarierendePerioder = formMethods.watch(`varierendePerioder`);
 
-    const valgtTilrettelegging = notEmpty(tilrettelegginger.find((t) => t.id === valgtTilretteleggingId));
-    const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
-    const sluttDatoArbeid = valgtTilrettelegging.arbeidsforhold.sluttdato;
-
-    const maxDato = sluttDatoArbeid
-        ? notEmpty(dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttDatoArbeid)))
+    const maxDato = periode.tom
+        ? notEmpty(dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(periode.tom)))
         : sisteDagForSvangerskapspenger;
-    const minDatoFom = new Date(valgtTilrettelegging.behovForTilretteleggingFom);
 
-    const opprinneligStillingsprosent = getOpprinneligStillingsprosent(
-        alleVarierendePerioder,
-        valgtTilrettelegging.arbeidsforhold.stillinger,
-    );
+    const opprinneligStillingsprosent = getOpprinneligStillingsprosent(alleVarierendePerioder, stillinger);
     const periodeDerSøkerErTilbakeIOpprinneligStilling = getPeriodeDerSøkerErTilbakeIFullStilling(
         alleVarierendePerioder,
         opprinneligStillingsprosent,
@@ -102,7 +121,7 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
                     alleVarierendePerioder[index],
                     opprinneligStillingsprosent,
                 );
-                const minDatoTom = getMinDatoTom(alleVarierendePerioder[index].fom, minDatoFom);
+                const minDatoTom = getMinDatoTom(alleVarierendePerioder[index].fom, behovForTilretteleggingFom);
                 const defaultMonthTom = getDefaultMonth(minDatoTom, maxDato);
 
                 return (
@@ -134,7 +153,7 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
                         <RhfDatepicker
                             name={`varierendePerioder.${index}.fom`}
                             label={intl.formatMessage({ id: 'perioder.varierende.fom.label' })}
-                            minDate={minDatoFom}
+                            minDate={behovForTilretteleggingFom}
                             maxDate={maxDato}
                             validate={[
                                 isRequired(intl.formatMessage({ id: 'valideringsfeil.periode.fom.påkrevd' })),
@@ -155,13 +174,13 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
                                     intl,
                                     index,
                                     alleVarierendePerioder,
-                                    valgtTilrettelegging.behovForTilretteleggingFom,
+                                    behovForTilretteleggingFom,
                                     sisteDagForSvangerskapspenger,
-                                    valgtTilrettelegging.arbeidsforhold.navn || '',
-                                    sluttDatoArbeid,
+                                    navnArbeidsgiver || '',
+                                    periode.tom,
                                 ),
                             ]}
-                            defaultMonth={getDefaultMonth(minDatoFom, maxDato)}
+                            defaultMonth={getDefaultMonth(behovForTilretteleggingFom, maxDato)}
                         />
                         <RhfRadioGroup
                             name={`varierendePerioder.${index}.tomType`}
@@ -175,8 +194,8 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
                                 validatePeriodeTomType(
                                     intl,
                                     sisteDagForSvangerskapspenger,
-                                    valgtTilrettelegging.arbeidsforhold.navn || '',
-                                    sluttDatoArbeid,
+                                    navnArbeidsgiver || '',
+                                    periode.tom,
                                 ),
                             ]}
                         >
@@ -210,11 +229,7 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
                                             : intl.formatMessage({ id: 'valideringsfeil.periode.tom.etterFødsel' }),
                                         sisteDagForSvangerskapspenger,
                                     ),
-                                    validatePeriodeTom(
-                                        intl,
-                                        valgtTilrettelegging.arbeidsforhold.navn || '',
-                                        sluttDatoArbeid,
-                                    ),
+                                    validatePeriodeTom(intl, navnArbeidsgiver || '', periode.tom),
                                 ]}
                                 minDate={minDatoTom}
                                 maxDate={maxDato}
@@ -287,5 +302,3 @@ const PerioderFieldArray: React.FunctionComponent<Props> = ({
         </>
     );
 };
-
-export default PerioderFieldArray;
