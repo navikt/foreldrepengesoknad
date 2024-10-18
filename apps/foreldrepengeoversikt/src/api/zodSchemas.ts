@@ -31,7 +31,7 @@ export const InntektsmeldingDtoSchema = z.object({
     arbeidsgiverNavn: z.string(),
     journalpostId: z.string(),
     mottattTidspunkt: z.string(),
-    startDatoPermisjon: z.string(), //TODO: gjelder svp??
+    startDatoPermisjon: z.string().optional(),
     refusjonsperioder: z.array(
         z.object({
             fomDato: z.string(),

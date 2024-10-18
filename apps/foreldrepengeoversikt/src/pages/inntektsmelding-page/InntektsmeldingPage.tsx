@@ -102,7 +102,7 @@ const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: Inntekt
     }
 
     if (refusjonsperioder.length === 0) {
-        return `Du vil få utbetaling fra ${arbeidsgiverNavn}. NAV betaler da foreldrepenger til ${arbeidsgiverNavn}.`;
+        return `Du vil få utbetaling fra ${arbeidsgiverNavn}. NAV betaler da til ${arbeidsgiverNavn}.`;
     }
 
     // TODO: vise beløp? og hvis beløp over 6G?
