@@ -8,17 +8,15 @@ import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'utils/arbei
 import { Heading } from '@navikt/ds-react';
 
 import { EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, ArbeidsforholdOgInntektSvp, EgenNæring, egenNæringId, frilansId } from '@navikt/fp-types';
+import { Arbeidsforhold, ArbeidsforholdOgInntektSvp, EgenNæring } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
-
-import { getNæringTilretteleggingOption } from '../velg-arbeidsforhold/velgArbeidFormUtils';
 
 const getNextRouteValgAvArbeidEllerSkjema = (
     termindato: string,
     arbeidsforhold: Arbeidsforhold[],
     inntektsinformasjon: ArbeidsforholdOgInntektSvp,
-): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
+): SøknadRoutes => {
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
     const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
         termindato,
@@ -26,26 +24,16 @@ const getNextRouteValgAvArbeidEllerSkjema = (
         inntektsinformasjon.harJobbetSomFrilans,
         inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
     );
-    if (harKunEtArbeid) {
-        if (aktiveArbeidsforhold.length === 0) {
-            const frilansEllerNæringId = inntektsinformasjon.harJobbetSomFrilans ? frilansId : egenNæringId;
-            return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: frilansEllerNæringId };
-        } else {
-            return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: aktiveArbeidsforhold[0].arbeidsgiverId };
-        }
-    }
-    return { nextRoute: SøknadRoutes.VELG_ARBEID };
+    return harKunEtArbeid ? SøknadRoutes.SKJEMA : SøknadRoutes.VELG_ARBEID;
 };
 
 const getNextRoute = (
     inntektsinformasjon: ArbeidsforholdOgInntektSvp,
     termindato: string,
     arbeidsforhold: Arbeidsforhold[],
-): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
+): SøknadRoutes => {
     const nextRoute = inntektsinformasjon.harHattArbeidIUtlandet ? SøknadRoutes.ARBEID_I_UTLANDET : undefined;
-    return nextRoute
-        ? { nextRoute }
-        : getNextRouteValgAvArbeidEllerSkjema(termindato, arbeidsforhold, inntektsinformasjon);
+    return nextRoute ?? getNextRouteValgAvArbeidEllerSkjema(termindato, arbeidsforhold, inntektsinformasjon);
 };
 
 type Props = {
@@ -63,38 +51,14 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
-    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
+    const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
 
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
-    const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
-    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
 
     const onSubmit = (values: EgenNæring) => {
         oppdaterEgenNæring(values);
-
-        if (
-            søkerHarKunEtAktivtArbeid(
-                barnet.termindato,
-                arbeidsforhold,
-                inntektsinformasjon.harJobbetSomFrilans,
-                inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
-            )
-        ) {
-            const automatiskValgtTilrettelegging = [getNæringTilretteleggingOption(tilrettelegginger || [], values)];
-            oppdaterTilrettelegginger(automatiskValgtTilrettelegging);
-        }
-
-        const { nextRoute, nextTilretteleggingId } = getNextRoute(
-            inntektsinformasjon,
-            barnet.termindato,
-            arbeidsforhold,
-        );
-
-        oppdaterValgtTilretteleggingId(nextTilretteleggingId);
-
-        return navigator.goToNextStep(nextRoute);
+        return navigator.goToNextStep(getNextRoute(arbeidsforholdOgInntekt, barnet.termindato, arbeidsforhold));
     };
 
     const saveOnPrevious = () => {

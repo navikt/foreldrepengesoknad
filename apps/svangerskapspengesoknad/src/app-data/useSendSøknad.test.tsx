@@ -4,7 +4,7 @@ import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
-import Tilrettelegging, { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'types/Tilrettelegging';
+import Tilrettelegging, { Arbeidsforholdstype, Tilretteleggingstype } from 'types/Tilrettelegging';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Næringstype } from '@navikt/fp-types';
@@ -143,7 +143,7 @@ describe('useSendSøknad', () => {
                     ],
                     startdato: '2024-01-01',
                 },
-                type: TilretteleggingstypeOptions.DELVIS,
+                type: Tilretteleggingstype.DELVIS,
                 vedlegg: [VEDLEGG],
             },
         ];

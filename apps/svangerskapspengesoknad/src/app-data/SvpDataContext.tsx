@@ -1,10 +1,12 @@
 import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
 import { ArbeidIUtlandet } from 'types/ArbeidIUtlandet';
 import { Barn } from 'types/Barn';
-import Tilrettelegging from 'types/Tilrettelegging';
+import { DelvisTilrettelegging, IngenTilrettelegging, TilretteleggingPerioder } from 'types/Tilrettelegging';
+import { ValgteArbeidsforhold } from 'types/ValgteArbeidsforhold';
 
 import {
     ArbeidsforholdOgInntektSvp,
+    Attachment,
     EgenNæring,
     Frilans,
     Utenlandsopphold,
@@ -23,7 +25,10 @@ export enum ContextDataType {
     FRILANS = 'FRILANS',
     ARBEID_I_UTLANDET = 'ARBEID_I_UTLANDET',
     EGEN_NÆRING = 'EGEN_NÆRING',
+    VALGTE_ARBEIDSFORHOLD = 'VALGTE_ARBEIDSFORHOLD',
+    TILRETTELEGGINGER_VEDLEGG = 'TILRETTELEGGINGER_VEDLEGG',
     TILRETTELEGGINGER = 'TILRETTELEGGINGER',
+    TILRETTELEGGINGER_PERIODER = 'TILRETTELEGGINGER_PERIODER',
     VALGT_TILRETTELEGGING_ID = 'VALGT_TILRETTELEGGING_ID',
 }
 
@@ -37,7 +42,10 @@ export type ContextDataMap = {
     [ContextDataType.FRILANS]?: Frilans;
     [ContextDataType.ARBEID_I_UTLANDET]?: ArbeidIUtlandet;
     [ContextDataType.EGEN_NÆRING]?: EgenNæring;
-    [ContextDataType.TILRETTELEGGINGER]?: Tilrettelegging[];
+    [ContextDataType.VALGTE_ARBEIDSFORHOLD]?: ValgteArbeidsforhold;
+    [ContextDataType.TILRETTELEGGINGER_VEDLEGG]?: Record<string, Attachment[]>;
+    [ContextDataType.TILRETTELEGGINGER]?: Record<string, DelvisTilrettelegging | IngenTilrettelegging>;
+    [ContextDataType.TILRETTELEGGINGER_PERIODER]?: Record<string, TilretteleggingPerioder>;
     [ContextDataType.VALGT_TILRETTELEGGING_ID]?: string;
 };
 

@@ -20,7 +20,7 @@ import Barnet from './steps/barnet/Barnet';
 import EgenNæringStep from './steps/egen-næring/EgenNæringStep';
 import FrilansStep from './steps/frilans/FrilansStep';
 import Oppsummering from './steps/oppsummering/Oppsummering';
-import PerioderStep from './steps/perioder/PerioderStep';
+import { PerioderStep } from './steps/perioder/PerioderStep';
 import SkjemaSteg from './steps/skjema/SkjemaSteg';
 import TilretteleggingStep from './steps/tilrettelegging/TilretteleggingStep';
 import SenereUtenlandsoppholdSteg from './steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
@@ -205,7 +205,7 @@ const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({
     const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(false);
     const [kvittering, setKvittering] = useState<Kvittering>();
 
-    const { sendSøknad, errorSendSøknad } = useSendSøknad(setKvittering, locale);
+    const { sendSøknad, errorSendSøknad } = useSendSøknad(setKvittering, locale, søkerInfo.arbeidsforhold);
     const mellomlagreOgNaviger = useMellomlagreSøknad(locale, setHarGodkjentVilkår);
     const avbrytSøknad = useAvbrytSøknad(setHarGodkjentVilkår);
 

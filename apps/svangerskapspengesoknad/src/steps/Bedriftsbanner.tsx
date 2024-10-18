@@ -1,6 +1,6 @@
 import { Buildings3Icon } from '@navikt/aksel-icons';
 import { IntlShape, useIntl } from 'react-intl';
-import { ArbeidsforholdForTilrettelegging, Arbeidsforholdstype } from 'types/Tilrettelegging';
+import { Arbeidsforholdstype } from 'types/Tilrettelegging';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
@@ -9,7 +9,8 @@ import { bemUtils, capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils
 import './bedriftsbanner.css';
 
 interface Props {
-    arbeid: ArbeidsforholdForTilrettelegging;
+    arbeidsforholdType: Arbeidsforholdstype;
+    arbeidsforholdNavn?: string;
 }
 
 const getNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?: string) => {
@@ -22,13 +23,13 @@ const getNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?: string) => {
     return capitalizeFirstLetterInEveryWordOnly(navn);
 };
 
-const Bedriftsbanner: React.FunctionComponent<Props> = ({ arbeid }) => {
+const Bedriftsbanner: React.FunctionComponent<Props> = ({ arbeidsforholdType, arbeidsforholdNavn }) => {
     const bem = bemUtils('bedriftsbanner');
     const intl = useIntl();
-    const navn = getNavn(arbeid.type, intl, arbeid.navn);
+    const navn = getNavn(arbeidsforholdType, intl, arbeidsforholdNavn);
 
     const detailTekst =
-        arbeid.type !== Arbeidsforholdstype.FRILANSER
+        arbeidsforholdType !== Arbeidsforholdstype.FRILANSER
             ? intl.formatMessage({ id: 'bedriftsbanner.detail' })
             : intl.formatMessage({ id: 'bedriftsbanner.detail.frilans' });
     return (

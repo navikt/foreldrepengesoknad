@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import { Arbeidsforholdstype, Stilling, TilOgMedDatoType, TilretteleggingstypeOptions } from 'types/Tilrettelegging';
+import { Arbeidsforholdstype, Stilling, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 import { getTotalStillingsprosentPåSkjæringstidspunktet } from 'utils/arbeidsforholdUtils';
 import { getFloatFromString } from 'utils/numberUtils';
 import { TEXT_INPUT_MAX_LENGTH, TEXT_INPUT_MIN_LENGTH, getSlutteTekst, hasValue } from 'utils/validationUtils';
@@ -71,13 +71,13 @@ export const validateSammePeriodeFremTilTerminFom =
         intl: IntlShape,
         behovForTilretteleggingFom: string | undefined,
         sisteDagForSvangerskapspenger: string,
-        tilretteleggingstype: TilretteleggingstypeOptions,
+        tilretteleggingstype: Tilretteleggingstype,
         arbeidNavn: string,
         sluttDatoArbeid: string | undefined,
         kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
     (value: string) => {
-        const erDelvis = tilretteleggingstype === TilretteleggingstypeOptions.DELVIS;
+        const erDelvis = tilretteleggingstype === Tilretteleggingstype.DELVIS;
         if (
             hasValue(value) &&
             hasValue(behovForTilretteleggingFom) &&
@@ -140,13 +140,13 @@ export const validateSammePeriodeFremTilTerminTilbakeIJobbDato =
         behovForTilretteleggingFom: string | undefined,
         sisteDagForSvangerskapspenger: string,
         fom: string | undefined,
-        type: TilretteleggingstypeOptions,
+        type: Tilretteleggingstype,
         arbeidNavn: string,
         sluttDatoArbeid: string | undefined,
         kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
     (value: string) => {
-        const erDelvis = type === TilretteleggingstypeOptions.DELVIS;
+        const erDelvis = type === Tilretteleggingstype.DELVIS;
         if (
             hasValue(value) &&
             hasValue(behovForTilretteleggingFom) &&
@@ -249,7 +249,7 @@ export const validateBehovForTilretteleggingFom =
 export const validerTilretteleggingTomType =
     (
         intl: IntlShape,
-        tilretteleggingType: TilretteleggingstypeOptions,
+        tilretteleggingType: Tilretteleggingstype,
         behovForTilretteleggingFom: string | undefined,
         sisteDagForSvangerskapspenger: string,
         arbeidNavn: string,
@@ -257,7 +257,7 @@ export const validerTilretteleggingTomType =
         kanHaSVPFremTilTreUkerFørTermin: boolean,
     ) =>
     (value: string | number | boolean): string | undefined => {
-        const erDelvis = tilretteleggingType === TilretteleggingstypeOptions.DELVIS;
+        const erDelvis = tilretteleggingType === Tilretteleggingstype.DELVIS;
         if (!hasValue(value)) {
             if (erDelvis) {
                 return kanHaSVPFremTilTreUkerFørTermin

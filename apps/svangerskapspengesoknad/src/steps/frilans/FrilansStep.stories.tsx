@@ -4,7 +4,7 @@ import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext'
 import SøknadRoutes from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'types/Tilrettelegging';
+import { Arbeidsforholdstype, Tilretteleggingstype } from 'types/Tilrettelegging';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -103,7 +103,7 @@ const meta = {
                                 },
                                 varierendePerioder: [],
                                 behovForTilretteleggingFom: '2023-01-01',
-                                type: TilretteleggingstypeOptions.DELVIS,
+                                type: Tilretteleggingstype.DELVIS,
                                 vedlegg: [
                                     {
                                         id: 'V134300149934973076055420920289127108',

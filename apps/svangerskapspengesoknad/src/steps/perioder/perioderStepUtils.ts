@@ -1,18 +1,11 @@
 import dayjs from 'dayjs';
 import { IntlShape } from 'react-intl';
-import {
-    PeriodeMedVariasjon,
-    TilOgMedDatoType,
-    Tilrettelegging,
-    TilretteleggingstypeOptions,
-} from 'types/Tilrettelegging';
+import { PeriodeMedVariasjon, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 import { getFloatFromString } from 'utils/numberUtils';
 import { hasValue } from 'utils/validationUtils';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { formatDate, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
-
-import { PerioderFormData } from './PerioderFieldArray';
 
 export const getMåSendeNySøknad = (
     periodeDerSøkerErTilbakeIOpprinneligStilling: PeriodeMedVariasjon | undefined,
@@ -28,26 +21,6 @@ export const getMåSendeNySøknad = (
             getFloatFromString(currentPeriode.stillingsprosent)! < opprinneligStillingsprosent) ||
             (opprinneligStillingsprosent === 0 && getFloatFromString(currentPeriode.stillingsprosent)! < 100))
     );
-};
-
-export const mapPerioderFormDataToState = (
-    id: string,
-    values: PerioderFormData,
-    tilretteleggingFraState: Tilrettelegging[],
-): Tilrettelegging[] => {
-    const tilretteleggingForOppdatering = tilretteleggingFraState.find((t) => t.id === id);
-    const oppdatert = {
-        ...tilretteleggingForOppdatering,
-        varierendePerioder: values.varierendePerioder.map((p) => ({
-            ...p,
-            type: TilretteleggingstypeOptions.DELVIS,
-        })),
-    } as Tilrettelegging;
-
-    const nyTilretteleggingISøknad = tilretteleggingFraState.map((t) => {
-        return t.id === id ? oppdatert : t;
-    });
-    return nyTilretteleggingISøknad;
 };
 
 export const getPeriodeDerSøkerErTilbakeIFullStilling = (
@@ -68,8 +41,8 @@ export const getPeriodeDerSøkerErTilbakeIFullStilling = (
         : undefined;
 };
 
-export const getMinDatoTom = (fom: string | undefined, minDatoFom: Date): Date => {
-    return fom && isStringAValidDate(fom) ? dayjs(fom).toDate() : minDatoFom;
+export const getMinDatoTom = (fom: string | undefined, minDatoFom: string): string => {
+    return fom && isStringAValidDate(fom) ? fom : minDatoFom;
 };
 
 export const getPeriodeInfoTekst = (
@@ -135,6 +108,6 @@ export const getUferdigPeriodeInput = (
         tom: '',
         stillingsprosent: '',
         tomType: undefined!,
-        type: TilretteleggingstypeOptions.DELVIS,
+        type: Tilretteleggingstype.DELVIS,
     } as PeriodeMedVariasjon;
 };

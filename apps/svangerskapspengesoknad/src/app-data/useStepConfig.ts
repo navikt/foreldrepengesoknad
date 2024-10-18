@@ -1,8 +1,14 @@
 import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
-import Tilrettelegging, { DelivisTilretteleggingPeriodeType, TilretteleggingstypeOptions } from 'types/Tilrettelegging';
+import {
+    DelivisTilretteleggingPeriodeType,
+    DelvisTilrettelegging,
+    IngenTilrettelegging,
+    Tilretteleggingstype,
+} from 'types/Tilrettelegging';
 import { søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
+import { getTilretteleggingId } from 'utils/tilretteleggingUtils';
 
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { ProgressStep } from '@navikt/fp-ui';
@@ -39,6 +45,47 @@ const getStepLabels = (
     [SøknadRoutes.VELG_ARBEID]: intl.formatMessage({ id: 'steps.label.velgArbeid' }),
 });
 
+const createTilretteleggingSteps = (
+    currentPath: SøknadRoutes,
+    erValgtTilrettelegging: boolean,
+    labels: Record<SøknadRoutes, string>,
+    tilrettelegging?: DelvisTilrettelegging | IngenTilrettelegging,
+): Array<ProgressStep<SøknadRoutes>> => {
+    const steps = new Array<ProgressStep<SøknadRoutes>>();
+    steps.push({
+        id: SøknadRoutes.SKJEMA,
+        label: labels[SøknadRoutes.SKJEMA],
+        isSelected: currentPath === SøknadRoutes.SKJEMA && erValgtTilrettelegging,
+    });
+    steps.push({
+        id: SøknadRoutes.TILRETTELEGGING,
+        label: labels[SøknadRoutes.TILRETTELEGGING],
+        isSelected: currentPath === SøknadRoutes.TILRETTELEGGING && erValgtTilrettelegging,
+    });
+    if (
+        tilrettelegging?.type === Tilretteleggingstype.DELVIS &&
+        tilrettelegging.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
+    ) {
+        steps.push({
+            id: SøknadRoutes.PERIODER,
+            label: labels[SøknadRoutes.PERIODER],
+            isSelected: currentPath === SøknadRoutes.PERIODER && erValgtTilrettelegging,
+        });
+    }
+    return steps;
+};
+
+const getTilretteleggingLabels = (
+    intl: IntlShape,
+    erFlereTilrettelegginger: boolean,
+    arbeidsforhold: Arbeidsforhold[],
+    id: string,
+) => {
+    const valgtArbeidsforhold = arbeidsforhold.find((a) => a.arbeidsgiverId === id);
+    const navn = capitalizeFirstLetterInEveryWordOnly(valgtArbeidsforhold?.arbeidsgiverNavn);
+    return getStepLabels(intl, erFlereTilrettelegginger, navn);
+};
+
 const createStep = (route: SøknadRoutes, intl: IntlShape, currentPath: string) => ({
     id: route,
     label: getStepLabels(intl)[route],
@@ -53,9 +100,15 @@ const getStepConfig = (
 ): Array<ProgressStep<SøknadRoutes>> => {
     const arbeidsforholdOgInntekt = getStateData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const tilrettelegginger = getStateData(ContextDataType.TILRETTELEGGINGER);
+    const valgteArbeidsforhold = getStateData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
     const barn = getStateData(ContextDataType.OM_BARNET);
     const utenlandsopphold = getStateData(ContextDataType.UTENLANDSOPPHOLD);
-    const valgtTilretteleggingId = getStateData(ContextDataType.VALGT_TILRETTELEGGING_ID);
+    const valgtTId = getStateData(ContextDataType.VALGT_TILRETTELEGGING_ID);
+    const valgtTilretteleggingId =
+        valgtTId ||
+        (barn &&
+            arbeidsforholdOgInntekt &&
+            getTilretteleggingId(arbeidsforhold, barn, arbeidsforholdOgInntekt, valgteArbeidsforhold));
 
     const steps = [
         createStep(SøknadRoutes.BARNET, intl, currentPath),
@@ -83,7 +136,7 @@ const getStepConfig = (
         steps.push(createStep(SøknadRoutes.ARBEID_I_UTLANDET, intl, currentPath));
     }
 
-    const harKunEtArbeid = barn?.termindato
+    const harKunEttArbeid = barn?.termindato
         ? søkerHarKunEtAktivtArbeid(
               barn.termindato,
               arbeidsforhold,
@@ -92,37 +145,29 @@ const getStepConfig = (
           )
         : true;
 
-    if (!harKunEtArbeid) {
+    if (!harKunEttArbeid) {
         steps.push(createStep(SøknadRoutes.VELG_ARBEID, intl, currentPath));
     }
 
-    if (tilrettelegginger && tilrettelegginger.length > 0) {
-        const erFlereTilrettelegginger = tilrettelegginger.length > 1;
-        tilrettelegginger.forEach((tilrettelegging: Tilrettelegging) => {
-            const navn = capitalizeFirstLetterInEveryWordOnly(tilrettelegging.arbeidsforhold.navn);
-            const labels = getStepLabels(intl, erFlereTilrettelegginger, navn);
-            steps.push({
-                id: SøknadRoutes.SKJEMA,
-                label: labels[SøknadRoutes.SKJEMA],
-                isSelected: currentPath === SøknadRoutes.SKJEMA && tilrettelegging.id === valgtTilretteleggingId,
-            });
-            steps.push({
-                id: SøknadRoutes.TILRETTELEGGING,
-                label: labels[SøknadRoutes.TILRETTELEGGING],
-                isSelected:
-                    currentPath === SøknadRoutes.TILRETTELEGGING && tilrettelegging.id === valgtTilretteleggingId,
-            });
-            if (
-                tilrettelegging.type === TilretteleggingstypeOptions.DELVIS &&
-                tilrettelegging.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
-            ) {
-                steps.push({
-                    id: SøknadRoutes.PERIODER,
-                    label: labels[SøknadRoutes.PERIODER],
-                    isSelected: currentPath === SøknadRoutes.PERIODER && tilrettelegging.id === valgtTilretteleggingId,
-                });
-            }
+    const erFlereTilrettelegginger =
+        !!valgteArbeidsforhold && valgteArbeidsforhold?.arbeidMedTilrettelegging?.length > 1;
+    if (erFlereTilrettelegginger) {
+        valgteArbeidsforhold.arbeidMedTilrettelegging.forEach((id) => {
+            const labels = getTilretteleggingLabels(intl, erFlereTilrettelegginger, arbeidsforhold, id);
+            steps.push(
+                ...createTilretteleggingSteps(
+                    currentPath,
+                    id === valgtTilretteleggingId,
+                    labels,
+                    tilrettelegginger?.[id],
+                ),
+            );
         });
+    } else if (valgtTilretteleggingId) {
+        const labels = getTilretteleggingLabels(intl, erFlereTilrettelegginger, arbeidsforhold, valgtTilretteleggingId);
+        steps.push(
+            ...createTilretteleggingSteps(currentPath, true, labels, tilrettelegginger?.[valgtTilretteleggingId]),
+        );
     } else {
         steps.push(createStep(SøknadRoutes.SKJEMA, intl, currentPath));
         steps.push(createStep(SøknadRoutes.TILRETTELEGGING, intl, currentPath));

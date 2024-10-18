@@ -4,6 +4,7 @@ import useStepConfig from 'appData/useStepConfig';
 import useSvpNavigator from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
+import { getForrigeTilretteleggingId } from 'utils/tilretteleggingUtils';
 
 import { FormSummary, Heading } from '@navikt/ds-react';
 
@@ -39,11 +40,12 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, søkerInfo.arbeidsforhold);
 
-    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
+    const tilretteleggingerVedlegg = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER_VEDLEGG));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const utenlandsoppholdSenere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const utenlandsoppholdTidligere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
+    const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
+    const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
 
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
 
@@ -60,7 +62,14 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                 sendSøknad={sendSøknad}
                 cancelApplication={avbrytSøknad}
                 goToPreviousStep={() => {
-                    oppdaterValgtTilretteleggingId(tilrettelegginger[tilrettelegginger?.length - 1].id);
+                    oppdaterValgtTilretteleggingId(
+                        getForrigeTilretteleggingId(
+                            søkerInfo.arbeidsforhold,
+                            barn,
+                            arbeidsforholdOgInntekt,
+                            valgteArbeidsforhold,
+                        ),
+                    );
                     navigator.goToPreviousDefaultStep();
                 }}
                 onContinueLater={navigator.fortsettSøknadSenere}
@@ -98,7 +107,7 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                     senereUtenlandsopphold={utenlandsoppholdSenere ?? []}
                 />
                 <ArbeidsforholdOppsummering
-                    arbeidsforholdOgInntekt={inntektsinformasjon}
+                    arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                     arbeidsforhold={aktiveArbeidsforhold}
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.INNTEKTSINFORMASJON)}
                 />
@@ -110,10 +119,14 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ARBEID_I_UTLANDET)}
                 />
                 <DokumentasjonOppsummering
-                    tilrettelegginger={tilrettelegginger}
+                    tilretteleggingerVedlegg={tilretteleggingerVedlegg}
+                    alleArbeidsforhold={søkerInfo.arbeidsforhold}
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.SKJEMA)}
                 />
-                <PerioderOppsummering onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.TILRETTELEGGING)} />
+                <PerioderOppsummering
+                    alleArbeidsforhold={søkerInfo.arbeidsforhold}
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.TILRETTELEGGING)}
+                />
             </OppsummeringPanel>
         </ContentWrapper>
     );

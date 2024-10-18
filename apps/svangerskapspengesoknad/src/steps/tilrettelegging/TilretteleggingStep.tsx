@@ -6,12 +6,22 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import Tilrettelegging, {
+import {
     Arbeidsforholdstype,
     DelivisTilretteleggingPeriodeType,
-    TilretteleggingstypeOptions,
+    DelvisTilrettelegging,
+    IngenTilrettelegging,
+    Tilretteleggingstype,
 } from 'types/Tilrettelegging';
+import { ValgteArbeidsforhold } from 'types/ValgteArbeidsforhold';
 import { getDefaultMonth, getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
+import {
+    getArbeidsgiverNavnForTilrettelegging,
+    getArbeidsgiverStillingerForTilrettelegging,
+    getNesteTilretteleggingId,
+    getPeriodeForTilrettelegging,
+    getTypeArbeidForTilrettelegging,
+} from 'utils/tilretteleggingUtils';
 
 import { BodyLong, BodyShort, ExpansionCard, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
@@ -32,40 +42,25 @@ import { hasLegalChars, isRequired, isValidDate, notEmpty } from '@navikt/fp-val
 import Bedriftsbanner from '../Bedriftsbanner';
 import DelvisTilretteleggingPanel from './DelvisTilretteleggingPanel';
 import IngenTilretteleggingPanel from './IngenTilretteleggingPanel';
-import { TilretteleggingFormData, mapOmTilretteleggingFormDataToState } from './tilretteleggingStepUtils';
 import {
     validateBehovForTilretteleggingFom,
     validateRisikofaktorer,
     validateTilretteleggingstiltak,
 } from './tilretteleggingValidation';
 
-const getNesteTilretteleggingId = (
-    tilretteleggingBehov: Tilrettelegging[],
-    currentTilretteleggingId: string | undefined,
-): string | undefined => {
-    if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
-        return tilretteleggingBehov[0].id;
-    }
-    const nesteTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) + 1;
-    if (nesteTilretteleggingIndex === tilretteleggingBehov.length) {
-        return undefined;
-    }
-    return tilretteleggingBehov[nesteTilretteleggingIndex].id;
-};
-
 const getNextRouteAndTilretteleggingIdForTilretteleggingSteg = (
-    values: TilretteleggingFormData,
-    tilrettelegging: Tilrettelegging[],
+    values: DelvisTilrettelegging | IngenTilrettelegging,
     currentTilretteleggingId: string,
+    valgteArbeidsforholdIder?: ValgteArbeidsforhold,
 ): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
     if (
-        values.type === TilretteleggingstypeOptions.DELVIS &&
+        values.type === Tilretteleggingstype.DELVIS &&
         values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
     ) {
         return { nextRoute: SøknadRoutes.PERIODER, nextTilretteleggingId: currentTilretteleggingId };
     }
 
-    const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegging, currentTilretteleggingId);
+    const nesteTilretteleggingId = getNesteTilretteleggingId(currentTilretteleggingId, valgteArbeidsforholdIder);
     if (nesteTilretteleggingId) {
         return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: nesteTilretteleggingId };
     }
@@ -116,7 +111,7 @@ export interface Props {
     arbeidsforhold: Arbeidsforhold[];
 }
 
-const TilretteleggingStep: FunctionComponent<Props> = ({
+export const TilretteleggingStep: FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     arbeidsforhold,
@@ -125,50 +120,59 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
-    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
+    const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
+    const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
+    const frilans = useContextGetData(ContextDataType.FRILANS);
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const valgtTilretteleggingId = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
+    const valgteArbeidsforholdIder = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
 
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
 
-    const currentTilrettelegging = notEmpty(tilrettelegginger.find((t) => t.id === valgtTilretteleggingId));
-    const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
-    const navnArbeidsgiver =
-        currentTilrettelegging.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG &&
-        currentTilrettelegging.arbeidsforhold.navn &&
-        currentTilrettelegging.arbeidsforhold.navn.trim().length === 0
-            ? intl.formatMessage({ id: 'egenNæring' }).toLowerCase()
-            : currentTilrettelegging.arbeidsforhold.navn;
+    const tilrettelegging = tilrettelegginger?.[valgtTilretteleggingId];
 
-    const erFlereTilrettelegginger = tilrettelegginger.length > 1;
-    const typeArbeid = currentTilrettelegging.arbeidsforhold.type;
-    const risikofaktorerLabel = finnRisikofaktorLabel(intl, typeArbeid);
+    const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
+
+    const navnArbeidsgiver = getArbeidsgiverNavnForTilrettelegging(intl, valgtTilretteleggingId, arbeidsforhold);
+    const stillinger = getArbeidsgiverStillingerForTilrettelegging(
+        barnet.termindato,
+        valgtTilretteleggingId,
+        arbeidsforhold,
+        egenNæring,
+        frilans,
+    );
+
+    const erFlereTilrettelegginger =
+        !!valgteArbeidsforholdIder && valgteArbeidsforholdIder.arbeidMedTilrettelegging.length > 1;
+    const typeArbeidsforhold = getTypeArbeidForTilrettelegging(valgtTilretteleggingId, arbeidsforhold);
+    const risikofaktorerLabel = finnRisikofaktorLabel(intl, typeArbeidsforhold);
 
     const labelTiltak = intl.formatMessage({ id: 'tilrettelegging.tilretteleggingstiltak.label' });
-    const harSkjema = typeArbeid === Arbeidsforholdstype.VIRKSOMHET || typeArbeid === Arbeidsforholdstype.PRIVAT;
-    const sluttDatoArbeid = currentTilrettelegging.arbeidsforhold.sluttdato;
-    const startDatoArbeid = currentTilrettelegging.arbeidsforhold.startdato;
-    const minDatoBehovFom =
-        dayjs.max(dayjs(tiMånederSidenDato(barnet.termindato)), dayjs(startDatoArbeid)) || undefined;
-    const maxDatoBehovFom = sluttDatoArbeid
-        ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttDatoArbeid))!.toDate()
+    const harSkjema =
+        typeArbeidsforhold === Arbeidsforholdstype.VIRKSOMHET || typeArbeidsforhold === Arbeidsforholdstype.PRIVAT;
+
+    const periode = getPeriodeForTilrettelegging(
+        barnet.termindato,
+        valgtTilretteleggingId,
+        arbeidsforhold,
+        egenNæring,
+        frilans,
+    );
+    const minDatoBehovFom = dayjs.max(dayjs(tiMånederSidenDato(barnet.termindato)), dayjs(periode.fom)) || undefined;
+    const maxDatoBehovFom = periode.tom
+        ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(periode.tom))!.toDate()
         : sisteDagForSvangerskapspenger;
+
     const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barnet);
 
-    const onSubmit = (values: TilretteleggingFormData) => {
-        const mappedTilrettelegginger = mapOmTilretteleggingFormDataToState(
-            valgtTilretteleggingId,
-            values,
-            tilrettelegginger,
-            currentTilrettelegging,
-        );
-        oppdaterTilrettelegginger(mappedTilrettelegginger);
+    const onSubmit = (values: DelvisTilrettelegging | IngenTilrettelegging) => {
+        oppdaterTilrettelegginger({ ...tilrettelegginger, [valgtTilretteleggingId]: values });
 
         const { nextRoute, nextTilretteleggingId } = getNextRouteAndTilretteleggingIdForTilretteleggingSteg(
             values,
-            tilrettelegginger,
-            currentTilrettelegging.id,
+            valgtTilretteleggingId,
+            valgteArbeidsforholdIder,
         );
         if (nextTilretteleggingId) {
             oppdaterValgtTilretteleggingId(nextTilretteleggingId);
@@ -177,9 +181,9 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
         return navigator.goToNextStep(nextRoute);
     };
 
-    const formMethods = useForm<TilretteleggingFormData>({
+    const formMethods = useForm<DelvisTilrettelegging | IngenTilrettelegging>({
         shouldUnregister: true,
-        defaultValues: currentTilrettelegging,
+        defaultValues: tilrettelegging,
     });
 
     const type = formMethods.watch('type');
@@ -195,10 +199,12 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    {erFlereTilrettelegginger && <Bedriftsbanner arbeid={currentTilrettelegging.arbeidsforhold} />}
+                    {erFlereTilrettelegginger && (
+                        <Bedriftsbanner arbeidsforholdType={typeArbeidsforhold} arbeidsforholdNavn={navnArbeidsgiver} />
+                    )}
                     <RhfDatepicker
                         name="behovForTilretteleggingFom"
-                        label={getLabel(erFlereTilrettelegginger, typeArbeid, intl, true, navnArbeidsgiver)}
+                        label={getLabel(erFlereTilrettelegginger, typeArbeidsforhold, intl, true, navnArbeidsgiver)}
                         description={
                             harSkjema
                                 ? intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidFom.description' })
@@ -213,23 +219,23 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                                 intl,
                                 sisteDagForSvangerskapspenger,
                                 barnet.termindato,
-                                currentTilrettelegging.arbeidsforhold.navn || '',
-                                startDatoArbeid,
-                                sluttDatoArbeid,
+                                navnArbeidsgiver || '',
+                                periode.fom,
+                                periode.tom,
                                 kanHaSVPFremTilTreUkerFørTermin,
-                                typeArbeid === Arbeidsforholdstype.FRILANSER,
+                                typeArbeidsforhold === Arbeidsforholdstype.FRILANSER,
                             ),
                         ]}
                         defaultMonth={minDatoBehovFom ? getDefaultMonth(minDatoBehovFom, maxDatoBehovFom) : undefined}
                     />
-                    {(typeArbeid === Arbeidsforholdstype.FRILANSER ||
-                        typeArbeid === Arbeidsforholdstype.SELVSTENDIG) && (
+                    {(typeArbeidsforhold === Arbeidsforholdstype.FRILANSER ||
+                        typeArbeidsforhold === Arbeidsforholdstype.SELVSTENDIG) && (
                         <>
                             <RhfTextarea
                                 name="risikofaktorer"
                                 label={risikofaktorerLabel}
                                 validate={[
-                                    validateRisikofaktorer(intl, typeArbeid),
+                                    validateRisikofaktorer(intl, typeArbeidsforhold),
                                     hasLegalChars((ugyldigeTegn: string) =>
                                         intl.formatMessage(
                                             { id: 'valideringsfeil.fritekst.kanIkkeInneholdeTegn' },
@@ -274,7 +280,13 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                     <div>
                         <RhfRadioGroup
                             name="type"
-                            label={getLabel(erFlereTilrettelegginger, typeArbeid, intl, false, navnArbeidsgiver)}
+                            label={getLabel(
+                                erFlereTilrettelegginger,
+                                typeArbeidsforhold,
+                                intl,
+                                false,
+                                navnArbeidsgiver,
+                            )}
                             description={
                                 harSkjema
                                     ? intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidType.description' })
@@ -286,10 +298,10 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                                 ),
                             ]}
                         >
-                            <Radio value={TilretteleggingstypeOptions.DELVIS}>
+                            <Radio value={Tilretteleggingstype.DELVIS}>
                                 <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.delvis" />
                             </Radio>
-                            <Radio value={TilretteleggingstypeOptions.INGEN}>
+                            <Radio value={Tilretteleggingstype.INGEN}>
                                 <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.ingen" />
                             </Radio>
                         </RhfRadioGroup>
@@ -302,11 +314,24 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
                             </BodyShort>
                         </ReadMore>
                     </div>
-                    {type === TilretteleggingstypeOptions.INGEN && (
-                        <IngenTilretteleggingPanel barnet={barnet} valgtTilrettelegging={currentTilrettelegging} />
+                    {type === Tilretteleggingstype.INGEN && (
+                        <IngenTilretteleggingPanel
+                            barnet={barnet}
+                            arbeidsforholdType={typeArbeidsforhold}
+                            sluttdatoArbeid={periode.fom}
+                            startdatoArbeid={periode.tom}
+                            arbeidsforholdNavn={navnArbeidsgiver}
+                        />
                     )}
-                    {type === TilretteleggingstypeOptions.DELVIS && (
-                        <DelvisTilretteleggingPanel barnet={barnet} valgtTilrettelegging={currentTilrettelegging} />
+                    {type === Tilretteleggingstype.DELVIS && (
+                        <DelvisTilretteleggingPanel
+                            barnet={barnet}
+                            arbeidsforholdType={typeArbeidsforhold}
+                            sluttdatoArbeid={periode.fom}
+                            startdatoArbeid={periode.tom}
+                            stillinger={stillinger}
+                            arbeidsforholdNavn={navnArbeidsgiver}
+                        />
                     )}
                     <ExpansionCard size="small" aria-label="">
                         <ExpansionCard.Header>
@@ -331,5 +356,3 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
         </Step>
     );
 };
-
-export default TilretteleggingStep;

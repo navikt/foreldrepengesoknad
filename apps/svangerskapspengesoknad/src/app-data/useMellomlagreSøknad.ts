@@ -9,7 +9,7 @@ import { LocaleNo } from '@navikt/fp-types';
 import Environment from './Environment';
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
-export const VERSJON_MELLOMLAGRING = 4;
+export const VERSJON_MELLOMLAGRING = 5;
 
 const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
