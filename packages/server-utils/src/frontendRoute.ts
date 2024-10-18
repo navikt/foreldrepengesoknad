@@ -1,6 +1,6 @@
 import { fetchDecoratorHtml, injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr/index.js';
 import { addViteModeHtmlToResponse } from '@navikt/vite-mode';
-import { Express } from 'express';
+import express, { Router } from 'express';
 import path from 'node:path';
 
 import config from './config.js';
@@ -13,13 +13,14 @@ const dekoratørProps = {
     },
 };
 
-export const setupAndServeHtml = async (app: Express) => {
+export const setupAndServeHtml = async (router: Router) => {
     // When deployed, the built frontend is copied into the public directory. If running BFF locally the index.html will not exist.
+    router.use(express.static('./public', { index: false }));
     const spaFilePath = path.resolve('./public', 'index.html');
 
     // Only add vite-mode to dev environment
     if (config.app.env === 'dev') {
-        setupViteMode(app);
+        setupViteMode(router);
     }
 
     const html = await injectDecoratorServerSide({
@@ -28,7 +29,7 @@ export const setupAndServeHtml = async (app: Express) => {
     });
     const renderedHtml = replaceAppSettings(html);
 
-    app.get(/^\/(?!.*dist).*$/, async (_request, response) => {
+    router.get('*', async (_request, response) => {
         return response.send(renderedHtml);
     });
 };
@@ -46,15 +47,15 @@ const replaceAppSettings = (html: string) => {
     );
 };
 
-const setupViteMode = (app: Express) => {
-    addViteModeHtmlToResponse(app, {
+const setupViteMode = (router: Router) => {
+    addViteModeHtmlToResponse(router, {
         port: '8080',
         useNonce: false,
         indexFilePath: 'src/bootstrap.tsx',
         mountId: 'app',
         setCSPHeaders: false,
     });
-    app.get('*', async (_, response, next) => {
+    router.get('*', async (_, response, next) => {
         const viteModeHtml = response.viteModeHtml;
 
         if (viteModeHtml) {
