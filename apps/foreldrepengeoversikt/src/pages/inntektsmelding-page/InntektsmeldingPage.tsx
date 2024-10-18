@@ -194,8 +194,8 @@ const InntektsmeldingSpørsmålOgSvar = () => {
                 </Heading>
                 <BodyShort>
                     I inntektsmeldingen oppgir din arbeidsgiver hva som er din vanlige lønn rundt den tiden da du skal
-                    starte uttak av foreldrepenger. Inntektsmeldingen er en del av grunnlaget NAV bruker for å beregne
-                    hvor mye du skal få.
+                    starte permisjonen din. Inntektsmeldingen er en del av grunnlaget NAV bruker for å beregne hvor mye
+                    du skal få.
                 </BodyShort>
             </VStack>
             <VStack>
