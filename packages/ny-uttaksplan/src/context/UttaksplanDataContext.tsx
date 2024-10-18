@@ -1,23 +1,24 @@
 import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
 
-import { AnnenForelder, Barn, NavnPåForeldre, Periode } from '@navikt/fp-common';
+import { Barn, NavnPåForeldre } from '@navikt/fp-common';
+import { Familiesituasjon, SaksperiodeNy } from '@navikt/fp-types';
 
 export enum UttaksplanContextDataType {
     UTTAKSPLAN = 'UTTAKSPLAN',
     FAMILIEHENDELSEDATO = 'FAMILIEHENDELSEDATO',
     ER_FAR_ELLER_MEDMOR = 'ER_FAR_ELLER_MEDMOR',
     NAVN_PÅ_FORELDRE = 'NAVN_PÅ_FORELDRE',
-    ANNEN_FORELDER = 'ANNEN_FORELDER',
     BARN = 'BARN',
+    FAMILIESITUASJON = 'FAMILIESITUASJON',
 }
 
 export type UttaksplanContextDataMap = {
-    [UttaksplanContextDataType.UTTAKSPLAN]?: Periode[];
+    [UttaksplanContextDataType.UTTAKSPLAN]?: SaksperiodeNy[];
     [UttaksplanContextDataType.FAMILIEHENDELSEDATO]?: string;
     [UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR]?: boolean;
     [UttaksplanContextDataType.NAVN_PÅ_FORELDRE]?: NavnPåForeldre;
-    [UttaksplanContextDataType.ANNEN_FORELDER]?: AnnenForelder;
     [UttaksplanContextDataType.BARN]?: Barn;
+    [UttaksplanContextDataType.FAMILIESITUASJON]?: Familiesituasjon;
 };
 
 const defaultInitialState = {} as UttaksplanContextDataMap;

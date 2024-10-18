@@ -135,17 +135,17 @@ const meta = {
         initAmplitude();
         return (
             <StrictMode>
-                <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-                    <ErrorBoundary appName="Foreldrepengeplanlegger" retryCallback={() => undefined}>
-                        <QueryClientProvider client={queryClient}>
-                            <MemoryRouter>
+                <MemoryRouter>
+                    <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
+                        <ErrorBoundary appName="Foreldrepengeplanlegger" retryCallback={() => undefined}>
+                            <QueryClientProvider client={queryClient}>
                                 <PlanleggerDataContext initialState={{}}>
                                     <PlanleggerDataFetcher locale="nb" changeLocale={() => undefined} />
                                 </PlanleggerDataContext>
-                            </MemoryRouter>
-                        </QueryClientProvider>
-                    </ErrorBoundary>
-                </IntlProvider>
+                            </QueryClientProvider>
+                        </ErrorBoundary>
+                    </IntlProvider>
+                </MemoryRouter>
             </StrictMode>
         );
     },

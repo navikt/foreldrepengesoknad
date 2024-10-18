@@ -40,9 +40,6 @@ describe('<Oppsummering>', () => {
 
         expect(screen.queryByText('Du må bekrefte at du har oppgitt riktige opplysninger')).not.toBeInTheDocument();
 
-        const abortController = new AbortController();
-
         expect(sendSøknad).toHaveBeenCalledTimes(1);
-        expect(sendSøknad).toHaveBeenNthCalledWith(1, abortController.signal);
     });
 });

@@ -27,7 +27,7 @@ import {
     isBeforeTodayOrToday,
     isRequired,
     isValidDate,
-    isValidNumberForm,
+    isValidInteger,
 } from '@navikt/fp-validation';
 
 import OrgnummerEllerLand from './components/OrgnummerEllerLand';
@@ -288,12 +288,12 @@ const EgenNæringPanel = <TYPE extends string>({
                                 description={intl.formatMessage({ id: 'egenNæring.næringsinntekt.description' })}
                                 validate={[
                                     isRequired(intl.formatMessage({ id: 'valideringsfeil.egenNæringInntekt.påkrevd' })),
+                                    isValidInteger(
+                                        intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.ugyldigFormat' }),
+                                    ),
                                     hasMaxLength(
                                         intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.forLang' }),
                                         9,
-                                    ),
-                                    isValidNumberForm(
-                                        intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.ugyldigFormat' }),
                                     ),
                                     hasMinValue(
                                         intl.formatMessage({ id: 'valideringsfeil.næringsinntekt.mindreEnnNull' }),

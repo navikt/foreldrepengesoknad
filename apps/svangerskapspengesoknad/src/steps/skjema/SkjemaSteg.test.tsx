@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
 import SøknadRoutes from 'appData/routes';
+import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import * as stories from './SkjemaSteg.stories';
 
@@ -14,6 +15,7 @@ describe('<SkjemaSteg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        await applyRequestHandlers(SkalIkkeFeileOpplasting.parameters.msw);
         render(
             <SkalIkkeFeileOpplasting
                 gåTilNesteSide={gåTilNesteSide}
@@ -61,8 +63,8 @@ describe('<SkjemaSteg>', () => {
                             skjemanummer: 'I000109',
                             type: 'tilrettelegging',
                             uploaded: true,
-                            url: undefined,
-                            uuid: undefined,
+                            url: 'test.com',
+                            uuid: 'uuid-test',
                         }),
                     ],
                 },
@@ -85,6 +87,7 @@ describe('<SkjemaSteg>', () => {
     });
 
     it('skal vise opplaster vedlegg', async () => {
+        await applyRequestHandlers(MedVedlegg.parameters.msw);
         render(<MedVedlegg />);
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
@@ -92,6 +95,7 @@ describe('<SkjemaSteg>', () => {
     });
 
     it('skal vise skjema når en har minst to tilrettelegginger', async () => {
+        await applyRequestHandlers(MedToTilrettelegginger.parameters.msw);
         render(<MedToTilrettelegginger />);
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
@@ -101,6 +105,7 @@ describe('<SkjemaSteg>', () => {
     });
 
     it('skal vise skjema for type frilans', async () => {
+        await applyRequestHandlers(ErTypeFrilans.parameters.msw);
         render(<ErTypeFrilans />);
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
@@ -113,6 +118,7 @@ describe('<SkjemaSteg>', () => {
     });
 
     it('skal vise kunne laste opp maks 2 (40 i prod) vedlegg', async () => {
+        await applyRequestHandlers(KanMaxHaToVedlegg.parameters.msw);
         render(<KanMaxHaToVedlegg />);
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();

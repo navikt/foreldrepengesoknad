@@ -132,27 +132,29 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                                 header={<FormattedMessage id="HvorLangPeriodeSteg.Infoboks.KunEnAvFedreneHarRett" />}
                                 color="gray"
                             >
-                                <BodyShort>
-                                    <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.NårBareEnHarRett" />
-                                </BodyShort>
-                                <BodyShort>
-                                    <FormattedMessage
-                                        id="HvorLangPeriodeSteg.Infoboks.ManFårEnDel"
-                                        values={{
-                                            a: (msg: any) => (
-                                                <Link
-                                                    inlineText
-                                                    href={links.godkjentAktivitet}
-                                                    className="lenke"
-                                                    rel="noreferrer"
-                                                    target="_blank"
-                                                >
-                                                    {msg}
-                                                </Link>
-                                            ),
-                                        }}
-                                    />
-                                </BodyShort>
+                                <VStack gap="2">
+                                    <BodyShort>
+                                        <FormattedMessage id="HvorLangPeriodeSteg.Infoboks.NårBareEnHarRett" />
+                                    </BodyShort>
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="HvorLangPeriodeSteg.Infoboks.ManFårEnDel"
+                                            values={{
+                                                a: (msg: any) => (
+                                                    <Link
+                                                        inlineText
+                                                        href={links.godkjentAktivitet}
+                                                        className="lenke"
+                                                        rel="noreferrer"
+                                                        target="_blank"
+                                                    >
+                                                        {msg}
+                                                    </Link>
+                                                ),
+                                            }}
+                                        />
+                                    </BodyShort>
+                                </VStack>
                             </Infobox>
                         )}
                         <BlueRadioGroup
@@ -189,17 +191,19 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
                             </Radio>
                         </BlueRadioGroup>
                         {valgtStønadskonto && (
-                            <ValgtDekningsgradInfoboks
-                                key={valgtDekningsgrad}
-                                barnet={barnet}
-                                hvemPlanlegger={hvemPlanlegger}
-                                arbeidssituasjon={arbeidssituasjon}
-                                valgtStønadskonto={valgtStønadskonto}
-                                uttaksdata100={uttaksdata100}
-                                uttaksdata80={uttaksdata80}
-                                valgtDekningsgrad={valgtDekningsgrad}
-                                antallUkerOgDager={antallUkerOgDager}
-                            />
+                            <VStack gap="2">
+                                <ValgtDekningsgradInfoboks
+                                    key={valgtDekningsgrad}
+                                    barnet={barnet}
+                                    hvemPlanlegger={hvemPlanlegger}
+                                    arbeidssituasjon={arbeidssituasjon}
+                                    valgtStønadskonto={valgtStønadskonto}
+                                    uttaksdata100={uttaksdata100}
+                                    uttaksdata80={uttaksdata80}
+                                    valgtDekningsgrad={valgtDekningsgrad}
+                                    antallUkerOgDager={antallUkerOgDager}
+                                />
+                            </VStack>
                         )}
                     </VStack>
                     <Spacer />

@@ -3,6 +3,7 @@ import { fireEvent, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
 import SøknadRoutes from 'appData/routes';
+import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 
@@ -15,6 +16,7 @@ describe('<ManglendeVedlegg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        await applyRequestHandlers(Termindatodokumentasjon.parameters.msw);
         const screen = render(
             <Termindatodokumentasjon
                 gåTilNesteSide={gåTilNesteSide}
@@ -57,6 +59,7 @@ describe('<ManglendeVedlegg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        await applyRequestHandlers(Termindatodokumentasjon.parameters.msw);
         const screen = render(
             <Termindatodokumentasjon
                 gåTilNesteSide={gåTilNesteSide}
@@ -86,8 +89,8 @@ describe('<ManglendeVedlegg>', () => {
                         skjemanummer: Skjemanummer.TERMINBEKREFTELSE,
                         type: 'terminbekreftelse',
                         uploaded: true,
-                        url: undefined,
-                        uuid: undefined,
+                        url: 'test.com',
+                        uuid: 'uuid-test',
                     }),
                 ],
             }),
@@ -100,6 +103,7 @@ describe('<ManglendeVedlegg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        await applyRequestHandlers(Omsorgsovertakelsedokumentasjon.parameters.msw);
         const screen = render(
             <Omsorgsovertakelsedokumentasjon
                 gåTilNesteSide={gåTilNesteSide}
@@ -142,6 +146,7 @@ describe('<ManglendeVedlegg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        await applyRequestHandlers(Omsorgsovertakelsedokumentasjon.parameters.msw);
         const screen = render(
             <Omsorgsovertakelsedokumentasjon
                 gåTilNesteSide={gåTilNesteSide}
@@ -171,8 +176,8 @@ describe('<ManglendeVedlegg>', () => {
                         skjemanummer: Skjemanummer.OMSORGSOVERTAKELSE,
                         type: 'omsorgsovertakelse',
                         uploaded: true,
-                        url: undefined,
-                        uuid: undefined,
+                        url: 'test.com',
+                        uuid: 'uuid-test',
                     }),
                 ],
             }),
@@ -185,6 +190,7 @@ describe('<ManglendeVedlegg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        await applyRequestHandlers(Aleneomsorgdokumentasjon.parameters.msw);
         const screen = render(
             <Aleneomsorgdokumentasjon
                 gåTilNesteSide={gåTilNesteSide}
@@ -227,6 +233,7 @@ describe('<ManglendeVedlegg>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
+        await applyRequestHandlers(Aleneomsorgdokumentasjon.parameters.msw);
         const screen = render(
             <Aleneomsorgdokumentasjon
                 gåTilNesteSide={gåTilNesteSide}
@@ -256,8 +263,8 @@ describe('<ManglendeVedlegg>', () => {
                         skjemanummer: Skjemanummer.DOK_AV_ALENEOMSORG,
                         type: 'dokumentasjonAvAleneomsorg',
                         uploaded: true,
-                        url: undefined,
-                        uuid: undefined,
+                        url: 'test.com',
+                        uuid: 'uuid-test',
                     }),
                 ],
             }),

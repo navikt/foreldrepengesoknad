@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
 import SøknadRoutes from 'appData/routes';
-import MockAdapter from 'axios-mock-adapter';
+import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Arbeidsforholdstype, Tilrettelegging } from 'types/Tilrettelegging';
@@ -10,7 +10,6 @@ import { Arbeidsforholdstype, Tilrettelegging } from 'types/Tilrettelegging';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import { AxiosInstanceAPI } from '../../api/AxiosInstance';
 import SkjemaSteg from './SkjemaSteg';
 
 const file1 = new File(['abc'.repeat(100000)], 'Filnavn1.jpg');
@@ -87,7 +86,6 @@ const promiseAction =
     };
 
 type StoryArgs = {
-    skalFeileOpplasting: boolean;
     tilrettelegging: Tilrettelegging[];
     gåTilNesteSide?: (action: Action) => void;
 } & ComponentProps<typeof SkjemaSteg>;
@@ -95,13 +93,9 @@ type StoryArgs = {
 const meta = {
     title: 'steps/SkjemaSteg',
     component: SkjemaSteg,
-    render: ({ gåTilNesteSide = action('button-click'), skalFeileOpplasting, tilrettelegging, ...rest }) => {
+    render: ({ gåTilNesteSide = action('button-click'), tilrettelegging, ...rest }) => {
         initAmplitude();
-        const apiMock = new MockAdapter(AxiosInstanceAPI());
-        if (!skalFeileOpplasting) {
-            apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(200); //story
-            apiMock.onPost('/rest/storage/svangerskapspenger/vedlegg').reply(200); //test
-        }
+
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.SKJEMA]}>
                 <SvpDataContext
@@ -132,9 +126,18 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const SkalIkkeFeileOpplasting: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    'https://svp/rest/storage/svangerskapspenger/vedlegg',
+                    () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
+                ),
+            ],
+        },
+    },
     args: {
         tilrettelegging: [defaultTilrettelegging],
-        skalFeileOpplasting: false,
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: promiseAction(),
         arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
@@ -143,14 +146,21 @@ export const SkalIkkeFeileOpplasting: Story = {
 };
 
 export const SkalFeileOpplasting: Story = {
-    args: {
-        ...SkalIkkeFeileOpplasting.args,
-        tilrettelegging: [defaultTilrettelegging],
-        skalFeileOpplasting: true,
+    parameters: {
+        msw: {
+            handlers: [
+                http.post(
+                    'https://svp/rest/storage/svangerskapspenger/vedlegg',
+                    () => new HttpResponse(null, { status: 400 }),
+                ),
+            ],
+        },
     },
+    args: SkalIkkeFeileOpplasting.args,
 };
 
 export const MedVedlegg: Story = {
+    parameters: SkalIkkeFeileOpplasting.parameters,
     args: {
         ...SkalIkkeFeileOpplasting.args,
         tilrettelegging: [
@@ -176,6 +186,7 @@ export const MedVedlegg: Story = {
 };
 
 export const MedToTilrettelegginger: Story = {
+    parameters: SkalIkkeFeileOpplasting.parameters,
     args: {
         ...SkalIkkeFeileOpplasting.args,
         tilrettelegging: [defaultTilrettelegging, defaultTilrettelegging],
@@ -183,6 +194,7 @@ export const MedToTilrettelegginger: Story = {
 };
 
 export const ErTypeFrilans: Story = {
+    parameters: SkalIkkeFeileOpplasting.parameters,
     args: {
         ...SkalIkkeFeileOpplasting.args,
         tilrettelegging: [
@@ -198,6 +210,7 @@ export const ErTypeFrilans: Story = {
 };
 
 export const KanMaxHaToVedlegg: Story = {
+    parameters: SkalIkkeFeileOpplasting.parameters,
     args: {
         ...SkalIkkeFeileOpplasting.args,
         tilrettelegging: [

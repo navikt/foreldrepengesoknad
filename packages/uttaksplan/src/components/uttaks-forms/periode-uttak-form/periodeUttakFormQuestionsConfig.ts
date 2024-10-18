@@ -8,7 +8,7 @@ import {
     TidsperiodeDate,
     UttakRundtFødselÅrsak,
 } from '@navikt/fp-common';
-import { isValidTidsperiode } from '@navikt/fp-utils';
+import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { QuestionConfig, Questions, YesOrNo } from '../../../formik-wrappers';
 import { harAnnenForelderRettIEØS } from '../../../utils/annenForelderUtils';
@@ -85,7 +85,7 @@ const skalViseGradering = (
     erDeltUttakINorge: boolean,
     annenForelder: AnnenForelder,
 ): boolean => {
-    if (!isValidTidsperiode({ fom: values.fom, tom: values.tom })) {
+    if (!isValidTidsperiodeString({ fom: values.fom, tom: values.tom })) {
         return false;
     }
 
@@ -118,7 +118,7 @@ const skalViseGradering = (
 };
 
 const skalViseAktivitetskrav = (regler: UttakSkjemaregler, values: PeriodeUttakFormData): boolean => {
-    if (!isValidTidsperiode({ fom: values.fom, tom: values.tom })) {
+    if (!isValidTidsperiodeString({ fom: values.fom, tom: values.tom })) {
         return false;
     }
 
@@ -136,7 +136,7 @@ const skalViseAktivitetskrav = (regler: UttakSkjemaregler, values: PeriodeUttakF
 };
 
 const skalViseSamtidigUttak = (regler: UttakSkjemaregler, values: PeriodeUttakFormData): boolean => {
-    if (!isValidTidsperiode({ fom: values.fom, tom: values.tom })) {
+    if (!isValidTidsperiodeString({ fom: values.fom, tom: values.tom })) {
         return false;
     }
 
@@ -169,7 +169,7 @@ const skalViseFlerbarnsdager = (
     termindato: Date | undefined,
     situasjon: Situasjon,
 ): boolean => {
-    if (!isValidTidsperiode({ fom: values.fom, tom: values.tom })) {
+    if (!isValidTidsperiodeString({ fom: values.fom, tom: values.tom })) {
         return false;
     }
     if (
@@ -203,7 +203,7 @@ const skalViseKonto = (
     situasjon: Situasjon,
 ): boolean => {
     const tidsperiode = { fom: values.fom, tom: values.tom };
-    if (!isValidTidsperiode(tidsperiode)) {
+    if (!isValidTidsperiodeString(tidsperiode)) {
         return false;
     }
     if (
@@ -233,7 +233,7 @@ const PeriodeUttakFormConfig: QuestionConfig<PeriodeUttakFormQuestionsPayload, P
     [PeriodeUttakFormField.hvemSkalTaUttak]: {
         isAnswered: ({ values }) => hasValue(values.hvemSkalTaUttak),
         isIncluded: ({ regelProps, values }) => getUttakSkjemaregler(values, regelProps).hvemSkalTaUttakSkalBesvares(),
-        visibilityFilter: ({ values }) => isValidTidsperiode({ fom: values.fom, tom: values.tom }),
+        visibilityFilter: ({ values }) => isValidTidsperiodeString({ fom: values.fom, tom: values.tom }),
     },
     [PeriodeUttakFormField.konto]: {
         isAnswered: ({ values }) => hasValue(values.konto),

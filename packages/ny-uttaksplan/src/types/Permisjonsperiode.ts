@@ -1,8 +1,10 @@
-import { Forelder, Periode, Tidsperiode } from '@navikt/fp-common';
+import { Forelder, Tidsperiode } from '@navikt/fp-common';
+
+import { Planperiode } from './Planperiode';
 
 interface Permisjonsperiode {
     forelder?: Forelder;
-    perioder: Periode[];
+    perioder: Planperiode[];
     tidsperiode: Tidsperiode;
     samtidigUttak?: boolean;
     erUtsettelse?: boolean;

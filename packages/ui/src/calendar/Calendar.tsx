@@ -37,6 +37,10 @@ const findDayColor = (year: number, month: number, day: number, periods: Period[
         return PeriodeColor.PINK;
     }
 
+    if (period?.color === PeriodeColor.PURPLE) {
+        return PeriodeColor.PURPLE;
+    }
+
     if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
         return PeriodeColor.GRAY;
     }
@@ -113,6 +117,7 @@ interface Props {
 
 const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }) => {
     const months = findMonths(periods[0].fom, periods[periods.length - 1].tom);
+
     return (
         <>
             {periods.some((period) => period.srText) && (

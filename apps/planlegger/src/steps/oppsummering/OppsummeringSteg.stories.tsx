@@ -9,6 +9,7 @@ import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
+import { HvorMye } from 'types/HvorMye';
 
 import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -49,6 +50,7 @@ type StoryArgs = {
     hvorLangPeriode?: HvorLangPeriode;
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
+    hvorMye?: HvorMye;
 } & ComponentProps<typeof OppsummeringSteg>;
 
 const meta = {
@@ -63,6 +65,7 @@ const meta = {
         stønadskontoer,
         satser,
         locale,
+        hvorMye,
     }) => {
         initAmplitude();
         return (
@@ -74,6 +77,7 @@ const meta = {
                         [ContextDataType.HVOR_LANG_PERIODE]: hvorLangPeriode,
                         [ContextDataType.OM_BARNET]: omBarnet,
                         [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
+                        [ContextDataType.HVOR_MYE]: hvorMye,
                     }}
                 >
                     <OppsummeringSteg stønadskontoer={stønadskontoer} satser={satser} locale={locale} />
@@ -98,13 +102,17 @@ export const FlereForsørgereHundreProsentTermin: Story = {
         fordeling: {
             antallDagerSøker1: 25,
         },
+        hvorMye: {
+            lønnSøker1: 50000,
+            lønnSøker2: 70000,
+        },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
         },
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: false,
-            termindato: '2024-07-24',
+            termindato: '2025-07-24',
             antallBarn: '1',
         },
         arbeidssituasjon: {
@@ -148,6 +156,9 @@ export const MorOgFarKunFarHarRett: Story = {
             navnPåMor: 'Klara Utvikler',
             navnPåFar: 'Espen Utvikler',
             type: Situasjon.MOR_OG_FAR,
+        },
+        hvorMye: {
+            lønnSøker1: 1000,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -193,13 +204,17 @@ export const FarOgFarFødsel: Story = {
         fordeling: {
             antallDagerSøker1: 25,
         },
+        hvorMye: {
+            lønnSøker1: 1000,
+            lønnSøker2: 70000,
+        },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
         },
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: false,
-            termindato: '2024-07-24',
+            termindato: '2024-11-24',
             antallBarn: '1',
         },
         arbeidssituasjon: {
@@ -220,6 +235,10 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
         fordeling: {
             antallDagerSøker1: 25,
         },
+        hvorMye: {
+            lønnSøker1: 1000,
+            lønnSøker2: 70000,
+        },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
         },
@@ -227,7 +246,7 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
             erFødsel: false,
             termindato: '2024-07-24',
             antallBarn: '1',
-            overtakelsesdato: '2024-10-24',
+            overtakelsesdato: '2024-10-13',
             fødselsdato: '2024-07-24',
         },
         arbeidssituasjon: {
@@ -235,6 +254,39 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
             jobberAnnenPart: false,
         },
         stønadskontoer: MorOgFarKunFarHarRett.args?.stønadskontoer,
+    },
+};
+export const FarOgFarAdopsjonBeggeHarRett: Story = {
+    args: {
+        locale: 'nb',
+        satser: DEFAULT_SATSER,
+        hvemPlanlegger: {
+            navnPåFar: 'Espen Utvikler',
+            navnPåMedfar: 'Anders Utvikler',
+            type: Situasjon.FAR_OG_FAR,
+        },
+        fordeling: {
+            antallDagerSøker1: 25,
+        },
+        hvorMye: {
+            lønnSøker1: 1000,
+            lønnSøker2: 70000,
+        },
+        hvorLangPeriode: {
+            dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
+        },
+        omBarnet: {
+            erFødsel: false,
+            erBarnetFødt: false,
+            fødselsdato: '2024-07-24',
+            antallBarn: '1',
+            overtakelsesdato: '2024-10-13',
+        },
+        arbeidssituasjon: {
+            status: Arbeidsstatus.JOBBER,
+            jobberAnnenPart: true,
+        },
+        stønadskontoer: FlereForsørgereHundreProsentTermin.args?.stønadskontoer,
     },
 };
 
@@ -249,6 +301,9 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
         fordeling: {
             antallDagerSøker1: 25,
         },
+        hvorMye: {
+            lønnSøker1: 70000,
+        },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
         },
@@ -257,7 +312,7 @@ export const AleneforsørgerÅttiProsentFødselToBarn: Story = {
             erBarnetFødt: true,
             termindato: '2024-07-10',
             antallBarn: '2',
-            fødselsdato: '2024-08-10',
+            fødselsdato: '2024-08-15',
         },
         arbeidssituasjon: {
             status: Arbeidsstatus.JOBBER,
@@ -287,6 +342,9 @@ export const AleneforsørgerFarÅttiProsentFødsel: Story = {
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             type: Situasjon.FAR,
+        },
+        hvorMye: {
+            lønnSøker1: 1000,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.ÅTTI_PROSENT,
@@ -325,6 +383,10 @@ export const FlereForsørgereHundreProsentAdopsjon: Story = {
         },
         fordeling: {
             antallDagerSøker1: 25,
+        },
+        hvorMye: {
+            lønnSøker1: 1000,
+            lønnSøker2: 70000,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -379,9 +441,12 @@ export const KunMorHarRett: Story = {
         omBarnet: {
             erFødsel: true,
             erBarnetFødt: true,
-            termindato: '2024-07-01',
-            fødselsdato: '2024-07-01',
+            termindato: '2024-12-01',
+            fødselsdato: '2024-12-01',
             antallBarn: '1',
+        },
+        hvorMye: {
+            lønnSøker1: 1000,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
@@ -449,6 +514,9 @@ export const AleneforsørgerMorErUfør: Story = {
             termindato: '2024-10-24',
             antallBarn: '1',
         },
+        hvorMye: {
+            lønnSøker1: 1000,
+        },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,
         },
@@ -471,6 +539,9 @@ export const OppsummeringFarOgFarKunFar2HarRett: Story = {
             erBarnetFødt: false,
             termindato: '2024-10-24',
             antallBarn: '1',
+        },
+        hvorMye: {
+            lønnSøker1: 1000,
         },
         hvorLangPeriode: {
             dekningsgrad: Dekningsgrad.HUNDRE_PROSENT,

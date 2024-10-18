@@ -11,11 +11,11 @@
 
 .periode-liste-header__uker {
     padding: 0.5rem 1rem;
-    min-width: 30%;
+    min-width: 25%;
 }
 
 .periode-liste-header__hendelse {
-    min-width: 40%;
+    min-width: 45%;
     padding: 0.5rem 1rem;
     border-radius: 1.25rem;
 }

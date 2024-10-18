@@ -12,7 +12,7 @@ import {
     isOverføringsperiode,
     isUttaksperiode,
 } from '@navikt/fp-common';
-import { Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
+import { Uttaksdagen, isValidTidsperiodeString } from '@navikt/fp-utils';
 
 import { andreAugust2022ReglerGjelder, tidperiodeOverlapperDato } from './dateUtils';
 import { finnAntallDagerÅTrekke } from './uttaksPlanStatus';
@@ -126,7 +126,7 @@ export const erFarMedmorSinWLBTidsperiodeRundtFødsel = (
 ): boolean => {
     return (
         tidsperiode !== undefined &&
-        isValidTidsperiode(tidsperiode) &&
+        isValidTidsperiodeString(tidsperiode) &&
         erFarEllerMedmor &&
         situasjon === 'fødsel' &&
         andreAugust2022ReglerGjelder(familiehendelsesdato) &&

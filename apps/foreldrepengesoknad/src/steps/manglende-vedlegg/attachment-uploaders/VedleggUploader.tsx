@@ -1,16 +1,16 @@
-import { AxiosInstanceAPI } from 'api/AxiosInstance';
 import React, { FunctionComponent, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { IntlShape } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { addMetadata, lagSendSenereDokument } from 'utils/vedleggUtils';
 
-import { getSaveAttachment } from '@navikt/fp-api';
+import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentMetadataType, AttachmentType } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { formatDateShortYear } from '@navikt/fp-utils';
 
+import Environment from '../../../Environment';
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
 
 type Perioder = Array<{
@@ -90,7 +90,7 @@ const VedleggUploader: FunctionComponent<Props> = ({
 
                 updateAttachments(attachmentsMedMetadata);
             }}
-            saveAttachment={getSaveAttachment(AxiosInstanceAPI(), 'foreldrepenger')}
+            saveAttachment={getSaveAttachmentFetch(Environment.PUBLIC_PATH, 'foreldrepenger')}
         />
     );
 };

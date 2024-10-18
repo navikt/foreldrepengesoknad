@@ -1,16 +1,15 @@
-import { Periode } from '@navikt/fp-common';
-
+import { Planperiode } from '../types/Planperiode';
 import { getPeriodeHullEllerPeriodeUtenUttak } from './uttaksplanbuilderUtils';
 
 interface SlettPeriodeParams {
-    perioder: Periode[];
-    slettetPeriode: Periode;
-    familiehendelsesdato: Date;
+    perioder: Planperiode[];
+    slettetPeriode: Planperiode;
+    familiehendelsesdato: string;
     harAktivitetskravIPeriodeUtenUttak: boolean;
     erAdopsjon: boolean;
     bareFarHarRett: boolean;
     erFarEllerMedmor: boolean;
-    førsteUttaksdagNesteBarnsSak: Date | undefined;
+    førsteUttaksdagNesteBarnsSak: string | undefined;
 }
 
 export const slettPeriode = ({
@@ -22,16 +21,18 @@ export const slettPeriode = ({
     bareFarHarRett,
     erFarEllerMedmor,
     førsteUttaksdagNesteBarnsSak,
-}: SlettPeriodeParams): Periode[] => {
-    const result: Periode[] = perioder.reduce((res, periode, index) => {
+}: SlettPeriodeParams): Planperiode[] => {
+    const result: Planperiode[] = perioder.reduce((res, periode, index) => {
         if (index === 0 && periode.id === slettetPeriode.id) {
             return res;
         }
 
         if (periode.id === slettetPeriode.id) {
+            const tidsperiode = { fom: slettetPeriode.fom, tom: slettetPeriode.tom };
+
             res.push(
                 ...getPeriodeHullEllerPeriodeUtenUttak(
-                    slettetPeriode.tidsperiode,
+                    tidsperiode,
                     harAktivitetskravIPeriodeUtenUttak,
                     familiehendelsesdato,
                     erAdopsjon,
@@ -45,7 +46,7 @@ export const slettPeriode = ({
 
         res.push(periode);
         return res;
-    }, [] as Periode[]);
+    }, [] as Planperiode[]);
 
     return result;
 };

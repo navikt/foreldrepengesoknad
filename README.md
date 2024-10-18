@@ -9,7 +9,7 @@ Du må på forhånd ha installert Node.js (v.18). Vi anbefaler å bruke Git Bash
 
 1. Installer pnpm: `npm install -g pnpm`.
 2. I roten av repoet, kjør `pnpm install`.
-3. Kjør `pnpm setup`. Følg instruksjonen i outputen.
+3. Kjør `pnpm setup`. Følg instruksjonen i outputen
 4. Installer turborepo med `pnpm install -g turbo`
 5. Kjør `turbo build`
 6. For å sjekke om alt fungerer, kjør testene med `turbo test`

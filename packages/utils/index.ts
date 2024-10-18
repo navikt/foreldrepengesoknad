@@ -24,6 +24,7 @@ export { redirect } from './src/loginUtils';
 export { default as useDocumentTitle } from './src/hooks/useDocumentTitle';
 export { default as useBeforeUnload } from './src/hooks/useBeforeUnload';
 export { default as useScrollBehaviour } from './src/hooks/useScrollBehaviour';
+export { useMedia } from './src/hooks/useMedia';
 export { default as bemUtils } from './src/bemUtils';
 export { trimNumberValue, getFloatFromString, getNumberFromNumberInputValue } from './src/numberUtils';
 export { capitalizeFirstLetter, capitalizeFirstLetterInEveryWordOnly, getNavnGenitivEierform } from './src/stringUtils';
@@ -67,11 +68,15 @@ export {
     enMånedSiden,
     niMånederFremITid,
     isISODateString,
+    ISOStringToDate,
+    dateToISOString,
     dateIsSameOrAfter,
     dateIsSameOrBefore,
     formaterDatoUtenDag,
 } from './src/dateUtils';
 
 export * from './src/uttak/Uttaksdagen';
+export * from './src/uttak/UttaksdagenString';
 export * from './src/uttak/Tidsperioden';
+export * from './src/uttak/TidsperiodenString';
 export * from './src/uttak/uttakUtils';

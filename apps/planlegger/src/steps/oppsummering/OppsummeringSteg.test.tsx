@@ -79,10 +79,9 @@ describe('<OppsummeringSteg>', () => {
         render(<FarOgFarFødsel />);
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
-        expect(screen.getByText('Perioden med foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Dere valgte 100 % i 46 uker.')).toBeInTheDocument();
         expect(screen.getByText(/Periode:/)).toBeInTheDocument();
-        expect(screen.getByText(/24. juli 2024 – 10. juni 2025/)).toBeInTheDocument();
+        expect(screen.getByText(/25. nov. 2024 – 10. okt. 2025/)).toBeInTheDocument();
     });
 
     it('skal vise perioder for begge fedrene ved adopsjon far og far', async () => {
@@ -90,10 +89,8 @@ describe('<OppsummeringSteg>', () => {
 
         expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
 
-        expect(screen.getByText('Perioden med foreldrepenger')).toBeInTheDocument();
-
         expect(screen.getByText('Periode:')).toBeInTheDocument();
-        expect(screen.getByText('25. okt. 2024 – 02. jan. 2025')).toBeInTheDocument();
+        expect(screen.getByText('14. okt. 2024 – 18. juli 2025')).toBeInTheDocument();
         expect(screen.getByText('Uten aktivitetskrav')).toBeInTheDocument();
         expect(screen.getByText('Med aktivitetskrav')).toBeInTheDocument();
     });
@@ -149,8 +146,25 @@ describe('<OppsummeringSteg>', () => {
         expect(screen.getByText('Lengde')).toBeInTheDocument();
         expect(screen.getByText('Dere valgte 100 % foreldrepenger i 46 uker.')).toBeInTheDocument();
 
-        expect(screen.getByText('Perioden med foreldrepenger')).toBeInTheDocument();
         expect(screen.getByText('Dere valgte 100 % i 46 uker.')).toBeInTheDocument();
         expect(screen.getByText('24. okt. 2024 – 10. sep. 2025')).toBeInTheDocument();
+    });
+    it('skal vise info om hvor mye-steget der det er flere forsørgere og begge har rett til foreldrepenger - fødsel', async () => {
+        render(<FlereForsørgereHundreProsentTermin />);
+
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+
+        expect(screen.getAllByText('Hvor mye?')).toHaveLength(2);
+        expect(
+            screen.getByText(
+                'Klara vil få rundt 2 308 kr per dag hvis dere velger 100 % foreldrepenger eller 1 846 kr per dag med 80 %.',
+            ),
+        ).toBeInTheDocument();
+
+        expect(
+            screen.getByText(
+                'Espen vil få rundt 2 862 kr per dag hvis dere velger 100 % foreldrepenger eller 2 289 kr per dag med 80 %.',
+            ),
+        ).toBeInTheDocument();
     });
 });

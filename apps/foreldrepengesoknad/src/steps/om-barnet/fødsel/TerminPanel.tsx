@@ -54,6 +54,7 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
                         label={intl.formatMessage({ id: 'omBarnet.termindato.termin' })}
                         minDate={date21DaysAgo}
                         maxDate={attenUkerTreDager}
+                        useStrategyAbsolute
                         validate={[
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.omBarnet.termindato.duMåOppgi' })),
                             isValidDate(
@@ -95,6 +96,7 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
                     name="terminbekreftelsedato"
                     label={intl.formatMessage({ id: 'omBarnet.terminbekreftelseDato' })}
                     maxDate={dateToday}
+                    useStrategyAbsolute
                     validate={[
                         isRequired(
                             intl.formatMessage({ id: 'valideringsfeil.omBarnet.terminbekreftelseDato.duMåOppgi' }),

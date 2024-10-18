@@ -1,20 +1,9 @@
 import dayjs from 'dayjs';
 
-import {
-    Periode,
-    PeriodeHull,
-    PeriodeHullÅrsak,
-    PeriodeUtenUttak,
-    Periodetype,
-    TidsperiodeDate,
-    isHull,
-    isPeriodeUtenUttak,
-    isPeriodeUtenUttakUtsettelse,
-    isUtsettelseAnnenPart,
-    isUttaksperiode,
-} from '@navikt/fp-common';
-import { Tidsperioden, Uttaksdagen, isValidTidsperiode } from '@navikt/fp-utils';
+import { Tidsperiode } from '@navikt/fp-types';
+import { TidsperiodenString, UttaksdagenString, isValidTidsperiodeString } from '@navikt/fp-utils';
 
+import { PeriodeHullType, Planperiode } from '../types/Planperiode';
 import { Perioden } from '../utils/Perioden';
 import { Periodene, sorterPerioder } from '../utils/Periodene';
 import {
@@ -22,20 +11,27 @@ import {
     førsteOktober2021ReglerGjelder,
     tidperiodeOverlapperDato,
 } from '../utils/dateUtils';
+import {
+    isHull,
+    isPeriodeUtenUttak,
+    isUtsettelsesperiodeAnnenPart,
+    isUttaksperiode,
+    normaliserPerioder,
+} from '../utils/periodeUtils';
 import { guid } from './guid';
 import { splittPeriodePåDato } from './leggTilPeriode';
 
 export const slåSammenLikePerioder = (
-    perioder: Periode[],
-    familiehendelsesdato: Date,
-    førsteUttaksdagNesteBarnsSak: Date | undefined,
-    annenPartsUttak?: Periode[],
-): Periode[] => {
+    perioder: Planperiode[],
+    familiehendelsesdato: string,
+    førsteUttaksdagNesteBarnsSak: string | undefined,
+    annenPartsUttak?: Planperiode[],
+): Planperiode[] => {
     if (perioder.length <= 1) {
         return perioder;
     }
-    const nyePerioder: Periode[] = [];
-    let forrigePeriode: Periode | undefined = { ...perioder[0] };
+    const nyePerioder: Planperiode[] = [];
+    let forrigePeriode: Planperiode | undefined = { ...perioder[0] };
     perioder.forEach((periode, index) => {
         if (index === 0) {
             return;
@@ -51,9 +47,9 @@ export const slåSammenLikePerioder = (
             if (
                 annenPartsUttak &&
                 isUttaksperiode(periode) &&
-                periode.ønskerSamtidigUttak &&
+                periode.samtidigUttak &&
                 isUttaksperiode(forrigePeriode) &&
-                forrigePeriode.ønskerSamtidigUttak
+                forrigePeriode.samtidigUttak
             ) {
                 const overlappendePerioderAnnenPartForrigePeriode =
                     Periodene(annenPartsUttak).finnOverlappendePerioder(forrigePeriode);
@@ -72,14 +68,12 @@ export const slåSammenLikePerioder = (
             }
 
             if (
-                (dayjs(forrigePeriode.tidsperiode.tom).isBefore(familiehendelsesdato, 'day') &&
-                    dayjs(periode.tidsperiode.tom).isSameOrAfter(
-                        Uttaksdagen(familiehendelsesdato).denneEllerNeste(),
-                    )) ||
+                (dayjs(forrigePeriode.tom).isBefore(familiehendelsesdato, 'day') &&
+                    dayjs(periode.tom).isSameOrAfter(UttaksdagenString(familiehendelsesdato).denneEllerNeste())) ||
                 (førsteUttaksdagNesteBarnsSak !== undefined &&
-                    dayjs(forrigePeriode.tidsperiode.tom).isBefore(førsteUttaksdagNesteBarnsSak, 'day') &&
-                    dayjs(periode.tidsperiode.fom).isSameOrAfter(
-                        Uttaksdagen(førsteUttaksdagNesteBarnsSak).denneEllerNeste(),
+                    dayjs(forrigePeriode.tom).isBefore(førsteUttaksdagNesteBarnsSak, 'day') &&
+                    dayjs(periode.fom).isSameOrAfter(
+                        UttaksdagenString(førsteUttaksdagNesteBarnsSak).denneEllerNeste(),
                         'day',
                     ))
             ) {
@@ -89,13 +83,14 @@ export const slåSammenLikePerioder = (
             }
 
             const nyTidsperiode = {
-                fom: forrigePeriode.tidsperiode.fom,
-                tom: periode.tidsperiode.tom,
+                fom: forrigePeriode.fom,
+                tom: periode.tom,
             };
 
             forrigePeriode = {
                 ...forrigePeriode,
-                tidsperiode: nyTidsperiode,
+                fom: nyTidsperiode.fom,
+                tom: nyTidsperiode.tom,
             };
 
             return;
@@ -110,40 +105,39 @@ export const slåSammenLikePerioder = (
 };
 
 const getSplittetPeriodeOmNødvendig = (
-    nyHullPeriode: PeriodeHull | PeriodeUtenUttak,
-    førsteUttaksdagNesteBarnsSak: Date | undefined,
-): Array<PeriodeHull | PeriodeUtenUttak> => {
+    nyHullPeriode: Planperiode,
+    førsteUttaksdagNesteBarnsSak: string | undefined,
+) => {
+    const hullTidsperiode = { fom: nyHullPeriode.fom, tom: nyHullPeriode.tom };
+
     if (
         førsteUttaksdagNesteBarnsSak !== undefined &&
-        tidperiodeOverlapperDato(nyHullPeriode.tidsperiode, førsteUttaksdagNesteBarnsSak)
+        tidperiodeOverlapperDato(hullTidsperiode, førsteUttaksdagNesteBarnsSak)
     ) {
-        return splittPeriodePåDato(nyHullPeriode, førsteUttaksdagNesteBarnsSak) as Array<
-            PeriodeHull | PeriodeUtenUttak
-        >;
+        return splittPeriodePåDato(nyHullPeriode, førsteUttaksdagNesteBarnsSak);
     }
     return [nyHullPeriode];
 };
 
 export const getPeriodeHullEllerPeriodeUtenUttak = (
-    tidsperiode: TidsperiodeDate,
+    tidsperiode: Tidsperiode,
     harAktivitetskravIPeriodeUtenUttak: boolean,
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
     erFarEllerMedmor: boolean,
-    førsteUttaksdagNesteBarnsSak: Date | undefined,
-    årsak: PeriodeHullÅrsak = PeriodeHullÅrsak.fridag,
-): Array<PeriodeHull | PeriodeUtenUttak> => {
+    førsteUttaksdagNesteBarnsSak: string | undefined,
+) => {
     const skalLeggeInnPerioderUtenUttak = førsteOktober2021ReglerGjelder(familiehendelsesdato);
 
     if (skalLeggeInnPerioderUtenUttak) {
         const ANTALL_UTTAKSDAGER_SEKS_UKER = 30;
-        const førsteUttaksdagFamiliehendelsesdato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
-        const førsteUttaksdagEtterSeksUker = Uttaksdagen(førsteUttaksdagFamiliehendelsesdato).leggTil(
+        const førsteUttaksdagFamiliehendelsesdato = UttaksdagenString(familiehendelsesdato).denneEllerNeste();
+        const førsteUttaksdagEtterSeksUker = UttaksdagenString(førsteUttaksdagFamiliehendelsesdato).leggTil(
             ANTALL_UTTAKSDAGER_SEKS_UKER,
         );
         const tidsperiodeErInnenFørsteSeksUker =
-            Tidsperioden(tidsperiode).erInnenforFørsteSeksUker(familiehendelsesdato);
+            TidsperiodenString(tidsperiode).erInnenforFørsteSeksUker(familiehendelsesdato);
 
         const farMedmorBeholderDagerIkkeTattUtDeFørsteSeksUkene =
             dayjs(tidsperiode.fom).isBefore(førsteUttaksdagEtterSeksUker, 'day') &&
@@ -152,7 +146,7 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
                 (erFarEllerMedmor && andreAugust2022ReglerGjelder(familiehendelsesdato)));
 
         if (harAktivitetskravIPeriodeUtenUttak && !farMedmorBeholderDagerIkkeTattUtDeFørsteSeksUkene) {
-            return getSplittetPeriodeOmNødvendig(getPeriodeHull(tidsperiode, årsak), førsteUttaksdagNesteBarnsSak);
+            return getSplittetPeriodeOmNødvendig(getPeriodeHull(tidsperiode), førsteUttaksdagNesteBarnsSak);
         }
 
         if (dayjs(tidsperiode.fom).isBefore(familiehendelsesdato, 'day')) {
@@ -167,23 +161,24 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
                 ) {
                     return [getNyPeriodeUtenUttak(tidsperiode)];
                 }
-                return [getPeriodeHull(tidsperiode, årsak)];
+                return [getPeriodeHull(tidsperiode)];
             }
 
             const antallDagerFraFomTilFørsteUttaksdagSeksUker =
-                Tidsperioden({ fom: tidsperiode.fom, tom: førsteUttaksdagEtterSeksUker }).getAntallUttaksdager() - 2;
+                TidsperiodenString({ fom: tidsperiode.fom, tom: førsteUttaksdagEtterSeksUker }).getAntallUttaksdager() -
+                2;
 
             const nyPeriodeUtenUttakTidsperiodeLengde =
-                Tidsperioden(tidsperiode).getAntallUttaksdager() - antallDagerFraFomTilFørsteUttaksdagSeksUker;
+                TidsperiodenString(tidsperiode).getAntallUttaksdager() - antallDagerFraFomTilFørsteUttaksdagSeksUker;
 
-            const førsteSeksUkerTidsperiode: TidsperiodeDate = {
+            const førsteSeksUkerTidsperiode: Tidsperiode = {
                 fom: tidsperiode.fom,
-                tom: Uttaksdagen(førsteUttaksdagEtterSeksUker).leggTil(-1),
+                tom: UttaksdagenString(førsteUttaksdagEtterSeksUker).leggTil(-1),
             };
 
-            const etterFørsteSeksUkerTidsperiode: TidsperiodeDate = {
+            const etterFørsteSeksUkerTidsperiode: Tidsperiode = {
                 fom: førsteUttaksdagEtterSeksUker,
-                tom: Uttaksdagen(førsteUttaksdagEtterSeksUker).leggTil(nyPeriodeUtenUttakTidsperiodeLengde - 2),
+                tom: UttaksdagenString(førsteUttaksdagEtterSeksUker).leggTil(nyPeriodeUtenUttakTidsperiodeLengde - 2),
             };
 
             if (
@@ -195,11 +190,11 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
                 }
 
                 const periodeUtenUttak = getNyPeriodeUtenUttak(førsteSeksUkerTidsperiode);
-                const periodeHull = getPeriodeHull(etterFørsteSeksUkerTidsperiode, årsak);
+                const periodeHull = getPeriodeHull(etterFørsteSeksUkerTidsperiode);
                 return [periodeUtenUttak, periodeHull];
             }
 
-            const periodeHull = getPeriodeHull(førsteSeksUkerTidsperiode, årsak);
+            const periodeHull = getPeriodeHull(førsteSeksUkerTidsperiode);
             const periodeUtenUttak = getNyPeriodeUtenUttak(etterFørsteSeksUkerTidsperiode);
 
             return [periodeHull, periodeUtenUttak];
@@ -208,41 +203,44 @@ export const getPeriodeHullEllerPeriodeUtenUttak = (
         return getSplittetPeriodeOmNødvendig(getNyPeriodeUtenUttak(tidsperiode), førsteUttaksdagNesteBarnsSak);
     }
 
-    return getSplittetPeriodeOmNødvendig(getPeriodeHull(tidsperiode, årsak), førsteUttaksdagNesteBarnsSak);
+    return getSplittetPeriodeOmNødvendig(getPeriodeHull(tidsperiode), førsteUttaksdagNesteBarnsSak);
 };
 
-export const getPeriodeHull = (tidsperiode: TidsperiodeDate, årsak?: PeriodeHullÅrsak): PeriodeHull => ({
+export const getPeriodeHull = (tidsperiode: Tidsperiode): Planperiode => ({
     id: guid(),
-    type: Periodetype.Hull,
-    tidsperiode,
-    årsak,
+    fom: tidsperiode.fom,
+    tom: tidsperiode.tom,
+    periodeHullÅrsak: PeriodeHullType.TAPTE_DAGER,
+    gjelderAnnenPart: false,
 });
 
-export const getNyPeriodeUtenUttak = (tidsperiode: TidsperiodeDate): PeriodeUtenUttak => ({
+export const getNyPeriodeUtenUttak = (tidsperiode: Tidsperiode): Planperiode => ({
     id: guid(),
-    type: Periodetype.PeriodeUtenUttak,
-    tidsperiode,
+    fom: tidsperiode.fom,
+    tom: tidsperiode.tom,
+    periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
+    gjelderAnnenPart: false,
 });
 
 export const getTidsperiodeMellomPerioder = (
-    tidsperiode1: TidsperiodeDate,
-    tidsperiode2: TidsperiodeDate,
-): TidsperiodeDate | undefined => {
-    const tidsperiodeMellomPerioder: TidsperiodeDate = {
-        fom: Uttaksdagen(tidsperiode1.tom).neste(),
-        tom: Uttaksdagen(tidsperiode2.fom).forrige(),
+    tidsperiode1: Tidsperiode,
+    tidsperiode2: Tidsperiode,
+): Tidsperiode | undefined => {
+    const tidsperiodeMellomPerioder: Tidsperiode = {
+        fom: UttaksdagenString(tidsperiode1.tom).neste(),
+        tom: UttaksdagenString(tidsperiode2.fom).forrige(),
     };
 
-    const antallDagerIMellomrom = Tidsperioden(tidsperiodeMellomPerioder).getAntallUttaksdager();
+    const antallDagerIMellomrom = TidsperiodenString(tidsperiodeMellomPerioder).getAntallUttaksdager();
 
-    if (isValidTidsperiode(tidsperiodeMellomPerioder) && antallDagerIMellomrom > 0) {
+    if (isValidTidsperiodeString(tidsperiodeMellomPerioder) && antallDagerIMellomrom > 0) {
         return tidsperiodeMellomPerioder;
     }
 
     return undefined;
 };
 
-export const fjernUnødvendigeHull = (perioder: Periode[]) => {
+export const fjernUnødvendigeHull = (perioder: Planperiode[]) => {
     return perioder.reduce((res, periode, index) => {
         if (index === 0) {
             if (isPeriodeUtenUttak(periode)) {
@@ -261,17 +259,17 @@ export const fjernUnødvendigeHull = (perioder: Periode[]) => {
 
         res.push(periode);
         return res;
-    }, [] as Periode[]);
+    }, [] as Planperiode[]);
 };
 
 export const finnOgSettInnHull = (
-    perioder: Periode[],
+    perioder: Planperiode[],
     harAktivitetskravIPeriodeUtenUttak: boolean,
-    familiehendelsesdato: Date,
+    familiehendelsesdato: string,
     erAdopsjon: boolean,
     bareFarHarRett: boolean,
     erFarEllerMedmor: boolean,
-    førsteUttaksdagNesteBarnsSak: Date | undefined,
+    førsteUttaksdagNesteBarnsSak: string | undefined,
 ) => {
     if (perioder.length === 0) {
         return perioder;
@@ -279,13 +277,13 @@ export const finnOgSettInnHull = (
 
     const result = perioder.reduce((res, periode, index) => {
         if (index === 0 && erFarEllerMedmor) {
-            const førsteUttaksdagFamiliehendelsesdato = Uttaksdagen(familiehendelsesdato).denneEllerNeste();
-            if (dayjs(førsteUttaksdagFamiliehendelsesdato).isBefore(periode.tidsperiode.fom)) {
-                const tidsperiodeMellom6ukerEtterFødselOgPerioden: TidsperiodeDate = {
+            const førsteUttaksdagFamiliehendelsesdato = UttaksdagenString(familiehendelsesdato).denneEllerNeste();
+            if (dayjs(førsteUttaksdagFamiliehendelsesdato).isBefore(periode.fom)) {
+                const tidsperiodeMellom6ukerEtterFødselOgPerioden: Tidsperiode = {
                     fom: førsteUttaksdagFamiliehendelsesdato,
-                    tom: Uttaksdagen(periode.tidsperiode.fom).forrige(),
+                    tom: UttaksdagenString(periode.fom).forrige(),
                 };
-                const uttaksdagerITidsperiode = Tidsperioden(
+                const uttaksdagerITidsperiode = TidsperiodenString(
                     tidsperiodeMellom6ukerEtterFødselOgPerioden,
                 ).getAntallUttaksdager();
 
@@ -313,9 +311,9 @@ export const finnOgSettInnHull = (
 
         const nestePeriode = perioder[index + 1];
 
-        const tidsperiodeMellomPerioder: TidsperiodeDate = {
-            fom: Uttaksdagen(periode.tidsperiode.tom).neste(),
-            tom: Uttaksdagen(nestePeriode.tidsperiode.fom).forrige(),
+        const tidsperiodeMellomPerioder: Tidsperiode = {
+            fom: UttaksdagenString(periode.tom).neste(),
+            tom: UttaksdagenString(nestePeriode.fom).forrige(),
         };
 
         if (dayjs(tidsperiodeMellomPerioder.tom).isBefore(tidsperiodeMellomPerioder.fom, 'day')) {
@@ -326,7 +324,7 @@ export const finnOgSettInnHull = (
             return res;
         }
 
-        const uttaksdagerITidsperiode = Tidsperioden(tidsperiodeMellomPerioder).getAntallUttaksdager();
+        const uttaksdagerITidsperiode = TidsperiodenString(tidsperiodeMellomPerioder).getAntallUttaksdager();
 
         if (uttaksdagerITidsperiode > 0) {
             res.push(
@@ -343,112 +341,16 @@ export const finnOgSettInnHull = (
         }
 
         return res;
-    }, [] as Periode[]);
+    }, [] as Planperiode[]);
 
     return result;
 };
 
-interface SplittetDatoType {
-    dato: Date;
-    erFom: boolean;
-}
-
-const splittPeriodePåDatoer = (periode: Periode, alleDatoer: SplittetDatoType[]) => {
-    const datoerIPerioden = alleDatoer.filter((datoWrapper) =>
-        Tidsperioden(periode.tidsperiode).inneholderDato(datoWrapper.dato),
-    );
-    const oppsplittetPeriode: Periode[] = [];
-
-    if (datoerIPerioden.length === 2) {
-        return [periode];
-    }
-
-    datoerIPerioden.forEach((datoWrapper, index) => {
-        if (index === 0) {
-            oppsplittetPeriode.push({
-                ...periode,
-                tidsperiode: { fom: datoWrapper.dato, tom: undefined! },
-            });
-            return;
-        }
-
-        oppsplittetPeriode[index - 1].tidsperiode.tom = datoWrapper.erFom
-            ? Uttaksdagen(datoWrapper.dato).forrige()
-            : datoWrapper.dato;
-
-        if (index < datoerIPerioden.length - 1) {
-            oppsplittetPeriode.push({
-                ...periode,
-                id: guid(),
-                tidsperiode: {
-                    fom: datoWrapper.erFom ? datoWrapper.dato : Uttaksdagen(datoWrapper.dato).neste(),
-                    tom: undefined!,
-                },
-            });
-        }
-    });
-
-    return oppsplittetPeriode.filter((p) => isValidTidsperiode(p.tidsperiode));
-};
-
-// Funksjon som gjør at alle perioder overlapper 1 til 1
-export const normaliserPerioder = (perioder: Periode[], annenPartsUttak: Periode[]) => {
-    const perioderTidsperioder: SplittetDatoType[] = perioder
-        .filter((per) => isValidTidsperiode(per.tidsperiode))
-        .reduce((res, p) => {
-            res.push({ dato: p.tidsperiode.fom, erFom: true });
-            res.push({ dato: p.tidsperiode.tom, erFom: false });
-            return res;
-        }, [] as SplittetDatoType[]);
-    const annenPartsUttakTidsperioder = annenPartsUttak.reduce((res, p) => {
-        res.push({ dato: p.tidsperiode.fom, erFom: true });
-        res.push({ dato: p.tidsperiode.tom, erFom: false });
-        return res;
-    }, [] as SplittetDatoType[]);
-
-    const alleDatoer = perioderTidsperioder.concat(annenPartsUttakTidsperioder).sort((d1, d2) => {
-        if (d1.dato.getTime() - d2.dato.getTime() === 0) {
-            if (!d1.erFom) {
-                return 1;
-            }
-
-            if (!d2.erFom) {
-                return -1;
-            }
-        }
-
-        return d1.dato.getTime() - d2.dato.getTime();
-    });
-
-    const alleUnikeDatoer = alleDatoer.filter(
-        (date, i, self) =>
-            self.findIndex((d) => d.dato.getTime() === date.dato.getTime() && d.erFom === date.erFom) === i,
-    );
-
-    const normaliserteEgnePerioder: Periode[] = [];
-    const normaliserteAnnenPartsPerioder: Periode[] = [];
-
-    perioder.forEach((p) => {
-        const oppsplittetPeriode = splittPeriodePåDatoer(p, alleUnikeDatoer);
-        normaliserteEgnePerioder.push(...oppsplittetPeriode);
-    });
-
-    annenPartsUttak.forEach((p) => {
-        const oppsplittetPeriode = splittPeriodePåDatoer(p, alleUnikeDatoer);
-        normaliserteAnnenPartsPerioder.push(...oppsplittetPeriode);
-    });
-
-    return {
-        normaliserteEgnePerioder,
-        normaliserteAnnenPartsPerioder,
-    };
-};
-
 export const settInnAnnenPartsUttak = (
-    perioder: Periode[],
-    annenPartsUttak: Periode[],
-    familiehendelsesdato: Date,
-    førsteUttaksdagNesteBarnsSak: Date | undefined,
+    perioder: Planperiode[],
+    annenPartsUttak: Planperiode[],
+    familiehendelsesdato: string,
+    førsteUttaksdagNesteBarnsSak: string | undefined,
     initiellMappingFraSaksperioder = false,
 ) => {
     if (annenPartsUttak.length === 0) {
@@ -465,10 +367,9 @@ export const settInnAnnenPartsUttak = (
         const overlappendePerioderAnnenPart = Periodene(normaliserteAnnenPartsPerioder).finnOverlappendePerioder(p);
 
         if (overlappendePerioderAnnenPart.length === 0) {
-            if (isUttaksperiode(p) && p.ønskerSamtidigUttak && initiellMappingFraSaksperioder) {
+            if (isUttaksperiode(p) && p.samtidigUttak !== undefined && initiellMappingFraSaksperioder) {
                 res.push({
                     ...p,
-                    ønskerSamtidigUttak: false,
                 });
 
                 return res;
@@ -479,19 +380,19 @@ export const settInnAnnenPartsUttak = (
             return res;
         }
 
-        if (isPeriodeUtenUttak(p) || isPeriodeUtenUttakUtsettelse(p) || isHull(p)) {
+        if (isPeriodeUtenUttak(p) || isHull(p)) {
             const overlappendePeriode = overlappendePerioderAnnenPart[0];
 
-            res.push({ ...overlappendePeriode, visPeriodeIPlan: true } as Periode);
+            res.push({ ...overlappendePeriode, visPeriodeIPlan: true } as Planperiode);
             return res;
         }
 
-        if (isUttaksperiode(p) && p.ønskerSamtidigUttak) {
+        if (isUttaksperiode(p) && p.samtidigUttak) {
             const overlappendePeriode = overlappendePerioderAnnenPart[0];
             res.push(p);
 
-            if (!isUtsettelseAnnenPart(overlappendePeriode)) {
-                res.push({ ...overlappendePeriode, visPeriodeIPlan: false, ønskerSamtidigUttak: true } as Periode);
+            if (!isUtsettelsesperiodeAnnenPart(overlappendePeriode)) {
+                res.push({ ...overlappendePeriode, visPeriodeIPlan: false } as Planperiode);
             }
 
             return res;
@@ -499,18 +400,18 @@ export const settInnAnnenPartsUttak = (
             res.push(p);
             return res;
         }
-    }, [] as Periode[]);
+    }, [] as Planperiode[]);
 
     result.sort(sorterPerioder);
 
-    const førstePeriodeStartdato = perioder[0].tidsperiode.fom;
+    const førstePeriodeStartdato = perioder[0].fom;
     const annenPartsUttakSomSlutterFørFørstePeriode = normaliserteAnnenPartsPerioder.filter((ap) =>
-        dayjs(ap.tidsperiode.tom).isBefore(førstePeriodeStartdato, 'day'),
+        dayjs(ap.tom).isBefore(førstePeriodeStartdato, 'day'),
     );
 
-    const sistePeriodeSluttdato = perioder[perioder.length - 1].tidsperiode.tom;
+    const sistePeriodeSluttdato = perioder[perioder.length - 1].tom;
     const annenPartsUttakSomStarterEtterSistePeriode = normaliserteAnnenPartsPerioder.filter((ap) =>
-        dayjs(ap.tidsperiode.fom).isAfter(sistePeriodeSluttdato, 'day'),
+        dayjs(ap.fom).isAfter(sistePeriodeSluttdato, 'day'),
     );
 
     return slåSammenLikePerioder(

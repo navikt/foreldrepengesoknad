@@ -2,7 +2,6 @@ import { FunctionComponent } from 'react';
 
 import { Accordion } from '@navikt/ds-react';
 
-import { FamiliehendelseType } from '@navikt/fp-common';
 import { bemUtils } from '@navikt/fp-utils';
 
 import Permisjonsperiode from '../../types/Permisjonsperiode';
@@ -12,34 +11,19 @@ import './periode-liste-item.css';
 
 interface Props {
     permisjonsperiode: Permisjonsperiode;
-    familiehendelsedato: string;
     erFamiliehendelse?: boolean;
-    familiehendelseType?: FamiliehendelseType;
 }
 
-const PeriodeListeItem: FunctionComponent<Props> = ({
-    permisjonsperiode,
-    familiehendelsedato,
-    erFamiliehendelse,
-    familiehendelseType,
-}) => {
+const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode, erFamiliehendelse }) => {
     const bem = bemUtils('periode-liste-item');
 
     return (
         <Accordion.Item>
             <Accordion.Header style={{ flexDirection: 'row-reverse' }} className={bem.element('header')}>
-                <PeriodeListeHeader
-                    permisjonsperiode={permisjonsperiode}
-                    familiehendelsedato={familiehendelsedato}
-                    erFamiliehendelse={erFamiliehendelse}
-                />
+                <PeriodeListeHeader permisjonsperiode={permisjonsperiode} erFamiliehendelse={erFamiliehendelse} />
             </Accordion.Header>
             <Accordion.Content>
-                <PeriodeListeContent
-                    erFamiliehendelse={!!erFamiliehendelse}
-                    permisjonsperiode={permisjonsperiode}
-                    familiehendelseType={familiehendelseType}
-                />
+                <PeriodeListeContent erFamiliehendelse={!!erFamiliehendelse} permisjonsperiode={permisjonsperiode} />
             </Accordion.Content>
         </Accordion.Item>
     );

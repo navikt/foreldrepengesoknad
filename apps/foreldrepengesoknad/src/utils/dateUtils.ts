@@ -133,7 +133,7 @@ export const getRelevantFamiliehendelseDato = (
     }
 };
 
-export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: Date): boolean => {
+export const førsteOktober2021ReglerGjelder = (familiehendelsesdato: string | Date): boolean => {
     const førsteOktober2021 = new Date('2021-10-01');
 
     return (
@@ -293,10 +293,7 @@ export const getVis1Juli2024Info = (barn: Barn, annenForelder: AnnenForelder) =>
     );
 };
 
-export const getErDatoInnenEnDagFraAnnenDato = (
-    dato1: Date | string | undefined,
-    dato2: Date | string | undefined,
-): boolean => {
+export const getErDatoInnenEnDagFraAnnenDato = (dato1: DateType, dato2: DateType): boolean => {
     if (dato1 === undefined || dato2 === undefined) {
         return false;
     }
@@ -340,9 +337,11 @@ export const getVarighetString = (antallDager: number, intl: IntlShape, format: 
     return ukerStr;
 };
 
+type DateType = string | Date | undefined;
+
 export const getToTetteReglerGjelder = (
-    familiehendelsesdato: string | Date | undefined,
-    familiehendelsesdatoNesteBarn: string | Date | undefined,
+    familiehendelsesdato: DateType,
+    familiehendelsesdatoNesteBarn: DateType,
 ): boolean => {
     if (familiehendelsesdato === undefined || familiehendelsesdatoNesteBarn === undefined) {
         return false;
@@ -359,6 +358,6 @@ export const formaterDatoKompakt = (dato: Date): string => {
     return formaterDato(dato, 'DD.MM.YYYY');
 };
 
-export const formaterDato = (dato: string | Date | undefined, datoformat?: string): string => {
+export const formaterDato = (dato: DateType, datoformat?: string): string => {
     return dayjs(dato).format(datoformat ?? 'dddd D. MMMM YYYY');
 };

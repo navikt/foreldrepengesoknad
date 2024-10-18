@@ -76,7 +76,7 @@ export const FlereForsørgereBarnFødtSeptemberStartSeptember: Story = {
     },
 };
 
-export const AleneforsørgerBarnFødtJanuarStartAugust: Story = {
+export const AleneforsørgerToBarnFødtJanuarStartAugust: Story = {
     args: {
         locale: 'nb',
         hvemPlanlegger: {
@@ -88,12 +88,12 @@ export const AleneforsørgerBarnFødtJanuarStartAugust: Story = {
             erFødsel: true,
             fødselsdato: '2024-01-01',
             termindato: '2023-08-01',
-            antallBarn: '1',
+            antallBarn: '2',
         },
     },
 };
 
-export const FlereForsørgereAdoptertBarnFødtJanuarStartAugust: Story = {
+export const FlereForsørgereAdoptertBarnFødtJanuarStartJuni2027: Story = {
     args: {
         locale: 'nb',
         hvemPlanlegger: {
@@ -107,6 +107,13 @@ export const FlereForsørgereAdoptertBarnFødtJanuarStartAugust: Story = {
             erBarnetFødt: true,
             fødselsdato: '2026-01-11',
             overtakelsesdato: '2026-03-01',
+        },
+        uttaksdata: {
+            familiehendelsedato: '2026-03-01',
+            startdatoPeriode1: '2026-03-01',
+            sluttdatoPeriode1: '2027-01-01',
+            startdatoPeriode2: '2027-01-02',
+            sluttdatoPeriode2: '2027-06-01',
         },
     },
 };

@@ -17,7 +17,6 @@ import { uttaksConstants } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import './fordeling-påvirkninger.css';
-import { getDegEllerMorTekst, getDegEllerSegTekst, getDuEllerDereTekst } from './fordelingOversiktUtils';
 
 interface Props {
     deltUttak: boolean;
@@ -55,9 +54,9 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
             });
         }
     };
-    const degEllerSeg = getDegEllerSegTekst(erFarEllerMedmor, intl);
-    const degEllerMor = getDegEllerMorTekst(erFarEllerMedmor, navnAnnenForelder, intl);
-    const duEllerDere = getDuEllerDereTekst(deltUttak, intl);
+    const degEllerSeg = erFarEllerMedmor ? intl.formatMessage({ id: 'seg' }) : intl.formatMessage({ id: 'deg' });
+    const degEllerMor = erFarEllerMedmor ? navnAnnenForelder : intl.formatMessage({ id: 'deg' });
+    const duEllerDere = deltUttak ? intl.formatMessage({ id: 'dere' }) : intl.formatMessage({ id: 'du' });
     const morMinsterettUkerToTette = erAdopsjon
         ? uttaksConstants.ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_ADOPSJON
         : uttaksConstants.ANTALL_UKER_MINSTERETT_MOR_TO_TETTE_FØDSEL;

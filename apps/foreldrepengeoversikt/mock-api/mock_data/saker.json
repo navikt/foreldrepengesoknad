@@ -1,7 +1,7 @@
 {
     "foreldrepenger": [
         {
-            "saksnummer": "352014464",
+            "saksnummer": "352018391",
             "sakAvsluttet": false,
             "kanSøkeOmEndring": true,
             "sakTilhørerMor": true,
@@ -11,17 +11,18 @@
             "ønskerJustertUttakVedFødsel": false,
             "rettighetType": "BEGGE_RETT",
             "annenPart": {
-                "fnr": "14529000325"
+                "fnr": "06499640380"
             },
             "familiehendelse": {
-                "termindato": "2024-03-05",
+                "fødselsdato": "2024-09-16",
+                "termindato": "2024-09-16",
                 "antallBarn": 1
             },
             "gjeldendeVedtak": {
                 "perioder": [
                     {
-                        "fom": "2024-02-13",
-                        "tom": "2024-03-04",
+                        "fom": "2024-08-26",
+                        "tom": "2024-09-13",
                         "kontoType": "FORELDREPENGER_FØR_FØDSEL",
                         "resultat": {
                             "innvilget": true,
@@ -32,8 +33,8 @@
                         "flerbarnsdager": false
                     },
                     {
-                        "fom": "2024-03-05",
-                        "tom": "2024-04-15",
+                        "fom": "2024-09-30",
+                        "tom": "2024-10-27",
                         "kontoType": "MØDREKVOTE",
                         "resultat": {
                             "innvilget": true,
@@ -42,12 +43,62 @@
                             "årsak": "ANNET"
                         },
                         "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2024-10-28",
+                        "tom": "2024-12-27",
+                        "kontoType": "MØDREKVOTE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2024-12-30",
+                        "tom": "2025-03-07",
+                        "kontoType": "FELLESPERIODE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "flerbarnsdager": false
+                    },
+                    {
+                        "fom": "2025-03-10",
+                        "tom": "2025-05-30",
+                        "kontoType": "FELLESPERIODE",
+                        "resultat": {
+                            "innvilget": true,
+                            "trekkerMinsterett": true,
+                            "trekkerDager": true,
+                            "årsak": "ANNET"
+                        },
+                        "gradering": {
+                            "arbeidstidprosent": 50,
+                            "aktivitet": {
+                                "type": "ORDINÆRT_ARBEID",
+                                "arbeidsgiver": {
+                                    "id": "896929119",
+                                    "type": "ORGANISASJON"
+                                }
+                            }
+                        },
+                        "flerbarnsdager": false
                     }
                 ]
             },
-            "barn": [],
+            "barn": [
+                {
+                    "fnr": "16492452800"
+                }
+            ],
             "dekningsgrad": "HUNDRE",
-            "oppdatertTidspunkt": "2024-02-28T21:19:08.911"
+            "oppdatertTidspunkt": "2024-09-18T12:40:04.733"
         }
     ],
     "engangsstønad": [],

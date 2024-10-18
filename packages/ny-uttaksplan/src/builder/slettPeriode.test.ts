@@ -1,92 +1,77 @@
 import MockDate from 'mockdate';
 
-import { Forelder, Periode, Periodetype, StønadskontoType } from '@navikt/fp-common';
+import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 
+import { PeriodeHullType, Planperiode } from '../types/Planperiode';
 import { slettPeriode } from './slettPeriode';
 
-const perioder: Periode[] = [
+const perioder: Planperiode[] = [
     {
         id: '1',
-        type: Periodetype.Uttak,
-        tidsperiode: {
-            fom: new Date('2022-04-14'),
-            tom: new Date('2022-05-04'),
-        },
+        fom: '2022-04-14',
+        tom: '2022-05-04',
         forelder: Forelder.mor,
-        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+        gjelderAnnenPart: false,
     },
     {
         id: '2',
-        type: Periodetype.Uttak,
-        tidsperiode: {
-            fom: new Date('2022-05-05'),
-            tom: new Date('2022-08-17'),
-        },
+        fom: '2022-05-05',
+        tom: '2022-08-17',
         forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        kontoType: StønadskontoType.Mødrekvote,
+        gjelderAnnenPart: false,
     },
     {
         id: '3',
-        type: Periodetype.Uttak,
-        tidsperiode: {
-            fom: new Date('2022-08-18'),
-            tom: new Date('2022-10-12'),
-        },
+        fom: '2022-08-18',
+        tom: '2022-10-12',
         forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        kontoType: StønadskontoType.Fellesperiode,
+        gjelderAnnenPart: false,
     },
 ];
 
-const perioder2: Periode[] = [
+const perioder2: Planperiode[] = [
     {
         id: '1',
-        type: Periodetype.Uttak,
-        tidsperiode: {
-            fom: new Date('2022-05-11'),
-            tom: new Date('2022-05-31'),
-        },
+        fom: '2022-05-11',
+        tom: '2022-05-31',
         forelder: Forelder.mor,
-        konto: StønadskontoType.ForeldrepengerFørFødsel,
+        kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+        gjelderAnnenPart: false,
     },
     {
         id: '2',
-        type: Periodetype.Uttak,
-        tidsperiode: {
-            fom: new Date('2022-06-01'),
-            tom: new Date('2022-08-09'),
-        },
+        fom: '2022-06-01',
+        tom: '2022-08-09',
         forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        kontoType: StønadskontoType.Mødrekvote,
+        gjelderAnnenPart: false,
     },
     {
         id: '3',
-        type: Periodetype.Uttak,
-        tidsperiode: {
-            fom: new Date('2022-08-10'),
-            tom: new Date('2022-08-23'),
-        },
+        fom: '2022-08-10',
+        tom: '2022-08-23',
         forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        kontoType: StønadskontoType.Fellesperiode,
+        gjelderAnnenPart: false,
     },
     {
         id: '4',
-        type: Periodetype.Uttak,
-        tidsperiode: {
-            fom: new Date('2022-08-24'),
-            tom: new Date('2022-08-30'),
-        },
+        fom: '2022-08-24',
+        tom: '2022-08-30',
         forelder: Forelder.mor,
-        konto: StønadskontoType.Mødrekvote,
+        kontoType: StønadskontoType.Mødrekvote,
+        gjelderAnnenPart: false,
     },
     {
         id: '5',
-        type: Periodetype.Uttak,
-        tidsperiode: {
-            fom: new Date('2022-08-31'),
-            tom: new Date('2022-10-12'),
-        },
+        fom: '2022-08-31',
+        tom: '2022-10-12',
         forelder: Forelder.mor,
-        konto: StønadskontoType.Fellesperiode,
+        kontoType: StønadskontoType.Fellesperiode,
+        gjelderAnnenPart: false,
     },
 ];
 
@@ -97,7 +82,7 @@ describe('Test av slett periode', () => {
         const result = slettPeriode({
             perioder,
             slettetPeriode,
-            familiehendelsesdato: new Date('2022-05-05'),
+            familiehendelsesdato: '2022-05-05',
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
@@ -106,10 +91,12 @@ describe('Test av slett periode', () => {
         });
 
         expect(result.length).toEqual(4);
-        expect(result[1].tidsperiode).toEqual({ fom: new Date('2022-05-05'), tom: new Date('2022-06-15') });
-        expect(result[1].type).toEqual(Periodetype.Hull);
-        expect(result[2].tidsperiode).toEqual({ fom: new Date('2022-06-16'), tom: new Date('2022-08-17') });
-        expect(result[2].type).toEqual(Periodetype.PeriodeUtenUttak);
+        expect(result[1].fom).toEqual('2022-05-05');
+        expect(result[1].tom).toEqual('2022-06-15');
+        expect(result[1].periodeHullÅrsak).toEqual(PeriodeHullType.TAPTE_DAGER);
+        expect(result[2].fom).toEqual('2022-06-16');
+        expect(result[2].tom).toEqual('2022-08-17');
+        expect(result[2].periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
     });
 
     it('Skal sette inn periode uten uttak etter sletting', () => {
@@ -118,7 +105,7 @@ describe('Test av slett periode', () => {
         const result = slettPeriode({
             perioder: perioder2,
             slettetPeriode,
-            familiehendelsesdato: new Date('2022-05-11'),
+            familiehendelsesdato: '2022-05-11',
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
@@ -127,59 +114,51 @@ describe('Test av slett periode', () => {
         });
 
         expect(result.length).toEqual(5);
-        expect(result[3].tidsperiode).toEqual(slettetPeriode.tidsperiode);
-        expect(result[3].type).toEqual(Periodetype.PeriodeUtenUttak);
+        expect(result[3].fom).toEqual(slettetPeriode.fom);
+        expect(result[3].tom).toEqual(slettetPeriode.tom);
+        expect(result[3].periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
     });
 });
 
-const perioderFar: Periode[] = [
+const perioderFar: Planperiode[] = [
     {
         id: '1',
-        type: Periodetype.Uttak,
-        tidsperiode: {
-            fom: new Date('2022-07-25'),
-            tom: new Date('2022-08-01'),
-        },
+        fom: '2022-07-25',
+        tom: '2022-08-01',
         forelder: Forelder.farMedmor,
-        konto: StønadskontoType.Fedrekvote,
+        kontoType: StønadskontoType.Fedrekvote,
+        gjelderAnnenPart: false,
     },
     {
         id: '2',
-        type: Periodetype.Uttak,
-        tidsperiode: {
-            fom: new Date('2022-08-02'),
-            tom: new Date('2022-08-08'),
-        },
+        fom: '2022-08-02',
+        tom: '2022-08-08',
         forelder: Forelder.farMedmor,
-        konto: StønadskontoType.Fedrekvote,
+        kontoType: StønadskontoType.Fedrekvote,
+        gjelderAnnenPart: false,
     },
     {
         id: '3',
-        type: Periodetype.PeriodeUtenUttak,
-        tidsperiode: {
-            fom: new Date('2022-08-11'),
-            tom: new Date('2022-09-11'),
-        },
+        fom: '2022-08-11',
+        tom: '2022-09-11',
+        periodeHullÅrsak: PeriodeHullType.PERIODE_UTEN_UTTAK,
+        gjelderAnnenPart: false,
     },
     {
         id: '4',
-        type: Periodetype.Uttak,
-        tidsperiode: {
-            fom: new Date('2022-08-12'),
-            tom: new Date('2022-09-19'),
-        },
+        fom: '2022-09-12',
+        tom: '2022-09-19',
         forelder: Forelder.farMedmor,
-        konto: StønadskontoType.Fedrekvote,
+        kontoType: StønadskontoType.Fedrekvote,
+        gjelderAnnenPart: false,
     },
     {
         id: '5',
-        type: Periodetype.Uttak,
-        tidsperiode: {
-            fom: new Date('2022-09-20'),
-            tom: new Date('2022-10-25'),
-        },
+        fom: '2022-09-20',
+        tom: '2022-10-25',
         forelder: Forelder.farMedmor,
-        konto: StønadskontoType.Fedrekvote,
+        kontoType: StønadskontoType.Fedrekvote,
+        gjelderAnnenPart: false,
     },
 ];
 
@@ -198,7 +177,7 @@ describe('Test av slett periode for far - etter WLB', () => {
         const result = slettPeriode({
             perioder: perioderFar,
             slettetPeriode,
-            familiehendelsesdato: new Date('2022-08-02'),
+            familiehendelsesdato: '2022-08-02',
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
@@ -207,11 +186,9 @@ describe('Test av slett periode for far - etter WLB', () => {
         });
 
         expect(result.length).toEqual(5);
-        expect(result[1].tidsperiode).toEqual({
-            fom: slettetPeriode.tidsperiode.fom,
-            tom: slettetPeriode.tidsperiode.tom,
-        });
-        expect(result[1].type).toEqual(Periodetype.PeriodeUtenUttak);
+        expect(result[1].fom).toEqual(slettetPeriode.fom);
+        expect(result[1].tom).toEqual(slettetPeriode.tom);
+        expect(result[1].periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
     });
 
     it(
@@ -223,7 +200,7 @@ describe('Test av slett periode for far - etter WLB', () => {
             const result = slettPeriode({
                 perioder: perioderFar,
                 slettetPeriode,
-                familiehendelsesdato: new Date('2022-08-02'),
+                familiehendelsesdato: '2022-08-02',
                 harAktivitetskravIPeriodeUtenUttak: false,
                 erAdopsjon: false,
                 bareFarHarRett: true,
@@ -232,16 +209,12 @@ describe('Test av slett periode for far - etter WLB', () => {
             });
 
             expect(result.length).toEqual(6);
-            expect(result[3].tidsperiode).toEqual({
-                fom: slettetPeriode.tidsperiode.fom,
-                tom: new Date('2022-09-12'),
-            });
-            expect(result[3].type).toEqual(Periodetype.PeriodeUtenUttak);
-            expect(result[4].tidsperiode).toEqual({
-                fom: new Date('2022-09-13'),
-                tom: slettetPeriode.tidsperiode.tom,
-            });
-            expect(result[4].type).toEqual(Periodetype.Hull);
+            expect(result[3].fom).toEqual(slettetPeriode.fom);
+            expect(result[3].tom).toEqual('2022-09-12');
+            expect(result[3].periodeHullÅrsak).toEqual(PeriodeHullType.PERIODE_UTEN_UTTAK);
+            expect(result[4].fom).toEqual('2022-09-13');
+            expect(result[4].tom).toEqual(slettetPeriode.tom);
+            expect(result[4].periodeHullÅrsak).toEqual(PeriodeHullType.TAPTE_DAGER);
         },
     );
 });
@@ -261,7 +234,7 @@ describe('Test av slett periode for far - før WLB', () => {
         const result = slettPeriode({
             perioder: perioderFar,
             slettetPeriode,
-            familiehendelsesdato: new Date('2022-08-02'),
+            familiehendelsesdato: '2022-08-02',
             harAktivitetskravIPeriodeUtenUttak: false,
             erAdopsjon: false,
             bareFarHarRett: false,
@@ -270,10 +243,8 @@ describe('Test av slett periode for far - før WLB', () => {
         });
 
         expect(result.length).toEqual(5);
-        expect(result[1].tidsperiode).toEqual({
-            fom: slettetPeriode.tidsperiode.fom,
-            tom: slettetPeriode.tidsperiode.tom,
-        });
-        expect(result[1].type).toEqual(Periodetype.Hull);
+        expect(result[1].fom).toEqual(slettetPeriode.fom);
+        expect(result[1].tom).toEqual(slettetPeriode.tom);
+        expect(result[1].periodeHullÅrsak).toEqual(PeriodeHullType.TAPTE_DAGER);
     });
 });

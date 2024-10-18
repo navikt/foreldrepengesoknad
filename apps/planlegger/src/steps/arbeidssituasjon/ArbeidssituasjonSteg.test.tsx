@@ -53,7 +53,7 @@ describe('<ArbeidssituasjonSteg>', () => {
             type: 'update',
         });
         expect(navigateMock).toHaveBeenCalledTimes(1);
-        expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.HVOR_LANG_PERIODE));
+        expect(navigateMock).toHaveBeenCalledWith(expect.stringMatching(PlanleggerRoutes.HVOR_MYE));
     });
 
     it('skal vise arbeidssituasjon for far og mor og velge at kun mor har rett', async () => {

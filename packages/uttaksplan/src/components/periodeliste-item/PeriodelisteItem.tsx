@@ -147,7 +147,6 @@ const renderPeriodeListeInnhold = (
                     navnPåForeldre={navnPåForeldre}
                     erMorUfør={erMorUfør}
                     søkerErFarEllerMedmorOgKunDeHarRett={søkerErFarEllerMedmorOgKunDeHarRett}
-                    arbeidsforhold={arbeidsforhold}
                     situasjon={situasjon}
                     utsettelserIPlan={utsettelserIPlan}
                     setPerioderErGyldige={setPerioderErGyldige}

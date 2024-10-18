@@ -4,10 +4,9 @@ import { Barn, Forelder, Periode, Situasjon, StønadskontoType, isUfødtBarn, is
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { andreAugust2022ReglerGjelder } from '@navikt/fp-uttaksplan';
 
-export const getKanPeriodenRundtFødselJusteres = (
-    periodeRundtFødsel: Periode,
-    termindato: Date | string | undefined,
-): boolean => {
+type DateType = Date | string | undefined;
+
+export const getKanPeriodenRundtFødselJusteres = (periodeRundtFødsel: Periode, termindato: DateType): boolean => {
     return (
         termindato !== undefined &&
         isUttaksperiode(periodeRundtFødsel) &&
@@ -25,7 +24,7 @@ export const getKanPeriodenRundtFødselJusteres = (
 export const getKanPerioderRundtFødselAutomatiskJusteres = (
     kanSøkersituasjonAutomatiskJustereRundtFødsel: boolean,
     perioderMedUttakRundtFødsel: Periode[],
-    termindato: Date | string | undefined,
+    termindato: DateType,
 ): boolean => {
     return (
         kanSøkersituasjonAutomatiskJustereRundtFødsel &&
@@ -40,7 +39,7 @@ export const getKanSøkersituasjonAutomatiskJustereRundtFødsel = (
     situasjon: Situasjon,
     perioderMedUttakRundtFødsel: Periode[],
     barn: Barn,
-    termindato: Date | string | undefined,
+    termindato: DateType,
     bareFarHarRett: boolean,
 ): boolean => {
     return (

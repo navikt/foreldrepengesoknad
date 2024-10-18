@@ -3,7 +3,6 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { ConfirmationPanel, VStack } from '@navikt/ds-react';
 
-import { useAbortSignal } from '@navikt/fp-api';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
 
 const getSamtykkeTekst = (
@@ -24,7 +23,7 @@ const getSamtykkeTekst = (
 };
 
 export interface Props<TYPE> {
-    sendSøknad: (abortSignal: AbortSignal) => Promise<void>;
+    sendSøknad: () => Promise<void>;
     cancelApplication: () => void;
     onContinueLater: () => void;
     goToPreviousStep: () => void;
@@ -47,7 +46,6 @@ const OppsummeringPanel = <TYPE extends string>({
     ekstraSamtykketekst,
 }: Props<TYPE>) => {
     const intl = useIntl();
-    const abortSignal = useAbortSignal();
 
     const [isChecked, setIsChecked] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -58,7 +56,7 @@ const OppsummeringPanel = <TYPE extends string>({
             setIsError(true);
         } else {
             setIsSubmitting(true);
-            sendSøknad(abortSignal);
+            sendSøknad();
         }
     };
 

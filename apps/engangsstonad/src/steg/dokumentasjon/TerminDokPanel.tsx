@@ -1,16 +1,15 @@
+import Environment from 'appData/Environment';
 import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { BarnetErIkkeFødt } from 'types/OmBarnet';
 
-import { getSaveAttachment } from '@navikt/fp-api';
+import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
-
-import { AxiosInstanceAPI } from '../../api/AxiosInstance';
 
 dayjs.extend(minMax);
 
@@ -63,7 +62,7 @@ const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAtt
                 skjemanummer={Skjemanummer.TERMINBEKREFTELSE}
                 existingAttachments={attachments}
                 updateAttachments={updateAttachments}
-                saveAttachment={getSaveAttachment(AxiosInstanceAPI(), 'engangsstonad')}
+                saveAttachment={getSaveAttachmentFetch(Environment.PUBLIC_PATH, 'engangsstonad')}
             />
         </>
     );
