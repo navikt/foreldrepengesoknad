@@ -18,6 +18,7 @@ import ArbeidIUtlandetStep from './steps/arbeid-i-utlandet/ArbeidIUtlandetStep';
 import ArbeidsforholdOgInntektSteg from './steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
 import Barnet from './steps/barnet/Barnet';
 import EgenNæringStep from './steps/egen-næring/EgenNæringStep';
+import { FerieStep } from './steps/ferie/FerieStep';
 import FrilansStep from './steps/frilans/FrilansStep';
 import Oppsummering from './steps/oppsummering/Oppsummering';
 import PerioderStep from './steps/perioder/PerioderStep';
@@ -166,6 +167,16 @@ const renderSøknadRoutes = (
                 path={SøknadRoutes.PERIODER}
                 element={
                     <PerioderStep
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
+            />
+            <Route
+                path={SøknadRoutes.FERIE}
+                element={
+                    <FerieStep
                         arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}

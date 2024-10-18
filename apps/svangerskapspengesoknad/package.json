@@ -7,6 +7,7 @@
     "scripts": {
         "build": "vite build",
         "dev": "node ./dev-server.cjs",
+        "dev-vite": "vite",
         "dev-api": "node ./mock-api/mock-api-server.cjs",
         "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "lint:tsc": "tsc --noEmit",

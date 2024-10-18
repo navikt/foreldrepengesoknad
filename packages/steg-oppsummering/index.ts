@@ -9,6 +9,7 @@ export const oppsummeringMessages = {
 };
 
 export { default as OppsummeringPanel } from './src/OppsummeringPanel';
+export { JaNeiTekst } from './src/OppsummeringPanel';
 export {
     ArbeidsforholdOppsummering,
     FrilansOppsummering,
