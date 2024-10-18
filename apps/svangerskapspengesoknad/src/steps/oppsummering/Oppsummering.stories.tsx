@@ -6,13 +6,17 @@ import dayjs from 'dayjs';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
-import { Arbeidsforholdstype, TilretteleggingstypeOptions } from 'types/Tilrettelegging';
+import { DelivisTilretteleggingPeriodeType, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { Næringstype, Søker } from '@navikt/fp-types';
+import { EGEN_NÆRING_ID, FRILANS_ID, Næringstype, Søker } from '@navikt/fp-types';
 
 import Oppsummering from './Oppsummering';
+
+const ARBEIDSFORHOLD_ID = '990322244';
+const ANNEN_ARBEIDSFORHOLD_ID = '975326209';
+const TREDJE_ARBEIDSFORHOLD_ID = '995090910';
 
 const DEFAULT_SØKERINFO = {
     arbeidsforhold: [
@@ -45,7 +49,7 @@ const DEFAULT_SØKERINFO = {
         },
         {
             id: '186699244-06994-0884-1562-860234771205',
-            arbeidsgiverId: '975326209',
+            arbeidsgiverId: ANNEN_ARBEIDSFORHOLD_ID,
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Sykehuset i Vestfold',
             fom: '2019-06-01T00:00:00.000Z',
@@ -53,7 +57,7 @@ const DEFAULT_SØKERINFO = {
         },
         {
             id: '263929546-6215-9868-5127-161910165730101',
-            arbeidsgiverId: '990322244',
+            arbeidsgiverId: ARBEIDSFORHOLD_ID,
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
             fom: '2017-04-05T00:00:00.000Z',
@@ -61,7 +65,7 @@ const DEFAULT_SØKERINFO = {
         },
         {
             id: '0132715641-23932-19917-03900-809964087910',
-            arbeidsgiverId: '995090910',
+            arbeidsgiverId: TREDJE_ARBEIDSFORHOLD_ID,
             arbeidsgiverIdType: 'orgnr',
             arbeidsgiverNavn: 'Re Kommune',
             fom: '2018-06-01T00:00:00.000Z',
@@ -99,35 +103,95 @@ const meta = {
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
-                        [ContextDataType.TILRETTELEGGINGER]: [
-                            {
-                                id: '263929546-6215-9868-5127-161910165730101',
-                                arbeidsforhold: {
-                                    arbeidsgiverId: '990322244',
-                                    type: Arbeidsforholdstype.VIRKSOMHET,
-                                    navn: 'Omsorgspartner Vestfold AS',
-                                    stillinger: [],
-                                    startdato: '2023-01-01',
-                                },
-                                varierendePerioder: [],
-                                behovForTilretteleggingFom: '2023-01-01',
-                                type: TilretteleggingstypeOptions.DELVIS,
-                                vedlegg: [
-                                    {
-                                        id: 'V134300149934973076055420920289127108',
-                                        file: {} as any,
-                                        filename: 'vedlegg – Kopi (7).png',
-                                        filesize: 7477,
-                                        uploaded: true,
-                                        pending: false,
-                                        type: AttachmentType.TILRETTELEGGING,
-                                        skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
-                                        url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
-                                        uuid: 'Created',
-                                    },
-                                ],
+                        [ContextDataType.TILRETTELEGGINGER]: {
+                            [ARBEIDSFORHOLD_ID]: {
+                                type: Tilretteleggingstype.INGEN,
+                                behovForTilretteleggingFom: '2024-0101',
+                                enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
+                                enPeriodeMedTilretteleggingFom: '2024-0101',
                             },
-                        ],
+                            [ANNEN_ARBEIDSFORHOLD_ID]: {
+                                type: Tilretteleggingstype.DELVIS,
+                                enPeriodeMedTilretteleggingStillingsprosent: '50',
+                                behovForTilretteleggingFom: '2024-0101',
+                                enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
+                                enPeriodeMedTilretteleggingFom: '2024-0101',
+                                delvisTilretteleggingPeriodeType:
+                                    DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN,
+                            },
+                            [TREDJE_ARBEIDSFORHOLD_ID]: {
+                                type: Tilretteleggingstype.DELVIS,
+                                behovForTilretteleggingFom: '2024-0101',
+                                enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
+                                delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
+                            },
+                            [EGEN_NÆRING_ID]: {
+                                type: Tilretteleggingstype.DELVIS,
+                                behovForTilretteleggingFom: '2024-0101',
+                                enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
+                                enPeriodeMedTilretteleggingFom: '2024-0101',
+                                delvisTilretteleggingPeriodeType:
+                                    DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN,
+                            },
+                            [FRILANS_ID]: {
+                                type: Tilretteleggingstype.DELVIS,
+                                behovForTilretteleggingFom: '2024-0101',
+                                enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
+                                enPeriodeMedTilretteleggingFom: '2024-0101',
+                                delvisTilretteleggingPeriodeType:
+                                    DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN,
+                            },
+                        },
+                        [ContextDataType.TILRETTELEGGINGER_VEDLEGG]: {
+                            [ARBEIDSFORHOLD_ID]: [
+                                {
+                                    id: 'V134300149934973076055420920289127108',
+                                    file: {} as any,
+                                    filename: 'vedlegg – Kopi (7).png',
+                                    filesize: 7477,
+                                    uploaded: true,
+                                    pending: false,
+                                    type: AttachmentType.TILRETTELEGGING,
+                                    skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
+                                    url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
+                                    uuid: 'Created',
+                                },
+                            ],
+                        },
+                        [ContextDataType.TILRETTELEGGINGER_PERIODER]: {
+                            [TREDJE_ARBEIDSFORHOLD_ID]: [
+                                {
+                                    fom: '2024-01-01',
+                                    stillingsprosent: '50',
+                                    tomType: TilOgMedDatoType.VALGFRI_DATO,
+                                    type: Tilretteleggingstype.DELVIS,
+                                },
+                                {
+                                    fom: '2024-03-01',
+                                    stillingsprosent: '100',
+                                    tomType: TilOgMedDatoType.VALGFRI_DATO,
+                                    type: Tilretteleggingstype.DELVIS,
+                                },
+                                {
+                                    fom: '2024-04-01',
+                                    stillingsprosent: '20',
+                                    tomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
+                                    type: Tilretteleggingstype.INGEN,
+                                },
+                                {
+                                    fom: '2024-05-01',
+                                    stillingsprosent: '20',
+                                    tomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
+                                    type: Tilretteleggingstype.DELVIS,
+                                },
+                                {
+                                    fom: '2024-07-01',
+                                    stillingsprosent: '0',
+                                    tomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
+                                    type: Tilretteleggingstype.DELVIS,
+                                },
+                            ],
+                        },
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
                             harHattArbeidIUtlandet: true,
                             harJobbetSomFrilans: true,

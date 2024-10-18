@@ -34,7 +34,7 @@ export interface Props {
     sluttdatoArbeid: string;
     startdatoArbeid?: string;
     arbeidsforholdNavn?: string;
-    stillinger?: Stilling[];
+    stillinger: Stilling[];
 }
 
 const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({

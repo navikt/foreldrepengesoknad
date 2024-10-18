@@ -13,7 +13,6 @@ import {
     IngenTilrettelegging,
     Tilretteleggingstype,
 } from 'types/Tilrettelegging';
-import { ValgteArbeidsforhold } from 'types/ValgteArbeidsforhold';
 import { getDefaultMonth, getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import {
     getArbeidsgiverNavnForTilrettelegging,
@@ -51,7 +50,7 @@ import {
 const getNextRouteAndTilretteleggingIdForTilretteleggingSteg = (
     values: DelvisTilrettelegging | IngenTilrettelegging,
     currentTilretteleggingId: string,
-    valgteArbeidsforholdIder?: ValgteArbeidsforhold,
+    valgteArbeidsforholdIder?: string[],
 ): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
     if (
         values.type === Tilretteleggingstype.DELVIS &&
@@ -125,7 +124,7 @@ export const TilretteleggingStep: FunctionComponent<Props> = ({
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const valgtTilretteleggingId = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
-    const valgteArbeidsforholdIder = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
+    const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
 
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
@@ -143,8 +142,7 @@ export const TilretteleggingStep: FunctionComponent<Props> = ({
         frilans,
     );
 
-    const erFlereTilrettelegginger =
-        !!valgteArbeidsforholdIder && valgteArbeidsforholdIder.arbeidMedTilrettelegging.length > 1;
+    const erFlereTilrettelegginger = !!valgteArbeidsforhold && valgteArbeidsforhold.length > 1;
     const typeArbeidsforhold = getTypeArbeidForTilrettelegging(valgtTilretteleggingId, arbeidsforhold);
     const risikofaktorerLabel = finnRisikofaktorLabel(intl, typeArbeidsforhold);
 
@@ -172,7 +170,7 @@ export const TilretteleggingStep: FunctionComponent<Props> = ({
         const { nextRoute, nextTilretteleggingId } = getNextRouteAndTilretteleggingIdForTilretteleggingSteg(
             values,
             valgtTilretteleggingId,
-            valgteArbeidsforholdIder,
+            valgteArbeidsforhold,
         );
         if (nextTilretteleggingId) {
             oppdaterValgtTilretteleggingId(nextTilretteleggingId);

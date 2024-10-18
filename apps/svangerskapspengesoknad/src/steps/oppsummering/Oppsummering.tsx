@@ -46,6 +46,8 @@ const Oppsummering: React.FunctionComponent<Props> = ({
     const utenlandsoppholdTidligere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
     const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
+    const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
+    const frilans = useContextGetData(ContextDataType.FRILANS);
 
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
 
@@ -111,8 +113,12 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                     arbeidsforhold={aktiveArbeidsforhold}
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.INNTEKTSINFORMASJON)}
                 />
-                <FrilansOppsummering onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.FRILANS)} />
+                <FrilansOppsummering
+                    frilans={frilans}
+                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.FRILANS)}
+                />
                 <SelvstendigNæringsdrivendeOppsummering
+                    egenNæring={egenNæring}
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.NÆRING)}
                 />
                 <JobbetIUtlandetOppsummering

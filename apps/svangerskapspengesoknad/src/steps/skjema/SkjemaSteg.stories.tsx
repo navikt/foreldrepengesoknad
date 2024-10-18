@@ -72,11 +72,7 @@ const meta = {
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
                         [ContextDataType.TILRETTELEGGINGER_VEDLEGG]: vedlegg,
                         [ContextDataType.VALGT_TILRETTELEGGING_ID]: valgtTilretteleggingId,
-                        [ContextDataType.VALGTE_ARBEIDSFORHOLD]: valgteArbeidsforhold
-                            ? {
-                                  arbeidMedTilrettelegging: valgteArbeidsforhold,
-                              }
-                            : undefined,
+                        [ContextDataType.VALGTE_ARBEIDSFORHOLD]: valgteArbeidsforhold,
                         [ContextDataType.OM_BARNET]: {
                             erBarnetFødt: false,
                             termindato: '2024-02-18',

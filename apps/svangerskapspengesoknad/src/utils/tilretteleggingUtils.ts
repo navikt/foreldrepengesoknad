@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { IntlShape } from 'react-intl';
 import { Barn } from 'types/Barn';
 import {
@@ -11,9 +11,8 @@ import {
     TilretteleggingPeriode,
     Tilretteleggingstype,
 } from 'types/Tilrettelegging';
-import { ValgteArbeidsforhold } from 'types/ValgteArbeidsforhold';
 
-import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
+import { ISO_DATE_FORMAT, TIDENES_MORGEN } from '@navikt/fp-constants';
 import {
     Arbeidsforhold,
     ArbeidsforholdOgInntekt,
@@ -32,11 +31,13 @@ import {
 } from './arbeidsforholdUtils';
 
 const lagPeriodeMedHelTilretteleggingFremTilSisteSvpDag = (
-    tom: string,
+    tom: string | Dayjs,
+    sisteDagForSvangerskapspenger: string,
     opprinneligStillingsprosent: number,
 ): TilretteleggingPeriode => ({
     type: Tilretteleggingstype.HEL,
     fom: dayjs(tom).add(1, 'd').format(ISO_DATE_FORMAT),
+    tom: sisteDagForSvangerskapspenger,
     stillingsprosent: opprinneligStillingsprosent,
 });
 
@@ -97,11 +98,18 @@ export const mapEnTilretteleggingPeriode = (
     perioder.push({
         type,
         fom,
+        tom,
         stillingsprosent,
     });
 
     if (!dayjs(tom).isSame(sisteDagForSvangerskapspenger, 'day')) {
-        perioder.push(lagPeriodeMedHelTilretteleggingFremTilSisteSvpDag(tom, opprinneligStillingsprosent));
+        perioder.push(
+            lagPeriodeMedHelTilretteleggingFremTilSisteSvpDag(
+                tom,
+                sisteDagForSvangerskapspenger,
+                opprinneligStillingsprosent,
+            ),
+        );
     }
 
     return perioder;
@@ -117,22 +125,32 @@ export const mapFlereTilretteleggingPerioder = (
     const allePerioder = tilretteleggingerPerioder.map<TilretteleggingPeriode>((periode) => {
         const stillingsprosent = notEmpty(getFloatFromString(periode.stillingsprosent));
         const type = finnTilretteleggingstype(periode.type, stillingsprosent, opprinneligStillingsprosent);
+
+        const tom =
+            periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP
+                ? sisteDagForSvangerskapspenger
+                : notEmpty(periode.tom);
+
         return {
             type,
             fom: periode.fom,
+            tom,
             stillingsprosent,
         };
     });
 
-    const sistePeriode = [...tilretteleggingerPerioder].sort(sorterTilretteleggingsperioder)[allePerioder.length - 1];
+    const sisteTom = allePerioder
+        .map((p) => dayjs(p.tom))
+        .reduce((siste, dato) => (dayjs(siste).diff(dato) ? siste : dato), dayjs(TIDENES_MORGEN));
 
-    const tom =
-        sistePeriode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP
-            ? sisteDagForSvangerskapspenger
-            : notEmpty(sistePeriode.tom);
-
-    if (!dayjs(tom).isSame(sisteDagForSvangerskapspenger, 'day')) {
-        allePerioder.push(lagPeriodeMedHelTilretteleggingFremTilSisteSvpDag(tom, opprinneligStillingsprosent));
+    if (!sisteTom.isSame(sisteDagForSvangerskapspenger, 'day')) {
+        allePerioder.push(
+            lagPeriodeMedHelTilretteleggingFremTilSisteSvpDag(
+                sisteTom,
+                sisteDagForSvangerskapspenger,
+                opprinneligStillingsprosent,
+            ),
+        );
     }
 
     return allePerioder;
@@ -151,58 +169,54 @@ export const getTilretteleggingId = (
     arbeidsforhold: Arbeidsforhold[],
     barnet: Barn,
     arbeidsforholdOgInntekt: ArbeidsforholdOgInntekt,
-    valgteArbeidsforhold?: ValgteArbeidsforhold,
+    valgteArbeidsforhold?: string[],
     isSisteTilrettelegging = false,
 ) => {
     if (valgteArbeidsforhold) {
-        const { arbeidMedTilrettelegging } = valgteArbeidsforhold;
-        return isSisteTilrettelegging
-            ? arbeidMedTilrettelegging[arbeidMedTilrettelegging.length - 1]
-            : arbeidMedTilrettelegging[0];
+        return isSisteTilrettelegging ? valgteArbeidsforhold[valgteArbeidsforhold.length - 1] : valgteArbeidsforhold[0];
     } else if (arbeidsforholdOgInntekt.harJobbetSomFrilans) {
         return FRILANS_ID;
     } else if (arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende) {
         return EGEN_NÆRING_ID;
     }
+
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, barnet.termindato);
-    return aktiveArbeidsforhold[0].arbeidsgiverId;
+    return aktiveArbeidsforhold[0]?.arbeidsgiverId;
 };
 
 export const getNesteTilretteleggingId = (
     currentTilretteleggingId?: string,
-    valgteArbeidsforhold?: ValgteArbeidsforhold,
+    valgteArbeidsforhold?: string[],
 ): string | undefined => {
-    if (!valgteArbeidsforhold || valgteArbeidsforhold.arbeidMedTilrettelegging.length === 0) {
+    if (!valgteArbeidsforhold || valgteArbeidsforhold.length === 0) {
         return undefined;
     }
 
     if (currentTilretteleggingId === undefined) {
-        return valgteArbeidsforhold.arbeidMedTilrettelegging[0];
+        return valgteArbeidsforhold[0];
     }
 
-    const nesteTilretteleggingIndex =
-        valgteArbeidsforhold.arbeidMedTilrettelegging.findIndex((id) => id === currentTilretteleggingId) + 1;
-    if (nesteTilretteleggingIndex === valgteArbeidsforhold.arbeidMedTilrettelegging.length) {
+    const nesteTilretteleggingIndex = valgteArbeidsforhold.findIndex((id) => id === currentTilretteleggingId) + 1;
+    if (nesteTilretteleggingIndex === valgteArbeidsforhold.length) {
         return undefined;
     }
-    return valgteArbeidsforhold.arbeidMedTilrettelegging[nesteTilretteleggingIndex];
+    return valgteArbeidsforhold[nesteTilretteleggingIndex];
 };
 
 export const getForrigeTilretteleggingId = (
     arbeidsforhold: Arbeidsforhold[],
     barnet: Barn,
     arbeidsforholdOgInntekt: ArbeidsforholdOgInntekt,
-    valgteArbeidsforhold?: ValgteArbeidsforhold,
+    valgteArbeidsforhold?: string[],
     currentTilretteleggingId?: string,
 ): string | undefined => {
     if (!currentTilretteleggingId) {
         return getTilretteleggingId(arbeidsforhold, barnet, arbeidsforholdOgInntekt, valgteArbeidsforhold, true);
     }
     if (valgteArbeidsforhold) {
-        const index =
-            valgteArbeidsforhold.arbeidMedTilrettelegging.findIndex((a) => a === currentTilretteleggingId) - 1;
+        const index = valgteArbeidsforhold.findIndex((a) => a === currentTilretteleggingId) - 1;
         if (index >= 0) {
-            return valgteArbeidsforhold.arbeidMedTilrettelegging[index];
+            return valgteArbeidsforhold[index];
         }
     }
 

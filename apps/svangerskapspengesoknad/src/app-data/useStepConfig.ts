@@ -149,10 +149,9 @@ const getStepConfig = (
         steps.push(createStep(SøknadRoutes.VELG_ARBEID, intl, currentPath));
     }
 
-    const erFlereTilrettelegginger =
-        !!valgteArbeidsforhold && valgteArbeidsforhold?.arbeidMedTilrettelegging?.length > 1;
+    const erFlereTilrettelegginger = !!valgteArbeidsforhold && valgteArbeidsforhold.length > 1;
     if (erFlereTilrettelegginger) {
-        valgteArbeidsforhold.arbeidMedTilrettelegging.forEach((id) => {
+        valgteArbeidsforhold.forEach((id) => {
             const labels = getTilretteleggingLabels(intl, erFlereTilrettelegginger, arbeidsforhold, id);
             steps.push(
                 ...createTilretteleggingSteps(

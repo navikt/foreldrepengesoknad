@@ -5,7 +5,6 @@ import SøknadRoutes from 'appData/routes';
 import dayjs from 'dayjs';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { ValgteArbeidsforhold } from 'types/ValgteArbeidsforhold';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
@@ -46,7 +45,7 @@ type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
     frilans?: Frilans;
     egenNæring?: EgenNæring;
-    valgteArbeidsforhold?: ValgteArbeidsforhold;
+    valgteArbeidsforhold?: string[];
     valgtTilretteleggingId: string;
 } & ComponentProps<typeof TilretteleggingStep>;
 
@@ -100,9 +99,7 @@ export const ForArbeidsforhold: Story = {
 export const ForArbeidsforholdMedFlereTilrettelegginger: Story = {
     args: {
         ...ForArbeidsforhold.args,
-        valgteArbeidsforhold: {
-            arbeidMedTilrettelegging: [VALGT_TILRETTELEGGING_ID, ANNEN_TILRETTELEGGING_ID],
-        },
+        valgteArbeidsforhold: [VALGT_TILRETTELEGGING_ID, ANNEN_TILRETTELEGGING_ID],
     },
 };
 
@@ -120,9 +117,7 @@ export const Frilanser: Story = {
 export const FrilanserMedFlereTilrettelegginger: Story = {
     args: {
         ...Frilanser.args,
-        valgteArbeidsforhold: {
-            arbeidMedTilrettelegging: [FRILANS_ID, VALGT_TILRETTELEGGING_ID],
-        },
+        valgteArbeidsforhold: [FRILANS_ID, VALGT_TILRETTELEGGING_ID],
     },
 };
 
@@ -143,8 +138,6 @@ export const SelvstendigNæring: Story = {
 export const SelvstendigNæringMedFlereTilrettelegginger: Story = {
     args: {
         ...SelvstendigNæring.args,
-        valgteArbeidsforhold: {
-            arbeidMedTilrettelegging: [EGEN_NÆRING_ID, VALGT_TILRETTELEGGING_ID],
-        },
+        valgteArbeidsforhold: [EGEN_NÆRING_ID, VALGT_TILRETTELEGGING_ID],
     },
 };

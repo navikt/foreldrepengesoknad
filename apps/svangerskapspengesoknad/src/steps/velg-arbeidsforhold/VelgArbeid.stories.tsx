@@ -4,8 +4,10 @@ import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext'
 import SøknadRoutes from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { DelvisTilrettelegging, IngenTilrettelegging } from 'types/Tilrettelegging';
 
 import { initAmplitude } from '@navikt/fp-metrics';
+import { ArbeidsforholdOgInntektSvp, EgenNæring, Frilans, Næringstype } from '@navikt/fp-types';
 
 import VelgArbeid from './VelgArbeid';
 
@@ -72,24 +74,36 @@ const DEFAULT_ARBEIDSFORHOLD = [
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
+    tilrettelegginger?: Record<string, DelvisTilrettelegging | IngenTilrettelegging>;
+    valgteArbeidsforhold?: string[];
+    arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektSvp;
+    egenNæring?: EgenNæring;
+    frilans?: Frilans;
 } & ComponentProps<typeof VelgArbeid>;
 
 const meta = {
     title: 'steps/VelgArbeid',
     component: VelgArbeid,
-    render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
+    render: ({
+        gåTilNesteSide = action('button-click'),
+        arbeidsforholdOgInntekt,
+        tilrettelegginger,
+        valgteArbeidsforhold,
+        egenNæring,
+        frilans,
+        ...rest
+    }) => {
         initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.VELG_ARBEID]}>
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
-                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                            harHattArbeidIUtlandet: false,
-                            harJobbetSomFrilans: false,
-                            harJobbetSomSelvstendigNæringsdrivende: false,
-                        },
-                        [ContextDataType.TILRETTELEGGINGER]: [],
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
+                        [ContextDataType.TILRETTELEGGINGER]: tilrettelegginger,
+                        [ContextDataType.VALGTE_ARBEIDSFORHOLD]: valgteArbeidsforhold,
+                        [ContextDataType.EGEN_NÆRING]: egenNæring,
+                        [ContextDataType.FRILANS]: frilans,
                         [ContextDataType.OM_BARNET]: {
                             erBarnetFødt: false,
                             termindato: '2024-02-18',
@@ -112,5 +126,43 @@ export const Default: Story = {
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: promiseAction(),
         arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        arbeidsforholdOgInntekt: {
+            harHattArbeidIUtlandet: false,
+            harJobbetSomFrilans: false,
+            harJobbetSomSelvstendigNæringsdrivende: false,
+        },
+    },
+};
+
+export const MedNæringsvalg: Story = {
+    args: {
+        ...Default.args,
+        arbeidsforholdOgInntekt: {
+            harHattArbeidIUtlandet: false,
+            harJobbetSomFrilans: false,
+            harJobbetSomSelvstendigNæringsdrivende: true,
+        },
+        egenNæring: {
+            fom: '2024-01-01',
+            tom: '2024-10-01',
+            pågående: false,
+            registrertINorge: true,
+            næringstype: Næringstype.FISKER,
+        },
+    },
+};
+
+export const MedFrilansvalg: Story = {
+    args: {
+        ...Default.args,
+        arbeidsforholdOgInntekt: {
+            harHattArbeidIUtlandet: false,
+            harJobbetSomFrilans: true,
+            harJobbetSomSelvstendigNæringsdrivende: false,
+        },
+        frilans: {
+            jobberFremdelesSomFrilans: true,
+            oppstart: '2024-01-01',
+        },
     },
 };
