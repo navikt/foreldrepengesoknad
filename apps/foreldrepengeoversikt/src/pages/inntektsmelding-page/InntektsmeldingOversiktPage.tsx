@@ -23,7 +23,7 @@ export const InntektsmeldingOversiktPage = () => {
     const aktiveInntektsmeldinger = inntektsmeldinger.filter((im) => im.erAktiv);
 
     if (aktiveInntektsmeldinger.length === 0) {
-        return null; // TODO
+        return <Navigate replace to={'..'} />;
     }
     if (aktiveInntektsmeldinger.length === 1) {
         return (
