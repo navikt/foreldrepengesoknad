@@ -1,1 +1,0 @@
-import{j as r}from"./jsx-runtime-Cw0GR0a5.js";import{A as e}from"./Alert-BDHNIHRQ.js";const i=({children:o,className:t})=>r.jsx(e,{className:t,variant:"info",children:o});i.__docgenInfo={description:"",methods:[],displayName:"NoeGikkGalt"};export{i as N};
