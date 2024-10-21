@@ -11,6 +11,7 @@
         "build": "vite build",
         "dev-api": "node ./mock-api/mock-api-server.cjs",
         "dev": "node ./dev-server.cjs",
+        "dev-vite": "vite",
         "test": "vitest run",
         "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "lint:tsc": "tsc --noEmit",
