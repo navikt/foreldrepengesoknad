@@ -1,12 +1,12 @@
+import { FileIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames';
 
-import { FileContent } from '@navikt/ds-icons';
 import { Link } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import { Dokument } from './../../types/Dokument';
-import { lagUrl } from './../../utils/dokumenterUtils';
+import { Dokument } from '../../types/Dokument';
+import { lagUrl } from '../../utils/dokumenterUtils';
 import './dokument-hendelse.css';
 
 interface Props {
@@ -21,7 +21,7 @@ const DokumentHendelse: React.FunctionComponent<Props> = ({ dokument, visesITids
 
     return (
         <li className={classNames(`${bem.block} ${visesITidslinjen ? bem.modifier('medium') : bem.modifier('large')}`)}>
-            <FileContent className={bem.element('ikon')} aria-hidden={true} />
+            <FileIcon className={bem.element('ikon')} aria-hidden={true} />
             <Link href={url} className={bem.element('ikon')} target="_blank">
                 {tittel}
             </Link>

@@ -1,11 +1,12 @@
-import { FileContent } from '@navikt/ds-icons';
+import { FileIcon } from '@navikt/aksel-icons';
+
 import { Detail, HGrid, HStack, Hide, Link, Show, Tag } from '@navikt/ds-react';
 
 import { formatDateExtended } from '@navikt/fp-utils';
 
 import { Dokument as DokumentType } from '../../types/Dokument';
 import { DokumentType as DokumentTypeEnum } from '../../types/DokumentType';
-import { lagUrl } from './../../utils/dokumenterUtils';
+import { lagUrl } from '../../utils/dokumenterUtils';
 
 interface Props {
     dokument: DokumentType;
@@ -16,7 +17,7 @@ function DokumentLenke({ dokument }: { dokument: DokumentType }) {
 
     return (
         <>
-            <FileContent className="text-text-action" height={24} width={24} aria-hidden={true} />
+            <FileIcon className="text-text-action" height={24} width={24} aria-hidden={true} />
             <Link href={url} target="_blank" className="overflow-hidden overflow-ellipsis block whitespace-nowrap">
                 {dokument.tittel}
             </Link>
