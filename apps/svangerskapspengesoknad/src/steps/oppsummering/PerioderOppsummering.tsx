@@ -22,6 +22,9 @@ export function PerioderOppsummering({
     readonly onVilEndreSvar: () => Promise<void>;
     readonly alleArbeidsforhold: Arbeidsforhold[];
 }) {
+    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
+
     return (
         <FormSummary>
             <FormSummary.Header>
@@ -33,16 +36,27 @@ export function PerioderOppsummering({
                 </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
-                <VirksomhetSummary alleArbeidsforhold={alleArbeidsforhold} />
-                <FrilansSummary />
-                <SelvstendigNæringsdrivendeSummary />
+                <VirksomhetSummary
+                    alleArbeidsforhold={alleArbeidsforhold}
+                    sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger}
+                    termindato={barn.termindato}
+                />
+                <FrilansSummary sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger} />
+                <SelvstendigNæringsdrivendeSummary sisteDagForSvangerskapspenger={sisteDagForSvangerskapspenger} />
             </FormSummary.Answers>
         </FormSummary>
     );
 }
 
-function VirksomhetSummary({ alleArbeidsforhold }: { readonly alleArbeidsforhold: Arbeidsforhold[] }) {
-    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+function VirksomhetSummary({
+    alleArbeidsforhold,
+    sisteDagForSvangerskapspenger,
+    termindato,
+}: {
+    readonly alleArbeidsforhold: Arbeidsforhold[];
+    readonly sisteDagForSvangerskapspenger: string;
+    readonly termindato: string;
+}) {
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const tilretteleggingerPerioder = useContextGetData(ContextDataType.TILRETTELEGGINGER_PERIODER);
 
@@ -54,15 +68,13 @@ function VirksomhetSummary({ alleArbeidsforhold }: { readonly alleArbeidsforhold
         return null;
     }
 
-    const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
-
     return tilretteleggingIder.map((tilretteleggingId) => {
         const tilrettelegging = tilrettelegginger[tilretteleggingId];
         const perioder = tilretteleggingerPerioder?.[tilretteleggingId];
 
         const arbeidsforhold = alleArbeidsforhold.find((a) => a.arbeidsgiverId === tilretteleggingId);
         const stillinger = getArbeidsgiverStillingerForTilrettelegging(
-            barn.termindato,
+            termindato,
             tilretteleggingId,
             alleArbeidsforhold,
         );
@@ -90,8 +102,7 @@ function VirksomhetSummary({ alleArbeidsforhold }: { readonly alleArbeidsforhold
     });
 }
 
-function FrilansSummary() {
-    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+function FrilansSummary({ sisteDagForSvangerskapspenger }: { readonly sisteDagForSvangerskapspenger: string }) {
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const tilretteleggingerPerioder = useContextGetData(ContextDataType.TILRETTELEGGINGER_PERIODER);
     const frilans = useContextGetData(ContextDataType.FRILANS);
@@ -105,13 +116,7 @@ function FrilansSummary() {
     }
 
     const frilansTilrettelegging = tilrettelegginger[FRILANS_ID];
-
-    const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
-
-    const perioder =
-        tilretteleggingerPerioder && tilretteleggingerPerioder[FRILANS_ID]?.length > 0
-            ? tilretteleggingerPerioder[FRILANS_ID]
-            : undefined;
+    const perioder = tilretteleggingerPerioder?.[FRILANS_ID];
 
     const stillinger = [{ fom: frilans.oppstart, stillingsprosent: 100 }];
     const mappedPerioder = perioder
@@ -156,10 +161,13 @@ function FrilansSummary() {
     );
 }
 
-function SelvstendigNæringsdrivendeSummary() {
+function SelvstendigNæringsdrivendeSummary({
+    sisteDagForSvangerskapspenger,
+}: {
+    readonly sisteDagForSvangerskapspenger: string;
+}) {
     const intl = useIntl();
 
-    const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const tilretteleggingerPerioder = useContextGetData(ContextDataType.TILRETTELEGGINGER_PERIODER);
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
@@ -172,14 +180,8 @@ function SelvstendigNæringsdrivendeSummary() {
         return null;
     }
 
-    const tilretteleggingMedSN = tilrettelegginger[FRILANS_ID];
-
-    const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
-
-    const perioder =
-        tilretteleggingerPerioder && tilretteleggingerPerioder[FRILANS_ID]?.length > 0
-            ? tilretteleggingerPerioder[FRILANS_ID]
-            : undefined;
+    const tilretteleggingMedSN = tilrettelegginger[EGEN_NÆRING_ID];
+    const perioder = tilretteleggingerPerioder?.[EGEN_NÆRING_ID];
 
     const stillinger = [{ fom: egenNæring.fom, tom: egenNæring.tom, stillingsprosent: 100 }];
     const mappedPerioder = perioder
@@ -288,8 +290,8 @@ function FlerePerioder({ perioder }: { readonly perioder: TilretteleggingPeriode
 
 function SvpPeriodeDatoTekst({ periode }: { readonly periode: TilretteleggingPeriode }) {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const kanHaSvpFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
+    const kanHaSvpFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
     const varerTilSisteDagMedSvp = dayjs(periode.tom).isSame(sisteDagForSvangerskapspenger, 'd');
 
     if (!varerTilSisteDagMedSvp) {

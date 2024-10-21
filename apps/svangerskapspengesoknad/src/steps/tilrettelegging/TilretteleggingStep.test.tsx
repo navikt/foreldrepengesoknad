@@ -59,40 +59,13 @@ describe('<Behov for tilrettelegging>', () => {
         expect(screen.queryByText('Du må oppgi hvor mye du kan jobbe.')).not.toBeInTheDocument();
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: [
-                {
-                    arbeidsforhold: {
-                        arbeidsgiverId: '990322244',
-                        navn: 'Omsorgspartner Vestfold AS',
-                        type: 'virksomhet',
-                        stillinger: [],
-                        startdato: '2023-01-01',
-                    },
+            data: {
+                '990322244': {
                     behovForTilretteleggingFom: dayjs().format(ISO_DATE_FORMAT),
                     delvisTilretteleggingPeriodeType: 'VARIERTE_PERIODER',
-                    enPeriodeMedTilretteleggingFom: undefined,
-                    enPeriodeMedTilretteleggingStillingsprosent: undefined,
-                    enPeriodeMedTilretteleggingTilbakeIJobbDato: undefined,
-                    enPeriodeMedTilretteleggingTomType: undefined,
-                    id: '990322244',
-                    risikofaktorer: undefined,
-                    tilretteleggingstiltak: undefined,
                     type: 'delvis',
-                    varierendePerioder: [],
-                    vedlegg: [
-                        expect.objectContaining({
-                            filename: 'vedlegg – Kopi (7).png',
-                            filesize: 7477,
-                            pending: false,
-                            skjemanummer: 'I000109',
-                            type: 'tilrettelegging',
-                            uploaded: true,
-                            url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
-                            uuid: 'Created',
-                        }),
-                    ],
                 },
-            ],
+            },
             key: ContextDataType.TILRETTELEGGINGER,
             type: 'update',
         });

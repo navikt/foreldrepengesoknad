@@ -173,7 +173,7 @@ export const SkjemaSteg: FunctionComponent<Props> = ({
                                 const indexForrige = valgteArbeidsforhold.findIndex((id) => id === valgtId) - 1;
 
                                 oppdaterValgtTilretteleggingId(
-                                    indexForrige < 0 ? undefined : valgteArbeidsforhold[indexForrige - 1],
+                                    indexForrige < 0 ? undefined : valgteArbeidsforhold[indexForrige],
                                 );
                             }
 

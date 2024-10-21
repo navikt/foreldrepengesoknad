@@ -204,7 +204,7 @@ export const KanMaxHaToVedlegg: Story = {
                     uuid: 'Created',
                 },
                 {
-                    id: 'V134300149934973076055420920289127108',
+                    id: 'V134300149934973076055420920289127101',
                     filename: file2.name,
                     filesize: file2.size,
                     file: file2,

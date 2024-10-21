@@ -17,6 +17,7 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import { PerioderStep } from './PerioderStep';
 
 const TILRETTELEGGING_ID = '263929546-6215-9868-5127-161910165730101';
+const ANNEN_TILRETTELEGGING_ID = '0132715641-23932-19917-03900-809964087910';
 
 const DEFAULT_ARBEIDSFORHOLD = [
     {
@@ -58,10 +59,24 @@ const DEFAULT_ARBEIDSFORHOLD = [
         stillingsprosent: 100,
     },
     {
-        arbeidsgiverId: '0132715641-23932-19917-03900-809964087910',
+        arbeidsgiverId: ANNEN_TILRETTELEGGING_ID,
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Re Kommune',
-        fom: '2018-06-01T00:00:00.000Z',
+        fom: '2023-09-01',
+        stillingsprosent: 10,
+    },
+    {
+        arbeidsgiverId: ANNEN_TILRETTELEGGING_ID,
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Re Kommune',
+        fom: '2023-10-01',
+        stillingsprosent: 20,
+    },
+    {
+        arbeidsgiverId: ANNEN_TILRETTELEGGING_ID,
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Re Kommune',
+        fom: '2023-11-01',
         stillingsprosent: 0,
     },
 ];
@@ -83,20 +98,27 @@ type StoryArgs = {
     tilrettelegging: IngenTilrettelegging | DelvisTilrettelegging;
     barn?: Barn;
     gåTilNesteSide?: (action: Action) => void;
+    valgtTilrettelegging?: string;
 } & ComponentProps<typeof PerioderStep>;
 
 const meta = {
     title: 'steps/PerioderStep',
     component: PerioderStep,
-    render: ({ gåTilNesteSide = action('button-click'), tilrettelegging, barn = DEFAULT_BARN, ...rest }) => {
+    render: ({
+        gåTilNesteSide = action('button-click'),
+        tilrettelegging,
+        valgtTilrettelegging = TILRETTELEGGING_ID,
+        barn = DEFAULT_BARN,
+        ...rest
+    }) => {
         initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.PERIODER]}>
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
-                        [ContextDataType.TILRETTELEGGINGER]: { [TILRETTELEGGING_ID]: tilrettelegging },
-                        [ContextDataType.VALGT_TILRETTELEGGING_ID]: TILRETTELEGGING_ID,
+                        [ContextDataType.TILRETTELEGGINGER]: { [valgtTilrettelegging]: tilrettelegging },
+                        [ContextDataType.VALGT_TILRETTELEGGING_ID]: valgtTilrettelegging,
                         [ContextDataType.OM_BARNET]: barn,
                     }}
                 >
@@ -140,6 +162,7 @@ export const FremTilFødselsdato: Story = {
 export const FlereStillinger: Story = {
     args: {
         ...Default.args,
+        valgtTilrettelegging: ANNEN_TILRETTELEGGING_ID,
         tilrettelegging: {
             behovForTilretteleggingFom: '2023-09-01',
             type: Tilretteleggingstype.DELVIS,

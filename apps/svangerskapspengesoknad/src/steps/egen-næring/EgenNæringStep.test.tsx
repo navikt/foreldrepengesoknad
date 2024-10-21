@@ -65,12 +65,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: undefined,
-            key: ContextDataType.VALGT_TILRETTELEGGING_ID,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
-            data: SøknadRoutes.VELG_ARBEID,
+            data: SøknadRoutes.SKJEMA,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
