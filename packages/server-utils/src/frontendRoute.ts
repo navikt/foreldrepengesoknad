@@ -19,7 +19,7 @@ export const setupAndServeHtml = async (router: Router) => {
     const spaFilePath = path.resolve('./public', 'index.html');
 
     // Only add vite-mode to dev environment
-    if (config.app.env === 'dev') {
+    if (config.app.env !== 'prod') {
         setupViteMode(router);
     }
 
@@ -52,6 +52,7 @@ const setupViteMode = (router: Router) => {
         port: '8080',
         useNonce: false,
         indexFilePath: 'src/bootstrap.tsx',
+        subpath: config.app.publicPath,
         mountId: 'app',
         setCSPHeaders: false,
     });
