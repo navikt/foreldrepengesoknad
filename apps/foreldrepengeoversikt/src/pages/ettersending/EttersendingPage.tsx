@@ -1,9 +1,9 @@
+import { PlusIcon } from '@navikt/aksel-icons';
 import { useMutation } from '@tanstack/react-query';
 import { FormEvent, useState } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Link, useParams } from 'react-router-dom';
 
-import { Add } from '@navikt/ds-icons';
 import {
     Alert,
     BodyLong,
@@ -22,20 +22,20 @@ import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
+import { sendEttersending } from '../../api/api';
 import Environment from '../../appData/Environment';
+import { EttersendingHeader } from '../../components/header/Header';
+import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
+import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
+import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import EttersendingDto from '../../types/EttersendingDTO';
 import { Sak } from '../../types/Sak';
 import { SakOppslag } from '../../types/SakOppslag';
 import { Ytelse } from '../../types/Ytelse';
-import { sendEttersending } from './../../api/api';
-import { EttersendingHeader } from './../../components/header/Header';
+import { getAlleYtelser } from '../../utils/sakerUtils';
+import { getRelevanteSkjemanummer } from '../../utils/skjemanummerUtils';
 import ScrollToTop from './../../components/scroll-to-top/ScrollToTop';
-import { useSetBackgroundColor } from './../../hooks/useBackgroundColor';
-import { useSetSelectedRoute } from './../../hooks/useSelectedRoute';
-import { PageRouteLayout } from './../../routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from './../../routes/routes';
-import { getAlleYtelser } from './../../utils/sakerUtils';
-import { getRelevanteSkjemanummer } from './../../utils/skjemanummerUtils';
 
 const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad' => {
     if (sakstype === Ytelse.ENGANGSSTØNAD) {
@@ -195,7 +195,7 @@ const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
                     <HStack>
                         <Button
                             type="submit"
-                            icon={<Add aria-hidden={true} />}
+                            icon={<PlusIcon aria-hidden={true} />}
                             loading={isPending || avventerVedlegg}
                             disabled={isPending || avventerVedlegg}
                         >

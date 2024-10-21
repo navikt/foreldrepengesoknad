@@ -1,10 +1,10 @@
+import { Chat2Icon, PaperplaneIcon, PhoneIcon } from '@navikt/aksel-icons';
 import { FormattedMessage } from 'react-intl';
 
-import { Dialog, Send, Telephone } from '@navikt/ds-icons';
 import { BodyShort, HGrid, Heading, Link, VStack } from '@navikt/ds-react';
 
-import { NavRoutes } from './../../routes/routes';
-import { LayoutWrapper } from './../../sections/LayoutWrapper';
+import { NavRoutes } from '../../routes/routes';
+import { LayoutWrapper } from '../LayoutWrapper';
 
 const KontaktOss: React.FunctionComponent = () => {
     return (
@@ -16,7 +16,7 @@ const KontaktOss: React.FunctionComponent = () => {
                 <HGrid gap="4" columns={{ sm: 1, md: 3 }}>
                     <VStack gap="4">
                         <Link href={NavRoutes.CHAT_MED_OSS}>
-                            <Dialog aria-hidden={true} />
+                            <Chat2Icon aria-hidden={true} />
                             <BodyShort weight="semibold">
                                 <FormattedMessage id="kontaktOss.chatMedOss" />
                             </BodyShort>
@@ -27,7 +27,7 @@ const KontaktOss: React.FunctionComponent = () => {
                     </VStack>
                     <VStack gap="4">
                         <Link href={NavRoutes.SKRIV_TIL_OSS}>
-                            <Send aria-hidden={true} />
+                            <PaperplaneIcon aria-hidden={true} />
                             <BodyShort weight="semibold">
                                 <FormattedMessage id="kontaktOss.skrivTilOss" />
                             </BodyShort>
@@ -41,7 +41,7 @@ const KontaktOss: React.FunctionComponent = () => {
                     </VStack>
                     <VStack gap="4">
                         <Link href={NavRoutes.RING_OSS}>
-                            <Telephone aria-hidden={true} />
+                            <PhoneIcon aria-hidden={true} />
                             <BodyShort weight="semibold">
                                 <FormattedMessage id="kontaktOss.ringOss" />
                             </BodyShort>
