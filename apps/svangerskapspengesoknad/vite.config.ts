@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
                 utils: path.resolve(__dirname, './src/utils/'),
             },
         },
-        base: mode === 'development' ? '' : '/svangerskapspenger/soknad',
+        base: '/svangerskapspenger/soknad',
         build: {
             sourcemap: true,
         },

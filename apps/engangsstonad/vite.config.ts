@@ -27,7 +27,7 @@ export default defineConfig(({ mode }) => {
                 },
             },
         },
-        base: mode === 'development' ? '' : '/engangsstonad/soknad',
+        base: '/engangsstonad/soknad',
         build: {
             sourcemap: true,
         },
