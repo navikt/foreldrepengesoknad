@@ -27,6 +27,7 @@ export enum TilOgMedDatoType {
     SISTE_DAG_MED_SVP = 'SISTE_DAG_MED_SVP',
 }
 
+//FIXME Treng ein denne typen?
 export type TilretteleggingPeriode = {
     type: Tilretteleggingstype;
     fom: string;
@@ -35,6 +36,7 @@ export type TilretteleggingPeriode = {
 };
 
 export type PeriodeMedVariasjon = {
+    //FIXME Treng ein type?
     type: Tilretteleggingstype;
     tomType: TilOgMedDatoType;
     fom: string;
@@ -46,6 +48,7 @@ type Tilrettelegging = {
     behovForTilretteleggingFom: string;
     risikofaktorer?: string;
     tilretteleggingstiltak?: string;
+    //FIXME Treng denne vera obligatorisk?
     enPeriodeMedTilretteleggingTomType: TilOgMedDatoType;
     enPeriodeMedTilretteleggingTilbakeIJobbDato?: string;
 };

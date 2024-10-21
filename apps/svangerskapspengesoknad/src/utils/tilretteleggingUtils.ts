@@ -87,7 +87,9 @@ export const mapEnTilretteleggingPeriode = (
 
     const tom =
         tilrettelegging.enPeriodeMedTilretteleggingTomType === TilOgMedDatoType.VALGFRI_DATO
-            ? dayjs(tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato).subtract(1, 'day').toString()
+            ? dayjs(tilrettelegging.enPeriodeMedTilretteleggingTilbakeIJobbDato)
+                  .subtract(1, 'day')
+                  .format(ISO_DATE_FORMAT)
             : sisteDagForSvangerskapspenger;
 
     const type =
@@ -141,7 +143,7 @@ export const mapFlereTilretteleggingPerioder = (
 
     const sisteTom = allePerioder
         .map((p) => dayjs(p.tom))
-        .reduce((siste, dato) => (dayjs(siste).diff(dato) ? siste : dato), dayjs(TIDENES_MORGEN));
+        .reduce((siste, dato) => (dayjs(siste).isBefore(dato) ? dato : siste), dayjs(TIDENES_MORGEN));
 
     if (!sisteTom.isSame(sisteDagForSvangerskapspenger, 'day')) {
         allePerioder.push(
