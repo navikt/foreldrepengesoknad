@@ -35,6 +35,9 @@ export default defineConfig({
     build: {
         sourcemap: true,
     },
+    server: {
+        port: 8080,
+    },
     test: {
         globals: true,
         environment: 'jsdom',

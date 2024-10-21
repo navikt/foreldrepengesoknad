@@ -37,6 +37,9 @@ export default defineConfig({
             appData: path.resolve(__dirname, './src/app-data/'),
         },
     },
+    server: {
+        port: 8080,
+    },
     test: {
         globals: true,
         environment: 'jsdom',
