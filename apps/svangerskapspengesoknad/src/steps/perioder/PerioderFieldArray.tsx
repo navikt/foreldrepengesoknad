@@ -4,12 +4,7 @@ import { Fragment } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Barn } from 'types/Barn';
-import {
-    PeriodeMedVariasjon,
-    TilOgMedDatoType,
-    TilretteleggingPerioder,
-    Tilretteleggingstype,
-} from 'types/Tilrettelegging';
+import { PeriodeMedVariasjon, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 import { getDefaultMonth, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import {
     getArbeidsgiverNavnForTilrettelegging,
@@ -49,6 +44,10 @@ export const NEW_PERIODE = {
     stillingsprosent: '',
     tomType: undefined!,
 } as PeriodeMedVariasjon;
+
+type PerioderFormValues = {
+    varierendePerioder: PeriodeMedVariasjon[];
+};
 
 interface Props {
     barn: Barn;
@@ -90,7 +89,7 @@ export const PerioderFieldArray: React.FunctionComponent<Props> = ({
         frilans,
     );
 
-    const formMethods = useFormContext<TilretteleggingPerioder>();
+    const formMethods = useFormContext<PerioderFormValues>();
     const { fields, append, remove } = useFieldArray({
         name: 'varierendePerioder',
         control: formMethods.control,

@@ -41,11 +41,7 @@ const lagPeriodeMedHelTilretteleggingFremTilSisteSvpDag = (
     stillingsprosent: opprinneligStillingsprosent,
 });
 
-const finnTilretteleggingstype = (
-    type: Tilretteleggingstype,
-    stillingsprosent: number,
-    opprinneligStillingsprosent: number,
-) => {
+const finnTilretteleggingstype = (stillingsprosent: number, opprinneligStillingsprosent: number) => {
     if (stillingsprosent === 0) {
         return Tilretteleggingstype.INGEN;
     } else if (opprinneligStillingsprosent === 0 && stillingsprosent === 100) {
@@ -53,7 +49,7 @@ const finnTilretteleggingstype = (
     } else if (stillingsprosent === opprinneligStillingsprosent) {
         return Tilretteleggingstype.HEL;
     }
-    return type;
+    return Tilretteleggingstype.DELVIS;
 };
 
 const sorterTilretteleggingsperioder = (p1: PeriodeMedVariasjon, p2: PeriodeMedVariasjon) => {
@@ -126,7 +122,7 @@ export const mapFlereTilretteleggingPerioder = (
 
     const allePerioder = tilretteleggingerPerioder.map<TilretteleggingPeriode>((periode) => {
         const stillingsprosent = notEmpty(getFloatFromString(periode.stillingsprosent));
-        const type = finnTilretteleggingstype(periode.type, stillingsprosent, opprinneligStillingsprosent);
+        const type = finnTilretteleggingstype(stillingsprosent, opprinneligStillingsprosent);
 
         const tom =
             periode.tomType === TilOgMedDatoType.SISTE_DAG_MED_SVP

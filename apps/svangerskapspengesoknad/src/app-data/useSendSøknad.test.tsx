@@ -408,21 +408,18 @@ describe('useSendSøknad', () => {
         const tilretteleggingPerioder = {
             [ARBEIDSGIVER_ID]: [
                 {
-                    type: Tilretteleggingstype.DELVIS,
                     tomType: TilOgMedDatoType.VALGFRI_DATO,
                     fom: '2024-05-10',
                     tom: '2024-06-01',
                     stillingsprosent: '50',
                 },
                 {
-                    type: Tilretteleggingstype.INGEN,
                     tomType: TilOgMedDatoType.VALGFRI_DATO,
                     fom: '2024-06-02',
                     tom: '2024-08-01',
                     stillingsprosent: '0',
                 },
                 {
-                    type: Tilretteleggingstype.DELVIS,
                     tomType: TilOgMedDatoType.VALGFRI_DATO,
                     fom: '2024-08-02',
                     tom: '2024-09-25',

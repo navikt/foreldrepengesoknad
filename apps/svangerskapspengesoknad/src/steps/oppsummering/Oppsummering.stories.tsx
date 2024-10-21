@@ -162,33 +162,32 @@ const meta = {
                             [TREDJE_ARBEIDSFORHOLD_ID]: [
                                 {
                                     fom: '2024-01-01',
+                                    tom: '2024-02-28',
                                     stillingsprosent: '50',
                                     tomType: TilOgMedDatoType.VALGFRI_DATO,
-                                    type: Tilretteleggingstype.DELVIS,
                                 },
                                 {
                                     fom: '2024-03-01',
+                                    tom: '2024-03-31',
                                     stillingsprosent: '100',
                                     tomType: TilOgMedDatoType.VALGFRI_DATO,
-                                    type: Tilretteleggingstype.DELVIS,
                                 },
                                 {
                                     fom: '2024-04-01',
-                                    stillingsprosent: '20',
-                                    tomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
-                                    type: Tilretteleggingstype.INGEN,
+                                    tom: '2024-04-30',
+                                    stillingsprosent: '0',
+                                    tomType: TilOgMedDatoType.VALGFRI_DATO,
                                 },
                                 {
                                     fom: '2024-05-01',
+                                    tom: '2024-06-30',
                                     stillingsprosent: '20',
-                                    tomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
-                                    type: Tilretteleggingstype.DELVIS,
+                                    tomType: TilOgMedDatoType.VALGFRI_DATO,
                                 },
                                 {
                                     fom: '2024-07-01',
                                     stillingsprosent: '0',
                                     tomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
-                                    type: Tilretteleggingstype.DELVIS,
                                 },
                             ],
                         },
@@ -199,8 +198,8 @@ const meta = {
                         },
                         [ContextDataType.OM_BARNET]: {
                             erBarnetFødt: false,
-                            termindato: '2024-02-18',
-                            fødselsdato: '2024-02-18',
+                            termindato: '2024-10-18',
+                            fødselsdato: '2024-10-18',
                         },
                         [ContextDataType.UTENLANDSOPPHOLD]: {
                             skalBoUtenforNorgeNeste12Mnd: false,
