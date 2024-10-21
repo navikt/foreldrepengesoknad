@@ -13,7 +13,13 @@ import {
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { Situasjon } from 'types/HvemPlanlegger';
-import { erAlenesøker, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+import {
+    erAlenesøker,
+    getFornavnPåSøker1,
+    getFornavnPåSøker2,
+    getNavnPåSøker1,
+    getNavnPåSøker2,
+} from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
@@ -30,6 +36,7 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanNy } from '../../../../../packages/ny-uttaksplan/src';
 import PlanvisningToggle, { Visningsmodus } from '../../components/planvisning-toggle/PlanvisningToggle';
+import { getFamiliesituasjon } from '../../utils/barnetUtils';
 import styles from './planenDeresSteg.module.css';
 import OmÅTilpassePlanen from './tilpasse-planen/OmÅTilpassePlanen';
 import UforutsetteEndringer from './uforutsette-endringer/UforutsetteEndringer';
@@ -63,7 +70,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
     useScrollBehaviour();
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
-    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const omBarnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
@@ -89,23 +96,24 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
         }
     };
 
+    const familiesituasjon = getFamiliesituasjon(omBarnet);
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const farOgFarKunEnPartHarRett =
         hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
         (hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett');
 
-    const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
-    const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, barnet);
+    const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, omBarnet);
+    const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, omBarnet);
 
     const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata100);
     const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata80);
-    const familiehendelsedato = getFamiliehendelsedato(barnet);
+    const familiehendelsedato = getFamiliehendelsedato(omBarnet);
 
     const erAleneforsørger = erAlenesøker(hvemPlanlegger);
 
     const uttaksperioder = lagKalenderPerioder(
         valgtStønadskonto,
-        barnet,
+        omBarnet,
         hvemPlanlegger,
         arbeidssituasjon,
         fordeling?.antallDagerSøker1,
@@ -131,7 +139,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                             <FormattedMessage id="OversiktSteg.Infoboks.Utkast.Tekst" />
                         </BodyLong>
                     </Infobox>
-                    {farOgFarKunEnPartHarRett && barnet.erFødsel && (
+                    {farOgFarKunEnPartHarRett && omBarnet.erFødsel && (
                         <Infobox
                             header={<FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DereHarOppgitt" />}
                             icon={
@@ -174,7 +182,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                             </ToggleGroup.Item>
                         </ToggleGroup>
                         {hvemHarRett === 'beggeHarRett' &&
-                            (!barnet.erFødsel || hvemPlanlegger.type !== Situasjon.FAR_OG_FAR) && (
+                            (!omBarnet.erFødsel || hvemPlanlegger.type !== Situasjon.FAR_OG_FAR) && (
                                 <Select
                                     defaultValue={fordeling?.antallDagerSøker1}
                                     label={''}
@@ -214,27 +222,28 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                                     : uttaksdata80
                             }
                             hvemPlanlegger={hvemPlanlegger}
-                            barnet={barnet}
+                            barnet={omBarnet}
                             hvemHarRett={hvemHarRett}
                         />
 
                         {visningsmodus === 'liste' && (
                             <UttaksplanNy
                                 familiehendelsedato={familiehendelsedato}
-                                bareFarHarRett={false}
+                                bareFarHarRett={hvemHarRett === 'kunSøker2HarRett'}
                                 erFarEllerMedmor={false}
-                                familiesituasjon="fødsel"
-                                gjelderAdopsjon={false}
+                                familiesituasjon={familiesituasjon}
+                                gjelderAdopsjon={familiesituasjon === 'adopsjon'}
                                 navnPåForeldre={{
-                                    farMedmor: 'Far',
-                                    mor: 'Mor',
+                                    farMedmor: getNavnPåSøker2(hvemPlanlegger, intl) || 'Annen forelder',
+                                    mor: getNavnPåSøker1(hvemPlanlegger, intl),
                                 }}
                                 førsteUttaksdagNesteBarnsSak={undefined}
                                 harAktivitetskravIPeriodeUtenUttak={false}
                                 søkersPerioder={uttaksperioder.filter((p) => {
                                     if (
                                         p.kontoType === StønadskontoType.Mødrekvote ||
-                                        p.kontoType === StønadskontoType.ForeldrepengerFørFødsel
+                                        p.kontoType === StønadskontoType.ForeldrepengerFørFødsel ||
+                                        p.kontoType === StønadskontoType.Foreldrepenger
                                     ) {
                                         return true;
                                     }
@@ -242,7 +251,10 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                                     return false;
                                 })}
                                 annenPartsPerioder={uttaksperioder.filter((p) => {
-                                    if (p.kontoType === StønadskontoType.Fedrekvote) {
+                                    if (
+                                        p.kontoType === StønadskontoType.Fedrekvote ||
+                                        p.kontoType === StønadskontoType.Foreldrepenger
+                                    ) {
                                         return true;
                                     }
 
@@ -268,13 +280,13 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                     <VStack gap="1">
                         <OmÅTilpassePlanen
                             arbeidssituasjon={arbeidssituasjon}
-                            barnet={barnet}
+                            barnet={omBarnet}
                             hvemPlanlegger={hvemPlanlegger}
                         />
                         <UforutsetteEndringer
                             arbeidssituasjon={arbeidssituasjon}
                             hvemPlanlegger={hvemPlanlegger}
-                            barnet={barnet}
+                            barnet={omBarnet}
                         />
                     </VStack>
                     <StepButtons

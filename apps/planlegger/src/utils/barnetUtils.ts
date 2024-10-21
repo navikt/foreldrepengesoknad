@@ -1,5 +1,7 @@
 import { BarnetErAdoptert, BarnetErFødt, BarnetErIkkeFødt, OmBarnet } from 'types/Barnet';
 
+import { Familiesituasjon } from '@navikt/fp-types';
+
 export const erBarnetUFødt = (omBarnet: OmBarnet): omBarnet is BarnetErIkkeFødt => {
     if ((omBarnet as BarnetErIkkeFødt).erBarnetFødt === false) {
         return true;
@@ -31,4 +33,16 @@ export const erToBarn = (omBarnet: OmBarnet): boolean => {
 
 export const erFlereEnnToBarn = (omBarnet: OmBarnet): boolean => {
     return omBarnet.antallBarn === '3';
+};
+
+export const getFamiliesituasjon = (omBarnet: OmBarnet): Familiesituasjon => {
+    if (erBarnetUFødt(omBarnet)) {
+        return 'termin';
+    }
+
+    if (erBarnetFødt(omBarnet)) {
+        return 'fødsel';
+    }
+
+    return 'adopsjon';
 };

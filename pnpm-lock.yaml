@@ -975,6 +975,9 @@ importers:
       http-proxy-middleware:
         specifier: 3.0.3
         version: 3.0.3
+      mockdate:
+        specifier: ^3.0.5
+        version: 3.0.5
       msw:
         specifier: ^2.4.11
         version: 2.4.11(typescript@5.6.3)

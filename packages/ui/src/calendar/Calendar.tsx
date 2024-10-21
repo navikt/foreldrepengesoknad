@@ -40,7 +40,7 @@ const findDayColor = (
 
     const period = periods.find((p) => date.isBetween(p.fom, p.tom, 'day', '[]'));
 
-    if (date.isSame(familiehendelsedato)) {
+    if (date.isSame(familiehendelsedato, 'day')) {
         return PeriodeColor.PINK;
     }
 
@@ -52,26 +52,22 @@ const findDayColor = (
 };
 
 const isFirstDay = (date: Dayjs, day: number, periods: SaksperiodeNy[], familiehendelsedato: string) => {
-    const pinkPeriod = date.isSame(familiehendelsedato);
-
     return (
         date.isoWeekday() === 6 ||
         date.isoWeekday() === 1 ||
         day === 1 ||
-        periods.some((period) => date.isSame(period.fom, 'day')) ||
-        pinkPeriod
+        periods.some(
+            (period) => date.isSame(period.fom, 'day') || date.isSame(dayjs(familiehendelsedato).add(1, 'day'), 'day'),
+        )
     );
 };
 
-const isLastDay = (date: Dayjs, day: number, periods: SaksperiodeNy[], familiehendelsedato: string) => {
-    const pinkPeriod = date.isSame(familiehendelsedato);
-
+const isLastDay = (date: Dayjs, day: number, periods: SaksperiodeNy[]) => {
     return (
         date.isoWeekday() === 7 ||
         date.isoWeekday() === 5 ||
         day === date.daysInMonth() ||
-        periods.some((period) => date.isSame(period.tom, 'day')) ||
-        pinkPeriod
+        periods.some((period) => date.isSame(period.tom, 'day'))
     );
 };
 
@@ -84,7 +80,7 @@ const findDayType = (
 ) => {
     const date = dayjs().year(year).month(month).date(day);
     const firstDay = isFirstDay(date, day, periods, familiehendelsedato);
-    const lastDay = isLastDay(date, day, periods, familiehendelsedato);
+    const lastDay = isLastDay(date, day, periods);
 
     if (firstDay && lastDay) {
         return DayType.FIRST_AND_LAST_DAY;
