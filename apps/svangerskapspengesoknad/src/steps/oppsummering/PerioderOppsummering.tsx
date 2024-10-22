@@ -19,7 +19,7 @@ export function PerioderOppsummering({
     onVilEndreSvar,
     alleArbeidsforhold,
 }: {
-    readonly onVilEndreSvar: () => Promise<void>;
+    readonly onVilEndreSvar: () => void;
     readonly alleArbeidsforhold: Arbeidsforhold[];
 }) {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));

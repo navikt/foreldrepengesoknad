@@ -50,7 +50,10 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
     );
 
     const onSubmit = (formValues: VelgArbeidForm) => {
-        oppdaterValgteArbeidsforhold(formValues.arbeidMedTilrettelegging);
+        const sorterteArbeidsforholdIder = arbeidsforholdOptions
+            .filter((a) => formValues.arbeidMedTilrettelegging.includes(a.id))
+            .map((a) => a.id);
+        oppdaterValgteArbeidsforhold(sorterteArbeidsforholdIder);
 
         if (valgteArbeidsforhold && tilrettelegginger) {
             const valgSomSkalFjernes = valgteArbeidsforhold.filter(

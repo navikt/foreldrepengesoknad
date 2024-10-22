@@ -12,7 +12,7 @@ export function DokumentasjonOppsummering({
     alleArbeidsforhold,
 }: {
     readonly tilretteleggingerVedlegg: Record<string, Attachment[]>;
-    readonly onVilEndreSvar: () => Promise<void>;
+    readonly onVilEndreSvar: () => void;
     readonly alleArbeidsforhold: Arbeidsforhold[];
 }) {
     return (

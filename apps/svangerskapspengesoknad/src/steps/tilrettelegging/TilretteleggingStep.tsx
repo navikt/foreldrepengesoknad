@@ -19,6 +19,7 @@ import {
     getArbeidsgiverStillingerForTilrettelegging,
     getNesteTilretteleggingId,
     getPeriodeForTilrettelegging,
+    getTilretteleggingId,
     getTypeArbeidForTilrettelegging,
 } from 'utils/tilretteleggingUtils';
 
@@ -123,11 +124,15 @@ export const TilretteleggingStep: FunctionComponent<Props> = ({
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const valgtTilretteleggingId = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
+    const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
+    const valgtId = useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
 
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
     const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
+
+    const valgtTilretteleggingId =
+        valgtId || getTilretteleggingId(arbeidsforhold, barnet, arbeidsforholdOgInntekt, valgteArbeidsforhold);
 
     const tilrettelegging = tilrettelegginger?.[valgtTilretteleggingId];
 
