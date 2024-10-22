@@ -24,8 +24,9 @@ export const skjemanummerForFørstegangssøknadForeldrepenger = (skjemanummer: S
         case Skjemanummer.DEPRECATED_TERMINBEKREFTELSE:
         case Skjemanummer.DEPRECATED_BEKREFTELSE_DELTAR_KVALIFISERINGSPROGRAM:
         case Skjemanummer.DEPRECATED_DOK_BEGRUNNELSE_SØKE_TILBAKE_I_TID:
+        case Skjemanummer.DEPRECATED_KOPI_SKATTEMELDING:
+        case Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM:
             // case Skjemanummer.DEPRECATED_TILBAKEBETALING: // TODO Putt disse inn igjen om en måneds tid
-            // case Skjemanummer.DEPRECATED_KOPI_SKATTEMELDING:
             return false;
         default:
             return true;
@@ -55,7 +56,6 @@ export const isSkjemanummerForEndringssøknadForeldrepenger = (skjemanummer: Skj
         case Skjemanummer.NAV_TILTAK:
         case Skjemanummer.TERMINBEKREFTELSE:
         case Skjemanummer.DEPRECATED_TILBAKEBETALING: // TODO fjern disse igjen om en måneds tid
-        case Skjemanummer.DEPRECATED_KOPI_SKATTEMELDING:
             return true;
         default:
             return false;
