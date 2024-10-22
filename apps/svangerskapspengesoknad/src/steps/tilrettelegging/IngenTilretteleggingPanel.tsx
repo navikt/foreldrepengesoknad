@@ -26,8 +26,8 @@ import {
 export interface Props {
     barnet: Barn;
     arbeidsforholdType: Arbeidsforholdstype;
-    sluttdatoArbeid: string;
-    startdatoArbeid?: string;
+    sluttdatoArbeid?: string;
+    startdatoArbeid: string;
     arbeidsforholdNavn?: string;
 }
 

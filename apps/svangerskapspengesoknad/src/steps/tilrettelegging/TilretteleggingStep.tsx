@@ -321,8 +321,8 @@ export const TilretteleggingStep: FunctionComponent<Props> = ({
                         <IngenTilretteleggingPanel
                             barnet={barnet}
                             arbeidsforholdType={typeArbeidsforhold}
-                            sluttdatoArbeid={periode.fom}
-                            startdatoArbeid={periode.tom}
+                            startdatoArbeid={periode.fom}
+                            sluttdatoArbeid={periode.tom}
                             arbeidsforholdNavn={navnArbeidsgiver}
                         />
                     )}
@@ -330,8 +330,8 @@ export const TilretteleggingStep: FunctionComponent<Props> = ({
                         <DelvisTilretteleggingPanel
                             barnet={barnet}
                             arbeidsforholdType={typeArbeidsforhold}
-                            sluttdatoArbeid={periode.fom}
-                            startdatoArbeid={periode.tom}
+                            startdatoArbeid={periode.fom}
+                            sluttdatoArbeid={periode.tom}
                             stillinger={stillinger}
                             arbeidsforholdNavn={navnArbeidsgiver}
                         />
