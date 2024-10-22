@@ -12,6 +12,7 @@ enum SøknadRoutes {
     SKJEMA = '/skjema',
     TILRETTELEGGING = '/tilrettelegging',
     PERIODER = '/perioder',
+    FERIE = '/ferie',
     OPPSUMMERING = '/oppsummering',
 }
 

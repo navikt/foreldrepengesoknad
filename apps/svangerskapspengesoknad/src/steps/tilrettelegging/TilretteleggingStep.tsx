@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import Tilrettelegging, {
+import {
     Arbeidsforholdstype,
     DelivisTilretteleggingPeriodeType,
     TilretteleggingstypeOptions,
@@ -39,23 +39,8 @@ import {
     validateTilretteleggingstiltak,
 } from './tilretteleggingValidation';
 
-const getNesteTilretteleggingId = (
-    tilretteleggingBehov: Tilrettelegging[],
-    currentTilretteleggingId: string | undefined,
-): string | undefined => {
-    if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
-        return tilretteleggingBehov[0].id;
-    }
-    const nesteTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) + 1;
-    if (nesteTilretteleggingIndex === tilretteleggingBehov.length) {
-        return undefined;
-    }
-    return tilretteleggingBehov[nesteTilretteleggingIndex].id;
-};
-
 const getNextRouteAndTilretteleggingIdForTilretteleggingSteg = (
     values: TilretteleggingFormData,
-    tilrettelegging: Tilrettelegging[],
     currentTilretteleggingId: string,
 ): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
     if (
@@ -65,11 +50,7 @@ const getNextRouteAndTilretteleggingIdForTilretteleggingSteg = (
         return { nextRoute: SøknadRoutes.PERIODER, nextTilretteleggingId: currentTilretteleggingId };
     }
 
-    const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegging, currentTilretteleggingId);
-    if (nesteTilretteleggingId) {
-        return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: nesteTilretteleggingId };
-    }
-    return { nextRoute: SøknadRoutes.OPPSUMMERING };
+    return { nextRoute: SøknadRoutes.FERIE, nextTilretteleggingId: currentTilretteleggingId };
 };
 
 const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) =>
@@ -167,7 +148,6 @@ const TilretteleggingStep: FunctionComponent<Props> = ({
 
         const { nextRoute, nextTilretteleggingId } = getNextRouteAndTilretteleggingIdForTilretteleggingSteg(
             values,
-            tilrettelegginger,
             currentTilrettelegging.id,
         );
         if (nextTilretteleggingId) {

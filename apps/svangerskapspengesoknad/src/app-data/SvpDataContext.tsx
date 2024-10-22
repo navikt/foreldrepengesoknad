@@ -1,5 +1,6 @@
 import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
 import { ArbeidIUtlandet } from 'types/ArbeidIUtlandet';
+import { AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
 import { Barn } from 'types/Barn';
 import Tilrettelegging from 'types/Tilrettelegging';
 
@@ -25,6 +26,7 @@ export enum ContextDataType {
     EGEN_NÆRING = 'EGEN_NÆRING',
     TILRETTELEGGINGER = 'TILRETTELEGGINGER',
     VALGT_TILRETTELEGGING_ID = 'VALGT_TILRETTELEGGING_ID',
+    FERIE = 'FERIE',
 }
 
 export type ContextDataMap = {
@@ -38,10 +40,11 @@ export type ContextDataMap = {
     [ContextDataType.ARBEID_I_UTLANDET]?: ArbeidIUtlandet;
     [ContextDataType.EGEN_NÆRING]?: EgenNæring;
     [ContextDataType.TILRETTELEGGINGER]?: Tilrettelegging[];
+    [ContextDataType.FERIE]?: AvtaltFeriePerArbeidsgiver;
     [ContextDataType.VALGT_TILRETTELEGGING_ID]?: string;
 };
 
-const defaultInitialState = {} as ContextDataMap;
+const defaultInitialState: ContextDataMap = {};
 
 export type Action = { type: 'update'; key: ContextDataType; data: any } | { type: 'reset' };
 type Dispatch = (action: Action) => void;

@@ -1,7 +1,11 @@
 import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
-import Tilrettelegging, { DelivisTilretteleggingPeriodeType, TilretteleggingstypeOptions } from 'types/Tilrettelegging';
+import Tilrettelegging, {
+    Arbeidsforholdstype,
+    DelivisTilretteleggingPeriodeType,
+    TilretteleggingstypeOptions,
+} from 'types/Tilrettelegging';
 import { søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
 
 import { Arbeidsforhold } from '@navikt/fp-types';
@@ -37,6 +41,9 @@ const getStepLabels = (
         : intl.formatMessage({ id: 'steps.label.tilrettelegging.en' }),
     [SøknadRoutes.UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'steps.label.utenlandsopphold' }),
     [SøknadRoutes.VELG_ARBEID]: intl.formatMessage({ id: 'steps.label.velgArbeid' }),
+    [SøknadRoutes.FERIE]: erFlereTilrettelegginger
+        ? intl.formatMessage({ id: 'steps.label.ferie.flere' }, { navn })
+        : intl.formatMessage({ id: 'steps.label.ferie.en' }),
 });
 
 const createStep = (route: SøknadRoutes, intl: IntlShape, currentPath: string) => ({
@@ -122,10 +129,25 @@ const getStepConfig = (
                     isSelected: currentPath === SøknadRoutes.PERIODER && tilrettelegging.id === valgtTilretteleggingId,
                 });
             }
+
+            if (tilrettelegging.arbeidsforhold.type === Arbeidsforholdstype.VIRKSOMHET) {
+                steps.push({
+                    id: SøknadRoutes.FERIE,
+                    label: labels[SøknadRoutes.FERIE],
+                    isSelected: currentPath === SøknadRoutes.FERIE && tilrettelegging.id === valgtTilretteleggingId,
+                });
+            }
         });
     } else {
         steps.push(createStep(SøknadRoutes.SKJEMA, intl, currentPath));
         steps.push(createStep(SøknadRoutes.TILRETTELEGGING, intl, currentPath));
+
+        if (
+            !arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende &&
+            !arbeidsforholdOgInntekt?.harJobbetSomFrilans
+        ) {
+            steps.push(createStep(SøknadRoutes.FERIE, intl, currentPath));
+        }
     }
 
     steps.push(createStep(SøknadRoutes.OPPSUMMERING, intl, currentPath));

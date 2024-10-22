@@ -116,6 +116,7 @@ export const getSøknadForInnsending = (
     const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
     const tilrettelegging = notEmpty(hentData(ContextDataType.TILRETTELEGGINGER));
+    const ferie = hentData(ContextDataType.FERIE);
     const tilretteleggingForInnsending = mapTilretteleggingerForInnsending(tilrettelegging, barn);
     return {
         språkkode: locale,
@@ -126,5 +127,6 @@ export const getSøknadForInnsending = (
         utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
         tilrettelegging: tilretteleggingForInnsending,
         vedlegg: mapVedleggForInnsending(tilrettelegging),
+        ferie: ferie ? Object.values(ferie).flatMap((f) => f.feriePerioder) : [],
     };
 };
