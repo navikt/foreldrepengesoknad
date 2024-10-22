@@ -25,7 +25,7 @@ export default defineConfig(({ mode }) => {
                 },
             },
         },
-        base: mode === 'development' ? '' : '/foreldrepenger/oversikt',
+        base: '/foreldrepenger/oversikt',
         build: {
             sourcemap: true,
         },
@@ -35,7 +35,7 @@ export default defineConfig(({ mode }) => {
             },
         },
         server: {
-            port: 9070,
+            port: 8080,
         },
         test: {
             globals: true,

@@ -6,6 +6,7 @@
         "inntektPrMnd": 140000,
         "refusjonPrMnd": 100000,
         "arbeidsgiverNavn": "Laksinor",
+        "arbeidsgiverIdent": "123",
         "journalpostId": "1017115920",
         "mottattTidspunkt": "2024-10-17T00:00:00",
         "startDatoPermisjon": "2024-08-01",
