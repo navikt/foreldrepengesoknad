@@ -33,7 +33,8 @@ export const useTilretteleggingerHelper = () => {
 
     const fjernTilrettelegginger = (tilretteleggingerSomSkalFjernes: string[]) => {
         if (tilrettelegginger && tilretteleggingerSomSkalFjernes.length > 0) {
-            oppdaterTilrettelegginger(filtrerBort(tilrettelegginger, tilretteleggingerSomSkalFjernes));
+            const test = filtrerBort(tilrettelegginger, tilretteleggingerSomSkalFjernes);
+            oppdaterTilrettelegginger(test);
             if (tilretteleggingerVedlegg) {
                 oppdaterTilretteleggingerVedlegg(
                     filtrerBort(tilretteleggingerVedlegg, tilretteleggingerSomSkalFjernes),

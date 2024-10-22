@@ -8,7 +8,7 @@ export type TilretteleggingDTO = {
     };
     risikofaktorer?: string;
     tilretteleggingstiltak?: string;
-    perioder: Array<{
+    tilrettelegginger: Array<{
         type: Tilretteleggingstype;
         fom: string;
         stillingsprosent?: number;

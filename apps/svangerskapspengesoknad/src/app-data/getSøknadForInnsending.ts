@@ -47,7 +47,7 @@ const finnTilretteleggingsbehov = (
             behovForTilretteleggingFom: tilrettelegging.behovForTilretteleggingFom,
             risikofaktorer: tilrettelegging.risikofaktorer,
             tilretteleggingstiltak: tilrettelegging.tilretteleggingstiltak,
-            perioder:
+            tilrettelegginger:
                 perioder && perioder.length > 0
                     ? mapFlereTilretteleggingPerioder(perioder, sisteDagForSvangerskapspenger, stillinger)
                     : mapEnTilretteleggingPeriode(tilrettelegging, sisteDagForSvangerskapspenger, stillinger),

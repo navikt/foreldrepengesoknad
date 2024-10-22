@@ -79,16 +79,22 @@ const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
 
         oppdaterArbeidsforholdOgInntekt(values);
 
+        const tilretteleggingerSomSkalFjernes = [];
+
         if (values.harHattArbeidIUtlandet === false) {
             oppdaterArbeidIUtlandet(undefined);
         }
         if (values.harJobbetSomFrilans === false) {
             oppdaterFrilans(undefined);
-            fjernTilrettelegginger([FRILANS_ID]);
+            tilretteleggingerSomSkalFjernes.push(FRILANS_ID);
         }
         if (values.harJobbetSomSelvstendigNæringsdrivende === false) {
             oppdaterEgenNæring(undefined);
-            fjernTilrettelegginger([EGEN_NÆRING_ID]);
+            tilretteleggingerSomSkalFjernes.push(EGEN_NÆRING_ID);
+        }
+
+        if (tilretteleggingerSomSkalFjernes.length > 0) {
+            fjernTilrettelegginger(tilretteleggingerSomSkalFjernes);
         }
 
         const harKunEttArbeidsforhold = søkerHarKunEttARegArbeidsforholdForTilrettelegging(

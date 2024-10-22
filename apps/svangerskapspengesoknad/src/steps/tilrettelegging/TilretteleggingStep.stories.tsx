@@ -70,6 +70,11 @@ const meta = {
                         [ContextDataType.FRILANS]: frilans,
                         [ContextDataType.EGEN_NÆRING]: egenNæring,
                         [ContextDataType.VALGTE_ARBEIDSFORHOLD]: valgteArbeidsforhold,
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                            harHattArbeidIUtlandet: false,
+                            harJobbetSomFrilans: false,
+                            harJobbetSomSelvstendigNæringsdrivende: false,
+                        },
                         [ContextDataType.OM_BARNET]: {
                             erBarnetFødt: false,
                             termindato: dayjs().add(45, 'days').format(ISO_DATE_FORMAT),

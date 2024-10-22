@@ -212,7 +212,7 @@ describe('useSendSøknad', () => {
                                 type: Arbeidsforholdstype.VIRKSOMHET,
                             },
                             behovForTilretteleggingFom: '2024-05-10',
-                            perioder: [
+                            tilrettelegginger: [
                                 {
                                     fom: '2024-05-10',
                                     tom: '2024-10-11',
@@ -229,7 +229,7 @@ describe('useSendSøknad', () => {
                                 type: Arbeidsforholdstype.PRIVAT,
                             },
                             behovForTilretteleggingFom: '2024-09-10',
-                            perioder: [
+                            tilrettelegginger: [
                                 {
                                     fom: '2024-09-10',
                                     tom: '2024-10-09',
@@ -332,7 +332,7 @@ describe('useSendSøknad', () => {
                                 type: Arbeidsforholdstype.SELVSTENDIG,
                             },
                             behovForTilretteleggingFom: '2024-05-10',
-                            perioder: [
+                            tilrettelegginger: [
                                 {
                                     fom: '2024-05-10',
                                     tom: '2024-10-11',
@@ -349,7 +349,7 @@ describe('useSendSøknad', () => {
                                 type: Arbeidsforholdstype.FRILANSER,
                             },
                             behovForTilretteleggingFom: '2024-09-10',
-                            perioder: [
+                            tilrettelegginger: [
                                 {
                                     fom: '2024-09-10',
                                     tom: '2024-10-11',
@@ -458,7 +458,7 @@ describe('useSendSøknad', () => {
                                 type: Arbeidsforholdstype.VIRKSOMHET,
                             },
                             behovForTilretteleggingFom: '2024-05-10',
-                            perioder: [
+                            tilrettelegginger: [
                                 {
                                     fom: '2024-05-10',
                                     tom: '2024-06-01',
