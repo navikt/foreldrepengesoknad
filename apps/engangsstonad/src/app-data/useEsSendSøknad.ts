@@ -8,7 +8,6 @@ import { useAbortSignal } from '@navikt/fp-api';
 import { Kvittering, LocaleAll } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-import Environment from './Environment';
 import { ContextDataType, useContextGetAnyData } from './EsDataContext';
 
 // TODO Vurder om ein heller bør mappa fram og tilbake i barn-komponenten. Er nok bedre å gjera det
@@ -57,7 +56,7 @@ const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: Kvitter
     const { initAbortSignal } = useAbortSignal();
 
     const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/engangsstonad`),
+        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`),
     });
 
     const send = async () => {
@@ -83,7 +82,7 @@ const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: Kvitter
         const signal = initAbortSignal();
 
         try {
-            const response = await ky.post(`${Environment.PUBLIC_PATH}/rest/soknad/engangsstonad`, {
+            const response = await ky.post(`${import.meta.env.BASE_URL}/rest/soknad/engangsstonad`, {
                 json: søknad,
                 signal,
             });

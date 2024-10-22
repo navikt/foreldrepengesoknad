@@ -60,7 +60,6 @@ const startServer = async () => {
         '{{{APP_SETTINGS}}}',
         JSON.stringify({
             INNSYN: `${process.env.INNSYN}`,
-            PUBLIC_PATH: `${process.env.PUBLIC_PATH}`,
             APP_VERSION: 'Lokal utvikling',
         }),
     );
