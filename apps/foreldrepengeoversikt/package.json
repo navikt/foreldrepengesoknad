@@ -27,7 +27,6 @@
         "@formatjs/intl-relativetimeformat": "^11.2.16",
         "@navikt/aksel-icons": "^7.2.1",
         "@navikt/ds-css": "^7.2.1",
-        "@navikt/ds-icons": "^3.4.3",
         "@navikt/ds-react": "^7.2.1",
         "@navikt/ds-tailwind": "7.2.1",
         "@navikt/fp-api": "workspace:*",

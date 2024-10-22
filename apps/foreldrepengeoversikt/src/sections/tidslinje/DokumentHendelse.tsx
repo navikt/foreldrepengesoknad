@@ -1,8 +1,8 @@
+import { FileIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import classNames from 'classnames';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 
-import { FileContent } from '@navikt/ds-icons';
 import { Link } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
@@ -25,7 +25,7 @@ export const DokumentHendelse: React.FunctionComponent<Props> = ({ dokument, vis
 
     return (
         <li className={classNames(`${bem.block} ${visesITidslinjen ? bem.modifier('medium') : bem.modifier('large')}`)}>
-            <FileContent className={bem.element('ikon')} aria-hidden={true} />
+            <FileIcon className={bem.element('ikon')} aria-hidden={true} />
             <Link href={url} className={bem.element('ikon')} target="_blank">
                 {tittel}
             </Link>

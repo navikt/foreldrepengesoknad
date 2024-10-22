@@ -1,9 +1,9 @@
+import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { UseQueryResult } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 import { Link as LinkInternal } from 'react-router-dom';
 
-import { ExternalLink } from '@navikt/ds-icons';
 import { BodyShort, Button, Link, ReadMore } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
@@ -179,7 +179,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({
                             {hendelse.linkTittel && hendelse.eksternalUrl && (
                                 <Link href={hendelse.eksternalUrl} className={bem.element('link')}>
                                     <BodyShort size="small">{hendelse.linkTittel}</BodyShort>
-                                    <ExternalLink fontSize={'16px'} aria-hidden={true}></ExternalLink>
+                                    <ExternalLinkIcon aria-hidden={true} />
                                 </Link>
                             )}
                             {hendelse.linkTittel && hendelse.internalUrl && (

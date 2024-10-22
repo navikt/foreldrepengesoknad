@@ -215,7 +215,7 @@ importers:
         version: 1.4.5-lts.1
       mustache-loader:
         specifier: ^1.4.3
-        version: 1.4.3(hogan.js@3.0.2)(webpack@5.95.0)
+        version: 1.4.3(hogan.js@3.0.2)(webpack@5.95.0(esbuild@0.23.1))
       storybook:
         specifier: 8.3.5
         version: 8.3.5
@@ -249,9 +249,6 @@ importers:
       '@navikt/ds-css':
         specifier: ^7.2.1
         version: 7.2.1
-      '@navikt/ds-icons':
-        specifier: ^3.4.3
-        version: 3.4.3(@types/react@18.3.11)(react@18.3.1)
       '@navikt/ds-react':
         specifier: ^7.2.1
         version: 7.2.1(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1932,9 +1929,6 @@ importers:
       '@navikt/ds-css':
         specifier: ^7.2.1
         version: 7.2.1
-      '@navikt/ds-icons':
-        specifier: 3.4.3
-        version: 3.4.3(@types/react@18.3.11)(react@18.3.1)
       '@navikt/ds-react':
         specifier: ^7.2.1
         version: 7.2.1(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2026,9 +2020,6 @@ importers:
       '@navikt/ds-css':
         specifier: ^7.2.1
         version: 7.2.1
-      '@navikt/ds-icons':
-        specifier: 3.4.3
-        version: 3.4.3(@types/react@18.3.11)(react@18.3.1)
       '@navikt/ds-react':
         specifier: ^7.2.1
         version: 7.2.1(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -4808,15 +4799,6 @@ packages:
       react: 18.x
       react-day-picker: 8.x
       uuid: '9'
-
-  '@navikt/ds-icons@3.4.3':
-    resolution: {integrity: sha512-Ys25tnDUzS+AtagMMW4/154OCZy+pTxCv9uiV4YcZUeXMfjnMiRWx1dueyCODb7FF7Jd6TwELd3G6ieQt/rf+w==, tarball: https://npm.pkg.github.com/download/@navikt/ds-icons/3.4.3/eaa8fc38f6d184806d3405a5efbc9d137c2b8d27}
-    peerDependencies:
-      '@types/react': ^17.0.30 || ^18.0.0
-      react: ^17.0.0 || ^18.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
 
   '@navikt/ds-react@7.2.1':
     resolution: {integrity: sha512-zVewWWjBCiHd1TchuzBlQVYBYjBJ0v5vbnvXvDaP0I4zbG4b+Fb71F+Oxn7HyaboXEkXk0TlZjerylEdtc28zg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/7.2.1/d8283fca0fea8efb9281f54dc08e424d4f4e0078}
@@ -11569,12 +11551,6 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
-  '@navikt/ds-icons@3.4.3(@types/react@18.3.11)(react@18.3.1)':
-    dependencies:
-      react: 18.3.1
-    optionalDependencies:
-      '@types/react': 18.3.11
-
   '@navikt/ds-react@7.2.1(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@floating-ui/react': 0.25.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -15526,6 +15502,13 @@ snapshots:
       lru-cache: 5.1.1
       mustache: 4.2.0
 
+  mustache-loader@1.4.3(hogan.js@3.0.2)(webpack@5.95.0(esbuild@0.23.1)):
+    dependencies:
+      hogan.js: 3.0.2
+      html-minifier: 3.5.21
+      loader-utils: 1.4.2
+      webpack: 5.95.0(esbuild@0.23.1)
+
   mustache-loader@1.4.3(hogan.js@3.0.2)(webpack@5.95.0):
     dependencies:
       hogan.js: 3.0.2
@@ -16940,6 +16923,17 @@ snapshots:
     dependencies:
       rimraf: 2.6.3
 
+  terser-webpack-plugin@5.3.10(esbuild@0.23.1)(webpack@5.95.0(esbuild@0.23.1)):
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.25
+      jest-worker: 27.5.1
+      schema-utils: 3.3.0
+      serialize-javascript: 6.0.2
+      terser: 5.34.1
+      webpack: 5.95.0(esbuild@0.23.1)
+    optionalDependencies:
+      esbuild: 0.23.1
+
   terser-webpack-plugin@5.3.10(webpack@5.95.0):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
@@ -17461,6 +17455,36 @@ snapshots:
       schema-utils: 3.3.0
       tapable: 2.2.1
       terser-webpack-plugin: 5.3.10(webpack@5.95.0)
+      watchpack: 2.4.2
+      webpack-sources: 3.2.3
+    transitivePeerDependencies:
+      - '@swc/core'
+      - esbuild
+      - uglify-js
+
+  webpack@5.95.0(esbuild@0.23.1):
+    dependencies:
+      '@types/estree': 1.0.6
+      '@webassemblyjs/ast': 1.12.1
+      '@webassemblyjs/wasm-edit': 1.12.1
+      '@webassemblyjs/wasm-parser': 1.12.1
+      acorn: 8.12.1
+      acorn-import-attributes: 1.9.5(acorn@8.12.1)
+      browserslist: 4.24.0
+      chrome-trace-event: 1.0.4
+      enhanced-resolve: 5.17.1
+      es-module-lexer: 1.5.4
+      eslint-scope: 5.1.1
+      events: 3.3.0
+      glob-to-regexp: 0.4.1
+      graceful-fs: 4.2.11
+      json-parse-even-better-errors: 2.3.1
+      loader-runner: 4.3.0
+      mime-types: 2.1.35
+      neo-async: 2.6.2
+      schema-utils: 3.3.0
+      tapable: 2.2.1
+      terser-webpack-plugin: 5.3.10(esbuild@0.23.1)(webpack@5.95.0(esbuild@0.23.1))
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     transitivePeerDependencies:
