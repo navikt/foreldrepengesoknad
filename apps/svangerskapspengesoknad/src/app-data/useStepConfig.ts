@@ -10,7 +10,7 @@ import {
 import { søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
 import { getTilretteleggingId } from 'utils/tilretteleggingUtils';
 
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { Arbeidsforhold, EGEN_NÆRING_ID, FRILANS_ID } from '@navikt/fp-types';
 import { ProgressStep } from '@navikt/fp-ui';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
@@ -81,6 +81,14 @@ const getTilretteleggingLabels = (
     arbeidsforhold: Arbeidsforhold[],
     id: string,
 ) => {
+    if (id === FRILANS_ID || id === EGEN_NÆRING_ID) {
+        return getStepLabels(
+            intl,
+            erFlereTilrettelegginger,
+            id === FRILANS_ID ? intl.formatMessage({ id: 'frilans' }) : intl.formatMessage({ id: 'egenNæring' }),
+        );
+    }
+
     const valgtArbeidsforhold = arbeidsforhold.find((a) => a.arbeidsgiverId === id);
     const navn = capitalizeFirstLetterInEveryWordOnly(valgtArbeidsforhold?.arbeidsgiverNavn);
     return getStepLabels(intl, erFlereTilrettelegginger, navn);
