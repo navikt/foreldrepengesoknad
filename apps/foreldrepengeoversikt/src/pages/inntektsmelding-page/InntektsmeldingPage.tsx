@@ -1,10 +1,9 @@
-import { SparklesIcon, WalletIcon } from '@navikt/aksel-icons';
+import { Buildings3Icon, SparklesIcon, WalletIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import classNames from 'classnames';
 import { ReactNode } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Office2 } from '@navikt/ds-icons';
 import { BodyShort, HGrid, Heading, List, VStack } from '@navikt/ds-react';
 
 import { formatCurrency, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
@@ -22,7 +21,7 @@ export const InntektsmeldingPage = () => {
     useSetSelectedRoute(OversiktRoutes.INNTEKTSMELDING);
 
     const params = useParams();
-    const inntektsmeldinger = useQuery(hentInntektsmelding(params.saksnummer!)).data; //TODO: fiks !
+    const inntektsmeldinger = useQuery(hentInntektsmelding(params.saksnummer!)).data;
     const inntektsmelding = inntektsmeldinger?.find((i) => i.journalpostId === params.journalpostId);
     const GRUNNBELØP = useQuery(hentGrunnbeløpOptions()).data;
 
@@ -78,7 +77,7 @@ export const InntektsmeldingPage = () => {
                 <InntektsmeldingInfoBlokk
                     size="xsmall"
                     heading="Din arbeidsgiver"
-                    Ikon={Office2}
+                    Ikon={Buildings3Icon}
                     className="col-span-2"
                 >
                     <VStack>
