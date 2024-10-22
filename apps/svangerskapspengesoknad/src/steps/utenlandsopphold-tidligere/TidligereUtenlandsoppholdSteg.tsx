@@ -51,7 +51,6 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
                 tidligereUtenlandsopphold={tidligereUtenlandsopphold ?? []}
                 saveOnNext={save}
                 saveOnPrevious={saveOnPrevious}
-                onStepChange={navigator.goToNextStep}
                 cancelApplication={avbrytSøknad}
                 onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}

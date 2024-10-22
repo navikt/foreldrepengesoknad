@@ -71,7 +71,6 @@ const FrilansStep = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhol
                 frilans={frilans}
                 saveOnNext={onSubmit}
                 saveOnPrevious={saveOnPrevious}
-                onStepChange={navigator.goToNextStep}
                 cancelApplication={avbrytSøknad}
                 onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}

@@ -74,7 +74,6 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
                 egenNæring={egenNæring}
                 saveOnNext={onSubmit}
                 saveOnPrevious={saveOnPrevious}
-                onStepChange={navigator.goToNextStep}
                 cancelApplication={avbrytSøknad}
                 onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}

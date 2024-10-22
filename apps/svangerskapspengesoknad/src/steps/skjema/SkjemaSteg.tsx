@@ -127,7 +127,6 @@ export const SkjemaSteg: FunctionComponent<Props> = ({
             onCancel={avbrytSøknad}
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
-            onStepChange={navigator.goToNextStep}
             noFieldsRequired
         >
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>

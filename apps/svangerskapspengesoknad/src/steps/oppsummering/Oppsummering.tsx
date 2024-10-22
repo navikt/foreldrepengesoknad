@@ -63,7 +63,6 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                 cancelApplication={avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 onContinueLater={navigator.fortsettSøknadSenere}
-                onStepChange={fjernValgtTilretteleggingOgNavigerTilbakeTil}
             >
                 <FormSummary>
                     <FormSummary.Header>

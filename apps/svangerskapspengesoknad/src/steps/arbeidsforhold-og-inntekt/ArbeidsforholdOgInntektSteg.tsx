@@ -115,7 +115,6 @@ const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
                 aktiveArbeidsforhold={aktiveArbeidsforhold}
                 arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                 saveOnNext={onSubmit}
-                onStepChange={navigator.goToNextStep}
                 cancelApplication={avbrytSøknad}
                 onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
