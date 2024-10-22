@@ -67,7 +67,7 @@ dayjs.locale(localeFromSessionStorage);
 
 const retryCallback = async () => {
     try {
-        await ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/svangerskapspenger`);
+        await ky.delete(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
         // Vi bryr oss ikke om feil her. Logges bare i backend

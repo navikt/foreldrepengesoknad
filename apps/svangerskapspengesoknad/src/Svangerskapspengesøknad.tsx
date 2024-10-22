@@ -25,13 +25,13 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
 
     const søkerinfo = useQuery({
         queryKey: ['SOKERINFO'],
-        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/sokerinfo`).json<Søkerinfo>(),
+        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`).json<Søkerinfo>(),
     });
 
     const mellomlagretInfo = useQuery({
         queryKey: ['MELLOMLAGRET_INFO'],
         queryFn: () =>
-            ky.get(`${Environment.PUBLIC_PATH}/rest/storage/svangerskapspenger`).json<SvpDataMapAndMetaData>(),
+            ky.get(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`).json<SvpDataMapAndMetaData>(),
     });
 
     if (søkerinfo.error || mellomlagretInfo.error) {

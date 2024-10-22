@@ -37,7 +37,7 @@ if (container) {
     const root = createRoot(container);
     root.render(
         <StrictMode>
-            <BrowserRouter basename={Environment.PUBLIC_PATH}>
+            <BrowserRouter basename={import.meta.env.BASE_URL}>
                 <AppContainer />
             </BrowserRouter>
         </StrictMode>,
