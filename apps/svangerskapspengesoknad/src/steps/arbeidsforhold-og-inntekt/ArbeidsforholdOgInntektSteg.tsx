@@ -1,10 +1,11 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
-import useStepConfig from 'appData/useStepConfig';
-import useSvpNavigator from 'appData/useSvpNavigator';
+import { SøknadRoute } from 'appData/routes';
+import { useStepConfig } from 'appData/useStepConfig';
+import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { useTilretteleggingerHelper } from 'appData/useTilretteleggingerHelper';
 import { FormattedMessage } from 'react-intl';
-import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
+import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
+import { getNextRouteValgAvArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
 
 import { Heading } from '@navikt/ds-react';
 
@@ -20,31 +21,21 @@ import {
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-const søkerHarKunEttARegArbeidsforholdForTilrettelegging = (
-    formValues: ArbeidsforholdOgInntektSvp,
-    aktiveArbeidsforhold: Arbeidsforhold[],
+const getNextRoute = (
     termindato: string,
-) => {
-    const kunEttAktivt = søkerHarKunEtAktivtArbeid(
-        termindato,
-        aktiveArbeidsforhold,
-        formValues.harJobbetSomFrilans,
-        formValues.harJobbetSomSelvstendigNæringsdrivende,
-    );
-    return kunEttAktivt && aktiveArbeidsforhold.length > 0;
-};
-
-const getNextRoute = (harKunEttArbeidsforhold: boolean, values: ArbeidsforholdOgInntektSvp): SøknadRoutes => {
+    aktiveArbeidsforhold: Arbeidsforhold[],
+    values: ArbeidsforholdOgInntektSvp,
+): SøknadRoute | string => {
     if (values.harJobbetSomFrilans) {
-        return SøknadRoutes.FRILANS;
+        return SøknadRoute.FRILANS;
     }
     if (values.harJobbetSomSelvstendigNæringsdrivende) {
-        return SøknadRoutes.NÆRING;
+        return SøknadRoute.NÆRING;
     }
     if (values.harHattArbeidIUtlandet) {
-        return SøknadRoutes.ARBEID_I_UTLANDET;
+        return SøknadRoute.ARBEID_I_UTLANDET;
     }
-    return harKunEttArbeidsforhold ? SøknadRoutes.SKJEMA : SøknadRoutes.VELG_ARBEID;
+    return getNextRouteValgAvArbeidEllerSkjema(termindato, aktiveArbeidsforhold, values);
 };
 
 type Props = {
@@ -53,7 +44,7 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
+export const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     arbeidsforhold,
@@ -97,13 +88,7 @@ const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
             fjernTilrettelegginger(tilretteleggingerSomSkalFjernes);
         }
 
-        const harKunEttArbeidsforhold = søkerHarKunEttARegArbeidsforholdForTilrettelegging(
-            values,
-            aktiveArbeidsforhold,
-            termindato,
-        );
-
-        return navigator.goToNextStep(getNextRoute(harKunEttArbeidsforhold, values));
+        return navigator.goToStep(getNextRoute(termindato, aktiveArbeidsforhold, values));
     };
 
     return (
@@ -119,10 +104,9 @@ const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
                 onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
+                onStepChange={navigator.goToStep}
                 stønadstype="Svangerskapspenger"
             />
         </ContentWrapper>
     );
 };
-
-export default ArbeidsforholdOgInntektSteg;

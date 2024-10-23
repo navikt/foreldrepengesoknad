@@ -1,13 +1,13 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, SvpDataContext } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import Barnet from './Barnet';
+import { Barnet } from './Barnet';
 
 const promiseAction =
     () =>
@@ -26,7 +26,7 @@ const meta = {
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.BARNET]}>
+            <MemoryRouter initialEntries={[SøknadRoute.BARNET]}>
                 <SvpDataContext onDispatch={gåTilNesteSide}>
                     <Barnet {...rest} />
                 </SvpDataContext>

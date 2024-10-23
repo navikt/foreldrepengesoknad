@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import dayjs from 'dayjs';
 import MockDate from 'mockdate';
 
@@ -80,7 +80,7 @@ describe('<ArbeidIUtlandet>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.SKJEMA,
+            data: addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, '995090910'),
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

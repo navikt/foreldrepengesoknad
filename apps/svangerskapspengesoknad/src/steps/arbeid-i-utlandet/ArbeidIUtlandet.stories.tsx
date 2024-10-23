@@ -1,14 +1,13 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import ArbeidIUtlandetStep from '../arbeid-i-utlandet/ArbeidIUtlandetStep';
-import ArbeidIUtlandet from './ArbeidIUtlandetStep';
+import { ArbeidIUtlandetStep } from './ArbeidIUtlandetStep';
 
 const promiseAction =
     () =>
@@ -30,15 +29,15 @@ const DEFAULT_ARBEIDSFORHOLD = [
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
-} & ComponentProps<typeof ArbeidIUtlandet>;
+} & ComponentProps<typeof ArbeidIUtlandetStep>;
 
 const meta = {
     title: 'steps/ArbeidIUtlandet',
-    component: ArbeidIUtlandet,
+    component: ArbeidIUtlandetStep,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.ARBEID_I_UTLANDET]}>
+            <MemoryRouter initialEntries={[SøknadRoute.ARBEID_I_UTLANDET]}>
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{

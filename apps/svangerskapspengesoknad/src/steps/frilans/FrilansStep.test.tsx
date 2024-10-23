@@ -2,8 +2,10 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import dayjs from 'dayjs';
+
+import { FRILANS_ID } from '@navikt/fp-types';
 
 import * as stories from './FrilansStep.stories';
 
@@ -39,7 +41,7 @@ describe('<Arbeid som frilanser>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.SKJEMA,
+            data: addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, FRILANS_ID),
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

@@ -1,36 +1,20 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
-import useStepConfig from 'appData/useStepConfig';
-import useSvpNavigator from 'appData/useSvpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
+import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { ArbeidIUtlandet, ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
-import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
+import { getNextRouteValgAvArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
 
 import { VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold, ArbeidsforholdOgInntektSvp } from '@navikt/fp-types';
+import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import ArbeidIUtlandetFieldArray, { NEW_ARBEID_I_UTLANDET } from './ArbeidIUtlandetFieldArray';
+import { ArbeidIUtlandetFieldArray, NEW_ARBEID_I_UTLANDET } from './ArbeidIUtlandetFieldArray';
 import './arbeidIUtlandet.css';
-
-const getNextRoute = (
-    termindato: string,
-    arbeidsforhold: Arbeidsforhold[],
-    inntektsinformasjon: ArbeidsforholdOgInntektSvp,
-): SøknadRoutes => {
-    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
-    const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
-        termindato,
-        aktiveArbeidsforhold,
-        inntektsinformasjon.harJobbetSomFrilans,
-        inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
-    );
-    return harKunEtArbeid ? SøknadRoutes.SKJEMA : SøknadRoutes.VELG_ARBEID;
-};
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -38,7 +22,7 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
+export const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     arbeidsforhold,
@@ -61,7 +45,9 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
             })),
         });
 
-        return navigator.goToNextStep(getNextRoute(barnet.termindato, arbeidsforhold, arbeidsforholdOgInntekt));
+        return navigator.goToStep(
+            getNextRouteValgAvArbeidEllerSkjema(barnet.termindato, arbeidsforhold, arbeidsforholdOgInntekt),
+        );
     };
 
     const formMethods = useForm<ArbeidIUtlandet>({
@@ -77,6 +63,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
             onCancel={avbrytSøknad}
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
+            onStepChange={navigator.goToStep}
         >
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
@@ -88,5 +75,3 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
         </Step>
     );
 };
-
-export default ArbeidIUtlandetStep;

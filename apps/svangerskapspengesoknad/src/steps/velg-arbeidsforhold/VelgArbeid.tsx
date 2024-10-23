@@ -1,6 +1,7 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import useStepConfig from 'appData/useStepConfig';
-import useSvpNavigator from 'appData/useSvpNavigator';
+import { SøknadRoute } from 'appData/routes';
+import { useStepConfig } from 'appData/useStepConfig';
+import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { useTilretteleggingerHelper } from 'appData/useTilretteleggingerHelper';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
@@ -12,7 +13,7 @@ import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
-import FlereArbeidsforholdGuidePanel from './FlereArbeidsforholdGuidePanel';
+import { FlereArbeidsforholdGuidePanel } from './FlereArbeidsforholdGuidePanel';
 import { getOptionNavn, mapArbeidsforholdToVelgArbeidOptions } from './velgArbeidFormUtils';
 
 type VelgArbeidForm = {
@@ -25,7 +26,11 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }) => {
+export const VelgArbeid: React.FunctionComponent<Props> = ({
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    arbeidsforhold,
+}) => {
     const intl = useIntl();
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
@@ -62,7 +67,7 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
             fjernTilrettelegginger(valgSomSkalFjernes);
         }
 
-        return navigator.goToNextDefaultStep();
+        return navigator.goToStep(SøknadRoute.SKJEMA + '/' + sorterteArbeidsforholdIder[0]);
     };
 
     const formMethods = useForm<VelgArbeidForm>({
@@ -78,6 +83,7 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
             onCancel={avbrytSøknad}
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
+            onStepChange={navigator.goToStep}
         >
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
@@ -100,5 +106,3 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
         </Step>
     );
 };
-
-export default VelgArbeid;

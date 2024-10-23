@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { DelvisTilrettelegging, IngenTilrettelegging } from 'types/Tilrettelegging';
@@ -9,7 +9,7 @@ import { DelvisTilrettelegging, IngenTilrettelegging } from 'types/Tilretteleggi
 import { initAmplitude } from '@navikt/fp-metrics';
 import { ArbeidsforholdOgInntektSvp, EgenNæring, Frilans, Næringstype } from '@navikt/fp-types';
 
-import VelgArbeid from './VelgArbeid';
+import { VelgArbeid } from './VelgArbeid';
 
 const promiseAction =
     () =>
@@ -95,7 +95,7 @@ const meta = {
     }) => {
         initAmplitude();
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.VELG_ARBEID]}>
+            <MemoryRouter initialEntries={[SøknadRoute.VELG_ARBEID]}>
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{

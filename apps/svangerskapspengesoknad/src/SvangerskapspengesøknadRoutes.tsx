@@ -1,8 +1,8 @@
 import Environment from 'appData/Environment';
 import { ContextDataType } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
-import useAvbrytSøknad from 'appData/useAvbrytSøknad';
-import useSendSøknad from 'appData/useSendSøknad';
+import { SøknadRoute, TILRETTELEGGING_PARAM } from 'appData/routes';
+import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
+import { useSendSøknad } from 'appData/useSendSøknad';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
@@ -12,21 +12,21 @@ import { Kvittering, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 import { redirect } from '@navikt/fp-utils';
 
-import useMellomlagreSøknad, { SvpDataMapAndMetaData } from './app-data/useMellomlagreSøknad';
-import Forside from './pages/forside/Forside';
-import ArbeidIUtlandetStep from './steps/arbeid-i-utlandet/ArbeidIUtlandetStep';
-import ArbeidsforholdOgInntektSteg from './steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
-import Barnet from './steps/barnet/Barnet';
-import EgenNæringStep from './steps/egen-næring/EgenNæringStep';
-import FrilansStep from './steps/frilans/FrilansStep';
-import Oppsummering from './steps/oppsummering/Oppsummering';
+import { SvpDataMapAndMetaData, useMellomlagreSøknad } from './app-data/useMellomlagreSøknad';
+import { Forside } from './pages/forside/Forside';
+import { ArbeidIUtlandetStep } from './steps/arbeid-i-utlandet/ArbeidIUtlandetStep';
+import { ArbeidsforholdOgInntektSteg } from './steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
+import { Barnet } from './steps/barnet/Barnet';
+import { EgenNæringStep } from './steps/egen-næring/EgenNæringStep';
+import { FrilansStep } from './steps/frilans/FrilansStep';
+import { Oppsummering } from './steps/oppsummering/Oppsummering';
 import { PerioderStep } from './steps/perioder/PerioderStep';
 import { SkjemaSteg } from './steps/skjema/SkjemaSteg';
 import { TilretteleggingStep } from './steps/tilrettelegging/TilretteleggingStep';
-import SenereUtenlandsoppholdSteg from './steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
-import TidligereUtenlandsoppholdSteg from './steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
-import UtenlandsoppholdSteg from './steps/utenlandsopphold/UtenlandsoppholdSteg';
-import VelgArbeid from './steps/velg-arbeidsforhold/VelgArbeid';
+import { SenereUtenlandsoppholdSteg } from './steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
+import { TidligereUtenlandsoppholdSteg } from './steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
+import { UtenlandsoppholdSteg } from './steps/utenlandsopphold/UtenlandsoppholdSteg';
+import { VelgArbeid } from './steps/velg-arbeidsforhold/VelgArbeid';
 
 export const Spinner: React.FunctionComponent = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
@@ -48,12 +48,12 @@ const renderSøknadRoutes = (
     sendSøknad: () => Promise<void>,
 ) => {
     if (!harGodkjentVilkår) {
-        return <Route path="*" element={<Navigate to={SøknadRoutes.FORSIDE} />} />;
+        return <Route path="*" element={<Navigate to={SøknadRoute.FORSIDE} />} />;
     }
     return (
         <>
             <Route
-                path={SøknadRoutes.BARNET}
+                path={SøknadRoute.BARNET}
                 element={
                     <Barnet
                         arbeidsforhold={søkerInfo.arbeidsforhold}
@@ -63,7 +63,7 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoutes.UTENLANDSOPPHOLD}
+                path={SøknadRoute.UTENLANDSOPPHOLD}
                 element={
                     <UtenlandsoppholdSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
@@ -73,7 +73,7 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoutes.HAR_BODD_I_UTLANDET}
+                path={SøknadRoute.HAR_BODD_I_UTLANDET}
                 element={
                     <TidligereUtenlandsoppholdSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
@@ -83,7 +83,7 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoutes.SKAL_BO_I_UTLANDET}
+                path={SøknadRoute.SKAL_BO_I_UTLANDET}
                 element={
                     <SenereUtenlandsoppholdSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
@@ -93,7 +93,7 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoutes.INNTEKTSINFORMASJON}
+                path={SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT}
                 element={
                     <ArbeidsforholdOgInntektSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
@@ -103,7 +103,7 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoutes.FRILANS}
+                path={SøknadRoute.FRILANS}
                 element={
                     <FrilansStep
                         arbeidsforhold={søkerInfo.arbeidsforhold}
@@ -113,7 +113,7 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoutes.NÆRING}
+                path={SøknadRoute.NÆRING}
                 element={
                     <EgenNæringStep
                         arbeidsforhold={søkerInfo.arbeidsforhold}
@@ -123,7 +123,7 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoutes.ARBEID_I_UTLANDET}
+                path={SøknadRoute.ARBEID_I_UTLANDET}
                 element={
                     <ArbeidIUtlandetStep
                         arbeidsforhold={søkerInfo.arbeidsforhold}
@@ -133,7 +133,7 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoutes.VELG_ARBEID}
+                path={SøknadRoute.VELG_ARBEID}
                 element={
                     <VelgArbeid
                         arbeidsforhold={søkerInfo.arbeidsforhold}
@@ -143,7 +143,7 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoutes.SKJEMA}
+                path={`${SøknadRoute.SKJEMA}/${TILRETTELEGGING_PARAM}`}
                 element={
                     <SkjemaSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
@@ -153,7 +153,7 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoutes.TILRETTELEGGING}
+                path={`${SøknadRoute.TILRETTELEGGING}/${TILRETTELEGGING_PARAM}`}
                 element={
                     <TilretteleggingStep
                         arbeidsforhold={søkerInfo.arbeidsforhold}
@@ -163,7 +163,7 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoutes.PERIODER}
+                path={`${SøknadRoute.PERIODER}/${TILRETTELEGGING_PARAM}`}
                 element={
                     <PerioderStep
                         arbeidsforhold={søkerInfo.arbeidsforhold}
@@ -173,7 +173,7 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoutes.OPPSUMMERING}
+                path={SøknadRoute.OPPSUMMERING}
                 element={
                     <Oppsummering
                         søkerInfo={søkerInfo}
@@ -194,7 +194,7 @@ interface Props {
     mellomlagretData?: SvpDataMapAndMetaData;
 }
 
-const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({
+export const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({
     søkerInfo,
     locale,
     onChangeLocale,
@@ -238,7 +238,7 @@ const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({
     return (
         <Routes>
             <Route
-                path={SøknadRoutes.FORSIDE}
+                path={SøknadRoute.FORSIDE}
                 element={
                     <Forside
                         mellomlagreSøknadOgNaviger={mellomlagreOgNaviger}
@@ -254,5 +254,3 @@ const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({
         </Routes>
     );
 };
-
-export default SvangerskapspengesøknadRoutes;

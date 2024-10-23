@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import { TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 
 import * as stories from './VelgArbeid.stories';
@@ -50,7 +50,7 @@ describe('<Velg arbeid>', () => {
         });
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.SKJEMA,
+            data: addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, '975326209'),
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -130,7 +130,7 @@ describe('<Velg arbeid>', () => {
         });
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
-            data: SøknadRoutes.SKJEMA,
+            data: addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, '990322244'),
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

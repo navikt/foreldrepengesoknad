@@ -12,7 +12,7 @@ import {
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
 
-import SøknadRoutes from './routes';
+import { SøknadRoute } from './routes';
 
 export enum ContextDataType {
     APP_ROUTE = 'APP_ROUTE',
@@ -28,11 +28,10 @@ export enum ContextDataType {
     TILRETTELEGGINGER_VEDLEGG = 'TILRETTELEGGINGER_VEDLEGG',
     TILRETTELEGGINGER = 'TILRETTELEGGINGER',
     TILRETTELEGGINGER_PERIODER = 'TILRETTELEGGINGER_PERIODER',
-    VALGT_TILRETTELEGGING_ID = 'VALGT_TILRETTELEGGING_ID',
 }
 
 export type ContextDataMap = {
-    [ContextDataType.APP_ROUTE]?: SøknadRoutes;
+    [ContextDataType.APP_ROUTE]?: SøknadRoute | string;
     [ContextDataType.OM_BARNET]?: Barn;
     [ContextDataType.UTENLANDSOPPHOLD]?: Utenlandsopphold;
     [ContextDataType.UTENLANDSOPPHOLD_SENERE]?: UtenlandsoppholdPeriode[];
@@ -45,7 +44,6 @@ export type ContextDataMap = {
     [ContextDataType.TILRETTELEGGINGER_VEDLEGG]?: Record<string, Attachment[]>;
     [ContextDataType.TILRETTELEGGINGER]?: Record<string, DelvisTilrettelegging | IngenTilrettelegging>;
     [ContextDataType.TILRETTELEGGINGER_PERIODER]?: Record<string, PeriodeMedVariasjon[]>;
-    [ContextDataType.VALGT_TILRETTELEGGING_ID]?: string;
 };
 
 const defaultInitialState = {} as ContextDataMap;

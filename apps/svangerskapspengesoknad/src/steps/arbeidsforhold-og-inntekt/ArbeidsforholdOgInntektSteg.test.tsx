@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute } from 'appData/routes';
 
 import * as stories from './ArbeidsforholdOgInntektSteg.stories';
 
@@ -46,7 +46,7 @@ describe('<ArbeidsforholdOgInntektSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(4, {
-            data: SøknadRoutes.ARBEID_I_UTLANDET,
+            data: SøknadRoute.ARBEID_I_UTLANDET,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

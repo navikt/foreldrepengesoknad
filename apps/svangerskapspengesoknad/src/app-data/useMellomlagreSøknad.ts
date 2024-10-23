@@ -9,7 +9,7 @@ import { LocaleNo } from '@navikt/fp-types';
 import Environment from './Environment';
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
-export const VERSJON_MELLOMLAGRING = 5;
+export const VERSJON_MELLOMLAGRING = 6;
 
 const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
@@ -17,7 +17,7 @@ const FEIL_VED_INNSENDING =
 
 export type SvpDataMapAndMetaData = { version: number; locale: LocaleNo } & ContextDataMap;
 
-const useMellomlagreSøknad = (locale: LocaleNo, setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void) => {
+export const useMellomlagreSøknad = (locale: LocaleNo, setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void) => {
     const navigate = useNavigate();
     const state = useContextComplete();
     const resetState = useContextReset();
@@ -98,5 +98,3 @@ const useMellomlagreSøknad = (locale: LocaleNo, setHarGodkjentVilkår: (harGodk
 
     return mellomlagreOgNaviger;
 };
-
-export default useMellomlagreSøknad;

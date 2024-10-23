@@ -1,10 +1,11 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
-import useStepConfig from 'appData/useStepConfig';
-import useSvpNavigator from 'appData/useSvpNavigator';
-import { FunctionComponent, useState } from 'react';
+import { RouteParams, SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
+import { useStepConfig } from 'appData/useStepConfig';
+import { useSvpNavigator } from 'appData/useSvpNavigator';
+import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { useParams } from 'react-router-dom';
 import { PeriodeMedVariasjon } from 'types/Tilrettelegging';
 import { getKanHaSvpFremTilTreUkerFørTermin } from 'utils/dateUtils';
 import {
@@ -20,7 +21,7 @@ import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import Bedriftsbanner from '../Bedriftsbanner';
+import { Bedriftsbanner } from '../Bedriftsbanner';
 import { NEW_PERIODE, PerioderFieldArray } from './PerioderFieldArray';
 
 type TilretteleggingPerioderFormValues = {
@@ -42,6 +43,9 @@ export const PerioderStep: FunctionComponent<Props> = ({
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
+    const params = useParams<RouteParams>();
+    const valgtTilretteleggingId = notEmpty(params.tilretteleggingId);
+
     const tilretteleggingerPerioder = useContextGetData(ContextDataType.TILRETTELEGGINGER_PERIODER);
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -49,11 +53,7 @@ export const PerioderStep: FunctionComponent<Props> = ({
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
 
-    const vti = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
-    const [valgtTilretteleggingId] = useState(vti); //For å unngå oppdatering ved neste
-
     const oppdaterTilretteleggingerPerioder = useContextSaveData(ContextDataType.TILRETTELEGGINGER_PERIODER);
-    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
 
     const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barnet);
 
@@ -68,11 +68,12 @@ export const PerioderStep: FunctionComponent<Props> = ({
         });
 
         const nesteTilretteleggingId = getNesteTilretteleggingId(valgtTilretteleggingId, valgteArbeidsforhold);
-        if (nesteTilretteleggingId) {
-            oppdaterValgtTilretteleggingId(nesteTilretteleggingId);
-        }
 
-        return navigator.goToNextStep(nesteTilretteleggingId ? SøknadRoutes.SKJEMA : SøknadRoutes.OPPSUMMERING);
+        return navigator.goToStep(
+            nesteTilretteleggingId
+                ? addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, nesteTilretteleggingId)
+                : SøknadRoute.OPPSUMMERING,
+        );
     };
 
     const formMethods = useForm<TilretteleggingPerioderFormValues>({
@@ -86,6 +87,7 @@ export const PerioderStep: FunctionComponent<Props> = ({
             onCancel={avbrytSøknad}
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
+            onStepChange={navigator.goToStep}
         >
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">

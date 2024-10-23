@@ -1,6 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import useStepConfig from 'appData/useStepConfig';
-import useSvpNavigator from 'appData/useSvpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
+import { useSvpNavigator } from 'appData/useSvpNavigator';
 import dayjs, { Dayjs } from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
@@ -58,7 +58,11 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }) => {
+export const Barnet: React.FunctionComponent<Props> = ({
+    mellomlagreSøknadOgNaviger,
+    avbrytSøknad,
+    arbeidsforhold,
+}) => {
     const intl = useIntl();
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
@@ -87,6 +91,7 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
             onCancel={avbrytSøknad}
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
+            onStepChange={navigator.goToStep}
         >
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
@@ -191,5 +196,3 @@ const Barnet: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, a
         </Step>
     );
 };
-
-export default Barnet;

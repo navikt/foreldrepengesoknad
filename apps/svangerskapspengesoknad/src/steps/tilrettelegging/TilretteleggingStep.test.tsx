@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import dayjs from 'dayjs';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
@@ -70,12 +70,7 @@ describe('<Behov for tilrettelegging>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: '990322244',
-            key: ContextDataType.VALGT_TILRETTELEGGING_ID,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
-            data: SøknadRoutes.PERIODER,
+            data: addTilretteleggingIdToRoute(SøknadRoute.PERIODER, '990322244'),
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
