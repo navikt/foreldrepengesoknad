@@ -120,7 +120,8 @@ const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: Inntekt
                 ))}
             </VStack>
             <Detail>
-                Dette er opplysninger oppgitt av Laksinor, du vil få vite dette sikkert når du får svar på søknaden din.
+                Dette er opplysninger oppgitt av {arbeidsgiverNavn}, du vil få vite dette sikkert når du får svar på
+                søknaden din.
             </Detail>
         </>
     );
