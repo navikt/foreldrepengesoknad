@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { LocaleAll } from '@navikt/fp-types';
 
-import Environment from './Environment';
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './EsDataContext';
 
 export const VERSJON_MELLOMLAGRING = 2;
@@ -28,7 +27,7 @@ const useEsMellomlagring = (locale: LocaleAll, setVelkommen: (erVelkommen: boole
     const promiseRef = useRef<() => void>();
 
     const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/engangsstonad`),
+        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`),
     });
 
     useEffect(() => {
@@ -46,7 +45,7 @@ const useEsMellomlagring = (locale: LocaleAll, setVelkommen: (erVelkommen: boole
                             locale,
                             ...state,
                         };
-                        await ky.post(`${Environment.PUBLIC_PATH}/rest/storage/engangsstonad`, { json: data });
+                        await ky.post(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`, { json: data });
                     } catch (error: unknown) {
                         if (error instanceof HTTPError) {
                             if (error.response.status === 401 || error.response.status === 403) {

@@ -3,8 +3,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
+import { Ytelse } from '../../types/Ytelse';
 import OversiktRoutes from './../../routes/routes';
-import { Ytelse } from './../../types/Ytelse';
 import EttersendingPage from './EttersendingPage';
 
 const queryClient = new QueryClient({
@@ -41,7 +41,7 @@ export const SkalIkkeFeileOpplasting: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post('https://oversikt/rest/storage/engangsstonad/vedlegg', () => {
+                http.post(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad/vedlegg`, () => {
                     return new HttpResponse(null, { status: 200 });
                 }),
             ],
@@ -72,7 +72,7 @@ export const SkalFeileOpplasting: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post('https://oversikt/rest/storage/engangsstonad/vedlegg', () => {
+                http.post(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad/vedlegg`, () => {
                     return new HttpResponse(null, { status: 400 });
                 }),
             ],

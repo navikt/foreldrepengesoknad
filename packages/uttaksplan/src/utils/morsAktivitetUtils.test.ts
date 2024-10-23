@@ -62,6 +62,7 @@ describe('getMorsAktivitetSkjemanummer', () => {
         );
     });
 
+    // eslint-disable-next-line max-len
     it('should require Skjemanummer.DOK_ARBEID_MOR or DOK_UTDANNING_OG_ARBEID_MOR or DOK_UTDANNING_MOR when morsAktivitet is ArbeidOgUtdanning, Arbeid or TrengerHjelp', () => {
         expect(getMorsAktivitetSkjemanummer(MorsAktivitet.Arbeid)).toBe(Skjemanummer.DOK_ARBEID_MOR);
         expect(getMorsAktivitetSkjemanummer(MorsAktivitet.ArbeidOgUtdanning)).toBe(

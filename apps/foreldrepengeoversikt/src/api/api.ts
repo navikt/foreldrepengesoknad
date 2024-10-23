@@ -3,7 +3,6 @@ import ky from 'ky';
 
 import { Skjemanummer } from '@navikt/fp-constants';
 
-import Environment from '../appData/Environment';
 import { AnnenPartVedtakDTO } from '../types/AnnenPartVedtakDTO';
 import { Dokument } from '../types/Dokument';
 import EttersendingDto from '../types/EttersendingDTO';
@@ -13,37 +12,36 @@ import { SakOppslagDTO } from '../types/SakOppslag';
 import { SøkerinfoDTO } from '../types/SøkerinfoDTO';
 import { Tidslinjehendelse } from '../types/Tidslinjehendelse';
 
-export const prefiks_public_path = Environment.PUBLIC_PATH;
+export const urlPrefiks = import.meta.env.BASE_URL;
 
 export const søkerInfoOptions = () =>
     queryOptions({
         queryKey: ['SØKER_INFO'],
-        queryFn: () => ky.get(`${prefiks_public_path}/rest/sokerinfo`).json<SøkerinfoDTO>(),
+        queryFn: () => ky.get(`${urlPrefiks}/rest/sokerinfo`).json<SøkerinfoDTO>(),
     });
 
 export const minidialogOptions = () =>
     queryOptions({
         queryKey: ['MINIDIALOG'],
-        queryFn: () => ky.get(`${prefiks_public_path}/rest/minidialog`).json<MinidialogInnslag[]>(),
+        queryFn: () => ky.get(`${urlPrefiks}/rest/minidialog`).json<MinidialogInnslag[]>(),
     });
 
 export const hentSakerOptions = () =>
     queryOptions({
         queryKey: ['SAKER'],
-        queryFn: () => ky.get(`${prefiks_public_path}/rest/innsyn/v2/saker`).json<SakOppslagDTO>(),
+        queryFn: () => ky.get(`${urlPrefiks}/rest/innsyn/v2/saker`).json<SakOppslagDTO>(),
     });
 
 export const hentDokumenterOptions = (saksnummer: string) =>
     queryOptions({
         queryKey: ['DOKUMENTER', saksnummer],
-        queryFn: () =>
-            ky.get(`${prefiks_public_path}/rest/dokument/alle`, { searchParams: { saksnummer } }).json<Dokument[]>(),
+        queryFn: () => ky.get(`${urlPrefiks}/rest/dokument/alle`, { searchParams: { saksnummer } }).json<Dokument[]>(),
     });
 
 export const hentMellomlagredeYtelserOptions = () =>
     queryOptions({
         queryKey: ['MELLOMLAGREDE_YTELSER'],
-        queryFn: () => ky.get(`${prefiks_public_path}/rest/storage/aktive`).json<MellomlagredeYtelser>(),
+        queryFn: () => ky.get(`${urlPrefiks}/rest/storage/aktive`).json<MellomlagredeYtelser>(),
     });
 
 type AnnenPartsVedtakRequestBody = {
@@ -61,7 +59,7 @@ export const hentAnnenPartsVedtakOptions = (body: AnnenPartsVedtakRequestBody) =
                 // Det virker som at siden måten Adrum wrapper alle requests på, gjør at det skjer noe funny-business på et
                 // eller annet punkt som fjerner content-type...
                 // Undersøke videre senere, gjør det slik for nå for å rette feil.
-                const response = await fetch(`${prefiks_public_path}/rest/innsyn/v2/annenPartVedtak`, {
+                const response = await fetch(`${urlPrefiks}/rest/innsyn/v2/annenPartVedtak`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -93,25 +91,21 @@ export const hentTidslinjehendelserOptions = (saksnummer: string) =>
     queryOptions({
         queryKey: ['TIDSLINJEHENDELSER', saksnummer],
         queryFn: () =>
-            ky
-                .get(`${prefiks_public_path}/rest/innsyn/tidslinje`, { searchParams: { saksnummer } })
-                .json<Tidslinjehendelse[]>(),
+            ky.get(`${urlPrefiks}/rest/innsyn/tidslinje`, { searchParams: { saksnummer } }).json<Tidslinjehendelse[]>(),
     });
 
 export const hentManglendeVedleggOptions = (saksnummer: string) =>
     queryOptions({
         queryKey: ['MANGLENDE_VEDLEGG', saksnummer],
         queryFn: () =>
-            ky
-                .get(`${prefiks_public_path}/rest/historikk/vedlegg`, { searchParams: { saksnummer } })
-                .json<Skjemanummer[]>(),
+            ky.get(`${urlPrefiks}/rest/historikk/vedlegg`, { searchParams: { saksnummer } }).json<Skjemanummer[]>(),
     });
 
 export const sendEttersending = async (ettersending: EttersendingDto, fnr?: string) => {
     // Det funker ikke å bruke ky.post() her.
     // Det virker som at siden måten Adrum wrapper alle requests på, gjør at det skjer noe funny-business på et eller annet punkt som fjerner content-type...
     // Undersøke videre senere, gjør det slik for nå for å rette feil.
-    const response = await fetch(`${prefiks_public_path}/rest/soknad/ettersend`, {
+    const response = await fetch(`${urlPrefiks}/rest/soknad/ettersend`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -131,5 +125,5 @@ export const sendEttersending = async (ettersending: EttersendingDto, fnr?: stri
 export const erSakOppdatertOptions = () =>
     queryOptions({
         queryKey: ['SAK_OPPDATERT'],
-        queryFn: () => ky.get(`${prefiks_public_path}/rest/innsyn/v2/saker/oppdatert`).json<boolean>(),
+        queryFn: () => ky.get(`${urlPrefiks}/rest/innsyn/v2/saker/oppdatert`).json<boolean>(),
     });

@@ -1,4 +1,3 @@
-import Environment from 'appData/Environment';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { getSaveAttachmentFetch } from '@navikt/fp-api';
@@ -21,7 +20,7 @@ const AdopsjonDokPanel: React.FunctionComponent<Props> = ({ attachments, updateA
             skjemanummer={Skjemanummer.OMSORGSOVERTAKELSE}
             existingAttachments={attachments}
             updateAttachments={updateAttachments}
-            saveAttachment={getSaveAttachmentFetch(Environment.PUBLIC_PATH, 'engangsstonad')}
+            saveAttachment={getSaveAttachmentFetch(import.meta.env.BASE_URL, 'engangsstonad')}
         />
     );
 };

@@ -42,22 +42,33 @@ const meta = {
     parameters: {
         msw: {
             handlers: [
-                http.get('https://fp/rest/sokerinfo', () => HttpResponse.json(søkerinfo)),
-                http.get('https://fp/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
-                http.post('https://fp/rest/innsyn/v2/annenPartVedtak', () => HttpResponse.json(annenPartVedtak)),
-                http.post('https://fp/rest/konto', () =>
+                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () => HttpResponse.json(søkerinfo)),
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
+                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
+                    HttpResponse.json(annenPartVedtak),
+                ),
+                http.post(`${import.meta.env.BASE_URL}/rest/konto`, () =>
                     HttpResponse.json({ 80: stønadskontoer, 100: stønadskontoer }),
                 ),
-                http.get('https://fp/rest/storage/kvittering/foreldrepenger', () =>
+                http.get(`${import.meta.env.BASE_URL}/rest/storage/kvittering/foreldrepenger`, () =>
                     HttpResponse.json(storageKvittering),
                 ),
-                http.get('https://fp/rest/foreldrepenger', () => HttpResponse.json(storageKvittering)),
-                http.get('https://fp/rest/storage/foreldrepenger', () => new HttpResponse(null, { status: 200 })),
-                http.post('https://fp/rest/storage/foreldrepenger', () => new HttpResponse(null, { status: 200 })),
-                http.post('https://fp/rest/soknad', () => new HttpResponse(null, { status: 200 })),
-                http.delete('https://fp/rest/storage/foreldrepenger', () => new HttpResponse(null, { status: 200 })),
+                http.get(`${import.meta.env.BASE_URL}/rest/foreldrepenger`, () => HttpResponse.json(storageKvittering)),
+                http.get(
+                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`,
+                    () => new HttpResponse(null, { status: 200 }),
+                ),
                 http.post(
-                    'https://fp/rest/storage/foreldrepenger/vedlegg',
+                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`,
+                    () => new HttpResponse(null, { status: 200 }),
+                ),
+                http.post(`${import.meta.env.BASE_URL}/rest/soknad`, () => new HttpResponse(null, { status: 200 })),
+                http.delete(
+                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`,
+                    () => new HttpResponse(null, { status: 200 }),
+                ),
+                http.post(
+                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger/vedlegg`,
                     () => new HttpResponse(null, { status: 200 }),
                 ),
             ],

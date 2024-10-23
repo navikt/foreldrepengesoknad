@@ -6,7 +6,6 @@ import { useMemo } from 'react';
 import { useAbortSignal } from '@navikt/fp-api';
 import { Arbeidsforhold, Kvittering, LocaleNo } from '@navikt/fp-types';
 
-import Environment from './Environment';
 import { useContextGetAnyData } from './SvpDataContext';
 import { getSøknadForInnsending } from './getSøknadForInnsending';
 
@@ -23,7 +22,7 @@ const useSendSøknad = (
     const { initAbortSignal } = useAbortSignal();
 
     const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/svangerskapspenger`),
+        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`),
     });
 
     const send = async () => {
@@ -32,7 +31,7 @@ const useSendSøknad = (
         const signal = initAbortSignal();
 
         try {
-            const response = await ky.post(`${Environment.PUBLIC_PATH}/rest/soknad/svangerskapspenger`, {
+            const response = await ky.post(`${import.meta.env.BASE_URL}/rest/soknad/svangerskapspenger`, {
                 json: søknadForInnsending,
                 signal,
             });

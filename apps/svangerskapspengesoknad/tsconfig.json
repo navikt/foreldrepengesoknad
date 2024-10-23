@@ -8,7 +8,7 @@
             "types/*": ["types/*"],
             "utils/*": ["utils/*"]
         },
-        "types": ["@testing-library/jest-dom", "vitest/globals"]
+        "types": ["@testing-library/jest-dom", "vitest/globals", "vite/client"]
     },
 
     "include": ["src/**/*", "./@types"],

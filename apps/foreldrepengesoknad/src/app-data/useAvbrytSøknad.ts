@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
-import Environment from '../Environment';
 import { useContextReset } from './FpDataContext';
 
 export const useAvbrytSøknad = (
@@ -18,7 +17,7 @@ export const useAvbrytSøknad = (
     const reset = useContextReset();
 
     const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/foreldrepenger`),
+        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`),
     });
 
     const avbrytSøknadHandler = useCallback(async () => {

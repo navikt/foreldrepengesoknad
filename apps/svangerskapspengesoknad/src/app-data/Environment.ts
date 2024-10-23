@@ -10,7 +10,6 @@ const Environment = () => {
     return {
         LOG_VALIDATION: appSettings.LOG_VALIDATION,
         INNSYN: appSettings.INNSYN,
-        PUBLIC_PATH: appSettings.PUBLIC_PATH,
     };
 };
 

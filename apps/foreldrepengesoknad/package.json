@@ -11,6 +11,7 @@
         "prettier": "prettier --write src",
         "dev-api": "node ./mock-api/mock-api-server.cjs",
         "dev": "node ./dev-server.cjs",
+        "dev-vite": "vite",
         "test": "vitest run",
         "build-storybook": "storybook build -o .storybook-static-build",
         "storybook": "storybook dev --quiet -p 9001"

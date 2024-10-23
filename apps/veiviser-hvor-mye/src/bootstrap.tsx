@@ -13,7 +13,6 @@ import '@navikt/ds-css';
 import { initAmplitude } from '@navikt/fp-metrics';
 
 import AppContainer from './AppContainer';
-import Environment from './app-data/Environment';
 import './styles/global.css';
 
 countries.registerLocale(langNB);
@@ -35,7 +34,7 @@ if (container) {
     const root = createRoot(container);
     root.render(
         <StrictMode>
-            <BrowserRouter basename={Environment.PUBLIC_PATH}>
+            <BrowserRouter basename={import.meta.env.BASE_URL}>
                 <AppContainer />
             </BrowserRouter>
         </StrictMode>,

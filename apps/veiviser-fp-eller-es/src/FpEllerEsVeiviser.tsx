@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import Environment from 'appData/Environment';
 import ky from 'ky';
 import { FunctionComponent } from 'react';
 
@@ -24,7 +23,7 @@ interface Props {
 export const FpEllerEsVeiviser: FunctionComponent<Props> = ({ locale, changeLocale }) => {
     const satserData = useQuery({
         queryKey: ['SATSER'],
-        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/satser`).json<Satser>(),
+        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/satser`).json<Satser>(),
     });
 
     if (satserData.error) {

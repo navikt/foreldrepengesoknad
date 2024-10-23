@@ -29,7 +29,7 @@ const Spinner: React.FunctionComponent = () => (
 
 export const retryCallback = async () => {
     try {
-        await ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/foreldrepenger`);
+        await ky.delete(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
         // Vi bryr oss ikke om feil her. Logges bare i backend
@@ -50,17 +50,17 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
 
     const søkerinfoQuery = useQuery({
         queryKey: ['SØKERINFO'],
-        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/sokerinfo`).json<Søkerinfo>(),
+        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`).json<Søkerinfo>(),
     });
 
     const sakerQuery = useQuery({
         queryKey: ['SAKER'],
-        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/innsyn/v2/saker`).json<SakerOppslag>(),
+        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`).json<SakerOppslag>(),
     });
 
     const mellomlagretInfoQuery = useQuery({
         queryKey: ['MELLOMLAGRET_INFO'],
-        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/storage/foreldrepenger`).text(),
+        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`).text(),
         select: (text: string) => {
             // TODO (TOR) Ta vekk parsing her etter at ny uttaksplan (og rydding av andre Date i context) er gjort
             return storageParser(text) as FpMellomlagretData;

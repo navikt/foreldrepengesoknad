@@ -19,7 +19,6 @@ scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
     APP_VERSION: 'test',
     INNSYN: 'test',
-    PUBLIC_PATH: 'https://es',
 });
 document.head.appendChild(scriptTag);
 

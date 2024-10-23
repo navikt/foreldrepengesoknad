@@ -4,8 +4,6 @@ import { AnnenPartVedtakDTO } from 'types/AnnenPartVedtakDTO';
 
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
-import Environment from '../Environment';
-
 type AnnenPartVedtakParams = {
     annenPartFødselsnummer?: string;
     barnFødselsnummer?: string;
@@ -28,7 +26,7 @@ export const annenPartVedtakOptions = (data: AnnenPartVedtakParams, enabled: boo
         queryKey: ['ANNEN_PART_VEDTAK', data],
         queryFn: () =>
             ky
-                .post(`${Environment.PUBLIC_PATH}/rest/innsyn/v2/annenPartVedtak`, { json: data })
+                .post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, { json: data })
                 .json<AnnenPartVedtakDTO>(),
         enabled,
     });
@@ -38,7 +36,7 @@ export const nesteSakAnnenPartVedtakOptions = (data: AnnenPartVedtakParams, enab
         queryKey: ['NESTE_SAK_ANNEN_PART_VEDTAK', data],
         queryFn: () =>
             ky
-                .post(`${Environment.PUBLIC_PATH}/rest/innsyn/v2/annenPartVedtak`, { json: data })
+                .post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, { json: data })
                 .json<AnnenPartVedtakDTO>(),
         enabled,
     });
@@ -47,6 +45,6 @@ export const tilgjengeligeStønadskontoerOptions = (data: StønadskontoParams, e
     queryOptions({
         queryKey: ['TILGJENGELIGE_STONADSKONTOER', data],
         queryFn: () =>
-            ky.post(`${Environment.PUBLIC_PATH}/rest/konto`, { json: data }).json<TilgjengeligeStønadskontoer>(),
+            ky.post(`${import.meta.env.BASE_URL}/rest/konto`, { json: data }).json<TilgjengeligeStønadskontoer>(),
         enabled,
     });

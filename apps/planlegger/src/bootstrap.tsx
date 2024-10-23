@@ -1,5 +1,4 @@
 import * as Sentry from '@sentry/browser';
-import Environment from 'appData/Environment';
 import 'dayjs/locale/nb.js';
 import 'dayjs/locale/nn.js';
 import * as countries from 'i18n-iso-countries';
@@ -35,7 +34,7 @@ if (container) {
     const root = createRoot(container);
     root.render(
         <StrictMode>
-            <BrowserRouter basename={Environment.PUBLIC_PATH}>
+            <BrowserRouter basename={import.meta.env.BASE_URL}>
                 <AppContainer />
             </BrowserRouter>
         </StrictMode>,

@@ -10,8 +10,8 @@ import saker from 'storybookData/saker/saker.json';
 import søkerinfo from 'storybookData/sokerinfo/sokerinfo.json';
 import tidslinjeHendelser from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.json';
 
+import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
 import OversiktRoutes from './../../routes/routes';
-import { SøkerinfoDTO } from './../../types/SøkerinfoDTO';
 import Saksoversikt from './Saksoversikt';
 
 const queryClient = new QueryClient();
@@ -46,12 +46,18 @@ export const Default: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get('https://oversikt/rest/dokument/alle', () => HttpResponse.json(dokumenter)),
-                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
-                http.get('https://oversikt/rest/innsyn/tidslinje', () => HttpResponse.json(tidslinjeHendelser)),
-                http.get('https://oversikt/rest/historikk/vedlegg', () => HttpResponse.json(manglendeVedlegg)),
-                http.get('https://oversikt/rest/innsyn/v2/saker/oppdatert', () => HttpResponse.json(true)),
-                http.post('https://oversikt/rest/innsyn/v2/annenPartVedtak', () => HttpResponse.json(annenPartsVedtak)),
+                http.get(`${import.meta.env.BASE_URL}/rest/dokument/alle`, () => HttpResponse.json(dokumenter)),
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
+                    HttpResponse.json(tidslinjeHendelser),
+                ),
+                http.get(`${import.meta.env.BASE_URL}/rest/historikk/vedlegg`, () =>
+                    HttpResponse.json(manglendeVedlegg),
+                ),
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker/oppdatert`, () => HttpResponse.json(true)),
+                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
+                    HttpResponse.json(annenPartsVedtak),
+                ),
             ],
         },
     },

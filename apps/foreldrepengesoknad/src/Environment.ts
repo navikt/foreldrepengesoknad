@@ -11,7 +11,6 @@ const Environment = () => {
     return {
         APP_VERSION: appSettings.APP_VERSION,
         INNSYN: appSettings.INNSYN,
-        PUBLIC_PATH: appSettings.PUBLIC_PATH,
         [FeatureToggle.test1Juli2024Regler]: appSettings[FeatureToggle.test1Juli2024Regler],
     };
 };

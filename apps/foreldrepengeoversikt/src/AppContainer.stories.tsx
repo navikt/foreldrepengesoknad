@@ -24,15 +24,23 @@ const meta = {
     parameters: {
         msw: {
             handlers: [
-                http.get('https://oversikt/rest/innsyn/v2/saker/oppdatert', () => HttpResponse.json(true)),
-                http.get('https://oversikt/rest/minidialog', () => HttpResponse.json(miniDialog)),
-                http.get('https://oversikt/rest/sokerinfo', () => HttpResponse.json(søkerinfo)),
-                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
-                http.get('https://oversikt/rest/historikk/vedlegg', () => HttpResponse.json(manglendeVedlegg)),
-                http.post('https://oversikt/rest/innsyn/v2/annenPartVedtak', () => HttpResponse.json(annenPartsVedtak)),
-                http.get('https://oversikt/rest/innsyn/tidslinje', () => HttpResponse.json(tidslinjeHendelser)),
-                http.get('https://oversikt/rest/dokument/alle', () => HttpResponse.json(dokumenter)),
-                http.post('https://oversikt/rest/storage/foreldrepenger/vedlegg', () => HttpResponse.json({})),
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker/oppdatert`, () => HttpResponse.json(true)),
+                http.get(`${import.meta.env.BASE_URL}/rest/minidialog`, () => HttpResponse.json(miniDialog)),
+                http.get(`${import.meta.env.BASE_URL}/rest/sokerinfo`, () => HttpResponse.json(søkerinfo)),
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
+                http.get(`${import.meta.env.BASE_URL}/rest/historikk/vedlegg`, () =>
+                    HttpResponse.json(manglendeVedlegg),
+                ),
+                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
+                    HttpResponse.json(annenPartsVedtak),
+                ),
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
+                    HttpResponse.json(tidslinjeHendelser),
+                ),
+                http.get(`${import.meta.env.BASE_URL}/rest/dokument/alle`, () => HttpResponse.json(dokumenter)),
+                http.post(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger/vedlegg`, () =>
+                    HttpResponse.json({}),
+                ),
             ],
         },
     },

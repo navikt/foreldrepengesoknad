@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { LocaleNo } from '@navikt/fp-types';
 
-import Environment from './Environment';
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
 export const VERSJON_MELLOMLAGRING = 5;
@@ -27,7 +26,7 @@ const useMellomlagreSøknad = (locale: LocaleNo, setHarGodkjentVilkår: (harGodk
     const promiseRef = useRef<() => void>();
 
     const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/svangerskapspenger`),
+        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`),
     });
 
     useEffect(() => {
@@ -45,7 +44,7 @@ const useMellomlagreSøknad = (locale: LocaleNo, setHarGodkjentVilkår: (harGodk
                             locale,
                             ...state,
                         } as SvpDataMapAndMetaData;
-                        await ky.post(`${Environment.PUBLIC_PATH}/rest/storage/svangerskapspenger`, { json: data });
+                        await ky.post(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`, { json: data });
                     } catch (error: unknown) {
                         if (error instanceof HTTPError) {
                             if (error.response.status === 401 || error.response.status === 403) {

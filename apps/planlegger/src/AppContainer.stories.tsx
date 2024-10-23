@@ -89,7 +89,7 @@ const meta = {
     parameters: {
         msw: {
             handlers: [
-                http.post('https://pl/rest/konto', async ({ request }) => {
+                http.post(`${import.meta.env.BASE_URL}/rest/konto`, async ({ request }) => {
                     const body = await request.json();
                     const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/konto', {
                         body: JSON.stringify(body),
@@ -101,7 +101,7 @@ const meta = {
                     const json = await response.json();
                     return HttpResponse.json(json);
                 }),
-                http.get('https://pl/rest/satser', async () => {
+                http.get(`${import.meta.env.BASE_URL}/rest/satser`, async () => {
                     const response = await fetch('https://foreldrepengesoknad-api.ekstern.dev.nav.no/rest/satser');
                     const json = await response.json();
                     return HttpResponse.json(json);
@@ -131,8 +131,8 @@ export const DefaultMockaStønadskontoerOgSatser: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.post('https://pl/rest/konto', () => HttpResponse.json(STØNADSKONTOER)),
-                http.get('https://pl/rest/satser', () => HttpResponse.json(SATSER)),
+                http.post(`${import.meta.env.BASE_URL}/rest/konto`, () => HttpResponse.json(STØNADSKONTOER)),
+                http.get(`${import.meta.env.BASE_URL}/rest/satser`, () => HttpResponse.json(SATSER)),
             ],
         },
     },

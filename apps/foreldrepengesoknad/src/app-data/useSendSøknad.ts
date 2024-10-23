@@ -9,7 +9,6 @@ import { useAbortSignal } from '@navikt/fp-api';
 import { LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-import Environment from '../Environment';
 import { ContextDataType, useContextGetAnyData } from './FpDataContext';
 
 const useSendSøknad = (
@@ -22,7 +21,7 @@ const useSendSøknad = (
     const { initAbortSignal } = useAbortSignal();
 
     const { mutate: slettMellomlagring } = useMutation({
-        mutationFn: () => ky.delete(`${Environment.PUBLIC_PATH}/rest/storage/foreldrepenger`),
+        mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`),
     });
 
     const send = async () => {
@@ -47,7 +46,7 @@ const useSendSøknad = (
 
         try {
             const url = cleanedSøknad.erEndringssøknad ? '/rest/soknad/endre' : '/rest/soknad';
-            const response = await ky.post(`${Environment.PUBLIC_PATH}${url}`, {
+            const response = await ky.post(`${import.meta.env.BASE_URL}${url}`, {
                 json: cleanedSøknad,
                 signal: abortSignal,
                 timeout: 120 * 1000,

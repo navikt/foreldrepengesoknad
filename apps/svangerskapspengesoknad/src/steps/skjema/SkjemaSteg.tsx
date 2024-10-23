@@ -1,4 +1,3 @@
-import Environment from 'appData/Environment';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
 import useStepConfig from 'appData/useStepConfig';
 import useSvpNavigator from 'appData/useSvpNavigator';
@@ -163,7 +162,7 @@ export const SkjemaSteg: FunctionComponent<Props> = ({
                             skjemanummer={Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING}
                             existingAttachments={defaultValues?.vedlegg}
                             updateAttachments={updateAttachments}
-                            saveAttachment={getSaveAttachmentFetch(Environment.PUBLIC_PATH, 'svangerskapspenger')}
+                            saveAttachment={getSaveAttachmentFetch(import.meta.env.BASE_URL, 'svangerskapspenger')}
                         />
                     </VStack>
                     <StepButtonsHookForm

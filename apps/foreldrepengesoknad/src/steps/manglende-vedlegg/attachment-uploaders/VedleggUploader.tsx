@@ -10,7 +10,6 @@ import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { formatDateShortYear } from '@navikt/fp-utils';
 
-import Environment from '../../../Environment';
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
 
 type Perioder = Array<{
@@ -90,7 +89,7 @@ const VedleggUploader: FunctionComponent<Props> = ({
 
                 updateAttachments(attachmentsMedMetadata);
             }}
-            saveAttachment={getSaveAttachmentFetch(Environment.PUBLIC_PATH, 'foreldrepenger')}
+            saveAttachment={getSaveAttachmentFetch(import.meta.env.BASE_URL, 'foreldrepenger')}
         />
     );
 };

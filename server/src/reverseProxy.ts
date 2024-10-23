@@ -1,5 +1,5 @@
 import { getToken, requestTokenxOboToken } from '@navikt/oasis';
-import { Express, NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
 import { serverConfig } from '@navikt/fp-server-utils';
@@ -10,19 +10,19 @@ type ProxyOptions = {
     scope: string;
 };
 
-export function configureReverseProxyApi(app: Express) {
+export function configureReverseProxyApi(router: Router) {
     if (!serverConfig.proxy.apiUrl || !serverConfig.proxy.apiScope) {
         throw new Error('Påkrevd miljøvariable SCOPE og URL ikke satt mot API');
     }
-    addProxyHandler(app, {
-        ingoingUrl: `${serverConfig.app.publicPath}/rest`,
+    addProxyHandler(router, {
+        ingoingUrl: "/rest",
         outgoingUrl: serverConfig.proxy.apiUrl,
         scope: serverConfig.proxy.apiScope,
     });
 }
 
-export function addProxyHandler(server: Express, { ingoingUrl, outgoingUrl, scope }: ProxyOptions) {
-    server.use(
+export function addProxyHandler(router: Router, { ingoingUrl, outgoingUrl, scope }: ProxyOptions) {
+    router.use(
         ingoingUrl,
         async (request: Request, response: Response, next: NextFunction) => {
             const token = getToken(request);
