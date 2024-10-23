@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { LocaleNo } from '@navikt/fp-types';
 
-import Environment from './Environment';
 import { ContextDataMap, ContextDataType, useContextComplete, useContextReset } from './SvpDataContext';
 
 export const VERSJON_MELLOMLAGRING = 4;

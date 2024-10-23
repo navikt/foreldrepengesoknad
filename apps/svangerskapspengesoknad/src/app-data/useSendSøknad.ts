@@ -6,7 +6,6 @@ import { useMemo } from 'react';
 import { useAbortSignal } from '@navikt/fp-api';
 import { Kvittering, LocaleNo } from '@navikt/fp-types';
 
-import Environment from './Environment';
 import { useContextGetAnyData } from './SvpDataContext';
 import { getSøknadForInnsending } from './getSøknadForInnsending';
 

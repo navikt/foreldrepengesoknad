@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import Environment from 'appData/Environment';
 import dayjs from 'dayjs';
 import ky from 'ky';
 import { FunctionComponent, useState } from 'react';

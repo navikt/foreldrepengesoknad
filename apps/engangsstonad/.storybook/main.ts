@@ -1,4 +1,7 @@
 import type { StorybookConfig } from '@storybook/react-vite';
+import { mergeConfig } from 'vite';
+
+import viteConfig from '../vite.config';
 
 const config: StorybookConfig = {
     stories: ['../src/**/*.stories.@(ts|tsx)'],
@@ -6,6 +9,13 @@ const config: StorybookConfig = {
     framework: {
         name: '@storybook/react-vite',
         options: {},
+    },
+    async viteFinal(c) {
+        console.log('base', c.base);
+        console.log('vite', viteConfig.base);
+        return mergeConfig(c, {
+            base: viteConfig.base,
+        });
     },
     staticDirs: ['../../../scripts/mock-service-worker'],
     docs: {

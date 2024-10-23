@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
-import Environment from './Environment';
 import { useContextReset } from './SvpDataContext';
 
 const useAvbrytSøknad = (setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void) => {

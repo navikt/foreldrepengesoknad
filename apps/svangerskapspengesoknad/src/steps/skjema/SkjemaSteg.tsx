@@ -1,4 +1,3 @@
-import Environment from 'appData/Environment';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
 import useStepConfig from 'appData/useStepConfig';
 import useSvpNavigator from 'appData/useSvpNavigator';

@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import Environment from 'appData/Environment';
 import ky from 'ky';
 import { useIntl } from 'react-intl';
 
