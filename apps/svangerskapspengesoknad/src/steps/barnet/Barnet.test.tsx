@@ -162,7 +162,7 @@ describe('<Barnet>', () => {
         expect(screen.getAllByText('Termindato må være en gyldig dato på formatet dd.mm.åååå.')[0]).toBeInTheDocument();
     });
 
-    it('validering av for tidlig fødselsdato', async () => {
+    it('validering av for tidlig termindato', async () => {
         render(<Default />);
 
         expect(await screen.findByText('Er barnet født?')).toBeInTheDocument();
@@ -170,8 +170,8 @@ describe('<Barnet>', () => {
 
         const fødselsdatoInput = screen.getByLabelText('Fødselsdato');
         const termindatoInput = screen.getByLabelText('Termindato');
-        await userEvent.type(fødselsdatoInput, dayjs('2024-05-19').format('DD.MM.YYYY'));
-        await userEvent.type(termindatoInput, dayjs('2023-10-18').format('DD.MM.YYYY'));
+        await userEvent.type(fødselsdatoInput, dayjs().format('DD.MM.YYYY'));
+        await userEvent.type(termindatoInput, dayjs().subtract(2, 'months').format('DD.MM.YYYY'));
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(

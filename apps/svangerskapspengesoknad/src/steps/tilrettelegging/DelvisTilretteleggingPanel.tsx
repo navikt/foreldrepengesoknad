@@ -3,10 +3,14 @@ import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Barn } from 'types/Barn';
-import Tilrettelegging, {
+import {
     Arbeidsforholdstype,
     DelivisTilretteleggingPeriodeType,
+    DelvisTilrettelegging,
+    IngenTilrettelegging,
+    Stilling,
     TilOgMedDatoType,
+    Tilretteleggingstype,
 } from 'types/Tilrettelegging';
 import { getDefaultMonth, getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 
@@ -17,7 +21,6 @@ import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { tiMånederSidenDato } from '@navikt/fp-utils';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
-import { TilretteleggingFormData } from './tilretteleggingStepUtils';
 import {
     validateSammePeriodeFremTilTerminFom,
     validateSammePeriodeFremTilTerminTilbakeIJobbDato,
@@ -27,29 +30,35 @@ import {
 
 export interface Props {
     barnet: Barn;
-    valgtTilrettelegging: Tilrettelegging;
+    arbeidsforholdType: Arbeidsforholdstype;
+    sluttdatoArbeid?: string;
+    startdatoArbeid: string;
+    arbeidsforholdNavn?: string;
+    stillinger: Stilling[];
 }
 
-const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({ barnet, valgtTilrettelegging }) => {
+const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({
+    barnet,
+    arbeidsforholdType,
+    sluttdatoArbeid,
+    startdatoArbeid,
+    arbeidsforholdNavn,
+    stillinger,
+}) => {
     const intl = useIntl();
 
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
 
-    const typeArbeid = valgtTilrettelegging.arbeidsforhold.type;
-
-    const harSkjema = typeArbeid === Arbeidsforholdstype.VIRKSOMHET || typeArbeid === Arbeidsforholdstype.PRIVAT;
-    const sluttDatoArbeid = valgtTilrettelegging.arbeidsforhold.sluttdato;
-    const startDatoArbeid = valgtTilrettelegging.arbeidsforhold.startdato;
+    const harSkjema =
+        arbeidsforholdType === Arbeidsforholdstype.VIRKSOMHET || arbeidsforholdType === Arbeidsforholdstype.PRIVAT;
     const minDatoBehovFom =
-        dayjs.max(dayjs(tiMånederSidenDato(barnet.termindato)), dayjs(startDatoArbeid)) || undefined;
-    const maxDatoBehovFom = sluttDatoArbeid
-        ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttDatoArbeid))!.toDate()
+        dayjs.max(dayjs(tiMånederSidenDato(barnet.termindato)), dayjs(startdatoArbeid)) || undefined;
+    const maxDatoBehovFom = sluttdatoArbeid
+        ? dayjs.min(dayjs(sisteDagForSvangerskapspenger), dayjs(sluttdatoArbeid))!.toDate()
         : sisteDagForSvangerskapspenger;
     const kanHaSVPFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barnet);
 
-    const formMethods = useFormContext<TilretteleggingFormData>();
-
-    const type = formMethods.watch('type');
+    const formMethods = useFormContext<DelvisTilrettelegging | IngenTilrettelegging>();
     const behovForTilretteleggingFom = formMethods.watch('behovForTilretteleggingFom');
     const enPeriodeMedTilretteleggingFom = formMethods.watch('enPeriodeMedTilretteleggingFom');
     const delvisTilretteleggingPeriodeType = formMethods.watch('delvisTilretteleggingPeriodeType');
@@ -92,11 +101,7 @@ const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({ barnet, valgtTil
                                 : ''
                         }
                         validate={[
-                            validateStillingsprosentEnDelvisPeriode(
-                                intl,
-                                enPeriodeMedTilretteleggingFom,
-                                valgtTilrettelegging.arbeidsforhold.stillinger,
-                            ),
+                            validateStillingsprosentEnDelvisPeriode(intl, enPeriodeMedTilretteleggingFom, stillinger),
                         ]}
                     />
                     <ReadMore
@@ -144,9 +149,9 @@ const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({ barnet, valgtTil
                             intl,
                             behovForTilretteleggingFom,
                             sisteDagForSvangerskapspenger,
-                            type,
-                            valgtTilrettelegging.arbeidsforhold.navn || '',
-                            sluttDatoArbeid,
+                            Tilretteleggingstype.DELVIS,
+                            arbeidsforholdNavn || '',
+                            sluttdatoArbeid,
                             kanHaSVPFremTilTreUkerFørTermin,
                         ),
                     ]}
@@ -162,11 +167,11 @@ const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({ barnet, valgtTil
                     validate={[
                         validerTilretteleggingTomType(
                             intl,
-                            type,
+                            Tilretteleggingstype.DELVIS,
                             behovForTilretteleggingFom,
                             sisteDagForSvangerskapspenger,
-                            valgtTilrettelegging.arbeidsforhold.navn || '',
-                            sluttDatoArbeid,
+                            arbeidsforholdNavn || '',
+                            sluttdatoArbeid,
                             kanHaSVPFremTilTreUkerFørTermin,
                         ),
                     ]}
@@ -208,9 +213,9 @@ const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({ barnet, valgtTil
                                 behovForTilretteleggingFom,
                                 sisteDagForSvangerskapspenger,
                                 enPeriodeMedTilretteleggingFom,
-                                type,
-                                valgtTilrettelegging.arbeidsforhold.navn || '',
-                                sluttDatoArbeid,
+                                Tilretteleggingstype.DELVIS,
+                                arbeidsforholdNavn || '',
+                                sluttdatoArbeid,
                                 kanHaSVPFremTilTreUkerFørTermin,
                             ),
                         ]}

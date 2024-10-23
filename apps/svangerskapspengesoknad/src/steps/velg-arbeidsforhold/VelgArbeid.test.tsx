@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
 import SøknadRoutes from 'appData/routes';
+import { TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 
 import * as stories from './VelgArbeid.stories';
 
@@ -43,43 +44,12 @@ describe('<Velg arbeid>', () => {
         ).not.toBeInTheDocument();
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: [
-                {
-                    arbeidsforhold: {
-                        arbeidsgiverId: '975326209',
-                        navn: 'Sykehuset i Vestfold',
-                        sluttdato: undefined,
-                        startdato: '2019-06-01T00:00:00.000Z',
-                        stillinger: [
-                            {
-                                fom: '2019-06-01T00:00:00.000Z',
-                                stillingsprosent: 85.09,
-                                tom: undefined,
-                            },
-                        ],
-                        type: 'virksomhet',
-                    },
-                    behovForTilretteleggingFom: undefined,
-                    delvisTilretteleggingPeriodeType: undefined,
-                    enPeriodeMedTilretteleggingFom: undefined,
-                    enPeriodeMedTilretteleggingStillingsprosent: undefined,
-                    enPeriodeMedTilretteleggingTilbakeIJobbDato: undefined,
-                    enPeriodeMedTilretteleggingTomType: undefined,
-                    id: '975326209',
-                    type: undefined,
-                    varierendePerioder: [],
-                    vedlegg: [],
-                },
-            ],
-            key: ContextDataType.TILRETTELEGGINGER,
+            data: ['975326209'],
+            key: ContextDataType.VALGTE_ARBEIDSFORHOLD,
             type: 'update',
         });
+
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: '975326209',
-            key: ContextDataType.VALGT_TILRETTELEGGING_ID,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
             data: SøknadRoutes.SKJEMA,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
@@ -105,5 +75,66 @@ describe('<Velg arbeid>', () => {
         await userEvent.click(screen.getByText('Omsorgspartner Vestfold AS'));
 
         expect(screen.getByText('Du vil nå gå gjennom hvert arbeidsforhold og gjøre dette:')).toBeInTheDocument();
+    });
+
+    it('skal fjerne tilrettelegging når en har gått tilbake og valgt bort tilrettelegging', async () => {
+        const gåTilNesteSide = vi.fn();
+        const mellomlagreSøknadOgNaviger = vi.fn();
+
+        render(
+            <Default
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                valgteArbeidsforhold={['975326209', '990322244']}
+                tilrettelegginger={{
+                    '975326209': {
+                        behovForTilretteleggingFom: '2024-01-01',
+                        type: Tilretteleggingstype.INGEN,
+                        enPeriodeMedTilretteleggingFom: '2024-01-01',
+                        enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
+                    },
+                    '990322244': {
+                        behovForTilretteleggingFom: '2024-10-01',
+                        type: Tilretteleggingstype.INGEN,
+                        enPeriodeMedTilretteleggingFom: '2024-11-01',
+                        enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
+                    },
+                }}
+            />,
+        );
+
+        expect(await screen.findByText('Sykehuset i Vestfold')).toBeInTheDocument();
+
+        await userEvent.click(screen.getByText('Sykehuset i Vestfold'));
+
+        expect(screen.getByText('Neste steg')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Neste steg'));
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: ['990322244'],
+            key: ContextDataType.VALGTE_ARBEIDSFORHOLD,
+            type: 'update',
+        });
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
+            data: {
+                '990322244': {
+                    behovForTilretteleggingFom: '2024-10-01',
+                    type: Tilretteleggingstype.INGEN,
+                    enPeriodeMedTilretteleggingFom: '2024-11-01',
+                    enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
+                },
+            },
+            key: ContextDataType.TILRETTELEGGINGER,
+            type: 'update',
+        });
+
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
+            data: SøknadRoutes.SKJEMA,
+            key: ContextDataType.APP_ROUTE,
+            type: 'update',
+        });
+
+        expect(mellomlagreSøknadOgNaviger).toHaveBeenCalledOnce();
     });
 });

@@ -9,12 +9,12 @@ import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
 import * as stories from './TilretteleggingStep.stories';
 
-const { Default } = composeStories(stories);
+const { ForArbeidsforhold } = composeStories(stories);
 
 describe('<Behov for tilrettelegging>', () => {
     const user = userEvent.setup();
     it('skal vise feilmelding når ingenting er fylt eller huket av', async () => {
-        render(<Default />);
+        render(<ForArbeidsforhold />);
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
         expect(
@@ -31,7 +31,12 @@ describe('<Behov for tilrettelegging>', () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
 
-        render(<Default gåTilNesteSide={gåTilNesteSide} mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger} />);
+        render(
+            <ForArbeidsforhold
+                gåTilNesteSide={gåTilNesteSide}
+                mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+            />,
+        );
         expect(
             await screen.findByText('Fra hvilken dato har du behov for tilrettelegging eller omplassering?'),
         ).toBeInTheDocument();
@@ -54,40 +59,13 @@ describe('<Behov for tilrettelegging>', () => {
         expect(screen.queryByText('Du må oppgi hvor mye du kan jobbe.')).not.toBeInTheDocument();
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: [
-                {
-                    arbeidsforhold: {
-                        arbeidsgiverId: '990322244',
-                        navn: 'Omsorgspartner Vestfold AS',
-                        type: 'virksomhet',
-                        stillinger: [],
-                        startdato: '2023-01-01',
-                    },
+            data: {
+                '990322244': {
                     behovForTilretteleggingFom: dayjs().format(ISO_DATE_FORMAT),
                     delvisTilretteleggingPeriodeType: 'VARIERTE_PERIODER',
-                    enPeriodeMedTilretteleggingFom: undefined,
-                    enPeriodeMedTilretteleggingStillingsprosent: undefined,
-                    enPeriodeMedTilretteleggingTilbakeIJobbDato: undefined,
-                    enPeriodeMedTilretteleggingTomType: undefined,
-                    id: '990322244',
-                    risikofaktorer: undefined,
-                    tilretteleggingstiltak: undefined,
                     type: 'delvis',
-                    varierendePerioder: [],
-                    vedlegg: [
-                        expect.objectContaining({
-                            filename: 'vedlegg – Kopi (7).png',
-                            filesize: 7477,
-                            pending: false,
-                            skjemanummer: 'I000109',
-                            type: 'tilrettelegging',
-                            uploaded: true,
-                            url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
-                            uuid: 'Created',
-                        }),
-                    ],
                 },
-            ],
+            },
             key: ContextDataType.TILRETTELEGGINGER,
             type: 'update',
         });
@@ -106,7 +84,7 @@ describe('<Behov for tilrettelegging>', () => {
     });
 
     it('validering av for sen tilrettelegging', async () => {
-        render(<Default />);
+        render(<ForArbeidsforhold />);
 
         expect(
             await screen.findByText('Fra hvilken dato har du behov for tilrettelegging eller omplassering?'),
@@ -125,7 +103,7 @@ describe('<Behov for tilrettelegging>', () => {
     });
 
     it('redusert valgt', async () => {
-        render(<Default />);
+        render(<ForArbeidsforhold />);
 
         expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
         await user.click(screen.getByText('Jeg kan jobbe redusert'));
@@ -138,7 +116,7 @@ describe('<Behov for tilrettelegging>', () => {
     });
 
     it('spørsmål om fra-dato vises når man har valgt at man ikke kan jobbe', async () => {
-        render(<Default />);
+        render(<ForArbeidsforhold />);
         expect(await screen.findByText('Jeg kan ikke jobbe')).toBeInTheDocument();
         await user.click(screen.getByText('Jeg kan ikke jobbe'));
 
@@ -148,7 +126,7 @@ describe('<Behov for tilrettelegging>', () => {
     });
 
     it('redusert valgt, ikke oppgitt stillingsprosent', async () => {
-        render(<Default />);
+        render(<ForArbeidsforhold />);
 
         expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
         await user.click(screen.getByText('Jeg kan jobbe redusert'));
@@ -163,7 +141,7 @@ describe('<Behov for tilrettelegging>', () => {
     });
 
     it('spørsmål om stillingsprosent skal vises når redusert arbeidstid og samme stillingsprosent er valgt', async () => {
-        render(<Default />);
+        render(<ForArbeidsforhold />);
         expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
 
         await user.click(screen.getByText('Jeg kan jobbe redusert'));
@@ -173,7 +151,7 @@ describe('<Behov for tilrettelegging>', () => {
     });
 
     it('feilmelding ved ikke oppgitt stillingsprosent', async () => {
-        render(<Default />);
+        render(<ForArbeidsforhold />);
 
         expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
 
@@ -186,7 +164,7 @@ describe('<Behov for tilrettelegging>', () => {
         expect(screen.getAllByText('Du må oppgi stillingsprosenten du skal jobbe.')[0]).toBeInTheDocument();
     });
     it('feilmelding ved stillingsprosent i feil format', async () => {
-        render(<Default />);
+        render(<ForArbeidsforhold />);
 
         expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
 
@@ -201,7 +179,7 @@ describe('<Behov for tilrettelegging>', () => {
         expect(screen.getAllByText('Stillingsprosent må være et tall.')[0]).toBeInTheDocument();
     });
     it('feilmelding ved ikke oppgitt redusert fra-dato', async () => {
-        render(<Default />);
+        render(<ForArbeidsforhold />);
 
         expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
 
@@ -214,7 +192,7 @@ describe('<Behov for tilrettelegging>', () => {
         expect(screen.getAllByText('Du må oppgi fra hvilken dato du skal jobbe redusert.')[0]).toBeInTheDocument();
     });
     it('feilmelding ved ikke oppgitt redusert til-dato', async () => {
-        render(<Default />);
+        render(<ForArbeidsforhold />);
 
         expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
 
@@ -232,7 +210,7 @@ describe('<Behov for tilrettelegging>', () => {
     });
 
     it('redusert frem til en dato valgt', async () => {
-        render(<Default />);
+        render(<ForArbeidsforhold />);
 
         expect(await screen.findByText('Jeg kan jobbe redusert')).toBeInTheDocument();
 
@@ -246,7 +224,7 @@ describe('<Behov for tilrettelegging>', () => {
     });
 
     it('validering av dato på feil format', async () => {
-        render(<Default />);
+        render(<ForArbeidsforhold />);
 
         expect(
             await screen.findByText('Fra hvilken dato har du behov for tilrettelegging eller omplassering?'),

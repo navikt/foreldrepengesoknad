@@ -5,20 +5,23 @@ import SøknadRoutes from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Barn } from 'types/Barn';
-import Tilrettelegging, {
-    Arbeidsforholdstype,
+import {
     DelivisTilretteleggingPeriodeType,
-    TilretteleggingstypeOptions,
+    DelvisTilrettelegging,
+    IngenTilrettelegging,
+    Tilretteleggingstype,
 } from 'types/Tilrettelegging';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import PerioderStep from './PerioderStep';
+import { PerioderStep } from './PerioderStep';
+
+const TILRETTELEGGING_ID = '263929546-6215-9868-5127-161910165730101';
+const ANNEN_TILRETTELEGGING_ID = '0132715641-23932-19917-03900-809964087910';
 
 const DEFAULT_ARBEIDSFORHOLD = [
     {
-        id: '1669400414-9409-3313-0700-3334116100409',
-        arbeidsgiverId: '975326209',
+        arbeidsgiverId: '1669400414-9409-3313-0700-3334116100409',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Sykehuset i Vestfold',
         fom: '2014-05-22T00:00:00.000Z',
@@ -26,8 +29,7 @@ const DEFAULT_ARBEIDSFORHOLD = [
         tom: '2019-05-31T00:00:00.000Z',
     },
     {
-        id: '149599873-5769-19110-21897-6184606004018',
-        arbeidsgiverId: '975326209',
+        arbeidsgiverId: '149599873-5769-19110-21897-6184606004018',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Sykehuset i Vestfold',
         fom: '2018-04-09T00:00:00.000Z',
@@ -35,8 +37,7 @@ const DEFAULT_ARBEIDSFORHOLD = [
         tom: '2018-09-09T00:00:00.000Z',
     },
     {
-        id: '86832061-1118-9701-6179-20647729409710',
-        arbeidsgiverId: '975326209',
+        arbeidsgiverId: '86832061-1118-9701-6179-20647729409710',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Sykehuset i Vestfold',
         fom: '2018-06-25T00:00:00.000Z',
@@ -44,27 +45,38 @@ const DEFAULT_ARBEIDSFORHOLD = [
         tom: '2018-08-05T00:00:00.000Z',
     },
     {
-        id: '186699244-06994-0884-1562-860234771205',
-        arbeidsgiverId: '975326209',
+        arbeidsgiverId: '186699244-06994-0884-1562-860234771205',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Sykehuset i Vestfold',
         fom: '2019-06-01T00:00:00.000Z',
         stillingsprosent: 85.09,
     },
     {
-        id: '263929546-6215-9868-5127-161910165730101',
-        arbeidsgiverId: '990322244',
+        arbeidsgiverId: TILRETTELEGGING_ID,
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
         fom: '2017-04-05T00:00:00.000Z',
         stillingsprosent: 100,
     },
     {
-        id: '0132715641-23932-19917-03900-809964087910',
-        arbeidsgiverId: '995090910',
+        arbeidsgiverId: ANNEN_TILRETTELEGGING_ID,
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Re Kommune',
-        fom: '2018-06-01T00:00:00.000Z',
+        fom: '2023-09-01',
+        stillingsprosent: 10,
+    },
+    {
+        arbeidsgiverId: ANNEN_TILRETTELEGGING_ID,
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Re Kommune',
+        fom: '2023-10-01',
+        stillingsprosent: 20,
+    },
+    {
+        arbeidsgiverId: ANNEN_TILRETTELEGGING_ID,
+        arbeidsgiverIdType: 'orgnr',
+        arbeidsgiverNavn: 'Re Kommune',
+        fom: '2023-11-01',
         stillingsprosent: 0,
     },
 ];
@@ -83,23 +95,30 @@ const promiseAction =
     };
 
 type StoryArgs = {
-    tilrettelegging: Tilrettelegging[];
+    tilrettelegging: IngenTilrettelegging | DelvisTilrettelegging;
     barn?: Barn;
     gåTilNesteSide?: (action: Action) => void;
+    valgtTilrettelegging?: string;
 } & ComponentProps<typeof PerioderStep>;
 
 const meta = {
     title: 'steps/PerioderStep',
     component: PerioderStep,
-    render: ({ gåTilNesteSide = action('button-click'), tilrettelegging, barn = DEFAULT_BARN, ...rest }) => {
+    render: ({
+        gåTilNesteSide = action('button-click'),
+        tilrettelegging,
+        valgtTilrettelegging = TILRETTELEGGING_ID,
+        barn = DEFAULT_BARN,
+        ...rest
+    }) => {
         initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.PERIODER]}>
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
-                        [ContextDataType.TILRETTELEGGINGER]: tilrettelegging,
-                        [ContextDataType.VALGT_TILRETTELEGGING_ID]: '263929546-6215-9868-5127-161910165730101',
+                        [ContextDataType.TILRETTELEGGINGER]: { [valgtTilrettelegging]: tilrettelegging },
+                        [ContextDataType.VALGT_TILRETTELEGGING_ID]: valgtTilrettelegging,
                         [ContextDataType.OM_BARNET]: barn,
                     }}
                 >
@@ -118,34 +137,20 @@ export const Default: Story = {
         arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: promiseAction(),
-        tilrettelegging: [
-            {
-                id: '263929546-6215-9868-5127-161910165730101',
-                arbeidsforhold: {
-                    navn: 'Omsorgspartner Vestfold AS',
-                    stillinger: [{ fom: '2019-01-01', stillingsprosent: 100 }],
-                },
-                type: TilretteleggingstypeOptions.DELVIS,
-                delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
-            } as Tilrettelegging,
-        ],
+        tilrettelegging: {
+            type: Tilretteleggingstype.DELVIS,
+            delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
+        } as DelvisTilrettelegging,
     },
 };
 
 export const FremTilFødselsdato: Story = {
     args: {
         ...Default.args,
-        tilrettelegging: [
-            {
-                id: '263929546-6215-9868-5127-161910165730101',
-                arbeidsforhold: {
-                    navn: 'Omsorgspartner Vestfold AS',
-                    stillinger: [{ fom: '2019-01-01', stillingsprosent: 100 }],
-                },
-                type: TilretteleggingstypeOptions.DELVIS,
-                delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
-            } as Tilrettelegging,
-        ],
+        tilrettelegging: {
+            type: Tilretteleggingstype.DELVIS,
+            delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
+        } as DelvisTilrettelegging,
         barn: {
             erBarnetFødt: true,
             termindato: '2024-01-18',
@@ -157,23 +162,11 @@ export const FremTilFødselsdato: Story = {
 export const FlereStillinger: Story = {
     args: {
         ...Default.args,
-        tilrettelegging: [
-            {
-                id: '263929546-6215-9868-5127-161910165730101',
-                behovForTilretteleggingFom: '2023-09-01',
-                arbeidsforhold: {
-                    navn: 'Omsorgspartner Vestfold AS',
-                    type: Arbeidsforholdstype.VIRKSOMHET,
-                    startdato: '2023-09-01',
-                    stillinger: [
-                        { fom: '2023-09-01', stillingsprosent: 10 },
-                        { fom: '2023-10-01', stillingsprosent: 20 },
-                        { fom: '2023-11-01', stillingsprosent: 0 },
-                    ],
-                },
-                type: TilretteleggingstypeOptions.DELVIS,
-                delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
-            } as Tilrettelegging,
-        ],
+        valgtTilrettelegging: ANNEN_TILRETTELEGGING_ID,
+        tilrettelegging: {
+            behovForTilretteleggingFom: '2023-09-01',
+            type: Tilretteleggingstype.DELVIS,
+            delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
+        } as DelvisTilrettelegging,
     },
 };
