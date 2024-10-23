@@ -13,8 +13,6 @@ import { InntektsmeldingPage } from './InntektsmeldingPage';
 
 const queryClient = new QueryClient();
 
-type StoryArgs = {};
-
 const meta = {
     title: 'Inntektsmelding',
     render: () => {
@@ -35,7 +33,7 @@ const meta = {
             </QueryClientProvider>
         );
     },
-} satisfies Meta<StoryArgs>;
+} satisfies Meta;
 export default meta;
 
 type Story = StoryObj<typeof meta>;

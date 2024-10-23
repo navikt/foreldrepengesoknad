@@ -44,7 +44,7 @@ export const InntektsmeldingDokumentHendelse = ({ dokument, visesITidslinjen }: 
 
     return (
         <li className={classNames(`${bem.block} ${visesITidslinjen ? bem.modifier('medium') : bem.modifier('large')}`)}>
-            <FileContent className={bem.element('ikon')} aria-hidden={true} />
+            <FileIcon className={bem.element('ikon')} aria-hidden={true} />
             <Link
                 as={RouterLink}
                 to={`${Routes.SAKSOVERSIKT}/${saksnummer}/${Routes.INNTEKTSMELDING}/${dokument.journalpostId}`}

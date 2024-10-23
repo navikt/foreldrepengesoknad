@@ -147,9 +147,11 @@ const BortfaltNaturalytelseTekst = ({
     bortfaltNaturalytelse: InntektsmeldingDto['bortfalteNaturalytelser'][0];
 }) => {
     if (bortfaltNaturalytelse.tomDato === '9999-12-31') {
+        // eslint-disable-next-line max-len
         return `${formatDate(bortfaltNaturalytelse.fomDato)} får du ikke lenger ${NaturalytelseType[bortfaltNaturalytelse.type]} til en verdi av ${formatCurrency(bortfaltNaturalytelse.beløpPerMnd)} kr.`;
     }
 
+    // eslint-disable-next-line max-len
     return `Mellom ${formatDate(bortfaltNaturalytelse.fomDato)} og ${formatDate(bortfaltNaturalytelse.tomDato)} får du ikke lenger ${NaturalytelseType[bortfaltNaturalytelse.type]} til en verdi av ${formatCurrency(bortfaltNaturalytelse.beløpPerMnd)} kr.`;
 };
 
