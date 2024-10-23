@@ -11,8 +11,6 @@ const config: StorybookConfig = {
         options: {},
     },
     async viteFinal(c) {
-        console.log('base', c.base);
-        console.log('vite', viteConfig.base);
         return mergeConfig(c, {
             base: viteConfig.base,
         });
