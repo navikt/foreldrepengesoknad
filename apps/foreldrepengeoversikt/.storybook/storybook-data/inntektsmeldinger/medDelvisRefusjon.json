@@ -4,7 +4,7 @@
         "erAktiv": true,
         "stillingsprosent": 100,
         "inntektPrMnd": 140000,
-        "refusjonPrMnd": 140000,
+        "refusjonPrMnd": 100000,
         "arbeidsgiverNavn": "Laksinor",
         "arbeidsgiverIdent": "123",
         "journalpostId": "1017115920",

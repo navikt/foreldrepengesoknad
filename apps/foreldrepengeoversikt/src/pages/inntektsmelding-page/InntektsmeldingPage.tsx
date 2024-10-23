@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { ReactNode } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { BodyShort, HGrid, Heading, List, VStack } from '@navikt/ds-react';
+import { BodyShort, Detail, HGrid, Heading, List, VStack } from '@navikt/ds-react';
 
 import { formatCurrency, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
@@ -94,31 +94,61 @@ export const InntektsmeldingPage = () => {
 };
 
 const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
-    const { refusjonsperioder, refusjonPrMnd, arbeidsgiverNavn } = inntektsmelding;
-    // TODO: case der refusjonPrMdn er null, men har refusjonsperioder
-    if (refusjonPrMnd === undefined) {
-        return 'Du får utbetaling direkte fra NAV.';
-    }
+    const { inntektPrMnd, refusjonsperioder, refusjonPrMnd, arbeidsgiverNavn } = inntektsmelding;
 
-    if (refusjonsperioder.length === 0) {
-        return `Du vil få utbetaling fra ${arbeidsgiverNavn}. NAV betaler da til ${arbeidsgiverNavn}.`;
-    }
-
-    // TODO: vise beløp? og hvis beløp over 6G?
     const førsteRefusjonsPeriode = refusjonsperioder[0];
     return (
-        <VStack>
-            <span>
-                Frem til {formatDate(førsteRefusjonsPeriode.fomDato)} får du utbetalt fra {arbeidsgiverNavn}
-            </span>
-            {refusjonsperioder.map((r) => (
-                <span key={r.fomDato}>
-                    Fra {formatDate(r.fomDato)} får du utbetalt{' '}
-                    {r.refusjonsbeløpMnd === 0 ? 'direkte fra NAV' : `fra ${arbeidsgiverNavn}`}
-                </span>
-            ))}
-        </VStack>
+        <>
+            <VStack className="mb-4">
+                <BodyShort>
+                    <HvordanUtbetalesPengeneTekst
+                        inntektPrMnd={inntektPrMnd}
+                        refusjonPrMnd={refusjonPrMnd ?? 0}
+                        arbeidsgiverNavn={arbeidsgiverNavn}
+                    />
+                </BodyShort>
+                {refusjonsperioder.map((periode) => (
+                    <BodyShort key={periode.fomDato}>
+                        Fra {formatDate(førsteRefusjonsPeriode.fomDato)}
+                        {' - '}
+                        <HvordanUtbetalesPengeneTekst
+                            inntektPrMnd={inntektPrMnd}
+                            refusjonPrMnd={refusjonPrMnd ?? 0}
+                            arbeidsgiverNavn={arbeidsgiverNavn}
+                        />
+                    </BodyShort>
+                ))}
+            </VStack>
+            <Detail>
+                Dette er opplysninger oppgitt av Laksinor, du vil få vite dette sikkert når du får svar på søknaden din.
+            </Detail>
+        </>
     );
+};
+
+const HvordanUtbetalesPengeneTekst = ({
+    inntektPrMnd,
+    refusjonPrMnd,
+    arbeidsgiverNavn,
+}: {
+    inntektPrMnd: number;
+    refusjonPrMnd: number;
+    arbeidsgiverNavn: string;
+}) => {
+    if (refusjonPrMnd === undefined) {
+        return `${arbeidsgiverNavn} har opplyst at det utbetales direkte til deg fra Nav.`;
+    }
+
+    if (refusjonPrMnd !== inntektPrMnd) {
+        return `${arbeidsgiverNavn} har opplyst at det skal utbetales delvis av dem og Nav.`;
+    }
+
+    if (refusjonPrMnd === inntektPrMnd) {
+        return `${arbeidsgiverNavn} har opplyst at de skal utbetale til deg, og ønsker betalt Fra Nav.`;
+    }
+
+    // Burde være exhaustive
+    return '';
 };
 
 const NaturalytelserInfo = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {

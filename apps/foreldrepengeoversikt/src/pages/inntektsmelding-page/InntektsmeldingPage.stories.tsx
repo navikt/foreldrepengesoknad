@@ -4,7 +4,9 @@ import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import enBortfaltNaturalytelse from 'storybookData/inntektsmeldinger/enBortfaltNaturalytelse.json';
 import flereBortfalteNaturalytelser from 'storybookData/inntektsmeldinger/flereBortfalteNaturalytelser.json';
+import medDelvisRefusjon from 'storybookData/inntektsmeldinger/medDelvisRefusjon.json';
 import medRefusjon from 'storybookData/inntektsmeldinger/medRefusjon.json';
+import medRefusjonsPerioder from 'storybookData/inntektsmeldinger/medRefusjonsPerioder.json';
 import utenRefusjon from 'storybookData/inntektsmeldinger/utenRefusjon.json';
 import saker from 'storybookData/saker/saker.json';
 
@@ -78,11 +80,37 @@ export const UtenRefusjon: Story = {
     args: {},
 };
 
+export const DelvisRefusjon: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get('https://oversikt/rest/innsyn/inntektsmeldinger', () => HttpResponse.json(medDelvisRefusjon)),
+                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
+            ],
+        },
+    },
+    args: {},
+};
+
 export const MedRefusjon: Story = {
     parameters: {
         msw: {
             handlers: [
                 http.get('https://oversikt/rest/innsyn/inntektsmeldinger', () => HttpResponse.json(medRefusjon)),
+                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
+            ],
+        },
+    },
+    args: {},
+};
+
+export const Refusjonsperioder: Story = {
+    parameters: {
+        msw: {
+            handlers: [
+                http.get('https://oversikt/rest/innsyn/inntektsmeldinger', () =>
+                    HttpResponse.json(medRefusjonsPerioder),
+                ),
                 http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
             ],
         },
