@@ -21,22 +21,22 @@ import {
     getNavnPåSøker2,
 } from 'utils/HvemPlanleggerUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata, getFamiliehendelsedato } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { BarnType, StønadskontoType } from '@navikt/fp-constants';
+import { BarnType } from '@navikt/fp-constants';
 import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { Calendar, Infobox, StepButtons } from '@navikt/fp-ui';
 import { useMedia } from '@navikt/fp-utils/src/hooks/useMedia';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
+import { UttaksplanNy, sorterPerioder } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { UttaksplanNy } from '../../../../../packages/ny-uttaksplan/src';
 import PlanvisningToggle, { Visningsmodus } from '../../components/planvisning-toggle/PlanvisningToggle';
 import { getFamiliesituasjon } from '../../utils/barnetUtils';
+import { deltUttak } from '../../utils/deltUttak';
 import styles from './planenDeresSteg.module.css';
 import OmÅTilpassePlanen from './tilpasse-planen/OmÅTilpassePlanen';
 import UforutsetteEndringer from './uforutsette-endringer/UforutsetteEndringer';
@@ -111,13 +111,20 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
 
     const erAleneforsørger = erAlenesøker(hvemPlanlegger);
 
-    const uttaksperioder = lagKalenderPerioder(
-        valgtStønadskonto,
-        omBarnet,
-        hvemPlanlegger,
-        arbeidssituasjon,
-        fordeling?.antallDagerSøker1,
-    );
+    // const uttaksperioder = lagKalenderPerioder(
+    //     valgtStønadskonto,
+    //     omBarnet,
+    //     hvemPlanlegger,
+    //     arbeidssituasjon,
+    //     fordeling?.antallDagerSøker1,
+    // );
+
+    const planforslag = deltUttak({
+        famDato: familiehendelsedato,
+        tilgjengeligeStønadskontoer: valgtStønadskonto.kontoer,
+        fellesperiodeDagerMor: fordeling?.antallDagerSøker1,
+    });
+    const kombinertPlanforslag = [...planforslag.søker1, ...planforslag.søker2].sort(sorterPerioder);
 
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
@@ -239,27 +246,8 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                                 }}
                                 førsteUttaksdagNesteBarnsSak={undefined}
                                 harAktivitetskravIPeriodeUtenUttak={false}
-                                søkersPerioder={uttaksperioder.filter((p) => {
-                                    if (
-                                        p.kontoType === StønadskontoType.Mødrekvote ||
-                                        p.kontoType === StønadskontoType.ForeldrepengerFørFødsel ||
-                                        p.kontoType === StønadskontoType.Foreldrepenger
-                                    ) {
-                                        return true;
-                                    }
-
-                                    return false;
-                                })}
-                                annenPartsPerioder={uttaksperioder.filter((p) => {
-                                    if (
-                                        p.kontoType === StønadskontoType.Fedrekvote ||
-                                        p.kontoType === StønadskontoType.Foreldrepenger
-                                    ) {
-                                        return true;
-                                    }
-
-                                    return false;
-                                })}
+                                søkersPerioder={planforslag.søker1}
+                                annenPartsPerioder={planforslag.søker2}
                                 barn={{
                                     antallBarn: 1,
                                     type: BarnType.FØDT,
@@ -273,7 +261,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                     <VStack gap="5">
                         {visningsmodus === 'kalender' && (
                             <div className={styles.calendar}>
-                                <Calendar periods={uttaksperioder} familiehendelsedato={familiehendelsedato} />
+                                <Calendar periods={kombinertPlanforslag} familiehendelsedato={familiehendelsedato} />
                             </div>
                         )}
                     </VStack>

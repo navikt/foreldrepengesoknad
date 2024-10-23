@@ -1,4 +1,4 @@
-import { StønadskontoType } from '@navikt/fp-constants';
+import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 
 import { Gradering } from './Gradering';
 import { MorsAktivitet } from './MorsAktivitet';
@@ -10,6 +10,7 @@ import { UtsettelseÅrsakType } from './UtsettelseÅrsakType';
 export interface SaksperiodeNy {
     fom: string;
     tom: string;
+    forelder?: Forelder;
     resultat?: PeriodeResultat;
     flerbarnsdager?: boolean;
     kontoType?: StønadskontoType;

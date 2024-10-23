@@ -5,7 +5,7 @@ import { FunctionComponent } from 'react';
 
 import { HGrid } from '@navikt/ds-react';
 
-import { PeriodeColor, StønadskontoType } from '@navikt/fp-constants';
+import { Forelder, PeriodeColor } from '@navikt/fp-constants';
 import { SaksperiodeNy } from '@navikt/fp-types';
 
 import Day, { DayType } from './Day';
@@ -48,7 +48,7 @@ const findDayColor = (
         return PeriodeColor.GRAY;
     }
 
-    return period?.kontoType === StønadskontoType.Fedrekvote ? PeriodeColor.GREEN : PeriodeColor.BLUE;
+    return period?.forelder === Forelder.farMedmor ? PeriodeColor.GREEN : PeriodeColor.BLUE;
 };
 
 const isFirstDay = (date: Dayjs, day: number, periods: SaksperiodeNy[], familiehendelsedato: string) => {

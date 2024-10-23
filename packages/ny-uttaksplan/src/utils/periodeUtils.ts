@@ -630,20 +630,6 @@ export const skalAnnenPartsPeriodeVises = (annenPartsPeriode: Planperiode, termi
     return erAnnenPartsPrematurePeriode(annenPartsPeriode, termindato);
 };
 
-export const getPeriodeForelder = (erFarEllerMedmor: boolean): Forelder => {
-    //periode: Periode
-    if (erFarEllerMedmor) {
-        // if (periode.gjelderAnnenPart) {
-        //     return Forelder.mor;
-        // }
-        return Forelder.farMedmor;
-    }
-    // if (periode.gjelderAnnenPart) {
-    //     return Forelder.farMedmor;
-    // }
-    return Forelder.mor;
-};
-
 export const getTidsperiodeFromPlanperiode = (periode: Planperiode): Tidsperiode => {
     return {
         fom: periode.fom,
