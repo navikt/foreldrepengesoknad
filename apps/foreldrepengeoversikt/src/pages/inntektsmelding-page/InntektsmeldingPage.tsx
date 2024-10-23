@@ -136,7 +136,7 @@ const HvordanUtbetalesPengeneTekst = ({
     refusjonPrMnd: number;
     arbeidsgiverNavn: string;
 }) => {
-    if (refusjonPrMnd === undefined) {
+    if (refusjonPrMnd === 0) {
         return `${arbeidsgiverNavn} har opplyst at det utbetales direkte til deg fra Nav.`;
     }
 
