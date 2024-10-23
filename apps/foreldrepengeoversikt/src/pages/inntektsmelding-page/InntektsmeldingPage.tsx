@@ -113,7 +113,7 @@ const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: Inntekt
                         {' - '}
                         <HvordanUtbetalesPengeneTekst
                             inntektPrMnd={inntektPrMnd}
-                            refusjonPrMnd={refusjonPrMnd ?? 0}
+                            refusjonPrMnd={periode.refusjonsbeløpMnd ?? 0}
                             arbeidsgiverNavn={arbeidsgiverNavn}
                         />
                     </BodyShort>
