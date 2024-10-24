@@ -22,7 +22,7 @@ import {
     isValidDate,
 } from '@navikt/fp-validation';
 
-import './arbeidIUtlandet.css';
+import './arbeidIUtlandetSteg.css';
 
 export const NEW_ARBEID_I_UTLANDET = {
     type: ArbeidIUtlandetType.JOBB_I_UTLANDET,
