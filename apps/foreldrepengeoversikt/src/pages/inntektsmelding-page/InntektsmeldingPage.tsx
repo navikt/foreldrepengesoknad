@@ -40,10 +40,21 @@ export const InntektsmeldingPage = () => {
     const params = useParams();
     const inntektsmeldingerQuery = useQuery(hentInntektsmelding(params.saksnummer!));
     if (inntektsmeldingerQuery.isPending) {
-        return <Loader />;
+        return (
+            <PageRouteLayout header="">
+                <div className="flex flex-col gap-4 items-center justify-center">
+                    <Loader size="2xlarge" />
+                    <BodyShort>Henter inntektsmelding…</BodyShort>
+                </div>
+            </PageRouteLayout>
+        );
     }
     if (inntektsmeldingerQuery.isError) {
-        return <Alert variant="error">Noe gikk galt. Prøv igjen senere</Alert>;
+        return (
+            <PageRouteLayout header="">
+                <Alert variant="error">Noe gikk galt. Prøv igjen senere</Alert>
+            </PageRouteLayout>
+        );
     }
 
     const inntektsmelding = inntektsmeldingerQuery.data.find((i) => i.journalpostId === params.journalpostId);
