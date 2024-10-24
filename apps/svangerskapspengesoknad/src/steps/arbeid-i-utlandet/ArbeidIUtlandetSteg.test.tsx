@@ -6,11 +6,11 @@ import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import dayjs from 'dayjs';
 import MockDate from 'mockdate';
 
-import * as stories from './ArbeidIUtlandet.stories';
+import * as stories from './ArbeidIUtlandetSteg.stories';
 
 const { Default } = composeStories(stories);
 
-describe('<ArbeidIUtlandet>', () => {
+describe('<ArbeidIUtlandetSteg>', () => {
     it('skal vise feilmelding når ingenting er utfylt', async () => {
         render(<Default />);
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();

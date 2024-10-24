@@ -111,7 +111,7 @@ export interface Props {
     arbeidsforhold: Arbeidsforhold[];
 }
 
-export const TilretteleggingStep: FunctionComponent<Props> = ({
+export const TilretteleggingSteg: FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     arbeidsforhold,

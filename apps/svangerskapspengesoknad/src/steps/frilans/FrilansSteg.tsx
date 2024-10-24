@@ -3,12 +3,12 @@ import { SøknadRoute } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
-import { getNextRouteValgAvArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
+import { getRuteVelgArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
 
 import { Heading } from '@navikt/ds-react';
 
-import { EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, EgenNæring } from '@navikt/fp-types';
+import { FrilansPanel } from '@navikt/fp-steg-frilans';
+import { Arbeidsforhold, Frilans } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -18,27 +18,25 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-export const EgenNæringStep: React.FunctionComponent<Props> = ({
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-    arbeidsforhold,
-}) => {
+export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
-    const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
+    const frilans = useContextGetData(ContextDataType.FRILANS);
     const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
-    const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
+    const oppdaterFrilans = useContextSaveData(ContextDataType.FRILANS);
 
-    const onSubmit = (values: EgenNæring) => {
-        oppdaterEgenNæring(values);
+    const onSubmit = (values: Frilans) => {
+        oppdaterFrilans(values);
 
         const route = arbeidsforholdOgInntekt.harHattArbeidIUtlandet ? SøknadRoute.ARBEID_I_UTLANDET : undefined;
-        const nextRoute =
-            route ?? getNextRouteValgAvArbeidEllerSkjema(barnet.termindato, arbeidsforhold, arbeidsforholdOgInntekt);
-        return navigator.goToStep(nextRoute);
+        const nextRoute = arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende ? SøknadRoute.NÆRING : route;
+
+        return navigator.goToStep(
+            nextRoute ?? getRuteVelgArbeidEllerSkjema(barnet.termindato, arbeidsforhold, arbeidsforholdOgInntekt),
+        );
     };
 
     const saveOnPrevious = () => {
@@ -50,15 +48,14 @@ export const EgenNæringStep: React.FunctionComponent<Props> = ({
             <Heading size="large">
                 <FormattedMessage id="søknad.pageheading" />
             </Heading>
-            <EgenNæringPanel
-                egenNæring={egenNæring}
+            <FrilansPanel
+                frilans={frilans}
                 saveOnNext={onSubmit}
                 saveOnPrevious={saveOnPrevious}
                 cancelApplication={avbrytSøknad}
                 onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
-                stønadstype="Svangerskapspenger"
                 onStepChange={navigator.goToStep}
             />
         </ContentWrapper>

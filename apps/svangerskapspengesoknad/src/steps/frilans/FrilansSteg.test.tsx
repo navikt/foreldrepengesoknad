@@ -7,11 +7,11 @@ import dayjs from 'dayjs';
 
 import { FRILANS_ID } from '@navikt/fp-types';
 
-import * as stories from './FrilansStep.stories';
+import * as stories from './FrilansSteg.stories';
 
 const { Default } = composeStories(stories);
 
-describe('<Arbeid som frilanser>', () => {
+describe('<FrilansSteg>', () => {
     it('skal gå til neste steg når informasjon er korrekt', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();

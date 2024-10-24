@@ -36,7 +36,7 @@ export const Bedriftsbanner: React.FunctionComponent<Props> = ({ arbeidsforholdT
         <div className={bem.block}>
             <HStack gap="5">
                 <div className={bem.element('ikon')}>
-                    <Buildings3Icon aria-hidden={true} height={'24px'} width={'24px'} />
+                    <Buildings3Icon aria-hidden={true} height="24px" width="24px" />
                 </div>
                 <div className={bem.element('tekst')}>
                     <VStack gap="1">

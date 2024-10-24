@@ -5,11 +5,11 @@ import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute } from 'appData/routes';
 import dayjs from 'dayjs';
 
-import * as stories from './PerioderStep.stories';
+import * as stories from './PerioderSteg.stories';
 
 const { Default, FlereStillinger, FremTilFødselsdato } = composeStories(stories);
 
-describe('<Perioder>', () => {
+describe('<PerioderSteg>', () => {
     const user = userEvent.setup();
 
     it('feilmelding når ingenting er utfylt', async () => {

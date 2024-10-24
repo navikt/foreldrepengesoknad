@@ -31,7 +31,7 @@ type Props = {
     søkerInfo: Søkerinfo;
 };
 
-export const Oppsummering: React.FunctionComponent<Props> = ({
+export const OppsummeringSteg: React.FunctionComponent<Props> = ({
     sendSøknad,
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,

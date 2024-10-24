@@ -7,11 +7,11 @@ import dayjs from 'dayjs';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
-import * as stories from './Barnet.stories';
+import * as stories from './BarnetSteg.stories';
 
 const { Default } = composeStories(stories);
 
-describe('<Barnet>', () => {
+describe('<BarnetSteg>', () => {
     it('skal ikke måtte oppgi fødselsdato om barnet ikke er født', async () => {
         render(<Default />);
 

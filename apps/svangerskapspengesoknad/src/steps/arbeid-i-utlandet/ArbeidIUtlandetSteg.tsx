@@ -4,7 +4,7 @@ import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { ArbeidIUtlandet, ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
-import { getNextRouteValgAvArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
+import { getRuteVelgArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -14,7 +14,7 @@ import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ArbeidIUtlandetFieldArray, NEW_ARBEID_I_UTLANDET } from './ArbeidIUtlandetFieldArray';
-import './arbeidIUtlandet.css';
+import './arbeidIUtlandetSteg.css';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -22,7 +22,7 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-export const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
+export const ArbeidIUtlandetSteg: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     arbeidsforhold,
@@ -46,7 +46,7 @@ export const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
         });
 
         return navigator.goToStep(
-            getNextRouteValgAvArbeidEllerSkjema(barnet.termindato, arbeidsforhold, arbeidsforholdOgInntekt),
+            getRuteVelgArbeidEllerSkjema(barnet.termindato, arbeidsforhold, arbeidsforholdOgInntekt),
         );
     };
 

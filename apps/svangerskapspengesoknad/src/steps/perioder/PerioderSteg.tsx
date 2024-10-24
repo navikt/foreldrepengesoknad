@@ -34,7 +34,7 @@ export interface Props {
     arbeidsforhold: Arbeidsforhold[];
 }
 
-export const PerioderStep: FunctionComponent<Props> = ({
+export const PerioderSteg: FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     arbeidsforhold,

@@ -9,7 +9,7 @@ import { DelvisTilrettelegging, IngenTilrettelegging } from 'types/Tilretteleggi
 import { initAmplitude } from '@navikt/fp-metrics';
 import { ArbeidsforholdOgInntektSvp, EgenNæring, Frilans, Næringstype } from '@navikt/fp-types';
 
-import { VelgArbeid } from './VelgArbeid';
+import { VelgArbeidSteg } from './VelgArbeidSteg';
 
 const promiseAction =
     () =>
@@ -79,11 +79,11 @@ type StoryArgs = {
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntektSvp;
     egenNæring?: EgenNæring;
     frilans?: Frilans;
-} & ComponentProps<typeof VelgArbeid>;
+} & ComponentProps<typeof VelgArbeidSteg>;
 
 const meta = {
-    title: 'steps/VelgArbeid',
-    component: VelgArbeid,
+    title: 'steps/VelgArbeidSteg',
+    component: VelgArbeidSteg,
     render: ({
         gåTilNesteSide = action('button-click'),
         arbeidsforholdOgInntekt,
@@ -111,7 +111,7 @@ const meta = {
                         },
                     }}
                 >
-                    <VelgArbeid {...rest} />
+                    <VelgArbeidSteg {...rest} />
                 </SvpDataContext>
             </MemoryRouter>
         );

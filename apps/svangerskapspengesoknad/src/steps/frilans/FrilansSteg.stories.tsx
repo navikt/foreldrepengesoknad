@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import { ArbeidIUtlandetStep } from './ArbeidIUtlandetStep';
+import { FrilansSteg } from './FrilansSteg';
 
 const promiseAction =
     () =>
@@ -16,36 +16,26 @@ const promiseAction =
         return Promise.resolve();
     };
 
-const DEFAULT_ARBEIDSFORHOLD = [
-    {
-        id: '0132715641-23932-19917-03900-809964087910',
-        arbeidsgiverId: '995090910',
-        arbeidsgiverIdType: 'orgnr',
-        arbeidsgiverNavn: 'Re Kommune',
-        fom: '2018-06-01T00:00:00.000Z',
-        stillingsprosent: 0,
-    },
-];
-
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
-} & ComponentProps<typeof ArbeidIUtlandetStep>;
+} & ComponentProps<typeof FrilansSteg>;
 
 const meta = {
-    title: 'steps/ArbeidIUtlandet',
-    component: ArbeidIUtlandetStep,
+    title: 'steps/FrilansSteg',
+    component: FrilansSteg,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();
         return (
-            <MemoryRouter initialEntries={[SøknadRoute.ARBEID_I_UTLANDET]}>
+            <MemoryRouter initialEntries={[SøknadRoute.FRILANS]}>
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                            harHattArbeidIUtlandet: true,
-                            harJobbetSomFrilans: false,
+                            harJobbetSomFrilans: true,
+                            harHattArbeidIUtlandet: false,
                             harJobbetSomSelvstendigNæringsdrivende: false,
                         },
+
                         [ContextDataType.OM_BARNET]: {
                             erBarnetFødt: false,
                             termindato: '2024-02-18',
@@ -53,7 +43,7 @@ const meta = {
                         },
                     }}
                 >
-                    <ArbeidIUtlandetStep {...rest} />
+                    <FrilansSteg {...rest} />
                 </SvpDataContext>
             </MemoryRouter>
         );
@@ -65,7 +55,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        arbeidsforhold: [],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: promiseAction(),
     },

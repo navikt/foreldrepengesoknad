@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import { FrilansStep } from './FrilansStep';
+import { EgenNæringSteg } from './EgenNæringSteg';
 
 const promiseAction =
     () =>
@@ -18,24 +18,23 @@ const promiseAction =
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
-} & ComponentProps<typeof FrilansStep>;
+} & ComponentProps<typeof EgenNæringSteg>;
 
 const meta = {
-    title: 'steps/FrilansStep',
-    component: FrilansStep,
+    title: 'steps/EgenNæringSteg',
+    component: EgenNæringSteg,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();
         return (
-            <MemoryRouter initialEntries={[SøknadRoute.FRILANS]}>
+            <MemoryRouter initialEntries={[SøknadRoute.NÆRING]}>
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
-                            harJobbetSomFrilans: true,
+                            harJobbetSomSelvstendigNæringsdrivende: true,
                             harHattArbeidIUtlandet: false,
-                            harJobbetSomSelvstendigNæringsdrivende: false,
+                            harJobbetSomFrilans: false,
                         },
-
                         [ContextDataType.OM_BARNET]: {
                             erBarnetFødt: false,
                             termindato: '2024-02-18',
@@ -43,7 +42,7 @@ const meta = {
                         },
                     }}
                 >
-                    <FrilansStep {...rest} />
+                    <EgenNæringSteg {...rest} />
                 </SvpDataContext>
             </MemoryRouter>
         );

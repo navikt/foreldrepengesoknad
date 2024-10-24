@@ -10,7 +10,7 @@ import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { EGEN_NÆRING_ID, EgenNæring, FRILANS_ID, Frilans, Næringstype } from '@navikt/fp-types';
 
-import { TilretteleggingStep } from './TilretteleggingStep';
+import { TilretteleggingSteg } from './TilretteleggingSteg';
 
 const promiseAction =
     () =>
@@ -47,11 +47,11 @@ type StoryArgs = {
     egenNæring?: EgenNæring;
     valgteArbeidsforhold?: string[];
     valgtTilretteleggingId: string;
-} & ComponentProps<typeof TilretteleggingStep>;
+} & ComponentProps<typeof TilretteleggingSteg>;
 
 const meta = {
-    title: 'steps/TilretteleggingStep',
-    component: TilretteleggingStep,
+    title: 'steps/TilretteleggingSteg',
+    component: TilretteleggingSteg,
     render: ({
         gåTilNesteSide = action('button-click'),
         frilans,
@@ -85,7 +85,7 @@ const meta = {
                 >
                     <Routes>
                         <Route
-                            element={<TilretteleggingStep {...rest} />}
+                            element={<TilretteleggingSteg {...rest} />}
                             path={`/${SøknadRoute.TILRETTELEGGING}/${TILRETTELEGGING_PARAM}`}
                         />
                     </Routes>

@@ -1,5 +1,5 @@
 import { IntlShape, useIntl } from 'react-intl';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import {
     DelivisTilretteleggingPeriodeType,
     DelvisTilrettelegging,
@@ -14,7 +14,7 @@ import { ProgressStep } from '@navikt/fp-ui';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './SvpDataContext';
-import { RouteParams, SøknadRoute, addTilretteleggingIdToRoute } from './routes';
+import { SøknadRoute, addTilretteleggingIdToRoute } from './routes';
 
 const getStepLabels = (
     intl: IntlShape,
@@ -110,7 +110,6 @@ const getStepConfig = (
     currentPath: SøknadRoute | string,
     arbeidsforhold: Arbeidsforhold[],
     getStateData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
-    valgtTilretteleggingId?: string,
 ): Array<ProgressStep<SøknadRoute | string>> => {
     const arbeidsforholdOgInntekt = getStateData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const tilrettelegginger = getStateData(ContextDataType.TILRETTELEGGINGER);
@@ -168,7 +167,7 @@ const getStepConfig = (
         const id = harValgtEnTilrettelegging
             ? valgteArbeidsforhold[0]
             : getTilretteleggingId(arbeidsforhold, barn.termindato, arbeidsforholdOgInntekt);
-        const labels = getTilretteleggingLabels(intl, false, arbeidsforhold, valgtTilretteleggingId);
+        const labels = getTilretteleggingLabels(intl, false, arbeidsforhold, id);
         steps.push(...createTilretteleggingSteps(currentPath, labels, id, tilrettelegginger?.[id]));
     } else {
         steps.push(createStep(SøknadRoute.SKJEMA, intl, currentPath));
@@ -185,7 +184,6 @@ export const useStepConfig = (arbeidsforhold: Arbeidsforhold[]): Array<ProgressS
 
     const location = useLocation();
     const getStateData = useContextGetAnyData();
-    const params = useParams<RouteParams>();
 
-    return getStepConfig(intl, location.pathname, arbeidsforhold, getStateData, params.tilretteleggingId);
+    return getStepConfig(intl, location.pathname, arbeidsforhold, getStateData);
 };

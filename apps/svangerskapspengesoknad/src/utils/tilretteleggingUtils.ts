@@ -1,4 +1,4 @@
-import { SøknadRoute } from 'appData/routes';
+import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import dayjs, { Dayjs } from 'dayjs';
 import { IntlShape } from 'react-intl';
 import { Barn } from 'types/Barn';
@@ -300,7 +300,7 @@ export const getPeriodeForTilrettelegging = (
     return { fom: arbeidsforhold.fom, tom: arbeidsforhold.tom };
 };
 
-export const getNextRouteValgAvArbeidEllerSkjema = (
+export const getRuteVelgArbeidEllerSkjema = (
     termindato: string,
     arbeidsforhold: Arbeidsforhold[],
     arbeidsforholdOgInntekt: ArbeidsforholdOgInntektSvp,
@@ -313,6 +313,9 @@ export const getNextRouteValgAvArbeidEllerSkjema = (
         arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende,
     );
     return harKunEtArbeid
-        ? SøknadRoute.SKJEMA + '/' + getTilretteleggingId(aktiveArbeidsforhold, termindato, arbeidsforholdOgInntekt)
+        ? addTilretteleggingIdToRoute(
+              SøknadRoute.SKJEMA,
+              getTilretteleggingId(aktiveArbeidsforhold, termindato, arbeidsforholdOgInntekt),
+          )
         : SøknadRoute.VELG_ARBEID;
 };

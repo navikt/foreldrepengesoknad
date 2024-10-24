@@ -5,7 +5,7 @@ import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { useTilretteleggingerHelper } from 'appData/useTilretteleggingerHelper';
 import { FormattedMessage } from 'react-intl';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
-import { getNextRouteValgAvArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
+import { getRuteVelgArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
 
 import { Heading } from '@navikt/ds-react';
 
@@ -35,7 +35,7 @@ const getNextRoute = (
     if (values.harHattArbeidIUtlandet) {
         return SøknadRoute.ARBEID_I_UTLANDET;
     }
-    return getNextRouteValgAvArbeidEllerSkjema(termindato, aktiveArbeidsforhold, values);
+    return getRuteVelgArbeidEllerSkjema(termindato, aktiveArbeidsforhold, values);
 };
 
 type Props = {

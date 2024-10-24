@@ -5,11 +5,11 @@ import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import { TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 
-import * as stories from './VelgArbeid.stories';
+import * as stories from './VelgArbeidSteg.stories';
 
 const { Default } = composeStories(stories);
 
-describe('<Velg arbeid>', () => {
+describe('<VelgArbeidSteg>', () => {
     it('skal vise feilmelding hvis ingen arbeidsforhold er avhuket', async () => {
         render(<Default />);
 

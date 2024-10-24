@@ -26,7 +26,7 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-export const VelgArbeid: React.FunctionComponent<Props> = ({
+export const VelgArbeidSteg: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     arbeidsforhold,

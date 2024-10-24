@@ -58,7 +58,7 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-export const Barnet: React.FunctionComponent<Props> = ({
+export const BarnetSteg: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     arbeidsforhold,

@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import { Barnet } from './Barnet';
+import { BarnetSteg } from './BarnetSteg';
 
 const promiseAction =
     () =>
@@ -18,17 +18,17 @@ const promiseAction =
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
-} & ComponentProps<typeof Barnet>;
+} & ComponentProps<typeof BarnetSteg>;
 
 const meta = {
-    title: 'steps/Barnet',
-    component: Barnet,
+    title: 'steps/BarnetSteg',
+    component: BarnetSteg,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoute.BARNET]}>
                 <SvpDataContext onDispatch={gåTilNesteSide}>
-                    <Barnet {...rest} />
+                    <BarnetSteg {...rest} />
                 </SvpDataContext>
             </MemoryRouter>
         );

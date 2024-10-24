@@ -14,7 +14,7 @@ import {
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import { PerioderStep } from './PerioderStep';
+import { PerioderSteg } from './PerioderSteg';
 
 const TILRETTELEGGING_ID = '263929546-6215-9868-5127-161910165730101';
 const ANNEN_TILRETTELEGGING_ID = '0132715641-23932-19917-03900-809964087910';
@@ -100,11 +100,11 @@ type StoryArgs = {
     barn?: Barn;
     gåTilNesteSide?: (action: Action) => void;
     valgtTilretteleggingId?: string;
-} & ComponentProps<typeof PerioderStep>;
+} & ComponentProps<typeof PerioderSteg>;
 
 const meta = {
-    title: 'steps/PerioderStep',
-    component: PerioderStep,
+    title: 'steps/PerioderSteg',
+    component: PerioderSteg,
     render: ({
         gåTilNesteSide = action('button-click'),
         tilrettelegging,
@@ -131,7 +131,7 @@ const meta = {
                 >
                     <Routes>
                         <Route
-                            element={<PerioderStep {...rest} />}
+                            element={<PerioderSteg {...rest} />}
                             path={`/${SøknadRoute.PERIODER}/${TILRETTELEGGING_PARAM}`}
                         />
                     </Routes>

@@ -7,11 +7,11 @@ import dayjs from 'dayjs';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 
-import * as stories from './TilretteleggingStep.stories';
+import * as stories from './TilretteleggingSteg.stories';
 
 const { ForArbeidsforhold } = composeStories(stories);
 
-describe('<Behov for tilrettelegging>', () => {
+describe('<TilretteleggingSteg>', () => {
     const user = userEvent.setup();
     it('skal vise feilmelding når ingenting er fylt eller huket av', async () => {
         render(<ForArbeidsforhold />);
