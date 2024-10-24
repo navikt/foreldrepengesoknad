@@ -29,7 +29,10 @@ const preview: Preview = {
     // beforeAll is available in Storybook 8.2. Else the call would happen outside of the preview object
     beforeAll: async () => {
         initialize({
-            onUnhandledRequest: 'bypass',
+            onUnhandledRequest: (req) => {
+                console.warn(`Unhandled request: ${req.method} ${req.url}`);
+            },
+            // onUnhandledRequest: 'bypass',
             serviceWorker: {
                 url: './mockServiceWorker.js',
             },

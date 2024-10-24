@@ -21,9 +21,7 @@ const meta = {
         return (
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter
-                    initialEntries={[
-                        `${OversiktRoutes.SAKSOVERSIKT}/352011079/${OversiktRoutes.INNTEKTSMELDING}/1017115920`,
-                    ]}
+                    initialEntries={[`${OversiktRoutes.SAKSOVERSIKT}/1/${OversiktRoutes.INNTEKTSMELDING}/1017115920`]}
                 >
                     <Routes>
                         <Route

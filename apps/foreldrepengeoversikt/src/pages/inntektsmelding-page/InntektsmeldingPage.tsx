@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { ReactNode } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 
-import { BodyShort, Detail, HGrid, Heading, List, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Detail, HGrid, Heading, List, Loader, VStack } from '@navikt/ds-react';
 
 import { formatCurrency, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
@@ -19,11 +19,18 @@ import OversiktRoutes from '../../routes/routes';
 export const InntektsmeldingPage = () => {
     useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.INNTEKTSMELDING);
+    const GRUNNBELØP = useQuery(hentGrunnbeløpOptions()).data;
 
     const params = useParams();
-    const inntektsmeldinger = useQuery(hentInntektsmelding(params.saksnummer!)).data;
-    const inntektsmelding = inntektsmeldinger?.find((i) => i.journalpostId === params.journalpostId);
-    const GRUNNBELØP = useQuery(hentGrunnbeløpOptions()).data;
+    const inntektsmeldingerQuery = useQuery(hentInntektsmelding(params.saksnummer!));
+    if (inntektsmeldingerQuery.isPending) {
+        return <Loader />;
+    }
+    if (inntektsmeldingerQuery.isError) {
+        return <Alert variant="error">Noe gikk galt. Prøv igjen senere</Alert>;
+    }
+
+    const inntektsmelding = inntektsmeldingerQuery.data.find((i) => i.journalpostId === params.journalpostId);
 
     if (!inntektsmelding) {
         return <Navigate replace to={`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`} />;
@@ -96,7 +103,6 @@ export const InntektsmeldingPage = () => {
 const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
     const { inntektPrMnd, refusjonsperioder, refusjonPrMnd, arbeidsgiverNavn } = inntektsmelding;
 
-    const førsteRefusjonsPeriode = refusjonsperioder[0];
     return (
         <>
             <VStack className="mb-4">
@@ -109,7 +115,7 @@ const HvordanUtbetalesPengene = ({ inntektsmelding }: { inntektsmelding: Inntekt
                 </BodyShort>
                 {refusjonsperioder.map((periode) => (
                     <BodyShort key={periode.fomDato}>
-                        Fra {formatDate(førsteRefusjonsPeriode.fomDato)}
+                        Fra {formatDate(periode.fomDato)}
                         {' - '}
                         <HvordanUtbetalesPengeneTekst
                             inntektPrMnd={inntektPrMnd}
