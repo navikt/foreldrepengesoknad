@@ -111,7 +111,9 @@ const Tidslinje: React.FunctionComponent<Params> = ({
                             />
                         );
                     }
-                    return <DokumentHendelse dokument={dokument} key={dokument.url} visesITidslinjen={true} />;
+                    return (
+                        <DokumentHendelse dokument={dokument} key={dokument.journalpostId} visesITidslinjen={true} />
+                    );
                 });
                 const visKlokkeslett =
                     hendelse.tidslinjeHendelseType !== TidslinjehendelseType.FAMILIEHENDELSE &&

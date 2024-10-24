@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
+import { Fragment, FunctionComponent } from 'react';
 
 import { Accordion } from '@navikt/ds-react';
 
@@ -35,12 +35,12 @@ const PeriodeListe: FunctionComponent<Props> = ({ perioder }) => {
             <Accordion>
                 {permisjonsperioder.map((p, index) => {
                     return (
-                        <>
+                        <Fragment key={index}>
                             {indexOfFørstePeriodeEtterFødsel === index ? (
                                 <PeriodeListeItem permisjonsperiode={p} erFamiliehendelse={true} />
                             ) : null}
                             <PeriodeListeItem permisjonsperiode={p} />
-                        </>
+                        </Fragment>
                     );
                 })}
             </Accordion>
