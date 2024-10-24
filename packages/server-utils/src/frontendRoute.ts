@@ -48,7 +48,7 @@ const replaceAppSettings = (html: string) => {
 
 const setupViteMode = (app: Express) => {
     addViteModeHtmlToResponse(app, {
-        port: '9070',
+        port: '8080',
         useNonce: false,
         indexFilePath: 'src/bootstrap.tsx',
         mountId: 'app',
