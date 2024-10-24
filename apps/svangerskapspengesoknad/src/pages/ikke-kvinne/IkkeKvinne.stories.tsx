@@ -4,7 +4,7 @@ import '@navikt/ds-css';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import IkkeKvinne from './IkkeKvinne';
+import { IkkeKvinne } from './IkkeKvinne';
 
 const meta = {
     title: 'pages/IkkeKvinne',

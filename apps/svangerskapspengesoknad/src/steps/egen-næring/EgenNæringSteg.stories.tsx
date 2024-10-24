@@ -1,13 +1,13 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import EgenNæringStep from './EgenNæringStep';
+import { EgenNæringSteg } from './EgenNæringSteg';
 
 const promiseAction =
     () =>
@@ -18,15 +18,15 @@ const promiseAction =
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
-} & ComponentProps<typeof EgenNæringStep>;
+} & ComponentProps<typeof EgenNæringSteg>;
 
 const meta = {
-    title: 'steps/EgenNæringStep',
-    component: EgenNæringStep,
+    title: 'steps/EgenNæringSteg',
+    component: EgenNæringSteg,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.NÆRING]}>
+            <MemoryRouter initialEntries={[SøknadRoute.NÆRING]}>
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
@@ -42,7 +42,7 @@ const meta = {
                         },
                     }}
                 >
-                    <EgenNæringStep {...rest} />
+                    <EgenNæringSteg {...rest} />
                 </SvpDataContext>
             </MemoryRouter>
         );

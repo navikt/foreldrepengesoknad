@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute } from 'appData/routes';
 
 import * as stories from './Forside.stories';
 
@@ -37,7 +37,7 @@ describe('<Forside>', () => {
         expect(setHarGodkjentVilkår).toHaveBeenCalledTimes(1);
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: SøknadRoutes.BARNET,
+            data: SøknadRoute.BARNET,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

@@ -1,6 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import useStepConfig from 'appData/useStepConfig';
-import useSvpNavigator from 'appData/useSvpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
+import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
@@ -15,7 +15,7 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
+export const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     arbeidsforhold,
@@ -49,9 +49,8 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
                 onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
+                onStepChange={navigator.goToStep}
             />
         </ContentWrapper>
     );
 };
-
-export default SenereUtenlandsoppholdSteg;

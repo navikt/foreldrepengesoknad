@@ -1,14 +1,14 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute, TILRETTELEGGING_PARAM, addTilretteleggingIdToRoute } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
-import { ArbeidsforholdOgInntektSvp, Attachment } from '@navikt/fp-types';
+import { ArbeidsforholdOgInntektSvp, Attachment, EGEN_NÆRING_ID, FRILANS_ID } from '@navikt/fp-types';
 
 import { SkjemaSteg } from './SkjemaSteg';
 
@@ -47,7 +47,7 @@ type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
     vedlegg?: Record<string, Attachment[]>;
     valgteArbeidsforhold?: string[];
-    valgtTilretteleggingId?: string;
+    valgtTilretteleggingId: string;
     arbeidsforholdOgInntekt: ArbeidsforholdOgInntektSvp;
 } & ComponentProps<typeof SkjemaSteg>;
 
@@ -57,21 +57,20 @@ const meta = {
     render: ({
         gåTilNesteSide = action('button-click'),
         vedlegg,
-        valgtTilretteleggingId,
         valgteArbeidsforhold,
+        valgtTilretteleggingId,
         arbeidsforholdOgInntekt,
         ...rest
     }) => {
         initAmplitude();
 
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.SKJEMA]}>
+            <MemoryRouter initialEntries={[addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, valgtTilretteleggingId)]}>
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: arbeidsforholdOgInntekt,
                         [ContextDataType.TILRETTELEGGINGER_VEDLEGG]: vedlegg,
-                        [ContextDataType.VALGT_TILRETTELEGGING_ID]: valgtTilretteleggingId,
                         [ContextDataType.VALGTE_ARBEIDSFORHOLD]: valgteArbeidsforhold,
                         [ContextDataType.OM_BARNET]: {
                             erBarnetFødt: false,
@@ -80,7 +79,12 @@ const meta = {
                         },
                     }}
                 >
-                    <SkjemaSteg {...rest} />
+                    <Routes>
+                        <Route
+                            element={<SkjemaSteg {...rest} />}
+                            path={`/${SøknadRoute.SKJEMA}/${TILRETTELEGGING_PARAM}`}
+                        />
+                    </Routes>
                 </SvpDataContext>
             </MemoryRouter>
         );
@@ -106,6 +110,7 @@ export const SkalIkkeFeileOpplasting: Story = {
         avbrytSøknad: promiseAction(),
         arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
         maxAntallVedlegg: 40,
+        valgtTilretteleggingId: ARBEIDSGIVER_ID,
         arbeidsforholdOgInntekt: {
             harHattArbeidIUtlandet: false,
             harJobbetSomFrilans: false,
@@ -132,7 +137,6 @@ export const MedVedlegg: Story = {
     parameters: SkalIkkeFeileOpplasting.parameters,
     args: {
         ...SkalIkkeFeileOpplasting.args,
-        valgtTilretteleggingId: ARBEIDSGIVER_ID,
         vedlegg: {
             [ARBEIDSGIVER_ID]: [
                 {
@@ -164,6 +168,8 @@ export const ErTypeFrilans: Story = {
     parameters: SkalIkkeFeileOpplasting.parameters,
     args: {
         ...SkalIkkeFeileOpplasting.args,
+        valgtTilretteleggingId: FRILANS_ID,
+        valgteArbeidsforhold: [FRILANS_ID],
         arbeidsforholdOgInntekt: {
             harHattArbeidIUtlandet: false,
             harJobbetSomFrilans: true,
@@ -176,6 +182,8 @@ export const ErTypeEgenNæring: Story = {
     parameters: SkalIkkeFeileOpplasting.parameters,
     args: {
         ...SkalIkkeFeileOpplasting.args,
+        valgtTilretteleggingId: EGEN_NÆRING_ID,
+        valgteArbeidsforhold: [EGEN_NÆRING_ID],
         arbeidsforholdOgInntekt: {
             harHattArbeidIUtlandet: false,
             harJobbetSomFrilans: false,

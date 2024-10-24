@@ -1,14 +1,14 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Utenlandsopphold } from '@navikt/fp-types';
 
-import TidligereUtenlandsoppholdSteg from './TidligereUtenlandsoppholdSteg';
+import { TidligereUtenlandsoppholdSteg } from './TidligereUtenlandsoppholdSteg';
 
 const promiseAction =
     () =>
@@ -35,7 +35,7 @@ const meta = {
     }) => {
         initAmplitude();
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.HAR_BODD_I_UTLANDET]}>
+            <MemoryRouter initialEntries={[SøknadRoute.HAR_BODD_I_UTLANDET]}>
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{

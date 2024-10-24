@@ -1,40 +1,16 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
-import useStepConfig from 'appData/useStepConfig';
-import useSvpNavigator from 'appData/useSvpNavigator';
+import { SøknadRoute } from 'appData/routes';
+import { useStepConfig } from 'appData/useStepConfig';
+import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
-import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
+import { getRuteVelgArbeidEllerSkjema as getRuteSkjemaEllerVelgArbeid } from 'utils/tilretteleggingUtils';
 
 import { Heading } from '@navikt/ds-react';
 
 import { EgenNæringPanel } from '@navikt/fp-steg-egen-naering';
-import { Arbeidsforhold, ArbeidsforholdOgInntektSvp, EgenNæring } from '@navikt/fp-types';
+import { Arbeidsforhold, EgenNæring } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
-
-const getNextRouteValgAvArbeidEllerSkjema = (
-    termindato: string,
-    arbeidsforhold: Arbeidsforhold[],
-    inntektsinformasjon: ArbeidsforholdOgInntektSvp,
-): SøknadRoutes => {
-    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
-    const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
-        termindato,
-        aktiveArbeidsforhold,
-        inntektsinformasjon.harJobbetSomFrilans,
-        inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
-    );
-    return harKunEtArbeid ? SøknadRoutes.SKJEMA : SøknadRoutes.VELG_ARBEID;
-};
-
-const getNextRoute = (
-    inntektsinformasjon: ArbeidsforholdOgInntektSvp,
-    termindato: string,
-    arbeidsforhold: Arbeidsforhold[],
-): SøknadRoutes => {
-    const nextRoute = inntektsinformasjon.harHattArbeidIUtlandet ? SøknadRoutes.ARBEID_I_UTLANDET : undefined;
-    return nextRoute ?? getNextRouteValgAvArbeidEllerSkjema(termindato, arbeidsforhold, inntektsinformasjon);
-};
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -42,7 +18,7 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-const EgenNæringStep: React.FunctionComponent<Props> = ({
+export const EgenNæringSteg: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     arbeidsforhold,
@@ -58,7 +34,11 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
 
     const onSubmit = (values: EgenNæring) => {
         oppdaterEgenNæring(values);
-        return navigator.goToNextStep(getNextRoute(arbeidsforholdOgInntekt, barnet.termindato, arbeidsforhold));
+
+        const route = arbeidsforholdOgInntekt.harHattArbeidIUtlandet ? SøknadRoute.ARBEID_I_UTLANDET : undefined;
+        const nextRoute =
+            route ?? getRuteSkjemaEllerVelgArbeid(barnet.termindato, arbeidsforhold, arbeidsforholdOgInntekt);
+        return navigator.goToStep(nextRoute);
     };
 
     const saveOnPrevious = () => {
@@ -79,9 +59,8 @@ const EgenNæringStep: React.FunctionComponent<Props> = ({
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
                 stønadstype="Svangerskapspenger"
+                onStepChange={navigator.goToStep}
             />
         </ContentWrapper>
     );
 };
-
-export default EgenNæringStep;

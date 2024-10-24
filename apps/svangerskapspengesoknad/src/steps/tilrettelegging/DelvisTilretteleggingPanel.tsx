@@ -37,7 +37,7 @@ export interface Props {
     stillinger: Stilling[];
 }
 
-const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({
+export const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({
     barnet,
     arbeidsforholdType,
     sluttdatoArbeid,
@@ -225,5 +225,3 @@ const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({
         </>
     );
 };
-
-export default DelvisTilretteleggingPanel;

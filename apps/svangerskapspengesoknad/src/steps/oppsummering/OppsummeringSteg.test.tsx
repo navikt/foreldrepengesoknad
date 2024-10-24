@@ -2,11 +2,11 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import * as stories from './Oppsummering.stories';
+import * as stories from './OppsummeringSteg.stories';
 
 const { Default } = composeStories(stories);
 
-describe('<Oppsummering>', () => {
+describe('<OppsummeringSteg>', () => {
     it('skal vise feilmelding når vilkår ikke er godkjent', async () => {
         render(<Default />);
 

@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute } from 'appData/routes';
 
 import * as stories from './UtenlandsoppholdSteg.stories';
 
@@ -45,7 +45,7 @@ describe('<Utlandsopphold>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(4, {
-            data: SøknadRoutes.INNTEKTSINFORMASJON,
+            data: SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -82,7 +82,7 @@ describe('<Utlandsopphold>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
-            data: SøknadRoutes.HAR_BODD_I_UTLANDET,
+            data: SøknadRoute.HAR_BODD_I_UTLANDET,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -119,7 +119,7 @@ describe('<Utlandsopphold>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
-            data: SøknadRoutes.SKAL_BO_I_UTLANDET,
+            data: SøknadRoute.SKAL_BO_I_UTLANDET,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -151,7 +151,7 @@ describe('<Utlandsopphold>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.HAR_BODD_I_UTLANDET,
+            data: SøknadRoute.HAR_BODD_I_UTLANDET,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -170,7 +170,7 @@ describe('<Utlandsopphold>', () => {
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: SøknadRoutes.BARNET,
+            data: SøknadRoute.BARNET,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

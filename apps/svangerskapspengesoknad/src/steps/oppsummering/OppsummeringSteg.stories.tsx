@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute } from 'appData/routes';
 import dayjs from 'dayjs';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
@@ -12,7 +12,7 @@ import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-consta
 import { initAmplitude } from '@navikt/fp-metrics';
 import { EGEN_NÆRING_ID, FRILANS_ID, Næringstype, Søker } from '@navikt/fp-types';
 
-import Oppsummering from './Oppsummering';
+import { OppsummeringSteg } from './OppsummeringSteg';
 
 const ARBEIDSFORHOLD_ID = '990322244';
 const ANNEN_ARBEIDSFORHOLD_ID = '975326209';
@@ -91,15 +91,15 @@ const promiseAction =
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
-} & ComponentProps<typeof Oppsummering>;
+} & ComponentProps<typeof OppsummeringSteg>;
 
 const meta = {
-    title: 'steps/Oppsummering',
-    component: Oppsummering,
+    title: 'steps/OppsummeringSteg',
+    component: OppsummeringSteg,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
+            <MemoryRouter initialEntries={[SøknadRoute.OPPSUMMERING]}>
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
@@ -236,7 +236,7 @@ const meta = {
                         },
                     }}
                 >
-                    <Oppsummering {...rest} />
+                    <OppsummeringSteg {...rest} />
                 </SvpDataContext>
             </MemoryRouter>
         );

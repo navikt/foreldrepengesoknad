@@ -29,7 +29,7 @@ import {
     getPeriodeDerSøkerErTilbakeIFullStilling,
     getPeriodeInfoTekst,
     getUferdigPeriodeInput,
-} from './perioderStepUtils';
+} from './perioderStegUtils';
 import {
     validatePeriodeFom,
     validatePeriodeTom,

@@ -1,3 +1,4 @@
+import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import dayjs, { Dayjs } from 'dayjs';
 import { IntlShape } from 'react-intl';
 import { Barn } from 'types/Barn';
@@ -16,6 +17,7 @@ import { ISO_DATE_FORMAT, TIDENES_MORGEN } from '@navikt/fp-constants';
 import {
     Arbeidsforhold,
     ArbeidsforholdOgInntekt,
+    ArbeidsforholdOgInntektSvp,
     EGEN_NÆRING_ID,
     EgenNæring,
     FRILANS_ID,
@@ -28,6 +30,7 @@ import {
     getAktiveArbeidsforhold,
     getTotalStillingsprosentPåSkjæringstidspunktet,
     getUnikeArbeidsforhold,
+    søkerHarKunEtAktivtArbeid,
 } from './arbeidsforholdUtils';
 
 const lagPeriodeMedHelTilretteleggingFremTilSisteSvpDag = (
@@ -165,7 +168,7 @@ export const getOpprinneligStillingsprosent = (
 
 export const getTilretteleggingId = (
     arbeidsforhold: Arbeidsforhold[],
-    barnet: Barn,
+    termindato: string,
     arbeidsforholdOgInntekt: ArbeidsforholdOgInntekt,
     valgteArbeidsforhold?: string[],
     isSisteTilrettelegging = false,
@@ -178,7 +181,7 @@ export const getTilretteleggingId = (
         return EGEN_NÆRING_ID;
     }
 
-    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, barnet.termindato);
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
     return aktiveArbeidsforhold[0]?.arbeidsgiverId;
 };
 
@@ -209,7 +212,13 @@ export const getForrigeTilretteleggingId = (
     currentTilretteleggingId?: string,
 ): string | undefined => {
     if (!currentTilretteleggingId) {
-        return getTilretteleggingId(arbeidsforhold, barnet, arbeidsforholdOgInntekt, valgteArbeidsforhold, true);
+        return getTilretteleggingId(
+            arbeidsforhold,
+            barnet.termindato,
+            arbeidsforholdOgInntekt,
+            valgteArbeidsforhold,
+            true,
+        );
     }
     if (valgteArbeidsforhold) {
         const index = valgteArbeidsforhold.findIndex((a) => a === currentTilretteleggingId) - 1;
@@ -289,4 +298,24 @@ export const getPeriodeForTilrettelegging = (
         throw new Error('kunne ikke finne arbeidsforhold');
     }
     return { fom: arbeidsforhold.fom, tom: arbeidsforhold.tom };
+};
+
+export const getRuteVelgArbeidEllerSkjema = (
+    termindato: string,
+    arbeidsforhold: Arbeidsforhold[],
+    arbeidsforholdOgInntekt: ArbeidsforholdOgInntektSvp,
+): SøknadRoute | string => {
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
+    const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
+        termindato,
+        aktiveArbeidsforhold,
+        arbeidsforholdOgInntekt.harJobbetSomFrilans,
+        arbeidsforholdOgInntekt.harJobbetSomSelvstendigNæringsdrivende,
+    );
+    return harKunEtArbeid
+        ? addTilretteleggingIdToRoute(
+              SøknadRoute.SKJEMA,
+              getTilretteleggingId(aktiveArbeidsforhold, termindato, arbeidsforholdOgInntekt),
+          )
+        : SøknadRoute.VELG_ARBEID;
 };

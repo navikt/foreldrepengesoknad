@@ -20,7 +20,7 @@ import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';
 import { ContextDataType, SvpDataContext } from './SvpDataContext';
-import useSendSøknad from './useSendSøknad';
+import { useSendSøknad } from './useSendSøknad';
 
 const queryClient = new QueryClient({
     defaultOptions: {

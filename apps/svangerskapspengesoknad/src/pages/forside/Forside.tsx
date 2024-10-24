@@ -1,5 +1,5 @@
 import { ContextDataType, useContextSaveData } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute } from 'appData/routes';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -20,7 +20,7 @@ export interface Props {
     locale: LocaleNo;
 }
 
-const Forside: React.FunctionComponent<Props> = ({
+export const Forside: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     setHarGodkjentVilkår,
     harGodkjentVilkår,
@@ -41,7 +41,7 @@ const Forside: React.FunctionComponent<Props> = ({
         } else {
             setHarGodkjentVilkår(true);
 
-            oppdaterAppRoute(SøknadRoutes.BARNET);
+            oppdaterAppRoute(SøknadRoute.BARNET);
 
             mellomlagreSøknadOgNaviger();
         }
@@ -156,5 +156,3 @@ const Forside: React.FunctionComponent<Props> = ({
         </ContentWrapper>
     );
 };
-
-export default Forside;

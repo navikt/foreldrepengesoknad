@@ -76,7 +76,7 @@ const retryCallback = async () => {
     location.reload();
 };
 
-const AppContainer: FunctionComponent = () => {
+export const AppContainer: FunctionComponent = () => {
     const [locale, setLocale] = useState<LocaleNo>(localeFromSessionStorage);
 
     return (
@@ -98,5 +98,3 @@ const AppContainer: FunctionComponent = () => {
         </IntlProvider>
     );
 };
-
-export default AppContainer;

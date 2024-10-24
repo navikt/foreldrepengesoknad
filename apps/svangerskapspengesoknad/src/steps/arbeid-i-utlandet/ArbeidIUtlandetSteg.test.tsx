@@ -2,15 +2,15 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import dayjs from 'dayjs';
 import MockDate from 'mockdate';
 
-import * as stories from './ArbeidIUtlandet.stories';
+import * as stories from './ArbeidIUtlandetSteg.stories';
 
 const { Default } = composeStories(stories);
 
-describe('<ArbeidIUtlandet>', () => {
+describe('<ArbeidIUtlandetSteg>', () => {
     it('skal vise feilmelding når ingenting er utfylt', async () => {
         render(<Default />);
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
@@ -80,7 +80,7 @@ describe('<ArbeidIUtlandet>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.SKJEMA,
+            data: addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, '995090910'),
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

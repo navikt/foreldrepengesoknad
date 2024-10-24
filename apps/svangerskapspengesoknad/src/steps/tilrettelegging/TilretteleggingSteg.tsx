@@ -1,11 +1,12 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
-import useStepConfig from 'appData/useStepConfig';
-import useSvpNavigator from 'appData/useSvpNavigator';
+import { RouteParams, SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
+import { useStepConfig } from 'appData/useStepConfig';
+import { useSvpNavigator } from 'appData/useSvpNavigator';
 import dayjs from 'dayjs';
 import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
+import { useParams } from 'react-router-dom';
 import {
     Arbeidsforholdstype,
     DelivisTilretteleggingPeriodeType,
@@ -19,7 +20,6 @@ import {
     getArbeidsgiverStillingerForTilrettelegging,
     getNesteTilretteleggingId,
     getPeriodeForTilrettelegging,
-    getTilretteleggingId,
     getTypeArbeidForTilrettelegging,
 } from 'utils/tilretteleggingUtils';
 
@@ -39,32 +39,32 @@ import { Step } from '@navikt/fp-ui';
 import { capitalizeFirstLetterInEveryWordOnly, tiMånederSidenDato } from '@navikt/fp-utils';
 import { hasLegalChars, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
-import Bedriftsbanner from '../Bedriftsbanner';
-import DelvisTilretteleggingPanel from './DelvisTilretteleggingPanel';
-import IngenTilretteleggingPanel from './IngenTilretteleggingPanel';
+import { Bedriftsbanner } from '../Bedriftsbanner';
+import { DelvisTilretteleggingPanel } from './DelvisTilretteleggingPanel';
+import { IngenTilretteleggingPanel } from './IngenTilretteleggingPanel';
 import {
     validateBehovForTilretteleggingFom,
     validateRisikofaktorer,
     validateTilretteleggingstiltak,
 } from './tilretteleggingValidation';
 
-const getNextRouteAndTilretteleggingIdForTilretteleggingSteg = (
+const getNextRoute = (
     values: DelvisTilrettelegging | IngenTilrettelegging,
     currentTilretteleggingId: string,
     valgteArbeidsforholdIder?: string[],
-): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
+): string => {
     if (
         values.type === Tilretteleggingstype.DELVIS &&
         values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
     ) {
-        return { nextRoute: SøknadRoutes.PERIODER, nextTilretteleggingId: currentTilretteleggingId };
+        return addTilretteleggingIdToRoute(SøknadRoute.PERIODER, currentTilretteleggingId);
     }
 
     const nesteTilretteleggingId = getNesteTilretteleggingId(currentTilretteleggingId, valgteArbeidsforholdIder);
     if (nesteTilretteleggingId) {
-        return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: nesteTilretteleggingId };
+        return addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, nesteTilretteleggingId);
     }
-    return { nextRoute: SøknadRoutes.OPPSUMMERING };
+    return SøknadRoute.OPPSUMMERING;
 };
 
 const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) =>
@@ -111,7 +111,7 @@ export interface Props {
     arbeidsforhold: Arbeidsforhold[];
 }
 
-export const TilretteleggingStep: FunctionComponent<Props> = ({
+export const TilretteleggingSteg: FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     arbeidsforhold,
@@ -120,19 +120,16 @@ export const TilretteleggingStep: FunctionComponent<Props> = ({
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
+    const params = useParams<RouteParams>();
+    const valgtTilretteleggingId = notEmpty(params.tilretteleggingId);
+
     const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
-    const valgtId = useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID);
     const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
 
     const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
-    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
-
-    const valgtTilretteleggingId =
-        valgtId || getTilretteleggingId(arbeidsforhold, barnet, arbeidsforholdOgInntekt, valgteArbeidsforhold);
 
     const tilrettelegging = tilrettelegginger?.[valgtTilretteleggingId];
 
@@ -172,16 +169,9 @@ export const TilretteleggingStep: FunctionComponent<Props> = ({
     const onSubmit = (values: DelvisTilrettelegging | IngenTilrettelegging) => {
         oppdaterTilrettelegginger({ ...tilrettelegginger, [valgtTilretteleggingId]: values });
 
-        const { nextRoute, nextTilretteleggingId } = getNextRouteAndTilretteleggingIdForTilretteleggingSteg(
-            values,
-            valgtTilretteleggingId,
-            valgteArbeidsforhold,
-        );
-        if (nextTilretteleggingId) {
-            oppdaterValgtTilretteleggingId(nextTilretteleggingId);
-        }
+        const nextRoute = getNextRoute(values, valgtTilretteleggingId, valgteArbeidsforhold);
 
-        return navigator.goToNextStep(nextRoute);
+        return navigator.goToStep(nextRoute);
     };
 
     const formMethods = useForm<DelvisTilrettelegging | IngenTilrettelegging>({
@@ -197,6 +187,7 @@ export const TilretteleggingStep: FunctionComponent<Props> = ({
             onCancel={avbrytSøknad}
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
+            onStepChange={navigator.goToStep}
         >
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">

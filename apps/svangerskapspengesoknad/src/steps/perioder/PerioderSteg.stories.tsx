@@ -1,9 +1,9 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute, TILRETTELEGGING_PARAM, addTilretteleggingIdToRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { Barn } from 'types/Barn';
 import {
     DelivisTilretteleggingPeriodeType,
@@ -14,7 +14,7 @@ import {
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import { PerioderStep } from './PerioderStep';
+import { PerioderSteg } from './PerioderSteg';
 
 const TILRETTELEGGING_ID = '263929546-6215-9868-5127-161910165730101';
 const ANNEN_TILRETTELEGGING_ID = '0132715641-23932-19917-03900-809964087910';
@@ -96,33 +96,45 @@ const promiseAction =
 
 type StoryArgs = {
     tilrettelegging: IngenTilrettelegging | DelvisTilrettelegging;
+    valgteArbeidsforhold: string[];
     barn?: Barn;
     gåTilNesteSide?: (action: Action) => void;
-    valgtTilrettelegging?: string;
-} & ComponentProps<typeof PerioderStep>;
+    valgtTilretteleggingId?: string;
+} & ComponentProps<typeof PerioderSteg>;
 
 const meta = {
-    title: 'steps/PerioderStep',
-    component: PerioderStep,
+    title: 'steps/PerioderSteg',
+    component: PerioderSteg,
     render: ({
         gåTilNesteSide = action('button-click'),
         tilrettelegging,
-        valgtTilrettelegging = TILRETTELEGGING_ID,
+        valgtTilretteleggingId = TILRETTELEGGING_ID,
+        valgteArbeidsforhold,
         barn = DEFAULT_BARN,
         ...rest
     }) => {
         initAmplitude();
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.PERIODER]}>
+            <MemoryRouter initialEntries={[addTilretteleggingIdToRoute(SøknadRoute.PERIODER, valgtTilretteleggingId)]}>
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
-                        [ContextDataType.TILRETTELEGGINGER]: { [valgtTilrettelegging]: tilrettelegging },
-                        [ContextDataType.VALGT_TILRETTELEGGING_ID]: valgtTilrettelegging,
+                        [ContextDataType.TILRETTELEGGINGER]: { [valgtTilretteleggingId]: tilrettelegging },
                         [ContextDataType.OM_BARNET]: barn,
+                        [ContextDataType.VALGTE_ARBEIDSFORHOLD]: valgteArbeidsforhold,
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                            harHattArbeidIUtlandet: false,
+                            harJobbetSomFrilans: false,
+                            harJobbetSomSelvstendigNæringsdrivende: false,
+                        },
                     }}
                 >
-                    <PerioderStep {...rest} />
+                    <Routes>
+                        <Route
+                            element={<PerioderSteg {...rest} />}
+                            path={`/${SøknadRoute.PERIODER}/${TILRETTELEGGING_PARAM}`}
+                        />
+                    </Routes>
                 </SvpDataContext>
             </MemoryRouter>
         );
@@ -135,6 +147,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     args: {
         arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
+        valgteArbeidsforhold: [TILRETTELEGGING_ID],
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: promiseAction(),
         tilrettelegging: {
@@ -162,7 +175,8 @@ export const FremTilFødselsdato: Story = {
 export const FlereStillinger: Story = {
     args: {
         ...Default.args,
-        valgtTilrettelegging: ANNEN_TILRETTELEGGING_ID,
+        valgtTilretteleggingId: ANNEN_TILRETTELEGGING_ID,
+        valgteArbeidsforhold: [ANNEN_TILRETTELEGGING_ID],
         tilrettelegging: {
             behovForTilretteleggingFom: '2023-09-01',
             type: Tilretteleggingstype.DELVIS,

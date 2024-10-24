@@ -23,7 +23,7 @@ const getNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?: string) => {
     return capitalizeFirstLetterInEveryWordOnly(navn);
 };
 
-const Bedriftsbanner: React.FunctionComponent<Props> = ({ arbeidsforholdType, arbeidsforholdNavn }) => {
+export const Bedriftsbanner: React.FunctionComponent<Props> = ({ arbeidsforholdType, arbeidsforholdNavn }) => {
     const bem = bemUtils('bedriftsbanner');
     const intl = useIntl();
     const navn = getNavn(arbeidsforholdType, intl, arbeidsforholdNavn);
@@ -36,7 +36,7 @@ const Bedriftsbanner: React.FunctionComponent<Props> = ({ arbeidsforholdType, ar
         <div className={bem.block}>
             <HStack gap="5">
                 <div className={bem.element('ikon')}>
-                    <Buildings3Icon aria-hidden={true} height={'24px'} width={'24px'} />
+                    <Buildings3Icon aria-hidden={true} height="24px" width="24px" />
                 </div>
                 <div className={bem.element('tekst')}>
                     <VStack gap="1">
@@ -52,5 +52,3 @@ const Bedriftsbanner: React.FunctionComponent<Props> = ({ arbeidsforholdType, ar
         </div>
     );
 };
-
-export default Bedriftsbanner;

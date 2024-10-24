@@ -1,10 +1,10 @@
 import { ContextDataType, useContextGetData } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
-import useStepConfig from 'appData/useStepConfig';
-import useSvpNavigator from 'appData/useSvpNavigator';
-import { useTilretteleggingerHelper } from 'appData/useTilretteleggingerHelper';
+import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
+import { useStepConfig } from 'appData/useStepConfig';
+import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
+import { getTilretteleggingId } from 'utils/tilretteleggingUtils';
 
 import { FormSummary, Heading } from '@navikt/ds-react';
 
@@ -31,7 +31,7 @@ type Props = {
     søkerInfo: Søkerinfo;
 };
 
-const Oppsummering: React.FunctionComponent<Props> = ({
+export const OppsummeringSteg: React.FunctionComponent<Props> = ({
     sendSøknad,
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
@@ -39,17 +39,24 @@ const Oppsummering: React.FunctionComponent<Props> = ({
 }) => {
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, søkerInfo.arbeidsforhold);
-    const { fjernValgtTilretteleggingOgNavigerTilbakeTil } = useTilretteleggingerHelper();
 
     const tilretteleggingerVedlegg = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER_VEDLEGG));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
     const utenlandsoppholdSenere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const utenlandsoppholdTidligere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-    const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
+    const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
     const frilans = useContextGetData(ContextDataType.FRILANS);
 
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(søkerInfo.arbeidsforhold, barn.termindato);
+
+    const førsteTilretteleggingId = getTilretteleggingId(
+        søkerInfo.arbeidsforhold,
+        barn.termindato,
+        arbeidsforholdOgInntekt,
+        valgteArbeidsforhold,
+    );
 
     return (
         <ContentWrapper>
@@ -63,15 +70,14 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                 cancelApplication={avbrytSøknad}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 onContinueLater={navigator.fortsettSøknadSenere}
+                onStepChange={navigator.goToStep}
             >
                 <FormSummary>
                     <FormSummary.Header>
                         <FormSummary.Heading level="2">
                             <FormattedMessage id="oppsummering.omBarnet" />
                         </FormSummary.Heading>
-                        <FormSummary.EditLink
-                            onClick={() => fjernValgtTilretteleggingOgNavigerTilbakeTil(SøknadRoutes.BARNET)}
-                        >
+                        <FormSummary.EditLink onClick={() => navigator.goToStep(SøknadRoute.BARNET)}>
                             <FormattedMessage id="oppsummering.EndreSvar" />
                         </FormSummary.EditLink>
                     </FormSummary.Header>
@@ -93,40 +99,37 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                     </FormSummary.Answers>
                 </FormSummary>
                 <BoIUtlandetOppsummering
-                    onVilEndreSvar={() => fjernValgtTilretteleggingOgNavigerTilbakeTil(SøknadRoutes.UTENLANDSOPPHOLD)}
+                    onVilEndreSvar={() => navigator.goToStep(SøknadRoute.UTENLANDSOPPHOLD)}
                     tidligereUtenlandsopphold={utenlandsoppholdTidligere ?? []}
                     senereUtenlandsopphold={utenlandsoppholdSenere ?? []}
                 />
                 <ArbeidsforholdOppsummering
                     arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                     arbeidsforhold={aktiveArbeidsforhold}
-                    onVilEndreSvar={() =>
-                        fjernValgtTilretteleggingOgNavigerTilbakeTil(SøknadRoutes.INNTEKTSINFORMASJON)
-                    }
+                    onVilEndreSvar={() => navigator.goToStep(SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT)}
                 />
-                <FrilansOppsummering
-                    frilans={frilans}
-                    onVilEndreSvar={() => fjernValgtTilretteleggingOgNavigerTilbakeTil(SøknadRoutes.FRILANS)}
-                />
+                <FrilansOppsummering frilans={frilans} onVilEndreSvar={() => navigator.goToStep(SøknadRoute.FRILANS)} />
                 <SelvstendigNæringsdrivendeOppsummering
                     egenNæring={egenNæring}
-                    onVilEndreSvar={() => fjernValgtTilretteleggingOgNavigerTilbakeTil(SøknadRoutes.NÆRING)}
+                    onVilEndreSvar={() => navigator.goToStep(SøknadRoute.NÆRING)}
                 />
-                <JobbetIUtlandetOppsummering
-                    onVilEndreSvar={() => fjernValgtTilretteleggingOgNavigerTilbakeTil(SøknadRoutes.ARBEID_I_UTLANDET)}
-                />
+                <JobbetIUtlandetOppsummering onVilEndreSvar={() => navigator.goToStep(SøknadRoute.ARBEID_I_UTLANDET)} />
                 <DokumentasjonOppsummering
                     tilretteleggingerVedlegg={tilretteleggingerVedlegg}
                     alleArbeidsforhold={søkerInfo.arbeidsforhold}
-                    onVilEndreSvar={() => fjernValgtTilretteleggingOgNavigerTilbakeTil(SøknadRoutes.SKJEMA)}
+                    onVilEndreSvar={() =>
+                        navigator.goToStep(addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, førsteTilretteleggingId))
+                    }
                 />
                 <PerioderOppsummering
                     alleArbeidsforhold={søkerInfo.arbeidsforhold}
-                    onVilEndreSvar={() => fjernValgtTilretteleggingOgNavigerTilbakeTil(SøknadRoutes.TILRETTELEGGING)}
+                    onVilEndreSvar={() =>
+                        navigator.goToStep(
+                            addTilretteleggingIdToRoute(SøknadRoute.TILRETTELEGGING, førsteTilretteleggingId),
+                        )
+                    }
                 />
             </OppsummeringPanel>
         </ContentWrapper>
     );
 };
-
-export default Oppsummering;

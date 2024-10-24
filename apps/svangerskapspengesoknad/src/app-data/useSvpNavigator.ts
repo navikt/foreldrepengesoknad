@@ -4,10 +4,10 @@ import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
 import { ContextDataType, useContextSaveData } from './SvpDataContext';
-import SøknadRoutes from './routes';
-import useStepConfig from './useStepConfig';
+import { SøknadRoute } from './routes';
+import { useStepConfig } from './useStepConfig';
 
-const useSvpNavigator = (mellomlagreOgNaviger: () => Promise<void>, arbeidsforhold: Arbeidsforhold[]) => {
+export const useSvpNavigator = (mellomlagreOgNaviger: () => Promise<void>, arbeidsforhold: Arbeidsforhold[]) => {
     const stepConfig = useStepConfig(arbeidsforhold);
     const oppdaterPath = useContextSaveData(ContextDataType.APP_ROUTE);
 
@@ -23,12 +23,12 @@ const useSvpNavigator = (mellomlagreOgNaviger: () => Promise<void>, arbeidsforho
 
     const goToPreviousDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
-        const previousPath = stepConfig[index]?.id || SøknadRoutes.FORSIDE;
+        const previousPath = stepConfig[index]?.id || SøknadRoute.FORSIDE;
         oppdaterPath(previousPath);
         return mellomlagreOgNaviger();
     };
 
-    const goToNextStep = (path: SøknadRoutes) => {
+    const goToStep = (path: SøknadRoute | string) => {
         oppdaterPath(path);
         return mellomlagreOgNaviger();
     };
@@ -51,10 +51,8 @@ const useSvpNavigator = (mellomlagreOgNaviger: () => Promise<void>, arbeidsforho
 
     return {
         goToPreviousDefaultStep,
-        goToNextStep,
+        goToStep,
         goToNextDefaultStep,
         fortsettSøknadSenere,
     };
 };
-
-export default useSvpNavigator;

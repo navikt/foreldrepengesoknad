@@ -14,7 +14,7 @@ const UKJENT_UUID = 'ukjent uuid';
 export const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-const useSendSøknad = (
+export const useSendSøknad = (
     setKvittering: (kvittering: Kvittering) => void,
     locale: LocaleNo,
     arbeidsforhold: Arbeidsforhold[],
@@ -71,5 +71,3 @@ const useSendSøknad = (
         [sendSøknad, error],
     );
 };
-
-export default useSendSøknad;

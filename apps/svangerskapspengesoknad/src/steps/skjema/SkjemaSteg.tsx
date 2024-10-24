@@ -1,15 +1,13 @@
 import Environment from 'appData/Environment';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import useStepConfig from 'appData/useStepConfig';
-import useSvpNavigator from 'appData/useSvpNavigator';
+import { RouteParams } from 'appData/routes';
+import { useStepConfig } from 'appData/useStepConfig';
+import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import {
-    getArbeidsgiverNavnForTilrettelegging,
-    getTilretteleggingId,
-    getTypeArbeidForTilrettelegging,
-} from 'utils/tilretteleggingUtils';
+import { useParams } from 'react-router-dom';
+import { getArbeidsgiverNavnForTilrettelegging, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -20,7 +18,7 @@ import { Arbeidsforhold, Attachment, EGEN_NÆRING_ID, FRILANS_ID } from '@navikt
 import { FileUploader, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import Bedriftsbanner from '../Bedriftsbanner';
+import { Bedriftsbanner } from '../Bedriftsbanner';
 
 const MAX_ANTALL_VEDLEGG = 40;
 
@@ -55,22 +53,15 @@ export const SkjemaSteg: FunctionComponent<Props> = ({
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
-    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
+    const params = useParams<RouteParams>();
+    const tilretteleggingId = notEmpty(params.tilretteleggingId);
+
     const tilretteleggingerVedlegg = useContextGetData(ContextDataType.TILRETTELEGGINGER_VEDLEGG);
     const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
 
-    const vti = useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID);
-    const [valgtTilretteleggingId] = useState(vti); //For å unngå oppdatering ved forrige
-
     const oppdaterTilretteleggingerVedlegg = useContextSaveData(ContextDataType.TILRETTELEGGINGER_VEDLEGG);
-    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
 
     const [avventerVedlegg, setAvventerVedlegg] = useState(false);
-
-    const valgtId =
-        valgtTilretteleggingId ||
-        getTilretteleggingId(arbeidsforhold, barnet, arbeidsforholdOgInntekt, valgteArbeidsforhold);
 
     const onSubmit = (values: SkjemaFormData) => {
         if (values.vedlegg.length === 0) {
@@ -82,7 +73,7 @@ export const SkjemaSteg: FunctionComponent<Props> = ({
 
         const antallVedleggAndreTilrettelegginger = tilretteleggingerVedlegg
             ? Object.keys(tilretteleggingerVedlegg)
-                  .filter((id) => id !== valgtId)
+                  .filter((id) => id !== tilretteleggingId)
                   .reduce((total, id) => total + tilretteleggingerVedlegg[id].length, 0)
             : 0;
         const antallNyeVedlegg = values.vedlegg ? values.vedlegg.length : 0;
@@ -95,15 +86,14 @@ export const SkjemaSteg: FunctionComponent<Props> = ({
             });
             return Promise.resolve();
         } else {
-            oppdaterTilretteleggingerVedlegg({ ...tilretteleggingerVedlegg, [valgtId]: values.vedlegg });
-            oppdaterValgtTilretteleggingId(valgtId);
+            oppdaterTilretteleggingerVedlegg({ ...tilretteleggingerVedlegg, [tilretteleggingId]: values.vedlegg });
 
             return navigator.goToNextDefaultStep();
         }
     };
 
     const defaultValues = {
-        vedlegg: tilretteleggingerVedlegg ? tilretteleggingerVedlegg[valgtId] : undefined,
+        vedlegg: tilretteleggingerVedlegg ? tilretteleggingerVedlegg[tilretteleggingId] : undefined,
     };
 
     const formMethods = useForm<SkjemaFormData>({
@@ -118,8 +108,8 @@ export const SkjemaSteg: FunctionComponent<Props> = ({
         }
     };
 
-    const typeArbeidsgiver = getTypeArbeidForTilrettelegging(valgtId, arbeidsforhold);
-    const navnArbeidsgiver = getArbeidsgiverNavnForTilrettelegging(intl, valgtId, arbeidsforhold);
+    const typeArbeidsgiver = getTypeArbeidForTilrettelegging(tilretteleggingId, arbeidsforhold);
+    const navnArbeidsgiver = getArbeidsgiverNavnForTilrettelegging(intl, tilretteleggingId, arbeidsforhold);
 
     return (
         <Step
@@ -127,6 +117,7 @@ export const SkjemaSteg: FunctionComponent<Props> = ({
             onCancel={avbrytSøknad}
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
+            onStepChange={navigator.goToStep}
             noFieldsRequired
         >
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
@@ -137,9 +128,9 @@ export const SkjemaSteg: FunctionComponent<Props> = ({
                     )}
                     <VStack gap="4">
                         <FileUploader
-                            label={finnFileUploaderLabel(intl, valgtId)}
+                            label={finnFileUploaderLabel(intl, tilretteleggingId)}
                             description={
-                                valgtId === FRILANS_ID || valgtId === EGEN_NÆRING_ID ? (
+                                tilretteleggingId === FRILANS_ID || tilretteleggingId === EGEN_NÆRING_ID ? (
                                     <FormattedMessage id="skjema.vedlegg.description.frilansSN" />
                                 ) : (
                                     <FormattedMessage
@@ -167,17 +158,7 @@ export const SkjemaSteg: FunctionComponent<Props> = ({
                         />
                     </VStack>
                     <StepButtonsHookForm
-                        goToPreviousStep={() => {
-                            if (valgteArbeidsforhold) {
-                                const indexForrige = valgteArbeidsforhold.findIndex((id) => id === valgtId) - 1;
-
-                                oppdaterValgtTilretteleggingId(
-                                    indexForrige < 0 ? undefined : valgteArbeidsforhold[indexForrige],
-                                );
-                            }
-
-                            navigator.goToPreviousDefaultStep();
-                        }}
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
                         isDisabledAndLoading={avventerVedlegg}
                     />
                 </VStack>

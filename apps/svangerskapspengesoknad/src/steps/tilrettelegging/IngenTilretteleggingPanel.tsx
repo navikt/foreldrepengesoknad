@@ -31,7 +31,7 @@ export interface Props {
     arbeidsforholdNavn?: string;
 }
 
-const IngenTilretteleggingPanel: FunctionComponent<Props> = ({
+export const IngenTilretteleggingPanel: FunctionComponent<Props> = ({
     barnet,
     sluttdatoArbeid,
     startdatoArbeid,
@@ -161,5 +161,3 @@ const IngenTilretteleggingPanel: FunctionComponent<Props> = ({
         </>
     );
 };
-
-export default IngenTilretteleggingPanel;

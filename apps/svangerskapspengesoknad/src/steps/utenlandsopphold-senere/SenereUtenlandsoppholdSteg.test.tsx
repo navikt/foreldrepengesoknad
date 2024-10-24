@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute } from 'appData/routes';
 import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
@@ -48,7 +48,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.INNTEKTSINFORMASJON,
+            data: SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -67,7 +67,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: SøknadRoutes.UTENLANDSOPPHOLD,
+            data: SøknadRoute.UTENLANDSOPPHOLD,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -95,7 +95,7 @@ describe('<SenereUtenlandsoppholdSteg>', () => {
 
         expect(gåTilNesteSide).toHaveBeenCalledTimes(1);
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: SøknadRoutes.HAR_BODD_I_UTLANDET,
+            data: SøknadRoute.HAR_BODD_I_UTLANDET,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

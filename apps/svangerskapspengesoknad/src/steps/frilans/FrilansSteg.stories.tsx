@@ -1,13 +1,13 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import FrilansStep from './FrilansStep';
+import { FrilansSteg } from './FrilansSteg';
 
 const promiseAction =
     () =>
@@ -18,15 +18,15 @@ const promiseAction =
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
-} & ComponentProps<typeof FrilansStep>;
+} & ComponentProps<typeof FrilansSteg>;
 
 const meta = {
-    title: 'steps/FrilansStep',
-    component: FrilansStep,
+    title: 'steps/FrilansSteg',
+    component: FrilansSteg,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.FRILANS]}>
+            <MemoryRouter initialEntries={[SøknadRoute.FRILANS]}>
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
@@ -43,7 +43,7 @@ const meta = {
                         },
                     }}
                 >
-                    <FrilansStep {...rest} />
+                    <FrilansSteg {...rest} />
                 </SvpDataContext>
             </MemoryRouter>
         );

@@ -1,13 +1,13 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import ArbeidsforholdOgInntektSteg from './ArbeidsforholdOgInntektSteg';
+import { ArbeidsforholdOgInntektSteg } from './ArbeidsforholdOgInntektSteg';
 
 const DEFAULT_ARBEIDSFORHOLD = [
     {
@@ -80,7 +80,7 @@ const meta = {
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.INNTEKTSINFORMASJON]}>
+            <MemoryRouter initialEntries={[SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT]}>
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{

@@ -59,11 +59,11 @@ const finnVedlegg = (
     tilretteleggingerVedlegg: Record<string, Attachment[]>,
     alleArbeidsforhold: Arbeidsforhold[],
 ): AttachmentDTO[] => {
-    const mappedVedlegg = Object.keys(tilretteleggingerVedlegg).map((arbeidsforholdId) => {
-        const alleVedlegg = tilretteleggingerVedlegg[arbeidsforholdId];
+    const mappedVedlegg = Object.keys(tilretteleggingerVedlegg).map((tilretteleggingId) => {
+        const alleVedlegg = tilretteleggingerVedlegg[tilretteleggingId];
         const arbeidsforhold = {
-            id: arbeidsforholdId,
-            type: getTypeArbeidForTilrettelegging(arbeidsforholdId, alleArbeidsforhold),
+            id: tilretteleggingId,
+            type: getTypeArbeidForTilrettelegging(tilretteleggingId, alleArbeidsforhold),
         };
         return alleVedlegg.map((vedlegg) => ({
             ...vedlegg,
