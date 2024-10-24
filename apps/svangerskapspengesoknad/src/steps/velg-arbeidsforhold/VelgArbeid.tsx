@@ -1,6 +1,7 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
 import useStepConfig from 'appData/useStepConfig';
 import useSvpNavigator from 'appData/useSvpNavigator';
+import { useTilretteleggingerHelper } from 'appData/useTilretteleggingerHelper';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
@@ -14,7 +15,7 @@ import { isRequired, notEmpty } from '@navikt/fp-validation';
 import FlereArbeidsforholdGuidePanel from './FlereArbeidsforholdGuidePanel';
 import { getOptionNavn, mapArbeidsforholdToVelgArbeidOptions } from './velgArbeidFormUtils';
 
-type VelgArbeidFormData = {
+type VelgArbeidForm = {
     arbeidMedTilrettelegging: string[];
 };
 
@@ -28,42 +29,44 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
     const intl = useIntl();
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
+    const { fjernTilrettelegginger } = useTilretteleggingerHelper();
 
+    const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
+    const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
     const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
     const frilans = useContextGetData(ContextDataType.FRILANS);
     const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
-    const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
-    const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
-    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
+    const oppdaterValgteArbeidsforhold = useContextSaveData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
 
-    const { termindato } = barnet;
-
-    const tilretteleggingOptions = mapArbeidsforholdToVelgArbeidOptions(
-        tilrettelegginger || [],
+    const arbeidsforholdOptions = mapArbeidsforholdToVelgArbeidOptions(
         arbeidsforholdOgInntekt,
         arbeidsforhold,
-        termindato,
+        barnet.termindato,
         intl,
         frilans,
         egenNæring,
     );
 
-    const onSubmit = (formValues: VelgArbeidFormData) => {
-        const valgteTilrettelegginger = tilretteleggingOptions.filter((o) =>
-            formValues.arbeidMedTilrettelegging.some((t) => t === o.id),
-        );
-        oppdaterTilrettelegginger(valgteTilrettelegginger);
+    const onSubmit = (formValues: VelgArbeidForm) => {
+        const sorterteArbeidsforholdIder = arbeidsforholdOptions
+            .filter((a) => formValues.arbeidMedTilrettelegging.includes(a.id))
+            .map((a) => a.id);
+        oppdaterValgteArbeidsforhold(sorterteArbeidsforholdIder);
 
-        oppdaterValgtTilretteleggingId(valgteTilrettelegginger[0].id);
+        if (valgteArbeidsforhold && tilrettelegginger) {
+            const valgSomSkalFjernes = valgteArbeidsforhold.filter(
+                (x) => !formValues.arbeidMedTilrettelegging.includes(x),
+            );
+            fjernTilrettelegginger(valgSomSkalFjernes);
+        }
+
         return navigator.goToNextDefaultStep();
     };
 
-    const formMethods = useForm<VelgArbeidFormData>({
-        defaultValues: {
-            arbeidMedTilrettelegging: tilrettelegginger ? tilrettelegginger.map((t) => t.id) : undefined,
-        },
+    const formMethods = useForm<VelgArbeidForm>({
+        defaultValues: valgteArbeidsforhold ? { arbeidMedTilrettelegging: valgteArbeidsforhold } : undefined,
     });
 
     const arbeidMedTilrettelegging = formMethods.watch('arbeidMedTilrettelegging');
@@ -75,7 +78,6 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
             onCancel={avbrytSøknad}
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
-            onStepChange={navigator.goToNextStep}
         >
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
@@ -85,9 +87,9 @@ const VelgArbeid: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavige
                         label={intl.formatMessage({ id: 'velgArbeid.hvor' })}
                         validate={[isRequired(intl.formatMessage({ id: 'valideringsfeil.tilrettelegging.påkrevd' }))]}
                     >
-                        {tilretteleggingOptions.map((option) => (
+                        {arbeidsforholdOptions.map((option) => (
                             <Checkbox key={option.id} value={option.id}>
-                                {getOptionNavn(option.arbeidsforhold.type, intl, option.arbeidsforhold.navn)}
+                                {getOptionNavn(option.arbeidsforholdType, intl, option.arbeidsforholdNavn)}
                             </Checkbox>
                         ))}
                     </RhfCheckboxGroup>

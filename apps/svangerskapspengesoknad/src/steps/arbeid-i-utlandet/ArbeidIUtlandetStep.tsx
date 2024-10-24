@@ -10,18 +10,18 @@ import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'utils/arbei
 import { VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold, ArbeidsforholdOgInntektSvp, egenNæringId, frilansId } from '@navikt/fp-types';
+import { Arbeidsforhold, ArbeidsforholdOgInntektSvp } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import ArbeidIUtlandetFieldArray, { NEW_ARBEID_I_UTLANDET } from './ArbeidIUtlandetFieldArray';
 import './arbeidIUtlandet.css';
 
-const getNextRouteValgAvArbeidEllerSkjema = (
+const getNextRoute = (
     termindato: string,
     arbeidsforhold: Arbeidsforhold[],
     inntektsinformasjon: ArbeidsforholdOgInntektSvp,
-): { nextRoute: SøknadRoutes; nextTilretteleggingId?: string } => {
+): SøknadRoutes => {
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(arbeidsforhold, termindato);
     const harKunEtArbeid = søkerHarKunEtAktivtArbeid(
         termindato,
@@ -29,15 +29,7 @@ const getNextRouteValgAvArbeidEllerSkjema = (
         inntektsinformasjon.harJobbetSomFrilans,
         inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende,
     );
-    if (harKunEtArbeid) {
-        if (aktiveArbeidsforhold.length === 0) {
-            const frilansEllerNæringId = inntektsinformasjon.harJobbetSomFrilans ? frilansId : egenNæringId;
-            return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: frilansEllerNæringId };
-        } else {
-            return { nextRoute: SøknadRoutes.SKJEMA, nextTilretteleggingId: aktiveArbeidsforhold[0].arbeidsgiverId };
-        }
-    }
-    return { nextRoute: SøknadRoutes.VELG_ARBEID };
+    return harKunEtArbeid ? SøknadRoutes.SKJEMA : SøknadRoutes.VELG_ARBEID;
 };
 
 type Props = {
@@ -60,7 +52,6 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
     const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
 
     const oppdaterArbeidIUtlandet = useContextSaveData(ContextDataType.ARBEID_I_UTLANDET);
-    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
 
     const onSubmit = (values: ArbeidIUtlandet) => {
         oppdaterArbeidIUtlandet({
@@ -70,14 +61,7 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
             })),
         });
 
-        const { nextRoute, nextTilretteleggingId } = getNextRouteValgAvArbeidEllerSkjema(
-            barnet.termindato,
-            arbeidsforhold,
-            arbeidsforholdOgInntekt,
-        );
-        oppdaterValgtTilretteleggingId(nextTilretteleggingId);
-
-        return navigator.goToNextStep(nextRoute);
+        return navigator.goToNextStep(getNextRoute(barnet.termindato, arbeidsforhold, arbeidsforholdOgInntekt));
     };
 
     const formMethods = useForm<ArbeidIUtlandet>({
@@ -93,7 +77,6 @@ const ArbeidIUtlandetStep: React.FunctionComponent<Props> = ({
             onCancel={avbrytSøknad}
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
-            onStepChange={navigator.goToNextStep}
         >
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">

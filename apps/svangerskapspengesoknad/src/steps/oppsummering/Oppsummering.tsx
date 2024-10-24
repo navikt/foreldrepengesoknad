@@ -1,7 +1,8 @@
-import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
+import { ContextDataType, useContextGetData } from 'appData/SvpDataContext';
 import SøknadRoutes from 'appData/routes';
 import useStepConfig from 'appData/useStepConfig';
 import useSvpNavigator from 'appData/useSvpNavigator';
+import { useTilretteleggingerHelper } from 'appData/useTilretteleggingerHelper';
 import { FormattedMessage } from 'react-intl';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 
@@ -38,14 +39,15 @@ const Oppsummering: React.FunctionComponent<Props> = ({
 }) => {
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, søkerInfo.arbeidsforhold);
+    const { fjernValgtTilretteleggingOgNavigerTilbakeTil } = useTilretteleggingerHelper();
 
-    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
+    const tilretteleggingerVedlegg = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER_VEDLEGG));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const utenlandsoppholdSenere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const utenlandsoppholdTidligere = useContextGetData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
-    const inntektsinformasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
-
-    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
+    const arbeidsforholdOgInntekt = notEmpty(useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT));
+    const egenNæring = useContextGetData(ContextDataType.EGEN_NÆRING);
+    const frilans = useContextGetData(ContextDataType.FRILANS);
 
     const aktiveArbeidsforhold = getAktiveArbeidsforhold(søkerInfo.arbeidsforhold, barn.termindato);
 
@@ -59,19 +61,17 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                 stepConfig={stepConfig}
                 sendSøknad={sendSøknad}
                 cancelApplication={avbrytSøknad}
-                goToPreviousStep={() => {
-                    oppdaterValgtTilretteleggingId(tilrettelegginger[tilrettelegginger?.length - 1].id);
-                    navigator.goToPreviousDefaultStep();
-                }}
+                goToPreviousStep={navigator.goToPreviousDefaultStep}
                 onContinueLater={navigator.fortsettSøknadSenere}
-                onStepChange={navigator.goToNextStep}
             >
                 <FormSummary>
                     <FormSummary.Header>
                         <FormSummary.Heading level="2">
                             <FormattedMessage id="oppsummering.omBarnet" />
                         </FormSummary.Heading>
-                        <FormSummary.EditLink onClick={() => navigator.goToNextStep(SøknadRoutes.BARNET)}>
+                        <FormSummary.EditLink
+                            onClick={() => fjernValgtTilretteleggingOgNavigerTilbakeTil(SøknadRoutes.BARNET)}
+                        >
                             <FormattedMessage id="oppsummering.EndreSvar" />
                         </FormSummary.EditLink>
                     </FormSummary.Header>
@@ -93,27 +93,37 @@ const Oppsummering: React.FunctionComponent<Props> = ({
                     </FormSummary.Answers>
                 </FormSummary>
                 <BoIUtlandetOppsummering
-                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.UTENLANDSOPPHOLD)}
+                    onVilEndreSvar={() => fjernValgtTilretteleggingOgNavigerTilbakeTil(SøknadRoutes.UTENLANDSOPPHOLD)}
                     tidligereUtenlandsopphold={utenlandsoppholdTidligere ?? []}
                     senereUtenlandsopphold={utenlandsoppholdSenere ?? []}
                 />
                 <ArbeidsforholdOppsummering
-                    arbeidsforholdOgInntekt={inntektsinformasjon}
+                    arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                     arbeidsforhold={aktiveArbeidsforhold}
-                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.INNTEKTSINFORMASJON)}
+                    onVilEndreSvar={() =>
+                        fjernValgtTilretteleggingOgNavigerTilbakeTil(SøknadRoutes.INNTEKTSINFORMASJON)
+                    }
                 />
-                <FrilansOppsummering onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.FRILANS)} />
+                <FrilansOppsummering
+                    frilans={frilans}
+                    onVilEndreSvar={() => fjernValgtTilretteleggingOgNavigerTilbakeTil(SøknadRoutes.FRILANS)}
+                />
                 <SelvstendigNæringsdrivendeOppsummering
-                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.NÆRING)}
+                    egenNæring={egenNæring}
+                    onVilEndreSvar={() => fjernValgtTilretteleggingOgNavigerTilbakeTil(SøknadRoutes.NÆRING)}
                 />
                 <JobbetIUtlandetOppsummering
-                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ARBEID_I_UTLANDET)}
+                    onVilEndreSvar={() => fjernValgtTilretteleggingOgNavigerTilbakeTil(SøknadRoutes.ARBEID_I_UTLANDET)}
                 />
                 <DokumentasjonOppsummering
-                    tilrettelegginger={tilrettelegginger}
-                    onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.SKJEMA)}
+                    tilretteleggingerVedlegg={tilretteleggingerVedlegg}
+                    alleArbeidsforhold={søkerInfo.arbeidsforhold}
+                    onVilEndreSvar={() => fjernValgtTilretteleggingOgNavigerTilbakeTil(SøknadRoutes.SKJEMA)}
                 />
-                <PerioderOppsummering onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.TILRETTELEGGING)} />
+                <PerioderOppsummering
+                    alleArbeidsforhold={søkerInfo.arbeidsforhold}
+                    onVilEndreSvar={() => fjernValgtTilretteleggingOgNavigerTilbakeTil(SøknadRoutes.TILRETTELEGGING)}
+                />
             </OppsummeringPanel>
         </ContentWrapper>
     );

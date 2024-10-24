@@ -5,12 +5,12 @@ import SøknadRoutes from 'appData/routes';
 import dayjs from 'dayjs';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { Arbeidsforholdstype } from 'types/Tilrettelegging';
 
-import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
+import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
+import { EGEN_NÆRING_ID, EgenNæring, FRILANS_ID, Frilans, Næringstype } from '@navikt/fp-types';
 
-import TilretteleggingStep from './TilretteleggingStep';
+import { TilretteleggingStep } from './TilretteleggingStep';
 
 const promiseAction =
     () =>
@@ -19,99 +19,62 @@ const promiseAction =
         return Promise.resolve();
     };
 
+const VALGT_TILRETTELEGGING_ID = '990322244';
+const ANNEN_TILRETTELEGGING_ID = '975326209';
+
 const DEFAULT_ARBEIDSFORHOLD = [
     {
-        arbeidsgiverId: '975326209',
-        arbeidsgiverIdType: 'orgnr',
-        arbeidsgiverNavn: 'Sykehuset i Vestfold',
-        fom: '2014-05-22T00:00:00.000Z',
-        stillingsprosent: 32.63,
-        tom: '2019-05-31T00:00:00.000Z',
-    },
-    {
-        arbeidsgiverId: '975326209',
+        arbeidsgiverId: ANNEN_TILRETTELEGGING_ID,
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Sykehuset i Vestfold',
         fom: '2018-04-09T00:00:00.000Z',
         stillingsprosent: 0,
         tom: '2018-09-09T00:00:00.000Z',
     },
+
     {
-        arbeidsgiverId: '975326209',
-        arbeidsgiverIdType: 'orgnr',
-        arbeidsgiverNavn: 'Sykehuset i Vestfold',
-        fom: '2018-06-25T00:00:00.000Z',
-        stillingsprosent: 80,
-        tom: '2018-08-05T00:00:00.000Z',
-    },
-    {
-        arbeidsgiverId: '975326209',
-        arbeidsgiverIdType: 'orgnr',
-        arbeidsgiverNavn: 'Sykehuset i Vestfold',
-        fom: '2019-06-01T00:00:00.000Z',
-        stillingsprosent: 85.09,
-    },
-    {
-        arbeidsgiverId: '990322244',
+        arbeidsgiverId: VALGT_TILRETTELEGGING_ID,
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Omsorgspartner Vestfold AS',
         fom: '2017-04-05T00:00:00.000Z',
         stillingsprosent: 100,
     },
-    {
-        arbeidsgiverId: '995090910',
-        arbeidsgiverIdType: 'orgnr',
-        arbeidsgiverNavn: 'Re Kommune',
-        fom: '2018-06-01T00:00:00.000Z',
-        stillingsprosent: 0,
-    },
 ];
 
 type StoryArgs = {
-    type: Arbeidsforholdstype;
     gåTilNesteSide?: (action: Action) => void;
+    frilans?: Frilans;
+    egenNæring?: EgenNæring;
+    valgteArbeidsforhold?: string[];
+    valgtTilretteleggingId: string;
 } & ComponentProps<typeof TilretteleggingStep>;
 
 const meta = {
     title: 'steps/TilretteleggingStep',
     component: TilretteleggingStep,
-    render: ({ gåTilNesteSide = action('button-click'), type, ...rest }) => {
+    render: ({
+        gåTilNesteSide = action('button-click'),
+        frilans,
+        egenNæring,
+        valgteArbeidsforhold,
+        valgtTilretteleggingId,
+        ...rest
+    }) => {
         initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.TILRETTELEGGING]}>
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
-                        [ContextDataType.TILRETTELEGGINGER]: [
-                            {
-                                id: '990322244',
-                                arbeidsforhold: {
-                                    arbeidsgiverId: '990322244',
-                                    type: type,
-                                    navn: 'Omsorgspartner Vestfold AS',
-                                    stillinger: [],
-                                    startdato: '2023-01-01',
-                                },
-                                varierendePerioder: [],
-                                behovForTilretteleggingFom: undefined!,
-                                type: undefined!,
-                                vedlegg: [
-                                    {
-                                        id: 'V134300149934973076055420920289127108',
-                                        file: {} as any,
-                                        filename: 'vedlegg – Kopi (7).png',
-                                        filesize: 7477,
-                                        uploaded: true,
-                                        pending: false,
-                                        type: AttachmentType.TILRETTELEGGING,
-                                        skjemanummer: Skjemanummer.SKJEMA_FOR_TILRETTELEGGING_OG_OMPLASSERING,
-                                        url: 'http://localhost:8080/foreldrepengesoknad/dist/vedlegg/V134300149934973076055420920289127108',
-                                        uuid: 'Created',
-                                    },
-                                ],
-                            },
-                        ],
-                        [ContextDataType.VALGT_TILRETTELEGGING_ID]: '990322244',
+                        [ContextDataType.VALGT_TILRETTELEGGING_ID]: valgtTilretteleggingId,
+                        [ContextDataType.FRILANS]: frilans,
+                        [ContextDataType.EGEN_NÆRING]: egenNæring,
+                        [ContextDataType.VALGTE_ARBEIDSFORHOLD]: valgteArbeidsforhold,
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                            harHattArbeidIUtlandet: false,
+                            harJobbetSomFrilans: false,
+                            harJobbetSomSelvstendigNæringsdrivende: false,
+                        },
                         [ContextDataType.OM_BARNET]: {
                             erBarnetFødt: false,
                             termindato: dayjs().add(45, 'days').format(ISO_DATE_FORMAT),
@@ -129,18 +92,57 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const ForArbeidsforhold: Story = {
     args: {
         mellomlagreSøknadOgNaviger: promiseAction(),
         avbrytSøknad: promiseAction(),
         arbeidsforhold: DEFAULT_ARBEIDSFORHOLD,
-        type: Arbeidsforholdstype.VIRKSOMHET,
+        valgtTilretteleggingId: VALGT_TILRETTELEGGING_ID,
+    },
+};
+
+export const ForArbeidsforholdMedFlereTilrettelegginger: Story = {
+    args: {
+        ...ForArbeidsforhold.args,
+        valgteArbeidsforhold: [VALGT_TILRETTELEGGING_ID, ANNEN_TILRETTELEGGING_ID],
     },
 };
 
 export const Frilanser: Story = {
     args: {
-        ...Default.args,
-        type: Arbeidsforholdstype.FRILANSER,
+        ...ForArbeidsforhold.args,
+        valgtTilretteleggingId: FRILANS_ID,
+        frilans: {
+            jobberFremdelesSomFrilans: true,
+            oppstart: '2024-01-01',
+        },
+    },
+};
+
+export const FrilanserMedFlereTilrettelegginger: Story = {
+    args: {
+        ...Frilanser.args,
+        valgteArbeidsforhold: [FRILANS_ID, VALGT_TILRETTELEGGING_ID],
+    },
+};
+
+export const SelvstendigNæring: Story = {
+    args: {
+        ...ForArbeidsforhold.args,
+        valgtTilretteleggingId: EGEN_NÆRING_ID,
+        egenNæring: {
+            fom: '2024-01-01',
+            tom: '2024-10-01',
+            pågående: false,
+            registrertINorge: true,
+            næringstype: Næringstype.FISKER,
+        },
+    },
+};
+
+export const SelvstendigNæringMedFlereTilrettelegginger: Story = {
+    args: {
+        ...SelvstendigNæring.args,
+        valgteArbeidsforhold: [EGEN_NÆRING_ID, VALGT_TILRETTELEGGING_ID],
     },
 };

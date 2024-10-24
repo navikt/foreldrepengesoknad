@@ -61,31 +61,16 @@ describe('<Perioder>', () => {
         expect(screen.queryByText('Du må oppgi stillingsprosenten du skal jobbe.')).not.toBeInTheDocument();
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: [
-                {
-                    arbeidsforhold: {
-                        navn: 'Omsorgspartner Vestfold AS',
-                        stillinger: [
-                            {
-                                fom: '2019-01-01',
-                                stillingsprosent: 100,
-                            },
-                        ],
+            data: {
+                '263929546-6215-9868-5127-161910165730101': [
+                    {
+                        fom: '2023-10-30',
+                        stillingsprosent: '20',
+                        tomType: 'SISTE_DAG_MED_SVP',
                     },
-                    delvisTilretteleggingPeriodeType: 'VARIERTE_PERIODER',
-                    id: '263929546-6215-9868-5127-161910165730101',
-                    type: 'delvis',
-                    varierendePerioder: [
-                        {
-                            fom: '2023-10-30',
-                            stillingsprosent: '20',
-                            tomType: 'SISTE_DAG_MED_SVP',
-                            type: 'delvis',
-                        },
-                    ],
-                },
-            ],
-            key: ContextDataType.TILRETTELEGGINGER,
+                ],
+            },
+            key: ContextDataType.TILRETTELEGGINGER_PERIODER,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
