@@ -2,7 +2,7 @@ import { Buildings3Icon, SparklesIcon, WalletIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import classNames from 'classnames';
 import { ReactNode } from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
 import { BodyShort, Detail, HGrid, Heading, List, VStack } from '@navikt/ds-react';
 
@@ -26,7 +26,7 @@ export const InntektsmeldingPage = () => {
     const GRUNNBELØP = useQuery(hentGrunnbeløpOptions()).data;
 
     if (!inntektsmelding) {
-        return null; // TODO: what to do
+        return <Navigate replace to={`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`} />;
     }
 
     const tjenerOver6G = inntektsmelding.inntektPrMnd * 12 > GRUNNBELØP * 6;
