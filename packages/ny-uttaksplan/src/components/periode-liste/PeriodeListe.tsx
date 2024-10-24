@@ -35,7 +35,7 @@ const PeriodeListe: FunctionComponent<Props> = ({ perioder }) => {
             <Accordion>
                 {permisjonsperioder.map((p, index) => {
                     return (
-                        <Fragment key={index}>
+                        <Fragment key={`${p.tidsperiode.fom}-${p.tidsperiode.tom}`}>
                             {indexOfFørstePeriodeEtterFødsel === index ? (
                                 <PeriodeListeItem permisjonsperiode={p} erFamiliehendelse={true} />
                             ) : null}
