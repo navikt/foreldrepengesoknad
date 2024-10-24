@@ -18,18 +18,20 @@ describe('<InntektsmeldingPage>', () => {
         applyRequestHandlers(UtenRefusjon.parameters.msw);
         render(<UtenRefusjon />);
 
-        expect(screen.findByText('Din inntekt rapportert av Laksinor')).toBeInTheDocument();
-        expect(screen.findByText('Hvordan utbetales foreldrepengene?')).toBeInTheDocument();
-        expect(screen.findByText('Laksinor har opplyst at det utbetales direkte til deg fra Nav.')).toBeInTheDocument();
+        expect(await screen.findByText('Din inntekt rapportert av Laksinor')).toBeInTheDocument();
+        expect(await screen.findByText('Hvordan utbetales foreldrepengene?')).toBeInTheDocument();
+        expect(
+            await screen.findByText('Laksinor har opplyst at det utbetales direkte til deg fra Nav.'),
+        ).toBeInTheDocument();
     });
 
     it('Med Refusjon', async () => {
         applyRequestHandlers(MedRefusjon.parameters.msw);
         render(<MedRefusjon />);
 
-        expect(screen.findByText('Hvordan utbetales foreldrepengene?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvordan utbetales foreldrepengene?')).toBeInTheDocument();
         expect(
-            screen.findByText('Laksinor har opplyst at de skal utbetale til deg, og ønsker betalt Fra Nav.'),
+            await screen.findByText('Laksinor har opplyst at de skal utbetale til deg, og ønsker betalt Fra Nav.'),
         ).toBeInTheDocument();
     });
 
@@ -37,9 +39,9 @@ describe('<InntektsmeldingPage>', () => {
         applyRequestHandlers(DelvisRefusjon.parameters.msw);
         render(<DelvisRefusjon />);
 
-        expect(screen.findByText('Hvordan utbetales svangerskapspengene?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvordan utbetales svangerskapspengene?')).toBeInTheDocument();
         expect(
-            screen.findByText('Laksinor har opplyst at det skal utbetales delvis av dem og Nav.'),
+            await screen.findByText('Laksinor har opplyst at det skal utbetales delvis av dem og Nav.'),
         ).toBeInTheDocument();
     });
 
@@ -47,18 +49,20 @@ describe('<InntektsmeldingPage>', () => {
         applyRequestHandlers(Refusjonsperioder.parameters.msw);
         render(<Refusjonsperioder />);
 
-        expect(screen.findByText('Hvordan utbetales foreldrepengene?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvordan utbetales foreldrepengene?')).toBeInTheDocument();
         expect(
-            screen.findByText('Laksinor har opplyst at det skal utbetales delvis av dem og Nav.'),
+            await screen.findByText('Laksinor har opplyst at det skal utbetales delvis av dem og Nav.'),
         ).toBeInTheDocument();
         expect(
-            screen.findByText('Fra 12.10.2024 - Laksinor har opplyst at det skal utbetales delvis av dem og Nav.'),
+            await screen.findByText(
+                'Fra 12.10.2024 - Laksinor har opplyst at det skal utbetales delvis av dem og Nav.',
+            ),
         ).toBeInTheDocument();
         expect(
-            screen.findByText('Fra 13.10.2024 - Laksinor har opplyst at det utbetales direkte til deg fra Nav.'),
+            await screen.findByText('Fra 13.10.2024 - Laksinor har opplyst at det utbetales direkte til deg fra Nav.'),
         ).toBeInTheDocument();
         expect(
-            screen.findByText(
+            await screen.findByText(
                 'Fra 14.10.2024 - Laksinor har opplyst at de skal utbetale til deg, og ønsker betalt Fra Nav.',
             ),
         ).toBeInTheDocument();
@@ -68,9 +72,9 @@ describe('<InntektsmeldingPage>', () => {
         applyRequestHandlers(EnBortfaltNaturalytelse.parameters.msw);
         render(<EnBortfaltNaturalytelse />);
 
-        expect(screen.findByText('Naturalytelser eller “frynsegoder” under permisjonen')).toBeInTheDocument();
+        expect(await screen.findByText('Naturalytelser eller “frynsegoder” under permisjonen')).toBeInTheDocument();
         expect(
-            screen.findByText('10.09.2024 får du ikke lenger Fri transport til en verdi av 998 kr.'),
+            await screen.findByText('10.09.2024 får du ikke lenger Fri transport til en verdi av 998 kr.'),
         ).toBeInTheDocument();
     });
 
@@ -78,19 +82,19 @@ describe('<InntektsmeldingPage>', () => {
         applyRequestHandlers(FlereBortfalteNaturalytelser.parameters.msw);
         render(<FlereBortfalteNaturalytelser />);
 
-        expect(screen.findByText('Naturalytelser eller “frynsegoder” under permisjonen')).toBeInTheDocument();
+        expect(await screen.findByText('Naturalytelser eller “frynsegoder” under permisjonen')).toBeInTheDocument();
         expect(
-            screen.findByText(
+            await screen.findByText(
                 'Mellom 10.09.2024 og 11.10.2024 får du ikke lenger Fri transport til en verdi av 998 kr.',
             ),
         ).toBeInTheDocument();
         expect(
-            screen.findByText(
+            await screen.findByText(
                 'Mellom 12.12.2024 og 24.12.2024 får du ikke lenger Fri transport til en verdi av 998 kr.',
             ),
         ).toBeInTheDocument();
         expect(
-            screen.findByText('01.01.2025 får du ikke lenger Elektrisk kommunikasjon til en verdi av 200 kr.'),
+            await screen.findByText('01.01.2025 får du ikke lenger Elektrisk kommunikasjon til en verdi av 200 kr.'),
         ).toBeInTheDocument();
     });
 });
