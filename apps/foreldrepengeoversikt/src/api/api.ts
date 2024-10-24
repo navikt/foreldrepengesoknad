@@ -78,6 +78,7 @@ export const hentGrunnbeløpOptions = () =>
                 return Infinity;
             }
         },
+        staleTime: Infinity,
         initialData: Infinity,
     });
 
