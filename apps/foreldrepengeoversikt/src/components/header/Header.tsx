@@ -6,19 +6,22 @@ import { useParams } from 'react-router-dom';
 
 import { Detail, HGrid, HStack, Heading, Show, VStack } from '@navikt/ds-react';
 
-import StatusTag from '../status-tag/StatusTag';
-import { hentSakerOptions, søkerInfoOptions } from './../../api/api';
-import { LayoutWrapper } from './../../sections/LayoutWrapper';
-import { Sak } from './../../types/Sak';
-import { SøkerinfoDTO } from './../../types/SøkerinfoDTO';
-import { Ytelse } from './../../types/Ytelse';
+import { capitalizeFirstLetterInEveryWordOnly, formatDateMedUkedag } from '@navikt/fp-utils';
+
+import { hentSakerOptions, søkerInfoOptions } from '../../api/api';
+import { InntektsmeldingDto } from '../../api/zodSchemas';
+import { LayoutWrapper } from '../../sections/LayoutWrapper';
+import { Sak } from '../../types/Sak';
+import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
+import { Ytelse } from '../../types/Ytelse';
 import {
     getFamiliehendelseDato,
     getSakTittel,
     grupperSakerPåBarn,
     mapSakerDTOToSaker,
     utledFamiliesituasjon,
-} from './../../utils/sakerUtils';
+} from '../../utils/sakerUtils';
+import StatusTag from '../status-tag/StatusTag';
 
 export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
     if (ytelse === Ytelse.ENGANGSSTØNAD) {
@@ -127,6 +130,27 @@ export function EttersendingHeader() {
         </SimpleHeaderWrapper>
     );
 }
+
+export const InntektsmeldingHeader = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
+    return (
+        <SimpleHeaderWrapper>
+            <Heading level="1" size="medium">
+                Din inntekt rapportert av {capitalizeFirstLetterInEveryWordOnly(inntektsmelding.arbeidsgiverNavn)}
+            </Heading>
+            <Detail textColor="subtle">Endret {formatDateMedUkedag(inntektsmelding.mottattTidspunkt)}</Detail>
+        </SimpleHeaderWrapper>
+    );
+};
+
+export const InntektsmeldingOversiktHeader = () => {
+    return (
+        <SimpleHeaderWrapper>
+            <Heading level="1" size="medium">
+                Inntekt rapportert av dine arbeidsgivere
+            </Heading>
+        </SimpleHeaderWrapper>
+    );
+};
 
 function FamiliehendelseDescription({ sak, søkerinfo }: { sak: Sak; søkerinfo?: SøkerinfoDTO }) {
     const intl = useIntl();

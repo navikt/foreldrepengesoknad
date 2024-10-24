@@ -6,9 +6,9 @@ import { BodyShort, Detail } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import { TidslinjehendelseType } from './../../types/TidslinjehendelseType';
-import { formaterDato, formaterTid } from './../../utils/dateUtils';
-import { getTidligstDatoForInntektsmelding } from './../../utils/tidslinjeUtils';
+import { TidslinjehendelseType } from '../../types/TidslinjehendelseType';
+import { formaterDato, formaterTid } from '../../utils/dateUtils';
+import { getTidligstDatoForInntektsmelding } from '../../utils/tidslinjeUtils';
 import './tidslinje-hendelse.css';
 
 interface Props {

@@ -4,6 +4,7 @@ enum OversiktRoutes {
     DIN_PLAN = 'din-plan',
     DOKUMENTER = 'dokumenter',
     ETTERSEND = 'ettersend',
+    INNTEKTSMELDING = 'inntektsmelding',
     TIDSLINJEN = 'tidslinjen',
     OPPGAVER = 'oppgaver',
 }

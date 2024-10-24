@@ -3,8 +3,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
+import { Ytelse } from '../../types/Ytelse';
 import OversiktRoutes from './../../routes/routes';
-import { Ytelse } from './../../types/Ytelse';
 import EttersendingPage from './EttersendingPage';
 
 const queryClient = new QueryClient({
