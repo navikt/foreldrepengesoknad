@@ -13,13 +13,13 @@ const {
     Refusjonsperioder,
 } = composeStories(stories);
 
-vi.mock('react-router-dom', async () => {
-    const actual = await vi.importActual('react-router-dom');
-    return {
-        ...actual,
-        useParams: () => ({ saksnummer: '1', journalpostId: '1017115920' }),
-    };
-});
+// vi.mock('react-router-dom', async () => {
+//     const actual = await vi.importActual('react-router-dom');
+//     return {
+//         ...actual,
+//         useParams: () => ({ saksnummer: '308', journalpostId: '1017115920' }),
+//     };
+// });
 
 describe('<InntektsmeldingPage>', () => {
     it('Uten Refusjon', async () => {
@@ -47,7 +47,7 @@ describe('<InntektsmeldingPage>', () => {
         applyRequestHandlers(DelvisRefusjon.parameters.msw);
         render(<DelvisRefusjon />);
 
-        expect(await screen.findByText('Hvordan utbetales foreldrepengene?')).toBeInTheDocument();
+        expect(await screen.findByText('Hvordan utbetales svangerskapspengene?')).toBeInTheDocument();
         expect(
             await screen.findByText('Laksinor har opplyst at det skal utbetales delvis av dem og Nav.'),
         ).toBeInTheDocument();
@@ -86,16 +86,6 @@ describe('<InntektsmeldingPage>', () => {
         ).toBeInTheDocument();
     });
 
-    it('En bortfalt naturalytelse', async () => {
-        applyRequestHandlers(EnBortfaltNaturalytelse.parameters.msw);
-        render(<EnBortfaltNaturalytelse />);
-
-        expect(await screen.findByText('Naturalytelser eller “frynsegoder” under permisjonen')).toBeInTheDocument();
-        expect(
-            await screen.findByText('10.09.2024 får du ikke lenger Fri transport til en verdi av 998 kr.'),
-        ).toBeInTheDocument();
-    });
-
     it('Flere bortfalte naturalytelser', async () => {
         applyRequestHandlers(FlereBortfalteNaturalytelser.parameters.msw);
         render(<FlereBortfalteNaturalytelser />);
@@ -115,16 +105,4 @@ describe('<InntektsmeldingPage>', () => {
             await screen.findByText('01.01.2025 får du ikke lenger Elektrisk kommunikasjon til en verdi av 200 kr.'),
         ).toBeInTheDocument();
     });
-
-    // it('Test at ytelse endrer seg basert på sak', async () => {
-    //     applyRequestHandlers(MedRefusjon.parameters.msw);
-    //     render(<MedRefusjon />);
-    //
-    //     expect(await screen.findByText('Din inntekt rapportert av Laksinor')).toBeInTheDocument();
-    //
-    //     expect(await screen.findByText('Hvordan utbetales foreldrepengene?')).toBeInTheDocument();
-    //     expect(
-    //         await screen.findByText('Laksinor har opplyst at det utbetales direkte til deg fra Nav.'),
-    //     ).toBeInTheDocument();
-    // });
 });

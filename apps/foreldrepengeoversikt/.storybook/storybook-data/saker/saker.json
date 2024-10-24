@@ -159,5 +159,65 @@
         }
     ],
     "engangsstønad": [],
-    "svangerskapspenger": []
+    "svangerskapspenger": [
+        {
+            "saksnummer": "308",
+            "familiehendelse": {
+                "termindato": "2024-11-21",
+                "antallBarn": 0
+            },
+            "sakAvsluttet": false,
+            "gjeldendeVedtak": {
+                "arbeidsforhold": [
+                    {
+                        "aktivitet": {
+                            "type": "ORDINÆRT_ARBEID",
+                            "arbeidsgiver": {
+                                "id": "991078045",
+                                "type": "ORGANISASJON"
+                            }
+                        },
+                        "behovFrom": "2024-10-24",
+                        "tilrettelegginger": [
+                            {
+                                "fom": "2024-10-24",
+                                "tom": "2024-10-30",
+                                "type": "INGEN",
+                                "resultat": {
+                                    "resultatType": "INNVILGET",
+                                    "utbetalingsgrad": 100.00
+                                }
+                            }
+                        ],
+                        "oppholdsperioder": [],
+                        "avslutningÅrsak": "NORMAL"
+                    },
+                    {
+                        "aktivitet": {
+                            "type": "ORDINÆRT_ARBEID",
+                            "arbeidsgiver": {
+                                "id": "992260475",
+                                "type": "ORGANISASJON"
+                            }
+                        },
+                        "behovFrom": "2024-10-17",
+                        "tilrettelegginger": [
+                            {
+                                "fom": "2024-10-17",
+                                "tom": "2024-10-30",
+                                "type": "INGEN",
+                                "resultat": {
+                                    "resultatType": "INNVILGET",
+                                    "utbetalingsgrad": 100.00
+                                }
+                            }
+                        ],
+                        "oppholdsperioder": [],
+                        "avslutningÅrsak": "NORMAL"
+                    }
+                ]
+            },
+            "oppdatertTidspunkt": "2024-10-24T09:33:39.69"
+        }
+    ]
 }

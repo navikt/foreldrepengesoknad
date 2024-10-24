@@ -17,11 +17,13 @@ const queryClient = new QueryClient();
 
 const meta = {
     title: 'Inntektsmelding',
-    render: () => {
+    render: (args) => {
         return (
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter
-                    initialEntries={[`${OversiktRoutes.SAKSOVERSIKT}/1/${OversiktRoutes.INNTEKTSMELDING}/1017115920`]}
+                    initialEntries={[
+                        `${OversiktRoutes.SAKSOVERSIKT}/${args.saksnummer}/${OversiktRoutes.INNTEKTSMELDING}/${args.journalpostId}`,
+                    ]}
                 >
                     <Routes>
                         <Route
@@ -49,7 +51,10 @@ export const EnBortfaltNaturalytelse: Story = {
             ],
         },
     },
-    args: {},
+    args: {
+        saksnummer: '352011079',
+        journalpostId: '1017115920',
+    },
 };
 
 export const FlereBortfalteNaturalytelser: Story = {
@@ -63,7 +68,10 @@ export const FlereBortfalteNaturalytelser: Story = {
             ],
         },
     },
-    args: {},
+    args: {
+        saksnummer: '352011079',
+        journalpostId: '1017115920',
+    },
 };
 
 export const UtenRefusjon: Story = {
@@ -75,7 +83,10 @@ export const UtenRefusjon: Story = {
             ],
         },
     },
-    args: {},
+    args: {
+        saksnummer: '352011079',
+        journalpostId: '1017115920',
+    },
 };
 
 export const DelvisRefusjon: Story = {
@@ -87,7 +98,10 @@ export const DelvisRefusjon: Story = {
             ],
         },
     },
-    args: {},
+    args: {
+        saksnummer: '308',
+        journalpostId: '1017115920',
+    },
 };
 
 export const MedRefusjon: Story = {
@@ -99,7 +113,10 @@ export const MedRefusjon: Story = {
             ],
         },
     },
-    args: {},
+    args: {
+        saksnummer: '352011079',
+        journalpostId: '1017115920',
+    },
 };
 
 export const Refusjonsperioder: Story = {
@@ -113,5 +130,8 @@ export const Refusjonsperioder: Story = {
             ],
         },
     },
-    args: {},
+    args: {
+        saksnummer: '352011079',
+        journalpostId: '1017115920',
+    },
 };

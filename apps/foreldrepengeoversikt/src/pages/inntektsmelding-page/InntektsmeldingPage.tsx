@@ -24,7 +24,6 @@ const useGetYtelse = () => {
         ...hentSakerOptions(),
         select: mapSakerDTOToSaker,
     }).data;
-
     if (!saker) {
         return undefined;
     }
