@@ -8,18 +8,35 @@ import { Alert, BodyShort, Detail, HGrid, Heading, List, Loader, VStack } from '
 
 import { formatCurrency, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
-import { hentGrunnbeløpOptions, hentInntektsmelding } from '../../api/api';
+import { hentGrunnbeløpOptions, hentInntektsmelding, hentSakerOptions } from '../../api/api';
 import { InntektsmeldingDto, Naturalytelsetype } from '../../api/zodSchemas';
 import { InntektsmeldingHeader } from '../../components/header/Header';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from '../../routes/routes';
+import { Ytelse } from '../../types/Ytelse';
+import { getAlleYtelser, mapSakerDTOToSaker } from '../../utils/sakerUtils';
+
+const useGetYtelse = () => {
+    const params = useParams();
+    const saker = useQuery({
+        ...hentSakerOptions(),
+        select: mapSakerDTOToSaker,
+    }).data;
+
+    if (!saker) {
+        return undefined;
+    }
+
+    return getAlleYtelser(saker).find((sak) => sak.saksnummer === params.saksnummer)?.ytelse;
+};
 
 export const InntektsmeldingPage = () => {
     useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.INNTEKTSMELDING);
     const GRUNNBELØP = useQuery(hentGrunnbeløpOptions()).data;
+    const ytelseTekst = useGetYtelse() === Ytelse.SVANGERSKAPSPENGER ? 'svangerskapspengene' : 'foreldrepengene';
 
     const params = useParams();
     const inntektsmeldingerQuery = useQuery(hentInntektsmelding(params.saksnummer!));
@@ -68,7 +85,7 @@ export const InntektsmeldingPage = () => {
                 <InntektsmeldingInfoBlokk
                     className="col-span-2"
                     size="xsmall"
-                    heading="Hvordan utbetales foreldrepengene?"
+                    heading={`Hvordan utbetales ${ytelseTekst}?`}
                     Ikon={WalletIcon}
                 >
                     <HvordanUtbetalesPengene inntektsmelding={inntektsmelding} />
