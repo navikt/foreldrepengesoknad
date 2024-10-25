@@ -7,3 +7,5 @@ export const nyUttaksplanMessages = {
     nb: nbMessages,
     nn: nnMessages,
 };
+
+export { finnOgSettInnHull } from './builder/uttaksplanbuilderUtils';

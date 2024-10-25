@@ -3430,6 +3430,121 @@ importers:
         specifier: ^2.1.4
         version: 2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.6.0(@types/node@22.8.5)(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0)
 
+  packages/uttaksplan-kalender-ny:
+    dependencies:
+      '@navikt/aksel-icons':
+        specifier: ^7.2.1
+        version: 7.2.1
+      '@navikt/ds-css':
+        specifier: ^7.2.1
+        version: 7.2.1
+      '@navikt/ds-react':
+        specifier: ^7.2.1
+        version: 7.2.1(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@navikt/fp-constants':
+        specifier: workspace:*
+        version: link:../constants
+      '@navikt/fp-metrics':
+        specifier: workspace:*
+        version: link:../metrics
+      '@navikt/fp-types':
+        specifier: workspace:*
+        version: link:../types
+      '@navikt/fp-ui':
+        specifier: workspace:*
+        version: link:../ui
+      '@navikt/fp-utils':
+        specifier: workspace:*
+        version: link:../utils
+      '@navikt/fp-utils-test':
+        specifier: workspace:*
+        version: link:../utils-test
+      '@navikt/fp-uttaksplan-ny':
+        specifier: workspace:*
+        version: link:../ny-uttaksplan
+      '@types/react':
+        specifier: ^18.3.11
+        version: 18.3.11
+      dayjs:
+        specifier: ^1.11.12
+        version: 1.11.13
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-intl:
+        specifier: ^6.8.0
+        version: 6.8.0(react@18.3.1)(typescript@5.6.3)
+      react-to-pdf:
+        specifier: 1.0.1
+        version: 1.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    devDependencies:
+      '@formatjs/cli-lib':
+        specifier: 6.4.5
+        version: 6.4.5
+      '@navikt/eslint-config-fp-selvbetjening':
+        specifier: workspace:*
+        version: link:../eslint-config-custom
+      '@storybook/addon-essentials':
+        specifier: 8.3.5
+        version: 8.3.5(storybook@8.3.5)(webpack-sources@3.2.3)
+      '@storybook/addon-interactions':
+        specifier: 8.3.5
+        version: 8.3.5(storybook@8.3.5)
+      '@storybook/addon-links':
+        specifier: 8.3.5
+        version: 8.3.5(react@18.3.1)(storybook@8.3.5)
+      '@storybook/builder-vite':
+        specifier: 8.3.5
+        version: 8.3.5(storybook@8.3.5)(typescript@5.6.3)(vite@5.4.9(@types/node@22.7.5)(less@4.2.0)(sass@1.79.5)(terser@5.34.1))(webpack-sources@3.2.3)
+      '@storybook/react':
+        specifier: 8.3.5
+        version: 8.3.5(@storybook/test@8.3.5(storybook@8.3.5))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.5)(typescript@5.6.3)
+      '@storybook/react-vite':
+        specifier: 8.3.5
+        version: 8.3.5(@storybook/test@8.3.5(storybook@8.3.5))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.24.0)(storybook@8.3.5)(typescript@5.6.3)(vite@5.4.9(@types/node@22.7.5)(less@4.2.0)(sass@1.79.5)(terser@5.34.1))(webpack-sources@3.2.3)
+      '@testing-library/dom':
+        specifier: ^10.1.0
+        version: 10.4.0
+      '@testing-library/jest-dom':
+        specifier: ^6.4.6
+        version: 6.5.0
+      '@testing-library/react':
+        specifier: ^16.0.0
+        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.1)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@trivago/prettier-plugin-sort-imports':
+        specifier: ^4.3.0
+        version: 4.3.0(prettier@3.3.3)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.9(@types/node@22.7.5)(less@4.2.0)(sass@1.79.5)(terser@5.34.1))
+      fast-glob:
+        specifier: ^3.3.2
+        version: 3.3.2
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      storybook:
+        specifier: 8.3.5
+        version: 8.3.5
+      storybook-react-intl:
+        specifier: ^3.0.1
+        version: 3.1.1(react-intl@6.8.0(react@18.3.1)(typescript@5.6.3))
+      tsconfig:
+        specifier: workspace:*
+        version: link:../tsconfig
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
+      vite:
+        specifier: ^5.4.9
+        version: 5.4.9(@types/node@22.7.5)(less@4.2.0)(sass@1.79.5)(terser@5.34.1)
+      vite-plugin-checker:
+        specifier: ^0.8.0
+        version: 0.8.0(eslint@9.12.0)(optionator@0.9.4)(typescript@5.6.3)(vite@5.4.9(@types/node@22.7.5)(less@4.2.0)(sass@1.79.5)(terser@5.34.1))
+      vitest:
+        specifier: ^2.1.3
+        version: 2.1.3(@types/node@22.7.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.11(typescript@5.6.3))(sass@1.79.5)(terser@5.34.1)
+
   packages/validation:
     dependencies:
       '@navikt/fp-constants':
@@ -4764,9 +4879,14 @@ packages:
     resolution: {integrity: sha512-SSnyl/4ni/2ViHKkiZb8eajA/eN1DNFaHjhGiLUdZvDz6PKF4COSf/17xqSz64nOo2Ia29SA6B2KNCsyCbVmaQ==}
     engines: {node: '>=18'}
 
+<<<<<<< HEAD
   '@mswjs/interceptors@0.36.7':
     resolution: {integrity: sha512-sdx02Wlus5hv6Bx7uUDb25gb0WGjCuSgnJB2LVERemoSGuqkZMe3QI6nEXhieFGtYwPrZbYrT2vPbsFN2XfbUw==}
     engines: {node: '>=18'}
+=======
+  '@navikt/aksel-icons@7.2.1':
+    resolution: {integrity: sha512-AQNR2ld5Kjx1A8LA7TnRxztbNf27UFMFt9vitSIlHGVHvWppSzIrxRhBESsldUDRxMQUjJrFY72o53whF0lhxQ==}
+>>>>>>> 9e258be80 (Laga ny versjon av uttaksplan-kalender)
 
   '@navikt/aksel-icons@7.4.1':
     resolution: {integrity: sha512-s1TcZIXkpfHM2e662WNCW1F1VtjvDv8aZyz5ahn6bcVRphdnrGYUcO+O4Lg5avgLGRzvLGeDxFbU9yFc+R1RDQ==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/7.4.1/3761bb19ec6b2930ad594e387abeba4abd8ef6ac}
@@ -4786,8 +4906,13 @@ packages:
       react-day-picker: 8.x
       uuid: '9'
 
+<<<<<<< HEAD
   '@navikt/ds-react@7.4.1':
     resolution: {integrity: sha512-LH32oEyThfU91JvTqNS+e6JPu+MhHzADNZ8laAhrXfr0incvA2l0Fv5LEqolqDk9OcHrkEmD4U8WwLjK9YKVhA==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/7.4.1/1e3d1e2ea53ce962febe28d66ada13f267481f15}
+=======
+  '@navikt/ds-react@7.2.1':
+    resolution: {integrity: sha512-zVewWWjBCiHd1TchuzBlQVYBYjBJ0v5vbnvXvDaP0I4zbG4b+Fb71F+Oxn7HyaboXEkXk0TlZjerylEdtc28zg==}
+>>>>>>> 9e258be80 (Laga ny versjon av uttaksplan-kalender)
     peerDependencies:
       '@types/react': ^17.0.30 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
@@ -4798,8 +4923,13 @@ packages:
   '@navikt/ds-tailwind@7.4.1':
     resolution: {integrity: sha512-u+oBO8X4LxReuth9ODrKOjns6p/RhfoRexu3JTCVeFy76bd7ErRrcMEnxJ9a6r38z/HNS3ppZLzYJ0b99vcrSg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/7.4.1/febfc549c8c5c2b2f1aff2fa554873c704147179}
 
+<<<<<<< HEAD
   '@navikt/ds-tokens@7.4.1':
     resolution: {integrity: sha512-RrmGmgw126FtgyedY45vIJ6tdCTSAZWGO43CKmQWuJPV61o2HKj1ca9sQjYFlcVzosUtfbXvod6Ji1vZxp91mA==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/7.4.1/bfea3c752d093e831f752b40c213f685131c601d}
+=======
+  '@navikt/ds-tokens@7.2.1':
+    resolution: {integrity: sha512-u2Aog1I10uWKJra4aFwXiMvgo/f23E7No9l0RhzCRIatQ9qFjaaV1koEtftGBS0VbkVmRgjSeSkGb4SzgiUSbw==}
+>>>>>>> 9e258be80 (Laga ny versjon av uttaksplan-kalender)
 
   '@navikt/fnrvalidator@1.3.0':
     resolution: {integrity: sha512-k1MEZ8xwxtmY570gB+BF38kr9Xta1KIcx0yUExHQZWIsD1PNGSVagoriRTxqGyyTTkt4ajk1Z18WPfWX7rtpgQ==, tarball: https://npm.pkg.github.com/download/@navikt/fnrvalidator/1.3.0/8cea6bae592f772d07efebe9a5ab7179552e1d6f}

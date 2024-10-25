@@ -5,7 +5,9 @@ import 'dayjs/locale/nn.js';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 
 import { uiMessages } from '@navikt/fp-ui';
+import { utilsMessages } from '@navikt/fp-utils';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
+import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
 import '../src/index.css';
 import nbMessages from '../src/intl/messages/nb_NO.json';
@@ -21,7 +23,7 @@ scriptTag.innerHTML = JSON.stringify({
 document.head.appendChild(scriptTag);
 
 const withIntlProvider = getIntlDecorator({
-    nb: { ...nbMessages, ...uiMessages.nb },
+    nb: { ...nbMessages, ...uiMessages.nb, ...utilsMessages.nb, ...nyUttaksplanMessages.nb },
 });
 
 const preview: Preview = {
