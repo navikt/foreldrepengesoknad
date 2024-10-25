@@ -2,14 +2,14 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute } from 'appData/routes';
 import dayjs from 'dayjs';
 
-import * as stories from './PerioderStep.stories';
+import * as stories from './PerioderSteg.stories';
 
 const { Default, FlereStillinger, FremTilFødselsdato } = composeStories(stories);
 
-describe('<Perioder>', () => {
+describe('<PerioderSteg>', () => {
     const user = userEvent.setup();
 
     it('feilmelding når ingenting er utfylt', async () => {
@@ -74,7 +74,7 @@ describe('<Perioder>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.OPPSUMMERING,
+            data: SøknadRoute.OPPSUMMERING,
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
