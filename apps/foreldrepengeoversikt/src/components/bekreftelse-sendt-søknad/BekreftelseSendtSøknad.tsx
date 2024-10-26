@@ -9,7 +9,7 @@ import { Skjemanummer, links } from '@navikt/fp-constants';
 import { Bankkonto } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
 
-import DokumentHendelse from '../../sections/tidslinje/DokumentHendelse';
+import { DokumentHendelse } from '../../sections/tidslinje/DokumentHendelse';
 import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
 import { Ytelse } from '../../types/Ytelse';
 import { KontonummerInfo } from './../../components/kontonummer-info/KontonummerInfo';
