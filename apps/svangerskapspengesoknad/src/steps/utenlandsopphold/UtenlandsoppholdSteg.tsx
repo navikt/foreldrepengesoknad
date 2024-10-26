@@ -1,7 +1,7 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
-import useStepConfig from 'appData/useStepConfig';
-import useSvpNavigator from 'appData/useSvpNavigator';
+import { SøknadRoute } from 'appData/routes';
+import { useStepConfig } from 'appData/useStepConfig';
+import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
@@ -12,20 +12,20 @@ import { ContentWrapper } from '@navikt/fp-ui';
 
 const getNextRouteForUtenlandsopphold = (values: Utenlandsopphold) => {
     if (values.harBoddUtenforNorgeSiste12Mnd) {
-        return SøknadRoutes.HAR_BODD_I_UTLANDET;
+        return SøknadRoute.HAR_BODD_I_UTLANDET;
     } else if (values.skalBoUtenforNorgeNeste12Mnd) {
-        return SøknadRoutes.SKAL_BO_I_UTLANDET;
+        return SøknadRoute.SKAL_BO_I_UTLANDET;
     }
-    return SøknadRoutes.INNTEKTSINFORMASJON;
+    return SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT;
 };
 
-type Props = {
+interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
     arbeidsforhold: Arbeidsforhold[];
-};
+}
 
-const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
+export const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     arbeidsforhold,
@@ -49,7 +49,7 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
             oppdaterSenereUtenlandsopphold(undefined);
         }
 
-        return navigator.goToNextStep(getNextRouteForUtenlandsopphold(values));
+        return navigator.goToStep(getNextRouteForUtenlandsopphold(values));
     };
 
     const saveOnPrevious = () => {
@@ -65,15 +65,13 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
                 utenlandsopphold={utenlandsopphold}
                 saveOnNext={onSubmit}
                 saveOnPrevious={saveOnPrevious}
-                onStepChange={navigator.goToNextStep}
                 cancelApplication={avbrytSøknad}
                 onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
                 stønadstype="Svangerskapspenger"
+                onStepChange={navigator.goToStep}
             />
         </ContentWrapper>
     );
 };
-
-export default UtenlandsoppholdSteg;

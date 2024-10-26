@@ -24,7 +24,7 @@ import {
     getTidslinjehendelseTittel,
 } from '../../utils/tidslinjeUtils';
 import NoeGikkGalt from './../../components/noe-gikk-galt/NoeGikkGalt';
-import DokumentHendelse from './DokumentHendelse';
+import { DokumentHendelse, InntektsmeldingDokumentHendelse } from './DokumentHendelse';
 import TidslinjeHendelse from './TidslinjeHendelse';
 import './tidslinje-hendelse.css';
 
@@ -102,7 +102,18 @@ const Tidslinje: React.FunctionComponent<Params> = ({
             {hendelserForVisning.map((hendelse, index) => {
                 const isActiveStep = index === aktivtStegIndex;
                 const alleDokumenter = hendelse.dokumenter.map((dokument) => {
-                    return <DokumentHendelse dokument={dokument} key={dokument.url} visesITidslinjen={true} />;
+                    if (hendelse.tidslinjeHendelseType === TidslinjehendelseType.INNTEKTSMELDING) {
+                        return (
+                            <InntektsmeldingDokumentHendelse
+                                key={dokument.journalpostId}
+                                dokument={{ ...dokument, tittel: 'Inntektsmelding' }}
+                                visesITidslinjen={true}
+                            />
+                        );
+                    }
+                    return (
+                        <DokumentHendelse dokument={dokument} key={dokument.journalpostId} visesITidslinjen={true} />
+                    );
                 });
                 const visKlokkeslett =
                     hendelse.tidslinjeHendelseType !== TidslinjehendelseType.FAMILIEHENDELSE &&

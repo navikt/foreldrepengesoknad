@@ -6,7 +6,7 @@ import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 import { useContextReset } from './SvpDataContext';
 
-const useAvbrytSøknad = (setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void) => {
+export const useAvbrytSøknad = (setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void) => {
     const navigate = useNavigate();
     const reset = useContextReset();
 
@@ -32,5 +32,3 @@ const useAvbrytSøknad = (setHarGodkjentVilkår: (harGodkjentVilkår: boolean) =
 
     return avbrytSøknadHandler;
 };
-
-export default useAvbrytSøknad;

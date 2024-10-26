@@ -7,7 +7,7 @@ import '@navikt/ds-css';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søker } from '@navikt/fp-types';
 
-import AppContainer from './AppContainer';
+import { AppContainer } from './AppContainer';
 
 const defaultSøkerinfo = {
     søker: {

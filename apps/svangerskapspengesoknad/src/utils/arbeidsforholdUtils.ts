@@ -3,12 +3,11 @@ import isBetween from 'dayjs/plugin/isBetween';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import minMax from 'dayjs/plugin/minMax';
 import uniqBy from 'lodash/uniqBy';
-import { IntlShape } from 'react-intl';
 import { UnikArbeidsforhold } from 'types/Arbeidsforhold';
 import { Stilling } from 'types/Tilrettelegging';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { Arbeidsforhold, ArbeidsforholdOgInntektSvp } from '@navikt/fp-types';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isBetween);
@@ -118,32 +117,4 @@ export const søkerHarKunEtAktivtArbeid = (
         (aktiveUnikeArbeidsforhold.length === 0 && erFrilanser && !harEgenNæring) ||
         (aktiveUnikeArbeidsforhold.length === 0 && !erFrilanser && harEgenNæring)
     );
-};
-
-export const getTekstOmManglendeArbeidsforhold = (
-    inntektsinformasjon: ArbeidsforholdOgInntektSvp,
-    intl: IntlShape,
-): string => {
-    const erFrilanser = inntektsinformasjon.harJobbetSomFrilans;
-    const harNæring = inntektsinformasjon.harJobbetSomSelvstendigNæringsdrivende;
-    const harJobbetIUtlandet = inntektsinformasjon.harHattArbeidIUtlandet;
-    if (erFrilanser && !harNæring && !harJobbetIUtlandet) {
-        return intl.formatMessage({ id: 'oppsummering.harIkkeNæringEllerJobbIUtlandet' });
-    }
-    if (!erFrilanser && harNæring && !harJobbetIUtlandet) {
-        return intl.formatMessage({ id: 'oppsummering.erIkkeFrilanserEllerJobbIUtlandet' });
-    }
-    if (!erFrilanser && !harNæring && harJobbetIUtlandet) {
-        return intl.formatMessage({ id: 'oppsummering.erIkkeFrilanserEllerNæringsdrivende' });
-    }
-    if (erFrilanser && harNæring && !harJobbetIUtlandet) {
-        return intl.formatMessage({ id: 'oppsummering.harIkkeJobbIUtlandet' });
-    }
-    if (erFrilanser && !harNæring && harJobbetIUtlandet) {
-        return intl.formatMessage({ id: 'oppsummering.harIkkeNæring' });
-    }
-    if (!erFrilanser && !harNæring && !harJobbetIUtlandet) {
-        return intl.formatMessage({ id: 'oppsummering.erIkkeFrilanserHarIkkeNæringJobbetIkkeIUtlandet' });
-    }
-    return intl.formatMessage({ id: 'oppsummering.erIkkeFrilanser' });
 };

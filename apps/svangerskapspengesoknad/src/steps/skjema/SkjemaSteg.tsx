@@ -1,60 +1,48 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import useStepConfig from 'appData/useStepConfig';
-import useSvpNavigator from 'appData/useSvpNavigator';
+import { RouteParams } from 'appData/routes';
+import { useStepConfig } from 'appData/useStepConfig';
+import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FunctionComponent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import { Arbeidsforholdstype, Tilrettelegging } from 'types/Tilrettelegging';
+import { useParams } from 'react-router-dom';
+import { getArbeidsgiverNavnForTilrettelegging, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
 import { VStack } from '@navikt/ds-react';
 
 import { getSaveAttachmentFetch } from '@navikt/fp-api';
 import { AttachmentType, Skjemanummer, links } from '@navikt/fp-constants';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
+import { Arbeidsforhold, Attachment, EGEN_NÆRING_ID, FRILANS_ID } from '@navikt/fp-types';
 import { FileUploader, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import Bedriftsbanner from '../Bedriftsbanner';
+import { Bedriftsbanner } from '../Bedriftsbanner';
 
 const MAX_ANTALL_VEDLEGG = 40;
 
-const finnLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) => {
-    if (typeArbeid === Arbeidsforholdstype.FRILANSER) {
-        return intl.formatMessage({ id: 'skjema.vedlegg.label.frilanser' });
-    }
-    if (typeArbeid === Arbeidsforholdstype.SELVSTENDIG) {
+const finnFileUploaderLabel = (intl: IntlShape, typeArbeid: string) => {
+    if (typeArbeid === EGEN_NÆRING_ID) {
         return intl.formatMessage({ id: 'skjema.vedlegg.label.selvstendig' });
     }
-    throw Error('Har ingen tekst for kode: ' + typeArbeid);
+    if (typeArbeid === FRILANS_ID) {
+        return intl.formatMessage({ id: 'skjema.vedlegg.label.frilanser' });
+    }
+    return intl.formatMessage({ id: 'skjema.vedlegg.label.arbeidsgiver' });
 };
 
-const getForrigeTilretteleggingId = (
-    tilretteleggingBehov: Tilrettelegging[],
-    currentTilretteleggingId: string | undefined,
-): string | undefined => {
-    if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
-        return tilretteleggingBehov[tilretteleggingBehov.length - 1].id;
-    }
-    const forrigeTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) - 1;
-    if (forrigeTilretteleggingIndex < 0) {
-        return undefined;
-    }
-    return tilretteleggingBehov[forrigeTilretteleggingIndex].id;
-};
-
-export interface SkjemaFormData {
+type SkjemaFormData = {
     vedlegg: Attachment[];
-}
+};
 
-export interface Props {
+interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     avbrytSøknad: () => Promise<void>;
     arbeidsforhold: Arbeidsforhold[];
     maxAntallVedlegg?: number;
 }
 
-const SkjemaSteg: FunctionComponent<Props> = ({
+export const SkjemaSteg: FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     arbeidsforhold,
@@ -64,16 +52,15 @@ const SkjemaSteg: FunctionComponent<Props> = ({
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
-    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
-    const vti = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
-    const [valgtTilretteleggingId] = useState(vti); //For å unngå oppdatering ved forrige
+    const params = useParams<RouteParams>();
+    const tilretteleggingId = notEmpty(params.tilretteleggingId);
 
-    const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
-    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
+    const tilretteleggingerVedlegg = useContextGetData(ContextDataType.TILRETTELEGGINGER_VEDLEGG);
+    const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
+
+    const oppdaterTilretteleggingerVedlegg = useContextSaveData(ContextDataType.TILRETTELEGGINGER_VEDLEGG);
 
     const [avventerVedlegg, setAvventerVedlegg] = useState(false);
-
-    const valgtTilrettelegging = notEmpty(tilrettelegginger.find((t) => t.id === valgtTilretteleggingId));
 
     const onSubmit = (values: SkjemaFormData) => {
         if (values.vedlegg.length === 0) {
@@ -83,9 +70,11 @@ const SkjemaSteg: FunctionComponent<Props> = ({
             return Promise.resolve();
         }
 
-        const antallVedleggAndreTilrettelegginger = tilrettelegginger
-            .filter((t) => t.id !== valgtTilrettelegging!.id)
-            .reduce((total, tilrettelegging) => total + tilrettelegging.vedlegg.length, 0);
+        const antallVedleggAndreTilrettelegginger = tilretteleggingerVedlegg
+            ? Object.keys(tilretteleggingerVedlegg)
+                  .filter((id) => id !== tilretteleggingId)
+                  .reduce((total, id) => total + tilretteleggingerVedlegg[id].length, 0)
+            : 0;
         const antallNyeVedlegg = values.vedlegg ? values.vedlegg.length : 0;
         const antallVedlegg = antallVedleggAndreTilrettelegginger + antallNyeVedlegg;
 
@@ -96,23 +85,15 @@ const SkjemaSteg: FunctionComponent<Props> = ({
             });
             return Promise.resolve();
         } else {
-            const oppdatertTilrettelegginger = {
-                ...valgtTilrettelegging,
-                vedlegg: values.vedlegg,
-            };
-
-            const alleValgteTilrettelegginger = tilrettelegginger.map((t) => {
-                return t.id === valgtTilrettelegging.id ? oppdatertTilrettelegginger : t;
-            });
-
-            oppdaterTilrettelegginger(alleValgteTilrettelegginger);
-            oppdaterValgtTilretteleggingId(valgtTilrettelegging.id);
+            oppdaterTilretteleggingerVedlegg({ ...tilretteleggingerVedlegg, [tilretteleggingId]: values.vedlegg });
 
             return navigator.goToNextDefaultStep();
         }
     };
 
-    const defaultValues = { vedlegg: valgtTilrettelegging.vedlegg };
+    const defaultValues = {
+        vedlegg: tilretteleggingerVedlegg ? tilretteleggingerVedlegg[tilretteleggingId] : undefined,
+    };
 
     const formMethods = useForm<SkjemaFormData>({
         defaultValues: defaultValues,
@@ -126,9 +107,8 @@ const SkjemaSteg: FunctionComponent<Props> = ({
         }
     };
 
-    const typeArbeid = valgtTilrettelegging.arbeidsforhold.type;
-    const erSNEllerFrilans =
-        typeArbeid === Arbeidsforholdstype.FRILANSER || typeArbeid === Arbeidsforholdstype.SELVSTENDIG;
+    const typeArbeidsgiver = getTypeArbeidForTilrettelegging(tilretteleggingId, arbeidsforhold);
+    const navnArbeidsgiver = getArbeidsgiverNavnForTilrettelegging(intl, tilretteleggingId, arbeidsforhold);
 
     return (
         <Step
@@ -136,22 +116,20 @@ const SkjemaSteg: FunctionComponent<Props> = ({
             onCancel={avbrytSøknad}
             steps={stepConfig}
             onContinueLater={navigator.fortsettSøknadSenere}
-            onStepChange={navigator.goToNextStep}
+            onStepChange={navigator.goToStep}
             noFieldsRequired
         >
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
                 <VStack gap="10">
                     <ErrorSummaryHookForm />
-                    {tilrettelegginger.length > 1 && <Bedriftsbanner arbeid={valgtTilrettelegging.arbeidsforhold} />}
+                    {valgteArbeidsforhold && valgteArbeidsforhold.length > 1 && (
+                        <Bedriftsbanner arbeidsforholdType={typeArbeidsgiver} arbeidsforholdNavn={navnArbeidsgiver} />
+                    )}
                     <VStack gap="4">
                         <FileUploader
-                            label={
-                                erSNEllerFrilans
-                                    ? finnLabel(intl, typeArbeid)
-                                    : intl.formatMessage({ id: 'skjema.vedlegg.label.arbeidsgiver' })
-                            }
+                            label={finnFileUploaderLabel(intl, tilretteleggingId)}
                             description={
-                                erSNEllerFrilans ? (
+                                tilretteleggingId === FRILANS_ID || tilretteleggingId === EGEN_NÆRING_ID ? (
                                     <FormattedMessage id="skjema.vedlegg.description.frilansSN" />
                                 ) : (
                                     <FormattedMessage
@@ -179,16 +157,7 @@ const SkjemaSteg: FunctionComponent<Props> = ({
                         />
                     </VStack>
                     <StepButtonsHookForm
-                        goToPreviousStep={() => {
-                            const forrigeTilretteleggingId = getForrigeTilretteleggingId(
-                                tilrettelegginger,
-                                valgtTilrettelegging.id,
-                            );
-                            if (forrigeTilretteleggingId) {
-                                oppdaterValgtTilretteleggingId(forrigeTilretteleggingId);
-                            }
-                            navigator.goToPreviousDefaultStep();
-                        }}
+                        goToPreviousStep={navigator.goToPreviousDefaultStep}
                         isDisabledAndLoading={avventerVedlegg}
                     />
                 </VStack>
@@ -196,5 +165,3 @@ const SkjemaSteg: FunctionComponent<Props> = ({
         </Step>
     );
 };
-
-export default SkjemaSteg;

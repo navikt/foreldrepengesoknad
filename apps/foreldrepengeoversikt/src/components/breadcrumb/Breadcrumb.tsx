@@ -55,6 +55,12 @@ const oppgaver = {
     handleInApp: true,
 };
 
+const inntektsmelding = {
+    title: 'Inntektsmelding',
+    url: OversiktRoutes.INNTEKTSMELDING,
+    handleInApp: true,
+};
+
 export const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
     switch (selectedRoute) {
         case OversiktRoutes.HOVEDSIDE:
@@ -71,6 +77,8 @@ export const getBreadcrumbs = (selectedRoute: OversiktRoutes) => {
             return [minSide, hovedside, saksoversikt, dinPlan];
         case OversiktRoutes.OPPGAVER:
             return [minSide, hovedside, saksoversikt, oppgaver];
+        case OversiktRoutes.INNTEKTSMELDING:
+            return [minSide, hovedside, saksoversikt, inntektsmelding];
         default:
             return assertUnreachable('En rute mangler brødsmulesti');
     }
@@ -89,6 +97,9 @@ const getRoute = (route: string, saksnummer: string | undefined): string => {
 
     if (route === OversiktRoutes.ETTERSEND) {
         return `${sakRoute}/${OversiktRoutes.ETTERSEND}`;
+    }
+    if (route === OversiktRoutes.INNTEKTSMELDING) {
+        return `${sakRoute}/${OversiktRoutes.INNTEKTSMELDING}`;
     }
 
     if (route === OversiktRoutes.TIDSLINJEN) {

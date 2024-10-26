@@ -19,7 +19,7 @@ export const LenkePanel = ({ to, tittel, undertittel, Ikon, className, tag }: Pr
     return (
         <Link to={to} className={classNames(styles.LenkePanel, className)}>
             <HStack gap="4" align="center" justify="space-between">
-                <HStack gap="4" align="center">
+                <HStack gap="4" align="center" wrap={false}>
                     {Ikon && (
                         <Ikon
                             className="p-1 rounded-[50%] bg-deepblue-100 text-icon-info"
@@ -28,7 +28,7 @@ export const LenkePanel = ({ to, tittel, undertittel, Ikon, className, tag }: Pr
                             aria-hidden
                         />
                     )}
-                    <VStack gap="0">
+                    <VStack gap="0" className="flex-1">
                         <BodyShort size="medium" weight="semibold">
                             {tittel}
                         </BodyShort>
