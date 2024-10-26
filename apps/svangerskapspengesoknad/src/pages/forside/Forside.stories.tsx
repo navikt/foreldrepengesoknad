@@ -3,7 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Action, SvpDataContext } from 'appData/SvpDataContext';
 import { ComponentProps } from 'react';
 
-import Forside from './Forside';
+import { Forside } from './Forside';
 
 const promiseAction =
     () =>

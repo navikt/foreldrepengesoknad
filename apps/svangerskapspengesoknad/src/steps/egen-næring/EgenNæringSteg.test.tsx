@@ -2,14 +2,16 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import dayjs from 'dayjs';
 
-import * as stories from './EgenNæringStep.stories';
+import { EGEN_NÆRING_ID } from '@navikt/fp-types';
+
+import * as stories from './EgenNæringSteg.stories';
 
 const { Default } = composeStories(stories);
 
-describe('<Arbeid som selvstendig næringsdrivende>', () => {
+describe('<EgenNæringSteg>', () => {
     it('skal gå til neste steg når informasjon er korrekt', async () => {
         const gåTilNesteSide = vi.fn();
         const mellomlagreSøknadOgNaviger = vi.fn();
@@ -65,7 +67,7 @@ describe('<Arbeid som selvstendig næringsdrivende>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoutes.SKJEMA,
+            data: addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, EGEN_NÆRING_ID),
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

@@ -1,16 +1,16 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute, TILRETTELEGGING_PARAM, addTilretteleggingIdToRoute } from 'appData/routes';
 import dayjs from 'dayjs';
 import { ComponentProps } from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { EGEN_NÆRING_ID, EgenNæring, FRILANS_ID, Frilans, Næringstype } from '@navikt/fp-types';
 
-import { TilretteleggingStep } from './TilretteleggingStep';
+import { TilretteleggingSteg } from './TilretteleggingSteg';
 
 const promiseAction =
     () =>
@@ -47,11 +47,11 @@ type StoryArgs = {
     egenNæring?: EgenNæring;
     valgteArbeidsforhold?: string[];
     valgtTilretteleggingId: string;
-} & ComponentProps<typeof TilretteleggingStep>;
+} & ComponentProps<typeof TilretteleggingSteg>;
 
 const meta = {
-    title: 'steps/TilretteleggingStep',
-    component: TilretteleggingStep,
+    title: 'steps/TilretteleggingSteg',
+    component: TilretteleggingSteg,
     render: ({
         gåTilNesteSide = action('button-click'),
         frilans,
@@ -62,18 +62,19 @@ const meta = {
     }) => {
         initAmplitude();
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.TILRETTELEGGING]}>
+            <MemoryRouter
+                initialEntries={[addTilretteleggingIdToRoute(SøknadRoute.TILRETTELEGGING, valgtTilretteleggingId)]}
+            >
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
-                        [ContextDataType.VALGT_TILRETTELEGGING_ID]: valgtTilretteleggingId,
                         [ContextDataType.FRILANS]: frilans,
                         [ContextDataType.EGEN_NÆRING]: egenNæring,
                         [ContextDataType.VALGTE_ARBEIDSFORHOLD]: valgteArbeidsforhold,
                         [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
                             harHattArbeidIUtlandet: false,
-                            harJobbetSomFrilans: false,
-                            harJobbetSomSelvstendigNæringsdrivende: false,
+                            harJobbetSomFrilans: !!frilans,
+                            harJobbetSomSelvstendigNæringsdrivende: !!egenNæring,
                         },
                         [ContextDataType.OM_BARNET]: {
                             erBarnetFødt: false,
@@ -82,7 +83,12 @@ const meta = {
                         },
                     }}
                 >
-                    <TilretteleggingStep {...rest} />
+                    <Routes>
+                        <Route
+                            element={<TilretteleggingSteg {...rest} />}
+                            path={`/${SøknadRoute.TILRETTELEGGING}/${TILRETTELEGGING_PARAM}`}
+                        />
+                    </Routes>
                 </SvpDataContext>
             </MemoryRouter>
         );
@@ -111,6 +117,7 @@ export const ForArbeidsforholdMedFlereTilrettelegginger: Story = {
 export const Frilanser: Story = {
     args: {
         ...ForArbeidsforhold.args,
+        arbeidsforhold: [],
         valgtTilretteleggingId: FRILANS_ID,
         frilans: {
             jobberFremdelesSomFrilans: true,
@@ -129,6 +136,7 @@ export const FrilanserMedFlereTilrettelegginger: Story = {
 export const SelvstendigNæring: Story = {
     args: {
         ...ForArbeidsforhold.args,
+        arbeidsforhold: [],
         valgtTilretteleggingId: EGEN_NÆRING_ID,
         egenNæring: {
             fom: '2024-01-01',
