@@ -34,7 +34,8 @@ const useGetYtelse = () => {
 export const InntektsmeldingPage = () => {
     useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.INNTEKTSMELDING);
-    const GRUNNBELØP = useQuery(hentGrunnbeløpOptions()).data;
+    // Siden vi er opptatt av om du tjener over 6G så settes G til uendelig om den loader eller ikke er tilgjengelig.
+    const GRUNNBELØP = useQuery(hentGrunnbeløpOptions()).data ?? Infinity;
     const ytelseTekst = useGetYtelse() === Ytelse.SVANGERSKAPSPENGER ? 'svangerskapspengene' : 'foreldrepengene';
 
     const params = useParams();

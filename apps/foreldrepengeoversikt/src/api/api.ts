@@ -3,6 +3,7 @@ import ky from 'ky';
 import { z } from 'zod';
 
 import { Skjemanummer } from '@navikt/fp-constants';
+import { Satser } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 import Environment from '../appData/Environment';
@@ -69,17 +70,10 @@ export const hentInntektsmelding = (saksnummer: string) =>
 
 export const hentGrunnbeløpOptions = () =>
     queryOptions({
-        queryKey: ['GRUNNBELØP_PER_MND'],
-        queryFn: async () => {
-            try {
-                const response = await ky.get('https://g.nav.no/api/v1/grunnbel%C3%B8p').json<{ grunnbeløp: number }>();
-                return response.grunnbeløp;
-            } catch {
-                return Infinity;
-            }
-        },
+        queryKey: ['SATSER'],
+        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/satser`).json<Satser>(),
+        select: (satser) => satser.grunnbeløp[0].verdi,
         staleTime: Infinity,
-        initialData: Infinity,
     });
 
 export const hentMellomlagredeYtelserOptions = () =>
