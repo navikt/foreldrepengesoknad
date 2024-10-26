@@ -47,7 +47,7 @@ export const hentInntektsmelding = (saksnummer: string) =>
         queryKey: ['INNTEKTSMELDING', saksnummer],
         queryFn: async () => {
             const response = await ky
-                .get(`${prefiks_public_path}/rest/innsyn/inntektsmeldinger`, { searchParams: { saksnummer } })
+                .get(`${urlPrefiks}/rest/innsyn/inntektsmeldinger`, { searchParams: { saksnummer } })
                 .json();
 
             const parsedJson = z.array(InntektsmeldingDtoSchema).safeParse(response);
@@ -69,7 +69,7 @@ export const hentInntektsmelding = (saksnummer: string) =>
 export const hentGrunnbeløpOptions = () =>
     queryOptions({
         queryKey: ['SATSER'],
-        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/satser`).json<Satser>(),
+        queryFn: () => ky.get(`${urlPrefiks}/rest/satser`).json<Satser>(),
         select: (satser) => satser.grunnbeløp[0].verdi,
         staleTime: Infinity,
     });
