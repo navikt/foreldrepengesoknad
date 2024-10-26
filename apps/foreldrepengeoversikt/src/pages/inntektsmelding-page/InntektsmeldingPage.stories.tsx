@@ -7,6 +7,7 @@ import flereBortfalteNaturalytelser from 'storybookData/inntektsmeldinger/flereB
 import medDelvisRefusjon from 'storybookData/inntektsmeldinger/medDelvisRefusjon.json';
 import medRefusjon from 'storybookData/inntektsmeldinger/medRefusjon.json';
 import medRefusjonsPerioder from 'storybookData/inntektsmeldinger/medRefusjonsPerioder.json';
+import satser from 'storybookData/inntektsmeldinger/satser.json';
 import utenRefusjon from 'storybookData/inntektsmeldinger/utenRefusjon.json';
 import saker from 'storybookData/saker/saker.json';
 
@@ -40,15 +41,19 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+const HANDLERS = [
+    http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
+    http.get('https://oversikt/rest/satser', () => HttpResponse.json(satser)),
+];
+
 export const EnBortfaltNaturalytelse: Story = {
     parameters: {
         msw: {
-            handlers: [
+            handlers: HANDLERS.concat([
                 http.get('https://oversikt/rest/innsyn/inntektsmeldinger', () =>
                     HttpResponse.json(enBortfaltNaturalytelse),
                 ),
-                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
-            ],
+            ]),
         },
     },
     args: {
@@ -60,12 +65,11 @@ export const EnBortfaltNaturalytelse: Story = {
 export const FlereBortfalteNaturalytelser: Story = {
     parameters: {
         msw: {
-            handlers: [
+            handlers: HANDLERS.concat([
                 http.get('https://oversikt/rest/innsyn/inntektsmeldinger', () =>
                     HttpResponse.json(flereBortfalteNaturalytelser),
                 ),
-                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
-            ],
+            ]),
         },
     },
     args: {
@@ -77,10 +81,9 @@ export const FlereBortfalteNaturalytelser: Story = {
 export const UtenRefusjon: Story = {
     parameters: {
         msw: {
-            handlers: [
+            handlers: HANDLERS.concat([
                 http.get('https://oversikt/rest/innsyn/inntektsmeldinger', () => HttpResponse.json(utenRefusjon)),
-                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
-            ],
+            ]),
         },
     },
     args: {
@@ -92,10 +95,9 @@ export const UtenRefusjon: Story = {
 export const DelvisRefusjon: Story = {
     parameters: {
         msw: {
-            handlers: [
+            handlers: HANDLERS.concat([
                 http.get('https://oversikt/rest/innsyn/inntektsmeldinger', () => HttpResponse.json(medDelvisRefusjon)),
-                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
-            ],
+            ]),
         },
     },
     args: {
@@ -107,10 +109,9 @@ export const DelvisRefusjon: Story = {
 export const MedRefusjon: Story = {
     parameters: {
         msw: {
-            handlers: [
+            handlers: HANDLERS.concat([
                 http.get('https://oversikt/rest/innsyn/inntektsmeldinger', () => HttpResponse.json(medRefusjon)),
-                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
-            ],
+            ]),
         },
     },
     args: {
@@ -122,12 +123,11 @@ export const MedRefusjon: Story = {
 export const Refusjonsperioder: Story = {
     parameters: {
         msw: {
-            handlers: [
+            handlers: HANDLERS.concat([
                 http.get('https://oversikt/rest/innsyn/inntektsmeldinger', () =>
                     HttpResponse.json(medRefusjonsPerioder),
                 ),
-                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
-            ],
+            ]),
         },
     },
     args: {
