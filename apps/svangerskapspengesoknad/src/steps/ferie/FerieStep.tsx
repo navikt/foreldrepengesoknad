@@ -1,5 +1,5 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import { RouteParams, SøknadRoute } from 'appData/routes';
+import { RouteParams, SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import dayjs from 'dayjs';
@@ -8,7 +8,7 @@ import { useController, useFieldArray, useForm, useFormContext } from 'react-hoo
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { AvtaltFerieDto } from 'types/AvtaltFerie';
-import { getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
+import { getNesteTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
 import { BodyShort, DatePicker, HStack, Heading, Radio, ReadMore, VStack, useRangeDatepicker } from '@navikt/ds-react';
 
@@ -52,9 +52,7 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
     const arbeidsgiverId = notEmpty(params.tilretteleggingId); // TODO
 
-    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
-
-    const currentTilrettelegging = notEmpty(tilrettelegginger[arbeidsgiverId]);
+    const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
 
     const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);
     const ferie = useContextGetData(ContextDataType.FERIE);
@@ -86,12 +84,13 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
         console.log(nyeFerieVerdier);
         oppdaterFerie(nyeFerieVerdier);
 
-        const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegginger, currentTilrettelegging.id);
-        const nextRoute = nesteTilretteleggingId ? SøknadRoute.SKJEMA : SøknadRoute.OPPSUMMERING;
-        if (nesteTilretteleggingId) {
-            oppdaterValgtTilretteleggingId(nesteTilretteleggingId);
-        }
-        return navigator.goToNextStep(nextRoute);
+        const nesteTilretteleggingId = getNesteTilretteleggingId(arbeidsgiverId, valgteArbeidsforhold);
+
+        return navigator.goToStep(
+            nesteTilretteleggingId
+                ? addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, nesteTilretteleggingId)
+                : SøknadRoute.OPPSUMMERING,
+        );
     };
 
     const skalHaFerie = formMethods.watch('skalHaFerie');
@@ -276,17 +275,17 @@ function RangeDatePicker({ name }: { name: string }) {
 function IndentDivider() {
     return <div className="indent-divider"></div>;
 }
-
-const getNesteTilretteleggingId = (
-    tilretteleggingBehov: Tilrettelegging[],
-    currentTilretteleggingId: string | undefined,
-): string | undefined => {
-    if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
-        return tilretteleggingBehov[0].id;
-    }
-    const nesteTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) + 1;
-    if (nesteTilretteleggingIndex === tilretteleggingBehov.length) {
-        return undefined;
-    }
-    return tilretteleggingBehov[nesteTilretteleggingIndex].id;
-};
+//
+// const getNesteTilretteleggingId = (
+//     tilretteleggingBehov: Tilrettelegging[],
+//     currentTilretteleggingId: string | undefined,
+// ): string | undefined => {
+//     if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
+//         return tilretteleggingBehov[0].id;
+//     }
+//     const nesteTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) + 1;
+//     if (nesteTilretteleggingIndex === tilretteleggingBehov.length) {
+//         return undefined;
+//     }
+//     return tilretteleggingBehov[nesteTilretteleggingIndex].id;
+// };
