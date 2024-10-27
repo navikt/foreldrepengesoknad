@@ -1,14 +1,10 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import Tilrettelegging, {
-    Arbeidsforholdstype,
-    DelivisTilretteleggingPeriodeType,
-    TilretteleggingstypeOptions,
-} from 'types/Tilrettelegging';
+import { DelivisTilretteleggingPeriodeType, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 
 import { initAmplitude } from '../../../../../packages/metrics';
 import { FerieStep } from './FerieStep';
@@ -31,23 +27,21 @@ const meta = {
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();
         return (
-            <MemoryRouter initialEntries={[SøknadRoutes.FERIE]}>
+            <MemoryRouter initialEntries={[SøknadRoute.FERIE]}>
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
-                        [ContextDataType.VALGT_TILRETTELEGGING_ID]: '263929546-6215-9868-5127-161910165730101',
-                        [ContextDataType.TILRETTELEGGINGER]: [
-                            {
-                                id: '263929546-6215-9868-5127-161910165730101',
-                                arbeidsforhold: {
-                                    navn: 'Omsorgspartner Vestfold AS',
-                                    stillinger: [{ fom: '2019-01-01', stillingsprosent: 100 }],
-                                    type: Arbeidsforholdstype.VIRKSOMHET,
-                                },
-                                type: TilretteleggingstypeOptions.DELVIS,
-                                delvisTilretteleggingPeriodeType: DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER,
-                            } as Tilrettelegging,
-                        ],
+                        [ContextDataType.TILRETTELEGGINGER]: {
+                            '263929546-6215-9868-5127-161910165730101': {
+                                type: Tilretteleggingstype.DELVIS,
+                                enPeriodeMedTilretteleggingStillingsprosent: '50',
+                                behovForTilretteleggingFom: '2024-0101',
+                                enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
+                                enPeriodeMedTilretteleggingFom: '2024-0101',
+                                delvisTilretteleggingPeriodeType:
+                                    DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN,
+                            },
+                        },
                     }}
                 >
                     <FerieStep {...rest} />

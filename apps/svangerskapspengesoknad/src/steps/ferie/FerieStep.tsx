@@ -1,13 +1,14 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
-import useStepConfig from 'appData/useStepConfig';
-import useSvpNavigator from 'appData/useSvpNavigator';
+import { RouteParams, SøknadRoute } from 'appData/routes';
+import { useStepConfig } from 'appData/useStepConfig';
+import { useSvpNavigator } from 'appData/useSvpNavigator';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { useController, useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { AvtaltFerie } from 'types/AvtaltFerie';
-import Tilrettelegging from 'types/Tilrettelegging';
+import { useParams } from 'react-router-dom';
+import { AvtaltFerieDto } from 'types/AvtaltFerie';
+import { getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
 import { BodyShort, DatePicker, HStack, Heading, Radio, ReadMore, VStack, useRangeDatepicker } from '@navikt/ds-react';
 
@@ -38,7 +39,7 @@ const DEFAULT_FERIE_VALUES = {
 
 type FerieFormData = {
     skalHaFerie?: boolean;
-    feriePerioder: Array<Partial<AvtaltFerie>>;
+    feriePerioder: Array<Partial<AvtaltFerieDto>>;
     antallFeriePerioder: number;
 };
 
@@ -46,14 +47,14 @@ const MAKS_ANTALL_PERIODER = 50;
 
 export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) {
     const intl = useIntl();
+    const params = useParams<RouteParams>();
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
+    const arbeidsgiverId = notEmpty(params.tilretteleggingId); // TODO
 
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
-    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
-    const valgtTilretteleggingId = notEmpty(useContextGetData(ContextDataType.VALGT_TILRETTELEGGING_ID));
-    const currentTilrettelegging = notEmpty(tilrettelegginger.find((t) => t.id === valgtTilretteleggingId));
-    const arbeidsgiverId = currentTilrettelegging.arbeidsforhold.arbeidsgiverId ?? ''; // TODO: what to do hvis denne er undefined?
+
+    const currentTilrettelegging = notEmpty(tilrettelegginger[arbeidsgiverId]);
 
     const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);
     const ferie = useContextGetData(ContextDataType.FERIE);
@@ -66,12 +67,12 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
     });
 
     const onSubmit = (values: FerieFormData) => {
-        const feriePerioderFraSubmit = values.skalHaFerie ? (values.feriePerioder as AvtaltFerie[]) : [];
+        const feriePerioderFraSubmit = values.skalHaFerie ? (values.feriePerioder as AvtaltFerieDto[]) : [];
         const nyeAvtaltFeriePerioder = feriePerioderFraSubmit.map((feriePeriode) => ({
             ...feriePeriode,
             arbeidsforhold: {
                 id: arbeidsgiverId,
-                type: currentTilrettelegging.arbeidsforhold.type,
+                type: getTypeArbeidForTilrettelegging(arbeidsgiverId, arbeidsforhold),
             },
         }));
         const nyeFerieVerdier = {
@@ -86,7 +87,7 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
         oppdaterFerie(nyeFerieVerdier);
 
         const nesteTilretteleggingId = getNesteTilretteleggingId(tilrettelegginger, currentTilrettelegging.id);
-        const nextRoute = nesteTilretteleggingId ? SøknadRoutes.SKJEMA : SøknadRoutes.OPPSUMMERING;
+        const nextRoute = nesteTilretteleggingId ? SøknadRoute.SKJEMA : SøknadRoute.OPPSUMMERING;
         if (nesteTilretteleggingId) {
             oppdaterValgtTilretteleggingId(nesteTilretteleggingId);
         }

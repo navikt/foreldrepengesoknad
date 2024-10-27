@@ -41,7 +41,7 @@ const getStepLabels = (
         : intl.formatMessage({ id: 'steps.label.tilrettelegging.en' }),
     [SøknadRoute.UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'steps.label.utenlandsopphold' }),
     [SøknadRoute.VELG_ARBEID]: intl.formatMessage({ id: 'steps.label.velgArbeid' }),
-    [SøknadRoutes.FERIE]: erFlereTilrettelegginger
+    [SøknadRoute.FERIE]: erFlereTilrettelegginger
         ? intl.formatMessage({ id: 'steps.label.ferie.flere' }, { navn })
         : intl.formatMessage({ id: 'steps.label.ferie.en' }),
 });
@@ -180,7 +180,7 @@ const getStepConfig = (
             !arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende &&
             !arbeidsforholdOgInntekt?.harJobbetSomFrilans
         ) {
-            steps.push(createStep(SøknadRoutes.FERIE, intl, currentPath));
+            steps.push(createStep(SøknadRoute.FERIE, intl, currentPath));
         }
     }
 

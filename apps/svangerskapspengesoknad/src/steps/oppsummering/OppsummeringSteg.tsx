@@ -130,7 +130,11 @@ export const OppsummeringSteg: React.FunctionComponent<Props> = ({
                         )
                     }
                 />
-                <FerieOppsummering onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.FERIE)} />
+                <FerieOppsummering
+                    onVilEndreSvar={() =>
+                        navigator.goToStep(addTilretteleggingIdToRoute(SøknadRoute.FERIE, førsteTilretteleggingId))
+                    }
+                />
             </OppsummeringPanel>
         </ContentWrapper>
     );

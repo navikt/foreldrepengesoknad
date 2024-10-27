@@ -1,6 +1,6 @@
 import { Arbeidsforholdstype } from 'types/Tilrettelegging';
 
-export type AvtaltFerie = {
+export type AvtaltFerieDto = {
     arbeidsforhold: {
         type: Arbeidsforholdstype;
         id: string;
@@ -12,7 +12,7 @@ export type AvtaltFerie = {
 export type AvtaltFeriePerArbeidsgiver = {
     [arbeidsgiverId: string]: {
         skalHaFerie?: boolean;
-        feriePerioder: AvtaltFerie[];
+        feriePerioder: AvtaltFerieDto[];
         antallFeriePerioder: number;
     };
 };

@@ -1,5 +1,5 @@
 import { ArbeidIUtlandetInput } from 'types/ArbeidIUtlandet';
-import { AvtaltFerie } from 'types/AvtaltFerie';
+import { AvtaltFerieDto } from 'types/AvtaltFerie';
 import { Barn } from 'types/Barn';
 
 import { EgenNæring, Frilans, LocaleNo, UtenlandsoppholdPeriode } from '@navikt/fp-types';
@@ -16,5 +16,5 @@ export interface SøknadDTO {
     utenlandsopphold: UtenlandsoppholdPeriode[] | undefined;
     tilretteleggingsbehov: TilretteleggingDTO[];
     vedlegg: AttachmentDTO[];
-    ferie: AvtaltFerie[];
+    ferie: AvtaltFerieDto[];
 }
