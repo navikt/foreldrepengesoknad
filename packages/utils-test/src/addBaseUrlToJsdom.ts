@@ -10,7 +10,7 @@ export const addBaseUrlToJsdom = () => {
     global.URL = class extends originalURL {
         constructor(url: string, base: string) {
             if (!base) {
-                base = 'http://localhost:3000'; // Ikke så farlig hva denne er. Poenet er at det må finnes en baseUrl
+                base = 'http://localhost:3000'; // Ikke så farlig hva denne er. Poenget er at det må finnes en baseUrl
             }
             super(url, base);
         }
