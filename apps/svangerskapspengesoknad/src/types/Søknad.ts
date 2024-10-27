@@ -2,9 +2,10 @@ import { ArbeidIUtlandetInput } from 'types/ArbeidIUtlandet';
 import { AvtaltFerie } from 'types/AvtaltFerie';
 import { Barn } from 'types/Barn';
 
-import { Attachment, EgenNæring, Frilans, LocaleNo, UtenlandsoppholdPeriode } from '@navikt/fp-types';
+import { EgenNæring, Frilans, LocaleNo, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
-import { TilretteleggingDTO } from './Tilrettelegging';
+import { AttachmentDTO } from './AttachmentDTO';
+import { TilretteleggingDTO } from './TilretteleggingDto';
 
 export interface SøknadDTO {
     språkkode: LocaleNo;
@@ -13,7 +14,7 @@ export interface SøknadDTO {
     egenNæring: EgenNæring | undefined;
     andreInntekterSiste10Mnd: ArbeidIUtlandetInput[] | undefined;
     utenlandsopphold: UtenlandsoppholdPeriode[] | undefined;
-    tilrettelegging: TilretteleggingDTO[];
-    vedlegg: Attachment[];
+    tilretteleggingsbehov: TilretteleggingDTO[];
+    vedlegg: AttachmentDTO[];
     ferie: AvtaltFerie[];
 }

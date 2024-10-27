@@ -1,11 +1,14 @@
 import { AttachmentMetadataType } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
-import { ArbeidsforholdDTO } from './Arbeidsforhold';
+import { Arbeidsforholdstype } from './Tilrettelegging';
 
 export interface AttachmentDTO extends Attachment {
     dokumenterer: {
         type: AttachmentMetadataType;
-        arbeidsforhold: ArbeidsforholdDTO;
+        arbeidsforhold: {
+            id: string;
+            type: Arbeidsforholdstype;
+        };
     };
 }

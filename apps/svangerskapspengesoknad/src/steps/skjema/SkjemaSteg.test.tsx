@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import * as stories from './SkjemaSteg.stories';
@@ -42,43 +42,25 @@ describe('<SkjemaSteg>', () => {
         expect(screen.queryByText('Du må laste opp minst ett dokument')).not.toBeInTheDocument();
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
-            data: [
-                {
-                    arbeidsforhold: {
-                        arbeidsgiverId: '990322244',
-                        navn: 'Omsorgspartner Vestfold AS',
-                        type: 'virksomhet',
-                        startdato: '2023-01-01',
-                        stillinger: [],
-                    },
-                    id: '990322244',
-                    varierendePerioder: [],
-                    behovForTilretteleggingFom: undefined,
-                    type: undefined,
-                    vedlegg: [
-                        expect.objectContaining({
-                            filename: 'hello.png',
-                            filesize: 5,
-                            pending: false,
-                            skjemanummer: 'I000109',
-                            type: 'tilrettelegging',
-                            uploaded: true,
-                            url: 'test.com',
-                            uuid: 'uuid-test',
-                        }),
-                    ],
-                },
-            ],
-            key: ContextDataType.TILRETTELEGGINGER,
+            data: {
+                '990322244': [
+                    expect.objectContaining({
+                        filename: 'hello.png',
+                        filesize: 5,
+                        pending: false,
+                        skjemanummer: 'I000109',
+                        type: 'tilrettelegging',
+                        uploaded: true,
+                        url: 'test.com',
+                        uuid: 'uuid-test',
+                    }),
+                ],
+            },
+            key: ContextDataType.TILRETTELEGGINGER_VEDLEGG,
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: '990322244',
-            key: ContextDataType.VALGT_TILRETTELEGGING_ID,
-            type: 'update',
-        });
-        expect(gåTilNesteSide).toHaveBeenNthCalledWith(3, {
-            data: SøknadRoutes.TILRETTELEGGING,
+            data: addTilretteleggingIdToRoute(SøknadRoute.TILRETTELEGGING, '990322244'),
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });
@@ -99,7 +81,7 @@ describe('<SkjemaSteg>', () => {
         render(<MedToTilrettelegginger />);
 
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
-        expect(screen.getAllByText('Last opp skjema for Omsorgspartner Vestfold AS')).toHaveLength(3);
+        expect(screen.getAllByText('Last opp skjema for Omsorgspartner Vestfold AS')).toHaveLength(2);
         expect(screen.getByText('Om ditt arbeidsforhold i')).toBeInTheDocument();
         expect(screen.getByText('Omsorgspartner Vestfold AS')).toBeInTheDocument();
     });
@@ -127,11 +109,6 @@ describe('<SkjemaSteg>', () => {
         const fileInput = screen.getByLabelText('Last opp skjema for risiko og tilrettelegging i svangerskapet');
         await fireEvent.change(fileInput, {
             target: { files: { item: () => file1, length: 1, 0: file1 } },
-        });
-
-        const file2 = new File(['hello1'], 'hello1.png', { type: 'image/png' });
-        await fireEvent.change(fileInput, {
-            target: { files: { item: () => file2, length: 1, 0: file2 } },
         });
 
         await userEvent.click(screen.getByText('Neste steg'));

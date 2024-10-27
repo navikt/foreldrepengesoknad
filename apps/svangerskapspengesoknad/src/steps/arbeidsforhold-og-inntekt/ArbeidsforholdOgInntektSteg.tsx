@@ -1,10 +1,11 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
-import useStepConfig from 'appData/useStepConfig';
-import useSvpNavigator from 'appData/useSvpNavigator';
-import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import Tilrettelegging from 'types/Tilrettelegging';
-import { getAktiveArbeidsforhold, søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
+import { SøknadRoute } from 'appData/routes';
+import { useStepConfig } from 'appData/useStepConfig';
+import { useSvpNavigator } from 'appData/useSvpNavigator';
+import { useTilretteleggingerHelper } from 'appData/useTilretteleggingerHelper';
+import { FormattedMessage } from 'react-intl';
+import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
+import { getRuteVelgArbeidEllerSkjema } from 'utils/tilretteleggingUtils';
 
 import { Heading } from '@navikt/ds-react';
 
@@ -13,65 +14,28 @@ import {
     Arbeidsforhold,
     ArbeidsforholdOgInntekt,
     ArbeidsforholdOgInntektSvp,
+    EGEN_NÆRING_ID,
+    FRILANS_ID,
     isArbeidsforholdOgInntektSvp,
 } from '@navikt/fp-types';
 import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import { getArbeidsforholdTilretteleggingOptions } from '../velg-arbeidsforhold/velgArbeidFormUtils';
-
-const søkerHarKunEttARegArbeidsforholdForTilrettelegging = (
-    formValues: ArbeidsforholdOgInntektSvp,
-    aktiveArbeidsforhold: Arbeidsforhold[],
+const getNextRoute = (
     termindato: string,
-) => {
-    const kunEttAktivt = søkerHarKunEtAktivtArbeid(
-        termindato,
-        aktiveArbeidsforhold,
-        formValues.harJobbetSomFrilans,
-        formValues.harJobbetSomSelvstendigNæringsdrivende,
-    );
-    return kunEttAktivt && aktiveArbeidsforhold.length > 0;
-};
-
-export const getAutomatiskValgtTilretteleggingHvisKunEtArbeid = (
-    formValues: ArbeidsforholdOgInntektSvp,
     aktiveArbeidsforhold: Arbeidsforhold[],
-    termindato: string,
-    tilrettelegging: Tilrettelegging[],
-    intl: IntlShape,
-) => {
-    let automatiskValgtTilrettelegging = undefined;
-    const kunEtAregArbeidsforholdForTilrettelegging = søkerHarKunEttARegArbeidsforholdForTilrettelegging(
-        formValues,
-        aktiveArbeidsforhold,
-        termindato,
-    );
-    if (kunEtAregArbeidsforholdForTilrettelegging) {
-        automatiskValgtTilrettelegging = getArbeidsforholdTilretteleggingOptions(
-            aktiveArbeidsforhold,
-            tilrettelegging,
-            termindato,
-            intl,
-        )[0];
-    }
-    return automatiskValgtTilrettelegging;
-};
-
-const getNextRouteForInntektsinformasjon = (
-    automatiskValgtTilrettelegging: Tilrettelegging | undefined,
     values: ArbeidsforholdOgInntektSvp,
-): SøknadRoutes => {
+): SøknadRoute | string => {
     if (values.harJobbetSomFrilans) {
-        return SøknadRoutes.FRILANS;
+        return SøknadRoute.FRILANS;
     }
     if (values.harJobbetSomSelvstendigNæringsdrivende) {
-        return SøknadRoutes.NÆRING;
+        return SøknadRoute.NÆRING;
     }
     if (values.harHattArbeidIUtlandet) {
-        return SøknadRoutes.ARBEID_I_UTLANDET;
+        return SøknadRoute.ARBEID_I_UTLANDET;
     }
-    return automatiskValgtTilrettelegging ? SøknadRoutes.SKJEMA : SøknadRoutes.VELG_ARBEID;
+    return getRuteVelgArbeidEllerSkjema(termindato, aktiveArbeidsforhold, values);
 };
 
 type Props = {
@@ -80,22 +44,19 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
+export const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     arbeidsforhold,
 }) => {
-    const intl = useIntl();
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
+    const { fjernTilrettelegginger } = useTilretteleggingerHelper();
 
-    const inntektsinformasjon = useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
-    const tilrettelegginger = useContextGetData(ContextDataType.TILRETTELEGGINGER);
+    const arbeidsforholdOgInntekt = useContextGetData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const { termindato } = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
 
-    const oppdaterInntektsinformasjon = useContextSaveData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
-    const oppdaterTilrettelegginger = useContextSaveData(ContextDataType.TILRETTELEGGINGER);
-    const oppdaterValgtTilretteleggingId = useContextSaveData(ContextDataType.VALGT_TILRETTELEGGING_ID);
+    const oppdaterArbeidsforholdOgInntekt = useContextSaveData(ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT);
     const oppdaterFrilans = useContextSaveData(ContextDataType.FRILANS);
     const oppdaterEgenNæring = useContextSaveData(ContextDataType.EGEN_NÆRING);
     const oppdaterArbeidIUtlandet = useContextSaveData(ContextDataType.ARBEID_I_UTLANDET);
@@ -106,36 +67,28 @@ const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
         if (!isArbeidsforholdOgInntektSvp(values)) {
             throw Error('values er på feil format');
         }
-        const automatiskValgtTilrettelegging = getAutomatiskValgtTilretteleggingHvisKunEtArbeid(
-            values,
-            aktiveArbeidsforhold,
-            termindato,
-            tilrettelegginger || [],
-            intl,
-        );
 
-        if (automatiskValgtTilrettelegging) {
-            oppdaterTilrettelegginger([automatiskValgtTilrettelegging]);
-        }
+        oppdaterArbeidsforholdOgInntekt(values);
 
-        oppdaterInntektsinformasjon(values);
+        const tilretteleggingerSomSkalFjernes = [];
 
         if (values.harHattArbeidIUtlandet === false) {
             oppdaterArbeidIUtlandet(undefined);
         }
         if (values.harJobbetSomFrilans === false) {
             oppdaterFrilans(undefined);
+            tilretteleggingerSomSkalFjernes.push(FRILANS_ID);
         }
         if (values.harJobbetSomSelvstendigNæringsdrivende === false) {
             oppdaterEgenNæring(undefined);
+            tilretteleggingerSomSkalFjernes.push(EGEN_NÆRING_ID);
         }
 
-        const neste = getNextRouteForInntektsinformasjon(automatiskValgtTilrettelegging, values);
-        if (neste === SøknadRoutes.SKJEMA && automatiskValgtTilrettelegging) {
-            oppdaterValgtTilretteleggingId(automatiskValgtTilrettelegging.id);
+        if (tilretteleggingerSomSkalFjernes.length > 0) {
+            fjernTilrettelegginger(tilretteleggingerSomSkalFjernes);
         }
 
-        return navigator.goToNextStep(neste);
+        return navigator.goToStep(getNextRoute(termindato, aktiveArbeidsforhold, values));
     };
 
     return (
@@ -145,17 +98,15 @@ const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
             </Heading>
             <ArbeidsforholdOgInntektPanel
                 aktiveArbeidsforhold={aktiveArbeidsforhold}
-                arbeidsforholdOgInntekt={inntektsinformasjon}
+                arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
                 saveOnNext={onSubmit}
-                onStepChange={navigator.goToNextStep}
                 cancelApplication={avbrytSøknad}
                 onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
+                onStepChange={navigator.goToStep}
                 stønadstype="Svangerskapspenger"
             />
         </ContentWrapper>
     );
 };
-
-export default ArbeidsforholdOgInntektSteg;

@@ -1,10 +1,10 @@
+import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { FunctionComponent } from 'react';
 
-import { ExternalLink } from '@navikt/ds-icons';
 import { Alert, BodyShort, Button, Heading, Link, VStack } from '@navikt/ds-react';
 
+import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import ContentSection from '../content-section/ContentSection';
-import { useSetBackgroundColor } from './../../hooks/useBackgroundColor';
 
 interface Props {
     harOppdatertSak: boolean;
@@ -31,7 +31,7 @@ const HarIkkeSaker: FunctionComponent<Props> = ({ harOppdatertSak }) => {
                         fødsel eller adopsjon.
                     </BodyShort>
                     <Link href="https://www.nav.no/foreldrepenger">
-                        Les mer om foreldrepenger <ExternalLink aria-hidden={true} />
+                        Les mer om foreldrepenger <ExternalLinkIcon aria-hidden={true} />
                     </Link>
                     <Button as="a" href="https://foreldrepengesoknad.nav.no" className="w-fit">
                         Søk om foreldrepenger

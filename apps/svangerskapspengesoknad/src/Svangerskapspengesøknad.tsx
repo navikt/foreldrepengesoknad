@@ -8,10 +8,10 @@ import { Umyndig } from '@navikt/fp-ui';
 import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import SvangerskapspengesøknadRoutes, { ApiErrorHandler, Spinner } from './SvangerskapspengesøknadRoutes';
+import { ApiErrorHandler, Spinner, SvangerskapspengesøknadRoutes } from './SvangerskapspengesøknadRoutes';
 import { SvpDataContext } from './app-data/SvpDataContext';
 import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from './app-data/useMellomlagreSøknad';
-import IkkeKvinne from './pages/ikke-kvinne/IkkeKvinne';
+import { IkkeKvinne } from './pages/ikke-kvinne/IkkeKvinne';
 import './styles/app.css';
 
 interface Props {

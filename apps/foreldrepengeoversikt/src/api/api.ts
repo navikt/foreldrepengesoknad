@@ -1,7 +1,10 @@
 import { queryOptions } from '@tanstack/react-query';
 import ky from 'ky';
+import { z } from 'zod';
 
 import { Skjemanummer } from '@navikt/fp-constants';
+import { Satser } from '@navikt/fp-types';
+import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 import Environment from '../appData/Environment';
 import { AnnenPartVedtakDTO } from '../types/AnnenPartVedtakDTO';
@@ -12,6 +15,7 @@ import { MinidialogInnslag } from '../types/MinidialogInnslag';
 import { SakOppslagDTO } from '../types/SakOppslag';
 import { SøkerinfoDTO } from '../types/SøkerinfoDTO';
 import { Tidslinjehendelse } from '../types/Tidslinjehendelse';
+import { InntektsmeldingDtoSchema } from './zodSchemas';
 
 export const prefiks_public_path = Environment.PUBLIC_PATH;
 
@@ -38,6 +42,38 @@ export const hentDokumenterOptions = (saksnummer: string) =>
         queryKey: ['DOKUMENTER', saksnummer],
         queryFn: () =>
             ky.get(`${prefiks_public_path}/rest/dokument/alle`, { searchParams: { saksnummer } }).json<Dokument[]>(),
+    });
+
+export const hentInntektsmelding = (saksnummer: string) =>
+    queryOptions({
+        queryKey: ['INNTEKTSMELDING', saksnummer],
+        queryFn: async () => {
+            const response = await ky
+                .get(`${prefiks_public_path}/rest/innsyn/inntektsmeldinger`, { searchParams: { saksnummer } })
+                .json();
+
+            const parsedJson = z.array(InntektsmeldingDtoSchema).safeParse(response);
+
+            if (!parsedJson.success) {
+                throw new Error('Responsen fra serveren matchet ikke forventet format');
+            }
+
+            // Versjon 1 kan ikke brukes og skal ignoreres.
+            return parsedJson.data
+                .filter((im) => im.versjon >= 2)
+                .map((im) => ({
+                    ...im,
+                    arbeidsgiverNavn: capitalizeFirstLetterInEveryWordOnly(im.arbeidsgiverNavn) ?? '',
+                }));
+        },
+    });
+
+export const hentGrunnbeløpOptions = () =>
+    queryOptions({
+        queryKey: ['SATSER'],
+        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/satser`).json<Satser>(),
+        select: (satser) => satser.grunnbeløp[0].verdi,
+        staleTime: Infinity,
     });
 
 export const hentMellomlagredeYtelserOptions = () =>

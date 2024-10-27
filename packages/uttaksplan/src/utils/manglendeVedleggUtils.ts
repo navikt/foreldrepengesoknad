@@ -109,7 +109,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
-                                Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM,
+                                Skjemanummer.DOK_ARBEID_MOR,
                                 AttachmentType.MORS_AKTIVITET_DOKUMENTASJON,
                                 periode.id,
                             ),
@@ -182,7 +182,7 @@ export const findMissingAttachmentsForPerioder = (søknadsinfo: Søknadsinfo): M
                         missingAttachments.push(
                             createMissingAttachment(
                                 index,
-                                Skjemanummer.DOK_MORS_UTDANNING_ARBEID_SYKDOM,
+                                Skjemanummer.DOK_ARBEID_MOR,
                                 AttachmentType.UTSETTELSE_SYKDOM,
                                 periode.id,
                             ),

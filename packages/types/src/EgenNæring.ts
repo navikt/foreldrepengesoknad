@@ -1,4 +1,4 @@
-export const egenNæringId = 'næring';
+export const EGEN_NÆRING_ID = 'nearing';
 
 export enum Næringstype {
     FISKER = 'FISKE',

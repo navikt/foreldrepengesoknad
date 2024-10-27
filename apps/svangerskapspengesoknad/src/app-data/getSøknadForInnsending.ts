@@ -1,132 +1,112 @@
-import { ArbeidsforholdDTO } from 'types/Arbeidsforhold';
 import { AttachmentDTO } from 'types/AttachmentDTO';
 import { Barn } from 'types/Barn';
 import { SøknadDTO } from 'types/Søknad';
-import Tilrettelegging, {
-    Arbeidsforholdstype,
-    DelvisTilretteleggingDTO,
-    HelTilretteleggingDTO,
-    IngenTilretteleggingDTO,
-    TilretteleggingDTO,
-    TilretteleggingPeriode,
-    Tilretteleggingstype,
-} from 'types/Tilrettelegging';
+import { DelvisTilrettelegging, IngenTilrettelegging, PeriodeMedVariasjon } from 'types/Tilrettelegging';
+import { TilretteleggingDTO } from 'types/TilretteleggingDto';
 import { getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
-import { mapTilretteleggingTilPerioder } from 'utils/tilretteleggingUtils';
+import {
+    getArbeidsgiverStillingerForTilrettelegging,
+    getTypeArbeidForTilrettelegging,
+    mapEnTilretteleggingPeriode,
+    mapFlereTilretteleggingPerioder,
+} from 'utils/tilretteleggingUtils';
 
 import { AttachmentMetadataType } from '@navikt/fp-constants';
-import { LocaleNo } from '@navikt/fp-types';
+import { Arbeidsforhold, Attachment, EgenNæring, Frilans, LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType } from './SvpDataContext';
 
-const getArbeidsforholdForInnsending = (t: TilretteleggingPeriode | Tilrettelegging): ArbeidsforholdDTO => {
-    if (
-        t.arbeidsforhold.type === Arbeidsforholdstype.FRILANSER ||
-        t.arbeidsforhold.type === Arbeidsforholdstype.SELVSTENDIG
-    ) {
-        return {
-            type: t.arbeidsforhold.type,
-            risikoFaktorer: t.risikofaktorer!,
-            tilretteleggingstiltak: t.tilretteleggingstiltak!,
-        };
-    }
-    return {
-        id: t.arbeidsforhold.arbeidsgiverId!,
-        type: t.arbeidsforhold.type,
-    };
-};
-
-const mapHelTilretteleggingForInnsending = (
-    periode: TilretteleggingPeriode,
-    arbeidsforhold: ArbeidsforholdDTO,
-): HelTilretteleggingDTO => {
-    return {
-        type: Tilretteleggingstype.HEL,
-        tilrettelagtArbeidFom: periode.fom,
-        arbeidsforhold,
-        behovForTilretteleggingFom: periode.behovForTilretteleggingFom,
-    };
-};
-
-const mapDelvisTilretteleggingForInnsending = (
-    periode: TilretteleggingPeriode,
-    arbeidsforhold: ArbeidsforholdDTO,
-): DelvisTilretteleggingDTO => {
-    return {
-        type: Tilretteleggingstype.DELVIS,
-        tilrettelagtArbeidFom: periode.fom,
-        arbeidsforhold,
-        behovForTilretteleggingFom: periode.behovForTilretteleggingFom,
-        stillingsprosent: periode.stillingsprosent,
-    };
-};
-
-const mapIngenTilretteleggingForInnsending = (
-    periode: TilretteleggingPeriode,
-    arbeidsforhold: ArbeidsforholdDTO,
-): IngenTilretteleggingDTO => {
-    return {
-        type: Tilretteleggingstype.INGEN,
-        slutteArbeidFom: periode.fom,
-        arbeidsforhold,
-        behovForTilretteleggingFom: periode.behovForTilretteleggingFom,
-    };
-};
-
-const mapTilretteleggingPeriodeForInnsending = (periode: TilretteleggingPeriode): TilretteleggingDTO => {
-    const mappedArbeid = getArbeidsforholdForInnsending(periode);
-    if (periode.type === Tilretteleggingstype.HEL) {
-        return mapHelTilretteleggingForInnsending(periode, mappedArbeid);
-    }
-    if (periode.type === Tilretteleggingstype.DELVIS) {
-        return mapDelvisTilretteleggingForInnsending(periode, mappedArbeid);
-    }
-    return mapIngenTilretteleggingForInnsending(periode, mappedArbeid);
-};
-
-// TODO: Fikses mappingen her senere. 3 lag med objekter som er litt unødvendig.
-const mapTilretteleggingerForInnsending = (tilrettelegging: Tilrettelegging[], barn: Barn): TilretteleggingDTO[] => {
+const finnTilretteleggingsbehov = (
+    alleArbeidsforhold: Arbeidsforhold[],
+    barn: Barn,
+    tilrettelegginger: Record<string, DelvisTilrettelegging | IngenTilrettelegging>,
+    tilretteleggingerPerioder?: Record<string, PeriodeMedVariasjon[]>,
+    egenNæring?: EgenNæring,
+    frilans?: Frilans,
+): TilretteleggingDTO[] => {
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
-    const tilretteleggingsPerioder = mapTilretteleggingTilPerioder(tilrettelegging, sisteDagForSvangerskapspenger);
-    return tilretteleggingsPerioder.map((p: TilretteleggingPeriode) => {
-        return mapTilretteleggingPeriodeForInnsending(p);
+
+    return Object.keys(tilrettelegginger).map((tilretteleggingId) => {
+        const tilrettelegging = tilrettelegginger[tilretteleggingId];
+        const perioder = tilretteleggingerPerioder?.[tilretteleggingId];
+
+        const stillinger = getArbeidsgiverStillingerForTilrettelegging(
+            barn.termindato,
+            tilretteleggingId,
+            alleArbeidsforhold,
+            egenNæring,
+            frilans,
+        );
+
+        return {
+            arbeidsforhold: {
+                id: tilretteleggingId,
+                type: getTypeArbeidForTilrettelegging(tilretteleggingId, alleArbeidsforhold),
+            },
+            behovForTilretteleggingFom: tilrettelegging.behovForTilretteleggingFom,
+            risikofaktorer: tilrettelegging.risikofaktorer,
+            tilretteleggingstiltak: tilrettelegging.tilretteleggingstiltak,
+            tilrettelegginger:
+                perioder && perioder.length > 0
+                    ? mapFlereTilretteleggingPerioder(perioder, sisteDagForSvangerskapspenger, stillinger)
+                    : mapEnTilretteleggingPeriode(tilrettelegging, sisteDagForSvangerskapspenger, stillinger),
+        };
     });
 };
 
-const mapVedleggForInnsending = (tilrettelegginger: Tilrettelegging[]): AttachmentDTO[] => {
-    const mappedVedlegg = tilrettelegginger.map((t) => {
-        const mappedArbeid = getArbeidsforholdForInnsending(t);
-        return t.vedlegg.map((v) => ({
-            ...v,
+const finnVedlegg = (
+    tilretteleggingerVedlegg: Record<string, Attachment[]>,
+    alleArbeidsforhold: Arbeidsforhold[],
+): AttachmentDTO[] => {
+    const mappedVedlegg = Object.keys(tilretteleggingerVedlegg).map((tilretteleggingId) => {
+        const alleVedlegg = tilretteleggingerVedlegg[tilretteleggingId];
+        const arbeidsforhold = {
+            id: tilretteleggingId,
+            type: getTypeArbeidForTilrettelegging(tilretteleggingId, alleArbeidsforhold),
+        };
+        return alleVedlegg.map((vedlegg) => ({
+            ...vedlegg,
             dokumenterer: {
                 type: AttachmentMetadataType.TILRETTELEGGING,
-                arbeidsforhold: mappedArbeid,
+                arbeidsforhold,
             },
         }));
     });
-    return mappedVedlegg.flat(1);
+    return mappedVedlegg.flat();
 };
 
 export const getSøknadForInnsending = (
+    alleArbeidsforhold: Arbeidsforhold[],
     hentData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
     locale: LocaleNo,
 ): SøknadDTO => {
     const senereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_SENERE);
     const tidligereUtenlandsopphold = hentData(ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE);
     const barn = notEmpty(hentData(ContextDataType.OM_BARNET));
-    const tilrettelegging = notEmpty(hentData(ContextDataType.TILRETTELEGGINGER));
+    const tilrettelegginger = notEmpty(hentData(ContextDataType.TILRETTELEGGINGER));
+    const tilretteleggingerVedlegg = notEmpty(hentData(ContextDataType.TILRETTELEGGINGER_VEDLEGG));
+    const tilretteleggingerPerioder = hentData(ContextDataType.TILRETTELEGGINGER_PERIODER);
+    const frilans = hentData(ContextDataType.FRILANS);
+    const egenNæring = hentData(ContextDataType.EGEN_NÆRING);
     const ferie = hentData(ContextDataType.FERIE);
-    const tilretteleggingForInnsending = mapTilretteleggingerForInnsending(tilrettelegging, barn);
+
     return {
         språkkode: locale,
-        barn: barn,
-        frilans: hentData(ContextDataType.FRILANS),
-        egenNæring: hentData(ContextDataType.EGEN_NÆRING),
+        barn,
+        frilans,
+        egenNæring,
         andreInntekterSiste10Mnd: hentData(ContextDataType.ARBEID_I_UTLANDET)?.arbeidIUtlandet,
         utenlandsopphold: (tidligereUtenlandsopphold ?? []).concat(senereUtenlandsopphold ?? []),
-        tilrettelegging: tilretteleggingForInnsending,
-        vedlegg: mapVedleggForInnsending(tilrettelegging),
+        tilretteleggingsbehov: finnTilretteleggingsbehov(
+            alleArbeidsforhold,
+            barn,
+            tilrettelegginger,
+            tilretteleggingerPerioder,
+            egenNæring,
+            frilans,
+        ),
+        vedlegg: finnVedlegg(tilretteleggingerVedlegg, alleArbeidsforhold),
         ferie: ferie ? Object.values(ferie).flatMap((f) => f.feriePerioder) : [],
     };
 };
