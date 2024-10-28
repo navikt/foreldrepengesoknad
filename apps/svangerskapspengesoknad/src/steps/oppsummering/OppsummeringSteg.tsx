@@ -131,6 +131,7 @@ export const OppsummeringSteg: React.FunctionComponent<Props> = ({
                     }
                 />
                 <FerieOppsummering
+                    alleArbeidsforhold={søkerInfo.arbeidsforhold}
                     onVilEndreSvar={() =>
                         navigator.goToStep(addTilretteleggingIdToRoute(SøknadRoute.FERIE, førsteTilretteleggingId))
                     }

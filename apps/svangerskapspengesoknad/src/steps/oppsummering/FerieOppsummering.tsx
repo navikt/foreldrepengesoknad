@@ -7,12 +7,19 @@ import { FormSummary } from '@navikt/ds-react';
 import { JaNeiTekst } from '@navikt/fp-steg-oppsummering';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
+import { Arbeidsforhold } from '../../../../../packages/types';
 import { notEmpty } from '../../../../../packages/validation';
 
-export function FerieOppsummering({ onVilEndreSvar }: { readonly onVilEndreSvar: () => void }) {
+export function FerieOppsummering({
+    onVilEndreSvar,
+    alleArbeidsforhold,
+}: {
+    onVilEndreSvar: () => void;
+    alleArbeidsforhold: Arbeidsforhold[];
+}) {
     const ferie = useContextGetData(ContextDataType.FERIE);
-    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
-    console.log(ferie);
+    const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD) ?? [];
+    console.log(valgteArbeidsforhold);
     if (!ferie) {
         return null;
     }
@@ -28,8 +35,11 @@ export function FerieOppsummering({ onVilEndreSvar }: { readonly onVilEndreSvar:
                 </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
-                {true ? (
-                    <FeriePeriodeOppsummering avtaltFerie={flatFerie} />
+                {valgteArbeidsforhold.length > 1 ? (
+                    <FlereArbeidsgivereFerieOppsummering
+                        avtaltFerie={flatFerie}
+                        alleArbeidsforhold={alleArbeidsforhold}
+                    />
                 ) : (
                     <FeriePeriodeOppsummering avtaltFerie={flatFerie} />
                 )}
@@ -71,17 +81,26 @@ const FeriePeriodeOppsummering = ({ avtaltFerie }: { avtaltFerie: AvtaltFerieDto
     );
 };
 
-const FlereArbeidsgivereFerieOppsummering = ({ avtaltFerie }: { avtaltFerie: AvtaltFerieDto[] }) => {
-    const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
+const FlereArbeidsgivereFerieOppsummering = ({
+    avtaltFerie,
+    alleArbeidsforhold,
+}: {
+    avtaltFerie: AvtaltFerieDto[];
+    alleArbeidsforhold: Arbeidsforhold[];
+}) => {
+    const valgteArbeidsforhold = notEmpty(useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD));
 
-    return [].map((tilrettelegging) => {
+    return valgteArbeidsforhold.map((arbeidsforholdId) => {
         const perioderForDenneTilretteleggingen = avtaltFerie.filter(
-            (periode) => periode.arbeidsforhold.id === tilrettelegging.arbeidsforhold.arbeidsgiverId,
+            (periode) => periode.arbeidsforhold.id === arbeidsforholdId,
         );
         return (
-            <FormSummary.Answer key={tilrettelegging.id}>
+            <FormSummary.Answer key={arbeidsforholdId}>
                 <FormSummary.Label>
-                    {capitalizeFirstLetterInEveryWordOnly(tilrettelegging.arbeidsforhold.navn)}
+                    {capitalizeFirstLetterInEveryWordOnly(
+                        alleArbeidsforhold.find((arbeidsforhold) => arbeidsforhold.arbeidsgiverId === arbeidsforholdId)
+                            ?.arbeidsgiverNavn,
+                    )}
                 </FormSummary.Label>
                 <FormSummary.Value>
                     <FormSummary.Answers>
