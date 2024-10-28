@@ -79,7 +79,6 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
                 feriePerioder: nyeAvtaltFeriePerioder,
             },
         };
-        console.log(nyeFerieVerdier);
         oppdaterFerie(nyeFerieVerdier);
 
         const nesteTilretteleggingId = getNesteTilretteleggingId(arbeidsgiverId, valgteArbeidsforhold);
