@@ -4,7 +4,7 @@ import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
-import { AvtaltFerieDto } from 'types/AvtaltFerie';
+import { AvtaltFerieDto, AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
 import {
     Arbeidsforholdstype,
     DelivisTilretteleggingPeriodeType,
@@ -83,7 +83,7 @@ const FRILANS = {
     oppstart: '2024-01-01',
 };
 
-const FERIE = [] satisfies AvtaltFerieDto[];
+const INGEN_FERIE = [] satisfies AvtaltFerieDto[];
 
 const EGEN_NÆRING = {
     næringstype: Næringstype.FISKER,
@@ -126,6 +126,7 @@ const getWrapper =
         tilrettelegginger: Record<string, DelvisTilrettelegging | IngenTilrettelegging>,
         tilretteleggingerVedlegg: Record<string, Attachment[]>,
         tilretteleggingerPerioder?: Record<string, PeriodeMedVariasjon[]>,
+        ferie?: AvtaltFeriePerArbeidsgiver,
     ) =>
     ({ children }: { children: ReactNode }) => (
         <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
@@ -140,6 +141,7 @@ const getWrapper =
                             [ContextDataType.TILRETTELEGGINGER]: tilrettelegginger,
                             [ContextDataType.TILRETTELEGGINGER_PERIODER]: tilretteleggingerPerioder,
                             [ContextDataType.TILRETTELEGGINGER_VEDLEGG]: tilretteleggingerVedlegg,
+                            [ContextDataType.FERIE]: ferie,
                             [ContextDataType.UTENLANDSOPPHOLD_TIDLIGERE]: TIDLIGERE_UTENLANDSOPPHOLD,
                             [ContextDataType.UTENLANDSOPPHOLD_SENERE]: SENERE_UTENLANDSOPPHOLD,
                         }}
@@ -189,8 +191,25 @@ describe('useSendSøknad', () => {
             [ANNEN_ARBEIDSGIVER_ID]: [VEDLEGG],
         };
 
+        const ferie = {
+            [ARBEIDSGIVER_ID]: {
+                skalHaFerie: true,
+                feriePerioder: [
+                    {
+                        arbeidsforhold: {
+                            type: Arbeidsforholdstype.VIRKSOMHET,
+                            id: ARBEIDSGIVER_ID,
+                        },
+                        fom: '2024-09-10',
+                        tom: '2024-10-10',
+                    },
+                ],
+                antallFeriePerioder: 1,
+            },
+        } satisfies AvtaltFeriePerArbeidsgiver;
+
         const { result } = renderHook(() => useSendSøknad(setKvittering, 'nb', DEFAULT_ARBEIDSFORHOLD), {
-            wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg),
+            wrapper: getWrapper(tilrettelegginger, tilretteleggingerVedlegg, undefined, ferie),
         });
 
         result.current.sendSøknad();
@@ -205,7 +224,7 @@ describe('useSendSøknad', () => {
                     språkkode: 'nb',
                     barn: BARNET,
                     frilans: FRILANS,
-                    ferie: FERIE,
+                    ferie: ferie[ARBEIDSGIVER_ID].feriePerioder,
                     egenNæring: EGEN_NÆRING,
                     andreInntekterSiste10Mnd: ARBEID_I_UTLANDET.arbeidIUtlandet,
                     utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
@@ -326,7 +345,7 @@ describe('useSendSøknad', () => {
                     språkkode: 'nb',
                     barn: BARNET,
                     frilans: FRILANS,
-                    ferie: FERIE,
+                    ferie: INGEN_FERIE,
                     egenNæring: EGEN_NÆRING,
                     andreInntekterSiste10Mnd: ARBEID_I_UTLANDET.arbeidIUtlandet,
                     utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
@@ -453,7 +472,7 @@ describe('useSendSøknad', () => {
                     språkkode: 'nb',
                     barn: BARNET,
                     frilans: FRILANS,
-                    ferie: FERIE,
+                    ferie: INGEN_FERIE,
                     egenNæring: EGEN_NÆRING,
                     andreInntekterSiste10Mnd: ARBEID_I_UTLANDET.arbeidIUtlandet,
                     utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
