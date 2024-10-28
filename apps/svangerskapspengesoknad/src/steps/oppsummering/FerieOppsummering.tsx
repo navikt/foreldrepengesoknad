@@ -1,6 +1,6 @@
 import { ContextDataType, useContextGetData } from 'appData/SvpDataContext';
 import { FormattedMessage } from 'react-intl';
-import { AvtaltFerie } from 'types/AvtaltFerie';
+import { AvtaltFerieDto } from 'types/AvtaltFerie';
 
 import { FormSummary } from '@navikt/ds-react';
 
@@ -28,8 +28,8 @@ export function FerieOppsummering({ onVilEndreSvar }: { readonly onVilEndreSvar:
                 </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
-                {tilrettelegginger.length > 1 ? (
-                    <FlereArbeidsgivereFerieOppsummering avtaltFerie={flatFerie} />
+                {true ? (
+                    <FeriePeriodeOppsummering avtaltFerie={flatFerie} />
                 ) : (
                     <FeriePeriodeOppsummering avtaltFerie={flatFerie} />
                 )}
@@ -38,7 +38,7 @@ export function FerieOppsummering({ onVilEndreSvar }: { readonly onVilEndreSvar:
     );
 }
 
-const FeriePeriodeOppsummering = ({ avtaltFerie }: { avtaltFerie: AvtaltFerie[] }) => {
+const FeriePeriodeOppsummering = ({ avtaltFerie }: { avtaltFerie: AvtaltFerieDto[] }) => {
     return (
         <>
             <FormSummary.Answer>
@@ -71,10 +71,10 @@ const FeriePeriodeOppsummering = ({ avtaltFerie }: { avtaltFerie: AvtaltFerie[] 
     );
 };
 
-const FlereArbeidsgivereFerieOppsummering = ({ avtaltFerie }: { avtaltFerie: AvtaltFerie[] }) => {
+const FlereArbeidsgivereFerieOppsummering = ({ avtaltFerie }: { avtaltFerie: AvtaltFerieDto[] }) => {
     const tilrettelegginger = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
 
-    return tilrettelegginger.map((tilrettelegging) => {
+    return [].map((tilrettelegging) => {
         const perioderForDenneTilretteleggingen = avtaltFerie.filter(
             (periode) => periode.arbeidsforhold.id === tilrettelegging.arbeidsforhold.arbeidsgiverId,
         );

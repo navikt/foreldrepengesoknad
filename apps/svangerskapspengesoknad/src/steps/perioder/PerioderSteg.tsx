@@ -8,11 +8,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { PeriodeMedVariasjon } from 'types/Tilrettelegging';
 import { getKanHaSvpFremTilTreUkerFørTermin } from 'utils/dateUtils';
-import {
-    getArbeidsgiverNavnForTilrettelegging,
-    getNesteTilretteleggingId,
-    getTypeArbeidForTilrettelegging,
-} from 'utils/tilretteleggingUtils';
+import { getArbeidsgiverNavnForTilrettelegging, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';
 
@@ -67,13 +63,7 @@ export const PerioderSteg: FunctionComponent<Props> = ({
             [valgtTilretteleggingId]: values.varierendePerioder,
         });
 
-        const nesteTilretteleggingId = getNesteTilretteleggingId(valgtTilretteleggingId, valgteArbeidsforhold);
-
-        return navigator.goToStep(
-            nesteTilretteleggingId
-                ? addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, nesteTilretteleggingId)
-                : SøknadRoute.OPPSUMMERING,
-        );
+        return navigator.goToStep(addTilretteleggingIdToRoute(SøknadRoute.FERIE, valgtTilretteleggingId));
     };
 
     const formMethods = useForm<TilretteleggingPerioderFormValues>({

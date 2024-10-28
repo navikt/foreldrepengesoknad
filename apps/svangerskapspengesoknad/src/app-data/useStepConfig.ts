@@ -80,6 +80,14 @@ const createTilretteleggingSteps = (
         });
     }
 
+    const feriePath = addTilretteleggingIdToRoute(SøknadRoute.FERIE, tilretteleggingId);
+    // TODO: ikke legge til for frilans og sånt??
+    steps.push({
+        id: feriePath,
+        label: labels[SøknadRoute.FERIE],
+        isSelected: currentPath === feriePath,
+    });
+
     return steps;
 };
 

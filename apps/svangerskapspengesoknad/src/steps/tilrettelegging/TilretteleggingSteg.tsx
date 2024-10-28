@@ -18,7 +18,6 @@ import { getDefaultMonth, getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSva
 import {
     getArbeidsgiverNavnForTilrettelegging,
     getArbeidsgiverStillingerForTilrettelegging,
-    getNesteTilretteleggingId,
     getPeriodeForTilrettelegging,
     getTypeArbeidForTilrettelegging,
 } from 'utils/tilretteleggingUtils';
@@ -51,7 +50,6 @@ import {
 const getNextRoute = (
     values: DelvisTilrettelegging | IngenTilrettelegging,
     currentTilretteleggingId: string,
-    valgteArbeidsforholdIder?: string[],
 ): string => {
     if (
         values.type === Tilretteleggingstype.DELVIS &&
@@ -60,11 +58,7 @@ const getNextRoute = (
         return addTilretteleggingIdToRoute(SøknadRoute.PERIODER, currentTilretteleggingId);
     }
 
-    const nesteTilretteleggingId = getNesteTilretteleggingId(currentTilretteleggingId, valgteArbeidsforholdIder);
-    if (nesteTilretteleggingId) {
-        return addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, nesteTilretteleggingId);
-    }
-    return SøknadRoute.OPPSUMMERING;
+    return addTilretteleggingIdToRoute(SøknadRoute.FERIE, currentTilretteleggingId);
 };
 
 const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) =>
@@ -169,7 +163,7 @@ export const TilretteleggingSteg: FunctionComponent<Props> = ({
     const onSubmit = (values: DelvisTilrettelegging | IngenTilrettelegging) => {
         oppdaterTilrettelegginger({ ...tilrettelegginger, [valgtTilretteleggingId]: values });
 
-        const nextRoute = getNextRoute(values, valgtTilretteleggingId, valgteArbeidsforhold);
+        const nextRoute = getNextRoute(values, valgtTilretteleggingId);
 
         return navigator.goToStep(nextRoute);
     };

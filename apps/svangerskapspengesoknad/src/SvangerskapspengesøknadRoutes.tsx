@@ -174,7 +174,7 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
-                path={SøknadRoute.FERIE}
+                path={`${SøknadRoute.FERIE}/${TILRETTELEGGING_PARAM}`}
                 element={
                     <FerieStep
                         arbeidsforhold={søkerInfo.arbeidsforhold}

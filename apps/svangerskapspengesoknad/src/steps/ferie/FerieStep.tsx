@@ -51,12 +51,10 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
     const arbeidsgiverId = notEmpty(params.tilretteleggingId); // TODO
-
     const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
 
     const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);
     const ferie = useContextGetData(ContextDataType.FERIE);
-    console.log(ferie);
     const eksisterendeSkjemaVerdier = ferie?.[arbeidsgiverId];
 
     const formMethods = useForm<FerieFormData>({
@@ -103,12 +101,12 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
             formMethods.setValue('antallFeriePerioder', 1);
         }
     }, [skalHaFerie]);
-
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
             onCancel={avbrytSøknad}
             steps={stepConfig}
+            onStepChange={navigator.goToStep}
             onContinueLater={navigator.fortsettSøknadSenere}
         >
             <RhfForm formMethods={formMethods} onSubmit={onSubmit}>
