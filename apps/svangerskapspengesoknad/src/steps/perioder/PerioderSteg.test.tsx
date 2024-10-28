@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/SvpDataContext';
-import { SøknadRoute } from 'appData/routes';
+import { SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import dayjs from 'dayjs';
 
 import * as stories from './PerioderSteg.stories';
@@ -74,7 +74,7 @@ describe('<PerioderSteg>', () => {
             type: 'update',
         });
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(2, {
-            data: SøknadRoute.FERIE,
+            data: addTilretteleggingIdToRoute(SøknadRoute.FERIE, '263929546-6215-9868-5127-161910165730101'),
             key: ContextDataType.APP_ROUTE,
             type: 'update',
         });

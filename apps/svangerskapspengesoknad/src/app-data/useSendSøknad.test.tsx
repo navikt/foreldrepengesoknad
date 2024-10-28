@@ -4,6 +4,7 @@ import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
+import { AvtaltFerieDto } from 'types/AvtaltFerie';
 import {
     Arbeidsforholdstype,
     DelivisTilretteleggingPeriodeType,
@@ -81,6 +82,8 @@ const FRILANS = {
     jobberFremdelesSomFrilans: true,
     oppstart: '2024-01-01',
 };
+
+const FERIE = [] satisfies AvtaltFerieDto[];
 
 const EGEN_NÆRING = {
     næringstype: Næringstype.FISKER,
@@ -202,6 +205,7 @@ describe('useSendSøknad', () => {
                     språkkode: 'nb',
                     barn: BARNET,
                     frilans: FRILANS,
+                    ferie: FERIE,
                     egenNæring: EGEN_NÆRING,
                     andreInntekterSiste10Mnd: ARBEID_I_UTLANDET.arbeidIUtlandet,
                     utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
@@ -322,6 +326,7 @@ describe('useSendSøknad', () => {
                     språkkode: 'nb',
                     barn: BARNET,
                     frilans: FRILANS,
+                    ferie: FERIE,
                     egenNæring: EGEN_NÆRING,
                     andreInntekterSiste10Mnd: ARBEID_I_UTLANDET.arbeidIUtlandet,
                     utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
@@ -448,6 +453,7 @@ describe('useSendSøknad', () => {
                     språkkode: 'nb',
                     barn: BARNET,
                     frilans: FRILANS,
+                    ferie: FERIE,
                     egenNæring: EGEN_NÆRING,
                     andreInntekterSiste10Mnd: ARBEID_I_UTLANDET.arbeidIUtlandet,
                     utenlandsopphold: TIDLIGERE_UTENLANDSOPPHOLD.concat(SENERE_UTENLANDSOPPHOLD),
