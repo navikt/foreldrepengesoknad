@@ -4,7 +4,12 @@ import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
-import { HvemHarRett, harKunFarSøker1Rett, harKunMorRett, harMedmorEllerFarSøker2Rett } from 'utils/hvemHarRettUtils';
+import {
+    HvemHarRett,
+    harKunFarSøker1Rett,
+    harKunMedmorEllerFarSøker2Rett,
+    harKunMorRett,
+} from 'utils/hvemHarRettUtils';
 import { Uttaksdata } from 'utils/uttakUtils';
 
 import { HStack, VStack } from '@navikt/ds-react';
@@ -45,7 +50,7 @@ const CalendarLabels: FunctionComponent<Props> = ({ barnet, uttaksdata, hvemPlan
         søker2Tekst &&
         startdatoPeriode2 &&
         sluttdatoPeriode2 &&
-        (harMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) ||
+        (harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) ||
             (hvemHarRett === 'kunSøker1HarRett' && erFarOgFarOgAdopsjon));
 
     const farOgFarAdopsjonDerKunSøker1HarRett = hvemHarRett === 'kunSøker1HarRett' && erFarOgFarOgAdopsjon;

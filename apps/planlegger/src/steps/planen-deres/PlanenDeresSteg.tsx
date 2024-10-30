@@ -20,9 +20,14 @@ import {
     getNavnPåSøker1,
     getNavnPåSøker2,
 } from 'utils/HvemPlanleggerUtils';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
+import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
-import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata, getFamiliehendelsedato } from 'utils/uttakUtils';
+import {
+    finnAntallUkerOgDagerMedForeldrepenger,
+    finnUttaksdata,
+    getFamiliehendelsedato,
+    lagForslagTilPlan,
+} from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
@@ -35,8 +40,8 @@ import { UttaksplanNy, sorterPerioder } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import PlanvisningToggle, { Visningsmodus } from '../../components/planvisning-toggle/PlanvisningToggle';
-import { getFamiliesituasjon } from '../../utils/barnetUtils';
-import { deltUttak } from '../../utils/deltUttak';
+import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
+import { erBarnetAdoptert, getFamiliesituasjon } from '../../utils/barnetUtils';
 import styles from './planenDeresSteg.module.css';
 import OmÅTilpassePlanen from './tilpasse-planen/OmÅTilpassePlanen';
 import UforutsetteEndringer from './uforutsette-endringer/UforutsetteEndringer';
@@ -119,10 +124,18 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
     //     fordeling?.antallDagerSøker1,
     // );
 
-    const planforslag = deltUttak({
+    const bareFarMedmorHarRett =
+        harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
+
+    const planforslag = lagForslagTilPlan({
+        erDeltUttak: fordeling !== undefined,
         famDato: familiehendelsedato,
         tilgjengeligeStønadskontoer: valgtStønadskonto.kontoer,
         fellesperiodeDagerMor: fordeling?.antallDagerSøker1,
+        bareFarMedmorHarRett,
+        erAdopsjon: erBarnetAdoptert(omBarnet),
+        erFarEllerMedmor: true,
+        erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
     });
     const kombinertPlanforslag = [...planforslag.søker1, ...planforslag.søker2].sort(sorterPerioder);
 
@@ -236,7 +249,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                         {visningsmodus === 'liste' && (
                             <UttaksplanNy
                                 familiehendelsedato={familiehendelsedato}
-                                bareFarHarRett={hvemHarRett === 'kunSøker2HarRett'}
+                                bareFarHarRett={bareFarMedmorHarRett}
                                 erFarEllerMedmor={false}
                                 familiesituasjon={familiesituasjon}
                                 gjelderAdopsjon={familiesituasjon === 'adopsjon'}

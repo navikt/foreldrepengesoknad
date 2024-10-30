@@ -4,12 +4,14 @@ import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { PlanForslag, Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { Uttaksdagen, treUkerSiden } from '@navikt/fp-utils';
 
 import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from './barnetUtils';
+import { deltUttak } from './deltUttak';
 import { HvemHarRett } from './hvemHarRettUtils';
+import { ikkeDeltUttak } from './ikkeDeltUttak';
 import {
     getAntallDagerAktivitetsfriKvote,
     getAntallDagerFedrekvote,
@@ -335,4 +337,39 @@ export const finnAntallUkerOgDagerMedForeldrepenger = (uttaksdata: Uttaksdata): 
         };
     }
     return antallUkerOgDager;
+};
+
+interface LagForslagProps {
+    erDeltUttak: boolean;
+    famDato: string;
+    tilgjengeligeStønadskontoer: Stønadskonto[];
+    fellesperiodeDagerMor: number | undefined;
+    erAdopsjon: boolean;
+    erFarEllerMedmor: boolean;
+    erMorUfør: boolean;
+    bareFarMedmorHarRett: boolean;
+}
+
+export const lagForslagTilPlan = ({
+    erDeltUttak,
+    famDato,
+    tilgjengeligeStønadskontoer,
+    fellesperiodeDagerMor,
+    erAdopsjon,
+    erFarEllerMedmor,
+    erMorUfør,
+    bareFarMedmorHarRett,
+}: LagForslagProps): PlanForslag => {
+    if (erDeltUttak) {
+        return deltUttak({ famDato, tilgjengeligeStønadskontoer, fellesperiodeDagerMor });
+    }
+
+    return ikkeDeltUttak({
+        situasjon: erAdopsjon ? 'adopsjon' : 'fødsel',
+        famDato,
+        erFarEllerMedmor,
+        tilgjengeligeStønadskontoer,
+        erMorUfør,
+        bareFarMedmorHarRett,
+    });
 };
