@@ -45,10 +45,9 @@ const getUtsettelseLabel = (unikeUtsettelseÅrsaker: UtsettelseÅrsakType[], int
 
 export const getFamiliehendelseKalendarLabel = (barn: Barn, intl: IntlShape): string => {
     if (!isAdoptertBarn(barn)) {
-        if (isFødtBarn(barn)) {
-            return intl.formatMessage({ id: 'kalender.fødsel' });
-        }
-        return intl.formatMessage({ id: 'kalender.termin' });
+        return isFødtBarn(barn)
+            ? intl.formatMessage({ id: 'kalender.fødsel' })
+            : intl.formatMessage({ id: 'kalender.termin' });
     }
     return intl.formatMessage({ id: 'kalender.adopsjon' });
 };

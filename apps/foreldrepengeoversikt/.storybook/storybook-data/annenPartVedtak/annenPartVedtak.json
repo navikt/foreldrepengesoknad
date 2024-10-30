@@ -10,7 +10,8 @@
                 "trekkerMinsterett": false,
                 "trekkerDager": true,
                 "årsak": "ANNET"
-            }
+            },
+            "forelder": "farMedmor"
         }
     ],
     "termindato": "2022-08-17",

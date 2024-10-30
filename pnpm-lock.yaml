@@ -270,6 +270,9 @@ importers:
       '@navikt/fp-utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@navikt/fp-uttaksplan-kalender-ny':
+        specifier: workspace:*
+        version: link:../../packages/uttaksplan-kalender-ny
       '@navikt/fp-uttaksplan-ny':
         specifier: workspace:*
         version: link:../../packages/ny-uttaksplan

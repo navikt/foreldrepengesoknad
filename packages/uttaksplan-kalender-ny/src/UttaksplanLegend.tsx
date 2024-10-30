@@ -46,7 +46,7 @@ interface Props {
     erFarEllerMedmor: boolean;
 }
 
-const UttaksplanLegend: FunctionComponent<Props> = ({
+export const UttaksplanLegend: FunctionComponent<Props> = ({
     uniqueColors,
     barn,
     navnAnnenPart,
@@ -66,5 +66,3 @@ const UttaksplanLegend: FunctionComponent<Props> = ({
             </div>
         ));
 };
-
-export default UttaksplanLegend;

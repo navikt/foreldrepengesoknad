@@ -7,6 +7,7 @@ import { initialize, mswLoader } from 'msw-storybook-addon';
 import { uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
 import { getIntlDecorator } from '@navikt/fp-utils-test';
+import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
 import '../src/index.css';
@@ -23,7 +24,13 @@ scriptTag.innerHTML = JSON.stringify({
 document.head.appendChild(scriptTag);
 
 const withIntlProvider = getIntlDecorator({
-    nb: { ...nbMessages, ...uiMessages.nb, ...utilsMessages.nb, ...nyUttaksplanMessages.nb },
+    nb: {
+        ...nbMessages,
+        ...uiMessages.nb,
+        ...utilsMessages.nb,
+        ...nyUttaksplanMessages.nb,
+        ...uttaksplanKalenderMessages.nb,
+    },
 });
 
 const preview: Preview = {

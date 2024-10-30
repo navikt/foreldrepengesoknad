@@ -86,9 +86,7 @@ const UttaksplanNy: FunctionComponent<Props> = ({
                 FAMILIESITUASJON: familiesituasjon,
             }}
         >
-            <div style={{ padding: '2rem 0' }}>
-                <PeriodeListe perioder={komplettPlan} />
-            </div>
+            <PeriodeListe perioder={komplettPlan} />
         </UttaksplanDataContext>
     );
 };

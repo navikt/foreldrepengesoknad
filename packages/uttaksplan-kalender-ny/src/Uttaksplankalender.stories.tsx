@@ -85,6 +85,8 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -111,6 +113,8 @@ export const FarSøkerMedTapteDagerOgUtsettelse: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: true,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hanne',
     },
 };
@@ -143,6 +147,8 @@ export const MorSøkerMedFlereUtsettelser: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -213,6 +219,8 @@ export const FarSøkerMedSamtidigUttakMorUtsettelseMorOgGradering: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: true,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hanne',
     },
 };
@@ -233,6 +241,8 @@ export const UtsettelseMorArbeid: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -259,6 +269,8 @@ export const UtsettelseMorFerieMedFarsUtsettelse: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -279,6 +291,8 @@ export const UtsettelseMorFri: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -299,6 +313,8 @@ export const UtsettelseMorInstitusjonBarnet: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hanne',
     },
 };
@@ -319,6 +335,8 @@ export const UtsettelseMorInstitusjonSøker: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -339,6 +357,8 @@ export const UtsettelseMorNavTiltak: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -359,6 +379,8 @@ export const UtsettelseFarSykdom: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: true,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hanne',
     },
 };
@@ -379,6 +401,8 @@ export const UtsettelseFarHvØvelse: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: true,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hanne',
     },
 };
@@ -405,6 +429,8 @@ export const UtsettelseFarFlereÅrsaker: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: true,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hanne',
     },
 };
@@ -443,6 +469,8 @@ export const MorAvslåttPeriodeFørste6UkeneGirTapteDager: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -481,6 +509,8 @@ export const MorAvslåttPeriodeUtenTapteDager: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -501,6 +531,8 @@ export const KortPeriodeMedHelg: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -522,6 +554,8 @@ export const KortPeriodeUtenHelg: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -554,6 +588,8 @@ export const TreSammenhengendePerioderSlåttSammen: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -576,6 +612,8 @@ export const MorOppgirSamtidigUttakMedFar: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hans',
     },
 };
@@ -598,6 +636,40 @@ export const FarOppgirSamtidigUttakMedMor: Story = {
             antallBarn: 1,
         },
         erFarEllerMedmor: true,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
         navnAnnenPart: 'Hanne',
+    },
+};
+
+export const FarOppgirSamtidigUttakNårMorSøker: Story = {
+    args: {
+        søkersPerioder: [
+            {
+                fom: '2025-05-21',
+                tom: '2025-05-27',
+                forelder: Forelder.mor,
+                kontoType: StønadskontoType.Mødrekvote,
+            },
+        ] satisfies SaksperiodeNy[],
+        annenPartsPerioder: [
+            {
+                fom: '2025-06-11',
+                tom: '2025-06-17',
+                forelder: Forelder.farMedmor,
+                kontoType: StønadskontoType.Fedrekvote,
+                samtidigUttak: 70,
+            },
+        ] satisfies SaksperiodeNy[],
+        barn: {
+            type: BarnType.ADOPTERT_STEBARN,
+            fødselsdatoer: ['2025-05-21'],
+            adopsjonsdato: '2025-05-21',
+            antallBarn: 1,
+        },
+        erFarEllerMedmor: false,
+        harAktivitetskravIPeriodeUtenUttak: false,
+        bareFarHarRett: false,
+        navnAnnenPart: 'Espen',
     },
 };

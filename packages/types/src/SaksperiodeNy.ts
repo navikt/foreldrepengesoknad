@@ -19,5 +19,5 @@ export interface SaksperiodeNy {
     overføringÅrsak?: OverføringÅrsakType;
     samtidigUttak?: number;
     morsAktivitet?: MorsAktivitet;
-    forelder: Forelder;
+    forelder?: Forelder;
 }

@@ -16,10 +16,9 @@ import {
     getForelderFarge,
     getUttaksperiodeFarge,
 } from '@navikt/fp-utils';
-import { finnOgSettInnHull } from '@navikt/fp-uttaksplan-ny';
-import { PeriodeHullType, Planperiode } from '@navikt/fp-uttaksplan-ny/src/types/Planperiode';
+import { PeriodeHullType, Planperiode, finnOgSettInnHull } from '@navikt/fp-uttaksplan-ny';
 
-import UttaksplanLegend from './UttaksplanLegend';
+import { UttaksplanLegend } from './UttaksplanLegend';
 import {
     getAnnenForelderSamtidigUttakPeriode,
     getIndexOfSistePeriodeFørDato,
@@ -30,7 +29,11 @@ import {
 import styles from './uttaksplanKalender.module.css';
 import { getKalenderSkjermlesertekstForPeriode } from './uttaksplanKalenderUtils';
 
-const slåSammenPeriods = (periods: Period[]) => {
+type KalenderPeriode = {
+    periodeHullÅrsak?: PeriodeHullType;
+} & SaksperiodeNy;
+
+const slåSammenPerioder = (periods: Period[]) => {
     if (periods.length <= 1) {
         return periods;
     }
@@ -59,38 +62,39 @@ const getPerioderForKalendervisning = (
     intl: IntlShape,
 ): Period[] => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const pe = allePerioder.filter(
+    const allePerioderBortsettFraFamiliehendelseperioden = allePerioder.filter(
         (p) =>
             !(dayjs(p.fom).isSame(familiehendelsesdato, 'd') && dayjs(p.tom).isSame(familiehendelsesdato, 'd')) &&
             p.fom !== undefined &&
             p.tom !== undefined,
     );
 
-    const perioderForVisning = pe.reduce((allPeriods, period) => {
-        if (allPeriods.some((a) => a.fom === period.fom || a.tom === period.tom)) {
-            return allPeriods;
+    const unikePerioder = allePerioderBortsettFraFamiliehendelseperioden.reduce((alle, period) => {
+        if (alle.some((a) => a.fom === period.fom || a.tom === period.tom)) {
+            return alle;
         }
-        return allPeriods.concat(period);
+        return alle.concat(period);
     }, [] as KalenderPeriode[]);
 
-    const periods = perioderForVisning.map((p) => {
-        const color = getKalenderFargeForPeriodeType(p, erFarEllerMedmor, allePerioder, barn);
+    const perioderForVisning = unikePerioder.map((periode) => {
+        const color = getKalenderFargeForPeriodeType(periode, erFarEllerMedmor, allePerioder, barn);
         return {
-            fom: dayjs(p.fom).isSame(dayjs(familiehendelsesdato), 'd')
-                ? formatDateIso(UttaksdagenString(p.fom).neste())
-                : formatDateIso(p.fom),
-            tom: formatDateIso(p.tom),
+            fom: dayjs(periode.fom).isSame(dayjs(familiehendelsesdato), 'd')
+                ? formatDateIso(UttaksdagenString(periode.fom).neste())
+                : formatDateIso(periode.fom),
+            tom: formatDateIso(periode.tom),
             color,
         };
     });
 
     const indexOfFamiliehendelse = getIndexOfSistePeriodeFørDato(allePerioder, familiehendelsesdato) || 0;
-    periods.splice(indexOfFamiliehendelse, 0, {
+    perioderForVisning.splice(indexOfFamiliehendelse, 0, {
         fom: familiehendelsesdato,
         tom: familiehendelsesdato,
         color: PeriodeColor.PINK,
     });
-    const perioderSlåttSammen = slåSammenPeriods(periods);
+
+    const perioderSlåttSammen = slåSammenPerioder(perioderForVisning);
     return perioderSlåttSammen.map((p) => ({
         ...p,
         srText: getKalenderSkjermlesertekstForPeriode(
@@ -112,10 +116,12 @@ const getKalenderFargeForUttaksperiode = (
     const annenForelderSamtidigUttaksperiode = isUttaksperiode(periode)
         ? getAnnenForelderSamtidigUttakPeriode(periode, allePerioder)
         : undefined;
+
     const samtidigUttaksprosent = isUttaksperiode(periode) ? periode.samtidigUttak : undefined;
     if (annenForelderSamtidigUttaksperiode || (samtidigUttaksprosent && samtidigUttaksprosent > 0)) {
         return erFarEllerMedmor ? PeriodeColor.LIGHTBLUEGREEN : PeriodeColor.LIGHTGREENBLUE;
     }
+
     if (
         !annenForelderSamtidigUttaksperiode &&
         !samtidigUttaksprosent &&
@@ -124,11 +130,12 @@ const getKalenderFargeForUttaksperiode = (
     ) {
         return erFarEllerMedmor ? PeriodeColor.GREENSTRIPED : PeriodeColor.BLUESTRIPED;
     }
-    //TODO Bør denne visast?
+
+    //FIXME Bør denne visast?
     // if (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin) {
     //     return PeriodeColor.NONE;
     // }
-    //TODO Blir sikkert feil?
+    //FIXME Blir sikkert feil?
     if (!periode.kontoType) {
         return PeriodeColor.NONE;
     }
@@ -150,7 +157,7 @@ const getKalenderFargeForAnnenPart = (periode: KalenderPeriode, erFarEllerMedmor
     if (periode.utsettelseÅrsak) {
         return erFarEllerMedmor ? PeriodeColor.BLUEOUTLINE : PeriodeColor.GREENOUTLINE;
     }
-    if (periode.overføringÅrsak || isUttaksperiode(periode)) {
+    if (periode.forelder && (periode.overføringÅrsak || isUttaksperiode(periode))) {
         return getForelderFarge(periode.forelder, erFarEllerMedmor);
     }
 
@@ -163,33 +170,38 @@ const getKalenderFargeForPeriodeType = (
     allePerioder: KalenderPeriode[],
     barn: Barn,
 ): PeriodeColor => {
-    const familiehendelsesdato = getFamiliehendelsedato(barn);
-    const erPeriodeForSøker =
-        (periode.forelder === Forelder.mor && !erFarEllerMedmor) ||
-        (periode.forelder === Forelder.farMedmor && erFarEllerMedmor);
-
     if (isAvslåttPeriode(periode)) {
+        const familiehendelsesdato = getFamiliehendelsedato(barn);
         return !erFarEllerMedmor && isAvslåttPeriodeFørsteSeksUkerMor(periode, familiehendelsesdato)
             ? PeriodeColor.BLACK
             : PeriodeColor.NONE;
     }
+
     if (periode.utsettelseÅrsak) {
         return periode.forelder === Forelder.farMedmor ? PeriodeColor.GREENOUTLINE : PeriodeColor.BLUEOUTLINE;
     }
-    if (periode.periodeHullÅrsak && periode.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
+
+    if (periode.periodeHullÅrsak === PeriodeHullType.PERIODE_UTEN_UTTAK) {
         return getKalenderFargeForPeriodeUtenUttak(periode, barn);
     }
-    if (periode.periodeHullÅrsak && periode.periodeHullÅrsak === PeriodeHullType.TAPTE_DAGER) {
+
+    if (periode.periodeHullÅrsak === PeriodeHullType.TAPTE_DAGER) {
         return PeriodeColor.BLACK;
     }
-    if (!erPeriodeForSøker) {
-        return getKalenderFargeForAnnenPart(periode, erFarEllerMedmor);
-    }
+
     if (periode.overføringÅrsak || isUttaksperiode(periode)) {
         return getKalenderFargeForUttaksperiode(periode, allePerioder, erFarEllerMedmor);
     }
-    if (periode.oppholdÅrsak) {
+
+    if (periode.oppholdÅrsak && periode.forelder) {
         return getForelderFarge(periode.forelder, erFarEllerMedmor);
+    }
+
+    const erPeriodeForSøker =
+        (periode.forelder === Forelder.mor && !erFarEllerMedmor) ||
+        (periode.forelder === Forelder.farMedmor && erFarEllerMedmor);
+    if (!erPeriodeForSøker) {
+        return getKalenderFargeForAnnenPart(periode, erFarEllerMedmor);
     }
 
     return PeriodeColor.NONE;
@@ -206,24 +218,33 @@ const getInneholderKalenderHelgedager = (periods: Period[]): boolean => {
     return sisteDagNr < førsteDagNr;
 };
 
-type KalenderPeriode = {
-    periodeHullÅrsak?: PeriodeHullType;
-} & SaksperiodeNy;
+const getUnikeUtsettelsesårsaker = (allePerioderInklHull: KalenderPeriode[]) => {
+    const utsettelseÅrsaker = allePerioderInklHull
+        .map((u) => u.utsettelseÅrsak)
+        .filter((utsettelseÅrsak): utsettelseÅrsak is UtsettelseÅrsakType => !!utsettelseÅrsak);
+    return [...new Set(utsettelseÅrsaker)];
+};
 
-export interface UttaksplanKalenderProps {
-    søkersPerioder: KalenderPeriode[];
-    annenPartsPerioder?: KalenderPeriode[];
+interface UttaksplanKalenderProps {
+    søkersPerioder: SaksperiodeNy[];
+    annenPartsPerioder?: SaksperiodeNy[];
+    harAktivitetskravIPeriodeUtenUttak: boolean;
     erFarEllerMedmor: boolean;
+    bareFarHarRett: boolean;
     barn: Barn;
     navnAnnenPart: string;
+    førsteUttaksdagNesteBarnsSak?: string;
 }
 
 export const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
     søkersPerioder,
     annenPartsPerioder,
+    harAktivitetskravIPeriodeUtenUttak,
     erFarEllerMedmor,
+    bareFarHarRett,
     barn,
     navnAnnenPart,
+    førsteUttaksdagNesteBarnsSak,
 }) => {
     const intl = useIntl();
     const familiehendelsesdato = getFamiliehendelsedato(barn);
@@ -233,15 +254,14 @@ export const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
         dayjs(p1.fom).isBefore(p2.fom) ? -1 : 1,
     );
 
-    //FIXME Sjå på input til funksjon
     const søkersHullPerioder = finnOgSettInnHull(
         allePerioder as Planperiode[],
-        false,
+        harAktivitetskravIPeriodeUtenUttak,
         familiehendelsesdato,
         erAdopsjon,
-        false,
+        bareFarHarRett,
         erFarEllerMedmor,
-        undefined,
+        førsteUttaksdagNesteBarnsSak,
     )
         .filter((p) => !!p.periodeHullÅrsak)
         .map<KalenderPeriode>((p) => ({
@@ -255,11 +275,9 @@ export const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
         (p1, p2) => (dayjs(p1.fom).isBefore(p2.fom) ? -1 : 1),
     );
 
-    const utsettelseÅrsaker = allePerioderInklHull
-        .map((u) => u.utsettelseÅrsak)
-        .filter((utsettelseÅrsak): utsettelseÅrsak is UtsettelseÅrsakType => !!utsettelseÅrsak);
-    const unikeUtsettelseÅrsaker = [...new Set(utsettelseÅrsaker)];
-    const periods = getPerioderForKalendervisning(
+    const unikeUtsettelseÅrsaker = getUnikeUtsettelsesårsaker(allePerioderInklHull);
+
+    const perioderForKalendervisning = getPerioderForKalendervisning(
         allePerioderInklHull,
         erFarEllerMedmor,
         barn,
@@ -267,13 +285,11 @@ export const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
         unikeUtsettelseÅrsaker,
         intl,
     );
-    const unikePeriodColors = [...new Set(periods.map((period) => period.color))];
-    const harAvslåttePerioderSomIkkeGirTapteDager = allePerioderInklHull.some(
-        (p) => isAvslåttPeriode(p) && (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsesdato)),
-    );
-    const inkludererHelg = getInneholderKalenderHelgedager(periods);
+
+    const inkludererHelg = getInneholderKalenderHelgedager(perioderForKalendervisning);
+    const unikePeriodefarger = [...new Set(perioderForKalendervisning.map((period) => period.color))];
     if (inkludererHelg) {
-        unikePeriodColors.push(PeriodeColor.GRAY);
+        unikePeriodefarger.push(PeriodeColor.GRAY);
     }
 
     const pdfOptions = {
@@ -285,8 +301,12 @@ export const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
     } as Options;
     const { toPDF, targetRef } = usePDF(pdfOptions);
 
+    const harAvslåttePerioderSomIkkeGirTapteDager = allePerioderInklHull.some(
+        (p) => isAvslåttPeriode(p) && (erFarEllerMedmor || !isAvslåttPeriodeFørsteSeksUkerMor(p, familiehendelsesdato)),
+    );
+
     return (
-        <>
+        <div>
             {harAvslåttePerioderSomIkkeGirTapteDager && (
                 <Alert variant="info" style={{ margin: '1.5rem 0rem' }}>
                     <FormattedMessage id="kalender.avslåttePerioder" />
@@ -295,18 +315,18 @@ export const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
             <div ref={targetRef}>
                 <div className={styles.legend} style={{ display: 'flex', flexWrap: 'wrap' }} id="legend">
                     <UttaksplanLegend
-                        uniqueColors={unikePeriodColors}
+                        uniqueColors={unikePeriodefarger}
                         barn={barn}
                         navnAnnenPart={navnAnnenPart}
                         unikeUtsettelseÅrsaker={unikeUtsettelseÅrsaker}
                         erFarEllerMedmor={erFarEllerMedmor}
                     />
                 </div>
-                <Calendar periods={periods} />
+                <Calendar periods={perioderForKalendervisning} />
             </div>
             <Button className={styles.button} variant="tertiary" icon={<DownloadIcon />} onClick={() => toPDF()}>
                 <FormattedMessage id="kalender.lastNed" />
             </Button>
-        </>
+        </div>
     );
 };

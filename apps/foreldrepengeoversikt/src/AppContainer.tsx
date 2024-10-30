@@ -5,6 +5,7 @@ import { FunctionComponent } from 'react';
 
 import { ByttBrowserModal, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { utilsMessages } from '@navikt/fp-utils';
+import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
 import Foreldrepengeoversikt from './Foreldrepengeoversikt';
@@ -19,7 +20,13 @@ const queryClient = new QueryClient({
     },
 });
 
-const allNbMessages = { ...nbMessages, ...uiMessages.nb, ...utilsMessages.nb, ...nyUttaksplanMessages.nb };
+const allNbMessages = {
+    ...nbMessages,
+    ...uiMessages.nb,
+    ...utilsMessages.nb,
+    ...nyUttaksplanMessages.nb,
+    ...uttaksplanKalenderMessages.nb,
+};
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
