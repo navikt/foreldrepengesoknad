@@ -72,7 +72,8 @@
                             "årsak": "ANNET"
                         },
                         "flerbarnsdager": false,
-                        "forelder": "mor"
+                        "forelder": "mor",
+                        "samtidigUttak": 50
                     }
                 ]
             },

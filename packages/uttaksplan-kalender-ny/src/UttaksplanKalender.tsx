@@ -69,11 +69,12 @@ const getPerioderForKalendervisning = (
             p.tom !== undefined,
     );
 
-    const unikePerioder = allePerioderBortsettFraFamiliehendelseperioden.reduce((alle, period) => {
-        if (alle.some((a) => a.fom === period.fom || a.tom === period.tom)) {
-            return alle;
-        }
-        return alle.concat(period);
+    const unikePerioder = allePerioderBortsettFraFamiliehendelseperioden.reduce((alle, periode) => {
+        const erSøkersPeriode = erPeriodeForSøker(periode, erFarEllerMedmor);
+        const filtrerte = allePerioderBortsettFraFamiliehendelseperioden.filter(
+            (p) => p.fom === periode.fom && p.tom === periode.tom,
+        );
+        return filtrerte.length > 1 && !erSøkersPeriode ? alle : alle.concat(periode);
     }, [] as KalenderPeriode[]);
 
     const perioderForVisning = unikePerioder.map((periode) => {
@@ -118,7 +119,7 @@ const getKalenderFargeForUttaksperiode = (
         : undefined;
 
     const samtidigUttaksprosent = isUttaksperiode(periode) ? periode.samtidigUttak : undefined;
-    if (annenForelderSamtidigUttaksperiode || (samtidigUttaksprosent && samtidigUttaksprosent > 0)) {
+    if (annenForelderSamtidigUttaksperiode && samtidigUttaksprosent && samtidigUttaksprosent > 0) {
         return erFarEllerMedmor ? PeriodeColor.LIGHTBLUEGREEN : PeriodeColor.LIGHTGREENBLUE;
     }
 
@@ -131,11 +132,6 @@ const getKalenderFargeForUttaksperiode = (
         return erFarEllerMedmor ? PeriodeColor.GREENSTRIPED : PeriodeColor.BLUESTRIPED;
     }
 
-    //FIXME Bør denne visast?
-    // if (isForeldrepengerFørFødselUttaksperiode(periode) && periode.skalIkkeHaUttakFørTermin) {
-    //     return PeriodeColor.NONE;
-    // }
-    //FIXME Blir sikkert feil?
     if (!periode.kontoType) {
         return PeriodeColor.NONE;
     }
@@ -163,6 +159,10 @@ const getKalenderFargeForAnnenPart = (periode: KalenderPeriode, erFarEllerMedmor
 
     return PeriodeColor.NONE;
 };
+
+const erPeriodeForSøker = (periode: KalenderPeriode, erFarEllerMedmor: boolean) =>
+    (periode.forelder === Forelder.mor && !erFarEllerMedmor) ||
+    (periode.forelder === Forelder.farMedmor && erFarEllerMedmor);
 
 const getKalenderFargeForPeriodeType = (
     periode: KalenderPeriode,
@@ -197,10 +197,7 @@ const getKalenderFargeForPeriodeType = (
         return getForelderFarge(periode.forelder, erFarEllerMedmor);
     }
 
-    const erPeriodeForSøker =
-        (periode.forelder === Forelder.mor && !erFarEllerMedmor) ||
-        (periode.forelder === Forelder.farMedmor && erFarEllerMedmor);
-    if (!erPeriodeForSøker) {
+    if (!erPeriodeForSøker(periode, erFarEllerMedmor)) {
         return getKalenderFargeForAnnenPart(periode, erFarEllerMedmor);
     }
 
@@ -271,8 +268,8 @@ export const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
             periodeHullÅrsak: p.periodeHullÅrsak,
         }));
 
-    const allePerioderInklHull = [...søkersPerioder.concat(søkersHullPerioder).concat(annenPartsPerioder || [])].sort(
-        (p1, p2) => (dayjs(p1.fom).isBefore(p2.fom) ? -1 : 1),
+    const allePerioderInklHull = [...allePerioder.concat(søkersHullPerioder)].sort((p1, p2) =>
+        dayjs(p1.fom).isBefore(p2.fom) ? -1 : 1,
     );
 
     const unikeUtsettelseÅrsaker = getUnikeUtsettelsesårsaker(allePerioderInklHull);

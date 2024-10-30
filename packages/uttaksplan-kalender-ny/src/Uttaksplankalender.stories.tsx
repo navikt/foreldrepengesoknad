@@ -63,6 +63,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
                 tom: '2024-07-02',
                 forelder: Forelder.mor,
                 kontoType: StønadskontoType.Fellesperiode,
+                samtidigUttak: 50,
             },
         ] satisfies SaksperiodeNy[],
         annenPartsPerioder: [
@@ -71,6 +72,7 @@ export const MorSøkerMedSamtidigUttakFarUtsettelseFarOgGradering: Story = {
                 tom: '2024-07-02',
                 kontoType: StønadskontoType.Fedrekvote,
                 forelder: Forelder.farMedmor,
+                samtidigUttak: 50,
             },
             {
                 fom: '2024-07-03',
@@ -639,37 +641,5 @@ export const FarOppgirSamtidigUttakMedMor: Story = {
         harAktivitetskravIPeriodeUtenUttak: false,
         bareFarHarRett: false,
         navnAnnenPart: 'Hanne',
-    },
-};
-
-export const FarOppgirSamtidigUttakNårMorSøker: Story = {
-    args: {
-        søkersPerioder: [
-            {
-                fom: '2025-05-21',
-                tom: '2025-05-27',
-                forelder: Forelder.mor,
-                kontoType: StønadskontoType.Mødrekvote,
-            },
-        ] satisfies SaksperiodeNy[],
-        annenPartsPerioder: [
-            {
-                fom: '2025-06-11',
-                tom: '2025-06-17',
-                forelder: Forelder.farMedmor,
-                kontoType: StønadskontoType.Fedrekvote,
-                samtidigUttak: 70,
-            },
-        ] satisfies SaksperiodeNy[],
-        barn: {
-            type: BarnType.ADOPTERT_STEBARN,
-            fødselsdatoer: ['2025-05-21'],
-            adopsjonsdato: '2025-05-21',
-            antallBarn: 1,
-        },
-        erFarEllerMedmor: false,
-        harAktivitetskravIPeriodeUtenUttak: false,
-        bareFarHarRett: false,
-        navnAnnenPart: 'Espen',
     },
 };
