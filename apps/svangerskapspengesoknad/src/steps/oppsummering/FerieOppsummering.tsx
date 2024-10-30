@@ -8,7 +8,6 @@ import { JaNeiTekst } from '@navikt/fp-steg-oppsummering';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
 import { Arbeidsforhold } from '../../../../../packages/types';
-import { notEmpty } from '../../../../../packages/validation';
 
 export function FerieOppsummering({
     onVilEndreSvar,
@@ -18,13 +17,12 @@ export function FerieOppsummering({
     alleArbeidsforhold: Arbeidsforhold[];
 }) {
     const ferie = useContextGetData(ContextDataType.FERIE);
-    const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD) ?? [];
-    console.log(valgteArbeidsforhold);
     if (!ferie) {
         return null;
     }
 
     const flatFerie = Object.values(ferie).flatMap((p) => p.feriePerioder);
+    const arbeidsforholdMedFerie = [...new Set(flatFerie.map((f) => f.arbeidsforhold.id))];
 
     return (
         <FormSummary>
@@ -35,7 +33,7 @@ export function FerieOppsummering({
                 </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
-                {valgteArbeidsforhold.length > 1 ? (
+                {arbeidsforholdMedFerie.length > 1 ? (
                     <FlereArbeidsgivereFerieOppsummering
                         avtaltFerie={flatFerie}
                         alleArbeidsforhold={alleArbeidsforhold}
@@ -88,9 +86,9 @@ const FlereArbeidsgivereFerieOppsummering = ({
     avtaltFerie: AvtaltFerieDto[];
     alleArbeidsforhold: Arbeidsforhold[];
 }) => {
-    const valgteArbeidsforhold = notEmpty(useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD));
+    const arbeidsforholdMedFerie = [...new Set(avtaltFerie.map((f) => f.arbeidsforhold.id))];
 
-    return valgteArbeidsforhold.map((arbeidsforholdId) => {
+    return arbeidsforholdMedFerie.map((arbeidsforholdId) => {
         const perioderForDenneTilretteleggingen = avtaltFerie.filter(
             (periode) => periode.arbeidsforhold.id === arbeidsforholdId,
         );
