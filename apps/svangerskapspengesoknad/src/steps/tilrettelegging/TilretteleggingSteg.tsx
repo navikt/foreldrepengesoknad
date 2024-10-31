@@ -158,8 +158,8 @@ export const TilretteleggingSteg: FunctionComponent<Props> = ({
             return navigator.goToStep(addTilretteleggingIdToRoute(SøknadRoute.PERIODER, valgtTilretteleggingId));
         }
 
-        // Bare virksomheter skal oppgi ferie.
-        if (typeArbeidsgiver === 'virksomhet') {
+        // Bare virksomheter eller private skal oppgi ferie.
+        if (typeArbeidsgiver === 'virksomhet' || typeArbeidsgiver === 'privat') {
             return navigator.goToStep(addTilretteleggingIdToRoute(SøknadRoute.FERIE, valgtTilretteleggingId));
         }
 
