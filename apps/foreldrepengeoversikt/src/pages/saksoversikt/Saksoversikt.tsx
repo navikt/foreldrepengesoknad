@@ -12,6 +12,7 @@ import { links } from '@navikt/fp-constants';
 import { Satser } from '@navikt/fp-types';
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
+import { BehandlingTilstand } from '../../types/BehandlingTilstand';
 import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
 import { TidslinjehendelseType } from '../../types/TidslinjehendelseType';
 import { getNavnPåForeldre } from '../../utils/personUtils';
@@ -219,7 +220,7 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
                         </ContentSection>
                     </div>
                 )}
-                {gjeldendeSak.ytelse === Ytelse.ENGANGSSTØNAD && (
+                {gjeldendeSak.ytelse === Ytelse.ENGANGSSTØNAD && !gjeldendeSak.sakAvsluttet && (
                     <VStack gap="2">
                         <ContentSection
                             heading={intl.formatMessage({ id: 'saksoversikt.dinPlan.søktOm' })}

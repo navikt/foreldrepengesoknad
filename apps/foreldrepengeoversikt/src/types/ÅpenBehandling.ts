@@ -8,6 +8,10 @@ export interface ÅpenBehandlingFP {
     søknadsperioder?: SaksperiodeNy[];
 }
 
+export interface ÅpenBehandlingES {
+    tilstand: BehandlingTilstand;
+}
+
 export interface ÅpenBehandlingSVP {
     tilstand: BehandlingTilstand;
     søknad: SøknadSVP;

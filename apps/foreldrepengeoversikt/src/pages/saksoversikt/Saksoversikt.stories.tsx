@@ -84,7 +84,7 @@ export const Engangsstønad: Story = {
                                     antallBarn: 1,
                                 },
                                 åpenBehandling: {
-                                    tilstand: BehandlingTilstand.TIDLIG_SØKNAD,
+                                    tilstand: BehandlingTilstand.UNDER_BEHANDLING,
                                     søknadsperioder: [
                                         {
                                             fom: '2024-01-01',
