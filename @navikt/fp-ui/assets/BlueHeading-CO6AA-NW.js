@@ -1,1 +1,0 @@
-import{j as o}from"./jsx-runtime-Cw0GR0a5.js";import{B as d}from"./Box-CX9D1vBH.js";const r=({children:e})=>o.jsx(d,{background:"surface-alt-3-subtle",borderRadius:"medium medium 0 0",padding:"6",borderWidth:"0 0 2",style:{borderStyle:"solid",borderColor:"var(--a-deepblue-200)"},children:e});r.__docgenInfo={description:"",methods:[],displayName:"BlueHeading"};export{r as B};
