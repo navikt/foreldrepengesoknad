@@ -266,7 +266,6 @@ function KunEnPeriode({ periode }: { periode: TilretteleggingPeriode }) {
 }
 
 function FlerePerioder({ perioder }: { perioder: TilretteleggingPeriode[] }) {
-    console.log(perioder);
     return (
         <FormSummary.Answer>
             <FormSummary.Label>
