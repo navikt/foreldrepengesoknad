@@ -1,1 +1,0 @@
-const t=[{fom:"2023-03-12",tom:"2023-03-26",kontoType:"FEDREKVOTE",samtidigUttak:100,resultat:{innvilget:!0,trekkerMinsterett:!1,trekkerDager:!0,årsak:"ANNET"}}],e="2022-08-17",r="HUNDRE",n={perioder:t,termindato:e,dekningsgrad:r};export{n as a};
