@@ -219,6 +219,7 @@
     "perioder.varierende.tomType.valgfriDato": "Fram til ei dato",
     "perioder.varierende.tomType.treUkerFørTermin": "Fram til tre veker før termin",
     "perioder.varierende.tomType.dagenFørFødsel": "Fram til fødselsdato",
+    "ferie.heading": "Ferie",
     "ferie.harDuPlanlagtFerie.label": "Har du planlagt ferie i perioden du skal ha svangerskapspengar?",
     "ferie.harDuPlanlagtFerie.validering": "Må oppgivast",
     "ferie.readmore.hvordanPlanlegge.header": "Korleis planlagd ferie verkar inn på svangerskapspengane",

@@ -27,7 +27,9 @@ export function FerieOppsummering({
     return (
         <FormSummary>
             <FormSummary.Header>
-                <FormSummary.Heading level="2">FERIE</FormSummary.Heading>
+                <FormSummary.Heading level="2">
+                    <FormattedMessage id="ferie.heading" />
+                </FormSummary.Heading>
                 <FormSummary.EditLink onClick={onVilEndreSvar}>
                     <FormattedMessage id="oppsummering.EndreSvar" />
                 </FormSummary.EditLink>
