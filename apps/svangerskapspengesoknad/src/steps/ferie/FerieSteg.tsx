@@ -51,7 +51,7 @@ export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
     const params = useParams<RouteParams>();
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
-    const arbeidsgiverId = notEmpty(params.tilretteleggingId); // TODO
+    const arbeidsgiverId = notEmpty(params.tilretteleggingId);
     const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
     const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);
     const ferie = useContextGetData(ContextDataType.FERIE);
@@ -141,7 +141,7 @@ export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
 function FeriePerioder() {
     const intl = useIntl();
     const params = useParams<RouteParams>();
-    const arbeidsgiverId = notEmpty(params.tilretteleggingId); // TODO
+    const arbeidsgiverId = notEmpty(params.tilretteleggingId);
     const tilrettelegginer = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const startDatoSvp = tilrettelegginer[arbeidsgiverId].behovForTilretteleggingFom;
 
