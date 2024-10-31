@@ -205,17 +205,17 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0
       msw:
-        specifier: ^2.4.11
-        version: 2.4.11(typescript@5.6.3)
+        specifier: 2.5.2
+        version: 2.5.2(@types/node@22.8.5)(typescript@5.6.3)
       msw-storybook-addon:
         specifier: ^2.0.3
-        version: 2.0.3(msw@2.4.11(typescript@5.6.3))
+        version: 2.0.3(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))
       multer:
         specifier: 1.4.5-lts.1
         version: 1.4.5-lts.1
       mustache-loader:
         specifier: ^1.4.3
-        version: 1.4.3(hogan.js@3.0.2)(webpack@5.95.0(esbuild@0.23.1))
+        version: 1.4.3(hogan.js@3.0.2)(webpack@5.95.0)
       storybook:
         specifier: 8.3.6
         version: 8.3.6
@@ -233,7 +233,7 @@ importers:
         version: 0.8.0(eslint@9.13.0(jiti@2.3.3))(optionator@0.9.4)(typescript@5.6.3)(vite@5.4.10(@types/node@22.8.5)(less@4.2.0)(sass@1.80.5)(terser@5.36.0))
       vitest:
         specifier: ^2.1.4
-        version: 2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.11(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0)
+        version: 2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0)
 
   apps/foreldrepengeoversikt:
     dependencies:
@@ -431,11 +431,11 @@ importers:
         specifier: ^1.10.0
         version: 1.10.0
       msw:
-        specifier: ^2.4.11
-        version: 2.4.11(typescript@5.6.3)
+        specifier: 2.5.2
+        version: 2.5.2(@types/node@22.8.5)(typescript@5.6.3)
       msw-storybook-addon:
         specifier: ^2.0.2
-        version: 2.0.3(msw@2.4.11(typescript@5.6.3))
+        version: 2.0.3(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))
       multer:
         specifier: ^1.4.5-lts.1
         version: 1.4.5-lts.1
@@ -468,7 +468,7 @@ importers:
         version: 0.8.0(eslint@9.13.0(jiti@2.3.3))(optionator@0.9.4)(typescript@5.6.3)(vite@5.4.10(@types/node@22.8.5)(less@4.2.0)(sass@1.80.5)(terser@5.36.0))
       vitest:
         specifier: ^2.1.4
-        version: 2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.11(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0)
+        version: 2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0)
 
   apps/foreldrepengesoknad:
     dependencies:
@@ -780,11 +780,11 @@ importers:
         specifier: ^3.0.5
         version: 3.0.5
       msw:
-        specifier: ^2.4.11
-        version: 2.4.11(typescript@5.6.3)
+        specifier: 2.5.2
+        version: 2.5.2(@types/node@22.8.5)(typescript@5.6.3)
       msw-storybook-addon:
         specifier: ^2.0.3
-        version: 2.0.3(msw@2.4.11(typescript@5.6.3))
+        version: 2.0.3(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))
       multer:
         specifier: 1.4.5-lts.1
         version: 1.4.5-lts.1
@@ -814,7 +814,7 @@ importers:
         version: 0.8.0(eslint@9.13.0(jiti@2.3.3))(optionator@0.9.4)(typescript@5.6.3)(vite@5.4.10(@types/node@22.8.5)(less@4.2.0)(sass@1.80.5)(terser@5.36.0))
       vitest:
         specifier: ^2.1.4
-        version: 2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.11(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0)
+        version: 2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0)
 
   apps/planlegger:
     dependencies:
@@ -976,11 +976,11 @@ importers:
         specifier: 3.0.3
         version: 3.0.3
       msw:
-        specifier: ^2.4.11
-        version: 2.4.11(typescript@5.6.3)
+        specifier: 2.5.2
+        version: 2.5.2(@types/node@22.8.5)(typescript@5.6.3)
       msw-storybook-addon:
         specifier: ^2.0.3
-        version: 2.0.3(msw@2.4.11(typescript@5.6.3))
+        version: 2.0.3(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))
       mustache-loader:
         specifier: ^1.4.3
         version: 1.4.3(hogan.js@3.0.2)(webpack@5.95.0)
@@ -1001,7 +1001,7 @@ importers:
         version: 0.8.0(eslint@9.13.0)(optionator@0.9.4)(typescript@5.6.3)(vite@5.4.10(@types/node@22.8.5)(less@4.2.0)(sass@1.80.5)(terser@5.36.0))
       vitest:
         specifier: ^2.1.4
-        version: 2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.11(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0)
+        version: 2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0)
 
   apps/svangerskapspengesoknad:
     dependencies:
@@ -1277,11 +1277,11 @@ importers:
         specifier: ^3.0.5
         version: 3.0.5
       msw:
-        specifier: ^2.4.11
-        version: 2.4.11(typescript@5.6.3)
+        specifier: 2.5.2
+        version: 2.5.2(@types/node@22.8.5)(typescript@5.6.3)
       msw-storybook-addon:
         specifier: ^2.0.3
-        version: 2.0.3(msw@2.4.11(typescript@5.6.3))
+        version: 2.0.3(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))
       multer:
         specifier: ^1.4.5-lts.1
         version: 1.4.5-lts.1
@@ -1308,7 +1308,7 @@ importers:
         version: 0.8.0(eslint@9.13.0(jiti@2.3.3))(optionator@0.9.4)(typescript@5.6.3)(vite@5.4.10(@types/node@22.8.5)(less@4.2.0)(sass@1.80.5)(terser@5.36.0))
       vitest:
         specifier: ^2.1.4
-        version: 2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.11(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0)
+        version: 2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0)
 
   apps/veiviser-fp-eller-es:
     dependencies:
@@ -1458,11 +1458,11 @@ importers:
         specifier: 3.0.3
         version: 3.0.3
       msw:
-        specifier: ^2.4.11
-        version: 2.4.11(typescript@5.6.3)
+        specifier: 2.5.2
+        version: 2.5.2(@types/node@22.8.5)(typescript@5.6.3)
       msw-storybook-addon:
         specifier: ^2.0.3
-        version: 2.0.3(msw@2.4.11(typescript@5.6.3))
+        version: 2.0.3(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))
       mustache-loader:
         specifier: ^1.4.3
         version: 1.4.3(hogan.js@3.0.2)(webpack@5.95.0)
@@ -1486,7 +1486,7 @@ importers:
         version: 0.8.0(eslint@9.13.0)(optionator@0.9.4)(typescript@5.6.3)(vite@5.4.10(@types/node@22.8.5)(less@4.2.0)(sass@1.80.5)(terser@5.36.0))
       vitest:
         specifier: ^2.1.4
-        version: 2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.11(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0)
+        version: 2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0)
 
   apps/veiviser-hva-skjer-nar:
     dependencies:
@@ -1645,11 +1645,11 @@ importers:
         specifier: 3.0.3
         version: 3.0.3
       msw:
-        specifier: ^2.4.11
-        version: 2.4.11(typescript@5.6.3)
+        specifier: 2.5.2
+        version: 2.5.2(@types/node@22.8.5)(typescript@5.6.3)
       msw-storybook-addon:
         specifier: ^2.0.3
-        version: 2.0.3(msw@2.4.11(typescript@5.6.3))
+        version: 2.0.3(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))
       mustache-loader:
         specifier: ^1.4.3
         version: 1.4.3(hogan.js@3.0.2)(webpack@5.95.0)
@@ -1670,7 +1670,7 @@ importers:
         version: 0.8.0(eslint@9.13.0)(optionator@0.9.4)(typescript@5.6.3)(vite@5.4.10(@types/node@22.8.5)(less@4.2.0)(sass@1.80.5)(terser@5.36.0))
       vitest:
         specifier: ^2.1.4
-        version: 2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.11(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0)
+        version: 2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0)
 
   apps/veiviser-hvor-mye:
     dependencies:
@@ -1820,11 +1820,11 @@ importers:
         specifier: 3.0.3
         version: 3.0.3
       msw:
-        specifier: ^2.4.11
-        version: 2.4.11(typescript@5.6.3)
+        specifier: 2.5.2
+        version: 2.5.2(@types/node@22.8.5)(typescript@5.6.3)
       msw-storybook-addon:
         specifier: ^2.0.3
-        version: 2.0.3(msw@2.4.11(typescript@5.6.3))
+        version: 2.0.3(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))
       mustache-loader:
         specifier: ^1.4.3
         version: 1.4.3(hogan.js@3.0.2)(webpack@5.95.0)
@@ -1845,7 +1845,7 @@ importers:
         version: 0.8.0(eslint@9.13.0)(optionator@0.9.4)(typescript@5.6.3)(vite@5.4.10(@types/node@22.8.5)(less@4.2.0)(sass@1.80.5)(terser@5.36.0))
       vitest:
         specifier: ^2.1.4
-        version: 2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.11(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0)
+        version: 2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0)
 
   packages/api:
     dependencies:
@@ -4855,10 +4855,6 @@ packages:
     resolution: {integrity: sha512-JBxkERygn7Bv/GbN5Rv8Ul6LVknS+5Bp6RgDC/O8gEBU/yeH5Ui5C/OlWrTb6qct7LjjfT6Re2NxB0ln0yYybA==}
     engines: {node: '>=18.18'}
 
-  '@inquirer/confirm@3.2.0':
-    resolution: {integrity: sha512-oOIwPs0Dvq5220Z8lGL/6LHRTEr9TgLHmiI99Rj1PJ1p1czTys+olrgBqZk4E2qC0YTzeHprxSQmoHioVdJ7Lw==}
-    engines: {node: '>=18'}
-
   '@inquirer/confirm@5.0.1':
     resolution: {integrity: sha512-6ycMm7k7NUApiMGfVc32yIPp28iPKxhGRMqoNDiUjq2RyTAkbs5Fx0TdzBqhabcKvniDdAAvHCmsRjnNfTsogw==}
     engines: {node: '>=18'}
@@ -4869,20 +4865,8 @@ packages:
     resolution: {integrity: sha512-KKTgjViBQUi3AAssqjUFMnMO3CM3qwCHvePV9EW+zTKGKafFGFF01sc1yOIYjLJ7QU52G/FbzKc+c01WLzXmVQ==}
     engines: {node: '>=18'}
 
-  '@inquirer/core@9.2.1':
-    resolution: {integrity: sha512-F2VBt7W/mwqEU4bL0RnHNZmC/OxzNx9cOYxHqnXX3MP6ruYvZUZAW9imgN9+h/uBT/oP8Gh888J2OZSbjSeWcg==}
-    engines: {node: '>=18'}
-
   '@inquirer/figures@1.0.7':
     resolution: {integrity: sha512-m+Trk77mp54Zma6xLkLuY+mvanPxlE4A7yNKs2HBiyZ4UkVs28Mv5c/pgWrHeInx+USHeX/WEPzjrWrcJiQgjw==}
-    engines: {node: '>=18'}
-
-  '@inquirer/type@1.5.5':
-    resolution: {integrity: sha512-MzICLu4yS7V8AA61sANROZ9vT1H3ooca5dSmI1FjZkzq7o/koMsRfQSzRtFo+F3Ao4Sf1C0bpLKejpKB/+j6MA==}
-    engines: {node: '>=18'}
-
-  '@inquirer/type@2.0.0':
-    resolution: {integrity: sha512-XvJRx+2KR3YXyYtPUUy+qd9i7p+GO9Ko6VIIpWlBrpWwXDv8WLFeHTxz35CfQFUiBMLXlGHhGzys7lqit9gWag==}
     engines: {node: '>=18'}
 
   '@inquirer/type@3.0.0':
@@ -4930,10 +4914,6 @@ packages:
     peerDependencies:
       '@types/react': '>=16'
       react: '>=16'
-
-  '@mswjs/interceptors@0.35.9':
-    resolution: {integrity: sha512-SSnyl/4ni/2ViHKkiZb8eajA/eN1DNFaHjhGiLUdZvDz6PKF4COSf/17xqSz64nOo2Ia29SA6B2KNCsyCbVmaQ==}
-    engines: {node: '>=18'}
 
   '@mswjs/interceptors@0.36.7':
     resolution: {integrity: sha512-sdx02Wlus5hv6Bx7uUDb25gb0WGjCuSgnJB2LVERemoSGuqkZMe3QI6nEXhieFGtYwPrZbYrT2vPbsFN2XfbUw==}
@@ -5781,9 +5761,6 @@ packages:
   '@types/morgan@1.9.9':
     resolution: {integrity: sha512-iRYSDKVaC6FkGSpEVVIvrRGw0DfJMiQzIn3qr2G5B3C//AWkulhXgaBd7tS9/J79GWSYMTHGs7PfI5b3Y8m+RQ==}
 
-  '@types/mute-stream@0.0.4':
-    resolution: {integrity: sha512-CPM9nzrCPPJHQNA9keH9CVkVI+WR5kMa+7XEs5jcGQ0VoAGnLv242w8lIVgwAEfmE4oufJRaTc9PNLQl0ioAow==}
-
   '@types/node@18.19.62':
     resolution: {integrity: sha512-UOGhw+yZV/icyM0qohQVh3ktpY40Sp7tdTW7HxG3pTd7AiMrlFlAJNUrGK9t5mdW0+ViQcFV74zCSIx9ZJpncA==}
 
@@ -5867,9 +5844,6 @@ packages:
 
   '@types/uuid@9.0.8':
     resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
-
-  '@types/wrap-ansi@3.0.0':
-    resolution: {integrity: sha512-ltIpx+kM7g/MLRZfkbL7EsCEjfzCcScLpkg37eXEtx5kmrAKBkTJwd1GIAjDSL8wTpM6Hzn5YO4pSb91BEwu1g==}
 
   '@typescript-eslint/eslint-plugin@8.12.2':
     resolution: {integrity: sha512-gQxbxM8mcxBwaEmWdtLCIGLfixBMHhQjBqR8sVWNTPpcj45WlYL2IObS/DNMLH1DBP0n8qz+aiiLTGfopPEebw==}
@@ -8537,8 +8511,8 @@ packages:
     peerDependencies:
       msw: ^2.0.0
 
-  msw@2.4.11:
-    resolution: {integrity: sha512-TVEw9NOPTc6ufOQLJ53234S9NBRxQbu7xFMxs+OCP43JQcNEIOKiZHxEm2nDzYIrwccoIhUxUf8wr99SukD76A==}
+  msw@2.5.2:
+    resolution: {integrity: sha512-eBsFgU30NYtrfC62XzS1rdAzFK+Br0zKU4ORqD9Qliq86362DWZyPiD6FLfMgy0Ktik83DPTXmqPMz2bqwmJdA==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
@@ -8575,10 +8549,6 @@ packages:
   mustache@4.2.0:
     resolution: {integrity: sha512-71ippSywq5Yb7/tVYyGbkBggbU8H3u5Rz56fH60jGFgr8uHwxs+aSKeqmluIVzM0m0kB7xQjKS6qPfd0b2ZoqQ==}
     hasBin: true
-
-  mute-stream@1.0.0:
-    resolution: {integrity: sha512-avsJQhyd+680gKXyG/sQc0nXaC6rBkPOfyHYcFb9+hdkqQkR9bdnkJ0AMZhke0oesPqIO+mFFJ+IdBc7mst4IA==}
-    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
 
   mute-stream@2.0.0:
     resolution: {integrity: sha512-WWdIxpyjEn+FhQJQQv9aQAYlHoNVdzIzUySNV1gHUPDSdZJ3yZn7pAAbQcV7B56Mvu881q9FZV+0Vx2xC44VWA==}
@@ -11808,17 +11778,11 @@ snapshots:
 
   '@humanwhocodes/retry@0.3.1': {}
 
-  '@inquirer/confirm@3.2.0':
-    dependencies:
-      '@inquirer/core': 9.2.1
-      '@inquirer/type': 1.5.5
-
   '@inquirer/confirm@5.0.1(@types/node@22.8.5)':
     dependencies:
       '@inquirer/core': 10.0.1(@types/node@22.8.5)
       '@inquirer/type': 3.0.0(@types/node@22.8.5)
       '@types/node': 22.8.5
-    optional: true
 
   '@inquirer/core@10.0.1(@types/node@22.8.5)':
     dependencies:
@@ -11833,37 +11797,12 @@ snapshots:
       yoctocolors-cjs: 2.1.2
     transitivePeerDependencies:
       - '@types/node'
-    optional: true
-
-  '@inquirer/core@9.2.1':
-    dependencies:
-      '@inquirer/figures': 1.0.7
-      '@inquirer/type': 2.0.0
-      '@types/mute-stream': 0.0.4
-      '@types/node': 22.8.5
-      '@types/wrap-ansi': 3.0.0
-      ansi-escapes: 4.3.2
-      cli-width: 4.1.0
-      mute-stream: 1.0.0
-      signal-exit: 4.1.0
-      strip-ansi: 6.0.1
-      wrap-ansi: 6.2.0
-      yoctocolors-cjs: 2.1.2
 
   '@inquirer/figures@1.0.7': {}
-
-  '@inquirer/type@1.5.5':
-    dependencies:
-      mute-stream: 1.0.0
-
-  '@inquirer/type@2.0.0':
-    dependencies:
-      mute-stream: 1.0.0
 
   '@inquirer/type@3.0.0(@types/node@22.8.5)':
     dependencies:
       '@types/node': 22.8.5
-    optional: true
 
   '@isaacs/cliui@8.0.2':
     dependencies:
@@ -11912,15 +11851,6 @@ snapshots:
       '@types/react': 18.3.12
       react: 18.3.1
 
-  '@mswjs/interceptors@0.35.9':
-    dependencies:
-      '@open-draft/deferred-promise': 2.2.0
-      '@open-draft/logger': 0.3.0
-      '@open-draft/until': 2.1.0
-      is-node-process: 1.2.0
-      outvariant: 1.4.3
-      strict-event-emitter: 0.5.1
-
   '@mswjs/interceptors@0.36.7':
     dependencies:
       '@open-draft/deferred-promise': 2.2.0
@@ -11929,7 +11859,6 @@ snapshots:
       is-node-process: 1.2.0
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
-    optional: true
 
   '@navikt/aksel-icons@7.4.1': {}
 
@@ -13047,10 +12976,6 @@ snapshots:
     dependencies:
       '@types/node': 22.8.5
 
-  '@types/mute-stream@0.0.4':
-    dependencies:
-      '@types/node': 22.8.5
-
   '@types/node@18.19.62':
     dependencies:
       undici-types: 5.26.5
@@ -13144,8 +13069,6 @@ snapshots:
   '@types/uuid@10.0.0': {}
 
   '@types/uuid@9.0.8': {}
-
-  '@types/wrap-ansi@3.0.0': {}
 
   '@typescript-eslint/eslint-plugin@8.12.2(@typescript-eslint/parser@8.12.2(eslint@9.13.0(jiti@2.3.3))(typescript@5.4.5))(eslint@9.13.0(jiti@2.3.3))(typescript@5.4.5)':
     dependencies:
@@ -13295,13 +13218,13 @@ snapshots:
       chai: 5.1.2
       tinyrainbow: 1.2.0
 
-  '@vitest/mocker@2.1.4(msw@2.4.11(typescript@5.6.3))(vite@5.4.10(@types/node@22.8.5)(less@4.2.0)(sass@1.80.5)(terser@5.36.0))':
+  '@vitest/mocker@2.1.4(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))(vite@5.4.10(@types/node@22.8.5)(less@4.2.0)(sass@1.80.5)(terser@5.36.0))':
     dependencies:
       '@vitest/spy': 2.1.4
       estree-walker: 3.0.3
       magic-string: 0.30.12
     optionalDependencies:
-      msw: 2.4.11(typescript@5.6.3)
+      msw: 2.5.2(@types/node@22.8.5)(typescript@5.6.3)
       vite: 5.4.10(@types/node@22.8.5)(less@4.2.0)(sass@1.80.5)(terser@5.36.0)
 
   '@vitest/mocker@2.1.4(msw@2.6.0(@types/node@22.8.5)(typescript@5.6.3))(vite@5.4.10(@types/node@22.8.5)(less@4.2.0)(sass@1.80.5)(terser@5.36.0))':
@@ -16129,18 +16052,18 @@ snapshots:
 
   ms@2.1.3: {}
 
-  msw-storybook-addon@2.0.3(msw@2.4.11(typescript@5.6.3)):
+  msw-storybook-addon@2.0.3(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3)):
     dependencies:
       is-node-process: 1.2.0
-      msw: 2.4.11(typescript@5.6.3)
+      msw: 2.5.2(@types/node@22.8.5)(typescript@5.6.3)
 
-  msw@2.4.11(typescript@5.6.3):
+  msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3):
     dependencies:
       '@bundled-es-modules/cookie': 2.0.0
       '@bundled-es-modules/statuses': 1.0.1
       '@bundled-es-modules/tough-cookie': 0.1.6
-      '@inquirer/confirm': 3.2.0
-      '@mswjs/interceptors': 0.35.9
+      '@inquirer/confirm': 5.0.1(@types/node@22.8.5)
+      '@mswjs/interceptors': 0.36.7
       '@open-draft/until': 2.1.0
       '@types/cookie': 0.6.0
       '@types/statuses': 2.0.5
@@ -16155,6 +16078,8 @@ snapshots:
       yargs: 17.7.2
     optionalDependencies:
       typescript: 5.6.3
+    transitivePeerDependencies:
+      - '@types/node'
 
   msw@2.6.0(@types/node@22.8.5)(typescript@5.6.3):
     dependencies:
@@ -16198,13 +16123,6 @@ snapshots:
       lru-cache: 5.1.1
       mustache: 4.2.0
 
-  mustache-loader@1.4.3(hogan.js@3.0.2)(webpack@5.95.0(esbuild@0.23.1)):
-    dependencies:
-      hogan.js: 3.0.2
-      html-minifier: 3.5.21
-      loader-utils: 1.4.2
-      webpack: 5.95.0(esbuild@0.23.1)
-
   mustache-loader@1.4.3(hogan.js@3.0.2)(webpack@5.95.0):
     dependencies:
       hogan.js: 3.0.2
@@ -16214,10 +16132,7 @@ snapshots:
 
   mustache@4.2.0: {}
 
-  mute-stream@1.0.0: {}
-
-  mute-stream@2.0.0:
-    optional: true
+  mute-stream@2.0.0: {}
 
   mz@2.7.0:
     dependencies:
@@ -17633,17 +17548,6 @@ snapshots:
     dependencies:
       rimraf: 2.6.3
 
-  terser-webpack-plugin@5.3.10(esbuild@0.23.1)(webpack@5.95.0(esbuild@0.23.1)):
-    dependencies:
-      '@jridgewell/trace-mapping': 0.3.25
-      jest-worker: 27.5.1
-      schema-utils: 3.3.0
-      serialize-javascript: 6.0.2
-      terser: 5.36.0
-      webpack: 5.95.0(esbuild@0.23.1)
-    optionalDependencies:
-      esbuild: 0.23.1
-
   terser-webpack-plugin@5.3.10(webpack@5.95.0):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
@@ -18067,10 +17971,10 @@ snapshots:
       sass: 1.80.5
       terser: 5.36.0
 
-  vitest@2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.4.11(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0):
+  vitest@2.1.4(@types/node@22.8.5)(jsdom@25.0.1)(less@4.2.0)(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))(sass@1.80.5)(terser@5.36.0):
     dependencies:
       '@vitest/expect': 2.1.4
-      '@vitest/mocker': 2.1.4(msw@2.4.11(typescript@5.6.3))(vite@5.4.10(@types/node@22.8.5)(less@4.2.0)(sass@1.80.5)(terser@5.36.0))
+      '@vitest/mocker': 2.1.4(msw@2.5.2(@types/node@22.8.5)(typescript@5.6.3))(vite@5.4.10(@types/node@22.8.5)(less@4.2.0)(sass@1.80.5)(terser@5.36.0))
       '@vitest/pretty-format': 2.1.4
       '@vitest/runner': 2.1.4
       '@vitest/snapshot': 2.1.4
@@ -18210,36 +18114,6 @@ snapshots:
       schema-utils: 3.3.0
       tapable: 2.2.1
       terser-webpack-plugin: 5.3.10(webpack@5.95.0)
-      watchpack: 2.4.2
-      webpack-sources: 3.2.3
-    transitivePeerDependencies:
-      - '@swc/core'
-      - esbuild
-      - uglify-js
-
-  webpack@5.95.0(esbuild@0.23.1):
-    dependencies:
-      '@types/estree': 1.0.6
-      '@webassemblyjs/ast': 1.12.1
-      '@webassemblyjs/wasm-edit': 1.12.1
-      '@webassemblyjs/wasm-parser': 1.12.1
-      acorn: 8.14.0
-      acorn-import-attributes: 1.9.5(acorn@8.14.0)
-      browserslist: 4.24.2
-      chrome-trace-event: 1.0.4
-      enhanced-resolve: 5.17.1
-      es-module-lexer: 1.5.4
-      eslint-scope: 5.1.1
-      events: 3.3.0
-      glob-to-regexp: 0.4.1
-      graceful-fs: 4.2.11
-      json-parse-even-better-errors: 2.3.1
-      loader-runner: 4.3.0
-      mime-types: 2.1.35
-      neo-async: 2.6.2
-      schema-utils: 3.3.0
-      tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(esbuild@0.23.1)(webpack@5.95.0(esbuild@0.23.1))
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     transitivePeerDependencies:
