@@ -102,7 +102,7 @@ export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåF
                         harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
                         søkersPerioder={getRelevantePerioder() || []}
                         annenPartsPerioder={annenPartsPerioder}
-                        navnAnnenPart={søkerErFarEllerMedmor ? navnPåForeldre.farMedmor : navnPåForeldre.mor}
+                        navnAnnenPart={søkerErFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor}
                     />
                 )}
             </VStack>
