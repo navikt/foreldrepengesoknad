@@ -6,8 +6,9 @@ import { HStack } from '@navikt/ds-react';
 import styles from './calendarIconLabel.module.css';
 import BlåSirkel from './icons/BlåSirkel';
 import GrønnSirkel from './icons/GrønnSirkel';
+import LillaSirkel from './icons/LillaSirkel';
 
-type IconType = 'blue' | 'green' | 'pink';
+type IconType = 'blue' | 'green' | 'pink' | 'purple';
 
 interface Props {
     children: React.ReactElement | React.ReactElement[];
@@ -21,6 +22,16 @@ const CalendarLabel: FunctionComponent<Props> = ({ children, iconType }) => {
                 <HStack gap="2" align="center">
                     {children}
                     <HeartFillIcon color="#F68282" aria-hidden />
+                </HStack>
+            </div>
+        );
+    }
+    if (iconType === 'purple') {
+        return (
+            <div className={styles.purplePanel}>
+                <HStack gap="2" align="center">
+                    {children}
+                    <div className={styles.margin}>{<LillaSirkel />} </div>
                 </HStack>
             </div>
         );

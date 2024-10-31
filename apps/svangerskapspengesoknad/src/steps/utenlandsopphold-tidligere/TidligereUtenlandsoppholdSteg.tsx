@@ -1,7 +1,7 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
-import SøknadRoutes from 'appData/routes';
-import useStepConfig from 'appData/useStepConfig';
-import useSvpNavigator from 'appData/useSvpNavigator';
+import { SøknadRoute } from 'appData/routes';
+import { useStepConfig } from 'appData/useStepConfig';
+import { useSvpNavigator } from 'appData/useSvpNavigator';
 import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
@@ -17,7 +17,7 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
+export const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     arbeidsforhold,
@@ -33,9 +33,9 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
         oppdaterTidligereUtenlandsopphold(values);
 
         const nesteSide = utenlandsopphold.skalBoUtenforNorgeNeste12Mnd
-            ? SøknadRoutes.SKAL_BO_I_UTLANDET
-            : SøknadRoutes.INNTEKTSINFORMASJON;
-        return navigator.goToNextStep(nesteSide);
+            ? SøknadRoute.SKAL_BO_I_UTLANDET
+            : SøknadRoute.ARBEIDSFORHOLD_OG_INNTEKT;
+        return navigator.goToStep(nesteSide);
     };
 
     const saveOnPrevious = () => {
@@ -51,14 +51,12 @@ const TidligereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
                 tidligereUtenlandsopphold={tidligereUtenlandsopphold ?? []}
                 saveOnNext={save}
                 saveOnPrevious={saveOnPrevious}
-                onStepChange={navigator.goToNextStep}
                 cancelApplication={avbrytSøknad}
                 onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
+                onStepChange={navigator.goToStep}
             />
         </ContentWrapper>
     );
 };
-
-export default TidligereUtenlandsoppholdSteg;

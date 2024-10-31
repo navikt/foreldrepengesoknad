@@ -27,3 +27,8 @@ export const nyUttaksplanMessages = {
     nb: nbMessages,
     nn: nnMessages,
 };
+
+export type { Planperiode } from './types/Planperiode';
+export { PeriodeHullType } from './types/Planperiode';
+
+export { finnOgSettInnHull } from './builder/uttaksplanbuilderUtils';

@@ -133,7 +133,7 @@
 }
 
 .grayDay {
-    background-color: var(--a-gray-200) !important;
+    background-color: var(--a-gray-200);
     print-color-adjust: exact;
 }
 
@@ -251,6 +251,11 @@
     background-repeat: no-repeat;
     padding: 0 2px 2px 2px;
     margin-left: 1px;
+    print-color-adjust: exact;
+}
+
+.purpleDay {
+    background-color: var(--a-purple-200) !important;
     print-color-adjust: exact;
 }
 

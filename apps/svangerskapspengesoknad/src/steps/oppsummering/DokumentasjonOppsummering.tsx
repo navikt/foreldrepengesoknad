@@ -1,16 +1,19 @@
-import { FormattedMessage } from 'react-intl';
-import Tilrettelegging, { Arbeidsforholdstype } from 'types/Tilrettelegging';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { getArbeidsgiverNavnForTilrettelegging } from 'utils/tilretteleggingUtils';
 
 import { FormSummary, Link, VStack } from '@navikt/ds-react';
 
+import { Arbeidsforhold, Attachment, EGEN_NÆRING_ID, FRILANS_ID } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 export function DokumentasjonOppsummering({
-    tilrettelegginger,
+    tilretteleggingerVedlegg,
     onVilEndreSvar,
+    alleArbeidsforhold,
 }: {
-    readonly tilrettelegginger: Tilrettelegging[];
-    readonly onVilEndreSvar: () => Promise<void>;
+    readonly tilretteleggingerVedlegg: Record<string, Attachment[]>;
+    readonly onVilEndreSvar: () => void;
+    readonly alleArbeidsforhold: Arbeidsforhold[];
 }) {
     return (
         <FormSummary>
@@ -23,14 +26,17 @@ export function DokumentasjonOppsummering({
                 </FormSummary.EditLink>
             </FormSummary.Header>
             <FormSummary.Answers>
-                {tilrettelegginger.map((tilrettelegging) => (
-                    <FormSummary.Answer key={tilrettelegging.id}>
+                {Object.keys(tilretteleggingerVedlegg).map((tilretteleggingId) => (
+                    <FormSummary.Answer key={tilretteleggingId}>
                         <FormSummary.Label>
-                            <DokumentasjonLabel tilrettelegging={tilrettelegging} />
+                            <DokumentasjonLabel
+                                tilretteleggingId={tilretteleggingId}
+                                alleArbeidsforhold={alleArbeidsforhold}
+                            />
                         </FormSummary.Label>
                         <FormSummary.Value>
                             <VStack>
-                                {tilrettelegging.vedlegg.map((vedlegg) => (
+                                {tilretteleggingerVedlegg[tilretteleggingId].map((vedlegg) => (
                                     <Link key={vedlegg.id} href={vedlegg.url} target="_blank">
                                         {vedlegg.filename}
                                     </Link>
@@ -44,20 +50,29 @@ export function DokumentasjonOppsummering({
     );
 }
 
-function DokumentasjonLabel({ tilrettelegging }: { readonly tilrettelegging: Tilrettelegging }) {
-    switch (tilrettelegging.arbeidsforhold.type) {
-        case Arbeidsforholdstype.FRILANSER:
+function DokumentasjonLabel({
+    tilretteleggingId,
+    alleArbeidsforhold,
+}: {
+    readonly tilretteleggingId: string;
+    readonly alleArbeidsforhold: Arbeidsforhold[];
+}) {
+    const intl = useIntl();
+    switch (tilretteleggingId) {
+        case FRILANS_ID:
             return <FormattedMessage id="oppsummering.dokumentasjon.frilanser" />;
-        case Arbeidsforholdstype.SELVSTENDIG:
+        case EGEN_NÆRING_ID:
             return <FormattedMessage id="oppsummering.dokumentasjon.selvstendig" />;
-        default:
+        default: {
+            const navn = getArbeidsgiverNavnForTilrettelegging(intl, tilretteleggingId, alleArbeidsforhold);
             return (
                 <FormattedMessage
                     id="oppsummering.dokumentasjon.virksomhet"
                     values={{
-                        arbeidsforholdNavn: capitalizeFirstLetterInEveryWordOnly(tilrettelegging.arbeidsforhold.navn),
+                        arbeidsforholdNavn: capitalizeFirstLetterInEveryWordOnly(navn),
                     }}
                 />
             );
+        }
     }
 }

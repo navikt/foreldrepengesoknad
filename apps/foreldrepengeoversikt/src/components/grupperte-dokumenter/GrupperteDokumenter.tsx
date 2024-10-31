@@ -1,9 +1,10 @@
-import { Folder } from '@navikt/ds-icons';
+import { FolderIcon } from '@navikt/aksel-icons';
+
 import { Accordion, BodyShort, HStack } from '@navikt/ds-react';
 
+import { guid } from '../../utils/guid';
 import Dokument from '../dokument/Dokument';
 import { Dokument as DokumentType } from './../../types/Dokument';
-import { guid } from './../../utils/guid';
 
 interface Props {
     dokumenter: DokumentType[];
@@ -22,7 +23,7 @@ const GrupperteDokumenter: React.FunctionComponent<Props> = ({ dokumenter }) => 
                     }}
                 >
                     <HStack gap="4">
-                        <Folder aria-hidden={true} />
+                        <FolderIcon aria-hidden={true} />
                         <BodyShort>{dokumenter.length} dokumenter</BodyShort>
                     </HStack>
                 </Accordion.Header>

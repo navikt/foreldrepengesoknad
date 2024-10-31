@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
@@ -85,6 +86,37 @@ const erFarOgFarKunSøker1HarRett = (hvemPlanlegger: HvemPlanlegger, hvemHarRett
 const erFarAlenesøkerOgHarRett = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett): boolean =>
     hvemHarRett === 'kunSøker1HarRett' && hvemPlanlegger.type === Situasjon.FAR;
 
+export const leggTilBarnehageplassKalenderPerioder = (uttaksperioder: Period[], barnet: OmBarnet) => {
+    const erAdoptert = erBarnetAdoptert(barnet);
+    if (erAdoptert) {
+        return uttaksperioder;
+    }
+
+    const barnehageplassdato = barnehagestartDato(barnet);
+    const barnehageperiode = { fom: barnehageplassdato, tom: barnehageplassdato, color: PeriodeColor.PURPLE };
+    const res = uttaksperioder.reduce((acc, uttaksperiode) => {
+        if (dayjs(barnehageperiode.fom).isBetween(uttaksperiode.fom, uttaksperiode.tom, 'day', '[]')) {
+            return [
+                ...acc,
+                {
+                    fom: uttaksperiode.fom,
+                    tom: dayjs(barnehageperiode.fom).subtract(1, 'day').format(ISO_DATE_FORMAT),
+                    color: uttaksperiode.color,
+                },
+                {
+                    fom: dayjs(barnehageperiode.fom).add(1, 'day').format(ISO_DATE_FORMAT),
+                    tom: uttaksperiode.tom,
+                    color: uttaksperiode.color,
+                },
+            ];
+        }
+        return [...acc, uttaksperiode];
+    }, [] as Period[]);
+
+    const perioder = res.concat(barnehageperiode).sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)));
+
+    return perioder;
+};
 export const lagKalenderPerioder = (
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
     barnet: OmBarnet,
@@ -105,26 +137,35 @@ export const lagKalenderPerioder = (
         erFarOgFarFødsel(hvemPlanlegger, hvemHarRett, erAdoptert) ||
         erFarAlenesøkerOgHarRett(hvemPlanlegger, hvemHarRett)
     ) {
-        return finnPerioderForKunFarHarRett(familiehendelsedato, sluttdatoPeriode1);
+        return leggTilBarnehageplassKalenderPerioder(
+            finnPerioderForKunFarHarRett(familiehendelsedato, sluttdatoPeriode1),
+            barnet,
+        );
     }
 
     if (hvemHarRett === 'beggeHarRett' && harPeriode2) {
-        return finnPerioderForBeggeHarRettEllerKunMorHarRett(
-            erAdoptert,
-            startdatoPeriode1,
-            sluttdatoPeriode1,
-            familiehendelsedato,
-            startdatoPeriode2,
-            sluttdatoPeriode2,
+        return leggTilBarnehageplassKalenderPerioder(
+            finnPerioderForBeggeHarRettEllerKunMorHarRett(
+                erAdoptert,
+                startdatoPeriode1,
+                sluttdatoPeriode1,
+                familiehendelsedato,
+                startdatoPeriode2,
+                sluttdatoPeriode2,
+            ),
+            barnet,
         );
     }
 
     if (hvemHarRett === 'kunSøker1HarRett' && erMorDelAvSøknaden(hvemPlanlegger)) {
-        return finnPerioderForBeggeHarRettEllerKunMorHarRett(
-            erAdoptert,
-            startdatoPeriode1,
-            sluttdatoPeriode1,
-            familiehendelsedato,
+        return leggTilBarnehageplassKalenderPerioder(
+            finnPerioderForBeggeHarRettEllerKunMorHarRett(
+                erAdoptert,
+                startdatoPeriode1,
+                sluttdatoPeriode1,
+                familiehendelsedato,
+            ),
+            barnet,
         );
     }
 

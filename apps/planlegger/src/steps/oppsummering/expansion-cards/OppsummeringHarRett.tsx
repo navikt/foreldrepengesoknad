@@ -187,24 +187,45 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                             }}
                                         />
                                     </BodyShort>
-                                    <BodyShort>
-                                        <FormattedMessage
-                                            id="OppsummeringSteg.Periode"
-                                            values={{
-                                                fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
-                                                    day: '2-digit',
-                                                    month: 'short',
-                                                    year: 'numeric',
-                                                }),
-                                                tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
-                                                    day: '2-digit',
-                                                    month: 'short',
-                                                    year: 'numeric',
-                                                }),
-                                                b: (msg: any) => <b>{msg}</b>,
-                                            }}
-                                        />
-                                    </BodyShort>
+                                    {hvemHarRett === 'kunSøker1HarRett' ? (
+                                        <BodyShort>
+                                            <FormattedMessage
+                                                id="OppsummeringSteg.Periode"
+                                                values={{
+                                                    fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
+                                                        day: '2-digit',
+                                                        month: 'short',
+                                                        year: 'numeric',
+                                                    }),
+                                                    tom: intl.formatDate(uttaksdata.sluttdatoPeriode2, {
+                                                        day: '2-digit',
+                                                        month: 'short',
+                                                        year: 'numeric',
+                                                    }),
+                                                    b: (msg: any) => <b>{msg}</b>,
+                                                }}
+                                            />
+                                        </BodyShort>
+                                    ) : (
+                                        <BodyShort>
+                                            <FormattedMessage
+                                                id="OppsummeringSteg.Periode"
+                                                values={{
+                                                    fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
+                                                        day: '2-digit',
+                                                        month: 'short',
+                                                        year: 'numeric',
+                                                    }),
+                                                    tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
+                                                        day: '2-digit',
+                                                        month: 'short',
+                                                        year: 'numeric',
+                                                    }),
+                                                    b: (msg: any) => <b>{msg}</b>,
+                                                }}
+                                            />
+                                        </BodyShort>
+                                    )}
                                 </VStack>
                             </BluePanel>
                         )}
@@ -247,7 +268,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                                 b: (msg: any) => <b>{msg}</b>,
                                             }}
                                         />
-                                    </BodyShort>{' '}
+                                    </BodyShort>
                                 </VStack>
                                 <BodyShort>
                                     <FormattedMessage

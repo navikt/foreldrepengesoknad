@@ -36,7 +36,7 @@ const meta = {
                     <LenkePanel
                         tittel="Litt lengre tittel for mobil"
                         to="#"
-                        undertittel="Undertittel"
+                        undertittel="Undertittel som er veldig lang og vil brekke over flere linjer"
                         Ikon={StrollerIcon}
                     />
                     <LenkePanel

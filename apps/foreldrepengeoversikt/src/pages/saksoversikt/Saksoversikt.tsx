@@ -10,6 +10,7 @@ import { useDocumentTitle } from '@navikt/fp-utils';
 
 import { getNavnPåForeldre } from '../../utils/personUtils';
 import { getNavnAnnenForelder } from '../../utils/sakerUtils';
+import { InntektsmeldingLenkePanel } from '../inntektsmelding-page/InntektsmeldingLenkePanel';
 import {
     erSakOppdatertOptions,
     hentDokumenterOptions,
@@ -30,7 +31,7 @@ import { useSetSelectedRoute } from './../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from './../../hooks/useSelectedSak';
 import { PageRouteLayout } from './../../routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from './../../routes/routes';
-import DinPlan from './../../sections/din-plan/DinPlan';
+import { DinPlan } from './../../sections/din-plan/DinPlan';
 import Oppgaver from './../../sections/oppgaver/Oppgaver';
 import Tidslinje from './../../sections/tidslinje/Tidslinje';
 import { RedirectSource } from './../../types/RedirectSource';
@@ -155,6 +156,7 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
                     <LenkePanel tittel="Dokumenter" to={OversiktRoutes.DOKUMENTER} Ikon={FolderFileIcon} />
                     <LenkePanel tittel="Ettersend dokumenter" to={OversiktRoutes.ETTERSEND} Ikon={FilesIcon} />
                     <LenkePanel tittel="Endre planen din" to="https://nav.no/foreldrepenger/soknad" Ikon={PencilIcon} />
+                    <InntektsmeldingLenkePanel />
                 </HGrid>
 
                 {gjeldendeSak.ytelse === Ytelse.FORELDREPENGER && (

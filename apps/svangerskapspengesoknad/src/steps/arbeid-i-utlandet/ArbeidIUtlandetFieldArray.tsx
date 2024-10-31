@@ -22,7 +22,7 @@ import {
     isValidDate,
 } from '@navikt/fp-validation';
 
-import './arbeidIUtlandet.css';
+import './arbeidIUtlandetSteg.css';
 
 export const NEW_ARBEID_I_UTLANDET = {
     type: ArbeidIUtlandetType.JOBB_I_UTLANDET,
@@ -33,7 +33,7 @@ export const NEW_ARBEID_I_UTLANDET = {
     land: '',
 };
 
-const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
+export const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
     const bem = bemUtils('arbeidIUtlandet');
     const intl = useIntl();
 
@@ -176,5 +176,3 @@ const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
         </>
     );
 };
-
-export default ArbeidIUtlandetFieldArray;

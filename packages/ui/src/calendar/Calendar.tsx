@@ -44,6 +44,10 @@ const findDayColor = (
         return PeriodeColor.PINK;
     }
 
+    if (period?.color === PeriodeColor.PURPLE) {
+        return PeriodeColor.PURPLE;
+    }
+
     if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
         return PeriodeColor.GRAY;
     }
@@ -125,6 +129,7 @@ interface Props {
 
 const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false, familiehendelsedato }) => {
     const months = findMonths(periods[0].fom, periods[periods.length - 1].tom);
+
     return (
         <>
             {/* {periods.some((period) => period.srText) && (
@@ -137,7 +142,11 @@ const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false, 
             )} */}
             <HGrid
                 gap={{ xs: '2', sm: '4', md: '8' }}
-                className={useSmallerWidth ? styles.gridColumnsSmall : styles.gridColumnsWide}
+                columns={
+                    useSmallerWidth
+                        ? { xs: 'repeat(1, 1fr)', sm: 'repeat(3, 1fr)' }
+                        : { xs: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)' }
+                }
             >
                 {months.map((monthData, index) => (
                     <Month
