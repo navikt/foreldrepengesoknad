@@ -49,7 +49,7 @@ export type ContextDataMap = {
     [ContextDataType.TILRETTELEGGINGER_PERIODER]?: Record<string, PeriodeMedVariasjon[]>;
 };
 
-const defaultInitialState: ContextDataMap = {};
+const defaultInitialState = {} satisfies ContextDataMap;
 
 export type Action = { type: 'update'; key: ContextDataType; data: any } | { type: 'reset' };
 type Dispatch = (action: Action) => void;
