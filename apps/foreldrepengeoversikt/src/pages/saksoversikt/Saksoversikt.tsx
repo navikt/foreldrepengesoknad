@@ -12,7 +12,6 @@ import { links } from '@navikt/fp-constants';
 import { Satser } from '@navikt/fp-types';
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
-import { BehandlingTilstand } from '../../types/BehandlingTilstand';
 import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
 import { TidslinjehendelseType } from '../../types/TidslinjehendelseType';
 import { getNavnPåForeldre } from '../../utils/personUtils';
