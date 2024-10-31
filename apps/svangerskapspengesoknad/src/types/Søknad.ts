@@ -16,5 +16,5 @@ export interface SøknadDTO {
     utenlandsopphold: UtenlandsoppholdPeriode[] | undefined;
     tilretteleggingsbehov: TilretteleggingDTO[];
     vedlegg: AttachmentDTO[];
-    ferie: AvtaltFerieDto[];
+    avtaltFerie: AvtaltFerieDto[];
 }

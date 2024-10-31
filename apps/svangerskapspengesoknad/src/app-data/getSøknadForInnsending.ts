@@ -107,6 +107,6 @@ export const getSøknadForInnsending = (
             frilans,
         ),
         vedlegg: finnVedlegg(tilretteleggingerVedlegg, alleArbeidsforhold),
-        ferie: ferie ? Object.values(ferie).flatMap((f) => f.feriePerioder) : [],
+        avtaltFerie: ferie ? Object.values(ferie).flatMap((f) => f.feriePerioder) : [],
     };
 };

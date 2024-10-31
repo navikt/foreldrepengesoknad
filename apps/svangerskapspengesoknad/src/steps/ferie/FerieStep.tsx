@@ -8,6 +8,7 @@ import { useController, useFieldArray, useForm, useFormContext } from 'react-hoo
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { AvtaltFerieDto } from 'types/AvtaltFerie';
+import { getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import { getNesteTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
 import { BodyShort, DatePicker, HStack, Heading, Radio, ReadMore, VStack, useRangeDatepicker } from '@navikt/ds-react';
@@ -43,7 +44,7 @@ type FerieFormData = {
     antallFeriePerioder: number;
 };
 
-const MAKS_ANTALL_PERIODER = 50;
+const MAKS_ANTALL_PERIODER = 20;
 
 export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) {
     const intl = useIntl();
@@ -52,7 +53,6 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
     const arbeidsgiverId = notEmpty(params.tilretteleggingId); // TODO
     const valgteArbeidsforhold = useContextGetData(ContextDataType.VALGTE_ARBEIDSFORHOLD);
-
     const oppdaterFerie = useContextSaveData(ContextDataType.FERIE);
     const ferie = useContextGetData(ContextDataType.FERIE);
     const eksisterendeSkjemaVerdier = ferie?.[arbeidsgiverId];
@@ -140,9 +140,16 @@ export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
 
 function FeriePerioder() {
     const intl = useIntl();
+    const params = useParams<RouteParams>();
+    const arbeidsgiverId = notEmpty(params.tilretteleggingId); // TODO
+    const tilrettelegginer = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
+    const startDatoSvp = tilrettelegginer[arbeidsgiverId].behovForTilretteleggingFom;
+
     const { watch, setValue } = useFormContext();
     const antallFeriePerioder = watch('antallFeriePerioder');
     const feriePerioder = watch('feriePerioder');
+    const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
+    const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
 
     useEffect(() => {
         /*
@@ -195,7 +202,11 @@ function FeriePerioder() {
                         </Heading>
                         <HStack>
                             <IndentDivider />
-                            <RangeDatePicker name={`feriePerioder.${index}`} />
+                            <RangeDatePicker
+                                name={`feriePerioder.${index}`}
+                                max={dayjs(sisteDagForSvangerskapspenger).toDate()}
+                                min={dayjs(startDatoSvp).toDate()}
+                            />
                         </HStack>
                     </VStack>
                 ))}
@@ -205,14 +216,14 @@ function FeriePerioder() {
 }
 
 // TODO: vurder å lag generell komponent
-function RangeDatePicker({ name }: { name: string }) {
+function RangeDatePicker({ name, min, max }: { name: string; max?: Date; min?: Date }) {
     const {
         field: fromField,
         fieldState: { error: fromError },
     } = useController({
         name: `${name}.fom`,
         rules: {
-            required: 'Må oppgis',
+            required: 'Må være etter første fraværsdag',
         },
     });
 
@@ -222,16 +233,17 @@ function RangeDatePicker({ name }: { name: string }) {
     } = useController({
         name: `${name}.tom`,
         rules: {
-            required: 'Må oppgis',
+            required: 'Må være før siste fraværsdag',
         },
     });
-
     const defaultFom = fromField.value
         ? dayjs(fromField.value, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT)
         : '';
     const defaultTom = toField.value ? dayjs(toField.value, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT) : '';
 
     const { datepickerProps, toInputProps, fromInputProps } = useRangeDatepicker({
+        toDate: max,
+        fromDate: min,
         defaultSelected: {
             from: fromField.value ? dayjs(fromField.value, ISO_DATE_FORMAT, true).toDate() : undefined,
             to: toField.value ? dayjs(toField.value, ISO_DATE_FORMAT, true).toDate() : undefined,
