@@ -133,7 +133,7 @@
 }
 
 .grayDay {
-    background-color: var(--a-gray-200) ;
+    background-color: var(--a-gray-200);
     print-color-adjust: exact;
 }
 

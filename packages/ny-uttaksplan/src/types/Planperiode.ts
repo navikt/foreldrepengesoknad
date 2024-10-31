@@ -1,4 +1,3 @@
-import { Forelder } from '@navikt/fp-constants';
 import { SaksperiodeNy } from '@navikt/fp-types';
 
 export enum PeriodeHullType {
@@ -10,6 +9,5 @@ export interface Planperiode extends SaksperiodeNy {
     periodeHullÅrsak?: PeriodeHullType;
     skalIkkeHaUttakFørTermin?: boolean;
     id: string;
-    forelder?: Forelder;
     gjelderAnnenPart: boolean;
 }
