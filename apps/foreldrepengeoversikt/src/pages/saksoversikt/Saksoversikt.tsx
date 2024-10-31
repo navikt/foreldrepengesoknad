@@ -1,13 +1,19 @@
-import { FilesIcon, FolderFileIcon, PencilIcon } from '@navikt/aksel-icons';
+import { FilesIcon, FolderFileIcon, PencilIcon, WalletIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
+import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import React from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 
-import { Alert, HGrid, Link, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, HGrid, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
-import { useDocumentTitle } from '@navikt/fp-utils';
+import { links } from '@navikt/fp-constants';
+import { Satser } from '@navikt/fp-types';
+import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
+import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
+import { TidslinjehendelseType } from '../../types/TidslinjehendelseType';
 import { getNavnPåForeldre } from '../../utils/personUtils';
 import { getNavnAnnenForelder } from '../../utils/sakerUtils';
 import { InntektsmeldingLenkePanel } from '../inntektsmelding-page/InntektsmeldingLenkePanel';
@@ -15,6 +21,7 @@ import {
     erSakOppdatertOptions,
     hentDokumenterOptions,
     hentManglendeVedleggOptions,
+    hentSatserOptions,
     hentTidslinjehendelserOptions,
 } from './../../api/api';
 import BekreftelseSendtSøknad from './../../components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
@@ -39,10 +46,33 @@ import { SøkerinfoDTO } from './../../types/SøkerinfoDTO';
 import { Ytelse } from './../../types/Ytelse';
 import { getRelevantNyTidslinjehendelse } from './../../utils/tidslinjeUtils';
 
+dayjs.extend(isSameOrBefore);
+
 interface Props {
     søkerinfo: SøkerinfoDTO;
     isFirstRender: React.MutableRefObject<boolean>;
 }
+
+const finnSøknadstidspunkt = (tidslinjehendelser: Tidslinjehendelse[] | undefined): Date | undefined => {
+    if (!tidslinjehendelser) {
+        return undefined;
+    }
+    const nySøknadHendelse = tidslinjehendelser.find(
+        (th) => th.tidslinjeHendelseType === TidslinjehendelseType.FØRSTEGANGSSØKNAD_NY,
+    );
+    return nySøknadHendelse
+        ? nySøknadHendelse.opprettet
+        : tidslinjehendelser.find((th) => th.tidslinjeHendelseType === TidslinjehendelseType.FØRSTEGANGSSØKNAD)
+              ?.opprettet;
+};
+
+const finnEngangstønadForSøknadstidspunkt = (satser: Satser, søknadstidspunkt: Date | undefined) => {
+    const { engangstønad } = satser;
+    if (!søknadstidspunkt) {
+        return engangstønad[0].verdi;
+    }
+    return engangstønad.filter((es) => dayjs(es.fom).isSameOrBefore(søknadstidspunkt))[0].verdi;
+};
 
 const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRender }) => {
     const gjeldendeSak = useGetSelectedSak();
@@ -78,6 +108,12 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
     const manglendeVedleggQuery = useQuery(hentManglendeVedleggOptions(params.saksnummer!));
     const harIkkeOppdatertSakQuery = useQuery(erSakOppdatertOptions());
     const harIkkeOppdatertSak = harIkkeOppdatertSakQuery.isSuccess && !harIkkeOppdatertSakQuery.data;
+
+    const søknadstidspunkt = finnSøknadstidspunkt(tidslinjeHendelserQuery.data);
+    const ENGANGSTØNAD = useQuery({
+        ...hentSatserOptions(),
+        select: (satser) => finnEngangstønadForSøknadstidspunkt(satser, søknadstidspunkt),
+    }).data;
 
     const annenPartsVedtakQuery = useAnnenPartsVedtak(gjeldendeSak);
 
@@ -182,6 +218,47 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
                             />
                         </ContentSection>
                     </div>
+                )}
+                {gjeldendeSak.ytelse === Ytelse.ENGANGSSTØNAD && (
+                    <VStack gap="2">
+                        <ContentSection
+                            heading={intl.formatMessage({ id: 'saksoversikt.dinPlan.søktOm' })}
+                            showSkeleton={ENGANGSTØNAD === undefined}
+                            skeletonProps={{ height: '90px', variant: 'rounded' }}
+                        >
+                            <HStack gap="8" align="center">
+                                <WalletIcon
+                                    className="p-1 rounded-full text-icon-info bg-green-100"
+                                    width={40}
+                                    height={40}
+                                    aria-hidden
+                                />
+
+                                <VStack gap="2">
+                                    {ENGANGSTØNAD && (
+                                        <Heading size="small">
+                                            <FormattedMessage
+                                                id="saksoversikt.engangsstonad"
+                                                values={{ sum: formatCurrency(ENGANGSTØNAD) }}
+                                            />
+                                        </Heading>
+                                    )}
+                                    {søkerinfo.søker.bankkonto?.kontonummer && (
+                                        <BodyShort>
+                                            <FormattedMessage
+                                                id="saksoversikt.utbetales"
+                                                values={{ kontonr: søkerinfo.søker.bankkonto.kontonummer }}
+                                            />
+                                        </BodyShort>
+                                    )}
+                                </VStack>
+                            </HStack>
+                        </ContentSection>
+                        <LenkePanel
+                            tittel={intl.formatMessage({ id: 'saksoversikt.endre.kontonr' })}
+                            to={links.brukerprofil}
+                        />
+                    </VStack>
                 )}
             </VStack>
         </VStack>

@@ -8,7 +8,7 @@ import { Alert, BodyShort, Detail, HGrid, Heading, List, Loader, VStack } from '
 
 import { formatCurrency, formatCurrencyWithKr, formatDate } from '@navikt/fp-utils';
 
-import { hentGrunnbeløpOptions, hentInntektsmelding, hentSakerOptions } from '../../api/api';
+import { hentInntektsmelding, hentSakerOptions, hentSatserOptions } from '../../api/api';
 import { InntektsmeldingDto, Naturalytelsetype } from '../../api/zodSchemas';
 import { InntektsmeldingHeader } from '../../components/header/Header';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
@@ -35,7 +35,8 @@ export const InntektsmeldingPage = () => {
     useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.INNTEKTSMELDING);
     // Siden vi er opptatt av om du tjener over 6G så settes G til uendelig om den loader eller ikke er tilgjengelig.
-    const GRUNNBELØP = useQuery(hentGrunnbeløpOptions()).data ?? Infinity;
+    const GRUNNBELØP =
+        useQuery({ ...hentSatserOptions(), select: (satser) => satser.grunnbeløp[0].verdi }).data ?? Infinity;
     const ytelseTekst = useGetYtelse() === Ytelse.SVANGERSKAPSPENGER ? 'svangerskapspengene' : 'foreldrepengene';
 
     const params = useParams();
