@@ -10,7 +10,6 @@ import { SaksperiodeNy } from '@navikt/fp-types';
 
 import Day, { DayType } from './Day';
 import Month from './Month';
-import styles from './calendar.module.css';
 
 dayjs.extend(isoWeek);
 dayjs.extend(isBetween);
@@ -42,10 +41,6 @@ const findDayColor = (
 
     if (date.isSame(familiehendelsedato, 'day')) {
         return PeriodeColor.PINK;
-    }
-
-    if (period?.color === PeriodeColor.PURPLE) {
-        return PeriodeColor.PURPLE;
     }
 
     if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {

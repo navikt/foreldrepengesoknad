@@ -2,7 +2,7 @@ import { CalendarIcon } from '@navikt/aksel-icons';
 import CalendarLabels from 'components/labels/CalendarLabels';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
+import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
@@ -13,15 +13,14 @@ import {
     getFornavnPåSøker2,
     getNavnGenitivEierform,
 } from 'utils/HvemPlanleggerUtils';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
+import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import {
     getAntallUkerOgDager,
     getAntallUkerOgDagerAktivitetsfriKvote,
     getAntallUkerOgDagerFellesperiode,
     getUkerOgDager,
 } from 'utils/stønadskontoerUtils';
-import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
+import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata, lagForslagTilPlan } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
@@ -29,6 +28,9 @@ import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { BluePanel, Calendar, IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
+import { sorterPerioder } from '@navikt/fp-uttaksplan-ny';
+
+import { erBarnetAdoptert } from '../../../utils/barnetUtils';
 
 const onToggleExpansionCard = (open: boolean) => {
     if (open) {
@@ -69,20 +71,29 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
         fordeling?.antallDagerSøker1,
     );
 
+    const { familiehendelsedato } = uttaksdata;
+
     const antallDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto).totaltAntallDager;
     const antallUkerOgDagerFellesperiodeSøker1 = fordeling ? getUkerOgDager(fordeling.antallDagerSøker1) : undefined;
     const antallUkerOgDagerFellesperiodeSøker2 = fordeling
         ? getUkerOgDager(antallDagerFellesperiode - fordeling.antallDagerSøker1)
         : undefined;
     const antallUkerOgDagerAktivitetsfriKvote = getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskonto);
+    const bareFarMedmorHarRett =
+        harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
 
-    const uttaksperioder = lagKalenderPerioder(
-        valgtStønadskonto,
-        barnet,
-        hvemPlanlegger,
-        arbeidssituasjon,
-        fordeling?.antallDagerSøker1,
-    );
+    const planforslag = lagForslagTilPlan({
+        erDeltUttak: fordeling !== undefined,
+        famDato: familiehendelsedato,
+        tilgjengeligeStønadskontoer: valgtStønadskonto.kontoer,
+        fellesperiodeDagerMor: fordeling?.antallDagerSøker1,
+        bareFarMedmorHarRett,
+        erAdopsjon: erBarnetAdoptert(barnet),
+        erFarEllerMedmor: true,
+        erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
+    });
+
+    const kombinertPlanforslag = [...planforslag.søker1, ...planforslag.søker2].sort(sorterPerioder);
 
     const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata);
 
@@ -91,7 +102,6 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
     const fornavnSøker1Genitiv = getNavnGenitivEierform(fornavnSøker1, intl.locale);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
     const fornavnSøker2Genitiv = fornavnSøker2 ? getNavnGenitivEierform(fornavnSøker2, intl.locale) : undefined;
-    const { familiehendelsedato } = uttaksdata;
 
     return (
         <VStack gap="10">
@@ -296,7 +306,11 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             barnet={barnet}
                             hvemHarRett={hvemHarRett}
                         />
-                        <Calendar periods={uttaksperioder} familiehendelsedato={familiehendelsedato} useSmallerWidth />
+                        <Calendar
+                            periods={kombinertPlanforslag}
+                            familiehendelsedato={familiehendelsedato}
+                            useSmallerWidth
+                        />
                     </VStack>
                 </ExpansionCard.Content>
             </ExpansionCard>
