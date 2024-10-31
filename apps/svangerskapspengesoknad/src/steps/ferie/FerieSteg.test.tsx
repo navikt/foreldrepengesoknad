@@ -82,7 +82,6 @@ describe('<FerieSteg>', () => {
         await user.type(tildatoInput, dayjs('2024-11-05').format('DD.MM.YYYY'));
         await user.tab();
         await user.click(screen.getByText('Neste steg'));
-        screen.logTestingPlaygroundURL();
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 '896929119': {
@@ -95,6 +94,73 @@ describe('<FerieSteg>', () => {
                             },
                             fom: '2024-10-30',
                             tom: '2024-11-05',
+                        },
+                    ],
+                    skalHaFerie: true,
+                },
+            },
+            key: 'FERIE',
+            type: 'update',
+        });
+    });
+
+    it('Fyll ut flere perioder', async () => {
+        const gåTilNesteSide = vi.fn();
+        render(<Default gåTilNesteSide={gåTilNesteSide} />);
+
+        await user.click(screen.getByText('Ja'));
+
+        const antallPerioderInput = screen.getByText('Hvor mange perioder med ferie skal du ha?');
+        await user.type(antallPerioderInput, '{backspace}3');
+
+        await user.type(screen.getAllByText('Første feriedag')[0], dayjs('2024-10-30').format('DD.MM.YYYY'));
+        await user.tab();
+        await user.type(screen.getAllByText('Siste feriedag')[0], dayjs('2024-10-31').format('DD.MM.YYYY'));
+        await user.tab();
+
+        expect(screen.getByText('1. periode')).toBeInTheDocument();
+        expect(screen.getByText('2. periode')).toBeInTheDocument();
+        expect(screen.getByText('3. periode')).toBeInTheDocument();
+
+        await user.type(screen.getAllByText('Første feriedag')[1], dayjs('2024-11-01').format('DD.MM.YYYY'));
+        await user.tab();
+        await user.type(screen.getAllByText('Siste feriedag')[1], dayjs('2024-11-04').format('DD.MM.YYYY'));
+        await user.tab();
+
+        await user.type(screen.getAllByText('Første feriedag')[2], dayjs('2024-11-06').format('DD.MM.YYYY'));
+        await user.tab();
+        await user.type(screen.getAllByText('Siste feriedag')[2], dayjs('2024-11-08').format('DD.MM.YYYY'));
+        await user.tab();
+
+        await user.click(screen.getByText('Neste steg'));
+        expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
+            data: {
+                '896929119': {
+                    antallFeriePerioder: 3,
+                    feriePerioder: [
+                        {
+                            arbeidsforhold: {
+                                id: '896929119',
+                                type: 'virksomhet',
+                            },
+                            fom: '2024-10-30',
+                            tom: '2024-10-31',
+                        },
+                        {
+                            arbeidsforhold: {
+                                id: '896929119',
+                                type: 'virksomhet',
+                            },
+                            fom: '2024-11-01',
+                            tom: '2024-11-04',
+                        },
+                        {
+                            arbeidsforhold: {
+                                id: '896929119',
+                                type: 'virksomhet',
+                            },
+                            fom: '2024-11-06',
+                            tom: '2024-11-08',
                         },
                     ],
                     skalHaFerie: true,
