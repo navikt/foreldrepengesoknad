@@ -4,7 +4,7 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(() => {
     return {
         plugins: [
             react({
@@ -27,7 +27,7 @@ export default defineConfig(({ mode }) => {
                 },
             },
         },
-        base: mode === 'development' ? '' : '/engangsstonad/soknad',
+        base: process.env['PUBLIC_PATH'],
         build: {
             sourcemap: true,
         },
