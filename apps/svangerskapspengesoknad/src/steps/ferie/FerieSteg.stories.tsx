@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { DelivisTilretteleggingPeriodeType, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 
 import { initAmplitude } from '../../../../../packages/metrics';
-import { FerieStep } from './FerieStep';
+import { FerieSteg } from './FerieSteg';
 
 const arbeidsforhold = [
     {
@@ -22,8 +22,8 @@ const arbeidsforhold = [
 ];
 
 const meta = {
-    title: 'steps/FerieStep',
-    component: FerieStep,
+    title: 'steps/FerieSteg',
+    component: FerieSteg,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();
         return (
@@ -44,7 +44,7 @@ const meta = {
                         },
                     }}
                 >
-                    <FerieStep {...rest} />
+                    <FerieSteg {...rest} />
                 </SvpDataContext>
             </MemoryRouter>
         );
@@ -61,7 +61,7 @@ const promiseAction =
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;
-} & ComponentProps<typeof FerieStep>;
+} & ComponentProps<typeof FerieSteg>;
 
 type Story = StoryObj<typeof meta>;
 

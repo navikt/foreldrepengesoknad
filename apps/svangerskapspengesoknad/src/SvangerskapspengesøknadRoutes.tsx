@@ -18,7 +18,7 @@ import { ArbeidIUtlandetSteg } from './steps/arbeid-i-utlandet/ArbeidIUtlandetSt
 import { ArbeidsforholdOgInntektSteg } from './steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
 import { BarnetSteg } from './steps/barnet/BarnetSteg';
 import { EgenNæringSteg } from './steps/egen-næring/EgenNæringSteg';
-import { FerieStep } from './steps/ferie/FerieStep';
+import { FerieSteg } from './steps/ferie/FerieSteg';
 import { FrilansSteg } from './steps/frilans/FrilansSteg';
 import { OppsummeringSteg } from './steps/oppsummering/OppsummeringSteg';
 import { PerioderSteg } from './steps/perioder/PerioderSteg';
@@ -176,7 +176,7 @@ const renderSøknadRoutes = (
             <Route
                 path={`${SøknadRoute.FERIE}/${TILRETTELEGGING_PARAM}`}
                 element={
-                    <FerieStep
+                    <FerieSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}

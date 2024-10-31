@@ -24,7 +24,7 @@ import {
 import { Arbeidsforhold } from '../../../../../packages/types';
 import { Step } from '../../../../../packages/ui';
 import { hasMaxValue, hasMinValue, isRequired, isValidNumberForm, notEmpty } from '../../../../../packages/validation';
-import './feriestep.css';
+import './feriesteg.css';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -46,7 +46,7 @@ type FerieFormData = {
 
 const MAKS_ANTALL_PERIODER = 20;
 
-export function FerieStep({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) {
+export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) {
     const intl = useIntl();
     const params = useParams<RouteParams>();
     const stepConfig = useStepConfig(arbeidsforhold);
