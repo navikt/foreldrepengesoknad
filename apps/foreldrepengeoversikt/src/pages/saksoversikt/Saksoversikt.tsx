@@ -57,9 +57,9 @@ const finnSøknadstidspunkt = (tidslinjehendelser: Tidslinjehendelse[] | undefin
     if (!tidslinjehendelser) {
         return undefined;
     }
-    const nySøknadHendelse = tidslinjehendelser.find(
-        (th) => th.tidslinjeHendelseType === TidslinjehendelseType.FØRSTEGANGSSØKNAD_NY,
-    );
+    const nySøknadHendelse = tidslinjehendelser
+        .sort((t1, t2) => (dayjs(t1.opprettet).isBefore(t2.opprettet, 'day') ? 1 : -1))
+        .find((th) => th.tidslinjeHendelseType === TidslinjehendelseType.FØRSTEGANGSSØKNAD_NY);
     return nySøknadHendelse
         ? nySøknadHendelse.opprettet
         : tidslinjehendelser.find((th) => th.tidslinjeHendelseType === TidslinjehendelseType.FØRSTEGANGSSØKNAD)
