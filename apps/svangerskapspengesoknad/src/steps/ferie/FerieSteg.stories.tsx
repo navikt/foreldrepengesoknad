@@ -1,18 +1,18 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
-import { SøknadRoute } from 'appData/routes';
+import { SøknadRoute, TILRETTELEGGING_PARAM, addTilretteleggingIdToRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
-import { MemoryRouter } from 'react-router-dom';
-import { DelivisTilretteleggingPeriodeType, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 
 import { initAmplitude } from '../../../../../packages/metrics';
 import { FerieSteg } from './FerieSteg';
 
 const arbeidsforhold = [
     {
-        id: '1669400414-9409-3313-0700-3334116100409',
-        arbeidsgiverId: '975326209',
+        id: '896929119',
+        arbeidsgiverId: '896929119',
         arbeidsgiverIdType: 'orgnr',
         arbeidsgiverNavn: 'Sykehuset i Vestfold',
         fom: '2014-05-22T00:00:00.000Z',
@@ -27,24 +27,37 @@ const meta = {
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
         initAmplitude();
         return (
-            <MemoryRouter initialEntries={[SøknadRoute.FERIE]}>
+            <MemoryRouter initialEntries={[addTilretteleggingIdToRoute(SøknadRoute.FERIE, '896929119')]}>
                 <SvpDataContext
                     onDispatch={gåTilNesteSide}
                     initialState={{
+                        [ContextDataType.OM_BARNET]: {
+                            erBarnetFødt: false,
+                            termindato: '2024-12-01',
+                            fødselsdato: undefined,
+                        },
+                        [ContextDataType.VALGTE_ARBEIDSFORHOLD]: ['896929119'],
+                        [ContextDataType.ARBEIDSFORHOLD_OG_INNTEKT]: {
+                            harJobbetSomFrilans: false,
+                            harJobbetSomSelvstendigNæringsdrivende: false,
+                            harHattArbeidIUtlandet: false,
+                        },
                         [ContextDataType.TILRETTELEGGINGER]: {
-                            '263929546-6215-9868-5127-161910165730101': {
-                                type: Tilretteleggingstype.DELVIS,
-                                enPeriodeMedTilretteleggingStillingsprosent: '50',
-                                behovForTilretteleggingFom: '2024-0101',
+                            '896929119': {
+                                behovForTilretteleggingFom: '2024-10-01',
+                                type: Tilretteleggingstype.INGEN,
+                                enPeriodeMedTilretteleggingFom: '2024-10-01',
                                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
-                                enPeriodeMedTilretteleggingFom: '2024-0101',
-                                delvisTilretteleggingPeriodeType:
-                                    DelivisTilretteleggingPeriodeType.SAMMME_PERIODE_FREM_TIL_TERMIN,
                             },
                         },
                     }}
                 >
-                    <FerieSteg {...rest} />
+                    <Routes>
+                        <Route
+                            element={<FerieSteg {...rest} />}
+                            path={`/${SøknadRoute.FERIE}/${TILRETTELEGGING_PARAM}`}
+                        />
+                    </Routes>
                 </SvpDataContext>
             </MemoryRouter>
         );
