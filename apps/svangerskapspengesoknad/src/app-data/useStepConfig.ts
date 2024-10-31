@@ -217,7 +217,6 @@ const getStepConfig = (
         steps.push(createStep(SøknadRoute.SKJEMA, intl, currentPath));
         steps.push(createStep(SøknadRoute.TILRETTELEGGING, intl, currentPath));
 
-        // TODO: dekker disse det samme som "getTypeArbeidForTilrettelegging"? Når kan det være privat vs virksomhet
         if (
             !arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende &&
             !arbeidsforholdOgInntekt?.harJobbetSomFrilans
