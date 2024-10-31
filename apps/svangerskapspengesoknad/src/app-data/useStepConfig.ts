@@ -88,9 +88,8 @@ const createTilretteleggingSteps = ({
         });
     }
 
-    if (typeArbeidsgiver === 'virksomhet') {
+    if (typeArbeidsgiver === 'virksomhet' || typeArbeidsgiver === 'privat') {
         const feriePath = addTilretteleggingIdToRoute(SøknadRoute.FERIE, tilretteleggingId);
-        // TODO: ikke legge til for frilans og sånt??
         steps.push({
             id: feriePath,
             label: labels[SøknadRoute.FERIE],
