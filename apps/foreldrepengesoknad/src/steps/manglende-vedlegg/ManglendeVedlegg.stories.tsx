@@ -116,7 +116,7 @@ const meta = {
         msw: {
             handlers: [
                 http.post(
-                    'https://fp/rest/storage/foreldrepenger/vedlegg',
+                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger/vedlegg`,
                     () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
                 ),
             ],

@@ -15,14 +15,6 @@ import nbMessages from '../src/intl/messages/nb_NO.json';
 
 dayjs.locale('nb');
 
-const scriptTag = document.createElement('script');
-scriptTag.type = 'text/json';
-scriptTag.id = 'nav:appSettings';
-scriptTag.innerHTML = JSON.stringify({
-    PUBLIC_PATH: 'https://oversikt',
-});
-document.head.appendChild(scriptTag);
-
 const withIntlProvider = getIntlDecorator({
     nb: {
         ...nbMessages,

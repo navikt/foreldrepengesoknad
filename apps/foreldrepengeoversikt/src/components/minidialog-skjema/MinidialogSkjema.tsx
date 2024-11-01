@@ -22,13 +22,12 @@ import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';
 
-import Environment from '../../appData/Environment';
+import { urlPrefiks } from '../../api/api';
 import EttersendingDto from '../../types/EttersendingDTO';
 import { MinidialogInnslag } from '../../types/MinidialogInnslag';
 import { Ytelse } from '../../types/Ytelse';
+import { validateFritekstFelt } from '../../utils/validationUtils';
 import ScrollToTop from '../scroll-to-top/ScrollToTop';
-import { prefiks_public_path } from './../../api/api';
-import { validateFritekstFelt } from './../../utils/validationUtils';
 import HvaLeggerNAVVektPå from './hva-legger-nav-vekt-på/HvaLeggerNAVVektPå';
 import MinidialogVenterPåSvar from './minidialog-venter-på-svar/MinidialogVenterPåSvar';
 import { mapMinidialogInputTilDTO } from './minidialogskjemaUtils';
@@ -80,7 +79,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
         queryKey: ['minidialog'],
         queryFn: async () => {
             setFetchCounter((prev) => prev + 1);
-            return await fetch(`${prefiks_public_path}/rest/minidialog`, { credentials: 'include' }).then((response) =>
+            return await fetch(`${urlPrefiks}/rest/minidialog`, { credentials: 'include' }).then((response) =>
                 response.json(),
             );
         },
@@ -178,7 +177,7 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
                             updateAttachments={updateAttachments}
                             attachmentType={AttachmentType.TILBAKEBETALING}
                             skjemanummer={Skjemanummer.TILBAKEBETALING}
-                            saveAttachment={getSaveAttachmentFetch(Environment.PUBLIC_PATH, mapYtelse(sakstype))}
+                            saveAttachment={getSaveAttachmentFetch(urlPrefiks, mapYtelse(sakstype))}
                         />
                     </>
                 )}

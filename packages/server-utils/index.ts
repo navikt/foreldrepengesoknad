@@ -1,4 +1,4 @@
-export { setupAndServeHtml as setupStaticRoutes } from './src/frontendRoute';
+export { setupAndServeHtml } from './src/frontendRoute';
 export { setupActuators } from './src/actuators';
 export { default as serverConfig } from './src/config';
 export { errorHandling } from './src/errorHandler';
