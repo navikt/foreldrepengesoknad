@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG NODE_IMG=node:20.12-alpine
+ARG NODE_IMG=gcr.io/distroless/nodejs22-debian12
 ARG APP="foreldrepengesoknad"
 ARG SERVER="server"
 
