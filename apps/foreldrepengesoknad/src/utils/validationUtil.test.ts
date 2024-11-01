@@ -93,8 +93,8 @@ describe('getIllegalChars', () => {
         expect(result).toEqual('');
     });
     it('should return invalid chars for invalid string', () => {
-        const result = getIllegalChars('¤Special !@#%^&*()`~');
-        expect(result).toEqual('^`~');
+        const result = getIllegalChars('¤Special !@#%^&*()`~<>');
+        expect(result).toEqual('~<>');
     });
     it('should return \u2f8a (glyphen) as invalid char', () => {
         const result = getIllegalChars('\u2f8aSome text');

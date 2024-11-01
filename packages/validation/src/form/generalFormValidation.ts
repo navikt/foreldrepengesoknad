@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
-export const textRegex = /^[\p{N}\p{L}\p{Z}\p{Cf}\p{P}\p{Sc}\n\r+]*$/u;
-export const textGyldigRegex = /[\p{N}\p{L}\p{Z}\p{Cf}\p{P}\p{Sc}\n\r+]*/gu;
+export const textRegex = /^[\p{N}\p{L}\p{Z}\p{Cf}\p{P}\p{Sc}\p{Sk}\n\r+]*$/u;
+export const textGyldigRegex = /[\p{N}\p{L}\p{Z}\p{Cf}\p{P}\p{Sc}\p{Sk}\n\r+]*/gu;
 
 export const isEmpty = (text?: string | number | boolean | dayjs.Dayjs | null) =>
     text === null || text === undefined || text.toString().trim().length === 0;
