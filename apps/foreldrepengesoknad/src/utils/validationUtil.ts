@@ -3,7 +3,7 @@ import minMax from 'dayjs/plugin/minMax';
 import { IntlShape } from 'react-intl';
 import { SkjemaelementFeil } from 'types/SkjemaelementFeil';
 
-import { textGyldigRegex, textRegex } from '@navikt/fp-validation/src/form/generalFormValidation';
+import { textGyldigRegex, textRegex } from '@navikt/fp-validation';
 
 import { isFødselsnummerFormatValid, isSixteenOrOlder } from './validation/fødselsnummer';
 
