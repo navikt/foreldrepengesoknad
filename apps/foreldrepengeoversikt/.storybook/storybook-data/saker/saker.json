@@ -6,7 +6,6 @@
             "sakAvsluttet": false,
             "kanSøkeOmEndring": true,
             "sakTilhørerMor": true,
-            "sisteSøknadMottattDato": "2023-01-31",
             "gjelderAdopsjon": false,
             "morUføretrygd": false,
             "harAnnenForelderTilsvarendeRettEØS": false,
@@ -88,7 +87,6 @@
             "oppdatertTidspunkt": "2024-02-28T21:19:08.911",
             "saksnummer": "352011080",
             "sakAvsluttet": false,
-            "sisteSøknadMottattDato": "2023-01-31",
             "kanSøkeOmEndring": true,
             "sakTilhørerMor": true,
             "gjelderAdopsjon": false,
@@ -194,7 +192,7 @@
                                 "type": "INGEN",
                                 "resultat": {
                                     "resultatType": "INNVILGET",
-                                    "utbetalingsgrad": 100.00
+                                    "utbetalingsgrad": 100.0
                                 }
                             }
                         ],
@@ -217,7 +215,7 @@
                                 "type": "INGEN",
                                 "resultat": {
                                     "resultatType": "INNVILGET",
-                                    "utbetalingsgrad": 100.00
+                                    "utbetalingsgrad": 100.0
                                 }
                             }
                         ],

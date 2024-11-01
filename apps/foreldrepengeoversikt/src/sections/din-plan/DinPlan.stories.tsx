@@ -67,7 +67,6 @@ export const FarSøker: Story = {
                                 sakAvsluttet: false,
                                 kanSøkeOmEndring: true,
                                 sakTilhørerMor: false,
-                                sisteSøknadMottattDato: '2024-09-31',
                                 gjelderAdopsjon: false,
                                 morUføretrygd: false,
                                 harAnnenForelderTilsvarendeRettEØS: false,
