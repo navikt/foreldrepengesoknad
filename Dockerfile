@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
-ARG NODE_BUILD_IMG=node:20.12-alpine
-ARG NODE_SERVER_IMG=node:20.12-alpine
+ARG NODE_BUILD_IMG=node:22-alpine
+ARG NODE_DEPLOY_IMG=gcr.io/distroless/nodejs22-debian12
 ARG APP="foreldrepengesoknad"
 ARG SERVER="server"
 
@@ -58,17 +58,10 @@ RUN pnpm exec turbo test && mv /usr/src/app/apps/${APP}/dist /public
 #########################################
 # App Distroless
 #########################################
-FROM ${NODE_SERVER_IMG} AS server
+FROM ${NODE_DEPLOY_IMG}
 ARG SERVER
-WORKDIR /usr/src/app
 
 COPY --from=server-build /usr/src/app/${SERVER}/dist ./
-
-#########################################
-# App
-#########################################
-FROM server
-
 COPY --from=client /public ./public
 
 CMD ["node", "index.js"]
