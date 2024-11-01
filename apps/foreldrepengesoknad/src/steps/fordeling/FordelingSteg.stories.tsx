@@ -3,12 +3,13 @@ import { Meta, StoryObj } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import SøknadRoutes from 'appData/routes';
+import dayjs from 'dayjs';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
-import { StønadskontoType } from '@navikt/fp-constants';
+import { ISO_DATE_FORMAT, StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Arbeidsforhold, Søker, SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
@@ -1137,7 +1138,7 @@ export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
         barnet: {
             type: BarnType.UFØDT,
             antallBarn: 4,
-            termindato: '2024-10-21',
+            termindato: dayjs().subtract(2, 'months').format(ISO_DATE_FORMAT),
         },
         annenForelder: {
             fornavn: 'Hanne',
@@ -1670,7 +1671,7 @@ export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
         barnet: {
             type: BarnType.UFØDT,
             antallBarn: 4,
-            termindato: '2024-10-21',
+            termindato: dayjs().subtract(2, 'months').format(ISO_DATE_FORMAT),
         },
         annenForelder: {
             fornavn: 'Hanne',
