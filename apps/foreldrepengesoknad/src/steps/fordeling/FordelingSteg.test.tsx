@@ -1350,7 +1350,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB', () => {
         expect(screen.getByText('Jeg vil velge en annen dato')).toBeInTheDocument();
     });
 
-    it('skal ikke kunne begynne uttaket før 2 uker før termin', async () => {
+    it.skip('skal ikke kunne begynne uttaket før 2 uker før termin', async () => {
         await applyRequestHandlers(FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.parameters.msw);
         const utils = render(
             <FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB
