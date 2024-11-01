@@ -56,19 +56,6 @@ WORKDIR /usr/src/app/apps/${APP}
 RUN pnpm exec turbo test && mv /usr/src/app/apps/${APP}/dist /public
 
 #########################################
-# Server
-#########################################
-FROM ${BUILD_NODE_IMG} AS server
-ARG SERVER
-WORKDIR /usr/src/app
-
-RUN apk fix \
-    && apk add --no-cache --update libc6-compat tini \
-    && rm -rf /var/cache/apk/*
-
-COPY --from=server-build /usr/src/app/${SERVER}/dist ./
-
-#########################################
 # App Distroless
 #########################################
 FROM ${DEPLOY_NODE_IMG}
