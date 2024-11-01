@@ -24,7 +24,7 @@ export const mapMinidialogInputTilDTO = (
             overskrift: 'Svar på tilbakebetalingen',
             tekst:
                 brukerØnskerÅUttaleSeg && tilbakemelding !== undefined && tilbakemelding !== null
-                    ? replaceInvisibleCharsWithSpace(tilbakemelding)
+                    ? (replaceInvisibleCharsWithSpace(tilbakemelding) ?? '')
                     : 'Jeg ønsker ikke å uttale meg. Saken vil bli behandlet med de opplysningene som NAV har tilgjengelig.',
         },
     };
