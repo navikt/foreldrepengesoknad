@@ -1,6 +1,6 @@
 import { IntlShape } from 'react-intl';
 
-import { textGyldigRegex, textRegex } from '@navikt/fp-validation/src/form/generalFormValidation';
+import { textGyldigRegex, textRegex } from '@navikt/fp-validation';
 
 export type SkjemaelementFeil = string | undefined;
 
