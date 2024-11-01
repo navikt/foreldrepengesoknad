@@ -60,6 +60,7 @@ RUN pnpm exec turbo test && mv /usr/src/app/apps/${APP}/dist /public
 #########################################
 FROM ${NODE_DEPLOY_IMG}
 ARG SERVER
+USER nonroot
 
 COPY --from=server-build /usr/src/app/${SERVER}/dist ./
 COPY --from=client /public ./public
