@@ -31,7 +31,7 @@ import { useSetSelectedRoute } from './../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from './../../hooks/useSelectedSak';
 import { PageRouteLayout } from './../../routes/ForeldrepengeoversiktRoutes';
 import OversiktRoutes from './../../routes/routes';
-import DinPlan from './../../sections/din-plan/DinPlan';
+import { DinPlan } from './../../sections/din-plan/DinPlan';
 import Oppgaver from './../../sections/oppgaver/Oppgaver';
 import Tidslinje from './../../sections/tidslinje/Tidslinje';
 import { RedirectSource } from './../../types/RedirectSource';

@@ -81,7 +81,7 @@
         "fast-glob": "^3.3.2",
         "http-proxy-middleware": "3.0.3",
         "less": "^4.2.0",
-        "msw": "^2.4.11",
+        "msw": "2.5.2",
         "msw-storybook-addon": "^2.0.3",
         "multer": "1.4.5-lts.1",
         "mustache-loader": "^1.4.3",

@@ -1,0 +1,15 @@
+.button {
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .legend {
+        padding-bottom: 0.5rem;
+    }
+}
+
+@media print {
+    .button {
+        display: none;
+    }
+}

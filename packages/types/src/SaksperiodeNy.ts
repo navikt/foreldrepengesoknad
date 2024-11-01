@@ -1,4 +1,4 @@
-import { StønadskontoType } from '@navikt/fp-constants';
+import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 
 import { Gradering } from './Gradering';
 import { MorsAktivitet } from './MorsAktivitet';
@@ -19,4 +19,5 @@ export interface SaksperiodeNy {
     overføringÅrsak?: OverføringÅrsakType;
     samtidigUttak?: number;
     morsAktivitet?: MorsAktivitet;
+    forelder?: Forelder;
 }
