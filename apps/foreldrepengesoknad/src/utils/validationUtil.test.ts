@@ -79,11 +79,11 @@ describe('validationUtil', () => {
     it('skal ikke gi feilmelding når frn er utenlandsk og fnr inneholder ulovlige tegn', () => {
         const søkerFnr = '08088620241';
         const erUtenlandskFnr = true;
-        const andrePartFnr = '887–862024';
+        const andrePartFnr = '887<>862024';
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer', erUtenlandskFnr)(andrePartFnr);
 
-        expect(resultat).toBe('– er ugyldige tegn i feltet "fødselsnummer".');
+        expect(resultat).toBe('<> er ugyldige tegn i feltet "fødselsnummer".');
     });
 });
 
