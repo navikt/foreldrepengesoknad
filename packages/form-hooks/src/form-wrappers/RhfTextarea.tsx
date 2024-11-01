@@ -3,7 +3,8 @@ import { useController, useFormContext } from 'react-hook-form';
 
 import { Textarea } from '@navikt/ds-react';
 
-import { getError, getValidationRules, replaceInvisibleCharsWithSpace } from './formUtils';
+import { getError, getValidationRules } from './formUtils';
+import { replaceInvisibleCharsWithSpace } from '../../../utils';
 
 export interface Props {
     name: string;
