@@ -25,7 +25,7 @@ export type Naturalytelsetype = z.infer<typeof NaturalytelseTypeSchema>;
 export const InntektsmeldingDtoSchema = z.object({
     versjon: z.number(),
     erAktiv: z.boolean(),
-    stillingsprosent: z.number(),
+    stillingsprosent: z.number().optional(),
     inntektPrMnd: z.number(),
     refusjonPrMnd: z.number().optional(),
     arbeidsgiverNavn: z.string(),
