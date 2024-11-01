@@ -105,14 +105,18 @@ const Tidslinje: React.FunctionComponent<Params> = ({
                     if (hendelse.tidslinjeHendelseType === TidslinjehendelseType.INNTEKTSMELDING) {
                         return (
                             <InntektsmeldingDokumentHendelse
-                                key={dokument.journalpostId}
+                                key={`${dokument.journalpostId}-${dokument.dokumentId}`}
                                 dokument={{ ...dokument, tittel: 'Inntektsmelding' }}
                                 visesITidslinjen={true}
                             />
                         );
                     }
                     return (
-                        <DokumentHendelse dokument={dokument} key={dokument.journalpostId} visesITidslinjen={true} />
+                        <DokumentHendelse
+                            dokument={dokument}
+                            key={`${dokument.journalpostId}-${dokument.dokumentId}`}
+                            visesITidslinjen={true}
+                        />
                     );
                 });
                 const visKlokkeslett =
