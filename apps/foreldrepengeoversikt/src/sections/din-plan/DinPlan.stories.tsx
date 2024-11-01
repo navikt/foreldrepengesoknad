@@ -58,7 +58,7 @@ export const FarSøker: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get('https://oversikt/rest/innsyn/v2/saker', () =>
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () =>
                     HttpResponse.json({
                         foreldrepenger: [
                             {
