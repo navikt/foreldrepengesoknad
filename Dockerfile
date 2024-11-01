@@ -64,4 +64,4 @@ ARG SERVER
 COPY --from=server-build /usr/src/app/${SERVER}/dist ./
 COPY --from=client /public ./public
 
-CMD ["node", "index.js"]
+CMD ["index.js"]
