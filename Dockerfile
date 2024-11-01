@@ -58,7 +58,7 @@ RUN pnpm exec turbo test && mv /usr/src/app/apps/${APP}/dist /public
 #########################################
 # App Distroless
 #########################################
-FROM --platform=${BUILDPLATFORM} ${NODE_DEPLOY_IMG}
+FROM ${NODE_DEPLOY_IMG}
 ARG SERVER
 
 COPY --from=server-build /usr/src/app/${SERVER}/dist ./
