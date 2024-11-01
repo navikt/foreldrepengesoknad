@@ -14,8 +14,8 @@ import tidslinjeHendelser from 'storybookData/tidslinjeHendelser/tidslinjeHendel
 import { SaksperiodeNy } from '@navikt/fp-types';
 
 import { BehandlingTilstand } from '../../types/BehandlingTilstand';
+import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
 import OversiktRoutes from './../../routes/routes';
-import { SøkerinfoDTO } from './../../types/SøkerinfoDTO';
 import Saksoversikt from './Saksoversikt';
 
 const queryClient = new QueryClient();
@@ -52,12 +52,18 @@ export const Default: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get('https://oversikt/rest/dokument/alle', () => HttpResponse.json(dokumenter)),
-                http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker)),
-                http.get('https://oversikt/rest/innsyn/tidslinje', () => HttpResponse.json(tidslinjeHendelser)),
-                http.get('https://oversikt/rest/historikk/vedlegg', () => HttpResponse.json(manglendeVedlegg)),
-                http.get('https://oversikt/rest/innsyn/v2/saker/oppdatert', () => HttpResponse.json(true)),
-                http.post('https://oversikt/rest/innsyn/v2/annenPartVedtak', () => HttpResponse.json(annenPartsVedtak)),
+                http.get(`${import.meta.env.BASE_URL}/rest/dokument/alle`, () => HttpResponse.json(dokumenter)),
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
+                    HttpResponse.json(tidslinjeHendelser),
+                ),
+                http.get(`${import.meta.env.BASE_URL}/rest/historikk/vedlegg`, () =>
+                    HttpResponse.json(manglendeVedlegg),
+                ),
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker/oppdatert`, () => HttpResponse.json(true)),
+                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
+                    HttpResponse.json(annenPartsVedtak),
+                ),
             ],
         },
     },
@@ -70,7 +76,7 @@ export const Engangsstønad: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get('https://oversikt/rest/innsyn/v2/saker', () =>
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () =>
                     HttpResponse.json({
                         foreldrepenger: [],
                         engangsstønad: [
@@ -98,7 +104,7 @@ export const Engangsstønad: Story = {
                         svangerskapspenger: [],
                     }),
                 ),
-                http.get('https://oversikt/rest/innsyn/tidslinje', () =>
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
                     HttpResponse.json([
                         {
                             type: 'søknad',
@@ -119,9 +125,9 @@ export const Engangsstønad: Story = {
                         },
                     ]),
                 ),
-                http.get('https://oversikt/rest/historikk/vedlegg', () => HttpResponse.json()),
-                http.get('https://oversikt/rest/innsyn/v2/saker/oppdatert', () => HttpResponse.json(true)),
-                http.get('https://oversikt/rest/satser', () => HttpResponse.json(satser)),
+                http.get(`${import.meta.env.BASE_URL}/rest/historikk/vedlegg`, () => HttpResponse.json()),
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker/oppdatert`, () => HttpResponse.json(true)),
+                http.get(`${import.meta.env.BASE_URL}/rest/satser`, () => HttpResponse.json(satser)),
             ],
         },
     },

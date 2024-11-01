@@ -14,8 +14,8 @@ import { Arbeidsforhold, Søker, SøkersituasjonFp, TilgjengeligeStønadskontoer
 
 import FordelingSteg from './FordelingSteg';
 
-const UTTAKSPLAN_ANNEN_URL = 'https://fp/rest/innsyn/v2/annenPartVedtak';
-const STØNADSKONTO_URL = `https://fp/rest/konto`;
+const UTTAKSPLAN_ANNEN_URL = `${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`;
+const STØNADSKONTO_URL = `${import.meta.env.BASE_URL}/rest/konto`;
 
 const vedtakFar = {
     dekningsgrad: 'HUNDRE' as DekningsgradDTO,

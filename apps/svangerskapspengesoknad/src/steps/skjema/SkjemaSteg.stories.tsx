@@ -99,7 +99,7 @@ export const SkalIkkeFeileOpplasting: Story = {
         msw: {
             handlers: [
                 http.post(
-                    'https://svp/rest/storage/svangerskapspenger/vedlegg',
+                    `${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger/vedlegg`,
                     () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
                 ),
             ],
@@ -124,7 +124,7 @@ export const SkalFeileOpplasting: Story = {
         msw: {
             handlers: [
                 http.post(
-                    'https://svp/rest/storage/svangerskapspenger/vedlegg',
+                    `${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger/vedlegg`,
                     () => new HttpResponse(null, { status: 400 }),
                 ),
             ],

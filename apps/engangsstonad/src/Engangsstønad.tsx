@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import Environment from 'appData/Environment';
 import { EsDataContext } from 'appData/EsDataContext';
 import { EsDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 import ky from 'ky';
@@ -23,12 +22,12 @@ export const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChang
 
     const personinfo = useQuery({
         queryKey: ['PERSONINFO'],
-        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/personinfo`).json<Søker>(),
+        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/personinfo`).json<Søker>(),
     });
 
     const mellomlagretInfo = useQuery({
         queryKey: ['MELLOMLAGRET_INFO'],
-        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/storage/engangsstonad`).json<EsDataMapAndMetaData>(),
+        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`).json<EsDataMapAndMetaData>(),
     });
 
     if (personinfo.error || mellomlagretInfo.error) {

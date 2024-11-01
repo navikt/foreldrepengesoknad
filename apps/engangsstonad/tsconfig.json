@@ -8,7 +8,7 @@
             "types/*": ["types/*"],
             "appData/*": ["app-data/*"]
         },
-        "types": ["@testing-library/jest-dom", "vitest/globals"]
+        "types": ["@testing-library/jest-dom", "vitest/globals", "vite/client"]
     },
     "exclude": ["node_modules", "build", "scripts", "config", "src/build", "src/config", "dist"]
 }

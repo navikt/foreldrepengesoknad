@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import Environment from 'appData/Environment';
 import dayjs from 'dayjs';
 import ky from 'ky';
 import { FunctionComponent } from 'react';
@@ -34,14 +33,14 @@ interface Props {
 export const HvorMyeVeiviser: FunctionComponent<Props> = ({ locale, changeLocale }) => {
     const satserData = useQuery({
         queryKey: ['SATSER'],
-        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/satser`).json<Satser>(),
+        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/satser`).json<Satser>(),
     });
 
     const stønadskontoerData = useQuery({
         queryKey: ['KONTOER'],
         queryFn: () =>
             ky
-                .post(`${Environment.PUBLIC_PATH}/rest/konto`, {
+                .post(`${import.meta.env.BASE_URL}/rest/konto`, {
                     json: STØNADSKONTO_PARAMS,
                 })
                 .json<TilgjengeligeStønadskontoer>(),

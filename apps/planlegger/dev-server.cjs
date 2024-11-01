@@ -45,13 +45,6 @@ const startServer = async () => {
 
     const htmlWithDecoratorInjected = await injectDecorator(indexHtmlPath);
 
-    const renderedHtml = htmlWithDecoratorInjected.replaceAll(
-        '{{{APP_SETTINGS}}}',
-        JSON.stringify({
-            PUBLIC_PATH: `${process.env.PUBLIC_PATH}`,
-        }),
-    );
-
     server.use(
         '/rest',
         createProxyMiddleware({
@@ -65,10 +58,14 @@ const startServer = async () => {
     );
 
     const fs = require('fs');
-    fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), renderedHtml);
+    fs.writeFileSync(path.resolve(__dirname, 'index-decorated.html'), htmlWithDecoratorInjected);
 
     const vite = await require('vite').createServer({
         root: __dirname,
+        base: "./",
+        define: {
+            'import.meta.env.BASE_URL': '""',
+        },
         server: {
             middlewareMode: true,
             port: 8080,

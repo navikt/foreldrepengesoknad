@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import Environment from 'appData/Environment';
 import { ContextDataType, PlanleggerDataContext, useContextGetData } from 'appData/PlanleggerDataContext';
 import ky from 'ky';
 import { useLocation } from 'react-router-dom';
@@ -60,7 +59,7 @@ const getStønadskontoer = async (
         morHarUføretrygd: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
     };
 
-    return ky.post(`${Environment.PUBLIC_PATH}/rest/konto`, { json: params }).json<TilgjengeligeStønadskontoer>();
+    return ky.post(`${import.meta.env.BASE_URL}/rest/konto`, { json: params }).json<TilgjengeligeStønadskontoer>();
 };
 
 interface Props {
@@ -77,7 +76,7 @@ export const PlanleggerDataFetcher = ({ locale, changeLocale }: Props) => {
 
     const satserData = useQuery({
         queryKey: ['SATSER'],
-        queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/satser`).json<Satser>(),
+        queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/satser`).json<Satser>(),
     });
 
     const stønadskontoerData = useQuery({
