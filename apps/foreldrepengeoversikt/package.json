@@ -36,6 +36,7 @@
         "@navikt/fp-uttaksplan-kalender-ny": "workspace:*",
         "@navikt/fp-uttaksplan-ny": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
+        "@navikt/fp-form-hooks": "workspace:*",
         "@navikt/nav-dekoratoren-moduler": "2.1.6",
         "@sentry/browser": "^7.109.0",
         "@tanstack/react-query": "5.59.16",
