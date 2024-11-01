@@ -1,0 +1,7 @@
+import{j as e}from"./jsx-runtime-Cw0GR0a5.js";import{a as m}from"./chunk-D5ZWXAHU-CGElDDNX.js";import{F as d,C as l}from"./FpDataContext-BUlrLNeW.js";import{M as c,S as u}from"./useFpNavigator-Crua35rz.js";import{i as S}from"./Uttaksplan-D-ZaTweq.js";import{A as o}from"./AndreInntektskilderSteg-DUDVYpMj.js";import"./index-CTjT7uj6.js";import"./v4-CQkTLCs1.js";import"./UttaksdagenString-CX13rlbn.js";import"./Label-Da2udS5t.js";import"./iframe-VGh7kwQJ.js";import"../sb-preview/runtime.js";import"./VStack-DPZ5Pzm1.js";import"./index-BbmHap-z.js";import"./index-BRV0Se7Z.js";import"./_baseAssignValue-BYq83q8P.js";import"./ErrorSummaryHookForm-BJTvDwry.js";import"./Plus-CGH0ZkWQ.js";const i=()=>(...t)=>(m("button-click")(...t),Promise.resolve()),F={title:"steps/AndreInntektskilderSteg",component:o,render:({gåTilNesteSide:t=m("button-click"),...p})=>(S(),e.jsx(c,{initialEntries:[u.ANDRE_INNTEKTER],children:e.jsx(d,{onDispatch:t,initialState:{[l.ARBEIDSFORHOLD_OG_INNTEKT]:{harJobbetSomFrilans:!1,harJobbetSomSelvstendigNæringsdrivende:!1,harHattAndreInntektskilder:!0}},children:e.jsx(o,{...p})})}))},r={args:{mellomlagreSøknadOgNaviger:i(),avbrytSøknad:i(),arbeidsforhold:[]}};var a,n,s;r.parameters={...r.parameters,docs:{...(a=r.parameters)==null?void 0:a.docs,source:{originalSource:`{
+  args: {
+    mellomlagreSøknadOgNaviger: promiseAction(),
+    avbrytSøknad: promiseAction(),
+    arbeidsforhold: []
+  }
+}`,...(s=(n=r.parameters)==null?void 0:n.docs)==null?void 0:s.source}}};const C=["Default"];export{r as Default,C as __namedExportsOrder,F as default};
