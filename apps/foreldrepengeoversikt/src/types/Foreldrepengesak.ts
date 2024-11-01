@@ -10,7 +10,6 @@ import { ÅpenBehandlingFP } from './ÅpenBehandling';
 export interface ForeldrepengesakDTO {
     saksnummer: string;
     sakAvsluttet: boolean;
-    sisteSøknadMottattDato: string;
     kanSøkeOmEndring: boolean;
     sakTilhørerMor: boolean;
     gjelderAdopsjon: boolean;

@@ -68,11 +68,10 @@ export const hentInntektsmelding = (saksnummer: string) =>
         },
     });
 
-export const hentGrunnbeløpOptions = () =>
+export const hentSatserOptions = () =>
     queryOptions({
         queryKey: ['SATSER'],
         queryFn: () => ky.get(`${Environment.PUBLIC_PATH}/rest/satser`).json<Satser>(),
-        select: (satser) => satser.grunnbeløp[0].verdi,
         staleTime: Infinity,
     });
 
