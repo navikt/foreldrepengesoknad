@@ -1320,7 +1320,7 @@ describe('Fordeling - FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB', () => {
     const gåTilNesteSide = vi.fn();
     const mellomlagreSøknadOgNaviger = vi.fn();
 
-    it.skip('skal vise riktig informasjon til far med delt uttak som søker på trillinger født før 2 aug. 2022', async () => {
+    it('skal vise riktig informasjon til far med delt uttak som søker på trillinger født før 2 aug. 2022', async () => {
         await applyRequestHandlers(FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB.parameters.msw);
         render(
             <FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB
@@ -1609,7 +1609,7 @@ describe('Fordeling - BareFarHarRettOgMorErUførTermin4Barn', () => {
     const gåTilNesteSide = vi.fn();
     const mellomlagreSøknadOgNaviger = vi.fn();
 
-    it.skip('skal vise riktig informasjon til far søker på termin, kun far har rett, mor er ufør, fire barn', async () => {
+    it('skal vise riktig informasjon til far søker på termin, kun far har rett, mor er ufør, fire barn', async () => {
         await applyRequestHandlers(BareFarHarRettOgMorErUførTermin4Barn.parameters.msw);
         render(
             <BareFarHarRettOgMorErUførTermin4Barn

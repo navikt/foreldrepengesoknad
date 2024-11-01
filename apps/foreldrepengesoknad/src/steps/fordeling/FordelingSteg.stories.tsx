@@ -1137,7 +1137,7 @@ export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
         barnet: {
             type: BarnType.UFØDT,
             antallBarn: 4,
-            termindato: '2024-07-21',
+            termindato: '2024-10-21',
         },
         annenForelder: {
             fornavn: 'Hanne',
@@ -1670,7 +1670,7 @@ export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
         barnet: {
             type: BarnType.UFØDT,
             antallBarn: 4,
-            termindato: '2024-07-21',
+            termindato: '2024-10-21',
         },
         annenForelder: {
             fornavn: 'Hanne',
