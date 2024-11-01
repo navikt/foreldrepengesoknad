@@ -1,5 +1,5 @@
 import { Skjemanummer } from '@navikt/fp-constants';
-import { replaceInvisibleCharsWithSpace } from '@navikt/fp-form-hooks/src/form-wrappers/formUtils';
+import { replaceInvisibleCharsWithSpace } from '@navikt/fp-form-hooks';
 import { Attachment } from '@navikt/fp-types';
 
 import EttersendingDto from './../../types/EttersendingDTO';

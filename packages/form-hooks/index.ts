@@ -12,3 +12,4 @@ export { default as RhfConfirmationPanel } from './src/form-wrappers/RhfConfirma
 export { default as StepButtonsHookForm } from './src/StepButtonsHookForm';
 export { default as ErrorMessageHookForm } from './src/error/ErrorMessageHookForm';
 export { default as ErrorSummaryHookForm } from './src/error/ErrorSummaryHookForm';
+export { replaceInvisibleCharsWithSpace } from './src/form-wrappers/formUtils';

@@ -8,8 +8,12 @@ import { getRegistrerteBarnOmDeFinnes } from 'utils/barnUtils';
 import { VStack } from '@navikt/ds-react';
 
 import { Barn, isAnnenForelderOppgitt } from '@navikt/fp-common';
-import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
-import { replaceInvisibleCharsWithSpace } from '@navikt/fp-form-hooks/src/form-wrappers/formUtils';
+import {
+    ErrorSummaryHookForm,
+    RhfForm,
+    StepButtonsHookForm,
+    replaceInvisibleCharsWithSpace,
+} from '@navikt/fp-form-hooks';
 import { Søker, Søkerinfo } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
