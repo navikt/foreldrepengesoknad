@@ -76,7 +76,7 @@ export const Engangsstønad: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get('https://oversikt/rest/innsyn/v2/saker', () =>
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () =>
                     HttpResponse.json({
                         foreldrepenger: [],
                         engangsstønad: [
@@ -104,7 +104,7 @@ export const Engangsstønad: Story = {
                         svangerskapspenger: [],
                     }),
                 ),
-                http.get('https://oversikt/rest/innsyn/tidslinje', () =>
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
                     HttpResponse.json([
                         {
                             type: 'søknad',
@@ -125,9 +125,9 @@ export const Engangsstønad: Story = {
                         },
                     ]),
                 ),
-                http.get('https://oversikt/rest/historikk/vedlegg', () => HttpResponse.json()),
-                http.get('https://oversikt/rest/innsyn/v2/saker/oppdatert', () => HttpResponse.json(true)),
-                http.get('https://oversikt/rest/satser', () => HttpResponse.json(satser)),
+                http.get(`${import.meta.env.BASE_URL}/rest/historikk/vedlegg`, () => HttpResponse.json()),
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker/oppdatert`, () => HttpResponse.json(true)),
+                http.get(`${import.meta.env.BASE_URL}/rest/satser`, () => HttpResponse.json(satser)),
             ],
         },
     },
