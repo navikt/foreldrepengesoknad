@@ -1,5 +1,4 @@
 # syntax=docker/dockerfile:1
-
 ARG NODE_IMG=node:22-alpine
 ARG APP="foreldrepengesoknad"
 ARG SERVER="server"
