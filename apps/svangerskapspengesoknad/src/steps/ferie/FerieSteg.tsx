@@ -4,20 +4,35 @@ import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
-import { useController, useFieldArray, useForm, useFormContext } from 'react-hook-form';
+import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { AvtaltFerieDto } from 'types/AvtaltFerie';
 import { getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import { getNesteTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
-import { BodyShort, DatePicker, HStack, Heading, Radio, ReadMore, VStack, useRangeDatepicker } from '@navikt/ds-react';
+import { BodyShort, HStack, Heading, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { DDMMYYYY_DATE_FORMAT, ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup, RhfTextField, StepButtonsHookForm } from '@navikt/fp-form-hooks';
+import {
+    ErrorSummaryHookForm,
+    RhfDateRangepicker,
+    RhfForm,
+    RhfRadioGroup,
+    RhfTextField,
+    StepButtonsHookForm,
+} from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
-import { hasMaxValue, hasMinValue, isRequired, isValidNumberForm, notEmpty } from '@navikt/fp-validation';
+import {
+    hasMaxValue,
+    hasMinValue,
+    isAfterOrSame,
+    isBeforeOrSame,
+    isRequired,
+    isValidDate,
+    isValidNumberForm,
+    notEmpty,
+} from '@navikt/fp-validation';
 
 import './feriesteg.css';
 
@@ -145,7 +160,6 @@ function FeriePerioder() {
     const feriePerioder = watch('feriePerioder');
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
-    console.log(sisteDagForSvangerskapspenger);
 
     useEffect(() => {
         /*
@@ -165,6 +179,8 @@ function FeriePerioder() {
     const { fields } = useFieldArray({
         name: 'feriePerioder',
     });
+
+    console.log(watch());
 
     return (
         <VStack gap="4">
@@ -198,82 +214,73 @@ function FeriePerioder() {
                         </Heading>
                         <HStack>
                             <IndentDivider />
-                            <RangeDatePicker
-                                name={`feriePerioder.${index}`}
-                                max={dayjs(sisteDagForSvangerskapspenger).toDate()}
-                                min={dayjs(startDatoSvp).toDate()}
+                            <RhfDateRangepicker
+                                labelFrom={<FormattedMessage id="ferie.periode.førsteDag" />}
+                                labelTo={<FormattedMessage id="ferie.periode.sisteDag" />}
+                                nameFrom={`feriePerioder.${index}.fom`}
+                                nameTo={`feriePerioder.${index}.tom`}
+                                maxDate={dayjs(sisteDagForSvangerskapspenger)}
+                                minDate={dayjs(startDatoSvp)}
+                                validateFrom={[
+                                    isRequired(
+                                        intl.formatMessage({
+                                            id: 'ferie.antallPerioder.validering.dato.obligatorisk',
+                                        }),
+                                    ),
+                                    isValidDate(
+                                        intl.formatMessage({
+                                            id: 'ferie.antallPerioder.validering.dato.gyldig',
+                                        }),
+                                    ),
+                                    isBeforeOrSame(
+                                        intl.formatMessage({
+                                            id: 'ferie.antallPerioder.validering.dato.førTilDato',
+                                        }),
+                                        watch(`feriePerioder.${index}.tom`),
+                                    ),
+                                    isBeforeOrSame(
+                                        intl.formatMessage({
+                                            id: 'ferie.antallPerioder.validering.dato.førSisteFraværsDag',
+                                        }),
+                                        sisteDagForSvangerskapspenger,
+                                    ),
+                                    isAfterOrSame(
+                                        intl.formatMessage({
+                                            id: 'ferie.antallPerioder.validering.dato.etterFørsteFraværsDag',
+                                        }),
+                                        startDatoSvp,
+                                    ),
+                                ]}
+                                validateTo={[
+                                    isRequired(
+                                        intl.formatMessage({
+                                            id: 'ferie.antallPerioder.validering.dato.obligatorisk',
+                                        }),
+                                    ),
+                                    isValidDate(
+                                        intl.formatMessage({
+                                            id: 'ferie.antallPerioder.validering.dato.gyldig',
+                                        }),
+                                    ),
+                                    isBeforeOrSame(
+                                        intl.formatMessage({
+                                            id: 'ferie.antallPerioder.validering.dato.førSisteFraværsDag',
+                                        }),
+                                        sisteDagForSvangerskapspenger,
+                                    ),
+                                    isAfterOrSame(
+                                        intl.formatMessage({
+                                            id: 'ferie.antallPerioder.validering.dato.etterFørsteFraværsDag',
+                                        }),
+                                        startDatoSvp,
+                                    ),
+                                ]}
                             />
                         </HStack>
                     </VStack>
                 ))}
             </VStack>
         </VStack>
-    );
-}
-
-// TODO: vurder å lag generell komponent
-function RangeDatePicker({ name, min, max }: { name: string; max?: Date; min?: Date }) {
-    const {
-        field: fromField,
-        fieldState: { error: fromError },
-    } = useController({
-        name: `${name}.fom`,
-        rules: {
-            required: 'Må være etter første fraværsdag',
-        },
-    });
-
-    const {
-        field: toField,
-        fieldState: { error: toError },
-    } = useController({
-        name: `${name}.tom`,
-        rules: {
-            required: 'Må være før siste fraværsdag',
-        },
-    });
-    const defaultFom = fromField.value
-        ? dayjs(fromField.value, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT)
-        : '';
-    const defaultTom = toField.value ? dayjs(toField.value, ISO_DATE_FORMAT, true).format(DDMMYYYY_DATE_FORMAT) : '';
-
-    const { datepickerProps, toInputProps, fromInputProps } = useRangeDatepicker({
-        toDate: max,
-        fromDate: min,
-        defaultSelected: {
-            from: fromField.value ? dayjs(fromField.value, ISO_DATE_FORMAT, true).toDate() : undefined,
-            to: toField.value ? dayjs(toField.value, ISO_DATE_FORMAT, true).toDate() : undefined,
-        },
-        onRangeChange: (dateRange) => {
-            if (dateRange) {
-                const fom = dateRange.from ? dayjs(dateRange.from).format(ISO_DATE_FORMAT) : undefined;
-                const tom = dateRange.to ? dayjs(dateRange.to).format(ISO_DATE_FORMAT) : undefined;
-
-                fromField.onChange(fom);
-                toField.onChange(tom);
-            }
-        },
-    });
-
-    return (
-        <DatePicker {...datepickerProps}>
-            <HStack gap="10" align="start">
-                <DatePicker.Input
-                    error={fromError?.message}
-                    value={defaultFom}
-                    ref={fromField.ref}
-                    {...fromInputProps}
-                    label={<FormattedMessage id="ferie.periode.førsteDag" />}
-                />
-                <DatePicker.Input
-                    error={toError?.message}
-                    value={defaultTom}
-                    ref={toField.ref}
-                    {...toInputProps}
-                    label={<FormattedMessage id="ferie.periode.sisteDag" />}
-                />
-            </HStack>
-        </DatePicker>
     );
 }
 
