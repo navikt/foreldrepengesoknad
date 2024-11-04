@@ -279,17 +279,3 @@ function RangeDatePicker({ name, min, max }: { name: string; max?: Date; min?: D
 function IndentDivider() {
     return <div className="indent-divider"></div>;
 }
-//
-// const getNesteTilretteleggingId = (
-//     tilretteleggingBehov: Tilrettelegging[],
-//     currentTilretteleggingId: string | undefined,
-// ): string | undefined => {
-//     if (currentTilretteleggingId === undefined && tilretteleggingBehov.length > 0) {
-//         return tilretteleggingBehov[0].id;
-//     }
-//     const nesteTilretteleggingIndex = tilretteleggingBehov.findIndex((t) => t.id === currentTilretteleggingId) + 1;
-//     if (nesteTilretteleggingIndex === tilretteleggingBehov.length) {
-//         return undefined;
-//     }
-//     return tilretteleggingBehov[nesteTilretteleggingIndex].id;
-// };
