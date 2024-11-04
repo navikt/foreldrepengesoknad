@@ -52,19 +52,25 @@ const FeriePeriodeOppsummering = ({ avtaltFerie }: { avtaltFerie: AvtaltFerieDto
     return (
         <>
             <FormSummary.Answer>
-                <FormSummary.Label>Har du planlagt ferie i perioden du skal ha svangerskapspenger?</FormSummary.Label>
+                <FormSummary.Label>
+                    <FormattedMessage id="ferie.harDuPlanlagtFerie.label" />
+                </FormSummary.Label>
                 <JaNeiTekst ja={avtaltFerie.length > 0} />
             </FormSummary.Answer>
 
             {avtaltFerie.length > 0 && (
                 <>
                     <FormSummary.Answer>
-                        <FormSummary.Label>Hvor mange perioder med ferie skal du ha?</FormSummary.Label>
+                        <FormSummary.Label>
+                            <FormattedMessage id="ferie.antallPerioder.label" />
+                        </FormSummary.Label>
                         <FormSummary.Value>{avtaltFerie.length}</FormSummary.Value>
                     </FormSummary.Answer>
 
                     <FormSummary.Answer>
-                        <FormSummary.Label>Periode med ferie</FormSummary.Label>
+                        <FormSummary.Label>
+                            <FormattedMessage id="oppsummering.ferie.perioder" />
+                        </FormSummary.Label>
                         <FormSummary.Value>
                             <ul>
                                 {avtaltFerie.map((feriePeriode) => (

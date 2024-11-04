@@ -245,6 +245,7 @@
     "oppsummering.periode.stillingsprosent": "Du skal jobbe {stillingsprosent} % ",
     "oppsummering.periode.ikkeJobbe": "Du skal ikke jobbe",
     "oppsummering.periode.tilbakeIFullJobb": "Du skal tilbake i full stilling",
+    "oppsummering.ferie.perioder": "Perioder med ferie",
     "ikkeKvinne.tittel": "Kun kvinner har rett på svangerskapspenger",
     "ikkeKvinne.tekst": "Du har dessverre ikke rett på svangerskapspenger. Svangerskapspenger er ment for kvinner som er gravide og som må gå ut av arbeidet sitt da arbeidet kan føre til skade hos fosteret.",
     "ikkeKvinne.knappetekst": "Gå til nav.no",
