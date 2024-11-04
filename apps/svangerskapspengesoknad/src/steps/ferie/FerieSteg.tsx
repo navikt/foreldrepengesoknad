@@ -180,8 +180,6 @@ function FeriePerioder() {
         name: 'feriePerioder',
     });
 
-    console.log(watch());
-
     return (
         <VStack gap="4">
             <RhfTextField

@@ -45,25 +45,39 @@ describe('<FerieSteg>', () => {
         expect(screen.getByText('1. periode')).toBeInTheDocument();
 
         await user.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Må være etter første fraværsdag')).toHaveLength(2);
-        expect(screen.getAllByText('Må være før siste fraværsdag')).toHaveLength(2);
+        expect(screen.getAllByText('Du må oppgi en ferieperiode')).toHaveLength(3);
 
-        const fradatoInput = screen.getByText('Første feriedag');
+        const fradatoInput = screen.getByLabelText('Første feriedag');
         await user.type(fradatoInput, dayjs('2010-10-30').format('DD.MM.YYYY'));
         await user.tab();
+        expect(screen.getAllByText('Må være etter første fraværsdag')).toHaveLength(2);
 
-        const tildatoInput = screen.getByText('Siste feriedag');
+        const tildatoInput = screen.getByLabelText('Siste feriedag');
+
         await user.type(tildatoInput, dayjs('2030-10-30').format('DD.MM.YYYY'));
         await user.tab();
-
-        // Datoer var utenfor range. Da skal ikke rangedatepicker ha akseptert disse verdiene
-        await user.click(screen.getByText('Neste steg'));
-        expect(screen.getAllByText('Må være etter første fraværsdag')).toHaveLength(2);
         expect(screen.getAllByText('Må være før siste fraværsdag')).toHaveLength(2);
+
+        await user.clear(fradatoInput);
+        await user.clear(tildatoInput);
+
+        await user.type(fradatoInput, 'asd');
+        await user.tab();
+        await user.type(tildatoInput, 'asd');
+        await user.tab();
+        expect(screen.getAllByText('Du må oppgi en dato')).toHaveLength(3);
+
+        await user.clear(fradatoInput);
+        await user.clear(tildatoInput);
 
         await user.type(fradatoInput, dayjs('2024-10-30').format('DD.MM.YYYY'));
         await user.tab();
-        await user.type(tildatoInput, dayjs('2024-11-05').format('DD.MM.YYYY'));
+        await user.type(tildatoInput, dayjs('2024-10-29').format('DD.MM.YYYY'));
+        await user.tab();
+        await user.click(screen.getByText('Neste steg'));
+        expect(screen.getAllByText('Fra dato må være før til dato')).toHaveLength(2);
+
+        await user.type(tildatoInput, dayjs('2024-10-31').format('DD.MM.YYYY'));
         await user.tab();
         await user.click(screen.getByText('Neste steg'));
     });
