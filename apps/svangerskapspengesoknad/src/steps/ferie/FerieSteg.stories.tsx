@@ -6,7 +6,8 @@ import { ComponentProps } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 
-import { initAmplitude } from '../../../../../packages/metrics';
+import { initAmplitude } from '@navikt/fp-metrics';
+
 import { FerieSteg } from './FerieSteg';
 
 const arbeidsforhold = [
