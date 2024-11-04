@@ -1,6 +1,8 @@
 export { notEmpty, assertUnreachable, containsWhiteSpace } from './src/other/validation';
 export { erGyldigNorskOrgnummer } from './src/other/orgnrValidation';
 export {
+    textRegex,
+    textGyldigRegex,
     isRequired,
     isNotEqualValue,
     hasMinLength,

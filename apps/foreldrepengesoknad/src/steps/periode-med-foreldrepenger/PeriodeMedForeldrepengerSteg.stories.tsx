@@ -14,8 +14,8 @@ import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '
 
 import PeriodeMedForeldrepengerSteg from './PeriodeMedForeldrepengerSteg';
 
-const UTTAKSPLAN_ANNEN_URL = 'https://fp/rest/innsyn/v2/annenPartVedtak';
-const STØNADSKONTO_URL = `https://fp/rest/konto`;
+const UTTAKSPLAN_ANNEN_URL = `${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`;
+const STØNADSKONTO_URL = `${import.meta.env.BASE_URL}/rest/konto`;
 
 const promiseAction =
     () =>

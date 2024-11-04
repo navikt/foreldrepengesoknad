@@ -31,7 +31,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     parameters: {
         msw: {
-            handlers: [http.get('https://oversikt/rest/dokument/alle', () => HttpResponse.json(dokumenter))],
+            handlers: [http.get(`${import.meta.env.BASE_URL}/rest/dokument/alle`, () => HttpResponse.json(dokumenter))],
         },
     },
 };

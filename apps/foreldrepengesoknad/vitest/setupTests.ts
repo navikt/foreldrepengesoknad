@@ -4,8 +4,11 @@ import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { beforeAll, expect } from 'vitest';
 
+import { addBaseUrlToJsdom } from '@navikt/fp-utils-test';
+
 import * as globalStorybookConfig from '../.storybook/preview';
 
+addBaseUrlToJsdom();
 const annotations = setProjectAnnotations(globalStorybookConfig);
 
 // Run Storybook's beforeAll hook

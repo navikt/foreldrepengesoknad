@@ -19,7 +19,6 @@ scriptTag.type = 'text/json';
 scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
     APPRES_CMS_URL: '',
-    PUBLIC_PATH: 'https://pl',
 });
 document.head.appendChild(scriptTag);
 

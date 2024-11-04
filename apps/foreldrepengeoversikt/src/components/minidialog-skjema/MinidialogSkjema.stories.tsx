@@ -36,7 +36,7 @@ export const SkalIkkeFeileOpplasting: Story = {
         msw: {
             handlers: [
                 http.post(
-                    'https://oversikt/rest/storage/foreldrepenger/vedlegg',
+                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger/vedlegg`,
                     () => new HttpResponse(null, { status: 200 }),
                 ),
             ],
@@ -61,7 +61,7 @@ export const SkalFeileOpplasting: Story = {
         msw: {
             handlers: [
                 http.post(
-                    'https://oversikt/rest/storage/foreldrepenger/vedlegg',
+                    `${import.meta.env.BASE_URL}/storage/foreldrepenger/vedlegg`,
                     () => new HttpResponse(null, { status: 400 }),
                 ),
             ],

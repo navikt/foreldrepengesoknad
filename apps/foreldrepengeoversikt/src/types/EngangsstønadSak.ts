@@ -1,13 +1,13 @@
 import { Familiehendelse } from './Familiehendelse';
 import { Ytelse } from './Ytelse';
-import { ÅpenBehandlingFP } from './ÅpenBehandling';
+import { ÅpenBehandlingES } from './ÅpenBehandling';
 
 export interface EngangsstønadSakDTO {
     saksnummer: string;
     sakAvsluttet: boolean;
     gjelderAdopsjon: boolean;
     familiehendelse: Familiehendelse;
-    åpenBehandling?: ÅpenBehandlingFP;
+    åpenBehandling?: ÅpenBehandlingES;
     oppdatertTidspunkt: string;
 }
 

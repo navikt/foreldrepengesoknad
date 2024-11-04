@@ -111,7 +111,7 @@ describe('useEsSendSøknad', () => {
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
-            'https://es/rest/soknad/engangsstonad',
+            `${import.meta.env.BASE_URL}/rest/soknad/engangsstonad`,
             expect.objectContaining({
                 json: {
                     barn: {
@@ -163,7 +163,7 @@ describe('useEsSendSøknad', () => {
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
-            'https://es/rest/soknad/engangsstonad',
+            `${import.meta.env.BASE_URL}/rest/soknad/engangsstonad`,
             expect.objectContaining({
                 json: {
                     barn: {
@@ -207,7 +207,7 @@ describe('useEsSendSøknad', () => {
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
-            'https://es/rest/soknad/engangsstonad',
+            `${import.meta.env.BASE_URL}/rest/soknad/engangsstonad`,
             expect.objectContaining({
                 json: {
                     barn: {

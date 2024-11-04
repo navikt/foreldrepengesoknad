@@ -36,3 +36,13 @@ export const getNavnGenitivEierform = (navn: string, locale: string): string => 
     }
     return `${navn}s`;
 };
+
+const usynligeCharsRegex = /[\p{Cf}\p{Zs}]/gu;
+
+export const replaceInvisibleCharsWithSpace = (inputString: string): string | null => {
+    if (inputString === '') {
+        return null;
+    }
+
+    return inputString.replace(usynligeCharsRegex, '\u0020');
+};

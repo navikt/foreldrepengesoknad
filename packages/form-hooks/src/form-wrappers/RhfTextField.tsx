@@ -2,8 +2,8 @@ import { CSSProperties, FunctionComponent, ReactNode, useCallback, useMemo } fro
 import { useController, useFormContext } from 'react-hook-form';
 
 import { TextField, TextFieldProps as DsTextFieldProps } from '@navikt/ds-react';
-
-import { getError, getValidationRules, replaceInvisibleCharsWithSpace } from './formUtils';
+import { getError, getValidationRules } from './formUtils';
+import { replaceInvisibleCharsWithSpace } from '../../../utils';
 
 export type Props = {
     name: string;

@@ -3,19 +3,20 @@ import { Meta, StoryObj } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
 import SøknadRoutes from 'appData/routes';
+import dayjs from 'dayjs';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
-import { StønadskontoType } from '@navikt/fp-constants';
+import { ISO_DATE_FORMAT, StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Arbeidsforhold, Søker, SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import FordelingSteg from './FordelingSteg';
 
-const UTTAKSPLAN_ANNEN_URL = 'https://fp/rest/innsyn/v2/annenPartVedtak';
-const STØNADSKONTO_URL = `https://fp/rest/konto`;
+const UTTAKSPLAN_ANNEN_URL = `${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`;
+const STØNADSKONTO_URL = `${import.meta.env.BASE_URL}/rest/konto`;
 
 const vedtakFar = {
     dekningsgrad: 'HUNDRE' as DekningsgradDTO,
@@ -1137,7 +1138,7 @@ export const FarMedmorSøkerDeltUttakFireBarnTerminEtterWLB: Story = {
         barnet: {
             type: BarnType.UFØDT,
             antallBarn: 4,
-            termindato: '2024-07-21',
+            termindato: dayjs().subtract(2, 'months').format(ISO_DATE_FORMAT),
         },
         annenForelder: {
             fornavn: 'Hanne',
@@ -1670,7 +1671,7 @@ export const BareFarHarRettOgMorErUførTermin4Barn: Story = {
         barnet: {
             type: BarnType.UFØDT,
             antallBarn: 4,
-            termindato: '2024-07-21',
+            termindato: dayjs().subtract(2, 'months').format(ISO_DATE_FORMAT),
         },
         annenForelder: {
             fornavn: 'Hanne',

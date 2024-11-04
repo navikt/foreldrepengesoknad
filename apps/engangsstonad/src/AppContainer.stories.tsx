@@ -30,10 +30,16 @@ const DEFAULT_PERSONINFO = {
 };
 
 const HANDLERS = [
-    http.post('https://es/rest/soknad/engangsstonad', () => HttpResponse.json(KVITTERING)),
-    http.post('https://es/rest/storage/engangsstonad', () => new HttpResponse(null, { status: 200 })),
-    http.delete('https://es/rest/storage/engangsstonad', () => new HttpResponse(null, { status: 200 })),
-    http.post('https://es/rest/storage/engangsstonad/vedlegg', () => new HttpResponse(null, { status: 200 })),
+    http.post(`${import.meta.env.BASE_URL}/rest/soknad/engangsstonad`, () => HttpResponse.json(KVITTERING)),
+    http.post(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`, () => new HttpResponse(null, { status: 200 })),
+    http.delete(
+        `${import.meta.env.BASE_URL}/rest/storage/engangsstonad`,
+        () => new HttpResponse(null, { status: 200 }),
+    ),
+    http.post(
+        `${import.meta.env.BASE_URL}/rest/storage/engangsstonad/vedlegg`,
+        () => new HttpResponse(null, { status: 200 }),
+    ),
 ];
 
 const meta = {
@@ -56,8 +62,11 @@ export const SøkerErKvinne: Story = {
     parameters: {
         msw: {
             handlers: HANDLERS.concat([
-                http.get('https://es/rest/personinfo', () => HttpResponse.json(DEFAULT_PERSONINFO)),
-                http.get('https://es/rest/storage/engangsstonad', () => new HttpResponse(null, { status: 200 })),
+                http.get(`${import.meta.env.BASE_URL}/rest/personinfo`, () => HttpResponse.json(DEFAULT_PERSONINFO)),
+                http.get(
+                    `${import.meta.env.BASE_URL}/rest/storage/engangsstonad`,
+                    () => new HttpResponse(null, { status: 200 }),
+                ),
             ]),
         },
     },
@@ -67,8 +76,8 @@ export const SøkerErKvinneMedMellomlagretData: Story = {
     parameters: {
         msw: {
             handlers: HANDLERS.concat([
-                http.get('https://es/rest/personinfo', () => HttpResponse.json(DEFAULT_PERSONINFO)),
-                http.get('https://es/rest/storage/engangsstonad', () =>
+                http.get(`${import.meta.env.BASE_URL}/rest/personinfo`, () => HttpResponse.json(DEFAULT_PERSONINFO)),
+                http.get(`${import.meta.env.BASE_URL}/rest/storage/engangsstonad`, () =>
                     HttpResponse.json({
                         version: VERSJON_MELLOMLAGRING,
                         locale: 'nb',
@@ -87,7 +96,7 @@ export const SøkerErMann: Story = {
     parameters: {
         msw: {
             handlers: HANDLERS.concat([
-                http.get('https://es/rest/personinfo', () =>
+                http.get(`${import.meta.env.BASE_URL}/rest/personinfo`, () =>
                     HttpResponse.json({
                         fnr: '1231111111',
                         fornavn: 'Espen',
@@ -101,7 +110,10 @@ export const SøkerErMann: Story = {
                         barn: [],
                     }),
                 ),
-                http.get('https://es/rest/storage/engangsstonad', () => new HttpResponse(null, { status: 200 })),
+                http.get(
+                    `${import.meta.env.BASE_URL}/rest/storage/engangsstonad`,
+                    () => new HttpResponse(null, { status: 200 }),
+                ),
             ]),
         },
     },

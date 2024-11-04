@@ -218,7 +218,7 @@ describe('useSendSøknad', () => {
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
-            'https://svp/rest/soknad/svangerskapspenger',
+            `${import.meta.env.BASE_URL}/rest/soknad/svangerskapspenger`,
             expect.objectContaining({
                 json: {
                     språkkode: 'nb',
@@ -339,7 +339,7 @@ describe('useSendSøknad', () => {
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
-            'https://svp/rest/soknad/svangerskapspenger',
+            `${import.meta.env.BASE_URL}/rest/soknad/svangerskapspenger`,
             expect.objectContaining({
                 json: {
                     språkkode: 'nb',
@@ -466,7 +466,7 @@ describe('useSendSøknad', () => {
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
-            'https://svp/rest/soknad/svangerskapspenger',
+            `${import.meta.env.BASE_URL}/rest/soknad/svangerskapspenger`,
             expect.objectContaining({
                 json: {
                     språkkode: 'nb',

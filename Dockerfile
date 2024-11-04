@@ -1,13 +1,14 @@
 # syntax=docker/dockerfile:1
 
-ARG NODE_IMG=node:20.12-alpine
+ARG NODE_BUILD_IMG=node:22-alpine
+ARG NODE_DEPLOY_IMG=gcr.io/distroless/nodejs22-debian12
 ARG APP="foreldrepengesoknad"
 ARG SERVER="server"
 
 #########################################
 # PREPARE DEPS FOR BUILD
 #########################################
-FROM --platform=${BUILDPLATFORM} ${NODE_IMG} AS prepare
+FROM --platform=${BUILDPLATFORM} ${NODE_BUILD_IMG} AS prepare
 WORKDIR /usr/src/app
 COPY ["package.json", ".npmrc", "pnpm-lock.yaml", "pnpm-workspace.yaml", "./"]
 COPY packages packages
@@ -21,7 +22,7 @@ RUN find ${SERVER} \! -name "package.json" -mindepth 2 -maxdepth 2 -print | xarg
 #########################################
 # BUILDER IMAGE - INSTALL PACKAGES AND COPY SOURCE
 #########################################
-FROM --platform=${BUILDPLATFORM} ${NODE_IMG} AS builder
+FROM --platform=${BUILDPLATFORM} ${NODE_BUILD_IMG} AS builder
 WORKDIR /usr/src/app
 RUN apk fix \
     && apk add --no-cache --update libc6-compat \
@@ -55,25 +56,13 @@ WORKDIR /usr/src/app/apps/${APP}
 RUN pnpm exec turbo test && mv /usr/src/app/apps/${APP}/dist /public
 
 #########################################
-# Server
+# App Distroless
 #########################################
-FROM ${NODE_IMG} AS server
+FROM ${NODE_DEPLOY_IMG}
 ARG SERVER
-WORKDIR /usr/src/app
-
-RUN apk fix \
-    && apk add --no-cache --update libc6-compat tini \
-    && rm -rf /var/cache/apk/*
+USER nonroot
 
 COPY --from=server-build /usr/src/app/${SERVER}/dist ./
-
-ENTRYPOINT ["/sbin/tini", "--"]
-
-#########################################
-# App
-#########################################
-FROM server
-
 COPY --from=client /public ./public
 
-CMD ["node", "index.js"]
+CMD ["index.js"]

@@ -49,7 +49,6 @@ const startServer = async () => {
         '{{{APP_SETTINGS}}}',
         JSON.stringify({
             APP_VERSION: `${process.env.APP_VERSION}`,
-            PUBLIC_PATH: `${process.env.PUBLIC_PATH}`,
             INNSYN: `${process.env.INNSYN}`,
             FEATURE_TEST_1JULI2024_REGLER: `${process.env.FEATURE_TEST_1JULI2024_REGLER}`,
         }),
@@ -72,6 +71,10 @@ const startServer = async () => {
 
     const vite = await require('vite').createServer({
         root: __dirname,
+        base: "./",
+        define: {
+            'import.meta.env.BASE_URL': '""',
+        },
         server: {
             middlewareMode: true,
             port: 8080,
