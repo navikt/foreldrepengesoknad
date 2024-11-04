@@ -1,1 +1,0 @@
-const r=t=>t.charAt(0).toUpperCase()+t.slice(1),s=["og","and","i","in"],i=["as"],o=t=>{if(t)return t.toLowerCase().split(" ").map(e=>i.includes(e)?e.toUpperCase():s.includes(e)?e:r(e)).join(" ")},n=t=>{const e=t.charAt(t.length-1).toLowerCase();return e==="s"||e==="x"||e==="z"},a=(t,e)=>e!=="nb"?t:n(t)?`${t}'`:`${t}s`;export{o as a,r as c,a as g};
