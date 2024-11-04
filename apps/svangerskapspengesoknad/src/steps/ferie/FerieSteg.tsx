@@ -145,6 +145,7 @@ function FeriePerioder() {
     const feriePerioder = watch('feriePerioder');
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
+    console.log(sisteDagForSvangerskapspenger);
 
     useEffect(() => {
         /*

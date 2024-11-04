@@ -2,6 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, SvpDataContext } from 'appData/SvpDataContext';
 import { SøknadRoute, TILRETTELEGGING_PARAM, addTilretteleggingIdToRoute } from 'appData/routes';
+import dayjs from 'dayjs';
 import { ComponentProps } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
@@ -34,7 +35,7 @@ const meta = {
                     initialState={{
                         [ContextDataType.OM_BARNET]: {
                             erBarnetFødt: false,
-                            termindato: '2024-12-01',
+                            termindato: dayjs(new Date()).add(2, 'month').toISOString(),
                             fødselsdato: undefined,
                         },
                         [ContextDataType.VALGTE_ARBEIDSFORHOLD]: ['896929119'],
@@ -45,9 +46,9 @@ const meta = {
                         },
                         [ContextDataType.TILRETTELEGGINGER]: {
                             '896929119': {
-                                behovForTilretteleggingFom: '2024-10-01',
+                                behovForTilretteleggingFom: dayjs(new Date()).subtract(2, 'day').toISOString(),
                                 type: Tilretteleggingstype.INGEN,
-                                enPeriodeMedTilretteleggingFom: '2024-10-01',
+                                enPeriodeMedTilretteleggingFom: dayjs(new Date()).subtract(2, 'day').toISOString(),
                                 enPeriodeMedTilretteleggingTomType: TilOgMedDatoType.SISTE_DAG_MED_SVP,
                             },
                         },
