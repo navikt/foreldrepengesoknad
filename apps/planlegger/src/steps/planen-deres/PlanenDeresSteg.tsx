@@ -1,4 +1,4 @@
-import { InformationIcon, PersonGroupIcon } from '@navikt/aksel-icons';
+import { PencilIcon, PersonGroupIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
@@ -29,7 +29,7 @@ import {
     lagForslagTilPlan,
 } from 'utils/uttakUtils';
 
-import { BodyLong, BodyShort, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Button, HStack, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { BarnType } from '@navikt/fp-constants';
 import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
@@ -146,19 +146,22 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
     return (
         <form>
             <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
-                <VStack gap="10">
-                    <Heading size="medium" spacing level="2">
-                        <FormattedMessage id="OversiktSteg.Tittel" values={{ erAleneforsørger }} />
-                    </Heading>
-                    <Infobox
-                        header={<FormattedMessage id="OversiktSteg.Infoboks.Utkast" />}
-                        color="gray"
-                        icon={<InformationIcon height={24} width={24} fontSize="1-5rem" aria-hidden />}
-                    >
-                        <BodyLong>
-                            <FormattedMessage id="OversiktSteg.Infoboks.Utkast.Tekst" />
-                        </BodyLong>
-                    </Infobox>
+                <VStack gap="6">
+                    <HStack justify="space-between">
+                        <Heading size="medium" spacing level="2">
+                            <FormattedMessage id="OversiktSteg.Tittel" values={{ erAleneforsørger }} />
+                        </Heading>
+                        <VStack gap="1">
+                            <Button
+                                size="xsmall"
+                                variant="secondary"
+                                icon={<PencilIcon height={24} width={24} fontSize="1-5rem" aria-hidden />}
+                            >
+                                <FormattedMessage id="OversiktSteg.Infoboks.Tilpass" />
+                            </Button>
+                        </VStack>
+                    </HStack>
+
                     {farOgFarKunEnPartHarRett && omBarnet.erFødsel && (
                         <Infobox
                             header={<FormattedMessage id="OversiktSteg.Infoboks.FarOgFar.DereHarOppgitt" />}
@@ -278,6 +281,27 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                             </div>
                         )}
                     </VStack>
+                    <Infobox
+                        header={<FormattedMessage id="OversiktSteg.Infoboks.Utkast" values={{ erAleneforsørger }} />}
+                        color="gray"
+                        icon={<PencilIcon height={24} width={24} fontSize="1-5rem" aria-hidden />}
+                    >
+                        <VStack gap="2">
+                            <BodyLong>
+                                <FormattedMessage
+                                    id="OversiktSteg.Infoboks.Utkast.Tekst"
+                                    values={{ erAleneforsørger }}
+                                />
+                            </BodyLong>
+                            <HStack>
+                                <Button variant="primary">
+                                    <BodyShort size="small">
+                                        <FormattedMessage id="OversiktSteg.Infoboks.TilpassPlanen" />
+                                    </BodyShort>
+                                </Button>
+                            </HStack>
+                        </VStack>
+                    </Infobox>
                     <VStack gap="1">
                         <OmÅTilpassePlanen
                             arbeidssituasjon={arbeidssituasjon}

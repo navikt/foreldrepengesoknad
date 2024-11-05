@@ -79,7 +79,7 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
     return (
         <form>
             <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
-                <VStack gap="10">
+                <VStack gap="6">
                     <Heading size="medium" spacing level="2">
                         <FormattedMessage id="TilpassPlanenSteg.Tittel" values={{ erAleneforsørger }} />
                     </Heading>
@@ -139,10 +139,18 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
                             </div>
                         )}
                         <HStack gap="4">
-                            <Button variant="secondary" icon={<ArrowRedoIcon aria-hidden height={24} width={24} />}>
+                            <Button
+                                size="xsmall"
+                                variant="secondary"
+                                icon={<ArrowRedoIcon aria-hidden height={24} width={24} />}
+                            >
                                 <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
                             </Button>
-                            <Button variant="secondary" icon={<TrashIcon aria-hidden height={24} width={24} />}>
+                            <Button
+                                size="xsmall"
+                                variant="secondary"
+                                icon={<TrashIcon aria-hidden height={24} width={24} />}
+                            >
                                 <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
                             </Button>
                         </HStack>
