@@ -1,10 +1,10 @@
-import { PencilIcon, PersonGroupIcon } from '@navikt/aksel-icons';
+import { PersonGroupIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import CalendarLabels from 'components/labels/CalendarLabels';
 import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     finnFellesperiodeFordelingOptionTekst,
@@ -13,13 +13,7 @@ import {
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { Situasjon } from 'types/HvemPlanlegger';
-import {
-    erAlenesøker,
-    getFornavnPåSøker1,
-    getFornavnPåSøker2,
-    getNavnPåSøker1,
-    getNavnPåSøker2,
-} from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import {
@@ -29,19 +23,17 @@ import {
     lagForslagTilPlan,
 } from 'utils/uttakUtils';
 
-import { BodyLong, BodyShort, Button, HStack, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
+import { BodyShort, HStack, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { BarnType } from '@navikt/fp-constants';
 import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { Calendar, Infobox, StepButtons } from '@navikt/fp-ui';
 import { useMedia } from '@navikt/fp-utils/src/hooks/useMedia';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
-import { UttaksplanNy, sorterPerioder } from '@navikt/fp-uttaksplan-ny';
+import { sorterPerioder } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
-import PlanvisningToggle, { Visningsmodus } from '../../components/planvisning-toggle/PlanvisningToggle';
 import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
-import { erBarnetAdoptert, getFamiliesituasjon } from '../../utils/barnetUtils';
+import { erBarnetAdoptert } from '../../utils/barnetUtils';
 import styles from './planenDeresSteg.module.css';
 import OmÅTilpassePlanen from './tilpasse-planen/OmÅTilpassePlanen';
 import UforutsetteEndringer from './uforutsette-endringer/UforutsetteEndringer';
@@ -70,7 +62,6 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
     const intl = useIntl();
     const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
-    const [visningsmodus, setVisningsmodus] = useState<Visningsmodus>('kalender');
 
     useScrollBehaviour();
 
@@ -101,7 +92,6 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
         }
     };
 
-    const familiesituasjon = getFamiliesituasjon(omBarnet);
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const farOgFarKunEnPartHarRett =
         hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
@@ -115,14 +105,6 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
     const familiehendelsedato = getFamiliehendelsedato(omBarnet);
 
     const erAleneforsørger = erAlenesøker(hvemPlanlegger);
-
-    // const uttaksperioder = lagKalenderPerioder(
-    //     valgtStønadskonto,
-    //     omBarnet,
-    //     hvemPlanlegger,
-    //     arbeidssituasjon,
-    //     fordeling?.antallDagerSøker1,
-    // );
 
     const bareFarMedmorHarRett =
         harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
@@ -151,7 +133,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                         <Heading size="medium" spacing level="2">
                             <FormattedMessage id="OversiktSteg.Tittel" values={{ erAleneforsørger }} />
                         </Heading>
-                        <VStack gap="1">
+                        {/* <VStack gap="1">
                             <Button
                                 size="xsmall"
                                 variant="secondary"
@@ -159,7 +141,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                             >
                                 <FormattedMessage id="OversiktSteg.Infoboks.Tilpass" />
                             </Button>
-                        </VStack>
+                        </VStack> */}
                     </HStack>
 
                     {farOgFarKunEnPartHarRett && omBarnet.erFødsel && (
@@ -236,8 +218,6 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                     </VStack>
 
                     <VStack gap="5">
-                        <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
-
                         <CalendarLabels
                             uttaksdata={
                                 hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
@@ -248,40 +228,14 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                             barnet={omBarnet}
                             hvemHarRett={hvemHarRett}
                         />
-
-                        {visningsmodus === 'liste' && (
-                            <UttaksplanNy
-                                familiehendelsedato={familiehendelsedato}
-                                bareFarHarRett={bareFarMedmorHarRett}
-                                erFarEllerMedmor={false}
-                                familiesituasjon={familiesituasjon}
-                                gjelderAdopsjon={familiesituasjon === 'adopsjon'}
-                                navnPåForeldre={{
-                                    farMedmor: getNavnPåSøker2(hvemPlanlegger, intl) || 'Annen forelder',
-                                    mor: getNavnPåSøker1(hvemPlanlegger, intl),
-                                }}
-                                førsteUttaksdagNesteBarnsSak={undefined}
-                                harAktivitetskravIPeriodeUtenUttak={false}
-                                søkersPerioder={planforslag.søker1}
-                                annenPartsPerioder={planforslag.søker2}
-                                barn={{
-                                    antallBarn: 1,
-                                    type: BarnType.FØDT,
-                                    fødselsdatoer: [familiehendelsedato],
-                                    termindato: familiehendelsedato,
-                                }}
-                            />
-                        )}
                     </VStack>
 
                     <VStack gap="5">
-                        {visningsmodus === 'kalender' && (
-                            <div className={styles.calendar}>
-                                <Calendar periods={kombinertPlanforslag} familiehendelsedato={familiehendelsedato} />
-                            </div>
-                        )}
+                        <div className={styles.calendar}>
+                            <Calendar periods={kombinertPlanforslag} familiehendelsedato={familiehendelsedato} />
+                        </div>
                     </VStack>
-                    <Infobox
+                    {/* <Infobox
                         header={<FormattedMessage id="OversiktSteg.Infoboks.Utkast" values={{ erAleneforsørger }} />}
                         color="gray"
                         icon={<PencilIcon height={24} width={24} fontSize="1-5rem" aria-hidden />}
@@ -301,7 +255,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                                 </Button>
                             </HStack>
                         </VStack>
-                    </Infobox>
+                    </Infobox> */}
                     <VStack gap="1">
                         <OmÅTilpassePlanen
                             arbeidssituasjon={arbeidssituasjon}
