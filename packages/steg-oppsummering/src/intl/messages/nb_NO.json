@@ -47,6 +47,7 @@
     "ArbeidsforholdOppsummering.egenNæringVarigEndringDato": "Hva var datoen for endringen?",
     "ArbeidsforholdOppsummering.egenNæringVarigEndringInntektEtterEndring": "Hva var næringsinntekten din etter endringen?",
     "ArbeidsforholdOppsummering.varigEndringBeskrivelse.label": "Hva har endret seg i virksomheten eller arbeidssituasjonen din?",
+    "ArbeidsforholdOppsummering.inntektsmelding": "{antall, plural, one {Arbeidsgiveren din} other {Arbeidsgiverene dine}} blir kontaktet av NAV for å sende opplysninger om din inntekt. Dette vil skje fire uker før du skal starte permisjonen. De vil da få informasjon om periodene du har søkt om å ha foreldrepenger.",
     "LandOppsummering.IDag": "i dag",
     "LandOppsummering.periode": "Fra {fra} til {til}",
     "EndreSvar": "Endre svar",
