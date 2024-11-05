@@ -168,5 +168,12 @@
     "KontonummerInfoTekst.Mangler": "NAV mangler kontonummeret som {ytelse, select, foreldrepenger {foreldrepengene} svangerskapspenger {svangerskapspengene} other {engangsstønaden}} vil bli betalt til hvis du får søknaden din innvilget.",
     "DinPlan.EndrePlan": "Endre planen",
     "DinPlan.Liste": "Liste",
-    "DinPlan.Kalender": "Kalender"
+    "DinPlan.Kalender": "Kalender",
+    "SøkelenkerPanel.HarRett": "Les om hva du har rett på",
+    "SøkelenkerPanel.VenterBarn": "Hvis du venter eller har nylig fått barn",
+    "SøkelenkerPanel.SokFp": "Søk om foreldrepenger",
+    "SøkelenkerPanel.SokSvp": "Søk om svangerskapspenger",
+    "SøkelenkerPanel.SokEs": "Søk om engangsstønad",
+    "HarIkkeSaker.IngenSoknader": "Du har ingen søknader om foreldrepenger, engangsstønad eller svangerskapspenger",
+    "HarIkkeSaker.ToUker": "Det kan ta opp til to uker for å få svar dersom du har søkt via brev."
 }

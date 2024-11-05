@@ -10,9 +10,9 @@ const config: StorybookConfig = {
         name: '@storybook/react-vite',
         options: {},
     },
-    async viteFinal(c) {
+    async viteFinal(c, { configType }) {
         return mergeConfig(c, {
-            base: viteConfig.base,
+            base: configType === 'DEVELOPMENT' ? viteConfig.base : './',
         });
     },
     staticDirs: ['../../../scripts/mock-service-worker'],
