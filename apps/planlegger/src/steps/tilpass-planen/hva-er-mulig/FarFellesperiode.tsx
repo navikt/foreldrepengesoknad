@@ -1,7 +1,7 @@
 import { BabyWrappedIcon } from '@navikt/aksel-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
-import { finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
+import { erMorDelAvSøknaden, finnSøker1Tekst, finnSøker2Tekst } from 'utils/HvemPlanleggerUtils';
 
 import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
@@ -27,7 +27,13 @@ const FarFellesperiode: React.FunctionComponent<Props> = ({ hvemPlanlegger }) =>
                     />
                 </Heading>
                 <BodyLong>
-                    <FormattedMessage id="HvaErMulig.MorIAktivitet" />
+                    <FormattedMessage
+                        id="HvaErMulig.MorIAktivitet"
+                        values={{
+                            hvem: finnSøker1Tekst(intl, hvemPlanlegger),
+                            erMorHovedsøker: erMorDelAvSøknaden(hvemPlanlegger),
+                        }}
+                    />
                 </BodyLong>
             </div>
         </HStack>
