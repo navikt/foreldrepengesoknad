@@ -28,6 +28,7 @@ import {
     hasMinValue,
     isAfterOrSame,
     isBeforeOrSame,
+    isPeriodNotOverlappingOthers,
     isRequired,
     isValidDate,
     isValidNumberForm,
@@ -103,13 +104,13 @@ export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
     const skalHaFerie = formMethods.watch('skalHaFerie');
 
     // Hvis radio-button valget endret seg vil vi endre "antallFeriePerioder" slik at fieldArray får riktige initielle verdier.
-    useEffect(() => {
-        if (!skalHaFerie) {
-            formMethods.setValue('antallFeriePerioder', 0);
-        } else {
-            formMethods.setValue('antallFeriePerioder', 1);
-        }
-    }, [skalHaFerie]);
+    // useEffect(() => {
+    //     if (!skalHaFerie) {
+    //         formMethods.setValue('antallFeriePerioder', 0);
+    //     } else {
+    //         formMethods.setValue('antallFeriePerioder', 1);
+    //     }
+    // }, [skalHaFerie]);
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
@@ -247,6 +248,16 @@ function FeriePerioder() {
                                             id: 'ferie.antallPerioder.validering.dato.etterFørsteFraværsDag',
                                         }),
                                         startDatoSvp,
+                                    ),
+                                    isPeriodNotOverlappingOthers(
+                                        intl.formatMessage(
+                                            {
+                                                id: 'ferie.antallPerioder.validering.dato.overlapp',
+                                            },
+                                            { periode: index },
+                                        ),
+                                        { date: watch(`feriePerioder.${index}.tom`), isStartDate: false },
+                                        [watch('feriePerioder')[index - 1] ?? []].flat(),
                                     ),
                                 ]}
                                 validateTo={[
