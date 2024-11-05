@@ -47,7 +47,7 @@ const findDayColor = (
         return PeriodeColor.GRAY;
     }
 
-    return period?.forelder === Forelder.farMedmor ? PeriodeColor.GREEN : PeriodeColor.BLUE;
+    return period?.forelder === Forelder.farMedmor ? PeriodeColor.LIGHTGREEN : PeriodeColor.BLUE;
 };
 
 const isFirstDay = (date: Dayjs, day: number, periods: SaksperiodeNy[], familiehendelsedato: string) => {
