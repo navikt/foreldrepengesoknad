@@ -4,7 +4,6 @@ import useStepConfig from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { getRegistrerteBarnOmDeFinnes } from 'utils/barnUtils';
-import { replaceInvisibleCharsWithSpace } from 'utils/stringUtils';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -12,6 +11,7 @@ import { Barn, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { Søker, Søkerinfo } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
+import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import RegistrertePersonalia from '../../pages/registrerte-personalia/RegistrertePersonalia';
@@ -73,9 +73,9 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søkerInfo, melloml
             oppdaterAnnenForeldre({
                 ...values,
                 kanIkkeOppgis: false,
-                fornavn: replaceInvisibleCharsWithSpace(fornavn),
-                etternavn: replaceInvisibleCharsWithSpace(etternavn),
-                fnr: replaceInvisibleCharsWithSpace(fnr.trim()),
+                fornavn: replaceInvisibleCharsWithSpace(fornavn) ?? '',
+                etternavn: replaceInvisibleCharsWithSpace(etternavn) ?? '',
+                fnr: replaceInvisibleCharsWithSpace(fnr.trim()) ?? '',
                 harRettPåForeldrepengerIEØS: values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : false,
             });
         }

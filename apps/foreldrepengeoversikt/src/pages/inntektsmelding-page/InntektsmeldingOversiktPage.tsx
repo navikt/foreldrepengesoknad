@@ -26,9 +26,7 @@ export const InntektsmeldingOversiktPage = () => {
         return <Navigate replace to={'..'} />;
     }
     if (aktiveInntektsmeldinger.length === 1) {
-        return (
-            <Navigate replace to={`${OversiktRoutes.INNTEKTSMELDING}/${aktiveInntektsmeldinger[0].journalpostId}`} />
-        );
+        return <Navigate replace to={`${aktiveInntektsmeldinger[0].journalpostId}`} />;
     }
 
     return (

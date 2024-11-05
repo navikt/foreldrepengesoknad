@@ -21,6 +21,7 @@
         "@navikt/ds-react": "^7.4.1",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
+        "@navikt/fp-utils": "workspace:*",
         "@types/react": "^18.3.12",
         "@types/react-dom": "^18.3.1",
         "dayjs": "^1.11.12",

@@ -27,7 +27,12 @@ export { default as useScrollBehaviour } from './src/hooks/useScrollBehaviour';
 export { useMedia } from './src/hooks/useMedia';
 export { default as bemUtils } from './src/bemUtils';
 export { trimNumberValue, getFloatFromString, getNumberFromNumberInputValue } from './src/numberUtils';
-export { capitalizeFirstLetter, capitalizeFirstLetterInEveryWordOnly, getNavnGenitivEierform } from './src/stringUtils';
+export {
+    capitalizeFirstLetter,
+    capitalizeFirstLetterInEveryWordOnly,
+    getNavnGenitivEierform,
+    replaceInvisibleCharsWithSpace,
+} from './src/stringUtils';
 export { getFamiliehendelsedato } from './src/barnUtils';
 export { formatCurrencyWithKr, formatCurrency } from './src/currencyUtils';
 export { encodeToBase64, decodeBase64 } from './src/urlEncodingUtils';
