@@ -24,7 +24,6 @@ describe('<FerieSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 '896929119': {
-                    antallFeriePerioder: 1,
                     feriePerioder: [],
                     skalHaFerie: false,
                 },
@@ -41,7 +40,7 @@ describe('<FerieSteg>', () => {
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
         expect(screen.getByText('Har du planlagt ferie i perioden du skal ha svangerskapspenger?')).toBeInTheDocument();
         await user.click(screen.getByText('Ja'));
-        expect(screen.getByText('Hvor mange perioder med ferie skal du ha?')).toBeInTheDocument();
+        expect(screen.getByText('Legg til ny ferieperiode')).toBeInTheDocument();
         expect(screen.getByText('1. periode')).toBeInTheDocument();
 
         await user.click(screen.getByText('Neste steg'));
@@ -99,7 +98,6 @@ describe('<FerieSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 '896929119': {
-                    antallFeriePerioder: 1,
                     feriePerioder: [
                         {
                             arbeidsforhold: {
@@ -124,17 +122,18 @@ describe('<FerieSteg>', () => {
 
         await user.click(screen.getByText('Ja'));
 
-        const antallPerioderInput = screen.getByText('Hvor mange perioder med ferie skal du ha?');
-        await user.type(antallPerioderInput, '{backspace}3');
-
         await user.type(screen.getAllByText('Første feriedag')[0], dayjs('2024-10-30').format('DD.MM.YYYY'));
         await user.tab();
         await user.type(screen.getAllByText('Siste feriedag')[0], dayjs('2024-10-31').format('DD.MM.YYYY'));
         await user.tab();
 
+        await user.click(screen.getByText('Legg til ny ferieperiode'));
+        await user.click(screen.getByText('Legg til ny ferieperiode'));
+
         expect(screen.getByText('1. periode')).toBeInTheDocument();
         expect(screen.getByText('2. periode')).toBeInTheDocument();
         expect(screen.getByText('3. periode')).toBeInTheDocument();
+        expect(screen.getAllByText('Slett denne perioden')).toHaveLength(2);
 
         await user.type(screen.getAllByText('Første feriedag')[1], dayjs('2024-11-01').format('DD.MM.YYYY'));
         await user.tab();
@@ -146,11 +145,12 @@ describe('<FerieSteg>', () => {
         await user.type(screen.getAllByText('Siste feriedag')[2], dayjs('2024-11-08').format('DD.MM.YYYY'));
         await user.tab();
 
+        await user.click(screen.getByLabelText('Slett 3. periode'));
+
         await user.click(screen.getByText('Neste steg'));
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
                 '896929119': {
-                    antallFeriePerioder: 3,
                     feriePerioder: [
                         {
                             arbeidsforhold: {
@@ -167,14 +167,6 @@ describe('<FerieSteg>', () => {
                             },
                             fom: '2024-11-01',
                             tom: '2024-11-04',
-                        },
-                        {
-                            arbeidsforhold: {
-                                id: '896929119',
-                                type: 'virksomhet',
-                            },
-                            fom: '2024-11-06',
-                            tom: '2024-11-08',
                         },
                     ],
                     skalHaFerie: true,
