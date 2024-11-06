@@ -13,6 +13,5 @@ export type AvtaltFeriePerArbeidsgiver = {
     [arbeidsgiverId: string]: {
         skalHaFerie?: boolean;
         feriePerioder: AvtaltFerieDto[];
-        antallFeriePerioder: number;
     };
 };

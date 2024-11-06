@@ -204,7 +204,6 @@ describe('useSendSøknad', () => {
                         tom: '2024-10-10',
                     },
                 ],
-                antallFeriePerioder: 1,
             },
         } satisfies AvtaltFeriePerArbeidsgiver;
 

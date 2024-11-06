@@ -1,9 +1,9 @@
+import { PlusIcon, TrashIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
 import { RouteParams, SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import dayjs from 'dayjs';
-import { useEffect } from 'react';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
@@ -11,27 +11,23 @@ import { AvtaltFerieDto } from 'types/AvtaltFerie';
 import { getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import { getNesteTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
-import { BodyShort, HStack, Heading, Radio, ReadMore, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, HStack, Heading, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import {
     ErrorSummaryHookForm,
     RhfDateRangepicker,
     RhfForm,
     RhfRadioGroup,
-    RhfTextField,
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import {
-    hasMaxValue,
-    hasMinValue,
     isAfterOrSame,
     isBeforeOrSame,
     isPeriodNotOverlappingOthers,
     isRequired,
     isValidDate,
-    isValidNumberForm,
     notEmpty,
 } from '@navikt/fp-validation';
 
@@ -46,16 +42,12 @@ type Props = {
 const DEFAULT_FERIE_VALUES = {
     skalHaFerie: undefined,
     feriePerioder: [{ fom: undefined, tom: undefined }],
-    antallFeriePerioder: 1,
 };
 
 type FerieFormData = {
     skalHaFerie?: boolean;
     feriePerioder: Array<Partial<AvtaltFerieDto>>;
-    antallFeriePerioder: number;
 };
-
-const MAKS_ANTALL_PERIODER = 20;
 
 export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) {
     const intl = useIntl();
@@ -86,7 +78,6 @@ export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
             ...ferie,
             [arbeidsgiverId]: {
                 skalHaFerie: values.skalHaFerie,
-                antallFeriePerioder: values.feriePerioder.length,
                 feriePerioder: nyeAvtaltFeriePerioder,
             },
         };
@@ -101,16 +92,6 @@ export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
         );
     };
 
-    const skalHaFerie = formMethods.watch('skalHaFerie');
-
-    // Hvis radio-button valget endret seg vil vi endre "antallFeriePerioder" slik at fieldArray får riktige initielle verdier.
-    // useEffect(() => {
-    //     if (!skalHaFerie) {
-    //         formMethods.setValue('antallFeriePerioder', 0);
-    //     } else {
-    //         formMethods.setValue('antallFeriePerioder', 1);
-    //     }
-    // }, [skalHaFerie]);
     return (
         <Step
             bannerTitle={intl.formatMessage({ id: 'søknad.pageheading' })}
@@ -125,6 +106,13 @@ export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
                     <VStack gap="4">
                         <RhfRadioGroup
                             name="skalHaFerie"
+                            onChange={(checked) => {
+                                if (checked) {
+                                    formMethods.setValue('feriePerioder', DEFAULT_FERIE_VALUES.feriePerioder);
+                                } else {
+                                    formMethods.setValue('feriePerioder', []);
+                                }
+                            }}
                             label={intl.formatMessage({ id: 'ferie.harDuPlanlagtFerie.label' })}
                             validate={[isRequired(intl.formatMessage({ id: 'ferie.harDuPlanlagtFerie.validering' }))]}
                         >
@@ -141,7 +129,7 @@ export function FerieSteg({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsf
                             </BodyShort>
                         </ReadMore>
                     </VStack>
-                    {skalHaFerie && <FeriePerioder />}
+                    <FeriePerioder />
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
             </RhfForm>
@@ -156,143 +144,134 @@ function FeriePerioder() {
     const tilrettelegginer = notEmpty(useContextGetData(ContextDataType.TILRETTELEGGINGER));
     const startDatoSvp = tilrettelegginer[arbeidsgiverId].behovForTilretteleggingFom;
 
-    const { watch, setValue } = useFormContext();
-    const antallFeriePerioder = watch('antallFeriePerioder');
-    const feriePerioder = watch('feriePerioder');
+    const { watch } = useFormContext();
+    const skalHaFerie = watch('skalHaFerie');
     const barnet = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
 
-    useEffect(() => {
-        /*
-         Hvis antall ferieperioder har forandret seg innenfor gyldige verdier
-         Så enten kutt bort de som er over antall, eller utvid array med "undefined" for nye entries
-        */
-        if (antallFeriePerioder > 0 && antallFeriePerioder < MAKS_ANTALL_PERIODER) {
-            if (antallFeriePerioder !== feriePerioder.length) {
-                const forrigeLengde = feriePerioder.length;
-                feriePerioder.length = antallFeriePerioder;
-                feriePerioder.fill(undefined, forrigeLengde, antallFeriePerioder);
-                setValue('feriePerioder', feriePerioder);
-            }
-        }
-    }, [antallFeriePerioder]);
-
-    const { fields } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
         name: 'feriePerioder',
     });
 
+    if (!skalHaFerie) {
+        return null;
+    }
+
     return (
         <VStack gap="4">
-            <RhfTextField
-                name="antallFeriePerioder"
-                label={intl.formatMessage({ id: 'ferie.antallPerioder.label' })}
-                htmlSize={2}
-                validate={[
-                    isRequired(intl.formatMessage({ id: 'ferie.antallPerioder.validering.obligatorisk' })),
-                    isValidNumberForm(intl.formatMessage({ id: 'ferie.antallPerioder.validering.tall' })),
-                    hasMinValue(intl.formatMessage({ id: 'ferie.antallPerioder.validering.minimum' }), 1),
-                    hasMaxValue(
-                        intl.formatMessage(
-                            { id: 'ferie.antallPerioder.validering.maksimum' },
-                            { maks: MAKS_ANTALL_PERIODER },
-                        ),
-                        MAKS_ANTALL_PERIODER,
-                    ),
-                ]}
-            />
+            <VStack gap="6">
+                {fields.map((field, index) => (
+                    <VStack gap="4" key={field.id} className="feriePeriode">
+                        <HStack justify="space-between" align="center">
+                            <Heading level="3" size="small">
+                                <FormattedMessage id="ferie.periode.heading" values={{ teller: index + 1 }} />
+                            </Heading>
+                            {index > 0 && (
+                                <Button
+                                    onClick={() => remove(index)}
+                                    size="small"
+                                    variant="tertiary"
+                                    icon={<TrashIcon />}
+                                >
+                                    Slett denne perioden
+                                </Button>
+                            )}
+                        </HStack>
+                        <RhfDateRangepicker
+                            labelFrom={<FormattedMessage id="ferie.periode.førsteDag" />}
+                            labelTo={<FormattedMessage id="ferie.periode.sisteDag" />}
+                            nameFrom={`feriePerioder.${index}.fom`}
+                            nameTo={`feriePerioder.${index}.tom`}
+                            maxDate={dayjs(sisteDagForSvangerskapspenger)}
+                            minDate={dayjs(startDatoSvp)}
+                            validateFrom={[
+                                isRequired(
+                                    intl.formatMessage({
+                                        id: 'ferie.antallPerioder.validering.dato.obligatorisk',
+                                    }),
+                                ),
+                                isValidDate(
+                                    intl.formatMessage({
+                                        id: 'ferie.antallPerioder.validering.dato.gyldig',
+                                    }),
+                                ),
+                                isBeforeOrSame(
+                                    intl.formatMessage({
+                                        id: 'ferie.antallPerioder.validering.dato.førTilDato',
+                                    }),
+                                    watch(`feriePerioder.${index}.tom`),
+                                ),
+                                isBeforeOrSame(
+                                    intl.formatMessage({
+                                        id: 'ferie.antallPerioder.validering.dato.førSisteFraværsDag',
+                                    }),
+                                    sisteDagForSvangerskapspenger,
+                                ),
+                                isAfterOrSame(
+                                    intl.formatMessage({
+                                        id: 'ferie.antallPerioder.validering.dato.etterFørsteFraværsDag',
+                                    }),
+                                    startDatoSvp,
+                                ),
+                                isPeriodNotOverlappingOthers(
+                                    intl.formatMessage(
+                                        {
+                                            id: 'ferie.antallPerioder.validering.dato.overlapp',
+                                        },
+                                        { periode: index },
+                                    ),
+                                    { date: watch(`feriePerioder.${index}.tom`), isStartDate: false },
+                                    [watch('feriePerioder')[index - 1] ?? []].flat(),
+                                ),
+                            ]}
+                            validateTo={[
+                                isRequired(
+                                    intl.formatMessage({
+                                        id: 'ferie.antallPerioder.validering.dato.obligatorisk',
+                                    }),
+                                ),
+                                isValidDate(
+                                    intl.formatMessage({
+                                        id: 'ferie.antallPerioder.validering.dato.gyldig',
+                                    }),
+                                ),
+                                isBeforeOrSame(
+                                    intl.formatMessage({
+                                        id: 'ferie.antallPerioder.validering.dato.førSisteFraværsDag',
+                                    }),
+                                    sisteDagForSvangerskapspenger,
+                                ),
+                                isAfterOrSame(
+                                    intl.formatMessage({
+                                        id: 'ferie.antallPerioder.validering.dato.etterFørsteFraværsDag',
+                                    }),
+                                    startDatoSvp,
+                                ),
+                            ]}
+                        />
+                        {index < fields.length - 1 && <HorizontalIndentDivider />}
+                    </VStack>
+                ))}
+            </VStack>
+            <Button
+                onClick={() => append({ fom: undefined, tom: undefined })}
+                size="small"
+                className="legg-til-ferieperiode-button"
+                type="button"
+                variant="secondary"
+                icon={<PlusIcon />}
+            >
+                Legg til ny ferieperiode
+            </Button>
             <ReadMore header={intl.formatMessage({ id: 'ferie.antallPerioder.readmore.label' })}>
                 <BodyShort>
                     <FormattedMessage id="ferie.antallPerioder.readmore.body" />
                 </BodyShort>
             </ReadMore>
-            <VStack gap="10">
-                {fields.map((field, index) => (
-                    <VStack gap="4" key={field.id} className="feriePeriode">
-                        <Heading level="3" size="small">
-                            <FormattedMessage id="ferie.periode.heading" values={{ teller: index + 1 }} />
-                        </Heading>
-                        <HStack>
-                            <IndentDivider />
-                            <RhfDateRangepicker
-                                labelFrom={<FormattedMessage id="ferie.periode.førsteDag" />}
-                                labelTo={<FormattedMessage id="ferie.periode.sisteDag" />}
-                                nameFrom={`feriePerioder.${index}.fom`}
-                                nameTo={`feriePerioder.${index}.tom`}
-                                maxDate={dayjs(sisteDagForSvangerskapspenger)}
-                                minDate={dayjs(startDatoSvp)}
-                                validateFrom={[
-                                    isRequired(
-                                        intl.formatMessage({
-                                            id: 'ferie.antallPerioder.validering.dato.obligatorisk',
-                                        }),
-                                    ),
-                                    isValidDate(
-                                        intl.formatMessage({
-                                            id: 'ferie.antallPerioder.validering.dato.gyldig',
-                                        }),
-                                    ),
-                                    isBeforeOrSame(
-                                        intl.formatMessage({
-                                            id: 'ferie.antallPerioder.validering.dato.førTilDato',
-                                        }),
-                                        watch(`feriePerioder.${index}.tom`),
-                                    ),
-                                    isBeforeOrSame(
-                                        intl.formatMessage({
-                                            id: 'ferie.antallPerioder.validering.dato.førSisteFraværsDag',
-                                        }),
-                                        sisteDagForSvangerskapspenger,
-                                    ),
-                                    isAfterOrSame(
-                                        intl.formatMessage({
-                                            id: 'ferie.antallPerioder.validering.dato.etterFørsteFraværsDag',
-                                        }),
-                                        startDatoSvp,
-                                    ),
-                                    isPeriodNotOverlappingOthers(
-                                        intl.formatMessage(
-                                            {
-                                                id: 'ferie.antallPerioder.validering.dato.overlapp',
-                                            },
-                                            { periode: index },
-                                        ),
-                                        { date: watch(`feriePerioder.${index}.tom`), isStartDate: false },
-                                        [watch('feriePerioder')[index - 1] ?? []].flat(),
-                                    ),
-                                ]}
-                                validateTo={[
-                                    isRequired(
-                                        intl.formatMessage({
-                                            id: 'ferie.antallPerioder.validering.dato.obligatorisk',
-                                        }),
-                                    ),
-                                    isValidDate(
-                                        intl.formatMessage({
-                                            id: 'ferie.antallPerioder.validering.dato.gyldig',
-                                        }),
-                                    ),
-                                    isBeforeOrSame(
-                                        intl.formatMessage({
-                                            id: 'ferie.antallPerioder.validering.dato.førSisteFraværsDag',
-                                        }),
-                                        sisteDagForSvangerskapspenger,
-                                    ),
-                                    isAfterOrSame(
-                                        intl.formatMessage({
-                                            id: 'ferie.antallPerioder.validering.dato.etterFørsteFraværsDag',
-                                        }),
-                                        startDatoSvp,
-                                    ),
-                                ]}
-                            />
-                        </HStack>
-                    </VStack>
-                ))}
-            </VStack>
         </VStack>
     );
 }
 
-function IndentDivider() {
-    return <div className="indent-divider"></div>;
+function HorizontalIndentDivider() {
+    return <div className="horizontal-indent-divider"></div>;
 }

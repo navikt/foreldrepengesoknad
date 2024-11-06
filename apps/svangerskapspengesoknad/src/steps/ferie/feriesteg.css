@@ -1,8 +1,11 @@
-.indent-divider {
-    background: rgba(224, 227, 230, 1);
-    width: 3px;
+.horizontal-indent-divider {
+    background: var(--a-surface-alt-3-moderate);
+    width: auto;
     border-radius: 2px;
-    margin-left: 2rem;
-    margin-right: 2rem;
-    height: auto;
+    height: 3px;
+}
+
+.legg-til-ferieperiode-button {
+    margin-top: var(--a-spacing-4);
+    width:fit-content;
 }

@@ -100,6 +100,7 @@ export const isPeriodNotOverlappingOthers =
         otherPeriods: Array<{ fom: Date | string; tom: Date | string }>,
     ) =>
     (date: string): FormValidationResult => {
+        console.log(otherPeriods);
         const dateRanges = otherPeriods
             .filter((u) => u.fom)
             .map((u) => ({
