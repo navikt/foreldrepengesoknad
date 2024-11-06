@@ -171,6 +171,7 @@ function FeriePerioder() {
                                     onClick={() => remove(index)}
                                     size="small"
                                     variant="tertiary"
+                                    type="button"
                                     aria-label={`Slett ${index + 1}. periode`}
                                     icon={<TrashIcon />}
                                 >
