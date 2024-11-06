@@ -209,7 +209,7 @@ const finnEnsligUttaksdata = (
         );
 
         const startdatoSøker1 = erBarnetAdoptert(barnet)
-            ? dayjs(familiehendelsedato).add(1, 'day')
+            ? dayjs(familiehendelsedato)
             : dayjs(familiehendelsedato).add(6, 'weeks');
 
         return {
@@ -233,7 +233,7 @@ const finnEnsligUttaksdata = (
         );
 
         const startdatoSøker1 = erBarnetAdoptert(barnet)
-            ? dayjs(familiehendelsedato).add(1, 'day')
+            ? dayjs(familiehendelsedato)
             : dayjs(familiehendelsedato).add(6, 'weeks');
 
         return {
@@ -278,7 +278,11 @@ export const finnUttaksdata = (
     barnet: OmBarnet,
     antallDagerFellesperiodeSøker1?: number,
 ): Uttaksdata => {
-    return hvemHarRett === 'beggeHarRett' || (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(barnet))
+    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(barnet)) {
+        return finnEnsligUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, hvemHarRett);
+    }
+
+    return hvemHarRett === 'beggeHarRett'
         ? finnDeltUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, antallDagerFellesperiodeSøker1)
         : finnEnsligUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, hvemHarRett);
 };
@@ -348,6 +352,8 @@ interface LagForslagProps {
     erFarEllerMedmor: boolean;
     erMorUfør: boolean;
     bareFarMedmorHarRett: boolean;
+    erAleneOmOmsorg: boolean;
+    startdato?: string;
 }
 
 export const lagForslagTilPlan = ({
@@ -359,9 +365,11 @@ export const lagForslagTilPlan = ({
     erFarEllerMedmor,
     erMorUfør,
     bareFarMedmorHarRett,
+    erAleneOmOmsorg,
+    startdato,
 }: LagForslagProps): PlanForslag => {
     if (erDeltUttak) {
-        return deltUttak({ famDato, tilgjengeligeStønadskontoer, fellesperiodeDagerMor });
+        return deltUttak({ famDato, tilgjengeligeStønadskontoer, fellesperiodeDagerMor, startdato });
     }
 
     return ikkeDeltUttak({
@@ -371,5 +379,7 @@ export const lagForslagTilPlan = ({
         tilgjengeligeStønadskontoer,
         erMorUfør,
         bareFarMedmorHarRett,
+        erAleneOmOmsorg,
+        startdato,
     });
 };

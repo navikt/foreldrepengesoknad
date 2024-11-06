@@ -5,7 +5,7 @@ import { FunctionComponent } from 'react';
 
 import { HGrid } from '@navikt/ds-react';
 
-import { Forelder, PeriodeColor } from '@navikt/fp-constants';
+import { Forelder, PeriodeColor, StønadskontoType } from '@navikt/fp-constants';
 import { SaksperiodeNy } from '@navikt/fp-types';
 
 import Day, { DayType } from './Day';
@@ -27,8 +27,17 @@ const findDayColor = (
     day: number,
     periods: SaksperiodeNy[],
     familiehendelsedato: string,
+    barnehageplassdato: string,
 ) => {
     const date = dayjs().year(year).month(month).date(day);
+
+    if (date.isSame(familiehendelsedato, 'day')) {
+        return PeriodeColor.PINK;
+    }
+
+    if (date.isSame(barnehageplassdato, 'day')) {
+        return PeriodeColor.PURPLE;
+    }
 
     const fomFirstPeriod = periods[0].fom;
     const tomLastPeriod = periods[periods.length - 1].tom;
@@ -39,34 +48,46 @@ const findDayColor = (
 
     const period = periods.find((p) => date.isBetween(p.fom, p.tom, 'day', '[]'));
 
-    if (date.isSame(familiehendelsedato, 'day')) {
-        return PeriodeColor.PINK;
-    }
-
     if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
         return PeriodeColor.GRAY;
+    }
+
+    if (
+        period?.kontoType === StønadskontoType.Foreldrepenger &&
+        periods.find((p) => p.kontoType === StønadskontoType.AktivitetsfriKvote) !== undefined
+    ) {
+        return PeriodeColor.LIGHTGREEN;
     }
 
     return period?.forelder === Forelder.farMedmor ? PeriodeColor.LIGHTGREEN : PeriodeColor.BLUE;
 };
 
-const isFirstDay = (date: Dayjs, day: number, periods: SaksperiodeNy[], familiehendelsedato: string) => {
+const isFirstDay = (
+    date: Dayjs,
+    day: number,
+    periods: SaksperiodeNy[],
+    familiehendelsedato: string,
+    barnehageplassdato: string,
+) => {
     return (
         date.isoWeekday() === 6 ||
         date.isoWeekday() === 1 ||
         day === 1 ||
         periods.some(
-            (period) => date.isSame(period.fom, 'day') || date.isSame(dayjs(familiehendelsedato).add(1, 'day'), 'day'),
+            (period) =>
+                date.isSame(period.fom, 'day') ||
+                date.isSame(dayjs(familiehendelsedato).add(1, 'day'), 'day') ||
+                date.isSame(dayjs(barnehageplassdato), 'day'),
         )
     );
 };
 
-const isLastDay = (date: Dayjs, day: number, periods: SaksperiodeNy[]) => {
+const isLastDay = (date: Dayjs, day: number, periods: SaksperiodeNy[], barnehageplassdato: string) => {
     return (
         date.isoWeekday() === 7 ||
         date.isoWeekday() === 5 ||
         day === date.daysInMonth() ||
-        periods.some((period) => date.isSame(period.tom, 'day'))
+        periods.some((period) => date.isSame(period.tom, 'day') || date.isSame(dayjs(barnehageplassdato), 'day'))
     );
 };
 
@@ -76,10 +97,11 @@ const findDayType = (
     day: number,
     periods: SaksperiodeNy[],
     familiehendelsedato: string,
+    barnehageplassdato: string,
 ) => {
     const date = dayjs().year(year).month(month).date(day);
-    const firstDay = isFirstDay(date, day, periods, familiehendelsedato);
-    const lastDay = isLastDay(date, day, periods);
+    const firstDay = isFirstDay(date, day, periods, familiehendelsedato, barnehageplassdato);
+    const lastDay = isLastDay(date, day, periods, barnehageplassdato);
 
     if (firstDay && lastDay) {
         return DayType.FIRST_AND_LAST_DAY;
@@ -120,10 +142,24 @@ interface Props {
     periods: SaksperiodeNy[];
     useSmallerWidth?: boolean;
     familiehendelsedato: string;
+    barnehageplassdato: string;
 }
 
-const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false, familiehendelsedato }) => {
-    const months = findMonths(periods[0].fom, periods[periods.length - 1].tom);
+const Calendar: FunctionComponent<Props> = ({
+    periods,
+    useSmallerWidth = false,
+    familiehendelsedato,
+    barnehageplassdato,
+}) => {
+    const startFomDato = dayjs(familiehendelsedato).isSameOrBefore(periods[0].fom)
+        ? familiehendelsedato
+        : periods[0].fom;
+
+    const sluttTomDato = dayjs(barnehageplassdato).isSameOrAfter(periods[periods.length - 1].tom)
+        ? barnehageplassdato
+        : periods[periods.length - 1].tom;
+
+    const months = findMonths(startFomDato, sluttTomDato);
 
     return (
         <>
@@ -162,6 +198,7 @@ const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false, 
                                         day + 1,
                                         periods,
                                         familiehendelsedato,
+                                        barnehageplassdato,
                                     )}
                                     dayType={findDayType(
                                         monthData.year,
@@ -169,6 +206,7 @@ const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false, 
                                         day + 1,
                                         periods,
                                         familiehendelsedato,
+                                        barnehageplassdato,
                                     )}
                                 />
                             ),

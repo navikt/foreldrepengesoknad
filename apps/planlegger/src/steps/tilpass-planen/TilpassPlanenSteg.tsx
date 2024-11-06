@@ -22,7 +22,9 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import PlanvisningToggle, { Visningsmodus } from '../../components/planvisning-toggle/PlanvisningToggle';
 import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
+import { Situasjon } from '../../types/HvemPlanlegger';
 import { erBarnetAdoptert, getFamiliesituasjon } from '../../utils/barnetUtils';
+import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
 import HvaErMulig from './hva-er-mulig/HvaErMulig';
 import styles from './tilpassPlanenSteg.module.css';
 
@@ -53,6 +55,7 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
 
     const familiesituasjon = getFamiliesituasjon(omBarnet);
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
+    const barnehageplassdato = barnehagestartDato(omBarnet);
 
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, omBarnet);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, omBarnet);
@@ -73,6 +76,7 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
         erAdopsjon: erBarnetAdoptert(omBarnet),
         erFarEllerMedmor: true,
         erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
+        erAleneOmOmsorg: hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.MOR,
     });
     const kombinertPlanforslag = [...planforslag.søker1, ...planforslag.søker2].sort(sorterPerioder);
 
@@ -135,7 +139,11 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
                     <VStack gap="5">
                         {visningsmodus === 'kalender' && (
                             <div className={styles.calendar}>
-                                <Calendar periods={kombinertPlanforslag} familiehendelsedato={familiehendelsedato} />
+                                <Calendar
+                                    periods={kombinertPlanforslag}
+                                    barnehageplassdato={barnehageplassdato}
+                                    familiehendelsedato={familiehendelsedato}
+                                />
                             </div>
                         )}
                         <HStack gap="4">

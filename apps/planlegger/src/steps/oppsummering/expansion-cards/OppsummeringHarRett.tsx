@@ -27,10 +27,11 @@ import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-r
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { BluePanel, Calendar, IconCircleWrapper } from '@navikt/fp-ui';
-import { capitalizeFirstLetter } from '@navikt/fp-utils';
+import { UttaksdagenString, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { sorterPerioder } from '@navikt/fp-uttaksplan-ny';
 
 import { erBarnetAdoptert } from '../../../utils/barnetUtils';
+import { barnehagestartDato } from '../../barnehageplass/BarnehageplassSteg';
 
 const onToggleExpansionCard = (open: boolean) => {
     if (open) {
@@ -81,6 +82,29 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
     const antallUkerOgDagerAktivitetsfriKvote = getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskonto);
     const bareFarMedmorHarRett =
         harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
+    const barnehageplassdato = barnehagestartDato(barnet);
+
+    const getErFarEllerMedmor = () => {
+        if (
+            hvemPlanlegger.type === Situasjon.FAR ||
+            (hvemPlanlegger.type === Situasjon.MOR_OG_FAR && hvemHarRett === 'kunSøker2HarRett') ||
+            hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
+            (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR && hvemHarRett === 'kunSøker2HarRett')
+        ) {
+            return true;
+        }
+
+        return false;
+    };
+
+    let startdato = undefined;
+
+    if (
+        (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR || hvemPlanlegger.type === Situasjon.MOR_OG_FAR) &&
+        hvemHarRett === 'kunSøker2HarRett'
+    ) {
+        startdato = UttaksdagenString(familiehendelsedato).leggTil(30);
+    }
 
     const planforslag = lagForslagTilPlan({
         erDeltUttak: fordeling !== undefined,
@@ -89,8 +113,10 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
         fellesperiodeDagerMor: fordeling?.antallDagerSøker1,
         bareFarMedmorHarRett,
         erAdopsjon: erBarnetAdoptert(barnet),
-        erFarEllerMedmor: true,
+        erFarEllerMedmor: getErFarEllerMedmor(),
+        startdato,
         erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
+        erAleneOmOmsorg: hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.MOR,
     });
 
     const kombinertPlanforslag = [...planforslag.søker1, ...planforslag.søker2].sort(sorterPerioder);
@@ -309,6 +335,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                         <Calendar
                             periods={kombinertPlanforslag}
                             familiehendelsedato={familiehendelsedato}
+                            barnehageplassdato={barnehageplassdato}
                             useSmallerWidth
                         />
                     </VStack>

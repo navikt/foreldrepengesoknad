@@ -8,12 +8,14 @@ export interface DeltUttakParams {
     famDato: string;
     tilgjengeligeStønadskontoer: Stønadskonto[];
     fellesperiodeDagerMor: number | undefined;
+    startdato?: string;
 }
 
 export const deltUttak = ({
     famDato,
     tilgjengeligeStønadskontoer,
     fellesperiodeDagerMor,
+    startdato,
 }: DeltUttakParams): PlanForslag => {
     if (fellesperiodeDagerMor === undefined) {
         return {
@@ -22,7 +24,7 @@ export const deltUttak = ({
         };
     }
 
-    const førsteUttaksdag = UttaksdagenString(famDato).denneEllerNeste();
+    const førsteUttaksdag = UttaksdagenString(startdato ?? famDato).denneEllerNeste();
     const morsPerioder: SaksperiodeNy[] = [];
     const farsPerioder: SaksperiodeNy[] = [];
     const fellesperiodeDagerFarMedmor =

@@ -550,6 +550,21 @@ export const OppsummeringFarOgFarKunFar2HarRett: Story = {
             status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,
         },
-        stønadskontoer: FlereForsørgereHundreProsentTermin.args?.stønadskontoer,
+        stønadskontoer: {
+            '80': {
+                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 291 }],
+                minsteretter: {
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+            '100': {
+                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 230 }],
+                minsteretter: {
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+        },
     },
 };

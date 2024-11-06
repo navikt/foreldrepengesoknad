@@ -27,6 +27,7 @@ import { BodyShort, HStack, Heading, Select, ToggleGroup, VStack } from '@navikt
 
 import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { Calendar, Infobox, StepButtons } from '@navikt/fp-ui';
+import { UttaksdagenString } from '@navikt/fp-utils';
 import { useMedia } from '@navikt/fp-utils/src/hooks/useMedia';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { sorterPerioder } from '@navikt/fp-uttaksplan-ny';
@@ -34,6 +35,7 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
 import { erBarnetAdoptert } from '../../utils/barnetUtils';
+import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
 import styles from './planenDeresSteg.module.css';
 import OmÅTilpassePlanen from './tilpasse-planen/OmÅTilpassePlanen';
 import UforutsetteEndringer from './uforutsette-endringer/UforutsetteEndringer';
@@ -81,6 +83,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
         hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
 
     const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
+    const barnehageplassdato = barnehagestartDato(omBarnet);
 
     const oppdaterPeriodeOgFordeling = (value: string) => {
         const dekningsgrad = value as Dekningsgrad;
@@ -109,15 +112,39 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
     const bareFarMedmorHarRett =
         harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
 
+    const getErFarEllerMedmor = () => {
+        if (
+            hvemPlanlegger.type === Situasjon.FAR ||
+            (hvemPlanlegger.type === Situasjon.MOR_OG_FAR && hvemHarRett === 'kunSøker2HarRett') ||
+            hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
+            (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR && hvemHarRett === 'kunSøker2HarRett')
+        ) {
+            return true;
+        }
+
+        return false;
+    };
+
+    let startdato = undefined;
+
+    if (
+        (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR || hvemPlanlegger.type === Situasjon.MOR_OG_FAR) &&
+        hvemHarRett === 'kunSøker2HarRett'
+    ) {
+        startdato = UttaksdagenString(familiehendelsedato).leggTil(30);
+    }
+
     const planforslag = lagForslagTilPlan({
         erDeltUttak: fordeling !== undefined,
         famDato: familiehendelsedato,
+        startdato,
         tilgjengeligeStønadskontoer: valgtStønadskonto.kontoer,
         fellesperiodeDagerMor: fordeling?.antallDagerSøker1,
         bareFarMedmorHarRett,
         erAdopsjon: erBarnetAdoptert(omBarnet),
-        erFarEllerMedmor: true,
+        erFarEllerMedmor: getErFarEllerMedmor(),
         erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
+        erAleneOmOmsorg: hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.MOR,
     });
     const kombinertPlanforslag = [...planforslag.søker1, ...planforslag.søker2].sort(sorterPerioder);
 
@@ -232,7 +259,11 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
 
                     <VStack gap="5">
                         <div className={styles.calendar}>
-                            <Calendar periods={kombinertPlanforslag} familiehendelsedato={familiehendelsedato} />
+                            <Calendar
+                                periods={kombinertPlanforslag}
+                                barnehageplassdato={barnehageplassdato}
+                                familiehendelsedato={familiehendelsedato}
+                            />
                         </div>
                     </VStack>
                     {/* <Infobox
