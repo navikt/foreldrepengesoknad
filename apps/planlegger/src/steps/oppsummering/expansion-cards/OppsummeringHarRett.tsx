@@ -221,51 +221,27 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                             }}
                                         />
                                     </BodyShort>
-                                    {hvemHarRett === 'kunSøker1HarRett' ? (
-                                        <BodyShort>
-                                            <FormattedMessage
-                                                id="OppsummeringSteg.Periode"
-                                                values={{
-                                                    fom: intl.formatDate(planforslag.søker1[0].fom, {
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="OppsummeringSteg.Periode"
+                                            values={{
+                                                fom: intl.formatDate(planforslag.søker1[0].fom, {
+                                                    day: '2-digit',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                }),
+                                                tom: intl.formatDate(
+                                                    planforslag.søker1[planforslag.søker1.length - 1].tom,
+                                                    {
                                                         day: '2-digit',
                                                         month: 'short',
                                                         year: 'numeric',
-                                                    }),
-                                                    tom: intl.formatDate(
-                                                        planforslag.søker1[planforslag.søker1.length - 1].tom,
-                                                        {
-                                                            day: '2-digit',
-                                                            month: 'short',
-                                                            year: 'numeric',
-                                                        },
-                                                    ),
-                                                    b: (msg: any) => <b>{msg}</b>,
-                                                }}
-                                            />
-                                        </BodyShort>
-                                    ) : (
-                                        <BodyShort>
-                                            <FormattedMessage
-                                                id="OppsummeringSteg.Periode"
-                                                values={{
-                                                    fom: intl.formatDate(planforslag.søker1[0].fom, {
-                                                        day: '2-digit',
-                                                        month: 'short',
-                                                        year: 'numeric',
-                                                    }),
-                                                    tom: intl.formatDate(
-                                                        planforslag.søker2[planforslag.søker2.length - 1].tom,
-                                                        {
-                                                            day: '2-digit',
-                                                            month: 'short',
-                                                            year: 'numeric',
-                                                        },
-                                                    ),
-                                                    b: (msg: any) => <b>{msg}</b>,
-                                                }}
-                                            />
-                                        </BodyShort>
-                                    )}
+                                                    },
+                                                ),
+                                                b: (msg: any) => <b>{msg}</b>,
+                                            }}
+                                        />
+                                    </BodyShort>
                                 </VStack>
                             </BluePanel>
                         )}
