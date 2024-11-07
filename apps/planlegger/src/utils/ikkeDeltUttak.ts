@@ -130,7 +130,7 @@ const ikkeDeltUttakFødselFarMedmor = (
 
     if (erMorUfør !== true) {
         let startDatoNestePeriode = startDato;
-        if (andreAugust2022ReglerGjelder(famDato) && !!bareFarMedmorHarRett && !erAleneOmOmsorg && aktivitetsfriKvote) {
+        if (andreAugust2022ReglerGjelder(famDato) && bareFarMedmorHarRett && !erAleneOmOmsorg && aktivitetsfriKvote) {
             const aktivitetsFriPeriode: SaksperiodeNy = {
                 kontoType: StønadskontoType.AktivitetsfriKvote,
                 fom: getTidsperiodeString(startDato, aktivitetsfriKvote!.dager).fom,

@@ -73,7 +73,7 @@ describe('<HvorLangPeriodeSteg>', () => {
 
         expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
 
-        await userEvent.click(screen.getByText('100 % utbetaling over 46 uker'));
+        await userEvent.click(screen.getByText('100 % utbetaling over 40 uker'));
 
         expect(screen.queryByText('Når bare far skal ha foreldrepenger')).not.toBeInTheDocument();
         expect(screen.queryByText('Når bare én av fedrene skal ha foreldrepenger')).not.toBeInTheDocument();
@@ -142,7 +142,7 @@ describe('<HvorLangPeriodeSteg>', () => {
         expect(await screen.findAllByText('Hvor lenge')).toHaveLength(2);
         expect(screen.queryByText('Når bare én av fedrene skal ha foreldrepenger')).not.toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('100 % utbetaling over 0 uker'));
+        await userEvent.click(screen.getByText('100 % utbetaling over 40 uker'));
 
         await userEvent.click(screen.getByText('Neste'));
 

@@ -9,7 +9,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { erAlenesøker, getNavnPåSøker1, getNavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { finnUttaksdata, getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
+import { getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
 
 import { Button, HStack, Heading, VStack } from '@navikt/ds-react';
 
@@ -57,9 +57,6 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const barnehageplassdato = barnehagestartDato(omBarnet);
 
-    const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, omBarnet);
-    const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, omBarnet);
-
     const familiehendelsedato = getFamiliehendelsedato(omBarnet);
 
     const erAleneforsørger = erAlenesøker(hvemPlanlegger);
@@ -100,11 +97,6 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
 
                             {visningsmodus === 'kalender' && (
                                 <CalendarLabels
-                                    uttaksdata={
-                                        hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-                                            ? uttaksdata100
-                                            : uttaksdata80
-                                    }
                                     hvemPlanlegger={hvemPlanlegger}
                                     barnet={omBarnet}
                                     hvemHarRett={hvemHarRett}

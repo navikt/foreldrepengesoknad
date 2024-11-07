@@ -16,12 +16,7 @@ import { Situasjon } from 'types/HvemPlanlegger';
 import { erAlenesøker, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
-import {
-    finnAntallUkerOgDagerMedForeldrepenger,
-    finnUttaksdata,
-    getFamiliehendelsedato,
-    lagForslagTilPlan,
-} from 'utils/uttakUtils';
+import { finnAntallUkerOgDagerMedForeldrepenger, getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
 
 import { BodyShort, HStack, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
@@ -100,9 +95,6 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
         hvemPlanlegger.type === Situasjon.FAR_OG_FAR &&
         (hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett');
 
-    const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, omBarnet);
-    const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, omBarnet);
-
     const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(stønadskonto100);
     const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(stønadskonto80);
     const familiehendelsedato = getFamiliehendelsedato(omBarnet);
@@ -152,6 +144,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
     const erOversiktSteg = true;
     const isDesktop = useMedia('screen and (min-width: 480)');
+
     return (
         <form>
             <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
@@ -248,16 +241,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                     </VStack>
 
                     <VStack gap="5">
-                        <CalendarLabels
-                            uttaksdata={
-                                hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT
-                                    ? uttaksdata100
-                                    : uttaksdata80
-                            }
-                            hvemPlanlegger={hvemPlanlegger}
-                            barnet={omBarnet}
-                            hvemHarRett={hvemHarRett}
-                        />
+                        <CalendarLabels hvemPlanlegger={hvemPlanlegger} barnet={omBarnet} hvemHarRett={hvemHarRett} />
                     </VStack>
 
                     <VStack gap="5">
