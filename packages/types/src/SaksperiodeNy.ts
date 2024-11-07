@@ -10,6 +10,7 @@ import { UtsettelseÅrsakType } from './UtsettelseÅrsakType';
 export interface SaksperiodeNy {
     fom: string;
     tom: string;
+    forelder?: Forelder;
     resultat?: PeriodeResultat;
     flerbarnsdager?: boolean;
     kontoType?: StønadskontoType;
@@ -19,5 +20,4 @@ export interface SaksperiodeNy {
     overføringÅrsak?: OverføringÅrsakType;
     samtidigUttak?: number;
     morsAktivitet?: MorsAktivitet;
-    forelder?: Forelder;
 }

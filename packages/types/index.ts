@@ -17,6 +17,7 @@ export type { Tidsperiode } from './src/Tidsperiode';
 export type { Satser } from './src/Satser';
 export type { NavnPåForeldre } from './src/NavnPåForeldre';
 export type { AppName } from './src/AppName';
+export type { PlanForslag } from './src/PlanForslag';
 export type { DatepickerDateRange } from './src/DatepickerDateRange';
 export type { EgenNæring } from './src/EgenNæring';
 export { Næringstype, EGEN_NÆRING_ID } from './src/EgenNæring';

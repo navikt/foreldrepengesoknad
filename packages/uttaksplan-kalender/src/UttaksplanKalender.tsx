@@ -263,7 +263,7 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
                         erFarEllerMedmor={erFarEllerMedmor}
                     />
                 </div>
-                <Calendar periods={periods} />
+                <Calendar periods={periods} familiehendelsedato={familiehendelsesdato} />
             </div>
             <Button className={styles.button} variant="tertiary" icon={<DownloadIcon />} onClick={() => toPDF()}>
                 <FormattedMessage id="kalender.lastNed" />

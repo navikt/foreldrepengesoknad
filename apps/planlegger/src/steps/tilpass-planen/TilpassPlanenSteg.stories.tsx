@@ -14,7 +14,7 @@ import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import PlanenDeresSteg from './PlanenDeresSteg';
+import TilpassPlanenSteg from './TilpassPlanenSteg';
 
 const MINSTERETTER = {
     farRundtFødsel: 10,
@@ -28,11 +28,11 @@ type StoryArgs = {
     omBarnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
     gåTilNesteSide?: (action: Action) => void;
-} & ComponentProps<typeof PlanenDeresSteg>;
+} & ComponentProps<typeof TilpassPlanenSteg>;
 
 const meta = {
-    title: 'steg/PlanenDeresSteg/Fødsel',
-    component: PlanenDeresSteg,
+    title: 'steg/TilpassPlanenSteg',
+    component: TilpassPlanenSteg,
     render: ({
         gåTilNesteSide = action('button-click'),
         hvemPlanlegger,
@@ -56,7 +56,7 @@ const meta = {
                         [ContextDataType.ARBEIDSSITUASJON]: arbeidssituasjon,
                     }}
                 >
-                    <PlanenDeresSteg stønadskontoer={stønadskontoer} locale={locale} />
+                    <TilpassPlanenSteg stønadskontoer={stønadskontoer} locale={locale} />
                 </PlanleggerDataContext>
             </MemoryRouter>
         );
@@ -262,7 +262,6 @@ export const BareMorSøkerOgHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: undefined,
         },
-        stønadskontoer: MorOgFarKunMorHarRett.args?.stønadskontoer,
     },
 };
 
@@ -294,27 +293,10 @@ export const BareFarSøkerOgHarRett: Story = {
 export const FarOgFarBeggeHarRett: Story = {
     args: {
         ...MorOgFarBeggeHarRett.args,
-        fordeling: undefined,
         hvemPlanlegger: {
             navnPåFar: 'Espen Utvikler',
             navnPåMedfar: 'Anders Utvikler',
             type: Situasjon.FAR_OG_FAR,
-        },
-        stønadskontoer: {
-            '80': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 291 }],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            },
-            '100': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 230 }],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            },
         },
     },
 };
@@ -327,22 +309,6 @@ export const FarOgFarKunFarHarRett: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: false,
         },
-        stønadskontoer: {
-            '80': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 291 }],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            },
-            '100': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 230 }],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            },
-        },
     },
 };
 
@@ -353,22 +319,6 @@ export const FarOgFarKunMedfarHarRett: Story = {
         arbeidssituasjon: {
             status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,
-        },
-        stønadskontoer: {
-            '80': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 291 }],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            },
-            '100': {
-                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 230 }],
-                minsteretter: {
-                    farRundtFødsel: 10,
-                    toTette: 0,
-                },
-            },
         },
     },
 };

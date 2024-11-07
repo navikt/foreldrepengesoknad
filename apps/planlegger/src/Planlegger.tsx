@@ -30,12 +30,15 @@ const finnRettighetstype = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHar
     if (hvemPlanlegger.type === Situasjon.MOR || hvemPlanlegger.type === Situasjon.FAR) {
         return 'ALENEOMSORG';
     }
-    if (
-        hvemHarRett === 'beggeHarRett' ||
-        (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(omBarnet))
-    ) {
+
+    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(omBarnet)) {
+        return 'BARE_SØKER_RETT';
+    }
+
+    if (hvemHarRett === 'beggeHarRett') {
         return 'BEGGE_RETT';
     }
+
     return 'BARE_SØKER_RETT';
 };
 

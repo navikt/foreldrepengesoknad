@@ -9,7 +9,7 @@ import { erAlenesøker, erMorDelAvSøknaden, getFornavnPåSøker1, getFornavnPå
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerAktivitetsfriKvote, getAntallUkerOgDagerForeldrepenger } from 'utils/stønadskontoerUtils';
-import { UttakUkerOgDager, Uttaksdata, finnUttaksdata } from 'utils/uttakUtils';
+import { UttakUkerOgDager, Uttaksdata, getFamiliehendelsedato } from 'utils/uttakUtils';
 
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
@@ -49,9 +49,7 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
     const kunEnPartSkalHa =
         erAlenesøker(hvemPlanlegger) || hvemHarRett === 'kunSøker1HarRett' || hvemHarRett === 'kunSøker2HarRett';
 
-    const uttaksdata = finnUttaksdata(hvemHarRett, hvemPlanlegger, valgtStønadskonto, barnet);
-
-    const familiehendelsedato = intl.formatDate(uttaksdata.familiehendelsedato, {
+    const familiehendelsedato = intl.formatDate(getFamiliehendelsedato(barnet), {
         day: '2-digit',
         month: 'long',
         year: 'numeric',

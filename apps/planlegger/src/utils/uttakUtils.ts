@@ -4,12 +4,14 @@ import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { PlanForslag, Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { Uttaksdagen, treUkerSiden } from '@navikt/fp-utils';
 
 import { erFarSøker2, erMedmorDelAvSøknaden } from './HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from './barnetUtils';
+import { deltUttak } from './deltUttak';
 import { HvemHarRett } from './hvemHarRettUtils';
+import { ikkeDeltUttak } from './ikkeDeltUttak';
 import {
     getAntallDagerAktivitetsfriKvote,
     getAntallDagerFedrekvote,
@@ -207,7 +209,7 @@ const finnEnsligUttaksdata = (
         );
 
         const startdatoSøker1 = erBarnetAdoptert(barnet)
-            ? dayjs(familiehendelsedato).add(1, 'day')
+            ? dayjs(familiehendelsedato)
             : dayjs(familiehendelsedato).add(6, 'weeks');
 
         return {
@@ -231,7 +233,7 @@ const finnEnsligUttaksdata = (
         );
 
         const startdatoSøker1 = erBarnetAdoptert(barnet)
-            ? dayjs(familiehendelsedato).add(1, 'day')
+            ? dayjs(familiehendelsedato)
             : dayjs(familiehendelsedato).add(6, 'weeks');
 
         return {
@@ -276,7 +278,11 @@ export const finnUttaksdata = (
     barnet: OmBarnet,
     antallDagerFellesperiodeSøker1?: number,
 ): Uttaksdata => {
-    return hvemHarRett === 'beggeHarRett' || (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(barnet))
+    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erBarnetAdoptert(barnet)) {
+        return finnEnsligUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, hvemHarRett);
+    }
+
+    return hvemHarRett === 'beggeHarRett'
         ? finnDeltUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, antallDagerFellesperiodeSøker1)
         : finnEnsligUttaksdata(hvemPlanlegger, valgtStønadskonto, barnet, hvemHarRett);
 };
@@ -324,15 +330,63 @@ export const findMonthsAndWeeksAndDaysBetween = (startDate: string, endDate: str
     return { måneder: months, uker: weeks - months * 4, dager: totalDays };
 };
 
-export const finnAntallUkerOgDagerMedForeldrepenger = (uttaksdata: Uttaksdata): UttakUkerOgDager => {
-    const { startdatoPeriode1, sluttdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2 } = uttaksdata;
-    const antallUkerOgDager = findDaysAndWeeksBetween(startdatoPeriode1, sluttdatoPeriode1);
-    if (startdatoPeriode2 && sluttdatoPeriode2) {
-        const ukerOgDagerPeriode2 = findDaysAndWeeksBetween(startdatoPeriode2, sluttdatoPeriode2);
-        return {
-            uker: antallUkerOgDager.uker + ukerOgDagerPeriode2.uker,
-            dager: antallUkerOgDager.dager + ukerOgDagerPeriode2.dager,
-        };
+export const finnAntallUkerOgDagerMedForeldrepenger = (
+    stønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
+): UttakUkerOgDager => {
+    const { kontoer } = stønadskonto;
+    return {
+        uker: kontoer.reduce((prev: number, current: Stønadskonto) => {
+            return Math.round(current.dager / 5) + prev;
+        }, 0),
+        dager: kontoer.reduce((prev: number, current: Stønadskonto, index: number) => {
+            const result = current.dager + prev;
+
+            if (index === kontoer.length - 1) {
+                return result % 5;
+            }
+
+            return result;
+        }, 0),
+    };
+};
+
+interface LagForslagProps {
+    erDeltUttak: boolean;
+    famDato: string;
+    tilgjengeligeStønadskontoer: Stønadskonto[];
+    fellesperiodeDagerMor: number | undefined;
+    erAdopsjon: boolean;
+    erFarEllerMedmor: boolean;
+    erMorUfør: boolean;
+    bareFarMedmorHarRett: boolean;
+    erAleneOmOmsorg: boolean;
+    startdato?: string;
+}
+
+export const lagForslagTilPlan = ({
+    erDeltUttak,
+    famDato,
+    tilgjengeligeStønadskontoer,
+    fellesperiodeDagerMor,
+    erAdopsjon,
+    erFarEllerMedmor,
+    erMorUfør,
+    bareFarMedmorHarRett,
+    erAleneOmOmsorg,
+    startdato,
+}: LagForslagProps): PlanForslag => {
+    if (erDeltUttak) {
+        return deltUttak({ famDato, tilgjengeligeStønadskontoer, fellesperiodeDagerMor, startdato });
     }
-    return antallUkerOgDager;
+
+    return ikkeDeltUttak({
+        situasjon: erAdopsjon ? 'adopsjon' : 'fødsel',
+        famDato,
+        erFarEllerMedmor,
+        tilgjengeligeStønadskontoer,
+        erMorUfør,
+        bareFarMedmorHarRett,
+        erAleneOmOmsorg,
+        startdato,
+    });
 };
