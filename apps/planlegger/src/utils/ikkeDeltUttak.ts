@@ -113,7 +113,7 @@ const ikkeDeltUttakFødselMor = (
 
     perioder.push(foreldrepengerPeriode);
 
-    return { søker1: perioder.sort(sorterPerioder), søker2: [] };
+    return { søker1: [...perioder].sort(sorterPerioder), søker2: [] };
 };
 
 const ikkeDeltUttakFødselFarMedmor = (
@@ -182,7 +182,7 @@ const ikkeDeltUttakFødselFarMedmor = (
         }
     }
 
-    return { søker1: perioder.sort(sorterPerioder), søker2: [] };
+    return { søker1: [...perioder].sort(sorterPerioder), søker2: [] };
 };
 
 const ikkeDeltUttakFødsel = (

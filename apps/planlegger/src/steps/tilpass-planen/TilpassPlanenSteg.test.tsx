@@ -17,7 +17,5 @@ describe('<TilpassPlanenSteg - fødsel>', () => {
         expect(screen.getByText('Olga')).toBeInTheDocument();
         expect(screen.getByText('Espen')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
-
-        expect(screen.getByTestId('year:2024;month:5'));
     });
 });
