@@ -5,8 +5,8 @@ import { Alert, VStack } from '@navikt/ds-react';
 
 import { erSakOppdatertOptions } from './../../api/api';
 import BekreftelseSendtSøknad from './../../components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
-import HarIkkeSaker from './../../components/har-ikke-saker/HarIkkeSaker';
-import HarSaker from './../../components/har-saker/HarSaker';
+import { HarIkkeSaker } from './../../components/har-ikke-saker/HarIkkeSaker';
+import { HarSaker } from './../../components/har-saker/HarSaker';
 import { ForsideHeader } from './../../components/header/Header';
 import { SakLink } from './../../components/sak-link/SakLink';
 import {

@@ -5,6 +5,7 @@ import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { SakLink } from '../sak-link/SakLink';
+import { SøkelenkerPanel } from '../søkelenker/SøkelenkerPanel';
 import { useSetBackgroundColor } from './../../hooks/useBackgroundColor';
 import { GruppertSak } from './../../types/GruppertSak';
 import { guid } from './../../utils/guid';
@@ -15,13 +16,13 @@ interface Props {
     harMinstEttArbeidsforhold: boolean;
 }
 
-const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker, harMinstEttArbeidsforhold }) => {
+export const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker, harMinstEttArbeidsforhold }) => {
     const intl = useIntl();
     useSetBackgroundColor('blue');
 
     return (
         <>
-            {grupperteSaker.map((gruppering) => {
+            {grupperteSaker.map((gruppering, index) => {
                 const { tittel, undertittel } = getSakTittel({
                     barngruppering: gruppering.barn,
                     familiehendelsedato: gruppering.familiehendelsedato,
@@ -48,11 +49,10 @@ const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker, harMinstEttA
                                 );
                             })}
                         </VStack>
+                        {index === 0 && <SøkelenkerPanel doBleed />}
                     </div>
                 );
             })}
         </>
     );
 };
-
-export default HarSaker;

@@ -10,7 +10,6 @@ import { BarnFraNesteSak, EksisterendeSak, Periode } from '@navikt/fp-common';
 import { LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-import Environment from '../Environment';
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
 import SøknadRoutes from './routes';
 
@@ -130,7 +129,7 @@ const useMellomlagreSøknad = (
                 );
 
                 try {
-                    await ky.post(`${Environment.PUBLIC_PATH}/rest/storage/foreldrepenger`, {
+                    await ky.post(`${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`, {
                         json: data,
                         headers: {
                             fnr: fødselsnr,

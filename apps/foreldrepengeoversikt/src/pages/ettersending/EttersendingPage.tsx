@@ -22,8 +22,7 @@ import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import { sendEttersending } from '../../api/api';
-import Environment from '../../appData/Environment';
+import { sendEttersending, urlPrefiks } from '../../api/api';
 import { EttersendingHeader } from '../../components/header/Header';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
@@ -177,7 +176,7 @@ const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
                         attachmentType={AttachmentType.MORS_AKTIVITET_DOKUMENTASJON}
                         skjemanummer={type}
                         existingAttachments={vedlegg}
-                        saveAttachment={getSaveAttachmentFetch(Environment.PUBLIC_PATH, mapYtelse(sak!.ytelse))}
+                        saveAttachment={getSaveAttachmentFetch(urlPrefiks, mapYtelse(sak!.ytelse))}
                         skjemanummerTextMap={
                             sak
                                 ? getRelevanteSkjemanummer(sak).reduce(

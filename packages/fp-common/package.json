@@ -57,7 +57,7 @@
         "mockdate": "^3.0.5",
         "npm-run-all": "^4.1.5",
         "sass": "^1.80.5",
-        "vite": "^5.4.10",
+        "vite": "^5.4.9",
         "vite-plugin-checker": "^0.8.0"
     },
     "peerDependencies": {

@@ -34,7 +34,10 @@ const meta = {
     parameters: {
         msw: {
             handlers: [
-                http.post('https://fp/rest/storage/foreldrepenger', () => new HttpResponse(null, { status: 200 })),
+                http.post(
+                    `${import.meta.env.BASE_URL}/rest/storage/foreldrepenger`,
+                    () => new HttpResponse(null, { status: 200 }),
+                ),
             ],
         },
     },

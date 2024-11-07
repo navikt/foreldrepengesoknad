@@ -15,7 +15,6 @@ import { FileUploader } from '@navikt/fp-ui';
 import { bemUtils } from '@navikt/fp-utils';
 import { PeriodelisteItemHeader } from '@navikt/fp-uttaksplan';
 
-import Environment from '../../../Environment';
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
 import './periode-attachment-uploader.css';
 
@@ -106,7 +105,7 @@ const UttakUploader: FunctionComponent<Props> = ({
 
                 return updateAttachments(attachmentsMedMetadata);
             }}
-            saveAttachment={getSaveAttachmentFetch(Environment.PUBLIC_PATH, 'foreldrepenger')}
+            saveAttachment={getSaveAttachmentFetch(import.meta.env.BASE_URL, 'foreldrepenger')}
         />
     );
 };

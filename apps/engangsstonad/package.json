@@ -11,6 +11,7 @@
         "build": "vite build",
         "dev-api": "node ./mock-api/mock-api-server.cjs",
         "dev": "node ./dev-server.cjs",
+        "dev-vite": "vite",
         "test": "vitest run",
         "lint:eslint": "eslint \"./src/**/*.{js,ts,tsx}\"",
         "lint:tsc": "tsc --noEmit",
@@ -87,7 +88,7 @@
         "storybook": "8.3.6",
         "tsconfig": "workspace:*",
         "typescript": "^5.6.3",
-        "vite": "^5.4.10",
+        "vite": "^5.4.9",
         "vite-plugin-checker": "^0.8.0",
         "vitest": "^2.1.4"
     },

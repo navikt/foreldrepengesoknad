@@ -22,6 +22,9 @@
     "saksoversikt.kontaktOss": "Finner du ikke det du leter etter? Ta kontakt med oss.",
     "saksoversikt.dinPlan.vedtatt": "Din plan",
     "saksoversikt.dinPlan.søktOm": "Dette har du søkt om",
+    "saksoversikt.endre.kontonr": "Endre kontonummer",
+    "saksoversikt.engangsstonad": "Engangsstønad på {sum} kr",
+    "saksoversikt.utbetales": "Utbetales til kontonummer {kontonr} hvis søknaden innvilges",
     "oppgaver.feilVedHentingAvOppgaver": "Vi har problemer med å hente informasjon om oppgavene i saken din.",
     "oppgaver.tittel.tilbakebetaling": "Svar på varsel om tilbakebetaling",
     "miniDialog.tilbakekreving.tittel": "NAV har sendt deg et varsel om at du har fått for mye utbetalte { sakstype }. Før vi behandler saken, kan du gi en uttalelse og legge ved relevant dokumentasjon om du har det. Du finner relevant informasjon om hva som har skjedd i saken og dine rettigheter i varselet som vi har sendt til deg.",
@@ -165,5 +168,12 @@
     "KontonummerInfoTekst.Mangler": "NAV mangler kontonummeret som {ytelse, select, foreldrepenger {foreldrepengene} svangerskapspenger {svangerskapspengene} other {engangsstønaden}} vil bli betalt til hvis du får søknaden din innvilget.",
     "DinPlan.EndrePlan": "Endre planen",
     "DinPlan.Liste": "Liste",
-    "DinPlan.Kalender": "Kalender"
+    "DinPlan.Kalender": "Kalender",
+    "SøkelenkerPanel.HarRett": "Les om hva du har rett på",
+    "SøkelenkerPanel.VenterBarn": "Hvis du venter eller har nylig fått barn",
+    "SøkelenkerPanel.SokFp": "Søk om foreldrepenger",
+    "SøkelenkerPanel.SokSvp": "Søk om svangerskapspenger",
+    "SøkelenkerPanel.SokEs": "Søk om engangsstønad",
+    "HarIkkeSaker.IngenSoknader": "Du har ingen søknader om foreldrepenger, engangsstønad eller svangerskapspenger",
+    "HarIkkeSaker.ToUker": "Det kan ta opp til to uker for å få svar dersom du har søkt via brev."
 }

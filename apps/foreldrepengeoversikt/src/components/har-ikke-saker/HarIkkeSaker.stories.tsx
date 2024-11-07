@@ -1,10 +1,18 @@
 import { Meta, StoryObj } from '@storybook/react/*';
+import { MemoryRouter } from 'react-router-dom';
 
-import HarIkkeSaker from './HarIkkeSaker';
+import { HarIkkeSaker } from './HarIkkeSaker';
 
 const meta = {
     title: 'HarIkkeSaker',
     component: HarIkkeSaker,
+    render: (props) => {
+        return (
+            <MemoryRouter>
+                <HarIkkeSaker {...props} />
+            </MemoryRouter>
+        );
+    },
 } satisfies Meta<typeof HarIkkeSaker>;
 export default meta;
 

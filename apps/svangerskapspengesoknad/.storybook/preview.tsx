@@ -22,7 +22,6 @@ scriptTag.id = 'nav:appSettings';
 scriptTag.innerHTML = JSON.stringify({
     LOG_VALIDATION: 'test',
     INNSYN: 'test',
-    PUBLIC_PATH: 'https://svp',
 });
 document.head.appendChild(scriptTag);
 

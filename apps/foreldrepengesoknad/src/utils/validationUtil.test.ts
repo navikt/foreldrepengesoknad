@@ -79,11 +79,11 @@ describe('validationUtil', () => {
     it('skal ikke gi feilmelding når frn er utenlandsk og fnr inneholder ulovlige tegn', () => {
         const søkerFnr = '08088620241';
         const erUtenlandskFnr = true;
-        const andrePartFnr = '887–862024';
+        const andrePartFnr = '887<>862024';
 
         const resultat = validateFødselsnummer(intl, søkerFnr, 'fødselsnummer', erUtenlandskFnr)(andrePartFnr);
 
-        expect(resultat).toBe('– er ugyldige tegn i feltet "fødselsnummer".');
+        expect(resultat).toBe('<> er ugyldige tegn i feltet "fødselsnummer".');
     });
 });
 
@@ -93,8 +93,8 @@ describe('getIllegalChars', () => {
         expect(result).toEqual('');
     });
     it('should return invalid chars for invalid string', () => {
-        const result = getIllegalChars('¤Special !@#%^&*()`~');
-        expect(result).toEqual('¤#^*`~');
+        const result = getIllegalChars('¤Special !@#%^&*()`~<>');
+        expect(result).toEqual('~<>');
     });
     it('should return \u2f8a (glyphen) as invalid char', () => {
         const result = getIllegalChars('\u2f8aSome text');

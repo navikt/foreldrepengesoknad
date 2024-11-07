@@ -53,7 +53,7 @@ export const Terminbekreftelse: Story = {
         msw: {
             handlers: [
                 http.post(
-                    'https://es/rest/storage/engangsstonad/vedlegg',
+                    `${import.meta.env.BASE_URL}/rest/storage/engangsstonad/vedlegg`,
                     () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
                 ),
             ],
@@ -75,7 +75,7 @@ export const Adopsjonsbekreftelse: Story = {
         msw: {
             handlers: [
                 http.post(
-                    'https://es/rest/storage/engangsstonad/vedlegg',
+                    `${import.meta.env.BASE_URL}/rest/storage/engangsstonad/vedlegg`,
                     () => new HttpResponse('uuid-test', { status: 200, headers: { location: 'test.com' } }),
                 ),
             ],
@@ -98,7 +98,7 @@ export const FeilerOpplastinger: Story = {
         msw: {
             handlers: [
                 http.post(
-                    'https://es/rest/storage/engangsstonad/vedlegg',
+                    `${import.meta.env.BASE_URL}/rest/storage/engangsstonad/vedlegg`,
                     () => new HttpResponse(null, { status: 400 }),
                 ),
             ],

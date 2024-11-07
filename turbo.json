@@ -52,7 +52,6 @@
         "INNSYN",
         "NODE_ENV",
         "ENV",
-        "PUBLIC_PATH",
         "PORT"
     ]
 }

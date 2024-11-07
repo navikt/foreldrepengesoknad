@@ -34,7 +34,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     parameters: {
         msw: {
-            handlers: [http.get('https://oversikt/rest/innsyn/v2/saker', () => HttpResponse.json(saker))],
+            handlers: [http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker))],
         },
     },
     args: {
@@ -58,7 +58,7 @@ export const FarSøker: Story = {
     parameters: {
         msw: {
             handlers: [
-                http.get('https://oversikt/rest/innsyn/v2/saker', () =>
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () =>
                     HttpResponse.json({
                         foreldrepenger: [
                             {
@@ -67,7 +67,6 @@ export const FarSøker: Story = {
                                 sakAvsluttet: false,
                                 kanSøkeOmEndring: true,
                                 sakTilhørerMor: false,
-                                sisteSøknadMottattDato: '2024-09-31',
                                 gjelderAdopsjon: false,
                                 morUføretrygd: false,
                                 harAnnenForelderTilsvarendeRettEØS: false,

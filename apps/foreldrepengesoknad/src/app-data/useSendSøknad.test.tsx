@@ -221,7 +221,7 @@ describe('useEsSendSøknad', () => {
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
-            'https://fp/rest/soknad',
+            `${import.meta.env.BASE_URL}/rest/soknad`,
             expect.objectContaining({
                 headers: {
                     fnr: '02343434',
@@ -332,7 +332,7 @@ describe('useEsSendSøknad', () => {
         expect(deleteMock).toHaveBeenCalledOnce();
         expect(postMock).toHaveBeenNthCalledWith(
             1,
-            'https://fp/rest/soknad/endre',
+            `${import.meta.env.BASE_URL}/rest/soknad/endre`,
             expect.objectContaining({
                 headers: {
                     fnr: '02343434',
