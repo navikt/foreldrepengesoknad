@@ -254,7 +254,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                                         year: 'numeric',
                                                     }),
                                                     tom: intl.formatDate(
-                                                        planforslag.søker1[planforslag.søker1.length - 1].tom,
+                                                        planforslag.søker2[planforslag.søker2.length - 1].tom,
                                                         {
                                                             day: '2-digit',
                                                             month: 'short',
