@@ -330,17 +330,24 @@ export const findMonthsAndWeeksAndDaysBetween = (startDate: string, endDate: str
     return { måneder: months, uker: weeks - months * 4, dager: totalDays };
 };
 
-export const finnAntallUkerOgDagerMedForeldrepenger = (uttaksdata: Uttaksdata): UttakUkerOgDager => {
-    const { startdatoPeriode1, sluttdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2 } = uttaksdata;
-    const antallUkerOgDager = findDaysAndWeeksBetween(startdatoPeriode1, sluttdatoPeriode1);
-    if (startdatoPeriode2 && sluttdatoPeriode2) {
-        const ukerOgDagerPeriode2 = findDaysAndWeeksBetween(startdatoPeriode2, sluttdatoPeriode2);
-        return {
-            uker: antallUkerOgDager.uker + ukerOgDagerPeriode2.uker,
-            dager: antallUkerOgDager.dager + ukerOgDagerPeriode2.dager,
-        };
-    }
-    return antallUkerOgDager;
+export const finnAntallUkerOgDagerMedForeldrepenger = (
+    stønadskonto: TilgjengeligeStønadskontoerForDekningsgrad,
+): UttakUkerOgDager => {
+    const { kontoer } = stønadskonto;
+    return {
+        uker: kontoer.reduce((prev: number, current: Stønadskonto) => {
+            return Math.round(current.dager / 5) + prev;
+        }, 0),
+        dager: kontoer.reduce((prev: number, current: Stønadskonto, index: number) => {
+            const result = current.dager + prev;
+
+            if (index === kontoer.length - 1) {
+                return result % 5;
+            }
+
+            return result;
+        }, 0),
+    };
 };
 
 interface LagForslagProps {

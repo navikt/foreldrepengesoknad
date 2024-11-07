@@ -121,7 +121,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
 
     const kombinertPlanforslag = [...planforslag.søker1, ...planforslag.søker2].sort(sorterPerioder);
 
-    const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata);
+    const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(valgtStønadskonto);
 
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
