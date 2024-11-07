@@ -37,7 +37,7 @@
         "@navikt/fp-uttaksplan-ny": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
         "@navikt/nav-dekoratoren-moduler": "2.1.6",
-        "@sentry/browser": "^7.109.0",
+        "@sentry/browser": "^8.37.1",
         "@tanstack/react-query": "5.59.16",
         "@tanstack/react-query-devtools": "^5.59.16",
         "amplitude-js": "^8.21.9",
