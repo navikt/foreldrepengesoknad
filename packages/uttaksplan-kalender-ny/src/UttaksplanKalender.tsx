@@ -319,7 +319,7 @@ export const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
                         erFarEllerMedmor={erFarEllerMedmor}
                     />
                 </div>
-                <Calendar periods={perioderForKalendervisning} />
+                <Calendar periods={perioderForKalendervisning} familiehendelsedato={familiehendelsesdato} />
             </div>
             <Button className={styles.button} variant="tertiary" icon={<DownloadIcon />} onClick={() => toPDF()}>
                 <FormattedMessage id="kalender.lastNed" />

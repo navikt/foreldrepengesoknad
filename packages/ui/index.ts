@@ -25,6 +25,7 @@ export { default as IntlProvider } from './src/i18n/IntlProvider';
 export { default as Step } from './src/step/page-step/Step';
 export { default as ProgressStepper } from './src/step/progress-stepper/ProgressStepper';
 export { default as Calendar } from './src/calendar/Calendar';
+export type { Period } from './src/calendar/Calendar';
 export { default as CalendarLabel } from './src/calendar/label/CalendarLabel';
 export type { ProgressStep } from './src/step/progress-stepper/ProgressStepper';
 export { default as Page } from './src/page/Page';
