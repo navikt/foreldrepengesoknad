@@ -21,7 +21,7 @@ export const utledHvemSomHarRett = (arbeidssituasjon: Arbeidssituasjon): HvemHar
     return kunSøker2HarRett ? 'kunSøker2HarRett' : 'ingenHarRett';
 };
 
-export const harMedmorEllerFarSøker2Rett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
+export const harKunMedmorEllerFarSøker2Rett = (hvemHarRett: HvemHarRett, hvemPlanlegger: HvemPlanlegger): boolean =>
     hvemHarRett === 'kunSøker2HarRett' &&
     (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR ||
         hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||

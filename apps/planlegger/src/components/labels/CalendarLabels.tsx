@@ -4,8 +4,12 @@ import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
-import { HvemHarRett, harKunFarSøker1Rett, harKunMorRett, harMedmorEllerFarSøker2Rett } from 'utils/hvemHarRettUtils';
-import { Uttaksdata } from 'utils/uttakUtils';
+import {
+    HvemHarRett,
+    harKunFarSøker1Rett,
+    harKunMedmorEllerFarSøker2Rett,
+    harKunMorRett,
+} from 'utils/hvemHarRettUtils';
 
 import { HStack, VStack } from '@navikt/ds-react';
 
@@ -17,12 +21,11 @@ import ForeldrepengerLabel from './calendar-labels/ForeldrepengerLabel';
 
 interface Props {
     barnet: OmBarnet;
-    uttaksdata: Uttaksdata;
     hvemPlanlegger: HvemPlanlegger;
     hvemHarRett: HvemHarRett;
 }
 
-const CalendarLabels: FunctionComponent<Props> = ({ barnet, uttaksdata, hvemPlanlegger, hvemHarRett }) => {
+const CalendarLabels: FunctionComponent<Props> = ({ barnet, hvemPlanlegger, hvemHarRett }) => {
     const intl = useIntl();
 
     const erAdoptert = erBarnetAdoptert(barnet);
@@ -30,8 +33,6 @@ const CalendarLabels: FunctionComponent<Props> = ({ barnet, uttaksdata, hvemPlan
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
     const søker1Tekst = getFornavnPåSøker1(hvemPlanlegger, intl);
     const søker2Tekst = getFornavnPåSøker2(hvemPlanlegger, intl);
-
-    const { startdatoPeriode1, sluttdatoPeriode1, startdatoPeriode2, sluttdatoPeriode2 } = uttaksdata;
 
     const erFarOgFarOgFødsel = erFarOgFar && !erAdoptert;
     const erFarOgFarOgAdopsjon = erFarOgFar && erAdoptert;
@@ -44,9 +45,7 @@ const CalendarLabels: FunctionComponent<Props> = ({ barnet, uttaksdata, hvemPlan
     const skalViseAktivitetskravLabels =
         !erFarOgFarOgFødsel &&
         søker2Tekst &&
-        startdatoPeriode2 &&
-        sluttdatoPeriode2 &&
-        (harMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) ||
+        (harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) ||
             (hvemHarRett === 'kunSøker1HarRett' && erFarOgFarOgAdopsjon));
 
     const farOgFarAdopsjonDerKunSøker1HarRett = hvemHarRett === 'kunSøker1HarRett' && erFarOgFarOgAdopsjon;
@@ -55,19 +54,8 @@ const CalendarLabels: FunctionComponent<Props> = ({ barnet, uttaksdata, hvemPlan
         <VStack gap="1">
             {skalViseAntallUkerLabels && (
                 <HStack gap="2">
-                    <AntallUkerFpLabel
-                        søkerTekst={søker1Tekst}
-                        startdato={startdatoPeriode1}
-                        sluttdato={sluttdatoPeriode1}
-                        isBluePanel
-                    />
-                    {søker2Tekst && hvemHarRett === 'beggeHarRett' && startdatoPeriode2 && sluttdatoPeriode2 && (
-                        <AntallUkerFpLabel
-                            søkerTekst={søker2Tekst}
-                            startdato={startdatoPeriode2}
-                            sluttdato={sluttdatoPeriode2}
-                        />
-                    )}
+                    <AntallUkerFpLabel søkerTekst={søker1Tekst} isBluePanel />
+                    {søker2Tekst && hvemHarRett === 'beggeHarRett' && <AntallUkerFpLabel søkerTekst={søker2Tekst} />}
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
                 </HStack>
@@ -77,22 +65,16 @@ const CalendarLabels: FunctionComponent<Props> = ({ barnet, uttaksdata, hvemPlan
                     <AktivitetskravLabel
                         utenAktivitetskrav
                         tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
-                        startdato={startdatoPeriode1}
-                        sluttdato={sluttdatoPeriode1}
                         isBluePanel
                     />
-                    <AktivitetskravLabel
-                        tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
-                        startdato={startdatoPeriode2}
-                        sluttdato={sluttdatoPeriode2}
-                    />
+                    <AktivitetskravLabel tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst} />
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
                 </HStack>
             )}
             {erFarOgFarOgFødsel && (
                 <HStack gap="2">
-                    <ForeldrepengerLabel startdato={startdatoPeriode1} sluttdato={sluttdatoPeriode1} />
+                    <ForeldrepengerLabel />
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
                 </HStack>

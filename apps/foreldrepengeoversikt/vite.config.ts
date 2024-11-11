@@ -13,7 +13,7 @@ export default defineConfig({
         {
             name: 'crossorigin',
             transformIndexHtml(html) {
-                return html.replace(/<link rel="stylesheet" crossorigin/g, '<link rel="stylesheet" ');
+                return html.replace(/<link rel="stylesheet" crossorigin/g, '<link rel="stylesheet" type="text/css"');
             },
         },
     ],

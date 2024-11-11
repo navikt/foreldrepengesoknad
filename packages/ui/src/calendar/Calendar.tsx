@@ -5,11 +5,11 @@ import { FunctionComponent } from 'react';
 
 import { HGrid } from '@navikt/ds-react';
 
-import { PeriodeColor } from '@navikt/fp-constants';
+import { Forelder, PeriodeColor, StønadskontoType } from '@navikt/fp-constants';
+import { SaksperiodeNy } from '@navikt/fp-types';
 
 import Day, { DayType } from './Day';
 import Month from './Month';
-import styles from './calendar.module.css';
 
 dayjs.extend(isoWeek);
 dayjs.extend(isBetween);
@@ -21,8 +21,23 @@ export type Period = {
     srText?: string;
 };
 
-const findDayColor = (year: number, month: number, day: number, periods: Period[]) => {
+const findDayColor = (
+    year: number,
+    month: number,
+    day: number,
+    periods: SaksperiodeNy[],
+    familiehendelsedato: string,
+    barnehageplassdato?: string,
+) => {
     const date = dayjs().year(year).month(month).date(day);
+
+    if (date.isSame(familiehendelsedato, 'day')) {
+        return PeriodeColor.PINK;
+    }
+
+    if (date.isSame(barnehageplassdato, 'day')) {
+        return PeriodeColor.PURPLE;
+    }
 
     const fomFirstPeriod = periods[0].fom;
     const tomLastPeriod = periods[periods.length - 1].tom;
@@ -33,47 +48,60 @@ const findDayColor = (year: number, month: number, day: number, periods: Period[
 
     const period = periods.find((p) => date.isBetween(p.fom, p.tom, 'day', '[]'));
 
-    if (period?.color === PeriodeColor.PINK) {
-        return PeriodeColor.PINK;
-    }
-
-    if (period?.color === PeriodeColor.PURPLE) {
-        return PeriodeColor.PURPLE;
-    }
-
     if (date.isoWeekday() === 6 || date.isoWeekday() === 7) {
         return PeriodeColor.GRAY;
     }
 
-    return period?.color || PeriodeColor.NONE;
+    if (
+        period?.kontoType === StønadskontoType.Foreldrepenger &&
+        periods.find((p) => p.kontoType === StønadskontoType.AktivitetsfriKvote) !== undefined
+    ) {
+        return PeriodeColor.LIGHTGREEN;
+    }
+
+    return period?.forelder === Forelder.farMedmor ? PeriodeColor.LIGHTGREEN : PeriodeColor.BLUE;
 };
 
-const isFirstDay = (date: Dayjs, day: number, periods: Period[]) => {
-    const pinkPeriod = periods.find((p) => p.color === PeriodeColor.PINK);
+const isFirstDay = (
+    date: Dayjs,
+    day: number,
+    periods: SaksperiodeNy[],
+    familiehendelsedato: string,
+    barnehageplassdato?: string,
+) => {
     return (
         date.isoWeekday() === 6 ||
         date.isoWeekday() === 1 ||
         day === 1 ||
-        periods.some((period) => date.isSame(period.fom, 'day')) ||
-        (pinkPeriod && dayjs(pinkPeriod.fom).isSame(date.subtract(1, 'day'), 'day'))
+        periods.some(
+            (period) =>
+                date.isSame(period.fom, 'day') ||
+                date.isSame(dayjs(familiehendelsedato).add(1, 'day'), 'day') ||
+                date.isSame(dayjs(barnehageplassdato), 'day'),
+        )
     );
 };
 
-const isLastDay = (date: Dayjs, day: number, periods: Period[]) => {
-    const pinkPeriod = periods.find((p) => p.color === PeriodeColor.PINK);
+const isLastDay = (date: Dayjs, day: number, periods: SaksperiodeNy[], barnehageplassdato?: string) => {
     return (
         date.isoWeekday() === 7 ||
         date.isoWeekday() === 5 ||
         day === date.daysInMonth() ||
-        periods.some((period) => date.isSame(period.tom, 'day')) ||
-        (pinkPeriod && dayjs(pinkPeriod.fom).isSame(date.add(1, 'day'), 'day'))
+        periods.some((period) => date.isSame(period.tom, 'day') || date.isSame(dayjs(barnehageplassdato), 'day'))
     );
 };
 
-const findDayType = (year: number, month: number, day: number, periods: Period[]) => {
+const findDayType = (
+    year: number,
+    month: number,
+    day: number,
+    periods: SaksperiodeNy[],
+    familiehendelsedato: string,
+    barnehageplassdato?: string,
+) => {
     const date = dayjs().year(year).month(month).date(day);
-    const firstDay = isFirstDay(date, day, periods);
-    const lastDay = isLastDay(date, day, periods);
+    const firstDay = isFirstDay(date, day, periods, familiehendelsedato, barnehageplassdato);
+    const lastDay = isLastDay(date, day, periods, barnehageplassdato);
 
     if (firstDay && lastDay) {
         return DayType.FIRST_AND_LAST_DAY;
@@ -111,23 +139,40 @@ const findMonths = (firstDate: string, lastDate: string): Array<{ month: number;
 };
 
 interface Props {
-    periods: Period[];
+    periods: SaksperiodeNy[];
     useSmallerWidth?: boolean;
+    familiehendelsedato: string;
+    barnehageplassdato?: string;
 }
 
-const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }) => {
-    const months = findMonths(periods[0].fom, periods[periods.length - 1].tom);
+const Calendar: FunctionComponent<Props> = ({
+    periods,
+    useSmallerWidth = false,
+    familiehendelsedato,
+    barnehageplassdato,
+}) => {
+    const startFomDato = dayjs(familiehendelsedato).isSameOrBefore(periods[0].fom)
+        ? familiehendelsedato
+        : periods[0].fom;
+
+    const sluttTomDato = dayjs(barnehageplassdato ?? periods[periods.length - 1].tom).isSameOrAfter(
+        periods[periods.length - 1].tom,
+    )
+        ? barnehageplassdato
+        : periods[periods.length - 1].tom;
+
+    const months = findMonths(startFomDato, sluttTomDato!);
 
     return (
         <>
-            {periods.some((period) => period.srText) && (
+            {/* {periods.some((period) => period.srText) && (
                 <div className={styles.srOnly}>
                     {periods
                         .filter((periode) => periode.srText)
                         .map((period) => period.srText)
                         .toString()}
                 </div>
-            )}
+            )} */}
             <HGrid
                 gap={{ xs: '2', sm: '4', md: '8' }}
                 columns={
@@ -149,8 +194,22 @@ const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }
                                 <Day
                                     key={monthData.year + monthData.month + day}
                                     day={day + 1}
-                                    periodeColor={findDayColor(monthData.year, monthData.month, day + 1, periods)}
-                                    dayType={findDayType(monthData.year, monthData.month, day + 1, periods)}
+                                    periodeColor={findDayColor(
+                                        monthData.year,
+                                        monthData.month,
+                                        day + 1,
+                                        periods,
+                                        familiehendelsedato,
+                                        barnehageplassdato,
+                                    )}
+                                    dayType={findDayType(
+                                        monthData.year,
+                                        monthData.month,
+                                        day + 1,
+                                        periods,
+                                        familiehendelsedato,
+                                        barnehageplassdato,
+                                    )}
                                 />
                             ),
                         )}

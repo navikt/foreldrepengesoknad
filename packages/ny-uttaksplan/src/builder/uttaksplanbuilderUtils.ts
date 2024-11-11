@@ -383,7 +383,7 @@ export const settInnAnnenPartsUttak = (
         if (isPeriodeUtenUttak(p) || isHull(p)) {
             const overlappendePeriode = overlappendePerioderAnnenPart[0];
 
-            res.push({ ...overlappendePeriode, visPeriodeIPlan: true } as Planperiode);
+            res.push({ ...overlappendePeriode });
             return res;
         }
 
@@ -392,7 +392,7 @@ export const settInnAnnenPartsUttak = (
             res.push(p);
 
             if (!isUtsettelsesperiodeAnnenPart(overlappendePeriode)) {
-                res.push({ ...overlappendePeriode, visPeriodeIPlan: false } as Planperiode);
+                res.push({ ...overlappendePeriode });
             }
 
             return res;

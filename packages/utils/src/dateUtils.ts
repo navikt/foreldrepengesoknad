@@ -125,7 +125,7 @@ export const dateStringIsSameOrBefore = (date: string | undefined, otherDate: st
     return false;
 };
 
-export const dateIsSameOrAfter = (date: Date | undefined, otherDate: Date | undefined): boolean => {
+export const dateIsSameOrAfter = (date: DateTypes | undefined, otherDate: DateTypes | undefined): boolean => {
     if (date && otherDate) {
         return dayjs(date).isSameOrAfter(otherDate, 'day');
     }
