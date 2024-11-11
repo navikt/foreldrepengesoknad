@@ -12,6 +12,11 @@ on:
       - 'Dockerfile'
       - 'docker-bake.hcl'
       - 'pnpm-lock.yaml'
+  pull_request:
+    paths:
+      - 'apps/planlegger/**'
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
 
 jobs:
   build-app:
