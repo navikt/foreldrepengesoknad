@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - 'master'
-    paths: &paths
+    paths:
       - 'apps/engangsstonad/**'
       - 'packages/**'
       - 'server/**'
@@ -15,7 +15,16 @@ on:
       - 'docker-bake.hcl'
       - 'pnpm-lock.yaml'
   pull_request:
-    paths: *paths
+    paths:
+      - 'apps/engangsstonad/**'
+      - 'packages/**'
+      - 'server/**'
+      - '.deploy/engangsstonad/**'
+      - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-engangsstonad.yml'
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
+      - 'pnpm-lock.yaml'
 
 jobs:
   build-app:

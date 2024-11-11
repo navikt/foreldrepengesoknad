@@ -16,6 +16,12 @@ on:
     paths:
       - 'apps/veiviser-hvor-mye/**'
       - 'packages/**'
+      - 'server-uinnlogget/**'
+      - '.deploy/veiviser-hvor-mye/**'
+      - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-veiviser-hvor-mye.yml'
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
       - 'pnpm-lock.yaml'
 
 jobs:

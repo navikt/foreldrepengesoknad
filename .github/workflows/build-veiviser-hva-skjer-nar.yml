@@ -16,6 +16,12 @@ on:
     paths:
       - 'apps/veiviser-hva-skjer-nar/**'
       - 'packages/**'
+      - 'server-uinnlogget/**'
+      - '.deploy/veiviser-hva-skjer-nar/**'
+      - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-veiviser-hva-skjer-nar.yml'
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
       - 'pnpm-lock.yaml'
 
 jobs:

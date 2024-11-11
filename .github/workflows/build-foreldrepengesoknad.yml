@@ -18,6 +18,12 @@ on:
     paths:
       - 'apps/foreldrepengesoknad/**'
       - 'packages/**'
+      - 'server/**'
+      - '.deploy/foreldrepengesoknad/**'
+      - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-foreldrepengesoknad.yml'
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
       - 'pnpm-lock.yaml'
 
 jobs:

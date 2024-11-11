@@ -16,6 +16,12 @@ on:
     paths:
       - 'apps/planlegger/**'
       - 'packages/**'
+      - 'server-uinnlogget/**'
+      - '.deploy/planlegger/**'
+      - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-planlegger.yml'
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
       - 'pnpm-lock.yaml'
 
 jobs:

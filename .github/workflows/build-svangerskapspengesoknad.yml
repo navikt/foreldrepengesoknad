@@ -16,6 +16,12 @@ on:
     paths:
       - 'apps/svangerskapspengesoknad/**'
       - 'packages/**'
+      - 'server/**'
+      - '.deploy/svangerskapspengesoknad/**'
+      - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-svangerskapspengesoknad.yml'
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
       - 'pnpm-lock.yaml'
 
 jobs:

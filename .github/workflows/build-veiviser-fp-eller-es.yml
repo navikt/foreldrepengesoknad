@@ -16,6 +16,12 @@ on:
     paths:
       - 'apps/veiviser-fp-eller-es/**'
       - 'packages/**'
+      - 'server-uinnlogget/**'
+      - '.deploy/veiviser-fp-eller-es/**'
+      - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-veiviser-fp-eller-es.yml'
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
       - 'pnpm-lock.yaml'
 
 jobs:

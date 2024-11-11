@@ -16,6 +16,12 @@ on:
     paths:
       - 'apps/foreldrepengeoversikt/**'
       - 'packages/**'
+      - 'server/**'
+      - '.deploy/foreldrepengeoversikt/**'
+      - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-foreldrepengeoversikt.yml'
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
       - 'pnpm-lock.yaml'
 
 jobs:
