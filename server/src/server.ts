@@ -19,16 +19,16 @@ setupServerDefaults(server);
 setupActuators(server);
 
 const router = express.Router();
+const publicRouter = express.Router();
 
 // Logging i json format
 server.use(logger.morganMiddleware);
 
 // Skjermdeling krever tilgang til CSS uten å være innlogget!
-router.use(express.static('./public', { index: false }));
-router.use('/assets', express.static(path.resolve(path.resolve('public'), 'assets')));
+publicRouter.use(express.static('./public', { index: false }));
+server.use(serverConfig.app.publicPath, publicRouter);
 
 server.use(validerInnkommendeIdportenToken);
-
 configureReverseProxyApi(router);
 // Catch all route, må være sist
 setupAndServeHtml(router);
