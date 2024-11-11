@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 
 import {
     errorHandling,
@@ -22,7 +23,9 @@ const router = express.Router();
 // Logging i json format
 server.use(logger.morganMiddleware);
 
+// Skjermdeling krever tilgang til CSS uten å være innlogget!
 router.use(express.static('./public', { index: false }));
+router.use('/assets', express.static(path.resolve(path.resolve('public'), 'assets')));
 
 server.use(validerInnkommendeIdportenToken);
 
