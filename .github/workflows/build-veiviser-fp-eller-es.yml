@@ -2,6 +2,8 @@ name: Bygg og deploy Veiviser-fp-eller-es
 on:
   workflow_dispatch:
   push:
+    branches:
+      - 'master'
     paths:
       - 'apps/veiviser-fp-eller-es/**'
       - 'packages/**'

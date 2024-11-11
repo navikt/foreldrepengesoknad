@@ -2,6 +2,8 @@ name: Bygg og deploy Foreldrepengerplanlegger
 on:
   workflow_dispatch:
   push:
+    branches:
+      - 'master'
     paths:
       - 'apps/planlegger/**'
       - 'packages/**'

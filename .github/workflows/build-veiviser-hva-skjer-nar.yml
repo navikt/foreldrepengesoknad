@@ -2,6 +2,8 @@ name: Bygg og deploy Veiviser-hva-skjer-nar
 on:
   workflow_dispatch:
   push:
+    branches:
+      - 'master'
     paths:
       - 'apps/veiviser-hva-skjer-nar/**'
       - 'packages/**'

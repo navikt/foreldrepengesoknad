@@ -2,6 +2,8 @@ name: Bygg og deploy Svangerskapspengesøknad
 on:
   workflow_dispatch:
   push:
+    branches:
+      - 'master'
     paths:
       - 'apps/svangerskapspengesoknad/**'
       - 'packages/**'

@@ -2,6 +2,8 @@ name: Bygg og deploy Foreldrepengeoversikt
 on:
   workflow_dispatch:
   push:
+    branches:
+      - 'master'
     paths:
       - 'apps/foreldrepengeoversikt/**'
       - 'packages/**'

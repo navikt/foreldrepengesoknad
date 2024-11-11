@@ -2,6 +2,8 @@ name: Bygg og deploy Veiviser-hvor-mye
 on:
   workflow_dispatch:
   push:
+    branches:
+      - 'master'
     paths:
       - 'apps/veiviser-hvor-mye/**'
       - 'packages/**'
