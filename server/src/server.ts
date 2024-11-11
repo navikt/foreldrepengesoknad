@@ -5,8 +5,8 @@ import {
     logger,
     serverConfig,
     setupActuators,
-    setupServerDefaults,
     setupAndServeHtml,
+    setupServerDefaults,
 } from '@navikt/fp-server-utils';
 
 import { configureReverseProxyApi } from './reverseProxy.js';
@@ -21,6 +21,8 @@ const router = express.Router();
 
 // Logging i json format
 server.use(logger.morganMiddleware);
+
+router.use(express.static('./public', { index: false }));
 
 server.use(validerInnkommendeIdportenToken);
 
