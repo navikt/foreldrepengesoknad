@@ -28,7 +28,7 @@ export const Periodene = (perioder: Planperiode[]) => ({
     sort: () => [...perioder].sort(sorterPerioder),
 });
 
-export function sorterPerioder(p1: Planperiode, p2: Planperiode) {
+export function sorterPerioder(p1: Planperiode | SaksperiodeNy, p2: Planperiode | SaksperiodeNy) {
     const tidsperiode1 = { fom: p1.fom, tom: p1.tom };
     const tidsperiode2 = { fom: p2.fom, tom: p2.tom };
 
@@ -46,7 +46,7 @@ export function sorterPerioder(p1: Planperiode, p2: Planperiode) {
     return dayjs(tidsperiode1.fom).isBefore(tidsperiode2.fom, 'day') ? -1 : 1;
 }
 
-export const isUttaksperiode = (periode: Planperiode) => {
+export const isUttaksperiode = (periode: Planperiode | SaksperiodeNy) => {
     return periode.kontoType !== undefined && periode.utsettelseÅrsak === undefined;
 };
 
@@ -628,20 +628,6 @@ export const skalAnnenPartsPeriodeVises = (annenPartsPeriode: Planperiode, termi
         return true;
     }
     return erAnnenPartsPrematurePeriode(annenPartsPeriode, termindato);
-};
-
-export const getPeriodeForelder = (erFarEllerMedmor: boolean): Forelder => {
-    //periode: Periode
-    if (erFarEllerMedmor) {
-        // if (periode.gjelderAnnenPart) {
-        //     return Forelder.mor;
-        // }
-        return Forelder.farMedmor;
-    }
-    // if (periode.gjelderAnnenPart) {
-    //     return Forelder.farMedmor;
-    // }
-    return Forelder.mor;
 };
 
 export const getTidsperiodeFromPlanperiode = (periode: Planperiode): Tidsperiode => {

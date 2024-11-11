@@ -84,8 +84,8 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
     const uttaksdata100 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto100, barnet);
     const uttaksdata80 = finnUttaksdata(hvemHarRett, hvemPlanlegger, stønadskonto80, barnet);
 
-    const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata100);
-    const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata80);
+    const antallUkerOgDager100 = finnAntallUkerOgDagerMedForeldrepenger(stønadskonto100);
+    const antallUkerOgDager80 = finnAntallUkerOgDagerMedForeldrepenger(stønadskonto80);
     const antallUkerOgDager =
         valgtDekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? antallUkerOgDager100 : antallUkerOgDager80;
 

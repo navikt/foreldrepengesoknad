@@ -2,7 +2,7 @@ import { CalendarIcon } from '@navikt/aksel-icons';
 import CalendarLabels from 'components/labels/CalendarLabels';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
+import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
@@ -13,22 +13,25 @@ import {
     getFornavnPåSøker2,
     getNavnGenitivEierform,
 } from 'utils/HvemPlanleggerUtils';
-import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
-import { lagKalenderPerioder } from 'utils/kalenderPerioderUtils';
+import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import {
     getAntallUkerOgDager,
     getAntallUkerOgDagerAktivitetsfriKvote,
     getAntallUkerOgDagerFellesperiode,
     getUkerOgDager,
 } from 'utils/stønadskontoerUtils';
-import { finnAntallUkerOgDagerMedForeldrepenger, finnUttaksdata } from 'utils/uttakUtils';
+import { finnAntallUkerOgDagerMedForeldrepenger, getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
 
 import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { BluePanel, Calendar, IconCircleWrapper } from '@navikt/fp-ui';
-import { capitalizeFirstLetter } from '@navikt/fp-utils';
+import { UttaksdagenString, capitalizeFirstLetter } from '@navikt/fp-utils';
+import { sorterPerioder } from '@navikt/fp-uttaksplan-ny';
+
+import { erBarnetAdoptert } from '../../../utils/barnetUtils';
+import { barnehagestartDato } from '../../barnehageplass/BarnehageplassSteg';
 
 const onToggleExpansionCard = (open: boolean) => {
     if (open) {
@@ -61,13 +64,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
 
-    const uttaksdata = finnUttaksdata(
-        hvemHarRett,
-        hvemPlanlegger,
-        valgtStønadskonto,
-        barnet,
-        fordeling?.antallDagerSøker1,
-    );
+    const familiehendelsedato = getFamiliehendelsedato(barnet);
 
     const antallDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto).totaltAntallDager;
     const antallUkerOgDagerFellesperiodeSøker1 = fordeling ? getUkerOgDager(fordeling.antallDagerSøker1) : undefined;
@@ -75,16 +72,48 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
         ? getUkerOgDager(antallDagerFellesperiode - fordeling.antallDagerSøker1)
         : undefined;
     const antallUkerOgDagerAktivitetsfriKvote = getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskonto);
+    const bareFarMedmorHarRett =
+        harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
+    const barnehageplassdato = barnehagestartDato(barnet);
 
-    const uttaksperioder = lagKalenderPerioder(
-        valgtStønadskonto,
-        barnet,
-        hvemPlanlegger,
-        arbeidssituasjon,
-        fordeling?.antallDagerSøker1,
-    );
+    const getErFarEllerMedmor = () => {
+        if (
+            hvemPlanlegger.type === Situasjon.FAR ||
+            (hvemPlanlegger.type === Situasjon.MOR_OG_FAR && hvemHarRett === 'kunSøker2HarRett') ||
+            hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
+            (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR && hvemHarRett === 'kunSøker2HarRett')
+        ) {
+            return true;
+        }
 
-    const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(uttaksdata);
+        return false;
+    };
+
+    let startdato = undefined;
+
+    if (
+        (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR || hvemPlanlegger.type === Situasjon.MOR_OG_FAR) &&
+        hvemHarRett === 'kunSøker2HarRett'
+    ) {
+        startdato = UttaksdagenString(familiehendelsedato).leggTil(30);
+    }
+
+    const planforslag = lagForslagTilPlan({
+        erDeltUttak: fordeling !== undefined,
+        famDato: familiehendelsedato,
+        tilgjengeligeStønadskontoer: valgtStønadskonto.kontoer,
+        fellesperiodeDagerMor: fordeling?.antallDagerSøker1,
+        bareFarMedmorHarRett,
+        erAdopsjon: erBarnetAdoptert(barnet),
+        erFarEllerMedmor: getErFarEllerMedmor(),
+        startdato,
+        erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
+        erAleneOmOmsorg: hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.MOR,
+    });
+
+    const kombinertPlanforslag = [...planforslag.søker1, ...planforslag.søker2].sort(sorterPerioder);
+
+    const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(valgtStønadskonto);
 
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
@@ -135,16 +164,19 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                             id="OppsummeringSteg.Periodene"
                                             values={{
                                                 hvem: capitalizeFirstLetter(fornavnSøker1Genitiv),
-                                                fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
+                                                fom: intl.formatDate(planforslag.søker1[0].fom, {
                                                     day: '2-digit',
                                                     month: 'short',
                                                     year: 'numeric',
                                                 }),
-                                                tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
-                                                    day: '2-digit',
-                                                    month: 'short',
-                                                    year: 'numeric',
-                                                }),
+                                                tom: intl.formatDate(
+                                                    planforslag.søker1[planforslag.søker1.length - 1].tom,
+                                                    {
+                                                        day: '2-digit',
+                                                        month: 'short',
+                                                        year: 'numeric',
+                                                    },
+                                                ),
                                                 b: (msg: any) => <b>{msg}</b>,
                                             }}
                                         />
@@ -156,16 +188,19 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                         id="OppsummeringSteg.Periodene"
                                         values={{
                                             hvem: capitalizeFirstLetter(fornavnSøker2Genitiv),
-                                            fom: intl.formatDate(uttaksdata.startdatoPeriode2, {
+                                            fom: intl.formatDate(planforslag.søker2[0].fom, {
                                                 day: '2-digit',
                                                 month: 'short',
                                                 year: 'numeric',
                                             }),
-                                            tom: intl.formatDate(uttaksdata.sluttdatoPeriode2, {
-                                                day: '2-digit',
-                                                month: 'short',
-                                                year: 'numeric',
-                                            }),
+                                            tom: intl.formatDate(
+                                                planforslag.søker2[planforslag.søker2.length - 1].tom,
+                                                {
+                                                    day: '2-digit',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                },
+                                            ),
                                             b: (msg: any) => <b>{msg}</b>,
                                         }}
                                     />
@@ -186,45 +221,27 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                             }}
                                         />
                                     </BodyShort>
-                                    {hvemHarRett === 'kunSøker1HarRett' ? (
-                                        <BodyShort>
-                                            <FormattedMessage
-                                                id="OppsummeringSteg.Periode"
-                                                values={{
-                                                    fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
+                                    <BodyShort>
+                                        <FormattedMessage
+                                            id="OppsummeringSteg.Periode"
+                                            values={{
+                                                fom: intl.formatDate(planforslag.søker1[0].fom, {
+                                                    day: '2-digit',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                }),
+                                                tom: intl.formatDate(
+                                                    planforslag.søker1[planforslag.søker1.length - 1].tom,
+                                                    {
                                                         day: '2-digit',
                                                         month: 'short',
                                                         year: 'numeric',
-                                                    }),
-                                                    tom: intl.formatDate(uttaksdata.sluttdatoPeriode2, {
-                                                        day: '2-digit',
-                                                        month: 'short',
-                                                        year: 'numeric',
-                                                    }),
-                                                    b: (msg: any) => <b>{msg}</b>,
-                                                }}
-                                            />
-                                        </BodyShort>
-                                    ) : (
-                                        <BodyShort>
-                                            <FormattedMessage
-                                                id="OppsummeringSteg.Periode"
-                                                values={{
-                                                    fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
-                                                        day: '2-digit',
-                                                        month: 'short',
-                                                        year: 'numeric',
-                                                    }),
-                                                    tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
-                                                        day: '2-digit',
-                                                        month: 'short',
-                                                        year: 'numeric',
-                                                    }),
-                                                    b: (msg: any) => <b>{msg}</b>,
-                                                }}
-                                            />
-                                        </BodyShort>
-                                    )}
+                                                    },
+                                                ),
+                                                b: (msg: any) => <b>{msg}</b>,
+                                            }}
+                                        />
+                                    </BodyShort>
                                 </VStack>
                             </BluePanel>
                         )}
@@ -254,16 +271,19 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                         <FormattedMessage
                                             id="OppsummeringSteg.UtenAktivitetskrav"
                                             values={{
-                                                fom: intl.formatDate(uttaksdata.startdatoPeriode1, {
+                                                fom: intl.formatDate(planforslag.søker1[0].fom, {
                                                     day: '2-digit',
                                                     month: 'short',
                                                     year: 'numeric',
                                                 }),
-                                                tom: intl.formatDate(uttaksdata.sluttdatoPeriode1, {
-                                                    day: '2-digit',
-                                                    month: 'short',
-                                                    year: 'numeric',
-                                                }),
+                                                tom: intl.formatDate(
+                                                    planforslag.søker1[planforslag.søker1.length - 1].tom,
+                                                    {
+                                                        day: '2-digit',
+                                                        month: 'short',
+                                                        year: 'numeric',
+                                                    },
+                                                ),
                                                 b: (msg: any) => <b>{msg}</b>,
                                             }}
                                         />
@@ -273,29 +293,32 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                     <FormattedMessage
                                         id="OppsummeringSteg.MedAktivitetskrav"
                                         values={{
-                                            fom: intl.formatDate(uttaksdata.startdatoPeriode2, {
+                                            fom: intl.formatDate(planforslag.søker2[0].fom, {
                                                 day: '2-digit',
                                                 month: 'short',
                                                 year: 'numeric',
                                             }),
-                                            tom: intl.formatDate(uttaksdata.sluttdatoPeriode2, {
-                                                day: '2-digit',
-                                                month: 'short',
-                                                year: 'numeric',
-                                            }),
+                                            tom: intl.formatDate(
+                                                planforslag.søker2[planforslag.søker2.length - 1].tom,
+                                                {
+                                                    day: '2-digit',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                },
+                                            ),
                                             b: (msg: any) => <b>{msg}</b>,
                                         }}
                                     />
                                 </BodyShort>
                             </BluePanel>
                         )}
-                        <CalendarLabels
-                            uttaksdata={uttaksdata}
-                            hvemPlanlegger={hvemPlanlegger}
-                            barnet={barnet}
-                            hvemHarRett={hvemHarRett}
+                        <CalendarLabels hvemPlanlegger={hvemPlanlegger} barnet={barnet} hvemHarRett={hvemHarRett} />
+                        <Calendar
+                            periods={kombinertPlanforslag}
+                            familiehendelsedato={familiehendelsedato}
+                            barnehageplassdato={barnehageplassdato}
+                            useSmallerWidth
                         />
-                        <Calendar periods={uttaksperioder} useSmallerWidth />
                     </VStack>
                 </ExpansionCard.Content>
             </ExpansionCard>

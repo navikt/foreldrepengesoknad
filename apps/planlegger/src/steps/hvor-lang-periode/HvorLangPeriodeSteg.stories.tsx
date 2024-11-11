@@ -343,23 +343,25 @@ export const FarOgFarBeggeHarRett: Story = {
             jobberAnnenPart: true,
         },
         stønadskontoer: {
-            '80': {
-                kontoer: [
-                    { konto: StønadskontoType.Mødrekvote, dager: 95 },
-                    { konto: StønadskontoType.Fedrekvote, dager: 95 },
-                    { konto: StønadskontoType.Fellesperiode, dager: 101 },
-                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
-                ],
-                minsteretter: MINSTERETTER,
-            },
             '100': {
                 kontoer: [
-                    { konto: StønadskontoType.Mødrekvote, dager: 75 },
-                    { konto: StønadskontoType.Fedrekvote, dager: 75 },
-                    { konto: StønadskontoType.Fellesperiode, dager: 80 },
-                    { konto: StønadskontoType.ForeldrepengerFørFødsel, dager: 15 },
+                    { konto: StønadskontoType.Foreldrepenger, dager: 125 },
+                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 75 },
                 ],
-                minsteretter: MINSTERETTER,
+                minsteretter: {
+                    farRundtFødsel: 0,
+                    toTette: 0,
+                },
+            },
+            '80': {
+                kontoer: [
+                    { konto: StønadskontoType.Foreldrepenger, dager: 166 },
+                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 95 },
+                ],
+                minsteretter: {
+                    farRundtFødsel: 0,
+                    toTette: 0,
+                },
             },
         },
     },

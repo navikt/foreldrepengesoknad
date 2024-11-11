@@ -201,9 +201,7 @@ export const FarOgFarFødsel: Story = {
             navnPåMedfar: 'Anders Utvikler',
             type: Situasjon.FAR_OG_FAR,
         },
-        fordeling: {
-            antallDagerSøker1: 25,
-        },
+        fordeling: undefined,
         hvorMye: {
             lønnSøker1: 1000,
             lønnSøker2: 70000,
@@ -221,7 +219,28 @@ export const FarOgFarFødsel: Story = {
             status: Arbeidsstatus.JOBBER,
             jobberAnnenPart: true,
         },
-        stønadskontoer: FlereForsørgereHundreProsentTermin.args?.stønadskontoer,
+        stønadskontoer: {
+            '100': {
+                kontoer: [
+                    { konto: StønadskontoType.Foreldrepenger, dager: 125 },
+                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 75 },
+                ],
+                minsteretter: {
+                    farRundtFødsel: 0,
+                    toTette: 0,
+                },
+            },
+            '80': {
+                kontoer: [
+                    { konto: StønadskontoType.Foreldrepenger, dager: 166 },
+                    { konto: StønadskontoType.AktivitetsfriKvote, dager: 95 },
+                ],
+                minsteretter: {
+                    farRundtFødsel: 0,
+                    toTette: 0,
+                },
+            },
+        },
     },
 };
 
@@ -232,9 +251,7 @@ export const FarOgFarAdopsjonKunFar1HarRett: Story = {
         hvemPlanlegger: {
             type: Situasjon.FAR_OG_FAR,
         },
-        fordeling: {
-            antallDagerSøker1: 25,
-        },
+        fordeling: undefined,
         hvorMye: {
             lønnSøker1: 1000,
             lønnSøker2: 70000,
@@ -550,6 +567,21 @@ export const OppsummeringFarOgFarKunFar2HarRett: Story = {
             status: Arbeidsstatus.INGEN,
             jobberAnnenPart: true,
         },
-        stønadskontoer: FlereForsørgereHundreProsentTermin.args?.stønadskontoer,
+        stønadskontoer: {
+            '80': {
+                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 291 }],
+                minsteretter: {
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+            '100': {
+                kontoer: [{ konto: StønadskontoType.Foreldrepenger, dager: 230 }],
+                minsteretter: {
+                    farRundtFødsel: 10,
+                    toTette: 0,
+                },
+            },
+        },
     },
 };

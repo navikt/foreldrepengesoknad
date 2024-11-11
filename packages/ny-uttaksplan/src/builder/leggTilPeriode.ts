@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 
 import { StønadskontoType } from '@navikt/fp-constants';
+import { SaksperiodeNy } from '@navikt/fp-types';
 import { TidsperiodenString, UttaksdagenString } from '@navikt/fp-utils';
 
 import { Planperiode } from '../types/Planperiode';
@@ -26,6 +27,22 @@ export const splittPeriodePåDato = (periode: Planperiode, dato: string): Planpe
     return [periodeFørDato, periodeFraOgMedDato];
 };
 
+export const splittSaksperiodePåDato = (periode: SaksperiodeNy, dato: string): SaksperiodeNy[] => {
+    const periodeFørDato: SaksperiodeNy = {
+        ...periode,
+        fom: periode.fom,
+        tom: UttaksdagenString(dato).forrige(),
+    };
+
+    const periodeFraOgMedDato: SaksperiodeNy = {
+        ...periode,
+        fom: UttaksdagenString(periodeFørDato.tom).neste(),
+        tom: periode.tom,
+    };
+
+    return [periodeFørDato, periodeFraOgMedDato];
+};
+
 export const splittUttaksperiodePåFamiliehendelsesdato = (periode: Planperiode, famDato: string): Planperiode[] => {
     const periodeFørFamDato: Planperiode = {
         ...periode,
@@ -41,6 +58,27 @@ export const splittUttaksperiodePåFamiliehendelsesdato = (periode: Planperiode,
     const periodeFraOgMedFamDato: Planperiode = {
         ...periode,
         id: guid(),
+        fom: UttaksdagenString(periodeFørFamDato.tom).neste(),
+        tom: periode.tom,
+    };
+
+    return [periodeFørFamDato, periodeFraOgMedFamDato];
+};
+
+export const splittSaksperiodePåFamiliehendelsesdato = (periode: SaksperiodeNy, famDato: string): SaksperiodeNy[] => {
+    const periodeFørFamDato: SaksperiodeNy = {
+        ...periode,
+        kontoType:
+            periode.kontoType == StønadskontoType.Foreldrepenger
+                ? StønadskontoType.AktivitetsfriKvote
+                : periode.kontoType,
+        morsAktivitet: periode.kontoType == StønadskontoType.Foreldrepenger ? undefined : periode.morsAktivitet,
+        fom: periode.fom,
+        tom: UttaksdagenString(famDato).forrige(),
+    };
+
+    const periodeFraOgMedFamDato: SaksperiodeNy = {
+        ...periode,
         fom: UttaksdagenString(periodeFørFamDato.tom).neste(),
         tom: periode.tom,
     };
