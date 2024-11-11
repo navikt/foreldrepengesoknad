@@ -1,4 +1,4 @@
-import { PlusIcon, TrashIcon } from '@navikt/aksel-icons';
+import { PlusIcon, XMarkIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/SvpDataContext';
 import { RouteParams, SøknadRoute, addTilretteleggingIdToRoute } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
@@ -11,7 +11,7 @@ import { AvtaltFerieDto } from 'types/AvtaltFerie';
 import { getSisteDagForSvangerskapspenger } from 'utils/dateUtils';
 import { getNesteTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
-import { BodyShort, Button, HStack, Heading, Radio, ReadMore, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, HStack, Radio, ReadMore, Tag, VStack } from '@navikt/ds-react';
 
 import {
     ErrorSummaryHookForm,
@@ -163,19 +163,17 @@ function FeriePerioder() {
                 {fields.map((field, index) => (
                     <VStack gap="4" key={field.id} className="feriePeriode">
                         <HStack justify="space-between" align="center">
-                            <Heading level="3" size="small">
-                                <FormattedMessage id="ferie.periode.heading" values={{ teller: index + 1 }} />
-                            </Heading>
+                            <Tag variant="info-moderate">Ferie</Tag>
                             {index > 0 && (
                                 <Button
                                     onClick={() => remove(index)}
                                     size="small"
                                     variant="tertiary"
                                     type="button"
-                                    aria-label={`Slett ${index + 1}. periode`}
-                                    icon={<TrashIcon />}
+                                    aria-label={`Fjern ${index + 1}. periode`}
+                                    icon={<XMarkIcon />}
                                 >
-                                    Slett denne perioden
+                                    <FormattedMessage id="ferie.periode.slett" />
                                 </Button>
                             )}
                         </HStack>
@@ -263,7 +261,7 @@ function FeriePerioder() {
                 variant="secondary"
                 icon={<PlusIcon />}
             >
-                Legg til ny ferieperiode
+                <FormattedMessage id="ferie.periode.leggTil" />
             </Button>
             <ReadMore header={intl.formatMessage({ id: 'ferie.antallPerioder.readmore.label' })}>
                 <BodyShort>

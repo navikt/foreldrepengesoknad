@@ -40,8 +40,7 @@ describe('<FerieSteg>', () => {
         expect(await screen.findByText('Søknad om svangerskapspenger')).toBeInTheDocument();
         expect(screen.getByText('Har du planlagt ferie i perioden du skal ha svangerskapspenger?')).toBeInTheDocument();
         await user.click(screen.getByText('Ja'));
-        expect(screen.getByText('Legg til ny ferieperiode')).toBeInTheDocument();
-        expect(screen.getByText('1. periode')).toBeInTheDocument();
+        expect(screen.getByText('Legg til flere ferier')).toBeInTheDocument();
 
         await user.click(screen.getByText('Neste steg'));
         expect(screen.getAllByText('Du må oppgi en ferieperiode')).toHaveLength(3);
@@ -127,7 +126,7 @@ describe('<FerieSteg>', () => {
         await user.type(screen.getAllByText('Siste feriedag')[0], dayjs('2024-11-05').format('DD.MM.YYYY'));
         await user.tab();
 
-        await user.click(screen.getByText('Legg til ny ferieperiode'));
+        await user.click(screen.getByText('Legg til flere ferier'));
         await user.type(screen.getAllByText('Første feriedag')[1], dayjs('2024-11-03').format('DD.MM.YYYY'));
         await user.tab();
         await user.type(screen.getAllByText('Siste feriedag')[1], dayjs('2024-11-08').format('DD.MM.YYYY'));
@@ -135,7 +134,7 @@ describe('<FerieSteg>', () => {
         await user.click(screen.getByText('Neste steg'));
         expect(screen.getAllByText('Overlapper med 1. periode')).toHaveLength(2);
 
-        await user.click(screen.getByText('Legg til ny ferieperiode'));
+        await user.click(screen.getByText('Legg til flere ferier'));
         await user.type(screen.getAllByText('Første feriedag')[2], dayjs('2024-11-06').format('DD.MM.YYYY'));
         await user.tab();
         await user.type(screen.getAllByText('Siste feriedag')[2], dayjs('2024-11-12').format('DD.MM.YYYY'));
@@ -155,10 +154,10 @@ describe('<FerieSteg>', () => {
         await user.tab();
         expect(screen.queryAllByText('Overlapper med 2. periode')).toHaveLength(0);
 
-        expect(screen.getAllByText('Slett denne perioden')).toHaveLength(2);
-        await user.click(screen.getByLabelText('Slett 3. periode'));
-        await user.click(screen.getByLabelText('Slett 2. periode'));
-        expect(screen.queryAllByText('Slett denne perioden')).toHaveLength(0);
+        expect(screen.getAllByText('Fjern perioden')).toHaveLength(2);
+        await user.click(screen.getByLabelText('Fjern 3. periode'));
+        await user.click(screen.getByLabelText('Fjern 2. periode'));
+        expect(screen.queryAllByText('Fjern perioden')).toHaveLength(0);
 
         await user.click(screen.getByText('Neste steg'));
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
@@ -193,13 +192,10 @@ describe('<FerieSteg>', () => {
         await user.type(screen.getAllByText('Siste feriedag')[0], dayjs('2024-10-31').format('DD.MM.YYYY'));
         await user.tab();
 
-        await user.click(screen.getByText('Legg til ny ferieperiode'));
-        await user.click(screen.getByText('Legg til ny ferieperiode'));
+        await user.click(screen.getByText('Legg til flere ferier'));
+        await user.click(screen.getByText('Legg til flere ferier'));
 
-        expect(screen.getByText('1. periode')).toBeInTheDocument();
-        expect(screen.getByText('2. periode')).toBeInTheDocument();
-        expect(screen.getByText('3. periode')).toBeInTheDocument();
-        expect(screen.getAllByText('Slett denne perioden')).toHaveLength(2);
+        expect(screen.getAllByText('Fjern perioden')).toHaveLength(2);
 
         await user.type(screen.getAllByText('Første feriedag')[1], dayjs('2024-11-01').format('DD.MM.YYYY'));
         await user.tab();
@@ -211,7 +207,7 @@ describe('<FerieSteg>', () => {
         await user.type(screen.getAllByText('Siste feriedag')[2], dayjs('2024-11-08').format('DD.MM.YYYY'));
         await user.tab();
 
-        await user.click(screen.getByLabelText('Slett 3. periode'));
+        await user.click(screen.getByLabelText('Fjern 3. periode'));
 
         await user.click(screen.getByText('Neste steg'));
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {

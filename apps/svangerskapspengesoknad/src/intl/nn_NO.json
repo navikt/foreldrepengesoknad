@@ -236,6 +236,8 @@
     "ferie.periode.heading": "{teller}. periode",
     "ferie.periode.førsteDag": "Første feriedag",
     "ferie.periode.sisteDag": "Siste feriedag",
+    "ferie.periode.slett": "Fjern perioden",
+    "ferie.periode.leggTil": "Legg til fleire feriar",
     "oppsummering.EndreSvar": "Endre svar",
     "oppsummering.omBarnet": "Barnet",
     "oppsummering.arbeidIUtlandet.tittel": "{antall, plural, one {Arbeidsgivar} other {Arbeidsgivarar}}",
