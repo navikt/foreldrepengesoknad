@@ -2,7 +2,9 @@ name: Bygg og deploy Engangsstønad
 on:
   workflow_dispatch:
   push:
-    paths:
+    branches:
+      - 'master'
+    paths: &paths
       - 'apps/engangsstonad/**'
       - 'packages/**'
       - 'server/**'
@@ -13,10 +15,7 @@ on:
       - 'docker-bake.hcl'
       - 'pnpm-lock.yaml'
   pull_request:
-    paths:
-      - 'apps/engangsstonad/**'
-      - 'packages/**'
-      - 'pnpm-lock.yaml'
+    paths: *paths
 
 jobs:
   build-app:
