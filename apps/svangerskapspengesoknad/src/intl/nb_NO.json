@@ -230,7 +230,6 @@
     "ferie.antallPerioder.validering.dato.overlapp": "Overlapper med {periode}. periode",
     "ferie.antallPerioder.readmore.label": "Hvordan man regner antall ferieperioder",
     "ferie.antallPerioder.readmore.body": "En sammenhengende periode med feriedager og helger uten arbeidsdager regnes som én ferieperiode. Hvis det er en arbeidsdag mellom to ferieperioder, regnes de som to separate perioder.",
-    "ferie.periode.heading": "{teller}. periode",
     "ferie.periode.førsteDag": "Første feriedag",
     "ferie.periode.sisteDag": "Siste feriedag",
     "ferie.periode.slett": "Fjern perioden",
