@@ -116,3 +116,16 @@ export const getNavnGenitivEierform = (navn: string, locale: string): string => 
     }
     return `${navn}s`;
 };
+
+export const getErFarEllerMedmor = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
+    if (
+        hvemPlanlegger.type === Situasjon.FAR ||
+        (hvemPlanlegger.type === Situasjon.MOR_OG_FAR && hvemHarRett === 'kunSøker2HarRett') ||
+        hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
+        (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR && hvemHarRett === 'kunSøker2HarRett')
+    ) {
+        return true;
+    }
+
+    return false;
+};
