@@ -1,6 +1,6 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { FormSummary } from '@navikt/ds-react';
+import { Alert, FormSummary } from '@navikt/ds-react';
 
 import {
     Arbeidsforhold,
@@ -59,6 +59,12 @@ export const ArbeidsforholdOppsummering: React.FC<ArbeidsforholdOppsummeringProp
                             </FormSummary.Answers>
                         )}
                     </FormSummary.Value>
+                    <Alert variant="info" style={{ marginTop: 'var(--a-spacing-2)' }}>
+                        <FormattedMessage
+                            id="ArbeidsforholdOppsummering.inntektsmelding"
+                            values={{ antall: arbeidsforhold.length }}
+                        />
+                    </Alert>
                 </FormSummary.Answer>
                 <FormSummary.Answer>
                     <FormSummary.Label>
