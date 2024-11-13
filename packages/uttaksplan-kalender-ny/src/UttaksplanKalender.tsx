@@ -62,6 +62,7 @@ const getPerioderForKalendervisning = (
     intl: IntlShape,
     erIPlanleggerModus: boolean,
     foreldrepengerHarAktivitetskrav: boolean,
+    barnehagestartdato?: string,
 ): Period[] => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const allePerioderBortsettFraFamiliehendelseperioden = allePerioder.filter(
@@ -79,18 +80,42 @@ const getPerioderForKalendervisning = (
         return filtrerte.length > 1 && !erSøkersPeriode ? alle : alle.concat(periode);
     }, [] as KalenderPeriode[]);
 
-    const perioderForVisning = unikePerioder.map((periode) => {
+    const barnehageperiode = { fom: barnehagestartdato, tom: barnehagestartdato, color: PeriodeColor.PURPLE } as Period;
+
+    const res = unikePerioder.reduce((acc, periode) => {
         const color = erIPlanleggerModus
             ? getKalenderFargeForPeriodeTypePlanlegger(periode, erFarEllerMedmor, foreldrepengerHarAktivitetskrav)
             : getKalenderFargeForPeriodeType(periode, erFarEllerMedmor, allePerioder, barn);
-        return {
-            fom: dayjs(periode.fom).isSame(dayjs(familiehendelsesdato), 'd')
-                ? formatDateIso(UttaksdagenString(periode.fom).neste())
-                : formatDateIso(periode.fom),
-            tom: formatDateIso(periode.tom),
-            color,
-        };
-    });
+
+        if (dayjs(barnehagestartdato).isBetween(periode.fom, periode.tom, 'day', '[]')) {
+            return [
+                ...acc,
+                {
+                    fom: periode.fom,
+                    tom: dayjs(barnehagestartdato).subtract(1, 'day').format('YYYY-MM-DD'),
+                    color: color,
+                },
+                {
+                    fom: dayjs(barnehagestartdato).add(1, 'day').format('YYYY-MM-DD'),
+                    tom: periode.tom,
+                    color: color,
+                },
+            ];
+        }
+
+        return [
+            ...acc,
+            {
+                fom: dayjs(periode.fom).isSame(dayjs(familiehendelsesdato), 'd')
+                    ? formatDateIso(UttaksdagenString(periode.fom).neste())
+                    : formatDateIso(periode.fom),
+                tom: formatDateIso(periode.tom),
+                color,
+            },
+        ];
+    }, [] as Period[]);
+
+    const perioderForVisning = res.concat(barnehageperiode).sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)));
 
     const indexOfFamiliehendelse = getIndexOfSistePeriodeFørDato(allePerioder, familiehendelsesdato) || 0;
     perioderForVisning.splice(indexOfFamiliehendelse, 0, {
@@ -268,6 +293,7 @@ interface UttaksplanKalenderProps {
     navnAnnenPart: string;
     førsteUttaksdagNesteBarnsSak?: string;
     planleggerLegend?: ReactElement<any>;
+    barnehagestartdato?: string;
 }
 
 export const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
@@ -280,6 +306,7 @@ export const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
     navnAnnenPart,
     førsteUttaksdagNesteBarnsSak,
     planleggerLegend,
+    barnehagestartdato,
 }) => {
     const intl = useIntl();
     const familiehendelsesdato = getFamiliehendelsedato(barn);
@@ -326,6 +353,7 @@ export const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
         intl,
         erIPlanleggerModus,
         foreldrepengerHarAktivitetskrav,
+        barnehagestartdato,
     );
 
     const inkludererHelg = getInneholderKalenderHelgedager(perioderForKalendervisning);

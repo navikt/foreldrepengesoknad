@@ -30,6 +30,7 @@ import { notEmpty } from '@navikt/fp-validation';
 import CalendarLabels from '../../components/labels/CalendarLabels';
 import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
 import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
+import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
 import styles from './planenDeresSteg.module.css';
 import OmÅTilpassePlanen from './tilpasse-planen/OmÅTilpassePlanen';
 import UforutsetteEndringer from './uforutsette-endringer/UforutsetteEndringer';
@@ -72,6 +73,8 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
 
     const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
     const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
+
+    const barnehagestartdato = barnehagestartDato(omBarnet);
 
     const valgtStønadskonto =
         hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
@@ -243,6 +246,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                                         hvemHarRett={hvemHarRett}
                                     />
                                 }
+                                barnehagestartdato={barnehagestartdato}
                             />
                         </div>
                     </VStack>
