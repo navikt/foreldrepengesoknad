@@ -81,6 +81,19 @@ const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                             <FormattedMessage id="inntektsinformasjon.arbeidsforhold.label" />
                         </BodyShort>
                         <ArbeidsforholdInformasjon arbeidsforhold={aktiveArbeidsforhold} />
+                        <ReadMore
+                            header={
+                                <FormattedMessage
+                                    id="inntektsinformasjon.inntektsmelding.header"
+                                    values={{ antall: aktiveArbeidsforhold.length }}
+                                />
+                            }
+                        >
+                            <FormattedMessage
+                                id="inntektsinformasjon.inntektsmelding.body"
+                                values={{ antall: aktiveArbeidsforhold.length }}
+                            />
+                        </ReadMore>
                     </VStack>
                     <VStack gap="1">
                         <RhfRadioGroup
