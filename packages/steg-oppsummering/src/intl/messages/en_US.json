@@ -47,6 +47,7 @@
     "ArbeidsforholdOppsummering.egenNæringVarigEndringDato": "What was the date of the change?",
     "ArbeidsforholdOppsummering.egenNæringVarigEndringInntektEtterEndring": "What was your business income after the change?",
     "ArbeidsforholdOppsummering.varigEndringBeskrivelse.label": "What has changed in your business or work situation?",
+    "ArbeidsforholdOppsummering.inntektsmelding": "{count, plural, one {Your employer} other {Your employers}} will be contacted by Nav to provide information about your income. This will happen four weeks before you start your leave. They will then receive information about the periods you have applied for.",
     "LandOppsummering.IDag": "today",
     "LandOppsummering.periode": "From {fra} to {til}",
     "EndreSvar": "Edit",
