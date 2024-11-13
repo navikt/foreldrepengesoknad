@@ -27,6 +27,7 @@ import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviou
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
+import CalendarLabels from '../../components/labels/CalendarLabels';
 import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
 import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
 import styles from './planenDeresSteg.module.css';
@@ -235,6 +236,13 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                                 annenPartsPerioder={planforslag.søker2}
                                 navnAnnenPart="Test"
                                 barn={mapOmBarnetTilBarn(omBarnet)}
+                                planleggerLegend={
+                                    <CalendarLabels
+                                        hvemPlanlegger={hvemPlanlegger}
+                                        barnet={omBarnet}
+                                        hvemHarRett={hvemHarRett}
+                                    />
+                                }
                             />
                         </div>
                     </VStack>

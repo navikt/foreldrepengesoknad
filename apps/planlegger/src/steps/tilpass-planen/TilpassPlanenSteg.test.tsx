@@ -14,8 +14,8 @@ describe('<TilpassPlanenSteg - fødsel>', () => {
         expect(screen.getByText('Kalender').closest('button')?.getAttribute('aria-checked')).toBe('true');
         expect(screen.getByText('Liste').closest('button')?.getAttribute('aria-checked')).toBe('false');
 
-        expect(screen.getByText('Olga')).toBeInTheDocument();
-        expect(screen.getByText('Espen')).toBeInTheDocument();
+        expect(screen.getByText('Mor')).toBeInTheDocument();
+        expect(screen.getByText('Far')).toBeInTheDocument();
         expect(screen.getByText('Termin')).toBeInTheDocument();
     });
 });

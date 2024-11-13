@@ -8,8 +8,8 @@ import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
 import { useBeforeUnload, utilsMessages } from '@navikt/fp-utils';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
+import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
-import { nyUttaksplanMessages } from '../../../packages/ny-uttaksplan/src';
 import { PlanleggerDataInit } from './Planlegger';
 import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';

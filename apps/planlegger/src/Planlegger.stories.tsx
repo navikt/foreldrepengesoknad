@@ -9,6 +9,7 @@ import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
+import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
 
 import { PlanleggerDataFetcher } from './Planlegger';
 import enMessages from './intl/messages/en_US.json';
@@ -97,11 +98,11 @@ const SATSER = {
     ],
 };
 
-const allNbMessages = { ...nbMessages, ...uiMessages.nb };
+const allNbMessages = { ...nbMessages, ...uiMessages.nb, ...uttaksplanKalenderMessages.nb };
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: allNbMessages,
-    nn: { ...nnMessages, ...uiMessages.nn },
+    nn: { ...nnMessages, ...uiMessages.nn, ...uttaksplanKalenderMessages.nn },
     en: { ...enMessages, ...uiMessages.en },
 };
 

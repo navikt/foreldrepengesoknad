@@ -92,14 +92,6 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
 
                         <VStack gap="10">
                             <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
-
-                            {visningsmodus === 'kalender' && (
-                                <CalendarLabels
-                                    hvemPlanlegger={hvemPlanlegger}
-                                    barnet={omBarnet}
-                                    hvemHarRett={hvemHarRett}
-                                />
-                            )}
                         </VStack>
                         {visningsmodus === 'liste' && (
                             <UttaksplanNy
@@ -132,6 +124,13 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
                                     annenPartsPerioder={planforslag.søker2}
                                     navnAnnenPart="Test"
                                     barn={mapOmBarnetTilBarn(omBarnet)}
+                                    planleggerLegend={
+                                        <CalendarLabels
+                                            hvemPlanlegger={hvemPlanlegger}
+                                            barnet={omBarnet}
+                                            hvemHarRett={hvemHarRett}
+                                        />
+                                    }
                                 />
                             </div>
                         )}

@@ -282,7 +282,7 @@ export const getPeriodeTittel = (
                 intl,
                 periode.årsak,
                 getForelderNavn(periode.forelder, navnPåForeldre),
-                periode.forelder === 'mor',
+                periode.forelder === 'MOR',
             );
         case Periodetype.Hull:
             return intl.formatMessage({ id: 'uttaksplan.periodetype.hull.tittel' });
