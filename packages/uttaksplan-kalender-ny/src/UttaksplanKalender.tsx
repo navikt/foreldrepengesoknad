@@ -61,6 +61,7 @@ const getPerioderForKalendervisning = (
     unikeUtsettelseÅrsaker: UtsettelseÅrsakType[],
     intl: IntlShape,
     erIPlanleggerModus: boolean,
+    foreldrepengerHarAktivitetskrav: boolean,
 ): Period[] => {
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const allePerioderBortsettFraFamiliehendelseperioden = allePerioder.filter(
@@ -80,7 +81,7 @@ const getPerioderForKalendervisning = (
 
     const perioderForVisning = unikePerioder.map((periode) => {
         const color = erIPlanleggerModus
-            ? getKalenderFargeForPeriodeTypePlanlegger(periode, erFarEllerMedmor)
+            ? getKalenderFargeForPeriodeTypePlanlegger(periode, erFarEllerMedmor, foreldrepengerHarAktivitetskrav)
             : getKalenderFargeForPeriodeType(periode, erFarEllerMedmor, allePerioder, barn);
         return {
             fom: dayjs(periode.fom).isSame(dayjs(familiehendelsesdato), 'd')
@@ -170,6 +171,7 @@ const erPeriodeForSøker = (periode: KalenderPeriode, erFarEllerMedmor: boolean)
 const getKalenderFargeForPeriodeTypePlanlegger = (
     periode: KalenderPeriode,
     erFarEllerMedmor: boolean,
+    foreldrepengerHarAktivitetskrav: boolean,
 ): PeriodeColor => {
     if (periode.kontoType === StønadskontoType.ForeldrepengerFørFødsel) {
         return PeriodeColor.BLUE;
@@ -180,7 +182,11 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
     }
 
     if (periode.kontoType === StønadskontoType.Foreldrepenger) {
-        return erFarEllerMedmor ? PeriodeColor.LIGHTGREEN : PeriodeColor.LIGHTBLUE;
+        if (foreldrepengerHarAktivitetskrav) {
+            return erFarEllerMedmor ? PeriodeColor.LIGHTGREEN : PeriodeColor.BLUE;
+        }
+
+        return PeriodeColor.BLUE;
     }
 
     if (periode.forelder === Forelder.mor) {
@@ -188,7 +194,7 @@ const getKalenderFargeForPeriodeTypePlanlegger = (
     }
 
     if (periode.forelder === Forelder.farMedmor) {
-        return PeriodeColor.GREEN;
+        return PeriodeColor.LIGHTGREEN;
     }
 
     return PeriodeColor.NONE;
@@ -284,6 +290,10 @@ export const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
         dayjs(p1.fom).isBefore(p2.fom) ? -1 : 1,
     );
 
+    const foreldrepengerHarAktivitetskrav =
+        allePerioder.find((p) => p.kontoType === StønadskontoType.Foreldrepenger) !== undefined &&
+        allePerioder.find((p) => p.kontoType === StønadskontoType.AktivitetsfriKvote) !== undefined;
+
     const søkersHullPerioder = finnOgSettInnHull(
         allePerioder as Planperiode[],
         harAktivitetskravIPeriodeUtenUttak,
@@ -315,6 +325,7 @@ export const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
         unikeUtsettelseÅrsaker,
         intl,
         erIPlanleggerModus,
+        foreldrepengerHarAktivitetskrav,
     );
 
     const inkludererHelg = getInneholderKalenderHelgedager(perioderForKalendervisning);
