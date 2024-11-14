@@ -42,8 +42,19 @@ const queryClient = new QueryClient({
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: allNbMessages,
-    nn: { ...nnMessages, ...uiMessages.nn },
-    en: { ...enMessages, ...uiMessages.en },
+    nn: {
+        ...nnMessages,
+        ...uiMessages.nn,
+        ...utilsMessages.nn,
+        ...nyUttaksplanMessages.nn,
+        ...uttaksplanKalenderMessages.nn,
+    },
+    en: {
+        ...enMessages,
+        ...uiMessages.en,
+        ...utilsMessages.en,
+        ...uttaksplanKalenderMessages.en,
+    },
 };
 
 const initLocale = (): LocaleAll => {

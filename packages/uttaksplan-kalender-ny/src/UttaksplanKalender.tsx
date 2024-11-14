@@ -87,7 +87,10 @@ const getPerioderForKalendervisning = (
             ? getKalenderFargeForPeriodeTypePlanlegger(periode, erFarEllerMedmor, foreldrepengerHarAktivitetskrav)
             : getKalenderFargeForPeriodeType(periode, erFarEllerMedmor, allePerioder, barn);
 
-        if (dayjs(barnehagestartdato).isBetween(periode.fom, periode.tom, 'day', '[]')) {
+        if (
+            barnehagestartdato !== undefined &&
+            dayjs(barnehagestartdato).isBetween(periode.fom, periode.tom, 'day', '[]')
+        ) {
             return [
                 ...acc,
                 {
@@ -115,7 +118,10 @@ const getPerioderForKalendervisning = (
         ];
     }, [] as Period[]);
 
-    const perioderForVisning = res.concat(barnehageperiode).sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)));
+    const perioderForVisning =
+        barnehagestartdato !== undefined
+            ? res.concat(barnehageperiode).sort((a, b) => dayjs(a.fom).diff(dayjs(b.fom)))
+            : res;
 
     const indexOfFamiliehendelse = getIndexOfSistePeriodeFørDato(allePerioder, familiehendelsesdato) || 0;
     perioderForVisning.splice(indexOfFamiliehendelse, 0, {
