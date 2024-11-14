@@ -8,7 +8,8 @@ import {
     PersonPregnantFillIcon,
 } from '@navikt/aksel-icons';
 
-import { Forelder, NavnPåForeldre } from '@navikt/fp-common';
+import { NavnPåForeldre } from '@navikt/fp-common';
+import { Forelder } from '@navikt/fp-constants';
 import { Familiesituasjon, UtsettelseÅrsakType } from '@navikt/fp-types';
 
 type GetFargeProps = {

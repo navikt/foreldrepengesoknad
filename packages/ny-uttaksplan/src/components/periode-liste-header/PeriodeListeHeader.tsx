@@ -5,7 +5,7 @@ import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort, Heading, Hide, Show } from '@navikt/ds-react';
 
-import { Forelder } from '@navikt/fp-common';
+import { Forelder } from '@navikt/fp-constants';
 import { Tidsperioden, bemUtils, formatDateShortMonth } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 

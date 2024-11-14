@@ -32,7 +32,7 @@
                             "årsak": "ANNET"
                         },
                         "flerbarnsdager": false,
-                        "forelder": "mor"
+                        "forelder": "MOR"
                     },
                     {
                         "fom": "2022-07-01",
@@ -45,7 +45,7 @@
                             "årsak": "ANNET"
                         },
                         "flerbarnsdager": false,
-                        "forelder": "mor"
+                        "forelder": "MOR"
                     },
                     {
                         "fom": "2022-08-12",
@@ -58,7 +58,7 @@
                             "årsak": "ANNET"
                         },
                         "flerbarnsdager": false,
-                        "forelder": "mor"
+                        "forelder": "MOR"
                     },
                     {
                         "fom": "2022-10-14",
@@ -71,7 +71,7 @@
                             "årsak": "ANNET"
                         },
                         "flerbarnsdager": false,
-                        "forelder": "mor",
+                        "forelder": "MOR",
                         "samtidigUttak": 50
                     }
                 ]
@@ -118,7 +118,7 @@
                             "årsak": "ANNET"
                         },
                         "flerbarnsdager": false,
-                        "forelder": "mor"
+                        "forelder": "MOR"
                     },
                     {
                         "fom": "2023-01-10",
@@ -131,7 +131,7 @@
                             "årsak": "ANNET"
                         },
                         "flerbarnsdager": false,
-                        "forelder": "mor"
+                        "forelder": "MOR"
                     },
                     {
                         "fom": "2023-02-21",
@@ -144,7 +144,7 @@
                             "årsak": "ANNET"
                         },
                         "flerbarnsdager": false,
-                        "forelder": "mor"
+                        "forelder": "MOR"
                     },
                     {
                         "fom": "2024-05-28",
@@ -157,7 +157,7 @@
                             "årsak": "ANNET"
                         },
                         "flerbarnsdager": false,
-                        "forelder": "mor"
+                        "forelder": "MOR"
                     }
                 ]
             },

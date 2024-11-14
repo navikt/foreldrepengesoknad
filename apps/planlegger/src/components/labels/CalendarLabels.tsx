@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import { getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+import { getDefaultNavnSøker1, getDefaultNavnSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
 import {
     HvemHarRett,
@@ -31,8 +31,8 @@ const CalendarLabels: FunctionComponent<Props> = ({ barnet, hvemPlanlegger, hvem
     const erAdoptert = erBarnetAdoptert(barnet);
 
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
-    const søker1Tekst = getFornavnPåSøker1(hvemPlanlegger, intl);
-    const søker2Tekst = getFornavnPåSøker2(hvemPlanlegger, intl);
+    const søker1Tekst = getDefaultNavnSøker1(hvemPlanlegger, intl);
+    const søker2Tekst = getDefaultNavnSøker2(hvemPlanlegger, intl);
 
     const erFarOgFarOgFødsel = erFarOgFar && !erAdoptert;
     const erFarOgFarOgAdopsjon = erFarOgFar && erAdoptert;

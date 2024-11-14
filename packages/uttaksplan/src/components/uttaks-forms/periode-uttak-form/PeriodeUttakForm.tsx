@@ -6,7 +6,6 @@ import { BodyLong, Button, GuidePanel } from '@navikt/ds-react';
 import {
     AnnenForelder,
     Arbeidsforhold,
-    Forelder,
     NavnPåForeldre,
     OpprinneligSøkt,
     Periode,
@@ -19,6 +18,7 @@ import {
     isAnnenForelderOppgitt,
     isUttaksperiode,
 } from '@navikt/fp-common';
+import { Forelder } from '@navikt/fp-constants';
 import { Stønadskonto } from '@navikt/fp-types';
 import { isValidTidsperiodeString } from '@navikt/fp-utils';
 
@@ -284,8 +284,8 @@ const PeriodeUttakForm: FunctionComponent<Props> = ({
                     { fom: values.fom, tom: values.tom } as TidsperiodeDate,
                 );
                 const søkerOppgirAnnenForeldersPeriode =
-                    (values.hvemSkalTaUttak === 'mor' && erFarEllerMedmor) ||
-                    (values.hvemSkalTaUttak === 'farMedmor' && !erFarEllerMedmor);
+                    (values.hvemSkalTaUttak === 'MOR' && erFarEllerMedmor) ||
+                    (values.hvemSkalTaUttak === 'FAR_MEDMOR' && !erFarEllerMedmor);
 
                 if (isValid !== periodeIsValid) {
                     setPeriodeIsValid(isValid);

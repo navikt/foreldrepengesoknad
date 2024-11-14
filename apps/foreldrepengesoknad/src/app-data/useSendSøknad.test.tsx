@@ -344,7 +344,7 @@ describe('useEsSendSøknad', () => {
                     uttaksplan: [
                         expect.objectContaining({
                             erArbeidstaker: false,
-                            forelder: 'farMedmor',
+                            forelder: 'FAR_MEDMOR',
                             type: 'utsettelse',
                             årsak: 'FRI',
                         }),
