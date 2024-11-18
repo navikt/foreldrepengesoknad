@@ -12,6 +12,7 @@ export enum SøknadRoute {
     SKJEMA = '/skjema',
     TILRETTELEGGING = '/tilrettelegging',
     PERIODER = '/perioder',
+    FERIE = '/ferie',
     OPPSUMMERING = '/oppsummering',
 }
 
@@ -22,7 +23,7 @@ export type RouteParams = {
 export const TILRETTELEGGING_PARAM = ':tilretteleggingId';
 
 export const addTilretteleggingIdToRoute = (route: SøknadRoute, id: string) => {
-    if ([SøknadRoute.SKJEMA, SøknadRoute.TILRETTELEGGING, SøknadRoute.PERIODER].includes(route)) {
+    if ([SøknadRoute.SKJEMA, SøknadRoute.TILRETTELEGGING, SøknadRoute.PERIODER, SøknadRoute.FERIE].includes(route)) {
         return `${route}/${id}`;
     }
     throw new Error(`Rute ${route} kan ikke ha param`);

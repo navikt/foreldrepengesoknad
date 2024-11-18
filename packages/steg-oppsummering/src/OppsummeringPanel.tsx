@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import { IntlShape, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { ConfirmationPanel, VStack } from '@navikt/ds-react';
 
@@ -89,6 +89,10 @@ const OppsummeringPanel = <TYPE extends string>({
             </VStack>
         </Step>
     );
+};
+
+export const JaNeiTekst = ({ ja }: { ja: boolean }) => {
+    return ja ? <FormattedMessage id="ja" /> : <FormattedMessage id="nei" />;
 };
 
 export default OppsummeringPanel;

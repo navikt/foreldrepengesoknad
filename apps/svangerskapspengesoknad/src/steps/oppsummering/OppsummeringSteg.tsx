@@ -21,6 +21,7 @@ import { formatDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { DokumentasjonOppsummering } from './DokumentasjonOppsummering';
+import { FerieOppsummering } from './FerieOppsummering';
 import { JobbetIUtlandetOppsummering } from './JobbetIUtlandetOppsummering';
 import { PerioderOppsummering } from './PerioderOppsummering';
 
@@ -127,6 +128,12 @@ export const OppsummeringSteg: React.FunctionComponent<Props> = ({
                         navigator.goToStep(
                             addTilretteleggingIdToRoute(SøknadRoute.TILRETTELEGGING, førsteTilretteleggingId),
                         )
+                    }
+                />
+                <FerieOppsummering
+                    alleArbeidsforhold={søkerInfo.arbeidsforhold}
+                    onVilEndreSvar={() =>
+                        navigator.goToStep(addTilretteleggingIdToRoute(SøknadRoute.FERIE, førsteTilretteleggingId))
                     }
                 />
             </OppsummeringPanel>

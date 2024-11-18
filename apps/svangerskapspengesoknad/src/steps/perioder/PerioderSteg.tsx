@@ -67,6 +67,11 @@ export const PerioderSteg: FunctionComponent<Props> = ({
             [valgtTilretteleggingId]: values.varierendePerioder,
         });
 
+        // Bare virksomheter eller private skal oppgi ferie.
+        if (typeArbeidsgiver === 'virksomhet' || typeArbeidsgiver === 'privat') {
+            return navigator.goToStep(addTilretteleggingIdToRoute(SøknadRoute.FERIE, valgtTilretteleggingId));
+        }
+
         const nesteTilretteleggingId = getNesteTilretteleggingId(valgtTilretteleggingId, valgteArbeidsforhold);
 
         return navigator.goToStep(

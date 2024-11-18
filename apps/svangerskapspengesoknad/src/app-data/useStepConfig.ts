@@ -1,13 +1,14 @@
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 import {
+    Arbeidsforholdstype,
     DelivisTilretteleggingPeriodeType,
     DelvisTilrettelegging,
     IngenTilrettelegging,
     Tilretteleggingstype,
 } from 'types/Tilrettelegging';
 import { søkerHarKunEtAktivtArbeid } from 'utils/arbeidsforholdUtils';
-import { getTilretteleggingId } from 'utils/tilretteleggingUtils';
+import { getTilretteleggingId, getTypeArbeidForTilrettelegging } from 'utils/tilretteleggingUtils';
 
 import { Arbeidsforhold, EGEN_NÆRING_ID, FRILANS_ID } from '@navikt/fp-types';
 import { ProgressStep } from '@navikt/fp-ui';
@@ -41,14 +42,24 @@ const getStepLabels = (
         : intl.formatMessage({ id: 'steps.label.tilrettelegging.en' }),
     [SøknadRoute.UTENLANDSOPPHOLD]: intl.formatMessage({ id: 'steps.label.utenlandsopphold' }),
     [SøknadRoute.VELG_ARBEID]: intl.formatMessage({ id: 'steps.label.velgArbeid' }),
+    [SøknadRoute.FERIE]: erFlereTilrettelegginger
+        ? intl.formatMessage({ id: 'steps.label.ferie.flere' }, { navn })
+        : intl.formatMessage({ id: 'steps.label.ferie.en' }),
 });
 
-const createTilretteleggingSteps = (
-    currentPath: SøknadRoute | string,
-    labels: Record<SøknadRoute, string>,
-    tilretteleggingId: string,
-    tilrettelegging?: DelvisTilrettelegging | IngenTilrettelegging,
-): Array<ProgressStep<SøknadRoute | string>> => {
+const createTilretteleggingSteps = ({
+    currentPath,
+    labels,
+    tilrettelegging,
+    tilretteleggingId,
+    typeArbeidsgiver,
+}: {
+    currentPath: SøknadRoute | string;
+    labels: Record<SøknadRoute, string>;
+    tilretteleggingId: string;
+    tilrettelegging?: DelvisTilrettelegging | IngenTilrettelegging;
+    typeArbeidsgiver: Arbeidsforholdstype;
+}) => {
     const steps = new Array<ProgressStep<string>>();
 
     const skjemaPath = addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, tilretteleggingId);
@@ -74,6 +85,15 @@ const createTilretteleggingSteps = (
             id: perioderPath,
             label: labels[SøknadRoute.PERIODER],
             isSelected: currentPath === perioderPath,
+        });
+    }
+
+    if (typeArbeidsgiver === 'virksomhet' || typeArbeidsgiver === 'privat') {
+        const feriePath = addTilretteleggingIdToRoute(SøknadRoute.FERIE, tilretteleggingId);
+        steps.push({
+            id: feriePath,
+            label: labels[SøknadRoute.FERIE],
+            isSelected: currentPath === feriePath,
         });
     }
 
@@ -159,19 +179,50 @@ const getStepConfig = (
     const harValgtFlereTilrettelegginger = !!valgteArbeidsforhold && valgteArbeidsforhold.length > 1;
     const harValgtEnTilrettelegging = !!valgteArbeidsforhold && valgteArbeidsforhold.length === 1;
     if (harValgtFlereTilrettelegginger) {
-        valgteArbeidsforhold.forEach((id) => {
-            const labels = getTilretteleggingLabels(intl, harValgtFlereTilrettelegginger, arbeidsforhold, id);
-            steps.push(...createTilretteleggingSteps(currentPath, labels, id, tilrettelegginger?.[id]));
+        valgteArbeidsforhold.forEach((tilretteleggingId) => {
+            const typeArbeidsgiver = getTypeArbeidForTilrettelegging(tilretteleggingId, arbeidsforhold);
+            const labels = getTilretteleggingLabels(
+                intl,
+                harValgtFlereTilrettelegginger,
+                arbeidsforhold,
+                tilretteleggingId,
+            );
+            steps.push(
+                ...createTilretteleggingSteps({
+                    currentPath,
+                    labels,
+                    tilretteleggingId,
+                    tilrettelegging: tilrettelegginger?.[tilretteleggingId],
+                    typeArbeidsgiver,
+                }),
+            );
         });
     } else if ((harValgtEnTilrettelegging || harKunEttArbeid) && barn && arbeidsforholdOgInntekt) {
-        const id = harValgtEnTilrettelegging
+        const tilretteleggingId = harValgtEnTilrettelegging
             ? valgteArbeidsforhold[0]
             : getTilretteleggingId(arbeidsforhold, barn.termindato, arbeidsforholdOgInntekt);
-        const labels = getTilretteleggingLabels(intl, false, arbeidsforhold, id);
-        steps.push(...createTilretteleggingSteps(currentPath, labels, id, tilrettelegginger?.[id]));
+        const labels = getTilretteleggingLabels(intl, false, arbeidsforhold, tilretteleggingId);
+        const typeArbeidsgiver = getTypeArbeidForTilrettelegging(tilretteleggingId, arbeidsforhold);
+
+        steps.push(
+            ...createTilretteleggingSteps({
+                currentPath,
+                labels,
+                tilretteleggingId,
+                tilrettelegging: tilrettelegginger?.[tilretteleggingId],
+                typeArbeidsgiver,
+            }),
+        );
     } else {
         steps.push(createStep(SøknadRoute.SKJEMA, intl, currentPath));
         steps.push(createStep(SøknadRoute.TILRETTELEGGING, intl, currentPath));
+
+        if (
+            !arbeidsforholdOgInntekt?.harJobbetSomSelvstendigNæringsdrivende &&
+            !arbeidsforholdOgInntekt?.harJobbetSomFrilans
+        ) {
+            steps.push(createStep(SøknadRoute.FERIE, intl, currentPath));
+        }
     }
 
     steps.push(createStep(SøknadRoute.OPPSUMMERING, intl, currentPath));

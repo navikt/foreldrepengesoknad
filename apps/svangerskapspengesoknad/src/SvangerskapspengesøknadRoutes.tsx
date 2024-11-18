@@ -2,6 +2,7 @@ import Environment from 'appData/Environment';
 import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute, TILRETTELEGGING_PARAM } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
+import { SvpDataMapAndMetaData, useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
@@ -12,12 +13,12 @@ import { Kvittering, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 import { redirect } from '@navikt/fp-utils';
 
-import { SvpDataMapAndMetaData, useMellomlagreSøknad } from './app-data/useMellomlagreSøknad';
 import { Forside } from './pages/forside/Forside';
 import { ArbeidIUtlandetSteg } from './steps/arbeid-i-utlandet/ArbeidIUtlandetSteg';
 import { ArbeidsforholdOgInntektSteg } from './steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
 import { BarnetSteg } from './steps/barnet/BarnetSteg';
 import { EgenNæringSteg } from './steps/egen-næring/EgenNæringSteg';
+import { FerieSteg } from './steps/ferie/FerieSteg';
 import { FrilansSteg } from './steps/frilans/FrilansSteg';
 import { OppsummeringSteg } from './steps/oppsummering/OppsummeringSteg';
 import { PerioderSteg } from './steps/perioder/PerioderSteg';
@@ -166,6 +167,16 @@ const renderSøknadRoutes = (
                 path={`${SøknadRoute.PERIODER}/${TILRETTELEGGING_PARAM}`}
                 element={
                     <PerioderSteg
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
+            />
+            <Route
+                path={`${SøknadRoute.FERIE}/${TILRETTELEGGING_PARAM}`}
+                element={
+                    <FerieSteg
                         arbeidsforhold={søkerInfo.arbeidsforhold}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                         avbrytSøknad={avbrytSøknad}

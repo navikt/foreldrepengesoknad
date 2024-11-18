@@ -48,25 +48,6 @@ import {
     validateTilretteleggingstiltak,
 } from './tilretteleggingValidation';
 
-const getNextRoute = (
-    values: DelvisTilrettelegging | IngenTilrettelegging,
-    currentTilretteleggingId: string,
-    valgteArbeidsforholdIder?: string[],
-): string => {
-    if (
-        values.type === Tilretteleggingstype.DELVIS &&
-        values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
-    ) {
-        return addTilretteleggingIdToRoute(SøknadRoute.PERIODER, currentTilretteleggingId);
-    }
-
-    const nesteTilretteleggingId = getNesteTilretteleggingId(currentTilretteleggingId, valgteArbeidsforholdIder);
-    if (nesteTilretteleggingId) {
-        return addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, nesteTilretteleggingId);
-    }
-    return SøknadRoute.OPPSUMMERING;
-};
-
 const finnRisikofaktorLabel = (intl: IntlShape, typeArbeid: Arbeidsforholdstype) =>
     typeArbeid === Arbeidsforholdstype.FRILANSER
         ? intl.formatMessage({ id: 'skjema.risikofaktorer.frilanser' })
@@ -169,9 +150,26 @@ export const TilretteleggingSteg: FunctionComponent<Props> = ({
     const onSubmit = (values: DelvisTilrettelegging | IngenTilrettelegging) => {
         oppdaterTilrettelegginger({ ...tilrettelegginger, [valgtTilretteleggingId]: values });
 
-        const nextRoute = getNextRoute(values, valgtTilretteleggingId, valgteArbeidsforhold);
+        const typeArbeidsgiver = getTypeArbeidForTilrettelegging(valgtTilretteleggingId, arbeidsforhold);
+        if (
+            values.type === Tilretteleggingstype.DELVIS &&
+            values.delvisTilretteleggingPeriodeType === DelivisTilretteleggingPeriodeType.VARIERTE_PERIODER
+        ) {
+            return navigator.goToStep(addTilretteleggingIdToRoute(SøknadRoute.PERIODER, valgtTilretteleggingId));
+        }
 
-        return navigator.goToStep(nextRoute);
+        // Bare virksomheter eller private skal oppgi ferie.
+        if (typeArbeidsgiver === 'virksomhet' || typeArbeidsgiver === 'privat') {
+            return navigator.goToStep(addTilretteleggingIdToRoute(SøknadRoute.FERIE, valgtTilretteleggingId));
+        }
+
+        const nesteTilretteleggingId = getNesteTilretteleggingId(valgtTilretteleggingId, valgteArbeidsforhold);
+
+        return navigator.goToStep(
+            nesteTilretteleggingId
+                ? addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, nesteTilretteleggingId)
+                : SøknadRoute.OPPSUMMERING,
+        );
     };
 
     const formMethods = useForm<DelvisTilrettelegging | IngenTilrettelegging>({

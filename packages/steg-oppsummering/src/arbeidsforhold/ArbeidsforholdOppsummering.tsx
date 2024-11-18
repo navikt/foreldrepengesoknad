@@ -12,6 +12,8 @@ import {
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
+import { JaNeiTekst } from '../OppsummeringPanel';
+
 interface ArbeidsforholdOppsummeringProps {
     readonly arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
     readonly arbeidsforhold: Arbeidsforhold[];
@@ -116,10 +118,6 @@ export const ArbeidsforholdOppsummering: React.FC<ArbeidsforholdOppsummeringProp
             </FormSummary.Answers>
         </FormSummary>
     );
-};
-
-const JaNeiTekst = ({ ja }: { readonly ja: boolean }) => {
-    return ja ? <FormattedMessage id="ja" /> : <FormattedMessage id="nei" />;
 };
 
 const ArbeidsforholdFormSummaryValue = ({ arbeidsforhold }: { readonly arbeidsforhold: Arbeidsforhold }) => {
