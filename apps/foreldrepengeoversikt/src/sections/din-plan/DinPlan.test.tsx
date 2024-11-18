@@ -48,7 +48,7 @@ describe('<Default>', () => {
         expect(screen.getByText('Helg (er ikke dager med foreldrepenger)')).toBeInTheDocument();
     });
 
-    it.skip('Skal sjekke at fars kalender er korrekt', async () => {
+    it('Skal sjekke at fars kalender er korrekt', async () => {
         await applyRequestHandlers(FarSøker.parameters.msw);
         render(<FarSøker />);
 

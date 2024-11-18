@@ -7,14 +7,21 @@ import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
 import { useBeforeUnload, utilsMessages } from '@navikt/fp-utils';
+import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
+import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
-import { nyUttaksplanMessages } from '../../../packages/ny-uttaksplan/src';
 import { PlanleggerDataInit } from './Planlegger';
 import enMessages from './intl/messages/en_US.json';
 import nbMessages from './intl/messages/nb_NO.json';
 import nnMessages from './intl/messages/nn_NO.json';
 
-const allNbMessages = { ...nbMessages, ...uiMessages.nb, ...utilsMessages.nb, ...nyUttaksplanMessages.nb };
+const allNbMessages = {
+    ...nbMessages,
+    ...uiMessages.nb,
+    ...utilsMessages.nb,
+    ...nyUttaksplanMessages.nb,
+    ...uttaksplanKalenderMessages.nb,
+};
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -35,8 +42,19 @@ const queryClient = new QueryClient({
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: allNbMessages,
-    nn: { ...nnMessages, ...uiMessages.nn },
-    en: { ...enMessages, ...uiMessages.en },
+    nn: {
+        ...nnMessages,
+        ...uiMessages.nn,
+        ...utilsMessages.nn,
+        ...nyUttaksplanMessages.nn,
+        ...uttaksplanKalenderMessages.nn,
+    },
+    en: {
+        ...enMessages,
+        ...uiMessages.en,
+        ...utilsMessages.en,
+        ...uttaksplanKalenderMessages.en,
+    },
 };
 
 const initLocale = (): LocaleAll => {

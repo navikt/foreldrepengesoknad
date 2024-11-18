@@ -18,7 +18,7 @@ export const isAvslåttPeriode = (periode: SaksperiodeNy) => {
 export const isAvslåttPeriodeFørsteSeksUkerMor = (periode: SaksperiodeNy, familiehendelsesdato: string): boolean => {
     return (
         !!isAvslåttPeriode(periode) &&
-        periode.forelder === 'mor' &&
+        periode.forelder === 'MOR' &&
         dayjs(periode.fom).isSameOrAfter(dayjs(familiehendelsesdato), 'day') &&
         slutterTidsperiodeInnen6UkerEtterFødsel({ fom: periode.fom, tom: periode.tom }, new Date(familiehendelsesdato))
     );

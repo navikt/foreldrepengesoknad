@@ -107,7 +107,9 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
                                     />
                                 )}
                                 {hvorMye && <HvorMyeOppsummering satser={satser} />}
-                                <BarnehageplassOppsummering hvemPlanlegger={hvemPlanlegger} barnet={barnet} />
+                                {!erAdoptert && (
+                                    <BarnehageplassOppsummering hvemPlanlegger={hvemPlanlegger} barnet={barnet} />
+                                )}
                                 <OppgittInformasjon
                                     stønadskontoer={stønadskontoer}
                                     barnet={barnet}

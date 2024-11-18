@@ -20,7 +20,11 @@ import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviou
 import { notEmpty } from '@navikt/fp-validation';
 
 export const barnehagestartDato = (barnet: OmBarnet) => {
-    const dato = erBarnetAdoptert(barnet) ? barnet.fødselsdato : barnet.termindato;
+    if (erBarnetAdoptert(barnet)) {
+        return undefined;
+    }
+
+    const dato = erBarnetFødt(barnet) ? barnet.fødselsdato : barnet.termindato;
 
     if (dayjs(dato).month() < 8) {
         return getUttaksdagTilOgMedDato(

@@ -7,24 +7,23 @@ import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
 import { FunctionComponent, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Dekningsgrad } from 'types/Dekningsgrad';
-import { erAlenesøker, getNavnPåSøker1, getNavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker, getErFarEllerMedmor, getNavnPåSøker1, getNavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
 
 import { Button, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { BarnType } from '@navikt/fp-constants';
 import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
-import { Calendar, StepButtons } from '@navikt/fp-ui';
+import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
-import { UttaksplanNy, sorterPerioder } from '@navikt/fp-uttaksplan-ny';
+import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
+import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import PlanvisningToggle, { Visningsmodus } from '../../components/planvisning-toggle/PlanvisningToggle';
 import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
 import { Situasjon } from '../../types/HvemPlanlegger';
-import { erBarnetAdoptert, getFamiliesituasjon } from '../../utils/barnetUtils';
-import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
+import { erBarnetAdoptert, getFamiliesituasjon, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
 import HvaErMulig from './hva-er-mulig/HvaErMulig';
 import styles from './tilpassPlanenSteg.module.css';
 
@@ -55,7 +54,6 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
 
     const familiesituasjon = getFamiliesituasjon(omBarnet);
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
-    const barnehageplassdato = barnehagestartDato(omBarnet);
 
     const familiehendelsedato = getFamiliehendelsedato(omBarnet);
 
@@ -63,6 +61,7 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
 
     const bareFarMedmorHarRett =
         harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
+    const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
 
     const planforslag = lagForslagTilPlan({
         erDeltUttak: fordeling !== undefined,
@@ -71,11 +70,10 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
         fellesperiodeDagerMor: fordeling?.antallDagerSøker1,
         bareFarMedmorHarRett,
         erAdopsjon: erBarnetAdoptert(omBarnet),
-        erFarEllerMedmor: true,
+        erFarEllerMedmor,
         erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
         erAleneOmOmsorg: hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.MOR,
     });
-    const kombinertPlanforslag = [...planforslag.søker1, ...planforslag.søker2].sort(sorterPerioder);
 
     return (
         <form>
@@ -94,14 +92,6 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
 
                         <VStack gap="10">
                             <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
-
-                            {visningsmodus === 'kalender' && (
-                                <CalendarLabels
-                                    hvemPlanlegger={hvemPlanlegger}
-                                    barnet={omBarnet}
-                                    hvemHarRett={hvemHarRett}
-                                />
-                            )}
                         </VStack>
                         {visningsmodus === 'liste' && (
                             <UttaksplanNy
@@ -118,12 +108,7 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
                                 harAktivitetskravIPeriodeUtenUttak={false}
                                 søkersPerioder={planforslag.søker1}
                                 annenPartsPerioder={planforslag.søker2}
-                                barn={{
-                                    antallBarn: 1,
-                                    type: BarnType.FØDT,
-                                    fødselsdatoer: [familiehendelsedato],
-                                    termindato: familiehendelsedato,
-                                }}
+                                barn={mapOmBarnetTilBarn(omBarnet)}
                             />
                         )}
                     </VStack>
@@ -131,10 +116,21 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
                     <VStack gap="5">
                         {visningsmodus === 'kalender' && (
                             <div className={styles.calendar}>
-                                <Calendar
-                                    periods={kombinertPlanforslag}
-                                    barnehageplassdato={barnehageplassdato}
-                                    familiehendelsedato={familiehendelsedato}
+                                <UttaksplanKalender
+                                    bareFarHarRett={bareFarMedmorHarRett}
+                                    erFarEllerMedmor={erFarEllerMedmor}
+                                    harAktivitetskravIPeriodeUtenUttak={false}
+                                    søkersPerioder={planforslag.søker1}
+                                    annenPartsPerioder={planforslag.søker2}
+                                    navnAnnenPart="Test"
+                                    barn={mapOmBarnetTilBarn(omBarnet)}
+                                    planleggerLegend={
+                                        <CalendarLabels
+                                            hvemPlanlegger={hvemPlanlegger}
+                                            barnet={omBarnet}
+                                            hvemHarRett={hvemHarRett}
+                                        />
+                                    }
                                 />
                             </div>
                         )}
