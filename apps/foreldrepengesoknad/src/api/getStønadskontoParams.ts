@@ -51,10 +51,11 @@ const getTermindatoSomSkalBrukes = (barn: Barn, termindatoSaksgrunnlag?: string)
 };
 
 export const getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter = (
+    erFarEllerMedmor: boolean,
     termindatoSaksgrunnlag?: string,
     termindatoSaksgrunnlagAnnenPart?: string,
 ): string | undefined => {
-    if (termindatoSaksgrunnlagAnnenPart) {
+    if (termindatoSaksgrunnlagAnnenPart && erFarEllerMedmor) {
         return termindatoSaksgrunnlagAnnenPart;
     }
 
@@ -129,6 +130,7 @@ const getStønadskontoParams = (
     );
 
     const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
+        erFarEllerMedmor,
         eksisterendeSak?.grunnlag.termindato,
         eksisterendeVedtakAnnenPart?.grunnlag.termindato,
     );
