@@ -7,7 +7,6 @@ import CalendarIconLabel from './CalendarIconLabel';
 
 interface Props {
     utenAktivitetskrav?: boolean;
-    tekstPart1: string;
     isBluePanel?: boolean;
 }
 

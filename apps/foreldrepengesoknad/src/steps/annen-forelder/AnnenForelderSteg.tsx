@@ -57,28 +57,26 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søkerInfo, melloml
     const onSubmit = (values: AnnenForelderFormData) => {
         if (values.kanIkkeOppgis === true) {
             oppdaterAnnenForeldre({ kanIkkeOppgis: true });
-        } else {
-            const fornavn =
-                !skalOppgiPersonalia && annenForelderFraRegistrertBarn
-                    ? annenForelderFraRegistrertBarn.fornavn
-                    : values.fornavn;
-            const etternavn =
-                !skalOppgiPersonalia && annenForelderFraRegistrertBarn
-                    ? annenForelderFraRegistrertBarn.etternavn
-                    : values.etternavn;
-            const fnr =
-                !skalOppgiPersonalia && annenForelderFraRegistrertBarn
-                    ? annenForelderFraRegistrertBarn.fnr
-                    : values.fnr;
-            oppdaterAnnenForeldre({
-                ...values,
-                kanIkkeOppgis: false,
-                fornavn: replaceInvisibleCharsWithSpace(fornavn) ?? '',
-                etternavn: replaceInvisibleCharsWithSpace(etternavn) ?? '',
-                fnr: replaceInvisibleCharsWithSpace(fnr.trim()) ?? '',
-                harRettPåForeldrepengerIEØS: values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : false,
-            });
+            return navigator.goToNextDefaultStep();
         }
+
+        const skalIkkeOppgiPersonaliaOgHarFraRegBarn = !skalOppgiPersonalia && annenForelderFraRegistrertBarn;
+        const fornavn = skalIkkeOppgiPersonaliaOgHarFraRegBarn
+            ? annenForelderFraRegistrertBarn.fornavn
+            : values.fornavn;
+        const etternavn = skalIkkeOppgiPersonaliaOgHarFraRegBarn
+            ? annenForelderFraRegistrertBarn.etternavn
+            : values.etternavn;
+        const fnr = skalIkkeOppgiPersonaliaOgHarFraRegBarn ? annenForelderFraRegistrertBarn.fnr : values.fnr;
+
+        oppdaterAnnenForeldre({
+            ...values,
+            kanIkkeOppgis: false,
+            fornavn: replaceInvisibleCharsWithSpace(fornavn) ?? '',
+            etternavn: replaceInvisibleCharsWithSpace(etternavn) ?? '',
+            fnr: replaceInvisibleCharsWithSpace(fnr.trim()) ?? '',
+            harRettPåForeldrepengerIEØS: values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : false,
+        });
 
         return navigator.goToNextDefaultStep();
     };

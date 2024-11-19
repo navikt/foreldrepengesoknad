@@ -48,8 +48,6 @@ const CalendarLabels: FunctionComponent<Props> = ({ barnet, hvemPlanlegger, hvem
         (harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) ||
             (hvemHarRett === 'kunSøker1HarRett' && erFarOgFarOgAdopsjon));
 
-    const farOgFarAdopsjonDerKunSøker1HarRett = hvemHarRett === 'kunSøker1HarRett' && erFarOgFarOgAdopsjon;
-
     return (
         <VStack gap="1">
             {skalViseAntallUkerLabels && (
@@ -62,12 +60,8 @@ const CalendarLabels: FunctionComponent<Props> = ({ barnet, hvemPlanlegger, hvem
             )}
             {skalViseAktivitetskravLabels && (
                 <HStack gap="2">
-                    <AktivitetskravLabel
-                        utenAktivitetskrav
-                        tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
-                        isBluePanel
-                    />
-                    <AktivitetskravLabel tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst} />
+                    <AktivitetskravLabel utenAktivitetskrav isBluePanel />
+                    <AktivitetskravLabel />
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
                 </HStack>

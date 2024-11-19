@@ -187,7 +187,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                                     year: 'numeric',
                                                 },
                                             ),
-                                            b: (msg: any) => <b>{msg}</b>,
+                                            b: (msg) => <b>{msg}</b>,
                                         }}
                                     />
                                 </BodyLong>
