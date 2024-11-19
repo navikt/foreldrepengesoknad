@@ -3,7 +3,18 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - '**'
+      - 'master'
+    paths:
+      - 'apps/foreldrepengesoknad/**'
+      - 'packages/**'
+      - 'server/**'
+      - '.deploy/foreldrepengesoknad/**'
+      - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-foreldrepengesoknad.yml'
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
+      - 'pnpm-lock.yaml'
+  pull_request:
     paths:
       - 'apps/foreldrepengesoknad/**'
       - 'packages/**'

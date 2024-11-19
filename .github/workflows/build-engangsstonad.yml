@@ -2,6 +2,19 @@ name: Bygg og deploy Engangsstønad
 on:
   workflow_dispatch:
   push:
+    branches:
+      - 'master'
+    paths:
+      - 'apps/engangsstonad/**'
+      - 'packages/**'
+      - 'server/**'
+      - '.deploy/engangsstonad/**'
+      - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-engangsstonad.yml'
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
+      - 'pnpm-lock.yaml'
+  pull_request:
     paths:
       - 'apps/engangsstonad/**'
       - 'packages/**'

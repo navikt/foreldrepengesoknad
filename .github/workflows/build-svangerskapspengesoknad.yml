@@ -2,6 +2,19 @@ name: Bygg og deploy Svangerskapspengesøknad
 on:
   workflow_dispatch:
   push:
+    branches:
+      - 'master'
+    paths:
+      - 'apps/svangerskapspengesoknad/**'
+      - 'packages/**'
+      - 'server/**'
+      - '.deploy/svangerskapspengesoknad/**'
+      - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-svangerskapspengesoknad.yml'
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
+      - 'pnpm-lock.yaml'
+  pull_request:
     paths:
       - 'apps/svangerskapspengesoknad/**'
       - 'packages/**'

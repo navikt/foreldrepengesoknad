@@ -2,6 +2,19 @@ name: Bygg og deploy Foreldrepengeoversikt
 on:
   workflow_dispatch:
   push:
+    branches:
+      - 'master'
+    paths:
+      - 'apps/foreldrepengeoversikt/**'
+      - 'packages/**'
+      - 'server/**'
+      - '.deploy/foreldrepengeoversikt/**'
+      - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-foreldrepengeoversikt.yml'
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
+      - 'pnpm-lock.yaml'
+  pull_request:
     paths:
       - 'apps/foreldrepengeoversikt/**'
       - 'packages/**'

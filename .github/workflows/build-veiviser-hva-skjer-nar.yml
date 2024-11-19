@@ -2,6 +2,19 @@ name: Bygg og deploy Veiviser-hva-skjer-nar
 on:
   workflow_dispatch:
   push:
+    branches:
+      - 'master'
+    paths:
+      - 'apps/veiviser-hva-skjer-nar/**'
+      - 'packages/**'
+      - 'server-uinnlogget/**'
+      - '.deploy/veiviser-hva-skjer-nar/**'
+      - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-veiviser-hva-skjer-nar.yml'
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
+      - 'pnpm-lock.yaml'
+  pull_request:
     paths:
       - 'apps/veiviser-hva-skjer-nar/**'
       - 'packages/**'

@@ -2,6 +2,19 @@ name: Bygg og deploy Veiviser-hvor-mye
 on:
   workflow_dispatch:
   push:
+    branches:
+      - 'master'
+    paths:
+      - 'apps/veiviser-hvor-mye/**'
+      - 'packages/**'
+      - 'server-uinnlogget/**'
+      - '.deploy/veiviser-hvor-mye/**'
+      - '.deploy/naiserator.yaml'
+      - '.github/workflows/build-veiviser-hvor-mye.yml'
+      - 'Dockerfile'
+      - 'docker-bake.hcl'
+      - 'pnpm-lock.yaml'
+  pull_request:
     paths:
       - 'apps/veiviser-hvor-mye/**'
       - 'packages/**'
