@@ -16,6 +16,8 @@ import { Loader } from '@navikt/ds-react';
 
 import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
+import TilpassPlanenSteg from './steps/tilpass-planen/TilpassPlanenSteg';
+
 interface Props {
     locale: LocaleAll;
     changeLocale: (locale: LocaleAll) => void;
@@ -55,6 +57,12 @@ export const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocal
                 path={PlanleggerRoutes.PLANEN_DERES}
                 element={
                     stønadskontoer ? <PlanenDeresSteg stønadskontoer={stønadskontoer} locale={locale} /> : <Loader />
+                }
+            />
+            <Route
+                path={PlanleggerRoutes.TILPASS_PLANEN}
+                element={
+                    stønadskontoer ? <TilpassPlanenSteg stønadskontoer={stønadskontoer} locale={locale} /> : <Loader />
                 }
             />
             <Route

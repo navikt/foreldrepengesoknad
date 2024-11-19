@@ -24,6 +24,7 @@ const getLabelConfig = (intl: IntlShape): Record<PlanleggerRoutes, string> => ({
     [PlanleggerRoutes.BARNEHAGEPLASS]: intl.formatMessage({ id: 'BarnehageplassSteg.Tittel' }),
     [PlanleggerRoutes.OM_PLANLEGGEREN]: intl.formatMessage({ id: 'OmPlanleggerenSteg.Ingress' }),
     [PlanleggerRoutes.PLANEN_DERES]: intl.formatMessage({ id: 'PlanenDeresSteg.Tittel' }),
+    [PlanleggerRoutes.TILPASS_PLANEN]: intl.formatMessage({ id: 'TilpassPlanenSteg.Tittel' }),
     [PlanleggerRoutes.OPPSUMMERING]: intl.formatMessage({ id: 'OppsummeringHeader.Tittel' }),
 });
 
@@ -104,6 +105,13 @@ const showHvorMyeStep = (
     return false;
 };
 
+const showTilpassPlanenStep = (path: PlanleggerRoutes) => {
+    if (path === PlanleggerRoutes.TILPASS_PLANEN) {
+        return true;
+    }
+    return false;
+};
+
 const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
     const location = useLocation();
     const intl = useIntl();
@@ -123,6 +131,7 @@ const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
                 showBarnehageplassStep(path, getStateData) ||
                 showHvorMyeStep(path, getStateData) ||
                 showFordelingStep(path, getStateData) ||
+                showTilpassPlanenStep(path) ||
                 showHvorLangPeriodeEllerOversiktStep(path, getStateData)
                     ? [path]
                     : [],
