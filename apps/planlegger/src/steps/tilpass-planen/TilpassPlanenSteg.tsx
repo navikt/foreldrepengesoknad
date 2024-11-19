@@ -36,7 +36,7 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
     const intl = useIntl();
     const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
-    const [visningsmodus, setVisningsmodus] = useState<Visningsmodus>('kalender');
+    const [visningsmodus, setVisningsmodus] = useState<Visningsmodus>('liste');
 
     useScrollBehaviour();
 
