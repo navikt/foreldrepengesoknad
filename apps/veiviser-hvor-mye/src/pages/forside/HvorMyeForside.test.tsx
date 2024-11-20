@@ -30,7 +30,7 @@ describe('<HvorMyeForside>', () => {
 
         expect(
             screen.getByText(
-                'Denne veiviseren er for deg som ønsker å vite omtrent hvor mye foreldrepenger du kan få fra NAV.',
+                'Denne veiviseren er for deg som ønsker å vite omtrent hvor mye foreldrepenger du kan få fra Nav.',
             ),
         ).toBeInTheDocument();
 

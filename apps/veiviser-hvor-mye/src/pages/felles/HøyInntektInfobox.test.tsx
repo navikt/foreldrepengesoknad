@@ -11,7 +11,7 @@ describe('<HøyInntektInfobox>', () => {
 
         expect(await screen.findByText('Du får dekket opptil 700 000 kr av din inntekt')).toBeInTheDocument();
         expect(
-            screen.getByText('Du har oppgitt en inntekt høyere enn dette, men dette dekkes ikke av NAV.'),
+            screen.getByText('Du har oppgitt en inntekt høyere enn dette, men dette dekkes ikke av Nav.'),
         ).toBeInTheDocument();
     });
 });
