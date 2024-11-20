@@ -2,6 +2,7 @@ import { CalendarIcon } from '@navikt/aksel-icons';
 import CalendarLabels from 'components/labels/CalendarLabels';
 import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
@@ -106,6 +107,8 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
     const fornavnSøker1Genitiv = getNavnGenitivEierform(fornavnSøker1, intl.locale);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
     const fornavnSøker2Genitiv = fornavnSøker2 ? getNavnGenitivEierform(fornavnSøker2, intl.locale) : undefined;
+
+    const barnehagestartdato = barnehagestartDato(barnet);
 
     return (
         <VStack gap="10">
@@ -298,7 +301,6 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                 </BodyShort>
                             </BluePanel>
                         )}
-                        <CalendarLabels hvemPlanlegger={hvemPlanlegger} barnet={barnet} hvemHarRett={hvemHarRett} />
                         <UttaksplanKalender
                             bareFarHarRett={bareFarMedmorHarRett}
                             erFarEllerMedmor={erFarEllerMedmor}
@@ -307,6 +309,14 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             annenPartsPerioder={planforslag.søker2}
                             navnAnnenPart="Test"
                             barn={mapOmBarnetTilBarn(barnet)}
+                            planleggerLegend={
+                                <CalendarLabels
+                                    hvemPlanlegger={hvemPlanlegger}
+                                    barnet={barnet}
+                                    hvemHarRett={hvemHarRett}
+                                />
+                            }
+                            barnehagestartdato={barnehagestartdato}
                         />
                     </VStack>
                 </ExpansionCard.Content>
