@@ -138,6 +138,7 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
         eksisterendeVedtakAnnenPart?.grunnlag.antallBarn,
     );
     const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
+        erFarEllerMedmor,
         termindato,
         eksisterendeVedtakAnnenPart?.grunnlag.termindato,
     );
