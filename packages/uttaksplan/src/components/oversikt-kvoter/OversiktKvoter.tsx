@@ -104,6 +104,8 @@ const OversiktPerKvote: FunctionComponent<PropsPerKvote> = ({
     const uttakÅVise = erDeltUttakINorge
         ? uttaksstatus.uttak
         : filtrerBortAnnenPartsKonto(uttaksstatus.uttak, erFarEllerMedmor);
+    console.log(uttaksstatus);
+    console.log(uttakÅVise);
     return (
         <div className={bem.element('perKvote')}>
             <Heading size="small" as="h3" className="blokk-xs">
@@ -163,6 +165,7 @@ const OversiktKvoter: FunctionComponent<Props> = ({
     navnPåForeldre,
 }) => {
     const søkerErFarEllerMedmor = isFarEllerMedmor(rolle);
+    console.log('plan', uttaksplan);
     const uttaksstatus = getUttaksstatus({
         erDeltUttak: erDeltUttak,
         erEndringssøknad: erEndringssøknad,

@@ -3,7 +3,7 @@ import ky from 'ky';
 import { z } from 'zod';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { Satser } from '@navikt/fp-types';
+import { Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 import { AnnenPartVedtakDTO } from '../types/AnnenPartVedtakDTO';
@@ -34,6 +34,23 @@ export const hentSakerOptions = () =>
     queryOptions({
         queryKey: ['SAKER'],
         queryFn: () => ky.get(`${urlPrefiks}/rest/innsyn/v2/saker`).json<SakOppslagDTO>(),
+    });
+
+// TODO: relocate
+type KontoBeregningGrunnlagDto = {
+    rettighetstype: 'ALENEOMSORG' | 'BEGGE_RETT' | 'BARE_SØKER_RETT';
+    brukerrolle: 'MOR' | 'FAR' | 'MEDMOR' | 'UKJENT';
+    antallBarn: number;
+    fødselsdato?: string;
+    termindato?: string;
+    omsorgsovertakelseDato?: string;
+    morHarUføretrygd: boolean;
+    familieHendelseDatoNesteSak?: string;
+};
+export const hentUttaksKontoOptions = (body: KontoBeregningGrunnlagDto) =>
+    queryOptions({
+        queryKey: ['UTTAKSKONTO', body],
+        queryFn: () => ky.post(`${urlPrefiks}/rest/konto`, { json: body }).json<TilgjengeligeStønadskontoer>(),
     });
 
 export const hentDokumenterOptions = (saksnummer: string) =>

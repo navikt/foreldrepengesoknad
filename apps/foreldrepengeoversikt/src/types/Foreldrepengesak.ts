@@ -1,6 +1,7 @@
 import { SaksperiodeNy } from '@navikt/fp-types';
 
 import { Dekningsgrad } from './Dekningsgrad';
+import { DekningsgradDTO } from './DekningsgradDTO';
 import { Familiehendelse } from './Familiehendelse';
 import PersonFnrDTO from './PersonFnrDTO';
 import { RettighetType } from './RettighetType';
@@ -23,7 +24,7 @@ export interface ForeldrepengesakDTO {
         perioder: SaksperiodeNy[];
     };
     barn: PersonFnrDTO[];
-    dekningsgrad: Dekningsgrad;
+    dekningsgrad: DekningsgradDTO;
     åpenBehandling?: ÅpenBehandlingFP;
     oppdatertTidspunkt: string;
 }

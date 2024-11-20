@@ -13,6 +13,7 @@ import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { RettighetType } from '../../types/RettighetType';
 import { Ytelse } from '../../types/Ytelse';
 import { getBarnFraSak, getFamiliehendelseDato, utledFamiliesituasjon } from '../../utils/sakerUtils';
+import { KvoteOppsummering } from './KvoteOppsummering';
 
 interface Props {
     annenPartsPerioder?: SaksperiodeNy[];
@@ -80,19 +81,22 @@ export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåF
                     />
                 </ToggleGroup>
                 {!visKalender && (
-                    <UttaksplanNy
-                        barn={barn}
-                        erFarEllerMedmor={søkerErFarEllerMedmor}
-                        familiehendelsedato={familiehendelseDato}
-                        navnPåForeldre={navnPåForeldre}
-                        annenPartsPerioder={annenPartsPerioder}
-                        søkersPerioder={getRelevantePerioder() || []}
-                        gjelderAdopsjon={gjelderAdopsjon}
-                        bareFarHarRett={bareFarHarRett}
-                        familiesituasjon={familiesituasjon}
-                        førsteUttaksdagNesteBarnsSak={undefined}
-                        harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
-                    />
+                    <>
+                        <UttaksplanNy
+                            barn={barn}
+                            erFarEllerMedmor={søkerErFarEllerMedmor}
+                            familiehendelsedato={familiehendelseDato}
+                            navnPåForeldre={navnPåForeldre}
+                            annenPartsPerioder={annenPartsPerioder}
+                            søkersPerioder={getRelevantePerioder() || []}
+                            gjelderAdopsjon={gjelderAdopsjon}
+                            bareFarHarRett={bareFarHarRett}
+                            familiesituasjon={familiesituasjon}
+                            førsteUttaksdagNesteBarnsSak={undefined}
+                            harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
+                        />
+                        <KvoteOppsummering annenPartsPerioder={annenPartsPerioder} />
+                    </>
                 )}
                 {visKalender && (
                     <UttaksplanKalender
