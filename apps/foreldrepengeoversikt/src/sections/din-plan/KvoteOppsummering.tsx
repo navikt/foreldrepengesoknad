@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { sum, sumBy } from 'lodash';
 
+import { HStack } from '@navikt/ds-react';
+
 import { SaksperiodeNy, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
 
@@ -46,11 +48,20 @@ export const KvoteOppsummering = ({ annenPartsPerioder }: Props) => {
 
     const relevantePerioder = søkersPerioder ?? perioderSomErSøktOm ?? [];
 
-    // TODO: !
     const b = finnUbrukteDager({ perioder: relevantePerioder, konto });
     console.log('RES', b);
 
-    return <AleneOmsorgKvote kvoter={b} />;
+    return (
+        <>
+            <AleneOmsorgKvote kvoter={b} />
+            <FordelingsBar
+                fordelinger={[
+                    { farge: 'bg-data-surface-1', prosent: 49 },
+                    { farge: 'bg-data-surface-5-subtle', prosent: 49 },
+                ]}
+            />
+        </>
+    );
 };
 
 const AleneOmsorgKvote = ({ kvoter }: { kvoter: ReturnType<typeof finnUbrukteDager> }) => {
@@ -61,6 +72,16 @@ const AleneOmsorgKvote = ({ kvoter }: { kvoter: ReturnType<typeof finnUbrukteDag
     }
 
     return <div>Det er {antallUbrukteDager} igjen</div>;
+};
+
+const FordelingsBar = ({ fordelinger }: { fordelinger: { farge: string; prosent: number }[] }) => {
+    return (
+        <HStack gap="2">
+            {fordelinger.map(({ farge, prosent }) => (
+                <div className={`rounded-full h-4 ${farge}`} style={{ width: `${prosent}%` }} />
+            ))}
+        </HStack>
+    );
 };
 
 const finnUbrukteDager = ({
