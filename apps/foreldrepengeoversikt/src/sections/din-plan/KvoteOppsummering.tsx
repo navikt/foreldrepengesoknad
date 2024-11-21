@@ -290,7 +290,6 @@ const FellesKvoter = ({
                         ikkeBrukt: true,
                         prosent: 100 - (prosentBruktAvMødrekvote + prosentBruktAvDeg),
                     },
-                    //TODO: må legge inn ubrukt
                 ]}
             />
             <BodyShort>TODO</BodyShort>
