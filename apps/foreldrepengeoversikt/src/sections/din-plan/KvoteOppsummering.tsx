@@ -60,7 +60,9 @@ const KvoteOppsummeringInner = ({ sak }: { sak: Foreldrepengesak }) => {
         <>
             {sak.rettighetType === 'ALENEOMSORG' && <AleneOmsorgKvote kvoter={b} konto={konto} />}
             {sak.rettighetType === 'BARE_SØKER_RETT' && null}
-            {sak.rettighetType === 'BEGGE_RETT' && <BeggeRettKvote kvoter={b} konto={konto} />}
+            {sak.rettighetType === 'BEGGE_RETT' && (
+                <BeggeRettKvote kvoter={b} konto={konto} perioder={relevantePerioder} />
+            )}
         </>
     );
 };
@@ -125,9 +127,11 @@ const AleneOmsorgKvote = ({
 const BeggeRettKvote = ({
     kvoter,
     konto,
+    perioder,
 }: {
     kvoter: ReturnType<typeof finnUbrukteDager>;
     konto: TilgjengeligeStønadskontoerForDekningsgrad;
+    perioder: SaksperiodeNy[];
 }) => {
     const antallUbrukteDager = sumBy(kvoter, (k) => k.ubrukteDager);
     console.log('KVOTER', kvoter);
@@ -142,25 +146,36 @@ const BeggeRettKvote = ({
                 <ExpansionCard.Content>
                     {sorterKontoer(konto.kontoer).map((k, index) => {
                         const matchendeKvote = kvoter.find((kvote) => kvote.kontoType === k.konto);
-                        const bruktProsent = Math.floor((matchendeKvote?.brukteDager / k.dager) * 100);
+
+                        let fordelinger = [];
+                        if (matchendeKvote?.kontoType === 'FELLESPERIODE') {
+                            // TODO: hva med når flere disjunkte perioder
+                            const a = finnFellesperiodeFordeling(perioder);
+                            //TODO: avhenger av hvem som er innlogget.
+                            fordelinger = a.map((b) => ({
+                                ...FARGEKART[b.type === 'FELLESPERIODE' ? 'MØDREKVOTE' : 'FEDREKVOTE'],
+                                prosent: (b.brukteDager / k.dager) * 100,
+                            }));
+                        } else {
+                            const bruktProsent = Math.floor((matchendeKvote?.brukteDager / k.dager) * 100);
+                            fordelinger = [
+                                {
+                                    ...FARGEKART[k.konto],
+                                    prosent: bruktProsent,
+                                },
+                                {
+                                    ...FARGEKART[k.konto],
+                                    prosent: 100 - bruktProsent,
+                                },
+                            ];
+                        }
 
                         return (
                             <>
                                 {index > 0 && <div className="h-[2px] w-full bg-gray-300" />}
                                 <VStack gap="1">
                                     <BodyShort weight="semibold">{k.konto}</BodyShort>
-                                    <FordelingsBar
-                                        fordelinger={[
-                                            {
-                                                ...FARGEKART[k.konto],
-                                                prosent: bruktProsent,
-                                            },
-                                            {
-                                                ...FARGEKART[k.konto],
-                                                prosent: 100 - bruktProsent,
-                                            },
-                                        ]}
-                                    />
+                                    <FordelingsBar fordelinger={fordelinger} />
                                     <BodyShort>
                                         {matchendeKvote?.brukteDager} er lagt til, {matchendeKvote?.ubrukteDager}{' '}
                                         gjenstår
@@ -175,6 +190,23 @@ const BeggeRettKvote = ({
     }
 
     return <div>Det er {antallUbrukteDager} igjen</div>;
+};
+
+const finnFellesperiodeFordeling = (perioder: SaksperiodeNy[]) => {
+    let res: { type: 'FELLESPERIODE' | 'FELLESPERIODE_ANNEN_FORELDER'; brukteDager: number }[] = [];
+
+    perioder.forEach((p) => {
+        const brukteDager = Tidsperioden({ fom: new Date(p.fom), tom: new Date(p.tom) }).getAntallUttaksdager();
+        if (p.kontoType === 'FELLESPERIODE') {
+            return res.push({ type: 'FELLESPERIODE', brukteDager });
+        }
+        if (p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER') {
+            return res.push({ type: 'FELLESPERIODE_ANNEN_FORELDER', brukteDager });
+        }
+        return;
+    });
+
+    return res;
 };
 
 /**
@@ -217,7 +249,6 @@ const finnUbrukteDager = ({
     perioder: SaksperiodeNy[];
 }) => {
     const res: { ubrukteDager: number; brukteDager: number; kontoType: StønadskontoType }[] = [];
-    // const kontoTyper = [...new Set(perioder.map((p) => p.kontoType).filter((p) => p !== undefined))];
 
     konto.kontoer.forEach((k) => {
         const maksAntallDager = k.dager;
