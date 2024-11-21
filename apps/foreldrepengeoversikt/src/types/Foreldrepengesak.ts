@@ -27,6 +27,7 @@ export interface ForeldrepengesakDTO {
     dekningsgrad: DekningsgradDTO;
     åpenBehandling?: ÅpenBehandlingFP;
     oppdatertTidspunkt: string;
+    forelder: 'MOR' | 'FAR_MEDMOR'; // TODO: skjønner ikke denne
 }
 
 export interface Foreldrepengesak extends ForeldrepengesakDTO {

@@ -10,53 +10,65 @@ import { Tidsperioden } from '@navikt/fp-utils';
 import { hentUttaksKontoOptions } from '../../api/api';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { DekningsgradDTO } from '../../types/DekningsgradDTO';
+import { Foreldrepengesak } from '../../types/Foreldrepengesak';
+import { Sak } from '../../types/Sak';
 import { Ytelse } from '../../types/Ytelse';
 
 type Props = {
     annenPartsPerioder: SaksperiodeNy[];
 };
-export const KvoteOppsummering = ({ annenPartsPerioder }: Props) => {
-    const gjeldendeSak = useGetSelectedSak();
 
-    const kontoQuery = useQuery(
-        hentUttaksKontoOptions({
-            antallBarn: 1,
-            brukerrolle: 'MOR',
-            morHarUføretrygd: false,
-            rettighetstype: 'ALENEOMSORG',
-            termindato: '2024-12-05',
-        }),
-    );
+export const KvoteOppsummering = () => {
+    const gjeldendeSak = useGetSelectedSak();
 
     if (!gjeldendeSak || gjeldendeSak.ytelse !== Ytelse.FORELDREPENGER) {
         return null;
     }
 
+    return <KvoteOppsummeringInner sak={gjeldendeSak} />;
+};
+
+const KvoteOppsummeringInner = ({ sak }: { sak: Foreldrepengesak }) => {
+    const kontoQuery = useQuery(
+        hentUttaksKontoOptions({
+            antallBarn: sak.familiehendelse.antallBarn,
+            brukerrolle: sak.forelder, //TODO: ikke konsekvent
+            morHarUføretrygd: false,
+            rettighetstype: sak.rettighetType,
+            termindato: sak.familiehendelse.termindato, //TODO: hvilken dato å bruke
+        }),
+    );
+
     const konto =
-        gjeldendeSak.dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT
-            ? kontoQuery.data?.['100']
-            : kontoQuery.data?.['80'];
+        sak.dekningsgrad === DekningsgradDTO.HUNDRE_PROSENT ? kontoQuery.data?.['100'] : kontoQuery.data?.['80'];
 
     if (!konto) {
         return null;
     }
-    const søkersPerioder = gjeldendeSak.gjeldendeVedtak?.perioder;
-    const perioderSomErSøktOm = gjeldendeSak.åpenBehandling?.søknadsperioder;
-    const familiehendelse = gjeldendeSak.familiehendelse;
-    const sakTilhørerMor = gjeldendeSak.sakTilhørerMor;
-    const gjelderAdopsjon = gjeldendeSak.gjelderAdopsjon;
-    const rettighetType = gjeldendeSak.rettighetType;
+    const søkersPerioder = sak.gjeldendeVedtak?.perioder;
+    const perioderSomErSøktOm = sak.åpenBehandling?.søknadsperioder;
+    const familiehendelse = sak.familiehendelse;
+    const sakTilhørerMor = sak.sakTilhørerMor;
+    const gjelderAdopsjon = sak.gjelderAdopsjon;
+    const rettighetType = sak.rettighetType;
 
     const relevantePerioder = søkersPerioder ?? perioderSomErSøktOm ?? [];
 
     const b = finnUbrukteDager({ perioder: relevantePerioder, konto });
-    console.log('RES', b);
 
     return (
         <>
-            <AleneOmsorgKvote kvoter={b} konto={konto} />
+            {sak.rettighetType === 'ALENEOMSORG' && <AleneOmsorgKvote kvoter={b} konto={konto} />}
+            {sak.rettighetType === 'BARE_SØKER_RETT' && null}
+            {sak.rettighetType === 'BEGGE_RETT' && <BeggeRettKvote kvoter={b} konto={konto} />}
         </>
     );
+};
+
+const FARGEKART = {
+    MØDREKVOTE: { farge: 'bg-data-surface-1', border: 'border-data-surface-1' },
+    FORELDREPENGER_FØR_FØDSEL: { farge: 'bg-data-surface-1', border: 'border-data-surface-1' },
+    FEDREKVOTE: { farge: 'bg-data-surface-5-subtle', border: 'border-data-surface-5-subtle' },
 };
 
 const AleneOmsorgKvote = ({
@@ -86,13 +98,63 @@ const AleneOmsorgKvote = ({
                                 <FordelingsBar
                                     fordelinger={[
                                         {
-                                            farge: 'bg-data-surface-1',
-                                            border: 'border-data-surface-1',
+                                            ...FARGEKART[k.konto],
                                             prosent: bruktProsent,
                                         },
                                         {
-                                            border: 'border-data-surface-1',
-                                            farge: 'bg-bg-default',
+                                            ...FARGEKART[k.konto],
+                                            prosent: 100 - bruktProsent,
+                                        },
+                                    ]}
+                                />
+                                <BodyShort>
+                                    {matchendeKvote?.brukteDager} er lagt til, {matchendeKvote?.ubrukteDager} gjenstår
+                                </BodyShort>
+                            </VStack>
+                        );
+                    })}
+                </ExpansionCard.Content>
+            </ExpansionCard>
+        );
+    }
+
+    return <div>Det er {antallUbrukteDager} igjen</div>;
+};
+
+//TODO: vurder om kan være samme komponent
+const BeggeRettKvote = ({
+    kvoter,
+    konto,
+}: {
+    kvoter: ReturnType<typeof finnUbrukteDager>;
+    konto: TilgjengeligeStønadskontoerForDekningsgrad;
+}) => {
+    const antallUbrukteDager = sumBy(kvoter, (k) => k.ubrukteDager);
+    console.log('KVOTER', kvoter);
+    console.log('KONTO', konto);
+    if (antallUbrukteDager === 0) {
+        return (
+            <ExpansionCard aria-label="TODO" size="small">
+                <ExpansionCard.Header>
+                    <ExpansionCard.Title size="small">All tid er i planen</ExpansionCard.Title>
+                    <ExpansionCard.Description>TODODODODOD</ExpansionCard.Description>
+                </ExpansionCard.Header>
+                <ExpansionCard.Content>
+                    {konto.kontoer.map((k) => {
+                        const matchendeKvote = kvoter.find((kvote) => kvote.kontoType === k.konto);
+                        const bruktProsent = Math.floor((matchendeKvote?.brukteDager / k.dager) * 100);
+
+                        return (
+                            <VStack gap="1">
+                                <BodyShort weight="semibold">{k.konto}</BodyShort>
+                                <FordelingsBar
+                                    fordelinger={[
+                                        {
+                                            ...FARGEKART[k.konto],
+                                            prosent: bruktProsent,
+                                        },
+                                        {
+                                            ...FARGEKART[k.konto],
                                             prosent: 100 - bruktProsent,
                                         },
                                     ]}
@@ -135,20 +197,39 @@ const finnUbrukteDager = ({
     perioder: SaksperiodeNy[];
 }) => {
     const res: { ubrukteDager: number; brukteDager: number; kontoType: StønadskontoType }[] = [];
-    const kontoTyper = [...new Set(perioder.map((p) => p.kontoType).filter((p) => p !== undefined))];
+    // const kontoTyper = [...new Set(perioder.map((p) => p.kontoType).filter((p) => p !== undefined))];
 
-    kontoTyper.forEach((kontoType) => {
-        const maksAntallDager = konto.kontoer.find((k) => k.konto === kontoType)?.dager;
+    konto.kontoer.forEach((k) => {
+        const maksAntallDager = k.dager;
 
         if (maksAntallDager === undefined) {
             return;
         }
+
+        // TODO: dette ble hårete og dekker på langt nær alle cases
         const matchendePerioder = perioder
-            .filter((p) => p.kontoType === kontoType)
+            .filter((p) => {
+                if (k.konto === p.kontoType) {
+                    return true;
+                }
+                // Hvis det er fellesperiode vil vi summere inn kvote brukt av annen forelder.
+                if (k.konto === 'FELLESPERIODE') {
+                    return p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER';
+                }
+
+                if (k.konto === 'FEDREKVOTE') {
+                    return p.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER';
+                }
+                if (k.konto === 'MØDREKVOTE') {
+                    return p.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER';
+                }
+
+                return false;
+            })
             .map((p) => Tidsperioden({ fom: new Date(p.fom), tom: new Date(p.tom) }).getAntallUttaksdager());
         const brukteDager = sum(matchendePerioder);
 
-        res.push({ ubrukteDager: maksAntallDager - brukteDager, brukteDager, kontoType });
+        res.push({ ubrukteDager: maksAntallDager - brukteDager, brukteDager, kontoType: k.konto });
     });
 
     return res;
