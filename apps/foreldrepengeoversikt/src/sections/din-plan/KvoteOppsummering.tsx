@@ -139,8 +139,6 @@ const KvoteTittel = ({
     );
 };
 
-const KvoteBeskrivelse = () => {};
-
 const FedreKvoter = ({
     konto,
     perioder,
@@ -157,6 +155,7 @@ const FedreKvoter = ({
     const dagerBruktFedreKvote = summerDagerIPerioder(
         perioder.filter((p) => p.kontoType === 'FEDREKVOTE' || p.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'),
     );
+    const ubrukteDager = fedreKonto.dager - dagerBruktFedreKvote;
     const prosentBruktAvFedrekvote = Math.floor((dagerBruktFedreKvote / fedreKonto.dager) * 100);
 
     return (
@@ -177,7 +176,7 @@ const FedreKvoter = ({
                     ]}
                 />
                 <BodyShort>
-                    {dagerBruktFedreKvote} er lagt til, {fedreKonto.dager - dagerBruktFedreKvote} gjenstår
+                    {dagerBruktFedreKvote} er lagt til{ubrukteDager > 0 ? `, ${ubrukteDager} gjenstår` : ''}
                 </BodyShort>
             </VStack>
         </VStack>
@@ -204,7 +203,8 @@ const MødreKvoter = ({
     const dagerBruktMødrekvote = summerDagerIPerioder(
         perioder.filter((p) => p.kontoType === 'MØDREKVOTE' || p.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER'),
     );
-
+    const ubrukteDagerFørFødsel = treUkerFørFødselKonto.dager - dagerBruktTreUkerFørFødsel;
+    const ubrukteDagerMødreKvote = mødreKonto.dager - dagerBruktMødrekvote;
     const prosentBruktAvTreUkerFørFødsel = Math.floor((dagerBruktTreUkerFørFødsel / treUkerFørFødselKonto.dager) * 100);
     const prosentBruktAvMødrekvote = Math.floor((dagerBruktMødrekvote / mødreKonto.dager) * 100);
 
@@ -228,8 +228,8 @@ const MødreKvoter = ({
                         ]}
                     />
                     <BodyShort>
-                        {dagerBruktTreUkerFørFødsel} er lagt til,{' '}
-                        {treUkerFørFødselKonto.dager - dagerBruktTreUkerFørFødsel} gjenstår
+                        {dagerBruktTreUkerFørFødsel} er lagt til
+                        {ubrukteDagerFørFødsel > 0 ? `, ${ubrukteDagerFørFødsel} gjenstår` : ''}
                     </BodyShort>
                 </VStack>
                 <VStack gap="1">
@@ -248,7 +248,8 @@ const MødreKvoter = ({
                         ]}
                     />
                     <BodyShort>
-                        {dagerBruktTreUkerFørFødsel} er lagt til, {mødreKonto.dager - dagerBruktMødrekvote} gjenstår
+                        {dagerBruktTreUkerFørFødsel} er lagt til
+                        {ubrukteDagerMødreKvote > 0 ? `, ${ubrukteDagerMødreKvote} gjenstår` : ''}
                     </BodyShort>
                 </VStack>
             </VStack>
@@ -273,13 +274,14 @@ const FellesKvoter = ({
     const dagerBruktAvAnnenPart = summerDagerIPerioder(
         perioder.filter((p) => p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER'),
     );
+    const ubrukteDager = fellesKonto.dager - (dagerBruktAvDeg + dagerBruktAvAnnenPart);
 
     const prosentBruktAvDeg = Math.floor((dagerBruktAvDeg / fellesKonto.dager) * 100);
     const prosentBruktAvMødrekvote = Math.floor((dagerBruktAvAnnenPart / fellesKonto.dager) * 100);
 
     return (
         <VStack gap="4">
-            <BodyShort weight="semibold">Fellesperiode {fellesKonto.dager}</BodyShort>
+            <BodyShort weight="semibold">{fellesKonto.dager} dager for å dele, fellesperiode</BodyShort>
             <VStack gap="1" className="ml-4">
                 <FordelingsBar
                     fordelinger={[
@@ -299,7 +301,10 @@ const FellesKvoter = ({
                         },
                     ]}
                 />
-                <BodyShort>TODO</BodyShort>
+                <BodyShort>
+                    {dagerBruktAvDeg} dager er lagt til for deg, {dagerBruktAvAnnenPart} dager er lagt til for annen
+                    forelder {ubrukteDager > 0 ? `, ${ubrukteDager} dager gjenstår` : ''}
+                </BodyShort>
             </VStack>
         </VStack>
     );
