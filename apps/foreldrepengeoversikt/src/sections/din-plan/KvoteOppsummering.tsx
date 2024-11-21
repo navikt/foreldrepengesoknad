@@ -72,10 +72,7 @@ const BeggeRettKvote = ({
 }) => {
     return (
         <ExpansionCard aria-label="TODO" size="small">
-            <ExpansionCard.Header>
-                <ExpansionCard.Title size="small">All tid er i planen</ExpansionCard.Title>
-                <ExpansionCard.Description>TODODODODOD</ExpansionCard.Description>
-            </ExpansionCard.Header>
+            <KvoteTittel konto={konto} perioder={perioder} />
             <ExpansionCard.Content>
                 <VStack gap="4">
                     <MødreKvoter konto={konto} perioder={perioder} />
@@ -88,6 +85,61 @@ const BeggeRettKvote = ({
         </ExpansionCard>
     );
 };
+
+const KvoteTittel = ({
+    konto,
+    perioder,
+}: {
+    konto: TilgjengeligeStønadskontoerForDekningsgrad;
+    perioder: SaksperiodeNy[];
+}) => {
+    const dagerBruktAvMor = summerDagerIPerioder(
+        perioder.filter(
+            (p) =>
+                p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' ||
+                p.kontoType === 'MØDREKVOTE' ||
+                p.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER',
+        ),
+    );
+    const dagerBruktAvFar = summerDagerIPerioder(
+        perioder.filter((p) => p.kontoType === 'FEDREKVOTE' || p.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'),
+    );
+    const dagerFellesBrukt = summerDagerIPerioder(
+        perioder.filter((p) => p.kontoType === 'FELLESPERIODE' || p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER'),
+    );
+
+    const mødreKonto = konto.kontoer.find((k) => k.konto === 'FEDREKVOTE');
+    const fedreKonto = konto.kontoer.find((k) => k.konto === 'MØDREKVOTE');
+    const fellesKonto = konto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
+
+    const ubrukteDagerMor = mødreKonto ? mødreKonto.dager - dagerBruktAvMor : undefined;
+    const ubrukteDagerFar = fedreKonto ? fedreKonto.dager - dagerBruktAvFar : undefined;
+    const ubrukteDagerFelles = fellesKonto ? fellesKonto.dager - dagerFellesBrukt : undefined;
+
+    const antallUbrukteDager = sum([ubrukteDagerFar, ubrukteDagerMor, ubrukteDagerFelles]);
+
+    if (antallUbrukteDager === 0) {
+        const tittel = 'All tid er i planen';
+        const beskrivelse = `${dagerBruktAvMor} dager for mor, ${dagerFellesBrukt} dager fellesperiode og ${dagerBruktAvFar} dager til far er lagt til i planen`;
+        return (
+            <ExpansionCard.Header>
+                <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
+                <ExpansionCard.Description>{beskrivelse}</ExpansionCard.Description>
+            </ExpansionCard.Header>
+        );
+    }
+
+    const tittel = `Det er ${antallUbrukteDager} dager igjen som kan legges til i planen`;
+    const beskrivelse = 'TODO';
+    return (
+        <ExpansionCard.Header>
+            <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
+            <ExpansionCard.Description>{beskrivelse}</ExpansionCard.Description>
+        </ExpansionCard.Header>
+    );
+};
+
+const KvoteBeskrivelse = () => {};
 
 const FedreKvoter = ({
     konto,
