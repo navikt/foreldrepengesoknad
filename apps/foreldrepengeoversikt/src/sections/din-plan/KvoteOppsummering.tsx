@@ -144,6 +144,7 @@ const BeggeRettKvote = ({
                     <ExpansionCard.Description>TODODODODOD</ExpansionCard.Description>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
+                    <MødreKvoter konto={konto} perioder={perioder} />
                     {sorterKontoer(konto.kontoer).map((k, index) => {
                         const matchendeKvote = kvoter.find((kvote) => kvote.kontoType === k.konto);
 
@@ -191,6 +192,93 @@ const BeggeRettKvote = ({
 
     return <div>Det er {antallUbrukteDager} igjen</div>;
 };
+
+const MødreKvoter = ({
+    konto,
+    perioder,
+}: {
+    konto: TilgjengeligeStønadskontoerForDekningsgrad;
+    perioder: SaksperiodeNy[];
+}) => {
+    const treUkerFørFødselKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
+    const mødreKonto = konto.kontoer.find((k) => k.konto === 'MØDREKVOTE');
+
+    if (!treUkerFørFødselKonto || !mødreKonto) {
+        return null;
+    }
+
+    const dagerBruktTreUkerFørFødsel = summerDagerIPerioder(
+        perioder.filter((p) => p.kontoType === 'FORELDREPENGER_FØR_FØDSEL'),
+    );
+    const dagerBruktMødrekvote = summerDagerIPerioder(
+        perioder.filter((p) => p.kontoType === 'MØDREKVOTE' || p.oppholdÅrsak === 'MØDREKVOTE_ANNEN_FORELDER'),
+    );
+
+    const prosentBruktAvTreUkerFørFødsel = Math.floor((dagerBruktTreUkerFørFødsel / treUkerFørFødselKonto.dager) * 100);
+    const prosentBruktAvMødrekvote = Math.floor((dagerBruktMødrekvote / mødreKonto.dager) * 100);
+
+    return (
+        <VStack gap="1">
+            <VStack>
+                <BodyShort weight="semibold">Forldrepenger før fødsel {treUkerFørFødselKonto.dager}</BodyShort>
+                <FordelingsBar
+                    fordelinger={[
+                        {
+                            ...FARGEKART.FORELDREPENGER_FØR_FØDSEL,
+                            prosent: prosentBruktAvTreUkerFørFødsel,
+                        },
+                        {
+                            ...FARGEKART.FORELDREPENGER_FØR_FØDSEL,
+                            prosent: 100 - prosentBruktAvTreUkerFørFødsel,
+                        },
+                    ]}
+                />
+                <BodyShort>
+                    {dagerBruktTreUkerFørFødsel} er lagt til, {treUkerFørFødselKonto.dager - dagerBruktTreUkerFørFødsel}{' '}
+                    gjenstår
+                </BodyShort>
+            </VStack>
+            <VStack>
+                <BodyShort weight="semibold">Mødrekvote - {mødreKonto.dager}</BodyShort>
+                <FordelingsBar
+                    fordelinger={[
+                        {
+                            ...FARGEKART.MØDREKVOTE,
+                            prosent: prosentBruktAvMødrekvote,
+                        },
+                        {
+                            ...FARGEKART.MØDREKVOTE,
+                            prosent: 100 - prosentBruktAvMødrekvote,
+                        },
+                    ]}
+                />
+                <BodyShort>
+                    {dagerBruktTreUkerFørFødsel} er lagt til, {mødreKonto.dager - dagerBruktMødrekvote} gjenstår
+                </BodyShort>
+            </VStack>
+        </VStack>
+    );
+};
+
+const summerDagerIPerioder = (perioder: SaksperiodeNy[]) => {
+    return sum(
+        perioder.map((p) => Tidsperioden({ fom: new Date(p.fom), tom: new Date(p.tom) }).getAntallUttaksdager()),
+    );
+};
+
+// const FordelingTekst = ({
+//     dagerTilDeg,
+//     dagerTilAnnenPart,
+//     ubrukteDager,
+// }: {
+//     dagerTilDeg?: number;
+//     dagerTilAnnenPart?: number;
+//     ubrukteDager?: number;
+// }) => {
+//     const ubrukteDagerTekst = ubrukteDager ? `${ubrukteDager} gjenstår` : "";
+//     const dagerTilDegTekst = dagerTilDeg ? `${dagerTilDeg} er lagt til for `
+//
+// };
 
 const finnFellesperiodeFordeling = (perioder: SaksperiodeNy[]) => {
     let res: { type: 'FELLESPERIODE' | 'FELLESPERIODE_ANNEN_FORELDER'; brukteDager: number }[] = [];
