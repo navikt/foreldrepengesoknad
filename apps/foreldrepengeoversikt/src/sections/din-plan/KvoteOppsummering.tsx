@@ -128,11 +128,13 @@ const BeggeRettKvote = ({
                 <ExpansionCard.Description>TODODODODOD</ExpansionCard.Description>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-                <MødreKvoter konto={konto} perioder={perioder} />
-                <div className="h-[2px] bg-gray-300 w-full" />
-                <FedreKvoter konto={konto} perioder={perioder} />
-                <div className="h-[2px] bg-gray-300 w-full" />
-                <FellesKvoter konto={konto} perioder={perioder} />
+                <VStack gap="4">
+                    <MødreKvoter konto={konto} perioder={perioder} />
+                    <div className="h-[2px] bg-gray-300 w-full" />
+                    <FedreKvoter konto={konto} perioder={perioder} />
+                    <div className="h-[2px] bg-gray-300 w-full" />
+                    <FellesKvoter konto={konto} perioder={perioder} />
+                </VStack>
             </ExpansionCard.Content>
         </ExpansionCard>
     );
@@ -157,9 +159,9 @@ const FedreKvoter = ({
     const prosentBruktAvFedrekvote = Math.floor((dagerBruktFedreKvote / fedreKonto.dager) * 100);
 
     return (
-        <VStack gap="1">
-            <VStack>
-                <BodyShort weight="semibold">Fedrekvote - {fedreKonto.dager}</BodyShort>
+        <VStack gap="4">
+            <BodyShort weight="semibold">Fedrekvote - {fedreKonto.dager}</BodyShort>
+            <VStack gap="1" className="ml-4">
                 <FordelingsBar
                     fordelinger={[
                         {
@@ -206,45 +208,48 @@ const MødreKvoter = ({
     const prosentBruktAvMødrekvote = Math.floor((dagerBruktMødrekvote / mødreKonto.dager) * 100);
 
     return (
-        <VStack gap="1">
-            <VStack>
-                <BodyShort weight="semibold">Forldrepenger før fødsel {treUkerFørFødselKonto.dager}</BodyShort>
-                <FordelingsBar
-                    fordelinger={[
-                        {
-                            ...FARGEKART.FORELDREPENGER_FØR_FØDSEL,
-                            prosent: prosentBruktAvTreUkerFørFødsel,
-                        },
-                        {
-                            ...FARGEKART.FORELDREPENGER_FØR_FØDSEL,
-                            ikkeBrukt: true,
-                            prosent: 100 - prosentBruktAvTreUkerFørFødsel,
-                        },
-                    ]}
-                />
-                <BodyShort>
-                    {dagerBruktTreUkerFørFødsel} er lagt til, {treUkerFørFødselKonto.dager - dagerBruktTreUkerFørFødsel}{' '}
-                    gjenstår
-                </BodyShort>
-            </VStack>
-            <VStack>
-                <BodyShort weight="semibold">Mødrekvote - {mødreKonto.dager}</BodyShort>
-                <FordelingsBar
-                    fordelinger={[
-                        {
-                            ...FARGEKART.MØDREKVOTE,
-                            prosent: prosentBruktAvMødrekvote,
-                        },
-                        {
-                            ...FARGEKART.MØDREKVOTE,
-                            ikkeBrukt: true,
-                            prosent: 100 - prosentBruktAvMødrekvote,
-                        },
-                    ]}
-                />
-                <BodyShort>
-                    {dagerBruktTreUkerFørFødsel} er lagt til, {mødreKonto.dager - dagerBruktMødrekvote} gjenstår
-                </BodyShort>
+        <VStack gap="4">
+            <BodyShort weight="semibold">16 + 3 uker til deg</BodyShort>
+            <VStack gap="6" className="ml-4">
+                <VStack gap="1">
+                    <BodyShort weight="semibold">Forldrepenger før fødsel {treUkerFørFødselKonto.dager}</BodyShort>
+                    <FordelingsBar
+                        fordelinger={[
+                            {
+                                ...FARGEKART.FORELDREPENGER_FØR_FØDSEL,
+                                prosent: prosentBruktAvTreUkerFørFødsel,
+                            },
+                            {
+                                ...FARGEKART.FORELDREPENGER_FØR_FØDSEL,
+                                ikkeBrukt: true,
+                                prosent: 100 - prosentBruktAvTreUkerFørFødsel,
+                            },
+                        ]}
+                    />
+                    <BodyShort>
+                        {dagerBruktTreUkerFørFødsel} er lagt til,{' '}
+                        {treUkerFørFødselKonto.dager - dagerBruktTreUkerFørFødsel} gjenstår
+                    </BodyShort>
+                </VStack>
+                <VStack gap="1">
+                    <BodyShort weight="semibold">Mødrekvote - {mødreKonto.dager}</BodyShort>
+                    <FordelingsBar
+                        fordelinger={[
+                            {
+                                ...FARGEKART.MØDREKVOTE,
+                                prosent: prosentBruktAvMødrekvote,
+                            },
+                            {
+                                ...FARGEKART.MØDREKVOTE,
+                                ikkeBrukt: true,
+                                prosent: 100 - prosentBruktAvMødrekvote,
+                            },
+                        ]}
+                    />
+                    <BodyShort>
+                        {dagerBruktTreUkerFørFødsel} er lagt til, {mødreKonto.dager - dagerBruktMødrekvote} gjenstår
+                    </BodyShort>
+                </VStack>
             </VStack>
         </VStack>
     );
@@ -272,27 +277,29 @@ const FellesKvoter = ({
     const prosentBruktAvMødrekvote = Math.floor((dagerBruktAvAnnenPart / fellesKonto.dager) * 100);
 
     return (
-        <VStack gap="1">
+        <VStack gap="4">
             <BodyShort weight="semibold">Fellesperiode {fellesKonto.dager}</BodyShort>
-            <FordelingsBar
-                fordelinger={[
-                    {
-                        ...FARGEKART.MØDREKVOTE,
-                        prosent: prosentBruktAvDeg, //TODO: må se på hvem du er
-                    },
-                    {
-                        ...FARGEKART.FEDREKVOTE,
-                        prosent: prosentBruktAvMødrekvote,
-                    },
-                    {
-                        farge: '',
-                        border: 'border-surface-neutral-hover',
-                        ikkeBrukt: true,
-                        prosent: 100 - (prosentBruktAvMødrekvote + prosentBruktAvDeg),
-                    },
-                ]}
-            />
-            <BodyShort>TODO</BodyShort>
+            <VStack gap="1" className="ml-4">
+                <FordelingsBar
+                    fordelinger={[
+                        {
+                            ...FARGEKART.MØDREKVOTE,
+                            prosent: prosentBruktAvDeg, //TODO: må se på hvem du er
+                        },
+                        {
+                            ...FARGEKART.FEDREKVOTE,
+                            prosent: prosentBruktAvMødrekvote,
+                        },
+                        {
+                            farge: '',
+                            border: 'border-surface-neutral-hover',
+                            ikkeBrukt: true,
+                            prosent: 100 - (prosentBruktAvMødrekvote + prosentBruktAvDeg),
+                        },
+                    ]}
+                />
+                <BodyShort>TODO</BodyShort>
+            </VStack>
         </VStack>
     );
 };
