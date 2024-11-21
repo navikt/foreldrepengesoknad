@@ -62,58 +62,7 @@ const FARGEKART = {
     FORELDREPENGER_FØR_FØDSEL: { farge: 'bg-data-surface-1', border: 'border-data-surface-1' },
     FEDREKVOTE: { farge: 'bg-data-surface-5-subtle', border: 'border-data-surface-5-subtle' },
 };
-//
-// const AleneOmsorgKvote = ({
-//     kvoter,
-//     konto,
-// }: {
-//     kvoter: ReturnType<typeof finnUbrukteDager>;
-//     konto: TilgjengeligeStønadskontoerForDekningsgrad;
-// }) => {
-//     const antallUbrukteDager = sumBy(kvoter, (k) => k.ubrukteDager);
-//
-//     if (antallUbrukteDager > 0) {
-//         return (
-//             <ExpansionCard aria-label="TODO" size="small">
-//                 <ExpansionCard.Header>
-//                     <ExpansionCard.Title size="small">All tid er i planen</ExpansionCard.Title>
-//                     <ExpansionCard.Description>TODODODODOD</ExpansionCard.Description>
-//                 </ExpansionCard.Header>
-//                 <ExpansionCard.Content>
-//                     {konto.kontoer.map((k) => {
-//                         const matchendeKvote = kvoter.find((kvote) => kvote.kontoType === k.konto);
-//                         const bruktProsent = Math.floor((matchendeKvote?.brukteDager / k.dager) * 100);
-//
-//                         return (
-//                             <VStack gap="1">
-//                                 <BodyShort weight="semibold">{k.konto}</BodyShort>
-//                                 <FordelingsBar
-//                                     fordelinger={[
-//                                         {
-//                                             ...FARGEKART[k.konto],
-//                                             prosent: bruktProsent,
-//                                         },
-//                                         {
-//                                             ...FARGEKART[k.konto],
-//                                             prosent: 100 - bruktProsent,
-//                                         },
-//                                     ]}
-//                                 />
-//                                 <BodyShort>
-//                                     {matchendeKvote?.brukteDager} er lagt til, {matchendeKvote?.ubrukteDager} gjenstår
-//                                 </BodyShort>
-//                             </VStack>
-//                         );
-//                     })}
-//                 </ExpansionCard.Content>
-//             </ExpansionCard>
-//         );
-//     }
-//
-//     return <div>Det er {antallUbrukteDager} igjen</div>;
-// };
 
-//TODO: vurder om kan være samme komponent
 const BeggeRettKvote = ({
     konto,
     perioder,
