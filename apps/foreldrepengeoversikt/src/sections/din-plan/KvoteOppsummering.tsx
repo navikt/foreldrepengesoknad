@@ -135,7 +135,7 @@ const KvoteTittel = ({
     const beskrivelseMor = ubrukteDagerMor > 0 ? `${ubrukteDagerMor} dager til mor` : '';
     const beskrivelseFelles = ubrukteDagerFelles > 0 ? `${ubrukteDagerFelles} dager av fellesperioden` : '';
     const beskrivelseFar = ubrukteDagerFar > 0 ? `${ubrukteDagerFar} dager til far` : '';
-    const beskrivelse = `${[beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean).join(', ')} ligger ikke i planen. `;
+    const beskrivelse = `${formatOppramsing([beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean))} ligger ikke i planen. `;
     return (
         <ExpansionCard.Header>
             <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
@@ -345,3 +345,12 @@ const FordelingsBar = ({
         </HStack>
     );
 };
+
+//TODO: util
+function formatOppramsing(strenger: string[]) {
+    const formatterer = new Intl.ListFormat('no', {
+        style: 'long',
+        type: 'conjunction',
+    });
+    return formatterer.format(strenger);
+}
