@@ -140,29 +140,33 @@ const BeggeRettKvote = ({
                     <ExpansionCard.Description>TODODODODOD</ExpansionCard.Description>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
-                    {sorterKontoer(konto.kontoer).map((k) => {
+                    {sorterKontoer(konto.kontoer).map((k, index) => {
                         const matchendeKvote = kvoter.find((kvote) => kvote.kontoType === k.konto);
                         const bruktProsent = Math.floor((matchendeKvote?.brukteDager / k.dager) * 100);
 
                         return (
-                            <VStack gap="1">
-                                <BodyShort weight="semibold">{k.konto}</BodyShort>
-                                <FordelingsBar
-                                    fordelinger={[
-                                        {
-                                            ...FARGEKART[k.konto],
-                                            prosent: bruktProsent,
-                                        },
-                                        {
-                                            ...FARGEKART[k.konto],
-                                            prosent: 100 - bruktProsent,
-                                        },
-                                    ]}
-                                />
-                                <BodyShort>
-                                    {matchendeKvote?.brukteDager} er lagt til, {matchendeKvote?.ubrukteDager} gjenstår
-                                </BodyShort>
-                            </VStack>
+                            <>
+                                {index > 0 && <div className="h-[2px] w-full bg-gray-300" />}
+                                <VStack gap="1">
+                                    <BodyShort weight="semibold">{k.konto}</BodyShort>
+                                    <FordelingsBar
+                                        fordelinger={[
+                                            {
+                                                ...FARGEKART[k.konto],
+                                                prosent: bruktProsent,
+                                            },
+                                            {
+                                                ...FARGEKART[k.konto],
+                                                prosent: 100 - bruktProsent,
+                                            },
+                                        ]}
+                                    />
+                                    <BodyShort>
+                                        {matchendeKvote?.brukteDager} er lagt til, {matchendeKvote?.ubrukteDager}{' '}
+                                        gjenstår
+                                    </BodyShort>
+                                </VStack>
+                            </>
                         );
                     })}
                 </ExpansionCard.Content>
