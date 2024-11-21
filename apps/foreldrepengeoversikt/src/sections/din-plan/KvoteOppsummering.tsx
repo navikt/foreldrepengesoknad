@@ -109,12 +109,14 @@ const KvoteTittel = ({
     );
 
     const mødreKonto = konto.kontoer.find((k) => k.konto === 'FEDREKVOTE');
+    const førFødselKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
     const fedreKonto = konto.kontoer.find((k) => k.konto === 'MØDREKVOTE');
     const fellesKonto = konto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
 
-    const ubrukteDagerMor = mødreKonto ? mødreKonto.dager - dagerBruktAvMor : undefined;
-    const ubrukteDagerFar = fedreKonto ? fedreKonto.dager - dagerBruktAvFar : undefined;
-    const ubrukteDagerFelles = fellesKonto ? fellesKonto.dager - dagerFellesBrukt : undefined;
+    const ubrukteDagerMor =
+        mødreKonto && førFødselKonto ? mødreKonto.dager + førFødselKonto.dager - dagerBruktAvMor : 0;
+    const ubrukteDagerFar = fedreKonto ? fedreKonto.dager - dagerBruktAvFar : 0;
+    const ubrukteDagerFelles = fellesKonto ? fellesKonto.dager - dagerFellesBrukt : 0;
 
     const antallUbrukteDager = sum([ubrukteDagerFar, ubrukteDagerMor, ubrukteDagerFelles]);
 
@@ -130,11 +132,19 @@ const KvoteTittel = ({
     }
 
     const tittel = `Det er ${antallUbrukteDager} dager igjen som kan legges til i planen`;
-    const beskrivelse = 'TODO';
+    const beskrivelseMor = ubrukteDagerMor > 0 ? `${ubrukteDagerMor} dager til mor` : '';
+    const beskrivelseFelles = ubrukteDagerFelles > 0 ? `${ubrukteDagerFelles} dager av fellesperioden` : '';
+    const beskrivelseFar = ubrukteDagerFar > 0 ? `${ubrukteDagerFar} dager til far` : '';
+    const beskrivelse = `${[beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean).join(', ')} ligger ikke i planen. `;
     return (
         <ExpansionCard.Header>
             <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
-            <ExpansionCard.Description>{beskrivelse}</ExpansionCard.Description>
+            <ExpansionCard.Description>
+                {beskrivelse}
+                Hvis du ønsker å bruke mer foreldrepenger enn det som ligger i planen nå, kan du sende en
+                endringssøknad.
+                {ubrukteDagerFar > 0 ? 'Far må sende søknad selv for å bruke sine uker med foreldrepenger' : ''}
+            </ExpansionCard.Description>
         </ExpansionCard.Header>
     );
 };
@@ -213,7 +223,7 @@ const MødreKvoter = ({
             <BodyShort weight="semibold">16 + 3 uker til deg</BodyShort>
             <VStack gap="6" className="ml-4">
                 <VStack gap="1">
-                    <BodyShort weight="semibold">Forldrepenger før fødsel {treUkerFørFødselKonto.dager}</BodyShort>
+                    <BodyShort weight="semibold">Forldrepenger før fødsel - {treUkerFørFødselKonto.dager}</BodyShort>
                     <FordelingsBar
                         fordelinger={[
                             {
