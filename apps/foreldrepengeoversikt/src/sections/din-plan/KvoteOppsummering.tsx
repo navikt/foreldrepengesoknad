@@ -4,7 +4,7 @@ import { sum, sumBy } from 'lodash';
 import { BodyShort, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { StønadskontoType } from '@navikt/fp-constants';
-import { SaksperiodeNy, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { SaksperiodeNy, Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
 
 import { hentUttaksKontoOptions } from '../../api/api';
@@ -140,7 +140,7 @@ const BeggeRettKvote = ({
                     <ExpansionCard.Description>TODODODODOD</ExpansionCard.Description>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
-                    {konto.kontoer.map((k) => {
+                    {sorterKontoer(konto.kontoer).map((k) => {
                         const matchendeKvote = kvoter.find((kvote) => kvote.kontoType === k.konto);
                         const bruktProsent = Math.floor((matchendeKvote?.brukteDager / k.dager) * 100);
 
@@ -171,6 +171,22 @@ const BeggeRettKvote = ({
     }
 
     return <div>Det er {antallUbrukteDager} igjen</div>;
+};
+
+/**
+ * Sorter kontoene etter ønsket visuell rekkefølge
+ */
+const sorterKontoer = (kontoer: Stønadskonto[]) => {
+    const rekkefølge = [
+        StønadskontoType.ForeldrepengerFørFødsel,
+        StønadskontoType.Mødrekvote,
+        StønadskontoType.Fedrekvote,
+        StønadskontoType.Fellesperiode,
+        StønadskontoType.Foreldrepenger,
+        StønadskontoType.AktivitetsfriKvote,
+    ];
+
+    return kontoer.sort((a, b) => rekkefølge.indexOf(a.konto) - rekkefølge.indexOf(b.konto));
 };
 
 const FordelingsBar = ({ fordelinger }: { fordelinger: { farge: string; border: string; prosent: number }[] }) => {
