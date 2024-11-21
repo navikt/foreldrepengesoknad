@@ -145,6 +145,7 @@ const BeggeRettKvote = ({
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
                     <MødreKvoter konto={konto} perioder={perioder} />
+                    <FedreKvoter konto={konto} perioder={perioder} />
                     {sorterKontoer(konto.kontoer).map((k, index) => {
                         const matchendeKvote = kvoter.find((kvote) => kvote.kontoType === k.konto);
 
@@ -191,6 +192,48 @@ const BeggeRettKvote = ({
     }
 
     return <div>Det er {antallUbrukteDager} igjen</div>;
+};
+
+const FedreKvoter = ({
+    konto,
+    perioder,
+}: {
+    konto: TilgjengeligeStønadskontoerForDekningsgrad;
+    perioder: SaksperiodeNy[];
+}) => {
+    const fedreKonto = konto.kontoer.find((k) => k.konto === 'FEDREKVOTE');
+
+    if (!fedreKonto) {
+        return null;
+    }
+
+    const dagerBruktFedreKvote = summerDagerIPerioder(
+        perioder.filter((p) => p.kontoType === 'FEDREKVOTE' || p.oppholdÅrsak === 'FEDREKVOTE_ANNEN_FORELDER'),
+    );
+    const prosentBruktAvFedrekvote = Math.floor((dagerBruktFedreKvote / fedreKonto.dager) * 100);
+
+    return (
+        <VStack gap="1">
+            <VStack>
+                <BodyShort weight="semibold">Fedrekvote - {fedreKonto.dager}</BodyShort>
+                <FordelingsBar
+                    fordelinger={[
+                        {
+                            ...FARGEKART.FEDREKVOTE,
+                            prosent: prosentBruktAvFedrekvote,
+                        },
+                        {
+                            ...FARGEKART.FEDREKVOTE,
+                            prosent: 100 - prosentBruktAvFedrekvote,
+                        },
+                    ]}
+                />
+                <BodyShort>
+                    {dagerBruktFedreKvote} er lagt til, {fedreKonto.dager - dagerBruktFedreKvote} gjenstår
+                </BodyShort>
+            </VStack>
+        </VStack>
+    );
 };
 
 const MødreKvoter = ({
