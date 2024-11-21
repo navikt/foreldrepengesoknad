@@ -129,7 +129,9 @@ const BeggeRettKvote = ({
             </ExpansionCard.Header>
             <ExpansionCard.Content>
                 <MødreKvoter konto={konto} perioder={perioder} />
+                <div className="h-[2px] bg-gray-300 w-full" />
                 <FedreKvoter konto={konto} perioder={perioder} />
+                <div className="h-[2px] bg-gray-300 w-full" />
                 <FellesKvoter konto={konto} perioder={perioder} />
             </ExpansionCard.Content>
         </ExpansionCard>
@@ -166,6 +168,7 @@ const FedreKvoter = ({
                         },
                         {
                             ...FARGEKART.FEDREKVOTE,
+                            ikkeBrukt: true,
                             prosent: 100 - prosentBruktAvFedrekvote,
                         },
                     ]}
@@ -214,6 +217,7 @@ const MødreKvoter = ({
                         },
                         {
                             ...FARGEKART.FORELDREPENGER_FØR_FØDSEL,
+                            ikkeBrukt: true,
                             prosent: 100 - prosentBruktAvTreUkerFørFødsel,
                         },
                     ]}
@@ -233,6 +237,7 @@ const MødreKvoter = ({
                         },
                         {
                             ...FARGEKART.MØDREKVOTE,
+                            ikkeBrukt: true,
                             prosent: 100 - prosentBruktAvMødrekvote,
                         },
                     ]}
@@ -280,7 +285,9 @@ const FellesKvoter = ({
                         prosent: prosentBruktAvMødrekvote,
                     },
                     {
-                        ...FARGEKART.MØDREKVOTE, //TODO: farge
+                        farge: '',
+                        border: 'border-surface-neutral-hover',
+                        ikkeBrukt: true,
                         prosent: 100 - (prosentBruktAvMødrekvote + prosentBruktAvDeg),
                     },
                     //TODO: må legge inn ubrukt
@@ -297,14 +304,18 @@ const summerDagerIPerioder = (perioder: SaksperiodeNy[]) => {
     );
 };
 
-const FordelingsBar = ({ fordelinger }: { fordelinger: { farge: string; border: string; prosent: number }[] }) => {
+const FordelingsBar = ({
+    fordelinger,
+}: {
+    fordelinger: { farge: string; border: string; prosent: number; ikkeBrukt?: boolean }[];
+}) => {
     return (
         <HStack gap="2">
             {fordelinger.map(
-                ({ farge, prosent, border }) =>
+                ({ farge, prosent, border, ikkeBrukt }) =>
                     prosent > 0 && (
                         <div
-                            className={`rounded-full h-4 ${farge} border-2 ${border}`}
+                            className={`rounded-full h-4 ${ikkeBrukt ? 'bg-bg-default' : farge} border-2 ${border}`}
                             style={{ width: `${prosent - 1}%` }}
                         />
                     ),
