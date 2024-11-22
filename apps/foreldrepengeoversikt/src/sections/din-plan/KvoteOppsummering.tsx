@@ -355,7 +355,9 @@ const MødreKvoter = ({
 
     return (
         <VStack gap="4">
-            <BodyShort weight="semibold">16 + 3 uker til deg</BodyShort>
+            <BodyShort weight="semibold">
+                {mødreKonto.dager} + {treUkerFørFødselKonto.dager} dager til deg
+            </BodyShort>
             <VStack gap="6" className="ml-4">
                 <VStack gap="1">
                     <BodyShort weight="semibold">Forldrepenger før fødsel - {treUkerFørFødselKonto.dager}</BodyShort>
