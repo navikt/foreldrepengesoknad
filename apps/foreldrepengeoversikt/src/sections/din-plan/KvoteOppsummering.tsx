@@ -50,7 +50,16 @@ const KvoteOppsummeringInner = ({ sak }: { sak: Foreldrepengesak }) => {
 
     return (
         <>
-            {sak.rettighetType === 'ALENEOMSORG' && null}
+            {sak.rettighetType === 'ALENEOMSORG' && (
+                <ExpansionCard aria-label="TODO" size="small">
+                    <KvoteTittelAleneOmsorg konto={konto} perioder={relevantePerioder} />
+                    <ExpansionCard.Content>
+                        <VStack gap="4">
+                            <AleneOmsorgKvoter konto={konto} perioder={relevantePerioder} />
+                        </VStack>
+                    </ExpansionCard.Content>
+                </ExpansionCard>
+            )}
             {sak.rettighetType === 'BARE_SØKER_RETT' && null}
             {sak.rettighetType === 'BEGGE_RETT' && <BeggeRettKvote konto={konto} perioder={relevantePerioder} />}
         </>
@@ -83,6 +92,45 @@ const BeggeRettKvote = ({
                 </VStack>
             </ExpansionCard.Content>
         </ExpansionCard>
+    );
+};
+
+const KvoteTittelAleneOmsorg = ({
+    konto,
+    perioder,
+}: {
+    konto: TilgjengeligeStønadskontoerForDekningsgrad;
+    perioder: SaksperiodeNy[];
+}) => {
+    const dagerBrukt = summerDagerIPerioder(
+        perioder.filter((p) => p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' || p.kontoType === 'FORELDREPENGER'),
+    );
+
+    const fpKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER');
+    const førFødselKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
+
+    const antallUbrukteDager = fpKonto && førFødselKonto ? fpKonto.dager + førFødselKonto.dager - dagerBrukt : 0;
+
+    if (antallUbrukteDager === 0) {
+        const tittel = 'All tid er i planen';
+        const beskrivelse = `Du har lagt til ${dagerBrukt} dager i planen.`;
+        return (
+            <ExpansionCard.Header>
+                <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
+                <ExpansionCard.Description>{beskrivelse}</ExpansionCard.Description>
+            </ExpansionCard.Header>
+        );
+    }
+
+    const tittel = `Det er ${antallUbrukteDager} dager igjen som kan legges til i planen`;
+    return (
+        <ExpansionCard.Header>
+            <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
+            <ExpansionCard.Description>
+                Hvis du ønsker å bruke mer foreldrepenger enn det som ligger i planen nå, kan du sende en
+                endringssøknad.
+            </ExpansionCard.Description>
+        </ExpansionCard.Header>
     );
 };
 
@@ -122,7 +170,11 @@ const KvoteTittel = ({
 
     if (antallUbrukteDager === 0) {
         const tittel = 'All tid er i planen';
-        const beskrivelse = `${dagerBruktAvMor} dager for mor, ${dagerFellesBrukt} dager fellesperiode og ${dagerBruktAvFar} dager til far er lagt til i planen`;
+        const beskrivelseMor = dagerBruktAvMor > 0 ? `${dagerBruktAvMor} dager til mor` : '';
+        const beskrivelseFelles = dagerFellesBrukt > 0 ? `${ubrukteDagerFelles} dager av fellesperioden` : '';
+        const beskrivelseFar = dagerBruktAvFar > 0 ? `${ubrukteDagerFar} dager til far` : '';
+
+        const beskrivelse = `${formatOppramsing([beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean))} er lagt til i planen`;
         return (
             <ExpansionCard.Header>
                 <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
@@ -146,6 +198,89 @@ const KvoteTittel = ({
                 {ubrukteDagerFar > 0 ? 'Far må sende søknad selv for å bruke sine uker med foreldrepenger' : ''}
             </ExpansionCard.Description>
         </ExpansionCard.Header>
+    );
+};
+
+const AleneOmsorgKvoter = ({
+    konto,
+    perioder,
+}: {
+    konto: TilgjengeligeStønadskontoerForDekningsgrad;
+    perioder: SaksperiodeNy[];
+}) => {
+    // Denne kontoen finnes kun for mor
+    const treUkerFørFødselKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
+    const fpKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER');
+
+    if (!fpKonto) {
+        return null;
+    }
+
+    const dagerBruktTreUkerFørFødsel = summerDagerIPerioder(
+        perioder.filter((p) => p.kontoType === 'FORELDREPENGER_FØR_FØDSEL'),
+    );
+    const dagerBruktFpKvote = summerDagerIPerioder(perioder.filter((p) => p.kontoType === 'FORELDREPENGER'));
+    const ubrukteDagerFørFødsel = treUkerFørFødselKonto?.dager
+        ? treUkerFørFødselKonto?.dager - dagerBruktTreUkerFørFødsel
+        : 0;
+    const prosentBruktAvTreUkerFørFødsel = Math.floor(
+        (dagerBruktTreUkerFørFødsel / (treUkerFørFødselKonto?.dager ?? 1)) * 100,
+    );
+    const ubrukteDagerMødreKvote = fpKonto.dager - dagerBruktFpKvote;
+    const prosentBruktAvFpkvote = Math.floor((dagerBruktFpKvote / fpKonto.dager) * 100);
+
+    return (
+        <VStack gap="4">
+            <BodyShort weight="semibold">
+                {fpKonto.dager} dager {treUkerFørFødselKonto ? ` + ${treUkerFørFødselKonto.dager} dager` : ''} til deg
+            </BodyShort>
+            <VStack gap="6" className="ml-4">
+                {treUkerFørFødselKonto && (
+                    <VStack gap="1">
+                        <BodyShort weight="semibold">
+                            Forldrepenger før fødsel - {treUkerFørFødselKonto.dager}
+                        </BodyShort>
+                        <FordelingsBar
+                            fordelinger={[
+                                {
+                                    ...FARGEKART.FORELDREPENGER_FØR_FØDSEL,
+                                    prosent: prosentBruktAvTreUkerFørFødsel,
+                                },
+                                {
+                                    ...FARGEKART.FORELDREPENGER_FØR_FØDSEL,
+                                    ikkeBrukt: true,
+                                    prosent: 100 - prosentBruktAvTreUkerFørFødsel,
+                                },
+                            ]}
+                        />
+                        <BodyShort>
+                            {dagerBruktTreUkerFørFødsel} er lagt til
+                            {ubrukteDagerFørFødsel > 0 ? `, ${ubrukteDagerFørFødsel} gjenstår` : ''}
+                        </BodyShort>
+                    </VStack>
+                )}
+                <VStack gap="1">
+                    <BodyShort weight="semibold">Mødrekvote - {fpKonto.dager}</BodyShort>
+                    <FordelingsBar
+                        fordelinger={[
+                            {
+                                ...FARGEKART.MØDREKVOTE,
+                                prosent: prosentBruktAvFpkvote,
+                            },
+                            {
+                                ...FARGEKART.MØDREKVOTE,
+                                ikkeBrukt: true,
+                                prosent: 100 - prosentBruktAvFpkvote,
+                            },
+                        ]}
+                    />
+                    <BodyShort>
+                        {dagerBruktTreUkerFørFødsel} er lagt til
+                        {ubrukteDagerMødreKvote > 0 ? `, ${ubrukteDagerMødreKvote} gjenstår` : ''}
+                    </BodyShort>
+                </VStack>
+            </VStack>
+        </VStack>
     );
 };
 
