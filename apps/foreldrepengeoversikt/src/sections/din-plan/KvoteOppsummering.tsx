@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { sum } from 'lodash';
+import { createContext, useContext } from 'react';
 
 import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
@@ -16,6 +17,20 @@ import { Ytelse } from '../../types/Ytelse';
 // TODO: relevant for vedtatte planer
 type Props = {
     annenPartsPerioder: SaksperiodeNy[];
+};
+
+const KvoteContext = createContext<{
+    konto: TilgjengeligeStønadskontoerForDekningsgrad;
+    perioder: SaksperiodeNy[];
+} | null>(null);
+
+export const useKvote = () => {
+    const context = useContext(KvoteContext);
+    if (!context) {
+        throw new Error('useKvote må brukes i en KvoteContext.Provider');
+    }
+
+    return context;
 };
 
 export const KvoteOppsummering = () => {
@@ -48,56 +63,46 @@ const KvoteOppsummeringInner = ({ sak }: { sak: Foreldrepengesak }) => {
     const søkersPerioder = sak.gjeldendeVedtak?.perioder;
     const perioderSomErSøktOm = sak.åpenBehandling?.søknadsperioder;
 
-    const relevantePerioder = søkersPerioder ?? perioderSomErSøktOm ?? [];
+    const perioder = søkersPerioder ?? perioderSomErSøktOm ?? [];
 
     return (
-        <>
+        <KvoteContext.Provider value={{ konto, perioder }}>
             {sak.rettighetType === 'ALENEOMSORG' && (
                 <ExpansionCard aria-label="TODO" size="small">
-                    <KvoteTittelAleneOmsorg konto={konto} perioder={relevantePerioder} />
+                    <KvoteTittelAleneOmsorg />
                     <ExpansionCard.Content>
                         <VStack gap="4">
-                            <AleneOmsorgKvoter konto={konto} perioder={relevantePerioder} />
+                            <AleneOmsorgKvoter />
                         </VStack>
                     </ExpansionCard.Content>
                 </ExpansionCard>
             )}
             {sak.rettighetType === 'BARE_SØKER_RETT' && null}
-            {sak.rettighetType === 'BEGGE_RETT' && <BeggeRettKvote konto={konto} perioder={relevantePerioder} />}
-        </>
+            {sak.rettighetType === 'BEGGE_RETT' && <BeggeRettKvote />}
+        </KvoteContext.Provider>
     );
 };
 
-const BeggeRettKvote = ({
-    konto,
-    perioder,
-}: {
-    konto: TilgjengeligeStønadskontoerForDekningsgrad;
-    perioder: SaksperiodeNy[];
-}) => {
+const BeggeRettKvote = () => {
     return (
         <ExpansionCard aria-label="TODO" size="small">
-            <KvoteTittel konto={konto} perioder={perioder} />
+            <KvoteTittel />
             <ExpansionCard.Content>
                 <VStack gap="4">
-                    <MødreKvoter konto={konto} perioder={perioder} />
+                    <MødreKvoter />
                     <div className="h-[2px] bg-gray-300 w-full" />
-                    <FedreKvoter konto={konto} perioder={perioder} />
+                    <FedreKvoter />
                     <div className="h-[2px] bg-gray-300 w-full" />
-                    <FellesKvoter konto={konto} perioder={perioder} />
+                    <FellesKvoter />
                 </VStack>
             </ExpansionCard.Content>
         </ExpansionCard>
     );
 };
 
-const KvoteTittelAleneOmsorg = ({
-    konto,
-    perioder,
-}: {
-    konto: TilgjengeligeStønadskontoerForDekningsgrad;
-    perioder: SaksperiodeNy[];
-}) => {
+const KvoteTittelAleneOmsorg = () => {
+    const { konto, perioder } = useKvote();
+
     const dagerBrukt = summerDagerIPerioder(
         perioder.filter((p) => p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' || p.kontoType === 'FORELDREPENGER'),
     );
@@ -130,13 +135,9 @@ const KvoteTittelAleneOmsorg = ({
     );
 };
 
-const KvoteTittel = ({
-    konto,
-    perioder,
-}: {
-    konto: TilgjengeligeStønadskontoerForDekningsgrad;
-    perioder: SaksperiodeNy[];
-}) => {
+const KvoteTittel = () => {
+    const { konto, perioder } = useKvote();
+
     const dagerBruktAvMor = summerDagerIPerioder(
         perioder.filter(
             (p) =>
@@ -197,13 +198,8 @@ const KvoteTittel = ({
     );
 };
 
-const AleneOmsorgKvoter = ({
-    konto,
-    perioder,
-}: {
-    konto: TilgjengeligeStønadskontoerForDekningsgrad;
-    perioder: SaksperiodeNy[];
-}) => {
+const AleneOmsorgKvoter = () => {
+    const { konto, perioder } = useKvote();
     // Denne kontoen finnes kun for mor
     const treUkerFørFødselKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
     const fpKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER');
@@ -280,13 +276,9 @@ const AleneOmsorgKvoter = ({
     );
 };
 
-const FedreKvoter = ({
-    konto,
-    perioder,
-}: {
-    konto: TilgjengeligeStønadskontoerForDekningsgrad;
-    perioder: SaksperiodeNy[];
-}) => {
+const FedreKvoter = () => {
+    const { konto, perioder } = useKvote();
+
     const fedreKonto = konto.kontoer.find((k) => k.konto === 'FEDREKVOTE');
 
     if (!fedreKonto) {
@@ -324,13 +316,9 @@ const FedreKvoter = ({
     );
 };
 
-const MødreKvoter = ({
-    konto,
-    perioder,
-}: {
-    konto: TilgjengeligeStønadskontoerForDekningsgrad;
-    perioder: SaksperiodeNy[];
-}) => {
+const MødreKvoter = () => {
+    const { konto, perioder } = useKvote();
+
     const treUkerFørFødselKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
     const mødreKonto = konto.kontoer.find((k) => k.konto === 'MØDREKVOTE');
 
@@ -400,13 +388,8 @@ const MødreKvoter = ({
     );
 };
 
-const FellesKvoter = ({
-    konto,
-    perioder,
-}: {
-    konto: TilgjengeligeStønadskontoerForDekningsgrad;
-    perioder: SaksperiodeNy[];
-}) => {
+const FellesKvoter = () => {
+    const { konto, perioder } = useKvote();
     const fellesKonto = konto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
 
     if (!fellesKonto) {
