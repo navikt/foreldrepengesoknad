@@ -1,6 +1,5 @@
 import { SaksperiodeNy } from '@navikt/fp-types';
 
-import { Dekningsgrad } from './Dekningsgrad';
 import { DekningsgradDTO } from './DekningsgradDTO';
 import { Familiehendelse } from './Familiehendelse';
 import PersonFnrDTO from './PersonFnrDTO';

@@ -95,7 +95,7 @@ export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåF
                             førsteUttaksdagNesteBarnsSak={undefined}
                             harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
                         />
-                        <KvoteOppsummering annenPartsPerioder={annenPartsPerioder} />
+                        <KvoteOppsummering />
                     </>
                 )}
                 {visKalender && (
