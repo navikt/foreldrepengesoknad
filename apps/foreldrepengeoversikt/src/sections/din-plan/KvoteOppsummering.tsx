@@ -3,6 +3,7 @@ import { sum } from 'lodash';
 
 import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
+import { StønadskontoType } from '@navikt/fp-constants';
 import { SaksperiodeNy, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
 
@@ -12,6 +13,7 @@ import { DekningsgradDTO } from '../../types/DekningsgradDTO';
 import { Foreldrepengesak } from '../../types/Foreldrepengesak';
 import { Ytelse } from '../../types/Ytelse';
 
+// TODO: relevant for vedtatte planer
 type Props = {
     annenPartsPerioder: SaksperiodeNy[];
 };
@@ -64,12 +66,6 @@ const KvoteOppsummeringInner = ({ sak }: { sak: Foreldrepengesak }) => {
             {sak.rettighetType === 'BEGGE_RETT' && <BeggeRettKvote konto={konto} perioder={relevantePerioder} />}
         </>
     );
-};
-
-const FARGEKART = {
-    MØDREKVOTE: { farge: 'bg-data-surface-1', border: 'border-data-surface-1' },
-    FORELDREPENGER_FØR_FØDSEL: { farge: 'bg-data-surface-1', border: 'border-data-surface-1' },
-    FEDREKVOTE: { farge: 'bg-data-surface-5-subtle', border: 'border-data-surface-5-subtle' },
 };
 
 const BeggeRettKvote = ({
@@ -243,11 +239,11 @@ const AleneOmsorgKvoter = ({
                         <FordelingsBar
                             fordelinger={[
                                 {
-                                    ...FARGEKART.FORELDREPENGER_FØR_FØDSEL,
+                                    ...finnFarge(StønadskontoType.ForeldrepengerFørFødsel),
                                     prosent: prosentBruktAvTreUkerFørFødsel,
                                 },
                                 {
-                                    ...FARGEKART.FORELDREPENGER_FØR_FØDSEL,
+                                    ...finnFarge(StønadskontoType.ForeldrepengerFørFødsel),
                                     ikkeBrukt: true,
                                     prosent: 100 - prosentBruktAvTreUkerFørFødsel,
                                 },
@@ -264,11 +260,11 @@ const AleneOmsorgKvoter = ({
                     <FordelingsBar
                         fordelinger={[
                             {
-                                ...FARGEKART.MØDREKVOTE,
+                                ...finnFarge(StønadskontoType.Mødrekvote),
                                 prosent: prosentBruktAvFpkvote,
                             },
                             {
-                                ...FARGEKART.MØDREKVOTE,
+                                ...finnFarge(StønadskontoType.Mødrekvote),
                                 ikkeBrukt: true,
                                 prosent: 100 - prosentBruktAvFpkvote,
                             },
@@ -310,11 +306,11 @@ const FedreKvoter = ({
                 <FordelingsBar
                     fordelinger={[
                         {
-                            ...FARGEKART.FEDREKVOTE,
+                            ...finnFarge(StønadskontoType.Fedrekvote),
                             prosent: prosentBruktAvFedrekvote,
                         },
                         {
-                            ...FARGEKART.FEDREKVOTE,
+                            ...finnFarge(StønadskontoType.Fedrekvote),
                             ikkeBrukt: true,
                             prosent: 100 - prosentBruktAvFedrekvote,
                         },
@@ -364,11 +360,11 @@ const MødreKvoter = ({
                     <FordelingsBar
                         fordelinger={[
                             {
-                                ...FARGEKART.FORELDREPENGER_FØR_FØDSEL,
+                                ...finnFarge(StønadskontoType.ForeldrepengerFørFødsel),
                                 prosent: prosentBruktAvTreUkerFørFødsel,
                             },
                             {
-                                ...FARGEKART.FORELDREPENGER_FØR_FØDSEL,
+                                ...finnFarge(StønadskontoType.ForeldrepengerFørFødsel),
                                 ikkeBrukt: true,
                                 prosent: 100 - prosentBruktAvTreUkerFørFødsel,
                             },
@@ -384,11 +380,11 @@ const MødreKvoter = ({
                     <FordelingsBar
                         fordelinger={[
                             {
-                                ...FARGEKART.MØDREKVOTE,
+                                ...finnFarge(StønadskontoType.Mødrekvote),
                                 prosent: prosentBruktAvMødrekvote,
                             },
                             {
-                                ...FARGEKART.MØDREKVOTE,
+                                ...finnFarge(StønadskontoType.Mødrekvote),
                                 ikkeBrukt: true,
                                 prosent: 100 - prosentBruktAvMødrekvote,
                             },
@@ -421,10 +417,11 @@ const FellesKvoter = ({
     const dagerBruktAvAnnenPart = summerDagerIPerioder(
         perioder.filter((p) => p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER'),
     );
+    console.log(dagerBruktAvDeg, dagerBruktAvAnnenPart);
     const ubrukteDager = fellesKonto.dager - (dagerBruktAvDeg + dagerBruktAvAnnenPart);
 
     const prosentBruktAvDeg = Math.round((dagerBruktAvDeg / fellesKonto.dager) * 100);
-    const prosentBruktAvMødrekvote = Math.round((dagerBruktAvAnnenPart / fellesKonto.dager) * 100);
+    const prosentBruktAvAnnenPart = Math.round((dagerBruktAvAnnenPart / fellesKonto.dager) * 100);
 
     return (
         <VStack gap="4">
@@ -433,18 +430,18 @@ const FellesKvoter = ({
                 <FordelingsBar
                     fordelinger={[
                         {
-                            ...FARGEKART.MØDREKVOTE,
+                            ...finnFarge(StønadskontoType.Mødrekvote),
                             prosent: prosentBruktAvDeg, //TODO: må se på hvem du er
                         },
                         {
-                            ...FARGEKART.FEDREKVOTE,
-                            prosent: prosentBruktAvMødrekvote,
+                            ...finnFarge(StønadskontoType.Fedrekvote),
+                            prosent: prosentBruktAvAnnenPart,
                         },
                         {
                             farge: '',
                             border: 'border-surface-neutral-hover',
                             ikkeBrukt: true,
-                            prosent: 100 - (prosentBruktAvMødrekvote + prosentBruktAvDeg),
+                            prosent: 100 - (prosentBruktAvAnnenPart + prosentBruktAvDeg),
                         },
                     ]}
                 />
@@ -476,12 +473,23 @@ const FordelingsBar = ({
                         <div
                             key={[farge, prosent, border].join('-')}
                             className={`rounded-full h-4 ${ikkeBrukt ? 'bg-bg-default' : farge} border-2 ${border}`}
-                            style={{ width: `${prosent - 1}%` }}
+                            style={{ width: `${prosent - 1.5}%` }}
                         />
                     ),
             )}
         </HStack>
     );
+};
+
+const finnFarge = (kontoType: StønadskontoType) => {
+    if (kontoType === 'MØDREKVOTE' || kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
+        return { farge: 'bg-data-surface-1', border: 'border-data-surface-1' };
+    }
+    if (kontoType === 'FEDREKVOTE') {
+        return { farge: 'bg-data-surface-5-subtle', border: 'border-data-surface-5-subtle' };
+    }
+
+    return { farge: 'bg-bg-default', border: 'border-bg-default' };
 };
 
 //TODO: util
