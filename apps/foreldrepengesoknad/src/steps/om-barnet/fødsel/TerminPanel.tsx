@@ -1,6 +1,7 @@
 import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { andreAugust2022ReglerGjelder } from 'utils/dateUtils';
 import isFarEllerMedmor from 'utils/isFarEllerMedmor';
 import {
@@ -14,6 +15,7 @@ import {
 import { Alert, BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 
 import { Søkersituasjon } from '@navikt/fp-common';
+import { ISO_DATE_REGEX } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, Søkerrolle } from '@navikt/fp-types';
 import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
@@ -44,6 +46,16 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
     const søkerErFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const farMedMorSøkerPåTermin = søkerErFarMedmor && termindato;
     const kanSøkePåTermin = getKanSøkePåTermin(søkersituasjon.rolle, termindato);
+
+    const aktiveArbeidsforhold =
+        termindato && ISO_DATE_REGEX.test(termindato)
+            ? getAktiveArbeidsforhold(
+                  arbeidsforhold,
+                  søkersituasjon.situasjon === 'adopsjon',
+                  isFarEllerMedmor(søkersituasjon.rolle),
+                  termindato,
+              )
+            : arbeidsforhold;
 
     return (
         <>
@@ -91,7 +103,7 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
                     )}
                 </VStack>
             )}
-            {søknadGjelderEtNyttBarn && arbeidsforhold.length === 0 && kanSøkePåTermin && (
+            {søknadGjelderEtNyttBarn && aktiveArbeidsforhold.length === 0 && kanSøkePåTermin && (
                 <RhfDatepicker
                     name="terminbekreftelsedato"
                     label={intl.formatMessage({ id: 'omBarnet.terminbekreftelseDato' })}

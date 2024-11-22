@@ -1,3 +1,5 @@
+import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
+import isFarEllerMedmor from 'utils/isFarEllerMedmor';
 import { hasValue } from 'utils/validationUtil';
 
 import {
@@ -13,7 +15,7 @@ import {
     isFødtBarn,
     isUfødtBarn,
 } from '@navikt/fp-common';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
 
 import BarnetFormValues, {
     erAdoptertAnnetBarn,
@@ -61,6 +63,7 @@ const mapOmDetValgteBarnetFormDataToState = (
 export const mapOmBarnetFormDataToState = (
     values: BarnetFormValues,
     arbeidsforhold: Arbeidsforhold[],
+    søkersituasjon: SøkersituasjonFp,
     valgtRegistrertBarn: Barn | undefined,
     situasjon: Situasjon,
     barnSøktOmFørMenIkkeRegistrert: boolean,
@@ -84,7 +87,13 @@ export const mapOmBarnetFormDataToState = (
     }
 
     if (erUfødtBarn(values)) {
-        if (arbeidsforhold.length === 0) {
+        const aktiveArbeidsforhold = getAktiveArbeidsforhold(
+            arbeidsforhold,
+            søkersituasjon.situasjon === 'adopsjon',
+            isFarEllerMedmor(søkersituasjon.rolle),
+            values.termindato,
+        );
+        if (aktiveArbeidsforhold.length === 0) {
             return {
                 type: BarnType.UFØDT,
                 terminbekreftelsedato: values.terminbekreftelsedato,
@@ -122,7 +131,11 @@ export const mapOmBarnetFormDataToState = (
     throw new Error('Unreachable code');
 };
 
-export const getOmBarnetInitialValues = (arbeidsforhold: Arbeidsforhold[], barn?: Barn): BarnetFormValues => {
+export const getOmBarnetInitialValues = (
+    arbeidsforhold: Arbeidsforhold[],
+    søkersituasjon: SøkersituasjonFp,
+    barn?: Barn,
+): BarnetFormValues => {
     if (!barn) {
         return { fødselsdatoer: [{ dato: undefined }] };
     }
@@ -142,7 +155,13 @@ export const getOmBarnetInitialValues = (arbeidsforhold: Arbeidsforhold[], barn?
     }
 
     if (isUfødtBarn(barn)) {
-        if (arbeidsforhold.length === 0) {
+        const aktiveArbeidsforhold = getAktiveArbeidsforhold(
+            arbeidsforhold,
+            søkersituasjon.situasjon === 'adopsjon',
+            isFarEllerMedmor(søkersituasjon.rolle),
+            barn.termindato,
+        );
+        if (aktiveArbeidsforhold.length === 0) {
             return {
                 erBarnetFødt: false,
                 antallBarn: erFlereEnnToBarn ? 3 : barn.antallBarn,
