@@ -29,148 +29,64 @@ import { erMyndig } from '@navikt/fp-utils';
 
 import SøknadRoutes, { isRouteAvailable } from './app-data/routes';
 
-interface Props {
-    locale: LocaleNo;
-    onChangeLocale: (locale: LocaleNo) => void;
-    currentRoute: SøknadRoutes;
-    søkerInfo: Søkerinfo;
-    saker: Sak[];
-    lagretErEndringssøknad?: boolean;
-    lagretHarGodkjentVilkår?: boolean;
-    lagretSøknadGjelderNyttBarn?: boolean;
-    setKvittering: (kvittering: Kvittering) => void;
-}
+const renderSøknadRoutes = (
+    harGodkjentVilkår: boolean,
+    erEndringssøknad: boolean,
+    søkerInfo: Søkerinfo,
+    mellomlagreSøknadOgNaviger: () => Promise<void>,
+    sendSøknad: () => Promise<void>,
+    avbrytSøknad: () => void,
+    søknadGjelderNyttBarn?: boolean,
+) => {
+    if (!harGodkjentVilkår || søknadGjelderNyttBarn === undefined) {
+        return <Route path="*" element={<Navigate to={SøknadRoutes.VELKOMMEN} />} />;
+    }
 
-export const ForeldrepengesøknadRoutes = ({
-    locale,
-    onChangeLocale,
-    currentRoute,
-    søkerInfo,
-    saker,
-    lagretErEndringssøknad,
-    lagretHarGodkjentVilkår,
-    lagretSøknadGjelderNyttBarn,
-    setKvittering,
-}: Props) => {
-    const navigate = useNavigate();
-    const routerLocation = useLocation();
-    const [isFirstTimeLoadingApp, setIsFirstTimeLoadingApp] = useState(true);
+    if (!erMyndig(søkerInfo.søker.fødselsdato)) {
+        return <Route path="*" element={<Navigate to={SøknadRoutes.IKKE_MYNDIG} />} />;
+    }
 
-    const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(lagretHarGodkjentVilkår || false);
-    const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad || false);
-    const [søknadGjelderNyttBarn, setSøknadGjelderNyttBarn] = useState(lagretSøknadGjelderNyttBarn);
-
-    const {
-        søker: { fnr, fødselsdato },
-    } = søkerInfo;
-
-    const { sendSøknad, errorSendSøknad } = useSendSøknad(fnr, erEndringssøknad, setKvittering, locale);
-
-    const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(
-        locale,
-        fnr,
-        erEndringssøknad,
-        harGodkjentVilkår,
-        søknadGjelderNyttBarn,
-    );
-
-    const avbrytSøknad = useAvbrytSøknad(fnr, setErEndringssøknad, setHarGodkjentVilkår, setSøknadGjelderNyttBarn);
-
-    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
-
-    useEffect(() => {
-        if (currentRoute && erMyndig(fødselsdato) && lagretHarGodkjentVilkår && isFirstTimeLoadingApp) {
-            setIsFirstTimeLoadingApp(false);
-            if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
-                navigate(currentRoute);
-            } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING) {
-                navigate(SøknadRoutes.UTTAKSPLAN);
-            }
-        }
-    }, [
-        currentRoute,
-        fødselsdato,
-        lagretHarGodkjentVilkår,
-        navigate,
-        isFirstTimeLoadingApp,
-        routerLocation.pathname,
-        uttaksplan,
-    ]);
-
-    if (errorSendSøknad) {
+    if (erEndringssøknad) {
         return (
-            <ErrorPage
-                appName="Foreldrepenger"
-                errorMessage={errorSendSøknad.message}
-                retryCallback={() => location.reload()}
-            />
+            <>
+                <Route
+                    path={SøknadRoutes.UTTAKSPLAN}
+                    element={
+                        <UttaksplanStep
+                            søkerInfo={søkerInfo}
+                            erEndringssøknad={erEndringssøknad}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            avbrytSøknad={avbrytSøknad}
+                        />
+                    }
+                />
+                <Route
+                    path={SøknadRoutes.DOKUMENTASJON}
+                    element={
+                        <ManglendeVedlegg
+                            søkerInfo={søkerInfo}
+                            erEndringssøknad={erEndringssøknad}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                            avbrytSøknad={avbrytSøknad}
+                        />
+                    }
+                />
+                <Route
+                    path={SøknadRoutes.OPPSUMMERING}
+                    element={
+                        <Oppsummering
+                            erEndringssøknad={erEndringssøknad}
+                            søkerInfo={søkerInfo}
+                            sendSøknad={sendSøknad}
+                            avbrytSøknad={avbrytSøknad}
+                            mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        />
+                    }
+                />
+            </>
         );
     }
 
-    const navigerTilVelkommen = !harGodkjentVilkår || søknadGjelderNyttBarn === undefined;
-    const navigerTilIkkeMyndig = !erMyndig(fødselsdato);
-    const brukSøknadRoutes = !navigerTilVelkommen && !navigerTilIkkeMyndig;
-
-    return (
-        <Routes>
-            <Route
-                path={SøknadRoutes.VELKOMMEN}
-                element={
-                    <Velkommen
-                        locale={locale}
-                        saker={saker}
-                        søkerInfo={søkerInfo}
-                        onChangeLocale={onChangeLocale}
-                        harGodkjentVilkår={harGodkjentVilkår}
-                        setHarGodkjentVilkår={setHarGodkjentVilkår}
-                        setErEndringssøknad={setErEndringssøknad}
-                        setSøknadGjelderNyttBarn={setSøknadGjelderNyttBarn}
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    />
-                }
-            />
-            <Route path={SøknadRoutes.IKKE_MYNDIG} element={<Umyndig appnavn="Foreldrepenger" />} />
-            {navigerTilVelkommen && <Route path="*" element={<Navigate to={SøknadRoutes.VELKOMMEN} />} />}
-            {navigerTilIkkeMyndig && <Route path="*" element={<Navigate to={SøknadRoutes.IKKE_MYNDIG} />} />}
-            {erEndringssøknad && brukSøknadRoutes && (
-                <EndringSøknadRoutes
-                    søkerInfo={søkerInfo}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    sendSøknad={sendSøknad}
-                    avbrytSøknad={avbrytSøknad}
-                />
-            )}
-            {!erEndringssøknad && brukSøknadRoutes && (
-                <FørstegangssøknadRoutes
-                    erEndringssøknad={erEndringssøknad}
-                    søkerInfo={søkerInfo}
-                    mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                    sendSøknad={sendSøknad}
-                    avbrytSøknad={avbrytSøknad}
-                    søknadGjelderNyttBarn={søknadGjelderNyttBarn}
-                />
-            )}
-        </Routes>
-    );
-};
-
-interface FørstegangssøknadRoutesProps {
-    erEndringssøknad: boolean;
-    søkerInfo: Søkerinfo;
-    mellomlagreSøknadOgNaviger: () => Promise<void>;
-    sendSøknad: () => Promise<void>;
-    avbrytSøknad: () => void;
-    søknadGjelderNyttBarn: boolean;
-}
-
-const FørstegangssøknadRoutes = ({
-    erEndringssøknad,
-    søkerInfo,
-    mellomlagreSøknadOgNaviger,
-    sendSøknad,
-    avbrytSøknad,
-    søknadGjelderNyttBarn,
-}: FørstegangssøknadRoutesProps) => {
     return (
         <>
             <Route
@@ -334,55 +250,114 @@ const FørstegangssøknadRoutes = ({
     );
 };
 
-interface EndringSøknadRoutesProps {
+interface Props {
+    locale: LocaleNo;
+    onChangeLocale: (locale: LocaleNo) => void;
+    currentRoute: SøknadRoutes;
     søkerInfo: Søkerinfo;
-    mellomlagreSøknadOgNaviger: () => Promise<void>;
-    sendSøknad: () => Promise<void>;
-    avbrytSøknad: () => void;
+    saker: Sak[];
+    lagretErEndringssøknad?: boolean;
+    lagretHarGodkjentVilkår?: boolean;
+    lagretSøknadGjelderNyttBarn?: boolean;
+    setKvittering: (kvittering: Kvittering) => void;
 }
 
-const EndringSøknadRoutes = ({
+export const ForeldrepengesøknadRoutes = ({
+    locale,
+    onChangeLocale,
+    currentRoute,
     søkerInfo,
-    mellomlagreSøknadOgNaviger,
-    sendSøknad,
-    avbrytSøknad,
-}: EndringSøknadRoutesProps) => {
+    saker,
+    lagretErEndringssøknad,
+    lagretHarGodkjentVilkår,
+    lagretSøknadGjelderNyttBarn,
+    setKvittering,
+}: Props) => {
+    const navigate = useNavigate();
+    const routerLocation = useLocation();
+    const [isFirstTimeLoadingApp, setIsFirstTimeLoadingApp] = useState(true);
+
+    const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(lagretHarGodkjentVilkår || false);
+    const [erEndringssøknad, setErEndringssøknad] = useState(lagretErEndringssøknad || false);
+    const [søknadGjelderNyttBarn, setSøknadGjelderNyttBarn] = useState(lagretSøknadGjelderNyttBarn);
+
+    const { sendSøknad, errorSendSøknad } = useSendSøknad(søkerInfo.søker.fnr, erEndringssøknad, setKvittering, locale);
+
+    const mellomlagreSøknadOgNaviger = useMellomlagreSøknad(
+        locale,
+        søkerInfo.søker.fnr,
+        erEndringssøknad,
+        harGodkjentVilkår,
+        søknadGjelderNyttBarn,
+    );
+
+    const avbrytSøknad = useAvbrytSøknad(
+        søkerInfo.søker.fnr,
+        setErEndringssøknad,
+        setHarGodkjentVilkår,
+        setSøknadGjelderNyttBarn,
+    );
+
+    const uttaksplan = useContextGetData(ContextDataType.UTTAKSPLAN);
+
+    useEffect(() => {
+        if (currentRoute && erMyndig(søkerInfo.søker.fødselsdato) && lagretHarGodkjentVilkår && isFirstTimeLoadingApp) {
+            setIsFirstTimeLoadingApp(false);
+            if (isRouteAvailable(currentRoute, lagretHarGodkjentVilkår, uttaksplan)) {
+                navigate(currentRoute);
+            } else if (routerLocation.pathname === SøknadRoutes.OPPSUMMERING) {
+                navigate(SøknadRoutes.UTTAKSPLAN);
+            }
+        }
+    }, [
+        currentRoute,
+        søkerInfo.søker.fødselsdato,
+        lagretHarGodkjentVilkår,
+        navigate,
+        isFirstTimeLoadingApp,
+        routerLocation.pathname,
+        uttaksplan,
+    ]);
+
+    if (errorSendSøknad) {
+        return (
+            <ErrorPage
+                appName="Foreldrepenger"
+                errorMessage={errorSendSøknad.message}
+                retryCallback={() => location.reload()}
+            />
+        );
+    }
+
     return (
-        <>
+        <Routes>
             <Route
-                path={SøknadRoutes.UTTAKSPLAN}
+                path={SøknadRoutes.VELKOMMEN}
                 element={
-                    <UttaksplanStep
+                    <Velkommen
+                        locale={locale}
+                        saker={saker}
+                        onChangeLocale={onChangeLocale}
+                        harGodkjentVilkår={harGodkjentVilkår}
                         søkerInfo={søkerInfo}
-                        erEndringssøknad
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                        avbrytSøknad={avbrytSøknad}
-                    />
-                }
-            />
-            <Route
-                path={SøknadRoutes.DOKUMENTASJON}
-                element={
-                    <ManglendeVedlegg
-                        søkerInfo={søkerInfo}
-                        erEndringssøknad
-                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
-                        avbrytSøknad={avbrytSøknad}
-                    />
-                }
-            />
-            <Route
-                path={SøknadRoutes.OPPSUMMERING}
-                element={
-                    <Oppsummering
-                        erEndringssøknad
-                        søkerInfo={søkerInfo}
-                        sendSøknad={sendSøknad}
-                        avbrytSøknad={avbrytSøknad}
+                        setHarGodkjentVilkår={setHarGodkjentVilkår}
+                        setErEndringssøknad={setErEndringssøknad}
+                        setSøknadGjelderNyttBarn={setSøknadGjelderNyttBarn}
                         mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
                     />
                 }
             />
-        </>
+            <Route path={SøknadRoutes.IKKE_MYNDIG} element={<Umyndig appnavn="Foreldrepenger" />} />
+
+            {renderSøknadRoutes(
+                harGodkjentVilkår,
+                erEndringssøknad,
+                søkerInfo,
+                mellomlagreSøknadOgNaviger,
+                sendSøknad,
+                avbrytSøknad,
+                søknadGjelderNyttBarn,
+            )}
+        </Routes>
     );
 };
