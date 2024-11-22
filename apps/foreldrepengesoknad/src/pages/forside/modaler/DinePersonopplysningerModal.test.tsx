@@ -8,6 +8,6 @@ const { Default } = composeStories(stories);
 describe('<DinePersonopplysningerModal>', () => {
     it('skal vise modal for dine personopplysninger', async () => {
         render(<Default />);
-        expect(await screen.findByText('Slik behandler NAV personopplysningene dine')).toBeInTheDocument();
+        expect(await screen.findByText('Slik behandler Nav personopplysningene dine')).toBeInTheDocument();
     });
 });

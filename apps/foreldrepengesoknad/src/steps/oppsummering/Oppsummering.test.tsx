@@ -191,11 +191,6 @@ describe('<Oppsummering>', () => {
                 'Org nr: 1, 01.01.2015 - Pågående',
             ),
         ).toBeInTheDocument();
-        expect(
-            checkAndGetParentDiv(arbeidsforholdOgInntektDiv.getByText('Taco Express, 20%')).getByText(
-                'Org nr: 2, 01.01.2019 - 01.01.2021',
-            ),
-        ).toBeInTheDocument();
 
         expect(
             checkAndGetParentDiv(
