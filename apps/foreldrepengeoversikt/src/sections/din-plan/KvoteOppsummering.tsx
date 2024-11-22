@@ -15,9 +15,9 @@ import { Foreldrepengesak } from '../../types/Foreldrepengesak';
 import { Ytelse } from '../../types/Ytelse';
 
 // TODO: relevant for vedtatte planer
-type Props = {
-    annenPartsPerioder: SaksperiodeNy[];
-};
+// type Props = {
+//     annenPartsPerioder: SaksperiodeNy[];
+// };
 
 const KvoteContext = createContext<{
     konto: TilgjengeligeStønadskontoerForDekningsgrad;
