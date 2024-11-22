@@ -1,5 +1,5 @@
 import Environment from '../Environment';
-import FeatureToggle from '../FeatureToggle';
+import { FeatureToggle } from '../FeatureToggle';
 
 const isFeatureEnabled = (feature: FeatureToggle): boolean => {
     if (Environment[feature] && Environment[feature].toLowerCase() === 'on') {

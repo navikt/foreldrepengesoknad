@@ -44,7 +44,6 @@
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-uttaksplan": "workspace:*",
         "@navikt/fp-uttaksplan-kalender": "workspace:*",
-        "@navikt/fp-uttaksplan-ny": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
         "@sentry/browser": "^7.109.0",
         "@snyk/protect": "^1.1294.0",

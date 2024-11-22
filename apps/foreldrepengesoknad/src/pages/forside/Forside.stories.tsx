@@ -216,13 +216,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        fornavn: 'Espen',
         harGodkjentVilkår: false,
         saker: [],
         søkerInfo: { søker: defaultPerson, arbeidsforhold: [] },
         onChangeLocale: () => undefined,
         locale: 'nb',
-        fnr: '123',
         setErEndringssøknad: action('button-click'),
         setHarGodkjentVilkår: action('button-click'),
         setSøknadGjelderNyttBarn: action('button-click'),

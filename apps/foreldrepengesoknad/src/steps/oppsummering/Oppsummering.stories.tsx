@@ -33,7 +33,7 @@ import {
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
 
-import Oppsummering from './Oppsummering';
+import { Oppsummering } from './Oppsummering';
 
 const promiseAction =
     () =>

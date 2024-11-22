@@ -22,7 +22,7 @@ import { SøkerBarn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { isISODateString } from '@navikt/fp-utils';
 import { Perioden } from '@navikt/fp-uttaksplan';
 
-import FeatureToggle from '../FeatureToggle';
+import { FeatureToggle } from '../FeatureToggle';
 import { getIsDeltUttak } from './annenForelderUtils';
 import { getFamiliehendelsedato } from './barnUtils';
 import fn from './toggleUtils';

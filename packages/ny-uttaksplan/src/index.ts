@@ -5,6 +5,8 @@ export { splittSaksperiodePåDato, splittSaksperiodePåFamiliehendelsesdato } fr
 export { tidperiodeOverlapperDato, andreAugust2022ReglerGjelder } from './utils/dateUtils';
 export {
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
+    getFørsteUttaksdag2UkerFørFødsel,
+    getFørsteUttaksdagForeldrepengerFørFødsel,
     ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL,
 } from './utils/wlbUtils';
 export {
