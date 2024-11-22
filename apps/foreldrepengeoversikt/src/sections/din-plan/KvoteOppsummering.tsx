@@ -30,7 +30,7 @@ const KvoteOppsummeringInner = ({ sak }: { sak: Foreldrepengesak }) => {
     const kontoQuery = useQuery(
         hentUttaksKontoOptions({
             antallBarn: sak.familiehendelse.antallBarn,
-            brukerrolle: sak.forelder, //TODO: ikke konsekvent
+            brukerrolle: sak.forelder === 'MOR' ? 'MOR' : 'FAR',
             morHarUføretrygd: false,
             rettighetstype: sak.rettighetType,
             termindato: sak.familiehendelse.termindato, //TODO: hvilken dato å bruke
@@ -421,8 +421,8 @@ const FellesKvoter = ({
     );
     const ubrukteDager = fellesKonto.dager - (dagerBruktAvDeg + dagerBruktAvAnnenPart);
 
-    const prosentBruktAvDeg = Math.floor((dagerBruktAvDeg / fellesKonto.dager) * 100);
-    const prosentBruktAvMødrekvote = Math.floor((dagerBruktAvAnnenPart / fellesKonto.dager) * 100);
+    const prosentBruktAvDeg = Math.round((dagerBruktAvDeg / fellesKonto.dager) * 100);
+    const prosentBruktAvMødrekvote = Math.round((dagerBruktAvAnnenPart / fellesKonto.dager) * 100);
 
     return (
         <VStack gap="4">
@@ -472,6 +472,7 @@ const FordelingsBar = ({
                 ({ farge, prosent, border, ikkeBrukt }) =>
                     prosent > 0 && (
                         <div
+                            key={[farge, prosent, border].join('-')}
                             className={`rounded-full h-4 ${ikkeBrukt ? 'bg-bg-default' : farge} border-2 ${border}`}
                             style={{ width: `${prosent - 1}%` }}
                         />
