@@ -390,7 +390,7 @@ const MødreKvoter = () => {
 };
 
 const FellesKvoter = () => {
-    const { konto, perioder } = useKvote();
+    const { konto, perioder, sak } = useKvote();
     const fellesKonto = konto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
 
     if (!fellesKonto) {
@@ -413,11 +413,15 @@ const FellesKvoter = () => {
                 <FordelingsBar
                     fordelinger={[
                         {
-                            kontoType: StønadskontoType.Mødrekvote,
-                            prosent: prosentBruktAvDeg, //TODO: må se på hvem du er
+                            kontoType:
+                                sak.forelder === 'MOR' ? StønadskontoType.Mødrekvote : StønadskontoType.Fedrekvote,
+                            prosent: prosentBruktAvDeg,
                         },
                         {
-                            kontoType: StønadskontoType.Fedrekvote,
+                            kontoType:
+                                sak.forelder === 'FAR_MEDMOR'
+                                    ? StønadskontoType.Mødrekvote
+                                    : StønadskontoType.Fedrekvote,
                             prosent: prosentBruktAvAnnenPart,
                         },
                         {
