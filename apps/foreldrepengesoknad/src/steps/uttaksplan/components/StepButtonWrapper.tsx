@@ -10,7 +10,7 @@ type Props = {
     singleButton?: boolean;
 };
 
-const StepButtonWrapper: React.FunctionComponent<Props> = ({ children, lastStep = false, singleButton = false }) => {
+export const StepButtonWrapper = ({ children, lastStep = false, singleButton = false }: Props) => {
     const bem = bemUtils('step-button-wrapper');
 
     return (
@@ -25,5 +25,3 @@ const StepButtonWrapper: React.FunctionComponent<Props> = ({ children, lastStep 
         </div>
     );
 };
-
-export default StepButtonWrapper;

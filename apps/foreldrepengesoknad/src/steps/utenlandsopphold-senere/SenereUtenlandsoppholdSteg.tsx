@@ -1,6 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import useFpNavigator from 'appData/useFpNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { useFpNavigator } from 'appData/useFpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
@@ -15,11 +15,7 @@ type Props = {
     avbrytSøknad: () => void;
 };
 
-const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
-    arbeidsforhold,
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-}) => {
+export const SenereUtenlandsoppholdSteg = ({ arbeidsforhold, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
 
@@ -54,5 +50,3 @@ const SenereUtenlandsoppholdSteg: React.FunctionComponent<Props> = ({
         </ContentWrapper>
     );
 };
-
-export default SenereUtenlandsoppholdSteg;

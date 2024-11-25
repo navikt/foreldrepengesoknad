@@ -11,7 +11,7 @@ interface Props {
     navnMor: string;
 }
 
-const MorsSisteDag: React.FunctionComponent<Props> = ({ morsSisteDag, navnMor }) => {
+export const MorsSisteDag = ({ morsSisteDag, navnMor }: Props) => {
     const intl = useIntl();
     const bem = bemUtils('morsSisteDag');
     const sisteDagFormattert = formatDateMedUkedag(morsSisteDag);
@@ -31,5 +31,3 @@ const MorsSisteDag: React.FunctionComponent<Props> = ({ morsSisteDag, navnMor })
         </div>
     );
 };
-
-export default MorsSisteDag;

@@ -5,7 +5,7 @@ import { DelInformasjon, FordelingEier, FordelingFargekode } from 'types/Fordeli
 import { getErAleneOmOmsorg, getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { førsteOktober2021ReglerGjelder, getVarighetString } from 'utils/dateUtils';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import {
     getAntallUkerAktivitetsfriKvote,
     getAntallUkerFedrekvote,

@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Barn } from 'types/Barn';
@@ -31,13 +30,13 @@ export interface Props {
     arbeidsforholdNavn?: string;
 }
 
-export const IngenTilretteleggingPanel: FunctionComponent<Props> = ({
+export const IngenTilretteleggingPanel = ({
     barnet,
     sluttdatoArbeid,
     startdatoArbeid,
     arbeidsforholdType,
     arbeidsforholdNavn,
-}) => {
+}: Props) => {
     const intl = useIntl();
 
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);

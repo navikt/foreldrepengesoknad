@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import SøkersituasjonSteg from './SøkersituasjonSteg';
+import { SøkersituasjonSteg } from './SøkersituasjonSteg';
 
 const promiseAction =
     () =>

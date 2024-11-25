@@ -1,6 +1,5 @@
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { FormSummary } from '@navikt/ds-react';
 
@@ -13,7 +12,7 @@ interface Props {
     onVilEndreSvar: () => void;
 }
 
-const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, søkerrolle, onVilEndreSvar }) => {
+export const AnnenForelderOppsummering = ({ annenForelder, søkerrolle, onVilEndreSvar }: Props) => {
     const erFarEllerMedmor = isFarEllerMedmor(søkerrolle);
 
     return (
@@ -144,5 +143,3 @@ const AnnenForelderOppsummering: FunctionComponent<Props> = ({ annenForelder, s�
         </FormSummary>
     );
 };
-
-export default AnnenForelderOppsummering;

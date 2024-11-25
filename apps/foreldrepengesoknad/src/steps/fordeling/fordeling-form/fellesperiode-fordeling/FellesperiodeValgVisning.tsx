@@ -7,7 +7,7 @@ import { VStack } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import DelGraf from '../../fordeling-oversikt/grafer/del-graf/DelGraf';
+import { DelGraf } from '../../fordeling-oversikt/grafer/del-graf/DelGraf';
 import './fellesperiodeValgVisning.css';
 
 interface Props {
@@ -16,11 +16,7 @@ interface Props {
     erFarEllerMedmor: boolean;
 }
 
-const FellesperiodeValgVisning: React.FunctionComponent<Props> = ({
-    fordelingsdager,
-    dagerMedFellesperiode,
-    erFarEllerMedmor,
-}) => {
+export const FellesperiodeValgVisning = ({ fordelingsdager, dagerMedFellesperiode, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
     const bem = bemUtils('fellesperiodeValgVisning');
     const varighetStringFellesperiode = getVarighetString(dagerMedFellesperiode, intl);
@@ -73,5 +69,3 @@ const FellesperiodeValgVisning: React.FunctionComponent<Props> = ({
         </VStack>
     );
 };
-
-export default FellesperiodeValgVisning;

@@ -12,11 +12,7 @@ interface Props {
     fieldWidthPercent: number;
 }
 
-const FamiliehendelseVisning: React.FunctionComponent<Props> = ({
-    rowHeight,
-    familiehendelseNavn,
-    fieldWidthPercent,
-}) => {
+export const FamiliehendelseVisning = ({ rowHeight, familiehendelseNavn, fieldWidthPercent }: Props) => {
     const iconSize = 24;
     const bem = bemUtils('graf');
     return (
@@ -56,5 +52,3 @@ const FamiliehendelseVisning: React.FunctionComponent<Props> = ({
         </div>
     );
 };
-
-export default FamiliehendelseVisning;

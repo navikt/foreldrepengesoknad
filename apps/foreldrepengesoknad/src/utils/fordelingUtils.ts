@@ -1,4 +1,4 @@
-import Fordeling, { FellesperiodeFordelingValg, OppstartValg } from 'types/Fordeling';
+import { FellesperiodeFordelingValg, Fordeling, OppstartValg } from 'types/Fordeling';
 
 import { Uttaksdagen, getNumberFromNumberInputValue } from '@navikt/fp-utils';
 import {

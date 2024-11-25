@@ -1,6 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import useFpNavigator from 'appData/useFpNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { useFpNavigator } from 'appData/useFpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
@@ -11,7 +11,7 @@ import {
     getEldsteRegistrerteBarn,
     getErDatoInnenEnDagFraAnnenDato,
 } from 'utils/dateUtils';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -22,9 +22,9 @@ import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { BarnetFormValues } from './OmBarnetFormValues';
-import ValgteRegistrerteBarn from './ValgteRegistrerteBarn';
-import AdopsjonPanel from './adopsjon/AdopsjonPanel';
-import FødselPanel from './fødsel/FødselPanel';
+import { ValgteRegistrerteBarn } from './ValgteRegistrerteBarn';
+import { AdopsjonPanel } from './adopsjon/AdopsjonPanel';
+import { FødselPanel } from './fødsel/FødselPanel';
 import { getOmBarnetInitialValues, mapOmBarnetFormDataToState } from './omBarnetContextFormMapping';
 
 const erDatoInnenforDeSiste12Ukene = (dato: string | Date) => {
@@ -79,12 +79,7 @@ type Props = {
     avbrytSøknad: () => void;
 };
 
-const OmBarnetSteg: React.FunctionComponent<Props> = ({
-    søkerInfo,
-    søknadGjelderNyttBarn,
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-}) => {
+export const OmBarnetSteg = ({ søkerInfo, søknadGjelderNyttBarn, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold);
@@ -187,5 +182,3 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({
         </Step>
     );
 };
-
-export default OmBarnetSteg;

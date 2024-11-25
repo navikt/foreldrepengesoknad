@@ -3,11 +3,11 @@ import { useEffect } from 'react';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
-import SøknadRoutes from '../app-data/routes';
+import { SøknadRoutes } from '../app-data/routes';
 import { ContextDataType, useContextSaveData } from './FpDataContext';
-import useStepConfig from './useStepConfig';
+import { useStepConfig } from './useStepConfig';
 
-const useFpNavigator = (
+export const useFpNavigator = (
     arbeidsforhold: Arbeidsforhold[],
     mellomlagreOgNaviger: () => Promise<void>,
     erEndringssøknad = false,
@@ -61,5 +61,3 @@ const useFpNavigator = (
         fortsettSøknadSenere,
     };
 };
-
-export default useFpNavigator;

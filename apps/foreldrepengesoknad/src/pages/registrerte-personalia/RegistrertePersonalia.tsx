@@ -1,5 +1,4 @@
 import { BabyWrappedIcon } from '@navikt/aksel-icons';
-import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { formaterNavn } from 'utils/personUtils';
 
@@ -18,7 +17,7 @@ interface Props {
     altTekstHvisUkjentNavn?: string;
 }
 
-const RegistrertePersonalia: React.FunctionComponent<Props> = ({
+export const RegistrertePersonalia = ({
     person,
     fødselsnummerForVisning,
     fødselsdatoForVisning,
@@ -55,5 +54,3 @@ const RegistrertePersonalia: React.FunctionComponent<Props> = ({
         </Infobox>
     );
 };
-
-export default RegistrertePersonalia;

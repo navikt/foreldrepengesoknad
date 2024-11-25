@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { dateToISOString } from 'utils/dateUtils';
@@ -32,7 +32,7 @@ interface Props {
     attachmentType: AttachmentType;
 }
 
-const UttakUploader: FunctionComponent<Props> = ({
+export const UttakUploader = ({
     attachments,
     updateAttachments,
     perioder,
@@ -44,7 +44,7 @@ const UttakUploader: FunctionComponent<Props> = ({
     labelText,
     description,
     attachmentType,
-}) => {
+}: Props) => {
     const bem = bemUtils('periode-attachment-uploader');
 
     const { watch } = useFormContext<ManglendeVedleggFormData>();
@@ -109,5 +109,3 @@ const UttakUploader: FunctionComponent<Props> = ({
         />
     );
 };
-
-export default UttakUploader;

@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import Fordeling, { FellesperiodeFordelingValg } from 'types/Fordeling';
+import { FellesperiodeFordelingValg, Fordeling } from 'types/Fordeling';
 import { FordelingDager, FordelingFargekode } from 'types/FordelingOversikt';
 
 import { Alert, BodyLong, BodyShort, HStack, VStack } from '@navikt/ds-react';
@@ -11,8 +11,8 @@ import { bemUtils, getNumberFromNumberInputValue } from '@navikt/fp-utils';
 import { isValidInteger, isValidNumberForm } from '@navikt/fp-validation';
 
 import { isValidAntallDagerFellesperiode, isValidAntallUkerFellesperiode } from '../fordelingFormUtils';
-import FellesperiodeValgVisning from './FellesperiodeValgVisning';
-import FordelingValg from './FordelingValg';
+import { FellesperiodeValgVisning } from './FellesperiodeValgVisning';
+import { FordelingValg } from './FordelingValg';
 import './fellesperiode-fordeling.css';
 
 const getInputErNullEllerHeltall = (input: number) => {
@@ -99,11 +99,8 @@ interface Props {
     dagerMedFellesperiode: number;
     erFarEllerMedmor: boolean;
 }
-const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
-    navnPåForeldre,
-    dagerMedFellesperiode,
-    erFarEllerMedmor,
-}) => {
+
+export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
     const bem = bemUtils('fellesperiodeFordeling');
     const {
@@ -193,5 +190,3 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
         </VStack>
     );
 };
-
-export default FellesperiodeFordeling;

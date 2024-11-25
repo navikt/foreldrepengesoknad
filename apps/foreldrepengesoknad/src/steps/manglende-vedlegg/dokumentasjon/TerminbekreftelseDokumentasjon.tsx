@@ -8,7 +8,7 @@ import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp
 import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
 import { getFamiliehendelsedato } from '@navikt/fp-utils';
 
-import VedleggUploader from '../attachment-uploaders/VedleggUploader';
+import { VedleggUploader } from '../attachment-uploaders/VedleggUploader';
 
 const getKanSøkePåTermin = (erFarEllerMedmor: boolean, termindato: string): boolean => {
     if (!erFarEllerMedmor) {

@@ -9,7 +9,7 @@ import { BodyLong, VStack } from '@navikt/ds-react';
 import { bemUtils } from '@navikt/fp-utils';
 
 import { getFordelingDelTittel } from './fordelingOversiktUtils';
-import DelGraf from './grafer/del-graf/DelGraf';
+import { DelGraf } from './grafer/del-graf/DelGraf';
 import './oversikt-per-del.css';
 
 interface Props {
@@ -24,7 +24,7 @@ interface Props {
     erDeltUttak: boolean;
 }
 
-const OversiktPerDel: React.FunctionComponent<Props> = ({
+export const OversiktPerDel = ({
     delInformasjon,
     currentUthevet,
     erFarEllerMedmor,
@@ -34,7 +34,7 @@ const OversiktPerDel: React.FunctionComponent<Props> = ({
     annenForelderKunRettIEØS,
     setCurrentUthevet,
     erDeltUttak,
-}) => {
+}: Props) => {
     const intl = useIntl();
     const bem = bemUtils('oversiktPerDel');
 
@@ -80,5 +80,3 @@ const OversiktPerDel: React.FunctionComponent<Props> = ({
         </VStack>
     );
 };
-
-export default OversiktPerDel;

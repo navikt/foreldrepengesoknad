@@ -1,16 +1,13 @@
-import * as React from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
 import { MorsAktivitet } from '@navikt/fp-common';
 import { assertUnreachable } from '@navikt/fp-validation';
 
-import Feltoppsummering from './Feltoppsummering';
+import { Feltoppsummering } from './Feltoppsummering';
 
-interface MorsAktivitetDetaljerProps {
+interface Props {
     morsAktivitet: MorsAktivitet;
 }
-
-type Props = MorsAktivitetDetaljerProps;
 
 const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet): string => {
     switch (aktivitet) {
@@ -37,7 +34,7 @@ const getMorsAktivitetTekst = (intl: IntlShape, aktivitet: MorsAktivitet): strin
     }
 };
 
-const MorsAktivitetDetaljer: React.FunctionComponent<Props> = ({ morsAktivitet }) => {
+export const MorsAktivitetDetaljer = ({ morsAktivitet }: Props) => {
     const intl = useIntl();
 
     return (
@@ -47,5 +44,3 @@ const MorsAktivitetDetaljer: React.FunctionComponent<Props> = ({ morsAktivitet }
         />
     );
 };
-
-export default MorsAktivitetDetaljer;

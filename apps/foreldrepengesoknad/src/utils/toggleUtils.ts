@@ -8,8 +8,6 @@ const isFeatureEnabled = (feature: FeatureToggle): boolean => {
     return false;
 };
 
-const module = {
+export const toggleUtils = {
     isFeatureEnabled,
 };
-
-export default module;

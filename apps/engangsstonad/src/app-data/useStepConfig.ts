@@ -79,7 +79,7 @@ const showDokumentasjonStep = (
     return false;
 };
 
-const useStepConfig = () => {
+export const useStepConfig = () => {
     const intl = useIntl();
     const pathToLabelMap = getPathToLabelMap(intl);
 
@@ -113,5 +113,3 @@ const useStepConfig = () => {
         [appPathList, currentPath, pathToLabelMap],
     );
 };
-
-export default useStepConfig;

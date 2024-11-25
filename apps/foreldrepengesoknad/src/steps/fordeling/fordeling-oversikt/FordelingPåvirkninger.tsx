@@ -30,7 +30,7 @@ interface Props {
     annenForelderHarKunRettIEØS: boolean;
 }
 
-const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
+export const FordelingPåvirkninger = ({
     deltUttak,
     erAdopsjon,
     navnAnnenForelder,
@@ -40,7 +40,7 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
     erIkkeFødtBarn,
     familiehendelsesdato,
     annenForelderHarKunRettIEØS,
-}) => {
+}: Props) => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const bem = bemUtils('fordeling-påvirkninger');
@@ -240,5 +240,3 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
         </div>
     );
 };
-
-export default FordelingPåvirkninger;

@@ -1,6 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import useFpNavigator from 'appData/useFpNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { useFpNavigator } from 'appData/useFpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { getRegistrerteBarnOmDeFinnes } from 'utils/barnUtils';
@@ -14,10 +14,10 @@ import { Step } from '@navikt/fp-ui';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import RegistrertePersonalia from '../../pages/registrerte-personalia/RegistrertePersonalia';
+import { RegistrertePersonalia } from '../../pages/registrerte-personalia/RegistrertePersonalia';
 import { AnnenForelderFormData } from './AnnenForelderFormData';
-import AnnenForelderOppgittPanel from './AnnenForelderOppgittPanel';
-import OppgiPersonalia from './OppgiPersonalia';
+import { AnnenForelderOppgittPanel } from './AnnenForelderOppgittPanel';
+import { OppgiPersonalia } from './OppgiPersonalia';
 
 const getRegistrertAnnenForelder = (barn: NonNullable<Barn | undefined>, søker: Søker) => {
     const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søker.barn);
@@ -34,7 +34,7 @@ type Props = {
     avbrytSøknad: () => void;
 };
 
-const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
+export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold);
@@ -131,5 +131,3 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søkerInfo, melloml
         </Step>
     );
 };
-
-export default AnnenForelderSteg;

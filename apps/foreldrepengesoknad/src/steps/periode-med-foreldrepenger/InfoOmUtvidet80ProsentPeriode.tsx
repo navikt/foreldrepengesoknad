@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';
 
-const InfoOmUtvidet80ProsentPeriode = () => {
+export const InfoOmUtvidet80ProsentPeriode = () => {
     return (
         <VStack gap="4" style={{ width: '85%' }}>
             <Heading size="xsmall">
@@ -17,5 +17,3 @@ const InfoOmUtvidet80ProsentPeriode = () => {
         </VStack>
     );
 };
-
-export default InfoOmUtvidet80ProsentPeriode;

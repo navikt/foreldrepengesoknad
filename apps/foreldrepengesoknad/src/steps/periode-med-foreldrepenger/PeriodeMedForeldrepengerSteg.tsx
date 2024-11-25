@@ -1,10 +1,10 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
-import getStønadskontoParams from 'api/getStønadskontoParams';
+import { getStønadskontoParams } from 'api/getStønadskontoParams';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { annenPartVedtakOptions, tilgjengeligeStønadskontoerOptions } from 'appData/api';
-import useFpNavigator from 'appData/useFpNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { useFpNavigator } from 'appData/useFpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import { useIntl } from 'react-intl';
 import { getAnnenPartVedtakParam, shouldSuspendAnnenPartVedtakApiRequest } from 'utils/annenForelderUtils';
 import { getVis1Juli2024Info } from 'utils/dateUtils';
@@ -18,9 +18,9 @@ import { Step } from '@navikt/fp-ui';
 import { bemUtils } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import DekningsgradForm from './DekningsgradForm';
-import DekningsgradValgtAvAnnenPartPanel from './DekningsgradValgtAvAnnenPartPanel';
-import InfoOmUtvidet80ProsentPeriode from './InfoOmUtvidet80ProsentPeriode';
+import { DekningsgradForm } from './DekningsgradForm';
+import { DekningsgradValgtAvAnnenPartPanel } from './DekningsgradValgtAvAnnenPartPanel';
+import { InfoOmUtvidet80ProsentPeriode } from './InfoOmUtvidet80ProsentPeriode';
 import './panelWithCircleIcon.less';
 
 type Props = {
@@ -29,11 +29,7 @@ type Props = {
     avbrytSøknad: () => void;
 };
 
-const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
-    arbeidsforhold,
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-}) => {
+export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
     const intl = useIntl();
     const bem = bemUtils('circle');
     const stepConfig = useStepConfig(arbeidsforhold);
@@ -129,5 +125,3 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
         </Step>
     );
 };
-
-export default PeriodeMedForeldrepengerSteg;

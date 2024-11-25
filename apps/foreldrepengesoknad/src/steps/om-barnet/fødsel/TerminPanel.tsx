@@ -1,9 +1,8 @@
-import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { andreAugust2022ReglerGjelder } from 'utils/dateUtils';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import {
     attenUkerTreDager,
     date21DaysAgo,
@@ -35,7 +34,7 @@ interface Props {
     søknadGjelderEtNyttBarn?: boolean;
 }
 
-const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtNyttBarn }) => {
+export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtNyttBarn }: Props) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<UfødtBarn>();
@@ -141,5 +140,3 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
         </>
     );
 };
-
-export default TerminPanel;

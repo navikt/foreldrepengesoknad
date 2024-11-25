@@ -4,7 +4,7 @@ import { ComponentProps } from 'react';
 
 import { BarnFraNesteSak, BarnType } from '@navikt/fp-common';
 
-import InfoOmNesteBarn from './InfoOmNesteBarn';
+import { InfoOmNesteBarn } from './InfoOmNesteBarn';
 
 type StoryArgs = {
     barnFraNesteSak: BarnFraNesteSak | undefined;

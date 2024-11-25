@@ -1,11 +1,10 @@
-import React from 'react';
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment, Søkersituasjon } from '@navikt/fp-types';
 
-import VedleggUploader from '../attachment-uploaders/VedleggUploader';
+import { VedleggUploader } from '../attachment-uploaders/VedleggUploader';
 
 interface Props {
     attachments: Attachment[];
@@ -13,11 +12,7 @@ interface Props {
     søkersituasjon: Søkersituasjon;
 }
 
-const OmsorgsovertakelseDokumentasjon: React.FunctionComponent<Props> = ({
-    attachments,
-    updateAttachments,
-    søkersituasjon,
-}) => {
+export const OmsorgsovertakelseDokumentasjon = ({ attachments, updateAttachments, søkersituasjon }: Props) => {
     const intl = useIntl();
 
     if (søkersituasjon.situasjon !== 'adopsjon') {
@@ -36,5 +31,3 @@ const OmsorgsovertakelseDokumentasjon: React.FunctionComponent<Props> = ({
         />
     );
 };
-
-export default OmsorgsovertakelseDokumentasjon;

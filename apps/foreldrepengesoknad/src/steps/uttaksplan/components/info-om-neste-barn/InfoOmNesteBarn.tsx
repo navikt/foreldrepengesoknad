@@ -15,7 +15,7 @@ export interface Props {
     minsterettUkerToTette?: number;
 }
 
-const InfoOmNesteBarn: React.FunctionComponent<Props> = ({ minsterettUkerToTette }) => {
+export const InfoOmNesteBarn = ({ minsterettUkerToTette }: Props) => {
     const intl = useIntl();
     const bem = bemUtils('infoOmNesteBarn');
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -74,5 +74,3 @@ const InfoOmNesteBarn: React.FunctionComponent<Props> = ({ minsterettUkerToTette
         </Box>
     );
 };
-
-export default InfoOmNesteBarn;

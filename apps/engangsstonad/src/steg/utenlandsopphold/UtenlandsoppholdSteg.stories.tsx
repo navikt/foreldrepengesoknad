@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import UtenlandsoppholdSteg from './UtenlandsoppholdSteg';
+import { UtenlandsoppholdSteg } from './UtenlandsoppholdSteg';
 
 const promiseAction =
     () =>
