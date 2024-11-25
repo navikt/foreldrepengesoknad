@@ -8,7 +8,7 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import OmBarnetSteg from './OmBarnetSteg';
+import { OmBarnetSteg } from './OmBarnetSteg';
 
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;

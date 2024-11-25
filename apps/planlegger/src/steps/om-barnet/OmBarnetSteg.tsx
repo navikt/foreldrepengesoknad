@@ -1,9 +1,9 @@
 import { PersonGroupIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import useStepData from 'appData/useStepData';
-import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
+import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
+import { useStepData } from 'appData/useStepData';
+import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -21,9 +21,9 @@ import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
-import BlueRadioGroup from '../../components/form-wrappers/BlueRadioGroup';
-import Adopsjon from './Adopsjon';
-import Fødsel from './fødsel/Fødsel';
+import { BlueRadioGroup } from '../../components/form-wrappers/BlueRadioGroup';
+import { Adopsjon } from './Adopsjon';
+import { Fødsel } from './fødsel/Fødsel';
 
 const finnHvorMangeBarnLabel = (erAlenesøker: boolean, erFødsel: boolean) => {
     if (erFødsel) {
@@ -37,7 +37,7 @@ interface Props {
     locale: LocaleAll;
 }
 
-const OmBarnetSteg: React.FunctionComponent<Props> = ({ locale }) => {
+export const OmBarnetSteg = ({ locale }: Props) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
@@ -198,5 +198,3 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ locale }) => {
         </PlanleggerStepPage>
     );
 };
-
-export default OmBarnetSteg;

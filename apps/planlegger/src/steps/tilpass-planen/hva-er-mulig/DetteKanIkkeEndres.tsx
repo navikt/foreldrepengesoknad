@@ -20,7 +20,7 @@ interface Props {
     arbeidssituasjon: Arbeidssituasjon;
 }
 
-const DetteKanIkkeEndres: React.FunctionComponent<Props> = ({ hvemPlanlegger, arbeidssituasjon }) => {
+export const DetteKanIkkeEndres = ({ hvemPlanlegger, arbeidssituasjon }: Props) => {
     const intl = useIntl();
     const erFar = erFarDelAvSøknaden(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);
@@ -81,4 +81,3 @@ const DetteKanIkkeEndres: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
         </HStack>
     );
 };
-export default DetteKanIkkeEndres;

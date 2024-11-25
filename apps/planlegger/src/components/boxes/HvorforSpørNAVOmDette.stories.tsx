@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import HvorforSpørNAVOmDette from './HvorforSpørNAVOmDette';
+import { HvorforSpørNAVOmDette } from './HvorforSpørNAVOmDette';
 
 const meta = {
     title: 'components/HvorforSpørNAVOmDette',

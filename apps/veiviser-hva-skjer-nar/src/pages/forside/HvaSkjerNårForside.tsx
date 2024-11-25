@@ -1,6 +1,6 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { HvaSkjerNårRoutes } from 'appData/routes';
-import useVeiviserNavigator from 'appData/useVeiviserNavigator';
+import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
 import { veiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
 import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
@@ -14,7 +14,7 @@ interface Props {
     changeLocale: (locale: LocaleAll) => void;
 }
 
-const HvaSkjerNårForside: React.FunctionComponent<Props> = ({ locale, changeLocale }) => {
+export const HvaSkjerNårForside = ({ locale, changeLocale }: Props) => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator();
     useEffect(() => {
@@ -36,5 +36,3 @@ const HvaSkjerNårForside: React.FunctionComponent<Props> = ({ locale, changeLoc
         />
     );
 };
-
-export default HvaSkjerNårForside;

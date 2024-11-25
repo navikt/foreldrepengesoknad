@@ -1,8 +1,7 @@
 import { BabyWrappedIcon, CalendarIcon, PaperplaneIcon } from '@navikt/aksel-icons';
 import { HvaSkjerNårRoutes } from 'appData/routes';
-import useVeiviserNavigator from 'appData/useVeiviserNavigator';
+import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -14,7 +13,7 @@ import { BluePanel, Infobox, VeiviserPage } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils';
 import { isBeforeTodayOrToday, isValidDate } from '@navikt/fp-validation';
 
-import BlueRadioGroup from '../BlueRadioGroup';
+import { BlueRadioGroup } from '../BlueRadioGroup';
 
 export enum Situasjon {
     MOR_OG_FAR = 'morOgFar',
@@ -39,7 +38,7 @@ interface Props {
     setHvaSkjerNårSituasjon: (data: HvaSkjerNårSituasjon) => void;
 }
 
-const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHvaSkjerNårSituasjon }) => {
+export const SituasjonSide = ({ hvaSkjerNårSituasjon, setHvaSkjerNårSituasjon }: Props) => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator();
 
@@ -240,5 +239,3 @@ const SituasjonSide: FunctionComponent<Props> = ({ hvaSkjerNårSituasjon, setHva
         </VeiviserPage>
     );
 };
-
-export default SituasjonSide;

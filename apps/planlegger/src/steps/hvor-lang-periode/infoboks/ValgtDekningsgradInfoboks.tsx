@@ -1,5 +1,4 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
@@ -28,7 +27,7 @@ interface Props {
     antallUkerOgDager: UttakUkerOgDager;
 }
 
-const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
+export const ValgtDekningsgradInfoboks = ({
     barnet,
     hvemPlanlegger,
     arbeidssituasjon,
@@ -37,7 +36,7 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
     uttaksdata80,
     valgtDekningsgrad,
     antallUkerOgDager,
-}) => {
+}: Props) => {
     const intl = useIntl();
 
     const antallBarn = barnet.antallBarn;
@@ -166,5 +165,3 @@ const ValgtDekningsgradInfoboks: FunctionComponent<Props> = ({
         </Infobox>
     );
 };
-
-export default ValgtDekningsgradInfoboks;

@@ -1,8 +1,7 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
-import useStepData from 'appData/useStepData';
-import BlueRadioGroup from 'components/form-wrappers/BlueRadioGroup';
-import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
-import { FunctionComponent } from 'react';
+import { useStepData } from 'appData/useStepData';
+import { BlueRadioGroup } from 'components/form-wrappers/BlueRadioGroup';
+import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
@@ -16,7 +15,7 @@ import { BluePanel } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired } from '@navikt/fp-validation';
 
-import usePlanleggerNavigator from '../../app-data/usePlanleggerNavigator';
+import { usePlanleggerNavigator } from '../../app-data/usePlanleggerNavigator';
 
 const erMorDelAvSøknadenGittType = (type: Situasjon) => {
     return type === Situasjon.MOR_OG_FAR || type === Situasjon.MOR_OG_MEDMOR || type === Situasjon.MOR;
@@ -30,7 +29,7 @@ interface Props {
     locale: LocaleAll;
 }
 
-const HvemPlanleggerSteg: FunctionComponent<Props> = ({ locale }) => {
+export const HvemPlanleggerSteg = ({ locale }: Props) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
@@ -131,5 +130,3 @@ const HvemPlanleggerSteg: FunctionComponent<Props> = ({ locale }) => {
         </PlanleggerStepPage>
     );
 };
-
-export default HvemPlanleggerSteg;

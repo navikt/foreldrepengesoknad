@@ -187,9 +187,9 @@ export const Oppsummering = (props: Props) => {
                     erFarEllerMedmor={søkerErFarEllerMedmor}
                     registrerteArbeidsforhold={aktiveArbeidsforhold}
                     dekningsgrad={dekningsgrad}
-                    antallUkerUttaksplan={uttaksplanMetadata.antallUkerIUttaksplan!}
+                    antallUkerUttaksplan={notEmpty(uttaksplanMetadata.antallUkerIUttaksplan)}
                     eksisterendeUttaksplan={eksisterendeSak ? eksisterendeSak.uttaksplan : undefined}
-                    familiehendelsesdato={familiehendelsesdato!}
+                    familiehendelsesdato={notEmpty(familiehendelsesdato)}
                     termindato={termindato}
                     situasjon={søkersituasjon.situasjon}
                     erAleneOmOmsorg={erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false}

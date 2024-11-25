@@ -5,7 +5,7 @@ import { Radio } from '@navikt/ds-react';
 
 import { RhfForm } from '@navikt/fp-form-hooks';
 
-import BlueRadioGroup from './BlueRadioGroup';
+import { BlueRadioGroup } from './BlueRadioGroup';
 
 const meta = {
     title: 'components/BlueRadioGroup',

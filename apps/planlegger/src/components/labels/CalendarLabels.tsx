@@ -1,4 +1,3 @@
-import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
@@ -13,11 +12,11 @@ import {
 
 import { HStack, VStack } from '@navikt/ds-react';
 
-import AktivitetskravLabel from './calendar-labels/AktivitetskravLabel';
-import AntallUkerFpLabel from './calendar-labels/AntallUkerFpLabel';
-import BarnehageplassLabel from './calendar-labels/BarnehageplassLabel';
-import FamiliehendelseLabel from './calendar-labels/FamiliehendelseLabel';
-import ForeldrepengerLabel from './calendar-labels/ForeldrepengerLabel';
+import { AktivitetskravLabel } from './calendar-labels/AktivitetskravLabel';
+import { AntallUkerFpLabel } from './calendar-labels/AntallUkerFpLabel';
+import { BarnehageplassLabel } from './calendar-labels/BarnehageplassLabel';
+import { FamiliehendelseLabel } from './calendar-labels/FamiliehendelseLabel';
+import { ForeldrepengerLabel } from './calendar-labels/ForeldrepengerLabel';
 
 interface Props {
     barnet: OmBarnet;
@@ -25,7 +24,7 @@ interface Props {
     hvemHarRett: HvemHarRett;
 }
 
-const CalendarLabels: FunctionComponent<Props> = ({ barnet, hvemPlanlegger, hvemHarRett }) => {
+export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett }: Props) => {
     const intl = useIntl();
 
     const erAdoptert = erBarnetAdoptert(barnet);
@@ -76,5 +75,3 @@ const CalendarLabels: FunctionComponent<Props> = ({ barnet, hvemPlanlegger, hvem
         </VStack>
     );
 };
-
-export default CalendarLabels;

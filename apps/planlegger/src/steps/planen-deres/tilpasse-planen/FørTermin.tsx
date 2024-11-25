@@ -12,7 +12,8 @@ interface Props {
     barnet: OmBarnet;
     hvemPlanlegger: HvemPlanlegger;
 }
-const FørTermin: React.FunctionComponent<Props> = ({ barnet, hvemPlanlegger }) => {
+
+export const FørTermin = ({ barnet, hvemPlanlegger }: Props) => {
     const antallBarn = barnet.antallBarn;
     const erAlenesøker = erAlene(hvemPlanlegger);
 
@@ -34,4 +35,3 @@ const FørTermin: React.FunctionComponent<Props> = ({ barnet, hvemPlanlegger }) 
         </HStack>
     );
 };
-export default FørTermin;

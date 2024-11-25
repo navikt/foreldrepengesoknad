@@ -1,4 +1,3 @@
-import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
@@ -6,13 +5,13 @@ import { getFamiliehendelsedato } from 'utils/uttakUtils';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import CalendarIconLabel from './CalendarIconLabel';
+import { CalendarIconLabel } from './CalendarIconLabel';
 
 interface Props {
     barnet: OmBarnet;
 }
 
-const FamiliehendelseLabel: FunctionComponent<Props> = ({ barnet }) => {
+export const FamiliehendelseLabel = ({ barnet }: Props) => {
     const intl = useIntl();
 
     const erFødt = erBarnetFødt(barnet);
@@ -62,4 +61,3 @@ const FamiliehendelseLabel: FunctionComponent<Props> = ({ barnet }) => {
         </CalendarIconLabel>
     );
 };
-export default FamiliehendelseLabel;

@@ -1,6 +1,5 @@
 import { WalletIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
@@ -19,7 +18,7 @@ interface Props {
     fornavn: string;
 }
 
-const HvorMyePanel: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }) => {
+export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const erAlenesøker = erAlene(hvemPlanlegger);
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
@@ -110,5 +109,3 @@ const HvorMyePanel: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }
         </VStack>
     );
 };
-
-export default HvorMyePanel;

@@ -1,5 +1,4 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
@@ -20,13 +19,13 @@ interface Props {
     fornavnSøker2?: string;
 }
 
-const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
+export const FordelingsdetaljerPanel = ({
     barnet,
     hvemPlanlegger,
     uttaksdata,
     fornavnSøker1,
     fornavnSøker2,
-}) => {
+}: Props) => {
     const intl = useIntl();
     const antallBarn = barnet.antallBarn;
     const erFødsel = barnet.erFødsel;
@@ -111,4 +110,3 @@ const FordelingsdetaljerPanel: FunctionComponent<Props> = ({
         </Infobox>
     );
 };
-export default FordelingsdetaljerPanel;

@@ -14,7 +14,7 @@ import { HvorMye } from 'types/HvorMye';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import OppsummeringSteg from './OppsummeringSteg';
+import { OppsummeringSteg } from './OppsummeringSteg';
 
 const MINSTERETTER_FAR_RUNDT_FØDSEL_10 = {
     farRundtFødsel: 10,
