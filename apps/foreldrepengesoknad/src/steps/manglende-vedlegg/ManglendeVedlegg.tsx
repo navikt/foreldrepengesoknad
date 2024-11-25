@@ -34,7 +34,7 @@ import MorJobberOgStudererDokumentasjon from './dokumentasjon/MorJobberOgStudere
 import MorKvalifiseringsprogrammetDokumentasjon from './dokumentasjon/MorKvalifiseringsprogrammetDokumentasjon';
 import MorStudererDokumentasjon from './dokumentasjon/MorStudererDokumentasjon';
 import OmsorgsovertakelseDokumentasjon from './dokumentasjon/OmsorgsovertakelseDokumentasjon';
-import TerminbekreftelseDokumentasjon from './dokumentasjon/TerminbekreftelseDokumentasjon';
+import { TerminbekreftelseDokumentasjon } from './dokumentasjon/TerminbekreftelseDokumentasjon';
 import {
     getAleneOmOmsorgVedlegg,
     getBarnInnlagtVedlegg,
@@ -299,7 +299,6 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                         updateAttachments={updateAttachments}
                         barn={barn}
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        rolle={søkersituasjon.rolle}
                         erFarEllerMedmor={erFarEllerMedmor}
                     />
                     <OmsorgsovertakelseDokumentasjon

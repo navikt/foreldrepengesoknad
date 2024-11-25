@@ -32,11 +32,9 @@ type VelkommenFormData = {
 };
 
 export interface Props {
-    fornavn: string;
     onChangeLocale: (locale: LocaleNo) => void;
     locale: LocaleNo;
     saker: Sak[];
-    fnr: string;
     harGodkjentVilkår: boolean;
     søkerInfo: Søkerinfo;
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void;
@@ -57,6 +55,7 @@ const Forside: React.FunctionComponent<Props> = ({
     mellomlagreSøknadOgNaviger,
 }) => {
     const intl = useIntl();
+
     const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const oppdaterDataIState = useContextSaveAnyData();

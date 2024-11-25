@@ -14,7 +14,7 @@ import { ErrorBoundary } from '@navikt/fp-ui';
 import { redirect, useDocumentTitle } from '@navikt/fp-utils';
 
 import Environment from './Environment';
-import ForeldrepengesøknadRoutes from './ForeldrepengesøknadRoutes';
+import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';
 import { FpDataContext } from './app-data/FpDataContext';
 import { konverterMellomlagretDataTilAppData } from './app-data/konverterMellomlagretDataTilAppData';
 import SøknadRoutes from './app-data/routes';
@@ -43,7 +43,7 @@ interface Props {
     onChangeLocale: (locale: LocaleNo) => void;
 }
 
-const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
+export const Foreldrepengesøknad = ({ locale, onChangeLocale }: Props) => {
     const intl = useIntl();
 
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
@@ -133,5 +133,3 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
         </ErrorBoundary>
     );
 };
-
-export default Foreldrepengesøknad;

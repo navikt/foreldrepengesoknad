@@ -3,7 +3,7 @@ import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
 import useMellomlagreSøknad from 'appData/useMellomlagreSøknad';
 import useSendSøknad from 'appData/useSendSøknad';
 import Velkommen from 'pages/forside/Forside';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import AndreInntektskilderSteg from 'steps/andre-inntektskilder/AndreInntektskilderSteg';
 import AnnenForelderSteg from 'steps/annen-forelder/AnnenForelderSteg';
@@ -13,7 +13,7 @@ import FordelingSteg from 'steps/fordeling/FordelingSteg';
 import FrilansSteg from 'steps/frilans/FrilansSteg';
 import ManglendeVedlegg from 'steps/manglende-vedlegg/ManglendeVedlegg';
 import OmBarnetSteg from 'steps/om-barnet/OmBarnetSteg';
-import Oppsummering from 'steps/oppsummering/Oppsummering';
+import { Oppsummering } from 'steps/oppsummering/Oppsummering';
 import PeriodeMedForeldrepengerSteg from 'steps/periode-med-foreldrepenger/PeriodeMedForeldrepengerSteg';
 import SøkersituasjonSteg from 'steps/søkersituasjon/SøkersituasjonSteg';
 import SenereUtenlandsoppholdSteg from 'steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
@@ -262,7 +262,7 @@ interface Props {
     setKvittering: (kvittering: Kvittering) => void;
 }
 
-const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
+export const ForeldrepengesøknadRoutes = ({
     locale,
     onChangeLocale,
     currentRoute,
@@ -272,7 +272,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
     lagretHarGodkjentVilkår,
     lagretSøknadGjelderNyttBarn,
     setKvittering,
-}) => {
+}: Props) => {
     const navigate = useNavigate();
     const routerLocation = useLocation();
     const [isFirstTimeLoadingApp, setIsFirstTimeLoadingApp] = useState(true);
@@ -335,11 +335,9 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
                 path={SøknadRoutes.VELKOMMEN}
                 element={
                     <Velkommen
-                        fornavn={søkerInfo.søker.fornavn}
                         locale={locale}
                         saker={saker}
                         onChangeLocale={onChangeLocale}
-                        fnr={søkerInfo.søker.fnr}
                         harGodkjentVilkår={harGodkjentVilkår}
                         søkerInfo={søkerInfo}
                         setHarGodkjentVilkår={setHarGodkjentVilkår}
@@ -363,5 +361,3 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
         </Routes>
     );
 };
-
-export default ForeldrepengesøknadRoutes;

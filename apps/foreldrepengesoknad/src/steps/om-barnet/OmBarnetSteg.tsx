@@ -96,6 +96,7 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({
     const oppdaterOmBarnet = useContextSaveData(ContextDataType.OM_BARNET);
 
     const { arbeidsforhold, søker } = søkerInfo;
+
     const erFarEllerMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const familiehendelsesdato = omBarnet ? getFamiliehendelsedato(omBarnet) : undefined;
 
@@ -119,9 +120,11 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({
 
     const onSubmit = (values: BarnetFormValues) => {
         const valgtBarn = !søknadGjelderNyttBarn && !barnSøktOmFørMenIkkeRegistrert ? omBarnet : undefined;
+
         const oppdatertBarn = mapOmBarnetFormDataToState(
             values,
             arbeidsforhold,
+            søkersituasjon,
             valgtBarn,
             søkersituasjon.situasjon,
             barnSøktOmFørMenIkkeRegistrert,
@@ -132,7 +135,10 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({
         return navigator.goToNextDefaultStep();
     };
 
-    const defaultValues = useMemo(() => getOmBarnetInitialValues(arbeidsforhold, omBarnet), [arbeidsforhold, omBarnet]);
+    const defaultValues = useMemo(
+        () => getOmBarnetInitialValues(arbeidsforhold, søkersituasjon, omBarnet),
+        [arbeidsforhold, omBarnet],
+    );
     const formMethods = useForm<BarnetFormValues>({
         shouldUnregister: true,
         defaultValues,

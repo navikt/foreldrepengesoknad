@@ -1,17 +1,17 @@
-import React from 'react';
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
+import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { andreAugust2022ReglerGjelder } from 'utils/dateUtils';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
 
-import { Barn, isUfødtBarn } from '@navikt/fp-common';
+import { Barn, isAdoptertBarn, isUfødtBarn } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { Arbeidsforhold, Attachment, Søkerrolle } from '@navikt/fp-types';
+import { Arbeidsforhold, Attachment } from '@navikt/fp-types';
+import { getFamiliehendelsedato } from '@navikt/fp-utils';
 
 import VedleggUploader from '../attachment-uploaders/VedleggUploader';
 
-const getKanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
-    if (!isFarEllerMedmor(rolle)) {
+const getKanSøkePåTermin = (erFarEllerMedmor: boolean, termindato: string): boolean => {
+    if (!erFarEllerMedmor) {
         return true;
     }
     return termindato ? andreAugust2022ReglerGjelder(termindato) : false;
@@ -22,24 +22,29 @@ interface Props {
     updateAttachments: (skjemanummer: GyldigeSkjemanummer) => (attachments: Attachment[]) => void;
     barn: Barn;
     arbeidsforhold: Arbeidsforhold[];
-    rolle: Søkerrolle;
     erFarEllerMedmor: boolean;
 }
 
-const TerminbekreftelseDokumentasjon: React.FunctionComponent<Props> = ({
+export const TerminbekreftelseDokumentasjon = ({
     attachments,
     updateAttachments,
     barn,
-    rolle,
     arbeidsforhold,
     erFarEllerMedmor,
-}) => {
+}: Props) => {
     const intl = useIntl();
+
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(
+        arbeidsforhold,
+        isAdoptertBarn(barn),
+        erFarEllerMedmor,
+        getFamiliehendelsedato(barn),
+    );
 
     if (
         !isUfødtBarn(barn) ||
-        (arbeidsforhold.length > 0 && !erFarEllerMedmor) ||
-        !getKanSøkePåTermin(rolle, barn.termindato)
+        (aktiveArbeidsforhold.length > 0 && !erFarEllerMedmor) ||
+        !getKanSøkePåTermin(erFarEllerMedmor, barn.termindato)
     ) {
         return null;
     }
@@ -60,5 +65,3 @@ const TerminbekreftelseDokumentasjon: React.FunctionComponent<Props> = ({
         />
     );
 };
-
-export default TerminbekreftelseDokumentasjon;

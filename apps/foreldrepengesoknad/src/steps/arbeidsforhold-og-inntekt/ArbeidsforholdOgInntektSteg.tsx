@@ -4,7 +4,6 @@ import useFpNavigator from 'appData/useFpNavigator';
 import useStepConfig from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
-import { ISOStringToDate } from 'utils/dateUtils';
 import isFarEllerMedmor from 'utils/isFarEllerMedmor';
 
 import { Heading } from '@navikt/ds-react';
@@ -43,7 +42,7 @@ const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
         arbeidsforhold,
         erAdopsjon,
         isFarEllerMedmor(søkersituasjon.rolle),
-        ISOStringToDate(getFamiliehendelsedato(barn)),
+        getFamiliehendelsedato(barn),
     );
 
     const onSubmit = (values: ArbeidsforholdOgInntekt) => {

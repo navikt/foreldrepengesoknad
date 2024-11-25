@@ -645,7 +645,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                                     søkerInfo.arbeidsforhold,
                                     erAdopsjon,
                                     erFarEllerMedmor,
-                                    ISOStringToDate(familiehendelsesdato),
+                                    familiehendelsesdato,
                                 )}
                                 erEndringssøknad={erEndringssøknad}
                                 erFarEllerMedmor={erFarEllerMedmor}
