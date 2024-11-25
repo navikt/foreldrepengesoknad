@@ -1,5 +1,6 @@
 import { sum } from 'lodash';
 import { createContext, useContext } from 'react';
+import { useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
@@ -7,6 +8,8 @@ import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType'
 import { StønadskontoType } from '@navikt/fp-constants';
 import { SaksperiodeNy, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { Tidsperioden } from '@navikt/fp-utils';
+
+import { getUkerOgDagerFromDager, getVarighetString } from './utils/dateUtils';
 
 type Props = {
     konto: TilgjengeligeStønadskontoerForDekningsgrad;
@@ -63,6 +66,7 @@ const BeggeRettKvote = () => {
 
 const KvoteTittelAleneOmsorg = () => {
     const { konto, perioder } = useKvote();
+    const intl = useIntl();
 
     const dagerBrukt = summerDagerIPerioder(
         perioder.filter((p) => p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' || p.kontoType === 'FORELDREPENGER'),
@@ -75,7 +79,7 @@ const KvoteTittelAleneOmsorg = () => {
 
     if (antallUbrukteDager === 0) {
         const tittel = 'All tid er i planen';
-        const beskrivelse = `Du har lagt til ${dagerBrukt} dager i planen.`;
+        const beskrivelse = `Du har lagt til ${getVarighetString(dagerBrukt, intl)} i planen.`;
         return (
             <ExpansionCard.Header>
                 <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
@@ -84,7 +88,7 @@ const KvoteTittelAleneOmsorg = () => {
         );
     }
 
-    const tittel = `Det er ${antallUbrukteDager} dager igjen som kan legges til i planen`;
+    const tittel = `Det er ${getVarighetString(antallUbrukteDager, intl)} igjen som kan legges til i planen`;
     return (
         <ExpansionCard.Header>
             <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
@@ -98,6 +102,7 @@ const KvoteTittelAleneOmsorg = () => {
 
 const KvoteTittel = () => {
     const { konto, perioder } = useKvote();
+    const intl = useIntl();
 
     const dagerBruktAvMor = summerDagerIPerioder(
         perioder.filter(
@@ -128,9 +133,10 @@ const KvoteTittel = () => {
 
     if (antallUbrukteDager === 0) {
         const tittel = 'All tid er i planen';
-        const beskrivelseMor = dagerBruktAvMor > 0 ? `${dagerBruktAvMor} dager til mor` : '';
-        const beskrivelseFelles = dagerFellesBrukt > 0 ? `${dagerFellesBrukt} dager av fellesperioden` : '';
-        const beskrivelseFar = dagerBruktAvFar > 0 ? `${dagerBruktAvFar} dager til far` : '';
+        const beskrivelseMor = dagerBruktAvMor > 0 ? `${getVarighetString(dagerBruktAvMor, intl)} til mor` : '';
+        const beskrivelseFelles =
+            dagerFellesBrukt > 0 ? `${getVarighetString(dagerFellesBrukt, intl)} av fellesperioden` : '';
+        const beskrivelseFar = dagerBruktAvFar > 0 ? `${getVarighetString(dagerBruktAvFar, intl)} til far` : '';
 
         const beskrivelse = `${formatOppramsing([beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean))} er lagt til i planen`;
         return (
@@ -141,10 +147,11 @@ const KvoteTittel = () => {
         );
     }
 
-    const tittel = `Det er ${antallUbrukteDager} dager igjen som kan legges til i planen`;
-    const beskrivelseMor = ubrukteDagerMor > 0 ? `${ubrukteDagerMor} dager til mor` : '';
-    const beskrivelseFelles = ubrukteDagerFelles > 0 ? `${ubrukteDagerFelles} dager av fellesperioden` : '';
-    const beskrivelseFar = ubrukteDagerFar > 0 ? `${ubrukteDagerFar} dager til far` : '';
+    const tittel = `Det er ${getVarighetString(antallUbrukteDager, intl)} igjen som kan legges til i planen`;
+    const beskrivelseMor = ubrukteDagerMor > 0 ? `${getVarighetString(ubrukteDagerMor, intl)} til mor` : '';
+    const beskrivelseFelles =
+        ubrukteDagerFelles > 0 ? `${getVarighetString(ubrukteDagerFelles, intl)} av fellesperioden` : '';
+    const beskrivelseFar = ubrukteDagerFar > 0 ? `${getVarighetString(ubrukteDagerFar, intl)} til far` : '';
     const beskrivelse = `${formatOppramsing([beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean))} ligger ikke i planen. `;
     return (
         <ExpansionCard.Header>
@@ -160,6 +167,7 @@ const KvoteTittel = () => {
 };
 
 const AleneOmsorgKvoter = () => {
+    const intl = useIntl();
     const { konto, perioder } = useKvote();
     // Denne kontoen finnes kun for mor
     const treUkerFørFødselKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
@@ -185,13 +193,14 @@ const AleneOmsorgKvoter = () => {
     return (
         <VStack gap="4">
             <BodyShort weight="semibold">
-                {fpKonto.dager} dager {treUkerFørFødselKonto ? ` + ${treUkerFørFødselKonto.dager} dager` : ''} til deg
+                {getVarighetString(fpKonto.dager, intl)}{' '}
+                {treUkerFørFødselKonto ? ` + ${treUkerFørFødselKonto.dager} dager` : ''} til deg
             </BodyShort>
             <VStack gap="6" className="ml-4">
                 {treUkerFørFødselKonto && (
                     <VStack gap="1">
                         <BodyShort weight="semibold">
-                            Forldrepenger før fødsel - {treUkerFørFødselKonto.dager}
+                            Forldrepenger før fødsel - {getVarighetString(treUkerFørFødselKonto.dager, intl)}
                         </BodyShort>
                         <FordelingsBar
                             fordelinger={[
@@ -238,6 +247,7 @@ const AleneOmsorgKvoter = () => {
 };
 
 const FedreKvoter = () => {
+    const intl = useIntl();
     const { konto, perioder } = useKvote();
 
     const fedreKonto = konto.kontoer.find((k) => k.konto === 'FEDREKVOTE');
@@ -254,7 +264,7 @@ const FedreKvoter = () => {
 
     return (
         <VStack gap="4">
-            <BodyShort weight="semibold">Fedrekvote - {fedreKonto.dager}</BodyShort>
+            <BodyShort weight="semibold">Fedrekvote - {getVarighetString(fedreKonto.dager, intl)}</BodyShort>
             <VStack gap="1" className="ml-4">
                 <FordelingsBar
                     fordelinger={[
@@ -270,7 +280,8 @@ const FedreKvoter = () => {
                     ]}
                 />
                 <BodyShort>
-                    {dagerBruktFedreKvote} er lagt til{ubrukteDager > 0 ? `, ${ubrukteDager} gjenstår` : ''}
+                    {getVarighetString(dagerBruktFedreKvote, intl)} er lagt til
+                    {ubrukteDager > 0 ? `, ${getVarighetString(ubrukteDager, intl)} gjenstår` : ''}
                 </BodyShort>
             </VStack>
         </VStack>
@@ -278,6 +289,7 @@ const FedreKvoter = () => {
 };
 
 const MødreKvoter = () => {
+    const intl = useIntl();
     const { konto, perioder } = useKvote();
 
     const treUkerFørFødselKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
@@ -301,11 +313,14 @@ const MødreKvoter = () => {
     return (
         <VStack gap="4">
             <BodyShort weight="semibold">
-                {mødreKonto.dager} + {treUkerFørFødselKonto.dager} dager til deg
+                {getUkerOgDagerFromDager(mødreKonto.dager).uker} +{' '}
+                {getVarighetString(treUkerFørFødselKonto.dager, intl)} til deg
             </BodyShort>
             <VStack gap="6" className="ml-4">
                 <VStack gap="1">
-                    <BodyShort weight="semibold">Forldrepenger før fødsel - {treUkerFørFødselKonto.dager}</BodyShort>
+                    <BodyShort weight="semibold">
+                        Forldrepenger før fødsel - {getVarighetString(treUkerFørFødselKonto.dager, intl)}
+                    </BodyShort>
                     <FordelingsBar
                         fordelinger={[
                             {
@@ -320,12 +335,14 @@ const MødreKvoter = () => {
                         ]}
                     />
                     <BodyShort>
-                        {dagerBruktTreUkerFørFødsel} er lagt til
-                        {ubrukteDagerFørFødsel > 0 ? `, ${ubrukteDagerFørFødsel} gjenstår` : ''}
+                        {getVarighetString(dagerBruktTreUkerFørFødsel, intl)} er lagt til
+                        {ubrukteDagerFørFødsel > 0
+                            ? `, ${getVarighetString(ubrukteDagerFørFødsel, intl)} gjenstår`
+                            : ''}
                     </BodyShort>
                 </VStack>
                 <VStack gap="1">
-                    <BodyShort weight="semibold">Mødrekvote - {mødreKonto.dager}</BodyShort>
+                    <BodyShort weight="semibold">Mødrekvote - {getVarighetString(mødreKonto.dager, intl)}</BodyShort>
                     <FordelingsBar
                         fordelinger={[
                             {
@@ -340,8 +357,10 @@ const MødreKvoter = () => {
                         ]}
                     />
                     <BodyShort>
-                        {dagerBruktTreUkerFørFødsel} er lagt til
-                        {ubrukteDagerMødreKvote > 0 ? `, ${ubrukteDagerMødreKvote} gjenstår` : ''}
+                        {getVarighetString(dagerBruktTreUkerFørFødsel, intl)} er lagt til
+                        {ubrukteDagerMødreKvote > 0
+                            ? `, ${getVarighetString(ubrukteDagerMødreKvote, intl)} gjenstår`
+                            : ''}
                     </BodyShort>
                 </VStack>
             </VStack>
@@ -350,6 +369,7 @@ const MødreKvoter = () => {
 };
 
 const FellesKvoter = () => {
+    const intl = useIntl();
     const { konto, perioder, forelder } = useKvote();
     const fellesKonto = konto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
 
@@ -368,7 +388,9 @@ const FellesKvoter = () => {
 
     return (
         <VStack gap="4">
-            <BodyShort weight="semibold">{fellesKonto.dager} dager for å dele, fellesperiode</BodyShort>
+            <BodyShort weight="semibold">
+                {getVarighetString(fellesKonto.dager, intl)} for å dele, fellesperiode
+            </BodyShort>
             <VStack gap="1" className="ml-4">
                 <FordelingsBar
                     fordelinger={[
@@ -389,8 +411,9 @@ const FellesKvoter = () => {
                     ]}
                 />
                 <BodyShort>
-                    {dagerBruktAvDeg} dager er lagt til for deg, {dagerBruktAvAnnenPart} dager er lagt til for annen
-                    forelder {ubrukteDager > 0 ? `, ${ubrukteDager} dager gjenstår` : ''}
+                    {getVarighetString(dagerBruktAvDeg, intl)} er lagt til for deg,{' '}
+                    {getVarighetString(dagerBruktAvAnnenPart, intl)} er lagt til for annen forelder{' '}
+                    {ubrukteDager > 0 ? `, ${getVarighetString(ubrukteDager, intl)} gjenstår` : ''}
                 </BodyShort>
             </VStack>
         </VStack>
