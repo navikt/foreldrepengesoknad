@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import ArbeidssituasjonSide from './ArbeidssituasjonSide';
+import { ArbeidssituasjonSide } from './ArbeidssituasjonSide';
 
 const satser = {
     engangstønad: [
