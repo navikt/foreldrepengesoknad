@@ -1,6 +1,5 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import CalendarLabels from 'components/labels/CalendarLabels';
-import { FunctionComponent } from 'react';
+import { CalendarLabels } from 'components/labels/CalendarLabels';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
@@ -53,14 +52,14 @@ interface Props {
     fordeling?: Fordeling;
 }
 
-const OppsummeringHarRett: FunctionComponent<Props> = ({
+export const OppsummeringHarRett = ({
     valgtStønadskonto,
     hvorLangPeriode,
     hvemPlanlegger,
     barnet,
     arbeidssituasjon,
     fordeling,
-}) => {
+}: Props) => {
     const intl = useIntl();
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
@@ -324,4 +323,3 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
         </VStack>
     );
 };
-export default OppsummeringHarRett;

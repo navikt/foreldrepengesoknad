@@ -5,7 +5,7 @@ import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
-const NyttBarnFørTreÅr: React.FunctionComponent = () => {
+export const NyttBarnFørTreÅr = () => {
     return (
         <HStack gap="5" wrap={false}>
             <div>
@@ -24,4 +24,3 @@ const NyttBarnFørTreÅr: React.FunctionComponent = () => {
         </HStack>
     );
 };
-export default NyttBarnFørTreÅr;

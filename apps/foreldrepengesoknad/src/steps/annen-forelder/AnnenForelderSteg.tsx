@@ -117,14 +117,7 @@ export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avb
                             visEtternavn
                         />
                     )}
-                    {kanIkkeOppgis !== true && (
-                        <AnnenForelderOppgittPanel
-                            rolle={rolle}
-                            barn={barn}
-                            annenForelder={annenForelder}
-                            søker={søkerInfo.søker}
-                        />
-                    )}
+                    {kanIkkeOppgis !== true && <AnnenForelderOppgittPanel rolle={rolle} barn={barn} />}
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
             </RhfForm>

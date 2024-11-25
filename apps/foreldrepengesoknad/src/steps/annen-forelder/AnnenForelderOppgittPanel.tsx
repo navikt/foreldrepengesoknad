@@ -7,18 +7,16 @@ import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { Alert, BodyLong, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { AnnenForelder, Barn } from '@navikt/fp-common';
+import { Barn } from '@navikt/fp-common';
 import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { Søker, Søkerrolle } from '@navikt/fp-types';
+import { Søkerrolle } from '@navikt/fp-types';
 import { isAfterOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { AnnenForelderFormData, erAnnenForelderOppgitt } from './AnnenForelderFormData';
 
 type Props = {
-    søker: Søker;
     rolle: Søkerrolle;
     barn: Barn;
-    annenForelder?: AnnenForelder;
 };
 
 export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {

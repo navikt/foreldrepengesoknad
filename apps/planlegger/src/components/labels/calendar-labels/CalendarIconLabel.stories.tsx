@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import CalendarIconLabel from './CalendarIconLabel';
+import { CalendarIconLabel } from './CalendarIconLabel';
 
 const meta = {
     title: 'components/CalendarIconLabel',

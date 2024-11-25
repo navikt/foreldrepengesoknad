@@ -1,5 +1,4 @@
 import { WalletIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
@@ -16,7 +15,7 @@ interface Props {
     fornavn: string;
 }
 
-const Utbetaling: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }) => {
+export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const annualMax = 6 * grunnbeløpet;
     const monthlyMax = annualMax / 12;
@@ -101,5 +100,3 @@ const Utbetaling: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }) 
         </VStack>
     );
 };
-
-export default Utbetaling;

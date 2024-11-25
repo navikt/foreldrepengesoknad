@@ -1,5 +1,4 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { OmBarnet } from 'types/Barnet';
@@ -20,13 +19,7 @@ interface Props {
     valgtDekningsgrad: Dekningsgrad;
 }
 
-const Barnehagestart: FunctionComponent<Props> = ({
-    barnet,
-    hvemPlanlegger,
-    uttaksdata100,
-    uttaksdata80,
-    valgtDekningsgrad,
-}) => {
+export const Barnehagestart = ({ barnet, hvemPlanlegger, uttaksdata100, uttaksdata80, valgtDekningsgrad }: Props) => {
     const intl = useIntl();
     const antallBarn = barnet.antallBarn;
 
@@ -101,5 +94,3 @@ const Barnehagestart: FunctionComponent<Props> = ({
         </Infobox>
     );
 };
-
-export default Barnehagestart;

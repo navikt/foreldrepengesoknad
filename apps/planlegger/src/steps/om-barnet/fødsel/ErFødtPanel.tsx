@@ -28,12 +28,7 @@ type Props = {
     scrollToBottom: () => void;
 };
 
-const ErFødtPanel: React.FunctionComponent<Props> = ({
-    hvemPlanlegger,
-    erOmBarnetIkkeOppgittFraFør,
-    antallBarn,
-    scrollToBottom,
-}) => {
+export const ErFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, antallBarn, scrollToBottom }: Props) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnet>();
@@ -149,4 +144,3 @@ const ErFødtPanel: React.FunctionComponent<Props> = ({
         </VStack>
     );
 };
-export default ErFødtPanel;

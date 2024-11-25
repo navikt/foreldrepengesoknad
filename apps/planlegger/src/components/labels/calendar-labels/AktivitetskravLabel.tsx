@@ -1,16 +1,15 @@
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import CalendarIconLabel from './CalendarIconLabel';
+import { CalendarIconLabel } from './CalendarIconLabel';
 
 interface Props {
     utenAktivitetskrav?: boolean;
     isBluePanel?: boolean;
 }
 
-const AktivitetskravLabel: FunctionComponent<Props> = ({ utenAktivitetskrav = false, isBluePanel = false }) => {
+export const AktivitetskravLabel = ({ utenAktivitetskrav = false, isBluePanel = false }: Props) => {
     return (
         <CalendarIconLabel iconType={isBluePanel ? 'blue' : 'green'}>
             <BodyShort>
@@ -20,5 +19,3 @@ const AktivitetskravLabel: FunctionComponent<Props> = ({ utenAktivitetskrav = fa
         </CalendarIconLabel>
     );
 };
-
-export default AktivitetskravLabel;
