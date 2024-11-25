@@ -154,9 +154,9 @@ const KvoteTittel = () => {
         perioder.filter((p) => p.kontoType === 'FELLESPERIODE' || p.oppholdÅrsak === 'FELLESPERIODE_ANNEN_FORELDER'),
     );
 
-    const mødreKonto = konto.kontoer.find((k) => k.konto === 'FEDREKVOTE');
+    const fedreKonto = konto.kontoer.find((k) => k.konto === 'FEDREKVOTE');
     const førFødselKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
-    const fedreKonto = konto.kontoer.find((k) => k.konto === 'MØDREKVOTE');
+    const mødreKonto = konto.kontoer.find((k) => k.konto === 'MØDREKVOTE');
     const fellesKonto = konto.kontoer.find((k) => k.konto === 'FELLESPERIODE');
 
     const ubrukteDagerMor =
@@ -169,8 +169,8 @@ const KvoteTittel = () => {
     if (antallUbrukteDager === 0) {
         const tittel = 'All tid er i planen';
         const beskrivelseMor = dagerBruktAvMor > 0 ? `${dagerBruktAvMor} dager til mor` : '';
-        const beskrivelseFelles = dagerFellesBrukt > 0 ? `${ubrukteDagerFelles} dager av fellesperioden` : '';
-        const beskrivelseFar = dagerBruktAvFar > 0 ? `${ubrukteDagerFar} dager til far` : '';
+        const beskrivelseFelles = dagerFellesBrukt > 0 ? `${dagerFellesBrukt} dager av fellesperioden` : '';
+        const beskrivelseFar = dagerBruktAvFar > 0 ? `${dagerBruktAvFar} dager til far` : '';
 
         const beskrivelse = `${formatOppramsing([beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean))} er lagt til i planen`;
         return (
