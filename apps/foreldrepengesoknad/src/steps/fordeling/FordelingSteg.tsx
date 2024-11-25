@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import getStønadskontoParams, {
+import {
     getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter,
+    getStønadskontoParams,
     getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter,
 } from 'api/getStønadskontoParams';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { annenPartVedtakOptions, tilgjengeligeStønadskontoerOptions } from 'appData/api';
-import useFpNavigator from 'appData/useFpNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { useFpNavigator } from 'appData/useFpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import { useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import {
@@ -17,7 +18,7 @@ import {
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
 import { getDekningsgradFromString } from 'utils/getDekningsgradFromString';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getNavnPåForeldre } from 'utils/personUtils';
 import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
 
@@ -29,10 +30,10 @@ import { Step } from '@navikt/fp-ui';
 import { Uttaksdagen } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import FordelingForm from './fordeling-form/FordelingForm';
-import FordelingOversikt from './fordeling-oversikt/FordelingOversikt';
+import { FordelingForm } from './fordeling-form/FordelingForm';
+import { FordelingOversikt } from './fordeling-oversikt/FordelingOversikt';
 import { getFordelingFraKontoer, getSisteUttaksdagAnnenForelder } from './fordeling-oversikt/fordelingOversiktUtils';
-import MorsSisteDag from './mors-siste-dag/MorsSisteDag';
+import { MorsSisteDag } from './mors-siste-dag/MorsSisteDag';
 
 type Props = {
     søker: Søker;
@@ -41,12 +42,7 @@ type Props = {
     avbrytSøknad: () => void;
 };
 
-const FordelingSteg: React.FunctionComponent<Props> = ({
-    søker,
-    arbeidsforhold,
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-}) => {
+export const FordelingSteg = ({ søker, arbeidsforhold, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig(arbeidsforhold);
@@ -193,5 +189,3 @@ const FordelingSteg: React.FunctionComponent<Props> = ({
         </Step>
     );
 };
-
-export default FordelingSteg;

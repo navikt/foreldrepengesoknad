@@ -16,7 +16,7 @@ interface Props {
     onChangeLocale: (locale: LocaleAll) => void;
 }
 
-export const Engangsstønad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
+export const Engangsstønad = ({ locale, onChangeLocale }: Props) => {
     const intl = useIntl();
     useDocumentTitle(intl.formatMessage({ id: 'Søknad.Pagetitle' }));
 

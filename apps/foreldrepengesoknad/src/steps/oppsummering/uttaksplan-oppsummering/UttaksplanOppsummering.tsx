@@ -6,7 +6,7 @@ import { FormSummary } from '@navikt/ds-react';
 import { AnnenForelder, Dekningsgrad, NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
-import UttaksplanOppsummeringsliste from './UttaksplanOppsummeringsliste';
+import { UttaksplanOppsummeringsliste } from './UttaksplanOppsummeringsliste';
 
 interface Props {
     perioder: Periode[];
@@ -26,14 +26,14 @@ interface Props {
     onVilEndreSvar: () => void;
 }
 
-const UttaksplanOppsummering: React.FunctionComponent<Props> = ({
+export const UttaksplanOppsummering = ({
     dekningsgrad,
     antallUkerUttaksplan,
     ønskerJustertUttakVedFødsel,
     antallBarn,
     onVilEndreSvar,
     ...rest
-}) => {
+}: Props) => {
     const intl = useIntl();
 
     const antallUkerOgDagerIUttaksplan = getUkerOgDagerFromDager(antallUkerUttaksplan * 5);
@@ -108,5 +108,3 @@ const UttaksplanOppsummering: React.FunctionComponent<Props> = ({
         </FormSummary>
     );
 };
-
-export default UttaksplanOppsummering;

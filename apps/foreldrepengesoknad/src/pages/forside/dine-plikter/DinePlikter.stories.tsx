@@ -1,4 +1,4 @@
-import DinePlikter from './DinePlikter';
+import { DinePlikter } from './DinePlikter';
 
 export default {
     title: 'components/DinePlikter',

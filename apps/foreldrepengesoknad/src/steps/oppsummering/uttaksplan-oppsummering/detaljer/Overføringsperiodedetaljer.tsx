@@ -1,17 +1,14 @@
-import * as React from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
 import { NavnPåForeldre, Overføringsperiode, StønadskontoType } from '@navikt/fp-common';
 
 import { getÅrsakTekst } from '../OppsummeringUtils';
-import Feltoppsummering from './Feltoppsummering';
+import { Feltoppsummering } from './Feltoppsummering';
 
-interface OverføringsperiodedetaljerProps {
+interface Props {
     periode: Overføringsperiode;
     navnPåForeldre: NavnPåForeldre;
 }
-
-type Props = OverføringsperiodedetaljerProps;
 
 const getNavnPåAnnenForelder = (navnPåForeldre: NavnPåForeldre, konto: StønadskontoType, intl: IntlShape) => {
     if (konto === StønadskontoType.Fedrekvote) {
@@ -22,7 +19,7 @@ const getNavnPåAnnenForelder = (navnPåForeldre: NavnPåForeldre, konto: Støna
     return intl.formatMessage({ id: 'annen.forelder' });
 };
 
-const Overføringsperiodedetaljer: React.FunctionComponent<Props> = ({ periode, navnPåForeldre }) => {
+export const Overføringsperiodedetaljer = ({ periode, navnPåForeldre }: Props) => {
     const intl = useIntl();
     const navnAnnenForelder = getNavnPåAnnenForelder(navnPåForeldre, periode.konto, intl);
     return (
@@ -32,5 +29,3 @@ const Overføringsperiodedetaljer: React.FunctionComponent<Props> = ({ periode, 
         />
     );
 };
-
-export default Overføringsperiodedetaljer;

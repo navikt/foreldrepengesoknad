@@ -1,7 +1,7 @@
 import { Periode } from '@navikt/fp-common';
 import { uttaksplanInneholderPerioderUtenKonto } from '@navikt/fp-uttaksplan';
 
-enum SøknadRoutes {
+export enum SøknadRoutes {
     VELKOMMEN = '/',
     SØKERSITUASJON = '/soker',
     OM_BARNET = '/barnet',
@@ -68,5 +68,3 @@ export const isRouteAvailable = (
             return true;
     }
 };
-
-export default SøknadRoutes;

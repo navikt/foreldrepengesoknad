@@ -13,7 +13,7 @@ interface Props {
     inntektskilde: AndreInntektskilder;
 }
 
-export const EtterlønnEllerSluttvederlagPanel: React.FunctionComponent<Props> = ({ index, inntektskilde }) => {
+export const EtterlønnEllerSluttvederlagPanel = ({ index, inntektskilde }: Props) => {
     const intl = useIntl();
 
     return (

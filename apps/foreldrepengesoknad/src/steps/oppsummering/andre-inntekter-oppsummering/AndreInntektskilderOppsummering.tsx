@@ -11,7 +11,7 @@ interface Props {
     andreInntektskilder?: AndreInntektskilder[];
 }
 
-export const AndreInntektskilderOppsummering: React.FC<Props> = ({ andreInntektskilder, onVilEndreSvar }) => {
+export const AndreInntektskilderOppsummering = ({ andreInntektskilder, onVilEndreSvar }: Props) => {
     if (!andreInntektskilder) {
         return null;
     }

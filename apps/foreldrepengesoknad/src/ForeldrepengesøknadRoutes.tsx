@@ -1,25 +1,25 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
-import useMellomlagreSøknad from 'appData/useMellomlagreSøknad';
-import useSendSøknad from 'appData/useSendSøknad';
-import Velkommen from 'pages/forside/Forside';
+import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
+import { useSendSøknad } from 'appData/useSendSøknad';
+import { Forside } from 'pages/forside/Forside';
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import AndreInntektskilderSteg from 'steps/andre-inntektskilder/AndreInntektskilderSteg';
-import AnnenForelderSteg from 'steps/annen-forelder/AnnenForelderSteg';
-import ArbeidsforholdOgInntektSteg from 'steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
-import EgenNæringSteg from 'steps/egen-næring/EgenNæringSteg';
-import FordelingSteg from 'steps/fordeling/FordelingSteg';
-import FrilansSteg from 'steps/frilans/FrilansSteg';
-import ManglendeVedlegg from 'steps/manglende-vedlegg/ManglendeVedlegg';
-import OmBarnetSteg from 'steps/om-barnet/OmBarnetSteg';
+import { AndreInntektskilderSteg } from 'steps/andre-inntektskilder/AndreInntektskilderSteg';
+import { AnnenForelderSteg } from 'steps/annen-forelder/AnnenForelderSteg';
+import { ArbeidsforholdOgInntektSteg } from 'steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
+import { EgenNæringSteg } from 'steps/egen-næring/EgenNæringSteg';
+import { FordelingSteg } from 'steps/fordeling/FordelingSteg';
+import { FrilansSteg } from 'steps/frilans/FrilansSteg';
+import { ManglendeVedlegg } from 'steps/manglende-vedlegg/ManglendeVedlegg';
+import { OmBarnetSteg } from 'steps/om-barnet/OmBarnetSteg';
 import { Oppsummering } from 'steps/oppsummering/Oppsummering';
-import PeriodeMedForeldrepengerSteg from 'steps/periode-med-foreldrepenger/PeriodeMedForeldrepengerSteg';
-import SøkersituasjonSteg from 'steps/søkersituasjon/SøkersituasjonSteg';
-import SenereUtenlandsoppholdSteg from 'steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
-import TidligereUtenlandsoppholdSteg from 'steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
-import UtenlandsoppholdSteg from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
-import UttaksplanStep from 'steps/uttaksplan/UttaksplanStep';
+import { PeriodeMedForeldrepengerSteg } from 'steps/periode-med-foreldrepenger/PeriodeMedForeldrepengerSteg';
+import { SøkersituasjonSteg } from 'steps/søkersituasjon/SøkersituasjonSteg';
+import { SenereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
+import { TidligereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
+import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
+import { UttaksplanStep } from 'steps/uttaksplan/UttaksplanStep';
 import { Kvittering } from 'types/Kvittering';
 
 import { Sak } from '@navikt/fp-common';
@@ -27,7 +27,7 @@ import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
 
-import SøknadRoutes, { isRouteAvailable } from './app-data/routes';
+import { SøknadRoutes, isRouteAvailable } from './app-data/routes';
 
 const renderSøknadRoutes = (
     harGodkjentVilkår: boolean,
@@ -334,7 +334,7 @@ export const ForeldrepengesøknadRoutes = ({
             <Route
                 path={SøknadRoutes.VELKOMMEN}
                 element={
-                    <Velkommen
+                    <Forside
                         locale={locale}
                         saker={saker}
                         onChangeLocale={onChangeLocale}

@@ -7,7 +7,7 @@ import { bemUtils } from '@navikt/fp-utils';
 
 import './dinePlikter.less';
 
-const DinePlikter = () => {
+export const DinePlikter = () => {
     const bem = bemUtils('dinePlikter');
 
     return (
@@ -36,5 +36,3 @@ const DinePlikter = () => {
         </div>
     );
 };
-
-export default DinePlikter;

@@ -17,7 +17,7 @@ export type FormValues = {
     andreInntektskilder: AndreInntektskilder[];
 };
 
-const AndreInntektskilderFieldArray: React.FunctionComponent = () => {
+export const AndreInntektskilderFieldArray = () => {
     const intl = useIntl();
     const { control, watch } = useFormContext<FormValues>();
     const { fields, append, remove } = useFieldArray({
@@ -93,5 +93,3 @@ const AndreInntektskilderFieldArray: React.FunctionComponent = () => {
         </VStack>
     );
 };
-
-export default AndreInntektskilderFieldArray;

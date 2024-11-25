@@ -23,7 +23,7 @@ const getNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?: string) => {
     return capitalizeFirstLetterInEveryWordOnly(navn);
 };
 
-export const Bedriftsbanner: React.FunctionComponent<Props> = ({ arbeidsforholdType, arbeidsforholdNavn }) => {
+export const Bedriftsbanner = ({ arbeidsforholdType, arbeidsforholdNavn }: Props) => {
     const bem = bemUtils('bedriftsbanner');
     const intl = useIntl();
     const navn = getNavn(arbeidsforholdType, intl, arbeidsforholdNavn);

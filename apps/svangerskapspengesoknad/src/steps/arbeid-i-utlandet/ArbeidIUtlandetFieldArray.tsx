@@ -33,7 +33,7 @@ export const NEW_ARBEID_I_UTLANDET = {
     land: '',
 };
 
-export const ArbeidIUtlandetFieldArray: React.FunctionComponent = () => {
+export const ArbeidIUtlandetFieldArray = () => {
     const bem = bemUtils('arbeidIUtlandet');
     const intl = useIntl();
 

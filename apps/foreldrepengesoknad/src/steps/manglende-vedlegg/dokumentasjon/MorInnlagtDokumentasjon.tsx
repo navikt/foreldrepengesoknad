@@ -1,4 +1,3 @@
-import React from 'react';
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
@@ -6,7 +5,7 @@ import { NavnPåForeldre, Periode, Periodetype, Situasjon, StønadskontoType } f
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
-import UttakUploader from '../attachment-uploaders/UttakUploader';
+import { UttakUploader } from '../attachment-uploaders/UttakUploader';
 
 interface Props {
     attachments: Attachment[];
@@ -19,7 +18,7 @@ interface Props {
     erFarEllerMedmor: boolean;
 }
 
-const MorInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
+export const MorInnlagtDokumentasjon = ({
     attachments,
     updateAttachments,
     perioder,
@@ -28,7 +27,7 @@ const MorInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
     situasjon,
     termindato,
     erFarEllerMedmor,
-}) => {
+}: Props) => {
     const intl = useIntl();
 
     if (perioder.length === 0) {
@@ -92,5 +91,3 @@ const MorInnlagtDokumentasjon: React.FunctionComponent<Props> = ({
         />
     );
 };
-
-export default MorInnlagtDokumentasjon;

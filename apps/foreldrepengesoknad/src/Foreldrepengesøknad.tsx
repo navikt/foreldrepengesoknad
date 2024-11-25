@@ -17,11 +17,11 @@ import Environment from './Environment';
 import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';
 import { FpDataContext } from './app-data/FpDataContext';
 import { konverterMellomlagretDataTilAppData } from './app-data/konverterMellomlagretDataTilAppData';
-import SøknadRoutes from './app-data/routes';
+import { SøknadRoutes } from './app-data/routes';
 import { Kvittering } from './types/Kvittering';
 import { shouldApplyStorage } from './utils/mellomlagringUtils';
 
-const Spinner: React.FunctionComponent = () => (
+const Spinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
         <Loader size="2xlarge" />
     </div>

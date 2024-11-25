@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { Alert, BodyLong, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
@@ -21,7 +21,7 @@ type Props = {
     annenForelder?: AnnenForelder;
 };
 
-const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn }) => {
+export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
     const intl = useIntl();
 
     const familiehendelsedato = getFamiliehendelsedato(barn);
@@ -259,5 +259,3 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn
         </>
     );
 };
-
-export default AnnenForelderOppgittPanel;

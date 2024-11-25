@@ -79,7 +79,7 @@ const getStarterPåUttaksdagEtterFamiliehendelse = (familiehendelsesdato: Date, 
     );
 };
 
-const MorOppstartInformasjon: React.FunctionComponent<Props> = ({ oppstartDato }) => {
+export const MorOppstartInformasjon = ({ oppstartDato }: Props) => {
     const intl = useIntl();
     const bem = bemUtils('mor-oppstartinformasjon');
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
@@ -152,5 +152,3 @@ const MorOppstartInformasjon: React.FunctionComponent<Props> = ({ oppstartDato }
         </div>
     );
 };
-
-export default MorOppstartInformasjon;

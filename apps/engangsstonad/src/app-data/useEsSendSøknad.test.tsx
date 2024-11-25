@@ -3,7 +3,7 @@ import { renderHook, waitFor } from '@testing-library/react';
 import ky, { ResponsePromise } from 'ky';
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import Dokumentasjon from 'types/Dokumentasjon';
+import { Dokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet } from 'types/OmBarnet';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
@@ -11,7 +11,7 @@ import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/messages/nb_NO.json';
 import { ContextDataType, EsDataContext } from './EsDataContext';
-import useEsSendSøknad from './useEsSendSøknad';
+import { useEsSendSøknad } from './useEsSendSøknad';
 
 const queryClient = new QueryClient({
     defaultOptions: {

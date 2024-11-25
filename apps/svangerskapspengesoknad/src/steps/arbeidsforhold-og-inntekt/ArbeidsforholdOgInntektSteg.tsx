@@ -44,11 +44,7 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-export const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-    arbeidsforhold,
-}) => {
+export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
     const { fjernTilrettelegginger } = useTilretteleggingerHelper();

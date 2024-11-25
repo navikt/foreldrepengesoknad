@@ -28,7 +28,7 @@ interface Props {
     barn: Barn;
 }
 
-const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer, rolle, barn }) => {
+export const OppgiPersonalia = ({ søkersFødselsnummer, rolle, barn }: Props) => {
     const intl = useIntl();
     const bem = bemUtils('width');
 
@@ -111,5 +111,3 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer
         </>
     );
 };
-
-export default OppgiPersonalia;

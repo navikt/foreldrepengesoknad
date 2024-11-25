@@ -2,7 +2,7 @@ import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import Fordeling, { OppstartValg } from 'types/Fordeling';
+import { Fordeling, OppstartValg } from 'types/Fordeling';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'utils/barnUtils';
 import { ISOStringToDate } from 'utils/dateUtils';
 
@@ -12,15 +12,15 @@ import { isFødtBarn } from '@navikt/fp-common';
 import { Uttaksdagen, erUttaksdag, isValidDate } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import MorOppstartInformasjon from './MorOppstartInformasjon';
-import OppstartDatoInput from './OppstartDatoInput';
+import { MorOppstartInformasjon } from './MorOppstartInformasjon';
+import { OppstartDatoInput } from './OppstartDatoInput';
 import { getErBarnetFødtInnenTreUkerFørTermin } from './OppstartValgInput';
 
 interface Props {
     oppstartValg: OppstartValg | undefined;
 }
 
-const OppstartDatoMorFødsel: React.FunctionComponent<Props> = ({ oppstartValg }) => {
+export const OppstartDatoMorFødsel = ({ oppstartValg }: Props) => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const erBarnetFødt = isFødtBarn(barn);
@@ -52,5 +52,3 @@ const OppstartDatoMorFødsel: React.FunctionComponent<Props> = ({ oppstartValg }
         </div>
     );
 };
-
-export default OppstartDatoMorFødsel;

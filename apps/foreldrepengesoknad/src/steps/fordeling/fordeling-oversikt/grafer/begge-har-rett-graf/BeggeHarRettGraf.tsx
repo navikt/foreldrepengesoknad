@@ -11,7 +11,7 @@ import { bemUtils, capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { getBeggeHarRettGrafFordeling } from '../../fordelingOversiktUtils';
 import './../graf.css';
-import FamiliehendelseVisning from './FamiliehendelseVisning';
+import { FamiliehendelseVisning } from './FamiliehendelseVisning';
 
 const getRowClass = (antallPerioder: number, periodeIndex: number) => {
     if (antallPerioder % 2 === 0) {
@@ -32,7 +32,7 @@ interface Props {
     setCurrentUthevet: Dispatch<SetStateAction<FordelingEier | undefined>>;
 }
 
-const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
+export const BeggeHarRettGraf = ({
     kontoer,
     erFarEllerMedmor,
     erAdopsjon,
@@ -42,7 +42,7 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
     navnFarMedmor,
     currentUthevet,
     setCurrentUthevet,
-}) => {
+}: Props) => {
     const intl = useIntl();
     const bem = bemUtils('graf');
 
@@ -123,5 +123,3 @@ const BeggeHarRettGraf: React.FunctionComponent<Props> = ({
         </div>
     );
 };
-
-export default BeggeHarRettGraf;

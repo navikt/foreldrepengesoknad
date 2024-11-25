@@ -20,13 +20,13 @@ export interface Props {
     locale: LocaleNo;
 }
 
-export const Forside: React.FunctionComponent<Props> = ({
+export const Forside = ({
     mellomlagreSøknadOgNaviger,
     setHarGodkjentVilkår,
     harGodkjentVilkår,
     locale,
     onChangeLocale,
-}) => {
+}: Props) => {
     const intl = useIntl();
     const bem = bemUtils('forside');
 

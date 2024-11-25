@@ -1,5 +1,5 @@
-import useEsNavigator from 'appData/useEsNavigator';
-import { FunctionComponent, useState } from 'react';
+import { useEsNavigator } from 'appData/useEsNavigator';
+import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import {
@@ -26,13 +26,7 @@ export interface Props {
     mellomlagreOgNaviger: () => Promise<void>;
 }
 
-const Velkommen: FunctionComponent<Props> = ({
-    locale,
-    onChangeLocale,
-    startSøknad,
-    erVelkommen,
-    mellomlagreOgNaviger,
-}) => {
+export const Velkommen = ({ locale, onChangeLocale, startSøknad, erVelkommen, mellomlagreOgNaviger }: Props) => {
     const intl = useIntl();
 
     const navigator = useEsNavigator(mellomlagreOgNaviger);
@@ -162,5 +156,3 @@ const Velkommen: FunctionComponent<Props> = ({
         </ContentWrapper>
     );
 };
-
-export default Velkommen;

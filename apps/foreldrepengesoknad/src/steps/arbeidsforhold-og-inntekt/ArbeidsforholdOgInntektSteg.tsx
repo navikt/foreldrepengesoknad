@@ -1,10 +1,10 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import SøknadRoutes from 'appData/routes';
-import useFpNavigator from 'appData/useFpNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { SøknadRoutes } from 'appData/routes';
+import { useFpNavigator } from 'appData/useFpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { Heading } from '@navikt/ds-react';
 
@@ -20,11 +20,7 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-    arbeidsforhold,
-}) => {
+export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
 
@@ -93,5 +89,3 @@ const ArbeidsforholdOgInntektSteg: React.FunctionComponent<Props> = ({
         </ContentWrapper>
     );
 };
-
-export default ArbeidsforholdOgInntektSteg;

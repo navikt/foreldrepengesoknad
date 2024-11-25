@@ -11,7 +11,7 @@ interface Props {
     sumDager: number;
 }
 
-const DelGraf: React.FunctionComponent<Props> = ({ fordelingsdager, sumDager }) => {
+export const DelGraf = ({ fordelingsdager, sumDager }: Props) => {
     const rowHeightRem = 0.75;
     const bem = bemUtils('graf');
 
@@ -40,5 +40,3 @@ const DelGraf: React.FunctionComponent<Props> = ({ fordelingsdager, sumDager }) 
         </div>
     );
 };
-
-export default DelGraf;

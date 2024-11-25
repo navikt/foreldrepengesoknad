@@ -1,7 +1,7 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
-import SøknadRoutes from 'appData/routes';
-import useFpNavigator from 'appData/useFpNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { SøknadRoutes } from 'appData/routes';
+import { useFpNavigator } from 'appData/useFpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
@@ -27,11 +27,11 @@ import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { AndreInntektskilderOppsummering } from './andre-inntekter-oppsummering/AndreInntektskilderOppsummering';
-import AnnenForelderOppsummering from './annen-forelder-oppsummering/AnnenForelderOppsummering';
+import { AnnenForelderOppsummering } from './annen-forelder-oppsummering/AnnenForelderOppsummering';
 import { BarnOppsummering } from './barn-oppsummering/BarnOppsummering';
 import { DokumentasjonOppsummering } from './dokumentasjon-oppsummering/DokumentasjonOppsummering';
 import { PeriodeMedForeldrepengerOppsummering } from './periode-med-foreldrepenger/PeriodeMedForeldrepengerOppsummering';
-import UttaksplanOppsummering from './uttaksplan-oppsummering/UttaksplanOppsummering';
+import { UttaksplanOppsummering } from './uttaksplan-oppsummering/UttaksplanOppsummering';
 
 const skalViseInfoOmFarskapsportal = (
     søker: Søker,

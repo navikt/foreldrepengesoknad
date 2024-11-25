@@ -59,7 +59,7 @@ interface Props {
     frilans?: Frilans;
 }
 
-export const PerioderFieldArray: React.FunctionComponent<Props> = ({
+export const PerioderFieldArray = ({
     barn,
     valgtTilretteleggingId,
     kanHaSVPFremTilTreUkerFørTermin,
@@ -67,7 +67,7 @@ export const PerioderFieldArray: React.FunctionComponent<Props> = ({
     arbeidsforhold,
     egenNæring,
     frilans,
-}) => {
+}: Props) => {
     const bem = bemUtils('perioderStep');
     const intl = useIntl();
 

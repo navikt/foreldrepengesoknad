@@ -1,6 +1,6 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { useFormContext } from 'react-hook-form';
-import Fordeling, { OppstartValg } from 'types/Fordeling';
+import { Fordeling, OppstartValg } from 'types/Fordeling';
 import { getErAleneOmOmsorg } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedatoDate } from 'utils/barnUtils';
 
@@ -9,9 +9,9 @@ import { VStack } from '@navikt/ds-react';
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { notEmpty } from '@navikt/fp-validation';
 
-import OppstartDatoInput from './OppstartDatoInput';
-import OppstartDatoMorFødsel from './OppstartDatoMorFødsel';
-import OppstartValgInput from './OppstartValgInput';
+import { OppstartDatoInput } from './OppstartDatoInput';
+import { OppstartDatoMorFødsel } from './OppstartDatoMorFødsel';
+import { OppstartValgInput } from './OppstartValgInput';
 
 interface Props {
     navnPåForeldre: NavnPåForeldre;
@@ -20,12 +20,12 @@ interface Props {
     oppstartsvalg: OppstartValg[];
 }
 
-const OppstartAvForeldrepenger: React.FunctionComponent<Props> = ({
+export const OppstartAvForeldrepenger = ({
     navnPåForeldre,
     erFarEllerMedmor,
     førsteDagEtterAnnenForelder,
     oppstartsvalg,
-}) => {
+}: Props) => {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -53,5 +53,3 @@ const OppstartAvForeldrepenger: React.FunctionComponent<Props> = ({
         </VStack>
     );
 };
-
-export default OppstartAvForeldrepenger;

@@ -1,7 +1,7 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
-import useEsNavigator from 'appData/useEsNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { useEsNavigator } from 'appData/useEsNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { OmBarnet } from 'types/OmBarnet';
@@ -14,8 +14,8 @@ import { Step } from '@navikt/fp-ui';
 import { omitOne } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import AdopsjonPanel, { FormValues as AdopsjonFormValues } from './AdopsjonPanel';
-import FødselPanel, { FormValues as FødtFormValues } from './FødselPanel';
+import { FormValues as AdopsjonFormValues, AdopsjonPanel } from './AdopsjonPanel';
+import { FødselPanel, FormValues as FødtFormValues } from './FødselPanel';
 
 type FormValues = FødtFormValues & AdopsjonFormValues;
 
@@ -48,7 +48,7 @@ export interface Props {
     mellomlagreOgNaviger: () => Promise<void>;
 }
 
-const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlagreOgNaviger }) => {
+export const OmBarnetSteg = ({ kjønn, mellomlagreOgNaviger }: Props) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig();
@@ -95,5 +95,3 @@ const OmBarnetSteg: React.FunctionComponent<Props> = ({ kjønn, mellomlagreOgNav
         </Step>
     );
 };
-
-export default OmBarnetSteg;

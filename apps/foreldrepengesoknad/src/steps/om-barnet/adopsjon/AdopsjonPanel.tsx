@@ -1,7 +1,6 @@
 import { FileIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -12,7 +11,7 @@ import { førsteOktober2021ReglerGjelder } from '@navikt/fp-uttaksplan';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { BarnetFormValues } from '../OmBarnetFormValues';
-import FødselsdatoerFieldArray from './FødselsdatoerFieldArray';
+import { FødselsdatoerFieldArray } from './FødselsdatoerFieldArray';
 
 dayjs.extend(isSameOrBefore);
 
@@ -20,7 +19,7 @@ interface Props {
     søknadGjelderEtNyttBarn: boolean;
 }
 
-const AdopsjonPanel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) => {
+export const AdopsjonPanel = ({ søknadGjelderEtNyttBarn }: Props) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<BarnetFormValues>();
@@ -162,5 +161,3 @@ const AdopsjonPanel: FunctionComponent<Props> = ({ søknadGjelderEtNyttBarn }) =
         </>
     );
 };
-
-export default AdopsjonPanel;

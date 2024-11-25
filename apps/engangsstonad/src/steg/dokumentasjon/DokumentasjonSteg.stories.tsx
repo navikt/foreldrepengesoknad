@@ -9,7 +9,7 @@ import { OmBarnet } from 'types/OmBarnet';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import DokumentasjonSteg from './DokumentasjonSteg';
+import { DokumentasjonSteg } from './DokumentasjonSteg';
 
 const promiseAction =
     () =>

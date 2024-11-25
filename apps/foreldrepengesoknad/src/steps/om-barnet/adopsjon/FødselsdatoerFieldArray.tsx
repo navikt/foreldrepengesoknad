@@ -54,7 +54,7 @@ interface Props {
     adopsjonsdato?: string;
 }
 
-const FødselsdatoerFieldArray: React.FunctionComponent<Props> = ({ adopsjonsdato, antallBarn, antallBarnDropDown }) => {
+export const FødselsdatoerFieldArray = ({ adopsjonsdato, antallBarn, antallBarnDropDown }: Props) => {
     const intl = useIntl();
     const { control } = useFormContext<FormValues>();
     const { fields, remove, append } = useFieldArray({
@@ -118,5 +118,3 @@ const FødselsdatoerFieldArray: React.FunctionComponent<Props> = ({ adopsjonsdat
         </VStack>
     );
 };
-
-export default FødselsdatoerFieldArray;
