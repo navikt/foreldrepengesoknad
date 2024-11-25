@@ -13,7 +13,7 @@ import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { RettighetType } from '../../types/RettighetType';
 import { Ytelse } from '../../types/Ytelse';
 import { getBarnFraSak, getFamiliehendelseDato, utledFamiliesituasjon } from '../../utils/sakerUtils';
-import { KvoteOppsummering } from './KvoteOppsummering';
+import { KvoteOppsummering1 } from './KvoteOppsummering';
 
 interface Props {
     annenPartsPerioder?: SaksperiodeNy[];
@@ -95,7 +95,7 @@ export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåF
                             førsteUttaksdagNesteBarnsSak={undefined}
                             harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
                         />
-                        <KvoteOppsummering />
+                        <KvoteOppsummering1 />
                     </>
                 )}
                 {visKalender && (
