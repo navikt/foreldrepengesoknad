@@ -131,6 +131,10 @@ export const mapOmBarnetFormDataToState = (
     throw new Error('Unreachable code');
 };
 
+const getAntallBarn = (erFlereEnnToBarn: boolean, barn: Barn): number => (erFlereEnnToBarn ? 3 : barn.antallBarn);
+const getAntallBarnSelect = (erFlereEnnToBarn: boolean, barn: Barn): string | undefined =>
+    erFlereEnnToBarn ? barn.antallBarn.toString() : undefined;
+
 export const getOmBarnetInitialValues = (
     arbeidsforhold: Arbeidsforhold[],
     søkersituasjon: SøkersituasjonFp,
@@ -145,8 +149,8 @@ export const getOmBarnetInitialValues = (
     if (isFødtBarn(barn)) {
         return {
             erBarnetFødt: true,
-            antallBarn: erFlereEnnToBarn ? 3 : barn.antallBarn,
-            antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : undefined,
+            antallBarn: getAntallBarn(erFlereEnnToBarn, barn),
+            antallBarnSelect: getAntallBarnSelect(erFlereEnnToBarn, barn),
             fødselsdatoer: barn.fødselsdatoer.map((f) => ({
                 dato: f,
             })),
@@ -164,8 +168,8 @@ export const getOmBarnetInitialValues = (
         if (aktiveArbeidsforhold.length === 0) {
             return {
                 erBarnetFødt: false,
-                antallBarn: erFlereEnnToBarn ? 3 : barn.antallBarn,
-                antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : undefined,
+                antallBarn: getAntallBarn(erFlereEnnToBarn, barn),
+                antallBarnSelect: getAntallBarnSelect(erFlereEnnToBarn, barn),
                 terminbekreftelsedato: barn.terminbekreftelsedato,
                 termindato: barn.termindato,
             };
@@ -173,8 +177,8 @@ export const getOmBarnetInitialValues = (
 
         return {
             erBarnetFødt: false,
-            antallBarn: erFlereEnnToBarn ? 3 : barn.antallBarn,
-            antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : undefined,
+            antallBarn: getAntallBarn(erFlereEnnToBarn, barn),
+            antallBarnSelect: getAntallBarnSelect(erFlereEnnToBarn, barn),
             termindato: barn.termindato,
         };
     }
@@ -183,8 +187,8 @@ export const getOmBarnetInitialValues = (
         return {
             adopsjonAvEktefellesBarn: false,
             adopsjonsdato: barn.adopsjonsdato,
-            antallBarn: erFlereEnnToBarn ? 3 : barn.antallBarn,
-            antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : undefined,
+            antallBarn: getAntallBarn(erFlereEnnToBarn, barn),
+            antallBarnSelect: getAntallBarnSelect(erFlereEnnToBarn, barn),
             fødselsdatoer: barn.fødselsdatoer.map((f) => ({
                 dato: f,
             })),
@@ -197,8 +201,8 @@ export const getOmBarnetInitialValues = (
         return {
             adopsjonAvEktefellesBarn: true,
             adopsjonsdato: barn.adopsjonsdato,
-            antallBarn: erFlereEnnToBarn ? 3 : barn.antallBarn,
-            antallBarnSelect: erFlereEnnToBarn ? barn.antallBarn.toString() : undefined,
+            antallBarn: getAntallBarn(erFlereEnnToBarn, barn),
+            antallBarnSelect: getAntallBarnSelect(erFlereEnnToBarn, barn),
             fødselsdatoer: barn.fødselsdatoer.map((f) => ({
                 dato: f,
             })),
