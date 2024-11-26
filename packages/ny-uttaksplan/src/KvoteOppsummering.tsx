@@ -31,7 +31,7 @@ export const useKvote = () => {
 export const KvoteOppsummering = (props: Props) => {
     return (
         <KvoteContext.Provider value={props}>
-            {props.rettighetType === 'ALENEOMSORG' && (
+            {(props.rettighetType === 'ALENEOMSORG' || props.rettighetType === 'BARE_SØKER_RETT') && (
                 <ExpansionCard aria-label="TODO" size="small">
                     <KvoteTittelAleneOmsorg />
                     <ExpansionCard.Content>
@@ -41,7 +41,6 @@ export const KvoteOppsummering = (props: Props) => {
                     </ExpansionCard.Content>
                 </ExpansionCard>
             )}
-            {props.rettighetType === 'BARE_SØKER_RETT' && null}
             {props.rettighetType === 'BEGGE_RETT' && <BeggeRettKvote />}
         </KvoteContext.Provider>
     );
@@ -193,7 +192,7 @@ const AleneOmsorgKvoter = () => {
         <VStack gap="4">
             <BodyShort weight="semibold">
                 {getVarighetString(fpKonto.dager, intl)}{' '}
-                {treUkerFørFødselKonto ? ` + ${treUkerFørFødselKonto.dager} dager` : ''} til deg
+                {treUkerFørFødselKonto ? ` + ${getVarighetString(treUkerFørFødselKonto.dager, intl)}` : ''} til deg
             </BodyShort>
             <VStack gap="6" className="ml-4">
                 {treUkerFørFødselKonto && (
@@ -215,13 +214,15 @@ const AleneOmsorgKvoter = () => {
                             ]}
                         />
                         <BodyShort>
-                            {dagerBruktTreUkerFørFødsel} er lagt til
-                            {ubrukteDagerFørFødsel > 0 ? `, ${ubrukteDagerFørFødsel} gjenstår` : ''}
+                            {getVarighetString(dagerBruktTreUkerFørFødsel, intl)} er lagt til
+                            {ubrukteDagerFørFødsel > 0
+                                ? `, ${getVarighetString(ubrukteDagerFørFødsel, intl)} gjenstår`
+                                : ''}
                         </BodyShort>
                     </VStack>
                 )}
                 <VStack gap="1">
-                    <BodyShort weight="semibold">Mødrekvote - {fpKonto.dager}</BodyShort>
+                    <BodyShort weight="semibold">Mødrekvote - {getVarighetString(fpKonto.dager, intl)}</BodyShort>
                     <FordelingsBar
                         fordelinger={[
                             {
@@ -236,8 +237,10 @@ const AleneOmsorgKvoter = () => {
                         ]}
                     />
                     <BodyShort>
-                        {dagerBruktTreUkerFørFødsel} er lagt til
-                        {ubrukteDagerMødreKvote > 0 ? `, ${ubrukteDagerMødreKvote} gjenstår` : ''}
+                        {getVarighetString(dagerBruktFpKvote, intl)} er lagt til
+                        {ubrukteDagerMødreKvote > 0
+                            ? `, ${getVarighetString(ubrukteDagerMødreKvote, intl)} gjenstår`
+                            : ''}
                     </BodyShort>
                 </VStack>
             </VStack>
