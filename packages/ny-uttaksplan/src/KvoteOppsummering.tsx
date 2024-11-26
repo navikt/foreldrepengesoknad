@@ -159,8 +159,7 @@ const KvoteTittel = () => {
             <ExpansionCard.Description>
                 {beskrivelse}
                 Hvis du ønsker å bruke mer foreldrepenger enn det som ligger i planen nå, kan du sende en
-                endringssøknad.
-                {ubrukteDagerFar > 0 ? 'Far må sende søknad selv for å bruke sine uker med foreldrepenger' : ''}
+                endringssøknad. Annen forelder må sende søknad selv for å bruke sine uker med foreldrepenger.
             </ExpansionCard.Description>
         </ExpansionCard.Header>
     );
