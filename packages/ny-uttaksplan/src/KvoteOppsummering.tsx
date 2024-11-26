@@ -1,4 +1,4 @@
-import { sum } from 'lodash';
+import { sum, sumBy } from 'lodash';
 import { createContext, useContext } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -68,13 +68,21 @@ const KvoteTittelAleneOmsorg = () => {
     const intl = useIntl();
 
     const dagerBrukt = summerDagerIPerioder(
-        perioder.filter((p) => p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' || p.kontoType === 'FORELDREPENGER'),
+        perioder.filter(
+            (p) =>
+                p.kontoType === 'FORELDREPENGER_FØR_FØDSEL' ||
+                p.kontoType === 'FORELDREPENGER' ||
+                p.kontoType === 'AKTIVITETSFRI_KVOTE',
+        ),
     );
 
     const fpKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER');
+    const aktivitetsfriKonto = konto.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
     const førFødselKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
 
-    const antallUbrukteDager = fpKonto && førFødselKonto ? fpKonto.dager + førFødselKonto.dager - dagerBrukt : 0;
+    const totaltTilgjengeligeDager = sumBy([fpKonto, aktivitetsfriKonto, førFødselKonto], (konto) => konto?.dager ?? 0);
+
+    const antallUbrukteDager = totaltTilgjengeligeDager - dagerBrukt;
 
     if (antallUbrukteDager === 0) {
         const tittel = 'All tid er i planen';
