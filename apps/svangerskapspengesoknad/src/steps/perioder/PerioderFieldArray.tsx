@@ -19,10 +19,8 @@ import { RhfDatepicker, RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hook
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { Arbeidsforhold, EgenNæring, Frilans } from '@navikt/fp-types';
 import { HorizontalLine } from '@navikt/fp-ui';
-import { bemUtils } from '@navikt/fp-utils';
 import { isAfterOrSame, isBeforeOrSame, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
-import './perioderFieldArray.css';
 import {
     getMinDatoTom,
     getMåSendeNySøknad,
@@ -68,7 +66,6 @@ export const PerioderFieldArray = ({
     egenNæring,
     frilans,
 }: Props) => {
-    const bem = bemUtils('perioderStep');
     const intl = useIntl();
 
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
@@ -128,7 +125,7 @@ export const PerioderFieldArray = ({
                         <VStack gap="1">
                             <HorizontalLine />
                             <HStack justify="space-between" align="center">
-                                <Tag variant="info-moderate" className={bem.element('tag')}>
+                                <Tag variant="info-moderate">
                                     {getPeriodeInfoTekst(
                                         index,
                                         sisteDagForSvangerskapspenger,
@@ -239,7 +236,7 @@ export const PerioderFieldArray = ({
                             <RhfTextField
                                 name={`varierendePerioder.${index}.stillingsprosent`}
                                 label={intl.formatMessage({ id: 'perioder.varierende.stillingsprosent.label' })}
-                                className={bem.element('stillingsprosent')}
+                                style={{ maxWidth: '450px' }}
                                 description={intl.formatMessage({
                                     id: 'tilrettelegging.tilrettelagtArbeidType.description',
                                 })}

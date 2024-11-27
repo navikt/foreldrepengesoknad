@@ -10,7 +10,7 @@ import { Button, HStack, Radio, VStack } from '@navikt/ds-react';
 import { DATE_5_MONTHS_AGO, DATE_20_YEARS_AGO } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfRadioGroup, RhfSelect, RhfTextField } from '@navikt/fp-form-hooks';
 import { HorizontalLine } from '@navikt/fp-ui';
-import { bemUtils, createCountryOptions } from '@navikt/fp-utils';
+import { createCountryOptions } from '@navikt/fp-utils';
 import { femMånederSiden } from '@navikt/fp-utils/src/dateUtils';
 import {
     hasLegalChars,
@@ -22,8 +22,6 @@ import {
     isValidDate,
 } from '@navikt/fp-validation';
 
-import './arbeidIUtlandetSteg.css';
-
 export const NEW_ARBEID_I_UTLANDET = {
     type: ArbeidIUtlandetType.JOBB_I_UTLANDET,
     fom: '',
@@ -34,7 +32,6 @@ export const NEW_ARBEID_I_UTLANDET = {
 };
 
 export const ArbeidIUtlandetFieldArray = () => {
-    const bem = bemUtils('arbeidIUtlandet');
     const intl = useIntl();
 
     const formMethods = useFormContext<ArbeidIUtlandet>();
@@ -68,7 +65,6 @@ export const ArbeidIUtlandetFieldArray = () => {
                         </RhfSelect>
                         {index !== 0 && (
                             <Button
-                                className={bem.element('delete')}
                                 icon={<XMarkIcon aria-hidden />}
                                 type="button"
                                 variant="tertiary"

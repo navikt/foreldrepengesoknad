@@ -14,7 +14,6 @@ import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ArbeidIUtlandetFieldArray, NEW_ARBEID_I_UTLANDET } from './ArbeidIUtlandetFieldArray';
-import './arbeidIUtlandetSteg.css';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;

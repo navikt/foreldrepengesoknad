@@ -4,9 +4,9 @@ import { Arbeidsforholdstype } from 'types/Tilrettelegging';
 
 import { BodyShort, HStack, VStack } from '@navikt/ds-react';
 
-import { bemUtils, capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
+import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
-import './bedriftsbanner.css';
+import styles from './bedriftsbanner.module.css';
 
 interface Props {
     arbeidsforholdType: Arbeidsforholdstype;
@@ -24,7 +24,6 @@ const getNavn = (type: Arbeidsforholdstype, intl: IntlShape, navn?: string) => {
 };
 
 export const Bedriftsbanner = ({ arbeidsforholdType, arbeidsforholdNavn }: Props) => {
-    const bem = bemUtils('bedriftsbanner');
     const intl = useIntl();
     const navn = getNavn(arbeidsforholdType, intl, arbeidsforholdNavn);
 
@@ -33,21 +32,17 @@ export const Bedriftsbanner = ({ arbeidsforholdType, arbeidsforholdNavn }: Props
             ? intl.formatMessage({ id: 'bedriftsbanner.detail' })
             : intl.formatMessage({ id: 'bedriftsbanner.detail.frilans' });
     return (
-        <div className={bem.block}>
-            <HStack gap="5">
-                <div className={bem.element('ikon')}>
-                    <Buildings3Icon aria-hidden={true} height="24px" width="24px" />
-                </div>
-                <div className={bem.element('tekst')}>
-                    <VStack gap="1">
-                        <BodyShort size="small" className={bem.modifier('bold')}>
-                            {detailTekst}
-                        </BodyShort>
-                        <BodyShort size="medium" className={bem.modifier('bold')}>
-                            {navn}
-                        </BodyShort>
-                    </VStack>
-                </div>
+        <div className={styles.bedriftsbanner}>
+            <HStack gap="5" align="center">
+                <Buildings3Icon aria-hidden={true} height="24px" width="24px" className={styles.ikon} />
+                <VStack gap="1">
+                    <BodyShort size="small" className={styles.bold}>
+                        {detailTekst}
+                    </BodyShort>
+                    <BodyShort size="medium" className={styles.bold}>
+                        {navn}
+                    </BodyShort>
+                </VStack>
             </HStack>
         </div>
     );

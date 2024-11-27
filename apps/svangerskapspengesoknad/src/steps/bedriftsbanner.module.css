@@ -5,15 +5,10 @@
     padding: 1rem;
 }
 
-.bedriftsbanner__ikon {
-    margin: auto 0rem;
+.ikon {
     color: var(--surface-alt-3-moderate, #99c4dd);
 }
 
-.bedriftsbanner__tekst {
-    display: block;
-}
-
-.bedriftsbanner--bold {
+.bold {
     font-weight: bold;
 }
