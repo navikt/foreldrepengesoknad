@@ -13,7 +13,6 @@ import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { InfoOmUtvidet80ProsentPeriode } from './InfoOmUtvidet80ProsentPeriode';
-import './panelWithCircleIcon.less';
 
 type Props = {
     goToPreviousDefaultStep: () => Promise<void>;
