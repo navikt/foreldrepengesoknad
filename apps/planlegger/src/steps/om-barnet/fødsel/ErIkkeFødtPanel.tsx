@@ -34,7 +34,6 @@ const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): st
 type Props = {
     hvemPlanlegger: HvemPlanlegger;
     erOmBarnetIkkeOppgittFraFør: boolean;
-    antallBarn?: string;
     scrollToBottom: () => void;
 };
 

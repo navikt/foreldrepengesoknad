@@ -7,7 +7,6 @@ import { Link as LinkInternal } from 'react-router-dom';
 import { BodyShort, Button, Link, ReadMore } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { bemUtils } from '@navikt/fp-utils';
 
 import { Sak } from '../../types/Sak';
 import { SøkerinfoDTOBarn } from '../../types/SøkerinfoDTO';
@@ -25,10 +24,10 @@ import {
 } from '../../utils/tidslinjeUtils';
 import NoeGikkGalt from './../../components/noe-gikk-galt/NoeGikkGalt';
 import { DokumentHendelse, InntektsmeldingDokumentHendelse } from './DokumentHendelse';
-import TidslinjeHendelse from './TidslinjeHendelse';
-import './tidslinje-hendelse.css';
+import { TidslinjeHendelse } from './TidslinjeHendelse';
+import styles from './tidslinje.module.css';
 
-interface Params {
+interface Props {
     sak: Sak;
     visHeleTidslinjen: boolean;
     søkersBarn: SøkerinfoDTOBarn[];
@@ -36,16 +35,15 @@ interface Params {
     tidslinjeHendelserQuery: UseQueryResult<Tidslinjehendelse[], Error>;
 }
 
-const Tidslinje: React.FunctionComponent<Params> = ({
+export const Tidslinje = ({
     sak,
     visHeleTidslinjen,
     søkersBarn,
     tidslinjeHendelserQuery,
     manglendeVedleggQuery,
-}) => {
+}: Props) => {
     const intl = useIntl();
 
-    const bem = bemUtils('tidslinje-hendelse');
     const førsteUttaksdagISaken =
         sak.ytelse === Ytelse.FORELDREPENGER ? getFørsteUttaksdagIForeldrepengesaken(sak) : undefined;
 
@@ -151,7 +149,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({
                             {hendelse.tidslinjeHendelseType === TidslinjehendelseType.VENT_DOKUMENTASJON &&
                                 manglendeVedleggData &&
                                 manglendeVedleggData.length > 1 && (
-                                    <div className={bem.element('manglende_vedlegg')}>
+                                    <div className={styles.manglendeVedlegg}>
                                         <div>
                                             {intl.formatMessage({
                                                 id: 'tidslinje.VENT_DOKUMENTASJON.flereVedlegg.tittel',
@@ -169,28 +167,28 @@ const Tidslinje: React.FunctionComponent<Params> = ({
                                     </div>
                                 )}
                             {hendelse.merInformasjon && (
-                                <BodyShort size="small" className={bem.element('mer_informasjon')}>
+                                <BodyShort size="small" className={styles.merInformasjon}>
                                     {hendelse.merInformasjon}
                                 </BodyShort>
                             )}
                             {alleDokumenter.length > 0 && alleDokumenter.length <= 3 && alleDokumenter}
                             {alleDokumenter.length > 0 && alleDokumenter.length > 3 && (
                                 <ReadMore
-                                    className={bem.element('medium_font')}
+                                    className={styles.mediumFont}
                                     header={`Du sendte ${hendelse.dokumenter.length} dokumenter`}
                                 >
                                     {alleDokumenter}
                                 </ReadMore>
                             )}
                             {hendelse.linkTittel && hendelse.eksternalUrl && (
-                                <Link href={hendelse.eksternalUrl} className={bem.element('link')}>
+                                <Link href={hendelse.eksternalUrl} className={styles.link}>
                                     <BodyShort size="small">{hendelse.linkTittel}</BodyShort>
                                     <ExternalLinkIcon aria-hidden={true} />
                                 </Link>
                             )}
                             {hendelse.linkTittel && hendelse.internalUrl && (
                                 <LinkInternal
-                                    className={bem.element('medium_font')}
+                                    className={styles.mediumFont}
                                     to={`/sak/${sak.saksnummer}/${hendelse.internalUrl}`}
                                 >
                                     <Button>{hendelse.linkTittel}</Button>
@@ -203,5 +201,3 @@ const Tidslinje: React.FunctionComponent<Params> = ({
         </div>
     );
 };
-
-export default Tidslinje;

@@ -65,7 +65,6 @@ export const Fødsel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, antallBa
                 <ErIkkeFødtPanel
                     hvemPlanlegger={hvemPlanlegger}
                     erOmBarnetIkkeOppgittFraFør={erOmBarnetIkkeOppgittFraFør}
-                    antallBarn={antallBarn}
                     scrollToBottom={scrollToBottom}
                 />
             )}

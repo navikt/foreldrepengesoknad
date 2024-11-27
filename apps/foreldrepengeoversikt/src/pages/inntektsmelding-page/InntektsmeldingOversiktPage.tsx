@@ -12,7 +12,7 @@ import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
-import OversiktRoutes from '../../routes/routes';
+import { OversiktRoutes } from '../../routes/routes';
 
 export const InntektsmeldingOversiktPage = () => {
     useSetBackgroundColor('white');

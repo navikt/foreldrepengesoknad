@@ -3,7 +3,7 @@ import { ChatExclamationmarkIcon } from '@navikt/aksel-icons';
 import { formatDate } from '@navikt/fp-utils';
 
 import { LenkePanel } from './../../components/lenke-panel/LenkePanel';
-import OversiktRoutes from './../../routes/routes';
+import { OversiktRoutes } from './../../routes/routes';
 import { MinidialogInnslag } from './../../types/MinidialogInnslag';
 
 interface Props {

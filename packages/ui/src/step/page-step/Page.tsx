@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 
-import './page.css';
+import styles from './page.module.css';
 
 interface PageProps {
     className?: string;
@@ -23,7 +23,7 @@ export const Page = ({ ariaLabel, id = 'pageMainContent', className, topContentR
     return (
         <main aria-label={ariaLabelToUse} id={id}>
             {topContentRenderer?.()}
-            <div className={`page ${className}`}>{children}</div>
+            <div className={`${styles.page} ${className}`}>{children}</div>
         </main>
     );
 };
