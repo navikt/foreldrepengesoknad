@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { hentInntektsmelding } from '../../api/api';
 import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
-import OversiktRoutes from '../../routes/routes';
+import { OversiktRoutes } from '../../routes/routes';
 
 export const InntektsmeldingLenkePanel = () => {
     const params = useParams();

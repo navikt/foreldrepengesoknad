@@ -6,10 +6,11 @@ import { IntlShape, useIntl } from 'react-intl';
 import { BodyShort, Heading, Hide, Show } from '@navikt/ds-react';
 
 import { Forelder } from '@navikt/fp-constants';
-import { Tidsperioden, bemUtils, formatDateShortMonth } from '@navikt/fp-utils';
+import { Tidsperioden, formatDateShortMonth } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { UttaksplanContextDataType, useContextGetData } from '../../context/UttaksplanDataContext';
+import planBemUtils from '../../planBemUtils';
 import Permisjonsperiode from '../../types/Permisjonsperiode';
 import { ISOStringToDate, getVarighetString } from '../../utils/dateUtils';
 import { getFarge, getIkon, getTekst } from './PeriodeListeHeaderUtils';
@@ -55,7 +56,7 @@ const renderVarighet = (erFamiliehendelse: boolean | undefined, antallDager: num
 
 const PeriodeListeHeader: FunctionComponent<Props> = ({ permisjonsperiode, erFamiliehendelse }) => {
     const intl = useIntl();
-    const bem = bemUtils('periode-liste-header');
+    const bem = planBemUtils('periode-liste-header');
 
     const navnPåForeldre = notEmpty(useContextGetData(UttaksplanContextDataType.NAVN_PÅ_FORELDRE));
     const erFarEllerMedmor = notEmpty(useContextGetData(UttaksplanContextDataType.ER_FAR_ELLER_MEDMOR));

@@ -12,12 +12,12 @@ import EttersendingPage from './../pages/ettersending/EttersendingPage';
 import Forside from './../pages/forside/Forside';
 import MinidialogPage from './../pages/minidialog-page/MinidialogPage';
 import Saksoversikt from './../pages/saksoversikt/Saksoversikt';
-import TidslinjePage from './../pages/tidslinje-page/TidslinjePage';
+import { TidslinjePage } from './../pages/tidslinje-page/TidslinjePage';
 import KontaktOss from './../sections/kontakt-oss/KontaktOss';
 import { SakOppslag } from './../types/SakOppslag';
 import { SøkerinfoDTO } from './../types/SøkerinfoDTO';
 import { getAlleYtelser } from './../utils/sakerUtils';
-import OversiktRoutes from './routes';
+import { OversiktRoutes } from './routes';
 
 interface Props {
     saker: SakOppslag;

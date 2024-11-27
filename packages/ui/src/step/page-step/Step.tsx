@@ -3,13 +3,11 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
-
 import { ProgressStep, ProgressStepper } from '../progress-stepper/ProgressStepper';
 import { Page } from './Page';
 import { StepBanner } from './StepBanner';
 import { StepFooter } from './step-footer/StepFooter';
-import './step.css';
+import styles from './step.module.css';
 
 interface StepProps<TYPE> {
     bannerTitle?: string;
@@ -47,14 +45,13 @@ export const Step = <TYPE extends string>({
 
     const title = steps[currentStepIndex].label;
 
-    const bem = bemUtils('step');
     return (
         <Page
-            className={bem.block}
+            className={styles.step}
             ariaLabel={pageAriaLabel}
             topContentRenderer={() => <>{bannerTitle && <StepBanner text={bannerTitle} />}</>}
         >
-            {infoMessage !== undefined && <div className={bem.element('infoMessage')}>{infoMessage}</div>}
+            {infoMessage !== undefined && <div className={styles.infoMessage}>{infoMessage}</div>}
             <VStack gap="6">
                 <div role="presentation">
                     <ProgressStepper steps={steps} hideHeader={hideHeader} onStepChange={onStepChange} />

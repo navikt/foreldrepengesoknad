@@ -5,7 +5,7 @@ import { assertUnreachable } from '@navikt/fp-validation';
 
 import { useGetSelectedRoute } from './../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from './../../hooks/useSelectedSak';
-import OversiktRoutes from './../../routes/routes';
+import { OversiktRoutes } from './../../routes/routes';
 
 const minSide = {
     title: 'Min side',

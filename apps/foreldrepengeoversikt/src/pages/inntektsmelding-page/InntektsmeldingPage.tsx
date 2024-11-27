@@ -14,7 +14,7 @@ import { InntektsmeldingHeader } from '../../components/header/Header';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
-import OversiktRoutes from '../../routes/routes';
+import { OversiktRoutes } from '../../routes/routes';
 import { Ytelse } from '../../types/Ytelse';
 import { getAlleYtelser, mapSakerDTOToSaker } from '../../utils/sakerUtils';
 

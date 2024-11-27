@@ -25,7 +25,6 @@ export { useDocumentTitle } from './src/hooks/useDocumentTitle';
 export { useBeforeUnload } from './src/hooks/useBeforeUnload';
 export { useScrollBehaviour } from './src/hooks/useScrollBehaviour';
 export { useMedia } from './src/hooks/useMedia';
-export { bemUtils } from './src/bemUtils';
 export { trimNumberValue, getFloatFromString, getNumberFromNumberInputValue } from './src/numberUtils';
 export {
     capitalizeFirstLetter,

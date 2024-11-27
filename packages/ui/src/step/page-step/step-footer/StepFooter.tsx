@@ -3,10 +3,8 @@ import { useIntl } from 'react-intl';
 
 import { Button } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
-
 import { AvsluttModal } from './AvsluttModal';
-import './stepFooter.css';
+import styles from './stepFooter.module.css';
 
 interface Props {
     onAvbrytOgFortsettSenere?: () => void;
@@ -17,10 +15,9 @@ export const StepFooter = ({ onAvbrytOgFortsettSenere, onAvbrytOgSlett }: Props)
     const [avsluttIsOpen, setAvsluttIsOpen] = useState(false);
     const intl = useIntl();
 
-    const bem = bemUtils('stepFooter');
     return (
-        <div className={bem.block}>
-            <div className={bem.element('divider')} />
+        <div className={styles.stepFooter}>
+            <div className={styles.divider} />
             <AvsluttModal
                 isOpen={avsluttIsOpen}
                 setIsOpen={setAvsluttIsOpen}

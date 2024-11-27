@@ -1,4 +1,4 @@
-enum OversiktRoutes {
+export enum OversiktRoutes {
     HOVEDSIDE = '/',
     SAKSOVERSIKT = '/sak',
     DIN_PLAN = 'din-plan',
@@ -33,5 +33,3 @@ export enum NavRoutes {
     FORELDREPENGESOKNAD = 'https://foreldrepengesoknad.nav.no',
     HVOR_LENGE = 'https://www.nav.no/foreldrepenger#hvor-lenge',
 }
-
-export default OversiktRoutes;

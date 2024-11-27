@@ -8,7 +8,7 @@ interface StepBannerProps {
 }
 
 export const StepBanner = ({ text, level = '1' }: StepBannerProps) => (
-    <Banner size="small">
+    <Banner>
         <Heading size="large" level={level}>
             {text}
         </Heading>

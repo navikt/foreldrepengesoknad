@@ -8,7 +8,7 @@ import saker from 'storybookData/saker/saker.json';
 import søkerinfo from 'storybookData/sokerinfo/sokerinfo.json';
 import tidslinjeHendelser from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.json';
 
-import OversiktRoutes from './../../routes/routes';
+import { OversiktRoutes } from './../../routes/routes';
 import { SakOppslag } from './../../types/SakOppslag';
 import { SøkerinfoDTO } from './../../types/SøkerinfoDTO';
 import Forside from './Forside';

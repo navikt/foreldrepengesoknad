@@ -5,7 +5,7 @@ import { IntlShape } from 'react-intl';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { formatDate } from '@navikt/fp-utils';
 
-import OversiktRoutes, { NavRoutes } from './../routes/routes';
+import { NavRoutes, OversiktRoutes } from './../routes/routes';
 import { AktørType } from './../types/AktørType';
 import { BarnGruppering } from './../types/BarnGruppering';
 import { BehandlingTilstand } from './../types/BehandlingTilstand';

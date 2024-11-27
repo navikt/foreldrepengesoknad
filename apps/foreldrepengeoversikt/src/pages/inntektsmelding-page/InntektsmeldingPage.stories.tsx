@@ -11,7 +11,7 @@ import satser from 'storybookData/inntektsmeldinger/satser.json';
 import utenRefusjon from 'storybookData/inntektsmeldinger/utenRefusjon.json';
 import saker from 'storybookData/saker/saker.json';
 
-import OversiktRoutes from '../../routes/routes';
+import { OversiktRoutes } from '../../routes/routes';
 import { InntektsmeldingPage } from './InntektsmeldingPage';
 
 const queryClient = new QueryClient();

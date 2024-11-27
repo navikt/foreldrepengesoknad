@@ -15,7 +15,7 @@ import NoeGikkGalt from './../../components/noe-gikk-galt/NoeGikkGalt';
 import { useSetBackgroundColor } from './../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from './../../hooks/useSelectedRoute';
 import { PageRouteLayout } from './../../routes/ForeldrepengeoversiktRoutes';
-import OversiktRoutes from './../../routes/routes';
+import { OversiktRoutes } from './../../routes/routes';
 import { grupperDokumenterPåTidspunkt } from './../../utils/dokumenterUtils';
 import { guid } from './../../utils/guid';
 
