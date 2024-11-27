@@ -17,8 +17,6 @@ import { Infobox } from '@navikt/fp-ui';
 import { Uttaksdagen, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
-import './panelWithCircleIcon.less';
-
 const finnSisteDagMedForeldrepenger = (
     stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     barn: Barn,

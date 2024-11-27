@@ -7,8 +7,6 @@ import { BodyShort } from '@navikt/ds-react';
 import { SøkerAnnenForelder, SøkerBarn } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
 
-import './registrertePersonalia.less';
-
 interface Props {
     person: SøkerAnnenForelder | SøkerBarn;
     visEtternavn: boolean;
