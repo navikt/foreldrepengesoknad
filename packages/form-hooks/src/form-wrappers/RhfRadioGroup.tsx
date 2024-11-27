@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement, ReactNode } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { RadioGroup } from '@navikt/ds-react';
@@ -16,7 +16,7 @@ interface Props {
     customErrorFormatter?: (error: string | undefined) => ReactNode;
 }
 
-const RhfRadioGroup: FunctionComponent<Props> = ({
+export const RhfRadioGroup = ({
     label,
     description,
     name,
@@ -25,7 +25,7 @@ const RhfRadioGroup: FunctionComponent<Props> = ({
     children,
     className,
     customErrorFormatter,
-}) => {
+}: Props) => {
     const {
         formState: { errors },
     } = useFormContext();
@@ -62,5 +62,3 @@ const RhfRadioGroup: FunctionComponent<Props> = ({
         </RadioGroup>
     );
 };
-
-export default RhfRadioGroup;

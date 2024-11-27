@@ -14,8 +14,6 @@ export interface BannerProps {
 
 const bem = bemUtils('banner');
 
-const Banner: React.FunctionComponent<BannerProps> = ({ size, className, children }) => (
+export const Banner = ({ size, className, children }: BannerProps) => (
     <div className={`${bem.block} ${bem.block}--${size} ${className}`}>{children}</div>
 );
-
-export default Banner;

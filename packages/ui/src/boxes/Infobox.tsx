@@ -2,8 +2,8 @@ import React from 'react';
 
 import { HStack, Heading, VStack } from '@navikt/ds-react';
 
-import HorizontalLine from '../horizontal-line/HorizontalLine';
-import IconCircleWrapper, { CircleColor } from '../icon-circle/IconCircleWrapper';
+import { HorizontalLine } from '../horizontal-line/HorizontalLine';
+import { CircleColor, IconCircleWrapper } from '../icon-circle/IconCircleWrapper';
 import styles from './infobox.module.css';
 
 type InfoboxColor = 'green' | 'blue' | 'gray';
@@ -32,14 +32,15 @@ interface Props {
     shouldFadeIn?: boolean;
     useHorizontalDivider?: boolean;
 }
-const Infobox: React.FC<Props> = ({
+
+export const Infobox = ({
     header,
     children,
     icon,
     color = 'green',
     shouldFadeIn = false,
     useHorizontalDivider = false,
-}) => (
+}: Props) => (
     <div className={`${styles.box} ${shouldFadeIn ? styles.animation : undefined} ${BOX_BACKGROUND[color]}`}>
         <VStack gap="2">
             {(header || (!header && icon)) && (
@@ -62,5 +63,3 @@ const Infobox: React.FC<Props> = ({
         </VStack>
     </div>
 );
-
-export default Infobox;

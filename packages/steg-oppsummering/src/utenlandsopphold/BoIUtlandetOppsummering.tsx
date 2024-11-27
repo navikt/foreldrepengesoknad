@@ -4,7 +4,7 @@ import { FormSummary } from '@navikt/ds-react';
 
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
-import LandOppsummering from './LandOppsummering';
+import { LandOppsummering } from './LandOppsummering';
 
 export enum HendelseType {
     ADOPSJON = 'ADOPSJON',
@@ -18,7 +18,11 @@ interface Props {
     onVilEndreSvar: () => void;
 }
 
-const BoIUtlandetOppsummering = ({ onVilEndreSvar, tidligereUtenlandsopphold, senereUtenlandsopphold }: Props) => {
+export const BoIUtlandetOppsummering = ({
+    onVilEndreSvar,
+    tidligereUtenlandsopphold,
+    senereUtenlandsopphold,
+}: Props) => {
     return (
         <FormSummary>
             <FormSummary.Header>
@@ -92,5 +96,3 @@ const BoIUtlandetOppsummering = ({ onVilEndreSvar, tidligereUtenlandsopphold, se
         </FormSummary>
     );
 };
-
-export default BoIUtlandetOppsummering;

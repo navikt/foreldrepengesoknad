@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import SimpleErrorPage from './SimpleErrorPage';
+import { SimpleErrorPage } from './SimpleErrorPage';
 
 const meta = {
     title: 'SimpleErrorPage',

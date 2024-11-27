@@ -1,11 +1,11 @@
-import { CSSProperties, FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
+import { CSSProperties, ReactNode, useCallback, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { Select } from '@navikt/ds-react';
 
 import { getError, getValidationRules } from './formUtils';
 
-export interface Props {
+interface Props {
     name: string;
     label: string | ReactNode;
     onChange?: (event: any) => void;
@@ -19,7 +19,7 @@ export interface Props {
     customErrorFormatter?: (error: string | undefined) => ReactNode;
 }
 
-const RhfSelect: FunctionComponent<Props> = ({
+export const RhfSelect = ({
     name,
     label,
     validate = [],
@@ -31,7 +31,7 @@ const RhfSelect: FunctionComponent<Props> = ({
     style,
     autofocusWhenEmpty,
     customErrorFormatter,
-}) => {
+}: Props) => {
     const {
         formState: { errors },
     } = useFormContext();
@@ -70,5 +70,3 @@ const RhfSelect: FunctionComponent<Props> = ({
         </Select>
     );
 };
-
-export default RhfSelect;

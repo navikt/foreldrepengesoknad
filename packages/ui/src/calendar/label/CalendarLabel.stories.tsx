@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 
 import { PeriodeColor } from '@navikt/fp-constants';
 
-import CalendarLabel from './CalendarLabel';
+import { CalendarLabel } from './CalendarLabel';
 
 const meta = {
     title: 'CalendarLabel',

@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import BlueHeading from './BlueHeading';
+import { BlueHeading } from './BlueHeading';
 
 const meta = {
     title: 'components/BlueHeading',

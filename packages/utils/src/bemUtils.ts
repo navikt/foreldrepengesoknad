@@ -3,7 +3,7 @@ import classNames from 'classnames';
 /**
  * @deprecated Bruk heller css-modules
  */
-const bemUtils = (cls: string) => ({
+export const bemUtils = (cls: string) => ({
     block: cls,
     element: (e?: string, m?: string) => `${cls}__${e}${m ? ` ${cls}__${e}--${m}` : ''}`,
     modifier: (m?: string) => `${cls}--${m}`,
@@ -12,5 +12,3 @@ const bemUtils = (cls: string) => ({
     child: (c: string) => bemUtils(bemUtils(cls).element(c)),
     classNames,
 });
-
-export default bemUtils;

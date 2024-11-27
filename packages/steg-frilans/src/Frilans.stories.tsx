@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
-import FrilansPanel from './FrilansPanel';
+import { FrilansPanel } from './FrilansPanel';
 
 const meta = {
     component: FrilansPanel,

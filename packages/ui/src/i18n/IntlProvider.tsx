@@ -8,7 +8,7 @@ interface Props<T extends LocaleAll> {
     children: React.ReactNode;
 }
 
-const IntlProvider = <T extends LocaleAll>({ locale, messagesGroupedByLocale, children }: Props<T>) => {
+export const IntlProvider = <T extends LocaleAll>({ locale, messagesGroupedByLocale, children }: Props<T>) => {
     const messages = messagesGroupedByLocale[locale];
     return (
         <Provider locale={locale} messages={messages || {}}>
@@ -16,5 +16,3 @@ const IntlProvider = <T extends LocaleAll>({ locale, messagesGroupedByLocale, ch
         </Provider>
     );
 };
-
-export default IntlProvider;

@@ -9,7 +9,7 @@ import { Utenlandsopphold } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
-export interface Props<TYPE> {
+interface Props<TYPE> {
     utenlandsopphold?: Utenlandsopphold;
     saveOnNext: (formValues: Utenlandsopphold) => void;
     saveOnPrevious: (formValues: Utenlandsopphold | undefined) => void;
@@ -21,7 +21,7 @@ export interface Props<TYPE> {
     stønadstype: 'Engangsstønad' | 'Foreldrepenger' | 'Svangerskapspenger';
 }
 
-const UtenlandsoppholdPanel = <TYPE extends string>({
+export const UtenlandsoppholdPanel = <TYPE extends string>({
     utenlandsopphold,
     saveOnNext,
     saveOnPrevious,
@@ -143,5 +143,3 @@ const UtenlandsoppholdPanel = <TYPE extends string>({
         </Step>
     );
 };
-
-export default UtenlandsoppholdPanel;

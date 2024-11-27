@@ -1,6 +1,6 @@
 import { DownloadIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { FunctionComponent, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
@@ -289,7 +289,7 @@ const getUnikeUtsettelsesårsaker = (allePerioderInklHull: KalenderPeriode[]) =>
     return [...new Set(utsettelseÅrsaker)];
 };
 
-interface UttaksplanKalenderProps {
+interface Props {
     søkersPerioder: SaksperiodeNy[];
     annenPartsPerioder?: SaksperiodeNy[];
     harAktivitetskravIPeriodeUtenUttak: boolean;
@@ -302,7 +302,7 @@ interface UttaksplanKalenderProps {
     barnehagestartdato?: string;
 }
 
-export const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
+export const UttaksplanKalender = ({
     søkersPerioder,
     annenPartsPerioder,
     harAktivitetskravIPeriodeUtenUttak,
@@ -313,7 +313,7 @@ export const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
     førsteUttaksdagNesteBarnsSak,
     planleggerLegend,
     barnehagestartdato,
-}) => {
+}: Props) => {
     const intl = useIntl();
     const familiehendelsesdato = getFamiliehendelsedato(barn);
     const erAdopsjon = barn.type === BarnType.ADOPTERT_ANNET_BARN || barn.type === BarnType.ADOPTERT_STEBARN;

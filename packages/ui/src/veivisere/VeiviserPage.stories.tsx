@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import VeiviserPage from './VeiviserPage';
+import { VeiviserPage } from './VeiviserPage';
 
 const meta = {
     title: 'VeiviserPage',

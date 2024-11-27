@@ -30,8 +30,8 @@ import {
     isValidInteger,
 } from '@navikt/fp-validation';
 
-import OrgnummerEllerLand from './components/OrgnummerEllerLand';
-import VarigEndringSpørsmål from './components/VarigEndringSpørsmål';
+import { OrgnummerEllerLand } from './components/OrgnummerEllerLand';
+import { VarigEndringSpørsmål } from './components/VarigEndringSpørsmål';
 
 dayjs.extend(minMax);
 
@@ -75,7 +75,7 @@ interface Props<TYPE> {
     stønadstype: AppName;
 }
 
-const EgenNæringPanel = <TYPE extends string>({
+export const EgenNæringPanel = <TYPE extends string>({
     egenNæring,
     saveOnNext,
     saveOnPrevious,
@@ -355,5 +355,3 @@ const EgenNæringPanel = <TYPE extends string>({
         </Step>
     );
 };
-
-export default EgenNæringPanel;

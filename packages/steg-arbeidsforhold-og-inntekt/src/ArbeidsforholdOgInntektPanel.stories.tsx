@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
-import ArbeidsforholdOgInntektPanel from './ArbeidsforholdOgInntektPanel';
+import { ArbeidsforholdOgInntektPanel } from './ArbeidsforholdOgInntektPanel';
 
 const DEFAULT_ARBEIDSFORHOLD = [
     {

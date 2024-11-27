@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import ScanDocumentInfo from './ScanDocumentInfo';
+import { ScanDocumentInfo } from './ScanDocumentInfo';
 
 const meta = {
     component: ScanDocumentInfo,
