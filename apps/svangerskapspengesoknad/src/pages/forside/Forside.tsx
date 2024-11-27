@@ -8,11 +8,10 @@ import { Alert, BodyShort, Button, ConfirmationPanel, GuidePanel, HStack, Headin
 import { links } from '@navikt/fp-constants';
 import { LocaleNo } from '@navikt/fp-types';
 import { ContentWrapper, LanguageToggle } from '@navikt/fp-ui';
-import { bemUtils } from '@navikt/fp-utils';
 
-import './forside.css';
+import styles from './forside.module.css';
 
-export interface Props {
+interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void;
     harGodkjentVilkår: boolean;
@@ -28,7 +27,6 @@ export const Forside = ({
     onChangeLocale,
 }: Props) => {
     const intl = useIntl();
-    const bem = bemUtils('forside');
 
     const oppdaterAppRoute = useContextSaveData(ContextDataType.APP_ROUTE);
 
@@ -56,14 +54,14 @@ export const Forside = ({
                     toggleLanguage={(l: LocaleNo) => onChangeLocale(l)}
                 />
                 <VStack gap="8">
-                    <Heading size="xlarge" className={`${bem.element('tittel')}`}>
+                    <Heading size="xlarge" className={styles.tittel}>
                         <FormattedMessage id="forside.tittel" />
                     </Heading>
                     <GuidePanel poster>
                         <BodyShort size="medium">
                             <FormattedMessage id="forside.guidepanel" />
                         </BodyShort>
-                        <ul className={`${bem.element('liste')}`}>
+                        <ul className={styles.liste}>
                             <li>
                                 <FormattedMessage id="forside.guidepanel.punkt1" />
                             </li>
@@ -128,7 +126,7 @@ export const Forside = ({
                         }
                     >
                         <BodyShort size="medium">{intl.formatMessage({ id: 'forside.samtykkeIntro' })}</BodyShort>
-                        <ul className={`${bem.element('liste')}`}>
+                        <ul className={styles.liste}>
                             <li>
                                 <FormattedMessage id="forside.samtykkeIntro.punkt1" />
                             </li>
