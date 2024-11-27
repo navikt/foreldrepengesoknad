@@ -37,6 +37,7 @@ export const KvoteOppsummering = (props: Props) => {
                     <ExpansionCard.Content>
                         <VStack gap="4">
                             <AleneOmsorgKvoter />
+                            <AktivitetsfriKvoter />
                         </VStack>
                     </ExpansionCard.Content>
                 </ExpansionCard>
@@ -174,7 +175,7 @@ const KvoteTittel = () => {
 
 const AleneOmsorgKvoter = () => {
     const intl = useIntl();
-    const { konto, perioder } = useKvote();
+    const { konto, perioder, forelder } = useKvote();
     // Denne kontoen finnes kun for mor
     const treUkerFørFødselKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
     const fpKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER');
@@ -186,7 +187,9 @@ const AleneOmsorgKvoter = () => {
     const dagerBruktTreUkerFørFødsel = summerDagerIPerioder(
         perioder.filter((p) => p.kontoType === 'FORELDREPENGER_FØR_FØDSEL'),
     );
-    const dagerBruktFpKvote = summerDagerIPerioder(perioder.filter((p) => p.kontoType === 'FORELDREPENGER'));
+    const dagerBruktFpKvote = summerDagerIPerioder(
+        perioder.filter((p) => p.kontoType === 'FORELDREPENGER' && p.morsAktivitet !== 'IKKE_OPPGITT'),
+    );
     const ubrukteDagerFørFødsel = treUkerFørFødselKonto?.dager
         ? treUkerFørFødselKonto?.dager - dagerBruktTreUkerFørFødsel
         : 0;
@@ -230,15 +233,17 @@ const AleneOmsorgKvoter = () => {
                     </VStack>
                 )}
                 <VStack gap="1">
-                    <BodyShort weight="semibold">Mødrekvote - {getVarighetString(fpKonto.dager, intl)}</BodyShort>
+                    <BodyShort weight="semibold">Foreldrepenger - {getVarighetString(fpKonto.dager, intl)}</BodyShort>
                     <FordelingsBar
                         fordelinger={[
                             {
-                                kontoType: StønadskontoType.Mødrekvote,
+                                kontoType:
+                                    forelder === 'MOR' ? StønadskontoType.Mødrekvote : StønadskontoType.Fedrekvote,
                                 prosent: prosentBruktAvFpkvote,
                             },
                             {
-                                kontoType: StønadskontoType.Mødrekvote,
+                                kontoType:
+                                    forelder === 'MOR' ? StønadskontoType.Mødrekvote : StønadskontoType.Fedrekvote,
                                 prosent: 100 - prosentBruktAvFpkvote,
                                 erFyllt: false,
                             },
@@ -291,6 +296,50 @@ const FedreKvoter = () => {
                 />
                 <BodyShort>
                     {getVarighetString(dagerBruktFedreKvote, intl)} er lagt til
+                    {ubrukteDager > 0 ? `, ${getVarighetString(ubrukteDager, intl)} gjenstår` : ''}
+                </BodyShort>
+            </VStack>
+        </VStack>
+    );
+};
+
+const AktivitetsfriKvoter = () => {
+    const intl = useIntl();
+    const { konto, perioder } = useKvote();
+
+    const aktivitetsfriKonto = konto.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
+
+    if (!aktivitetsfriKonto) {
+        return null;
+    }
+
+    const dagerBruktAktivitetsfriKvote = summerDagerIPerioder(
+        perioder.filter((p) => p.kontoType === 'FORELDREPENGER' && p.morsAktivitet === 'IKKE_OPPGITT'),
+    );
+    const ubrukteDager = aktivitetsfriKonto.dager - dagerBruktAktivitetsfriKvote;
+    const prosentBruktAvFedrekvote = Math.floor((dagerBruktAktivitetsfriKvote / aktivitetsfriKonto.dager) * 100);
+
+    return (
+        <VStack gap="4">
+            <BodyShort weight="semibold">
+                Aktivitetsfri kvote - {getVarighetString(aktivitetsfriKonto.dager, intl)}
+            </BodyShort>
+            <VStack gap="1" className="ml-4">
+                <FordelingsBar
+                    fordelinger={[
+                        {
+                            kontoType: StønadskontoType.Fedrekvote,
+                            prosent: prosentBruktAvFedrekvote,
+                        },
+                        {
+                            kontoType: StønadskontoType.Fedrekvote,
+                            prosent: 100 - prosentBruktAvFedrekvote,
+                            erFyllt: false,
+                        },
+                    ]}
+                />
+                <BodyShort>
+                    {getVarighetString(dagerBruktAktivitetsfriKvote, intl)} er lagt til
                     {ubrukteDager > 0 ? `, ${getVarighetString(ubrukteDager, intl)} gjenstår` : ''}
                 </BodyShort>
             </VStack>
