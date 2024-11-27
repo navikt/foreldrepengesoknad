@@ -3,12 +3,10 @@ import { FordelingDager, FordelingFargekode } from 'types/FordelingOversikt';
 import { getVarighetString } from 'utils/dateUtils';
 import { guid } from 'utils/guid';
 
-import { VStack } from '@navikt/ds-react';
-
-import { bemUtils } from '@navikt/fp-utils';
+import { Heading, VStack } from '@navikt/ds-react';
 
 import { DelGraf } from '../../fordeling-oversikt/grafer/del-graf/DelGraf';
-import './fellesperiodeValgVisning.css';
+import styles from './fellesperiodeValgVisning.module.css';
 
 interface Props {
     fordelingsdager: FordelingDager[];
@@ -18,18 +16,17 @@ interface Props {
 
 export const FellesperiodeValgVisning = ({ fordelingsdager, dagerMedFellesperiode, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
-    const bem = bemUtils('fellesperiodeValgVisning');
     const varighetStringFellesperiode = getVarighetString(dagerMedFellesperiode, intl);
     const fordelingErValgt =
         fordelingsdager.length > 0 && !fordelingsdager.every((f) => f.fargekode === FordelingFargekode.IKKE_TILDELT);
     return (
         <VStack gap="1" aria-hidden={true}>
-            <div className={bem.element('textTop')}>
+            <Heading size="xsmall">
                 <FormattedMessage
                     id="fordeling.fellesperiodeVisning.sumUker"
                     values={{ varighetString: varighetStringFellesperiode }}
                 />
-            </div>
+            </Heading>
             <DelGraf fordelingsdager={fordelingsdager} sumDager={dagerMedFellesperiode} />
             {fordelingErValgt && (
                 <div
@@ -55,7 +52,7 @@ export const FellesperiodeValgVisning = ({ fordelingsdager, dagerMedFellesperiod
                         return (
                             <div
                                 key={guid()}
-                                className={bem.element('textElement')}
+                                className={styles.textElement}
                                 style={{
                                     width: `${width}%`,
                                 }}

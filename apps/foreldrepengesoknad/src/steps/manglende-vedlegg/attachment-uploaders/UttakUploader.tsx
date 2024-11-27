@@ -12,11 +12,10 @@ import { NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
-import { bemUtils } from '@navikt/fp-utils';
 import { PeriodelisteItemHeader } from '@navikt/fp-uttaksplan';
 
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
-import './periode-attachment-uploader.css';
+import styles from './periode-attachment-uploader.module.css';
 
 interface Props {
     attachments: Attachment[];
@@ -45,8 +44,6 @@ export const UttakUploader = ({
     description,
     attachmentType,
 }: Props) => {
-    const bem = bemUtils('periode-attachment-uploader');
-
     const { watch } = useFormContext<ManglendeVedleggFormData>();
     const formAttachments = watch(skjemanummer);
 
@@ -73,7 +70,7 @@ export const UttakUploader = ({
                     <BodyLong>{description}</BodyLong>
                     {perioder.map((p) => {
                         return (
-                            <div key={p.id} className={bem.block}>
+                            <div key={p.id} className={styles.periodeAttachmentUploader}>
                                 <PeriodelisteItemHeader
                                     periode={p}
                                     erAleneOmOmsorg={false}

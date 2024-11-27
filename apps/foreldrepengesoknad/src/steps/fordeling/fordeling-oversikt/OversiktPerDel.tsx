@@ -6,11 +6,9 @@ import { guid } from 'utils/guid';
 
 import { BodyLong, VStack } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
-
 import { getFordelingDelTittel } from './fordelingOversiktUtils';
 import { DelGraf } from './grafer/del-graf/DelGraf';
-import './oversikt-per-del.css';
+import styles from './oversikt-per-del.module.css';
 
 interface Props {
     delInformasjon: DelInformasjon;
@@ -36,9 +34,6 @@ export const OversiktPerDel = ({
     erDeltUttak,
 }: Props) => {
     const intl = useIntl();
-    const bem = bemUtils('oversiktPerDel');
-
-    const hoverClass = currentUthevet === delInformasjon.eier && erDeltUttak ? 'hover' : 'no-hover';
 
     const handleOnMouseEnter = () => {
         setCurrentUthevet(delInformasjon.eier);
@@ -57,15 +52,17 @@ export const OversiktPerDel = ({
         annenForelderKunRettIEØS,
     );
 
+    const hoverClass = currentUthevet === delInformasjon.eier && erDeltUttak ? styles.hover : styles.noHover;
+
     return (
         <VStack
-            className={classNames(bem.block, bem.modifier(`${hoverClass}`))}
+            className={classNames(styles.oversiktPerDel, hoverClass)}
             gap="2"
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
         >
             <div>
-                <BodyLong className={bem.element('uker')}>{tittel}</BodyLong>
+                <BodyLong className={styles.uker}>{tittel}</BodyLong>
             </div>
             <DelGraf fordelingsdager={delInformasjon.fordelingDager} sumDager={delInformasjon.sumDager} />
             <VStack gap="2">

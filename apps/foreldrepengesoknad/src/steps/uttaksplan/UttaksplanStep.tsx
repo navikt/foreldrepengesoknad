@@ -693,7 +693,7 @@ export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøkn
                                     <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidereEndringssøknad" />
                                 </Alert>
                             )}
-                            <StepButtonWrapper singleButton={true}>
+                            <StepButtonWrapper>
                                 {!erEndringssøknad && (
                                     <Button
                                         variant="secondary"
