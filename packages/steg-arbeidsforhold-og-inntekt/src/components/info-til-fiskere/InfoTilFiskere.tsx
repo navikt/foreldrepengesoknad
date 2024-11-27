@@ -4,7 +4,7 @@ import { BodyLong, BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 
-const InfoTilFiskere = () => {
+export const InfoTilFiskere = () => {
     return (
         <ExpansionCard size="small" aria-label="Info til fiskere">
             <ExpansionCard.Header>
@@ -101,5 +101,3 @@ const InfoTilFiskere = () => {
         </ExpansionCard>
     );
 };
-
-export default InfoTilFiskere;

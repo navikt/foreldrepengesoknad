@@ -5,7 +5,7 @@ import { BodyShort, Link, ReadMore, VStack } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 
-const HvemKanDriveMedEgenNæring = () => {
+export const HvemKanDriveMedEgenNæring = () => {
     const intl = useIntl();
 
     return (
@@ -33,5 +33,3 @@ const HvemKanDriveMedEgenNæring = () => {
         </ReadMore>
     );
 };
-
-export default HvemKanDriveMedEgenNæring;

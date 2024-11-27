@@ -14,7 +14,7 @@ interface Props {
     links: AndreVeivisereLink[];
 }
 
-const AndreVeivisereLinkPanel: React.FunctionComponent<Props> = ({ links }) => {
+export const AndreVeivisereLinkPanel = ({ links }: Props) => {
     return (
         <div className={styles.background}>
             <div className={styles.box}>
@@ -36,5 +36,3 @@ const AndreVeivisereLinkPanel: React.FunctionComponent<Props> = ({ links }) => {
         </div>
     );
 };
-
-export default AndreVeivisereLinkPanel;

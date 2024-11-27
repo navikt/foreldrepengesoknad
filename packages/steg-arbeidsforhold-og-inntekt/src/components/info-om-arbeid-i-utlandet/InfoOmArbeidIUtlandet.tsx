@@ -4,7 +4,7 @@ import { ReadMore } from '@navikt/ds-react';
 
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 
-const InfoOmArbeidIUtlandet = () => {
+export const InfoOmArbeidIUtlandet = () => {
     const intl = useIntl();
     return (
         <ReadMore
@@ -17,5 +17,3 @@ const InfoOmArbeidIUtlandet = () => {
         </ReadMore>
     );
 };
-
-export default InfoOmArbeidIUtlandet;

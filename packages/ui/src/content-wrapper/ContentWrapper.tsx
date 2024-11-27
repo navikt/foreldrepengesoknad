@@ -6,9 +6,7 @@ interface Props {
     children: React.ReactElement | React.ReactElement[];
 }
 
-const ContentWrapper: React.FunctionComponent<Props> = ({ children }) => {
+export const ContentWrapper = ({ children }: Props) => {
     const bem = bemUtils('content');
     return <div className={bem.block}>{children}</div>;
 };
-
-export default ContentWrapper;

@@ -1,5 +1,4 @@
 import { ExclamationmarkTriangleFillIcon, HeartFillIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
 
 import { HStack } from '@navikt/ds-react';
 
@@ -61,7 +60,7 @@ interface Props {
     iconType: PeriodeColor;
 }
 
-const CalendarLabel: FunctionComponent<Props> = ({ children, iconType }) => {
+export const CalendarLabel = ({ children, iconType }: Props) => {
     if (iconType === PeriodeColor.PINK) {
         return (
             <div className={styles.pinkPanel}>
@@ -93,5 +92,3 @@ const CalendarLabel: FunctionComponent<Props> = ({ children, iconType }) => {
         );
     }
 };
-
-export default CalendarLabel;

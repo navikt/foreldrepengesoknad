@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 
 import './page.css';
 
-export interface PageProps {
+interface PageProps {
     className?: string;
     id?: string;
     ariaLabel?: string;
@@ -11,13 +11,7 @@ export interface PageProps {
     children: React.ReactNode;
 }
 
-const Page: React.FunctionComponent<PageProps> = ({
-    ariaLabel,
-    id = 'pageMainContent',
-    className,
-    topContentRenderer,
-    children,
-}) => {
+export const Page = ({ ariaLabel, id = 'pageMainContent', className, topContentRenderer, children }: PageProps) => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -33,5 +27,3 @@ const Page: React.FunctionComponent<PageProps> = ({
         </main>
     );
 };
-
-export default Page;

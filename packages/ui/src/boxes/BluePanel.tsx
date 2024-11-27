@@ -6,12 +6,10 @@ interface Props {
     shouldFadeIn?: boolean;
 }
 
-const BluePanel: React.FunctionComponent<Props> = ({ children, isDarkBlue = false, shouldFadeIn = false }) => (
+export const BluePanel = ({ children, isDarkBlue = false, shouldFadeIn = false }: Props) => (
     <div
         className={`${styles.box} ${shouldFadeIn ? styles.animation : undefined} ${isDarkBlue ? styles.darkBlue : styles.blue}`}
     >
         {children}
     </div>
 );
-
-export default BluePanel;

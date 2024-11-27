@@ -1,7 +1,7 @@
 import { TasklistStartIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react';
 
-import Infobox from './Infobox';
+import { Infobox } from './Infobox';
 
 const meta = {
     title: 'components/Infobox',

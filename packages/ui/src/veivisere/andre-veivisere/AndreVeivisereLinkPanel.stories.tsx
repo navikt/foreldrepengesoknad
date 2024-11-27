@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import AndreVeivisereLinkPanel from './AndreVeivisereLinkPanel';
+import { AndreVeivisereLinkPanel } from './AndreVeivisereLinkPanel';
 
 const meta = {
     title: 'components/AndreVeivisereLinkPanel',

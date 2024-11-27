@@ -1,4 +1,3 @@
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Select } from '@navikt/ds-react';
@@ -10,7 +9,7 @@ interface Props {
     changeLocale: (locale: LocaleAll) => void;
 }
 
-const LanguageToggle: FunctionComponent<Props> = ({ locale, changeLocale }) => {
+export const LanguageToggle = ({ locale, changeLocale }: Props) => {
     return (
         <Select
             label="Velg språk"
@@ -30,5 +29,3 @@ const LanguageToggle: FunctionComponent<Props> = ({ locale, changeLocale }) => {
         </Select>
     );
 };
-
-export default LanguageToggle;

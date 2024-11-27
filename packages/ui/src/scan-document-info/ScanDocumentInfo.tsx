@@ -4,7 +4,7 @@ import { BodyLong, ExpansionCard, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 
-const ScanDocumentInfo = () => (
+export const ScanDocumentInfo = () => (
     <ExpansionCard size="small" aria-label={useIntl().formatMessage({ id: 'ScanDocumentInfo.Tittel' })}>
         <ExpansionCard.Header>
             <ExpansionCard.Title size="small" as="h4">
@@ -45,5 +45,3 @@ const ScanDocumentInfo = () => (
         </ExpansionCard.Content>
     </ExpansionCard>
 );
-
-export default ScanDocumentInfo;

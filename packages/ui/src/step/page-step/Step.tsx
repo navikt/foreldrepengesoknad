@@ -5,13 +5,13 @@ import { BodyShort, VStack } from '@navikt/ds-react';
 
 import { bemUtils } from '@navikt/fp-utils';
 
-import ProgressStepper, { ProgressStep } from '../progress-stepper/ProgressStepper';
-import Page from './Page';
-import StepBanner from './StepBanner';
-import StepFooter from './step-footer/StepFooter';
+import { ProgressStep, ProgressStepper } from '../progress-stepper/ProgressStepper';
+import { Page } from './Page';
+import { StepBanner } from './StepBanner';
+import { StepFooter } from './step-footer/StepFooter';
 import './step.css';
 
-export interface StepProps<TYPE> {
+interface StepProps<TYPE> {
     bannerTitle?: string;
     steps: Array<ProgressStep<TYPE>>;
     children: React.ReactNode;
@@ -26,7 +26,7 @@ export interface StepProps<TYPE> {
     noFieldsRequired?: boolean;
 }
 
-const Step = <TYPE extends string>({
+export const Step = <TYPE extends string>({
     bannerTitle,
     steps,
     onCancel,
@@ -85,5 +85,3 @@ const Step = <TYPE extends string>({
         </Page>
     );
 };
-
-export default Step;

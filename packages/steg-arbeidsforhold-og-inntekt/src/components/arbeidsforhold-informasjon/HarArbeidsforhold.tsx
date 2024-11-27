@@ -1,4 +1,3 @@
-import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Box, HStack, VStack } from '@navikt/ds-react';
@@ -13,7 +12,7 @@ interface Props {
     harArbeidsforhold: boolean;
 }
 
-const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeidsforhold }: Props) => {
+export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) => {
     const intl = useIntl();
 
     if (!harArbeidsforhold) {
@@ -76,4 +75,3 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
         </VStack>
     );
 };
-export default HarArbeidsforhold;

@@ -1,7 +1,7 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { Meta, StoryObj } from '@storybook/react';
 
-import IconCircleWrapper from './IconCircleWrapper';
+import { IconCircleWrapper } from './IconCircleWrapper';
 
 const meta = {
     title: 'components/IconCircleWrapper',

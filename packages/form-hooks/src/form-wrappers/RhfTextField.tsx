@@ -1,11 +1,13 @@
-import { CSSProperties, FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
+import { CSSProperties, ReactNode, useCallback, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
-import { TextField, TextFieldProps as DsTextFieldProps } from '@navikt/ds-react';
-import { getError, getValidationRules } from './formUtils';
+import { TextFieldProps as DsTextFieldProps, TextField } from '@navikt/ds-react';
+
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 
-export type Props = {
+import { getError, getValidationRules } from './formUtils';
+
+type Props = {
     name: string;
     label?: string | ReactNode;
     validate?: Array<(value: string) => any> | Array<(value: number) => any>;
@@ -21,7 +23,7 @@ export type Props = {
     customErrorFormatter?: (error: string | undefined) => ReactNode;
 } & DsTextFieldProps;
 
-const RhfTextField: FunctionComponent<Props> = ({
+export const RhfTextField = ({
     name,
     label,
     validate = [],
@@ -36,7 +38,7 @@ const RhfTextField: FunctionComponent<Props> = ({
     autofocusWhenEmpty,
     customErrorFormatter,
     ...rest
-}) => {
+}: Props) => {
     const {
         formState: { errors },
     } = useFormContext();
@@ -82,5 +84,3 @@ const RhfTextField: FunctionComponent<Props> = ({
         />
     );
 };
-
-export default RhfTextField;

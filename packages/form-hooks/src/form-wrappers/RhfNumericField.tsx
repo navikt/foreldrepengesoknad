@@ -1,11 +1,11 @@
-import { CSSProperties, FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
+import { CSSProperties, ReactNode, useCallback, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { TextField } from '@navikt/ds-react';
 
 import { getError, getValidationRules } from './formUtils';
 
-export interface Props {
+interface Props {
     name: string;
     label: string | ReactNode;
     validate?: Array<(value: string) => any> | Array<(value: number) => any>;
@@ -18,7 +18,7 @@ export interface Props {
     style?: CSSProperties;
 }
 
-const RhfNumericField: FunctionComponent<Props> = ({
+export const RhfNumericField = ({
     name,
     label,
     validate = [],
@@ -29,7 +29,7 @@ const RhfNumericField: FunctionComponent<Props> = ({
     disabled,
     className,
     style,
-}) => {
+}: Props) => {
     const {
         formState: { errors },
     } = useFormContext();
@@ -70,5 +70,3 @@ const RhfNumericField: FunctionComponent<Props> = ({
         />
     );
 };
-
-export default RhfNumericField;

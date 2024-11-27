@@ -22,7 +22,7 @@ const getSamtykkeTekst = (
     throw new Error(`appName ${appName} not supported`);
 };
 
-export interface Props<TYPE> {
+interface Props<TYPE> {
     sendSøknad: () => Promise<void>;
     cancelApplication: () => void;
     onContinueLater: () => void;
@@ -34,7 +34,7 @@ export interface Props<TYPE> {
     ekstraSamtykketekst?: string;
 }
 
-const OppsummeringPanel = <TYPE extends string>({
+export const OppsummeringPanel = <TYPE extends string>({
     sendSøknad,
     cancelApplication,
     onContinueLater,
@@ -94,5 +94,3 @@ const OppsummeringPanel = <TYPE extends string>({
 export const JaNeiTekst = ({ ja }: { ja: boolean }) => {
     return ja ? <FormattedMessage id="ja" /> : <FormattedMessage id="nei" />;
 };
-
-export default OppsummeringPanel;

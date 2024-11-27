@@ -12,7 +12,7 @@ import {
 } from '@navikt/fp-constants';
 import { Periode } from '@navikt/fp-types';
 
-import UttaksplanKalender from './UttaksplanKalender';
+import { UttaksplanKalender } from './UttaksplanKalender';
 
 const meta = {
     title: 'UttaksplanKalender',

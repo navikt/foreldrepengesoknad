@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import * as countries from 'i18n-iso-countries';
-import React from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 
 import { FormSummary } from '@navikt/ds-react';
@@ -23,7 +22,7 @@ interface Props {
     utenlandsoppholdListe: UtenlandsoppholdPeriode[];
 }
 
-const LandOppsummering: React.FunctionComponent<Props> = ({ utenlandsoppholdListe }) => {
+export const LandOppsummering = ({ utenlandsoppholdListe }: Props) => {
     const intl = useIntl();
     return (
         <FormSummary.Answers>
@@ -41,5 +40,3 @@ const LandOppsummering: React.FunctionComponent<Props> = ({ utenlandsoppholdList
         </FormSummary.Answers>
     );
 };
-
-export default LandOppsummering;

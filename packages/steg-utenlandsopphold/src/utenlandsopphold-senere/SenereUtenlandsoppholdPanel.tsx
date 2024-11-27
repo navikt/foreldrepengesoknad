@@ -9,7 +9,7 @@ import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-f
 import { UtenlandsoppholdPeriode } from '@navikt/fp-types';
 import { HorizontalLine, ProgressStep, Step } from '@navikt/fp-ui';
 
-import SenereUtenlandsoppholdPeriode from './SenereUtenlandsoppholdPeriode';
+import { SenereUtenlandsoppholdPeriode } from './SenereUtenlandsoppholdPeriode';
 
 type FormType = {
     utenlandsoppholdNeste12Mnd: UtenlandsoppholdPeriode[];
@@ -21,7 +21,7 @@ const DEFAULT_PERIODE = {
     landkode: '',
 } satisfies UtenlandsoppholdPeriode;
 
-export interface Props<TYPE> {
+interface Props<TYPE> {
     senereUtenlandsopphold: UtenlandsoppholdPeriode[];
     saveOnNext: (formValues: UtenlandsoppholdPeriode[]) => void;
     saveOnPrevious: (formValues: UtenlandsoppholdPeriode[]) => void;
@@ -32,7 +32,7 @@ export interface Props<TYPE> {
     stepConfig: Array<ProgressStep<TYPE>>;
 }
 
-const SenereUtenlandsoppholdPanel = <TYPE extends string>({
+export const SenereUtenlandsoppholdPanel = <TYPE extends string>({
     saveOnNext,
     saveOnPrevious,
     onStepChange,
@@ -93,5 +93,3 @@ const SenereUtenlandsoppholdPanel = <TYPE extends string>({
         </Step>
     );
 };
-
-export default SenereUtenlandsoppholdPanel;

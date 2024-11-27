@@ -1,14 +1,13 @@
 import dayjs, { Dayjs } from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import isoWeek from 'dayjs/plugin/isoWeek';
-import { FunctionComponent } from 'react';
 
 import { HGrid } from '@navikt/ds-react';
 
 import { PeriodeColor } from '@navikt/fp-constants';
 
-import Day, { DayType } from './Day';
-import Month from './Month';
+import { Day, DayType } from './Day';
+import { Month } from './Month';
 import styles from './calendar.module.css';
 
 dayjs.extend(isoWeek);
@@ -115,7 +114,7 @@ interface Props {
     useSmallerWidth?: boolean;
 }
 
-const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }) => {
+export const Calendar = ({ periods, useSmallerWidth = false }: Props) => {
     const months = findMonths(periods[0].fom, periods[periods.length - 1].tom);
 
     return (
@@ -160,5 +159,3 @@ const Calendar: FunctionComponent<Props> = ({ periods, useSmallerWidth = false }
         </>
     );
 };
-
-export default Calendar;

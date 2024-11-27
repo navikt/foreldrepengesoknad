@@ -5,14 +5,15 @@ import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
-import HarArbeidsforhold from './HarArbeidsforhold';
-import HarIkkeArbeidsforhold from './HarIkkeArbeidsforhold';
+import { HarArbeidsforhold } from './HarArbeidsforhold';
+import { HarIkkeArbeidsforhold } from './HarIkkeArbeidsforhold';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];
     visManglerInfo?: boolean;
 }
-const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforhold, visManglerInfo = true }) => {
+
+export const ArbeidsforholdInformasjon = ({ arbeidsforhold, visManglerInfo = true }: Props) => {
     const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;
     const intl = useIntl();
 
@@ -33,5 +34,3 @@ const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforh
         </VStack>
     );
 };
-
-export default ArbeidsforholdInformasjon;

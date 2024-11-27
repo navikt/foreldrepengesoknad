@@ -20,11 +20,11 @@ interface ArbeidsforholdOppsummeringProps {
     readonly onVilEndreSvar: () => void;
 }
 
-export const ArbeidsforholdOppsummering: React.FC<ArbeidsforholdOppsummeringProps> = ({
+export const ArbeidsforholdOppsummering = ({
     arbeidsforholdOgInntekt,
     arbeidsforhold,
     onVilEndreSvar,
-}) => {
+}: ArbeidsforholdOppsummeringProps) => {
     if (!arbeidsforholdOgInntekt) {
         return null;
     }
@@ -312,7 +312,7 @@ interface FrilansOppsummeringProps {
     readonly frilans?: Frilans;
 }
 
-export const FrilansOppsummering: React.FC<FrilansOppsummeringProps> = ({ onVilEndreSvar, frilans }) => {
+export const FrilansOppsummering = ({ onVilEndreSvar, frilans }: FrilansOppsummeringProps) => {
     if (!frilans) {
         return null;
     }

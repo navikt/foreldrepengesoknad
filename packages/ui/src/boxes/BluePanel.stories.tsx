@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import BluePanel from './BluePanel';
+import { BluePanel } from './BluePanel';
 
 const meta = {
     title: 'components/BluePanel',
