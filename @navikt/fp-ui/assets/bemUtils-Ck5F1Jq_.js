@@ -1,1 +1,0 @@
-import{c as t}from"./UttaksdagenString-lBzUy-NH.js";const $=i=>({block:i,element:(e,o)=>`${i}__${e}${o?` ${i}__${e}--${o}`:""}`,modifier:e=>`${i}--${e}`,modifierConditional:(e,o)=>o===!0&&e!==void 0?`${i}--${e}`:void 0,child:e=>$($(i).element(e)),classNames:t});export{$ as b};

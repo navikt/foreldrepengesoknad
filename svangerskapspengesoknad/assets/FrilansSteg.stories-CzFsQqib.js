@@ -1,0 +1,7 @@
+import{j as e}from"./jsx-runtime-Cw0GR0a5.js";import{a as p}from"./chunk-D5ZWXAHU-CGElDDNX.js";import{a as d,S as c,C as o}from"./routes-B3RFaVmR.js";import{i as S}from"./VeiviserPage-Bk5Hhqwj.js";import{F as a}from"./FrilansSteg-n-D4ATPO.js";import{M as f}from"./useSvpNavigator-0uCkP_TH.js";import"./index-CTjT7uj6.js";import"./v4-CQkTLCs1.js";import"./index-BRV0Se7Z.js";import"./index-BbmHap-z.js";import"./FrilansPanel-suEaWDm7.js";import"./ErrorSummaryHookForm-29Cm5Gc6.js";import"./Checkbox-CdoEANqP.js";import"./minMax-jX5U5ij3.js";import"./_baseUniq-BRhi2-IM.js";const i=()=>(...t)=>(p("button-click")(...t),Promise.resolve()),j={title:"steps/FrilansSteg",component:a,render:({gåTilNesteSide:t=p("button-click"),...l})=>(S(),e.jsx(f,{initialEntries:[d.FRILANS],children:e.jsx(c,{onDispatch:t,initialState:{[o.ARBEIDSFORHOLD_OG_INNTEKT]:{harJobbetSomFrilans:!0,harHattArbeidIUtlandet:!1,harJobbetSomSelvstendigNæringsdrivende:!1},[o.OM_BARNET]:{erBarnetFødt:!1,termindato:"2024-02-18",fødselsdato:"2024-02-18"}},children:e.jsx(a,{...l})})}))},r={args:{arbeidsforhold:[],mellomlagreSøknadOgNaviger:i(),avbrytSøknad:i()}};var s,n,m;r.parameters={...r.parameters,docs:{...(s=r.parameters)==null?void 0:s.docs,source:{originalSource:`{
+  args: {
+    arbeidsforhold: [],
+    mellomlagreSøknadOgNaviger: promiseAction(),
+    avbrytSøknad: promiseAction()
+  }
+}`,...(m=(n=r.parameters)==null?void 0:n.docs)==null?void 0:m.source}}};const y=["Default"];export{r as Default,y as __namedExportsOrder,j as default};
