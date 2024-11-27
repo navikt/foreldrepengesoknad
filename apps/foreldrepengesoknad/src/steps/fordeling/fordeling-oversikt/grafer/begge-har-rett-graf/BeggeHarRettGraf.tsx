@@ -1,23 +1,46 @@
 import classNames from 'classnames';
 import { Dispatch, SetStateAction } from 'react';
 import { useIntl } from 'react-intl';
-import { FordelingEier, FordelingGrafInfo } from 'types/FordelingOversikt';
+import { FordelingEier, FordelingFargekode, FordelingGrafInfo } from 'types/FordelingOversikt';
 import { getFamiliehendelseNavn } from 'utils/familiehendelseUtils';
 
 import { BodyShort } from '@navikt/ds-react';
 
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { bemUtils, capitalizeFirstLetter } from '@navikt/fp-utils';
+import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
 import { getBeggeHarRettGrafFordeling } from '../../fordelingOversiktUtils';
-import './../graf.css';
+import styles from './../graf.module.css';
 import { FamiliehendelseVisning } from './FamiliehendelseVisning';
 
 const getRowClass = (antallPerioder: number, periodeIndex: number) => {
     if (antallPerioder % 2 === 0) {
-        return periodeIndex % 2 === 0 ? 'up' : 'down';
+        return periodeIndex % 2 === 0 ? styles.up : styles.down;
     }
-    return periodeIndex % 2 === 0 ? 'down' : 'up';
+    return periodeIndex % 2 === 0 ? styles.down : styles.up;
+};
+
+export const getFargeClass = (fargekode: FordelingFargekode): string => {
+    switch (fargekode) {
+        case FordelingFargekode.ANNEN_PART_FAR:
+            return styles.annenPartFar;
+        case FordelingFargekode.ANNEN_PART_MOR:
+            return styles.annenPartMor;
+        case FordelingFargekode.FEDREKVOTE_BRUKT_AV_MOR:
+            return styles.fedrekvoteBruktAvMor;
+        case FordelingFargekode.FELLESPERIODE_BRUKT_AV_FAR:
+            return styles.fellesperiodeBruktAvFar;
+        case FordelingFargekode.FELLESPERIODE_BRUKT_AV_MOR:
+            return styles.fellesperiodeBruktAvMor;
+        case FordelingFargekode.IKKE_TILDELT:
+            return styles.ikkeTildelt;
+        case FordelingFargekode.MØDREKVOTE_BRUKT_AV_FAR:
+            return styles.mødrekvoteBruktAvFar;
+        case FordelingFargekode.SØKER_FAR:
+            return styles.søkerFar;
+        case FordelingFargekode.SØKER_MOR:
+            return styles.søkerMor;
+    }
 };
 
 interface Props {
@@ -44,7 +67,6 @@ export const BeggeHarRettGraf = ({
     setCurrentUthevet,
 }: Props) => {
     const intl = useIntl();
-    const bem = bemUtils('graf');
 
     const rowHeight = 16;
 
@@ -64,13 +86,13 @@ export const BeggeHarRettGraf = ({
     const sumBredde = sumDager + widthFamiliehendelse;
     const famiHendelseFieldWidth = (widthFamiliehendelse / sumBredde) * 100;
     return (
-        <div className={bem.block} aria-hidden={true}>
+        <div className={styles.graf} aria-hidden={true}>
             {fordelingList.map((fordeling: FordelingGrafInfo, index) => {
                 const width = (fordeling.antallDager / sumBredde) * 100;
                 const indexForFamiliehendelse = erAdopsjon ? 0 : 1;
                 const finalWidth = index === indexForFamiliehendelse ? width + famiHendelseFieldWidth : width;
                 const erUthevet = currentUthevet === fordeling.eier;
-                const shadowClass = erUthevet ? 'shadow' : 'no-shadow';
+                const shadowClass = erUthevet ? styles.shadow : styles.noShadow;
                 const rowClass = getRowClass(fordelingList.length, index);
 
                 const handleOnMouseEnter = () => {
@@ -79,7 +101,7 @@ export const BeggeHarRettGraf = ({
 
                 return (
                     <div
-                        className={bem.element('container')}
+                        className={styles.container}
                         style={{
                             width: `${finalWidth}%`,
                         }}
@@ -92,13 +114,13 @@ export const BeggeHarRettGraf = ({
                                 fieldWidthPercent={famiHendelseFieldWidth}
                             />
                         )}
-                        <div className={bem.element('søyle')}>
-                            <div className={bem.element('del')}>
+                        <div className={styles.søyle}>
+                            <div className={styles.del}>
                                 <div
                                     className={classNames(
-                                        bem.element('del-box'),
-                                        bem.modifier(`${fordeling.fargekode}`),
-                                        bem.modifier(`${shadowClass}`),
+                                        styles.delBox,
+                                        getFargeClass(fordeling.fargekode),
+                                        shadowClass,
                                     )}
                                     onMouseEnter={handleOnMouseEnter}
                                     onMouseLeave={handleOnMouseLeave}
@@ -109,7 +131,7 @@ export const BeggeHarRettGraf = ({
                                 ></div>
                             </div>
                             <BodyShort
-                                className={classNames(bem.element('del-tekst'), bem.modifier(`${rowClass}`))}
+                                className={classNames(styles.delTekst, rowClass)}
                                 style={{
                                     height: `${rowHeight}px`,
                                 }}

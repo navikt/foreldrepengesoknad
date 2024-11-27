@@ -1,10 +1,9 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort } from '@navikt/ds-react';
+import { Detail, Heading } from '@navikt/ds-react';
 
-import { bemUtils, formatDateMedUkedag, getNavnGenitivEierform } from '@navikt/fp-utils';
-
-import './mors-siste-dag.css';
+import { BluePanel } from '@navikt/fp-ui';
+import { formatDateMedUkedag, getNavnGenitivEierform } from '@navikt/fp-utils';
 
 interface Props {
     morsSisteDag: Date;
@@ -13,21 +12,20 @@ interface Props {
 
 export const MorsSisteDag = ({ morsSisteDag, navnMor }: Props) => {
     const intl = useIntl();
-    const bem = bemUtils('morsSisteDag');
     const sisteDagFormattert = formatDateMedUkedag(morsSisteDag);
     const morsNavnGenitivForm = getNavnGenitivEierform(navnMor, intl.locale);
 
     return (
-        <div className={bem.block}>
-            <BodyShort className={bem.element('tittel')}>
+        <BluePanel>
+            <Heading size="xsmall">
                 <FormattedMessage
                     id="fordeling.morsSisteDag.tittel"
                     values={{ navnMor: morsNavnGenitivForm, dato: sisteDagFormattert }}
                 ></FormattedMessage>
-            </BodyShort>
-            <BodyShort className={bem.element('tekst')}>
+            </Heading>
+            <Detail>
                 <FormattedMessage id="fordeling.morsSisteDag.tekst" values={{ navnMor }}></FormattedMessage>
-            </BodyShort>
-        </div>
+            </Detail>
+        </BluePanel>
     );
 };

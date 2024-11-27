@@ -6,10 +6,11 @@ import { formaterDato, getToTetteReglerGjelder } from 'utils/dateUtils';
 
 import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { Uttaksdagen, bemUtils } from '@navikt/fp-utils';
+import { IconCircleWrapper } from '@navikt/fp-ui';
+import { Uttaksdagen } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import './info-om-neste-barn.css';
+import styles from './info-om-neste-barn.module.css';
 
 export interface Props {
     minsterettUkerToTette?: number;
@@ -17,7 +18,6 @@ export interface Props {
 
 export const InfoOmNesteBarn = ({ minsterettUkerToTette }: Props) => {
     const intl = useIntl();
-    const bem = bemUtils('infoOmNesteBarn');
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const barnFraNesteSak = useContextGetData(ContextDataType.BARN_FRA_NESTE_SAK);
     const startStønadsperiodeNyttBarn =
@@ -31,7 +31,7 @@ export const InfoOmNesteBarn = ({ minsterettUkerToTette }: Props) => {
         startStønadsperiodeNyttBarn !== undefined ? Uttaksdagen(startStønadsperiodeNyttBarn).forrige() : undefined;
 
     return (
-        <Box padding="4" background="surface-alt-3-subtle" className={bem.block}>
+        <Box padding="4" background="surface-alt-3-subtle" className={styles.infoOmNesteBarn}>
             <HStack justify="space-between" align="start">
                 <VStack gap="2" style={{ width: '85%' }}>
                     <Heading size="xsmall">
@@ -67,9 +67,9 @@ export const InfoOmNesteBarn = ({ minsterettUkerToTette }: Props) => {
                         )}
                     </BodyShort>
                 </VStack>
-                <div className={bem.element('ikon')}>
+                <IconCircleWrapper size="medium" color="lightBlue">
                     <BabyWrappedIcon height={24} width={24} color="#005B82" />
-                </div>
+                </IconCircleWrapper>
             </HStack>
         </Box>
     );
