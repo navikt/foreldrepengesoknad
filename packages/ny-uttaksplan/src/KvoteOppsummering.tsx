@@ -81,7 +81,7 @@ const KvoteTittelAleneOmsorg = () => {
     const aktivitetsfriKonto = konto.kontoer.find((k) => k.konto === 'AKTIVITETSFRI_KVOTE');
     const førFødselKonto = konto.kontoer.find((k) => k.konto === 'FORELDREPENGER_FØR_FØDSEL');
 
-    const totaltTilgjengeligeDager = sumBy([fpKonto, aktivitetsfriKonto, førFødselKonto], (konto) => konto?.dager ?? 0);
+    const totaltTilgjengeligeDager = sumBy([fpKonto, aktivitetsfriKonto, førFødselKonto], (k) => k?.dager ?? 0);
 
     const antallUbrukteDager = totaltTilgjengeligeDager - dagerBrukt;
 
