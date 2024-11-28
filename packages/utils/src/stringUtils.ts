@@ -1,3 +1,5 @@
+import { IntlShape } from 'react-intl';
+
 export const capitalizeFirstLetter = (s: string): string => {
     return s.charAt(0).toUpperCase() + s.slice(1);
 };
@@ -45,4 +47,15 @@ export const replaceInvisibleCharsWithSpace = (inputString: string): string | nu
     }
 
     return inputString.replace(usynligeCharsRegex, '\u0020');
+};
+
+/**
+ * Legger til oppramsing av strenger. Eksempelvis ["epler", "bananer", "pærer] blir "epler, bananer og pærer.
+ */
+export const formatOppramsing = (strenger: string[], intl: IntlShape) => {
+    const formatterer = new Intl.ListFormat(intl.locale, {
+        style: 'long',
+        type: 'conjunction',
+    });
+    return formatterer.format(strenger);
 };

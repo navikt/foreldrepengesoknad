@@ -7,7 +7,7 @@ import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { SaksperiodeNy, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { Tidsperioden } from '@navikt/fp-utils';
+import { Tidsperioden, formatOppramsing } from '@navikt/fp-utils';
 
 import { getUkerOgDagerFromDager, getVarighetString } from './utils/dateUtils';
 
@@ -33,10 +33,10 @@ export const KvoteOppsummering = (props: Props) => {
         <KvoteContext.Provider value={props}>
             {(props.rettighetType === 'ALENEOMSORG' || props.rettighetType === 'BARE_SØKER_RETT') && (
                 <ExpansionCard aria-label="TODO" size="small">
-                    <KvoteTittelAleneOmsorg />
+                    <KvoteTittelKunEnHarForeldrepenger />
                     <ExpansionCard.Content>
                         <VStack gap="4">
-                            <AleneOmsorgKvoter />
+                            <KunEnHarForeldrepengeKvoter />
                             <AktivitetsfriKvoter />
                         </VStack>
                     </ExpansionCard.Content>
@@ -64,7 +64,7 @@ const BeggeRettKvote = () => {
     );
 };
 
-const KvoteTittelAleneOmsorg = () => {
+const KvoteTittelKunEnHarForeldrepenger = () => {
     const { konto, perioder } = useKvote();
     const intl = useIntl();
 
@@ -146,7 +146,7 @@ const KvoteTittel = () => {
             dagerFellesBrukt > 0 ? `${getVarighetString(dagerFellesBrukt, intl)} av fellesperioden` : '';
         const beskrivelseFar = dagerBruktAvFar > 0 ? `${getVarighetString(dagerBruktAvFar, intl)} til far` : '';
 
-        const beskrivelse = `${formatOppramsing([beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean))} er lagt til i planen`;
+        const beskrivelse = `${formatOppramsing([beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean), intl)} er lagt til i planen`;
         return (
             <ExpansionCard.Header>
                 <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
@@ -160,7 +160,7 @@ const KvoteTittel = () => {
     const beskrivelseFelles =
         ubrukteDagerFelles > 0 ? `${getVarighetString(ubrukteDagerFelles, intl)} av fellesperioden` : '';
     const beskrivelseFar = ubrukteDagerFar > 0 ? `${getVarighetString(ubrukteDagerFar, intl)} til far` : '';
-    const beskrivelse = `${formatOppramsing([beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean))} ligger ikke i planen. `;
+    const beskrivelse = `${formatOppramsing([beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean), intl)} ligger ikke i planen. `;
     return (
         <ExpansionCard.Header>
             <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
@@ -173,7 +173,7 @@ const KvoteTittel = () => {
     );
 };
 
-const AleneOmsorgKvoter = () => {
+const KunEnHarForeldrepengeKvoter = () => {
     const intl = useIntl();
     const { konto, perioder, forelder } = useKvote();
     // Denne kontoen finnes kun for mor
@@ -542,12 +542,3 @@ const FordelingSegment = ({ kontoType, prosent, erFyllt = true }: FordelingSegme
 
     return <div className="rounded-full h-4 border-2 bg-bg-default border-surface-neutral-hover" style={style} />;
 };
-
-//TODO: util
-function formatOppramsing(strenger: string[]) {
-    const formatterer = new Intl.ListFormat('no', {
-        style: 'long',
-        type: 'conjunction',
-    });
-    return formatterer.format(strenger);
-}
