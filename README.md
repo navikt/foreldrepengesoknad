@@ -1,7 +1,7 @@
 
 # Selvbetjeningsløsninger for Team Foreldrepenger sine ytelser - foreldrepenger, svangerskapspenger og engangsstønad.
 
-# Lokal utvikling
+## Lokal utvikling
 
 ### Førstegangsoppsett
 
