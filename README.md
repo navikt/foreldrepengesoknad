@@ -1,7 +1,5 @@
-# Selvbetjeningsløsning for søknadene om foreldrepenger, engangsstønad og svangerskapspenger og for innsynsløsning for foreldrepengeytelser.
 
-Kildekoden til frontend-appene foreldrepengesøknad, engangsstønad, svangerskapspenger og foreldrepengeoversikt (
-innsynsløsning for foreldrepenger, svangerskapspenger og engangsstønad).
+# Selvbetjeningsløsninger for Team Foreldrepenger sine ytelser - foreldrepenger, svangerskapspenger og engangsstønad.
 
 # Lokal utvikling
 
