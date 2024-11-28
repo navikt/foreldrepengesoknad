@@ -62,8 +62,3 @@ Spørsmål knyttet til koden eller prosjektet kan rettes mot nav.team.foreldrepe
 ## For NAV-ansatte
 
 Interne henvendelser kan sendes via Slack i kanalen #teamforeldrepenger.
-
-### BrowserStack
-
-We test our app with BrowserStack.
-[![BrowserStack logo](./browserstack-logo-600x315.png)](https://www.browserstack.com/)
