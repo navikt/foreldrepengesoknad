@@ -417,7 +417,7 @@ const MødreKvoter = () => {
                         ]}
                     />
                     <BodyShort>
-                        {getVarighetString(dagerBruktTreUkerFørFødsel, intl)} er lagt til
+                        {getVarighetString(dagerBruktMødrekvote, intl)} er lagt til
                         {ubrukteDagerMødreKvote > 0
                             ? `, ${getVarighetString(ubrukteDagerMødreKvote, intl)} gjenstår`
                             : ''}

@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { KvoteOppsummering } from '@navikt/fp-uttaksplan-ny';
 
 import { hentUttaksKontoOptions } from '../../api/api';
+import { useAnnenPartsVedtak } from '../../hooks/useAnnenPartsVedtak';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { DekningsgradDTO } from '../../types/DekningsgradDTO';
 import { Foreldrepengesak } from '../../types/Foreldrepengesak';
@@ -21,11 +22,12 @@ export const KvoteOppsummering1 = () => {
 };
 
 const KvoteOppsummering2 = ({ sak }: { sak: Foreldrepengesak }) => {
+    const annenPartsPerioder = useAnnenPartsVedtak(sak).data?.perioder ?? [];
     const kontoQuery = useQuery(
         hentUttaksKontoOptions({
             antallBarn: sak.familiehendelse.antallBarn,
             brukerrolle: sak.forelder === 'MOR' ? 'MOR' : 'FAR',
-            morHarUføretrygd: false,
+            morHarUføretrygd: sak.morUføretrygd,
             rettighetstype: sak.rettighetType,
             termindato: sak.familiehendelse.termindato, //TODO: hvilken dato å bruke
         }),
@@ -44,7 +46,7 @@ const KvoteOppsummering2 = ({ sak }: { sak: Foreldrepengesak }) => {
     return (
         <KvoteOppsummering
             konto={konto}
-            perioder={perioder}
+            perioder={[...perioder, ...annenPartsPerioder.filter((p) => p.resultat?.innvilget)]}
             rettighetType={sak.rettighetType}
             forelder={sak.forelder}
         />
