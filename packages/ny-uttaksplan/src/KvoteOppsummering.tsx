@@ -4,6 +4,7 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
+import { Forelder } from '@navikt/fp-common';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { SaksperiodeNy, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
@@ -15,7 +16,7 @@ type Props = {
     konto: TilgjengeligeStønadskontoerForDekningsgrad;
     perioder: SaksperiodeNy[];
     rettighetType: RettighetType;
-    forelder: 'MOR' | 'FAR_MEDMOR'; // TODO.
+    forelder: Forelder;
 };
 const KvoteContext = createContext<Props | null>(null);
 
