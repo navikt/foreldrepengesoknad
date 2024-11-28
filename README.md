@@ -7,17 +7,18 @@ innsynsløsning for foreldrepenger, svangerskapspenger og engangsstønad).
 
 ### Førstegangsoppsett
 
-Du trenger følgende verktøy:
+Dette monorepoet bruker følgende verktøy:
 * node (v22)
 * pnpm - som npm, men mer plasseffektiv
 * turbo - for å kjøre tasks parrallelt i et monorepo.
 
-1. Installer pnpm: `npm install -g pnpm`.
-2. I roten av repoet, kjør `pnpm install`.
-3. Kjør `pnpm setup`. Følg instruksjonen i outputen
-4. Installer turborepo med `pnpm install -g turbo`
-5. Kjør `turbo build`
-6. For å sjekke om alt fungerer, kjør testene med `turbo test`
+1. Installer node hvis du ikke allerede har det.
+2. Installer pnpm: `npm install -g pnpm`.
+3. I roten av repoet, kjør `pnpm install`.
+4. Kjør `pnpm setup`. Følg instruksjonen i outputen
+5. Installer turborepo med `pnpm install -g turbo`
+6. Kjør `turbo build`
+7. For å sjekke om alt fungerer, kjør testene med `turbo test`
 
 ## Hvordan jobbe lokalt
 
