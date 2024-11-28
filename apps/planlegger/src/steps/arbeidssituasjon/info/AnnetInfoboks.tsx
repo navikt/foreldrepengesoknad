@@ -1,7 +1,6 @@
 import { CircleSlashIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
@@ -22,7 +21,7 @@ interface Props {
     satser: Satser;
 }
 
-const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSøker2 = false, erFarOgFar, satser }) => {
+export const AnnetInfoboks = ({ erAlenesøker, fornavn, erSøker2 = false, erFarOgFar, satser }: Props) => {
     return (
         <Infobox
             header={
@@ -86,5 +85,3 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
         </Infobox>
     );
 };
-
-export default AnnetInfoboks;

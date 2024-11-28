@@ -10,7 +10,7 @@ import { HvorMye } from 'types/HvorMye';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import HvorMyeSteg from './HvorMyeSteg';
+import { HvorMyeSteg } from './HvorMyeSteg';
 
 type StoryArgs = {
     hvorMye: HvorMye;

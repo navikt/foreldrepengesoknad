@@ -28,14 +28,14 @@ const getBarnTekst = (antallBarn: number, erAdopsjon: boolean, intl: IntlShape) 
     return getTekstForAntallBarn(antallBarn, intl).toLowerCase();
 };
 
-const FlerbarnsdagerInformasjon: React.FunctionComponent<Props> = ({
+export const FlerbarnsdagerInformasjon = ({
     flerbarnsDager,
     antallBarn,
     erAdopsjon,
     morTekst,
     farTekst,
     erFarEllerMedmor,
-}) => {
+}: Props) => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const varighetTekst = getVarighetString(flerbarnsDager, intl);
@@ -74,5 +74,3 @@ const FlerbarnsdagerInformasjon: React.FunctionComponent<Props> = ({
         </Alert>
     );
 };
-
-export default FlerbarnsdagerInformasjon;

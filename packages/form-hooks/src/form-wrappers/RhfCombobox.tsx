@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
+import { ReactNode, useCallback, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { UNSAFE_Combobox } from '@navikt/ds-react';
@@ -15,15 +15,7 @@ export interface Props {
     className?: string;
 }
 
-const RhfCombobox: FunctionComponent<Props> = ({
-    name,
-    label,
-    validate = [],
-    description,
-    disabled,
-    className,
-    options,
-}) => {
+export const RhfCombobox = ({ name, label, validate = [], description, disabled, className, options }: Props) => {
     const {
         formState: { errors },
     } = useFormContext();
@@ -59,5 +51,3 @@ const RhfCombobox: FunctionComponent<Props> = ({
         />
     );
 };
-
-export default RhfCombobox;

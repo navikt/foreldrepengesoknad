@@ -2,7 +2,7 @@ import { AnnenPartVedtakDTO } from 'types/AnnenPartVedtakDTO';
 import { getErMorUfør } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getFarMedmorErAleneOmOmsorg, getMorErAleneOmOmsorg } from 'utils/personUtils';
 
 import {
@@ -90,7 +90,7 @@ const finnRettighetstype = (
     return 'BARE_SØKER_RETT';
 };
 
-const getStønadskontoParams = (
+export const getStønadskontoParams = (
     barn: Barn,
     annenForelder: AnnenForelder,
     søkersituasjon: SøkersituasjonFp,
@@ -155,5 +155,3 @@ const getStønadskontoParams = (
         familieHendelseDatoNesteSak: førsteUttaksdagNesteBarnsSak,
     };
 };
-
-export default getStønadskontoParams;

@@ -1,7 +1,7 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
-import useEsNavigator from 'appData/useEsNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { useEsNavigator } from 'appData/useEsNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
@@ -21,7 +21,7 @@ type Props = {
     mellomlagreOgNaviger: () => Promise<void>;
 };
 
-const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
+export const UtenlandsoppholdSteg = ({ mellomlagreOgNaviger }: Props) => {
     const stepConfig = useStepConfig();
     const navigator = useEsNavigator(mellomlagreOgNaviger);
 
@@ -63,5 +63,3 @@ const UtenlandsoppholdSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNav
         </ContentWrapper>
     );
 };
-
-export default UtenlandsoppholdSteg;

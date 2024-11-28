@@ -1,11 +1,11 @@
 import dayjs from 'dayjs';
-import Fordeling from 'types/Fordeling';
+import { Fordeling } from 'types/Fordeling';
 import { UttaksplanMetaData } from 'types/UttaksplanMetaData';
 import { getDatoForAleneomsorg, getErAleneOmOmsorg, getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedatoDate, getTermindato } from 'utils/barnUtils';
 import { ISOStringToDate } from 'utils/dateUtils';
 import { getAntallDagerFellesperiodeTilSøker, getOppstartsdatoFromFordelingValg } from 'utils/fordelingUtils';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getKunFarHarRett } from 'utils/personUtils';
 import { getAntallUkerFellesperiode } from 'utils/stønadskontoerUtils';
 import { deltUttak } from 'utils/uttaksplan/deltUttak';

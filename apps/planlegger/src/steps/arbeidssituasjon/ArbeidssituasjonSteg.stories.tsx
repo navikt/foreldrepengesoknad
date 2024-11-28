@@ -8,7 +8,7 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import ArbeidssituasjonSteg from './ArbeidssituasjonSteg';
+import { ArbeidssituasjonSteg } from './ArbeidssituasjonSteg';
 
 const DEFAULT_SATSER = {
     engangstønad: [

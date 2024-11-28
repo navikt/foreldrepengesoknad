@@ -13,7 +13,7 @@ import { DokumentHendelse } from '../../sections/tidslinje/DokumentHendelse';
 import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
 import { Ytelse } from '../../types/Ytelse';
 import { KontonummerInfo } from './../../components/kontonummer-info/KontonummerInfo';
-import OversiktRoutes from './../../routes/routes';
+import { OversiktRoutes } from './../../routes/routes';
 
 interface Props {
     relevantNyTidslinjehendelse: Tidslinjehendelse | undefined;

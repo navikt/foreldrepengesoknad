@@ -18,7 +18,7 @@ interface Props {
     onChangeLocale: any;
 }
 
-const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
+export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
     const intl = useIntl();
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
 
@@ -69,5 +69,3 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
         </div>
     );
 };
-
-export default Svangerskapspengesøknad;

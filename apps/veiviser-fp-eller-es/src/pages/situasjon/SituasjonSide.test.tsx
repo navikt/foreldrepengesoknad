@@ -18,7 +18,7 @@ describe('<SituasjonSide>', () => {
 
         expect(
             screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra NAV?',
+                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
@@ -56,7 +56,7 @@ describe('<SituasjonSide>', () => {
 
         expect(
             screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra NAV?',
+                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
@@ -97,7 +97,7 @@ describe('<SituasjonSide>', () => {
 
         expect(
             screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra NAV?',
+                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
@@ -144,7 +144,7 @@ describe('<SituasjonSide>', () => {
 
         expect(
             screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra NAV?',
+                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
@@ -186,7 +186,7 @@ describe('<SituasjonSide>', () => {
 
         expect(
             screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra NAV?',
+                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
@@ -231,7 +231,7 @@ describe('<SituasjonSide>', () => {
 
         expect(
             screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra NAV?',
+                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
@@ -276,7 +276,7 @@ describe('<SituasjonSide>', () => {
 
         expect(
             screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra NAV?',
+                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
@@ -315,7 +315,7 @@ describe('<SituasjonSide>', () => {
 
         expect(
             screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra NAV?',
+                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
@@ -363,7 +363,7 @@ describe('<SituasjonSide>', () => {
 
             expect(
                 screen.getByText(
-                    'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra NAV?',
+                    'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
                 ),
             ).toBeInTheDocument();
             await userEvent.click(screen.getByText('Ja'));
@@ -408,7 +408,7 @@ describe('<SituasjonSide>', () => {
 
         expect(
             screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra NAV?',
+                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Nei'));
@@ -449,7 +449,7 @@ describe('<SituasjonSide>', () => {
 
         expect(
             screen.getByText(
-                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra NAV?',
+                'Er du arbeidstaker, frilanser, selvstendig næringsdrivende eller mottar du utbetalinger fra Nav?',
             ),
         ).toBeInTheDocument();
         await userEvent.click(screen.getByText('Nei'));

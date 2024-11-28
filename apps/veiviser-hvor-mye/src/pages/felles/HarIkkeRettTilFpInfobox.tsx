@@ -13,7 +13,7 @@ interface Props {
     showKrIcon?: boolean;
 }
 
-const HarIkkeRettTilFpInfobox: React.FunctionComponent<Props> = ({ minÅrslønn, antattÅrslønn, showKrIcon = false }) => {
+export const HarIkkeRettTilFpInfobox = ({ minÅrslønn, antattÅrslønn, showKrIcon = false }: Props) => {
     return (
         <Infobox
             header={
@@ -53,5 +53,3 @@ const HarIkkeRettTilFpInfobox: React.FunctionComponent<Props> = ({ minÅrslønn,
         </Infobox>
     );
 };
-
-export default HarIkkeRettTilFpInfobox;

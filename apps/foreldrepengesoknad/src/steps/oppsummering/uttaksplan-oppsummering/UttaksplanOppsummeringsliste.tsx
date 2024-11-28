@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getStønadskontoNavn } from 'utils/stønadskontoerUtils';
 
@@ -25,11 +24,11 @@ import {
     uttaksperiodeKanJusteresVedFødsel,
 } from '@navikt/fp-uttaksplan';
 
-import Overføringsperiodedetaljer from './detaljer/Overføringsperiodedetaljer';
-import Uttaksperiodedetaljer from './detaljer/Uttaksperiodedetaljer';
-import Utsettelsesperiodedetaljer from './detaljer/Uttsettelsesperiodedetaljer';
+import { Overføringsperiodedetaljer } from './detaljer/Overføringsperiodedetaljer';
+import { Uttaksperiodedetaljer } from './detaljer/Uttaksperiodedetaljer';
+import { Utsettelsesperiodedetaljer } from './detaljer/Uttsettelsesperiodedetaljer';
 
-interface UttaksplanOppsummeringslisteProps {
+interface Props {
     perioder: Periode[];
     navnPåForeldre: NavnPåForeldre;
     erFarEllerMedmor: boolean;
@@ -43,7 +42,7 @@ interface UttaksplanOppsummeringslisteProps {
     ønskerJustertUttakVedFødsel: boolean | undefined;
 }
 
-const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslisteProps> = ({
+export const UttaksplanOppsummeringsliste = ({
     perioder,
     navnPåForeldre,
     erFarEllerMedmor,
@@ -55,7 +54,7 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
     situasjon,
     erAleneOmOmsorg,
     ønskerJustertUttakVedFødsel,
-}) => {
+}: Props) => {
     const intl = useIntl();
 
     const getStønadskontoNavnFromKonto = (konto: StønadskontoType) => {
@@ -177,5 +176,3 @@ const UttaksplanOppsummeringsliste: FunctionComponent<UttaksplanOppsummeringslis
         </>
     );
 };
-
-export default UttaksplanOppsummeringsliste;

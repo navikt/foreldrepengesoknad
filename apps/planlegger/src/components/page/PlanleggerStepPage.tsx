@@ -12,7 +12,7 @@ interface Props {
     children: React.ReactElement | React.ReactElement[];
 }
 
-const PlanleggerStepPage = forwardRef<HTMLDivElement, Props>(({ steps, children, goToStep }, ref) => (
+export const PlanleggerStepPage = forwardRef<HTMLDivElement, Props>(({ steps, children, goToStep }, ref) => (
     <>
         <Page
             header={
@@ -31,5 +31,3 @@ const PlanleggerStepPage = forwardRef<HTMLDivElement, Props>(({ steps, children,
         <div ref={ref} />
     </>
 ));
-
-export default PlanleggerStepPage;

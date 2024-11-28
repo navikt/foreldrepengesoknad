@@ -1,4 +1,4 @@
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoutes } from 'appData/routes';
 import { FpMellomlagretData } from 'appData/useMellomlagreSøknad';
 
 export const MELLOMLAGRET_VERSJON = 13;

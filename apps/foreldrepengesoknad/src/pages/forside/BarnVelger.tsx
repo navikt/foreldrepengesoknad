@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { FunctionComponent, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { ValgtBarn, ValgtBarnType } from 'types/ValgtBarn';
 import { formaterFødselsdatoerPåBarn, formaterNavnPåBarn, getTekstForAntallBarn } from 'utils/barnUtils';
@@ -95,7 +95,7 @@ interface Props {
     selectableBarn: ValgtBarn[];
 }
 
-const BarnVelger: FunctionComponent<Props> = ({ selectableBarn }) => {
+export const BarnVelger = ({ selectableBarn }: Props) => {
     const intl = useIntl();
 
     if (selectableBarn.length === 0) {
@@ -136,5 +136,3 @@ const BarnVelger: FunctionComponent<Props> = ({ selectableBarn }) => {
         </RhfRadioGroup>
     );
 };
-
-export default BarnVelger;

@@ -1,9 +1,9 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import { useForm } from 'react-hook-form';
-import Fordeling from 'types/Fordeling';
+import { Fordeling } from 'types/Fordeling';
 import { getDatoForAleneomsorg } from 'utils/annenForelderUtils';
 import { ISOStringToDate } from 'utils/dateUtils';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { VStack } from '@navikt/ds-react';
 
@@ -11,8 +11,8 @@ import { NavnPåForeldre, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-form-hooks';
 import { notEmpty } from '@navikt/fp-validation';
 
-import FellesperiodeFordeling from './fellesperiode-fordeling/FellesperiodeFordeling';
-import OppstartAvForeldrepenger from './oppstart-av-foreldrepenger/OppstartAvForeldrepenger';
+import { FellesperiodeFordeling } from './fellesperiode-fordeling/FellesperiodeFordeling';
+import { OppstartAvForeldrepenger } from './oppstart-av-foreldrepenger/OppstartAvForeldrepenger';
 import { getValgOptionsForOppstart } from './oppstart-av-foreldrepenger/OppstartValgInput';
 
 type Props = {
@@ -24,14 +24,14 @@ type Props = {
     goToNextDefaultStep: () => Promise<void>;
 };
 
-const FordelingForm: React.FunctionComponent<Props> = ({
+export const FordelingForm = ({
     erDeltUttak,
     navnPåForeldre,
     dagerMedFellesperiode,
     førsteDagEtterAnnenForelder,
     goToPreviousDefaultStep,
     goToNextDefaultStep,
-}) => {
+}: Props) => {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const uttaksplanMetadata = useContextGetData(ContextDataType.UTTAKSPLAN_METADATA);
@@ -98,5 +98,3 @@ const FordelingForm: React.FunctionComponent<Props> = ({
         </RhfForm>
     );
 };
-
-export default FordelingForm;

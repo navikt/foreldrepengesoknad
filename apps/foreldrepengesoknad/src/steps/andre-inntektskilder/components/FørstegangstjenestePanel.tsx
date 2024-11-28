@@ -14,7 +14,7 @@ interface Props {
     inntektskilde: AndreInntektskilder;
 }
 
-export const FørstegangstjenestePanel: React.FunctionComponent<Props> = ({ index, inntektskilde }) => {
+export const FørstegangstjenestePanel = ({ index, inntektskilde }: Props) => {
     const intl = useIntl();
 
     if (inntektskilde.type !== AnnenInntektType.MILITÆRTJENESTE) {

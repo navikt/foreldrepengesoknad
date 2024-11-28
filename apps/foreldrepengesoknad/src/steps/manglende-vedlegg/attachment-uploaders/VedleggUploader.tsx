@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { IntlShape } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
@@ -47,7 +47,7 @@ interface Props {
     perioder?: Perioder;
 }
 
-const VedleggUploader: FunctionComponent<Props> = ({
+export const VedleggUploader = ({
     attachments,
     updateAttachments,
     skjemanummer,
@@ -56,7 +56,7 @@ const VedleggUploader: FunctionComponent<Props> = ({
     attachmentType,
     metadataType,
     perioder,
-}) => {
+}: Props) => {
     const { watch } = useFormContext<ManglendeVedleggFormData>();
     const formAttachments = watch(skjemanummer);
 
@@ -93,5 +93,3 @@ const VedleggUploader: FunctionComponent<Props> = ({
         />
     );
 };
-
-export default VedleggUploader;

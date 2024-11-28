@@ -21,5 +21,3 @@ export type Fordeling = {
     oppstartAvForeldrepengerValg?: OppstartValg;
     oppstartDato?: string;
 };
-
-export default Fordeling;

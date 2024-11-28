@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import HarIkkeRettTilFpInfobox from './HarIkkeRettTilFpInfobox';
+import { HarIkkeRettTilFpInfobox } from './HarIkkeRettTilFpInfobox';
 
 const meta = {
     title: 'components/HarIkkeRettTilFpInfobox',

@@ -1,4 +1,3 @@
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Alert, BodyShort, Box, Button, HStack, Heading, Label, Link, VStack } from '@navikt/ds-react';
@@ -6,15 +5,15 @@ import { Alert, BodyShort, Box, Button, HStack, Heading, Label, Link, VStack } f
 import { links } from '@navikt/fp-constants';
 import { AppName } from '@navikt/fp-types';
 
-import ContentWrapper from '../content-wrapper/ContentWrapper';
+import { ContentWrapper } from '../content-wrapper/ContentWrapper';
 
-export interface Props {
+interface Props {
     appName: AppName;
     errorMessage: string;
     retryCallback: () => void;
 }
 
-const ErrorPage: FunctionComponent<Props> = ({ appName, errorMessage, retryCallback }) => (
+export const ErrorPage = ({ appName, errorMessage, retryCallback }: Props) => (
     <ContentWrapper>
         <VStack gap="20">
             <Heading size="large" level="2">
@@ -55,5 +54,3 @@ const ErrorPage: FunctionComponent<Props> = ({ appName, errorMessage, retryCallb
         </VStack>
     </ContentWrapper>
 );
-
-export default ErrorPage;

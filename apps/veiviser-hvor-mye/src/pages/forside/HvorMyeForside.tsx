@@ -1,6 +1,6 @@
 import { BabyWrappedIcon, WalletIcon } from '@navikt/aksel-icons';
 import { HvorMyeRoutes } from 'appData/routes';
-import useVeiviserNavigator from 'appData/useVeiviserNavigator';
+import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
 import { veiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
 import { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -17,7 +17,7 @@ interface Props {
     changeLocale: (locale: LocaleAll) => void;
 }
 
-const HvorMyeForside: React.FunctionComponent<Props> = ({ locale, changeLocale }) => {
+export const HvorMyeForside = ({ locale, changeLocale }: Props) => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator();
 
@@ -63,5 +63,3 @@ const HvorMyeForside: React.FunctionComponent<Props> = ({ locale, changeLocale }
         </>
     );
 };
-
-export default HvorMyeForside;

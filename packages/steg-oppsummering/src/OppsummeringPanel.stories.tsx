@@ -3,13 +3,13 @@ import { Meta, StoryObj } from '@storybook/react';
 
 import { Næringstype } from '@navikt/fp-types';
 
-import OppsummeringPanel from './OppsummeringPanel';
+import { OppsummeringPanel } from './OppsummeringPanel';
 import {
     ArbeidsforholdOppsummering,
     FrilansOppsummering,
     SelvstendigNæringsdrivendeOppsummering,
 } from './arbeidsforhold/ArbeidsforholdOppsummering';
-import BoIUtlandetOppsummering from './utenlandsopphold/BoIUtlandetOppsummering';
+import { BoIUtlandetOppsummering } from './utenlandsopphold/BoIUtlandetOppsummering';
 
 const promiseAction =
     () =>

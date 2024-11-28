@@ -4,7 +4,7 @@ import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import saker from 'storybookData/saker/saker.json';
 
-import OversiktRoutes from './../../routes/routes';
+import { OversiktRoutes } from './../../routes/routes';
 import Snarveier from './Snarveier';
 
 const queryClient = new QueryClient();

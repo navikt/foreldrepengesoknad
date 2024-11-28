@@ -6,7 +6,7 @@ import { BodyShort, FileObject, FileRejected, FileRejectionReason, FileUpload, V
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
-import AttachmentList from './AttachmentList';
+import { AttachmentList } from './AttachmentList';
 import { mapFileToAttachment } from './fileUtils';
 import { FileUploadError } from './typer/FileUploadError';
 import { FileUploaderAttachment } from './typer/FileUploaderAttachment';
@@ -111,7 +111,7 @@ const convertToInternalFormat = (attachments: Attachment[]): FileUploaderAttachm
     }));
 };
 
-export interface Props {
+interface Props {
     label: string;
     description?: ReactNode;
     updateAttachments: (attachments: Attachment[], hasPendingUploads: boolean) => void;
@@ -123,7 +123,7 @@ export interface Props {
     skjemanummerTextMap?: Record<Skjemanummer, string>;
 }
 
-const FileUploader: React.FunctionComponent<Props> = ({
+export const FileUploader = ({
     label,
     description,
     existingAttachments = EMPTY_ATTACHMENT_LIST,
@@ -133,7 +133,7 @@ const FileUploader: React.FunctionComponent<Props> = ({
     saveAttachment,
     multiple = true,
     skjemanummerTextMap,
-}) => {
+}: Props) => {
     const intl = useIntl();
     const errorMessageMap = getErrorMessageMap(intl);
 
@@ -250,5 +250,3 @@ const FileUploader: React.FunctionComponent<Props> = ({
         </VStack>
     );
 };
-
-export default FileUploader;

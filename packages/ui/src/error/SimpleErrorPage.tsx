@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Box, Button, Heading, VStack } from '@navikt/ds-react';
 
-import ContentWrapper from '../content-wrapper/ContentWrapper';
+import { ContentWrapper } from '../content-wrapper/ContentWrapper';
 
 const defaultRetryCallback = async () => {
     window.location.href = window.location.origin;
@@ -13,7 +13,7 @@ interface Props {
     retryCallback?: () => void;
 }
 
-const SimpleErrorPage: React.FunctionComponent<Props> = ({ retryCallback }) => (
+export const SimpleErrorPage = ({ retryCallback }: Props) => (
     <ContentWrapper>
         <Box background="surface-alt-3-subtle" borderRadius="large" padding="6">
             <VStack gap="16">
@@ -35,5 +35,3 @@ const SimpleErrorPage: React.FunctionComponent<Props> = ({ retryCallback }) => (
         </Box>
     </ContentWrapper>
 );
-
-export default SimpleErrorPage;

@@ -1,18 +1,17 @@
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
 import { capitalizeFirstLetter } from '@navikt/fp-utils';
 
-import CalendarIconLabel from './CalendarIconLabel';
+import { CalendarIconLabel } from './CalendarIconLabel';
 
 interface Props {
     søkerTekst: string;
     isBluePanel?: boolean;
 }
 
-const AntallUkerFpLabel: FunctionComponent<Props> = ({ søkerTekst, isBluePanel = false }) => {
+export const AntallUkerFpLabel = ({ søkerTekst, isBluePanel = false }: Props) => {
     return (
         <CalendarIconLabel iconType={isBluePanel ? 'blue' : 'green'}>
             <BodyShort>
@@ -26,5 +25,3 @@ const AntallUkerFpLabel: FunctionComponent<Props> = ({ søkerTekst, isBluePanel 
         </CalendarIconLabel>
     );
 };
-
-export default AntallUkerFpLabel;

@@ -1,6 +1,5 @@
 import { SackKronerIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 
@@ -11,7 +10,7 @@ import { Satser } from '@navikt/fp-types';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import HvorMyePanel from './HvorMyePanel';
+import { HvorMyePanel } from './HvorMyePanel';
 
 const onToggleExpansionCard = (open: boolean) => {
     if (open) {
@@ -27,7 +26,7 @@ interface Props {
     satser: Satser;
 }
 
-const HvorMyeOppsummering: FunctionComponent<Props> = ({ satser }) => {
+export const HvorMyeOppsummering = ({ satser }: Props) => {
     const intl = useIntl();
 
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
@@ -62,5 +61,3 @@ const HvorMyeOppsummering: FunctionComponent<Props> = ({ satser }) => {
         </VStack>
     );
 };
-
-export default HvorMyeOppsummering;

@@ -4,7 +4,7 @@ interface Props {
     children: React.ReactElement | React.ReactElement[];
 }
 
-const BlueHeading: React.FunctionComponent<Props> = ({ children }) => (
+export const BlueHeading = ({ children }: Props) => (
     <Box
         background="surface-alt-3-subtle"
         borderRadius="medium medium 0 0"
@@ -15,5 +15,3 @@ const BlueHeading: React.FunctionComponent<Props> = ({ children }) => (
         {children}
     </Box>
 );
-
-export default BlueHeading;

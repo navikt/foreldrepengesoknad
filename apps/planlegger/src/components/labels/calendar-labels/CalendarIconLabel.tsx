@@ -1,12 +1,11 @@
 import { HeartFillIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
 
 import { HStack } from '@navikt/ds-react';
 
 import styles from './calendarIconLabel.module.css';
-import BlåSirkel from './icons/BlåSirkel';
-import GrønnSirkel from './icons/GrønnSirkel';
-import LillaSirkel from './icons/LillaSirkel';
+import { BlåSirkel } from './icons/BlåSirkel';
+import { GrønnSirkel } from './icons/GrønnSirkel';
+import { LillaSirkel } from './icons/LillaSirkel';
 
 type IconType = 'blue' | 'green' | 'pink' | 'purple';
 
@@ -15,7 +14,7 @@ interface Props {
     iconType: IconType;
 }
 
-const CalendarLabel: FunctionComponent<Props> = ({ children, iconType }) => {
+export const CalendarIconLabel = ({ children, iconType }: Props) => {
     if (iconType === 'pink') {
         return (
             <div className={styles.pinkPanel}>
@@ -47,5 +46,3 @@ const CalendarLabel: FunctionComponent<Props> = ({ children, iconType }) => {
         );
     }
 };
-
-export default CalendarLabel;

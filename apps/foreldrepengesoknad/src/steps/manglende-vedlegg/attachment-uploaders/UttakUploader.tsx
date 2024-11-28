@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { dateToISOString } from 'utils/dateUtils';
@@ -12,11 +12,10 @@ import { NavnPåForeldre, Periode, Situasjon } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { FileUploader } from '@navikt/fp-ui';
-import { bemUtils } from '@navikt/fp-utils';
 import { PeriodelisteItemHeader } from '@navikt/fp-uttaksplan';
 
 import { ManglendeVedleggFormData } from '../ManglendeVedleggFormData';
-import './periode-attachment-uploader.css';
+import styles from './periode-attachment-uploader.module.css';
 
 interface Props {
     attachments: Attachment[];
@@ -32,7 +31,7 @@ interface Props {
     attachmentType: AttachmentType;
 }
 
-const UttakUploader: FunctionComponent<Props> = ({
+export const UttakUploader = ({
     attachments,
     updateAttachments,
     perioder,
@@ -44,9 +43,7 @@ const UttakUploader: FunctionComponent<Props> = ({
     labelText,
     description,
     attachmentType,
-}) => {
-    const bem = bemUtils('periode-attachment-uploader');
-
+}: Props) => {
     const { watch } = useFormContext<ManglendeVedleggFormData>();
     const formAttachments = watch(skjemanummer);
 
@@ -73,7 +70,7 @@ const UttakUploader: FunctionComponent<Props> = ({
                     <BodyLong>{description}</BodyLong>
                     {perioder.map((p) => {
                         return (
-                            <div key={p.id} className={bem.block}>
+                            <div key={p.id} className={styles.periodeAttachmentUploader}>
                                 <PeriodelisteItemHeader
                                     periode={p}
                                     erAleneOmOmsorg={false}
@@ -109,5 +106,3 @@ const UttakUploader: FunctionComponent<Props> = ({
         />
     );
 };
-
-export default UttakUploader;

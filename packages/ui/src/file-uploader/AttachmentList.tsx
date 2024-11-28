@@ -4,19 +4,14 @@ import { FileObject, FileUpload, Heading, VStack } from '@navikt/ds-react';
 
 import { FileUploaderAttachment } from './typer/FileUploaderAttachment';
 
-export interface Props {
+interface Props {
     headingText: string;
     attachments: FileUploaderAttachment[];
     deleteAttachment: (fileToRemove: FileObject) => void;
     getErrorMessage?: (attachment: FileUploaderAttachment) => string;
 }
 
-const AttachmentList: React.FunctionComponent<Props> = ({
-    headingText,
-    attachments,
-    deleteAttachment,
-    getErrorMessage,
-}) => {
+export const AttachmentList = ({ headingText, attachments, deleteAttachment, getErrorMessage }: Props) => {
     const intl = useIntl();
 
     return (
@@ -47,5 +42,3 @@ const AttachmentList: React.FunctionComponent<Props> = ({
         </VStack>
     );
 };
-
-export default AttachmentList;

@@ -1,17 +1,16 @@
-.dokument-hendelse {
+.dokumentHendelseMedium {
     display: flex;
     align-items: center;
-}
-
-.dokument-hendelse--medium {
     font-size: var(--a-font-size-medium);
 }
 
-.dokument-hendelse--large {
+.dokumentHendelseLarge {
+    display: flex;
+    align-items: center;
     font-size: var(--a-font-size-large);
 }
 
-.dokument-hendelse__ikon {
+.ikon {
     color: var(--a-surface-action);
     min-width: 24px;
 }

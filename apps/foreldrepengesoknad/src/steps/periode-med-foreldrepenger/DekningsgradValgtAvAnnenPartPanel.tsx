@@ -12,8 +12,7 @@ import { Kjønn, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-
 import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import InfoOmUtvidet80ProsentPeriode from './InfoOmUtvidet80ProsentPeriode';
-import './panelWithCircleIcon.less';
+import { InfoOmUtvidet80ProsentPeriode } from './InfoOmUtvidet80ProsentPeriode';
 
 type Props = {
     goToPreviousDefaultStep: () => Promise<void>;
@@ -24,14 +23,14 @@ type Props = {
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
 };
 
-const DekningsgradValgtAvAnnenPartPanel: React.FunctionComponent<Props> = ({
+export const DekningsgradValgtAvAnnenPartPanel = ({
     goToPreviousDefaultStep,
     goToNextDefaultStep,
     fornavnAnnenForelder,
     kjønnAnnenForelder,
     dekningsgrad,
     valgtStønadskonto,
-}) => {
+}: Props) => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -95,5 +94,3 @@ const DekningsgradValgtAvAnnenPartPanel: React.FunctionComponent<Props> = ({
         </VStack>
     );
 };
-
-export default DekningsgradValgtAvAnnenPartPanel;

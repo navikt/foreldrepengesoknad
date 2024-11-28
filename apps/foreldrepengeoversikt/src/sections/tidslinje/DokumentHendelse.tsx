@@ -1,17 +1,14 @@
 import { FileIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
-import classNames from 'classnames';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 
 import { Link } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
-
 import { hentInntektsmelding } from '../../api/api';
-import Routes from '../../routes/routes';
+import { OversiktRoutes } from '../../routes/routes';
 import { Dokument } from '../../types/Dokument';
 import { lagUrl } from '../../utils/dokumenterUtils';
-import './dokument-hendelse.css';
+import styles from './dokumentHendelse.module.css';
 
 interface Props {
     dokument: Dokument;
@@ -19,14 +16,13 @@ interface Props {
 }
 
 export const DokumentHendelse: React.FunctionComponent<Props> = ({ dokument, visesITidslinjen }) => {
-    const bem = bemUtils('dokument-hendelse');
     const { tittel } = dokument;
     const url = lagUrl(dokument);
 
     return (
-        <li className={classNames(`${bem.block} ${visesITidslinjen ? bem.modifier('medium') : bem.modifier('large')}`)}>
-            <FileIcon className={bem.element('ikon')} aria-hidden={true} />
-            <Link href={url} className={bem.element('ikon')} target="_blank">
+        <li className={visesITidslinjen ? styles.dokumentHendelseMedium : styles.dokumentHendelseLarge}>
+            <FileIcon className={styles.ikon} aria-hidden={true} />
+            <Link href={url} className={styles.ikon} target="_blank">
                 {tittel}
             </Link>
         </li>
@@ -35,7 +31,6 @@ export const DokumentHendelse: React.FunctionComponent<Props> = ({ dokument, vis
 
 export const InntektsmeldingDokumentHendelse = ({ dokument, visesITidslinjen }: Props) => {
     const { saksnummer } = useParams();
-    const bem = bemUtils('dokument-hendelse');
     const { tittel } = dokument;
 
     const arbeidsgiverNavn = (useQuery(hentInntektsmelding(saksnummer!)).data ?? []).find(
@@ -43,12 +38,12 @@ export const InntektsmeldingDokumentHendelse = ({ dokument, visesITidslinjen }: 
     )?.arbeidsgiverNavn;
 
     return (
-        <li className={classNames(`${bem.block} ${visesITidslinjen ? bem.modifier('medium') : bem.modifier('large')}`)}>
-            <FileIcon className={bem.element('ikon')} aria-hidden={true} />
+        <li className={visesITidslinjen ? styles.dokumentHendelseMedium : styles.dokumentHendelseLarge}>
+            <FileIcon className={styles.ikon} aria-hidden={true} />
             <Link
                 as={RouterLink}
-                to={`${Routes.SAKSOVERSIKT}/${saksnummer}/${Routes.INNTEKTSMELDING}/${dokument.journalpostId}`}
-                className={bem.element('ikon')}
+                to={`${OversiktRoutes.SAKSOVERSIKT}/${saksnummer}/${OversiktRoutes.INNTEKTSMELDING}/${dokument.journalpostId}`}
+                className={styles.ikon}
             >
                 {tittel}
                 {arbeidsgiverNavn ? ` for ${arbeidsgiverNavn}` : ''}

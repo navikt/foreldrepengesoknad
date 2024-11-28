@@ -2,9 +2,7 @@ import { HeartFillIcon } from '@navikt/aksel-icons';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
-
-import './../graf.css';
+import styles from './../graf.module.css';
 
 interface Props {
     rowHeight: number;
@@ -12,16 +10,11 @@ interface Props {
     fieldWidthPercent: number;
 }
 
-const FamiliehendelseVisning: React.FunctionComponent<Props> = ({
-    rowHeight,
-    familiehendelseNavn,
-    fieldWidthPercent,
-}) => {
+export const FamiliehendelseVisning = ({ rowHeight, familiehendelseNavn, fieldWidthPercent }: Props) => {
     const iconSize = 24;
-    const bem = bemUtils('graf');
     return (
         <div
-            className={bem.element('søyle')}
+            className={styles.søyle}
             style={{
                 width: `${fieldWidthPercent}%`,
                 justifyContent: 'center',
@@ -56,5 +49,3 @@ const FamiliehendelseVisning: React.FunctionComponent<Props> = ({
         </div>
     );
 };
-
-export default FamiliehendelseVisning;

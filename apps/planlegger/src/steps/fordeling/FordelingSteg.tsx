@@ -1,9 +1,8 @@
 import { SectorChartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import useStepData from 'appData/useStepData';
-import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
-import { FunctionComponent } from 'react';
+import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
+import { useStepData } from 'appData/useStepData';
+import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Dekningsgrad } from 'types/Dekningsgrad';
@@ -23,7 +22,7 @@ import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
-import FordelingsdetaljerPanel from './FordelingsdetaljerPanel';
+import { FordelingsdetaljerPanel } from './FordelingsdetaljerPanel';
 
 type Fellesperiodefordeling = {
     antallUkerOgDagerSøker1: UkerOgDager;
@@ -113,7 +112,7 @@ interface Props {
     locale: LocaleAll;
 }
 
-const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => {
+export const FordelingSteg = ({ stønadskontoer, locale }: Props) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
@@ -241,5 +240,3 @@ const FordelingSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) =>
         </PlanleggerStepPage>
     );
 };
-
-export default FordelingSteg;

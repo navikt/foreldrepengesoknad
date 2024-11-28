@@ -13,11 +13,7 @@ interface Props {
     showKrIcon?: boolean;
 }
 
-const HøyInntektInfobox: React.FunctionComponent<Props> = ({
-    maxÅrslønnDekket,
-    isGray = false,
-    showKrIcon = false,
-}) => {
+export const HøyInntektInfobox = ({ maxÅrslønnDekket, isGray = false, showKrIcon = false }: Props) => {
     return (
         <Infobox
             header={
@@ -54,5 +50,3 @@ const HøyInntektInfobox: React.FunctionComponent<Props> = ({
         </Infobox>
     );
 };
-
-export default HøyInntektInfobox;

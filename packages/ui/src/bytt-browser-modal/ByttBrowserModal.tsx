@@ -1,11 +1,11 @@
-import { FunctionComponent, useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 
 import { shouldChangeBrowser } from '@navikt/fp-utils';
 
-const ByttBrowserModal: FunctionComponent = () => {
+export const ByttBrowserModal = () => {
     const [isOpen, setIsOpen] = useState(shouldChangeBrowser());
     const intl = useIntl();
     return (
@@ -30,5 +30,3 @@ const ByttBrowserModal: FunctionComponent = () => {
         </Modal>
     );
 };
-
-export default ByttBrowserModal;

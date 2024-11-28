@@ -20,11 +20,7 @@ interface Props {
     adopsjonsdato?: string;
 }
 
-const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
-    adopsjonsdato,
-    antallBarn,
-    antallBarnDropDown,
-}) => {
+export const AdopsjonFodselFieldArray = ({ adopsjonsdato, antallBarn, antallBarnDropDown }: Props) => {
     const intl = useIntl();
     const { control } = useFormContext<FormValues>();
     const { fields, remove, append } = useFieldArray({
@@ -83,5 +79,3 @@ const AdopsjonFodselFieldArray: React.FunctionComponent<Props> = ({
         </VStack>
     );
 };
-
-export default AdopsjonFodselFieldArray;

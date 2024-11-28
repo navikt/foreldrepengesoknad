@@ -24,7 +24,7 @@ function AntallBarnFormattedText({ omBarnet }: { omBarnet: OmBarnet }) {
     }
 }
 
-const OmBarnetOppsummering = ({ omBarnet, onVilEndreSvar }: Props) => {
+export const OmBarnetOppsummering = ({ omBarnet, onVilEndreSvar }: Props) => {
     const harAdoptert = erAdopsjon(omBarnet);
     const harTermin = erBarnetIkkeFødt(omBarnet);
     const harFødt = erBarnetFødt(omBarnet);
@@ -90,4 +90,3 @@ const OmBarnetOppsummering = ({ omBarnet, onVilEndreSvar }: Props) => {
         </FormSummary>
     );
 };
-export default OmBarnetOppsummering;

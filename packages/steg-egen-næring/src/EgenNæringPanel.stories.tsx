@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
-import EgenNæringPanel from './EgenNæringPanel';
+import { EgenNæringPanel } from './EgenNæringPanel';
 
 const meta = {
     component: EgenNæringPanel,

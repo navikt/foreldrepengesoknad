@@ -8,7 +8,7 @@ import { IconCircleWrapper } from '@navikt/fp-ui';
 interface Props {
     text: string;
 }
-const HvorforSpørNAVOmDette: React.FunctionComponent<Props> = ({ text }) => (
+export const HvorforSpørNAVOmDette = ({ text }: Props) => (
     <ExpansionCard aria-label="">
         <ExpansionCard.Header>
             <HStack gap="10" align="center">
@@ -23,5 +23,3 @@ const HvorforSpørNAVOmDette: React.FunctionComponent<Props> = ({ text }) => (
         <ExpansionCard.Content>{text}</ExpansionCard.Content>
     </ExpansionCard>
 );
-
-export default HvorforSpørNAVOmDette;

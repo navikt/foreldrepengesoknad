@@ -1,11 +1,10 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import useStepData from 'appData/useStepData';
-import BlueRadioGroup from 'components/form-wrappers/BlueRadioGroup';
-import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
-import { FunctionComponent } from 'react';
+import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
+import { useStepData } from 'appData/useStepData';
+import { BlueRadioGroup } from 'components/form-wrappers/BlueRadioGroup';
+import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
@@ -26,15 +25,15 @@ import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
-import NårBareEnPartHarRettInfoboks from './infoboks/NårBareEnPartHarRettInfoboks';
-import ValgtDekningsgradInfoboks from './infoboks/ValgtDekningsgradInfoboks';
+import { NårBareEnPartHarRettInfoboks } from './infoboks/NårBareEnPartHarRettInfoboks';
+import { ValgtDekningsgradInfoboks } from './infoboks/ValgtDekningsgradInfoboks';
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoer;
     locale: LocaleAll;
 }
 
-const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => {
+export const HvorLangPeriodeSteg = ({ stønadskontoer, locale }: Props) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
@@ -217,5 +216,3 @@ const HvorLangPeriodeSteg: FunctionComponent<Props> = ({ stønadskontoer, locale
         </PlanleggerStepPage>
     );
 };
-
-export default HvorLangPeriodeSteg;

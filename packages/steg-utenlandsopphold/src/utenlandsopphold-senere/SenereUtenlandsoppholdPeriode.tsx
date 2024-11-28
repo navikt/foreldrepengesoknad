@@ -19,12 +19,12 @@ import {
     isValidDate,
 } from '@navikt/fp-validation';
 
-interface OwnProps {
+interface Props {
     index: number;
     fjernOpphold: (index: number) => void;
 }
 
-const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index, fjernOpphold }) => {
+export const SenereUtenlandsoppholdPeriode = ({ index, fjernOpphold }: Props) => {
     const intl = useIntl();
 
     const {
@@ -157,5 +157,3 @@ const SenereUtenlandsoppholdPanel: React.FunctionComponent<OwnProps> = ({ index,
         </VStack>
     );
 };
-
-export default SenereUtenlandsoppholdPanel;

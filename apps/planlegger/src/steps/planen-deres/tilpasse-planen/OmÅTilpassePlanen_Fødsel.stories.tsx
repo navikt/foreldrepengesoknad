@@ -3,7 +3,7 @@ import { ComponentProps } from 'react';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Situasjon } from 'types/HvemPlanlegger';
 
-import OmÅTilpassePlanen from './OmÅTilpassePlanen';
+import { OmÅTilpassePlanen } from './OmÅTilpassePlanen';
 
 type StoryArgs = ComponentProps<typeof OmÅTilpassePlanen>;
 

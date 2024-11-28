@@ -24,7 +24,7 @@ interface Props {
     erAlenesøker: boolean;
 }
 
-const ShareDataInfobox: React.FunctionComponent<Props> = ({ erAlenesøker }) => (
+export const ShareDataInfobox = ({ erAlenesøker }: Props) => (
     <Infobox
         header={<FormattedMessage id="OmPlanleggerenSteg.TaVarePåHeader" values={{ erAlenesøker }} />}
         color="gray"
@@ -46,5 +46,3 @@ const ShareDataInfobox: React.FunctionComponent<Props> = ({ erAlenesøker }) => 
         </VStack>
     </Infobox>
 );
-
-export default ShareDataInfobox;

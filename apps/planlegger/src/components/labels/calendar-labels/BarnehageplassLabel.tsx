@@ -1,17 +1,16 @@
-import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { OmBarnet } from 'types/Barnet';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import CalendarIconLabel from './CalendarIconLabel';
+import { CalendarIconLabel } from './CalendarIconLabel';
 
 interface Props {
     barnet: OmBarnet;
 }
 
-const BarnehageplassLabel: FunctionComponent<Props> = ({ barnet }) => {
+export const BarnehageplassLabel = ({ barnet }: Props) => {
     const intl = useIntl();
 
     const barnehageplassdato = barnehagestartDato(barnet);
@@ -32,4 +31,3 @@ const BarnehageplassLabel: FunctionComponent<Props> = ({ barnet }) => {
         </CalendarIconLabel>
     );
 };
-export default BarnehageplassLabel;

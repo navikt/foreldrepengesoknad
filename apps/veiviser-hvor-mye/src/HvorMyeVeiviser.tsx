@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import ky from 'ky';
-import { FunctionComponent } from 'react';
 
 import { Loader } from '@navikt/ds-react';
 
@@ -11,7 +10,7 @@ import { SimpleErrorPage } from '@navikt/fp-ui';
 
 import { HvorMyeRouter } from './HvorMyeRouter';
 
-const Spinner: React.FunctionComponent = () => (
+const Spinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
         <Loader size="2xlarge" />
     </div>
@@ -30,7 +29,7 @@ interface Props {
     changeLocale: (locale: LocaleAll) => void;
 }
 
-export const HvorMyeVeiviser: FunctionComponent<Props> = ({ locale, changeLocale }) => {
+export const HvorMyeVeiviser = ({ locale, changeLocale }: Props) => {
     const satserData = useQuery({
         queryKey: ['SATSER'],
         queryFn: () => ky.get(`${import.meta.env.BASE_URL}/rest/satser`).json<Satser>(),

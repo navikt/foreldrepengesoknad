@@ -14,7 +14,7 @@ import { useSetBackgroundColor } from './../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from './../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from './../../hooks/useSelectedSak';
 import { PageRouteLayout } from './../../routes/ForeldrepengeoversiktRoutes';
-import OversiktRoutes from './../../routes/routes';
+import { OversiktRoutes } from './../../routes/routes';
 import EttersendingDto from './../../types/EttersendingDTO';
 
 interface Props {

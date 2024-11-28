@@ -52,12 +52,7 @@ interface Props {
     satser: Satser;
 }
 
-const Utbetalingspanel: React.FunctionComponent<Props> = ({
-    dekningsgrad,
-    gjennomsnittslønn,
-    stønadskontoer,
-    satser,
-}) => {
+export const Utbetalingspanel = ({ dekningsgrad, gjennomsnittslønn, stønadskontoer, satser }: Props) => {
     const antallUkerOgDagerMedUttak = finnAntallUkerOgDager(stønadskontoer[dekningsgrad]);
 
     const erDekningsgrad100 = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT;
@@ -118,5 +113,3 @@ const Utbetalingspanel: React.FunctionComponent<Props> = ({
         </Infobox>
     );
 };
-
-export default Utbetalingspanel;

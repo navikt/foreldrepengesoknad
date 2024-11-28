@@ -10,7 +10,8 @@ import { IconCircleWrapper } from '@navikt/fp-ui';
 interface Props {
     arbeidssituasjon: Arbeidssituasjon;
 }
-const HvisManBlirSyk: React.FunctionComponent<Props> = ({ arbeidssituasjon }) => {
+
+export const HvisManBlirSyk = ({ arbeidssituasjon }: Props) => {
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
     const kunEnPartSkalHa = hvemHarRett !== 'beggeHarRett';
     return (
@@ -40,4 +41,3 @@ const HvisManBlirSyk: React.FunctionComponent<Props> = ({ arbeidssituasjon }) =>
         </HStack>
     );
 };
-export default HvisManBlirSyk;

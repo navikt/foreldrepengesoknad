@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
@@ -13,7 +12,7 @@ import { FødtBarn } from '../OmBarnetFormValues';
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
-const ErFødtPanel: FunctionComponent = () => {
+export const ErFødtPanel = () => {
     const intl = useIntl();
 
     const formMethods = useFormContext<FødtBarn>();
@@ -77,5 +76,3 @@ const ErFødtPanel: FunctionComponent = () => {
         </>
     );
 };
-
-export default ErFødtPanel;

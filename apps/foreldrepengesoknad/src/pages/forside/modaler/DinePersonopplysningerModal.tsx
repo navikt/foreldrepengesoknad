@@ -7,7 +7,7 @@ interface Props {
     onRequestClose: () => void;
 }
 
-const DinePersonopplysningerModal = (props: Props) => {
+export const DinePersonopplysningerModal = (props: Props) => {
     const intl = useIntl();
 
     return (
@@ -165,5 +165,3 @@ const DinePersonopplysningerModal = (props: Props) => {
         </Modal>
     );
 };
-
-export default DinePersonopplysningerModal;

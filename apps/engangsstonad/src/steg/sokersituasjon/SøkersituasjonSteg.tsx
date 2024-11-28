@@ -1,6 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
-import useEsNavigator from 'appData/useEsNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { useEsNavigator } from 'appData/useEsNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -15,7 +15,7 @@ type Props = {
     mellomlagreOgNaviger: () => Promise<void>;
 };
 
-const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
+export const SøkersituasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig();
@@ -73,5 +73,3 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavi
         </Step>
     );
 };
-
-export default SøkersituasjonSteg;

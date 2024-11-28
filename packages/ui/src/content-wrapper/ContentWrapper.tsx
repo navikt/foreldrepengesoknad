@@ -1,14 +1,9 @@
-import { bemUtils } from '@navikt/fp-utils';
-
-import './contentWrapper.css';
+import styles from './contentWrapper.module.css';
 
 interface Props {
     children: React.ReactElement | React.ReactElement[];
 }
 
-const ContentWrapper: React.FunctionComponent<Props> = ({ children }) => {
-    const bem = bemUtils('content');
-    return <div className={bem.block}>{children}</div>;
+export const ContentWrapper = ({ children }: Props) => {
+    return <div className={styles.content}>{children}</div>;
 };
-
-export default ContentWrapper;

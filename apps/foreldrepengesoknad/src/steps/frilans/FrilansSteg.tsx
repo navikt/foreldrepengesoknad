@@ -1,7 +1,7 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import SøknadRoutes from 'appData/routes';
-import useFpNavigator from 'appData/useFpNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { SøknadRoutes } from 'appData/routes';
+import { useFpNavigator } from 'appData/useFpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
@@ -17,7 +17,7 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-const FrilansSteg: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }) => {
+export const FrilansSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
 
@@ -60,5 +60,3 @@ const FrilansSteg: React.FunctionComponent<Props> = ({ mellomlagreSøknadOgNavig
         </ContentWrapper>
     );
 };
-
-export default FrilansSteg;

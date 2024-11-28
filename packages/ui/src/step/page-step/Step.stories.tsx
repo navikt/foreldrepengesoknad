@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import Step from './Step';
+import { Step } from './Step';
 
 const meta = {
     title: 'step/Step',

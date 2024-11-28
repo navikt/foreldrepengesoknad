@@ -1,6 +1,6 @@
 import { ArrowLeftIcon, ChatElipsisIcon, CheckmarkIcon, InformationIcon, WalletIcon } from '@navikt/aksel-icons';
 import { HvorMyeRoutes } from 'appData/routes';
-import useVeiviserNavigator from 'appData/useVeiviserNavigator';
+import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
 import { veiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
@@ -17,10 +17,10 @@ import { capitalizeFirstLetter, formatCurrencyWithKr, useScrollBehaviour } from 
 import { isValidNumber, notEmpty } from '@navikt/fp-validation';
 
 import { Arbeidssituasjon, finnGjennomsnittsMånedslønn } from '../arbeidssituasjon/ArbeidssituasjonSide';
-import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
-import HøyInntektInfobox from '../felles/HøyInntektInfobox';
-import FpEllerEsOgHvaSkjerNåLinkPanel from './FpEllerEsOgHvaSkjerNåLinkPanel';
-import Utbetalingspanel from './Utbetalingspanel';
+import { HarIkkeRettTilFpInfobox } from '../felles/HarIkkeRettTilFpInfobox';
+import { HøyInntektInfobox } from '../felles/HøyInntektInfobox';
+import { FpEllerEsOgHvaSkjerNåLinkPanel } from './FpEllerEsOgHvaSkjerNåLinkPanel';
+import { Utbetalingspanel } from './Utbetalingspanel';
 
 export const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260;
 
@@ -48,7 +48,7 @@ interface Props {
     satser: Satser;
 }
 
-const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, stønadskontoer, satser }) => {
+export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: Props) => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator();
     const { ref } = useScrollBehaviour();
@@ -277,5 +277,3 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
         </>
     );
 };
-
-export default OppsummeringSide;

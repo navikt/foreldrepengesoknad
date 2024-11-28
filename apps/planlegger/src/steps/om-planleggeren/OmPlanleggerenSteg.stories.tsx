@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import OmPlanleggerenSteg from './OmPlanleggerenSteg';
+import { OmPlanleggerenSteg } from './OmPlanleggerenSteg';
 
 const meta = {
     title: 'steg/OmPlanleggerenSteg',

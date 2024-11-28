@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
 
 import * as stories from './AndreInntektskilderSteg.stories';

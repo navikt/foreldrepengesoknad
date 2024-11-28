@@ -33,7 +33,7 @@ type Props = {
     dayType: DayType;
 };
 
-const Day: React.FunctionComponent<Props> = ({ day, periodeColor, dayType }) => {
+export const Day = ({ day, periodeColor, dayType }: Props) => {
     const isStart = dayType === DayType.FIRST_DAY;
     const isEnd = dayType === DayType.LAST_DAY;
     const isStartAndEnd = dayType === DayType.FIRST_AND_LAST_DAY;
@@ -48,4 +48,3 @@ const Day: React.FunctionComponent<Props> = ({ day, periodeColor, dayType }) => 
         </div>
     );
 };
-export default Day;

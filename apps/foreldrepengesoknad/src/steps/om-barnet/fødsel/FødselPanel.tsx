@@ -1,7 +1,6 @@
-import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { Radio, ReadMore, VStack } from '@navikt/ds-react';
 
@@ -11,8 +10,8 @@ import { Arbeidsforhold } from '@navikt/fp-types';
 import { isRequired } from '@navikt/fp-validation';
 
 import { BarnetFormValues } from '../OmBarnetFormValues';
-import ErFødtPanel from './ErFødtPanel';
-import TerminPanel from './TerminPanel';
+import { ErFødtPanel } from './ErFødtPanel';
+import { TerminPanel } from './TerminPanel';
 
 const finnAntallBarnLabel = (intl: IntlShape, søkerErFarMedmor: boolean, erBarnetFødt?: boolean) => {
     if (erBarnetFødt === true) {
@@ -39,12 +38,7 @@ interface Props {
     arbeidsforhold: Arbeidsforhold[];
 }
 
-const FødselPanel: FunctionComponent<Props> = ({
-    søkersituasjon,
-    erFarEllerMedmor,
-    søknadGjelderEtNyttBarn,
-    arbeidsforhold,
-}) => {
+export const FødselPanel = ({ søkersituasjon, erFarEllerMedmor, søknadGjelderEtNyttBarn, arbeidsforhold }: Props) => {
     const intl = useIntl();
     const formMethods = useFormContext<BarnetFormValues>();
 
@@ -122,5 +116,3 @@ const FødselPanel: FunctionComponent<Props> = ({
         </>
     );
 };
-
-export default FødselPanel;

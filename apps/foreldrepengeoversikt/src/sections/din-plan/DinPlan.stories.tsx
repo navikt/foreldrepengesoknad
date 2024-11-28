@@ -7,7 +7,7 @@ import saker from 'storybookData/saker/saker.json';
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { OverføringÅrsakType, UttakArbeidType } from '@navikt/fp-types';
 
-import OversiktRoutes from '../../routes/routes';
+import { OversiktRoutes } from '../../routes/routes';
 import { DinPlan } from './DinPlan';
 
 const queryClient = new QueryClient();

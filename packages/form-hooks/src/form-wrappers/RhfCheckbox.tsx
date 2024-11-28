@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useCallback, useMemo } from 'react';
+import { ReactNode, useCallback, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { Checkbox, ErrorMessage } from '@navikt/ds-react';
@@ -14,7 +14,7 @@ export interface Props {
     disabled?: boolean;
 }
 
-const RhfCheckbox: FunctionComponent<Props> = ({ name, label, validate = [], onChange, className, disabled }) => {
+export const RhfCheckbox = ({ name, label, validate = [], onChange, className, disabled }: Props) => {
     const {
         formState: { errors },
     } = useFormContext();
@@ -55,5 +55,3 @@ const RhfCheckbox: FunctionComponent<Props> = ({ name, label, validate = [], onC
         </>
     );
 };
-
-export default RhfCheckbox;

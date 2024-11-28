@@ -6,8 +6,8 @@ import manglendeVedlegg from 'storybookData/manglendeVedlegg/manglendeVedlegg.js
 import saker from 'storybookData/saker/saker.json';
 import tidslinjeHendelser from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.json';
 
-import OversiktRoutes from './../../routes/routes';
-import TidslinjePage from './TidslinjePage';
+import { OversiktRoutes } from './../../routes/routes';
+import { TidslinjePage } from './TidslinjePage';
 
 const queryClient = new QueryClient();
 
