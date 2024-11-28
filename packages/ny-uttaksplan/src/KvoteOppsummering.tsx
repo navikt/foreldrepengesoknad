@@ -33,7 +33,7 @@ export const KvoteOppsummering = (props: Props) => {
     return (
         <KvoteContext.Provider value={props}>
             {(props.rettighetType === 'ALENEOMSORG' || props.rettighetType === 'BARE_SØKER_RETT') && (
-                <ExpansionCard aria-label="TODO" size="small">
+                <ExpansionCard aria-label="Kvoteoversikt" size="small">
                     <KvoteTittelKunEnHarForeldrepenger />
                     <ExpansionCard.Content>
                         <VStack gap="4">
@@ -50,7 +50,7 @@ export const KvoteOppsummering = (props: Props) => {
 
 const BeggeRettKvote = () => {
     return (
-        <ExpansionCard aria-label="TODO" size="small">
+        <ExpansionCard aria-label="Kvoteoversikt" size="small">
             <KvoteTittel />
             <ExpansionCard.Content>
                 <VStack gap="4">

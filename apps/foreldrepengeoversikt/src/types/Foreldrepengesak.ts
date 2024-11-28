@@ -2,6 +2,7 @@ import { SaksperiodeNy } from '@navikt/fp-types';
 
 import { DekningsgradDTO } from './DekningsgradDTO';
 import { Familiehendelse } from './Familiehendelse';
+import { Forelder } from './Forelder';
 import PersonFnrDTO from './PersonFnrDTO';
 import { RettighetType } from './RettighetType';
 import { Ytelse } from './Ytelse';
@@ -26,7 +27,7 @@ export interface ForeldrepengesakDTO {
     dekningsgrad: DekningsgradDTO;
     åpenBehandling?: ÅpenBehandlingFP;
     oppdatertTidspunkt: string;
-    forelder: 'MOR' | 'FAR_MEDMOR'; // TODO: skjønner ikke denne
+    forelder: Forelder;
 }
 
 export interface Foreldrepengesak extends ForeldrepengesakDTO {
