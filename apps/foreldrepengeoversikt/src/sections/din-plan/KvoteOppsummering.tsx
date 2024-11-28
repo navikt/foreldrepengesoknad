@@ -9,7 +9,7 @@ import { DekningsgradDTO } from '../../types/DekningsgradDTO';
 import { Foreldrepengesak } from '../../types/Foreldrepengesak';
 import { Ytelse } from '../../types/Ytelse';
 
-export const KvoteOppsummering1 = () => {
+export const KvoteOversikt = () => {
     const gjeldendeSak = useGetSelectedSak();
 
     const harFpSak = gjeldendeSak && gjeldendeSak.ytelse === Ytelse.FORELDREPENGER;
@@ -18,10 +18,10 @@ export const KvoteOppsummering1 = () => {
         return null;
     }
 
-    return <KvoteOppsummering2 sak={gjeldendeSak} />;
+    return <KvoterOversiktInner sak={gjeldendeSak} />;
 };
 
-const KvoteOppsummering2 = ({ sak }: { sak: Foreldrepengesak }) => {
+const KvoterOversiktInner = ({ sak }: { sak: Foreldrepengesak }) => {
     const annenPartsPerioder = useAnnenPartsVedtak(sak).data?.perioder ?? [];
     const kontoQuery = useQuery(
         hentUttaksKontoOptions({
