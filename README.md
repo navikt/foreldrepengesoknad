@@ -7,7 +7,10 @@ innsynsløsning for foreldrepenger, svangerskapspenger og engangsstønad).
 
 ### Førstegangsoppsett
 
-#### Du må på forhånd ha installert Node.js (v.22). Vi anbefaler å bruke Git Bash for å kjøre kommandoene.
+Du trenger følgende verktøy:
+* node (v22)
+* pnpm - som npm, men mer plasseffektiv
+* turbo - for å kjøre tasks parrallelt i et monorepo.
 
 1. Installer pnpm: `npm install -g pnpm`.
 2. I roten av repoet, kjør `pnpm install`.
@@ -19,6 +22,8 @@ innsynsløsning for foreldrepenger, svangerskapspenger og engangsstønad).
 ## Hvordan jobbe lokalt
 
 ### Utvikling
+
+`apps`-folderen inneholder alle selvbetjeningsappene. `packages` inneholder moduler som er felles for flere av appene.
 
 #### 1. Vite Mode
 
