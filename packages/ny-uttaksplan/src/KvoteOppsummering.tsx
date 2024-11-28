@@ -202,8 +202,8 @@ const AleneOmsorgKvoter = () => {
     return (
         <VStack gap="4">
             <BodyShort weight="semibold">
-                {getVarighetString(fpKonto.dager, intl)}{' '}
-                {treUkerFørFødselKonto ? ` + ${getVarighetString(treUkerFørFødselKonto.dager, intl)}` : ''} til deg
+                Mødrekvote {getVarighetString(fpKonto.dager, intl)}{' '}
+                {treUkerFørFødselKonto ? ` + ${getVarighetString(treUkerFørFødselKonto.dager, intl)}` : ''}
             </BodyShort>
             <VStack gap="6" className="ml-4">
                 {treUkerFørFødselKonto && (
@@ -372,8 +372,8 @@ const MødreKvoter = () => {
     return (
         <VStack gap="4">
             <BodyShort weight="semibold">
-                {getUkerOgDagerFromDager(mødreKonto.dager).uker} +{' '}
-                {getVarighetString(treUkerFørFødselKonto.dager, intl)} til deg
+                Mødrekvote {getUkerOgDagerFromDager(mødreKonto.dager).uker} +{' '}
+                {getVarighetString(treUkerFørFødselKonto.dager, intl)}
             </BodyShort>
             <VStack gap="6" className="ml-4">
                 <VStack gap="1">
