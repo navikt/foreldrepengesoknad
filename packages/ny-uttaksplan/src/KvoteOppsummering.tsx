@@ -293,7 +293,7 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
     return (
         <VStack gap="4">
             <BodyShort weight="semibold">
-                {konto.konto} - {getVarighetString(konto.dager, intl)}
+                {finnVisningsnavForKvote(konto.konto)} - {getVarighetString(konto.dager, intl)}
             </BodyShort>
             <VStack gap="1" className="ml-4">
                 <FordelingsBar
@@ -380,4 +380,21 @@ const FordelingSegment = ({ kontoType, prosent, erFyllt = true }: FordelingSegme
     }
 
     return <div className="rounded-full h-4 border-2 bg-bg-default border-surface-neutral-hover" style={style} />;
+};
+
+const finnVisningsnavForKvote = (kontoType: StønadskontoType) => {
+    switch (kontoType) {
+        case StønadskontoType.AktivitetsfriKvote:
+            return 'Aktivitetsfrikvote';
+        case StønadskontoType.Fedrekvote:
+            return 'Fedrekvote';
+        case StønadskontoType.Mødrekvote:
+            return 'Mødrekvote';
+        case StønadskontoType.ForeldrepengerFørFødsel:
+            return 'Foreldrepenger før fødsel';
+        case StønadskontoType.Foreldrepenger:
+            return 'Foreldrepenger';
+        case StønadskontoType.Fellesperiode:
+            return 'Fellesperioder';
+    }
 };
