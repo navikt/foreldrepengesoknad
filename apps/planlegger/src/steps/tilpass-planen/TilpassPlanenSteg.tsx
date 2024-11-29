@@ -109,6 +109,7 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
                                 søkersPerioder={planforslag.søker1}
                                 annenPartsPerioder={planforslag.søker2}
                                 barn={mapOmBarnetTilBarn(omBarnet)}
+                                handleOnPlanChange={() => {}}
                             />
                         )}
                     </VStack>

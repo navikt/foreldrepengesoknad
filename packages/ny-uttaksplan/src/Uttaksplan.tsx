@@ -5,9 +5,11 @@ import '@navikt/ds-css';
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { Barn, Familiesituasjon, SaksperiodeNy } from '@navikt/fp-types';
 
+import Uttaksplanbuilder from './builder/Uttaksplanbuilder';
 import { finnOgSettInnHull, settInnAnnenPartsUttak, slåSammenLikePerioder } from './builder/uttaksplanbuilderUtils';
 import PeriodeListe from './components/periode-liste/PeriodeListe';
 import { UttaksplanDataContext } from './context/UttaksplanDataContext';
+import { Planperiode } from './types/Planperiode';
 import { mapSaksperiodeTilPlanperiode } from './utils/periodeUtils';
 
 interface Props {
@@ -22,6 +24,7 @@ interface Props {
     harAktivitetskravIPeriodeUtenUttak: boolean;
     førsteUttaksdagNesteBarnsSak: string | undefined;
     familiesituasjon: Familiesituasjon;
+    handleOnPlanChange: (perioder: Planperiode[]) => void;
 }
 
 const UttaksplanNy: FunctionComponent<Props> = ({
@@ -36,6 +39,7 @@ const UttaksplanNy: FunctionComponent<Props> = ({
     harAktivitetskravIPeriodeUtenUttak,
     førsteUttaksdagNesteBarnsSak,
     familiesituasjon,
+    handleOnPlanChange,
 }) => {
     const søkersPlanperioder = finnOgSettInnHull(
         mapSaksperiodeTilPlanperiode(søkersPerioder, erFarEllerMedmor, false, familiehendelsedato),
@@ -75,6 +79,22 @@ const UttaksplanNy: FunctionComponent<Props> = ({
         førsteUttaksdagNesteBarnsSak,
     );
 
+    const builder = Uttaksplanbuilder(
+        komplettPlan,
+        familiehendelsedato,
+        harAktivitetskravIPeriodeUtenUttak,
+        gjelderAdopsjon,
+        bareFarHarRett,
+        erFarEllerMedmor,
+        førsteUttaksdagNesteBarnsSak,
+    );
+
+    const handleUpdatePeriode = (oppdatertPeriode: Planperiode) => {
+        const result = builder.oppdaterPeriode(oppdatertPeriode);
+
+        handleOnPlanChange(result);
+    };
+
     return (
         <UttaksplanDataContext
             initialState={{
@@ -86,7 +106,7 @@ const UttaksplanNy: FunctionComponent<Props> = ({
                 FAMILIESITUASJON: familiesituasjon,
             }}
         >
-            <PeriodeListe perioder={komplettPlan} />
+            <PeriodeListe perioder={komplettPlan} handleUpdatePeriode={handleUpdatePeriode} />
         </UttaksplanDataContext>
     );
 };
