@@ -140,34 +140,89 @@ const KvoteTittel = () => {
     const antallUbrukteDager = sum([ubrukteDagerFar, ubrukteDagerMor, ubrukteDagerFelles]);
 
     if (antallUbrukteDager === 0) {
-        const tittel = 'All tid er i planen';
-        const beskrivelseMor = dagerBruktAvMor > 0 ? `${getVarighetString(dagerBruktAvMor, intl)} til mor` : '';
+        const beskrivelseMor =
+            dagerBruktAvMor > 0
+                ? intl.formatMessage(
+                      { id: 'kvote.varighet.tilMor' },
+                      { varighet: getVarighetString(dagerBruktAvMor, intl) },
+                  )
+                : '';
         const beskrivelseFelles =
-            dagerFellesBrukt > 0 ? `${getVarighetString(dagerFellesBrukt, intl)} av fellesperioden` : '';
-        const beskrivelseFar = dagerBruktAvFar > 0 ? `${getVarighetString(dagerBruktAvFar, intl)} til far` : '';
+            dagerFellesBrukt > 0
+                ? intl.formatMessage(
+                      { id: 'kvote.varighet.fellesperiode' },
+                      { varighet: getVarighetString(dagerFellesBrukt, intl) },
+                  )
+                : '';
+        const beskrivelseFar =
+            dagerBruktAvFar > 0
+                ? intl.formatMessage(
+                      { id: 'kvote.varighet.tilFar' },
+                      { varighet: getVarighetString(dagerBruktAvFar, intl) },
+                  )
+                : '';
 
-        const beskrivelse = `${formatOppramsing([beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean), intl)} er lagt til i planen`;
         return (
             <ExpansionCard.Header>
-                <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
-                <ExpansionCard.Description>{beskrivelse}</ExpansionCard.Description>
+                <ExpansionCard.Title size="small">
+                    <FormattedMessage id="kvote.tittel.allTidIPlan" />
+                </ExpansionCard.Title>
+                <ExpansionCard.Description>
+                    <FormattedMessage
+                        id="kvote.tittel.beskrivelse.felles"
+                        values={{
+                            varighet: formatOppramsing(
+                                [beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean),
+                                intl,
+                            ),
+                        }}
+                    />
+                </ExpansionCard.Description>
             </ExpansionCard.Header>
         );
     }
 
-    const tittel = `Det er ${getVarighetString(antallUbrukteDager, intl)} igjen som kan legges til i planen`;
-    const beskrivelseMor = ubrukteDagerMor > 0 ? `${getVarighetString(ubrukteDagerMor, intl)} til mor` : '';
+    const beskrivelseMor =
+        ubrukteDagerMor > 0
+            ? intl.formatMessage(
+                  { id: 'kvote.varighet.tilMor' },
+                  { varighet: getVarighetString(ubrukteDagerMor, intl) },
+              )
+            : '';
     const beskrivelseFelles =
-        ubrukteDagerFelles > 0 ? `${getVarighetString(ubrukteDagerFelles, intl)} av fellesperioden` : '';
-    const beskrivelseFar = ubrukteDagerFar > 0 ? `${getVarighetString(ubrukteDagerFar, intl)} til far` : '';
-    const beskrivelse = `${formatOppramsing([beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean), intl)} ligger ikke i planen. `;
+        ubrukteDagerFelles > 0
+            ? intl.formatMessage(
+                  { id: 'kvote.varighet.fellesperiode' },
+                  { varighet: getVarighetString(ubrukteDagerFelles, intl) },
+              )
+            : '';
+    const beskrivelseFar =
+        ubrukteDagerFar > 0
+            ? intl.formatMessage(
+                  { id: 'kvote.varighet.tilFar' },
+                  { varighet: getVarighetString(ubrukteDagerFar, intl) },
+              )
+            : '';
+
     return (
         <ExpansionCard.Header>
-            <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
+            <ExpansionCard.Title size="small">
+                <FormattedMessage
+                    id="kvote.tittel.gjenståendeTid"
+                    values={{ varighet: getVarighetString(antallUbrukteDager, intl) }}
+                />
+            </ExpansionCard.Title>
             <ExpansionCard.Description>
-                {beskrivelse}
-                Hvis du ønsker å bruke mer foreldrepenger enn det som ligger i planen nå, kan du sende en
-                endringssøknad. Annen forelder må sende søknad selv for å bruke sine uker med foreldrepenger.
+                <FormattedMessage
+                    id="kvote.tittel.beskrivelse.felles"
+                    values={{
+                        varighet: formatOppramsing(
+                            [beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean),
+                            intl,
+                        ),
+                    }}
+                />{' '}
+                <FormattedMessage id="kvote.tittel.beskrivelse.endre" />
             </ExpansionCard.Description>
         </ExpansionCard.Header>
     );
