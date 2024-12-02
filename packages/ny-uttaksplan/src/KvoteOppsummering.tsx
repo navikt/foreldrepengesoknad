@@ -334,7 +334,6 @@ const FordelingSegment = ({ kontoType, prosent, erFyllt = true }: FordelingSegme
         return null;
     }
     const style = { width: `${prosent - 1.5}%` };
-    console.log(forelder);
     if (forelder === 'MOR') {
         if (
             kontoType === 'MØDREKVOTE' ||
