@@ -321,9 +321,25 @@ const FellesKvoter = () => {
                     ]}
                 />
                 <BodyShort>
-                    {getVarighetString(dagerBruktAvDeg, intl)} er lagt til for deg,{' '}
-                    {getVarighetString(dagerBruktAvAnnenPart, intl)} er lagt til for annen forelder{' '}
-                    {ubrukteDager > 0 ? `, ${getVarighetString(ubrukteDager, intl)} gjenstår` : ''}
+                    {formatOppramsing(
+                        [
+                            intl.formatMessage(
+                                { id: 'kvote.varighet.fellesperiode.deg' },
+                                { varighet: getVarighetString(dagerBruktAvDeg, intl) },
+                            ),
+                            intl.formatMessage(
+                                { id: 'kvote.varighet.fellesperiode.annenForeldre' },
+                                { varighet: getVarighetString(dagerBruktAvAnnenPart, intl) },
+                            ),
+                            ubrukteDager > 0
+                                ? intl.formatMessage(
+                                      { id: 'kvote.varighet.gjenstår' },
+                                      { varighet: getVarighetString(ubrukteDager, intl) },
+                                  )
+                                : '',
+                        ].filter(Boolean),
+                        intl,
+                    )}
                 </BodyShort>
             </VStack>
         </VStack>
@@ -362,8 +378,20 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
                     ]}
                 />
                 <BodyShort>
-                    {getVarighetString(dagerBrukt, intl)} er lagt til
-                    {ubrukteDager > 0 ? `, ${getVarighetString(ubrukteDager, intl)} gjenstår` : ''}
+                    {[
+                        intl.formatMessage(
+                            { id: 'kvote.varighet.erLagtTil' },
+                            { varighet: getVarighetString(dagerBrukt, intl) },
+                        ),
+                        ubrukteDager > 0
+                            ? intl.formatMessage(
+                                  { id: 'kvote.varighet.gjenstår' },
+                                  { varighet: getVarighetString(dagerBrukt, intl) },
+                              )
+                            : '',
+                    ]
+                        .filter(Boolean)
+                        .join(', ')}
                 </BodyShort>
             </VStack>
         </VStack>

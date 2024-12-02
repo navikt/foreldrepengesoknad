@@ -65,6 +65,10 @@
     "kvote.tittel.beskrivelse.felles": "{varighet} er lagt til i planen.",
     "kvote.varighet.tilMor": "{varighet} til mor",
     "kvote.varighet.tilFar": "{varighet} til far",
-    "kvote.varighet.fellesperiode": "{varighet} av fellesperioden"
+    "kvote.varighet.fellesperiode": "{varighet} av fellesperioden",
+    "kvote.varighet.fellesperiode.deg": "{varighet} er lagt til for deg",
+    "kvote.varighet.fellesperiode.annenForeldre": "{varighet} er lagt til for annen forelder",
+    "kvote.varighet.gjenstår": "{varighet} gjenstår",
+    "kvote.varighet.erLagtTil": "{varighet} er lagt til"
 
 }
