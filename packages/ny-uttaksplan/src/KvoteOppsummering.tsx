@@ -1,6 +1,6 @@
 import { sum, sumBy } from 'lodash';
 import { createContext, useContext } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
@@ -78,23 +78,31 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
     const antallUbrukteDager = totaltTilgjengeligeDager - dagerBrukt;
 
     if (antallUbrukteDager === 0) {
-        const tittel = 'All tid er i planen';
-        const beskrivelse = `Du har lagt til ${getVarighetString(dagerBrukt, intl)} i planen.`;
         return (
             <ExpansionCard.Header>
-                <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
-                <ExpansionCard.Description>{beskrivelse}</ExpansionCard.Description>
+                <ExpansionCard.Title size="small">
+                    <FormattedMessage id="kvote.tittel.allTidIPlan" />
+                </ExpansionCard.Title>
+                <ExpansionCard.Description>
+                    <FormattedMessage
+                        id="kvote.tittel.beskrivelse.tidBrukt"
+                        values={{ varighet: getVarighetString(dagerBrukt, intl) }}
+                    />
+                </ExpansionCard.Description>
             </ExpansionCard.Header>
         );
     }
 
-    const tittel = `Det er ${getVarighetString(antallUbrukteDager, intl)} igjen som kan legges til i planen`;
     return (
         <ExpansionCard.Header>
-            <ExpansionCard.Title size="small">{tittel}</ExpansionCard.Title>
+            <ExpansionCard.Title size="small">
+                <FormattedMessage
+                    id="kvote.tittel.beskrivelse.tidIgjen"
+                    values={{ varighet: getVarighetString(antallUbrukteDager, intl) }}
+                />
+            </ExpansionCard.Title>
             <ExpansionCard.Description>
-                Hvis du ønsker å bruke mer foreldrepenger enn det som ligger i planen nå, kan du sende en
-                endringssøknad.
+                <FormattedMessage id="kvote.tittel.beskrivelse.endre" />
             </ExpansionCard.Description>
         </ExpansionCard.Header>
     );

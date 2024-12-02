@@ -56,5 +56,10 @@
     "varighet.uker": "{uker, plural, one {# uke} other {# uker}}",
     "varighet.dager": "{dager, plural, one {# dag} other {# dager}}",
     "varighet.separator--full": " og ",
-    "varighet.separator--normal": ", "
+    "varighet.separator--normal": ", ",
+    "kvote.tittel.allTidIPlan": "All tid er i planen",
+    "kvote.tittel.beskrivelse.tidBrukt": "Du har lagt til {varighet} i planen.",
+    "kvote.tittel.beskrivelse.tidIgjen": "Det er {varighet} igjen som kan legges til i planen",
+    "kvote.tittel.beskrivelse.endre": "Hvis du ønsker å bruke mer foreldrepenger enn det som ligger i planen nå, kan du sende en endringssøknad."
+
 }
