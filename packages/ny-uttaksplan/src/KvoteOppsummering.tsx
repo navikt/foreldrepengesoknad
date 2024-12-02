@@ -32,39 +32,28 @@ export const useKvote = () => {
 export const KvoteOppsummering = (props: Props) => {
     return (
         <KvoteContext.Provider value={props}>
-            {(props.rettighetType === 'ALENEOMSORG' || props.rettighetType === 'BARE_SØKER_RETT') && (
-                <ExpansionCard aria-label="Kvoteoversikt" size="small">
-                    <KvoteTittelKunEnHarForeldrepenger />
-                    <ExpansionCard.Content>
-                        <VStack gap="4">
-                            <ForeldrepengerFørFødselKvoter />
-                            <KunEnHarForeldrepengeKvoter />
-                            <AktivitetsfriKvoter />
-                        </VStack>
-                    </ExpansionCard.Content>
-                </ExpansionCard>
-            )}
-            {props.rettighetType === 'BEGGE_RETT' && <BeggeRettKvote />}
+            <ExpansionCard aria-label="Kvoteoversikt" size="small">
+                <OppsummeringsTittel {...props} />
+                <ExpansionCard.Content>
+                    <VStack gap="4">
+                        <ForeldrepengerFørFødselKvoter />
+                        <MødreKvoter />
+                        <AktivitetsfriKvoter />
+                        <FedreKvoter />
+                        <KunEnHarForeldrepengeKvoter />
+                        <FellesKvoter />
+                    </VStack>
+                </ExpansionCard.Content>
+            </ExpansionCard>
         </KvoteContext.Provider>
     );
 };
 
-const BeggeRettKvote = () => {
-    return (
-        <ExpansionCard aria-label="Kvoteoversikt" size="small">
-            <KvoteTittel />
-            <ExpansionCard.Content>
-                <VStack gap="4">
-                    <ForeldrepengerFørFødselKvoter />
-                    <MødreKvoter />
-                    <div className="h-[2px] bg-gray-300 w-full" />
-                    <FedreKvoter />
-                    <div className="h-[2px] bg-gray-300 w-full" />
-                    <FellesKvoter />
-                </VStack>
-            </ExpansionCard.Content>
-        </ExpansionCard>
-    );
+const OppsummeringsTittel = (props: Props) => {
+    if (props.rettighetType === 'ALENEOMSORG' || props.rettighetType === 'BARE_SØKER_RETT') {
+        return <KvoteTittelKunEnHarForeldrepenger />;
+    }
+    return <KvoteTittel />;
 };
 
 const KvoteTittelKunEnHarForeldrepenger = () => {
@@ -345,35 +334,55 @@ const FordelingSegment = ({ kontoType, prosent, erFyllt = true }: FordelingSegme
         return null;
     }
     const style = { width: `${prosent - 1.5}%` };
-
-    if (kontoType === 'MØDREKVOTE' || kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
-        if (forelder === 'MOR') {
+    console.log(forelder);
+    if (forelder === 'MOR') {
+        if (
+            kontoType === 'MØDREKVOTE' ||
+            kontoType === 'FORELDREPENGER_FØR_FØDSEL' ||
+            kontoType === 'FORELDREPENGER' ||
+            kontoType === 'FELLESPERIODE'
+        ) {
             return (
                 <div
-                    className={`rounded-full h-4 border-2 ${erFyllt ? 'bg-data-surface-1' : 'bg-bg-default'} border-data-surface-1`}
+                    className={`rounded-full h-4 border-2 ${erFyllt ? 'bg-blue-400' : 'bg-bg-default'} border-blue-400`}
+                    style={style}
+                />
+            );
+        }
+        if (kontoType === 'FEDREKVOTE') {
+            return (
+                <div
+                    className={`rounded-full h-4 border-2 ${erFyllt ? 'bg-green-200' : 'bg-bg-default'} border-green-200`}
                     style={style}
                 />
             );
         }
         return (
             <div
-                className={`rounded-full h-4 border-2 ${erFyllt ? 'bg-data-surface-2-subtle' : 'bg-bg-default'} border-data-surface-2-subtle`}
+                className={`rounded-full h-4 border-2 ${erFyllt ? 'bg-deepblue-200' : 'bg-bg-default'} border-deepblue-200`}
                 style={style}
             />
         );
     }
-    if (kontoType === 'FEDREKVOTE') {
-        if (forelder === 'MOR') {
-            return (
-                <div
-                    className={`rounded-full h-4 border-2 ${erFyllt ? 'bg-data-surface-5-subtle' : 'bg-bg-default'} border-data-surface-5-subtle`}
-                    style={style}
-                />
-            );
-        }
+
+    // Logget inn som far
+    if (
+        kontoType === 'FEDREKVOTE' ||
+        kontoType === 'AKTIVITETSFRI_KVOTE' ||
+        kontoType === 'FORELDREPENGER' ||
+        kontoType === 'FELLESPERIODE'
+    ) {
         return (
             <div
                 className={`rounded-full h-4 border-2 ${erFyllt ? 'bg-green-400' : 'bg-bg-default'} border-green-400`}
+                style={style}
+            />
+        );
+    }
+    if (kontoType === 'MØDREKVOTE' || kontoType === 'FORELDREPENGER_FØR_FØDSEL') {
+        return (
+            <div
+                className={`rounded-full h-4 border-2 ${erFyllt ? 'bg-deepblue-200' : 'bg-bg-default'} border-deepblue-200`}
                 style={style}
             />
         );
