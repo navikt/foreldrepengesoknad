@@ -29,6 +29,7 @@
         "@navikt/ds-react": "^7.4.1",
         "@navikt/ds-tailwind": "7.4.1",
         "@navikt/fp-api": "workspace:*",
+        "@navikt/fp-common": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-ui": "workspace:*",
