@@ -101,7 +101,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
                 />
             </ExpansionCard.Title>
             <ExpansionCard.Description>
-                <FormattedMessage id="kvote.beskrivelse.endre" />
+                <FormattedMessage id="kvote.beskrivelse.endre.du" />
             </ExpansionCard.Description>
         </ExpansionCard.Header>
     );
@@ -221,7 +221,8 @@ const KvoteTittel = () => {
                         ),
                     }}
                 />{' '}
-                <FormattedMessage id="kvote.beskrivelse.endre" />
+                <FormattedMessage id="kvote.beskrivelse.endre.du" />{' '}
+                <FormattedMessage id="kvote.beskrivelse.endre.annenPart" />
             </ExpansionCard.Description>
         </ExpansionCard.Header>
     );
