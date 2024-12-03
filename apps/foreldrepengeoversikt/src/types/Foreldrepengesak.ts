@@ -1,10 +1,10 @@
+import { RettighetType } from '@navikt/fp-common';
 import { SaksperiodeNy } from '@navikt/fp-types';
 
 import { DekningsgradDTO } from './DekningsgradDTO';
 import { Familiehendelse } from './Familiehendelse';
 import { Forelder } from './Forelder';
 import PersonFnrDTO from './PersonFnrDTO';
-import { RettighetType } from './RettighetType';
 import { Ytelse } from './Ytelse';
 import { ÅpenBehandlingFP } from './ÅpenBehandling';
 

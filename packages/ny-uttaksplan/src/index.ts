@@ -1,3 +1,4 @@
+import './index.css';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
 
