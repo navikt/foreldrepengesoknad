@@ -1,5 +1,4 @@
 import { PersonGroupIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
@@ -15,7 +14,7 @@ interface Props {
     arbeidssituasjon: Arbeidssituasjon;
 }
 
-const NårBareEnPartHarRettInfoboks: FunctionComponent<Props> = ({ hvemPlanlegger, arbeidssituasjon }) => {
+export const NårBareEnPartHarRettInfoboks = ({ hvemPlanlegger, arbeidssituasjon }: Props) => {
     const intl = useIntl();
 
     const søker1HarIkkeRett =
@@ -93,5 +92,3 @@ const NårBareEnPartHarRettInfoboks: FunctionComponent<Props> = ({ hvemPlanlegge
         </Infobox>
     );
 };
-
-export default NårBareEnPartHarRettInfoboks;

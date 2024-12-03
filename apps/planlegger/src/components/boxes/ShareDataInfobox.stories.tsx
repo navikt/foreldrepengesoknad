@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import ShareDataInfobox from './ShareDataInfobox';
+import { ShareDataInfobox } from './ShareDataInfobox';
 
 const meta = {
     title: 'components/ShareDataInfobox',

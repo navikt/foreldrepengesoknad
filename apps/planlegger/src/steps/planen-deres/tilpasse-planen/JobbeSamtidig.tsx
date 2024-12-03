@@ -5,7 +5,7 @@ import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
-const JobbeSamtidig: React.FunctionComponent = () => {
+export const JobbeSamtidig = () => {
     return (
         <HStack gap="5" wrap={false}>
             <div>
@@ -24,4 +24,3 @@ const JobbeSamtidig: React.FunctionComponent = () => {
         </HStack>
     );
 };
-export default JobbeSamtidig;

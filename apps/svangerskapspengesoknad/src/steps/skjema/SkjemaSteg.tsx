@@ -2,7 +2,7 @@ import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/
 import { RouteParams } from 'appData/routes';
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
-import { FunctionComponent, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
@@ -42,12 +42,12 @@ interface Props {
     maxAntallVedlegg?: number;
 }
 
-export const SkjemaSteg: FunctionComponent<Props> = ({
+export const SkjemaSteg = ({
     mellomlagreSøknadOgNaviger,
     avbrytSøknad,
     arbeidsforhold,
     maxAntallVedlegg = MAX_ANTALL_VEDLEGG,
-}) => {
+}: Props) => {
     const intl = useIntl();
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);

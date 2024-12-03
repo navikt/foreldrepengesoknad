@@ -4,15 +4,15 @@
     padding: var(--app-padding);
 }
 
-.forside__personopplysningerLink {
+.personopplysningerLink {
     text-align: center;
 }
 
-.forside__liste {
+.liste {
     padding: 0 2rem;
 }
 
-.forside__tittel {
+.tittel {
     padding-top: 32px;
     padding-bottom: 32px;
 }
@@ -22,7 +22,7 @@
         max-width: 100%;
         padding: 1rem;
     }
-    .forside____tittel {
+    .tittel {
         padding-top: 20px;
         padding-bottom: 20px;
     }

@@ -12,13 +12,13 @@ import { BodyLong, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
-import Barnehageplass from './Barnehageplass';
-import DeFørsteSeksUkene from './DeFørsteSeksUkene';
-import FørTermin from './FørTermin';
-import JobbeSamtidig from './JobbeSamtidig';
-import LeggeTilFerie from './LeggeTilFerie';
-import PermisjonSamtidig from './PermisjonSamtidig';
-import ToUkerRundtFødsel from './ToUkerRundtFødsel';
+import { Barnehageplass } from './Barnehageplass';
+import { DeFørsteSeksUkene } from './DeFørsteSeksUkene';
+import { FørTermin } from './FørTermin';
+import { JobbeSamtidig } from './JobbeSamtidig';
+import { LeggeTilFerie } from './LeggeTilFerie';
+import { PermisjonSamtidig } from './PermisjonSamtidig';
+import { ToUkerRundtFødsel } from './ToUkerRundtFødsel';
 
 const onToggleExpansionCard = (open: boolean) => {
     if (open) {
@@ -35,7 +35,7 @@ interface Props {
     arbeidssituasjon: Arbeidssituasjon;
     barnet: OmBarnet;
 }
-const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, arbeidssituasjon, barnet }) => {
+export const OmÅTilpassePlanen = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) => {
     const erAlene = erAlenesøker(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);
 
@@ -106,5 +106,3 @@ const OmÅTilpassePlanen: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
         </ExpansionCard>
     );
 };
-
-export default OmÅTilpassePlanen;

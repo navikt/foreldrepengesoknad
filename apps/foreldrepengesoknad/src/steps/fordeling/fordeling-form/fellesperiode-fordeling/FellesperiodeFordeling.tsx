@@ -1,19 +1,19 @@
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import Fordeling, { FellesperiodeFordelingValg } from 'types/Fordeling';
+import { FellesperiodeFordelingValg, Fordeling } from 'types/Fordeling';
 import { FordelingDager, FordelingFargekode } from 'types/FordelingOversikt';
 
-import { Alert, BodyLong, BodyShort, HStack, VStack } from '@navikt/ds-react';
+import { Alert, BodyLong, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { NavnPåForeldre } from '@navikt/fp-common';
 import { RhfTextField } from '@navikt/fp-form-hooks';
-import { bemUtils, getNumberFromNumberInputValue } from '@navikt/fp-utils';
+import { getNumberFromNumberInputValue } from '@navikt/fp-utils';
 import { isValidInteger, isValidNumberForm } from '@navikt/fp-validation';
 
 import { isValidAntallDagerFellesperiode, isValidAntallUkerFellesperiode } from '../fordelingFormUtils';
-import FellesperiodeValgVisning from './FellesperiodeValgVisning';
-import FordelingValg from './FordelingValg';
-import './fellesperiode-fordeling.css';
+import { FellesperiodeValgVisning } from './FellesperiodeValgVisning';
+import { FordelingValg } from './FordelingValg';
+import styles from './fellesperiode-fordeling.module.css';
 
 const getInputErNullEllerHeltall = (input: number) => {
     if (input) {
@@ -99,13 +99,9 @@ interface Props {
     dagerMedFellesperiode: number;
     erFarEllerMedmor: boolean;
 }
-const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
-    navnPåForeldre,
-    dagerMedFellesperiode,
-    erFarEllerMedmor,
-}) => {
+
+export const FellesperiodeFordeling = ({ navnPåForeldre, dagerMedFellesperiode, erFarEllerMedmor }: Props) => {
     const intl = useIntl();
-    const bem = bemUtils('fellesperiodeFordeling');
     const {
         watch,
         trigger,
@@ -127,14 +123,14 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
         <VStack gap="5">
             <FordelingValg dagerMedFellesperiode={dagerMedFellesperiode} />
             {valgtFordeling === FellesperiodeFordelingValg.VIL_VELGE && (
-                <div className={bem.block}>
-                    <BodyShort className={bem.element('title')}>
+                <div className={styles.fellesperiodeFordeling}>
+                    <Heading size="xsmall">
                         <FormattedMessage
                             id="fordeling.antallUkerDager.spørsmål"
                             values={{ harHeleUkerTilFordeling }}
                         />
-                    </BodyShort>
-                    <BodyLong className={bem.element('description')}>
+                    </Heading>
+                    <BodyLong className={styles.description}>
                         <FormattedMessage
                             id="fordeling.antallUkerDager.spørsmål.description"
                             values={{ harHeleUkerTilFordeling, navnAnnenForelder }}
@@ -142,7 +138,7 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
                     </BodyLong>
                     <HStack gap="5" align="start">
                         <RhfTextField
-                            className={bem.element('textInput')}
+                            className={styles.textInput}
                             name="antallUkerFellesperiodeTilSøker"
                             label={<FormattedMessage id="fordeling.antallUker.spørsmål" />}
                             validate={[
@@ -158,7 +154,7 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
                         />
                         {!harHeleUkerTilFordeling && (
                             <RhfTextField
-                                className={bem.element('textInput')}
+                                className={styles.textInput}
                                 name="antallDagerFellesperiodeTilSøker"
                                 label={<FormattedMessage id="fordeling.antallDager.spørsmål" />}
                                 validate={[
@@ -193,5 +189,3 @@ const FellesperiodeFordeling: React.FunctionComponent<Props> = ({
         </VStack>
     );
 };
-
-export default FellesperiodeFordeling;

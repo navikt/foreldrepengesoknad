@@ -43,7 +43,7 @@ const initLocale = (): LocaleAll => {
     return defaultLocale;
 };
 
-const AppContainer = () => {
+export const AppContainer = () => {
     const [locale, setLocale] = useState<LocaleAll>(initLocale());
 
     const changeLocale = useCallback((activeLocale: LocaleAll) => {
@@ -66,5 +66,3 @@ const AppContainer = () => {
         </IntlProvider>
     );
 };
-
-export default AppContainer;

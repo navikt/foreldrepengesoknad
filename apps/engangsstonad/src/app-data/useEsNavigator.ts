@@ -4,9 +4,9 @@ import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
 import { ContextDataType, useContextSaveData } from './EsDataContext';
 import { Path } from './paths';
-import useStepConfig from './useStepConfig';
+import { useStepConfig } from './useStepConfig';
 
-const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
+export const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
     const stepConfig = useStepConfig();
     const oppdaterPath = useContextSaveData(ContextDataType.CURRENT_PATH);
 
@@ -62,5 +62,3 @@ const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
         fortsettSøknadSenere,
     };
 };
-
-export default useEsNavigator;

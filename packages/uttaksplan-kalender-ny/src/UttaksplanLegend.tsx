@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
@@ -46,13 +46,13 @@ interface Props {
     erFarEllerMedmor: boolean;
 }
 
-export const UttaksplanLegend: FunctionComponent<Props> = ({
+export const UttaksplanLegend = ({
     uniqueColors,
     barn,
     navnAnnenPart,
     unikeUtsettelseÅrsaker,
     erFarEllerMedmor,
-}) => {
+}: Props) => {
     const intl = useIntl();
     return uniqueColors
         .filter((c) => c !== PeriodeColor.NONE)

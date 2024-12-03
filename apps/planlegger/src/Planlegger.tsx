@@ -16,7 +16,7 @@ import { decodeBase64 } from '@navikt/fp-utils';
 
 import { PlanleggerRouter } from './PlanleggerRouter';
 
-const Spinner: React.FunctionComponent = () => (
+const Spinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
         <Loader size="2xlarge" />
     </div>

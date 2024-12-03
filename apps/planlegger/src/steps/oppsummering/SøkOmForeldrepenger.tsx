@@ -13,7 +13,7 @@ interface Props {
     barnet: OmBarnet;
 }
 
-const SøkOmForeldrepenger: React.FunctionComponent<Props> = ({ erAlenesøker, barnet }) => {
+export const SøkOmForeldrepenger = ({ erAlenesøker, barnet }: Props) => {
     return (
         <Infobox
             header={<FormattedMessage id="SøkOmForeldrepenger.Tittel" values={{ erAlenesøker }} />}
@@ -42,4 +42,3 @@ const SøkOmForeldrepenger: React.FunctionComponent<Props> = ({ erAlenesøker, b
         </Infobox>
     );
 };
-export default SøkOmForeldrepenger;

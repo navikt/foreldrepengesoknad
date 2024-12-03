@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { initAmplitude } from '@navikt/fp-metrics';
 
 import { Situasjon } from '../situasjon/SituasjonSide';
-import OppsummeringHvaSkjerNårSide from './OppsummeringHvaSkjerNårSide';
+import { OppsummeringHvaSkjerNårSide } from './OppsummeringHvaSkjerNårSide';
 
 const meta = {
     title: 'hvaSkjerNår/OppsummeringHvaSkjerNårSide',

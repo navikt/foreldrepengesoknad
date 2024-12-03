@@ -10,7 +10,8 @@ import { IconCircleWrapper } from '@navikt/fp-ui';
 interface Props {
     hvemPlanlegger: HvemPlanlegger;
 }
-const FarFellesperiode: React.FunctionComponent<Props> = ({ hvemPlanlegger }) => {
+
+export const FarFellesperiode = ({ hvemPlanlegger }: Props) => {
     const intl = useIntl();
     return (
         <HStack gap="5" wrap={false}>
@@ -39,4 +40,3 @@ const FarFellesperiode: React.FunctionComponent<Props> = ({ hvemPlanlegger }) =>
         </HStack>
     );
 };
-export default FarFellesperiode;

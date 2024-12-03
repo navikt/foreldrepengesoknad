@@ -1,6 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import useFpNavigator from 'appData/useFpNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { useFpNavigator } from 'appData/useFpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -18,12 +18,7 @@ type Props = {
     avbrytSøknad: () => void;
 };
 
-const SøkersituasjonSteg: React.FunctionComponent<Props> = ({
-    arbeidsforhold,
-    kjønn,
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-}) => {
+export const SøkersituasjonSteg = ({ arbeidsforhold, kjønn, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig(arbeidsforhold);
@@ -101,5 +96,3 @@ const SøkersituasjonSteg: React.FunctionComponent<Props> = ({
         </Step>
     );
 };
-
-export default SøkersituasjonSteg;

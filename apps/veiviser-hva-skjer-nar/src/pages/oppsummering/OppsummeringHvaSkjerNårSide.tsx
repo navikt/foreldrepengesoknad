@@ -32,7 +32,8 @@ const finnHvemSomPlanlegger = (hvaSkjerNårSituasjon: HvaSkjerNårSituasjon) => 
     }
     return 'undefined';
 };
-const OppsummeringHvaSkjerNårSide: React.FunctionComponent<Props> = ({ hvaSkjerNårSituasjon }) => {
+
+export const OppsummeringHvaSkjerNårSide = ({ hvaSkjerNårSituasjon }: Props) => {
     const intl = useIntl();
     const { ref } = useScrollBehaviour();
     const { situasjon, fødselsdato, termindato } = hvaSkjerNårSituasjon;
@@ -103,5 +104,3 @@ const OppsummeringHvaSkjerNårSide: React.FunctionComponent<Props> = ({ hvaSkjer
         </VeiviserPage>
     );
 };
-
-export default OppsummeringHvaSkjerNårSide;

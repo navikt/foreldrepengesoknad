@@ -6,7 +6,7 @@ import { OppstartValg } from 'types/Fordeling';
 import { getDatoForAleneomsorg, getIsDeltUttak } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato, getFødselsdato, getTermindato } from 'utils/barnUtils';
 import { ISOStringToDate } from 'utils/dateUtils';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getKunFarHarRett } from 'utils/personUtils';
 
 import { Radio } from '@navikt/ds-react';
@@ -384,14 +384,14 @@ interface Props {
     førsteDagEtterAnnenForelder: Date | undefined;
 }
 
-const OppstartValgInput: React.FunctionComponent<Props> = ({
+export const OppstartValgInput = ({
     oppstartsvalg,
     erFarEllerMedmor,
     familiehendelsesdato,
     erAleneOmOmsorg,
     navnPåForeldre,
     førsteDagEtterAnnenForelder,
-}) => {
+}: Props) => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
@@ -439,5 +439,3 @@ const OppstartValgInput: React.FunctionComponent<Props> = ({
         </RhfRadioGroup>
     );
 };
-
-export default OppstartValgInput;

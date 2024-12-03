@@ -9,7 +9,7 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import BarnehageplassSteg from './BarnehageplassSteg';
+import { BarnehageplassSteg } from './BarnehageplassSteg';
 
 type StoryArgs = {
     hvemPlanlegger: HvemPlanlegger;

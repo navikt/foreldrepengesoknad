@@ -6,9 +6,9 @@ import { BodyShort, Button, HStack, Heading, Show, VStack } from '@navikt/ds-rea
 
 import { LocaleAll } from '@navikt/fp-types';
 
-import BlueHeading from '../../boxes/BlueHeading';
-import IconCircleWrapper from '../../icon-circle/IconCircleWrapper';
-import Page from '../../page/Page';
+import { BlueHeading } from '../../boxes/BlueHeading';
+import { IconCircleWrapper } from '../../icon-circle/IconCircleWrapper';
+import { Page } from '../../page/Page';
 import styles from './frontPage.module.css';
 
 interface Props {
@@ -23,7 +23,7 @@ interface Props {
     childrenBelowStartButton?: boolean;
 }
 
-const FrontPage: React.FunctionComponent<Props> = ({
+export const FrontPage = ({
     children,
     titleLabel,
     minutesLabel,
@@ -31,7 +31,7 @@ const FrontPage: React.FunctionComponent<Props> = ({
     goToNextDefaultStep,
     icon,
     childrenBelowStartButton = false,
-}) => (
+}: Props) => (
     <Page
         header={
             <>
@@ -102,5 +102,3 @@ const FrontPage: React.FunctionComponent<Props> = ({
         </VStack>
     </Page>
 );
-
-export default FrontPage;

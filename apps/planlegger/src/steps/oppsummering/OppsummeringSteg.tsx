@@ -1,8 +1,7 @@
 import { ArrowLeftIcon, TasklistStartIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
+import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { erAlenesøker } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
@@ -17,15 +16,15 @@ import { Infobox } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { notEmpty } from '@navikt/fp-validation';
 
-import ShareDataInfobox from '../../components/boxes/ShareDataInfobox';
-import OppsummeringHeader from './OppsummeringHeader';
-import SøkOmForeldrepenger from './SøkOmForeldrepenger';
-import BarnehageplassOppsummering, { getFamiliehendelsedato } from './expansion-cards/BarnehageplassOppsummering';
-import OppgittInformasjon from './expansion-cards/OppgittInformasjon';
-import OppsummeringHarRett from './expansion-cards/OppsummeringHarRett';
-import HvorMyeOppsummering from './expansion-cards/hvor-mye/HvorMyeOppsummering';
-import HvaSkjerNårIkon from './ikoner/HvaSkjerNårIkon';
-import HvorMyeIkon from './ikoner/HvorMyeIkon';
+import { ShareDataInfobox } from '../../components/boxes/ShareDataInfobox';
+import { OppsummeringHeader } from './OppsummeringHeader';
+import { SøkOmForeldrepenger } from './SøkOmForeldrepenger';
+import { BarnehageplassOppsummering, getFamiliehendelsedato } from './expansion-cards/BarnehageplassOppsummering';
+import { OppgittInformasjon } from './expansion-cards/OppgittInformasjon';
+import { OppsummeringHarRett } from './expansion-cards/OppsummeringHarRett';
+import { HvorMyeOppsummering } from './expansion-cards/hvor-mye/HvorMyeOppsummering';
+import { HvaSkjerNårIkon } from './ikoner/HvaSkjerNårIkon';
+import { HvorMyeIkon } from './ikoner/HvorMyeIkon';
 import styles from './oppsummeringSteg.module.css';
 
 interface Props {
@@ -34,7 +33,7 @@ interface Props {
     locale: LocaleAll;
 }
 
-const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, locale }) => {
+export const OppsummeringSteg = ({ stønadskontoer, satser, locale }: Props) => {
     const navigator = usePlanleggerNavigator(locale);
 
     useScrollBehaviour();
@@ -196,4 +195,3 @@ const OppsummeringSteg: FunctionComponent<Props> = ({ stønadskontoer, satser, l
         </>
     );
 };
-export default OppsummeringSteg;

@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
-import ErrorPage from './ErrorPage';
+import { ErrorPage } from './ErrorPage';
 
 const meta = {
     title: 'ErrorPage',

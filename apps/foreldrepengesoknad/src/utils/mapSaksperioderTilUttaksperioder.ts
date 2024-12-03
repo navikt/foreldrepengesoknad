@@ -541,7 +541,7 @@ export const getPerioderSplittetOverFødselOgNesteBarnsFørsteStønadsdag = (
     return nyePerioder;
 };
 
-const mapSaksperioderTilUttaksperioder = (
+export const mapSaksperioderTilUttaksperioder = (
     saksperioder: Saksperiode[],
     grunnlag: Saksgrunnlag,
     førsteUttaksdagNesteBarnsSak: Date | undefined,
@@ -601,5 +601,3 @@ const mapSaksperioderTilUttaksperioder = (
         førsteUttaksdagNesteBarnsSak,
     );
 };
-
-export default mapSaksperioderTilUttaksperioder;

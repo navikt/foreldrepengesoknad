@@ -21,7 +21,7 @@ import {
     Uttaksperiode,
 } from '@navikt/fp-common';
 
-import mapSaksperioderTilUttaksperioder, { getKontotypeBareFarHarRett } from './mapSaksperioderTilUttaksperioder';
+import { getKontotypeBareFarHarRett, mapSaksperioderTilUttaksperioder } from './mapSaksperioderTilUttaksperioder';
 
 describe('getKontotypeBareFarHarRett', () => {
     const periodeTrekkerMinsterett = true;

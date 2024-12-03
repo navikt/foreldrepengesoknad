@@ -7,7 +7,7 @@ interface Props {
     children: React.ReactElement | React.ReactElement[];
 }
 
-const Page: React.FunctionComponent<Props> = ({ header, children }) => {
+export const Page = ({ header, children }: Props) => {
     return (
         <div className={styles.pageContent}>
             <div className={styles.header}>{header}</div>
@@ -15,5 +15,3 @@ const Page: React.FunctionComponent<Props> = ({ header, children }) => {
         </div>
     );
 };
-
-export default Page;

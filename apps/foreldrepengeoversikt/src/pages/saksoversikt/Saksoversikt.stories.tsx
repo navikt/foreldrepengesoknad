@@ -15,7 +15,7 @@ import { SaksperiodeNy } from '@navikt/fp-types';
 
 import { BehandlingTilstand } from '../../types/BehandlingTilstand';
 import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
-import OversiktRoutes from './../../routes/routes';
+import { OversiktRoutes } from './../../routes/routes';
 import Saksoversikt from './Saksoversikt';
 
 const queryClient = new QueryClient();

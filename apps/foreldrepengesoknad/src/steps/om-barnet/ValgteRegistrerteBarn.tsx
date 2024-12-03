@@ -1,8 +1,7 @@
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import RegistrertePersonalia from 'pages/registrerte-personalia/RegistrertePersonalia';
-import * as React from 'react';
+import { RegistrertePersonalia } from 'pages/registrerte-personalia/RegistrertePersonalia';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     formaterFødselsdatoerPåBarn,
@@ -24,7 +23,7 @@ interface Props {
     skalInkludereTermindato: boolean;
 }
 
-const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteRegistrerteBarn, skalInkludereTermindato }) => {
+export const ValgteRegistrerteBarn = ({ valgteRegistrerteBarn, skalInkludereTermindato }: Props) => {
     const intl = useIntl();
 
     const alleBarnaLever = valgteRegistrerteBarn.every((barn) => !barn.dødsdato);
@@ -93,5 +92,3 @@ const ValgteRegistrerteBarn: React.FunctionComponent<Props> = ({ valgteRegistrer
         </>
     );
 };
-
-export default ValgteRegistrerteBarn;

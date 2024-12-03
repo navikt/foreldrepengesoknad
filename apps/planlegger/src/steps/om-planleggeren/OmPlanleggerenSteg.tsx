@@ -1,6 +1,5 @@
 import { ArrowRightIcon, CalendarIcon, QuestionmarkIcon } from '@navikt/aksel-icons';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import { FunctionComponent } from 'react';
+import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, HStack, Heading, Show, VStack } from '@navikt/ds-react';
@@ -8,7 +7,7 @@ import { BodyShort, Button, HStack, Heading, Show, VStack } from '@navikt/ds-rea
 import { LocaleAll } from '@navikt/fp-types';
 import { IconCircleWrapper, LanguageToggleNew } from '@navikt/fp-ui';
 
-import PlanleggerForside from './PlanleggerForside';
+import { PlanleggerForside } from './PlanleggerForside';
 import styles from './omPlanleggerenSteg.module.css';
 
 interface Props {
@@ -16,7 +15,7 @@ interface Props {
     changeLocale: (locale: LocaleAll) => void;
 }
 
-const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) => {
+export const OmPlanleggerenSteg = ({ locale, changeLocale }: Props) => {
     const navigator = usePlanleggerNavigator(locale);
 
     return (
@@ -70,5 +69,3 @@ const OmPlanleggerenSteg: FunctionComponent<Props> = ({ locale, changeLocale }) 
         </PlanleggerForside>
     );
 };
-
-export default OmPlanleggerenSteg;

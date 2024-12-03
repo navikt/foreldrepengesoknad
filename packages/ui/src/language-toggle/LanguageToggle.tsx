@@ -1,14 +1,13 @@
 import { ChevronDownIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
 import { Button, Menu, MenuItem, Wrapper } from 'react-aria-menubutton';
 import { FormattedMessage } from 'react-intl';
 
 import { LocaleAll } from '@navikt/fp-types';
 
-import NorwayFlagSVG from './NorwayFlag';
+import { NorwayFlagSVG } from './NorwayFlag';
 import './languageToggle.css';
 
-const MenuListItem: FunctionComponent<{ locale: LocaleAll }> = ({ locale }) => {
+const MenuListItem = ({ locale }: { locale: LocaleAll }) => {
     return (
         <li key={locale}>
             <MenuItem className="languageToggle__menu__item">
@@ -25,13 +24,17 @@ const MenuListItem: FunctionComponent<{ locale: LocaleAll }> = ({ locale }) => {
     );
 };
 
-export interface LanguageToggleProps<T extends LocaleAll> {
+interface LanguageToggleProps<T extends LocaleAll> {
     locale: T;
     availableLocales: T[];
     toggleLanguage: (locale: T) => void;
 }
 
-const LanguageToggle = <T extends LocaleAll>({ locale, availableLocales, toggleLanguage }: LanguageToggleProps<T>) => {
+export const LanguageToggle = <T extends LocaleAll>({
+    locale,
+    availableLocales,
+    toggleLanguage,
+}: LanguageToggleProps<T>) => {
     const selectableOtherMenuLanguages: T[] = [...availableLocales].filter((code) => code !== locale);
 
     return (
@@ -64,4 +67,3 @@ const LanguageToggle = <T extends LocaleAll>({ locale, availableLocales, toggleL
         </div>
     );
 };
-export default LanguageToggle;

@@ -10,7 +10,7 @@ interface Props {
     updateAttachments: (attachments: Attachment[], hasPendingUploads: boolean) => void;
 }
 
-const AdopsjonDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAttachments }) => {
+export const AdopsjonDokPanel = ({ attachments, updateAttachments }: Props) => {
     const intl = useIntl();
     return (
         <FileUploader
@@ -24,5 +24,3 @@ const AdopsjonDokPanel: React.FunctionComponent<Props> = ({ attachments, updateA
         />
     );
 };
-
-export default AdopsjonDokPanel;

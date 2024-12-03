@@ -6,9 +6,9 @@ import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { encodeToBase64 } from '@navikt/fp-utils';
 
 import { useContextComplete } from './PlanleggerDataContext';
-import useStepData from './useStepData';
+import { useStepData } from './useStepData';
 
-const usePlanleggerNavigator = (locale: string) => {
+export const usePlanleggerNavigator = (locale: string) => {
     const navigate = useNavigate();
     const stepConfig = useStepData();
     const context = useContextComplete();
@@ -61,5 +61,3 @@ const usePlanleggerNavigator = (locale: string) => {
         [goToPreviousDefaultStep, goToNextDefaultStep, goToNextStep, avbrytSøknad],
     );
 };
-
-export default usePlanleggerNavigator;

@@ -7,7 +7,7 @@ import { links } from '@navikt/fp-constants';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { ContentWrapper } from '@navikt/fp-ui';
 
-export const IkkeKvinne: React.FunctionComponent = () => {
+export const IkkeKvinne = () => {
     logAmplitudeEvent('sidevisning', {
         app: 'svangerskapspengerny',
         team: 'foreldrepenger',

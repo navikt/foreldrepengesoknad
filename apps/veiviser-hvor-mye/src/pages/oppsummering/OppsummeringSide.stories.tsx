@@ -7,7 +7,7 @@ import { initAmplitude } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import { Arbeidssituasjon } from '../arbeidssituasjon/ArbeidssituasjonSide';
-import OppsummeringSide from './OppsummeringSide';
+import { OppsummeringSide } from './OppsummeringSide';
 
 const STØNADSKONTOER = {
     '100': {

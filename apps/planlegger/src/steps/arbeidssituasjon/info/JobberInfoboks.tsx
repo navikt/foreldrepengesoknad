@@ -1,5 +1,4 @@
 import { CheckmarkIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
@@ -12,7 +11,7 @@ interface Props {
     fornavn: string;
 }
 
-const JobberInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn }) => {
+export const JobberInfoboks = ({ erAlenesøker, fornavn }: Props) => {
     return (
         <Infobox
             header={
@@ -34,5 +33,3 @@ const JobberInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn }) =>
         </Infobox>
     );
 };
-
-export default JobberInfoboks;

@@ -2,8 +2,8 @@ import { Meta, StoryObj } from '@storybook/react';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 
-import ContentWrapper from '../content-wrapper/ContentWrapper';
-import FileUploader from './FileUploader';
+import { ContentWrapper } from '../content-wrapper/ContentWrapper';
+import { FileUploader } from './FileUploader';
 
 const file1 = new File(['abc'.repeat(100000)], 'Filnavn1.jpg');
 const file2 = new File(['abc'.repeat(500000)], 'Filnavn2.jpg');

@@ -17,8 +17,6 @@ import { Infobox } from '@navikt/fp-ui';
 import { Uttaksdagen, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { isRequired, notEmpty } from '@navikt/fp-validation';
 
-import './panelWithCircleIcon.less';
-
 const finnSisteDagMedForeldrepenger = (
     stønadskontoer: TilgjengeligeStønadskontoerForDekningsgrad,
     barn: Barn,
@@ -85,14 +83,14 @@ const getDekningsgradInformasjonDeltUttak = (barn: Barn) => {
     return <FormattedMessage id="uttaksplaninfo.dekningsgrad.beskrivelse.førFørsteJuli2024" />;
 };
 
-const DekningsgradForm: React.FunctionComponent<Props> = ({
+export const DekningsgradForm = ({
     goToPreviousDefaultStep,
     goToNextDefaultStep,
     barn,
     søkersituasjon,
     stønadskonto100,
     stønadskonto80,
-}) => {
+}: Props) => {
     const intl = useIntl();
 
     const periodeMedForeldrepenger = useContextGetData(ContextDataType.PERIODE_MED_FORELDREPENGER);
@@ -274,5 +272,3 @@ const DekningsgradForm: React.FunctionComponent<Props> = ({
         </RhfForm>
     );
 };
-
-export default DekningsgradForm;

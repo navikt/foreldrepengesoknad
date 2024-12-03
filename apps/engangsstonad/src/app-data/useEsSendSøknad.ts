@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import ky, { HTTPError } from 'ky';
 import { useMemo } from 'react';
-import Dokumentasjon, { erTerminDokumentasjon } from 'types/Dokumentasjon';
+import { Dokumentasjon, erTerminDokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet, erAdopsjon, erBarnetFødt, erBarnetIkkeFødt } from 'types/OmBarnet';
 
 import { useAbortSignal } from '@navikt/fp-api';
@@ -51,7 +51,7 @@ const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med innsending av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: Kvittering) => void) => {
+export const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: Kvittering) => void) => {
     const hentData = useContextGetAnyData();
     const { initAbortSignal } = useAbortSignal();
 
@@ -119,5 +119,3 @@ const useEsSendSøknad = (locale: LocaleAll, setKvittering: (kvittering: Kvitter
         [sendSøknad, error],
     );
 };
-
-export default useEsSendSøknad;

@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { FunctionComponent, ReactNode, useMemo, useState } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { DatePicker, HStack, VStack, useRangeDatepicker } from '@navikt/ds-react';
@@ -54,7 +54,7 @@ interface Props {
     useStrategyAbsolute?: boolean;
 }
 
-const RhfDateRangepicker: FunctionComponent<Props> = ({
+export const RhfDateRangepicker = ({
     nameFrom,
     nameTo,
     labelFrom,
@@ -66,7 +66,7 @@ const RhfDateRangepicker: FunctionComponent<Props> = ({
     defaultMonth,
     disableWeekends,
     useStrategyAbsolute = false,
-}): JSX.Element => {
+}: Props): JSX.Element => {
     const {
         formState: { errors },
     } = useFormContext();
@@ -166,5 +166,3 @@ const RhfDateRangepicker: FunctionComponent<Props> = ({
         </DatePicker>
     );
 };
-
-export default RhfDateRangepicker;

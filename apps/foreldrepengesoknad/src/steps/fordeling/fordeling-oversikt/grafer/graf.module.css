@@ -4,18 +4,18 @@
     padding-bottom: 1rem;
 }
 
-.graf__container {
+.container {
     display: flex;
 }
 
-.graf__søyle {
+.søyle {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     width: 100%;
 }
 
-.graf__del {
+.del {
     grid-row: 2;
     grid-column: 1;
     display: flex;
@@ -23,7 +23,7 @@
     align-items: center;
 }
 
-.graf__del-box {
+.delBox {
     width: 100%;
     border-width: 2px;
     border-style: solid;
@@ -32,94 +32,94 @@
     box-shadow: 0px 4px 4px 0px transparent;
 }
 
-.graf__del-tekst {
+.delTekst {
     grid-column: 1;
     display: flex;
     justify-content: center;
 }
 
-.graf__del-box:hover {
+.box:hover {
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.graf--shadow {
+.shadow {
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.graf--no-shadow {
+.noShadow {
     box-shadow: 0px 4px 4px transparent;
 }
 
-.graf--søker-mor {
+.søkerMor {
     background-color: var(--a-data-surface-1);
     border-color: var(--a-data-surface-1);
 }
 
-.graf--annen-part-mor {
+.annenPartMor {
     background-color: var(--a-data-surface-2-subtle);
     border-color: var(--a-data-surface-2-subtle);
 }
 
-.graf--søker-far {
+.søkerFar {
     background-color: var(--a-data-surface-5);
     border-color: var(--a-data-surface-5);
 }
 
-.graf--annen-part-far {
+.annenPartFar {
     background-color: var(--a-data-surface-5-subtle);
     border-color: var(--a-data-surface-5-subtle);
 }
 
-.graf--fellesperiode {
+.fellesperiode {
     background-color: var(--a-bg-subtle);
     border-color: var(--a-border-default);
 }
 
-.graf--fellesperiode-brukt-av-far {
+.fellesperiodeBruktAvFar {
     background-color: var(--a-data-surface-5-subtle);
     border-color: var(--a-border-default);
 }
 
-.graf--fellesperiode-brukt-av-mor {
+.fellesperiodeBruktAvMor {
     background-color: var(--a-data-surface-2-subtle);
     border-color: var(--a-deepblue-500);
 }
 
-.graf--fedrekvote-brukt-av-mor {
+.fedrekvoteBruktAvMor {
     background-color: var(--a-data-surface-2-subtle);
     border-color: var(--a-green-500);
 }
 
-.graf--mødrekvote-brukt-av-far {
+.mødrekvoteBruktAvFar {
     background-color: var(--a-data-surface-5-subtle);
     border-color: var(--a-data-surface-1);
 }
 
-.graf--ikke-tildelt {
+.ikkeTildelt {
     background-color: #eceef0;
     border: 2px solid var(--Surface-Neutral, #525962);
 }
 
-.graf__del-graf-box {
+.delGrafBox {
     border-width: 2px;
     border-style: solid;
     margin: 0px 2px;
 }
 
-.graf--up {
+.up {
     grid-row: 3;
 }
 
-.graf--down {
+.down {
     grid-row: 3;
 }
 
 @media (max-width: 768px) {
-    .graf--up {
+    .up {
         grid-row: 1;
     }
 
-    .graf--down {
+    .down {
         grid-row: 3;
     }
 
@@ -128,7 +128,7 @@
         flex-direction: row;
         padding-bottom: 2rem;
     }
-    .graf__del {
+    .del {
         padding: 0.2rem;
     }
 }

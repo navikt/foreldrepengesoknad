@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form';
+
 import { ErrorSummaryFp } from '@navikt/fp-ui';
 
 const findAllErrors = (errors: FieldErrors<FieldValues>): FieldErrors<FieldValues> => {
@@ -33,7 +34,7 @@ const findAllErrors = (errors: FieldErrors<FieldValues>): FieldErrors<FieldValue
     }, {});
 };
 
-const ErrorSummaryHookForm: React.FunctionComponent = () => {
+export const ErrorSummaryHookForm = () => {
     const errorRef = useRef<HTMLDivElement>(null);
 
     const {
@@ -59,5 +60,3 @@ const ErrorSummaryHookForm: React.FunctionComponent = () => {
         Object.keys(flattenAndUniqueErrors).length > 0 && <ErrorSummaryFp errorRef={errorRef} errors={mappedErrors} />
     );
 };
-
-export default ErrorSummaryHookForm;

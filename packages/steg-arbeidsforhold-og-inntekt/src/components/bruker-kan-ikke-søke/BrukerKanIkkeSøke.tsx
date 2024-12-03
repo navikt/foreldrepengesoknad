@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Alert, VStack } from '@navikt/ds-react';
 
-const BrukerKanIkkeSøke = () => {
+export const BrukerKanIkkeSøke = () => {
     return (
         <Alert variant="warning">
             <VStack gap="2">
@@ -46,5 +46,3 @@ const BrukerKanIkkeSøke = () => {
         </Alert>
     );
 };
-
-export default BrukerKanIkkeSøke;

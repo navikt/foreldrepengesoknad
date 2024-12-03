@@ -8,4 +8,4 @@ export const egenNæringMessages = {
     en: enMessages,
 };
 
-export { default as EgenNæringPanel } from './src/EgenNæringPanel';
+export { EgenNæringPanel } from './src/EgenNæringPanel';

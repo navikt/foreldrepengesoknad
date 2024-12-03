@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { fireEvent, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoutes } from 'appData/routes';
 import { applyRequestHandlers } from 'msw-storybook-addon';
 
 import { Skjemanummer } from '@navikt/fp-constants';

@@ -1,16 +1,15 @@
 import { PlanleggerRoutes } from 'appData/routes';
-import { FunctionComponent } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import ArbeidssituasjonSteg from 'steps/arbeidssituasjon/ArbeidssituasjonSteg';
-import BarnehageplassSteg from 'steps/barnehageplass/BarnehageplassSteg';
-import FordelingSteg from 'steps/fordeling/FordelingSteg';
-import HvemPlanleggerSteg from 'steps/hvem-planlegger/HvemPlanleggerSteg';
-import HvorLangPeriodeSteg from 'steps/hvor-lang-periode/HvorLangPeriodeSteg';
-import HvorMyeSteg from 'steps/hvor-mye/HvorMyeSteg';
-import OmBarnetSteg from 'steps/om-barnet/OmBarnetSteg';
-import OmPlanleggerenSteg from 'steps/om-planleggeren/OmPlanleggerenSteg';
-import OppsummeringSteg from 'steps/oppsummering/OppsummeringSteg';
-import PlanenDeresSteg from 'steps/planen-deres/PlanenDeresSteg';
+import { ArbeidssituasjonSteg } from 'steps/arbeidssituasjon/ArbeidssituasjonSteg';
+import { BarnehageplassSteg } from 'steps/barnehageplass/BarnehageplassSteg';
+import { FordelingSteg } from 'steps/fordeling/FordelingSteg';
+import { HvemPlanleggerSteg } from 'steps/hvem-planlegger/HvemPlanleggerSteg';
+import { HvorLangPeriodeSteg } from 'steps/hvor-lang-periode/HvorLangPeriodeSteg';
+import { HvorMyeSteg } from 'steps/hvor-mye/HvorMyeSteg';
+import { OmBarnetSteg } from 'steps/om-barnet/OmBarnetSteg';
+import { OmPlanleggerenSteg } from 'steps/om-planleggeren/OmPlanleggerenSteg';
+import { OppsummeringSteg } from 'steps/oppsummering/OppsummeringSteg';
+import { PlanenDeresSteg } from 'steps/planen-deres/PlanenDeresSteg';
 
 import { Loader } from '@navikt/ds-react';
 
@@ -23,7 +22,7 @@ interface Props {
     satser: Satser;
 }
 
-export const PlanleggerRouter: FunctionComponent<Props> = ({ locale, changeLocale, stønadskontoer, satser }) => {
+export const PlanleggerRouter = ({ locale, changeLocale, stønadskontoer, satser }: Props) => {
     return (
         <Routes>
             <Route path="/" element={<OmPlanleggerenSteg locale={locale} changeLocale={changeLocale} />} />

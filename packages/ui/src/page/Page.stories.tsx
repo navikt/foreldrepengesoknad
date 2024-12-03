@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import Page from './Page';
+import { Page } from './Page';
 
 const meta = {
     title: 'components/Page',

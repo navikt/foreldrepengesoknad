@@ -4,7 +4,7 @@ import { SøknadRoute, TILRETTELEGGING_PARAM } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
 import { SvpDataMapAndMetaData, useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { Loader } from '@navikt/ds-react';
@@ -29,13 +29,13 @@ import { TidligereUtenlandsoppholdSteg } from './steps/utenlandsopphold-tidliger
 import { UtenlandsoppholdSteg } from './steps/utenlandsopphold/UtenlandsoppholdSteg';
 import { VelgArbeidSteg } from './steps/velg-arbeidsforhold/VelgArbeidSteg';
 
-export const Spinner: React.FunctionComponent = () => (
+export const Spinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
         <Loader size="2xlarge" />
     </div>
 );
 
-export const ApiErrorHandler: React.FunctionComponent<{ error: Error }> = ({ error }) => {
+export const ApiErrorHandler = ({ error }: { error: Error }) => {
     return (
         <ErrorPage appName="Svangerskapspenger" errorMessage={error.message} retryCallback={() => location.reload()} />
     );
@@ -205,12 +205,7 @@ interface Props {
     mellomlagretData?: SvpDataMapAndMetaData;
 }
 
-export const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({
-    søkerInfo,
-    locale,
-    onChangeLocale,
-    mellomlagretData,
-}) => {
+export const SvangerskapspengesøknadRoutes = ({ søkerInfo, locale, onChangeLocale, mellomlagretData }: Props) => {
     const navigate = useNavigate();
 
     const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(false);

@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import HvemPlanleggerSteg from './HvemPlanleggerSteg';
+import { HvemPlanleggerSteg } from './HvemPlanleggerSteg';
 
 type StoryArgs = {
     gåTilNesteSide?: (action: Action) => void;

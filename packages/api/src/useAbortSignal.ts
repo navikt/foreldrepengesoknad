@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-const useAbortSignal = () => {
+export const useAbortSignal = () => {
     const abortControllerRef = useRef<AbortController | null>(null);
 
     useEffect(
@@ -25,5 +25,3 @@ const useAbortSignal = () => {
 
     return { initAbortSignal };
 };
-
-export default useAbortSignal;

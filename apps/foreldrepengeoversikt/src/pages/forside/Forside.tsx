@@ -15,7 +15,7 @@ import {
 } from './../../hooks/useRedirectedFromSøknadsnummer';
 import { useSetSelectedRoute } from './../../hooks/useSelectedRoute';
 import { PageRouteLayout } from './../../routes/ForeldrepengeoversiktRoutes';
-import OversiktRoutes from './../../routes/routes';
+import { OversiktRoutes } from './../../routes/routes';
 import { RedirectSource, UKNOWN_SAKSNUMMER } from './../../types/RedirectSource';
 import { SakOppslag } from './../../types/SakOppslag';
 import { SøkerinfoDTO } from './../../types/SøkerinfoDTO';

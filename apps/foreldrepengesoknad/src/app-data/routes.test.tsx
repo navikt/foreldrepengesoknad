@@ -1,6 +1,6 @@
 import { Forelder, Periode, Periodetype, StønadskontoType } from '@navikt/fp-common';
 
-import SøknadRoutes, { isRouteAvailable } from './routes';
+import { SøknadRoutes, isRouteAvailable } from './routes';
 
 describe('<routes>', () => {
     it('skal vere tilgjengelig når rute er SØKERSITUASJON og en har godkjent vilkår', () => {

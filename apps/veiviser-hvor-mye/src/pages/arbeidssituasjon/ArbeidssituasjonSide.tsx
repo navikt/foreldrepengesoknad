@@ -1,8 +1,7 @@
 import { InformationIcon, PaperplaneIcon, WalletIcon } from '@navikt/aksel-icons';
 import { HvorMyeRoutes } from 'appData/routes';
-import useVeiviserNavigator from 'appData/useVeiviserNavigator';
+import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
@@ -16,8 +15,8 @@ import { BluePanel, Infobox, VeiviserPage } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr, useScrollBehaviour } from '@navikt/fp-utils';
 import { isValidNumber, isValidNumberForm } from '@navikt/fp-validation';
 
-import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
-import HøyInntektInfobox from '../felles/HøyInntektInfobox';
+import { HarIkkeRettTilFpInfobox } from '../felles/HarIkkeRettTilFpInfobox';
+import { HøyInntektInfobox } from '../felles/HøyInntektInfobox';
 import styles from './arbeidssituasjonSide.module.css';
 
 export type Arbeidssituasjon = {
@@ -58,7 +57,7 @@ interface Props {
     satser: Satser;
 }
 
-const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setArbeidssituasjon, satser }) => {
+export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, satser }: Props) => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator();
 
@@ -278,5 +277,3 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
         </VeiviserPage>
     );
 };
-
-export default ArbeidssituasjonSide;

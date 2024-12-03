@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, FpDataContext } from 'appData/FpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType'
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Søker, SøkerBarn } from '@navikt/fp-types';
 
-import Forside from './Forside';
+import { Forside } from './Forside';
 
 const promiseAction =
     () =>
@@ -216,13 +216,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        fornavn: 'Espen',
         harGodkjentVilkår: false,
         saker: [],
         søkerInfo: { søker: defaultPerson, arbeidsforhold: [] },
         onChangeLocale: () => undefined,
         locale: 'nb',
-        fnr: '123',
         setErEndringssøknad: action('button-click'),
         setHarGodkjentVilkår: action('button-click'),
         setSøknadGjelderNyttBarn: action('button-click'),

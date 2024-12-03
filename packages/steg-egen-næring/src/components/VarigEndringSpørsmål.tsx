@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, Radio, ReadMore } from '@navikt/ds-react';
@@ -31,12 +30,7 @@ interface Props {
     stønadstype: AppName;
 }
 
-const VarigEndringSpørsmål: FunctionComponent<Props> = ({
-    egenNæringFom,
-    egenNæringTom,
-    varigEndring,
-    stønadstype,
-}) => {
+export const VarigEndringSpørsmål = ({ egenNæringFom, egenNæringTom, varigEndring, stønadstype }: Props) => {
     const intl = useIntl();
 
     return (
@@ -132,5 +126,3 @@ const VarigEndringSpørsmål: FunctionComponent<Props> = ({
         </>
     );
 };
-
-export default VarigEndringSpørsmål;

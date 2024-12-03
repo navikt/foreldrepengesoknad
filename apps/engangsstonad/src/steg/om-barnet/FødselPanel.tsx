@@ -19,7 +19,7 @@ export type FormValues = {
     antallBarnDropDown?: string;
 } & Fødsel;
 
-const FødselPanel: React.FunctionComponent = () => {
+export const FødselPanel = () => {
     const intl = useIntl();
 
     const { watch } = useFormContext<FormValues>();
@@ -132,5 +132,3 @@ const FødselPanel: React.FunctionComponent = () => {
         </>
     );
 };
-
-export default FødselPanel;

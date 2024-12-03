@@ -11,7 +11,7 @@ interface Props {
     dagerMedFellesperiode: number;
 }
 
-const FordelingValg: React.FunctionComponent<Props> = ({ dagerMedFellesperiode }) => {
+export const FordelingValg = ({ dagerMedFellesperiode }: Props) => {
     const intl = useIntl();
     return (
         <RhfRadioGroup
@@ -45,5 +45,3 @@ const FordelingValg: React.FunctionComponent<Props> = ({ dagerMedFellesperiode }
         </RhfRadioGroup>
     );
 };
-
-export default FordelingValg;

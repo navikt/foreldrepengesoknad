@@ -1,0 +1,13 @@
+.stepButtonWrapper {
+    gap: 0 0.5rem;
+    display: flex;
+    width: 100%;
+}
+
+.stepButtonWrapper > a {
+    width: 50%;
+}
+
+.stepButtonWrapper > button {
+    width: 50%;
+}

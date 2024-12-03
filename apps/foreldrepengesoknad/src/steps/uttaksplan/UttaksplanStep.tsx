@@ -1,29 +1,29 @@
 import * as Sentry from '@sentry/browser';
 import { useQuery } from '@tanstack/react-query';
-import getStønadskontoParams, { getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter } from 'api/getStønadskontoParams';
+import { getAntallBarnSomSkalBrukesFraSaksgrunnlagBeggeParter, getStønadskontoParams } from 'api/getStønadskontoParams';
 import { ContextDataType, useContextComplete, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import {
     annenPartVedtakOptions,
     nesteSakAnnenPartVedtakOptions,
     tilgjengeligeStønadskontoerOptions,
 } from 'appData/api';
-import SøknadRoutes from 'appData/routes';
-import useFpNavigator from 'appData/useFpNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { SøknadRoutes } from 'appData/routes';
+import { useFpNavigator } from 'appData/useFpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import dayjs from 'dayjs';
 import { FormikValues } from 'formik';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'steps/uttaksplan/UttaksplanFormConfig';
-import InfoOmNesteBarn from 'steps/uttaksplan/components/info-om-neste-barn/InfoOmNesteBarn';
+import { InfoOmNesteBarn } from 'steps/uttaksplan/components/info-om-neste-barn/InfoOmNesteBarn';
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getErMorUfør } from 'utils/annenForelderUtils';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { ISOStringToDate, dateToISOString, getEndringstidspunkt } from 'utils/dateUtils';
 import { getStartdatoFørstePeriodeAnnenPart, mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
-import useDebounce from 'utils/hooks/useDebounce';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { useDebounce } from 'utils/hooks/useDebounce';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import {
     getFarMedmorErAleneOmOmsorg,
     getKjønnFromFnr,
@@ -63,15 +63,15 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { getSamtidigUttaksprosent } from '../../utils/uttaksplanInfoUtils';
 import { getUttaksplanFormInitialValues } from './UttaksplanFormUtils';
-import AutomatiskJusteringForm from './automatisk-justering-form/AutomatiskJusteringForm';
+import { AutomatiskJusteringForm } from './automatisk-justering-form/AutomatiskJusteringForm';
 import {
     getKanPerioderRundtFødselAutomatiskJusteres,
     getKanSøkersituasjonAutomatiskJustereRundtFødsel,
 } from './automatisk-justering-form/automatiskJusteringUtils';
-import StepButtonWrapper from './components/StepButtonWrapper';
-import VilDuGåTilbakeModal from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
+import { StepButtonWrapper } from './components/StepButtonWrapper';
+import { VilDuGåTilbakeModal } from './components/vil-du-gå-tilbake-modal/VilDuGåTilbakeModal';
 import { lagUttaksplanForslag } from './lagUttaksplanForslag';
-import uttaksplanQuestionsConfig from './uttaksplanQuestionConfig';
+import { uttaksplanQuestionsConfig } from './uttaksplanQuestionConfig';
 
 const EMPTY_PERIOD_ARRAY: Periode[] = [];
 
@@ -82,12 +82,7 @@ type Props = {
     avbrytSøknad: () => void;
 };
 
-const UttaksplanStep: React.FunctionComponent<Props> = ({
-    søkerInfo,
-    erEndringssøknad,
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-}) => {
+export const UttaksplanStep = ({ søkerInfo, erEndringssøknad, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
@@ -645,7 +640,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                                     søkerInfo.arbeidsforhold,
                                     erAdopsjon,
                                     erFarEllerMedmor,
-                                    ISOStringToDate(familiehendelsesdato),
+                                    familiehendelsesdato,
                                 )}
                                 erEndringssøknad={erEndringssøknad}
                                 erFarEllerMedmor={erFarEllerMedmor}
@@ -698,7 +693,7 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
                                     <FormattedMessage id="uttaksplan.validering.kanIkkeGåVidereEndringssøknad" />
                                 </Alert>
                             )}
-                            <StepButtonWrapper singleButton={true}>
+                            <StepButtonWrapper>
                                 {!erEndringssøknad && (
                                     <Button
                                         variant="secondary"
@@ -730,4 +725,3 @@ const UttaksplanStep: React.FunctionComponent<Props> = ({
         />
     );
 };
-export default UttaksplanStep;

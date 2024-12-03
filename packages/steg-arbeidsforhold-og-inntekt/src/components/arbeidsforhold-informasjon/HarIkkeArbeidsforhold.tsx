@@ -1,4 +1,3 @@
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Alert } from '@navikt/ds-react';
@@ -7,7 +6,7 @@ interface Props {
     harArbeidsforhold: boolean;
 }
 
-const HarIkkeArbeidsforhold: FunctionComponent<Props> = ({ harArbeidsforhold }) => {
+export const HarIkkeArbeidsforhold = ({ harArbeidsforhold }: Props) => {
     if (harArbeidsforhold) {
         return null;
     }
@@ -18,5 +17,3 @@ const HarIkkeArbeidsforhold: FunctionComponent<Props> = ({ harArbeidsforhold }) 
         </Alert>
     );
 };
-
-export default HarIkkeArbeidsforhold;

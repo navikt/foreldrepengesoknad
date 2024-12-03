@@ -8,7 +8,7 @@ export const utenlandsoppholdMessages = {
     en: enMessages,
 };
 
-export { default as UtenlandsoppholdPanel } from './src/utenlandsopphold/UtenlandsoppholdPanel';
-export { default as SenereUtenlandsoppholdPanel } from './src/utenlandsopphold-senere/SenereUtenlandsoppholdPanel';
-export { default as TidligereUtenlandsoppholdPanel } from './src/utenlandsopphold-tidligere/TidligereUtenlandsoppholdPanel';
+export { UtenlandsoppholdPanel } from './src/utenlandsopphold/UtenlandsoppholdPanel';
+export { SenereUtenlandsoppholdPanel } from './src/utenlandsopphold-senere/SenereUtenlandsoppholdPanel';
+export { TidligereUtenlandsoppholdPanel } from './src/utenlandsopphold-tidligere/TidligereUtenlandsoppholdPanel';
 export { mapUtenlandsOppholdForInnsending } from './src/utils';

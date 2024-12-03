@@ -4,7 +4,7 @@ import { BodyLong, ExpansionCard, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 
-const InfoOmFørstegangstjeneste = () => {
+export const InfoOmFørstegangstjeneste = () => {
     return (
         <ExpansionCard size="small" aria-label="Informasjon til deg som er i førstegangstjenesten">
             <ExpansionCard.Header>
@@ -44,5 +44,3 @@ const InfoOmFørstegangstjeneste = () => {
         </ExpansionCard>
     );
 };
-
-export default InfoOmFørstegangstjeneste;

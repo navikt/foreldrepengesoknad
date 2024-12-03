@@ -45,7 +45,7 @@ import {
 } from './dateUtils';
 import { getFamiliehendelseType } from './familiehendelseUtils';
 import { guid } from './guid';
-import mapSaksperioderTilUttaksperioder from './mapSaksperioderTilUttaksperioder';
+import { mapSaksperioderTilUttaksperioder } from './mapSaksperioderTilUttaksperioder';
 import { getKjønnFromFnrString } from './personUtils';
 
 export const getArbeidsformFromUttakArbeidstype = (arbeidstype: UttakArbeidType): Arbeidsform => {

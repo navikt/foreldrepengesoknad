@@ -12,11 +12,11 @@ import { BodyLong, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
-import DetteKanIkkeEndres from './DetteKanIkkeEndres';
-import FarFellesperiode from './FarFellesperiode';
-import JobbeSamtidig from './JobbeSamtidig';
-import LeggeTilFerie from './LeggeTilFerie';
-import PermisjonSamtidig from './PermisjonSamtidig';
+import { DetteKanIkkeEndres } from './DetteKanIkkeEndres';
+import { FarFellesperiode } from './FarFellesperiode';
+import { JobbeSamtidig } from './JobbeSamtidig';
+import { LeggeTilFerie } from './LeggeTilFerie';
+import { PermisjonSamtidig } from './PermisjonSamtidig';
 
 const onToggleExpansionCard = (open: boolean) => {
     if (open) {
@@ -33,7 +33,8 @@ interface Props {
     arbeidssituasjon: Arbeidssituasjon;
     barnet: OmBarnet;
 }
-const HvaErMulig: React.FunctionComponent<Props> = ({ hvemPlanlegger, arbeidssituasjon, barnet }) => {
+
+export const HvaErMulig = ({ hvemPlanlegger, arbeidssituasjon, barnet }: Props) => {
     const erAlene = erAlenesøker(hvemPlanlegger);
     const erFedre = erFarOgFar(hvemPlanlegger);
 
@@ -91,5 +92,3 @@ const HvaErMulig: React.FunctionComponent<Props> = ({ hvemPlanlegger, arbeidssit
         </ExpansionCard>
     );
 };
-
-export default HvaErMulig;

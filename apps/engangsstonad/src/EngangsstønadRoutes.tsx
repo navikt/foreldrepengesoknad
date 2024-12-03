@@ -1,8 +1,8 @@
 import Environment from 'appData/Environment';
 import { ContextDataType } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
-import useEsMellomlagring, { EsDataMapAndMetaData } from 'appData/useEsMellomlagring';
-import useEsSendSøknad from 'appData/useEsSendSøknad';
+import { EsDataMapAndMetaData, useEsMellomlagring } from 'appData/useEsMellomlagring';
+import { useEsSendSøknad } from 'appData/useEsSendSøknad';
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
@@ -12,16 +12,16 @@ import { Kvittering, LocaleAll, Søker } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 import { redirect } from '@navikt/fp-utils';
 
-import DokumentasjonSteg from './steg/dokumentasjon/DokumentasjonSteg';
-import OmBarnetSteg from './steg/om-barnet/OmBarnetSteg';
-import OppsummeringSteg from './steg/oppsummering/OppsummeringSteg';
-import SøkersituasjonSteg from './steg/sokersituasjon/SøkersituasjonSteg';
-import SenereUtenlandsoppholdSteg from './steg/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
-import TidligereUtenlandsoppholdSteg from './steg/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
-import UtenlandsoppholdSteg from './steg/utenlandsopphold/UtenlandsoppholdSteg';
-import Velkommen from './velkommen/Velkommen';
+import { DokumentasjonSteg } from './steg/dokumentasjon/DokumentasjonSteg';
+import { OmBarnetSteg } from './steg/om-barnet/OmBarnetSteg';
+import { OppsummeringSteg } from './steg/oppsummering/OppsummeringSteg';
+import { SøkersituasjonSteg } from './steg/sokersituasjon/SøkersituasjonSteg';
+import { SenereUtenlandsoppholdSteg } from './steg/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
+import { TidligereUtenlandsoppholdSteg } from './steg/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
+import { UtenlandsoppholdSteg } from './steg/utenlandsopphold/UtenlandsoppholdSteg';
+import { Velkommen } from './velkommen/Velkommen';
 
-export const Spinner: React.FunctionComponent = () => (
+export const Spinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
         <Loader size="2xlarge" />
     </div>
