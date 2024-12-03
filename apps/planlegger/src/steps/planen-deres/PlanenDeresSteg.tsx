@@ -71,6 +71,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
 
     const lagreFordeling = useContextSaveData(ContextDataType.FORDELING);
     const lagreHvorLangPeriode = notEmpty(useContextSaveData(ContextDataType.HVOR_LANG_PERIODE));
+    const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
     const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
     const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
@@ -269,7 +270,10 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                                 <Button
                                     variant="primary"
                                     type="button"
-                                    onClick={() => navigator.goToNextStep(PlanleggerRoutes.TILPASS_PLANEN)}
+                                    onClick={() => {
+                                        lagreUttaksplan(planforslag.søker1);
+                                        navigator.goToNextStep(PlanleggerRoutes.TILPASS_PLANEN);
+                                    }}
                                 >
                                     <BodyShort size="small">
                                         <FormattedMessage id="OversiktSteg.Infoboks.TilpassPlanen" />
@@ -292,7 +296,10 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                     </VStack>
                     <StepButtons
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        nextButtonOnClick={navigator.goToNextDefaultStep}
+                        nextButtonOnClick={() => {
+                            lagreUttaksplan(planforslag.søker1);
+                            navigator.goToNextDefaultStep();
+                        }}
                         useSimplifiedTexts
                     />
                 </VStack>

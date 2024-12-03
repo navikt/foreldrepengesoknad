@@ -1,5 +1,5 @@
 import { ArrowRedoIcon, TrashIcon } from '@navikt/aksel-icons';
-import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
+import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
 import useStepData from 'appData/useStepData';
 import CalendarLabels from 'components/labels/CalendarLabels';
@@ -13,7 +13,7 @@ import { getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
 
 import { Button, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { LocaleAll, SaksperiodeNy, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
@@ -46,6 +46,8 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
 
+    const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
+
     const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
     const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
 
@@ -74,6 +76,10 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
         erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
         erAleneOmOmsorg: hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.MOR,
     });
+
+    const handleOnPlanChange = (perioder: SaksperiodeNy[]) => {
+        lagreUttaksplan(perioder);
+    };
 
     return (
         <form>
@@ -109,7 +115,7 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
                                 søkersPerioder={planforslag.søker1}
                                 annenPartsPerioder={planforslag.søker2}
                                 barn={mapOmBarnetTilBarn(omBarnet)}
-                                handleOnPlanChange={() => {}}
+                                handleOnPlanChange={handleOnPlanChange}
                             />
                         )}
                     </VStack>
