@@ -82,90 +82,84 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
     };
 
     return (
-        <form>
-            <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
-                <VStack gap="6">
-                    <Heading size="medium" spacing level="2">
-                        <FormattedMessage id="TilpassPlanenSteg.Tittel" values={{ erAleneforsørger }} />
-                    </Heading>
+        <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
+            <VStack gap="6">
+                <Heading size="medium" spacing level="2">
+                    <FormattedMessage id="TilpassPlanenSteg.Tittel" values={{ erAleneforsørger }} />
+                </Heading>
 
-                    <VStack gap="5">
-                        <HvaErMulig
-                            hvemPlanlegger={hvemPlanlegger}
-                            arbeidssituasjon={arbeidssituasjon}
-                            barnet={omBarnet}
+                <VStack gap="5">
+                    <HvaErMulig hvemPlanlegger={hvemPlanlegger} arbeidssituasjon={arbeidssituasjon} barnet={omBarnet} />
+
+                    <VStack gap="10">
+                        <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
+                    </VStack>
+                    {visningsmodus === 'liste' && (
+                        <UttaksplanNy
+                            familiehendelsedato={familiehendelsedato}
+                            bareFarHarRett={bareFarMedmorHarRett}
+                            erFarEllerMedmor={false}
+                            familiesituasjon={familiesituasjon}
+                            gjelderAdopsjon={familiesituasjon === 'adopsjon'}
+                            navnPåForeldre={{
+                                farMedmor: getNavnPåSøker2(hvemPlanlegger, intl) || 'Annen forelder',
+                                mor: getNavnPåSøker1(hvemPlanlegger, intl),
+                            }}
+                            førsteUttaksdagNesteBarnsSak={undefined}
+                            harAktivitetskravIPeriodeUtenUttak={false}
+                            søkersPerioder={planforslag.søker1}
+                            annenPartsPerioder={planforslag.søker2}
+                            barn={mapOmBarnetTilBarn(omBarnet)}
+                            handleOnPlanChange={handleOnPlanChange}
                         />
+                    )}
+                </VStack>
 
-                        <VStack gap="10">
-                            <PlanvisningToggle setVisningsmodus={setVisningsmodus} />
-                        </VStack>
-                        {visningsmodus === 'liste' && (
-                            <UttaksplanNy
-                                familiehendelsedato={familiehendelsedato}
+                <VStack gap="5">
+                    {visningsmodus === 'kalender' && (
+                        <div className={styles.calendar}>
+                            <UttaksplanKalender
                                 bareFarHarRett={bareFarMedmorHarRett}
-                                erFarEllerMedmor={false}
-                                familiesituasjon={familiesituasjon}
-                                gjelderAdopsjon={familiesituasjon === 'adopsjon'}
-                                navnPåForeldre={{
-                                    farMedmor: getNavnPåSøker2(hvemPlanlegger, intl) || 'Annen forelder',
-                                    mor: getNavnPåSøker1(hvemPlanlegger, intl),
-                                }}
-                                førsteUttaksdagNesteBarnsSak={undefined}
+                                erFarEllerMedmor={erFarEllerMedmor}
                                 harAktivitetskravIPeriodeUtenUttak={false}
                                 søkersPerioder={planforslag.søker1}
                                 annenPartsPerioder={planforslag.søker2}
+                                navnAnnenPart="Test"
                                 barn={mapOmBarnetTilBarn(omBarnet)}
-                                handleOnPlanChange={handleOnPlanChange}
+                                planleggerLegend={
+                                    <CalendarLabels
+                                        hvemPlanlegger={hvemPlanlegger}
+                                        barnet={omBarnet}
+                                        hvemHarRett={hvemHarRett}
+                                    />
+                                }
                             />
-                        )}
-                    </VStack>
-
-                    <VStack gap="5">
-                        {visningsmodus === 'kalender' && (
-                            <div className={styles.calendar}>
-                                <UttaksplanKalender
-                                    bareFarHarRett={bareFarMedmorHarRett}
-                                    erFarEllerMedmor={erFarEllerMedmor}
-                                    harAktivitetskravIPeriodeUtenUttak={false}
-                                    søkersPerioder={planforslag.søker1}
-                                    annenPartsPerioder={planforslag.søker2}
-                                    navnAnnenPart="Test"
-                                    barn={mapOmBarnetTilBarn(omBarnet)}
-                                    planleggerLegend={
-                                        <CalendarLabels
-                                            hvemPlanlegger={hvemPlanlegger}
-                                            barnet={omBarnet}
-                                            hvemHarRett={hvemHarRett}
-                                        />
-                                    }
-                                />
-                            </div>
-                        )}
-                        <HStack gap="4">
-                            <Button
-                                size="xsmall"
-                                variant="secondary"
-                                icon={<ArrowRedoIcon aria-hidden height={24} width={24} />}
-                            >
-                                <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
-                            </Button>
-                            <Button
-                                size="xsmall"
-                                variant="secondary"
-                                icon={<TrashIcon aria-hidden height={24} width={24} />}
-                            >
-                                <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
-                            </Button>
-                        </HStack>
-                    </VStack>
-                    <StepButtons
-                        goToPreviousStep={navigator.goToPreviousDefaultStep}
-                        nextButtonOnClick={navigator.goToNextDefaultStep}
-                        useSimplifiedTexts
-                    />
+                        </div>
+                    )}
+                    <HStack gap="4">
+                        <Button
+                            size="xsmall"
+                            variant="secondary"
+                            icon={<ArrowRedoIcon aria-hidden height={24} width={24} />}
+                        >
+                            <FormattedMessage id="TilpassPlanenSteg.Tilbakestill" />
+                        </Button>
+                        <Button
+                            size="xsmall"
+                            variant="secondary"
+                            icon={<TrashIcon aria-hidden height={24} width={24} />}
+                        >
+                            <FormattedMessage id="TilpassPlanenSteg.FjernAlt" />
+                        </Button>
+                    </HStack>
                 </VStack>
-            </PlanleggerStepPage>
-        </form>
+                <StepButtons
+                    goToPreviousStep={navigator.goToPreviousDefaultStep}
+                    nextButtonOnClick={navigator.goToNextDefaultStep}
+                    useSimplifiedTexts
+                />
+            </VStack>
+        </PlanleggerStepPage>
     );
 };
 
