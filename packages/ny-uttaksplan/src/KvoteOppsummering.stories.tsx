@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 
 import { Forelder, RettighetType } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
-import { OppholdÅrsakType, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import { MorsAktivitet, OppholdÅrsakType, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import { KvoteOppsummering } from '.';
 
@@ -13,7 +13,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const konto = {
+const kontoNårBeggeHarRett = {
     kontoer: [
         {
             konto: StønadskontoType.Fellesperiode,
@@ -44,7 +44,7 @@ const konto = {
 
 export const BeggeRettMorIngenDagerBrukt: Story = {
     args: {
-        konto,
+        konto: kontoNårBeggeHarRett,
         perioder: [],
         rettighetType: RettighetType.BEGGE_RETT,
         forelder: Forelder.mor,
@@ -53,7 +53,7 @@ export const BeggeRettMorIngenDagerBrukt: Story = {
 
 export const BeggeRettMorAlleDagerBrukt: Story = {
     args: {
-        konto,
+        konto: kontoNårBeggeHarRett,
         perioder: [
             {
                 fom: '2024-11-18',
@@ -105,7 +105,7 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
 
 export const BeggeRettMorLedigeDager: Story = {
     args: {
-        konto,
+        konto: kontoNårBeggeHarRett,
         perioder: [
             {
                 fom: '2024-11-18',
@@ -152,5 +152,78 @@ export const BeggeRettMorLedigeDager: Story = {
         ],
         rettighetType: RettighetType.BEGGE_RETT,
         forelder: Forelder.mor,
+    },
+};
+
+const kontoNårEnHarRett = {
+    kontoer: [
+        {
+            konto: StønadskontoType.AktivitetsfriKvote,
+            dager: 50,
+        },
+        {
+            konto: StønadskontoType.Foreldrepenger,
+            dager: 150,
+        },
+    ],
+    minsteretter: {
+        farRundtFødsel: 10,
+        toTette: 0,
+    },
+    tillegg: {
+        flerbarn: 0,
+        prematur: 0,
+    },
+} satisfies TilgjengeligeStønadskontoerForDekningsgrad;
+
+export const EnRettFarAlleDagerBrukt: Story = {
+    args: {
+        konto: kontoNårEnHarRett,
+        perioder: [
+            {
+                fom: '2024-12-06',
+                tom: '2025-02-13',
+                kontoType: StønadskontoType.Foreldrepenger,
+                morsAktivitet: MorsAktivitet.IkkeOppgitt,
+                flerbarnsdager: false,
+                forelder: Forelder.farMedmor,
+            },
+            {
+                fom: '2025-02-14',
+                tom: '2025-09-11',
+                kontoType: StønadskontoType.Foreldrepenger,
+                morsAktivitet: MorsAktivitet.Arbeid,
+                flerbarnsdager: false,
+                forelder: Forelder.farMedmor,
+            },
+        ],
+        rettighetType: RettighetType.BARE_SØKER_RETT,
+        forelder: Forelder.farMedmor,
+    },
+};
+
+export const EnRettFarLedigeDager: Story = {
+    args: {
+        konto: kontoNårEnHarRett,
+        perioder: [
+            {
+                fom: '2024-12-06',
+                tom: '2025-02-06',
+                kontoType: StønadskontoType.Foreldrepenger,
+                morsAktivitet: MorsAktivitet.IkkeOppgitt,
+                flerbarnsdager: false,
+                forelder: Forelder.farMedmor,
+            },
+            {
+                fom: '2025-02-14',
+                tom: '2025-09-04',
+                kontoType: StønadskontoType.Foreldrepenger,
+                morsAktivitet: MorsAktivitet.Arbeid,
+                flerbarnsdager: false,
+                forelder: Forelder.farMedmor,
+            },
+        ],
+        rettighetType: RettighetType.BARE_SØKER_RETT,
+        forelder: Forelder.farMedmor,
     },
 };

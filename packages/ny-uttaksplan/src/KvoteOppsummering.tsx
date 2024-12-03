@@ -76,7 +76,6 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
     const totaltTilgjengeligeDager = sumBy([fpKonto, aktivitetsfriKonto, førFødselKonto], (k) => k?.dager ?? 0);
 
     const antallUbrukteDager = totaltTilgjengeligeDager - dagerBrukt;
-
     if (antallUbrukteDager === 0) {
         return (
             <ExpansionCard.Header>
