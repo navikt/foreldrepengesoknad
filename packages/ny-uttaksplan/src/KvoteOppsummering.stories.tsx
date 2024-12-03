@@ -155,7 +155,7 @@ export const BeggeRettMorLedigeDager: Story = {
     },
 };
 
-const kontoNårEnHarRett = {
+const kontoNårBareFarHarRett = {
     kontoer: [
         {
             konto: StønadskontoType.AktivitetsfriKvote,
@@ -178,7 +178,7 @@ const kontoNårEnHarRett = {
 
 export const EnRettFarAlleDagerBrukt: Story = {
     args: {
-        konto: kontoNårEnHarRett,
+        konto: kontoNårBareFarHarRett,
         perioder: [
             {
                 fom: '2024-12-06',
@@ -204,7 +204,7 @@ export const EnRettFarAlleDagerBrukt: Story = {
 
 export const EnRettFarLedigeDager: Story = {
     args: {
-        konto: kontoNårEnHarRett,
+        konto: kontoNårBareFarHarRett,
         perioder: [
             {
                 fom: '2024-12-06',
@@ -225,5 +225,74 @@ export const EnRettFarLedigeDager: Story = {
         ],
         rettighetType: RettighetType.BARE_SØKER_RETT,
         forelder: Forelder.farMedmor,
+    },
+};
+
+const kontoNårBareMorHarRett = {
+    kontoer: [
+        {
+            konto: StønadskontoType.Foreldrepenger,
+            dager: 230,
+        },
+        {
+            konto: StønadskontoType.ForeldrepengerFørFødsel,
+            dager: 15,
+        },
+    ],
+    minsteretter: {
+        farRundtFødsel: 0,
+        toTette: 0,
+    },
+    tillegg: {
+        flerbarn: 0,
+        prematur: 0,
+    },
+} satisfies TilgjengeligeStønadskontoerForDekningsgrad;
+
+export const EnRettMorAlleDagerBrukt: Story = {
+    args: {
+        konto: kontoNårBareMorHarRett,
+        perioder: [
+            {
+                fom: '2024-11-19',
+                tom: '2024-12-09',
+                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2024-12-10',
+                tom: '2025-10-27',
+                kontoType: StønadskontoType.Foreldrepenger,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+        ],
+        rettighetType: RettighetType.BARE_SØKER_RETT,
+        forelder: Forelder.mor,
+    },
+};
+
+export const EnRettMorLedigeDager: Story = {
+    args: {
+        konto: kontoNårBareMorHarRett,
+        perioder: [
+            {
+                fom: '2024-11-19',
+                tom: '2024-12-01',
+                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2024-12-10',
+                tom: '2025-10-13',
+                kontoType: StønadskontoType.Foreldrepenger,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+        ],
+        rettighetType: RettighetType.BARE_SØKER_RETT,
+        forelder: Forelder.mor,
     },
 };
