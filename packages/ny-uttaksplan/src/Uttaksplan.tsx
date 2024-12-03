@@ -24,7 +24,7 @@ interface Props {
     harAktivitetskravIPeriodeUtenUttak: boolean;
     førsteUttaksdagNesteBarnsSak: string | undefined;
     familiesituasjon: Familiesituasjon;
-    handleOnPlanChange: (perioder: Planperiode[]) => void;
+    handleOnPlanChange: (perioder: SaksperiodeNy[]) => void;
 }
 
 const UttaksplanNy: FunctionComponent<Props> = ({
@@ -92,7 +92,13 @@ const UttaksplanNy: FunctionComponent<Props> = ({
     const handleUpdatePeriode = (oppdatertPeriode: Planperiode) => {
         const result = builder.oppdaterPeriode(oppdatertPeriode);
 
-        handleOnPlanChange(result);
+        const saksPerioder = result.map((r) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
+            const { id, periodeHullÅrsak, gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = r;
+            return saksPeriodeNy;
+        });
+
+        handleOnPlanChange(saksPerioder);
     };
 
     return (

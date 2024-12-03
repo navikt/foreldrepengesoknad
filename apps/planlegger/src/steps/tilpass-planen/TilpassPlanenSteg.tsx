@@ -78,6 +78,7 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
     });
 
     const handleOnPlanChange = (perioder: SaksperiodeNy[]) => {
+        console.log(perioder);
         lagreUttaksplan(perioder);
     };
 
