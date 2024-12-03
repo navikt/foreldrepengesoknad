@@ -85,7 +85,7 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
                 </ExpansionCard.Title>
                 <ExpansionCard.Description>
                     <FormattedMessage
-                        id="kvote.tittel.beskrivelse.tidBrukt"
+                        id="kvote.enRett.beskrivelse.allTidIPlan"
                         values={{ varighet: getVarighetString(dagerBrukt, intl) }}
                     />
                 </ExpansionCard.Description>
@@ -97,12 +97,12 @@ const KvoteTittelKunEnHarForeldrepenger = () => {
         <ExpansionCard.Header>
             <ExpansionCard.Title size="small">
                 <FormattedMessage
-                    id="kvote.tittel.beskrivelse.tidIgjen"
+                    id="kvote.beskrivelse.gjenståendeTid"
                     values={{ varighet: getVarighetString(antallUbrukteDager, intl) }}
                 />
             </ExpansionCard.Title>
             <ExpansionCard.Description>
-                <FormattedMessage id="kvote.tittel.beskrivelse.endre" />
+                <FormattedMessage id="kvote.beskrivelse.endre" />
             </ExpansionCard.Description>
         </ExpansionCard.Header>
     );
@@ -169,7 +169,7 @@ const KvoteTittel = () => {
                 </ExpansionCard.Title>
                 <ExpansionCard.Description>
                     <FormattedMessage
-                        id="kvote.tittel.beskrivelse.felles"
+                        id="kvote.beskrivelse.allTidIPlan"
                         values={{
                             varighet: formatOppramsing(
                                 [beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean),
@@ -214,7 +214,7 @@ const KvoteTittel = () => {
             </ExpansionCard.Title>
             <ExpansionCard.Description>
                 <FormattedMessage
-                    id="kvote.tittel.beskrivelse.felles"
+                    id="kvote.beskrivelse.gjenståendeTid"
                     values={{
                         varighet: formatOppramsing(
                             [beskrivelseFelles, beskrivelseMor, beskrivelseFar].filter(Boolean),
@@ -222,7 +222,7 @@ const KvoteTittel = () => {
                         ),
                     }}
                 />{' '}
-                <FormattedMessage id="kvote.tittel.beskrivelse.endre" />
+                <FormattedMessage id="kvote.beskrivelse.endre" />
             </ExpansionCard.Description>
         </ExpansionCard.Header>
     );
@@ -386,7 +386,7 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
                         ubrukteDager > 0
                             ? intl.formatMessage(
                                   { id: 'kvote.varighet.gjenstår' },
-                                  { varighet: getVarighetString(dagerBrukt, intl) },
+                                  { varighet: getVarighetString(ubrukteDager, intl) },
                               )
                             : '',
                     ]
@@ -395,12 +395,6 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
                 </BodyShort>
             </VStack>
         </VStack>
-    );
-};
-
-const summerDagerIPerioder = (perioder: SaksperiodeNy[]) => {
-    return sum(
-        perioder.map((p) => Tidsperioden({ fom: new Date(p.fom), tom: new Date(p.tom) }).getAntallUttaksdager()),
     );
 };
 
@@ -479,6 +473,12 @@ const FordelingSegment = ({ kontoType, prosent, erFyllt = true }: FordelingSegme
     }
 
     return <div className="rounded-full h-4 border-2 bg-bg-default border-surface-neutral-hover" style={style} />;
+};
+
+const summerDagerIPerioder = (perioder: SaksperiodeNy[]) => {
+    return sum(
+        perioder.map((p) => Tidsperioden({ fom: new Date(p.fom), tom: new Date(p.tom) }).getAntallUttaksdager()),
+    );
 };
 
 const finnVisningsnavForKvote = (kontoType: StønadskontoType) => {
