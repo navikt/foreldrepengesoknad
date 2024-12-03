@@ -4,7 +4,7 @@ import { Forelder, RettighetType } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { MorsAktivitet, OppholdÅrsakType, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
-import { KvoteOppsummering } from './KvoteOppsummering';
+import { KvoteOppsummering } from '.';
 
 const meta = {
     component: KvoteOppsummering,
