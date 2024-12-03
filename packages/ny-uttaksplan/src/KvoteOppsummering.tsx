@@ -441,12 +441,6 @@ const FordelingSegment = ({ kontoType, prosent, erFyllt = true }: FordelingSegme
                 />
             );
         }
-        return (
-            <div
-                className={`rounded-full h-4 border-2 ${erFyllt ? 'bg-deepblue-200' : 'bg-bg-default'} border-deepblue-200`}
-                style={style}
-            />
-        );
     }
 
     // Logget inn som far
