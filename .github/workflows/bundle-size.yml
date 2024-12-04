@@ -55,7 +55,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Measure bundle size (base branch)
-        run: npx vite-size --react --total > base-bundle-size.json
+        run: pnpm run build > build-output.log && node testscript.js > pr-bundle-size.json
 
       - name: Compare bundle sizes
         id: compare
