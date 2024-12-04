@@ -1,11 +1,10 @@
 import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 
 import * as stories from './KvoteOppsummering.stories';
 
-const { BeggeRettMorIngenDagerBrukt, BeggeRettMorLedigeDager } = composeStories(stories);
+const { BeggeRettMorAlleDagerBrukt, BeggeRettMorLedigeDager, AleneomsorgMorLedigeDager } = composeStories(stories);
 
 describe('<KvoteOppsummering >', () => {
     it('<BeggeRettMorLedigeDager >', async () => {
@@ -28,6 +27,27 @@ describe('<KvoteOppsummering >', () => {
             screen.getByText('Annen forelder må sende søknad selv for å bruke sine uker med foreldrepenger.', {
                 exact: false,
             }),
+        ).toBeInTheDocument();
+    });
+    it('<AleneomsorgMorLedigeDager >', async () => {
+        render(<AleneomsorgMorLedigeDager />);
+
+        expect(
+            screen.queryByText('Annen forelder må sende søknad selv for å bruke sine uker med foreldrepenger.'),
+        ).not.toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Hvis du ønsker å bruke mer foreldrepenger enn det som ligger i planen nå, kan du sende en endringssøknad.',
+            ),
+        ).toBeInTheDocument();
+    });
+
+    it('<BeggeRettMorAlleDagerBrukt >', async () => {
+        render(<BeggeRettMorAlleDagerBrukt />);
+
+        expect(screen.getByText('All tid er i planen')).toBeInTheDocument();
+        expect(
+            screen.getByText('16 uker av fellesperioden, 18 uker til mor og 15 uker til far er lagt til i planen.'),
         ).toBeInTheDocument();
     });
 });
