@@ -2205,9 +2205,6 @@ importers:
       '@navikt/ds-react':
         specifier: ^7.4.1
         version: 7.4.1(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@navikt/ds-tailwind':
-        specifier: 7.4.1
-        version: 7.4.1
       '@navikt/fp-common':
         specifier: workspace:*
         version: link:../fp-common
@@ -2248,6 +2245,9 @@ importers:
         specifier: 5.6.3
         version: 5.6.3
     devDependencies:
+      '@navikt/ds-tailwind':
+        specifier: 7.4.1
+        version: 7.4.1
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../eslint-config-custom
