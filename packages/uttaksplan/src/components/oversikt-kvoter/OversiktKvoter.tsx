@@ -163,7 +163,6 @@ const OversiktKvoter: FunctionComponent<Props> = ({
     navnPåForeldre,
 }) => {
     const søkerErFarEllerMedmor = isFarEllerMedmor(rolle);
-    console.log('plan', uttaksplan);
     const uttaksstatus = getUttaksstatus({
         erDeltUttak: erDeltUttak,
         erEndringssøknad: erEndringssøknad,

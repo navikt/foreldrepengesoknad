@@ -54,7 +54,6 @@ export const beregnGjenståendeUttaksdager = (
     uttaksplan: Periode[],
     beregnDagerBrukt: boolean,
 ): Stønadskonto[] => {
-    console.log('BEREGNER', tilgjengeligeStønadskontoer, uttaksplan);
     const alleUttakIUttaksplan = getAllePerioderMedUttaksinfoFraUttaksplan(uttaksplan);
     return tilgjengeligeStønadskontoer.kontoer.map((konto) => {
         let antallDager = beregnDagerBrukt ? 0 : konto.dager;
