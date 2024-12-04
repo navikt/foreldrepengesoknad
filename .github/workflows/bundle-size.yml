@@ -35,6 +35,9 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: "@navikt"
 
+      - name: Install pnpm
+        run: npm install -g pnpm
+
       - name: Install dependencies (PR branch)
         run: pnpm ci
         env:
