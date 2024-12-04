@@ -44,7 +44,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Measure bundle size (PR branch)
-        run: pnpm run build > build-output.log && node testscript.js > pr-bundle-size.json
+        run: pnpm run build > build-output.log && node ../../scripts/testscript.js > pr-bundle-size.json
 
       - name: Checkout base branch
         run: git checkout ${{ github.event.pull_request.base.ref }}
