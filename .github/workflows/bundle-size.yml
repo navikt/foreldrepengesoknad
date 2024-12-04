@@ -50,7 +50,7 @@ jobs:
         run: git checkout ${{ github.event.pull_request.base.ref }}
 
       - name: Install dependencies (base branch)
-        run: pnpm ci
+        run: pnpm install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
