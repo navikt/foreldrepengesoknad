@@ -9,6 +9,7 @@ import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 import { AnnenPartVedtakDTO } from '../types/AnnenPartVedtakDTO';
 import { Dokument } from '../types/Dokument';
 import EttersendingDto from '../types/EttersendingDTO';
+import { KontoBeregningGrunnlagDto } from '../types/KontoBeregningGrunnlagDto';
 import { MellomlagredeYtelser } from '../types/MellomlagredeYtelser';
 import { MinidialogInnslag } from '../types/MinidialogInnslag';
 import { SakOppslagDTO } from '../types/SakOppslag';
@@ -36,17 +37,6 @@ export const hentSakerOptions = () =>
         queryFn: () => ky.get(`${urlPrefiks}/rest/innsyn/v2/saker`).json<SakOppslagDTO>(),
     });
 
-// TODO: relocate
-type KontoBeregningGrunnlagDto = {
-    rettighetstype: 'ALENEOMSORG' | 'BEGGE_RETT' | 'BARE_SØKER_RETT';
-    brukerrolle: 'MOR' | 'FAR' | 'MEDMOR' | 'UKJENT';
-    antallBarn: number;
-    fødselsdato?: string;
-    termindato?: string;
-    omsorgsovertakelseDato?: string;
-    morHarUføretrygd: boolean;
-    familieHendelseDatoNesteSak?: string;
-};
 export const hentUttaksKontoOptions = (body: KontoBeregningGrunnlagDto) =>
     queryOptions({
         queryKey: ['UTTAKSKONTO', body],
