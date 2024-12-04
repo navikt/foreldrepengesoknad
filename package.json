@@ -25,7 +25,8 @@
         "husky": "9.1.6",
         "lint-staged": "15.2.10",
         "shelljs": "0.8.5",
-        "turbo": "^2.2.3"
+        "turbo": "^2.2.3",
+        "vite-size": "0.0.5"
     },
     "lint-staged": {
         "apps/**/*.{ts,tsx,js,jsx, css}": "prettier --write",
