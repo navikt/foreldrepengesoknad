@@ -1,0 +1,135 @@
+name: Bundle-størrelsessammenligning
+
+on:
+  pull_request:
+    branches:
+      - "**"
+    paths:
+      - "apps/**"
+      - "packages/**"
+      - ".github/workflows/bundle-size.yml"
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+defaults:
+  run:
+    working-directory: apps/foreldrepengeoversikt
+
+jobs:
+  compare-bundle-size:
+    name: Sammenligne bundle-størrelse
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: https://npm.pkg.github.com/
+          scope: "@navikt"
+
+      - name: Install dependencies (PR branch)
+        run: pnpm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+
+      - name: Measure bundle size (PR branch)
+        run: npx vite-size --react --total > pr-bundle-size.json
+
+      - name: Checkout base branch
+        run: git checkout ${{ github.event.pull_request.base.ref }}
+
+      - name: Install dependencies (base branch)
+        run: pnpm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+
+      - name: Measure bundle size (base branch)
+        run: npx vite-size --react --total > base-bundle-size.json
+
+      - name: Compare bundle sizes
+        id: compare
+        run: |
+          echo "Beregner forskjell i bundle-størrelse..."
+
+          # Extract the 'size' value from the JSON output for both PR and base branches
+          PR_SIZE_KB=$(jq '.[0].size' pr-bundle-size.json)
+          BASE_SIZE_KB=$(jq '.[0].size' base-bundle-size.json)
+
+          # Convert sizes from kilobytes to bytes
+          PR_SIZE=$(echo "$PR_SIZE_KB * 1024" | bc)
+          BASE_SIZE=$(echo "$BASE_SIZE_KB * 1024" | bc)
+
+          # Calculate the difference and percentage change
+          DIFF=$(echo "$PR_SIZE - $BASE_SIZE" | bc)
+          PERCENT_CHANGE=$(echo "scale=2; ($DIFF / $BASE_SIZE) * 100" | bc)
+
+          # Set outputs for use in the next step
+          echo "PR_SIZE=$PR_SIZE" >> $GITHUB_OUTPUT
+          echo "BASE_SIZE=$BASE_SIZE" >> $GITHUB_OUTPUT
+          echo "DIFF=$DIFF" >> $GITHUB_OUTPUT
+          echo "PERCENT_CHANGE=$PERCENT_CHANGE" >> $GITHUB_OUTPUT
+      - name: Create job summary
+        run: |
+          # Assign outputs from the previous step to variables
+          DIFF=${{ steps.compare.outputs.DIFF }}
+          PERCENT_CHANGE=${{ steps.compare.outputs.PERCENT_CHANGE }}
+          BASE_SIZE=${{ steps.compare.outputs.BASE_SIZE }}
+          PR_SIZE=${{ steps.compare.outputs.PR_SIZE }}
+
+          echo "## Sammenligning av bundle-størrelse" >> $GITHUB_STEP_SUMMARY
+          if [ "$DIFF" -gt 0 ]; then
+            echo "🔺 **Bundle-størrelse økte** med **$(echo "$DIFF / 1024" | bc -l | xargs printf "%.2f") KB** (${PERCENT_CHANGE}%)" >> $GITHUB_STEP_SUMMARY
+          elif [ "$DIFF" -lt 0 ]; then
+            echo "🔻 **Bundle-størrelse minket** med **$(echo "${DIFF#-} / 1024" | bc -l | xargs printf "%.2f") KB** (${PERCENT_CHANGE#-}%)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ **Ingen endring i bundle-størrelse.**" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "**Base-størrelse:** $(echo "$BASE_SIZE / 1024" | bc -l | xargs printf "%.2f") KB" >> $GITHUB_STEP_SUMMARY
+          echo "**PR-størrelse:** $(echo "$PR_SIZE / 1024" | bc -l | xargs printf "%.2f") KB" >> $GITHUB_STEP_SUMMARY
+      - name: Post comment on PR
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = context.issue.number;
+            const prSize = Number('${{ steps.compare.outputs.PR_SIZE }}');
+            const baseSize = Number('${{ steps.compare.outputs.BASE_SIZE }}');
+            const diff = Number('${{ steps.compare.outputs.DIFF }}');
+            const percentChange = Number('${{ steps.compare.outputs.PERCENT_CHANGE }}').toFixed(2);
+
+            // Function to format bytes into human-readable units
+            const formatBytes = (bytes) => {
+              const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+              if (bytes == 0) return '0 Bytes';
+              const i = parseInt(Math.floor(Math.log(Math.abs(bytes)) / Math.log(1024)), 10);
+              return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
+            };
+
+            let message = '';
+
+            if (diff > 0) {
+              message = `🔺 **Bundle-størrelse økte** med **${formatBytes(diff)}** (${percentChange}%)\n\n` +
+                        `**Base-størrelse:** ${formatBytes(baseSize)}\n` +
+                        `**PR-størrelse:** ${formatBytes(prSize)}`;
+            } else if (diff < 0) {
+              message = `🔻 **Bundle-størrelse minket** med **${formatBytes(Math.abs(diff))}** (${Math.abs(percentChange)}%)\n\n` +
+                        `**Base størrelse:** ${formatBytes(baseSize)}\n` +
+                        `**PR størrelse:** ${formatBytes(prSize)}`;
+            } else {
+              message = `✅ **Ingen endring i bundle-størrelse.**\n\n` +
+                        `**Bundle-størrelse:** ${formatBytes(prSize)}`;
+            }
+
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: prNumber,
+              body: message
+            });
