@@ -172,10 +172,13 @@ jobs:
     needs: compare-bundle-size
     steps:
       - name: Download bundle summaries
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
+          merge-multiple: true
           path: .
 
+      - name: Display structure of downloaded files
+        run: ls -R
       - name: Concatenate all bundle summaries
         run: cat bundle-summary-* > combined-bundle-summary.md
 
