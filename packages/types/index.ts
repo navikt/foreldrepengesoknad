@@ -72,4 +72,5 @@ export { UttakArbeidType } from './src/UttakArbeidType';
 export { MorsAktivitet } from './src/MorsAktivitet';
 export { OverføringÅrsakType } from './src/OverføringÅrsakType';
 export { OppholdÅrsakType } from './src/OppholdÅrsakType';
+export { RettighetType } from './src/RettighetType';
 export type { Familiesituasjon } from './src/Familiesituasjon';
