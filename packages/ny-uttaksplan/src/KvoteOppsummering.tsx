@@ -8,7 +8,7 @@ import { Forelder } from '@navikt/fp-common';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { SaksperiodeNy, Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { Tidsperioden, formatOppramsing } from '@navikt/fp-utils';
+import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 
 import { getVarighetString } from './utils/dateUtils';
 
@@ -489,7 +489,5 @@ const FordelingSegment = ({ kontoType, prosent, erFyllt = true }: FordelingSegme
 };
 
 const summerDagerIPerioder = (perioder: SaksperiodeNy[]) => {
-    return sum(
-        perioder.map((p) => Tidsperioden({ fom: new Date(p.fom), tom: new Date(p.tom) }).getAntallUttaksdager()),
-    );
+    return sum(perioder.map((p) => TidsperiodenString(p).getAntallUttaksdager()));
 };
