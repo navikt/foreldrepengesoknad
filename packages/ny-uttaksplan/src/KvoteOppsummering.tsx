@@ -361,7 +361,9 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
     return (
         <VStack gap="4">
             <BodyShort weight="semibold">
-                {finnVisningsnavForKvote(konto.konto)} - {getVarighetString(konto.dager, intl)}
+                <VisningsnavnForKvote kontoType={konto.konto} />
+                {' - '}
+                {getVarighetString(konto.dager, intl)}
             </BodyShort>
             <VStack gap="1" className="ml-4">
                 <FordelingsBar
@@ -396,6 +398,23 @@ const StandardVisning = ({ konto, perioder }: { konto?: Stønadskonto; perioder:
             </VStack>
         </VStack>
     );
+};
+
+const VisningsnavnForKvote = ({ kontoType }: { kontoType: StønadskontoType }) => {
+    switch (kontoType) {
+        case StønadskontoType.AktivitetsfriKvote:
+            return <FormattedMessage id="kvote.konto.Aktivitetsfrikvote" />;
+        case StønadskontoType.Fedrekvote:
+            return <FormattedMessage id="kvote.konto.Fedrekvote" />;
+        case StønadskontoType.Mødrekvote:
+            return <FormattedMessage id="kvote.konto.Mødrekvote" />;
+        case StønadskontoType.ForeldrepengerFørFødsel:
+            return <FormattedMessage id="kvote.konto.ForeldrepengerFørFødsel" />;
+        case StønadskontoType.Foreldrepenger:
+            return <FormattedMessage id="kvote.konto.Foreldrepenger" />;
+        case StønadskontoType.Fellesperiode:
+            return <FormattedMessage id="kvote.konto.Fellesperiode" />;
+    }
 };
 
 const FordelingsBar = ({ fordelinger }: { fordelinger: FordelingSegmentProps[] }) => {
@@ -473,21 +492,4 @@ const summerDagerIPerioder = (perioder: SaksperiodeNy[]) => {
     return sum(
         perioder.map((p) => Tidsperioden({ fom: new Date(p.fom), tom: new Date(p.tom) }).getAntallUttaksdager()),
     );
-};
-
-const finnVisningsnavForKvote = (kontoType: StønadskontoType) => {
-    switch (kontoType) {
-        case StønadskontoType.AktivitetsfriKvote:
-            return 'Aktivitetsfrikvote';
-        case StønadskontoType.Fedrekvote:
-            return 'Fedrekvote';
-        case StønadskontoType.Mødrekvote:
-            return 'Mødrekvote';
-        case StønadskontoType.ForeldrepengerFørFødsel:
-            return 'Foreldrepenger før fødsel';
-        case StønadskontoType.Foreldrepenger:
-            return 'Foreldrepenger';
-        case StønadskontoType.Fellesperiode:
-            return 'Fellesperioder';
-    }
 };
