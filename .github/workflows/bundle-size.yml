@@ -180,7 +180,10 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -R
       - name: Concatenate all bundle summaries
-        run: cat bundle-summary-* > combined-bundle-summary.md
+        run: |
+          ls
+          cat bundle-summary-apps_foreldrepengesoknad
+          cat bundle-summary-* > combined-bundle-summary.md
 
       - name: Post comment on PR
         uses: actions/github-script@v7
