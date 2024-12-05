@@ -109,6 +109,45 @@ jobs:
           echo "**PR-størrelse:** $(echo "$PR_SIZE / 1024" | bc -l | xargs printf "%.2f") KB" >> $GITHUB_WORKSPACE/bundle-summary.md
           echo "" >> $GITHUB_WORKSPACE/bundle-summary.md
 
+      - name: Post comment on PR
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = context.issue.number;
+            const prSize = Number('${{ steps.compare.outputs.PR_SIZE }}');
+            const baseSize = Number('${{ steps.compare.outputs.BASE_SIZE }}');
+            const diff = Number('${{ steps.compare.outputs.DIFF }}');
+            const percentChange = Number('${{ steps.compare.outputs.PERCENT_CHANGE }}').toFixed(2);
+
+            // Function to format bytes into human-readable units
+            const formatBytes = (bytes) => {
+              const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+              if (bytes == 0) return '0 Bytes';
+              const i = parseInt(Math.floor(Math.log(Math.abs(bytes)) / Math.log(1024)), 10);
+              return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
+            };
+
+            let message = '';
+
+            if (diff > 0) {
+              message = `🔺 **Bundle-størrelse økte** med **${formatBytes(diff)}** (${percentChange}%)\n\n` +
+                        `**Base-størrelse:** ${formatBytes(baseSize)}\n` +
+                        `**PR-størrelse:** ${formatBytes(prSize)}`;
+            } else if (diff < 0) {
+              message = `🔻 **Bundle-størrelse minket** med **${formatBytes(Math.abs(diff))}** (${Math.abs(percentChange)}%)\n\n` +
+                        `**Base størrelse:** ${formatBytes(baseSize)}\n` +
+                        `**PR størrelse:** ${formatBytes(prSize)}`;
+            } else {
+              message = `✅ **Ingen endring i bundle-størrelse.**\n\n` +
+                        `**Bundle-størrelse:** ${formatBytes(prSize)}`;
+            }
+
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: prNumber,
+              body: message
+            });
   post-summary:
     name: Post Summary Comment
     runs-on: ubuntu-latest
