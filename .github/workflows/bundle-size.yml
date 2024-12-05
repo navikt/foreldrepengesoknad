@@ -63,8 +63,8 @@ jobs:
           echo "Beregner forskjell i bundle-størrelse..."
 
           # Extract the 'size' value from the JSON output for both PR and base branches
-          PR_SIZE_KB=$(jq '.[0].size' pr-bundle-size.json)
-          BASE_SIZE_KB=$(jq '.[0].size' base-bundle-size.json)
+          PR_SIZE_KB=$(jq '.size' pr-bundle-size.json)
+          BASE_SIZE_KB=$(jq '.size' base-bundle-size.json)
 
           # Convert sizes from kilobytes to bytes
           PR_SIZE=$(echo "$PR_SIZE_KB * 1024" | bc)

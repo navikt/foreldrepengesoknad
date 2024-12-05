@@ -15,7 +15,7 @@ const parseViteOutput = (filePath) => {
         }
     }
 
-    return [{ name: 'Total Size', size: result.reduce((prev, info) => prev + info.size, 0) }];
+    return { name: 'Total Size', size: result.reduce((prev, info) => prev + info.size, 0) };
 };
 
 const outputPath = './build-output.log';
