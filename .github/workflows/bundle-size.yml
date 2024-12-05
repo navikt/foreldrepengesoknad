@@ -115,7 +115,12 @@ jobs:
           echo "Contents of bundle-summary.md:"
           cat bundle-summary.md
       - name: Upload bundle summary
-        uses: actions/upload-artifact@v3
+        run: |
+          echo "Current directory during artifact upload:"
+          pwd
+          echo "Files available before upload:"
+          ls -l
+        uses: actions/upload-artifact@v4
         with:
           name: bundle-summary-${{ matrix.directory }}
           path: bundle-summary.md
