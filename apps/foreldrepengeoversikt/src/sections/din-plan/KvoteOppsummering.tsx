@@ -28,7 +28,11 @@ const KvoterOversiktInner = ({ sak }: { sak: Foreldrepengesak }) => {
             brukerrolle: sak.forelder === 'MOR' ? 'MOR' : 'FAR',
             morHarUføretrygd: sak.morUføretrygd,
             rettighetstype: sak.rettighetType,
-            ...sak.familiehendelse,
+            omsorgsovertakelseDato: sak.familiehendelse.omsorgsovertakelse,
+            antallBarn: sak.familiehendelse.antallBarn,
+            termindato: sak.familiehendelse.termindato,
+            // Fødselsdato trumfer omsorgsovertakelseDato i APIet
+            fødselsdato: sak.familiehendelse.omsorgsovertakelse ? undefined : sak.familiehendelse.fødselsdato,
         }),
     );
     const konto =
