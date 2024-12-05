@@ -4,15 +4,15 @@ import { FormattedMessage } from 'react-intl';
 
 import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, SaksperiodeNy } from '@navikt/fp-types';
+import { NavnPåForeldre, RettighetType, SaksperiodeNy } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
 import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
-import { RettighetType } from '../../types/RettighetType';
 import { Ytelse } from '../../types/Ytelse';
 import { getBarnFraSak, getFamiliehendelseDato, utledFamiliesituasjon } from '../../utils/sakerUtils';
+import { KvoteOversikt } from './KvoteOppsummering';
 
 interface Props {
     annenPartsPerioder?: SaksperiodeNy[];
@@ -80,19 +80,22 @@ export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåF
                     />
                 </ToggleGroup>
                 {!visKalender && (
-                    <UttaksplanNy
-                        barn={barn}
-                        erFarEllerMedmor={søkerErFarEllerMedmor}
-                        familiehendelsedato={familiehendelseDato}
-                        navnPåForeldre={navnPåForeldre}
-                        annenPartsPerioder={annenPartsPerioder}
-                        søkersPerioder={getRelevantePerioder() || []}
-                        gjelderAdopsjon={gjelderAdopsjon}
-                        bareFarHarRett={bareFarHarRett}
-                        familiesituasjon={familiesituasjon}
-                        førsteUttaksdagNesteBarnsSak={undefined}
-                        harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
-                    />
+                    <>
+                        <UttaksplanNy
+                            barn={barn}
+                            erFarEllerMedmor={søkerErFarEllerMedmor}
+                            familiehendelsedato={familiehendelseDato}
+                            navnPåForeldre={navnPåForeldre}
+                            annenPartsPerioder={annenPartsPerioder}
+                            søkersPerioder={getRelevantePerioder() || []}
+                            gjelderAdopsjon={gjelderAdopsjon}
+                            bareFarHarRett={bareFarHarRett}
+                            familiesituasjon={familiesituasjon}
+                            førsteUttaksdagNesteBarnsSak={undefined}
+                            harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
+                        />
+                        <KvoteOversikt />
+                    </>
                 )}
                 {visKalender && (
                     <UttaksplanKalender

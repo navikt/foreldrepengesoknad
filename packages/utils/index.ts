@@ -31,6 +31,7 @@ export {
     capitalizeFirstLetterInEveryWordOnly,
     getNavnGenitivEierform,
     replaceInvisibleCharsWithSpace,
+    formatOppramsing,
 } from './src/stringUtils';
 export { getFamiliehendelsedato } from './src/barnUtils';
 export { formatCurrencyWithKr, formatCurrency } from './src/currencyUtils';

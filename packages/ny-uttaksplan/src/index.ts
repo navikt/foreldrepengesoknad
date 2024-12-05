@@ -1,3 +1,4 @@
+import '../.storybook/index.css';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
 
@@ -24,6 +25,7 @@ export {
     sorterPerioder,
 } from './utils/periodeUtils';
 export { default as UttaksplanNy } from './Uttaksplan';
+export { KvoteOppsummering } from './KvoteOppsummering';
 
 export const nyUttaksplanMessages = {
     nb: nbMessages,
