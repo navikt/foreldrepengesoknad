@@ -108,6 +108,12 @@ jobs:
           echo "**Base-størrelse:** $(echo "$BASE_SIZE / 1024" | bc -l | xargs printf "%.2f") KB" >> bundle-summary.md
           echo "**PR-størrelse:** $(echo "$PR_SIZE / 1024" | bc -l | xargs printf "%.2f") KB" >> bundle-summary.md
           echo "" >> bundle-summary.md
+
+          # Debug: Check if file is created and list contents
+          echo "Files in the current directory:"
+          ls -l
+          echo "Contents of bundle-summary.md:"
+          cat bundle-summary.md
       - name: Upload bundle summary
         uses: actions/upload-artifact@v3
         with:
