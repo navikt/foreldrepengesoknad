@@ -45,12 +45,15 @@ jobs:
         run: npm install -g pnpm
 
       - name: Install dependencies (PR branch)
-        run: pnpm install --frozen-lockfile
+        run: |
+          pnpm install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Measure bundle size (PR branch)
-        run: pnpm run build > build-output.log && node ./scripts/beregn-bundle-size.js > pr-bundle-size.json
+        run: |
+          pnpm run build > build-output.log
+          node ../../scripts/beregn-bundle-size.mjs > pr-bundle-size.json
 
       - name: Checkout base branch
         run: git checkout ${{ github.event.pull_request.base.ref }}

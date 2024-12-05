@@ -18,6 +18,5 @@ const parseViteOutput = (filePath) => {
     return { name: 'Total Size', size: result.reduce((prev, info) => prev + info.size, 0) };
 };
 
-const outputPath = './build-output.log';
-const size = parseViteOutput(outputPath);
+const size = parseViteOutput('./build-output.log');
 console.log(JSON.stringify(size));
