@@ -412,7 +412,7 @@ const VisningsnavnForKvote = ({ kontoType }: { kontoType: StønadskontoType }) =
         case StønadskontoType.Foreldrepenger:
             return <FormattedMessage id="kvote.konto.Foreldrepenger" />;
         case StønadskontoType.Fellesperiode:
-            return <FormattedMessage id="kvote.konto.Fellesperiode" />;
+            return <FormattedMessage id="kvote.konto.Fellesperioder" />;
     }
 };
 
