@@ -181,8 +181,10 @@ jobs:
         run: ls -R
       - name: Concatenate all bundle summaries
         run: |
-          ls
-          cat bundle-summary-apps_foreldrepengesoknad
+          ls -a
+          pwd
+          cat bundle-summary.md
+          cat bundle-summary-apps_foreldrepengesoknad.md
           cat bundle-summary-* > combined-bundle-summary.md
 
       - name: Post comment on PR
