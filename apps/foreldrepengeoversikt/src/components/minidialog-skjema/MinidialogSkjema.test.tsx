@@ -18,7 +18,7 @@ describe('<MinidialogSkjema>', () => {
 
         expect(
             await screen.findByText(
-                'NAV har sendt deg et varsel om at du har fått for mye utbetalte foreldrepenger. Før vi behandler saken, ' +
+                'Nav har sendt deg et varsel om at du har fått for mye utbetalte foreldrepenger. Før vi behandler saken, ' +
                     'kan du gi en uttalelse og legge ved relevant dokumentasjon om du har det. Du finner relevant informasjon ' +
                     'om hva som har skjedd i saken og dine rettigheter i varselet som vi har sendt til deg.',
             ),
@@ -39,7 +39,7 @@ describe('<MinidialogSkjema>', () => {
             brukerTekst: {
                 dokumentType: Skjemanummer.TILBAKEBETALING,
                 overskrift: 'Svar på tilbakebetalingen',
-                tekst: 'Jeg ønsker ikke å uttale meg. Saken vil bli behandlet med de opplysningene som NAV har tilgjengelig.',
+                tekst: 'Jeg ønsker ikke å uttale meg. Saken vil bli behandlet med de opplysningene som Nav har tilgjengelig.',
             },
             dialogId: '1',
             saksnummer: '1',
@@ -56,7 +56,7 @@ describe('<MinidialogSkjema>', () => {
 
         expect(
             await screen.findByText(
-                'NAV har sendt deg et varsel om at du har fått for mye utbetalte foreldrepenger. Før vi behandler saken, kan du ' +
+                'Nav har sendt deg et varsel om at du har fått for mye utbetalte foreldrepenger. Før vi behandler saken, kan du ' +
                     'gi en uttalelse og legge ved relevant dokumentasjon om du har det. Du finner relevant informasjon om hva som ' +
                     'har skjedd i saken og dine rettigheter i varselet som vi har sendt til deg.',
             ),
