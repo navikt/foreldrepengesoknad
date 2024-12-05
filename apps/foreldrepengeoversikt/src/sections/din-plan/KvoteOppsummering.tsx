@@ -25,11 +25,10 @@ const KvoterOversiktInner = ({ sak }: { sak: Foreldrepengesak }) => {
     const annenPartsPerioder = useAnnenPartsVedtak(sak).data?.perioder ?? [];
     const kontoQuery = useQuery(
         hentUttaksKontoOptions({
-            antallBarn: sak.familiehendelse.antallBarn,
             brukerrolle: sak.forelder === 'MOR' ? 'MOR' : 'FAR',
             morHarUføretrygd: sak.morUføretrygd,
             rettighetstype: sak.rettighetType,
-            termindato: sak.familiehendelse.termindato, //TODO: hvilken dato å bruke
+            ...sak.familiehendelse,
         }),
     );
     const konto =
