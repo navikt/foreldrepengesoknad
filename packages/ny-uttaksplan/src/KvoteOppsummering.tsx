@@ -4,8 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
-import { Forelder } from '@navikt/fp-common';
-import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
+import { Forelder, RettighetType } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { SaksperiodeNy, Stønadskonto, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
