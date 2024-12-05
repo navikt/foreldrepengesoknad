@@ -25,6 +25,10 @@ jobs:
           - apps/foreldrepengesoknad
           - apps/engangsstonad
 
+    defaults:
+      run:
+        working-directory: ${{ matrix.directory }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
