@@ -1,0 +1,1 @@
+import{n as e}from"./validation-DdAZ_Aa2.js";import"./dateFormValidation-dNhenV-l.js";const a=r=>`${Number(r).toLocaleString("nb-NO")} kr`,u=r=>`${Number(r).toLocaleString("nb-NO")}`,m=r=>e(r.grunnbeløp[0]).verdi;export{u as a,a as b,m as f};
