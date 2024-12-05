@@ -14,14 +14,16 @@ permissions:
   issues: write
   pull-requests: write
 
-defaults:
-  run:
-    working-directory: apps/foreldrepengeoversikt
-
 jobs:
   compare-bundle-size:
     name: Sammenligne bundle-størrelse
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory:
+          - apps/foreldrepengeoversikt
+          - apps/foreldrepengesoknad
+          - apps/engangsstonad
 
     steps:
       - name: Checkout code
@@ -44,7 +46,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Measure bundle size (PR branch)
-        run: pnpm run build > build-output.log && node ../../scripts/testscript.js > pr-bundle-size.json
+        run: pnpm run build > build-output.log && node ./scripts/beregn-bundle-size.js > pr-bundle-size.json
 
       - name: Checkout base branch
         run: git checkout ${{ github.event.pull_request.base.ref }}
@@ -55,7 +57,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Measure bundle size (base branch)
-        run: pnpm run build > build-output.log && node testscript.js > base-bundle-size.json
+        run: pnpm run build > build-output.log && node beregn-bundle-size.js > base-bundle-size.json
 
       - name: Compare bundle sizes
         id: compare
