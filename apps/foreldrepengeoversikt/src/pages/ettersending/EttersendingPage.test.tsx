@@ -23,7 +23,7 @@ describe('<EttersendingPage>', () => {
         expect(
             await screen.findByText(
                 'Dokumentene du laster opp vil bli lagt ved søknaden din. ' +
-                    'Du må velge hva dokumentene inneholder for at saksbehandlerene i NAV skal kunne behandle saken din.',
+                    'Du må velge hva dokumentene inneholder for at saksbehandlerene i Nav skal kunne behandle saken din.',
             ),
         ).toBeInTheDocument();
 
@@ -47,7 +47,7 @@ describe('<EttersendingPage>', () => {
         expect(
             await screen.findByText(
                 'Dokumentene du laster opp vil bli lagt ved søknaden din. ' +
-                    'Du må velge hva dokumentene inneholder for at saksbehandlerene i NAV skal kunne behandle saken din.',
+                    'Du må velge hva dokumentene inneholder for at saksbehandlerene i Nav skal kunne behandle saken din.',
             ),
         ).toBeInTheDocument();
 

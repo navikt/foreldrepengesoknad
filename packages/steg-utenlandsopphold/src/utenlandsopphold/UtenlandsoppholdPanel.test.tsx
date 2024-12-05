@@ -15,7 +15,7 @@ describe('<UtenlandsoppholdPanel>', () => {
 
         expect(screen.getByText('Hvor har du bodd de siste 12 månedene?')).toBeInTheDocument();
         expect(screen.getByText('Hvor skal du bo de neste 12 månedene?')).toBeInTheDocument();
-        expect(screen.getByText('Utenlandsopphold og støtte fra NAV')).toBeInTheDocument();
+        expect(screen.getByText('Utenlandsopphold og støtte fra Nav')).toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Neste steg'));
 

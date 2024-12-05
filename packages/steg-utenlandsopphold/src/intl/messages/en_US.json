@@ -7,8 +7,8 @@
     "UtenlandsoppholdSteg.Neste12Måneder.IsRequired": "You must enter where you are going to live for the next 12 months",
     "UtenlandsoppholdSteg.Neste12MånederInfotekst.Radiobutton.BoddINorge": "I will live in Norway",
     "UtenlandsoppholdSteg.Neste12MånederInfotekst.Radiobutton.BoddIUtlandet": "I will live abroad either fully or partially",
-    "UtenlandsoppholdSteg.StotteFraNav": "Stays abroad and support from NAV",
-    "UtenlandsoppholdSteg.Info.Del1": "To be entitled to support from NAV, you must be a member of Norwegian National Insurance Scheme. People who live in Norway are usually members of the Norwegian National Insurance",
+    "UtenlandsoppholdSteg.StotteFraNav": "Stays abroad and support from Nav",
+    "UtenlandsoppholdSteg.Info.Del1": "To be entitled to support from Nav, you must be a member of Norwegian National Insurance Scheme. People who live in Norway are usually members of the Norwegian National Insurance",
     "UtenlandsoppholdSteg.Info.Del2": "Whether you keep your membership in the National Insurance Scheme during your stay abroad depends on where you will be staying and how long you will be there.",
     "UtenlandsoppholdSteg.Info.Del3": "When you will be abroad for more than 12 months, we consider you to be resident abroad according to the Norwegian National Insurance Act's rules. The same applies if you will be abroad for more than 6 months a year for 2 or more consecutive calendar years.",
     "UtenlandsoppholdSteg.Info.Del4": "You are no longer a member of the National Insurance Scheme when you are considered resident abroad.",
@@ -35,7 +35,6 @@
     "TidligereUtenlandsoppholdSteg.DateOutsideRangeTom": "Even and including date of stay abroad must be between {min} and {max}",
     "TidligereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato": "The date has to before the to date",
     "TidligereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato": "The date has to be after the from date",
-
     "SenereUtenlandsoppholdSteg.Knapp.LeggTilLand": "Add a new stay abroad",
     "SenereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp": "You can't have several stays abroad during the same period",
     "SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Spørsmål.HvilketLandSkalDuBoI": "Which country should you live in?",

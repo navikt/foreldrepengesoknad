@@ -2,7 +2,7 @@
     "inntektsinformasjon.arbeidsforhold.label": "Dine arbeidsforhold",
     "inntektsinformasjon.arbeidsforhold.info": "Finn du feil eller manglar?",
     "inntektsinformasjon.arbeidsforhold.tekst": "Informasjonen er henta frå Arbeidsgiver- og arbeidstakarregisteret. Derfor må du be din arbeidsgivar oppdatere med riktig informasjon i Arbeidsgiver- og arbeidstakarregisteret.",
-    "inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV": "Viss du får utbetalingar frå NAV, treng du ikkje å opplyse om det i søknaden.",
+    "inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV": "Viss du får utbetalingar frå Nav, treng du ikkje å opplyse om det i søknaden.",
     "inntektsinformasjon.arbeidsforhold.ingenRegistrerteArbeidsforhold": "Du er ikkje registrert med nokre arbeidsforhold.",
     "inntektsinformasjon.arbeidsforhold.organisasjonsnummer": "Org nr: {organisasjonsnummer}",
     "inntektsinformasjon.arbeidsforhold.stillingsprosent": "{stillingsprosent} prosent",

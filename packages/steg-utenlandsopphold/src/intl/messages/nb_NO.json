@@ -7,8 +7,8 @@
     "UtenlandsoppholdSteg.Neste12Måneder.IsRequired": "Du må oppgi hvor du skal bo de neste 12 månedene",
     "UtenlandsoppholdSteg.Neste12MånederInfotekst.Radiobutton.BoddINorge": "Jeg skal bo i Norge",
     "UtenlandsoppholdSteg.Neste12MånederInfotekst.Radiobutton.BoddIUtlandet": "Jeg skal bo helt eller delvis i utlandet",
-    "UtenlandsoppholdSteg.StotteFraNav": "Utenlandsopphold og støtte fra NAV",
-    "UtenlandsoppholdSteg.Info.Del1": "For å ha rett til støtte fra NAV må du være medlem av norsk folketrygd. Personer som er bosatt i Norge er vanligvis medlemmer i folketrygden",
+    "UtenlandsoppholdSteg.StotteFraNav": "Utenlandsopphold og støtte fra Nav",
+    "UtenlandsoppholdSteg.Info.Del1": "For å ha rett til støtte fra Nav må du være medlem av norsk folketrygd. Personer som er bosatt i Norge er vanligvis medlemmer i folketrygden",
     "UtenlandsoppholdSteg.Info.Del2": "Om du beholder medlemskapet ditt i folketrygden under opphold i utlandet, avhenger av hvor du skal oppholde deg og hvor lenge du skal være der.",
     "UtenlandsoppholdSteg.Info.Del3": "Når du skal være i utlandet i mer enn 12 måneder, anser vi deg som bosatt i utlandet etter folketrygdlovens regler. Det samme gjelder hvis du i 2 eller flere kalenderår etter hverandre skal være i utlandet mer enn 6 måneder i året.",
     "UtenlandsoppholdSteg.Info.Del4": "Du er ikke lenger medlem i folketrygden når du regnes som bosatt i utlandet.",
@@ -18,7 +18,6 @@
     "UtenlandsoppholdSteg.Info.Del7.fp": "foreldrepenger og utenlandsopphold.",
     "UtenlandsoppholdSteg.Info.Del7.es": "engangsstønad og utenlandsopphold.",
     "UtenlandsoppholdSteg.Info.Del7.svp": "svangerskapspenger og utenlandsopphold.",
-
     "TidligereUtenlandsoppholdSteg.Knapp.LeggTilLand": "Legg til flere opphold i utlandet",
     "TidligereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp": "Det kan ikke være flere utenlandsopphold i samme periode",
     "TidligereUtenlandsoppholdSteg.Spørsmål.HvilketLandHarDuBoddI": "Hvilket land bodde du i?",
@@ -36,7 +35,6 @@
     "TidligereUtenlandsoppholdSteg.DateOutsideRangeTom": "Til og med dato for utenlandsopphold må være mellom {min} og {max}",
     "TidligereUtenlandsoppholdSteg.Utenlandsopphold.FørTilDato": "Fra og med dato kan ikke være etter til og med dato",
     "TidligereUtenlandsoppholdSteg.Utenlandsopphold.EtterFraDato": "Til og med dato kan ikke være før fra og med dato",
-
     "SenereUtenlandsoppholdSteg.Knapp.LeggTilLand": "Legg til flere opphold i utlandet",
     "SenereUtenlandsoppholdSteg.Valideringsfeil.Utenlandsopphold.Overlapp": "Det kan ikke være flere utenlandsopphold i samme periode",
     "SenereUtenlandsoppholdSteg.LeggTilUtenlandsopphold.Spørsmål.HvilketLandSkalDuBoI": "Hvilket land skal du bo i?",

@@ -2,7 +2,7 @@
     "inntektsinformasjon.arbeidsforhold.label": "Your Employment Relationships",
     "inntektsinformasjon.arbeidsforhold.info": "Do you find any errors or omissions?",
     "inntektsinformasjon.arbeidsforhold.tekst": "The information is retrieved from the Employer and Employee Register. Therefore, you must ask your employer to update with the correct information in the Employer and Employee Register.",
-    "inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV": "If you receive payments from NAV, you do not need to provide that information in the application.",
+    "inntektsinformasjon.arbeidsforhold.utbetalingerFraNAV": "If you receive payments from Nav, you do not need to provide that information in the application.",
     "inntektsinformasjon.arbeidsforhold.ingenRegistrerteArbeidsforhold": "You are not registered with any employment relationships.",
     "inntektsinformasjon.arbeidsforhold.organisasjonsnummer": "Org no: {organisasjonsnummer}",
     "inntektsinformasjon.arbeidsforhold.stillingsprosent": "{stillingsprosent} percent",
