@@ -93,52 +93,41 @@ jobs:
           BASE_SIZE=${{ steps.compare.outputs.BASE_SIZE }}
           PR_SIZE=${{ steps.compare.outputs.PR_SIZE }}
 
-          echo "## Sammenligning av bundle-størrelse" >> $GITHUB_STEP_SUMMARY
+          echo "## ${{ matrix.directory }}" >> $GITHUB_WORKSPACE/bundle-summary.md
           if [ "$DIFF" -gt 0 ]; then
-            echo "🔺 **Bundle-størrelse økte** med **$(echo "$DIFF / 1024" | bc -l | xargs printf "%.2f") KB** (${PERCENT_CHANGE}%)" >> $GITHUB_STEP_SUMMARY
+            echo "🔺 **Bundle-størrelse økte** med **$(echo "$DIFF / 1024" | bc -l | xargs printf "%.2f") KB** (${PERCENT_CHANGE}%)" >> $GITHUB_WORKSPACE/bundle-summary.md
           elif [ "$DIFF" -lt 0 ]; then
-            echo "🔻 **Bundle-størrelse minket** med **$(echo "${DIFF#-} / 1024" | bc -l | xargs printf "%.2f") KB** (${PERCENT_CHANGE#-}%)" >> $GITHUB_STEP_SUMMARY
+            echo "🔻 **Bundle-størrelse minket** med **$(echo "${DIFF#-} / 1024" | bc -l | xargs printf "%.2f") KB** (${PERCENT_CHANGE#-}%)" >> $GITHUB_WORKSPACE/bundle-summary.md
           else
-            echo "✅ **Ingen endring i bundle-størrelse.**" >> $GITHUB_STEP_SUMMARY
+            echo "✅ **Ingen endring i bundle-størrelse.**" >> $GITHUB_WORKSPACE/bundle-summary.md
           fi
-          echo "**Base-størrelse:** $(echo "$BASE_SIZE / 1024" | bc -l | xargs printf "%.2f") KB" >> $GITHUB_STEP_SUMMARY
-          echo "**PR-størrelse:** $(echo "$PR_SIZE / 1024" | bc -l | xargs printf "%.2f") KB" >> $GITHUB_STEP_SUMMARY
+          echo "**Base-størrelse:** $(echo "$BASE_SIZE / 1024" | bc -l | xargs printf "%.2f") KB" >> $GITHUB_WORKSPACE/bundle-summary.md
+          echo "**PR-størrelse:** $(echo "$PR_SIZE / 1024" | bc -l | xargs printf "%.2f") KB" >> $GITHUB_WORKSPACE/bundle-summary.md
+          echo "" >> $GITHUB_WORKSPACE/bundle-summary.md
+
+  post-summary:
+    name: Post Summary Comment
+    runs-on: ubuntu-latest
+    needs: compare-bundle-size
+    steps:
+      - name: Read Bundle Summary
+        id: read-summary
+        run: |
+          SUMMARY=$(cat $GITHUB_WORKSPACE/bundle-summary.md)
+          echo "summary<<EOF" >> $GITHUB_ENV
+          echo "$SUMMARY" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
       - name: Post comment on PR
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const summary = process.env.summary.trim();
             const prNumber = context.issue.number;
-            const prSize = Number('${{ steps.compare.outputs.PR_SIZE }}');
-            const baseSize = Number('${{ steps.compare.outputs.BASE_SIZE }}');
-            const diff = Number('${{ steps.compare.outputs.DIFF }}');
-            const percentChange = Number('${{ steps.compare.outputs.PERCENT_CHANGE }}').toFixed(2);
-
-            // Function to format bytes into human-readable units
-            const formatBytes = (bytes) => {
-              const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-              if (bytes == 0) return '0 Bytes';
-              const i = parseInt(Math.floor(Math.log(Math.abs(bytes)) / Math.log(1024)), 10);
-              return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
-            };
-
-            let message = '';
-
-            if (diff > 0) {
-              message = `🔺 **Bundle-størrelse økte** med **${formatBytes(diff)}** (${percentChange}%)\n\n` +
-                        `**Base-størrelse:** ${formatBytes(baseSize)}\n` +
-                        `**PR-størrelse:** ${formatBytes(prSize)}`;
-            } else if (diff < 0) {
-              message = `🔻 **Bundle-størrelse minket** med **${formatBytes(Math.abs(diff))}** (${Math.abs(percentChange)}%)\n\n` +
-                        `**Base størrelse:** ${formatBytes(baseSize)}\n` +
-                        `**PR størrelse:** ${formatBytes(prSize)}`;
-            } else {
-              message = `✅ **Ingen endring i bundle-størrelse.**\n\n` +
-                        `**Bundle-størrelse:** ${formatBytes(prSize)}`;
-            }
 
             await github.rest.issues.createComment({
               ...context.repo,
               issue_number: prNumber,
-              body: message
+              body: summary
             });
