@@ -117,7 +117,7 @@ jobs:
       - name: Upload bundle summary
         uses: actions/upload-artifact@v4
         with:
-          name: bundle-summary-${{ matrix.directory }}
+          name: bundle-summary-${{ github.run_id }}
           path: ${{ matrix.directory }}/bundle-summary.md
 
 #      - name: Post comment on PR
