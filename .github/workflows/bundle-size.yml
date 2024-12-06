@@ -15,7 +15,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  compare-bundle-size:
+  compare:
     name: Sammenligne bundle-størrelse
     runs-on: ubuntu-latest
     strategy:
@@ -85,10 +85,10 @@ jobs:
           PERCENT_CHANGE=$(echo "scale=2; ($DIFF / $BASE_SIZE) * 100" | bc)
 
           # Set outputs for use in the next step
-          echo "PR_SIZE=$PR_SIZE" >> $GITHUB_OUTPUT
-          echo "BASE_SIZE=$BASE_SIZE" >> $GITHUB_OUTPUT
-          echo "DIFF=$DIFF" >> $GITHUB_OUTPUT
-          echo "PERCENT_CHANGE=$PERCENT_CHANGE" >> $GITHUB_OUTPUT
+          echo "PR_SIZE_${{ matrix.directory }}=$PR_SIZE" >> $GITHUB_OUTPUT
+          echo "BASE_SIZE_${{ matrix.directory }}=$BASE_SIZE" >> $GITHUB_OUTPUT
+          echo "DIFF_${{ matrix.directory }}=$DIFF" >> $GITHUB_OUTPUT
+          echo "PERCENT_CHANGE_${{ matrix.directory }}=$PERCENT_CHANGE" >> $GITHUB_OUTPUT
       - name: Create job summary
         run: |
           # Assign outputs from the previous step to variables
@@ -109,23 +109,18 @@ jobs:
           echo "**PR-størrelse:** $(echo "$PR_SIZE / 1024" | bc -l | xargs printf "%.2f") KB" >> bundle-summary.md
           echo "" >> bundle-summary.md
 
-          # Debug: Check if file is created and list contents
-          echo "Files in the current directory:"
-          ls -l
-          echo "Contents of bundle-summary.md:"
-          cat bundle-summary.md
 
-      - name: Make artifact name
-        run: |
-          sanitized_name="${{ matrix.directory }}"
-          sanitized_name="${sanitized_name//\//_}"  # Replace slashes with underscores
-          echo "sanitized_name=$sanitized_name" >> $GITHUB_ENV
-
-      - name: Upload bundle summary
-        uses: actions/upload-artifact@v4
-        with:
-          name: bundle-summary-${{ env.sanitized_name }}
-          path: ${{ matrix.directory }}/bundle-summary.md
+#      - name: Make artifact name
+#        run: |
+#          sanitized_name="${{ matrix.directory }}"
+#          sanitized_name="${sanitized_name//\//_}"  # Replace slashes with underscores
+#          echo "sanitized_name=$sanitized_name" >> $GITHUB_ENV
+#
+#      - name: Upload bundle summary
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: bundle-summary-${{ env.sanitized_name }}
+#          path: ${{ matrix.directory }}/bundle-summary.md
 
 #      - name: Post comment on PR
 #        uses: actions/github-script@v7
@@ -169,35 +164,31 @@ jobs:
   post-summary:
     name: Post Summary Comment
     runs-on: ubuntu-latest
-    needs: compare-bundle-size
+    needs: compare
     steps:
-      - name: Download bundle summaries
-        uses: actions/download-artifact@v4
-        with:
-          merge-multiple: true
-          path: .
+#      - name: Download bundle summaries
+#        uses: actions/download-artifact@v4
+#        with:
+#          merge-multiple: true
+#          path: .
 
-      - name: Display structure of downloaded files
-        run: ls -R
+#      - name: Display structure of downloaded files
+#        run: ls -R
       - name: Concatenate all bundle summaries
         run: |
-          ls -a
-          pwd
-          cat bundle-summary.md
-          cat bundle-summary-apps_foreldrepengesoknad.md
-          cat bundle-summary-* > combined-bundle-summary.md
+          echo '${{ toJSON(needs.compare.outputs) }}'
 
-      - name: Post comment on PR
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const summary = fs.readFileSync('combined-bundle-summary.md', 'utf8');
-            const prNumber = context.issue.number;
-
-            await github.rest.issues.createComment({
-              ...context.repo,
-              issue_number: prNumber,
-              body: summary
-            });
+#      - name: Post comment on PR
+#        uses: actions/github-script@v7
+#        with:
+#          github-token: ${{ secrets.GITHUB_TOKEN }}
+#          script: |
+#            const fs = require('fs');
+#            const summary = fs.readFileSync('combined-bundle-summary.md', 'utf8');
+#            const prNumber = context.issue.number;
+#
+#            await github.rest.issues.createComment({
+#              ...context.repo,
+#              issue_number: prNumber,
+#              body: summary
+#            });
