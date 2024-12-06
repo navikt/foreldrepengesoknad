@@ -18,16 +18,21 @@ jobs:
   compare:
     name: Sammenligne bundle-størrelse
     runs-on: ubuntu-latest
+    outputs:
+      output_foreldrepengeoversikt: ${{ steps.compare.outputs.output_foreldrepengeoversikt }}
+      output_foreldrepengesoknad: ${{ steps.compare.outputs.output_foreldrepengesoknad }}
+      output_engangsstonad: ${{ steps.compare.outputs.output_engangsstonad }}
+
     strategy:
       matrix:
         directory:
-          - apps/foreldrepengeoversikt
-          - apps/foreldrepengesoknad
-          - apps/engangsstonad
+          - foreldrepengeoversikt
+          - foreldrepengesoknad
+          - engangsstonad
 
     defaults:
       run:
-        working-directory: ${{ matrix.directory }}
+        working-directory: apps/${{ matrix.directory }}
 
     steps:
       - name: Checkout code
@@ -108,6 +113,8 @@ jobs:
           echo "**Base-størrelse:** $(echo "$BASE_SIZE / 1024" | bc -l | xargs printf "%.2f") KB" >> bundle-summary.md
           echo "**PR-størrelse:** $(echo "$PR_SIZE / 1024" | bc -l | xargs printf "%.2f") KB" >> bundle-summary.md
           echo "" >> bundle-summary.md
+
+          echo "output_${{ matrix.directory }}=$(cat bundle-summary.md)" >> "$GITHUB_OUTPUT"
 
 
 #      - name: Make artifact name
