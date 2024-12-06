@@ -90,10 +90,10 @@ jobs:
           PERCENT_CHANGE=$(echo "scale=2; ($DIFF / $BASE_SIZE) * 100" | bc)
 
           # Set outputs for use in the next step
-          echo "PR_SIZE_${{ matrix.directory }}=$PR_SIZE" >> $GITHUB_OUTPUT
-          echo "BASE_SIZE_${{ matrix.directory }}=$BASE_SIZE" >> $GITHUB_OUTPUT
-          echo "DIFF_${{ matrix.directory }}=$DIFF" >> $GITHUB_OUTPUT
-          echo "PERCENT_CHANGE_${{ matrix.directory }}=$PERCENT_CHANGE" >> $GITHUB_OUTPUT
+          echo "PR_SIZE=$PR_SIZE" >> $GITHUB_OUTPUT
+          echo "BASE_SIZE=$BASE_SIZE" >> $GITHUB_OUTPUT
+          echo "DIFF=$DIFF" >> $GITHUB_OUTPUT
+          echo "PERCENT_CHANGE=$PERCENT_CHANGE" >> $GITHUB_OUTPUT
       - name: Create job summary
         run: |
           # Assign outputs from the previous step to variables
