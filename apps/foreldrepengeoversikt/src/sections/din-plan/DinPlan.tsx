@@ -12,6 +12,7 @@ import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { Ytelse } from '../../types/Ytelse';
 import { getBarnFraSak, getFamiliehendelseDato, utledFamiliesituasjon } from '../../utils/sakerUtils';
+import { KvoteOversikt } from './KvoteOppsummering';
 
 interface Props {
     annenPartsPerioder?: SaksperiodeNy[];
@@ -93,6 +94,7 @@ export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåF
                             førsteUttaksdagNesteBarnsSak={undefined}
                             harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
                         />
+                        <KvoteOversikt />
                     </>
                 )}
                 {visKalender && (

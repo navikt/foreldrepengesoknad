@@ -487,6 +487,21 @@ const FordelingSegment = ({ kontoType, prosent, erFyllt = true }: FordelingSegme
     return <div className="rounded-full h-4 border-2 bg-bg-default border-surface-neutral-hover" style={style} />;
 };
 
+export const finnAntallDagerÅTrekke = (periode: SaksperiodeNy) => {
+    const arbeidstidprosent = periode.gradering?.arbeidstidprosent;
+    const samtidigUttak = periode.samtidigUttak;
+    const dager = TidsperiodenString(periode).getAntallUttaksdager();
+
+    if (arbeidstidprosent) {
+        const graderingsProsent = (100 - arbeidstidprosent) / 100;
+        return dager * graderingsProsent;
+    }
+    if (samtidigUttak) {
+        return dager * (samtidigUttak / 100);
+    }
+    return dager;
+};
+
 const summerDagerIPerioder = (perioder: SaksperiodeNy[]) => {
-    return sum(perioder.map((p) => TidsperiodenString(p).getAntallUttaksdager()));
+    return Math.floor(sum(perioder.map(finnAntallDagerÅTrekke)));
 };
