@@ -85,6 +85,7 @@ export const getBrukteDager = (
     familiehendelsesdato: Date,
 ): BrukteDager => {
     const perioderMedUttak = getAllePerioderMedUttaksinfoFraUttaksplan(perioder);
+    console.log('perioderMedUttak', perioderMedUttak);
     return {
         mor: getBrukteDagerForForelder(
             tilgjengeligeStønadskontoer,
