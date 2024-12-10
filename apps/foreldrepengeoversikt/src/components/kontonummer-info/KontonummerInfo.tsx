@@ -15,7 +15,7 @@ interface Props {
 
 export const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, ytelse, harMinstEttArbeidsforhold }) => {
     const harKontonummer = !!bankkonto?.kontonummer && bankkonto?.kontonummer.trim().length > 0;
-    const kontonummerTekst = harKontonummer ? bankkonto?.kontonummer : 'NAV mangler kontonummeret ditt';
+    const kontonummerTekst = harKontonummer ? bankkonto?.kontonummer : 'Nav mangler kontonummeret ditt';
     const kontonummerEndreTekst = harKontonummer ? 'Endre kontonummer' : 'Registrer kontonummer';
 
     return (
@@ -75,10 +75,10 @@ const KontonummerInfoTekst = ({ harKontonummer, ytelse, harMinstEttArbeidsforhol
             <>
                 <BodyLong size="small">
                     Arbeidsgiveren din vil opplyse i inntektsmeldingen om de betaler deg eller om du får utbetalt fra
-                    NAV.
+                    Nav.
                 </BodyLong>
                 <BodyLong size="small">
-                    Hvis du får utbetaling direkte fra NAV, vil NAV trenge et kontonummer for å utbetale foreldrepengene
+                    Hvis du får utbetaling direkte fra Nav, vil Nav trenge et kontonummer for å utbetale foreldrepengene
                     dine til deg.
                 </BodyLong>
             </>
@@ -88,8 +88,8 @@ const KontonummerInfoTekst = ({ harKontonummer, ytelse, harMinstEttArbeidsforhol
     if (ytelse === Ytelse.FORELDREPENGER || ytelse === Ytelse.SVANGERSKAPSPENGER) {
         return (
             <BodyLong size="small">
-                Arbeidsgiveren din vil opplyse i inntektsmeldingen om de betaler deg eller om du får utbetalt fra NAV.
-                Hvis du får utbetaling direkte fra NAV, vil pengene komme til det registrerte kontonummeret.
+                Arbeidsgiveren din vil opplyse i inntektsmeldingen om de betaler deg eller om du får utbetalt fra Nav.
+                Hvis du får utbetaling direkte fra Nav, vil pengene komme til det registrerte kontonummeret.
             </BodyLong>
         );
     }
@@ -97,7 +97,7 @@ const KontonummerInfoTekst = ({ harKontonummer, ytelse, harMinstEttArbeidsforhol
     // Kan kun inntreffe dersom ytelse ikke er tilgjengelig fra saken.
     return (
         <BodyLong size="small">
-            NAV vil utbetale til dette kontonummeret, hvis søknaden blir innvilget. Hvis kontonummeret er feil kan du
+            Nav vil utbetale til dette kontonummeret, hvis søknaden blir innvilget. Hvis kontonummeret er feil kan du
             endre det.
         </BodyLong>
     );

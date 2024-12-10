@@ -25,7 +25,7 @@ export const mapMinidialogInputTilDTO = (
             tekst:
                 brukerØnskerÅUttaleSeg && tilbakemelding !== undefined && tilbakemelding !== null
                     ? (replaceInvisibleCharsWithSpace(tilbakemelding) ?? '')
-                    : 'Jeg ønsker ikke å uttale meg. Saken vil bli behandlet med de opplysningene som NAV har tilgjengelig.',
+                    : 'Jeg ønsker ikke å uttale meg. Saken vil bli behandlet med de opplysningene som Nav har tilgjengelig.',
         },
     };
 };

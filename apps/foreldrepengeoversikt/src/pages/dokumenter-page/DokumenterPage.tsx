@@ -66,7 +66,7 @@ const DokumenterPage: React.FunctionComponent = () => {
                             Er det noen dokumenter du savner?
                         </Heading>
                         <BodyLong>
-                            Vi har foreløpig ikke mulighet til å vise papirer du har sendt til NAV i posten, eller
+                            Vi har foreløpig ikke mulighet til å vise papirer du har sendt til Nav i posten, eller
                             dokumenter som gjelder saken din, men som er sendt av andre på vegne av deg. Det kan for
                             eksempel være en lege, advokat, verge eller fullmektig.
                         </BodyLong>

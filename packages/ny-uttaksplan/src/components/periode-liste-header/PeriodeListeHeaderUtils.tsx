@@ -150,7 +150,7 @@ export const getTekst = ({
             case UtsettelseÅrsakType.HvØvelse:
                 return 'Utsettelse grunnet heimvernsøvelse';
             case UtsettelseÅrsakType.NavTiltak:
-                return 'Utsettelse grunnet NAV tiltak';
+                return 'Utsettelse grunnet Nav tiltak';
             case UtsettelseÅrsakType.Fri:
                 return 'Uten foreldrepenger';
         }
