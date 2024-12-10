@@ -470,7 +470,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
         expect(
             await screen.findByText(
-                'Den totale utbetalingen fra NAV blir høyere dersom man velger 100% i stedet for 80%. ' +
+                'Den totale utbetalingen fra Nav blir høyere dersom man velger 100% i stedet for 80%. ' +
                     'Likevel kan det være andre grunner som påvirker hva som lønner seg,',
                 { exact: false },
             ),
@@ -499,7 +499,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
         expect(
             await screen.findByText(
-                'Den totale utbetalingen fra NAV blir høyere dersom man velger 100% i stedet for 80%.' +
+                'Den totale utbetalingen fra Nav blir høyere dersom man velger 100% i stedet for 80%.' +
                     ' Likevel kan det være andre grunner som påvirker hva som lønner seg,',
                 { exact: false },
             ),
@@ -561,7 +561,7 @@ describe('<PeriodeMedForeldrepengerSteg>', () => {
         await userEvent.click(screen.getByText('Hva lønner seg for oss?'));
         expect(
             await screen.findByText(
-                'Den totale utbetalingen fra NAV blir høyere dersom man velger 100% i stedet for 80%.' +
+                'Den totale utbetalingen fra Nav blir høyere dersom man velger 100% i stedet for 80%.' +
                     ' Likevel kan det være andre grunner som påvirker hva som lønner seg,',
                 { exact: false },
             ),

@@ -115,7 +115,7 @@ export function DokumenterHeader() {
                 Dokumenter
             </Heading>
             <Detail textColor="subtle">
-                Dokumenter fra du, arbeidsgiver og NAV som tilhører saken din ({saksnummer})
+                Dokumenter fra du, arbeidsgiver og Nav som tilhører saken din ({saksnummer})
             </Detail>
         </SimpleHeaderWrapper>
     );

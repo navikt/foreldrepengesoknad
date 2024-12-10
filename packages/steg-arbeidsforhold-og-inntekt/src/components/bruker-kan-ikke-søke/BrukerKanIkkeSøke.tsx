@@ -34,7 +34,7 @@ export const BrukerKanIkkeSøke = () => {
                                 <a
                                     className="lenke"
                                     rel="noopener noreferrer"
-                                    href="https://www.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Relatert+informasjon/chat-med-oss-om-foreldrepenger"
+                                    href="https://www.nav.no/no/Nav+og+samfunn/Kontakt+Nav/Relatert+informasjon/chat-med-oss-om-foreldrepenger"
                                 >
                                     {msg}
                                 </a>
