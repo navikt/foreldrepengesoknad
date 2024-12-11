@@ -8,6 +8,8 @@ import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { OverføringÅrsakType, UttakArbeidType } from '@navikt/fp-types';
 
 import { OversiktRoutes } from '../../routes/routes';
+import { AnnenPartVedtakDTO } from '../../types/AnnenPartVedtakDTO';
+import { DekningsgradDTO } from '../../types/DekningsgradDTO';
 import { DinPlan } from './DinPlan';
 
 const queryClient = new QueryClient();
@@ -34,19 +36,26 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     parameters: {
         msw: {
-            handlers: [http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker))],
+            handlers: [
+                http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker`, () => HttpResponse.json(saker)),
+                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
+                    HttpResponse.json({
+                        dekningsgrad: DekningsgradDTO.HUNDRE_PROSENT,
+                        perioder: [
+                            {
+                                fom: '2022-10-14',
+                                tom: '2022-12-21',
+                                kontoType: StønadskontoType.Fedrekvote,
+                                forelder: Forelder.farMedmor,
+                                samtidigUttak: 50,
+                            },
+                        ],
+                    } satisfies AnnenPartVedtakDTO),
+                ),
+            ],
         },
     },
     args: {
-        annenPartsPerioder: [
-            {
-                fom: '2022-10-14',
-                tom: '2022-12-21',
-                kontoType: StønadskontoType.Fedrekvote,
-                forelder: Forelder.farMedmor,
-                samtidigUttak: 50,
-            },
-        ],
         navnPåForeldre: {
             mor: 'Helga',
             farMedmor: 'Espen',
@@ -110,55 +119,60 @@ export const FarSøker: Story = {
                         svangerskapspenger: [],
                     }),
                 ),
+                http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
+                    HttpResponse.json({
+                        dekningsgrad: DekningsgradDTO.HUNDRE_PROSENT,
+                        perioder: [
+                            {
+                                fom: '2024-09-10',
+                                tom: '2024-09-30',
+                                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                                forelder: Forelder.mor,
+                            },
+                            {
+                                fom: '2024-10-01',
+                                tom: '2024-10-14',
+                                kontoType: StønadskontoType.Mødrekvote,
+                                forelder: Forelder.mor,
+                                samtidigUttak: 100,
+                            },
+                            {
+                                fom: '2024-10-15',
+                                tom: '2024-12-09',
+                                kontoType: StønadskontoType.Mødrekvote,
+                                forelder: Forelder.mor,
+                            },
+                            {
+                                fom: '2024-12-10',
+                                tom: '2024-12-31',
+                                kontoType: StønadskontoType.Fellesperiode,
+                                forelder: Forelder.mor,
+                            },
+                            {
+                                fom: '2025-02-05',
+                                tom: '2025-03-11',
+                                kontoType: StønadskontoType.Fellesperiode,
+                                forelder: Forelder.mor,
+                                gradering: {
+                                    arbeidstidprosent: 50,
+                                    aktivitet: {
+                                        type: UttakArbeidType.FRILANS,
+                                    },
+                                },
+                            },
+                            {
+                                fom: '2025-03-19',
+                                tom: '2025-04-22',
+                                kontoType: StønadskontoType.Fellesperiode,
+                                forelder: Forelder.mor,
+                            },
+                        ],
+                    } satisfies AnnenPartVedtakDTO),
+                ),
             ],
         },
     },
     args: {
-        annenPartsPerioder: [
-            {
-                fom: '2024-09-10',
-                tom: '2024-09-30',
-                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
-                forelder: Forelder.mor,
-            },
-            {
-                fom: '2024-10-01',
-                tom: '2024-10-14',
-                kontoType: StønadskontoType.Mødrekvote,
-                forelder: Forelder.mor,
-                samtidigUttak: 100,
-            },
-            {
-                fom: '2024-10-15',
-                tom: '2024-12-09',
-                kontoType: StønadskontoType.Mødrekvote,
-                forelder: Forelder.mor,
-            },
-            {
-                fom: '2024-12-10',
-                tom: '2024-12-31',
-                kontoType: StønadskontoType.Fellesperiode,
-                forelder: Forelder.mor,
-            },
-            {
-                fom: '2025-02-05',
-                tom: '2025-03-11',
-                kontoType: StønadskontoType.Fellesperiode,
-                forelder: Forelder.mor,
-                gradering: {
-                    arbeidstidprosent: 50,
-                    aktivitet: {
-                        type: UttakArbeidType.FRILANS,
-                    },
-                },
-            },
-            {
-                fom: '2025-03-19',
-                tom: '2025-04-22',
-                kontoType: StønadskontoType.Fellesperiode,
-                forelder: Forelder.mor,
-            },
-        ],
         navnPåForeldre: {
             mor: 'Helga',
             farMedmor: 'Espen',
