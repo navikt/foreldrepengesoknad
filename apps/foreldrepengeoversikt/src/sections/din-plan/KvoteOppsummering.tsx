@@ -45,11 +45,12 @@ const KvoterOversiktInner = ({ sak }: { sak: Foreldrepengesak }) => {
     const perioderSomErSøktOm = sak.åpenBehandling?.søknadsperioder;
 
     const perioder = søkersPerioder ?? perioderSomErSøktOm ?? [];
+    const innvilgetPerioder = [...perioder, ...annenPartsPerioder].filter((p) => p.resultat?.innvilget);
 
     return (
         <KvoteOppsummering
             konto={konto}
-            perioder={[...perioder, ...annenPartsPerioder.filter((p) => p.resultat?.innvilget)]}
+            perioder={innvilgetPerioder}
             rettighetType={sak.rettighetType}
             forelder={sak.forelder}
         />
