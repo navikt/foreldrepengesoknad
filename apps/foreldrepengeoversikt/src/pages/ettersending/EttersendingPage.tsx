@@ -156,7 +156,7 @@ const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
             <VStack gap="4">
                 <BodyLong>
                     Dokumentene du laster opp vil bli lagt ved søknaden din. Du må velge hva dokumentene inneholder for
-                    at saksbehandlerene i NAV skal kunne behandle saken din.
+                    at saksbehandlerene i Nav skal kunne behandle saken din.
                 </BodyLong>
                 <BodyShort>Du kan laste opp dokumenter i formatene pdf, png og jpg.</BodyShort>
                 <NAVLink target="_blank" href="https://www.nav.no/brukerstotte#sende-soknad-pa-nett">

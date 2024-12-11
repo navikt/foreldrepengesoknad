@@ -88,8 +88,8 @@ export const InntektsmeldingPage = () => {
                         </BodyShort>
                         {tjenerOver6G && (
                             <BodyShort>
-                                NAV dekker inntekten du har, opptil {formatCurrencyWithKr(GRUNNBELØP * 6)} (seks ganger
-                                grunnbeløpet). Siden du tjener mer enn dette vil NAV ikke dekke hele inntekten du har.
+                                Nav dekker inntekten du har, opptil {formatCurrencyWithKr(GRUNNBELØP * 6)} (seks ganger
+                                grunnbeløpet). Siden du tjener mer enn dette vil Nav ikke dekke hele inntekten du har.
                             </BodyShort>
                         )}
                     </VStack>
@@ -261,7 +261,7 @@ const InntektsmeldingSpørsmålOgSvar = () => {
                 </Heading>
                 <BodyShort>
                     I inntektsmeldingen oppgir din arbeidsgiver hva som er din vanlige lønn rundt den tiden da du skal
-                    starte permisjonen din. Inntektsmeldingen er en del av grunnlaget NAV bruker for å beregne hvor mye
+                    starte permisjonen din. Inntektsmeldingen er en del av grunnlaget Nav bruker for å beregne hvor mye
                     du skal få.
                 </BodyShort>
             </VStack>
@@ -271,8 +271,8 @@ const InntektsmeldingSpørsmålOgSvar = () => {
                 </Heading>
                 <BodyShort>
                     Hvis du ser noe som ikke stemmer er det arbeidsgiveren din du må ta kontakt med. Arbeidsgiveren din
-                    kan da rette opp feilen og sende en ny inntektsmelding til NAV. Hvis den nye inntektsmeldingen
-                    endrer hvordan NAV har beregnet din inntekt vil du få et nytt vedtak.
+                    kan da rette opp feilen og sende en ny inntektsmelding til Nav. Hvis den nye inntektsmeldingen
+                    endrer hvordan Nav har beregnet din inntekt vil du få et nytt vedtak.
                 </BodyShort>
             </VStack>
         </VStack>
