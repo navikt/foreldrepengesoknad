@@ -2,7 +2,12 @@ import { Meta, StoryObj } from '@storybook/react';
 
 import { Forelder, RettighetType } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
-import { MorsAktivitet, OppholdÅrsakType, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
+import {
+    MorsAktivitet,
+    OppholdÅrsakType,
+    TilgjengeligeStønadskontoerForDekningsgrad,
+    UttakArbeidType,
+} from '@navikt/fp-types';
 
 import { KvoteOppsummering } from '.';
 
@@ -94,6 +99,51 @@ export const BeggeRettMorAlleDagerBrukt: Story = {
                 fom: '2025-09-22',
                 tom: '2025-09-26',
                 kontoType: StønadskontoType.Mødrekvote,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+        ],
+        rettighetType: RettighetType.BEGGE_RETT,
+        forelder: Forelder.mor,
+    },
+};
+
+export const BeggeRettMorMedGraderingOgFellesUttak: Story = {
+    args: {
+        konto: kontoNårBeggeHarRett,
+        perioder: [
+            {
+                fom: '2024-11-18',
+                tom: '2024-12-06',
+                kontoType: StønadskontoType.ForeldrepengerFørFødsel,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2024-12-09',
+                tom: '2025-03-14',
+                kontoType: StønadskontoType.Mødrekvote,
+                samtidigUttak: 60.0,
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2025-03-24',
+                tom: '2025-05-16',
+                kontoType: StønadskontoType.Fellesperiode,
+                gradering: {
+                    arbeidstidprosent: 50.0,
+                    aktivitet: {
+                        type: UttakArbeidType.ORDINÆRT_ARBEID,
+                    },
+                },
+                flerbarnsdager: false,
+                forelder: Forelder.mor,
+            },
+            {
+                fom: '2025-05-19',
+                tom: '2025-08-31',
+                oppholdÅrsak: OppholdÅrsakType.UttakFedrekvoteAnnenForelder,
                 flerbarnsdager: false,
                 forelder: Forelder.mor,
             },
