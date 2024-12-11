@@ -4,26 +4,28 @@ import { FormattedMessage } from 'react-intl';
 
 import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, RettighetType, SaksperiodeNy } from '@navikt/fp-types';
+import { NavnPåForeldre, RettighetType } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
 import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 
+import { useAnnenPartsVedtak } from '../../hooks/useAnnenPartsVedtak';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { Ytelse } from '../../types/Ytelse';
 import { getBarnFraSak, getFamiliehendelseDato, utledFamiliesituasjon } from '../../utils/sakerUtils';
 import { KvoteOversikt } from './KvoteOppsummering';
 
 interface Props {
-    annenPartsPerioder?: SaksperiodeNy[];
     navnPåForeldre: NavnPåForeldre;
 }
 
-export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåForeldre }) => {
+export const DinPlan: FunctionComponent<Props> = ({ navnPåForeldre }) => {
     const gjeldendeSak = useGetSelectedSak();
     const isDesktop = useMedia('screen and (min-width: 768px)');
 
     const [visKalender, setVisKalender] = useState(false);
+
+    const annenPartsPerioder = useAnnenPartsVedtak(gjeldendeSak).data?.perioder ?? [];
 
     if (!gjeldendeSak || gjeldendeSak.ytelse !== Ytelse.FORELDREPENGER) {
         return null;
@@ -36,10 +38,7 @@ export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåF
     const gjelderAdopsjon = gjeldendeSak.gjelderAdopsjon;
     const rettighetType = gjeldendeSak.rettighetType;
 
-    const getRelevantePerioder = () => {
-        return søkersPerioder ?? perioderSomErSøktOm;
-    };
-
+    const relevantePerioder = søkersPerioder ?? perioderSomErSøktOm ?? [];
     const søkerErFarEllerMedmor = !sakTilhørerMor;
     const bareFarHarRett = rettighetType === RettighetType.BARE_SØKER_RETT && !sakTilhørerMor;
     const erDeltUttak = rettighetType === RettighetType.BEGGE_RETT;
@@ -87,7 +86,7 @@ export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåF
                             familiehendelsedato={familiehendelseDato}
                             navnPåForeldre={navnPåForeldre}
                             annenPartsPerioder={annenPartsPerioder}
-                            søkersPerioder={getRelevantePerioder() || []}
+                            søkersPerioder={relevantePerioder}
                             gjelderAdopsjon={gjelderAdopsjon}
                             bareFarHarRett={bareFarHarRett}
                             familiesituasjon={familiesituasjon}
@@ -103,7 +102,7 @@ export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåF
                         barn={barn}
                         erFarEllerMedmor={søkerErFarEllerMedmor}
                         harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
-                        søkersPerioder={getRelevantePerioder() || []}
+                        søkersPerioder={relevantePerioder}
                         annenPartsPerioder={annenPartsPerioder}
                         navnAnnenPart={søkerErFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor}
                     />

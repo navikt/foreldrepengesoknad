@@ -12,39 +12,38 @@ import { links } from '@navikt/fp-constants';
 import { Satser } from '@navikt/fp-types';
 import { formatCurrency, useDocumentTitle } from '@navikt/fp-utils';
 
-import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
-import { TidslinjehendelseType } from '../../types/TidslinjehendelseType';
-import { getNavnPåForeldre } from '../../utils/personUtils';
-import { getNavnAnnenForelder } from '../../utils/sakerUtils';
-import { InntektsmeldingLenkePanel } from '../inntektsmelding-page/InntektsmeldingLenkePanel';
 import {
     erSakOppdatertOptions,
     hentDokumenterOptions,
     hentManglendeVedleggOptions,
     hentSatserOptions,
     hentTidslinjehendelserOptions,
-} from './../../api/api';
-import BekreftelseSendtSøknad from './../../components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
-import ContentSection from './../../components/content-section/ContentSection';
-import { DinSakHeader, getSaksoversiktHeading } from './../../components/header/Header';
-import { LenkePanel } from './../../components/lenke-panel/LenkePanel';
-import { useAnnenPartsVedtak } from './../../hooks/useAnnenPartsVedtak';
-import { useSetBackgroundColor } from './../../hooks/useBackgroundColor';
+} from '../../api/api';
+import { DinSakHeader, getSaksoversiktHeading } from '../../components/header/Header';
+import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
+import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import {
     useGetRedirectedFromSøknadsnummer,
     useSetRedirectedFromSøknadsnummer,
-} from './../../hooks/useRedirectedFromSøknadsnummer';
-import { useSetSelectedRoute } from './../../hooks/useSelectedRoute';
-import { useGetSelectedSak } from './../../hooks/useSelectedSak';
-import { PageRouteLayout } from './../../routes/ForeldrepengeoversiktRoutes';
-import { OversiktRoutes } from './../../routes/routes';
-import { DinPlan } from './../../sections/din-plan/DinPlan';
+} from '../../hooks/useRedirectedFromSøknadsnummer';
+import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
+import { useGetSelectedSak } from '../../hooks/useSelectedSak';
+import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
+import { OversiktRoutes } from '../../routes/routes';
+import { DinPlan } from '../../sections/din-plan/DinPlan';
+import { Tidslinje } from '../../sections/tidslinje/Tidslinje';
+import { RedirectSource } from '../../types/RedirectSource';
+import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
+import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
+import { TidslinjehendelseType } from '../../types/TidslinjehendelseType';
+import { Ytelse } from '../../types/Ytelse';
+import { getNavnPåForeldre } from '../../utils/personUtils';
+import { getNavnAnnenForelder } from '../../utils/sakerUtils';
+import { getRelevantNyTidslinjehendelse } from '../../utils/tidslinjeUtils';
+import { InntektsmeldingLenkePanel } from '../inntektsmelding-page/InntektsmeldingLenkePanel';
+import BekreftelseSendtSøknad from './../../components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
+import ContentSection from './../../components/content-section/ContentSection';
 import Oppgaver from './../../sections/oppgaver/Oppgaver';
-import { Tidslinje } from './../../sections/tidslinje/Tidslinje';
-import { RedirectSource } from './../../types/RedirectSource';
-import { SøkerinfoDTO } from './../../types/SøkerinfoDTO';
-import { Ytelse } from './../../types/Ytelse';
-import { getRelevantNyTidslinjehendelse } from './../../utils/tidslinjeUtils';
 
 dayjs.extend(isSameOrBefore);
 
@@ -114,8 +113,6 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
         ...hentSatserOptions(),
         select: (satser) => finnEngangstønadForSøknadstidspunkt(satser, søknadstidspunkt),
     }).data;
-
-    const annenPartsVedtakQuery = useAnnenPartsVedtak(gjeldendeSak);
 
     if (params.redirect === RedirectSource.REDIRECT_FROM_SØKNAD) {
         navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
@@ -203,13 +200,8 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
                                     ? intl.formatMessage({ id: 'saksoversikt.dinPlan.vedtatt' })
                                     : intl.formatMessage({ id: 'saksoversikt.dinPlan.søktOm' })
                             }
-                            // Fordi annenPartsVedtakQuery kan være et disabled query må man bruke isLoading heller enn isPending:
-                            // https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading
-                            showSkeleton={annenPartsVedtakQuery.isLoading}
-                            skeletonProps={{ height: '210px', variant: 'rounded' }}
                         >
                             <DinPlan
-                                annenPartsPerioder={annenPartsVedtakQuery.data?.perioder}
                                 navnPåForeldre={getNavnPåForeldre(
                                     gjeldendeSak,
                                     søkerinfo.søker.fornavn,

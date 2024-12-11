@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { hentAnnenPartsVedtakOptions } from './../api/api';
-import { Sak } from './../types/Sak';
-import { Ytelse } from './../types/Ytelse';
-import { getFamiliehendelseDato } from './../utils/sakerUtils';
+import { hentAnnenPartsVedtakOptions } from '../api/api';
+import { Sak } from '../types/Sak';
+import { Ytelse } from '../types/Ytelse';
+import { getFamiliehendelseDato } from '../utils/sakerUtils';
 
 export function useAnnenPartsVedtak(sak: Sak | undefined) {
     const familiehendelse =
