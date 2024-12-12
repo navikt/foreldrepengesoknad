@@ -74,6 +74,7 @@ interface Props {
 
 const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjon }) => {
     const intl = useIntl();
+    const locale = intl.locale;
     const { goToRoute } = useVeiviserNavigator();
 
     const formMethods = useForm<FpEllerEsSituasjon>({
@@ -143,6 +144,9 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                 <List>
                                     <List.Item>
                                         <FormattedMessage id="SituasjonSide.HvaGirRett.Sykepenger" />
+                                    </List.Item>
+                                    <List.Item>
+                                        <FormattedMessage id="SituasjonSide.HvaGirRett.Fp" />
                                     </List.Item>
                                     <List.Item>
                                         <FormattedMessage id="SituasjonSide.HvaGirRett.Svp" />
@@ -248,7 +252,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                             </Label>
                                             <Heading size="large">
                                                 {lønnPerMånedNummer ? (
-                                                    formatCurrencyWithKr(lønnPerMånedNummer * 12)
+                                                    formatCurrencyWithKr(lønnPerMånedNummer * 12, locale)
                                                 ) : (
                                                     <FormattedMessage id="SituasjonSide.IngenKr" />
                                                 )}
@@ -260,7 +264,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                     <BodyShort>
                                         <FormattedMessage
                                             id="SituasjonSide.HvorMyeMåHaTjentDetaljer"
-                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
+                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn, locale) }}
                                         />
                                     </BodyShort>
                                 </ReadMore>
@@ -270,7 +274,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                     header={
                                         <FormattedMessage
                                             id="SituasjonSide.MåTjeneMinst"
-                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
+                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn, locale) }}
                                         />
                                     }
                                     icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
@@ -280,8 +284,8 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                         <FormattedMessage
                                             id="SituasjonSide.OppgittLønnIkkeRett"
                                             values={{
-                                                årslønn: formatCurrencyWithKr(lønnPerMånedNummer * 12),
-                                                minstelønn: formatCurrencyWithKr(minstelønn),
+                                                årslønn: formatCurrencyWithKr(lønnPerMånedNummer * 12, locale),
+                                                minstelønn: formatCurrencyWithKr(minstelønn, locale),
                                             }}
                                         />
                                     </BodyShort>

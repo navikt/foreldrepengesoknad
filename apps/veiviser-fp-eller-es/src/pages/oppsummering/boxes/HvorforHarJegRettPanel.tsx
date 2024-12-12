@@ -1,5 +1,5 @@
 import { QuestionmarkIcon } from '@navikt/aksel-icons';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
@@ -16,6 +16,7 @@ interface Props {
 }
 
 const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
+    const locale = useIntl().locale;
     const { borDuINorge, jobberDuINorge, lønnPerMåned } = fpEllerEsSituasjon;
 
     const minstelønn = grunnbeløpet / 2;
@@ -59,15 +60,15 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
                             headerText={
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuMåTeneOver"
-                                    values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
+                                    values={{ minstelønn: formatCurrencyWithKr(minstelønn, locale) }}
                                 />
                             }
                             boxBodyText={
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuHarOppgittMånedslønn"
                                     values={{
-                                        månedslønn: formatCurrencyWithKr(lønnPerMåned),
-                                        minstelønn: formatCurrencyWithKr(minstelønn),
+                                        månedslønn: formatCurrencyWithKr(lønnPerMåned, locale),
+                                        minstelønn: formatCurrencyWithKr(minstelønn, locale),
                                         hvorMye: årslønn > minstelønn,
                                     }}
                                 />
