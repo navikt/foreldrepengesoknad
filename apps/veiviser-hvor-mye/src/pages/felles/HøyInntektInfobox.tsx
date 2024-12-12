@@ -1,5 +1,5 @@
 import { InformationIcon, KronerIcon } from '@navikt/aksel-icons';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Link, VStack } from '@navikt/ds-react';
 
@@ -14,12 +14,13 @@ interface Props {
 }
 
 export const HøyInntektInfobox = ({ maxÅrslønnDekket, isGray = false, showKrIcon = false }: Props) => {
+    const locale = useIntl().locale;
     return (
         <Infobox
             header={
                 <FormattedMessage
                     id="HøyInntektInfobox.DelvisDekning"
-                    values={{ maxÅrslønn: formatCurrencyWithKr(maxÅrslønnDekket) }}
+                    values={{ maxÅrslønn: formatCurrencyWithKr(maxÅrslønnDekket, locale) }}
                 />
             }
             color={isGray ? 'gray' : 'green'}
@@ -39,7 +40,7 @@ export const HøyInntektInfobox = ({ maxÅrslønnDekket, isGray = false, showKrI
                     <BodyShort>
                         <FormattedMessage
                             id="HøyInntektInfobox.HøyereLenke1"
-                            values={{ maxÅrslønn: formatCurrencyWithKr(maxÅrslønnDekket) }}
+                            values={{ maxÅrslønn: formatCurrencyWithKr(maxÅrslønnDekket, locale) }}
                         />
                         <Link inlineText href={links.grunnbeløpet} className="lenke" rel="noreferrer" target="_blank">
                             <FormattedMessage id="HøyInntektInfobox.HøyereLenke2" />

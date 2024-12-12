@@ -59,6 +59,7 @@ interface Props {
 
 export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, satser }: Props) => {
     const intl = useIntl();
+    const locale = intl.locale;
     const { goToRoute } = useVeiviserNavigator();
 
     const formMethods = useForm<Arbeidssituasjon>({
@@ -215,7 +216,7 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                             </Label>
                                             <Heading size="large">
                                                 {gjennomsnittslønnPerMåned
-                                                    ? formatCurrencyWithKr(gjennomsnittslønnPerMåned)
+                                                    ? formatCurrencyWithKr(gjennomsnittslønnPerMåned, locale)
                                                     : '-'}
                                             </Heading>
                                         </div>
@@ -225,7 +226,10 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                             </Label>
                                             <Heading size="large">
                                                 {gjennomsnittslønnPerMåned
-                                                    ? formatCurrencyWithKr(parseInt(gjennomsnittslønnPerMåned, 10) * 12)
+                                                    ? formatCurrencyWithKr(
+                                                          parseInt(gjennomsnittslønnPerMåned, 10) * 12,
+                                                          locale,
+                                                      )
                                                     : '-'}
                                             </Heading>
                                         </div>
@@ -239,6 +243,9 @@ export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, sa
                                         </li>
                                         <li>
                                             <FormattedMessage id="ArbeidssituasjonSide.Foreldrepenger" />
+                                        </li>
+                                        <li>
+                                            <FormattedMessage id="ArbeidssituasjonSide.Svangerskapspenger" />
                                         </li>
                                         <li>
                                             <FormattedMessage id="ArbeidssituasjonSide.Arbeidsavklaring" />
