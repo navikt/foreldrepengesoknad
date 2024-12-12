@@ -49,6 +49,7 @@ export const OppgittInformasjon = ({
     satser,
 }: Props) => {
     const intl = useIntl();
+    const locale = intl.locale;
 
     const erFødt = erBarnetFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
@@ -89,7 +90,7 @@ export const OppgittInformasjon = ({
 
     const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdoptert;
 
-    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2);
+    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2, locale);
 
     return (
         <VStack gap="10">
