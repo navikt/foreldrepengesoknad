@@ -25,7 +25,11 @@ export const DinPlan: FunctionComponent<Props> = ({ navnPåForeldre }) => {
 
     const [visKalender, setVisKalender] = useState(false);
 
-    const annenPartsPerioder = useAnnenPartsVedtak(gjeldendeSak).data?.perioder ?? [];
+    const annenPartsQuery = useAnnenPartsVedtak(gjeldendeSak);
+
+    if (annenPartsQuery.isPending) {
+        return null;
+    }
 
     if (!gjeldendeSak || gjeldendeSak.ytelse !== Ytelse.FORELDREPENGER) {
         return null;
@@ -85,7 +89,7 @@ export const DinPlan: FunctionComponent<Props> = ({ navnPåForeldre }) => {
                             erFarEllerMedmor={søkerErFarEllerMedmor}
                             familiehendelsedato={familiehendelseDato}
                             navnPåForeldre={navnPåForeldre}
-                            annenPartsPerioder={annenPartsPerioder}
+                            annenPartsPerioder={annenPartsQuery.data?.perioder ?? []}
                             søkersPerioder={relevantePerioder}
                             gjelderAdopsjon={gjelderAdopsjon}
                             bareFarHarRett={bareFarHarRett}
@@ -103,7 +107,7 @@ export const DinPlan: FunctionComponent<Props> = ({ navnPåForeldre }) => {
                         erFarEllerMedmor={søkerErFarEllerMedmor}
                         harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
                         søkersPerioder={relevantePerioder}
-                        annenPartsPerioder={annenPartsPerioder}
+                        annenPartsPerioder={annenPartsQuery.data?.perioder ?? []}
                         navnAnnenPart={søkerErFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor}
                     />
                 )}
