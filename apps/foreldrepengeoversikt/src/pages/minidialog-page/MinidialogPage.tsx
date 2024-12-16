@@ -21,7 +21,7 @@ interface Props {
     fnr: string;
 }
 
-const MinidialogPage: React.FunctionComponent<Props> = ({ fnr }) => {
+export const MinidialogPage = ({ fnr }: Props) => {
     const params = useParams();
     const minidialog = useQuery({
         ...minidialogOptions(),
@@ -39,15 +39,8 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr }) => {
     useSetBackgroundColor('blue');
 
     const { mutate, isPending, isError, isSuccess } = useMutation({
-        //TODO FIX eslint-feil
-        // eslint-disable-next-line @typescript-eslint/no-shadow
-        mutationFn: ({ ettersendelse, fnr }: { ettersendelse: EttersendingDto; fnr: string }) =>
-            sendEttersending(ettersendelse, fnr),
+        mutationFn: (ettersendelse: EttersendingDto) => sendEttersending(ettersendelse, fnr),
     });
-
-    const sendEttersendelse = (ettersendelse: EttersendingDto) => {
-        mutate({ ettersendelse, fnr });
-    };
 
     if (!minidialog || !sak) {
         navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
@@ -64,7 +57,7 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr }) => {
                     <MinidialogSkjema
                         sakstype={sak.ytelse}
                         minidialog={minidialog}
-                        onSubmit={sendEttersendelse}
+                        onSubmit={mutate}
                         isSendingEttersendelse={isPending}
                         ettersendelseErSendt={isSuccess}
                         ettersendelseError={
@@ -78,5 +71,3 @@ const MinidialogPage: React.FunctionComponent<Props> = ({ fnr }) => {
         </PageRouteLayout>
     );
 };
-
-export default MinidialogPage;

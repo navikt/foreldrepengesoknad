@@ -1,22 +1,22 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router-dom';
 
+import { Breadcrumb } from '../components/breadcrumb/Breadcrumb';
+import { DokumenterPage } from '../pages/dokumenter-page/DokumenterPage';
 import { InntektsmeldingOversiktPage } from '../pages/inntektsmelding-page/InntektsmeldingOversiktPage';
 import { InntektsmeldingPage } from '../pages/inntektsmelding-page/InntektsmeldingPage';
+import { MinidialogPage } from '../pages/minidialog-page/MinidialogPage';
+import { TidslinjePage } from '../pages/tidslinje-page/TidslinjePage';
 import { LayoutWrapper } from '../sections/LayoutWrapper';
-import { Breadcrumb } from './../components/breadcrumb/Breadcrumb';
+import { SakOppslag } from '../types/SakOppslag';
+import { SøkerinfoDTO } from '../types/SøkerinfoDTO';
+import { getAlleYtelser } from '../utils/sakerUtils';
 import Snarveier from './../components/snarveier/Snarveier';
 import { default as SakComponent } from './../pages/Sak';
-import { DokumenterPage } from './../pages/dokumenter-page/DokumenterPage';
 import EttersendingPage from './../pages/ettersending/EttersendingPage';
 import Forside from './../pages/forside/Forside';
-import MinidialogPage from './../pages/minidialog-page/MinidialogPage';
 import Saksoversikt from './../pages/saksoversikt/Saksoversikt';
-import { TidslinjePage } from './../pages/tidslinje-page/TidslinjePage';
 import KontaktOss from './../sections/kontakt-oss/KontaktOss';
-import { SakOppslag } from './../types/SakOppslag';
-import { SøkerinfoDTO } from './../types/SøkerinfoDTO';
-import { getAlleYtelser } from './../utils/sakerUtils';
 import { OversiktRoutes } from './routes';
 
 interface Props {
