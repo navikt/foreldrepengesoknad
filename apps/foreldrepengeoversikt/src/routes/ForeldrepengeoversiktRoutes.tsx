@@ -7,7 +7,7 @@ import { LayoutWrapper } from '../sections/LayoutWrapper';
 import { Breadcrumb } from './../components/breadcrumb/Breadcrumb';
 import Snarveier from './../components/snarveier/Snarveier';
 import { default as SakComponent } from './../pages/Sak';
-import DokumenterPage from './../pages/dokumenter-page/DokumenterPage';
+import { DokumenterPage } from './../pages/dokumenter-page/DokumenterPage';
 import EttersendingPage from './../pages/ettersending/EttersendingPage';
 import Forside from './../pages/forside/Forside';
 import MinidialogPage from './../pages/minidialog-page/MinidialogPage';

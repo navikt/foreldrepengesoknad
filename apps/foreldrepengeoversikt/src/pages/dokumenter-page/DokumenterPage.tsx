@@ -7,19 +7,19 @@ import { Alert, BodyLong, Button, Heading, Loader } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import { hentDokumenterOptions } from './../../api/api';
+import { hentDokumenterOptions } from '../../api/api';
+import { DokumenterHeader } from '../../components/header/Header';
+import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
+import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
+import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
+import { OversiktRoutes } from '../../routes/routes';
+import { grupperDokumenterPåTidspunkt } from '../../utils/dokumenterUtils';
+import { guid } from '../../utils/guid';
 import Dokument from './../../components/dokument/Dokument';
 import GrupperteDokumenter from './../../components/grupperte-dokumenter/GrupperteDokumenter';
-import { DokumenterHeader } from './../../components/header/Header';
 import NoeGikkGalt from './../../components/noe-gikk-galt/NoeGikkGalt';
-import { useSetBackgroundColor } from './../../hooks/useBackgroundColor';
-import { useSetSelectedRoute } from './../../hooks/useSelectedRoute';
-import { PageRouteLayout } from './../../routes/ForeldrepengeoversiktRoutes';
-import { OversiktRoutes } from './../../routes/routes';
-import { grupperDokumenterPåTidspunkt } from './../../utils/dokumenterUtils';
-import { guid } from './../../utils/guid';
 
-const DokumenterPage: React.FunctionComponent = () => {
+export const DokumenterPage: React.FunctionComponent = () => {
     useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.DOKUMENTER);
     const params = useParams();
@@ -82,5 +82,3 @@ const DokumenterPage: React.FunctionComponent = () => {
         </PageRouteLayout>
     );
 };
-
-export default DokumenterPage;
