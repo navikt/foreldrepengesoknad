@@ -93,7 +93,7 @@ const konverterSelectVerdi = (selectText: string): Skjemanummer | typeof DEFAULT
 };
 
 type Props = {
-    saker: SakOppslag;
+    readonly saker: SakOppslag;
 };
 
 const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {

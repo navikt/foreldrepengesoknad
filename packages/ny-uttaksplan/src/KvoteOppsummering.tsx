@@ -12,10 +12,10 @@ import { TidsperiodenString, formatOppramsing } from '@navikt/fp-utils';
 import { getVarighetString } from './utils/dateUtils';
 
 type Props = {
-    konto: TilgjengeligeStønadskontoerForDekningsgrad;
-    perioder: SaksperiodeNy[];
-    rettighetType: RettighetType;
-    forelder: Forelder;
+    readonly konto: TilgjengeligeStønadskontoerForDekningsgrad;
+    readonly perioder: SaksperiodeNy[];
+    readonly rettighetType: RettighetType;
+    readonly forelder: Forelder;
 };
 const KvoteContext = createContext<Props | null>(null);
 

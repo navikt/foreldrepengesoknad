@@ -20,8 +20,8 @@ import { getAlleYtelser } from './../utils/sakerUtils';
 import { OversiktRoutes } from './routes';
 
 interface Props {
-    saker: SakOppslag;
-    søkerinfo: SøkerinfoDTO;
+    readonly saker: SakOppslag;
+    readonly søkerinfo: SøkerinfoDTO;
 }
 
 const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinfo, saker }) => {
@@ -76,7 +76,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
  *
  * Vi ønsker ikke å redirecte til sak dersom bruker allerede er på en underside på saken, eller at bruker navigerer tilbake til forside via breadcrumbs
  */
-function RedirectTilSakHvisDetKunFinnesEn({ saker }: { saker: SakOppslag }) {
+function RedirectTilSakHvisDetKunFinnesEn({ saker }: { readonly saker: SakOppslag }) {
     const navigate = useNavigate();
 
     const alleSaker = getAlleYtelser(saker);
@@ -101,7 +101,7 @@ function RedirectTilSakHvisDetKunFinnesEn({ saker }: { saker: SakOppslag }) {
     return <Outlet />;
 }
 
-export function PageRouteLayout({ header, children }: { header: ReactNode; children: ReactNode }) {
+export function PageRouteLayout({ header, children }: { readonly header: ReactNode; readonly children: ReactNode }) {
     return (
         <>
             {header}

@@ -13,8 +13,8 @@ export function FerieOppsummering({
     onVilEndreSvar,
     alleArbeidsforhold,
 }: {
-    onVilEndreSvar: () => void;
-    alleArbeidsforhold: Arbeidsforhold[];
+    readonly onVilEndreSvar: () => void;
+    readonly alleArbeidsforhold: Arbeidsforhold[];
 }) {
     const ferie = useContextGetData(ContextDataType.FERIE);
     if (!ferie) {
@@ -48,7 +48,7 @@ export function FerieOppsummering({
     );
 }
 
-const FeriePeriodeOppsummering = ({ avtaltFerie }: { avtaltFerie: AvtaltFerieDto[] }) => {
+const FeriePeriodeOppsummering = ({ avtaltFerie }: { readonly avtaltFerie: AvtaltFerieDto[] }) => {
     return (
         <>
             <FormSummary.Answer>
@@ -91,8 +91,8 @@ const FlereArbeidsgivereFerieOppsummering = ({
     avtaltFerie,
     alleArbeidsforhold,
 }: {
-    avtaltFerie: AvtaltFerieDto[];
-    alleArbeidsforhold: Arbeidsforhold[];
+    readonly avtaltFerie: AvtaltFerieDto[];
+    readonly alleArbeidsforhold: Arbeidsforhold[];
 }) => {
     const arbeidsforholdMedFerie = [...new Set(avtaltFerie.map((f) => f.arbeidsforhold.id))];
 

@@ -234,7 +234,7 @@ function SelvstendigNæringsdrivendeSummary({
     );
 }
 
-function KunEnPeriode({ periode }: { periode: TilretteleggingPeriode }) {
+function KunEnPeriode({ periode }: { readonly periode: TilretteleggingPeriode }) {
     return (
         <>
             <FormSummary.Answer>
@@ -265,7 +265,7 @@ function KunEnPeriode({ periode }: { periode: TilretteleggingPeriode }) {
     );
 }
 
-function FlerePerioder({ perioder }: { perioder: TilretteleggingPeriode[] }) {
+function FlerePerioder({ perioder }: { readonly perioder: TilretteleggingPeriode[] }) {
     return (
         <FormSummary.Answer>
             <FormSummary.Label>
@@ -288,7 +288,7 @@ function FlerePerioder({ perioder }: { perioder: TilretteleggingPeriode[] }) {
     );
 }
 
-function SvpPeriodeDatoTekst({ periode }: { periode: TilretteleggingPeriode }) {
+function SvpPeriodeDatoTekst({ periode }: { readonly periode: TilretteleggingPeriode }) {
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
     const kanHaSvpFremTilTreUkerFørTermin = getKanHaSvpFremTilTreUkerFørTermin(barn);
@@ -328,8 +328,8 @@ function StillingProsentTekst({
     tilretteleggingstype,
     stillingsprosent,
 }: {
-    stillingsprosent?: number;
-    tilretteleggingstype: Tilretteleggingstype;
+    readonly stillingsprosent?: number;
+    readonly tilretteleggingstype: Tilretteleggingstype;
 }) {
     if (tilretteleggingstype === Tilretteleggingstype.HEL) {
         return <FormattedMessage id="oppsummering.periode.tilbakeIFullJobb" />;

@@ -9,10 +9,10 @@ export interface FormikModalFormAndInfoProps<FieldName, InfoType, ErrorType>
     extends ModalFormAndInfoProps<InfoType>,
         UseFastFieldProps,
         TypedFormInputValidationProps<FieldName, ErrorType> {
-    name: FieldName;
-    error?: FormError;
-    defaultValue?: InfoType;
-    onAfterChange?: (data: InfoType) => void;
+    readonly name: FieldName;
+    readonly error?: FormError;
+    readonly defaultValue?: InfoType;
+    readonly onAfterChange?: (data: InfoType) => void;
 }
 
 function FormikModalFormAndInfo<FieldName, ItemType, ErrorType>({

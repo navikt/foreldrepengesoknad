@@ -9,10 +9,10 @@ import { DokumentType as DokumentTypeEnum } from '../../types/DokumentType';
 import { lagUrl } from '../../utils/dokumenterUtils';
 
 interface Props {
-    dokument: DokumentType;
+    readonly dokument: DokumentType;
 }
 
-function DokumentLenke({ dokument }: { dokument: DokumentType }) {
+function DokumentLenke({ dokument }: { readonly dokument: DokumentType }) {
     const url = lagUrl(dokument);
 
     return (
@@ -25,7 +25,7 @@ function DokumentLenke({ dokument }: { dokument: DokumentType }) {
     );
 }
 
-function DokumentAvsender({ dokumentType }: { dokumentType: DokumentTypeEnum }) {
+function DokumentAvsender({ dokumentType }: { readonly dokumentType: DokumentTypeEnum }) {
     const text = (() => {
         switch (dokumentType) {
             case DokumentTypeEnum.ARBEIDSGIVER:
