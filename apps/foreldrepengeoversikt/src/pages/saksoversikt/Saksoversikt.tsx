@@ -126,7 +126,7 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
         redirectedFromSøknadsnummer === params.saksnummer || relevantNyTidslinjehendelse !== undefined;
     const visBekreftelsePåSendtSøknad = nettoppSendtInnSøknad && gjeldendeSak?.åpenBehandling !== undefined;
 
-    const harMinstEttArbeidsforhold = !!søkerinfo?.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
+    const harMinstEttArbeidsforhold = !!søkerinfo.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
 
     if (harIkkeOppdatertSak) {
         return (
@@ -179,8 +179,8 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
                 >
                     <Tidslinje
                         sak={gjeldendeSak}
-                        tidslinjeHendelserQuery={tidslinjeHendelserQuery}
-                        manglendeVedleggQuery={manglendeVedleggQuery}
+                        tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
+                        manglendeVedlegg={manglendeVedleggQuery.data ?? []}
                         visHeleTidslinjen={false}
                         søkersBarn={søkerinfo.søker.barn ?? []}
                     />

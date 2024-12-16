@@ -360,6 +360,7 @@ export const getTidslinjehendelserDetaljer = (
     intl: IntlShape,
 ): Tidslinjehendelse[] => {
     return tidslinjeHendelserData.map((hendelse) => {
+        console.log(hendelse);
         switch (hendelse.tidslinjeHendelseType) {
             case TidslinjehendelseType.UTGÅENDE_INNHENT_OPPLYSNINGER:
                 return {
