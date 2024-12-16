@@ -46,12 +46,6 @@ const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 
     return 'svangerskapspenger';
 };
 
-export const getListOfUniqueSkjemanummer = (attachments: Attachment[]) => {
-    return attachments
-        .map((a: Attachment) => a.skjemanummer)
-        .filter((s: Skjemanummer, index, self) => self.indexOf(s) === index);
-};
-
 const DEFAULT_OPTION = 'default';
 
 export const getAttachmentTypeSelectOptions = (intl: IntlShape, sak: Sak | undefined) => {
