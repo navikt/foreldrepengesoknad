@@ -13,6 +13,7 @@ import { getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
 
 import { Button, HStack, Heading, VStack } from '@navikt/ds-react';
 
+import { Forelder } from '@navikt/fp-constants';
 import { LocaleAll, SaksperiodeNy, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { StepButtons } from '@navikt/fp-ui';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
@@ -45,6 +46,7 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
     const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
+    const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
 
     const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
@@ -82,6 +84,18 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
         lagreUttaksplan(perioder);
     };
 
+    const getSøkersPerioder = () => {
+        return uttaksplan.filter((p) =>
+            erFarEllerMedmor ? p.forelder === Forelder.farMedmor : p.forelder === Forelder.mor,
+        );
+    };
+
+    const getAnnenpartsPerioder = () => {
+        return uttaksplan.filter((p) =>
+            erFarEllerMedmor ? p.forelder === Forelder.mor : p.forelder === Forelder.farMedmor,
+        );
+    };
+
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
             <VStack gap="6">
@@ -99,7 +113,7 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
                         <UttaksplanNy
                             familiehendelsedato={familiehendelsedato}
                             bareFarHarRett={bareFarMedmorHarRett}
-                            erFarEllerMedmor={false}
+                            erFarEllerMedmor={erFarEllerMedmor}
                             familiesituasjon={familiesituasjon}
                             gjelderAdopsjon={familiesituasjon === 'adopsjon'}
                             navnPåForeldre={{
@@ -108,10 +122,11 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
                             }}
                             førsteUttaksdagNesteBarnsSak={undefined}
                             harAktivitetskravIPeriodeUtenUttak={false}
-                            søkersPerioder={planforslag.søker1}
-                            annenPartsPerioder={planforslag.søker2}
+                            søkersPerioder={getSøkersPerioder()}
+                            annenPartsPerioder={getAnnenpartsPerioder()}
                             barn={mapOmBarnetTilBarn(omBarnet)}
                             handleOnPlanChange={handleOnPlanChange}
+                            planleggerModus={true}
                         />
                     )}
                 </VStack>

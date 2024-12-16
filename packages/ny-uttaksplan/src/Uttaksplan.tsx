@@ -25,6 +25,7 @@ interface Props {
     førsteUttaksdagNesteBarnsSak: string | undefined;
     familiesituasjon: Familiesituasjon;
     handleOnPlanChange: (perioder: SaksperiodeNy[]) => void;
+    planleggerModus: boolean;
 }
 
 const UttaksplanNy: FunctionComponent<Props> = ({
@@ -40,9 +41,10 @@ const UttaksplanNy: FunctionComponent<Props> = ({
     førsteUttaksdagNesteBarnsSak,
     familiesituasjon,
     handleOnPlanChange,
+    planleggerModus,
 }) => {
     const søkersPlanperioder = finnOgSettInnHull(
-        mapSaksperiodeTilPlanperiode(søkersPerioder, erFarEllerMedmor, false, familiehendelsedato),
+        mapSaksperiodeTilPlanperiode(søkersPerioder, erFarEllerMedmor, false, familiehendelsedato, planleggerModus),
         harAktivitetskravIPeriodeUtenUttak,
         familiehendelsedato,
         gjelderAdopsjon,
@@ -51,7 +53,7 @@ const UttaksplanNy: FunctionComponent<Props> = ({
         førsteUttaksdagNesteBarnsSak,
     );
     const annenPartsPlanperioder = annenPartsPerioder
-        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato)
+        ? mapSaksperiodeTilPlanperiode(annenPartsPerioder, erFarEllerMedmor, true, familiehendelsedato, planleggerModus)
         : undefined;
 
     const planMedLikePerioderSlåttSammen = slåSammenLikePerioder(
@@ -87,6 +89,7 @@ const UttaksplanNy: FunctionComponent<Props> = ({
         bareFarHarRett,
         erFarEllerMedmor,
         førsteUttaksdagNesteBarnsSak,
+        annenPartsPlanperioder,
     );
 
     const handleUpdatePeriode = (oppdatertPeriode: Planperiode) => {
@@ -94,7 +97,7 @@ const UttaksplanNy: FunctionComponent<Props> = ({
 
         const saksPerioder = result.map((r) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars -- greit for spreading
-            const { id, periodeHullÅrsak, gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = r;
+            const { id, periodeHullÅrsak, readOnly: gjelderAnnenPart, skalIkkeHaUttakFørTermin, ...saksPeriodeNy } = r;
             return saksPeriodeNy;
         });
 

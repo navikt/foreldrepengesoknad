@@ -271,7 +271,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                                     variant="primary"
                                     type="button"
                                     onClick={() => {
-                                        lagreUttaksplan(planforslag.søker1);
+                                        lagreUttaksplan([...planforslag.søker1, ...planforslag.søker2]);
                                         navigator.goToNextStep(PlanleggerRoutes.TILPASS_PLANEN);
                                     }}
                                 >
@@ -297,7 +297,7 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                     <StepButtons
                         goToPreviousStep={navigator.goToPreviousDefaultStep}
                         nextButtonOnClick={() => {
-                            lagreUttaksplan(planforslag.søker1);
+                            lagreUttaksplan([...planforslag.søker1, ...planforslag.søker2]);
                             navigator.goToNextDefaultStep();
                         }}
                         useSimplifiedTexts

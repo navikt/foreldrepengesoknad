@@ -1,14 +1,14 @@
 import { PencilIcon } from '@navikt/aksel-icons';
-import { forwardRef } from 'react';
-import { useForm } from 'react-hook-form';
+import { forwardRef, useState } from 'react';
 
-import { Button, Heading, Modal, Radio } from '@navikt/ds-react';
-
-import { RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
+import { Heading, Modal } from '@navikt/ds-react';
 
 import Permisjonsperiode from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import styles from './endrePeriodeModal.module.css';
+import { EndreTidsperiodeModalStep } from './steps/EndreTidsperiodeModalStep';
+import { ValgModalStep } from './steps/ValgModalStep';
+import { VelgPeriodeModalStep } from './steps/VelgPeriodeModalStep';
 
 interface Props {
     closeModal: () => void | undefined;
@@ -16,46 +16,65 @@ interface Props {
     permisjonsperiode: Permisjonsperiode;
 }
 
-export const EndrePeriodeModal = forwardRef<HTMLDialogElement, Props>(
-    ({ closeModal, handleUpdatePeriode, permisjonsperiode }, ref) => {
-        const formMethods = useForm<any>({
-            defaultValues: {},
-        });
+export type ModalStep = 'step1' | 'step2' | 'step3';
 
-        const ariaLabelId = 'endre-periode-modal-heading';
+export interface ModalData {
+    valgtPeriode: Planperiode | undefined;
+    hvaVilDuGjøre: string | undefined;
+    currentStep: ModalStep;
+    fom?: string;
+    tom?: string;
+}
 
-        const periode = permisjonsperiode.perioder[0];
+export const EndrePeriodeModal = forwardRef<HTMLDialogElement, Props>(({ closeModal, permisjonsperiode }, ref) => {
+    const [modalData, setModalData] = useState<ModalData>({
+        valgtPeriode: undefined,
+        hvaVilDuGjøre: undefined,
+        fom: undefined,
+        tom: undefined,
+        currentStep: 'step1',
+    });
+    const { currentStep } = modalData;
 
-        return (
-            <Modal className={styles.modal} ref={ref} aria-labelledby={ariaLabelId}>
-                <Modal.Header className={styles.header}>
-                    <div className={styles.headerContent}>
-                        <PencilIcon aria-label="Lukk" width={24} height={24} />
-                        <Heading size="medium" id={ariaLabelId}>
-                            Endre periode
-                        </Heading>
-                    </div>
-                </Modal.Header>
-                <Modal.Body>
-                    <Heading size="medium">Hva vil du gjøre med perioden?</Heading>
-                    <RhfForm formMethods={formMethods}>
-                        <RhfRadioGroup name="Test">
-                            <Radio value="test1">Endre tidsrommet</Radio>
-                            <Radio value="test2">Overfør perioden til andre part</Radio>
-                            <Radio value="test3">Jeg vil jobbe delvis i perioden</Radio>
-                            <Radio value="test4">Jeg vil endre hvilken kvote som er brukt</Radio>
-                        </RhfRadioGroup>
-                    </RhfForm>
-                </Modal.Body>
-                <Modal.Footer style={{ justifyItems: 'space-between', flexFlow: 'row' }}>
-                    <Button type="button" variant="secondary" onClick={closeModal}>
-                        Avbryt
-                    </Button>
-                    <Button type="button" onClick={() => handleUpdatePeriode(periode)}>
-                        Lagre endringer
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        );
-    },
-);
+    const ariaLabelId = 'endre-periode-modal-heading';
+
+    const renderContent = () => {
+        switch (currentStep) {
+            case 'step1':
+                return (
+                    <VelgPeriodeModalStep
+                        perioder={permisjonsperiode.perioder}
+                        modalData={modalData}
+                        setModalData={setModalData}
+                        closeModal={closeModal}
+                    />
+                );
+            case 'step2':
+                return <ValgModalStep modalData={modalData} setModalData={setModalData} closeModal={closeModal} />;
+            case 'step3':
+                return (
+                    <EndreTidsperiodeModalStep
+                        modalData={modalData}
+                        setModalData={setModalData}
+                        closeModal={closeModal}
+                    />
+                );
+            default:
+                return null;
+        }
+    };
+
+    return (
+        <Modal className={styles.modal} ref={ref} aria-labelledby={ariaLabelId}>
+            <Modal.Header className={styles.header}>
+                <div className={styles.headerContent}>
+                    <PencilIcon aria-label="Lukk" width={24} height={24} />
+                    <Heading size="medium" id={ariaLabelId}>
+                        Endre periode
+                    </Heading>
+                </div>
+            </Modal.Header>
+            <Modal.Body>{renderContent()}</Modal.Body>
+        </Modal>
+    );
+});
