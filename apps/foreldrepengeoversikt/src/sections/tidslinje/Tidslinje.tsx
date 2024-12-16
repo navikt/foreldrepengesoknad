@@ -168,12 +168,14 @@ export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendel
                                 </Link>
                             )}
                             {hendelse.linkTittel && hendelse.internalUrl && (
-                                <LinkInternal
-                                    className={styles.mediumFont}
+                                <Button
+                                    size="small"
+                                    className="mt-2"
                                     to={`/sak/${sak.saksnummer}/${hendelse.internalUrl}`}
+                                    as={LinkInternal}
                                 >
-                                    <Button>{hendelse.linkTittel}</Button>
-                                </LinkInternal>
+                                    {hendelse.linkTittel}
+                                </Button>
                             )}
                         </ul>
                     </TidslinjeHendelse>
