@@ -5,7 +5,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import dokumenter from 'storybookData/dokumenter/dokumenter.json';
 
 import { OversiktRoutes } from './../../routes/routes';
-import DokumenterPage from './DokumenterPage';
+import { DokumenterPage } from './DokumenterPage';
 
 const queryClient = new QueryClient();
 

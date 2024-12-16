@@ -1,33 +1,41 @@
 import { ArrowRightIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Link, useParams } from 'react-router-dom';
 
 import { Alert, BodyLong, Button, Heading, Loader } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import { hentDokumenterOptions } from './../../api/api';
+import { hentDokumenterOptions } from '../../api/api';
+import { DokumenterHeader } from '../../components/header/Header';
+import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
+import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
+import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
+import { OversiktRoutes } from '../../routes/routes';
+import { grupperDokumenterPåTidspunkt } from '../../utils/dokumenterUtils';
+import { guid } from '../../utils/guid';
 import Dokument from './../../components/dokument/Dokument';
 import GrupperteDokumenter from './../../components/grupperte-dokumenter/GrupperteDokumenter';
-import { DokumenterHeader } from './../../components/header/Header';
 import NoeGikkGalt from './../../components/noe-gikk-galt/NoeGikkGalt';
-import { useSetBackgroundColor } from './../../hooks/useBackgroundColor';
-import { useSetSelectedRoute } from './../../hooks/useSelectedRoute';
-import { PageRouteLayout } from './../../routes/ForeldrepengeoversiktRoutes';
-import { OversiktRoutes } from './../../routes/routes';
-import { grupperDokumenterPåTidspunkt } from './../../utils/dokumenterUtils';
-import { guid } from './../../utils/guid';
 
-const DokumenterPage: React.FunctionComponent = () => {
+export const DokumenterPage = () => {
     useSetBackgroundColor('white');
     useSetSelectedRoute(OversiktRoutes.DOKUMENTER);
-    const params = useParams();
 
     const intl = useIntl();
     const title = intl.formatMessage({ id: 'dokumenter' });
-    const lastOppDokTittel = intl.formatMessage({ id: 'lastOppDokumenter' });
     useDocumentTitle(`${title} - ${intl.formatMessage({ id: 'dineForeldrepenger' })}`);
+
+    return (
+        <PageRouteLayout header={<DokumenterHeader />}>
+            <DokumenterPageInner />
+        </PageRouteLayout>
+    );
+};
+
+const DokumenterPageInner = () => {
+    const params = useParams();
     const dokumenterQuery = useQuery(hentDokumenterOptions(params.saksnummer!));
 
     if (dokumenterQuery.isPending) {
@@ -37,7 +45,7 @@ const DokumenterPage: React.FunctionComponent = () => {
     const dokumenterGruppertPåTidspunkt = grupperDokumenterPåTidspunkt(dokumenterQuery.data ?? []);
 
     return (
-        <PageRouteLayout header={<DokumenterHeader />}>
+        <>
             <Button
                 icon={<ArrowRightIcon aria-hidden />}
                 iconPosition="right"
@@ -46,7 +54,7 @@ const DokumenterPage: React.FunctionComponent = () => {
                 className="mb-8"
                 to={`../${OversiktRoutes.ETTERSEND}`}
             >
-                {lastOppDokTittel}
+                <FormattedMessage id="lastOppDokumenter" />
             </Button>
             {!dokumenterQuery.isError && (
                 <>
@@ -79,8 +87,6 @@ const DokumenterPage: React.FunctionComponent = () => {
                     deg. Prøv igjen senere.
                 </NoeGikkGalt>
             )}
-        </PageRouteLayout>
+        </>
     );
 };
-
-export default DokumenterPage;

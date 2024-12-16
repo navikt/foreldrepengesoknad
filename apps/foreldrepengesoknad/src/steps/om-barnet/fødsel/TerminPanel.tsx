@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
@@ -18,6 +19,7 @@ import { ISO_DATE_REGEX } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, Søkerrolle } from '@navikt/fp-types';
 import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
+import { terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke } from '@navikt/fp-validation/src/form/dateFormValidation';
 
 import { UfødtBarn } from '../OmBarnetFormValues';
 
@@ -107,6 +109,7 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
                     name="terminbekreftelsedato"
                     label={intl.formatMessage({ id: 'omBarnet.terminbekreftelseDato' })}
                     maxDate={dateToday}
+                    minDate={dayjs(termindato).subtract(18, 'week').subtract(3, 'day').startOf('day').toDate()}
                     useStrategyAbsolute
                     validate={[
                         isRequired(
@@ -121,6 +124,12 @@ export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtN
                             intl.formatMessage({
                                 id: 'valideringsfeil.omBarnet.terminbekreftelseDato.kanIkkeVæreFremITid',
                             }),
+                        ),
+                        terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke(
+                            intl.formatMessage({
+                                id: 'valideringsfeil.omBarnet.terminbekreftelseDato.terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke',
+                            }),
+                            termindato,
                         ),
                     ]}
                 />
