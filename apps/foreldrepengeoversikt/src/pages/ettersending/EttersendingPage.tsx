@@ -102,7 +102,6 @@ const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
     const [type, setType] = useState<Skjemanummer | typeof DEFAULT_OPTION>(DEFAULT_OPTION);
     const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
     const [avventerVedlegg, setAvventerVedlegg] = useState(false);
-
     const alleYtelser = getAlleYtelser(saker);
     const sak = alleYtelser.find((ytelse) => ytelse.saksnummer === params.saksnummer);
 
