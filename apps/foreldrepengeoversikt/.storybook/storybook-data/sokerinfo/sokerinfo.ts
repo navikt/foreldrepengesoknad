@@ -1,6 +1,6 @@
 import { SøkerinfoDTO } from '../../../src/types/SøkerinfoDTO';
 
-export const søkerInfo = {
+export const søkerinfo = {
     søker: {
         fnr: '26430359419',
         fornavn: 'Hardhudet',

@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import saker from 'storybookData/saker/saker.json';
+import { saker } from 'storybookData/saker/saker';
 
 import { BehandlingTilstand } from './../../types/BehandlingTilstand';
 import StatusTag from './StatusTag';

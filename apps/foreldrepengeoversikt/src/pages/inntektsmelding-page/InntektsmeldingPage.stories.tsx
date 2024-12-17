@@ -9,7 +9,7 @@ import medRefusjon from 'storybookData/inntektsmeldinger/medRefusjon.json';
 import medRefusjonsPerioder from 'storybookData/inntektsmeldinger/medRefusjonsPerioder.json';
 import satser from 'storybookData/inntektsmeldinger/satser.json';
 import utenRefusjon from 'storybookData/inntektsmeldinger/utenRefusjon.json';
-import saker from 'storybookData/saker/saker.json';
+import { saker } from 'storybookData/saker/saker';
 
 import { OversiktRoutes } from '../../routes/routes';
 import { InntektsmeldingPage } from './InntektsmeldingPage';
