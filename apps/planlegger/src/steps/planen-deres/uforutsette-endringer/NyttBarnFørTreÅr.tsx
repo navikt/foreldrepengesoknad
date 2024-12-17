@@ -14,7 +14,7 @@ export const NyttBarnFørTreÅr = () => {
                 </IconCircleWrapper>
             </div>
             <div>
-                <Heading size="small">
+                <Heading size="small" level="4">
                     <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManFårNyttBarnFørTreÅr" />
                 </Heading>
                 <BodyLong>

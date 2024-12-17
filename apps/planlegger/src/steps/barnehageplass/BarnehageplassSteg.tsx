@@ -68,7 +68,7 @@ export const BarnehageplassSteg = ({ locale, uttaksdata }: Props) => {
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
             <VStack gap="8">
-                <Heading size="medium">
+                <Heading size="medium" level="2">
                     <FormattedMessage id="BarnehageplassSteg.Tittel" />
                 </Heading>
                 <VStack gap="5">

@@ -21,7 +21,7 @@ export const ToUkerRundtFødsel = ({ hvemPlanlegger }: Props) => {
                 </IconCircleWrapper>
             </div>
             <div>
-                <Heading size="small">
+                <Heading size="small" level="4">
                     <FormattedMessage id="OmÅTilpassePlanen.ToUkerRundtFødsel" />
                 </Heading>
                 <BodyLong>
