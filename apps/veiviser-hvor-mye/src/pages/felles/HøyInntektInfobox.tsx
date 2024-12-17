@@ -23,6 +23,7 @@ export const HøyInntektInfobox = ({ maxÅrslønnDekket, isGray = false, showKrI
                     values={{ maxÅrslønn: formatCurrencyWithKr(maxÅrslønnDekket, locale) }}
                 />
             }
+            headingLevel="2"
             color={isGray ? 'gray' : 'green'}
             icon={
                 showKrIcon ? (

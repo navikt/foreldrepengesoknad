@@ -23,6 +23,7 @@ export const HarIkkeRettTilFpInfobox = ({ minÅrslønn, antattÅrslønn, showKrI
                     values={{ minÅrslønn: formatCurrencyWithKr(minÅrslønn, locale) }}
                 />
             }
+            headingLevel="2"
             icon={
                 showKrIcon ? (
                     <KronerIcon title="a11y-title" fontSize="1.5rem" aria-hidden />
