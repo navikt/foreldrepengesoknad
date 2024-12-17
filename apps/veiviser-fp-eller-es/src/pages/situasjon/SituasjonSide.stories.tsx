@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import SituasjonSide from './SituasjonSide';
+import { SituasjonSide } from './SituasjonSide';
 
 const DEFAULT_SATSER = {
     engangstønad: [

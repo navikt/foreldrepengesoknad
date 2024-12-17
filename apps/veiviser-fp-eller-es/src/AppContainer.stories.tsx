@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import AppContainer from './AppContainer';
+import { AppContainer } from './AppContainer';
 
 const SATSER = {
     engangstønad: [
