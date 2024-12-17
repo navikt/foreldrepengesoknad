@@ -10,6 +10,7 @@ interface Props {
     modalData: ModalData;
     setModalData: (data: ModalData) => void;
     closeModal: () => void;
+    kunEnPeriode: boolean;
 }
 
 interface FormValues {
@@ -23,7 +24,7 @@ enum HvaVilDuGjøre {
     GRADERE = 'gradere',
 }
 
-export const ValgModalStep = ({ modalData, setModalData, closeModal }: Props) => {
+export const ValgModalStep = ({ modalData, setModalData, closeModal, kunEnPeriode }: Props) => {
     const formMethods = useForm<FormValues>({
         defaultValues: {
             hvaVilDuGjøre: modalData.hvaVilDuGjøre,
@@ -62,15 +63,17 @@ export const ValgModalStep = ({ modalData, setModalData, closeModal }: Props) =>
                         </Button>
                     </div>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <Button
-                            type="button"
-                            variant="secondary"
-                            onClick={() => {
-                                setModalData({ ...modalData, currentStep: 'step1' });
-                            }}
-                        >
-                            Gå tilbake
-                        </Button>
+                        {!kunEnPeriode ? (
+                            <Button
+                                type="button"
+                                variant="secondary"
+                                onClick={() => {
+                                    setModalData({ ...modalData, currentStep: 'step1' });
+                                }}
+                            >
+                                Gå tilbake
+                            </Button>
+                        ) : null}
                         <Button>Gå videre</Button>
                     </div>
                 </div>

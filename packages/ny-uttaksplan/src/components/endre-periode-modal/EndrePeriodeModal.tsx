@@ -29,12 +29,13 @@ export interface ModalData {
 
 export const EndrePeriodeModal = forwardRef<HTMLDialogElement, Props>(
     ({ closeModal, permisjonsperiode, handleUpdatePeriode }, ref) => {
+        const kunEnPeriode = permisjonsperiode.perioder.length === 1;
         const initialModalState: ModalData = {
             valgtPeriode: undefined,
             hvaVilDuGjøre: undefined,
             fom: undefined,
             tom: undefined,
-            currentStep: 'step1',
+            currentStep: kunEnPeriode ? 'step2' : 'step1',
         };
 
         const [modalData, setModalData] = useState<ModalData>(initialModalState);
@@ -64,6 +65,7 @@ export const EndrePeriodeModal = forwardRef<HTMLDialogElement, Props>(
                             modalData={modalData}
                             setModalData={setModalData}
                             closeModal={closeModalWrapper}
+                            kunEnPeriode={kunEnPeriode}
                         />
                     );
                 case 'step3':

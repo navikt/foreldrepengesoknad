@@ -92,6 +92,8 @@ export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåF
                         familiesituasjon={familiesituasjon}
                         førsteUttaksdagNesteBarnsSak={undefined}
                         harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
+                        handleOnPlanChange={() => null}
+                        planleggerModus={false}
                     />
                 )}
                 {visKalender && (
