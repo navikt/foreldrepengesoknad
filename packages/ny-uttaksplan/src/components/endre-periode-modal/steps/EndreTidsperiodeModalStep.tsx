@@ -30,7 +30,7 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal 
             ...modalData,
             fom: values.fom,
             tom: values.tom,
-            currentStep: 'step3',
+            currentStep: 'step4',
         });
     };
 
@@ -65,7 +65,7 @@ export const EndreTidsperiodeModalStep = ({ modalData, setModalData, closeModal 
                         >
                             Gå tilbake
                         </Button>
-                        <Button>Ferdig, legg til i planen</Button>
+                        <Button>Gå videre</Button>
                     </div>
                 </div>
             </RhfForm>
