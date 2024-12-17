@@ -6,16 +6,17 @@ import { Heading, Loader } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import { hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from './../../api/api';
-import { DinSakHeader } from './../../components/header/Header';
-import { useSetBackgroundColor } from './../../hooks/useBackgroundColor';
-import { useSetSelectedRoute } from './../../hooks/useSelectedRoute';
-import { useGetSelectedSak } from './../../hooks/useSelectedSak';
-import { PageRouteLayout } from './../../routes/ForeldrepengeoversiktRoutes';
-import { OversiktRoutes } from './../../routes/routes';
-import { Tidslinje } from './../../sections/tidslinje/Tidslinje';
-import { Sak } from './../../types/Sak';
-import { SøkerinfoDTOBarn } from './../../types/SøkerinfoDTO';
+import { hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from '../../api/api';
+import { DinSakHeader } from '../../components/header/Header';
+import NoeGikkGalt from '../../components/noe-gikk-galt/NoeGikkGalt';
+import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
+import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
+import { useGetSelectedSak } from '../../hooks/useSelectedSak';
+import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
+import { OversiktRoutes } from '../../routes/routes';
+import { Tidslinje } from '../../sections/tidslinje/Tidslinje';
+import { Sak } from '../../types/Sak';
+import { SøkerinfoDTOBarn } from '../../types/SøkerinfoDTO';
 import styles from './tidslinje-page.module.css';
 
 type OuterProps = {
@@ -41,6 +42,15 @@ const TidslinjePageInner = ({ søkersBarn, sak }: InnerProps) => {
         return <Loader size="large" aria-label="Henter status for din søknad" />;
     }
 
+    if (tidslinjeHendelserQuery.isError || manglendeVedleggQuery.isError || sak === undefined) {
+        return (
+            <NoeGikkGalt>
+                Vi klarer ikke å vise informasjon om hva som skjer i saken din akkurat nå. Feilen er hos oss, ikke hos
+                deg. Prøv igjen senere.
+            </NoeGikkGalt>
+        );
+    }
+
     return (
         <div className={styles.div}>
             <Heading spacing level="2" size="medium">
@@ -50,8 +60,8 @@ const TidslinjePageInner = ({ søkersBarn, sak }: InnerProps) => {
                 sak={sak}
                 visHeleTidslinjen={true}
                 søkersBarn={søkersBarn}
-                tidslinjeHendelserQuery={tidslinjeHendelserQuery}
-                manglendeVedleggQuery={manglendeVedleggQuery}
+                tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
+                manglendeVedlegg={manglendeVedleggQuery.data ?? []}
             />
         </div>
     );

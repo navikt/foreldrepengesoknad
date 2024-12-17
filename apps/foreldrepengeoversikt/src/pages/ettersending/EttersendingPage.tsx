@@ -46,12 +46,6 @@ const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 
     return 'svangerskapspenger';
 };
 
-export const getListOfUniqueSkjemanummer = (attachments: Attachment[]) => {
-    return attachments
-        .map((a: Attachment) => a.skjemanummer)
-        .filter((s: Skjemanummer, index, self) => self.indexOf(s) === index);
-};
-
 const DEFAULT_OPTION = 'default';
 
 export const getAttachmentTypeSelectOptions = (intl: IntlShape, sak: Sak | undefined) => {
@@ -108,7 +102,6 @@ const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
     const [type, setType] = useState<Skjemanummer | typeof DEFAULT_OPTION>(DEFAULT_OPTION);
     const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
     const [avventerVedlegg, setAvventerVedlegg] = useState(false);
-
     const alleYtelser = getAlleYtelser(saker);
     const sak = alleYtelser.find((ytelse) => ytelse.saksnummer === params.saksnummer);
 
