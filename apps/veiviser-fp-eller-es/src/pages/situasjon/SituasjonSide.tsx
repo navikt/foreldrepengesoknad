@@ -1,7 +1,6 @@
 import { BabyWrappedIcon, PaperplaneIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { FpEllerEsRoutes } from 'appData/routes';
-import useVeiviserNavigator from 'appData/useVeiviserNavigator';
-import { FunctionComponent } from 'react';
+import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
 import { UseFormReturn, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
@@ -16,7 +15,7 @@ import { formatCurrencyWithKr, useScrollBehaviour } from '@navikt/fp-utils';
 import { isValidDecimal, isValidNumberForm } from '@navikt/fp-validation';
 import { formatValue } from '@navikt/fp-validation/src/form/numberFormValidation';
 
-import BlueRadioGroup from '../BlueRadioGroup';
+import { BlueRadioGroup } from '../BlueRadioGroup';
 
 export enum Situasjon {
     MOR = 'mor',
@@ -72,7 +71,7 @@ interface Props {
     satser: Satser;
 }
 
-const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjon }) => {
+export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjon }: Props) => {
     const intl = useIntl();
     const locale = intl.locale;
     const { goToRoute } = useVeiviserNavigator();
@@ -186,6 +185,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                             {harHattAndreInntekter === false && (
                                 <Infobox
                                     header={<FormattedMessage id="SituasjonSide.JobbetMinst6av10" />}
+                                    headingLevel="2"
                                     icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
                                     color="green"
                                 >
@@ -214,6 +214,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                             {harHattInntekt === false && (
                                 <Infobox
                                     header={<FormattedMessage id="SituasjonSide.JobbetMinst6av10" />}
+                                    headingLevel="2"
                                     icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
                                     color="green"
                                 >
@@ -250,7 +251,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                             <Label>
                                                 <FormattedMessage id="SituasjonSide.Årsinntekt" />
                                             </Label>
-                                            <Heading size="large">
+                                            <Heading size="large" as="p">
                                                 {lønnPerMånedNummer ? (
                                                     formatCurrencyWithKr(lønnPerMånedNummer * 12, locale)
                                                 ) : (
@@ -277,6 +278,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                             values={{ minstelønn: formatCurrencyWithKr(minstelønn, locale) }}
                                         />
                                     }
+                                    headingLevel="2"
                                     icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
                                     color="green"
                                 >
@@ -329,6 +331,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                             {jobberDuINorge === false && (
                                 <Infobox
                                     header={<FormattedMessage id="SituasjonSide.MåVæreMedlem" />}
+                                    headingLevel="2"
                                     icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
                                     color="green"
                                 >
@@ -364,5 +367,3 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
         </VeiviserPage>
     );
 };
-
-export default SituasjonSide;

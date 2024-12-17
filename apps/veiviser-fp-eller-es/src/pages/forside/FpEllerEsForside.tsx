@@ -1,6 +1,6 @@
 import { InformationIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { FpEllerEsRoutes } from 'appData/routes';
-import useVeiviserNavigator from 'appData/useVeiviserNavigator';
+import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
 import { veiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
 import { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -16,7 +16,7 @@ interface Props {
     changeLocale: (locale: LocaleAll) => void;
 }
 
-const FpEllerEsForside: React.FunctionComponent<Props> = ({ locale, changeLocale }) => {
+export const FpEllerEsForside = ({ locale, changeLocale }: Props) => {
     const intl = useIntl();
 
     const { goToRoute } = useVeiviserNavigator();
@@ -42,6 +42,7 @@ const FpEllerEsForside: React.FunctionComponent<Props> = ({ locale, changeLocale
         >
             <Infobox
                 header={<FormattedMessage id="FpEllerEsForside.Foreldrepenger" />}
+                headingLevel="2"
                 color="gray"
                 icon={<InformationIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
             >
@@ -51,6 +52,7 @@ const FpEllerEsForside: React.FunctionComponent<Props> = ({ locale, changeLocale
             </Infobox>
             <Infobox
                 header={<FormattedMessage id="FpEllerEsForside.Engangsstønad" />}
+                headingLevel="2"
                 color="gray"
                 icon={<InformationIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
             >
@@ -61,5 +63,3 @@ const FpEllerEsForside: React.FunctionComponent<Props> = ({ locale, changeLocale
         </FrontPage>
     );
 };
-
-export default FpEllerEsForside;

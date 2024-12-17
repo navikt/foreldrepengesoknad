@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { initAmplitude } from '@navikt/fp-metrics';
 
 import { Situasjon } from '../situasjon/SituasjonSide';
-import OppsummeringFpEllerEsSide from './OppsummeringFpEllerEsSide';
+import { OppsummeringFpEllerEsSide } from './OppsummeringFpEllerEsSide';
 
 const satser = {
     engangstønad: [
