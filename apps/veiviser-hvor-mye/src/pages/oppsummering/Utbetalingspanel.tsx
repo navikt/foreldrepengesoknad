@@ -80,6 +80,7 @@ export const Utbetalingspanel = ({ dekningsgrad, gjennomsnittslønn, stønadskon
                     }}
                 />
             }
+            headingLevel="2"
             icon={<BankNoteIcon aria-hidden />}
             useHorizontalDivider
             color="blue"
@@ -89,19 +90,25 @@ export const Utbetalingspanel = ({ dekningsgrad, gjennomsnittslønn, stønadskon
                     <BodyShort size="small">
                         <FormattedMessage id="OppsummeringSide.MånedligFørSkatt" />
                     </BodyShort>
-                    <Heading size="medium">{formatCurrencyWithKr(monthlyPayment, locale)}</Heading>
+                    <Heading size="medium" as="p">
+                        {formatCurrencyWithKr(monthlyPayment, locale)}
+                    </Heading>
                 </div>
                 <div>
                     <BodyShort size="small">
                         <FormattedMessage id="OppsummeringSide.DagligFørSkatt" />
                     </BodyShort>
-                    <Heading size="medium">{formatCurrencyWithKr(dailyPayment, locale)}</Heading>
+                    <Heading size="medium" as="p">
+                        {formatCurrencyWithKr(dailyPayment, locale)}
+                    </Heading>
                 </div>
                 <div>
                     <BodyShort size="small">
                         <FormattedMessage id="OppsummeringSide.Totalt" values={{ erDekningsgrad100 }} />
                     </BodyShort>
-                    <Heading size="medium">{formatCurrencyWithKr(totalt, locale)}</Heading>
+                    <Heading size="medium" as="p">
+                        {formatCurrencyWithKr(totalt, locale)}
+                    </Heading>
                     <ReadMore
                         header={
                             <FormattedMessage id="OppsummeringSide.HvorforAntallUker" values={{ erDekningsgrad100 }} />

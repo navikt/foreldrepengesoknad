@@ -20,7 +20,7 @@ export const AndreVeivisereLinkPanel = ({ links }: Props) => {
             <div className={styles.box}>
                 <VStack gap="2">
                     {links.length > 1 && (
-                        <Heading size="small">
+                        <Heading size="small" level="2">
                             <FormattedMessage id="AndreVeivisereLinkPanel.AndreVeivisere" />
                         </Heading>
                     )}
