@@ -3,8 +3,6 @@ import { HttpResponse, http } from 'msw';
 import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { AppContainer } from './AppContainer';
 
 const SATSER = {
@@ -45,7 +43,6 @@ const meta = {
         },
     },
     render: () => {
-        initAmplitude();
         return (
             <StrictMode>
                 <MemoryRouter>

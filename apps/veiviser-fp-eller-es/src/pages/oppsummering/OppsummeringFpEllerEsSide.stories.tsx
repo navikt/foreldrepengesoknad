@@ -2,8 +2,6 @@ import { Meta, StoryObj } from '@storybook/react';
 import { FpEllerEsRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { Situasjon } from '../situasjon/SituasjonSide';
 import { OppsummeringFpEllerEsSide } from './OppsummeringFpEllerEsSide';
 
@@ -26,7 +24,6 @@ const meta = {
     title: 'fpEllerEs/OppsummeringFpEllerEsSide',
     component: OppsummeringFpEllerEsSide,
     render: (props) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[FpEllerEsRoutes.SITUASJON]}>
                 <OppsummeringFpEllerEsSide {...props} />
