@@ -21,7 +21,7 @@ import {
     mapSakerDTOToSaker,
     utledFamiliesituasjon,
 } from '../../utils/sakerUtils';
-import StatusTag from '../status-tag/StatusTag';
+import { StatusTag } from '../status-tag/StatusTag';
 
 export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
     if (ytelse === Ytelse.ENGANGSSTØNAD) {

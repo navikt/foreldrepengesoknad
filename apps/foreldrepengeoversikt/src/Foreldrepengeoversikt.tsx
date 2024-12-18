@@ -3,13 +3,13 @@ import { useQuery } from '@tanstack/react-query';
 import { Loader } from '@navikt/ds-react';
 
 import { erSakOppdatertOptions, hentSakerOptions, minidialogOptions, søkerInfoOptions } from './api/api';
-import ScrollToTop from './components/scroll-to-top/ScrollToTop';
+import { ScrollToTop } from './components/scroll-to-top/ScrollToTop';
 import { useGetBackgroundColor } from './hooks/useBackgroundColor';
-import ForeldrepengeoversiktRoutes from './routes/ForeldrepengeoversiktRoutes';
+import { ForeldrepengeoversiktRoutes } from './routes/ForeldrepengeoversiktRoutes';
 import { SakOppslag } from './types/SakOppslag';
 import { mapSakerDTOToSaker } from './utils/sakerUtils';
 
-const Foreldrepengeoversikt: React.FunctionComponent = () => {
+export const Foreldrepengeoversikt: React.FunctionComponent = () => {
     const backgroundColor = useGetBackgroundColor();
 
     // Denne trenger vi ikke før senere. Men vi putter den i cache så tidlig som mulig.
@@ -61,5 +61,3 @@ const Foreldrepengeoversikt: React.FunctionComponent = () => {
         </div>
     );
 };
-
-export default Foreldrepengeoversikt;

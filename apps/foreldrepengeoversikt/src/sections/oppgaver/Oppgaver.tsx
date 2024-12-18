@@ -3,15 +3,15 @@ import { useIntl } from 'react-intl';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
-import OppgaveLenkepanel from '../oppgave-lenkepanel/OppgaveLenkepanel';
-import { minidialogOptions } from './../../api/api';
-import ContentSection from './../../components/content-section/ContentSection';
-import { guid } from './../../utils/guid';
+import { minidialogOptions } from '../../api/api';
+import { ContentSection } from '../../components/content-section/ContentSection';
+import { guid } from '../../utils/guid';
+import { OppgaveLenkepanel } from '../oppgave-lenkepanel/OppgaveLenkepanel';
 
 interface Props {
     saksnummer: string;
 }
-const Oppgaver: React.FunctionComponent<Props> = ({ saksnummer }) => {
+export const Oppgaver: React.FunctionComponent<Props> = ({ saksnummer }) => {
     const aktiveMinidialogerForSakenQuery = useQuery({
         ...minidialogOptions(),
         select: (data) => data.filter(({ saksnr }) => saksnr === saksnummer),
@@ -46,5 +46,3 @@ const Oppgaver: React.FunctionComponent<Props> = ({ saksnummer }) => {
         </VStack>
     );
 };
-
-export default Oppgaver;

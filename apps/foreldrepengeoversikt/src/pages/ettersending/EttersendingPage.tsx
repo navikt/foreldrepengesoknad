@@ -24,17 +24,17 @@ import { useDocumentTitle } from '@navikt/fp-utils';
 
 import { sendEttersending, urlPrefiks } from '../../api/api';
 import { EttersendingHeader } from '../../components/header/Header';
+import { ScrollToTop } from '../../components/scroll-to-top/ScrollToTop';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
-import EttersendingDto from '../../types/EttersendingDTO';
+import { OversiktRoutes } from '../../routes/routes';
+import { EttersendingDto } from '../../types/EttersendingDTO';
 import { Sak } from '../../types/Sak';
 import { SakOppslag } from '../../types/SakOppslag';
 import { Ytelse } from '../../types/Ytelse';
 import { getAlleYtelser } from '../../utils/sakerUtils';
 import { getRelevanteSkjemanummer } from '../../utils/skjemanummerUtils';
-import ScrollToTop from './../../components/scroll-to-top/ScrollToTop';
-import { OversiktRoutes } from './../../routes/routes';
 
 const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad' => {
     if (sakstype === Ytelse.ENGANGSSTØNAD) {
@@ -206,11 +206,10 @@ const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
     );
 };
 
-function EttersendingPage({ saker }: Props) {
+export function EttersendingPage({ saker }: Props) {
     return (
         <PageRouteLayout header={<EttersendingHeader />}>
             <EttersendingPageInner saker={saker} />
         </PageRouteLayout>
     );
 }
-export default EttersendingPage;

@@ -9,11 +9,11 @@ import { Skjemanummer, links } from '@navikt/fp-constants';
 import { Bankkonto } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
 
+import { OversiktRoutes } from '../../routes/routes';
 import { DokumentHendelse } from '../../sections/tidslinje/DokumentHendelse';
 import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
 import { Ytelse } from '../../types/Ytelse';
-import { KontonummerInfo } from './../../components/kontonummer-info/KontonummerInfo';
-import { OversiktRoutes } from './../../routes/routes';
+import { KontonummerInfo } from '../kontonummer-info/KontonummerInfo';
 
 interface Props {
     relevantNyTidslinjehendelse: Tidslinjehendelse | undefined;
@@ -36,7 +36,7 @@ const getTidspunktTekst = (mottattDato: string | undefined) => {
     return `Sendt ${formatDate(mottattDato)} kl. ${formatTime(mottattDato)}`;
 };
 
-const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({
+export const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({
     relevantNyTidslinjehendelse,
     bankkonto,
     ytelse,
@@ -221,5 +221,3 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({
         </VStack>
     );
 };
-
-export default BekreftelseSendtSøknad;

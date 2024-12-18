@@ -6,7 +6,7 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import { DokumentType } from '../../types/DokumentType';
 import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
 import { Ytelse } from '../../types/Ytelse';
-import BekreftelseSendtSøknad from './BekreftelseSendtSøknad';
+import { BekreftelseSendtSøknad } from './BekreftelseSendtSøknad';
 
 const meta = {
     title: 'BekreftelseSendtSøknad',

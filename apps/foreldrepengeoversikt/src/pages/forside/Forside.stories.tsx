@@ -11,7 +11,7 @@ import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHe
 import { OversiktRoutes } from '../../routes/routes';
 import { SakOppslag } from '../../types/SakOppslag';
 import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
-import Forside from './Forside';
+import { Forside } from './Forside';
 
 const queryClient = new QueryClient();
 

@@ -44,7 +44,7 @@ function DokumentAvsender({ dokumentType }: { readonly dokumentType: DokumentTyp
     );
 }
 
-const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
+export const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
     const { type, mottatt } = dokument;
 
     return (
@@ -68,5 +68,3 @@ const Dokument: React.FunctionComponent<Props> = ({ dokument }) => {
         </div>
     );
 };
-
-export default Dokument;

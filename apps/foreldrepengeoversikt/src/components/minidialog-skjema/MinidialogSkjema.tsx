@@ -23,13 +23,13 @@ import { FileUploader } from '@navikt/fp-ui';
 import { formatDate } from '@navikt/fp-utils';
 
 import { urlPrefiks } from '../../api/api';
-import EttersendingDto from '../../types/EttersendingDTO';
+import { EttersendingDto } from '../../types/EttersendingDTO';
 import { MinidialogInnslag } from '../../types/MinidialogInnslag';
 import { Ytelse } from '../../types/Ytelse';
 import { validateFritekstFelt } from '../../utils/validationUtils';
-import ScrollToTop from '../scroll-to-top/ScrollToTop';
-import HvaLeggerNAVVektPå from './hva-legger-nav-vekt-på/HvaLeggerNAVVektPå';
-import MinidialogVenterPåSvar from './minidialog-venter-på-svar/MinidialogVenterPåSvar';
+import { ScrollToTop } from '../scroll-to-top/ScrollToTop';
+import { HvaLeggerNAVVektPå } from './hva-legger-nav-vekt-på/HvaLeggerNAVVektPå';
+import { MinidialogVenterPåSvar } from './minidialog-venter-på-svar/MinidialogVenterPåSvar';
 import { mapMinidialogInputTilDTO } from './minidialogskjemaUtils';
 
 const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad' => {
@@ -51,7 +51,7 @@ export interface Props {
     ettersendelseError: string | undefined;
 }
 
-const MinidialogSkjema: React.FunctionComponent<Props> = ({
+export const MinidialogSkjema: React.FunctionComponent<Props> = ({
     ettersendelseErSendt,
     isSendingEttersendelse,
     sakstype,
@@ -206,5 +206,3 @@ const MinidialogSkjema: React.FunctionComponent<Props> = ({
         </form>
     );
 };
-
-export default MinidialogSkjema;

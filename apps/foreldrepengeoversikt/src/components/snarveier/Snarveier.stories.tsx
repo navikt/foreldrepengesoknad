@@ -5,7 +5,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { saker } from 'storybookData/saker/saker';
 
 import { OversiktRoutes } from '../../routes/routes';
-import Snarveier from './Snarveier';
+import { Snarveier } from './Snarveier';
 
 const queryClient = new QueryClient();
 

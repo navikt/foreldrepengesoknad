@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 
 import { DokumentType } from '../../types/DokumentType';
-import Dokument from './Dokument';
+import { Dokument } from './Dokument';
 
 const meta = {
     title: 'Dokument',

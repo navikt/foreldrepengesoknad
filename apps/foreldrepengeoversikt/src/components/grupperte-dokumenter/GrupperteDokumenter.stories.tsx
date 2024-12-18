@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 
 import { DokumentType } from '../../types/DokumentType';
-import GrupperteDokumenter from './GrupperteDokumenter';
+import { GrupperteDokumenter } from './GrupperteDokumenter';
 
 const meta = {
     title: 'GrupperteDokumenter',

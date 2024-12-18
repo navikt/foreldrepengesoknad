@@ -6,7 +6,7 @@ import { BodyShort, HGrid, Heading, Link, VStack } from '@navikt/ds-react';
 import { NavRoutes } from '../../routes/routes';
 import { LayoutWrapper } from '../LayoutWrapper';
 
-const KontaktOss: React.FunctionComponent = () => {
+export const KontaktOss: React.FunctionComponent = () => {
     return (
         <div className="bg-white p-8">
             <LayoutWrapper>
@@ -60,5 +60,3 @@ const KontaktOss: React.FunctionComponent = () => {
         </div>
     );
 };
-
-export default KontaktOss;

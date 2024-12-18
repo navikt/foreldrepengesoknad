@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { saker } from 'storybookData/saker/saker';
 
-import { BehandlingTilstand } from './../../types/BehandlingTilstand';
-import StatusTag from './StatusTag';
+import { BehandlingTilstand } from '../../types/BehandlingTilstand';
+import { StatusTag } from './StatusTag';
 
 const meta = {
     title: 'StatusTag',
