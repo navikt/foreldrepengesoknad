@@ -16,7 +16,7 @@ import {
 import { Alert, BodyShort, Button, HStack, Heading, Radio, ReadMore, Tag, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hooks';
-import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold, EgenNæring, Frilans } from '@navikt/fp-types';
 import { HorizontalLine } from '@navikt/fp-ui';
 import { isAfterOrSame, isBeforeOrSame, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
@@ -251,7 +251,15 @@ export const PerioderFieldArray = ({
                                 ]}
                             />
                             <ReadMore
-                                onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Ikke_har_100%_stilling')}
+                                onOpenChange={(open) =>
+                                    loggAmplitudeEvent({
+                                        origin: 'Svangerskapspenger',
+                                        eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                        eventData: {
+                                            tittel: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
+                                        },
+                                    })
+                                }
                                 size="medium"
                                 header={intl.formatMessage({
                                     id: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',

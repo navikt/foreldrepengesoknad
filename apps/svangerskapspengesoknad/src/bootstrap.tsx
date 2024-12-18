@@ -13,8 +13,6 @@ import { BrowserRouter } from 'react-router-dom';
 
 import '@navikt/ds-css';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { AppContainer } from './AppContainer';
 
 countries.registerLocale(langNB);
@@ -28,8 +26,6 @@ Sentry.init({
     environment: window.location.hostname,
     integrations: [new Sentry.Integrations.Breadcrumbs({ console: false })],
 });
-
-initAmplitude();
 
 const container = document.getElementById('app');
 if (container) {

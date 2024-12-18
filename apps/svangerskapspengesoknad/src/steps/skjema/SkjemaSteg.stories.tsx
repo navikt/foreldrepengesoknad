@@ -7,7 +7,6 @@ import { ComponentProps } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { AttachmentType, Skjemanummer } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 import { ArbeidsforholdOgInntektSvp, Attachment, EGEN_NÆRING_ID, FRILANS_ID } from '@navikt/fp-types';
 
 import { SkjemaSteg } from './SkjemaSteg';
@@ -62,8 +61,6 @@ const meta = {
         arbeidsforholdOgInntekt,
         ...rest
     }) => {
-        initAmplitude();
-
         return (
             <MemoryRouter initialEntries={[addTilretteleggingIdToRoute(SøknadRoute.SKJEMA, valgtTilretteleggingId)]}>
                 <SvpDataContext

@@ -2,14 +2,11 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyLong, GuidePanel } from '@navikt/ds-react';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 
 export const FlereArbeidsforholdGuidePanel = () => {
-    logAmplitudeEvent('sidevisning', {
-        app: 'svangerskapspengerny',
-        team: 'foreldrepenger',
-        pageKey: 'umyndig',
-    });
+    loggAmplitudeEvent({ origin: 'Svangerskapspenger', eventName: 'besøk', eventData: { tittel: 'umyndig' } });
+
     return (
         <GuidePanel>
             <BodyLong>

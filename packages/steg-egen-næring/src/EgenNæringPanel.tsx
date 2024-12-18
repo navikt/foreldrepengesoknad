@@ -14,7 +14,7 @@ import {
     RhfTextField,
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
-import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { AppName, EgenNæring, Næringstype } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
 import { femMånederSiden, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
@@ -302,7 +302,13 @@ export const EgenNæringPanel = <TYPE extends string>({
                                 ]}
                             />
                             <ReadMore
-                                onOpenChange={logAmplitudeEventOnOpen(stønadstype, 'Mer_om_næringsresultat')}
+                                onOpenChange={(open) =>
+                                    loggAmplitudeEvent({
+                                        origin: stønadstype,
+                                        eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                        eventData: { tittel: 'egenNæring.næringsinntekt.info.apneLabel' },
+                                    })
+                                }
                                 header={intl.formatMessage({ id: 'egenNæring.næringsinntekt.info.apneLabel' })}
                             >
                                 <BodyShort>

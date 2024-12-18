@@ -15,7 +15,7 @@ import {
     RhfRadioGroup,
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
-import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import {
@@ -112,7 +112,13 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                             </Radio>
                         </RhfRadioGroup>
                         <ReadMore
-                            onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'SVP_tilbake_i_tid')}
+                            onOpenChange={(open) =>
+                                loggAmplitudeEvent({
+                                    origin: 'Svangerskapspenger',
+                                    eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                    eventData: { tittel: 'barnet.erBarnetFødt.merInfo.tittel' },
+                                })
+                            }
                             header={intl.formatMessage({ id: 'barnet.erBarnetFødt.merInfo.tittel' })}
                         >
                             <BodyShort>
@@ -178,7 +184,13 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                             ]}
                         />
                         <ReadMore
-                            onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'SVP_tre_uker_før_termin')}
+                            onOpenChange={(open) =>
+                                loggAmplitudeEvent({
+                                    origin: 'Svangerskapspenger',
+                                    eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                    eventData: { tittel: 'barnet.termindato.merInfo.tittel' },
+                                })
+                            }
                             header={intl.formatMessage({ id: 'barnet.termindato.merInfo.tittel' })}
                         >
                             <BodyShort>
