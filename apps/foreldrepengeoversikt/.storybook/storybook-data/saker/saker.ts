@@ -102,11 +102,9 @@ export const saker = {
             ønskerJustertUttakVedFødsel: false,
             rettighetType: RettighetType.BEGGE_RETT,
             annenPart: {
-                type: 'person',
                 fnr: '03506715317',
-                fornavn: 'Aritmetisk',
-                etternavn: 'Okse',
             },
+            forelder: Forelder.mor,
             familiehendelse: {
                 fødselsdato: '2023-01-10',
                 termindato: '2023-01-10',
