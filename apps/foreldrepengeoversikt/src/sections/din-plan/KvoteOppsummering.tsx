@@ -45,12 +45,20 @@ const KvoterOversiktInner = ({ sak }: { sak: Foreldrepengesak }) => {
     const perioderSomErSøktOm = sak.åpenBehandling?.søknadsperioder;
 
     const perioder = søkersPerioder ?? perioderSomErSøktOm ?? [];
-    const innvilgetPerioder = [...perioder, ...annenPartsPerioder].filter((p) => p.resultat?.innvilget);
+    const aktuellePerioder = [...perioder, ...annenPartsPerioder].filter((p) => {
+        const erBehandlet = !!p.resultat;
+        if (!erBehandlet) {
+            // Hvis den ikke er behandlet skal perioden vises
+            return true;
+        }
+        // Hvis behandlet skal vi kunne vise innvilget perioder
+        return p.resultat?.innvilget;
+    });
 
     return (
         <KvoteOppsummering
             konto={konto}
-            perioder={innvilgetPerioder}
+            perioder={aktuellePerioder}
             rettighetType={sak.rettighetType}
             forelder={sak.forelder}
         />
