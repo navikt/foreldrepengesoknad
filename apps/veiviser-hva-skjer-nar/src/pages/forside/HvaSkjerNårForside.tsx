@@ -1,11 +1,8 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { HvaSkjerNårRoutes } from 'appData/routes';
 import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
-import { veiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
-import { useEffect } from 'react';
 import { useIntl } from 'react-intl';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll } from '@navikt/fp-types';
 import { FrontPage } from '@navikt/fp-ui';
 
@@ -17,13 +14,6 @@ interface Props {
 export const HvaSkjerNårForside = ({ locale, changeLocale }: Props) => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator();
-    useEffect(() => {
-        logAmplitudeEvent('sidevisning', {
-            app: veiviserAmplitudeKey,
-            team: 'foreldrepenger',
-            pageKey: HvaSkjerNårRoutes.OM,
-        });
-    }, []);
     return (
         <FrontPage
             changeLocale={changeLocale}

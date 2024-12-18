@@ -1,9 +1,7 @@
 import { HvaSkjerNårRoutes } from 'appData/routes';
-import { veiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
 import { useState } from 'react';
 import { Navigate, Route, Routes, useBeforeUnload } from 'react-router-dom';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll } from '@navikt/fp-types';
 
 import { HvaSkjerNårForside } from './pages/forside/HvaSkjerNårForside';
@@ -17,14 +15,6 @@ interface Props {
 
 export const HvaSkjerNårRouter = ({ locale, changeLocale }: Props) => {
     const [hvaSkjerNårSituasjon, setHvaSkjerNårSituasjon] = useState<HvaSkjerNårSituasjon>();
-
-    useBeforeUnload(() => {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: veiviserAmplitudeKey,
-            team: 'foreldrepenger',
-            pageKey: 'page-unload',
-        });
-    });
 
     return (
         <Routes>
