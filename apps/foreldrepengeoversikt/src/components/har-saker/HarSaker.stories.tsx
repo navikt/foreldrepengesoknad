@@ -27,7 +27,7 @@ export const Default: Story = {
                 antallBarn: 1,
                 familiehendelsedato: '2023-01-02',
                 type: 'fødsel',
-                // @ts-ignore Avklar om ytelse ligg i backend-data
+                // @ts-expect-error Avklar om ytelse ligg i backend-data
                 saker: saker.foreldrepenger,
                 ytelse: Ytelse.FORELDREPENGER,
                 barn: undefined,
