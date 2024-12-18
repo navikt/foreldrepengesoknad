@@ -24,7 +24,6 @@ export const AvsluttetSak: Story = {
     args: {
         //@ts-expect-error fiks
         sak: {
-            //@ts-expect-error fiks
             ...saker.foreldrepenger[0],
             sakAvsluttet: true,
         },
@@ -36,7 +35,6 @@ export const UnderBehandling: Story = {
     args: {
         //@ts-expect-error fiks
         sak: {
-            //@ts-expect-error fiks
             ...saker.foreldrepenger[0],
             åpenBehandling: {
                 tilstand: BehandlingTilstand.UNDER_BEHANDLING,
@@ -50,7 +48,6 @@ export const VenterPåInntektsmelding: Story = {
     args: {
         //@ts-expect-error fiks
         sak: {
-            //@ts-expect-error fiks
             ...saker.foreldrepenger[0],
             åpenBehandling: {
                 tilstand: BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING,
@@ -64,7 +61,6 @@ export const VenterPåBehandling: Story = {
     args: {
         //@ts-expect-error fiks
         sak: {
-            //@ts-expect-error fiks
             ...saker.foreldrepenger[0],
             åpenBehandling: {
                 tilstand: BehandlingTilstand.VENTER_PÅ_INNTEKTSMELDING,
@@ -78,7 +74,6 @@ export const TidligSøknad: Story = {
     args: {
         //@ts-expect-error fiks
         sak: {
-            //@ts-expect-error fiks
             ...saker.foreldrepenger[0],
             åpenBehandling: {
                 tilstand: BehandlingTilstand.TIDLIG_SØKNAD,
@@ -92,7 +87,6 @@ export const VenterPåMeldekort: Story = {
     args: {
         //@ts-expect-error fiks
         sak: {
-            //@ts-expect-error fiks
             ...saker.foreldrepenger[0],
             åpenBehandling: {
                 tilstand: BehandlingTilstand.VENTER_PÅ_MELDEKORT,
