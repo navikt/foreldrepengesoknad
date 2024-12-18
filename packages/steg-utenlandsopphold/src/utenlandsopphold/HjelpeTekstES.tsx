@@ -59,12 +59,3 @@ export const HjelpeTekstES = () => {
         </ExpansionCard>
     );
 };
-('UtenlandsoppholdSteg.HjelpeTekstES.Tittel');
-('UtenlandsoppholdSteg.HjelpeTekstES.Del1.1');
-('UtenlandsoppholdSteg.HjelpeTekstES.Del2.Undertittel');
-('UtenlandsoppholdSteg.HjelpeTekstES.Del2.1');
-('UtenlandsoppholdSteg.HjelpeTekstES.Del2.2');
-('UtenlandsoppholdSteg.HjelpeTekstES.Del2.3');
-('UtenlandsoppholdSteg.HjelpeTekstES.Del2.4');
-('UtenlandsoppholdSteg.HjelpeTekstES.Del2.5');
-('UtenlandsoppholdSteg.HjelpeTekstES.Del2.5.lenke.es');
