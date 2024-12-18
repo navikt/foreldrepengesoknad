@@ -4,7 +4,6 @@ import { StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { StønadskontoType } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';
@@ -110,7 +109,6 @@ const meta = {
         },
     },
     render: () => {
-        initAmplitude();
         return (
             <StrictMode>
                 <MemoryRouter>

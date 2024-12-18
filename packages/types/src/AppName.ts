@@ -3,4 +3,6 @@ export type AppName =
     | 'Engangsstønad'
     | 'Svangerskapspenger'
     | 'Foreldrepengeplanlegger'
-    | 'Foreldrepengeveivisere';
+    | 'veiviser-hvor-mye'
+    | 'veiviser-fp-eller-es'
+    | 'veiviser-hva-skjer-nar';
