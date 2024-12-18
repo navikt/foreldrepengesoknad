@@ -57,7 +57,7 @@ export const Default: Story = {
         },
     },
     args: {
-        // @ts-ignore Er backend og frontend-typar like her? Fiks!
+        // @ts-expect-error Er backend og frontend-typar like her? Fiks!
         saker,
         søkerinfo: søkerinfo as SøkerinfoDTO,
     },

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Alert, VStack } from '@navikt/ds-react';
 
 import { erSakOppdatertOptions } from '../../api/api';
+import { BekreftelseSendtSøknad } from '../../components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import { HarIkkeSaker } from '../../components/har-ikke-saker/HarIkkeSaker';
 import { HarSaker } from '../../components/har-saker/HarSaker';
 import { ForsideHeader } from '../../components/header/Header';
@@ -19,7 +20,6 @@ import { RedirectSource, UKNOWN_SAKSNUMMER } from '../../types/RedirectSource';
 import { SakOppslag } from '../../types/SakOppslag';
 import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
 import { getAlleYtelser, grupperSakerPåBarn } from '../../utils/sakerUtils';
-import { BekreftelseSendtSøknad } from './../../components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
 import './forside.css';
 
 interface Props {

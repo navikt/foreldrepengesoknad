@@ -32,7 +32,7 @@ type Story = StoryObj<typeof meta>;
 
 export const DefaultDinSakHeader: Story = {
     args: {
-        //@ts-ignore Sjekk om ytelse litt i backend
+        //@ts-expect-error Sjekk om ytelse litt i backend
         sak: saker.foreldrepenger[0],
     },
 };

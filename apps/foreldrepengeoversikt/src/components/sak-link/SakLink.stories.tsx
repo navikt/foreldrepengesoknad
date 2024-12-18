@@ -22,7 +22,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     args: {
         harMinstEttArbeidsforhold: true,
-        // @ts-ignore Sjekk Ytelse
+        // @ts-expect-error Sjekk Ytelse
         sak: saker.foreldrepenger[0],
     },
 };
