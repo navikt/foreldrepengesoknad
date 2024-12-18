@@ -4,23 +4,13 @@ import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
+import { loggExpansionCardOpen } from 'utils/amplitudeUtils';
 import { erBarnetAdoptert, erBarnetFødt, erBarnetUFødt } from 'utils/barnetUtils';
 
 import { BodyShort, ExpansionCard, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { BluePanel, IconCircleWrapper, Infobox } from '@navikt/fp-ui';
-
-const onToggleExpansionCard = (open: boolean) => {
-    if (open) {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'planlegger',
-            team: 'foreldrepenger',
-            pageKey: 'toggle-oppgitt-informasjon',
-        });
-    }
-};
 
 export const getFamiliehendelsedato = (barnet: OmBarnet) => {
     if (erBarnetAdoptert(barnet)) {
@@ -40,7 +30,7 @@ export const BarnehageplassOppsummering = ({ hvemPlanlegger, barnet }: Props) =>
 
     return (
         <VStack gap="10">
-            <ExpansionCard aria-label="" onToggle={onToggleExpansionCard} size="small">
+            <ExpansionCard aria-label="" onToggle={loggExpansionCardOpen('toggle-oppgitt-informasjon')} size="small">
                 <ExpansionCard.Header>
                     <HStack gap="6" align="center" wrap={false}>
                         <IconCircleWrapper size="medium" color="lightBlue">

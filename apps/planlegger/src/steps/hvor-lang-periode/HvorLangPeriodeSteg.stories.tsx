@@ -9,7 +9,6 @@ import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 import { StønadskontoType } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 
 import { HvorLangPeriodeSteg } from './HvorLangPeriodeSteg';
 
@@ -36,7 +35,6 @@ const meta = {
         gåTilNesteSide = action('button-click'),
         locale,
     }: StoryArgs) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.HVOR_LANG_PERIODE]}>
                 <PlanleggerDataContext

@@ -3,10 +3,9 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
-import { useBeforeUnload, utilsMessages } from '@navikt/fp-utils';
+import { utilsMessages } from '@navikt/fp-utils';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
@@ -74,14 +73,6 @@ const initLocale = (): LocaleAll => {
 export const AppContainer = () => {
     const origLocale = useMemo(() => initLocale(), []);
     const [locale, setLocale] = useState<LocaleAll>(origLocale);
-
-    useBeforeUnload(() => {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'planlegger',
-            team: 'foreldrepenger',
-            pageKey: 'page-unload',
-        });
-    });
 
     const changeLocale = useCallback((activeLocale: LocaleAll) => {
         setLocale(activeLocale);

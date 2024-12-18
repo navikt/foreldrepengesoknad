@@ -10,8 +10,6 @@ import { BrowserRouter } from 'react-router-dom';
 
 import '@navikt/ds-css';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { AppContainer } from './AppContainer';
 import './styles/global.css';
 
@@ -25,8 +23,6 @@ if (process.env.NODE_ENV !== 'development') {
         integrations: [new Sentry.Integrations.Breadcrumbs({ console: false })],
     });
 }
-
-initAmplitude();
 
 const container = document.getElementById('app');
 

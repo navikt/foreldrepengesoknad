@@ -7,7 +7,7 @@ import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
 
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { HvisManBlirSyk } from './HvisManBlirSyk';
@@ -16,10 +16,10 @@ import { NyttBarnFørTreÅr } from './NyttBarnFørTreÅr';
 
 const onToggleExpansionCard = (open: boolean) => {
     if (open) {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'planlegger',
-            team: 'foreldrepenger',
-            pageKey: 'toggle-uforutsette-endringer',
+        loggAmplitudeEvent({
+            origin: 'Foreldrepengeplanlegger',
+            eventName: 'accordion åpnet',
+            eventData: { tittel: "'toggle-uforutsette-endringer'" },
         });
     }
 };
