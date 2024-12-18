@@ -53,7 +53,7 @@ interface Props {
     isFirstRender: React.MutableRefObject<boolean>;
 }
 
-const finnSøknadstidspunkt = (tidslinjehendelser: Tidslinjehendelse[] | undefined): Date | undefined => {
+const finnSøknadstidspunkt = (tidslinjehendelser: Tidslinjehendelse[] | undefined) => {
     if (!tidslinjehendelser) {
         return undefined;
     }
@@ -66,7 +66,7 @@ const finnSøknadstidspunkt = (tidslinjehendelser: Tidslinjehendelse[] | undefin
               ?.opprettet;
 };
 
-const finnEngangstønadForSøknadstidspunkt = (satser: Satser, søknadstidspunkt: Date | undefined) => {
+const finnEngangstønadForSøknadstidspunkt = (satser: Satser, søknadstidspunkt: string | undefined) => {
     const { engangstønad } = satser;
     if (!søknadstidspunkt) {
         return engangstønad[0].verdi;

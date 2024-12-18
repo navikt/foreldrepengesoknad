@@ -393,7 +393,7 @@ export const getTidslinjeFamiliehendelse = (familiehendelse: Familiehendelse): T
     const familiehendelsedato = getFamiliehendelseDato(familiehendelse);
     return {
         type: 'søknad',
-        opprettet: new Date(familiehendelsedato),
+        opprettet: familiehendelsedato,
         tidslinjeHendelseType: TidslinjehendelseType.FAMILIEHENDELSE,
         aktørType: AktørType.BRUKER,
         dokumenter: [],

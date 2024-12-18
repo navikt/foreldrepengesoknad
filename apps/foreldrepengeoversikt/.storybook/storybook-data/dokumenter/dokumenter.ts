@@ -9,6 +9,7 @@ export const dokumenter = [
         tittel: 'Opphør Foreldrepenger',
         journalpostId: '598115880',
         dokumentId: '624862996',
+        url: '',
     },
     {
         type: DokumentType.UTGÅENDE_DOKUMENT,
@@ -17,6 +18,7 @@ export const dokumenter = [
         tittel: 'Innvilgelsesbrev Foreldrepenger',
         journalpostId: '598115879',
         dokumentId: '624862995',
+        url: '',
     },
     {
         type: DokumentType.INNGÅENDE_DOKUMENT,
@@ -25,6 +27,7 @@ export const dokumenter = [
         tittel: 'Søknad om foreldrepenger ved fødsel',
         journalpostId: '598115877',
         dokumentId: '624862992',
+        url: '',
     },
     {
         type: DokumentType.INNGÅENDE_DOKUMENT,
@@ -33,6 +36,7 @@ export const dokumenter = [
         tittel: 'Bekreftelse på ventet fødselsdato',
         journalpostId: '598115877',
         dokumentId: '624862993',
+        url: '',
     },
     {
         type: DokumentType.UTGÅENDE_DOKUMENT,
@@ -41,6 +45,7 @@ export const dokumenter = [
         tittel: 'Innvilgelsesbrev Foreldrepenger',
         journalpostId: '598115875',
         dokumentId: '624862990',
+        url: '',
     },
     {
         type: DokumentType.INNGÅENDE_DOKUMENT,
@@ -49,6 +54,7 @@ export const dokumenter = [
         tittel: 'Søknad om foreldrepenger ved fødsel',
         journalpostId: '598115874',
         dokumentId: '624862989',
+        url: '',
     },
     {
         type: DokumentType.INNGÅENDE_DOKUMENT,
@@ -57,5 +63,6 @@ export const dokumenter = [
         tittel: 'Bekreftelse på ventet fødselsdato',
         journalpostId: '598115877',
         dokumentId: '624862993',
+        url: '',
     },
 ] satisfies Dokument[];

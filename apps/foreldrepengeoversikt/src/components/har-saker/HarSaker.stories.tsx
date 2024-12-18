@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 import { MemoryRouter } from 'react-router-dom';
-import saker from 'storybookData/saker/saker.json';
+import { saker } from 'storybookData/saker/saker';
 
-import { Ytelse } from './../../types/Ytelse';
+import { Ytelse } from '../../types/Ytelse';
 import { HarSaker } from './HarSaker';
 
 const meta = {
