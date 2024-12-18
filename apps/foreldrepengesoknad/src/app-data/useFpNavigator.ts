@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
 import { SøknadRoutes } from '../app-data/routes';

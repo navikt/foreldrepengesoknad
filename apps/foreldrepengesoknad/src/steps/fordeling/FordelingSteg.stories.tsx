@@ -10,7 +10,6 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT, StønadskontoType } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 import { Arbeidsforhold, Søker, SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import { FordelingSteg } from './FordelingSteg';
@@ -124,8 +123,6 @@ const meta = {
     title: 'steps/FordelingSteg',
     component: FordelingSteg,
     render: ({ gåTilNesteSide, søkersituasjon, annenForelder, barnet, dekningsgrad, ...rest }) => {
-        initAmplitude();
-
         return (
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter initialEntries={[SøknadRoutes.FORDELING]}>

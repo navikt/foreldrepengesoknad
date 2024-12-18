@@ -2,7 +2,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
 
-import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
 import { HarArbeidsforhold } from './HarArbeidsforhold';
@@ -23,7 +23,13 @@ export const ArbeidsforholdInformasjon = ({ arbeidsforhold, visManglerInfo = tru
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             {visManglerInfo && (
                 <ReadMore
-                    onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Feil_eller_mangler')}
+                    onOpenChange={(open) =>
+                        loggAmplitudeEvent({
+                            origin: 'UHM',
+                            eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                            eventData: { tittel: 'inntektsinformasjon.arbeidsforhold.info' },
+                        })
+                    }
                     header={intl.formatMessage({ id: 'inntektsinformasjon.arbeidsforhold.info' })}
                 >
                     <BodyShort>

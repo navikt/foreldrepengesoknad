@@ -20,7 +20,6 @@ import {
     SivilstandType,
     Skjemanummer,
 } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 import {
     ArbeidsforholdOgInntektFp,
     EgenNæring,
@@ -232,7 +231,6 @@ const meta = {
         vedlegg = defaultVedlegg,
         ...rest
     }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
                 <FpDataContext
