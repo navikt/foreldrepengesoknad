@@ -12,6 +12,7 @@ export const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
 
     const activeStepId = stepConfig.find((sc) => sc.isSelected);
 
+    // TODO: slett??
     useEffect(() => {
         logAmplitudeEvent('sidevisning', {
             app: 'engangsstonadny',

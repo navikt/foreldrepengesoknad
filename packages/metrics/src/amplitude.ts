@@ -1,48 +1,22 @@
-import amplitude from 'amplitude-js';
-
 import { AppName } from '@navikt/fp-types';
 
-export const initAmplitude = () => {
-    if (amplitude) {
-        amplitude.getInstance().init('default', '', {
-            apiEndpoint: 'amplitude.nav.no/collect-auto',
-            saveEvents: false,
-            includeUtm: true,
-            includeReferrer: true,
-            platform: window.location.toString(),
-            // eslint-disable-next-line no-console
-            onError: () => console.log('Amplitude klarte ikke å starte opp'),
-        });
-    }
-};
+//Bruk kun navn fra taksonomien. Med utgangspunkt i https://github.com/navikt/analytics-taxonomy
+type EventNamesTaksonomi = 'readmore lukket' | 'readmore åpnet' | 'switch åpnet' | 'switch lukket';
 
-export const logAmplitudeEvent = (eventName: string, eventData?: any, logToConsoleOnly = false) => {
-    if (logToConsoleOnly) {
-        if (process.env.NODE_ENV !== 'test') {
-            // eslint-disable-next-line no-console
-            console.log({ eventName, eventData });
-        }
-        return;
-    }
-
-    setTimeout(() => {
-        try {
-            if (amplitude) {
-                amplitude.getInstance().logEvent(eventName, eventData);
-            }
-        } catch (error) {
-            // tslint:disable-next-line
-            console.error(error); // eslint-disable-line no-console
-        }
-    });
-};
-
-export const logAmplitudeEventOnOpen = (appName: AppName, hendelsenavn: string) => (open: boolean) => {
-    if (open) {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: appName,
-            team: 'foreldrepenger',
-            hendelse: hendelsenavn,
+export const loggAmplitudeEvent = ({
+    origin,
+    eventName,
+    eventData,
+}: {
+    origin: AppName;
+    eventName: EventNamesTaksonomi;
+    eventData?: Record<string, string>;
+}) => {
+    if (process.env.NODE_ENV === 'production') {
+        window.dekoratorenAmplitude({
+            origin,
+            eventName,
+            eventData,
         });
     }
 };
