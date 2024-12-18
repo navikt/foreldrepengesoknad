@@ -5,18 +5,17 @@ import { IntlShape } from 'react-intl';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { formatDate } from '@navikt/fp-utils';
 
-import { NavRoutes, OversiktRoutes } from './../routes/routes';
-import { AktørType } from './../types/AktørType';
-import { BarnGruppering } from './../types/BarnGruppering';
-import { BehandlingTilstand } from './../types/BehandlingTilstand';
-import { Familiehendelse } from './../types/Familiehendelse';
-import { Sak } from './../types/Sak';
-import { Tidslinjehendelse } from './../types/Tidslinjehendelse';
-import { TidslinjehendelseType } from './../types/TidslinjehendelseType';
-import { Tilretteleggingstype } from './../types/TilretteleggingsperiodeSVP';
-import { Ytelse } from './../types/Ytelse';
-import { ÅpenBehandling, ÅpenBehandlingFP, ÅpenBehandlingSVP } from './../types/ÅpenBehandling';
-import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from './../utils/Uttaksdagen';
+import { NavRoutes, OversiktRoutes } from '../routes/routes';
+import { AktørType } from '../types/AktørType';
+import { BarnGruppering } from '../types/BarnGruppering';
+import { BehandlingTilstand } from '../types/BehandlingTilstand';
+import { Familiehendelse } from '../types/Familiehendelse';
+import { Sak } from '../types/Sak';
+import { Tidslinjehendelse } from '../types/Tidslinjehendelse';
+import { TidslinjehendelseType } from '../types/TidslinjehendelseType';
+import { Ytelse } from '../types/Ytelse';
+import { ÅpenBehandling, ÅpenBehandlingFP, ÅpenBehandlingSVP } from '../types/ÅpenBehandling';
+import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from './Uttaksdagen';
 import { formaterDato } from './dateUtils';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils';
 
@@ -332,7 +331,7 @@ export const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: �
     const tilretteleggingerFomDatoer =
         åpenBehandling.søknad.arbeidsforhold
             .map((a) => {
-                const utenHelTilrettelegging = a.tilrettelegginger.filter((t) => t.type !== Tilretteleggingstype.HEL);
+                const utenHelTilrettelegging = a.tilrettelegginger.filter((t) => t.type !== 'HEL');
                 return utenHelTilrettelegging.map((periode) => dayjs(periode.fom));
             })
             .flat(1) || [];
