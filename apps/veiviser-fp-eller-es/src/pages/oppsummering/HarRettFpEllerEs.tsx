@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, BabyWrappedIcon, InformationIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { FpEllerEsRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { finnSisteEngangsstønad, finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
@@ -9,7 +9,7 @@ import { BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/d
 import { links } from '@navikt/fp-constants';
 import { Satser } from '@navikt/fp-types';
 import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
-import { formatCurrency } from '@navikt/fp-utils';
+import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
 import { FpEllerEsSituasjon } from '../situasjon/SituasjonSide';
 import HvorforHarJegRettEsPanel from './boxes/HvorforHarJegRettEsPanel';
@@ -22,6 +22,7 @@ interface Props {
 
 const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser }) => {
     const { goToRoute } = useVeiviserNavigator();
+    const locale = useIntl().locale;
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
 
     const engangsstønad = finnSisteEngangsstønad(satser);
@@ -44,7 +45,7 @@ const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, 
                         borderRadius="large"
                     >
                         <VStack gap="3">
-                            <HStack justify="space-between">
+                            <HStack justify="space-between" wrap={false}>
                                 <Heading size="small">
                                     <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRettFpEllerEs.KanVelgeMellom" />
                                 </Heading>
@@ -66,7 +67,7 @@ const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, 
                                 <BodyShort>
                                     <FormattedMessage
                                         id="OppsummeringFpEllerEsSide.DuFårUtbetaltEs"
-                                        values={{ engangsstønad: formatCurrency(engangsstønad) }}
+                                        values={{ engangsstønad: formatCurrencyWithKr(engangsstønad, locale) }}
                                     />
                                 </BodyShort>
                             </VStack>
@@ -77,7 +78,9 @@ const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, 
                                 <BodyShort>
                                     <FormattedMessage
                                         id="OppsummeringFpEllerEsSide.BasertPåSvarene"
-                                        values={{ utbetaling: formatCurrency(fpEllerEsSituasjon.lønnPerMåned) }}
+                                        values={{
+                                            utbetaling: formatCurrencyWithKr(fpEllerEsSituasjon.lønnPerMåned, locale),
+                                        }}
                                     />
                                 </BodyShort>
                             </VStack>
@@ -107,7 +110,7 @@ const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, 
                                     <FormattedMessage
                                         id="OppsummeringFpEllerEsSide.EsSkalBidra"
                                         values={{
-                                            engangsstønad: formatCurrency(engangsstønad),
+                                            engangsstønad: formatCurrencyWithKr(engangsstønad, locale),
                                             b: (msg: any) => <b>{msg}</b>,
                                         }}
                                     />

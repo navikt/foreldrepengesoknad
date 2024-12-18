@@ -1,14 +1,14 @@
 import { ArrowLeftIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { FpEllerEsRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { finnSisteEngangsstønad, finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { Satser } from '@navikt/fp-types';
-import { formatCurrency } from '@navikt/fp-utils';
+import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
 import { FpEllerEsSituasjon } from '../situasjon/SituasjonSide';
 import HvorforHarJegIkkeRettPanel from './boxes/HvorforHarJegIkkeRettPanel';
@@ -21,6 +21,7 @@ interface Props {
 
 const HarRettEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser }) => {
     const { goToRoute } = useVeiviserNavigator();
+    const locale = useIntl().locale;
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const engangsstønad = finnSisteEngangsstønad(satser);
@@ -49,7 +50,7 @@ const HarRettEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser 
                                 <FormattedMessage
                                     id="OppsummeringFpEllerEsSide.EsSkalBidra"
                                     values={{
-                                        engangsstønad: formatCurrency(engangsstønad),
+                                        engangsstønad: formatCurrencyWithKr(engangsstønad, locale),
                                         b: (msg: any) => <b>{msg}</b>,
                                     }}
                                 />
