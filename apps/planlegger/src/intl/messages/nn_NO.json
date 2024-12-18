@@ -202,6 +202,7 @@
     "OversiktSteg.Infoboks.Utkast": "{erAleneforsørger, select, true {Du} other {De}} kan tilpassa denne planen",
     "OversiktSteg.Infoboks.Utkast.Tekst": "Her er eit utkast til korleis permisjonen kan sjå ut. {erAleneforsørger, select, true {Du} other {De}} kan tilpassa  denne planen etter eigne behov, for å testa ut kva som er mogleg. Då kan {erAleneforsørger, select, true {du} other {de}} endra periodane eller leggja til ferie.",
     "OversiktSteg.Infoboks.TilpassPlanen": "Tilpass planen",
+    "OversiktSteg.Infoboks.Tilpass": "Tilpass",
     "OversiktSteg.UkerForeldrepenger": "{hvem}",
     "OversiktSteg.UtenAktivitetskrav": "Utan aktivitetskrav",
     "OversiktSteg.MedAktivitetskrav": "Med aktivitetskrav",

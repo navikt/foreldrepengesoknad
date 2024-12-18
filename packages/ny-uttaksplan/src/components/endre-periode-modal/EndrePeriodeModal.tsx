@@ -31,7 +31,7 @@ export const EndrePeriodeModal = forwardRef<HTMLDialogElement, Props>(
     ({ closeModal, permisjonsperiode, handleUpdatePeriode }, ref) => {
         const kunEnPeriode = permisjonsperiode.perioder.length === 1;
         const initialModalState: ModalData = {
-            valgtPeriode: undefined,
+            valgtPeriode: kunEnPeriode ? permisjonsperiode.perioder[0] : undefined,
             hvaVilDuGjøre: undefined,
             fom: undefined,
             tom: undefined,

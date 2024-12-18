@@ -50,7 +50,7 @@ export const VelgPeriodeModalStep = ({ perioder, modalData, setModalData, closeM
                     ]}
                 >
                     {perioder.map((p) => {
-                        return <Radio value={p.id}>{`${p.id}`}</Radio>;
+                        return <Radio key={p.id} value={p.id}>{`${p.id}`}</Radio>;
                     })}
                 </RhfRadioGroup>
                 <div

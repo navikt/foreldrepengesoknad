@@ -46,7 +46,7 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
     const hvorLangPeriode = notEmpty(useContextGetData(ContextDataType.HVOR_LANG_PERIODE));
     const arbeidssituasjon = notEmpty(useContextGetData(ContextDataType.ARBEIDSSITUASJON));
     const fordeling = useContextGetData(ContextDataType.FORDELING);
-    const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN));
+    const uttaksplan = notEmpty(useContextGetData(ContextDataType.UTTAKSPLAN), 'Uttaksplan ikke oppgitt');
 
     const lagreUttaksplan = useContextSaveData(ContextDataType.UTTAKSPLAN);
 
@@ -80,7 +80,6 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
     });
 
     const handleOnPlanChange = (perioder: SaksperiodeNy[]) => {
-        console.log(perioder);
         lagreUttaksplan(perioder);
     };
 

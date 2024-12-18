@@ -105,8 +105,23 @@ const showHvorMyeStep = (
     return false;
 };
 
-const showTilpassPlanenStep = (path: PlanleggerRoutes) => {
+const showTilpassPlanenStep = (
+    path: PlanleggerRoutes,
+    getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
+) => {
     if (path === PlanleggerRoutes.TILPASS_PLANEN) {
+        const arbeidssituasjon = getData(ContextDataType.ARBEIDSSITUASJON);
+        const omBarnet = getData(ContextDataType.OM_BARNET);
+
+        if (
+            (!arbeidssituasjon?.jobberAnnenPart &&
+                (arbeidssituasjon?.status === Arbeidsstatus.INGEN ||
+                    arbeidssituasjon?.status === Arbeidsstatus.UFØR)) ||
+            !erBarnIkkeOppgittEllerYngreEnnTreÅr(omBarnet)
+        ) {
+            return false;
+        }
+
         return true;
     }
     return false;
@@ -131,7 +146,7 @@ const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
                 showBarnehageplassStep(path, getStateData) ||
                 showHvorMyeStep(path, getStateData) ||
                 showFordelingStep(path, getStateData) ||
-                showTilpassPlanenStep(path) ||
+                showTilpassPlanenStep(path, getStateData) ||
                 showHvorLangPeriodeEllerOversiktStep(path, getStateData)
                     ? [path]
                     : [],

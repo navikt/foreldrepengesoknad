@@ -87,6 +87,11 @@ describe('useStepData', () => {
                     label: 'Planen',
                 },
                 {
+                    id: '/tilpass-planen',
+                    isSelected: false,
+                    label: 'Tilpass planen',
+                },
+                {
                     id: '/oppsummering',
                     isSelected: false,
                     label: 'Oppsummering',
@@ -149,6 +154,11 @@ describe('useStepData', () => {
                     id: '/planen-deres',
                     isSelected: false,
                     label: 'Planen',
+                },
+                {
+                    id: '/tilpass-planen',
+                    isSelected: false,
+                    label: 'Tilpass planen',
                 },
                 {
                     id: '/oppsummering',
@@ -258,6 +268,11 @@ describe('useStepData', () => {
                     label: 'Planen',
                 },
                 {
+                    id: '/tilpass-planen',
+                    isSelected: false,
+                    label: 'Tilpass planen',
+                },
+                {
                     id: '/oppsummering',
                     isSelected: true,
                     label: 'Oppsummering',
@@ -265,6 +280,7 @@ describe('useStepData', () => {
             ]),
         );
     });
+
     it('skal ikke vise barnehageplass-steg når barnet er adoptert', async () => {
         const barnet = {
             antallBarn: '1',
@@ -323,6 +339,11 @@ describe('useStepData', () => {
                     id: '/planen-deres',
                     isSelected: false,
                     label: 'Planen',
+                },
+                {
+                    id: '/tilpass-planen',
+                    isSelected: false,
+                    label: 'Tilpass planen',
                 },
                 {
                     id: '/oppsummering',
@@ -393,6 +414,11 @@ describe('useStepData', () => {
                     label: 'Planen',
                 },
                 {
+                    id: '/tilpass-planen',
+                    isSelected: false,
+                    label: 'Tilpass planen',
+                },
+                {
                     id: '/oppsummering',
                     isSelected: true,
                     label: 'Oppsummering',
@@ -458,6 +484,11 @@ describe('useStepData', () => {
                     id: '/planen-deres',
                     isSelected: false,
                     label: 'Planen',
+                },
+                {
+                    id: '/tilpass-planen',
+                    isSelected: false,
+                    label: 'Tilpass planen',
                 },
                 {
                     id: '/oppsummering',
@@ -526,6 +557,11 @@ describe('useStepData', () => {
                     id: '/planen-deres',
                     isSelected: false,
                     label: 'Planen',
+                },
+                {
+                    id: '/tilpass-planen',
+                    isSelected: false,
+                    label: 'Tilpass planen',
                 },
                 {
                     id: '/oppsummering',

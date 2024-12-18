@@ -20,6 +20,7 @@ const customRenderer = ({
     erFamiliehendelse,
     permisjonsperiode,
     familiehendelsedato,
+    handleUpdatePeriode,
     barn,
 }: StoryArgs) => {
     return (
@@ -36,7 +37,11 @@ const customRenderer = ({
         >
             <div style={{ maxWidth: '704px', margin: '2rem 4rem' }}>
                 <Accordion>
-                    <PeriodeListeItem erFamiliehendelse={erFamiliehendelse} permisjonsperiode={permisjonsperiode} />
+                    <PeriodeListeItem
+                        handleUpdatePeriode={handleUpdatePeriode}
+                        erFamiliehendelse={erFamiliehendelse}
+                        permisjonsperiode={permisjonsperiode}
+                    />
                 </Accordion>
             </div>
         </UttaksplanDataContext>
@@ -54,6 +59,7 @@ type Story = StoryObj<typeof meta>;
 
 export const UttaksperiodeMor: Story = {
     args: {
+        handleUpdatePeriode: () => null,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-06-01'],
@@ -84,6 +90,7 @@ export const UttaksperiodeMor: Story = {
 
 export const UttaksperiodeMorFlerePerioder: Story = {
     args: {
+        handleUpdatePeriode: () => null,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-06-01'],
@@ -122,6 +129,7 @@ export const UttaksperiodeMorFlerePerioder: Story = {
 
 export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
     args: {
+        handleUpdatePeriode: () => null,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-06-01'],
@@ -178,6 +186,7 @@ export const UttaksperiodeMorFlerePerioderInkludererGradering: Story = {
 
 export const UttaksperiodeFar: Story = {
     args: {
+        handleUpdatePeriode: () => null,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-06-01'],
@@ -208,6 +217,7 @@ export const UttaksperiodeFar: Story = {
 
 export const PeriodeUtenUttak: Story = {
     args: {
+        handleUpdatePeriode: () => null,
         barn: {
             antallBarn: 1,
             fødselsdatoer: ['2024-08-01'],
