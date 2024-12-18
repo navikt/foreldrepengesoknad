@@ -36,14 +36,14 @@ const getTidspunktTekst = (mottattDato: string | undefined) => {
     return `Sendt ${formatDate(mottattDato)} kl. ${formatTime(mottattDato)}`;
 };
 
-export const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({
+export const BekreftelseSendtSøknad = ({
     relevantNyTidslinjehendelse,
     bankkonto,
     ytelse,
     harMinstEttArbeidsforhold,
     manglendeVedlegg,
     saksnummer,
-}) => {
+}: Props) => {
     const intl = useIntl();
 
     const relevantDokument = relevantNyTidslinjehendelse?.dokumenter

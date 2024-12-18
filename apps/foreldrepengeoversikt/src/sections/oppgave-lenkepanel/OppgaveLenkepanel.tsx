@@ -11,7 +11,7 @@ interface Props {
     tittel: string;
 }
 
-export const OppgaveLenkepanel: React.FunctionComponent<Props> = ({ tittel, minidialogInnslag }) => {
+export const OppgaveLenkepanel = ({ tittel, minidialogInnslag }: Props) => {
     return (
         <LenkePanel
             undertittel={formatDate(minidialogInnslag.opprettet)}

@@ -9,7 +9,7 @@ import { ForeldrepengeoversiktRoutes } from './routes/ForeldrepengeoversiktRoute
 import { SakOppslag } from './types/SakOppslag';
 import { mapSakerDTOToSaker } from './utils/sakerUtils';
 
-export const Foreldrepengeoversikt: React.FunctionComponent = () => {
+export const Foreldrepengeoversikt = () => {
     const backgroundColor = useGetBackgroundColor();
 
     // Denne trenger vi ikke før senere. Men vi putter den i cache så tidlig som mulig.

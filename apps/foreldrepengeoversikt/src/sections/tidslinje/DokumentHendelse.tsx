@@ -15,7 +15,7 @@ interface Props {
     visesITidslinjen: boolean;
 }
 
-export const DokumentHendelse: React.FunctionComponent<Props> = ({ dokument, visesITidslinjen }) => {
+export const DokumentHendelse = ({ dokument, visesITidslinjen }: Props) => {
     const { tittel } = dokument;
     const url = lagUrl(dokument);
 

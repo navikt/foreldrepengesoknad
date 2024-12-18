@@ -11,7 +11,7 @@ const getPunktTekster = (intl: IntlShape) => [
     intl.formatMessage({ id: 'minidialog.hvaLeggerNAVVektPå.tilbakekreving.punkt6' }),
 ];
 
-export const HvaLeggerNAVVektPå: React.FunctionComponent = () => {
+export const HvaLeggerNAVVektPå = () => {
     const intl = useIntl();
 
     return (

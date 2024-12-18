@@ -21,7 +21,7 @@ const getHeading = (ytelse: Ytelse) => {
     }
 };
 
-export const SakLink: React.FunctionComponent<Props> = ({ sak, harMinstEttArbeidsforhold }) => {
+export const SakLink = ({ sak, harMinstEttArbeidsforhold }: Props) => {
     return (
         <LenkePanel
             tag={<StatusTag sak={sak} harMinstEttArbeidsforhold={harMinstEttArbeidsforhold} />}

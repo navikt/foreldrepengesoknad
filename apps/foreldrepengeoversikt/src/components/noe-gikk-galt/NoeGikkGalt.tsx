@@ -5,7 +5,7 @@ interface Props {
     className?: string;
 }
 
-export const NoeGikkGalt: React.FunctionComponent<Props> = ({ children, className }) => {
+export const NoeGikkGalt = ({ children, className }: Props) => {
     return (
         <Alert className={className} variant="info">
             {children}

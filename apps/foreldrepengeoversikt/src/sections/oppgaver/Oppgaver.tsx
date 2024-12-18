@@ -11,7 +11,7 @@ import { OppgaveLenkepanel } from '../oppgave-lenkepanel/OppgaveLenkepanel';
 interface Props {
     saksnummer: string;
 }
-export const Oppgaver: React.FunctionComponent<Props> = ({ saksnummer }) => {
+export const Oppgaver = ({ saksnummer }: Props) => {
     const aktiveMinidialogerForSakenQuery = useQuery({
         ...minidialogOptions(),
         select: (data) => data.filter(({ saksnr }) => saksnr === saksnummer),

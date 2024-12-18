@@ -67,7 +67,7 @@ const getSaksbehandlingstidLink = (ytelse: Ytelse | undefined) => {
     return NavRoutes.SAKSBEHANDLINGSTIDER;
 };
 
-export const Snarveier: React.FunctionComponent = () => {
+export const Snarveier = () => {
     const intl = useIntl();
     const currentSak = useGetSelectedSak();
     const ytelse = currentSak ? currentSak.ytelse : undefined;

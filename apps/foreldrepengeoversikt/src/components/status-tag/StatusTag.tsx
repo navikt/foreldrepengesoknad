@@ -8,7 +8,7 @@ interface Props {
     harMinstEttArbeidsforhold: boolean;
 }
 
-export const StatusTag: React.FunctionComponent<Props> = ({ sak, harMinstEttArbeidsforhold }) => {
+export const StatusTag = ({ sak, harMinstEttArbeidsforhold }: Props) => {
     if (sak.åpenBehandling) {
         if (!sak.sakAvsluttet) {
             if (sak.åpenBehandling.tilstand === BehandlingTilstand.UNDER_BEHANDLING) {

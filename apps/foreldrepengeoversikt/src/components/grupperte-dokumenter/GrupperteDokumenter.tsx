@@ -10,7 +10,7 @@ interface Props {
     dokumenter: DokumentType[];
 }
 
-export const GrupperteDokumenter: React.FunctionComponent<Props> = ({ dokumenter }) => {
+export const GrupperteDokumenter = ({ dokumenter }: Props) => {
     return (
         <Accordion>
             <Accordion.Item>

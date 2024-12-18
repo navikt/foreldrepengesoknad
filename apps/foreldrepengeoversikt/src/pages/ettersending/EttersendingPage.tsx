@@ -90,7 +90,7 @@ type Props = {
     readonly saker: SakOppslag;
 };
 
-const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
+const EttersendingPageInner = ({ saker }: Props) => {
     const intl = useIntl();
     useSetBackgroundColor('white');
     useDocumentTitle(

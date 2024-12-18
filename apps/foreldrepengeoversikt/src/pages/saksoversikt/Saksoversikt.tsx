@@ -74,7 +74,7 @@ const finnEngangstønadForSøknadstidspunkt = (satser: Satser, søknadstidspunkt
     return engangstønad.filter((es) => dayjs(es.fom).isSameOrBefore(søknadstidspunkt))[0].verdi;
 };
 
-export const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRender }) => {
+export const Saksoversikt = ({ søkerinfo, isFirstRender }: Props) => {
     const gjeldendeSak = useGetSelectedSak();
 
     return (
@@ -84,7 +84,7 @@ export const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFir
     );
 };
 
-const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRender }) => {
+const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
     const intl = useIntl();
     const params = useParams<{ saksnummer: string; redirect?: string }>();
     const navigate = useNavigate();

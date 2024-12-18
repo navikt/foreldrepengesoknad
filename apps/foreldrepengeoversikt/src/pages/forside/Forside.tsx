@@ -28,7 +28,7 @@ interface Props {
     søkerinfo: SøkerinfoDTO;
 }
 
-export const Forside: React.FunctionComponent<Props> = ({ saker, isFirstRender, søkerinfo }) => {
+export const Forside = ({ saker, isFirstRender, søkerinfo }: Props) => {
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
     const params = useParams();
     useSetRedirectedFromSøknadsnummer(params.redirect, undefined, isFirstRender);

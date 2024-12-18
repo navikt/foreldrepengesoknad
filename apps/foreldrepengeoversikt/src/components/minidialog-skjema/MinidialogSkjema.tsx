@@ -51,14 +51,14 @@ export interface Props {
     ettersendelseError: string | undefined;
 }
 
-export const MinidialogSkjema: React.FunctionComponent<Props> = ({
+export const MinidialogSkjema = ({
     ettersendelseErSendt,
     isSendingEttersendelse,
     sakstype,
     minidialog,
     ettersendelseError,
     onSubmit,
-}) => {
+}: Props) => {
     const intl = useIntl();
 
     const [vedlegg, setVedlegg] = useState<Attachment[]>([]);

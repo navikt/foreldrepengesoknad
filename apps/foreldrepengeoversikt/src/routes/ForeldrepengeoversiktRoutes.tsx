@@ -20,11 +20,11 @@ import { getAlleYtelser } from '../utils/sakerUtils';
 import { OversiktRoutes } from './routes';
 
 interface Props {
-    readonly saker: SakOppslag;
-    readonly søkerinfo: SøkerinfoDTO;
+    saker: SakOppslag;
+    søkerinfo: SøkerinfoDTO;
 }
 
-export const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinfo, saker }) => {
+export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {
     const isFirstRender = useRef(true);
 
     return (
