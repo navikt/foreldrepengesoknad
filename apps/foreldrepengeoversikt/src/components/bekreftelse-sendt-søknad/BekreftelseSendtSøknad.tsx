@@ -24,13 +24,13 @@ interface Props {
     saksnummer?: string;
 }
 
-const getTidspunktTekst = (mottattDato: Date | undefined): string | undefined => {
+const getTidspunktTekst = (mottattDato: string | undefined) => {
     if (!mottattDato) {
         return undefined;
     }
-    if (mottattDato && dayjs(mottattDato).isSame(dayjs(), 'd')) {
+    if (dayjs(mottattDato).isSame(dayjs(), 'd')) {
         return `Sendt i dag kl. ${formatTime(mottattDato)}`;
-    } else if (mottattDato && dayjs(mottattDato).isSame(dayjs().subtract(1, 'd'), 'd')) {
+    } else if (dayjs(mottattDato).isSame(dayjs().subtract(1, 'd'), 'd')) {
         return `Sendt i går kl. ${formatTime(mottattDato)}`;
     }
     return `Sendt ${formatDate(mottattDato)} kl. ${formatTime(mottattDato)}`;
