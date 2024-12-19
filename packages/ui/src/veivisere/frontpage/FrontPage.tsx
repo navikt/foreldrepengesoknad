@@ -13,8 +13,8 @@ import { Page } from '../../page/Page';
 import styles from './frontPage.module.css';
 
 interface Props {
-    locale: LocaleAll;
-    changeLocale: (locale: LocaleAll) => void;
+    locale?: LocaleAll;
+    changeLocale?: (locale: LocaleAll) => void;
     children?: ReactElement | ReactElement[];
     titleLabel: string;
     minutesLabel: string;
