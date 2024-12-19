@@ -8,6 +8,7 @@ import { LocaleAll } from '@navikt/fp-types';
 
 import { BlueHeading } from '../../boxes/BlueHeading';
 import { IconCircleWrapper } from '../../icon-circle/IconCircleWrapper';
+import { LanguageToggle } from '../../language-toggle-new/LanguageToggle';
 import { Page } from '../../page/Page';
 import styles from './frontPage.module.css';
 
@@ -31,6 +32,8 @@ export const FrontPage = ({
     goToNextDefaultStep,
     icon,
     childrenBelowStartButton = false,
+    locale,
+    changeLocale,
 }: Props) => (
     <Page
         header={
@@ -38,9 +41,11 @@ export const FrontPage = ({
                 <Show below="md">
                     <BlueHeading>
                         <VStack gap="4" align="center">
-                            {/* <div className={styles.languageToggle}>
-                                <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
-                            </div> */}
+                            {locale && changeLocale && (
+                                <div className={styles.languageToggle}>
+                                    <LanguageToggle locale={locale} changeLocale={changeLocale} />
+                                </div>
+                            )}
                             <IconCircleWrapper color="blue" size="xl">
                                 {icon}
                                 {!icon && <CalendarIcon height={28} width={28} fontSize="1.5rem" aria-hidden />}
@@ -92,13 +97,15 @@ export const FrontPage = ({
                 </HStack>
                 {childrenBelowStartButton && <VStack gap={{ xs: '2', sm: '5' }}>{children}</VStack>}
             </VStack>
-            {/* <Show above="md" asChild>
-                <HStack justify="center">
-                    <div className={styles.languageToggle}>
-                        <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
-                    </div>
-                </HStack>
-            </Show> */}
+            {locale && changeLocale && (
+                <Show above="md" asChild>
+                    <HStack justify="center">
+                        <div className={styles.languageToggle}>
+                            <LanguageToggle locale={locale} changeLocale={changeLocale} />
+                        </div>
+                    </HStack>
+                </Show>
+            )}
         </VStack>
     </Page>
 );
