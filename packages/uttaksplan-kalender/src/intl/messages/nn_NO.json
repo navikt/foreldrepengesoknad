@@ -7,11 +7,11 @@
     "kalender.dinPeriode.gradert": "Du kombinerer jobb og foreldrepengar",
     "kalender.annenPartPeriode": "{navnAnnenPart} periode",
     "kalender.samtidigUttak": "Du og {navnAnnenPart} har permisjon samtidig",
-    "kalender.dinUtsettelse": "Du utsetter foreldrepengar",
-    "kalender.utsettelseAnnenPart": "{navnAnnenPart} utsetter foreldrepengar",
+    "kalender.dinUtsettelse": "Du utset foreldrepengar",
+    "kalender.utsettelseAnnenPart": "{navnAnnenPart} utset foreldrepengar",
     "kalender.helg": "Helg (er ikkje dagar med foreldrepengar)",
     "kalender.tapteDager": "Dagar du kan tape",
-    "kalender.utsettelse": "Du utsetter foreldrepengar {årsak}",
+    "kalender.utsettelse": "Du utset foreldrepengar {årsak}",
     "kalender.utsettelse.ARBEID": "fordi du skal jobbe",
     "kalender.utsettelse.INSTITUSJONSOPPHOLD_BARNET": "fordi barnet er innlagt",
     "kalender.utsettelse.INSTITUSJONSOPPHOLD_SØKER": "fordi du er innlagt",
@@ -21,5 +21,5 @@
     "kalender.utsettelse.NAV_TILTAK": "pga. Nav tiltak som utgjer 100% arbeid",
     "kalender.lastNed": "Last ned kalender som PDF",
     "kalender.skjermleser.familiehendelse": "{familiehendelsenavn} den {dato}",
-    "kalender.skjermleser.periode": "{periodeNavn} fra den {fraDato} til den {tilDato}"
+    "kalender.skjermleser.periode": "{periodeNavn} frå den {fraDato} til den {tilDato}"
 }
