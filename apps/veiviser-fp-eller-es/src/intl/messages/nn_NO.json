@@ -35,7 +35,7 @@
     "SituasjonSide.IkkeMedlem": "Du har oppgitt at du ikkje bur eller jobbar i Noreg. Dermed kan det vera at du ikkje er medlem av folketrygda, som ein må vera for å få støtte frå Nav. Det finst nokre tilfelle der ein bur i utlandet, men framleis er medlem av folketrygda. Dette kan du lesa meir om på <a>Navs nettsider om folketrygda</a>.",
     "SituasjonSide.JobberDuINorge": "Jobbar du i Noreg?",
     "SituasjonSide.MåTjeneMinst": "For å kunne ha rett til foreldrepengar må ein ha tjent minst {minstelønn} i året",
-    "SituasjonSide.OppgittLønnIkkeRett": "Du har oppgitt at du tjener omtrent {årslønn} i året før skatt, som er mindre enn {minstelønn} i året før skatt. Det ser derfor ut til at du ikkje har rett til foreldrepenger. Du kan fortsatt ha rett til engangsstønad.",
+    "SituasjonSide.OppgittLønnIkkeRett": "Du har oppgitt at du tjener omtrent {årslønn} i året før skatt, som er mindre enn {minstelønn} i året før skatt. Det ser derfor ut til at du ikkje har rett til foreldrepengar. Du kan fortsatt ha rett til engangsstønad.",
     "SituasjonSide.JobbetMinst6av10": "For å kunne ha rett til foreldrepengar må ein ha jobba 6 av dei 10 siste månadene",
     "SituasjonSide.JobbetMinst6av10Detaljer": "Du må ha jobba 6 av dei siste 10 månadene før du skal ut i permisjon for å ha rett til foreldrepengar. Du kan fortsatt ha rett til eingongsstønad.",
     "OppsummeringFpEllerEsSide.DuHarRett": "Du har rett til foreldrepengar",
