@@ -16,7 +16,7 @@ interface Props {
     harMinstEttArbeidsforhold: boolean;
 }
 
-export const HarSaker: React.FunctionComponent<Props> = ({ grupperteSaker, harMinstEttArbeidsforhold }) => {
+export const HarSaker = ({ grupperteSaker, harMinstEttArbeidsforhold }: Props) => {
     const intl = useIntl();
     useSetBackgroundColor('blue');
 

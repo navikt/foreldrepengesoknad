@@ -11,7 +11,7 @@ interface Props {
     className?: string;
 }
 
-const ContentSection: FunctionComponent<Props> = ({
+export const ContentSection: FunctionComponent<Props> = ({
     heading,
     children,
     showSkeleton = false,
@@ -44,5 +44,3 @@ const ContentSection: FunctionComponent<Props> = ({
         </section>
     );
 };
-
-export default ContentSection;

@@ -2,9 +2,9 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 
-import EttersendingDto from './../../types/EttersendingDTO';
-import { Ytelse } from './../../types/Ytelse';
-import { isAttachmentWithError } from './../../utils/attachmentUtils';
+import { EttersendingDto } from '../../types/EttersendingDTO';
+import { Ytelse } from '../../types/Ytelse';
+import { isAttachmentWithError } from '../../utils/attachmentUtils';
 
 export const mapMinidialogInputTilDTO = (
     saksnummer: string,

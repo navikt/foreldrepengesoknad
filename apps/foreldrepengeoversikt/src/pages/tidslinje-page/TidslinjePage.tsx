@@ -8,7 +8,7 @@ import { useDocumentTitle } from '@navikt/fp-utils';
 
 import { hentManglendeVedleggOptions, hentTidslinjehendelserOptions } from '../../api/api';
 import { DinSakHeader } from '../../components/header/Header';
-import NoeGikkGalt from '../../components/noe-gikk-galt/NoeGikkGalt';
+import { NoeGikkGalt } from '../../components/noe-gikk-galt/NoeGikkGalt';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';

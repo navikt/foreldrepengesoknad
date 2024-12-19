@@ -1,14 +1,14 @@
 import { Tag } from '@navikt/ds-react';
 
-import { BehandlingTilstand } from './../../types/BehandlingTilstand';
-import { Sak } from './../../types/Sak';
+import { BehandlingTilstand } from '../../types/BehandlingTilstand';
+import { Sak } from '../../types/Sak';
 
 interface Props {
     sak: Sak;
     harMinstEttArbeidsforhold: boolean;
 }
 
-const StatusTag: React.FunctionComponent<Props> = ({ sak, harMinstEttArbeidsforhold }) => {
+export const StatusTag = ({ sak, harMinstEttArbeidsforhold }: Props) => {
     if (sak.åpenBehandling) {
         if (!sak.sakAvsluttet) {
             if (sak.åpenBehandling.tilstand === BehandlingTilstand.UNDER_BEHANDLING) {
@@ -71,5 +71,3 @@ const StatusTag: React.FunctionComponent<Props> = ({ sak, harMinstEttArbeidsforh
         </Tag>
     );
 };
-
-export default StatusTag;
