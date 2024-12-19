@@ -263,5 +263,5 @@
     "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige teikn i feltet \"{feltNavn}\".",
     "ArbeidIUtlandetFieldArray.arbeid.tom.description": "Om du slutta i jobben meir enn 4 veker før du skal starta svangerskapspengane dine, vil ikkje arbeidsforholdet ha betydning for retten din til svangerskapspengar.",
     "JobbetIUtlandetOppsummering.arbeidsforhold.periode": "{fom} - {tom}",
-    "ArbeidIUtlandetFieldArray.næring.pågående": "Jobber du der fortsatt?"
+    "ArbeidIUtlandetFieldArray.næring.pågående": "Jobbar du der fortsatt?"
 }
