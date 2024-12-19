@@ -1,0 +1,7 @@
+import{j as r}from"./jsx-runtime-Cw0GR0a5.js";import{a as e}from"./chunk-D5ZWXAHU-CGElDDNX.js";import{a as l,S as d,C as c}from"./routes-B3RFaVmR.js";import{i as u}from"./VeiviserPage-BrRWQLa2.js";import{S as a}from"./SenereUtenlandsoppholdSteg-Dc0ARE2-.js";import{M as S}from"./useSvpNavigator-CVot2Qjr.js";import"./index-CTjT7uj6.js";import"./v4-CQkTLCs1.js";import"./index-BRV0Se7Z.js";import"./index-BbmHap-z.js";import"./TidligereUtenlandsoppholdPanel-DJi-xQPu.js";import"./ErrorSummaryHookForm-MXXFV1ni.js";import"./Checkbox-CsCO6kab.js";import"./minMax-BE2vCSEM.js";import"./ExpansionCard-0jntCLyp.js";import"./Plus-CvEhlV_D.js";import"./_baseUniq-BRhi2-IM.js";const f=()=>(...o)=>(e("button-click")(...o),Promise.resolve()),g={harBoddUtenforNorgeSiste12Mnd:!1,skalBoUtenforNorgeNeste12Mnd:!0},B={title:"steps/SenereUtenlandsoppholdSteg",component:a,render:({gåTilNesteSide:o=e("button-click"),utenlandsforhold:m=g,...p})=>(u(),r.jsx(S,{initialEntries:[l.SKAL_BO_I_UTLANDET],children:r.jsx(d,{onDispatch:o,initialState:{[c.UTENLANDSOPPHOLD]:m},children:r.jsx(a,{...p})})}))},t={args:{mellomlagreSøknadOgNaviger:f(),avbrytSøknad:e("button-click"),arbeidsforhold:[]}};var n,i,s;t.parameters={...t.parameters,docs:{...(n=t.parameters)==null?void 0:n.docs,source:{originalSource:`{
+  args: {
+    mellomlagreSøknadOgNaviger: promiseAction(),
+    avbrytSøknad: action('button-click'),
+    arbeidsforhold: []
+  }
+}`,...(s=(i=t.parameters)==null?void 0:i.docs)==null?void 0:s.source}}};const C=["Default"];export{t as Default,C as __namedExportsOrder,B as default};
