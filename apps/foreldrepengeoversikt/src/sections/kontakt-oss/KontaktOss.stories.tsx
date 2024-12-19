@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 
-import KontaktOss from './KontaktOss';
+import { KontaktOss } from './KontaktOss';
 
 const meta = {
     title: 'KontaktOss',

@@ -2,11 +2,11 @@ import { Meta, StoryObj } from '@storybook/react/*';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import manglendeVedlegg from 'storybookData/manglendeVedlegg/manglendeVedlegg.json';
-import saker from 'storybookData/saker/saker.json';
-import tidslinjeHendelser from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.json';
+import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
+import { saker } from 'storybookData/saker/saker';
+import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
-import { OversiktRoutes } from './../../routes/routes';
+import { OversiktRoutes } from '../../routes/routes';
 import { TidslinjePage } from './TidslinjePage';
 
 const queryClient = new QueryClient();

@@ -6,16 +6,16 @@ import { Heading, VStack } from '@navikt/ds-react';
 
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import { minidialogOptions, sendEttersending } from './../../api/api';
-import ContentSection from './../../components/content-section/ContentSection';
-import { DinSakHeader } from './../../components/header/Header';
-import MinidialogSkjema from './../../components/minidialog-skjema/MinidialogSkjema';
-import { useSetBackgroundColor } from './../../hooks/useBackgroundColor';
-import { useSetSelectedRoute } from './../../hooks/useSelectedRoute';
-import { useGetSelectedSak } from './../../hooks/useSelectedSak';
-import { PageRouteLayout } from './../../routes/ForeldrepengeoversiktRoutes';
-import { OversiktRoutes } from './../../routes/routes';
-import EttersendingDto from './../../types/EttersendingDTO';
+import { minidialogOptions, sendEttersending } from '../../api/api';
+import { ContentSection } from '../../components/content-section/ContentSection';
+import { DinSakHeader } from '../../components/header/Header';
+import { MinidialogSkjema } from '../../components/minidialog-skjema/MinidialogSkjema';
+import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
+import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
+import { useGetSelectedSak } from '../../hooks/useSelectedSak';
+import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
+import { OversiktRoutes } from '../../routes/routes';
+import { EttersendingDto } from '../../types/EttersendingDTO';
 
 interface Props {
     fnr: string;

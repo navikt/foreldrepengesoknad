@@ -4,7 +4,7 @@ import { TidslinjehendelseType } from './TidslinjehendelseType';
 
 export interface Tidslinjehendelse {
     type: string;
-    opprettet: Date;
+    opprettet: string;
     aktørType: AktørType;
     tidslinjeHendelseType: TidslinjehendelseType;
     dokumenter: Dokument[];
@@ -13,5 +13,5 @@ export interface Tidslinjehendelse {
     linkTittel?: string;
     eksternalUrl?: string;
     internalUrl?: string;
-    tidligstBehandlingsDato?: Date;
+    tidligstBehandlingsDato?: string;
 }
