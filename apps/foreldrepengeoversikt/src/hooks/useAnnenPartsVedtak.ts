@@ -14,7 +14,7 @@ export function useAnnenPartsVedtak(sak: Sak | undefined) {
     const barnFødselsnummer =
         sak?.ytelse === Ytelse.FORELDREPENGER ? sak.barn?.find((barn) => barn.fnr !== undefined)?.fnr : undefined;
 
-    const enabled = sak?.ytelse === Ytelse.FORELDREPENGER && [annenPartFødselsnummer].every(Boolean);
+    const enabled = sak?.ytelse === Ytelse.FORELDREPENGER;
 
     return useQuery({
         ...hentAnnenPartsVedtakOptions({

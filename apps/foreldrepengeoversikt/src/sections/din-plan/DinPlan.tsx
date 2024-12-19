@@ -26,7 +26,6 @@ export const DinPlan: FunctionComponent<Props> = ({ navnPåForeldre }) => {
     const [visKalender, setVisKalender] = useState(false);
 
     const annenPartsQuery = useAnnenPartsVedtak(gjeldendeSak);
-
     if (annenPartsQuery.isPending) {
         return null;
     }
