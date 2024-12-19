@@ -1,13 +1,13 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
-import annenPartsVedtak from 'storybookData/annenPartVedtak/annenPartVedtak.json';
-import dokumenter from 'storybookData/dokumenter/dokumenter.json';
-import manglendeVedlegg from 'storybookData/manglendeVedlegg/manglendeVedlegg.json';
-import miniDialog from 'storybookData/miniDialog/miniDialog.json';
-import saker from 'storybookData/saker/saker.json';
-import søkerinfo from 'storybookData/sokerinfo/sokerinfo.json';
-import tidslinjeHendelser from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.json';
+import { annenPartVedtak } from 'storybookData/annenPartVedtak/annenPartVedtak';
+import { dokumenter } from 'storybookData/dokumenter/dokumenter';
+import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
+import { miniDialog } from 'storybookData/miniDialog/miniDialog';
+import { saker } from 'storybookData/saker/saker';
+import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
+import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
 import AppContainer from './AppContainer';
 
@@ -32,7 +32,7 @@ const meta = {
                     HttpResponse.json(manglendeVedlegg),
                 ),
                 http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
-                    HttpResponse.json(annenPartsVedtak),
+                    HttpResponse.json(annenPartVedtak),
                 ),
                 http.get(`${import.meta.env.BASE_URL}/rest/innsyn/tidslinje`, () =>
                     HttpResponse.json(tidslinjeHendelser),

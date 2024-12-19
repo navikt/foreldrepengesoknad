@@ -3,14 +3,14 @@ import { FolderIcon } from '@navikt/aksel-icons';
 import { Accordion, BodyShort, HStack } from '@navikt/ds-react';
 
 import { guid } from '../../utils/guid';
-import Dokument from '../dokument/Dokument';
+import { Dokument } from '../dokument/Dokument';
 import { Dokument as DokumentType } from './../../types/Dokument';
 
 interface Props {
     dokumenter: DokumentType[];
 }
 
-const GrupperteDokumenter: React.FunctionComponent<Props> = ({ dokumenter }) => {
+export const GrupperteDokumenter = ({ dokumenter }: Props) => {
     return (
         <Accordion>
             <Accordion.Item>
@@ -36,5 +36,3 @@ const GrupperteDokumenter: React.FunctionComponent<Props> = ({ dokumenter }) => 
         </Accordion>
     );
 };
-
-export default GrupperteDokumenter;

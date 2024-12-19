@@ -1,5 +1,4 @@
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
-import { UseQueryResult } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 import { Link as LinkInternal } from 'react-router-dom';
@@ -22,7 +21,6 @@ import {
     getHendelserForVisning,
     getTidslinjehendelseTittel,
 } from '../../utils/tidslinjeUtils';
-import NoeGikkGalt from './../../components/noe-gikk-galt/NoeGikkGalt';
 import { DokumentHendelse, InntektsmeldingDokumentHendelse } from './DokumentHendelse';
 import { TidslinjeHendelse } from './TidslinjeHendelse';
 import styles from './tidslinje.module.css';
@@ -31,17 +29,11 @@ interface Props {
     sak: Sak;
     visHeleTidslinjen: boolean;
     søkersBarn: SøkerinfoDTOBarn[];
-    manglendeVedleggQuery: UseQueryResult<Skjemanummer[], Error>;
-    tidslinjeHendelserQuery: UseQueryResult<Tidslinjehendelse[], Error>;
+    manglendeVedlegg: Skjemanummer[];
+    tidslinjeHendelser: Tidslinjehendelse[];
 }
 
-export const Tidslinje = ({
-    sak,
-    visHeleTidslinjen,
-    søkersBarn,
-    tidslinjeHendelserQuery,
-    manglendeVedleggQuery,
-}: Props) => {
+export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendelser, manglendeVedlegg }: Props) => {
     const intl = useIntl();
 
     const førsteUttaksdagISaken =
@@ -55,19 +47,8 @@ export const Tidslinje = ({
             sak.gjeldendeVedtak.perioder.every((p) => p.resultat !== undefined && p.resultat.innvilget === false));
     const erInnvilgetForeldrepengesøknad =
         sak.ytelse === Ytelse.FORELDREPENGER && sak.åpenBehandling === undefined && !!sak.gjeldendeVedtak;
-    if (tidslinjeHendelserQuery.isError || manglendeVedleggQuery.isError || sak === undefined) {
-        return (
-            <NoeGikkGalt>
-                Vi klarer ikke å vise informasjon om hva som skjer i saken din akkurat nå. Feilen er hos oss, ikke hos
-                deg. Prøv igjen senere.
-            </NoeGikkGalt>
-        );
-    }
 
-    const tidslinjeHendelserData = tidslinjeHendelserQuery.data ?? [];
-    const manglendeVedleggData = manglendeVedleggQuery.data ?? [];
-
-    if (tidslinjeHendelserData.length === 0) {
+    if (tidslinjeHendelser.length === 0) {
         return null;
     }
 
@@ -75,9 +56,9 @@ export const Tidslinje = ({
         sak.åpenBehandling && VENTEÅRSAKER.includes(sak.åpenBehandling.tilstand) ? sak.åpenBehandling : undefined;
 
     const alleSorterteHendelser = getAlleTidslinjehendelser(
-        tidslinjeHendelserData,
+        tidslinjeHendelser,
         åpenBehandlingPåVent,
-        manglendeVedleggData,
+        manglendeVedlegg,
         sak,
         barnFraSak,
         erAvslåttForeldrepengesøknad,
@@ -131,7 +112,7 @@ export const Tidslinje = ({
                             hendelse,
                             intl,
                             hendelse.tidligstBehandlingsDato,
-                            manglendeVedleggData,
+                            manglendeVedlegg,
                             barnFraSak,
                             sak,
                         )}
@@ -139,7 +120,7 @@ export const Tidslinje = ({
                         isActiveStep={isActiveStep}
                         visKlokkeslett={visKlokkeslett}
                         type={hendelse.tidslinjeHendelseType}
-                        førsteUttaksdagISaken={førsteUttaksdagISaken}
+                        førsteUttaksdagISaken={førsteUttaksdagISaken?.toISOString()}
                         tidligstBehandlingsDato={hendelse.tidligstBehandlingsDato}
                         finnesHendelserFørAktivtSteg={!!finnesHendelserFørAktivtSteg}
                         visHeleTidslinjen={visHeleTidslinjen}
@@ -147,8 +128,8 @@ export const Tidslinje = ({
                     >
                         <ul className="list-none p-0">
                             {hendelse.tidslinjeHendelseType === TidslinjehendelseType.VENT_DOKUMENTASJON &&
-                                manglendeVedleggData &&
-                                manglendeVedleggData.length > 1 && (
+                                manglendeVedlegg &&
+                                manglendeVedlegg.length > 1 && (
                                     <div className={styles.manglendeVedlegg}>
                                         <div>
                                             {intl.formatMessage({
@@ -156,7 +137,7 @@ export const Tidslinje = ({
                                             })}
                                         </div>
                                         <ul>
-                                            {manglendeVedleggData.map((skjemaId) => {
+                                            {manglendeVedlegg.map((skjemaId) => {
                                                 return (
                                                     <li key={guid()}>
                                                         {intl.formatMessage({ id: `ettersendelse.${skjemaId}` })}
@@ -187,12 +168,14 @@ export const Tidslinje = ({
                                 </Link>
                             )}
                             {hendelse.linkTittel && hendelse.internalUrl && (
-                                <LinkInternal
-                                    className={styles.mediumFont}
+                                <Button
+                                    size="small"
+                                    className="mt-2"
                                     to={`/sak/${sak.saksnummer}/${hendelse.internalUrl}`}
+                                    as={LinkInternal}
                                 >
-                                    <Button>{hendelse.linkTittel}</Button>
-                                </LinkInternal>
+                                    {hendelse.linkTittel}
+                                </Button>
                             )}
                         </ul>
                     </TidslinjeHendelse>

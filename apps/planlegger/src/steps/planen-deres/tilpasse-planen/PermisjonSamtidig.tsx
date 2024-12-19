@@ -18,7 +18,7 @@ export const PermisjonSamtidig = ({ erAdopsjon = false }: Props) => {
                 </IconCircleWrapper>
             </div>
             <div>
-                <Heading size="small">
+                <Heading size="small" level="4">
                     <FormattedMessage id="OmÅTilpassePlanen.PermisjonSamtidig" />
                 </Heading>
                 <BodyLong>

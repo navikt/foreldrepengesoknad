@@ -3,8 +3,8 @@ import { Meta, StoryObj } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 
-import { Ytelse } from './../../types/Ytelse';
-import MinidialogSkjema from './MinidialogSkjema';
+import { Ytelse } from '../../types/Ytelse';
+import { MinidialogSkjema } from './MinidialogSkjema';
 
 const queryClient = new QueryClient({
     defaultOptions: {

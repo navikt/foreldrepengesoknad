@@ -13,7 +13,7 @@ interface Props {
     harMinstEttArbeidsforhold: boolean;
 }
 
-export const KontonummerInfo: React.FunctionComponent<Props> = ({ bankkonto, ytelse, harMinstEttArbeidsforhold }) => {
+export const KontonummerInfo = ({ bankkonto, ytelse, harMinstEttArbeidsforhold }: Props) => {
     const harKontonummer = !!bankkonto?.kontonummer && bankkonto?.kontonummer.trim().length > 0;
     const kontonummerTekst = harKontonummer ? bankkonto?.kontonummer : 'Nav mangler kontonummeret ditt';
     const kontonummerEndreTekst = harKontonummer ? 'Endre kontonummer' : 'Registrer kontonummer';

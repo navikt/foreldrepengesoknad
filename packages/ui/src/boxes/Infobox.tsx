@@ -26,6 +26,7 @@ const BOX_BACKGROUND = {
 
 interface Props {
     header?: string | React.ReactNode;
+    headingLevel?: '1' | '2' | '3' | '4' | '5' | '6';
     children: React.ReactNode;
     icon?: React.ReactNode;
     color: InfoboxColor;
@@ -35,6 +36,7 @@ interface Props {
 
 export const Infobox = ({
     header,
+    headingLevel = '3',
     children,
     icon,
     color = 'green',
@@ -46,7 +48,7 @@ export const Infobox = ({
             {(header || (!header && icon)) && (
                 <HStack wrap={false} gap="4" justify="space-between" align={header ? 'center' : 'start'}>
                     {header && (
-                        <Heading size="xsmall" level="3">
+                        <Heading size="xsmall" level={headingLevel}>
                             {header}
                         </Heading>
                     )}

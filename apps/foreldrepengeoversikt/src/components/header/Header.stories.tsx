@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import saker from 'storybookData/saker/saker.json';
+import { saker } from 'storybookData/saker/saker';
 
-import { OversiktRoutes } from './../../routes/routes';
+import { OversiktRoutes } from '../../routes/routes';
 import { DinSakHeader } from './Header';
 
 const queryClient = new QueryClient();
@@ -32,7 +32,7 @@ type Story = StoryObj<typeof meta>;
 
 export const DefaultDinSakHeader: Story = {
     args: {
-        //@ts-ignore Sjekk om ytelse litt i backend
+        //@ts-expect-error Sjekk om ytelse litt i backend
         sak: saker.foreldrepenger[0],
     },
 };

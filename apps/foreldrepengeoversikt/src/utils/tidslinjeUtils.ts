@@ -5,18 +5,17 @@ import { IntlShape } from 'react-intl';
 import { Skjemanummer } from '@navikt/fp-constants';
 import { formatDate } from '@navikt/fp-utils';
 
-import { NavRoutes, OversiktRoutes } from './../routes/routes';
-import { AktørType } from './../types/AktørType';
-import { BarnGruppering } from './../types/BarnGruppering';
-import { BehandlingTilstand } from './../types/BehandlingTilstand';
-import { Familiehendelse } from './../types/Familiehendelse';
-import { Sak } from './../types/Sak';
-import { Tidslinjehendelse } from './../types/Tidslinjehendelse';
-import { TidslinjehendelseType } from './../types/TidslinjehendelseType';
-import { Tilretteleggingstype } from './../types/TilretteleggingsperiodeSVP';
-import { Ytelse } from './../types/Ytelse';
-import { ÅpenBehandling, ÅpenBehandlingFP, ÅpenBehandlingSVP } from './../types/ÅpenBehandling';
-import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from './../utils/Uttaksdagen';
+import { NavRoutes, OversiktRoutes } from '../routes/routes';
+import { AktørType } from '../types/AktørType';
+import { BarnGruppering } from '../types/BarnGruppering';
+import { BehandlingTilstand } from '../types/BehandlingTilstand';
+import { Familiehendelse } from '../types/Familiehendelse';
+import { Sak } from '../types/Sak';
+import { Tidslinjehendelse } from '../types/Tidslinjehendelse';
+import { TidslinjehendelseType } from '../types/TidslinjehendelseType';
+import { Ytelse } from '../types/Ytelse';
+import { ÅpenBehandling, ÅpenBehandlingFP, ÅpenBehandlingSVP } from '../types/ÅpenBehandling';
+import { UTTAKSDAGER_PER_UKE, Uttaksdagen } from './Uttaksdagen';
 import { formaterDato } from './dateUtils';
 import { getFamiliehendelseDato, getNavnPåBarna } from './sakerUtils';
 
@@ -56,7 +55,7 @@ export const getAktivTidslinjeStegIndex = (
     return hendelserForVisning.findIndex((hendelse) => dayjs(hendelse.opprettet).isAfter(dayjs(), 'd'));
 };
 
-export const getTidligstDatoForInntektsmelding = (førsteUttaksdagISaken: Date | undefined): Date | undefined => {
+export const getTidligstDatoForInntektsmelding = (førsteUttaksdagISaken: string | undefined) => {
     return førsteUttaksdagISaken
         ? dayjs(førsteUttaksdagISaken)
               .subtract(4 * 7, 'day')
@@ -232,7 +231,7 @@ const finnTekstForTidslinjehendelse = (intl: IntlShape, hendelse: Tidslinjehende
 export const getTidslinjehendelseTittel = (
     hendelse: Tidslinjehendelse,
     intl: IntlShape,
-    tidlistBehandlingsdato: Date | undefined,
+    tidlistBehandlingsdato: string | undefined,
     manglendeVedleggData: Skjemanummer[] | undefined,
     barnFraSak: BarnGruppering,
     sak: Sak,
@@ -322,17 +321,17 @@ export const getTidlinjeHendelseEksternUrl = (venteårsak: BehandlingTilstand): 
     return undefined;
 };
 
-export const getTidligstBehandlingsDatoForTidligSøknadFP = (åpenBehandling: ÅpenBehandlingFP): Date => {
+export const getTidligstBehandlingsDatoForTidligSøknadFP = (åpenBehandling: ÅpenBehandlingFP) => {
     const søknadsperioder = åpenBehandling.søknadsperioder;
     const førsteUttaksdagISaken = dayjs(søknadsperioder![0].fom).toDate();
     return Uttaksdagen(Uttaksdagen(førsteUttaksdagISaken).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
 };
 
-export const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: ÅpenBehandlingSVP): Date => {
+export const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: ÅpenBehandlingSVP) => {
     const tilretteleggingerFomDatoer =
         åpenBehandling.søknad.arbeidsforhold
             .map((a) => {
-                const utenHelTilrettelegging = a.tilrettelegginger.filter((t) => t.type !== Tilretteleggingstype.HEL);
+                const utenHelTilrettelegging = a.tilrettelegginger.filter((t) => t.type !== 'HEL');
                 return utenHelTilrettelegging.map((periode) => dayjs(periode.fom));
             })
             .flat(1) || [];
@@ -340,7 +339,7 @@ export const getTidligstBehandlingsDatoForTidligSøknadSVP = (åpenBehandling: �
     return Uttaksdagen(Uttaksdagen(datoFørstePeriodeMedSVP).denneEllerNeste()).trekkFra(4 * UTTAKSDAGER_PER_UKE);
 };
 
-export const getTidligstBehandlingsDatoForTidligSøknad = (ytelse: Ytelse, åpenBehandling: ÅpenBehandling): Date => {
+export const getTidligstBehandlingsDatoForTidligSøknad = (ytelse: Ytelse, åpenBehandling: ÅpenBehandling) => {
     if (ytelse === Ytelse.SVANGERSKAPSPENGER) {
         return getTidligstBehandlingsDatoForTidligSøknadSVP(åpenBehandling as ÅpenBehandlingSVP);
     }
@@ -348,7 +347,7 @@ export const getTidligstBehandlingsDatoForTidligSøknad = (ytelse: Ytelse, åpen
     return getTidligstBehandlingsDatoForTidligSøknadFP(åpenBehandling);
 };
 
-const getDatoForInnsendingAvFørsteSøknad = (tidslinjeHendelser: Tidslinjehendelse[]): Date | undefined => {
+const getDatoForInnsendingAvFørsteSøknad = (tidslinjeHendelser: Tidslinjehendelse[]) => {
     const hendelseFørsteSøknad = tidslinjeHendelser.find(
         (hendelse) => hendelse.tidslinjeHendelseType === TidslinjehendelseType.FØRSTEGANGSSØKNAD,
     );
@@ -393,7 +392,7 @@ export const getTidslinjeFamiliehendelse = (familiehendelse: Familiehendelse): T
     const familiehendelsedato = getFamiliehendelseDato(familiehendelse);
     return {
         type: 'søknad',
-        opprettet: new Date(familiehendelsedato),
+        opprettet: familiehendelsedato,
         tidslinjeHendelseType: TidslinjehendelseType.FAMILIEHENDELSE,
         aktørType: AktørType.BRUKER,
         dokumenter: [],
@@ -411,10 +410,10 @@ export const getTidslinjeBarnTreÅrHendelse = (
     let dato;
     let merInformasjon = '';
     if (gjelderAdopsjon) {
-        dato = dayjs(omsorgsovertakelse).add(3, 'y').toDate();
+        dato = dayjs(omsorgsovertakelse).add(3, 'y').toISOString();
         merInformasjon = intl.formatMessage({ id: 'tidslinje.BARN_TRE_ÅR.adopsjon.informasjon' }, { antallBarn });
     } else {
-        dato = dayjs(fødselsdato).add(3, 'y').toDate();
+        dato = dayjs(fødselsdato).add(3, 'y').toISOString();
         merInformasjon = intl.formatMessage({ id: 'tidslinje.BARN_TRE_ÅR.fødsel.informasjon' }, { antallBarn });
     }
     return {
@@ -440,7 +439,7 @@ export const getTidslinjeVedtakHendelse = (intl: IntlShape, ytelse: Ytelse): Tid
     }
     return {
         type: 'søknad',
-        opprettet: dayjs(new Date()).add(1, 'd').toDate(),
+        opprettet: dayjs(new Date()).add(1, 'd').toISOString(),
         tidslinjeHendelseType: TidslinjehendelseType.FREMTIDIG_VEDTAK,
         aktørType: AktørType.NAV,
         dokumenter: [],
@@ -506,7 +505,7 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
     ) {
         hendelseVenterPåDokumentasjon = {
             type: 'søknad',
-            opprettet: dayjs(new Date()).add(1, 'd').toDate(),
+            opprettet: dayjs(new Date()).add(1, 'd').toISOString(),
             aktørType: getAktørtypeAvVenteårsak(BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON),
             tidslinjeHendelseType: getTidslinjeHendelstypeAvVenteårsak(BehandlingTilstand.VENTER_PÅ_DOKUMENTASJON),
             dokumenter: [],
@@ -524,7 +523,7 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
             : finnBehandlingstilstandInfoTekst(intl, åpenBehandling.tilstand, ytelse);
     const tidslinjeHendelse = {
         type: 'søknad',
-        opprettet: dayjs(new Date()).add(1, 'd').toDate(),
+        opprettet: dayjs(new Date()).add(1, 'd').toISOString(),
         aktørType: getAktørtypeAvVenteårsak(åpenBehandling.tilstand),
         tidslinjeHendelseType: getTidslinjeHendelstypeAvVenteårsak(åpenBehandling.tilstand),
         dokumenter: [],
@@ -538,7 +537,7 @@ export const getTidslinjehendelserFraBehandlingPåVent = (
                 : undefined,
         tidligstBehandlingsDato:
             åpenBehandling.tilstand === BehandlingTilstand.TIDLIG_SØKNAD
-                ? getTidligstBehandlingsDatoForTidligSøknad(ytelse, åpenBehandling)
+                ? getTidligstBehandlingsDatoForTidligSøknad(ytelse, åpenBehandling).toISOString()
                 : undefined,
     };
 

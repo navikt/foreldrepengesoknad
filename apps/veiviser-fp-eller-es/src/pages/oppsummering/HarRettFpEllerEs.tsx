@@ -2,6 +2,7 @@ import { ArrowLeftIcon, BabyWrappedIcon, InformationIcon, StrollerIcon } from '@
 import { FpEllerEsRoutes } from 'appData/routes';
 import useVeiviserNavigator from 'appData/useVeiviserNavigator';
 import { FormattedMessage, useIntl } from 'react-intl';
+
 import { finnSisteEngangsstønad, finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Box, Button, HStack, Heading, Link, VStack } from '@navikt/ds-react';
@@ -12,15 +13,15 @@ import { IconCircleWrapper, Infobox } from '@navikt/fp-ui';
 import { formatCurrencyWithKr } from '@navikt/fp-utils';
 
 import { FpEllerEsSituasjon } from '../situasjon/SituasjonSide';
-import HvorforHarJegRettEsPanel from './boxes/HvorforHarJegRettEsPanel';
-import HvorforHarJegRettPanel from './boxes/HvorforHarJegRettPanel';
+import { HvorforHarJegRettEsPanel } from './boxes/HvorforHarJegRettEsPanel';
+import { HvorforHarJegRettPanel } from './boxes/HvorforHarJegRettPanel';
 
 interface Props {
     fpEllerEsSituasjon: FpEllerEsSituasjon;
     satser: Satser;
 }
 
-const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser }) => {
+export const HarRettFpEllerEs = ({ fpEllerEsSituasjon, satser }: Props) => {
     const { goToRoute } = useVeiviserNavigator();
     const locale = useIntl().locale;
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
@@ -156,5 +157,3 @@ const HarRettFpEllerEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, 
         </>
     );
 };
-
-export default HarRettFpEllerEs;
