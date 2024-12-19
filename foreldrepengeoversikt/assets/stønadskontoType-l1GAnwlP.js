@@ -1,0 +1,1 @@
+var r=(E=>(E.mor="MOR",E.farMedmor="FAR_MEDMOR",E))(r||{}),e=(E=>(E.Mødrekvote="MØDREKVOTE",E.Fedrekvote="FEDREKVOTE",E.Fellesperiode="FELLESPERIODE",E.Foreldrepenger="FORELDREPENGER",E.ForeldrepengerFørFødsel="FORELDREPENGER_FØR_FØDSEL",E.AktivitetsfriKvote="AKTIVITETSFRI_KVOTE",E))(e||{});export{r as F,e as S};
