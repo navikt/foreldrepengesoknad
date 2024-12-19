@@ -21,7 +21,7 @@
         "@navikt/fp-metrics": "workspace:*",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
-        "@sentry/browser": "^7.109.0",
+        "@sentry/browser": "^8.40.0",
         "bytes": "^3.1.2",
         "classnames": "^2.5.1",
         "dayjs": "^1.11.12",
