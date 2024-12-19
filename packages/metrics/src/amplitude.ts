@@ -21,6 +21,7 @@ export const loggAmplitudeEvent = ({
     eventData?: Record<string, string>;
 }) => {
     if (process.env.NODE_ENV === 'production') {
+        // @ts-ignore -- ts-expect-error sier den er unused. Men uten ts-ignore så feil tsc
         window.dekoratorenAmplitude({
             origin,
             eventName,

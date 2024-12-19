@@ -4,15 +4,17 @@ import { BodyShort, Link, ReadMore, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { AppName } from '@navikt/fp-types';
 
-export const HvemKanVæreFrilanser = () => {
+type Props = { stønadstype: AppName };
+export const HvemKanVæreFrilanser = ({ stønadstype }: Props) => {
     const intl = useIntl();
 
     return (
         <ReadMore
             onOpenChange={(open) =>
                 loggAmplitudeEvent({
-                    origin: 'UHM',
+                    origin: stønadstype,
                     eventName: open ? 'readmore åpnet' : 'readmore lukket',
                     eventData: { tittel: 'inntektsinformasjon.harDuJobbetSomFrilans.apneLabel' },
                 })

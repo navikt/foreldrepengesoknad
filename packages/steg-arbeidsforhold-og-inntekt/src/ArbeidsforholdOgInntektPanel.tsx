@@ -80,7 +80,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                         <BodyShort style={{ fontWeight: 'bold' }}>
                             <FormattedMessage id="inntektsinformasjon.arbeidsforhold.label" />
                         </BodyShort>
-                        <ArbeidsforholdInformasjon arbeidsforhold={aktiveArbeidsforhold} />
+                        <ArbeidsforholdInformasjon stønadstype={stønadstype} arbeidsforhold={aktiveArbeidsforhold} />
                         <ReadMore
                             header={
                                 <FormattedMessage
@@ -114,7 +114,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                                 <FormattedMessage id="inntektsinformasjon.ja" />
                             </Radio>
                         </RhfRadioGroup>
-                        <HvemKanVæreFrilanser />
+                        <HvemKanVæreFrilanser stønadstype={stønadstype} />
                     </VStack>
                     <VStack gap="1">
                         <RhfRadioGroup
