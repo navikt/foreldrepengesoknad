@@ -29,12 +29,6 @@ export const Umyndig = ({ appnavn }: Props) => {
     const titleText = getTitleText(appnavn, intl);
     useDocumentTitle(titleText);
 
-    // logAmplitudeEvent('sidevisning', {
-    //     app: appnavn,
-    //     team: 'foreldrepenger',
-    //     pageKey: 'umyndig',
-    // });
-
     return (
         <ContentWrapper>
             <VStack gap="10">
