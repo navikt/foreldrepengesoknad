@@ -6,6 +6,7 @@ type EventNamesTaksonomi =
     | 'accordion lukket'
     | 'readmore lukket'
     | 'readmore åpnet'
+    | 'button klikk'
     | 'kopier'
     | 'skjema fortsett senere'
     | 'skjema avbrutt'

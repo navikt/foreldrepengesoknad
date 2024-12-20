@@ -3,7 +3,7 @@ import { IntlShape, useIntl } from 'react-intl';
 import { BodyShort, Label, Link } from '@navikt/ds-react';
 
 import { TidsperiodeDate } from '@navikt/fp-common';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { formatDate } from '@navikt/fp-utils';
 
 import Block from '../../common/block/Block';
@@ -57,10 +57,10 @@ const TidsperiodeDisplay: React.FunctionComponent<Props> = ({ tidsperiode, toggl
                     onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        logAmplitudeEvent('applikasjon-hendelse', {
-                            app: 'foreldrepengesoknad',
-                            team: 'foreldrepenger',
-                            hendelse: 'endrePeriodeTidsromLinkKlikk',
+                        loggAmplitudeEvent({
+                            origin: 'Foreldrepenger',
+                            eventName: 'button klikk',
+                            eventData: { tittel: 'endrePeriodeTidsromLinkKlikk' },
                         });
                         toggleVisTidsperiode();
                     }}

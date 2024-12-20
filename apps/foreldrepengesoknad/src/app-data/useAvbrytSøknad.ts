@@ -23,7 +23,7 @@ export const useAvbrytSøknad = (
     const avbrytSøknadHandler = useCallback(async () => {
         loggAmplitudeEvent({
             origin: 'Foreldrepenger',
-            eventName: 'avbrutt',
+            eventName: 'skjema avbrutt',
         });
 
         reset();

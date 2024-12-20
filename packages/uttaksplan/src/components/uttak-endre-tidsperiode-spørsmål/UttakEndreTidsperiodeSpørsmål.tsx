@@ -11,7 +11,7 @@ import {
     Utsettelsesperiode,
     isForeldrepengerFørFødselUttaksperiode,
 } from '@navikt/fp-common';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { Tidsperioden, getTidsperiode } from '@navikt/fp-utils';
 
 import Block from '../../common/block/Block';
@@ -107,10 +107,10 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                         min: 0,
                         max: 100,
                         onChange: (nyUker: number) => {
-                            logAmplitudeEvent('applikasjon-hendelse', {
-                                app: 'foreldrepengesoknad',
-                                team: 'foreldrepenger',
-                                hendelse: 'ukeStepperKlikk',
+                            loggAmplitudeEvent({
+                                origin: 'Foreldrepenger',
+                                eventName: 'button klikk',
+                                eventData: { tittel: 'ukeStepperKlikk' },
                             });
                             const date = tidsperiode.fom;
                             if (date) {
@@ -129,10 +129,10 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                         min: uker === 0 ? 1 : 0,
                         max: 5,
                         onChange: (nyDager: number) => {
-                            logAmplitudeEvent('applikasjon-hendelse', {
-                                app: 'foreldrepengesoknad',
-                                team: 'foreldrepenger',
-                                hendelse: 'dagStepperKlikk',
+                            loggAmplitudeEvent({
+                                origin: 'Foreldrepenger',
+                                eventName: 'button klikk',
+                                eventData: { tittel: 'dagStepperKlikk' },
                             });
                             const date = tidsperiode.fom;
                             const ekstraUke = nyDager === 5 ? 1 : 0;

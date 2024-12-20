@@ -21,7 +21,7 @@ import {
     isAnnenPartInfoPeriode,
     isUtsettelsesperiode,
 } from '@navikt/fp-common';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold, Periode as PeriodeType, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender';
 
@@ -272,10 +272,10 @@ const Uttaksplan: FunctionComponent<Props> = ({
 
     const handleSlettUttaksplanModalBekreft = () => {
         setSlettUttaksplanModalOpen(false);
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'foreldrepengesoknad',
-            team: 'foreldrepenger',
-            hendelse: 'slettUttaksplan',
+        loggAmplitudeEvent({
+            origin: 'Foreldrepenger',
+            eventName: 'button klikk',
+            eventData: { tittel: 'slettUttaksplan' },
         });
         handleSlettUttaksplan();
     };

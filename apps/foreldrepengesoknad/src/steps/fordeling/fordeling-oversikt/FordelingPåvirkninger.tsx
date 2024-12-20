@@ -11,6 +11,7 @@ import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'u
 
 import { BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
 
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { uttaksConstants } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
@@ -42,15 +43,6 @@ export const FordelingPåvirkninger = ({
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const heading = intl.formatMessage({ id: 'fordeling.påvirkninger.tittel' });
-    const onToggleHandler = (open: boolean) => {
-        if (open) {
-            logAmplitudeEvent('applikasjon-hendelse', {
-                app: 'foreldrepengesoknad',
-                team: 'foreldrepenger',
-                hendelse: 'expand-fordeling-påvirkninger',
-            });
-        }
-    };
     const degEllerSeg = erFarEllerMedmor ? intl.formatMessage({ id: 'seg' }) : intl.formatMessage({ id: 'deg' });
     const degEllerMor = erFarEllerMedmor ? navnAnnenForelder : intl.formatMessage({ id: 'deg' });
     const duEllerDere = deltUttak ? intl.formatMessage({ id: 'dere' }) : intl.formatMessage({ id: 'du' });
@@ -66,7 +58,20 @@ export const FordelingPåvirkninger = ({
     const visInfoFørFørsteOkt2021 = deltUttak && !førsteOkt2021Gjelder;
     return (
         <div className={styles.fordelingPåvirkninger}>
-            <ExpansionCard size="small" title-size="small" aria-label={heading} onToggle={onToggleHandler}>
+            <ExpansionCard
+                size="small"
+                title-size="small"
+                aria-label={heading}
+                onToggle={(open) => {
+                    if (open) {
+                        loggAmplitudeEvent({
+                            origin: 'Foreldrepenger',
+                            eventName: 'accordion åpnet',
+                            eventData: { tittel: heading },
+                        });
+                    }
+                }}
+            >
                 <ExpansionCard.Header>
                     <ExpansionCard.Title className={styles.heading}>{heading}</ExpansionCard.Title>
                 </ExpansionCard.Header>

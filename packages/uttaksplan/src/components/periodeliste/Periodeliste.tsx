@@ -16,7 +16,7 @@ import {
     Utsettelsesperiode,
     isInfoPeriode,
 } from '@navikt/fp-common';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { formatDate, formatDateIso, isValidTidsperiodeString } from '@navikt/fp-utils';
 
@@ -105,10 +105,10 @@ const Periodeliste: FunctionComponent<Props> = ({
         if (openPeriodeId === id) {
             setOpenPeriodeId(null!);
         } else {
-            logAmplitudeEvent('applikasjon-hendelse', {
-                app: 'foreldrepengesoknad',
-                team: 'foreldrepenger',
-                hendelse: 'expandPeriode',
+            loggAmplitudeEvent({
+                origin: 'Foreldrepenger',
+                eventName: 'accordion åpnet',
+                eventData: { tittel: 'expandPeriode' },
             });
             setOpenPeriodeId(id);
         }

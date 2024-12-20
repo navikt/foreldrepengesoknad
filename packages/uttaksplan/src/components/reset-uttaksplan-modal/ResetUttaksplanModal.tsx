@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 
 import Block from '../../common/block/Block';
 import planBemUtils from '../../utils/planBemUtils';
@@ -19,10 +19,10 @@ const ResetUttaksplanModal: FunctionComponent<Props> = ({ isOpen, onClose, handl
     const bem = planBemUtils('resetUttaksplanModal');
 
     const onBekreft = () => {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'foreldrepengesoknad',
-            team: 'foreldrepenger',
-            hendelse: 'tilbakestillPlan',
+        loggAmplitudeEvent({
+            origin: 'Foreldrepenger',
+            eventName: 'button klikk',
+            eventData: { tittel: 'tilbakestillPlan' },
         });
         handleResetUttaksplanModalBekreft();
     };
