@@ -1,6 +1,7 @@
 import { AppName } from '@navikt/fp-types';
 
-//Bruk kun navn fra denne taksonomien. Med utgangspunkt i https://github.com/navikt/analytics-taxonomy utvides etter behov.
+// Bruk kun navn fra denne taksonomien. Med utgangspunkt i https://github.com/navikt/analytics-taxonomy utvides etter behov.
+// Den er ikke veldig omstendelig. FOreslår vi legger oss på 'AKSEL-COMPONENT HANDLING'. Feks "button klikk", "radio valgt", "readmore åpnet" osv
 type EventNamesTaksonomi =
     | 'accordion åpnet'
     | 'accordion lukket'
