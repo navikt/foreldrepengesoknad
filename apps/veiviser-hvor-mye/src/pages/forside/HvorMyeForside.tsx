@@ -6,23 +6,15 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { LocaleAll } from '@navikt/fp-types';
 import { AndreVeivisereLinkPanel, FrontPage } from '@navikt/fp-ui';
 
-interface Props {
-    locale: LocaleAll;
-    changeLocale: (locale: LocaleAll) => void;
-}
-
-export const HvorMyeForside = ({ locale, changeLocale }: Props) => {
+export const HvorMyeForside = () => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator();
 
     return (
         <>
             <FrontPage
-                changeLocale={changeLocale}
-                locale={locale}
                 titleLabel={intl.formatMessage({ id: 'HvorMyeForside.Title' })}
                 minutesLabel={intl.formatMessage({ id: 'HvorMyeForside.Minutes' })}
                 innholdLabel={intl.formatMessage({ id: 'HvorMyeForside.Innhold' })}

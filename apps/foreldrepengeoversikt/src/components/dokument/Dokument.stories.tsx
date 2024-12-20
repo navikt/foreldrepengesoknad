@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 
 import { DokumentType } from '../../types/DokumentType';
-import Dokument from './Dokument';
+import { Dokument } from './Dokument';
 
 const meta = {
     title: 'Dokument',
@@ -18,7 +18,7 @@ export const Default: Story = {
             dokumentId: '1',
             journalpostId: '2',
             saksnummer: '12234',
-            mottatt: new Date(),
+            mottatt: new Date().toISOString(),
             url: 'www.test.nu',
             tittel: 'Dette er en tittel',
         },

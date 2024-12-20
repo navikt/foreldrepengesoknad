@@ -5,6 +5,19 @@ import { UtenlandsoppholdPanel } from './UtenlandsoppholdPanel';
 
 const meta = {
     component: UtenlandsoppholdPanel,
+    args: {
+        saveOnNext: action('saveOnNext'),
+        saveOnPrevious: action('saveOnPrevious'),
+        cancelApplication: action('cancelApplication'),
+        goToPreviousStep: action('goToPreviousStep'),
+        onStepChange: action('onStepChange'),
+    },
+    argTypes: {
+        stønadstype: {
+            options: ['Foreldrepenger', 'Engangsstønad', 'Svangerskapspenger'],
+            control: { type: 'radio' },
+        },
+    },
 } satisfies Meta<typeof UtenlandsoppholdPanel>;
 export default meta;
 
@@ -12,11 +25,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        saveOnNext: action('button-click'),
-        saveOnPrevious: action('button-click'),
-        cancelApplication: action('button-click'),
-        goToPreviousStep: action('button-click'),
-        onStepChange: action('button-click'),
         stepConfig: [
             {
                 id: 'BARNET_PATH',

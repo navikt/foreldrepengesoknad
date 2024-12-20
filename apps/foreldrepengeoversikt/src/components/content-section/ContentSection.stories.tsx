@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 
-import ContentSection from './ContentSection';
+import { ContentSection } from './ContentSection';
 
 const meta = {
     title: 'ContentSection',

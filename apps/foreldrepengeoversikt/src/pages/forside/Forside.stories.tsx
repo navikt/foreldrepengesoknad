@@ -3,15 +3,15 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { useRef } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import manglendeVedlegg from 'storybookData/manglendeVedlegg/manglendeVedlegg.json';
-import saker from 'storybookData/saker/saker.json';
-import søkerinfo from 'storybookData/sokerinfo/sokerinfo.json';
-import tidslinjeHendelser from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.json';
+import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
+import { saker } from 'storybookData/saker/saker';
+import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
+import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
-import { OversiktRoutes } from './../../routes/routes';
-import { SakOppslag } from './../../types/SakOppslag';
-import { SøkerinfoDTO } from './../../types/SøkerinfoDTO';
-import Forside from './Forside';
+import { OversiktRoutes } from '../../routes/routes';
+import { SakOppslag } from '../../types/SakOppslag';
+import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
+import { Forside } from './Forside';
 
 const queryClient = new QueryClient();
 
@@ -57,7 +57,7 @@ export const Default: Story = {
         },
     },
     args: {
-        // @ts-ignore Er backend og frontend-typar like her? Fiks!
+        // @ts-expect-error Er backend og frontend-typar like her? Fiks!
         saker,
         søkerinfo: søkerinfo as SøkerinfoDTO,
     },
