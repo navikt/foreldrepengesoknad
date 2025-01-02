@@ -9,15 +9,9 @@ import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { LocaleAll } from '@navikt/fp-types';
 import { AndreVeivisereLinkPanel, FrontPage } from '@navikt/fp-ui';
 
-interface Props {
-    locale: LocaleAll;
-    changeLocale: (locale: LocaleAll) => void;
-}
-
-export const HvorMyeForside = ({ locale, changeLocale }: Props) => {
+export const HvorMyeForside = () => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator();
 
@@ -32,8 +26,6 @@ export const HvorMyeForside = ({ locale, changeLocale }: Props) => {
     return (
         <>
             <FrontPage
-                changeLocale={changeLocale}
-                locale={locale}
                 titleLabel={intl.formatMessage({ id: 'HvorMyeForside.Title' })}
                 minutesLabel={intl.formatMessage({ id: 'HvorMyeForside.Minutes' })}
                 innholdLabel={intl.formatMessage({ id: 'HvorMyeForside.Innhold' })}
