@@ -6,15 +6,25 @@ import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
 
 interface Props {
     headerText: ReactElement;
+    headerLevel?: '1' | '2' | '3' | '4' | '5' | '6';
     boxBodyText: ReactElement;
     erOppfylt: boolean;
     testId?: string;
     jobberINorge?: boolean;
 }
 
-const KravinfoBoks: React.FunctionComponent<Props> = ({ headerText, boxBodyText, erOppfylt, testId, jobberINorge }) => (
+export const KravinfoBoks = ({
+    headerText,
+    headerLevel = '1',
+    boxBodyText,
+    erOppfylt,
+    testId,
+    jobberINorge,
+}: Props) => (
     <VStack gap="1" data-testid={testId}>
-        <Heading size="small">{headerText}</Heading>
+        <Heading size="small" level={headerLevel}>
+            {headerText}
+        </Heading>
         <Box background="surface-alt-3-subtle" padding="4" borderRadius="large">
             <HStack gap="2" wrap={false}>
                 <div>
@@ -26,7 +36,7 @@ const KravinfoBoks: React.FunctionComponent<Props> = ({ headerText, boxBodyText,
                     )}
                 </div>
                 <VStack gap="2">
-                    <Heading size="xsmall">
+                    <Heading size="xsmall" level="4">
                         {erOppfylt && <FormattedMessage id="KravinfoBoks.DuOppfyllerKravet" />}
                         {!erOppfylt && (
                             <>
@@ -44,5 +54,3 @@ const KravinfoBoks: React.FunctionComponent<Props> = ({ headerText, boxBodyText,
         </Box>
     </VStack>
 );
-
-export default KravinfoBoks;

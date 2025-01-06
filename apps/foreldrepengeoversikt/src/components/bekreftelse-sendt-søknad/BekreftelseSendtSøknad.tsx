@@ -9,11 +9,11 @@ import { Skjemanummer, links } from '@navikt/fp-constants';
 import { Bankkonto } from '@navikt/fp-types';
 import { capitalizeFirstLetter, formatDate, formatDateMedUkedag, formatTime } from '@navikt/fp-utils';
 
+import { OversiktRoutes } from '../../routes/routes';
 import { DokumentHendelse } from '../../sections/tidslinje/DokumentHendelse';
 import { Tidslinjehendelse } from '../../types/Tidslinjehendelse';
 import { Ytelse } from '../../types/Ytelse';
-import { KontonummerInfo } from './../../components/kontonummer-info/KontonummerInfo';
-import OversiktRoutes from './../../routes/routes';
+import { KontonummerInfo } from '../kontonummer-info/KontonummerInfo';
 
 interface Props {
     relevantNyTidslinjehendelse: Tidslinjehendelse | undefined;
@@ -24,26 +24,26 @@ interface Props {
     saksnummer?: string;
 }
 
-const getTidspunktTekst = (mottattDato: Date | undefined): string | undefined => {
+const getTidspunktTekst = (mottattDato: string | undefined) => {
     if (!mottattDato) {
         return undefined;
     }
-    if (mottattDato && dayjs(mottattDato).isSame(dayjs(), 'd')) {
+    if (dayjs(mottattDato).isSame(dayjs(), 'd')) {
         return `Sendt i dag kl. ${formatTime(mottattDato)}`;
-    } else if (mottattDato && dayjs(mottattDato).isSame(dayjs().subtract(1, 'd'), 'd')) {
+    } else if (dayjs(mottattDato).isSame(dayjs().subtract(1, 'd'), 'd')) {
         return `Sendt i går kl. ${formatTime(mottattDato)}`;
     }
     return `Sendt ${formatDate(mottattDato)} kl. ${formatTime(mottattDato)}`;
 };
 
-const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({
+export const BekreftelseSendtSøknad = ({
     relevantNyTidslinjehendelse,
     bankkonto,
     ytelse,
     harMinstEttArbeidsforhold,
     manglendeVedlegg,
     saksnummer,
-}) => {
+}: Props) => {
     const intl = useIntl();
 
     const relevantDokument = relevantNyTidslinjehendelse?.dokumenter
@@ -221,5 +221,3 @@ const BekreftelseSendtSøknad: React.FunctionComponent<Props> = ({
         </VStack>
     );
 };
-
-export default BekreftelseSendtSøknad;

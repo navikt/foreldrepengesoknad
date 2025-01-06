@@ -2,15 +2,17 @@ import { useMemo } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 import { AnnenInntektType } from 'types/AndreInntektskilder';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getFarMedmorErAleneOmOmsorg, getMorHarRettPåForeldrepengerINorgeEllerEØS } from 'utils/personUtils';
 
-import { AnnenForelder, Søkerrolle, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
+import { AnnenForelder, Barn, Søkerrolle, isAnnenForelderOppgitt, isUfødtBarn } from '@navikt/fp-common';
 import { Arbeidsforhold, SøkersituasjonFp } from '@navikt/fp-types';
+import { getFamiliehendelsedato } from '@navikt/fp-utils';
 import { andreAugust2022ReglerGjelder, kreverUttaksplanVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
-import SøknadRoutes, { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER } from '../app-data/routes';
+import { REQUIRED_APP_STEPS, REQUIRED_APP_STEPS_ENDRINGSSØKNAD, ROUTES_ORDER, SøknadRoutes } from '../app-data/routes';
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
 
 const getKanSøkePåTermin = (rolle: Søkerrolle, termindato: string): boolean => {
@@ -114,6 +116,20 @@ const getBareFarMedmorHarRett = (
     return bareFarMedmorHarRett;
 };
 
+const harIngenAktiveArbeidsforhold = (
+    arbeidsforhold: Arbeidsforhold[],
+    søkersituasjon: SøkersituasjonFp,
+    barn: Barn,
+) => {
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(
+        arbeidsforhold,
+        søkersituasjon.situasjon === 'adopsjon',
+        isFarEllerMedmor(søkersituasjon.rolle),
+        getFamiliehendelsedato(barn),
+    );
+    return aktiveArbeidsforhold.length === 0;
+};
+
 const showManglendeDokumentasjonSteg = (
     path: SøknadRoutes,
     getData: <TYPE extends ContextDataType>(key: TYPE) => ContextDataMap[TYPE],
@@ -128,17 +144,17 @@ const showManglendeDokumentasjonSteg = (
         const uttaksplanMetadata = getData(ContextDataType.UTTAKSPLAN_METADATA);
         const andreInntektskilder = getData(ContextDataType.ANDRE_INNTEKTSKILDER);
 
-        const erFarEllerMedmor = !!søkersituasjon && isFarEllerMedmor(søkersituasjon.rolle);
-
         const skalHaAnnenForelderDok =
             annenForelder && isAnnenForelderOppgitt(annenForelder) ? annenForelder.datoForAleneomsorg : false;
+
+        const erFarEllerMedmor = !!søkersituasjon && isFarEllerMedmor(søkersituasjon.rolle);
 
         const skalHaOmBarnetDok =
             søkersituasjon?.situasjon === 'adopsjon' ||
             (barn &&
                 søkersituasjon &&
                 isUfødtBarn(barn) &&
-                (arbeidsforhold.length === 0 ||
+                (harIngenAktiveArbeidsforhold(arbeidsforhold, søkersituasjon, barn) ||
                     getBareFarMedmorHarRett(annenForelder, søkersituasjon, erFarEllerMedmor)) &&
                 getKanSøkePåTermin(søkersituasjon.rolle, barn.termindato));
 
@@ -163,7 +179,7 @@ const showManglendeDokumentasjonSteg = (
     return false;
 };
 
-const useStepConfig = (arbeidsforhold: Arbeidsforhold[], erEndringssøknad = false) => {
+export const useStepConfig = (arbeidsforhold: Arbeidsforhold[], erEndringssøknad = false) => {
     const intl = useIntl();
     const pathToLabelMap = getPathToLabelMap(intl);
 
@@ -200,5 +216,3 @@ const useStepConfig = (arbeidsforhold: Arbeidsforhold[], erEndringssøknad = fal
         [appPathList, currentPath, pathToLabelMap],
     );
 };
-
-export default useStepConfig;

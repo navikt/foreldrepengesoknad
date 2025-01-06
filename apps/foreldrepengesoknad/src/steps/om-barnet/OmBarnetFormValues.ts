@@ -47,5 +47,3 @@ export const erAdoptertStebarn = (barn: BarnetFormValues): barn is AdoptertSteba
 
 export const erAdoptertAnnetBarn = (barn: BarnetFormValues): barn is AdoptertAnnetBarn =>
     (barn as AdoptertAnnetBarn).adopsjonAvEktefellesBarn === false;
-
-export default BarnetFormValues;

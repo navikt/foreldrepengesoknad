@@ -7,7 +7,7 @@ interface Props {
     onRequestClose: () => void;
 }
 
-const DinePersonopplysningerModal = (props: Props) => {
+export const DinePersonopplysningerModal = (props: Props) => {
     const intl = useIntl();
 
     return (
@@ -148,7 +148,7 @@ const DinePersonopplysningerModal = (props: Props) => {
                                                 target="_blank"
                                                 rel="noreferrer"
                                                 href={
-                                                    'https://www.nav.no/no/NAV+og+samfunn/Om+NAV/personvern-i-arbeids-og' +
+                                                    'https://www.nav.no/no/Nav+og+samfunn/Om+Nav/personvern-i-arbeids-og' +
                                                     '-velferdsetaten/personvernerkl%C3%A6ring-for-arbeids-og-velferdsetaten'
                                                 }
                                             >
@@ -165,5 +165,3 @@ const DinePersonopplysningerModal = (props: Props) => {
         </Modal>
     );
 };
-
-export default DinePersonopplysningerModal;

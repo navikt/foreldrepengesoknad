@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
-const useVeiviserNavigator = () => {
+export const useVeiviserNavigator = () => {
     const navigate = useNavigate();
 
     const goToRoute = useCallback(
@@ -22,5 +22,3 @@ const useVeiviserNavigator = () => {
 
     return { goToRoute };
 };
-
-export default useVeiviserNavigator;

@@ -24,7 +24,7 @@ import { IntlProvider } from '@navikt/fp-ui';
 
 import nbMessages from '../intl/nb_NO.json';
 import { ContextDataType, FpDataContext } from './FpDataContext';
-import useSendSøknad from './useSendSøknad';
+import { useSendSøknad } from './useSendSøknad';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -344,7 +344,7 @@ describe('useEsSendSøknad', () => {
                     uttaksplan: [
                         expect.objectContaining({
                             erArbeidstaker: false,
-                            forelder: 'farMedmor',
+                            forelder: 'FAR_MEDMOR',
                             type: 'utsettelse',
                             årsak: 'FRI',
                         }),

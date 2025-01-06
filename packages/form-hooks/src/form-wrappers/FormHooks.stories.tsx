@@ -4,16 +4,16 @@ import { useForm } from 'react-hook-form';
 
 import { Alert, BodyShort, Checkbox as DsCheckbox, HStack, Heading, Label, Radio, VStack } from '@navikt/ds-react';
 
-import RhfCheckbox from './RhfCheckbox';
-import RhfCheckboxGroup from './RhfCheckboxGroup';
-import RhfCombobox from './RhfCombobox';
-import RhfDateRangepicker from './RhfDateRangepicker';
-import RhfDatepicker from './RhfDatepicker';
-import RhfForm from './RhfForm';
-import RhfRadioGroup from './RhfRadioGroup';
-import RhfSelect from './RhfSelect';
-import RhfTextField from './RhfTextField';
-import RhfTextarea from './RhfTextarea';
+import { RhfCheckbox } from './RhfCheckbox';
+import { RhfCheckboxGroup } from './RhfCheckboxGroup';
+import { RhfCombobox } from './RhfCombobox';
+import { RhfDateRangepicker } from './RhfDateRangepicker';
+import { RhfDatepicker } from './RhfDatepicker';
+import { RhfForm } from './RhfForm';
+import { RhfRadioGroup } from './RhfRadioGroup';
+import { RhfSelect } from './RhfSelect';
+import { RhfTextField } from './RhfTextField';
+import { RhfTextarea } from './RhfTextarea';
 
 const meta = {
     title: 'FormHooks',

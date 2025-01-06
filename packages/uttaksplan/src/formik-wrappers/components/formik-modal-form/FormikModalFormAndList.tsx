@@ -11,10 +11,10 @@ export interface FormikModalFormAndListProps<FieldName, ItemType extends {}, Err
     extends ModalFormAndListProps<ItemType>,
         UseFastFieldProps,
         TypedFormInputValidationProps<FieldName, ErrorType> {
-    name: FieldName;
-    error?: FormError;
-    sortFunc?: (a: ItemType, b: ItemType) => number;
-    onAfterChange?: (values: ItemType[]) => void;
+    readonly name: FieldName;
+    readonly error?: FormError;
+    readonly sortFunc?: (a: ItemType, b: ItemType) => number;
+    readonly onAfterChange?: (values: ItemType[]) => void;
 }
 
 function FormikModalFormAndList<FieldName, ItemType extends {}, ErrorType>({

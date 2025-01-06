@@ -2,8 +2,8 @@ import React from 'react';
 
 import { HStack, Heading, VStack } from '@navikt/ds-react';
 
-import HorizontalLine from '../horizontal-line/HorizontalLine';
-import IconCircleWrapper, { CircleColor } from '../icon-circle/IconCircleWrapper';
+import { HorizontalLine } from '../horizontal-line/HorizontalLine';
+import { CircleColor, IconCircleWrapper } from '../icon-circle/IconCircleWrapper';
 import styles from './infobox.module.css';
 
 type InfoboxColor = 'green' | 'blue' | 'gray';
@@ -26,26 +26,29 @@ const BOX_BACKGROUND = {
 
 interface Props {
     header?: string | React.ReactNode;
+    headingLevel?: '1' | '2' | '3' | '4' | '5' | '6';
     children: React.ReactNode;
     icon?: React.ReactNode;
     color: InfoboxColor;
     shouldFadeIn?: boolean;
     useHorizontalDivider?: boolean;
 }
-const Infobox: React.FC<Props> = ({
+
+export const Infobox = ({
     header,
+    headingLevel = '3',
     children,
     icon,
     color = 'green',
     shouldFadeIn = false,
     useHorizontalDivider = false,
-}) => (
+}: Props) => (
     <div className={`${styles.box} ${shouldFadeIn ? styles.animation : undefined} ${BOX_BACKGROUND[color]}`}>
         <VStack gap="2">
             {(header || (!header && icon)) && (
                 <HStack wrap={false} gap="4" justify="space-between" align={header ? 'center' : 'start'}>
                     {header && (
-                        <Heading size="xsmall" level="3">
+                        <Heading size="xsmall" level={headingLevel}>
                             {header}
                         </Heading>
                     )}
@@ -62,5 +65,3 @@ const Infobox: React.FC<Props> = ({
         </VStack>
     </div>
 );
-
-export default Infobox;

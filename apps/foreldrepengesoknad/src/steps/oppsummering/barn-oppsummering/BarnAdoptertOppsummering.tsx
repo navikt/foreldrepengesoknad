@@ -1,4 +1,3 @@
-import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { FormSummary } from '@navikt/ds-react';
@@ -18,7 +17,7 @@ interface Props {
     barn: AdoptertBarn | AdoptertStebarn | AdoptertAnnetBarn;
 }
 
-export const BarnAdoptertOppsummering: FunctionComponent<Props> = ({ barn }) => {
+export const BarnAdoptertOppsummering = ({ barn }: Props) => {
     const intl = useIntl();
 
     const adoptertStebarn = isAdoptertStebarn(barn);

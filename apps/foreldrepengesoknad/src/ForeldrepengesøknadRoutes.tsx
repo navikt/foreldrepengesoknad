@@ -1,25 +1,25 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
-import useMellomlagreSøknad from 'appData/useMellomlagreSøknad';
-import useSendSøknad from 'appData/useSendSøknad';
-import Velkommen from 'pages/forside/Forside';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
+import { useSendSøknad } from 'appData/useSendSøknad';
+import { Forside } from 'pages/forside/Forside';
+import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import AndreInntektskilderSteg from 'steps/andre-inntektskilder/AndreInntektskilderSteg';
-import AnnenForelderSteg from 'steps/annen-forelder/AnnenForelderSteg';
-import ArbeidsforholdOgInntektSteg from 'steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
-import EgenNæringSteg from 'steps/egen-næring/EgenNæringSteg';
-import FordelingSteg from 'steps/fordeling/FordelingSteg';
-import FrilansSteg from 'steps/frilans/FrilansSteg';
-import ManglendeVedlegg from 'steps/manglende-vedlegg/ManglendeVedlegg';
-import OmBarnetSteg from 'steps/om-barnet/OmBarnetSteg';
-import Oppsummering from 'steps/oppsummering/Oppsummering';
-import PeriodeMedForeldrepengerSteg from 'steps/periode-med-foreldrepenger/PeriodeMedForeldrepengerSteg';
-import SøkersituasjonSteg from 'steps/søkersituasjon/SøkersituasjonSteg';
-import SenereUtenlandsoppholdSteg from 'steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
-import TidligereUtenlandsoppholdSteg from 'steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
-import UtenlandsoppholdSteg from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
-import UttaksplanStep from 'steps/uttaksplan/UttaksplanStep';
+import { AndreInntektskilderSteg } from 'steps/andre-inntektskilder/AndreInntektskilderSteg';
+import { AnnenForelderSteg } from 'steps/annen-forelder/AnnenForelderSteg';
+import { ArbeidsforholdOgInntektSteg } from 'steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
+import { EgenNæringSteg } from 'steps/egen-næring/EgenNæringSteg';
+import { FordelingSteg } from 'steps/fordeling/FordelingSteg';
+import { FrilansSteg } from 'steps/frilans/FrilansSteg';
+import { ManglendeVedlegg } from 'steps/manglende-vedlegg/ManglendeVedlegg';
+import { OmBarnetSteg } from 'steps/om-barnet/OmBarnetSteg';
+import { Oppsummering } from 'steps/oppsummering/Oppsummering';
+import { PeriodeMedForeldrepengerSteg } from 'steps/periode-med-foreldrepenger/PeriodeMedForeldrepengerSteg';
+import { SøkersituasjonSteg } from 'steps/søkersituasjon/SøkersituasjonSteg';
+import { SenereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-senere/SenereUtenlandsoppholdSteg';
+import { TidligereUtenlandsoppholdSteg } from 'steps/utenlandsopphold-tidligere/TidligereUtenlandsoppholdSteg';
+import { UtenlandsoppholdSteg } from 'steps/utenlandsopphold/UtenlandsoppholdSteg';
+import { UttaksplanStep } from 'steps/uttaksplan/UttaksplanStep';
 import { Kvittering } from 'types/Kvittering';
 
 import { Sak } from '@navikt/fp-common';
@@ -27,7 +27,7 @@ import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage, Umyndig } from '@navikt/fp-ui';
 import { erMyndig } from '@navikt/fp-utils';
 
-import SøknadRoutes, { isRouteAvailable } from './app-data/routes';
+import { SøknadRoutes, isRouteAvailable } from './app-data/routes';
 
 const renderSøknadRoutes = (
     harGodkjentVilkår: boolean,
@@ -262,7 +262,7 @@ interface Props {
     setKvittering: (kvittering: Kvittering) => void;
 }
 
-const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
+export const ForeldrepengesøknadRoutes = ({
     locale,
     onChangeLocale,
     currentRoute,
@@ -272,7 +272,7 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
     lagretHarGodkjentVilkår,
     lagretSøknadGjelderNyttBarn,
     setKvittering,
-}) => {
+}: Props) => {
     const navigate = useNavigate();
     const routerLocation = useLocation();
     const [isFirstTimeLoadingApp, setIsFirstTimeLoadingApp] = useState(true);
@@ -334,12 +334,10 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
             <Route
                 path={SøknadRoutes.VELKOMMEN}
                 element={
-                    <Velkommen
-                        fornavn={søkerInfo.søker.fornavn}
+                    <Forside
                         locale={locale}
                         saker={saker}
                         onChangeLocale={onChangeLocale}
-                        fnr={søkerInfo.søker.fnr}
                         harGodkjentVilkår={harGodkjentVilkår}
                         søkerInfo={søkerInfo}
                         setHarGodkjentVilkår={setHarGodkjentVilkår}
@@ -363,5 +361,3 @@ const ForeldrepengesøknadRoutes: FunctionComponent<Props> = ({
         </Routes>
     );
 };
-
-export default ForeldrepengesøknadRoutes;

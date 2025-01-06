@@ -8,7 +8,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { initAmplitude } from '@navikt/fp-metrics';
 import { Situasjon } from '@navikt/fp-types';
 
-import OmBarnetSteg from './OmBarnetSteg';
+import { OmBarnetSteg } from './OmBarnetSteg';
 
 const promiseAction =
     () =>

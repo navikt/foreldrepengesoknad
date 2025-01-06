@@ -1,8 +1,8 @@
 import { BabyWrappedIcon, InformationIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import useStepData from 'appData/useStepData';
-import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
+import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
+import { useStepData } from 'appData/useStepData';
+import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getFamiliehendelsedato } from 'steps/oppsummering/expansion-cards/BarnehageplassOppsummering';
@@ -20,7 +20,11 @@ import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviou
 import { notEmpty } from '@navikt/fp-validation';
 
 export const barnehagestartDato = (barnet: OmBarnet) => {
-    const dato = erBarnetAdoptert(barnet) ? barnet.fødselsdato : barnet.termindato;
+    if (erBarnetAdoptert(barnet)) {
+        return undefined;
+    }
+
+    const dato = erBarnetFødt(barnet) ? barnet.fødselsdato : barnet.termindato;
 
     if (dayjs(dato).month() < 8) {
         return getUttaksdagTilOgMedDato(
@@ -48,7 +52,7 @@ interface Props {
     uttaksdata?: Uttaksdata;
 }
 
-const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale, uttaksdata }) => {
+export const BarnehageplassSteg = ({ locale, uttaksdata }: Props) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
@@ -64,7 +68,7 @@ const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale, uttaksdata
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
             <VStack gap="8">
-                <Heading size="medium">
+                <Heading size="medium" level="2">
                     <FormattedMessage id="BarnehageplassSteg.Tittel" />
                 </Heading>
                 <VStack gap="5">
@@ -157,5 +161,3 @@ const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale, uttaksdata
         </PlanleggerStepPage>
     );
 };
-
-export default BarnehageplassSteg;

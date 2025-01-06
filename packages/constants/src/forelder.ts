@@ -1,4 +1,4 @@
 export enum Forelder {
-    mor = 'mor',
-    farMedmor = 'farMedmor',
+    mor = 'MOR',
+    farMedmor = 'FAR_MEDMOR',
 }

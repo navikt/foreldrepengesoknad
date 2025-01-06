@@ -1,7 +1,6 @@
 import { WalletIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import { FunctionComponent } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { erAlenesøker as erAlene } from 'utils/HvemPlanleggerUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
@@ -10,7 +9,7 @@ import { BodyLong, HStack, Heading, VStack } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
 import { Satser } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
-import { capitalizeFirstLetter, formatCurrency } from '@navikt/fp-utils';
+import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 interface Props {
@@ -19,7 +18,8 @@ interface Props {
     fornavn: string;
 }
 
-const HvorMyePanel: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }) => {
+export const HvorMyePanel = ({ satser, lønnSøker, fornavn }: Props) => {
+    const locale = useIntl().locale;
     const hvemPlanlegger = notEmpty(useContextGetData(ContextDataType.HVEM_PLANLEGGER));
     const erAlenesøker = erAlene(hvemPlanlegger);
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
@@ -44,8 +44,8 @@ const HvorMyePanel: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }
                                 values={{
                                     hvem: capitalizeFirstLetter(fornavn),
                                     erAlenesøker,
-                                    utbetaling100: formatCurrency(getDailyPayment(lønnSøker, 1)),
-                                    utbetaling80: formatCurrency(getDailyPayment(lønnSøker, decimal80)),
+                                    utbetaling100: formatCurrencyWithKr(getDailyPayment(lønnSøker, 1), locale),
+                                    utbetaling80: formatCurrencyWithKr(getDailyPayment(lønnSøker, decimal80), locale),
                                 }}
                             />
                         </Heading>
@@ -58,8 +58,8 @@ const HvorMyePanel: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }
                         <FormattedMessage
                             id="HvorMyeOppsummering.DetteBlir"
                             values={{
-                                utbetaling100: formatCurrency(getMonthlyPayment(lønnSøker, 1)),
-                                utbetaling80: formatCurrency(getMonthlyPayment(lønnSøker, decimal80)),
+                                utbetaling100: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, 1), locale),
+                                utbetaling80: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, decimal80), locale),
                             }}
                         />
                     </BodyLong>
@@ -69,7 +69,7 @@ const HvorMyePanel: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }
                                 <FormattedMessage
                                     id="HvorMyeOppsummering.NAVDekker"
                                     values={{
-                                        maksInntekt: formatCurrency(annualMax),
+                                        maksInntekt: formatCurrencyWithKr(annualMax, locale),
                                         a: (msg: any) => (
                                             <a
                                                 href={links.grunnbeløpet}
@@ -101,7 +101,7 @@ const HvorMyePanel: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }
                             values={{
                                 erAlenesøker,
                                 hvem: fornavn,
-                                inntekt: formatCurrency(getMonthlyPayment(lønnSøker, 1)),
+                                inntekt: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, 1), locale),
                             }}
                         />
                     </BodyLong>
@@ -110,5 +110,3 @@ const HvorMyePanel: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }
         </VStack>
     );
 };
-
-export default HvorMyePanel;

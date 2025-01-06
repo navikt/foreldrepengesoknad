@@ -5,7 +5,7 @@ import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
-const Barnehageplass: React.FunctionComponent = () => {
+export const Barnehageplass = () => {
     return (
         <HStack gap="5" wrap={false}>
             <div>
@@ -14,7 +14,7 @@ const Barnehageplass: React.FunctionComponent = () => {
                 </IconCircleWrapper>
             </div>
             <div>
-                <Heading size="small">
+                <Heading size="small" level="4">
                     <FormattedMessage id="OmÅTilpassePlanen.Barnehageplass" />
                 </Heading>
                 <BodyLong>
@@ -24,4 +24,3 @@ const Barnehageplass: React.FunctionComponent = () => {
         </HStack>
     );
 };
-export default Barnehageplass;

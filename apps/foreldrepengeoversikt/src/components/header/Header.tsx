@@ -21,7 +21,7 @@ import {
     mapSakerDTOToSaker,
     utledFamiliesituasjon,
 } from '../../utils/sakerUtils';
-import StatusTag from '../status-tag/StatusTag';
+import { StatusTag } from '../status-tag/StatusTag';
 
 export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
     if (ytelse === Ytelse.ENGANGSSTØNAD) {
@@ -35,7 +35,7 @@ export const getSaksoversiktHeading = (ytelse: Ytelse | undefined) => {
     return 'Din sak';
 };
 
-function HeaderWrapper({ children }: { children: ReactNode }) {
+function HeaderWrapper({ children }: { readonly children: ReactNode }) {
     return (
         <div className={`bg-bg-default border-b-2 border-deepblue-200 mb-8`}>
             <LayoutWrapper className="pt-1 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
@@ -43,7 +43,7 @@ function HeaderWrapper({ children }: { children: ReactNode }) {
     );
 }
 
-function SimpleHeaderWrapper({ children }: { children: ReactNode }) {
+function SimpleHeaderWrapper({ children }: { readonly children: ReactNode }) {
     return (
         <div className={`bg-bg-default`}>
             <LayoutWrapper className="pt-1 pb-6 pl-4 pr-4">{children}</LayoutWrapper>
@@ -55,7 +55,7 @@ function BlueDot() {
     return <div className="h-[4px] w-[4px] rounded-[50%] bg-deepblue-300" />;
 }
 
-function BabyIkon({ ytelse }: { ytelse: Ytelse | undefined }) {
+function BabyIkon({ ytelse }: { readonly ytelse: Ytelse | undefined }) {
     const YtelseIkon = (() => {
         switch (ytelse) {
             case Ytelse.FORELDREPENGER:
@@ -115,7 +115,7 @@ export function DokumenterHeader() {
                 Dokumenter
             </Heading>
             <Detail textColor="subtle">
-                Dokumenter fra du, arbeidsgiver og NAV som tilhører saken din ({saksnummer})
+                Dokumenter fra du, arbeidsgiver og Nav som tilhører saken din ({saksnummer})
             </Detail>
         </SimpleHeaderWrapper>
     );
@@ -131,7 +131,7 @@ export function EttersendingHeader() {
     );
 }
 
-export const InntektsmeldingHeader = ({ inntektsmelding }: { inntektsmelding: InntektsmeldingDto }) => {
+export const InntektsmeldingHeader = ({ inntektsmelding }: { readonly inntektsmelding: InntektsmeldingDto }) => {
     return (
         <SimpleHeaderWrapper>
             <Heading level="1" size="medium">
@@ -152,7 +152,7 @@ export const InntektsmeldingOversiktHeader = () => {
     );
 };
 
-function FamiliehendelseDescription({ sak, søkerinfo }: { sak: Sak; søkerinfo?: SøkerinfoDTO }) {
+function FamiliehendelseDescription({ sak, søkerinfo }: { readonly sak: Sak; readonly søkerinfo?: SøkerinfoDTO }) {
     const intl = useIntl();
 
     const saker = useQuery({
@@ -184,7 +184,7 @@ function FamiliehendelseDescription({ sak, søkerinfo }: { sak: Sak; søkerinfo?
     );
 }
 
-export function DinSakHeader({ sak }: { sak?: Sak }) {
+export function DinSakHeader({ sak }: { readonly sak?: Sak }) {
     const søkerinfo = useQuery(søkerInfoOptions()).data;
 
     if (!sak) {

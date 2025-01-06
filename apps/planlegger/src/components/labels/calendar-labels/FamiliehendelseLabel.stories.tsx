@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import FamiliehendelseLabel from './FamiliehendelseLabel';
+import { FamiliehendelseLabel } from './FamiliehendelseLabel';
 
 const meta = {
     title: 'components/FamiliehendelseLabel',

@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
-import StepButtons from './StepButtons';
+import { StepButtons } from './StepButtons';
 
 const meta = {
     component: StepButtons,

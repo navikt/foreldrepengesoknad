@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { PlanleggerRoutes } from 'appData/routes';
 
-import PlanleggerStepPage from './PlanleggerStepPage';
+import { PlanleggerStepPage } from './PlanleggerStepPage';
 
 const meta = {
     title: 'components/PlanleggerStepPage',

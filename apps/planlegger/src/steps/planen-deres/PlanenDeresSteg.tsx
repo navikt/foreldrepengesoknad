@@ -1,10 +1,8 @@
 import { PersonGroupIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import useStepData from 'appData/useStepData';
-import CalendarLabels from 'components/labels/CalendarLabels';
-import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
-import { FunctionComponent } from 'react';
+import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
+import { useStepData } from 'appData/useStepData';
+import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     finnFellesperiodeFordelingOptionTekst,
@@ -13,7 +11,7 @@ import {
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { Fordeling } from 'types/Fordeling';
 import { Situasjon } from 'types/HvemPlanlegger';
-import { erAlenesøker, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+import { erAlenesøker, getErFarEllerMedmor, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { getAntallUkerOgDagerFellesperiode } from 'utils/stønadskontoerUtils';
 import { finnAntallUkerOgDagerMedForeldrepenger, getFamiliehendelsedato, lagForslagTilPlan } from 'utils/uttakUtils';
@@ -21,19 +19,20 @@ import { finnAntallUkerOgDagerMedForeldrepenger, getFamiliehendelsedato, lagFors
 import { BodyShort, HStack, Heading, Select, ToggleGroup, VStack } from '@navikt/ds-react';
 
 import { LocaleAll, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
-import { Calendar, Infobox, StepButtons } from '@navikt/fp-ui';
+import { Infobox, StepButtons } from '@navikt/fp-ui';
 import { UttaksdagenString } from '@navikt/fp-utils';
 import { useMedia } from '@navikt/fp-utils/src/hooks/useMedia';
 import { useScrollBehaviour } from '@navikt/fp-utils/src/hooks/useScrollBehaviour';
-import { sorterPerioder } from '@navikt/fp-uttaksplan-ny';
+import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
+import { CalendarLabels } from '../../components/labels/CalendarLabels';
 import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
-import { erBarnetAdoptert } from '../../utils/barnetUtils';
+import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
 import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
 import styles from './planenDeresSteg.module.css';
-import OmÅTilpassePlanen from './tilpasse-planen/OmÅTilpassePlanen';
-import UforutsetteEndringer from './uforutsette-endringer/UforutsetteEndringer';
+import { OmÅTilpassePlanen } from './tilpasse-planen/OmÅTilpassePlanen';
+import { UforutsetteEndringer } from './uforutsette-endringer/UforutsetteEndringer';
 
 const finnAntallDagerSøker1 = (
     dekningsgrad: Dekningsgrad,
@@ -55,7 +54,7 @@ interface Props {
     locale: LocaleAll;
 }
 
-const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => {
+export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
@@ -74,11 +73,12 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
     const stønadskonto100 = stønadskontoer[Dekningsgrad.HUNDRE_PROSENT];
     const stønadskonto80 = stønadskontoer[Dekningsgrad.ÅTTI_PROSENT];
 
+    const barnehagestartdato = barnehagestartDato(omBarnet);
+
     const valgtStønadskonto =
         hvorLangPeriode.dekningsgrad === Dekningsgrad.HUNDRE_PROSENT ? stønadskonto100 : stønadskonto80;
 
     const antallUkerOgDagerFellesperiode = getAntallUkerOgDagerFellesperiode(valgtStønadskonto);
-    const barnehageplassdato = barnehagestartDato(omBarnet);
 
     const oppdaterPeriodeOgFordeling = (value: string) => {
         const dekningsgrad = value as Dekningsgrad;
@@ -104,19 +104,6 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
     const bareFarMedmorHarRett =
         harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
 
-    const getErFarEllerMedmor = () => {
-        if (
-            hvemPlanlegger.type === Situasjon.FAR ||
-            (hvemPlanlegger.type === Situasjon.MOR_OG_FAR && hvemHarRett === 'kunSøker2HarRett') ||
-            hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
-            (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR && hvemHarRett === 'kunSøker2HarRett')
-        ) {
-            return true;
-        }
-
-        return false;
-    };
-
     let startdato = undefined;
 
     if (
@@ -126,6 +113,8 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
         startdato = UttaksdagenString(familiehendelsedato).leggTil(30);
     }
 
+    const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
+
     const planforslag = lagForslagTilPlan({
         erDeltUttak: fordeling !== undefined,
         famDato: familiehendelsedato,
@@ -134,11 +123,10 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
         fellesperiodeDagerMor: fordeling?.antallDagerSøker1,
         bareFarMedmorHarRett,
         erAdopsjon: erBarnetAdoptert(omBarnet),
-        erFarEllerMedmor: getErFarEllerMedmor(),
+        erFarEllerMedmor: erFarEllerMedmor,
         erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
         erAleneOmOmsorg: hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.MOR,
     });
-    const kombinertPlanforslag = [...planforslag.søker1, ...planforslag.søker2].sort(sorterPerioder);
 
     const fornavnSøker1 = getFornavnPåSøker1(hvemPlanlegger, intl);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
@@ -213,7 +201,8 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                             (!omBarnet.erFødsel || hvemPlanlegger.type !== Situasjon.FAR_OG_FAR) && (
                                 <Select
                                     defaultValue={fordeling?.antallDagerSøker1}
-                                    label={''}
+                                    label="Velg fordeling fellesperiode"
+                                    hideLabel
                                     name="antallDagerSøker1"
                                     onChange={(e) => {
                                         lagreFordeling({ antallDagerSøker1: parseInt(e.target.value, 10) });
@@ -241,15 +230,23 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                     </VStack>
 
                     <VStack gap="5">
-                        <CalendarLabels hvemPlanlegger={hvemPlanlegger} barnet={omBarnet} hvemHarRett={hvemHarRett} />
-                    </VStack>
-
-                    <VStack gap="5">
                         <div className={styles.calendar}>
-                            <Calendar
-                                periods={kombinertPlanforslag}
-                                barnehageplassdato={barnehageplassdato}
-                                familiehendelsedato={familiehendelsedato}
+                            <UttaksplanKalender
+                                bareFarHarRett={bareFarMedmorHarRett}
+                                erFarEllerMedmor={erFarEllerMedmor}
+                                harAktivitetskravIPeriodeUtenUttak={false}
+                                søkersPerioder={planforslag.søker1}
+                                annenPartsPerioder={planforslag.søker2}
+                                navnAnnenPart="Test"
+                                barn={mapOmBarnetTilBarn(omBarnet)}
+                                planleggerLegend={
+                                    <CalendarLabels
+                                        hvemPlanlegger={hvemPlanlegger}
+                                        barnet={omBarnet}
+                                        hvemHarRett={hvemHarRett}
+                                    />
+                                }
+                                barnehagestartdato={barnehagestartdato}
                             />
                         </div>
                     </VStack>
@@ -296,5 +293,3 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
         </form>
     );
 };
-
-export default PlanenDeresSteg;

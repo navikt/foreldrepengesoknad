@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import HøyInntektInfobox from './HøyInntektInfobox';
+import { HøyInntektInfobox } from './HøyInntektInfobox';
 
 const meta = {
     title: 'components/HøyInntektInfobox',

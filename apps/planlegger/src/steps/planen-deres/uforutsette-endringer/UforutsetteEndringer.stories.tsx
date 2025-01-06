@@ -3,7 +3,7 @@ import { ComponentProps } from 'react';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Situasjon } from 'types/HvemPlanlegger';
 
-import UforutsetteEndringer from './UforutsetteEndringer';
+import { UforutsetteEndringer } from './UforutsetteEndringer';
 
 type StoryArgs = ComponentProps<typeof UforutsetteEndringer>;
 

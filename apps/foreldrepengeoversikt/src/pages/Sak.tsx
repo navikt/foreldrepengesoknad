@@ -1,7 +1,5 @@
 import { Outlet } from 'react-router-dom';
 
-const Sak: React.FunctionComponent = () => {
+export const Sak = () => {
     return <Outlet />;
 };
-
-export default Sak;

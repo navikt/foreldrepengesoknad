@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react/*';
 
 import { DokumentType } from '../../types/DokumentType';
-import GrupperteDokumenter from './GrupperteDokumenter';
+import { GrupperteDokumenter } from './GrupperteDokumenter';
 
 const meta = {
     title: 'GrupperteDokumenter',
@@ -16,7 +16,7 @@ export const Default: Story = {
         dokumenter: [
             {
                 type: DokumentType.ARBEIDSGIVER,
-                mottatt: new Date(),
+                mottatt: new Date().toISOString(),
                 saksnummer: '124324',
                 tittel: 'Tittel arbeidsgiver',
                 url: 'www.test.nu',
@@ -25,7 +25,7 @@ export const Default: Story = {
             },
             {
                 type: DokumentType.INNGÅENDE_DOKUMENT,
-                mottatt: new Date(),
+                mottatt: new Date().toISOString(),
                 saksnummer: '124',
                 tittel: 'Tittel på inngåande dok',
                 url: 'www.test.nu',
@@ -34,7 +34,7 @@ export const Default: Story = {
             },
             {
                 type: DokumentType.UTGÅENDE_DOKUMENT,
-                mottatt: new Date(),
+                mottatt: new Date().toISOString(),
                 saksnummer: '124',
                 tittel: 'Tittel på utgående dok',
                 url: 'www.test.nu',

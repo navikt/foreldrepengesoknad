@@ -1,4 +1,3 @@
-import React from 'react';
 import { useIntl } from 'react-intl';
 import { AndreInntektskilder, AnnenInntektType } from 'types/AndreInntektskilder';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
@@ -6,7 +5,7 @@ import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { ArbeidsforholdOgInntektFp, Attachment } from '@navikt/fp-types';
 
-import VedleggUploader, { formaterPerioderForVisning } from '../attachment-uploaders/VedleggUploader';
+import { VedleggUploader, formaterPerioderForVisning } from '../attachment-uploaders/VedleggUploader';
 
 interface Props {
     attachments: Attachment[];
@@ -15,12 +14,12 @@ interface Props {
     andreInntektskilder?: AndreInntektskilder[];
 }
 
-const EtterlønnEllerSluttvederlagDokumentasjon: React.FunctionComponent<Props> = ({
+export const EtterlønnEllerSluttvederlagDokumentasjon = ({
     attachments,
     updateAttachments,
     arbeidsforholdOgInntekt,
     andreInntektskilder,
-}) => {
+}: Props) => {
     const intl = useIntl();
 
     if (
@@ -55,5 +54,3 @@ const EtterlønnEllerSluttvederlagDokumentasjon: React.FunctionComponent<Props> 
         />
     );
 };
-
-export default EtterlønnEllerSluttvederlagDokumentasjon;

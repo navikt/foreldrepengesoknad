@@ -1,6 +1,6 @@
 import { ArrowLeftIcon, ChatElipsisIcon, CheckmarkIcon, InformationIcon, WalletIcon } from '@navikt/aksel-icons';
 import { HvorMyeRoutes } from 'appData/routes';
-import useVeiviserNavigator from 'appData/useVeiviserNavigator';
+import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
 import { veiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
 import dayjs from 'dayjs';
 import { useEffect } from 'react';
@@ -17,10 +17,10 @@ import { capitalizeFirstLetter, formatCurrencyWithKr, useScrollBehaviour } from 
 import { isValidNumber, notEmpty } from '@navikt/fp-validation';
 
 import { Arbeidssituasjon, finnGjennomsnittsMånedslønn } from '../arbeidssituasjon/ArbeidssituasjonSide';
-import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
-import HøyInntektInfobox from '../felles/HøyInntektInfobox';
-import FpEllerEsOgHvaSkjerNåLinkPanel from './FpEllerEsOgHvaSkjerNåLinkPanel';
-import Utbetalingspanel from './Utbetalingspanel';
+import { HarIkkeRettTilFpInfobox } from '../felles/HarIkkeRettTilFpInfobox';
+import { HøyInntektInfobox } from '../felles/HøyInntektInfobox';
+import { FpEllerEsOgHvaSkjerNåLinkPanel } from './FpEllerEsOgHvaSkjerNåLinkPanel';
+import { Utbetalingspanel } from './Utbetalingspanel';
 
 export const getDailyPayment = (monthlyWage: number) => (monthlyWage * 12) / 260;
 
@@ -48,8 +48,9 @@ interface Props {
     satser: Satser;
 }
 
-const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, stønadskontoer, satser }) => {
+export const OppsummeringSide = ({ arbeidssituasjon, stønadskontoer, satser }: Props) => {
     const intl = useIntl();
+    const locale = intl.locale;
     const { goToRoute } = useVeiviserNavigator();
     const { ref } = useScrollBehaviour();
 
@@ -92,6 +93,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                             <HarIkkeRettTilFpInfobox antattÅrslønn={årslønn} minÅrslønn={minÅrslønn} />
                             <Infobox
                                 header={<FormattedMessage id="OppsummeringSide.HvaErEs" />}
+                                headingLevel="2"
                                 icon={
                                     <InformationIcon
                                         height={24}
@@ -106,7 +108,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                 <BodyShort>
                                     <FormattedMessage
                                         id="OppsummeringSide.EsSkalBidra"
-                                        values={{ engangsstønad: formatCurrencyWithKr(engangsstønad) }}
+                                        values={{ engangsstønad: formatCurrencyWithKr(engangsstønad, locale) }}
                                     />
                                 </BodyShort>
                             </Infobox>
@@ -129,6 +131,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                             {erMellomMinÅrslønnOg1Komma5G && (
                                 <Infobox
                                     header={<FormattedMessage id="OppsummeringSide.SammenlignFpOgEs" />}
+                                    headingLevel="2"
                                     icon={
                                         <WalletIcon
                                             height={24}
@@ -144,7 +147,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                         <BodyShort>
                                             <FormattedMessage
                                                 id="OppsummeringSide.SammenlignFpOgEsInfoPart1"
-                                                values={{ engangsstønad: formatCurrencyWithKr(engangsstønad) }}
+                                                values={{ engangsstønad: formatCurrencyWithKr(engangsstønad, locale) }}
                                             />
                                         </BodyShort>
                                         <BodyShort>
@@ -164,6 +167,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                             )}
                             <Infobox
                                 header={<FormattedMessage id="OppsummeringSide.UtbetaltSomVanlig" />}
+                                headingLevel="2"
                                 icon={
                                     <InformationIcon
                                         height={24}
@@ -187,7 +191,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                 <IconCircleWrapper size="medium" color="lightBlue">
                                     <ChatElipsisIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                                 </IconCircleWrapper>
-                                <ExpansionCard.Title size="small">
+                                <ExpansionCard.Title size="small" as="h2">
                                     <FormattedMessage id="OppsummeringSide.DetteSvarteDu" />
                                 </ExpansionCard.Title>
                             </HStack>
@@ -216,10 +220,10 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                     <BluePanel>
                                         <VStack gap="4">
                                             <VStack gap="1">
-                                                <Heading size="small">
+                                                <Heading size="small" level="4">
                                                     <FormattedMessage id="OppsummeringSide.Lønn" />
                                                 </Heading>
-                                                <Heading size="xsmall">
+                                                <Heading size="xsmall" level="5">
                                                     {capitalizeFirstLetter(
                                                         forrigeMåned.subtract(2, 'month').format('MMMM YYYY'),
                                                     )}
@@ -229,11 +233,12 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                                         isNumber(arbeidssituasjon.lønnMåned1)
                                                             ? parseInt(arbeidssituasjon.lønnMåned1, 10)
                                                             : 0,
+                                                        locale,
                                                     )}
                                                 </BodyShort>
                                             </VStack>
                                             <div>
-                                                <Heading size="xsmall">
+                                                <Heading size="xsmall" level="5">
                                                     {capitalizeFirstLetter(
                                                         forrigeMåned.subtract(1, 'month').format('MMMM YYYY'),
                                                     )}
@@ -243,11 +248,12 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                                         isNumber(arbeidssituasjon.lønnMåned2)
                                                             ? parseInt(arbeidssituasjon.lønnMåned2, 10)
                                                             : 0,
+                                                        locale,
                                                     )}
                                                 </BodyShort>
                                             </div>
                                             <div>
-                                                <Heading size="xsmall">
+                                                <Heading size="xsmall" level="5">
                                                     {capitalizeFirstLetter(forrigeMåned.format('MMMM YYYY'))}
                                                 </Heading>
                                                 <BodyShort>
@@ -255,6 +261,7 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
                                                         isNumber(arbeidssituasjon.lønnMåned3)
                                                             ? parseInt(arbeidssituasjon.lønnMåned3, 10)
                                                             : 0,
+                                                        locale,
                                                     )}
                                                 </BodyShort>
                                             </div>
@@ -277,5 +284,3 @@ const OppsummeringSide: React.FunctionComponent<Props> = ({ arbeidssituasjon, st
         </>
     );
 };
-
-export default OppsummeringSide;

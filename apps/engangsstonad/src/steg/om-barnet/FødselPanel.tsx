@@ -19,7 +19,7 @@ export type FormValues = {
     antallBarnDropDown?: string;
 } & Fødsel;
 
-const FødselPanel: React.FunctionComponent = () => {
+export const FødselPanel = () => {
     const intl = useIntl();
 
     const { watch } = useFormContext<FormValues>();
@@ -42,25 +42,6 @@ const FødselPanel: React.FunctionComponent = () => {
                     <FormattedMessage id="FødselPanel.Radiobutton.Nei" />
                 </Radio>
             </RhfRadioGroup>
-            {erBarnetFødt && (
-                <RhfDatepicker
-                    name="fødselsdato"
-                    label={<FormattedMessage id="FødselPanel.Fødselsdato" />}
-                    description={intl.formatMessage({ id: 'FødselPanel.TermindatoFodselsdato.beskrivelse' })}
-                    minDate={dayjs().subtract(6, 'month').toDate()}
-                    maxDate={dayjs().toDate()}
-                    validate={[
-                        isRequired(intl.formatMessage({ id: 'FødselPanel.Fødselsdato.DuMåOppgi' })),
-                        isValidDate(intl.formatMessage({ id: 'FødselPanel.Fødselsdato.Gyldig' })),
-                        isBeforeTodayOrToday(
-                            intl.formatMessage({ id: 'FødselPanel.Fodselsdato.MåVæreIdagEllerTidligere' }),
-                        ),
-                        isAfterOrSameAsSixMonthsAgo(
-                            intl.formatMessage({ id: 'FødselPanel.Fodselsdato.IkkeMerEnn6MånederTilbake' }),
-                        ),
-                    ]}
-                />
-            )}
             <RhfDatepicker
                 name="termindato"
                 label={<FormattedMessage id="FødselPanel.Termindato" />}
@@ -79,7 +60,24 @@ const FødselPanel: React.FunctionComponent = () => {
                     ),
                 ]}
             />
-
+            {erBarnetFødt && (
+                <RhfDatepicker
+                    name="fødselsdato"
+                    label={<FormattedMessage id="FødselPanel.Fødselsdato" />}
+                    minDate={dayjs().subtract(6, 'month').toDate()}
+                    maxDate={dayjs().toDate()}
+                    validate={[
+                        isRequired(intl.formatMessage({ id: 'FødselPanel.Fødselsdato.DuMåOppgi' })),
+                        isValidDate(intl.formatMessage({ id: 'FødselPanel.Fødselsdato.Gyldig' })),
+                        isBeforeTodayOrToday(
+                            intl.formatMessage({ id: 'FødselPanel.Fodselsdato.MåVæreIdagEllerTidligere' }),
+                        ),
+                        isAfterOrSameAsSixMonthsAgo(
+                            intl.formatMessage({ id: 'FødselPanel.Fodselsdato.IkkeMerEnn6MånederTilbake' }),
+                        ),
+                    ]}
+                />
+            )}
             <RhfRadioGroup
                 name="antallBarn"
                 label={
@@ -134,5 +132,3 @@ const FødselPanel: React.FunctionComponent = () => {
         </>
     );
 };
-
-export default FødselPanel;

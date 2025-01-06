@@ -2,8 +2,9 @@ import Environment from 'appData/Environment';
 import { ContextDataType } from 'appData/SvpDataContext';
 import { SøknadRoute, TILRETTELEGGING_PARAM } from 'appData/routes';
 import { useAvbrytSøknad } from 'appData/useAvbrytSøknad';
+import { SvpDataMapAndMetaData, useMellomlagreSøknad } from 'appData/useMellomlagreSøknad';
 import { useSendSøknad } from 'appData/useSendSøknad';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { Loader } from '@navikt/ds-react';
@@ -12,12 +13,12 @@ import { Kvittering, LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ErrorPage } from '@navikt/fp-ui';
 import { redirect } from '@navikt/fp-utils';
 
-import { SvpDataMapAndMetaData, useMellomlagreSøknad } from './app-data/useMellomlagreSøknad';
 import { Forside } from './pages/forside/Forside';
 import { ArbeidIUtlandetSteg } from './steps/arbeid-i-utlandet/ArbeidIUtlandetSteg';
 import { ArbeidsforholdOgInntektSteg } from './steps/arbeidsforhold-og-inntekt/ArbeidsforholdOgInntektSteg';
 import { BarnetSteg } from './steps/barnet/BarnetSteg';
 import { EgenNæringSteg } from './steps/egen-næring/EgenNæringSteg';
+import { FerieSteg } from './steps/ferie/FerieSteg';
 import { FrilansSteg } from './steps/frilans/FrilansSteg';
 import { OppsummeringSteg } from './steps/oppsummering/OppsummeringSteg';
 import { PerioderSteg } from './steps/perioder/PerioderSteg';
@@ -28,13 +29,13 @@ import { TidligereUtenlandsoppholdSteg } from './steps/utenlandsopphold-tidliger
 import { UtenlandsoppholdSteg } from './steps/utenlandsopphold/UtenlandsoppholdSteg';
 import { VelgArbeidSteg } from './steps/velg-arbeidsforhold/VelgArbeidSteg';
 
-export const Spinner: React.FunctionComponent = () => (
+export const Spinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
         <Loader size="2xlarge" />
     </div>
 );
 
-export const ApiErrorHandler: React.FunctionComponent<{ error: Error }> = ({ error }) => {
+export const ApiErrorHandler = ({ error }: { error: Error }) => {
     return (
         <ErrorPage appName="Svangerskapspenger" errorMessage={error.message} retryCallback={() => location.reload()} />
     );
@@ -173,6 +174,16 @@ const renderSøknadRoutes = (
                 }
             />
             <Route
+                path={`${SøknadRoute.FERIE}/${TILRETTELEGGING_PARAM}`}
+                element={
+                    <FerieSteg
+                        arbeidsforhold={søkerInfo.arbeidsforhold}
+                        mellomlagreSøknadOgNaviger={mellomlagreSøknadOgNaviger}
+                        avbrytSøknad={avbrytSøknad}
+                    />
+                }
+            />
+            <Route
                 path={SøknadRoute.OPPSUMMERING}
                 element={
                     <OppsummeringSteg
@@ -194,12 +205,7 @@ interface Props {
     mellomlagretData?: SvpDataMapAndMetaData;
 }
 
-export const SvangerskapspengesøknadRoutes: FunctionComponent<Props> = ({
-    søkerInfo,
-    locale,
-    onChangeLocale,
-    mellomlagretData,
-}) => {
+export const SvangerskapspengesøknadRoutes = ({ søkerInfo, locale, onChangeLocale, mellomlagretData }: Props) => {
     const navigate = useNavigate();
 
     const [harGodkjentVilkår, setHarGodkjentVilkår] = useState(false);

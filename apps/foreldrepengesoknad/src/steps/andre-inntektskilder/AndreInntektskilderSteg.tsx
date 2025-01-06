@@ -1,6 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import useFpNavigator from 'appData/useFpNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { useFpNavigator } from 'appData/useFpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
@@ -10,7 +10,7 @@ import { ErrorSummaryHookForm, RhfForm, StepButtonsHookForm } from '@navikt/fp-f
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 
-import AndreInntektskilderFieldArray, { FormValues } from './components/AndreInntektskilderFieldArray';
+import { AndreInntektskilderFieldArray, FormValues } from './components/AndreInntektskilderFieldArray';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -18,11 +18,7 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-const AndreInntektskilderSteg: React.FunctionComponent<Props> = ({
-    arbeidsforhold,
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-}) => {
+export const AndreInntektskilderSteg = ({ arbeidsforhold, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig(arbeidsforhold);
@@ -58,5 +54,3 @@ const AndreInntektskilderSteg: React.FunctionComponent<Props> = ({
         </Step>
     );
 };
-
-export default AndreInntektskilderSteg;

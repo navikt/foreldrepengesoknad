@@ -1,6 +1,5 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { UttaksplanFormComponents, UttaksplanFormField } from 'steps/uttaksplan/UttaksplanFormConfig';
 import { mapUttaksplanFormValueToState } from 'steps/uttaksplan/UttaksplanFormUtils';
@@ -17,12 +16,7 @@ interface Props {
     antallBarn: number;
     visibility: QuestionVisibility<UttaksplanFormField, undefined>;
 }
-const AutomatiskJusteringForm: FunctionComponent<Props> = ({
-    termindato,
-    perioderMedUttakRundtFødsel,
-    antallBarn,
-    visibility,
-}) => {
+export const AutomatiskJusteringForm = ({ termindato, perioderMedUttakRundtFødsel, antallBarn, visibility }: Props) => {
     const intl = useIntl();
     const uttaksdagPåEllerEtterTermin = Uttaksdagen(termindato).denneEllerNeste();
 
@@ -106,5 +100,3 @@ const AutomatiskJusteringForm: FunctionComponent<Props> = ({
         </UttaksplanFormComponents.Form>
     );
 };
-
-export default AutomatiskJusteringForm;

@@ -1,6 +1,6 @@
 import { Path } from 'appData/paths';
 import { FormattedMessage } from 'react-intl';
-import Dokumentasjon, { TerminDokumentasjon, Vedlegg, erTerminDokumentasjon } from 'types/Dokumentasjon';
+import { Dokumentasjon, TerminDokumentasjon, Vedlegg, erTerminDokumentasjon } from 'types/Dokumentasjon';
 
 import { FormSummary, VStack } from '@navikt/ds-react';
 

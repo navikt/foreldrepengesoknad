@@ -3,7 +3,7 @@ import { ComponentProps } from 'react';
 import { Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { Situasjon } from 'types/HvemPlanlegger';
 
-import HvaErMulig from './HvaErMulig';
+import { HvaErMulig } from './HvaErMulig';
 
 type StoryArgs = ComponentProps<typeof HvaErMulig>;
 

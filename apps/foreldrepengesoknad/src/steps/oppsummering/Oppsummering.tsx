@@ -1,9 +1,10 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
-import SøknadRoutes from 'appData/routes';
-import useFpNavigator from 'appData/useFpNavigator';
-import useStepConfig from 'appData/useStepConfig';
-import { FunctionComponent, useState } from 'react';
+import { SøknadRoutes } from 'appData/routes';
+import { useFpNavigator } from 'appData/useFpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
+import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { getFamiliehendelsedato, getTermindato } from 'utils/barnUtils';
 import { ISOStringToDate } from 'utils/dateUtils';
 import { getErSøkerFarEllerMedmor, getKjønnFromFnrString, getNavnPåForeldre } from 'utils/personUtils';
@@ -26,11 +27,11 @@ import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { AndreInntektskilderOppsummering } from './andre-inntekter-oppsummering/AndreInntektskilderOppsummering';
-import AnnenForelderOppsummering from './annen-forelder-oppsummering/AnnenForelderOppsummering';
+import { AnnenForelderOppsummering } from './annen-forelder-oppsummering/AnnenForelderOppsummering';
 import { BarnOppsummering } from './barn-oppsummering/BarnOppsummering';
 import { DokumentasjonOppsummering } from './dokumentasjon-oppsummering/DokumentasjonOppsummering';
 import { PeriodeMedForeldrepengerOppsummering } from './periode-med-foreldrepenger/PeriodeMedForeldrepengerOppsummering';
-import UttaksplanOppsummering from './uttaksplan-oppsummering/UttaksplanOppsummering';
+import { UttaksplanOppsummering } from './uttaksplan-oppsummering/UttaksplanOppsummering';
 
 const skalViseInfoOmFarskapsportal = (
     søker: Søker,
@@ -61,7 +62,7 @@ export interface Props {
     avbrytSøknad: () => void;
 }
 
-const Oppsummering: FunctionComponent<Props> = (props) => {
+export const Oppsummering = (props: Props) => {
     const { søkerInfo, erEndringssøknad, sendSøknad, avbrytSøknad, mellomlagreSøknadOgNaviger } = props;
     const intl = useIntl();
 
@@ -121,6 +122,13 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
         isUfødtBarn(barn),
     );
 
+    const aktiveArbeidsforhold = getAktiveArbeidsforhold(
+        søkerInfo.arbeidsforhold,
+        søkersituasjon.situasjon === 'adopsjon',
+        søkerErFarEllerMedmor,
+        getFamiliehendelsedato(barn),
+    );
+
     return (
         <ContentWrapper>
             <Heading size="large">
@@ -152,7 +160,7 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
                 </>
                 <ArbeidsforholdOppsummering
                     arbeidsforholdOgInntekt={arbeidsforholdOgInntekt}
-                    arbeidsforhold={søkerInfo.arbeidsforhold}
+                    arbeidsforhold={aktiveArbeidsforhold}
                     onVilEndreSvar={() => navigator.goToNextStep(SøknadRoutes.ARBEID_OG_INNTEKT)}
                 />
                 <FrilansOppsummering
@@ -177,11 +185,11 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
                     navnPåForeldre={navnPåForeldre}
                     annenForelder={annenForelder}
                     erFarEllerMedmor={søkerErFarEllerMedmor}
-                    registrerteArbeidsforhold={søkerInfo.arbeidsforhold}
+                    registrerteArbeidsforhold={aktiveArbeidsforhold}
                     dekningsgrad={dekningsgrad}
-                    antallUkerUttaksplan={uttaksplanMetadata.antallUkerIUttaksplan!}
+                    antallUkerUttaksplan={notEmpty(uttaksplanMetadata.antallUkerIUttaksplan)}
                     eksisterendeUttaksplan={eksisterendeSak ? eksisterendeSak.uttaksplan : undefined}
-                    familiehendelsesdato={familiehendelsesdato!}
+                    familiehendelsesdato={notEmpty(familiehendelsesdato)}
                     termindato={termindato}
                     situasjon={søkersituasjon.situasjon}
                     erAleneOmOmsorg={erAnnenForelderOppgitt ? annenForelder?.erAleneOmOmsorg : false}
@@ -243,5 +251,3 @@ const Oppsummering: FunctionComponent<Props> = (props) => {
         </ContentWrapper>
     );
 };
-
-export default Oppsummering;

@@ -5,7 +5,7 @@ import { BodyShort, Heading, List, VStack } from '@navikt/ds-react';
 
 import { Infobox } from '@navikt/fp-ui';
 
-const KravFarEllerMedmor: React.FunctionComponent = () => {
+export const KravFarEllerMedmor = () => {
     return (
         <>
             <Heading size="small">
@@ -54,5 +54,3 @@ const KravFarEllerMedmor: React.FunctionComponent = () => {
         </>
     );
 };
-
-export default KravFarEllerMedmor;

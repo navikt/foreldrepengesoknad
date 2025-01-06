@@ -167,4 +167,25 @@ describe('<OppsummeringSteg>', () => {
             ),
         ).toBeInTheDocument();
     });
+    it('skal vise info om barnehage - fødsel', async () => {
+        render(<FlereForsørgereHundreProsentTermin />);
+
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+
+        expect(screen.getByText('Planen deres')).toBeInTheDocument();
+        expect(screen.getAllByText('Hvor mye?')).toHaveLength(2);
+        expect(screen.getAllByText('Barnehageplass')).toHaveLength(2);
+        expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
+    });
+    it('skal ikke vise info om barnehage – adopsjon', async () => {
+        render(<FarOgFarAdopsjonKunFar1HarRett />);
+
+        expect(await screen.findAllByText('Oppsummering')).toHaveLength(2);
+
+        expect(screen.getByText('Planen deres')).toBeInTheDocument();
+        expect(screen.getAllByText('Hvor mye?')).toHaveLength(2);
+        expect(screen.getByText('Dette svarte dere')).toBeInTheDocument();
+
+        expect(screen.queryByText('Barnehageplass')).not.toBeInTheDocument();
+    });
 });

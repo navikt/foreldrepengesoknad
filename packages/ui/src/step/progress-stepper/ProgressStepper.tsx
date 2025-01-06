@@ -8,13 +8,13 @@ export type ProgressStep<TYPE> = {
     isSelected: boolean;
 };
 
-export interface ProgressStepperProps<TYPE> {
+interface ProgressStepperProps<TYPE> {
     steps: Array<ProgressStep<TYPE>>;
     onStepChange?: (id: TYPE) => void;
     hideHeader?: boolean;
 }
 
-const ProgressStepper = <TYPE extends string>({
+export const ProgressStepper = <TYPE extends string>({
     steps,
     onStepChange,
     hideHeader = false,
@@ -53,5 +53,3 @@ const ProgressStepper = <TYPE extends string>({
         </VStack>
     );
 };
-
-export default ProgressStepper;

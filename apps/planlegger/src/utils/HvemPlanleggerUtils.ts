@@ -52,6 +52,29 @@ export const getNavnPåSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShap
     return undefined;
 };
 
+export const getDefaultNavnSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
+    if (erMorDelAvSøknaden(hvemPlanlegger)) {
+        return intl.formatMessage({ id: 'HvemPlanlegger.DefaultMorNavn' });
+    }
+    if (erFarDelAvSøknaden(hvemPlanlegger)) {
+        return intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
+    }
+    throw new Error('Feil i kode: Ugyldig hvemPlanlegger');
+};
+
+export const getDefaultNavnSøker2 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string | undefined => {
+    if (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR) {
+        return intl.formatMessage({ id: 'HvemPlanlegger.DefaultMedMorNavn' });
+    }
+    if (hvemPlanlegger.type === Situasjon.MOR_OG_FAR) {
+        return intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
+    }
+    if (hvemPlanlegger.type === Situasjon.FAR_OG_FAR) {
+        return intl.formatMessage({ id: 'HvemPlanlegger.DefaultFarNavn' });
+    }
+    return undefined;
+};
+
 export const getFornavnPåSøker1 = (hvemPlanlegger: HvemPlanlegger, intl: IntlShape): string => {
     return getNavnPåSøker1(hvemPlanlegger, intl).split(' ')[0];
 };
@@ -115,4 +138,17 @@ export const getNavnGenitivEierform = (navn: string, locale: string): string => 
         return `${navn}'`;
     }
     return `${navn}s`;
+};
+
+export const getErFarEllerMedmor = (hvemPlanlegger: HvemPlanlegger, hvemHarRett: HvemHarRett) => {
+    if (
+        hvemPlanlegger.type === Situasjon.FAR ||
+        (hvemPlanlegger.type === Situasjon.MOR_OG_FAR && hvemHarRett === 'kunSøker2HarRett') ||
+        hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
+        (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR && hvemHarRett === 'kunSøker2HarRett')
+    ) {
+        return true;
+    }
+
+    return false;
 };

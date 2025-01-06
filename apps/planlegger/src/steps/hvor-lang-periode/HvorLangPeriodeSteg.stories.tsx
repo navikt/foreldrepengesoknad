@@ -11,7 +11,7 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { StønadskontoType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import HvorLangPeriodeSteg from './HvorLangPeriodeSteg';
+import { HvorLangPeriodeSteg } from './HvorLangPeriodeSteg';
 
 const MINSTERETTER = {
     farRundtFødsel: 10,

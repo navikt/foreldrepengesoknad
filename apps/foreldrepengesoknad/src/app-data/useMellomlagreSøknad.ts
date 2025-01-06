@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/browser';
 import ky, { HTTPError } from 'ky';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Fordeling from 'types/Fordeling';
+import { Fordeling } from 'types/Fordeling';
 import { Søknad } from 'types/Søknad';
 import { MELLOMLAGRET_VERSJON } from 'utils/mellomlagringUtils';
 
@@ -11,7 +11,7 @@ import { LocaleNo } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataMap, ContextDataType, useContextGetAnyData } from './FpDataContext';
-import SøknadRoutes from './routes';
+import { SøknadRoutes } from './routes';
 
 export interface FpMellomlagretData {
     version: number;
@@ -97,7 +97,7 @@ const getDataForMellomlagring = (
     return dataSomSkalMellomlagres;
 };
 
-const useMellomlagreSøknad = (
+export const useMellomlagreSøknad = (
     locale: LocaleNo,
     fødselsnr: string,
     erEndringssøknad: boolean,
@@ -180,5 +180,3 @@ const useMellomlagreSøknad = (
 
     return mellomlagreSøknadOgNaviger;
 };
-
-export default useMellomlagreSøknad;

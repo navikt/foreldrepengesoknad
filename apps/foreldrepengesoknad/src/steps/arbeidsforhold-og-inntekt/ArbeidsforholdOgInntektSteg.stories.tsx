@@ -1,14 +1,14 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { BarnType } from '@navikt/fp-constants';
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import ArbeidsforholdOgInntektSteg from './ArbeidsforholdOgInntektSteg';
+import { ArbeidsforholdOgInntektSteg } from './ArbeidsforholdOgInntektSteg';
 
 const DEFAULT_ARBEIDSFORHOLD = [
     {

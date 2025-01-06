@@ -1,4 +1,3 @@
-import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 
 import { BodyLong, Button, Heading, Modal } from '@navikt/ds-react';
@@ -10,7 +9,7 @@ interface Props {
     onAvbrytOgSlett?: () => void;
 }
 
-const AvsluttModal: FunctionComponent<Props> = ({ isOpen, setIsOpen, onAvbrytOgSlett, onAvbrytOgFortsettSenere }) => {
+export const AvsluttModal = ({ isOpen, setIsOpen, onAvbrytOgSlett, onAvbrytOgFortsettSenere }: Props) => {
     const intl = useIntl();
     return (
         <Modal
@@ -35,5 +34,3 @@ const AvsluttModal: FunctionComponent<Props> = ({ isOpen, setIsOpen, onAvbrytOgS
         </Modal>
     );
 };
-
-export default AvsluttModal;

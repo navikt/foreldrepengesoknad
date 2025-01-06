@@ -9,7 +9,7 @@ interface Props {
     children: React.ReactElement | React.ReactElement[];
 }
 
-const OppsummeringHeader: React.FunctionComponent<Props> = ({ children }) => (
+export const OppsummeringHeader = ({ children }: Props) => (
     <Page
         header={
             <>
@@ -43,5 +43,3 @@ const OppsummeringHeader: React.FunctionComponent<Props> = ({ children }) => (
         {children}
     </Page>
 );
-
-export default OppsummeringHeader;

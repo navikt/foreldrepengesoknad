@@ -18,5 +18,3 @@ export const useScrollBehaviour = () => {
 
     return { ref, scrollToBottom };
 };
-
-export default useScrollBehaviour;

@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import ByttBrowserModal from './ByttBrowserModal';
+import { ByttBrowserModal } from './ByttBrowserModal';
 
 const meta = {
     title: 'pages/ByttBrowserModal',

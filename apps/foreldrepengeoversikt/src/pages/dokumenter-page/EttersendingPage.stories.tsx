@@ -2,10 +2,10 @@ import { Meta, StoryObj } from '@storybook/react/*';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import dokumenter from 'storybookData/dokumenter/dokumenter.json';
+import { dokumenter } from 'storybookData/dokumenter/dokumenter';
 
-import OversiktRoutes from './../../routes/routes';
-import DokumenterPage from './DokumenterPage';
+import { OversiktRoutes } from './../../routes/routes';
+import { DokumenterPage } from './DokumenterPage';
 
 const queryClient = new QueryClient();
 

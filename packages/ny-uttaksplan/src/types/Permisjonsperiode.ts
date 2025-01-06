@@ -1,4 +1,5 @@
-import { Forelder, Tidsperiode } from '@navikt/fp-common';
+import { Tidsperiode } from '@navikt/fp-common';
+import { Forelder } from '@navikt/fp-constants';
 
 import { Planperiode } from './Planperiode';
 

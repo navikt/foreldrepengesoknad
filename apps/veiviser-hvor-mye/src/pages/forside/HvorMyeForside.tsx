@@ -1,6 +1,6 @@
 import { BabyWrappedIcon, WalletIcon } from '@navikt/aksel-icons';
 import { HvorMyeRoutes } from 'appData/routes';
-import useVeiviserNavigator from 'appData/useVeiviserNavigator';
+import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
 import { veiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
 import { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -17,7 +17,9 @@ interface Props {
     changeLocale: (locale: LocaleAll) => void;
 }
 
-const HvorMyeForside: React.FunctionComponent<Props> = ({ locale, changeLocale }) => {
+// @ts-expect-error
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- ubrukt frem til languageToggle skal tas i bruk
+export const HvorMyeForside = (props: Props) => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator();
 
@@ -32,8 +34,6 @@ const HvorMyeForside: React.FunctionComponent<Props> = ({ locale, changeLocale }
     return (
         <>
             <FrontPage
-                changeLocale={changeLocale}
-                locale={locale}
                 titleLabel={intl.formatMessage({ id: 'HvorMyeForside.Title' })}
                 minutesLabel={intl.formatMessage({ id: 'HvorMyeForside.Minutes' })}
                 innholdLabel={intl.formatMessage({ id: 'HvorMyeForside.Innhold' })}
@@ -48,7 +48,7 @@ const HvorMyeForside: React.FunctionComponent<Props> = ({ locale, changeLocale }
                             <HStack gap="5" align="center" wrap={false}>
                                 <BabyWrappedIcon aria-hidden height={45} width={45} />
                                 <VStack gap="4">
-                                    <Heading level="3" size="small">
+                                    <Heading level="2" size="small">
                                         <FormattedMessage id="HvorMyeForside.UsikkerFp" />
                                     </Heading>
                                     <BodyShort>
@@ -63,5 +63,3 @@ const HvorMyeForside: React.FunctionComponent<Props> = ({ locale, changeLocale }
         </>
     );
 };
-
-export default HvorMyeForside;

@@ -1,14 +1,13 @@
-import * as React from 'react';
 import { useIntl } from 'react-intl';
 
 import { AnnenForelder, PeriodeUtenUttakUtsettelse, Utsettelsesperiode, UtsettelseÅrsakType } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
 import { getÅrsakTekst } from '../OppsummeringUtils';
-import Feltoppsummering from './Feltoppsummering';
-import MorsAktivitetDetaljer from './MorsaktiviteterDetaljer';
+import { Feltoppsummering } from './Feltoppsummering';
+import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
-interface UtsettelsesperiodedetaljerProps {
+interface Props {
     periode: Utsettelsesperiode | PeriodeUtenUttakUtsettelse;
     registrerteArbeidsforhold: Arbeidsforhold[];
     søkerErFarEllerMedmor: boolean;
@@ -16,7 +15,7 @@ interface UtsettelsesperiodedetaljerProps {
     periodeErNyEllerEndret: boolean;
 }
 
-const Utsettelsesperiodedetaljer: React.FunctionComponent<UtsettelsesperiodedetaljerProps> = ({ periode }) => {
+export const Utsettelsesperiodedetaljer = ({ periode }: Props) => {
     const { årsak, morsAktivitetIPerioden, bekrefterArbeidIPerioden } = periode;
     const intl = useIntl();
     const bekreftErIArbeidSvar =
@@ -38,5 +37,3 @@ const Utsettelsesperiodedetaljer: React.FunctionComponent<Utsettelsesperiodedeta
         </>
     );
 };
-
-export default Utsettelsesperiodedetaljer;

@@ -9,7 +9,7 @@ import { EndringssøknadForInnsending, SøknadForInnsending } from 'types/Søkna
 import { VedleggDataType } from 'types/VedleggDataType';
 import { getTermindato } from 'utils/barnUtils';
 import { guid } from 'utils/guid';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import {
     AnnenForelder,

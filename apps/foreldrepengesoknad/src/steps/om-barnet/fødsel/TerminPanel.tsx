@@ -1,8 +1,9 @@
-import { FunctionComponent } from 'react';
+import dayjs from 'dayjs';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { getAktiveArbeidsforhold } from 'utils/arbeidsforholdUtils';
 import { andreAugust2022ReglerGjelder } from 'utils/dateUtils';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import {
     attenUkerTreDager,
     date21DaysAgo,
@@ -14,9 +15,11 @@ import {
 import { Alert, BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
 
 import { Søkersituasjon } from '@navikt/fp-common';
+import { ISO_DATE_REGEX } from '@navikt/fp-constants';
 import { RhfDatepicker } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold, Søkerrolle } from '@navikt/fp-types';
 import { isBeforeToday, isRequired, isValidDate } from '@navikt/fp-validation';
+import { terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke } from '@navikt/fp-validation/src/form/dateFormValidation';
 
 import { UfødtBarn } from '../OmBarnetFormValues';
 
@@ -33,7 +36,7 @@ interface Props {
     søknadGjelderEtNyttBarn?: boolean;
 }
 
-const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtNyttBarn }) => {
+export const TerminPanel = ({ søkersituasjon, arbeidsforhold, søknadGjelderEtNyttBarn }: Props) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<UfødtBarn>();
@@ -44,6 +47,16 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
     const søkerErFarMedmor = isFarEllerMedmor(søkersituasjon.rolle);
     const farMedMorSøkerPåTermin = søkerErFarMedmor && termindato;
     const kanSøkePåTermin = getKanSøkePåTermin(søkersituasjon.rolle, termindato);
+
+    const aktiveArbeidsforhold =
+        termindato && ISO_DATE_REGEX.test(termindato)
+            ? getAktiveArbeidsforhold(
+                  arbeidsforhold,
+                  søkersituasjon.situasjon === 'adopsjon',
+                  isFarEllerMedmor(søkersituasjon.rolle),
+                  termindato,
+              )
+            : arbeidsforhold;
 
     return (
         <>
@@ -91,11 +104,12 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
                     )}
                 </VStack>
             )}
-            {søknadGjelderEtNyttBarn && arbeidsforhold.length === 0 && kanSøkePåTermin && (
+            {søknadGjelderEtNyttBarn && aktiveArbeidsforhold.length === 0 && kanSøkePåTermin && (
                 <RhfDatepicker
                     name="terminbekreftelsedato"
                     label={intl.formatMessage({ id: 'omBarnet.terminbekreftelseDato' })}
                     maxDate={dateToday}
+                    minDate={dayjs(termindato).subtract(18, 'week').subtract(3, 'day').startOf('day').toDate()}
                     useStrategyAbsolute
                     validate={[
                         isRequired(
@@ -110,6 +124,12 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
                             intl.formatMessage({
                                 id: 'valideringsfeil.omBarnet.terminbekreftelseDato.kanIkkeVæreFremITid',
                             }),
+                        ),
+                        terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke(
+                            intl.formatMessage({
+                                id: 'valideringsfeil.omBarnet.terminbekreftelseDato.terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke',
+                            }),
+                            termindato,
                         ),
                     ]}
                 />
@@ -129,5 +149,3 @@ const TerminPanel: FunctionComponent<Props> = ({ søkersituasjon, arbeidsforhold
         </>
     );
 };
-
-export default TerminPanel;

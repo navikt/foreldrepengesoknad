@@ -11,7 +11,7 @@ interface Props<DATA_TYPE extends FieldValues> {
     useSimplifiedTexts?: boolean;
 }
 
-const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({
+export const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({
     goToPreviousStep,
     saveDataOnPreviousClick,
     nextButtonOnClick,
@@ -39,5 +39,3 @@ const StepButtonsHookForm = <DATA_TYPE extends FieldValues>({
         />
     );
 };
-
-export default StepButtonsHookForm;

@@ -2,10 +2,10 @@ import { Meta, StoryObj } from '@storybook/react/*';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import saker from 'storybookData/saker/saker.json';
+import { saker } from 'storybookData/saker/saker';
 
-import OversiktRoutes from './../../routes/routes';
-import MinidialogPage from './MinidialogPage';
+import { OversiktRoutes } from './../../routes/routes';
+import { MinidialogPage } from './MinidialogPage';
 
 const queryClient = new QueryClient();
 

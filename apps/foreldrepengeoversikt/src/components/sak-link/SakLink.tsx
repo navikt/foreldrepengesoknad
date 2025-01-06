@@ -1,9 +1,9 @@
 import { formatDate } from '@navikt/fp-utils';
 
-import StatusTag from '../status-tag/StatusTag';
-import { Sak } from './../../types/Sak';
-import { Ytelse } from './../../types/Ytelse';
-import { LenkePanel } from './../lenke-panel/LenkePanel';
+import { Sak } from '../../types/Sak';
+import { Ytelse } from '../../types/Ytelse';
+import { LenkePanel } from '../lenke-panel/LenkePanel';
+import { StatusTag } from '../status-tag/StatusTag';
 
 interface Props {
     sak: Sak;
@@ -21,7 +21,7 @@ const getHeading = (ytelse: Ytelse) => {
     }
 };
 
-export const SakLink: React.FunctionComponent<Props> = ({ sak, harMinstEttArbeidsforhold }) => {
+export const SakLink = ({ sak, harMinstEttArbeidsforhold }: Props) => {
     return (
         <LenkePanel
             tag={<StatusTag sak={sak} harMinstEttArbeidsforhold={harMinstEttArbeidsforhold} />}

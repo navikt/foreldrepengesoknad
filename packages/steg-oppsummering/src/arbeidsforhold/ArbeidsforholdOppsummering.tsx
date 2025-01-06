@@ -1,6 +1,6 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { FormSummary } from '@navikt/ds-react';
+import { Alert, FormSummary } from '@navikt/ds-react';
 
 import {
     Arbeidsforhold,
@@ -12,17 +12,19 @@ import {
 } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
+import { JaNeiTekst } from '../OppsummeringPanel';
+
 interface ArbeidsforholdOppsummeringProps {
     readonly arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
     readonly arbeidsforhold: Arbeidsforhold[];
     readonly onVilEndreSvar: () => void;
 }
 
-export const ArbeidsforholdOppsummering: React.FC<ArbeidsforholdOppsummeringProps> = ({
+export const ArbeidsforholdOppsummering = ({
     arbeidsforholdOgInntekt,
     arbeidsforhold,
     onVilEndreSvar,
-}) => {
+}: ArbeidsforholdOppsummeringProps) => {
     if (!arbeidsforholdOgInntekt) {
         return null;
     }
@@ -59,6 +61,12 @@ export const ArbeidsforholdOppsummering: React.FC<ArbeidsforholdOppsummeringProp
                             </FormSummary.Answers>
                         )}
                     </FormSummary.Value>
+                    <Alert variant="info" style={{ marginTop: 'var(--a-spacing-2)' }}>
+                        <FormattedMessage
+                            id="ArbeidsforholdOppsummering.inntektsmelding"
+                            values={{ antall: arbeidsforhold.length }}
+                        />
+                    </Alert>
                 </FormSummary.Answer>
                 <FormSummary.Answer>
                     <FormSummary.Label>
@@ -110,10 +118,6 @@ export const ArbeidsforholdOppsummering: React.FC<ArbeidsforholdOppsummeringProp
             </FormSummary.Answers>
         </FormSummary>
     );
-};
-
-const JaNeiTekst = ({ ja }: { readonly ja: boolean }) => {
-    return ja ? <FormattedMessage id="ja" /> : <FormattedMessage id="nei" />;
 };
 
 const ArbeidsforholdFormSummaryValue = ({ arbeidsforhold }: { readonly arbeidsforhold: Arbeidsforhold }) => {
@@ -308,7 +312,7 @@ interface FrilansOppsummeringProps {
     readonly frilans?: Frilans;
 }
 
-export const FrilansOppsummering: React.FC<FrilansOppsummeringProps> = ({ onVilEndreSvar, frilans }) => {
+export const FrilansOppsummering = ({ onVilEndreSvar, frilans }: FrilansOppsummeringProps) => {
     if (!frilans) {
         return null;
     }

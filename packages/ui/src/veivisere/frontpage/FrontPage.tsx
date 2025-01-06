@@ -6,14 +6,15 @@ import { BodyShort, Button, HStack, Heading, Show, VStack } from '@navikt/ds-rea
 
 import { LocaleAll } from '@navikt/fp-types';
 
-import BlueHeading from '../../boxes/BlueHeading';
-import IconCircleWrapper from '../../icon-circle/IconCircleWrapper';
-import Page from '../../page/Page';
+import { BlueHeading } from '../../boxes/BlueHeading';
+import { IconCircleWrapper } from '../../icon-circle/IconCircleWrapper';
+import { LanguageToggle } from '../../language-toggle-new/LanguageToggle';
+import { Page } from '../../page/Page';
 import styles from './frontPage.module.css';
 
 interface Props {
-    locale: LocaleAll;
-    changeLocale: (locale: LocaleAll) => void;
+    locale?: LocaleAll;
+    changeLocale?: (locale: LocaleAll) => void;
     children?: ReactElement | ReactElement[];
     titleLabel: string;
     minutesLabel: string;
@@ -23,7 +24,7 @@ interface Props {
     childrenBelowStartButton?: boolean;
 }
 
-const FrontPage: React.FunctionComponent<Props> = ({
+export const FrontPage = ({
     children,
     titleLabel,
     minutesLabel,
@@ -31,16 +32,20 @@ const FrontPage: React.FunctionComponent<Props> = ({
     goToNextDefaultStep,
     icon,
     childrenBelowStartButton = false,
-}) => (
+    locale,
+    changeLocale,
+}: Props) => (
     <Page
         header={
             <>
                 <Show below="md">
                     <BlueHeading>
                         <VStack gap="4" align="center">
-                            {/* <div className={styles.languageToggle}>
-                                <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
-                            </div> */}
+                            {locale && changeLocale && (
+                                <div className={styles.languageToggle}>
+                                    <LanguageToggle locale={locale} changeLocale={changeLocale} />
+                                </div>
+                            )}
                             <IconCircleWrapper color="blue" size="xl">
                                 {icon}
                                 {!icon && <CalendarIcon height={28} width={28} fontSize="1.5rem" aria-hidden />}
@@ -92,15 +97,15 @@ const FrontPage: React.FunctionComponent<Props> = ({
                 </HStack>
                 {childrenBelowStartButton && <VStack gap={{ xs: '2', sm: '5' }}>{children}</VStack>}
             </VStack>
-            {/* <Show above="md" asChild>
-                <HStack justify="center">
-                    <div className={styles.languageToggle}>
-                        <LanguageToggleNew locale={locale} changeLocale={changeLocale} />
-                    </div>
-                </HStack>
-            </Show> */}
+            {locale && changeLocale && (
+                <Show above="md" asChild>
+                    <HStack justify="center">
+                        <div className={styles.languageToggle}>
+                            <LanguageToggle locale={locale} changeLocale={changeLocale} />
+                        </div>
+                    </HStack>
+                </Show>
+            )}
         </VStack>
     </Page>
 );
-
-export default FrontPage;

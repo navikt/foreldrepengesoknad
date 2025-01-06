@@ -1,5 +1,6 @@
-import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
+import { ReactNode, createContext, useContext, useReducer } from 'react';
 import { ArbeidIUtlandet } from 'types/ArbeidIUtlandet';
+import { AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
 import { Barn } from 'types/Barn';
 import { DelvisTilrettelegging, IngenTilrettelegging, PeriodeMedVariasjon } from 'types/Tilrettelegging';
 
@@ -28,6 +29,7 @@ export enum ContextDataType {
     TILRETTELEGGINGER_VEDLEGG = 'TILRETTELEGGINGER_VEDLEGG',
     TILRETTELEGGINGER = 'TILRETTELEGGINGER',
     TILRETTELEGGINGER_PERIODER = 'TILRETTELEGGINGER_PERIODER',
+    FERIE = 'FERIE',
 }
 
 export type ContextDataMap = {
@@ -43,10 +45,11 @@ export type ContextDataMap = {
     [ContextDataType.VALGTE_ARBEIDSFORHOLD]?: string[];
     [ContextDataType.TILRETTELEGGINGER_VEDLEGG]?: Record<string, Attachment[]>;
     [ContextDataType.TILRETTELEGGINGER]?: Record<string, DelvisTilrettelegging | IngenTilrettelegging>;
+    [ContextDataType.FERIE]?: AvtaltFeriePerArbeidsgiver;
     [ContextDataType.TILRETTELEGGINGER_PERIODER]?: Record<string, PeriodeMedVariasjon[]>;
 };
 
-const defaultInitialState = {} as ContextDataMap;
+const defaultInitialState = {} satisfies ContextDataMap;
 
 export type Action = { type: 'update'; key: ContextDataType; data: any } | { type: 'reset' };
 type Dispatch = (action: Action) => void;
@@ -54,13 +57,13 @@ type Dispatch = (action: Action) => void;
 const SvpStateContext = createContext<ContextDataMap>(defaultInitialState);
 const SvpDispatchContext = createContext<Dispatch | undefined>(undefined);
 
-interface OwnProps {
+interface Props {
     children: ReactNode;
     initialState?: ContextDataMap;
     onDispatch?: (action: Action) => void;
 }
 
-export const SvpDataContext: FunctionComponent<OwnProps> = ({ children, initialState, onDispatch }): JSX.Element => {
+export const SvpDataContext = ({ children, initialState, onDispatch }: Props): JSX.Element => {
     const [state, dispatch] = useReducer((oldState: ContextDataMap, action: Action) => {
         switch (action.type) {
             case 'update':

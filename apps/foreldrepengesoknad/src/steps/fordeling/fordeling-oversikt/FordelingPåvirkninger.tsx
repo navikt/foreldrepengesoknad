@@ -12,11 +12,10 @@ import { andreAugust2022ReglerGjelder, førsteOktober2021ReglerGjelder } from 'u
 import { BodyShort, ExpansionCard, VStack } from '@navikt/ds-react';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { bemUtils } from '@navikt/fp-utils';
 import { uttaksConstants } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
-import './fordeling-påvirkninger.css';
+import styles from './fordeling-påvirkninger.module.css';
 
 interface Props {
     deltUttak: boolean;
@@ -30,7 +29,7 @@ interface Props {
     annenForelderHarKunRettIEØS: boolean;
 }
 
-const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
+export const FordelingPåvirkninger = ({
     deltUttak,
     erAdopsjon,
     navnAnnenForelder,
@@ -40,10 +39,9 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
     erIkkeFødtBarn,
     familiehendelsesdato,
     annenForelderHarKunRettIEØS,
-}) => {
+}: Props) => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
-    const bem = bemUtils('fordeling-påvirkninger');
     const heading = intl.formatMessage({ id: 'fordeling.påvirkninger.tittel' });
     const onToggleHandler = (open: boolean) => {
         if (open) {
@@ -68,20 +66,20 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
     const visInfoMorSykISinPeriode = deltUttak && førsteOkt2021Gjelder;
     const visInfoFørFørsteOkt2021 = deltUttak && !førsteOkt2021Gjelder;
     return (
-        <div className={bem.block}>
+        <div className={styles.fordelingPåvirkninger}>
             <ExpansionCard size="small" title-size="small" aria-label={heading} onToggle={onToggleHandler}>
                 <ExpansionCard.Header>
-                    <ExpansionCard.Title className={bem.element('heading')}>{heading}</ExpansionCard.Title>
+                    <ExpansionCard.Title className={styles.heading}>{heading}</ExpansionCard.Title>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
                     {visInfoMorSykFørsteSeksUker && (
                         <>
-                            <div className={bem.element('påvirkning')}>
-                                <div className={bem.element('ikon-frame')}>
-                                    <StethoscopeIcon className={bem.element('ikon')} aria-hidden={true} />
+                            <div className={styles.påvirkning}>
+                                <div className={styles.ikonFrame}>
+                                    <StethoscopeIcon className={styles.ikon} aria-hidden={true} />
                                 </div>
                                 <VStack>
-                                    <BodyShort className={bem.element('undertittel')}>
+                                    <BodyShort className={styles.undertittel}>
                                         <FormattedMessage
                                             id="fordeling.påvirkninger.barnSyk.tittel"
                                             values={{ antallBarn: barn.antallBarn }}
@@ -93,12 +91,12 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                                     />
                                 </VStack>
                             </div>
-                            <div className={bem.element('påvirkning')}>
-                                <div className={bem.element('ikon-frame')}>
-                                    <StethoscopeIcon className={bem.element('ikon')} aria-hidden={true} />
+                            <div className={styles.påvirkning}>
+                                <div className={styles.ikonFrame}>
+                                    <StethoscopeIcon className={styles.ikon} aria-hidden={true} />
                                 </div>
                                 <VStack>
-                                    <BodyShort className={bem.element('undertittel')}>
+                                    <BodyShort className={styles.undertittel}>
                                         <FormattedMessage
                                             id="fordeling.påvirkninger.morSykFørste6Uker.tittel"
                                             values={{ morTekst }}
@@ -119,12 +117,12 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                         </>
                     )}
                     {visInfoMorSykISinPeriode && (
-                        <div className={bem.element('påvirkning')}>
-                            <div className={bem.element('ikon-frame')}>
-                                <StethoscopeIcon className={bem.element('ikon')} aria-hidden={true} />
+                        <div className={styles.påvirkning}>
+                            <div className={styles.ikonFrame}>
+                                <StethoscopeIcon className={styles.ikon} aria-hidden={true} />
                             </div>
                             <VStack>
-                                <BodyShort className={bem.element('undertittel')}>
+                                <BodyShort className={styles.undertittel}>
                                     <FormattedMessage id="fordeling.påvirkninger.morSykISinPeriode.tittel" />
                                 </BodyShort>
                                 <FormattedMessage
@@ -135,12 +133,12 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                         </div>
                     )}
                     {visInfoFørFørsteOkt2021 && (
-                        <div className={bem.element('påvirkning')}>
-                            <div className={bem.element('ikon-frame')}>
-                                <StethoscopeIcon className={bem.element('ikon')} aria-hidden={true} />
+                        <div className={styles.påvirkning}>
+                            <div className={styles.ikonFrame}>
+                                <StethoscopeIcon className={styles.ikon} aria-hidden={true} />
                             </div>
                             <VStack>
-                                <BodyShort className={bem.element('undertittel')}>
+                                <BodyShort className={styles.undertittel}>
                                     <FormattedMessage
                                         id="fordeling.påvirkninger.utsettelse.tittel"
                                         values={{ antallBarn: barn.antallBarn }}
@@ -153,12 +151,12 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                             </VStack>
                         </div>
                     )}
-                    <div className={bem.element('påvirkning')}>
-                        <div className={bem.element('ikon-frame')}>
-                            <PersonPregnantIcon className={bem.element('ikon')} aria-hidden={true} />
+                    <div className={styles.påvirkning}>
+                        <div className={styles.ikonFrame}>
+                            <PersonPregnantIcon className={styles.ikon} aria-hidden={true} />
                         </div>
                         <VStack>
-                            <BodyShort className={bem.element('undertittel')}>
+                            <BodyShort className={styles.undertittel}>
                                 <FormattedMessage id="fordeling.påvirkninger.totette.tittel" values={{ duEllerDere }} />
                             </BodyShort>
                             {wlbReglerGjelder && (
@@ -192,24 +190,24 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                             )}
                         </VStack>
                     </div>
-                    <div className={bem.element('påvirkning')}>
-                        <div className={bem.element('ikon-frame')}>
-                            <BriefcaseIcon className={bem.element('ikon')} aria-hidden={true} />
+                    <div className={styles.påvirkning}>
+                        <div className={styles.ikonFrame}>
+                            <BriefcaseIcon className={styles.ikon} aria-hidden={true} />
                         </div>
                         <VStack>
-                            <BodyShort className={bem.element('undertittel')}>
+                            <BodyShort className={styles.undertittel}>
                                 <FormattedMessage id="fordeling.påvirkninger.jobb.tittel" />
                             </BodyShort>
                             <FormattedMessage id="fordeling.påvirkninger.jobb.info" />
                         </VStack>
                     </div>
                     {deltUttak && !annenForelderHarKunRettIEØS && (
-                        <div className={bem.element('påvirkning')}>
-                            <div className={bem.element('ikon-frame')}>
-                                <PersonGroupIcon className={bem.element('ikon')} aria-hidden={true} />
+                        <div className={styles.påvirkning}>
+                            <div className={styles.ikonFrame}>
+                                <PersonGroupIcon className={styles.ikon} aria-hidden={true} />
                             </div>
                             <VStack>
-                                <BodyShort className={bem.element('undertittel')}>
+                                <BodyShort className={styles.undertittel}>
                                     <FormattedMessage id="fordeling.påvirkninger.samtidigUttak.tittel" />
                                 </BodyShort>
                                 <FormattedMessage id="fordeling.påvirkninger.samtidigUttak.info" />
@@ -217,12 +215,12 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
                         </div>
                     )}
                     {erIkkeFødtBarn && (
-                        <div className={bem.element('påvirkning')}>
-                            <div className={bem.element('ikon-frame')}>
-                                <BabyWrappedIcon className={bem.element('ikon')} aria-hidden={true} />
+                        <div className={styles.påvirkning}>
+                            <div className={styles.ikonFrame}>
+                                <BabyWrappedIcon className={styles.ikon} aria-hidden={true} />
                             </div>
                             <VStack>
-                                <BodyShort className={bem.element('undertittel')}>
+                                <BodyShort className={styles.undertittel}>
                                     <FormattedMessage
                                         id="fordeling.påvirkninger.prematur.tittel"
                                         values={{ antallBarn: barn.antallBarn }}
@@ -240,5 +238,3 @@ const FordelingPåvirkninger: React.FunctionComponent<Props> = ({
         </div>
     );
 };
-
-export default FordelingPåvirkninger;

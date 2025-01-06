@@ -1,5 +1,4 @@
 import { ChatElipsisIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
@@ -40,7 +39,7 @@ interface Props {
     satser: Satser;
 }
 
-const OppgittInformasjon: FunctionComponent<Props> = ({
+export const OppgittInformasjon = ({
     stønadskontoer,
     barnet,
     hvemPlanlegger,
@@ -48,8 +47,9 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
     hvorLangPeriode,
     fordeling,
     satser,
-}) => {
+}: Props) => {
     const intl = useIntl();
+    const locale = intl.locale;
 
     const erFødt = erBarnetFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
@@ -90,7 +90,7 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
 
     const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdoptert;
 
-    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2);
+    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2, locale);
 
     return (
         <VStack gap="10">
@@ -303,5 +303,3 @@ const OppgittInformasjon: FunctionComponent<Props> = ({
         </VStack>
     );
 };
-
-export default OppgittInformasjon;

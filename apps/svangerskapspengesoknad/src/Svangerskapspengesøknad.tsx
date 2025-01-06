@@ -1,4 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
+import { SvpDataContext } from 'appData/SvpDataContext';
+import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from 'appData/useMellomlagreSøknad';
 import ky from 'ky';
 import { useIntl } from 'react-intl';
 
@@ -8,8 +10,6 @@ import { erMyndig, useDocumentTitle } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ApiErrorHandler, Spinner, SvangerskapspengesøknadRoutes } from './SvangerskapspengesøknadRoutes';
-import { SvpDataContext } from './app-data/SvpDataContext';
-import { SvpDataMapAndMetaData, VERSJON_MELLOMLAGRING } from './app-data/useMellomlagreSøknad';
 import { IkkeKvinne } from './pages/ikke-kvinne/IkkeKvinne';
 import './styles/app.css';
 
@@ -18,7 +18,7 @@ interface Props {
     onChangeLocale: any;
 }
 
-const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
+export const Svangerskapspengesøknad = ({ locale, onChangeLocale }: Props) => {
     const intl = useIntl();
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
 
@@ -69,5 +69,3 @@ const Svangerskapspengesøknad: React.FunctionComponent<Props> = ({ locale, onCh
         </div>
     );
 };
-
-export default Svangerskapspengesøknad;

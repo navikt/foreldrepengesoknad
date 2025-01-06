@@ -5,7 +5,7 @@ import { BodyShort, Link, ReadMore, VStack } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
 import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
 
-const HvemKanVæreFrilanser = () => {
+export const HvemKanVæreFrilanser = () => {
     const intl = useIntl();
 
     return (
@@ -36,5 +36,3 @@ const HvemKanVæreFrilanser = () => {
         </ReadMore>
     );
 };
-
-export default HvemKanVæreFrilanser;

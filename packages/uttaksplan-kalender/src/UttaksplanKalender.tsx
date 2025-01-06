@@ -1,6 +1,5 @@
 import { DownloadIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Margin, Options, Resolution, usePDF } from 'react-to-pdf';
 
@@ -35,16 +34,9 @@ import {
     isAvslåttPeriodeFørsteSeksUkerMor,
 } from '@navikt/fp-utils';
 
-import UttaksplanLegend from './UttaksplanLegend';
+import { UttaksplanLegend } from './UttaksplanLegend';
 import styles from './uttaksplanKalender.module.css';
 import { getKalenderSkjermlesertekstForPeriode } from './uttaksplanKalenderUtils';
-
-export interface UttaksplanKalenderProps {
-    uttaksplan: Periode[];
-    erFarEllerMedmor: boolean;
-    barn: Barn;
-    navnAnnenPart: string;
-}
 
 const getIndexOfFamiliehendelse = (uttaksplan: Periode[], familiehendelsesdato: string) => {
     const indexAvPeriodeUtenForeldrepengerFørFødsel = uttaksplan.findIndex(
@@ -210,12 +202,14 @@ const getInneholderKalenderHelgedager = (periods: Period[]): boolean => {
     return sisteDagNr < førsteDagNr;
 };
 
-const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
-    uttaksplan,
-    erFarEllerMedmor,
-    barn,
-    navnAnnenPart,
-}) => {
+interface Props {
+    uttaksplan: Periode[];
+    erFarEllerMedmor: boolean;
+    barn: Barn;
+    navnAnnenPart: string;
+}
+
+export const UttaksplanKalender = ({ uttaksplan, erFarEllerMedmor, barn, navnAnnenPart }: Props) => {
     const intl = useIntl();
     const utsettelser = uttaksplan.filter((p) => isUtsettelsesperiode(p)) as Utsettelsesperiode[];
     const unikeUtsettelseÅrsaker = [...new Set(utsettelser.map((u) => u.årsak))];
@@ -263,7 +257,7 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
                         erFarEllerMedmor={erFarEllerMedmor}
                     />
                 </div>
-                <Calendar periods={periods} familiehendelsedato={familiehendelsesdato} />
+                <Calendar periods={periods} />
             </div>
             <Button className={styles.button} variant="tertiary" icon={<DownloadIcon />} onClick={() => toPDF()}>
                 <FormattedMessage id="kalender.lastNed" />
@@ -271,5 +265,3 @@ const UttaksplanKalender: FunctionComponent<UttaksplanKalenderProps> = ({
         </>
     );
 };
-
-export default UttaksplanKalender;

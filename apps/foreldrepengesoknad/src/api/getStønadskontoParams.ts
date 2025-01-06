@@ -2,7 +2,7 @@ import { AnnenPartVedtakDTO } from 'types/AnnenPartVedtakDTO';
 import { getErMorUfør } from 'utils/annenForelderUtils';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { mapAnnenPartsEksisterendeSakFromDTO } from 'utils/eksisterendeSakUtils';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getFarMedmorErAleneOmOmsorg, getMorErAleneOmOmsorg } from 'utils/personUtils';
 
 import {
@@ -51,10 +51,11 @@ const getTermindatoSomSkalBrukes = (barn: Barn, termindatoSaksgrunnlag?: string)
 };
 
 export const getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter = (
+    erFarEllerMedmor: boolean,
     termindatoSaksgrunnlag?: string,
     termindatoSaksgrunnlagAnnenPart?: string,
 ): string | undefined => {
-    if (termindatoSaksgrunnlagAnnenPart) {
+    if (termindatoSaksgrunnlagAnnenPart && erFarEllerMedmor) {
         return termindatoSaksgrunnlagAnnenPart;
     }
 
@@ -89,7 +90,7 @@ const finnRettighetstype = (
     return 'BARE_SØKER_RETT';
 };
 
-const getStønadskontoParams = (
+export const getStønadskontoParams = (
     barn: Barn,
     annenForelder: AnnenForelder,
     søkersituasjon: SøkersituasjonFp,
@@ -129,6 +130,7 @@ const getStønadskontoParams = (
     );
 
     const saksgrunnlagsTermindato = getTermindatoSomSkalBrukesFraSaksgrunnlagBeggeParter(
+        erFarEllerMedmor,
         eksisterendeSak?.grunnlag.termindato,
         eksisterendeVedtakAnnenPart?.grunnlag.termindato,
     );
@@ -153,5 +155,3 @@ const getStønadskontoParams = (
         familieHendelseDatoNesteSak: førsteUttaksdagNesteBarnsSak,
     };
 };
-
-export default getStønadskontoParams;

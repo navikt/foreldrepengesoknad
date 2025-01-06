@@ -14,13 +14,13 @@ interface Props {
     links: AndreVeivisereLink[];
 }
 
-const AndreVeivisereLinkPanel: React.FunctionComponent<Props> = ({ links }) => {
+export const AndreVeivisereLinkPanel = ({ links }: Props) => {
     return (
         <div className={styles.background}>
             <div className={styles.box}>
                 <VStack gap="2">
                     {links.length > 1 && (
-                        <Heading size="small">
+                        <Heading size="small" level="2">
                             <FormattedMessage id="AndreVeivisereLinkPanel.AndreVeivisere" />
                         </Heading>
                     )}
@@ -36,5 +36,3 @@ const AndreVeivisereLinkPanel: React.FunctionComponent<Props> = ({ links }) => {
         </div>
     );
 };
-
-export default AndreVeivisereLinkPanel;

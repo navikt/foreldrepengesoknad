@@ -1,11 +1,11 @@
-import { FunctionComponent, ReactElement, ReactNode, useCallback, useMemo } from 'react';
+import { ReactElement, ReactNode, useCallback, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { CheckboxGroup } from '@navikt/ds-react';
 
 import { getError, getValidationRules } from './formUtils';
 
-interface CheckboxPanelProps {
+interface Props {
     name: string;
     label: string | ReactNode;
     description?: string;
@@ -15,7 +15,7 @@ interface CheckboxPanelProps {
     children: ReactElement[];
 }
 
-const RhfCheckboxGroup: FunctionComponent<CheckboxPanelProps> = ({
+export const RhfCheckboxGroup = ({
     label,
     name,
     description,
@@ -23,7 +23,7 @@ const RhfCheckboxGroup: FunctionComponent<CheckboxPanelProps> = ({
     onChange,
     disabled = false,
     children,
-}) => {
+}: Props) => {
     const {
         formState: { errors },
     } = useFormContext();
@@ -59,5 +59,3 @@ const RhfCheckboxGroup: FunctionComponent<CheckboxPanelProps> = ({
         </CheckboxGroup>
     );
 };
-
-export default RhfCheckboxGroup;

@@ -1,7 +1,7 @@
 import { ContextDataType, useContextGetData } from 'appData/EsDataContext';
 import { Path } from 'appData/paths';
-import useEsNavigator from 'appData/useEsNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { useEsNavigator } from 'appData/useEsNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import { FormattedMessage } from 'react-intl';
 
 import { Heading } from '@navikt/ds-react';
@@ -11,14 +11,14 @@ import { ContentWrapper } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { DokumentasjonOppsummering } from './DokumentasjonOppsummering';
-import OmBarnetOppsummering from './OmBarnetOppsummering';
+import { OmBarnetOppsummering } from './OmBarnetOppsummering';
 
 export interface Props {
     sendSøknad: () => Promise<void>;
     mellomlagreOgNaviger: () => Promise<void>;
 }
 
-const OppsummeringSteg = ({ sendSøknad, mellomlagreOgNaviger }: Props) => {
+export const OppsummeringSteg = ({ sendSøknad, mellomlagreOgNaviger }: Props) => {
     const stepConfig = useStepConfig();
     const navigator = useEsNavigator(mellomlagreOgNaviger);
 
@@ -55,5 +55,3 @@ const OppsummeringSteg = ({ sendSøknad, mellomlagreOgNaviger }: Props) => {
         </ContentWrapper>
     );
 };
-
-export default OppsummeringSteg;

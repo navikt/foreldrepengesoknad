@@ -14,7 +14,7 @@ import { getLocaleFromSessionStorage, setLocaleInSessionStorage, utilsMessages }
 import { uttaksplanMessages } from '@navikt/fp-uttaksplan';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender';
 
-import Foreldrepengesøknad, { retryCallback } from './Foreldrepengesøknad';
+import { Foreldrepengesøknad, retryCallback } from './Foreldrepengesøknad';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
 
@@ -66,7 +66,7 @@ const queryClient = new QueryClient({
 
 dayjs.locale(localeFromSessionStorage);
 
-const AppContainer = () => {
+export const AppContainer = () => {
     const [locale, setLocale] = useState<LocaleNo>(localeFromSessionStorage);
 
     return (
@@ -88,5 +88,3 @@ const AppContainer = () => {
         </IntlProvider>
     );
 };
-
-export default AppContainer;

@@ -3,20 +3,20 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { useRef } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import annenPartsVedtak from 'storybookData/annenPartVedtak/annenPartVedtak.json';
-import dokumenter from 'storybookData/dokumenter/dokumenter.json';
-import satser from 'storybookData/inntektsmeldinger/satser.json';
-import manglendeVedlegg from 'storybookData/manglendeVedlegg/manglendeVedlegg.json';
-import saker from 'storybookData/saker/saker.json';
-import søkerinfo from 'storybookData/sokerinfo/sokerinfo.json';
-import tidslinjeHendelser from 'storybookData/tidslinjeHendelser/tidslinjeHendelser.json';
+import { annenPartVedtak } from 'storybookData/annenPartVedtak/annenPartVedtak';
+import { dokumenter } from 'storybookData/dokumenter/dokumenter';
+import { satser } from 'storybookData/inntektsmeldinger/satser';
+import { manglendeVedlegg } from 'storybookData/manglendeVedlegg/manglendeVedlegg';
+import { saker } from 'storybookData/saker/saker';
+import { søkerinfo } from 'storybookData/sokerinfo/sokerinfo';
+import { tidslinjeHendelser } from 'storybookData/tidslinjeHendelser/tidslinjeHendelser';
 
 import { SaksperiodeNy } from '@navikt/fp-types';
 
+import { OversiktRoutes } from '../../routes/routes';
 import { BehandlingTilstand } from '../../types/BehandlingTilstand';
 import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
-import OversiktRoutes from './../../routes/routes';
-import Saksoversikt from './Saksoversikt';
+import { Saksoversikt } from './Saksoversikt';
 
 const queryClient = new QueryClient();
 
@@ -62,7 +62,7 @@ export const Default: Story = {
                 ),
                 http.get(`${import.meta.env.BASE_URL}/rest/innsyn/v2/saker/oppdatert`, () => HttpResponse.json(true)),
                 http.post(`${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`, () =>
-                    HttpResponse.json(annenPartsVedtak),
+                    HttpResponse.json(annenPartVedtak),
                 ),
             ],
         },

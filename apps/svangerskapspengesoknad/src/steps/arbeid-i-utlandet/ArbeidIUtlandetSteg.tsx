@@ -14,7 +14,6 @@ import { Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ArbeidIUtlandetFieldArray, NEW_ARBEID_I_UTLANDET } from './ArbeidIUtlandetFieldArray';
-import './arbeidIUtlandetSteg.css';
 
 type Props = {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
@@ -22,11 +21,7 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-export const ArbeidIUtlandetSteg: React.FunctionComponent<Props> = ({
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-    arbeidsforhold,
-}) => {
+export const ArbeidIUtlandetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
     const intl = useIntl();
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);

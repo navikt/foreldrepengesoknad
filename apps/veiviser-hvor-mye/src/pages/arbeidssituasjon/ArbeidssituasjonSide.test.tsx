@@ -51,14 +51,14 @@ describe('<ArbeidssituasjonSide>', () => {
         });
     });
 
-    it('skal velge at en får utbetaling fra NAV', async () => {
+    it('skal velge at en får utbetaling fra Nav', async () => {
         const setArbeidssituasjon = vi.fn();
         const utils = render(<Default setArbeidssituasjon={setArbeidssituasjon} />);
 
         expect(await screen.findByText('Hvor mye kan jeg få i foreldrepenger?')).toBeInTheDocument();
 
         expect(screen.getByText('Hva er din nåværende arbeidssituasjon?')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Jeg får utbetaling fra NAV'));
+        await userEvent.click(screen.getByText('Jeg får utbetaling fra Nav'));
 
         expect(screen.getByText('Hvor mye fikk du utbetalt de 3 siste månedene før skatt?')).toBeInTheDocument();
         expect(screen.queryByText('Oppgi lønnen din før skatt')).not.toBeInTheDocument();
@@ -92,7 +92,7 @@ describe('<ArbeidssituasjonSide>', () => {
         });
     });
 
-    it('skal velge både arbeidstaker eller frilanser og at en får utbetaling fra NAV', async () => {
+    it('skal velge både arbeidstaker eller frilanser og at en får utbetaling fra Nav', async () => {
         const setArbeidssituasjon = vi.fn();
         const utils = render(<Default setArbeidssituasjon={setArbeidssituasjon} />);
 
@@ -100,7 +100,7 @@ describe('<ArbeidssituasjonSide>', () => {
 
         expect(screen.getByText('Hva er din nåværende arbeidssituasjon?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Arbeidstaker eller frilanser'));
-        await userEvent.click(screen.getByText('Jeg får utbetaling fra NAV'));
+        await userEvent.click(screen.getByText('Jeg får utbetaling fra Nav'));
 
         expect(screen.getByText('Hvor mye fikk du utbetalt de 3 siste månedene før skatt?')).toBeInTheDocument();
         const forrigeMåned = dayjs().subtract(1, 'month');

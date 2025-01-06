@@ -1,5 +1,4 @@
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
-import { UseQueryResult } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 import { Link as LinkInternal } from 'react-router-dom';
@@ -7,7 +6,6 @@ import { Link as LinkInternal } from 'react-router-dom';
 import { BodyShort, Button, Link, ReadMore } from '@navikt/ds-react';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { bemUtils } from '@navikt/fp-utils';
 
 import { Sak } from '../../types/Sak';
 import { SøkerinfoDTOBarn } from '../../types/SøkerinfoDTO';
@@ -23,29 +21,21 @@ import {
     getHendelserForVisning,
     getTidslinjehendelseTittel,
 } from '../../utils/tidslinjeUtils';
-import NoeGikkGalt from './../../components/noe-gikk-galt/NoeGikkGalt';
 import { DokumentHendelse, InntektsmeldingDokumentHendelse } from './DokumentHendelse';
-import TidslinjeHendelse from './TidslinjeHendelse';
-import './tidslinje-hendelse.css';
+import { TidslinjeHendelse } from './TidslinjeHendelse';
+import styles from './tidslinje.module.css';
 
-interface Params {
+interface Props {
     sak: Sak;
     visHeleTidslinjen: boolean;
     søkersBarn: SøkerinfoDTOBarn[];
-    manglendeVedleggQuery: UseQueryResult<Skjemanummer[], Error>;
-    tidslinjeHendelserQuery: UseQueryResult<Tidslinjehendelse[], Error>;
+    manglendeVedlegg: Skjemanummer[];
+    tidslinjeHendelser: Tidslinjehendelse[];
 }
 
-const Tidslinje: React.FunctionComponent<Params> = ({
-    sak,
-    visHeleTidslinjen,
-    søkersBarn,
-    tidslinjeHendelserQuery,
-    manglendeVedleggQuery,
-}) => {
+export const Tidslinje = ({ sak, visHeleTidslinjen, søkersBarn, tidslinjeHendelser, manglendeVedlegg }: Props) => {
     const intl = useIntl();
 
-    const bem = bemUtils('tidslinje-hendelse');
     const førsteUttaksdagISaken =
         sak.ytelse === Ytelse.FORELDREPENGER ? getFørsteUttaksdagIForeldrepengesaken(sak) : undefined;
 
@@ -57,19 +47,8 @@ const Tidslinje: React.FunctionComponent<Params> = ({
             sak.gjeldendeVedtak.perioder.every((p) => p.resultat !== undefined && p.resultat.innvilget === false));
     const erInnvilgetForeldrepengesøknad =
         sak.ytelse === Ytelse.FORELDREPENGER && sak.åpenBehandling === undefined && !!sak.gjeldendeVedtak;
-    if (tidslinjeHendelserQuery.isError || manglendeVedleggQuery.isError || sak === undefined) {
-        return (
-            <NoeGikkGalt>
-                Vi klarer ikke å vise informasjon om hva som skjer i saken din akkurat nå. Feilen er hos oss, ikke hos
-                deg. Prøv igjen senere.
-            </NoeGikkGalt>
-        );
-    }
 
-    const tidslinjeHendelserData = tidslinjeHendelserQuery.data ?? [];
-    const manglendeVedleggData = manglendeVedleggQuery.data ?? [];
-
-    if (tidslinjeHendelserData.length === 0) {
+    if (tidslinjeHendelser.length === 0) {
         return null;
     }
 
@@ -77,9 +56,9 @@ const Tidslinje: React.FunctionComponent<Params> = ({
         sak.åpenBehandling && VENTEÅRSAKER.includes(sak.åpenBehandling.tilstand) ? sak.åpenBehandling : undefined;
 
     const alleSorterteHendelser = getAlleTidslinjehendelser(
-        tidslinjeHendelserData,
+        tidslinjeHendelser,
         åpenBehandlingPåVent,
-        manglendeVedleggData,
+        manglendeVedlegg,
         sak,
         barnFraSak,
         erAvslåttForeldrepengesøknad,
@@ -133,7 +112,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({
                             hendelse,
                             intl,
                             hendelse.tidligstBehandlingsDato,
-                            manglendeVedleggData,
+                            manglendeVedlegg,
                             barnFraSak,
                             sak,
                         )}
@@ -141,7 +120,7 @@ const Tidslinje: React.FunctionComponent<Params> = ({
                         isActiveStep={isActiveStep}
                         visKlokkeslett={visKlokkeslett}
                         type={hendelse.tidslinjeHendelseType}
-                        førsteUttaksdagISaken={førsteUttaksdagISaken}
+                        førsteUttaksdagISaken={førsteUttaksdagISaken?.toISOString()}
                         tidligstBehandlingsDato={hendelse.tidligstBehandlingsDato}
                         finnesHendelserFørAktivtSteg={!!finnesHendelserFørAktivtSteg}
                         visHeleTidslinjen={visHeleTidslinjen}
@@ -149,16 +128,16 @@ const Tidslinje: React.FunctionComponent<Params> = ({
                     >
                         <ul className="list-none p-0">
                             {hendelse.tidslinjeHendelseType === TidslinjehendelseType.VENT_DOKUMENTASJON &&
-                                manglendeVedleggData &&
-                                manglendeVedleggData.length > 1 && (
-                                    <div className={bem.element('manglende_vedlegg')}>
+                                manglendeVedlegg &&
+                                manglendeVedlegg.length > 1 && (
+                                    <div className={styles.manglendeVedlegg}>
                                         <div>
                                             {intl.formatMessage({
                                                 id: 'tidslinje.VENT_DOKUMENTASJON.flereVedlegg.tittel',
                                             })}
                                         </div>
                                         <ul>
-                                            {manglendeVedleggData.map((skjemaId) => {
+                                            {manglendeVedlegg.map((skjemaId) => {
                                                 return (
                                                     <li key={guid()}>
                                                         {intl.formatMessage({ id: `ettersendelse.${skjemaId}` })}
@@ -169,32 +148,34 @@ const Tidslinje: React.FunctionComponent<Params> = ({
                                     </div>
                                 )}
                             {hendelse.merInformasjon && (
-                                <BodyShort size="small" className={bem.element('mer_informasjon')}>
+                                <BodyShort size="small" className={styles.merInformasjon}>
                                     {hendelse.merInformasjon}
                                 </BodyShort>
                             )}
                             {alleDokumenter.length > 0 && alleDokumenter.length <= 3 && alleDokumenter}
                             {alleDokumenter.length > 0 && alleDokumenter.length > 3 && (
                                 <ReadMore
-                                    className={bem.element('medium_font')}
+                                    className={styles.mediumFont}
                                     header={`Du sendte ${hendelse.dokumenter.length} dokumenter`}
                                 >
                                     {alleDokumenter}
                                 </ReadMore>
                             )}
                             {hendelse.linkTittel && hendelse.eksternalUrl && (
-                                <Link href={hendelse.eksternalUrl} className={bem.element('link')}>
+                                <Link href={hendelse.eksternalUrl} className={styles.link}>
                                     <BodyShort size="small">{hendelse.linkTittel}</BodyShort>
                                     <ExternalLinkIcon aria-hidden={true} />
                                 </Link>
                             )}
                             {hendelse.linkTittel && hendelse.internalUrl && (
-                                <LinkInternal
-                                    className={bem.element('medium_font')}
+                                <Button
+                                    size="small"
+                                    className="mt-2"
                                     to={`/sak/${sak.saksnummer}/${hendelse.internalUrl}`}
+                                    as={LinkInternal}
                                 >
-                                    <Button>{hendelse.linkTittel}</Button>
-                                </LinkInternal>
+                                    {hendelse.linkTittel}
+                                </Button>
                             )}
                         </ul>
                     </TidslinjeHendelse>
@@ -203,5 +184,3 @@ const Tidslinje: React.FunctionComponent<Params> = ({
         </div>
     );
 };
-
-export default Tidslinje;

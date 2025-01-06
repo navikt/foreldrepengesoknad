@@ -1,8 +1,7 @@
-import { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
-import { getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+import { getDefaultNavnSøker1, getDefaultNavnSøker2 } from 'utils/HvemPlanleggerUtils';
 import { erBarnetAdoptert } from 'utils/barnetUtils';
 import {
     HvemHarRett,
@@ -13,11 +12,11 @@ import {
 
 import { HStack, VStack } from '@navikt/ds-react';
 
-import AktivitetskravLabel from './calendar-labels/AktivitetskravLabel';
-import AntallUkerFpLabel from './calendar-labels/AntallUkerFpLabel';
-import BarnehageplassLabel from './calendar-labels/BarnehageplassLabel';
-import FamiliehendelseLabel from './calendar-labels/FamiliehendelseLabel';
-import ForeldrepengerLabel from './calendar-labels/ForeldrepengerLabel';
+import { AktivitetskravLabel } from './calendar-labels/AktivitetskravLabel';
+import { AntallUkerFpLabel } from './calendar-labels/AntallUkerFpLabel';
+import { BarnehageplassLabel } from './calendar-labels/BarnehageplassLabel';
+import { FamiliehendelseLabel } from './calendar-labels/FamiliehendelseLabel';
+import { ForeldrepengerLabel } from './calendar-labels/ForeldrepengerLabel';
 
 interface Props {
     barnet: OmBarnet;
@@ -25,14 +24,14 @@ interface Props {
     hvemHarRett: HvemHarRett;
 }
 
-const CalendarLabels: FunctionComponent<Props> = ({ barnet, hvemPlanlegger, hvemHarRett }) => {
+export const CalendarLabels = ({ barnet, hvemPlanlegger, hvemHarRett }: Props) => {
     const intl = useIntl();
 
     const erAdoptert = erBarnetAdoptert(barnet);
 
     const erFarOgFar = hvemPlanlegger.type === Situasjon.FAR_OG_FAR;
-    const søker1Tekst = getFornavnPåSøker1(hvemPlanlegger, intl);
-    const søker2Tekst = getFornavnPåSøker2(hvemPlanlegger, intl);
+    const søker1Tekst = getDefaultNavnSøker1(hvemPlanlegger, intl);
+    const søker2Tekst = getDefaultNavnSøker2(hvemPlanlegger, intl);
 
     const erFarOgFarOgFødsel = erFarOgFar && !erAdoptert;
     const erFarOgFarOgAdopsjon = erFarOgFar && erAdoptert;
@@ -48,8 +47,6 @@ const CalendarLabels: FunctionComponent<Props> = ({ barnet, hvemPlanlegger, hvem
         (harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) ||
             (hvemHarRett === 'kunSøker1HarRett' && erFarOgFarOgAdopsjon));
 
-    const farOgFarAdopsjonDerKunSøker1HarRett = hvemHarRett === 'kunSøker1HarRett' && erFarOgFarOgAdopsjon;
-
     return (
         <VStack gap="1">
             {skalViseAntallUkerLabels && (
@@ -62,12 +59,8 @@ const CalendarLabels: FunctionComponent<Props> = ({ barnet, hvemPlanlegger, hvem
             )}
             {skalViseAktivitetskravLabels && (
                 <HStack gap="2">
-                    <AktivitetskravLabel
-                        utenAktivitetskrav
-                        tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst}
-                        isBluePanel
-                    />
-                    <AktivitetskravLabel tekstPart1={farOgFarAdopsjonDerKunSøker1HarRett ? søker1Tekst : søker2Tekst} />
+                    <AktivitetskravLabel utenAktivitetskrav isBluePanel />
+                    <AktivitetskravLabel />
                     <FamiliehendelseLabel barnet={barnet} />
                     {!erAdoptert && <BarnehageplassLabel barnet={barnet} />}
                 </HStack>
@@ -82,5 +75,3 @@ const CalendarLabels: FunctionComponent<Props> = ({ barnet, hvemPlanlegger, hvem
         </VStack>
     );
 };
-
-export default CalendarLabels;

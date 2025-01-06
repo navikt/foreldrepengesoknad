@@ -1,10 +1,10 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
-import getStønadskontoParams from 'api/getStønadskontoParams';
+import { getStønadskontoParams } from 'api/getStønadskontoParams';
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import { annenPartVedtakOptions, tilgjengeligeStønadskontoerOptions } from 'appData/api';
-import useFpNavigator from 'appData/useFpNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { useFpNavigator } from 'appData/useFpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import { useIntl } from 'react-intl';
 import { getAnnenPartVedtakParam, shouldSuspendAnnenPartVedtakApiRequest } from 'utils/annenForelderUtils';
 import { getVis1Juli2024Info } from 'utils/dateUtils';
@@ -14,14 +14,12 @@ import { Box, HStack, Loader } from '@navikt/ds-react';
 
 import { Dekningsgrad, DekningsgradDTO, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
-import { bemUtils } from '@navikt/fp-utils';
+import { IconCircleWrapper, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import DekningsgradForm from './DekningsgradForm';
-import DekningsgradValgtAvAnnenPartPanel from './DekningsgradValgtAvAnnenPartPanel';
-import InfoOmUtvidet80ProsentPeriode from './InfoOmUtvidet80ProsentPeriode';
-import './panelWithCircleIcon.less';
+import { DekningsgradForm } from './DekningsgradForm';
+import { DekningsgradValgtAvAnnenPartPanel } from './DekningsgradValgtAvAnnenPartPanel';
+import { InfoOmUtvidet80ProsentPeriode } from './InfoOmUtvidet80ProsentPeriode';
 
 type Props = {
     arbeidsforhold: Arbeidsforhold[];
@@ -29,13 +27,8 @@ type Props = {
     avbrytSøknad: () => void;
 };
 
-const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
-    arbeidsforhold,
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-}) => {
+export const PeriodeMedForeldrepengerSteg = ({ arbeidsforhold, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
     const intl = useIntl();
-    const bem = bemUtils('circle');
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useFpNavigator(arbeidsforhold, mellomlagreSøknadOgNaviger);
 
@@ -88,9 +81,9 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
                         <Box padding="4" background="surface-alt-3-subtle" style={{ marginBottom: '2rem' }}>
                             <HStack justify="space-between" align="start">
                                 <InfoOmUtvidet80ProsentPeriode />
-                                <div className={bem.block}>
-                                    <CalendarIcon height={24} width={24} color="#005B82" />
-                                </div>
+                                <IconCircleWrapper color="lightBlue" size="medium">
+                                    <CalendarIcon height={24} width={24} />
+                                </IconCircleWrapper>
                             </HStack>
                         </Box>
                     )}
@@ -129,5 +122,3 @@ const PeriodeMedForeldrepengerSteg: React.FunctionComponent<Props> = ({
         </Step>
     );
 };
-
-export default PeriodeMedForeldrepengerSteg;

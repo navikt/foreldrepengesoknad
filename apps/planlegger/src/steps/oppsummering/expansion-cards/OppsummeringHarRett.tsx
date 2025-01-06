@@ -1,7 +1,7 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import CalendarLabels from 'components/labels/CalendarLabels';
-import { FunctionComponent } from 'react';
+import { CalendarLabels } from 'components/labels/CalendarLabels';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
@@ -9,6 +9,7 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import {
     erAlenesøker,
+    getErFarEllerMedmor,
     getFornavnPåSøker1,
     getFornavnPåSøker2,
     getNavnGenitivEierform,
@@ -26,12 +27,11 @@ import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-r
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
-import { BluePanel, Calendar, IconCircleWrapper } from '@navikt/fp-ui';
+import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { UttaksdagenString, capitalizeFirstLetter } from '@navikt/fp-utils';
-import { sorterPerioder } from '@navikt/fp-uttaksplan-ny';
+import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
 
-import { erBarnetAdoptert } from '../../../utils/barnetUtils';
-import { barnehagestartDato } from '../../barnehageplass/BarnehageplassSteg';
+import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../../utils/barnetUtils';
 
 const onToggleExpansionCard = (open: boolean) => {
     if (open) {
@@ -52,14 +52,14 @@ interface Props {
     fordeling?: Fordeling;
 }
 
-const OppsummeringHarRett: FunctionComponent<Props> = ({
+export const OppsummeringHarRett = ({
     valgtStønadskonto,
     hvorLangPeriode,
     hvemPlanlegger,
     barnet,
     arbeidssituasjon,
     fordeling,
-}) => {
+}: Props) => {
     const intl = useIntl();
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
@@ -74,20 +74,6 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
     const antallUkerOgDagerAktivitetsfriKvote = getAntallUkerOgDagerAktivitetsfriKvote(valgtStønadskonto);
     const bareFarMedmorHarRett =
         harKunMedmorEllerFarSøker2Rett(hvemHarRett, hvemPlanlegger) || harKunFarSøker1Rett(hvemHarRett, hvemPlanlegger);
-    const barnehageplassdato = barnehagestartDato(barnet);
-
-    const getErFarEllerMedmor = () => {
-        if (
-            hvemPlanlegger.type === Situasjon.FAR ||
-            (hvemPlanlegger.type === Situasjon.MOR_OG_FAR && hvemHarRett === 'kunSøker2HarRett') ||
-            hvemPlanlegger.type === Situasjon.FAR_OG_FAR ||
-            (hvemPlanlegger.type === Situasjon.MOR_OG_MEDMOR && hvemHarRett === 'kunSøker2HarRett')
-        ) {
-            return true;
-        }
-
-        return false;
-    };
 
     let startdato = undefined;
 
@@ -98,6 +84,8 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
         startdato = UttaksdagenString(familiehendelsedato).leggTil(30);
     }
 
+    const erFarEllerMedmor = getErFarEllerMedmor(hvemPlanlegger, hvemHarRett);
+
     const planforslag = lagForslagTilPlan({
         erDeltUttak: fordeling !== undefined,
         famDato: familiehendelsedato,
@@ -105,13 +93,11 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
         fellesperiodeDagerMor: fordeling?.antallDagerSøker1,
         bareFarMedmorHarRett,
         erAdopsjon: erBarnetAdoptert(barnet),
-        erFarEllerMedmor: getErFarEllerMedmor(),
+        erFarEllerMedmor: erFarEllerMedmor,
         startdato,
         erMorUfør: arbeidssituasjon?.status === Arbeidsstatus.UFØR,
         erAleneOmOmsorg: hvemPlanlegger.type === Situasjon.FAR || hvemPlanlegger.type === Situasjon.MOR,
     });
-
-    const kombinertPlanforslag = [...planforslag.søker1, ...planforslag.søker2].sort(sorterPerioder);
 
     const ukerOgDagerMedForeldrepenger = finnAntallUkerOgDagerMedForeldrepenger(valgtStønadskonto);
 
@@ -120,6 +106,8 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
     const fornavnSøker1Genitiv = getNavnGenitivEierform(fornavnSøker1, intl.locale);
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
     const fornavnSøker2Genitiv = fornavnSøker2 ? getNavnGenitivEierform(fornavnSøker2, intl.locale) : undefined;
+
+    const barnehagestartdato = barnehagestartDato(barnet);
 
     return (
         <VStack gap="10">
@@ -201,7 +189,7 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                                     year: 'numeric',
                                                 },
                                             ),
-                                            b: (msg: any) => <b>{msg}</b>,
+                                            b: (msg) => <b>{msg}</b>,
                                         }}
                                     />
                                 </BodyLong>
@@ -312,12 +300,22 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                 </BodyShort>
                             </BluePanel>
                         )}
-                        <CalendarLabels hvemPlanlegger={hvemPlanlegger} barnet={barnet} hvemHarRett={hvemHarRett} />
-                        <Calendar
-                            periods={kombinertPlanforslag}
-                            familiehendelsedato={familiehendelsedato}
-                            barnehageplassdato={barnehageplassdato}
-                            useSmallerWidth
+                        <UttaksplanKalender
+                            bareFarHarRett={bareFarMedmorHarRett}
+                            erFarEllerMedmor={erFarEllerMedmor}
+                            harAktivitetskravIPeriodeUtenUttak={false}
+                            søkersPerioder={planforslag.søker1}
+                            annenPartsPerioder={planforslag.søker2}
+                            navnAnnenPart="Test"
+                            barn={mapOmBarnetTilBarn(barnet)}
+                            planleggerLegend={
+                                <CalendarLabels
+                                    hvemPlanlegger={hvemPlanlegger}
+                                    barnet={barnet}
+                                    hvemHarRett={hvemHarRett}
+                                />
+                            }
+                            barnehagestartdato={barnehagestartdato}
                         />
                     </VStack>
                 </ExpansionCard.Content>
@@ -325,4 +323,3 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
         </VStack>
     );
 };
-export default OppsummeringHarRett;

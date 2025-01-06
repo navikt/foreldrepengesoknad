@@ -3,12 +3,13 @@ import ky from 'ky';
 import { z } from 'zod';
 
 import { Skjemanummer } from '@navikt/fp-constants';
-import { Satser } from '@navikt/fp-types';
+import { Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 import { AnnenPartVedtakDTO } from '../types/AnnenPartVedtakDTO';
 import { Dokument } from '../types/Dokument';
-import EttersendingDto from '../types/EttersendingDTO';
+import { EttersendingDto } from '../types/EttersendingDTO';
+import { KontoBeregningGrunnlagDto } from '../types/KontoBeregningGrunnlagDto';
 import { MellomlagredeYtelser } from '../types/MellomlagredeYtelser';
 import { MinidialogInnslag } from '../types/MinidialogInnslag';
 import { SakOppslagDTO } from '../types/SakOppslag';
@@ -34,6 +35,12 @@ export const hentSakerOptions = () =>
     queryOptions({
         queryKey: ['SAKER'],
         queryFn: () => ky.get(`${urlPrefiks}/rest/innsyn/v2/saker`).json<SakOppslagDTO>(),
+    });
+
+export const hentUttaksKontoOptions = (body: KontoBeregningGrunnlagDto) =>
+    queryOptions({
+        queryKey: ['UTTAKSKONTO', body],
+        queryFn: () => ky.post(`${urlPrefiks}/rest/konto`, { json: body }).json<TilgjengeligeStønadskontoer>(),
     });
 
 export const hentDokumenterOptions = (saksnummer: string) =>

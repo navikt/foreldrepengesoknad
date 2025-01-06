@@ -1,4 +1,3 @@
-import React from 'react';
 import { useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
 
@@ -6,7 +5,7 @@ import { AnnenForelder, isAnnenForelderOppgitt } from '@navikt/fp-common';
 import { AttachmentMetadataType, AttachmentType, Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 
-import VedleggUploader from '../attachment-uploaders/VedleggUploader';
+import { VedleggUploader } from '../attachment-uploaders/VedleggUploader';
 
 interface Props {
     attachments: Attachment[];
@@ -14,11 +13,7 @@ interface Props {
     annenForelder: AnnenForelder;
 }
 
-const AleneomsorgDokumentasjon: React.FunctionComponent<Props> = ({
-    attachments,
-    updateAttachments,
-    annenForelder,
-}) => {
+export const AleneomsorgDokumentasjon = ({ attachments, updateAttachments, annenForelder }: Props) => {
     const intl = useIntl();
 
     if (!isAnnenForelderOppgitt(annenForelder) || !annenForelder.datoForAleneomsorg) {
@@ -37,5 +32,3 @@ const AleneomsorgDokumentasjon: React.FunctionComponent<Props> = ({
         />
     );
 };
-
-export default AleneomsorgDokumentasjon;

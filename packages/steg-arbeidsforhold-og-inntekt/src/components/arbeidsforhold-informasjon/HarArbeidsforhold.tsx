@@ -1,26 +1,21 @@
-import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { BodyShort, Box, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { bemUtils, capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
-
-import './harArbeidsforhold.css';
+import { capitalizeFirstLetterInEveryWordOnly, formatDate } from '@navikt/fp-utils';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];
     harArbeidsforhold: boolean;
 }
 
-const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeidsforhold }: Props) => {
+export const HarArbeidsforhold = ({ arbeidsforhold, harArbeidsforhold }: Props) => {
     const intl = useIntl();
 
     if (!harArbeidsforhold) {
         return null;
     }
-
-    const bem = bemUtils('arbeidsforholdInfoBox');
 
     return (
         <VStack gap="2">
@@ -33,13 +28,13 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
                 >
                     <VStack gap="4">
                         <HStack justify="space-between">
-                            <BodyShort className={bem.element('name')}>
+                            <Heading size="xsmall">
                                 {arbforhold.arbeidsgiverIdType === 'orgnr' || arbforhold.arbeidsgiverNavn ? (
                                     capitalizeFirstLetterInEveryWordOnly(arbforhold.arbeidsgiverNavn)
                                 ) : (
                                     <FormattedMessage id="HarArbeidsforhold.arbeidsgiver" />
                                 )}
-                            </BodyShort>
+                            </Heading>
                             <BodyShort>
                                 <FormattedMessage
                                     id="inntektsinformasjon.arbeidsforhold.stillingsprosent"
@@ -76,4 +71,3 @@ const HarArbeidsforhold: FunctionComponent<Props> = ({ arbeidsforhold, harArbeid
         </VStack>
     );
 };
-export default HarArbeidsforhold;

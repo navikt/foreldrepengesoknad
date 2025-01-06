@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import FpEllerEsForside from './FpEllerEsForside';
+import { FpEllerEsForside } from './FpEllerEsForside';
 
 const meta = {
     title: 'fpEllerEs/FpEllerEsForside',

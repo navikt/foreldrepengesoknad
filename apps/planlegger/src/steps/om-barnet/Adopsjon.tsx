@@ -26,12 +26,7 @@ type Props = {
     antallBarn?: string;
 };
 
-const Adopsjon: React.FunctionComponent<Props> = ({
-    erAlenesøker,
-    erOmBarnetIkkeOppgittFraFør,
-    antallBarn,
-    hvemPlanlegger,
-}) => {
+export const Adopsjon = ({ erAlenesøker, erOmBarnetIkkeOppgittFraFør, antallBarn, hvemPlanlegger }: Props) => {
     const intl = useIntl();
 
     const flereBarn = antallBarn === '3' || antallBarn === '2';
@@ -119,5 +114,3 @@ const Adopsjon: React.FunctionComponent<Props> = ({
         </>
     );
 };
-
-export default Adopsjon;

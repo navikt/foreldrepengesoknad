@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
@@ -33,7 +33,7 @@ import {
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
 
-import Oppsummering from './Oppsummering';
+import { Oppsummering } from './Oppsummering';
 
 const promiseAction =
     () =>
@@ -125,7 +125,7 @@ const defaultUttaksplan = [
     {
         id: '0',
         type: 'uttak',
-        forelder: 'mor',
+        forelder: 'MOR',
         konto: 'FORELDREPENGER_FØR_FØDSEL',
         tidsperiode: {
             fom: new Date('2021-11-23T23:00:00.000Z'),
@@ -152,7 +152,7 @@ const defaultUttaksplan = [
     {
         id: '3',
         type: 'uttak',
-        forelder: 'mor',
+        forelder: 'MOR',
         konto: 'FELLESPERIODE',
         tidsperiode: {
             fom: new Date('2022-03-29T23:00:00.000Z'),

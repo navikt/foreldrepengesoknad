@@ -33,4 +33,5 @@ export {
     isPeriodNotOverlappingOthers,
     isLessThanOneAndHalfYearsAgo,
     isBeforeToday,
+    terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke as terminbekreftelsedatoIsValid,
 } from './src/form/dateFormValidation';

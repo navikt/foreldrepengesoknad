@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
 
 import { DDMMYYYY_DATE_FORMAT } from '@navikt/fp-constants';
@@ -189,11 +189,6 @@ describe('<Oppsummering>', () => {
         expect(
             checkAndGetParentDiv(arbeidsforholdOgInntektDiv.getByText('Auto Joachim Bilpleie, 80%')).getByText(
                 'Org nr: 1, 01.01.2015 - Pågående',
-            ),
-        ).toBeInTheDocument();
-        expect(
-            checkAndGetParentDiv(arbeidsforholdOgInntektDiv.getByText('Taco Express, 20%')).getByText(
-                'Org nr: 2, 01.01.2019 - 01.01.2021',
             ),
         ).toBeInTheDocument();
 

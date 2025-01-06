@@ -10,9 +10,9 @@ import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
-import HvisManBlirSyk from './HvisManBlirSyk';
-import HvisMorBlirSyk from './HvisMorBlirSyk';
-import NyttBarnFørTreÅr from './NyttBarnFørTreÅr';
+import { HvisManBlirSyk } from './HvisManBlirSyk';
+import { HvisMorBlirSyk } from './HvisMorBlirSyk';
+import { NyttBarnFørTreÅr } from './NyttBarnFørTreÅr';
 
 const onToggleExpansionCard = (open: boolean) => {
     if (open) {
@@ -29,7 +29,8 @@ interface Props {
     barnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
 }
-const UforutsetteEndringer: React.FunctionComponent<Props> = ({ hvemPlanlegger, barnet, arbeidssituasjon }) => {
+
+export const UforutsetteEndringer = ({ hvemPlanlegger, barnet, arbeidssituasjon }: Props) => {
     const morHarIkkeRett =
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
     return (
@@ -72,5 +73,3 @@ const UforutsetteEndringer: React.FunctionComponent<Props> = ({ hvemPlanlegger, 
         </ExpansionCard>
     );
 };
-
-export default UforutsetteEndringer;

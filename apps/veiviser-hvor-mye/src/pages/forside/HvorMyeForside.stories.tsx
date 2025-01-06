@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { initAmplitude } from '@navikt/fp-metrics';
 
-import HvorMyeForside from './HvorMyeForside';
+import { HvorMyeForside } from './HvorMyeForside';
 
 const meta = {
     title: 'hvorMye/HvorMyeForside',

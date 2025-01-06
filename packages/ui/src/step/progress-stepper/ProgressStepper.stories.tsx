@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import ProgressStepper from './ProgressStepper';
+import { ProgressStepper } from './ProgressStepper';
 
 const meta = {
     title: 'step/ProgressStepper',

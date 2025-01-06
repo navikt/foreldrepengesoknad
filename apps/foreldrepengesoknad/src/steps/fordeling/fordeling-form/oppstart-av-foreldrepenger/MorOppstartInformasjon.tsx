@@ -1,5 +1,4 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
-import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
@@ -8,11 +7,11 @@ import { ISOStringToDate, getVarighetString } from 'utils/dateUtils';
 import { BodyShort } from '@navikt/ds-react';
 
 import { isFødtBarn } from '@navikt/fp-common';
-import { Tidsperioden, Uttaksdagen, bemUtils, getValidTidsperiode, isValidDate } from '@navikt/fp-utils';
+import { Tidsperioden, Uttaksdagen, getValidTidsperiode, isValidDate } from '@navikt/fp-utils';
 import { getFørsteUttaksdagForeldrepengerFørFødsel } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
-import './mor-oppstartinformasjon.css';
+import styles from './mor-oppstartinformasjon.module.css';
 
 interface Props {
     oppstartDato: string | undefined;
@@ -79,9 +78,8 @@ const getStarterPåUttaksdagEtterFamiliehendelse = (familiehendelsesdato: Date, 
     );
 };
 
-const MorOppstartInformasjon: React.FunctionComponent<Props> = ({ oppstartDato }) => {
+export const MorOppstartInformasjon = ({ oppstartDato }: Props) => {
     const intl = useIntl();
-    const bem = bemUtils('mor-oppstartinformasjon');
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const familiehendelsesdato = ISOStringToDate(getFamiliehendelsedato(barn))!;
     const førsteUttaksdagMorFødsel = getFørsteUttaksdagForeldrepengerFørFødsel(familiehendelsesdato);
@@ -108,9 +106,9 @@ const MorOppstartInformasjon: React.FunctionComponent<Props> = ({ oppstartDato }
         : intl.formatMessage({ id: 'termindato' });
 
     return (
-        <div className={bem.block}>
+        <div className={styles.morOppstartinformasjon}>
             {starterPåUttaksdagEtterFamiliehendelse && (
-                <BodyShort size="small" className={classNames(bem.modifier('bold'))}>
+                <BodyShort size="small" className={styles.bold}>
                     <FormattedMessage
                         id="fordeling.oppstartValg.førsteUkedagEtterTerminFødsel"
                         values={{ fødselEllerTerminDato }}
@@ -118,7 +116,7 @@ const MorOppstartInformasjon: React.FunctionComponent<Props> = ({ oppstartDato }
                 </BodyShort>
             )}
             {starterFørFamiliehendelse && (
-                <BodyShort size="small" className={classNames(bem.modifier('bold'))}>
+                <BodyShort size="small" className={styles.bold}>
                     <FormattedMessage
                         id="fordeling.oppstartValg.førFødselEllerTerminInfo"
                         values={{ varighetString, fødselEllerTermin }}
@@ -126,7 +124,7 @@ const MorOppstartInformasjon: React.FunctionComponent<Props> = ({ oppstartDato }
                 </BodyShort>
             )}
             {starterPåFamiliehendelse && (
-                <BodyShort size="small" className={classNames(bem.modifier('bold'))}>
+                <BodyShort size="small" className={styles.bold}>
                     <FormattedMessage
                         id="fordeling.oppstartValg.påFødselEllerTermin"
                         values={{ fødselEllerTerminDato }}
@@ -152,5 +150,3 @@ const MorOppstartInformasjon: React.FunctionComponent<Props> = ({ oppstartDato }
         </div>
     );
 };
-
-export default MorOppstartInformasjon;

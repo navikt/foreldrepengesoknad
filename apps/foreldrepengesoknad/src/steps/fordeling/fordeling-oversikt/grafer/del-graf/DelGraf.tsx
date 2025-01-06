@@ -2,18 +2,16 @@ import classNames from 'classnames';
 import { FordelingDager } from 'types/FordelingOversikt';
 import { guid } from 'utils/guid';
 
-import { bemUtils } from '@navikt/fp-utils';
-
-import './../graf.css';
+import { getFargeClass } from '../begge-har-rett-graf/BeggeHarRettGraf';
+import styles from './../graf.module.css';
 
 interface Props {
     fordelingsdager: FordelingDager[];
     sumDager: number;
 }
 
-const DelGraf: React.FunctionComponent<Props> = ({ fordelingsdager, sumDager }) => {
+export const DelGraf = ({ fordelingsdager, sumDager }: Props) => {
     const rowHeightRem = 0.75;
-    const bem = bemUtils('graf');
 
     return (
         <div
@@ -28,7 +26,7 @@ const DelGraf: React.FunctionComponent<Props> = ({ fordelingsdager, sumDager }) 
                 return (
                     <div
                         key={guid()}
-                        className={classNames(bem.element('del-graf-box'), bem.modifier(`${fordeling.fargekode}`))}
+                        className={classNames(styles.delGrafBox, getFargeClass(fordeling.fargekode))}
                         style={{
                             width: `${width}%`,
                             height: `${rowHeightRem}rem`,
@@ -40,5 +38,3 @@ const DelGraf: React.FunctionComponent<Props> = ({ fordelingsdager, sumDager }) 
         </div>
     );
 };
-
-export default DelGraf;

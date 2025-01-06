@@ -8,9 +8,7 @@ export type TerminDokumentasjon = {
     terminbekreftelsedato: string;
 } & Vedlegg;
 
-type Dokumentasjon = TerminDokumentasjon | Vedlegg;
-
-export default Dokumentasjon;
+export type Dokumentasjon = TerminDokumentasjon | Vedlegg;
 
 export const erTerminDokumentasjon = (dokumentasjon: Dokumentasjon): dokumentasjon is TerminDokumentasjon => {
     if ((dokumentasjon as TerminDokumentasjon).terminbekreftelsedato) {

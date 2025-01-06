@@ -13,7 +13,7 @@ interface Props {
     hvemPlanlegger: HvemPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
 }
-const LeggeTilFerie: React.FunctionComponent<Props> = ({ hvemPlanlegger, arbeidssituasjon }) => {
+export const LeggeTilFerie = ({ hvemPlanlegger, arbeidssituasjon }: Props) => {
     const intl = useIntl();
     const erAlenesøker = erAlene(hvemPlanlegger);
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
@@ -26,7 +26,7 @@ const LeggeTilFerie: React.FunctionComponent<Props> = ({ hvemPlanlegger, arbeids
                 </IconCircleWrapper>
             </div>
             <div>
-                <Heading size="small">
+                <Heading size="small" level="4">
                     <FormattedMessage id="OmÅTilpassePlanen.LeggeTilFerie" />
                 </Heading>
                 <BodyLong>
@@ -46,4 +46,3 @@ const LeggeTilFerie: React.FunctionComponent<Props> = ({ hvemPlanlegger, arbeids
         </HStack>
     );
 };
-export default LeggeTilFerie;

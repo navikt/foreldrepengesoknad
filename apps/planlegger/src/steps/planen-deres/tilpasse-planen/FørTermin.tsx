@@ -12,7 +12,8 @@ interface Props {
     barnet: OmBarnet;
     hvemPlanlegger: HvemPlanlegger;
 }
-const FørTermin: React.FunctionComponent<Props> = ({ barnet, hvemPlanlegger }) => {
+
+export const FørTermin = ({ barnet, hvemPlanlegger }: Props) => {
     const antallBarn = barnet.antallBarn;
     const erAlenesøker = erAlene(hvemPlanlegger);
 
@@ -24,7 +25,7 @@ const FørTermin: React.FunctionComponent<Props> = ({ barnet, hvemPlanlegger }) 
                 </IconCircleWrapper>
             </div>
             <div>
-                <Heading size="small">
+                <Heading size="small" level="4">
                     <FormattedMessage id="OmÅTilpassePlanen.FørTermin" />
                 </Heading>
                 <BodyLong>
@@ -34,4 +35,3 @@ const FørTermin: React.FunctionComponent<Props> = ({ barnet, hvemPlanlegger }) 
         </HStack>
     );
 };
-export default FørTermin;

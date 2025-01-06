@@ -1,6 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import useFpNavigator from 'appData/useFpNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { useFpNavigator } from 'appData/useFpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { getRegistrerteBarnOmDeFinnes } from 'utils/barnUtils';
@@ -14,10 +14,10 @@ import { Step } from '@navikt/fp-ui';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 import { notEmpty } from '@navikt/fp-validation';
 
-import RegistrertePersonalia from '../../pages/registrerte-personalia/RegistrertePersonalia';
+import { RegistrertePersonalia } from '../../pages/registrerte-personalia/RegistrertePersonalia';
 import { AnnenForelderFormData } from './AnnenForelderFormData';
-import AnnenForelderOppgittPanel from './AnnenForelderOppgittPanel';
-import OppgiPersonalia from './OppgiPersonalia';
+import { AnnenForelderOppgittPanel } from './AnnenForelderOppgittPanel';
+import { OppgiPersonalia } from './OppgiPersonalia';
 
 const getRegistrertAnnenForelder = (barn: NonNullable<Barn | undefined>, søker: Søker) => {
     const registrerteBarn = getRegistrerteBarnOmDeFinnes(barn, søker.barn);
@@ -34,7 +34,7 @@ type Props = {
     avbrytSøknad: () => void;
 };
 
-const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad }) => {
+export const AnnenForelderSteg = ({ søkerInfo, mellomlagreSøknadOgNaviger, avbrytSøknad }: Props) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold);
@@ -57,28 +57,26 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søkerInfo, melloml
     const onSubmit = (values: AnnenForelderFormData) => {
         if (values.kanIkkeOppgis === true) {
             oppdaterAnnenForeldre({ kanIkkeOppgis: true });
-        } else {
-            const fornavn =
-                !skalOppgiPersonalia && annenForelderFraRegistrertBarn
-                    ? annenForelderFraRegistrertBarn.fornavn
-                    : values.fornavn;
-            const etternavn =
-                !skalOppgiPersonalia && annenForelderFraRegistrertBarn
-                    ? annenForelderFraRegistrertBarn.etternavn
-                    : values.etternavn;
-            const fnr =
-                !skalOppgiPersonalia && annenForelderFraRegistrertBarn
-                    ? annenForelderFraRegistrertBarn.fnr
-                    : values.fnr;
-            oppdaterAnnenForeldre({
-                ...values,
-                kanIkkeOppgis: false,
-                fornavn: replaceInvisibleCharsWithSpace(fornavn) ?? '',
-                etternavn: replaceInvisibleCharsWithSpace(etternavn) ?? '',
-                fnr: replaceInvisibleCharsWithSpace(fnr.trim()) ?? '',
-                harRettPåForeldrepengerIEØS: values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : false,
-            });
+            return navigator.goToNextDefaultStep();
         }
+
+        const skalIkkeOppgiPersonaliaOgHarFraRegBarn = !skalOppgiPersonalia && annenForelderFraRegistrertBarn;
+        const fornavn = skalIkkeOppgiPersonaliaOgHarFraRegBarn
+            ? annenForelderFraRegistrertBarn.fornavn
+            : values.fornavn;
+        const etternavn = skalIkkeOppgiPersonaliaOgHarFraRegBarn
+            ? annenForelderFraRegistrertBarn.etternavn
+            : values.etternavn;
+        const fnr = skalIkkeOppgiPersonaliaOgHarFraRegBarn ? annenForelderFraRegistrertBarn.fnr : values.fnr;
+
+        oppdaterAnnenForeldre({
+            ...values,
+            kanIkkeOppgis: false,
+            fornavn: replaceInvisibleCharsWithSpace(fornavn) ?? '',
+            etternavn: replaceInvisibleCharsWithSpace(etternavn) ?? '',
+            fnr: replaceInvisibleCharsWithSpace(fnr.trim()) ?? '',
+            harRettPåForeldrepengerIEØS: values.harOppholdtSegIEØS ? values.harRettPåForeldrepengerIEØS : false,
+        });
 
         return navigator.goToNextDefaultStep();
     };
@@ -119,19 +117,10 @@ const AnnenForelderSteg: React.FunctionComponent<Props> = ({ søkerInfo, melloml
                             visEtternavn
                         />
                     )}
-                    {kanIkkeOppgis !== true && (
-                        <AnnenForelderOppgittPanel
-                            rolle={rolle}
-                            barn={barn}
-                            annenForelder={annenForelder}
-                            søker={søkerInfo.søker}
-                        />
-                    )}
+                    {kanIkkeOppgis !== true && <AnnenForelderOppgittPanel rolle={rolle} barn={barn} />}
                     <StepButtonsHookForm goToPreviousStep={navigator.goToPreviousDefaultStep} />
                 </VStack>
             </RhfForm>
         </Step>
     );
 };
-
-export default AnnenForelderSteg;

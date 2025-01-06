@@ -1,5 +1,5 @@
 import { BankNoteIcon } from '@navikt/aksel-icons';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Heading, ReadMore, VStack } from '@navikt/ds-react';
@@ -52,12 +52,8 @@ interface Props {
     satser: Satser;
 }
 
-const Utbetalingspanel: React.FunctionComponent<Props> = ({
-    dekningsgrad,
-    gjennomsnittslønn,
-    stønadskontoer,
-    satser,
-}) => {
+export const Utbetalingspanel = ({ dekningsgrad, gjennomsnittslønn, stønadskontoer, satser }: Props) => {
+    const locale = useIntl().locale;
     const antallUkerOgDagerMedUttak = finnAntallUkerOgDager(stønadskontoer[dekningsgrad]);
 
     const erDekningsgrad100 = dekningsgrad === Dekningsgrad.HUNDRE_PROSENT;
@@ -84,6 +80,7 @@ const Utbetalingspanel: React.FunctionComponent<Props> = ({
                     }}
                 />
             }
+            headingLevel="2"
             icon={<BankNoteIcon aria-hidden />}
             useHorizontalDivider
             color="blue"
@@ -93,19 +90,25 @@ const Utbetalingspanel: React.FunctionComponent<Props> = ({
                     <BodyShort size="small">
                         <FormattedMessage id="OppsummeringSide.MånedligFørSkatt" />
                     </BodyShort>
-                    <Heading size="medium">{formatCurrencyWithKr(monthlyPayment)}</Heading>
+                    <Heading size="medium" as="p">
+                        {formatCurrencyWithKr(monthlyPayment, locale)}
+                    </Heading>
                 </div>
                 <div>
                     <BodyShort size="small">
                         <FormattedMessage id="OppsummeringSide.DagligFørSkatt" />
                     </BodyShort>
-                    <Heading size="medium">{formatCurrencyWithKr(dailyPayment)}</Heading>
+                    <Heading size="medium" as="p">
+                        {formatCurrencyWithKr(dailyPayment, locale)}
+                    </Heading>
                 </div>
                 <div>
                     <BodyShort size="small">
                         <FormattedMessage id="OppsummeringSide.Totalt" values={{ erDekningsgrad100 }} />
                     </BodyShort>
-                    <Heading size="medium">{formatCurrencyWithKr(totalt)}</Heading>
+                    <Heading size="medium" as="p">
+                        {formatCurrencyWithKr(totalt, locale)}
+                    </Heading>
                     <ReadMore
                         header={
                             <FormattedMessage id="OppsummeringSide.HvorforAntallUker" values={{ erDekningsgrad100 }} />
@@ -118,5 +121,3 @@ const Utbetalingspanel: React.FunctionComponent<Props> = ({
         </Infobox>
     );
 };
-
-export default Utbetalingspanel;

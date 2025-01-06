@@ -1,8 +1,7 @@
 import { CircleSlashIcon } from '@navikt/aksel-icons';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { FunctionComponent } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
@@ -22,7 +21,9 @@ interface Props {
     satser: Satser;
 }
 
-const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSøker2 = false, erFarOgFar, satser }) => {
+export const AnnetInfoboks = ({ erAlenesøker, fornavn, erSøker2 = false, erFarOgFar, satser }: Props) => {
+    const locale = useIntl().locale;
+
     return (
         <Infobox
             header={
@@ -39,7 +40,7 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
                 <BodyShort>
                     <FormattedMessage
                         id="Arbeidssituasjon.Ingen.Infoboks.ManHarIkkeRett"
-                        values={{ minsteInntekt: formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2) }}
+                        values={{ minsteInntekt: formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2, locale) }}
                     />
                 </BodyShort>
                 {!erSøker2 && !erFarOgFar && (
@@ -86,5 +87,3 @@ const AnnetInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn, erSø
         </Infobox>
     );
 };
-
-export default AnnetInfoboks;

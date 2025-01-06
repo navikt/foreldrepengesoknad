@@ -1,5 +1,4 @@
 import { BabyWrappedIcon, InformationIcon, TeddyBearIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { OmBarnet } from 'types/Barnet';
@@ -34,7 +33,7 @@ interface Props {
     barnet: OmBarnet;
 }
 
-const BarnehageplassOppsummering: FunctionComponent<Props> = ({ hvemPlanlegger, barnet }) => {
+export const BarnehageplassOppsummering = ({ hvemPlanlegger, barnet }: Props) => {
     const intl = useIntl();
     const erAlenesøker = erAlene(hvemPlanlegger);
     const antallBarn = barnet.antallBarn;
@@ -136,5 +135,3 @@ const BarnehageplassOppsummering: FunctionComponent<Props> = ({ hvemPlanlegger, 
         </VStack>
     );
 };
-
-export default BarnehageplassOppsummering;

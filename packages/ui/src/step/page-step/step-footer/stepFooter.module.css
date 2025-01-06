@@ -1,0 +1,13 @@
+.stepFooter {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 2rem;
+}
+
+.divider {
+    width: 100%;
+    padding: 0.5rem;
+    margin-left: 0;
+    margin-right: 0;
+}

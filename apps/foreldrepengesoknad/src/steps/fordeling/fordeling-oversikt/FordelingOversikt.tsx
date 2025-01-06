@@ -5,7 +5,7 @@ import { DelInformasjon, FordelingEier } from 'types/FordelingOversikt';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
 import { ISOStringToDate, førsteOktober2021ReglerGjelder } from 'utils/dateUtils';
 import { guid } from 'utils/guid';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 import { getAntallUker } from 'utils/stønadskontoerUtils';
 
 import { VStack } from '@navikt/ds-react';
@@ -14,12 +14,12 @@ import { isAnnenForelderOppgitt, isFødtBarn, isUfødtBarn } from '@navikt/fp-co
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { notEmpty } from '@navikt/fp-validation';
 
-import FlerbarnsdagerInformasjon from './Flerbarnsdagerinformasjon';
-import FordelingPåvirkninger from './FordelingPåvirkninger';
-import OversiktPerDel from './OversiktPerDel';
-import SammenhengendeUttakInformasjon from './SammenhengendeUttakInformasjon';
+import { FlerbarnsdagerInformasjon } from './Flerbarnsdagerinformasjon';
+import { FordelingPåvirkninger } from './FordelingPåvirkninger';
+import { OversiktPerDel } from './OversiktPerDel';
+import { SammenhengendeUttakInformasjon } from './SammenhengendeUttakInformasjon';
 import { getFarTekst, getMorTekst } from './fordelingOversiktUtils';
-import BeggeHarRettGraf from './grafer/begge-har-rett-graf/BeggeHarRettGraf';
+import { BeggeHarRettGraf } from './grafer/begge-har-rett-graf/BeggeHarRettGraf';
 
 interface Props {
     kontoer: TilgjengeligeStønadskontoerForDekningsgrad;
@@ -29,13 +29,7 @@ interface Props {
     fordelingScenario: DelInformasjon[];
 }
 
-const FordelingOversikt: React.FunctionComponent<Props> = ({
-    kontoer,
-    navnFarMedmor,
-    navnMor,
-    deltUttak,
-    fordelingScenario,
-}) => {
+export const FordelingOversikt = ({ kontoer, navnFarMedmor, navnMor, deltUttak, fordelingScenario }: Props) => {
     const intl = useIntl();
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
@@ -117,5 +111,3 @@ const FordelingOversikt: React.FunctionComponent<Props> = ({
         </VStack>
     );
 };
-
-export default FordelingOversikt;

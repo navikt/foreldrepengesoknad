@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import styles from './iconCircleWrapper.module.css';
 
@@ -37,11 +37,9 @@ interface Props {
     size: CircleSize;
 }
 
-const IconCircleWrapper: FunctionComponent<Props> = ({ children, color, size }) => (
+export const IconCircleWrapper = ({ children, color, size }: Props) => (
     //Den ytre div'en ligg der for at bredden på denne alltid skal fungera i HStack
     <div>
         <div className={`${getSize(size)} ${getColor(color)}`}>{children}</div>
     </div>
 );
-
-export default IconCircleWrapper;

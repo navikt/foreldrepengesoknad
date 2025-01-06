@@ -4,53 +4,49 @@ import dayjs from 'dayjs';
 
 import { BodyShort, Detail } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
-
 import { TidslinjehendelseType } from '../../types/TidslinjehendelseType';
 import { formaterDato, formaterTid } from '../../utils/dateUtils';
 import { getTidligstDatoForInntektsmelding } from '../../utils/tidslinjeUtils';
-import './tidslinje-hendelse.css';
+import styles from './tidslinjeHendelse.module.css';
 
 interface Props {
     children: React.ReactNode;
-    date: Date;
+    date: string;
     title: string;
     isActiveStep: boolean;
     visKlokkeslett: boolean;
     type: TidslinjehendelseType;
-    førsteUttaksdagISaken: Date | undefined;
-    tidligstBehandlingsDato: Date | undefined;
+    førsteUttaksdagISaken: string | undefined;
+    tidligstBehandlingsDato: string | undefined;
     finnesHendelserFørAktivtSteg: boolean;
     visHeleTidslinjen: boolean;
     erSistePåForsidenMenIkkeSisteIHeleTidslinjen: boolean;
 }
 
-const bem = bemUtils('tidslinje-hendelse');
-
-const getIkonClassElement = (isActiveStep: boolean, opprettet: Date) => {
+const getIkonClassElement = (isActiveStep: boolean, opprettet: string) => {
     if (isActiveStep) {
-        return 'ikon_active';
+        return styles.ikonActive;
     } else if (dayjs(opprettet).isBefore(dayjs())) {
-        return 'ikon_completed';
+        return styles.ikonCompleted;
     }
-    return 'ikon_incomplete';
+    return styles.ikonIncomplete;
 };
 
-const getTimelineClassModifier = (opprettet: Date, isActiveStep: boolean) => {
+const getTimelineClassModifier = (opprettet: string, isActiveStep: boolean) => {
     if (isActiveStep) {
-        return 'active';
+        return styles.active;
     }
     if (dayjs(opprettet).isBefore(dayjs())) {
-        return 'complete';
+        return styles.complete;
     }
-    return 'incomplete';
+    return styles.incomplete;
 };
 
 const getDateTekst = (
     type: TidslinjehendelseType,
-    date: Date,
-    førsteUttaksdagISaken: Date | undefined,
-    tidligstBehandlingsDato: Date | undefined,
+    date: string,
+    førsteUttaksdagISaken: string | undefined,
+    tidligstBehandlingsDato: string | undefined,
 ) => {
     if (type === TidslinjehendelseType.VENTER_INNTEKTSMELDING) {
         const tidligstDato = getTidligstDatoForInntektsmelding(førsteUttaksdagISaken);
@@ -74,7 +70,7 @@ const getDateTekst = (
     }
 };
 
-const TidslinjeHendelse: React.FunctionComponent<Props> = ({
+export const TidslinjeHendelse = ({
     date,
     title,
     children,
@@ -86,40 +82,34 @@ const TidslinjeHendelse: React.FunctionComponent<Props> = ({
     finnesHendelserFørAktivtSteg,
     visHeleTidslinjen,
     erSistePåForsidenMenIkkeSisteIHeleTidslinjen,
-}) => {
+}: Props) => {
     const tidTekst = visKlokkeslett ? formaterTid(date) : '';
     const dateTekst = getDateTekst(type, date, førsteUttaksdagISaken, tidligstBehandlingsDato);
     return (
         <div
             className={classNames(
-                bem.block,
-                bem.modifier(`${getTimelineClassModifier(date, isActiveStep)}`),
-                bem.modifier(
-                    `${
-                        isActiveStep && finnesHendelserFørAktivtSteg && !visHeleTidslinjen
-                            ? 'aktiv_er_ikke_første_hendelse'
-                            : ''
-                    }`,
-                ),
-                bem.modifier(`${erSistePåForsidenMenIkkeSisteIHeleTidslinjen ? 'siste_hendelse_på_forsiden' : ''}`),
+                styles.tidslinjeHendelse,
+                getTimelineClassModifier(date, isActiveStep),
+                isActiveStep && finnesHendelserFørAktivtSteg && !visHeleTidslinjen
+                    ? styles.aktivErIkkeFørsteHendelse
+                    : undefined,
+                erSistePåForsidenMenIkkeSisteIHeleTidslinjen ? styles.sisteHendelsePåForsiden : undefined,
             )}
         >
-            <div className={classNames(bem.element('ikon'), bem.element(getIkonClassElement(isActiveStep, date)))}>
+            <div className={classNames(styles.ikon, getIkonClassElement(isActiveStep, date))}>
                 {dayjs(date).isSameOrBefore(dayjs(), 'd') && (
                     <RecordFillIcon width="20" height="20" aria-hidden={true} />
                 )}
                 {dayjs(date).isAfter(dayjs(), 'd') && <RecordIcon width="20" height="20" aria-hidden={true} />}
             </div>
 
-            <div className={bem.element('tekst')}>
-                <BodyShort size="small" className={bem.element('tittle')}>
+            <div className={styles.tekst}>
+                <BodyShort size="small" className={styles.title}>
                     {title}
                 </BodyShort>
-                <Detail className={bem.element('date')}>{`${dateTekst} ${tidTekst}`}</Detail>
+                <Detail className={styles.date}>{`${dateTekst} ${tidTekst}`}</Detail>
                 {children}
             </div>
         </div>
     );
 };
-
-export default TidslinjeHendelse;

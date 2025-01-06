@@ -89,6 +89,7 @@ export const getSøknadForInnsending = (
     const tilretteleggingerPerioder = hentData(ContextDataType.TILRETTELEGGINGER_PERIODER);
     const frilans = hentData(ContextDataType.FRILANS);
     const egenNæring = hentData(ContextDataType.EGEN_NÆRING);
+    const ferie = hentData(ContextDataType.FERIE);
 
     return {
         språkkode: locale,
@@ -106,5 +107,6 @@ export const getSøknadForInnsending = (
             frilans,
         ),
         vedlegg: finnVedlegg(tilretteleggingerVedlegg, alleArbeidsforhold),
+        avtaltFerie: ferie ? Object.values(ferie).flatMap((f) => f.feriePerioder) : [],
     };
 };

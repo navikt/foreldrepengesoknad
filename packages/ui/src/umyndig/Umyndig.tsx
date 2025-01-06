@@ -7,9 +7,9 @@ import { links } from '@navikt/fp-constants';
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
-import ContentWrapper from '../content-wrapper/ContentWrapper';
+import { ContentWrapper } from '../content-wrapper/ContentWrapper';
 
-export interface Props {
+interface Props {
     appnavn: 'Foreldrepenger' | 'Engangsstønad' | 'Svangerskapspenger';
 }
 
@@ -24,7 +24,7 @@ const getTitleText = (appnavn: Props['appnavn'], intl: IntlShape): string => {
     }
 };
 
-const Umyndig: React.FunctionComponent<Props> = ({ appnavn }) => {
+export const Umyndig = ({ appnavn }: Props) => {
     const intl = useIntl();
 
     const titleText = getTitleText(appnavn, intl);
@@ -59,5 +59,3 @@ const Umyndig: React.FunctionComponent<Props> = ({ appnavn }) => {
         </ContentWrapper>
     );
 };
-
-export default Umyndig;

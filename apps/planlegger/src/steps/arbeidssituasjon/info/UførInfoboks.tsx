@@ -1,5 +1,4 @@
 import { CircleSlashIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
@@ -13,7 +12,7 @@ interface Props {
     fornavn: string;
 }
 
-const UførInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn }) => {
+export const UførInfoboks = ({ erAlenesøker, fornavn }: Props) => {
     return (
         <Infobox
             header={
@@ -57,5 +56,3 @@ const UførInfoboks: FunctionComponent<Props> = ({ erAlenesøker, fornavn }) => 
         </Infobox>
     );
 };
-
-export default UførInfoboks;

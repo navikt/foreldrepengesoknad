@@ -10,13 +10,13 @@ import { AppName, Arbeidsforhold, ArbeidsforholdOgInntekt } from '@navikt/fp-typ
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
-import ArbeidsforholdInformasjon from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
-import BrukerKanIkkeSøke from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
-import HvemKanDriveMedEgenNæring from './components/hvem-kan-drive-egen-næring/HvemKanDriveMedEgenNæring';
-import HvemKanVæreFrilanser from './components/hvem-kan-være-frilanser/HvemKanVæreFrilanser';
-import InfoOmArbeidIUtlandet from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
-import InfoOmFørstegangstjeneste from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
-import InfoTilFiskere from './components/info-til-fiskere/InfoTilFiskere';
+import { ArbeidsforholdInformasjon } from './components/arbeidsforhold-informasjon/ArbeidsforholdInformasjon';
+import { BrukerKanIkkeSøke } from './components/bruker-kan-ikke-søke/BrukerKanIkkeSøke';
+import { HvemKanDriveMedEgenNæring } from './components/hvem-kan-drive-egen-næring/HvemKanDriveMedEgenNæring';
+import { HvemKanVæreFrilanser } from './components/hvem-kan-være-frilanser/HvemKanVæreFrilanser';
+import { InfoOmArbeidIUtlandet } from './components/info-om-arbeid-i-utlandet/InfoOmArbeidIUtlandet';
+import { InfoOmFørstegangstjeneste } from './components/info-om-førstegangstjeneste/InfoOmFørstegangstjeneste';
+import { InfoTilFiskere } from './components/info-til-fiskere/InfoTilFiskere';
 
 interface Props<TYPE> {
     arbeidsforholdOgInntekt?: ArbeidsforholdOgInntekt;
@@ -30,7 +30,7 @@ interface Props<TYPE> {
     stønadstype: AppName;
 }
 
-const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
+export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     arbeidsforholdOgInntekt,
     aktiveArbeidsforhold,
     saveOnNext,
@@ -81,6 +81,19 @@ const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                             <FormattedMessage id="inntektsinformasjon.arbeidsforhold.label" />
                         </BodyShort>
                         <ArbeidsforholdInformasjon arbeidsforhold={aktiveArbeidsforhold} />
+                        <ReadMore
+                            header={
+                                <FormattedMessage
+                                    id="inntektsinformasjon.inntektsmelding.header"
+                                    values={{ antall: aktiveArbeidsforhold.length }}
+                                />
+                            }
+                        >
+                            <FormattedMessage
+                                id="inntektsinformasjon.inntektsmelding.body"
+                                values={{ antall: aktiveArbeidsforhold.length }}
+                            />
+                        </ReadMore>
                     </VStack>
                     <VStack gap="1">
                         <RhfRadioGroup
@@ -202,5 +215,3 @@ const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
         </Step>
     );
 };
-
-export default ArbeidsforholdOgInntektPanel;

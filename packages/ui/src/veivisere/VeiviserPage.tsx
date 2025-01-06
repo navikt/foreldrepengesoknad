@@ -2,9 +2,9 @@ import { ReactElement, forwardRef } from 'react';
 
 import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import BlueHeading from '../boxes/BlueHeading';
-import IconCircleWrapper from '../icon-circle/IconCircleWrapper';
-import Page from '../page/Page';
+import { BlueHeading } from '../boxes/BlueHeading';
+import { IconCircleWrapper } from '../icon-circle/IconCircleWrapper';
+import { Page } from '../page/Page';
 
 interface Props {
     label: string;
@@ -13,7 +13,7 @@ interface Props {
     icon?: ReactElement;
 }
 
-const VeiviserPage = forwardRef<HTMLDivElement, Props>(({ label, description, children, icon }, ref) => (
+export const VeiviserPage = forwardRef<HTMLDivElement, Props>(({ label, description, children, icon }, ref) => (
     <>
         <Page
             header={
@@ -37,5 +37,3 @@ const VeiviserPage = forwardRef<HTMLDivElement, Props>(({ label, description, ch
         <div ref={ref} />
     </>
 ));
-
-export default VeiviserPage;

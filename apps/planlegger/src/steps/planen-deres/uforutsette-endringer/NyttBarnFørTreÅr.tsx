@@ -5,7 +5,7 @@ import { BodyLong, HStack, Heading } from '@navikt/ds-react';
 
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
-const NyttBarnFørTreÅr: React.FunctionComponent = () => {
+export const NyttBarnFørTreÅr = () => {
     return (
         <HStack gap="5" wrap={false}>
             <div>
@@ -14,7 +14,7 @@ const NyttBarnFørTreÅr: React.FunctionComponent = () => {
                 </IconCircleWrapper>
             </div>
             <div>
-                <Heading size="small">
+                <Heading size="small" level="4">
                     <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisManFårNyttBarnFørTreÅr" />
                 </Heading>
                 <BodyLong>
@@ -24,4 +24,3 @@ const NyttBarnFørTreÅr: React.FunctionComponent = () => {
         </HStack>
     );
 };
-export default NyttBarnFørTreÅr;

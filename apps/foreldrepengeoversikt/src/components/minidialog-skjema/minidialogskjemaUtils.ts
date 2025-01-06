@@ -2,9 +2,9 @@ import { Skjemanummer } from '@navikt/fp-constants';
 import { Attachment } from '@navikt/fp-types';
 import { replaceInvisibleCharsWithSpace } from '@navikt/fp-utils';
 
-import EttersendingDto from './../../types/EttersendingDTO';
-import { Ytelse } from './../../types/Ytelse';
-import { isAttachmentWithError } from './../../utils/attachmentUtils';
+import { EttersendingDto } from '../../types/EttersendingDTO';
+import { Ytelse } from '../../types/Ytelse';
+import { isAttachmentWithError } from '../../utils/attachmentUtils';
 
 export const mapMinidialogInputTilDTO = (
     saksnummer: string,
@@ -25,7 +25,7 @@ export const mapMinidialogInputTilDTO = (
             tekst:
                 brukerØnskerÅUttaleSeg && tilbakemelding !== undefined && tilbakemelding !== null
                     ? (replaceInvisibleCharsWithSpace(tilbakemelding) ?? '')
-                    : 'Jeg ønsker ikke å uttale meg. Saken vil bli behandlet med de opplysningene som NAV har tilgjengelig.',
+                    : 'Jeg ønsker ikke å uttale meg. Saken vil bli behandlet med de opplysningene som Nav har tilgjengelig.',
         },
     };
 };

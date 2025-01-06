@@ -1,6 +1,6 @@
 import { fetchDecoratorHtml, injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr/index.js';
 import { addViteModeHtmlToResponse } from '@navikt/vite-mode';
-import express, { Router } from 'express';
+import { Router } from 'express';
 import path from 'node:path';
 
 import config from './config.js';
@@ -15,7 +15,6 @@ const dekoratørProps = {
 
 export const setupAndServeHtml = async (router: Router) => {
     // When deployed, the built frontend is copied into the public directory. If running BFF locally the index.html will not exist.
-    router.use(express.static('./public', { index: false }));
     const spaFilePath = path.resolve('./public', 'index.html');
 
     // Only add vite-mode to dev environment

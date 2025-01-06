@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import React, { FunctionComponent, ReactNode, useCallback, useMemo, useState } from 'react';
+import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { DatePicker, useDatepicker } from '@navikt/ds-react';
@@ -31,7 +31,7 @@ const findDisabledDays = (minDate?: Date, maxDate?: Date): Array<{ from: Date; t
     return disabledDays;
 };
 
-export interface Props {
+interface Props {
     name: string;
     label?: string | ReactNode;
     description?: string;
@@ -47,7 +47,7 @@ export interface Props {
     useStrategyAbsolute?: boolean;
 }
 
-const RhfDatepicker: FunctionComponent<Props> = ({
+export const RhfDatepicker = ({
     name,
     label,
     description,
@@ -61,7 +61,7 @@ const RhfDatepicker: FunctionComponent<Props> = ({
     autofocusWhenEmpty,
     customErrorFormatter,
     useStrategyAbsolute = false,
-}): JSX.Element => {
+}: Props): JSX.Element => {
     const {
         formState: { errors },
     } = useFormContext();
@@ -139,5 +139,3 @@ const RhfDatepicker: FunctionComponent<Props> = ({
         </DatePicker>
     );
 };
-
-export default RhfDatepicker;

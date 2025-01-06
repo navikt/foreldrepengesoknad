@@ -4,7 +4,7 @@ import { BodyLong, GuidePanel } from '@navikt/ds-react';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
 
-export const FlereArbeidsforholdGuidePanel: React.FunctionComponent = () => {
+export const FlereArbeidsforholdGuidePanel = () => {
     logAmplitudeEvent('sidevisning', {
         app: 'svangerskapspengerny',
         team: 'foreldrepenger',

@@ -22,10 +22,10 @@ import { SøkerBarn, isAdoptertBarn, isFødtBarn } from '@navikt/fp-types';
 import { isISODateString } from '@navikt/fp-utils';
 import { Perioden } from '@navikt/fp-uttaksplan';
 
-import FeatureToggle from '../FeatureToggle';
+import { FeatureToggle } from '../FeatureToggle';
 import { getIsDeltUttak } from './annenForelderUtils';
 import { getFamiliehendelsedato } from './barnUtils';
-import fn from './toggleUtils';
+import { toggleUtils } from './toggleUtils';
 import { hasValue } from './validationUtil';
 
 dayjs.extend(isSameOrBefore);
@@ -153,7 +153,7 @@ export const andreAugust2022ReglerGjelder = (familiehendelsesdato: string | Date
 
 export const førsteJuli2024ReglerGjelder = (barn: Barn): boolean => {
     let førsteJuli2024 = '2024-07-01';
-    if (fn.isFeatureEnabled(FeatureToggle.test1Juli2024Regler)) {
+    if (toggleUtils.isFeatureEnabled(FeatureToggle.test1Juli2024Regler)) {
         førsteJuli2024 = '2024-06-18';
     }
 

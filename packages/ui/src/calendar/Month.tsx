@@ -20,7 +20,7 @@ type Props = {
     headerLevel: '4' | '5';
 };
 
-const Month: React.FunctionComponent<Props> = ({ year, month, showYear, children, headerLevel }) => {
+export const Month = ({ year, month, showYear, children, headerLevel }: Props) => {
     const monthDate = dayjs().year(year).month(month).startOf('month');
 
     const startWeekDay = monthDate.isoWeekday();
@@ -52,4 +52,3 @@ const Month: React.FunctionComponent<Props> = ({ year, month, showYear, children
         </Box>
     );
 };
-export default Month;
