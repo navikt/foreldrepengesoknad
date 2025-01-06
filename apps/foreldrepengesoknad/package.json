@@ -76,7 +76,7 @@
         "react-collapse": "^5.1.1",
         "react-day-picker": "^8.10.0",
         "react-dom": "^18.3.1",
-        "react-hook-form": "7.53.1",
+        "react-hook-form": "7.54.2",
         "react-intl": "^6.8.4",
         "react-modal": "^3.16.1",
         "react-router-dom": "^6.27.0",
