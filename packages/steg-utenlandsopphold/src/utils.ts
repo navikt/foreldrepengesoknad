@@ -10,6 +10,10 @@ const mapBostedUtlandTilDTO = (utenlandsopphold: UtenlandsoppholdPeriode) => {
     };
 };
 
+const testEndring = () => {
+    return null;
+};
+
 export const mapUtenlandsOppholdForInnsending = (
     utenlandsopphold: Utenlandsopphold,
     senereUtenlandsopphold?: UtenlandsoppholdPeriode[],
