@@ -4,20 +4,18 @@ import { useState } from 'react';
 import { Navigate, Route, Routes, useBeforeUnload } from 'react-router-dom';
 
 import { logAmplitudeEvent } from '@navikt/fp-metrics';
-import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
+import { Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
 import { Arbeidssituasjon, ArbeidssituasjonSide } from './pages/arbeidssituasjon/ArbeidssituasjonSide';
 import { HvorMyeForside } from './pages/forside/HvorMyeForside';
 import { OppsummeringSide } from './pages/oppsummering/OppsummeringSide';
 
 interface Props {
-    locale: LocaleAll;
-    changeLocale: (locale: LocaleAll) => void;
     satser: Satser;
     stønadskontoer?: TilgjengeligeStønadskontoer;
 }
 
-export const HvorMyeRouter = ({ locale, changeLocale, satser, stønadskontoer }: Props) => {
+export const HvorMyeRouter = ({ satser, stønadskontoer }: Props) => {
     const [arbeidssituasjon, setArbeidssituasjon] = useState<Arbeidssituasjon>();
 
     useBeforeUnload(() => {
@@ -30,7 +28,7 @@ export const HvorMyeRouter = ({ locale, changeLocale, satser, stønadskontoer }:
 
     return (
         <Routes>
-            <Route path="/" element={<HvorMyeForside locale={locale} changeLocale={changeLocale} />} />
+            <Route path="/" element={<HvorMyeForside />} />
             <Route
                 path={HvorMyeRoutes.ARBEIDSSITUASJON}
                 element={

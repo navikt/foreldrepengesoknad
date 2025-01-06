@@ -1,7 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
-import { useCallback, useState } from 'react';
 
 import { LocaleAll } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, SimpleErrorPage, uiMessages } from '@navikt/fp-ui';
@@ -44,23 +43,15 @@ const initLocale = (): LocaleAll => {
 };
 
 export const AppContainer = () => {
-    const [locale, setLocale] = useState<LocaleAll>(initLocale());
-
-    const changeLocale = useCallback((activeLocale: LocaleAll) => {
-        setLocale(activeLocale);
-        dayjs.locale(activeLocale);
-        document.documentElement.setAttribute('lang', activeLocale);
-    }, []);
-
     return (
-        <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
+        <IntlProvider locale={initLocale()} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
             <ErrorBoundary
                 appName="Foreldrepengeveivisere"
                 customErrorPage={<SimpleErrorPage retryCallback={() => location.reload()} />}
             >
                 <QueryClientProvider client={queryClient}>
                     <ReactQueryDevtools />
-                    <HvorMyeVeiviser locale={locale} changeLocale={changeLocale} />
+                    <HvorMyeVeiviser />
                 </QueryClientProvider>
             </ErrorBoundary>
         </IntlProvider>

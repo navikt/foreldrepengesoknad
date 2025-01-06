@@ -19,7 +19,7 @@ export const Default: Story = {
         initAmplitude();
         return (
             <MemoryRouter initialEntries={[HvorMyeRoutes.ARBEIDSSITUASJON]}>
-                <HvorMyeForside locale="nb" changeLocale={() => undefined} />
+                <HvorMyeForside />
             </MemoryRouter>
         );
     },
