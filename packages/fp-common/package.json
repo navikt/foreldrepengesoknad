@@ -10,8 +10,8 @@
         "lint:fix": "eslint --fix './src/**/*.{js,ts,tsx}' --color"
     },
     "dependencies": {
-        "@navikt/ds-css": "^7.9.0",
-        "@navikt/ds-react": "^7.9.0",
+        "@navikt/ds-css": "^7.9.1",
+        "@navikt/ds-react": "^7.9.1",
         "@navikt/fnrvalidator": "^2.1.5",
         "@navikt/fp-types": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
@@ -32,7 +32,7 @@
         "react-dom": "^18.3.1",
         "react-intl": "^7.1.0",
         "react-modal": "^3.16.3",
-        "react-router-dom": "^6.27.0",
+        "react-router-dom": "^7.1.1",
         "typescript": "^5.7.2"
     },
     "devDependencies": {
