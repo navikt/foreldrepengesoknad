@@ -6,7 +6,7 @@ import { links } from '@navikt/fp-constants';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { AppName } from '@navikt/fp-types';
 
-type Props = { appOrigin: AppOrigin };
+type Props = { appOrigin: AppName };
 export const HvemKanVæreFrilanser = ({ appOrigin }: Props) => {
     const intl = useIntl();
 

@@ -6,8 +6,7 @@ import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { AppName } from '@navikt/fp-types';
-import { Arbeidsforhold, ArbeidsforholdOgInntekt } from '@navikt/fp-types';
+import { AppName, Arbeidsforhold, ArbeidsforholdOgInntekt } from '@navikt/fp-types';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
 
