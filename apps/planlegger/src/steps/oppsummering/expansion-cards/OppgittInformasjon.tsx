@@ -6,6 +6,7 @@ import { Fordeling } from 'types/Fordeling';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { erAlenesøker as erAlene, erFarOgFar, getFornavnPåSøker1, getFornavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
+import { loggExpansionCardOpen } from 'utils/amplitudeUtils';
 import { erBarnetAdoptert, erBarnetFødt } from 'utils/barnetUtils';
 import { utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
@@ -14,20 +15,9 @@ import { finnAntallUkerOgDagerMedForeldrepenger } from 'utils/uttakUtils';
 
 import { BodyLong, ExpansionCard, HStack, Heading, VStack } from '@navikt/ds-react';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
-
-const onToggleExpansionCard = (open: boolean) => {
-    if (open) {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'planlegger',
-            team: 'foreldrepenger',
-            pageKey: 'toggle-oppgitt-informasjon',
-        });
-    }
-};
 
 interface Props {
     stønadskontoer: TilgjengeligeStønadskontoer;
@@ -49,6 +39,7 @@ export const OppgittInformasjon = ({
     satser,
 }: Props) => {
     const intl = useIntl();
+    const locale = intl.locale;
 
     const erFødt = erBarnetFødt(barnet);
     const erAdoptert = erBarnetAdoptert(barnet);
@@ -89,11 +80,11 @@ export const OppgittInformasjon = ({
 
     const erFarOgFarFødsel = hvemPlanlegger.type === Situasjon.FAR_OG_FAR && !erAdoptert;
 
-    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2);
+    const minsteInntekt = formatCurrencyWithKr(finnSisteGrunnbeløp(satser) / 2, locale);
 
     return (
         <VStack gap="10">
-            <ExpansionCard aria-label="" onToggle={onToggleExpansionCard} size="small">
+            <ExpansionCard aria-label="" onToggle={loggExpansionCardOpen('toggle-oppgitt-informasjon')} size="small">
                 <ExpansionCard.Header>
                     <HStack gap="6" align="center" wrap={false}>
                         <IconCircleWrapper size="medium" color="lightBlue">

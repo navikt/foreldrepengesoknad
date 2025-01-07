@@ -25,7 +25,7 @@ export const FørTermin = ({ barnet, hvemPlanlegger }: Props) => {
                 </IconCircleWrapper>
             </div>
             <div>
-                <Heading size="small">
+                <Heading size="small" level="4">
                     <FormattedMessage id="OmÅTilpassePlanen.FørTermin" />
                 </Heading>
                 <BodyLong>

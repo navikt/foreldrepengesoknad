@@ -32,7 +32,7 @@ import {
     RhfTextarea,
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
-import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { capitalizeFirstLetterInEveryWordOnly, tiMånederSidenDato } from '@navikt/fp-utils';
@@ -254,7 +254,13 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
                                 <ReadMore
                                     size="small"
                                     header={intl.formatMessage({ id: 'tilrettelegging.tiltak.info.title' })}
-                                    onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Tiltak')}
+                                    onOpenChange={(open) =>
+                                        loggAmplitudeEvent({
+                                            origin: 'svangerskapspengesoknad',
+                                            eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                            eventData: { tittel: 'tilrettelegging.tiltak.info.title' },
+                                        })
+                                    }
                                 >
                                     <BodyShort>
                                         <FormattedMessage id="tilrettelegging.tiltak.info.description"></FormattedMessage>
@@ -293,7 +299,15 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
                         </RhfRadioGroup>
                         <ReadMore
                             header={intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidType.info.tittel' })}
-                            onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Bytte_på_stillingsprosent')}
+                            onOpenChange={(open) =>
+                                loggAmplitudeEvent({
+                                    origin: 'svangerskapspengesoknad',
+                                    eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                    eventData: {
+                                        tittel: 'tilrettelegging.tilrettelagtArbeidType.info.tittel',
+                                    },
+                                })
+                            }
                         >
                             <BodyShort>
                                 <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.info.tekst"></FormattedMessage>

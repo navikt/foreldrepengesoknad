@@ -6,11 +6,11 @@ import { FormSummary } from '@navikt/ds-react';
 import { formatDate } from '@navikt/fp-utils';
 
 interface Props {
-    omBarnet: OmBarnet;
-    onVilEndreSvar: () => void;
+    readonly omBarnet: OmBarnet;
+    readonly onVilEndreSvar: () => void;
 }
 
-function AntallBarnFormattedText({ omBarnet }: { omBarnet: OmBarnet }) {
+function AntallBarnFormattedText({ omBarnet }: { readonly omBarnet: OmBarnet }) {
     const harAdoptert = erAdopsjon(omBarnet);
 
     if (omBarnet.antallBarn === 1) {

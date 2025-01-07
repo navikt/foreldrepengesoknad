@@ -12,8 +12,6 @@ import {
     Tilretteleggingstype,
 } from 'types/Tilrettelegging';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { PerioderSteg } from './PerioderSteg';
 
 const TILRETTELEGGING_ID = '263929546-6215-9868-5127-161910165730101';
@@ -113,7 +111,6 @@ const meta = {
         barn = DEFAULT_BARN,
         ...rest
     }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[addTilretteleggingIdToRoute(SøknadRoute.PERIODER, valgtTilretteleggingId)]}>
                 <SvpDataContext

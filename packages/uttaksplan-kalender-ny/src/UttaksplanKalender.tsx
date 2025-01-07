@@ -404,7 +404,12 @@ export const UttaksplanKalender = ({
                 </div>
                 <Calendar periods={perioderForKalendervisning} />
             </div>
-            <Button className={styles.button} variant="tertiary" icon={<DownloadIcon />} onClick={() => toPDF()}>
+            <Button
+                className={styles.button}
+                variant="tertiary"
+                icon={<DownloadIcon aria-hidden />}
+                onClick={() => toPDF()}
+            >
                 <FormattedMessage id="kalender.lastNed" />
             </Button>
         </div>

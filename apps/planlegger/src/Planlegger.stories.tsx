@@ -6,7 +6,6 @@ import { ComponentProps, StrictMode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { StønadskontoType } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 import { ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
@@ -133,12 +132,11 @@ const meta = {
         },
     },
     render: () => {
-        initAmplitude();
         return (
             <StrictMode>
                 <MemoryRouter>
                     <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-                        <ErrorBoundary appName="Foreldrepengeplanlegger" retryCallback={() => undefined}>
+                        <ErrorBoundary appName="planlegger" retryCallback={() => undefined}>
                             <QueryClientProvider client={queryClient}>
                                 <PlanleggerDataContext initialState={{}}>
                                     <PlanleggerDataFetcher locale="nb" changeLocale={() => undefined} />

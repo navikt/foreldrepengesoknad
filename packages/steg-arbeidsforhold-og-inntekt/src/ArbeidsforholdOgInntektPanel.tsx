@@ -5,7 +5,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { AppName, Arbeidsforhold, ArbeidsforholdOgInntekt } from '@navikt/fp-types';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
@@ -27,7 +27,7 @@ interface Props<TYPE> {
     onStepChange?: (id: TYPE) => void;
     goToPreviousStep: () => void;
     stepConfig: Array<ProgressStep<TYPE>>;
-    stønadstype: AppName;
+    appOrigin: AppName;
 }
 
 export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
@@ -39,7 +39,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     onStepChange,
     goToPreviousStep,
     stepConfig,
-    stønadstype,
+    appOrigin,
 }: Props<TYPE>) => {
     const intl = useIntl();
 
@@ -55,7 +55,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
     const kanIkkeSøke =
         aktiveArbeidsforhold.length === 0 && hattInntektSomFrilans === false && hattInntektSomNæringsdrivende === false;
 
-    const erSvp = stønadstype === 'Svangerskapspenger';
+    const erSvp = appOrigin === 'svangerskapspengesoknad';
 
     return (
         <Step
@@ -80,7 +80,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                         <BodyShort style={{ fontWeight: 'bold' }}>
                             <FormattedMessage id="inntektsinformasjon.arbeidsforhold.label" />
                         </BodyShort>
-                        <ArbeidsforholdInformasjon arbeidsforhold={aktiveArbeidsforhold} />
+                        <ArbeidsforholdInformasjon appOrigin={appOrigin} arbeidsforhold={aktiveArbeidsforhold} />
                         <ReadMore
                             header={
                                 <FormattedMessage
@@ -114,7 +114,7 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                                 <FormattedMessage id="inntektsinformasjon.ja" />
                             </Radio>
                         </RhfRadioGroup>
-                        <HvemKanVæreFrilanser />
+                        <HvemKanVæreFrilanser appOrigin={appOrigin} />
                     </VStack>
                     <VStack gap="1">
                         <RhfRadioGroup
@@ -189,7 +189,15 @@ export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({
                                 </Radio>
                             </RhfRadioGroup>
                             <ReadMore
-                                onOpenChange={logAmplitudeEventOnOpen(stønadstype, 'Andre_inntektskilder')}
+                                onOpenChange={(open) =>
+                                    loggAmplitudeEvent({
+                                        origin: appOrigin,
+                                        eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                        eventData: {
+                                            tittel: 'ArbeidsforholdOgInntektPanel.ReadMore.Header.AndreInntektskilder',
+                                        },
+                                    })
+                                }
                                 header={intl.formatMessage({
                                     id: 'ArbeidsforholdOgInntektPanel.ReadMore.Header.AndreInntektskilder',
                                 })}

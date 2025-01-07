@@ -5,8 +5,6 @@ import { Path } from 'appData/paths';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { Velkommen } from './Velkommen';
 
 const promiseAction =
@@ -23,7 +21,6 @@ type StoryArgs = {
 const meta = {
     component: Velkommen,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[Path.VELKOMMEN]}>
                 <EsDataContext onDispatch={gåTilNesteSide}>

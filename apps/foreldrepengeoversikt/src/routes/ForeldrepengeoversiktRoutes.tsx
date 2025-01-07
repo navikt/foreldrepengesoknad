@@ -1,22 +1,22 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Navigate, Outlet, Route, Routes, useMatch, useNavigate } from 'react-router-dom';
 
+import { Breadcrumb } from '../components/breadcrumb/Breadcrumb';
+import { Snarveier } from '../components/snarveier/Snarveier';
+import { Sak } from '../pages/Sak';
+import { DokumenterPage } from '../pages/dokumenter-page/DokumenterPage';
+import { EttersendingPage } from '../pages/ettersending/EttersendingPage';
+import { Forside } from '../pages/forside/Forside';
 import { InntektsmeldingOversiktPage } from '../pages/inntektsmelding-page/InntektsmeldingOversiktPage';
 import { InntektsmeldingPage } from '../pages/inntektsmelding-page/InntektsmeldingPage';
+import { MinidialogPage } from '../pages/minidialog-page/MinidialogPage';
+import { Saksoversikt } from '../pages/saksoversikt/Saksoversikt';
+import { TidslinjePage } from '../pages/tidslinje-page/TidslinjePage';
 import { LayoutWrapper } from '../sections/LayoutWrapper';
-import { Breadcrumb } from './../components/breadcrumb/Breadcrumb';
-import Snarveier from './../components/snarveier/Snarveier';
-import { default as SakComponent } from './../pages/Sak';
-import DokumenterPage from './../pages/dokumenter-page/DokumenterPage';
-import EttersendingPage from './../pages/ettersending/EttersendingPage';
-import Forside from './../pages/forside/Forside';
-import MinidialogPage from './../pages/minidialog-page/MinidialogPage';
-import Saksoversikt from './../pages/saksoversikt/Saksoversikt';
-import { TidslinjePage } from './../pages/tidslinje-page/TidslinjePage';
-import KontaktOss from './../sections/kontakt-oss/KontaktOss';
-import { SakOppslag } from './../types/SakOppslag';
-import { SøkerinfoDTO } from './../types/SøkerinfoDTO';
-import { getAlleYtelser } from './../utils/sakerUtils';
+import { KontaktOss } from '../sections/kontakt-oss/KontaktOss';
+import { SakOppslag } from '../types/SakOppslag';
+import { SøkerinfoDTO } from '../types/SøkerinfoDTO';
+import { getAlleYtelser } from '../utils/sakerUtils';
 import { OversiktRoutes } from './routes';
 
 interface Props {
@@ -24,7 +24,7 @@ interface Props {
     søkerinfo: SøkerinfoDTO;
 }
 
-const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinfo, saker }) => {
+export const ForeldrepengeoversiktRoutes = ({ søkerinfo, saker }: Props) => {
     const isFirstRender = useRef(true);
 
     return (
@@ -36,10 +36,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
                             path={`${OversiktRoutes.HOVEDSIDE}/:redirect?`}
                             element={<Forside saker={saker} isFirstRender={isFirstRender} søkerinfo={søkerinfo} />}
                         />
-                        <Route
-                            path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer/:redirect?`}
-                            element={<SakComponent />}
-                        >
+                        <Route path={`${OversiktRoutes.SAKSOVERSIKT}/:saksnummer/:redirect?`} element={<Sak />}>
                             <Route
                                 index
                                 element={<Saksoversikt søkerinfo={søkerinfo} isFirstRender={isFirstRender} />}
@@ -76,7 +73,7 @@ const ForeldrepengeoversiktRoutes: React.FunctionComponent<Props> = ({ søkerinf
  *
  * Vi ønsker ikke å redirecte til sak dersom bruker allerede er på en underside på saken, eller at bruker navigerer tilbake til forside via breadcrumbs
  */
-function RedirectTilSakHvisDetKunFinnesEn({ saker }: { saker: SakOppslag }) {
+function RedirectTilSakHvisDetKunFinnesEn({ saker }: { readonly saker: SakOppslag }) {
     const navigate = useNavigate();
 
     const alleSaker = getAlleYtelser(saker);
@@ -101,7 +98,7 @@ function RedirectTilSakHvisDetKunFinnesEn({ saker }: { saker: SakOppslag }) {
     return <Outlet />;
 }
 
-export function PageRouteLayout({ header, children }: { header: ReactNode; children: ReactNode }) {
+export function PageRouteLayout({ header, children }: { readonly header: ReactNode; readonly children: ReactNode }) {
     return (
         <>
             {header}
@@ -111,5 +108,3 @@ export function PageRouteLayout({ header, children }: { header: ReactNode; child
         </>
     );
 }
-
-export default ForeldrepengeoversiktRoutes;

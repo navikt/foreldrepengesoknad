@@ -1,13 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { Umyndig } from './Umyndig';
 
 const meta = {
     component: Umyndig,
     render: (props) => {
-        initAmplitude();
         return <Umyndig {...props} />;
     },
 } satisfies Meta<typeof Umyndig>;

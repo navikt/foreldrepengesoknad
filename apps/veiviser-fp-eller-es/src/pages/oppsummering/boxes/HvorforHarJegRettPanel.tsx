@@ -1,5 +1,5 @@
 import { QuestionmarkIcon } from '@navikt/aksel-icons';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
@@ -8,14 +8,15 @@ import { formatCurrencyWithKr } from '@navikt/fp-utils';
 import { isValidNumber } from '@navikt/fp-validation';
 
 import { FpEllerEsSituasjon } from '../../situasjon/SituasjonSide';
-import KravinfoBoks from '../KravinfoBoks';
+import { KravinfoBoks } from '../KravinfoBoks';
 
 interface Props {
     fpEllerEsSituasjon: FpEllerEsSituasjon;
     grunnbeløpet: number;
 }
 
-const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, grunnbeløpet }) => {
+export const HvorforHarJegRettPanel = ({ fpEllerEsSituasjon, grunnbeløpet }: Props) => {
+    const locale = useIntl().locale;
     const { borDuINorge, jobberDuINorge, lønnPerMåned } = fpEllerEsSituasjon;
 
     const minstelønn = grunnbeløpet / 2;
@@ -28,7 +29,7 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
                     <IconCircleWrapper size="medium" color="lightBlue">
                         <QuestionmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                     </IconCircleWrapper>
-                    <ExpansionCard.Title size="small">
+                    <ExpansionCard.Title size="small" as="h2">
                         {fpEllerEsSituasjon.situasjon === 'mor' ? (
                             <FormattedMessage id="HvorforHarJegRettPanel.HvorforHarJegRett" />
                         ) : (
@@ -46,6 +47,7 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
                         <KravinfoBoks
                             testId="harRettFp"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåHaInntekt" />}
+                            headerLevel="3"
                             boxBodyText={
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuHarOppgittInntekt"
@@ -59,15 +61,16 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
                             headerText={
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuMåTeneOver"
-                                    values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
+                                    values={{ minstelønn: formatCurrencyWithKr(minstelønn, locale) }}
                                 />
                             }
+                            headerLevel="3"
                             boxBodyText={
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.DuHarOppgittMånedslønn"
                                     values={{
-                                        månedslønn: formatCurrencyWithKr(lønnPerMåned),
-                                        minstelønn: formatCurrencyWithKr(minstelønn),
+                                        månedslønn: formatCurrencyWithKr(lønnPerMåned, locale),
+                                        minstelønn: formatCurrencyWithKr(minstelønn, locale),
                                         hvorMye: årslønn > minstelønn,
                                     }}
                                 />
@@ -77,6 +80,7 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
                         <KravinfoBoks
                             testId="harRettFp"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
+                            headerLevel="3"
                             boxBodyText={
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.OppgittAtDuBorINorge"
@@ -91,5 +95,3 @@ const HvorforHarJegRettPanel: React.FunctionComponent<Props> = ({ fpEllerEsSitua
         </ExpansionCard>
     );
 };
-
-export default HvorforHarJegRettPanel;

@@ -19,6 +19,8 @@ import {
     hentSatserOptions,
     hentTidslinjehendelserOptions,
 } from '../../api/api';
+import { BekreftelseSendtSøknad } from '../../components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
+import { ContentSection } from '../../components/content-section/ContentSection';
 import { DinSakHeader, getSaksoversiktHeading } from '../../components/header/Header';
 import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
@@ -31,6 +33,7 @@ import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
 import { OversiktRoutes } from '../../routes/routes';
 import { DinPlan } from '../../sections/din-plan/DinPlan';
+import { Oppgaver } from '../../sections/oppgaver/Oppgaver';
 import { Tidslinje } from '../../sections/tidslinje/Tidslinje';
 import { RedirectSource } from '../../types/RedirectSource';
 import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
@@ -41,9 +44,6 @@ import { getNavnPåForeldre } from '../../utils/personUtils';
 import { getNavnAnnenForelder } from '../../utils/sakerUtils';
 import { getRelevantNyTidslinjehendelse } from '../../utils/tidslinjeUtils';
 import { InntektsmeldingLenkePanel } from '../inntektsmelding-page/InntektsmeldingLenkePanel';
-import BekreftelseSendtSøknad from './../../components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
-import ContentSection from './../../components/content-section/ContentSection';
-import Oppgaver from './../../sections/oppgaver/Oppgaver';
 
 dayjs.extend(isSameOrBefore);
 
@@ -52,11 +52,11 @@ interface Props {
     isFirstRender: React.MutableRefObject<boolean>;
 }
 
-const finnSøknadstidspunkt = (tidslinjehendelser: Tidslinjehendelse[] | undefined): Date | undefined => {
+const finnSøknadstidspunkt = (tidslinjehendelser: Tidslinjehendelse[] | undefined) => {
     if (!tidslinjehendelser) {
         return undefined;
     }
-    const nySøknadHendelse = tidslinjehendelser
+    const nySøknadHendelse = [...tidslinjehendelser]
         .sort((t1, t2) => (dayjs(t1.opprettet).isBefore(t2.opprettet, 'day') ? 1 : -1))
         .find((th) => th.tidslinjeHendelseType === TidslinjehendelseType.FØRSTEGANGSSØKNAD_NY);
     return nySøknadHendelse
@@ -65,7 +65,7 @@ const finnSøknadstidspunkt = (tidslinjehendelser: Tidslinjehendelse[] | undefin
               ?.opprettet;
 };
 
-const finnEngangstønadForSøknadstidspunkt = (satser: Satser, søknadstidspunkt: Date | undefined) => {
+const finnEngangstønadForSøknadstidspunkt = (satser: Satser, søknadstidspunkt: string | undefined) => {
     const { engangstønad } = satser;
     if (!søknadstidspunkt) {
         return engangstønad[0].verdi;
@@ -73,7 +73,7 @@ const finnEngangstønadForSøknadstidspunkt = (satser: Satser, søknadstidspunkt
     return engangstønad.filter((es) => dayjs(es.fom).isSameOrBefore(søknadstidspunkt))[0].verdi;
 };
 
-const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRender }) => {
+export const Saksoversikt = ({ søkerinfo, isFirstRender }: Props) => {
     const gjeldendeSak = useGetSelectedSak();
 
     return (
@@ -83,7 +83,7 @@ const Saksoversikt: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRende
     );
 };
 
-const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirstRender }) => {
+const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
     const intl = useIntl();
     const params = useParams<{ saksnummer: string; redirect?: string }>();
     const navigate = useNavigate();
@@ -123,7 +123,7 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
         redirectedFromSøknadsnummer === params.saksnummer || relevantNyTidslinjehendelse !== undefined;
     const visBekreftelsePåSendtSøknad = nettoppSendtInnSøknad && gjeldendeSak?.åpenBehandling !== undefined;
 
-    const harMinstEttArbeidsforhold = !!søkerinfo?.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
+    const harMinstEttArbeidsforhold = !!søkerinfo.arbeidsforhold && søkerinfo.arbeidsforhold.length > 0;
 
     if (harIkkeOppdatertSak) {
         return (
@@ -176,8 +176,8 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
                 >
                     <Tidslinje
                         sak={gjeldendeSak}
-                        tidslinjeHendelserQuery={tidslinjeHendelserQuery}
-                        manglendeVedleggQuery={manglendeVedleggQuery}
+                        tidslinjeHendelser={tidslinjeHendelserQuery.data ?? []}
+                        manglendeVedlegg={manglendeVedleggQuery.data ?? []}
                         visHeleTidslinjen={false}
                         søkersBarn={søkerinfo.søker.barn ?? []}
                     />
@@ -256,5 +256,3 @@ const SaksoversiktInner: React.FunctionComponent<Props> = ({ søkerinfo, isFirst
         </VStack>
     );
 };
-
-export default Saksoversikt;

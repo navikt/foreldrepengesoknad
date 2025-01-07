@@ -2,6 +2,7 @@ import { Buildings3Icon, SparklesIcon, WalletIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import classNames from 'classnames';
 import { ReactNode } from 'react';
+import { useIntl } from 'react-intl';
 import { Navigate, useParams } from 'react-router-dom';
 
 import { Alert, BodyShort, Detail, HGrid, Heading, List, Loader, VStack } from '@navikt/ds-react';
@@ -38,6 +39,7 @@ export const InntektsmeldingPage = () => {
     const GRUNNBELØP =
         useQuery({ ...hentSatserOptions(), select: (satser) => satser.grunnbeløp[0].verdi }).data ?? Infinity;
     const ytelseTekst = useGetYtelse() === Ytelse.SVANGERSKAPSPENGER ? 'svangerskapspengene' : 'foreldrepengene';
+    const locale = useIntl().locale;
 
     const params = useParams();
     const inntektsmeldingerQuery = useQuery(hentInntektsmelding(params.saksnummer!));
@@ -88,8 +90,9 @@ export const InntektsmeldingPage = () => {
                         </BodyShort>
                         {tjenerOver6G && (
                             <BodyShort>
-                                Nav dekker inntekten du har, opptil {formatCurrencyWithKr(GRUNNBELØP * 6)} (seks ganger
-                                grunnbeløpet). Siden du tjener mer enn dette vil Nav ikke dekke hele inntekten du har.
+                                Nav dekker inntekten du har, opptil {formatCurrencyWithKr(GRUNNBELØP * 6, locale)} (seks
+                                ganger grunnbeløpet). Siden du tjener mer enn dette vil Nav ikke dekke hele inntekten du
+                                har.
                             </BodyShort>
                         )}
                     </VStack>

@@ -101,7 +101,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
                 onStepChange={navigator.goToStep}
-                stønadstype="Svangerskapspenger"
+                appOrigin="svangerskapspengesoknad"
             />
         </ContentWrapper>
     );

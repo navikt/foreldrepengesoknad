@@ -1,6 +1,6 @@
 {
     "HvorMyeForside.Title": "Hvor mye kan jeg få i foreldrepenger?",
-    "HvorMyeForside.Minutes": "ca 5 min",
+    "HvorMyeForside.Minutes": "ca. 5 min",
     "HvorMyeForside.Innhold": "Denne veiviseren er for deg som ønsker å vite omtrent hvor mye foreldrepenger du kan få fra Nav.",
     "Tittel": "Hvor mye kan jeg få i foreldrepenger?",
     "ArbeidssituasjonSide.Arbeidssituasjon": "Hva er din nåværende arbeidssituasjon?",
@@ -21,7 +21,8 @@
     "ArbeidssituasjonSide.Lenke": "hvor mye du kan få som selvstendig næringsdrivende",
     "ArbeidssituasjonSide.SeResultatet": "Se resultatet",
     "ArbeidssituasjonSide.Sykepenger": "Sykepenger",
-    "ArbeidssituasjonSide.Foreldrepenger": "Foreldre- og svangerskapspenger",
+    "ArbeidssituasjonSide.Foreldrepenger": "Foreldrepenger",
+    "ArbeidssituasjonSide.Svangerskapspenger": "Svangerskapspenger",
     "ArbeidssituasjonSide.Arbeidsavklaring": "Arbeidsavklaringspenger",
     "ArbeidssituasjonSide.Dagpenger": "Dagpenger",
     "ArbeidssituasjonSide.OmsorgOgPleie": "Omsorgs-, pleie- eller opplæringspenger ved sykt barn",

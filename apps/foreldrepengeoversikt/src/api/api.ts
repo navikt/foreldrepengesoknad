@@ -8,7 +8,7 @@ import { capitalizeFirstLetterInEveryWordOnly } from '@navikt/fp-utils';
 
 import { AnnenPartVedtakDTO } from '../types/AnnenPartVedtakDTO';
 import { Dokument } from '../types/Dokument';
-import EttersendingDto from '../types/EttersendingDTO';
+import { EttersendingDto } from '../types/EttersendingDTO';
 import { KontoBeregningGrunnlagDto } from '../types/KontoBeregningGrunnlagDto';
 import { MellomlagredeYtelser } from '../types/MellomlagredeYtelser';
 import { MinidialogInnslag } from '../types/MinidialogInnslag';

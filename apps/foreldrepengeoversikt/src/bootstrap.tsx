@@ -9,7 +9,6 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 import AppContainer from './AppContainer';
-import { initAmplitude } from './amplitude/amplitude';
 import { urlPrefiks } from './api/api';
 // Viktig at ds-css importeres før AppContainer. Det gjør at Aksel+tailwind sin css laster før vår i de tilfellene vi vil overskrive.
 import './index.css';
@@ -20,10 +19,8 @@ Sentry.init({
     dsn: 'https://b4fd4db97e7d4663852a5203961e3cee@sentry.gc.nav.no/6',
     release: (window as any).APP_VERSION,
     environment: window.location.hostname,
-    integrations: [new Sentry.Integrations.Breadcrumbs({ console: false })],
+    integrations: [Sentry.breadcrumbsIntegration({ console: false })],
 });
-
-initAmplitude();
 
 const container = document.getElementById('app');
 if (container) {

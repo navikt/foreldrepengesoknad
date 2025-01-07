@@ -9,11 +9,11 @@ import { useScrollBehaviour } from '@navikt/fp-utils';
 import { formatValue } from '@navikt/fp-validation/src/form/numberFormValidation';
 
 import { FpEllerEsSituasjon } from '../situasjon/SituasjonSide';
-import HarIkkeRett from './HarIkkeRett';
-import HarRett from './HarRett';
-import HarRettEs from './HarRettEs';
-import HarRettFpEllerEs from './HarRettFpEllerEs';
-import HvorMyeOgHvaSkjerNåLinkPanel from './HvorMyeOgHvaSkjerNåLinkPanel';
+import { HarIkkeRett } from './HarIkkeRett';
+import { HarRett } from './HarRett';
+import { HarRettEs } from './HarRettEs';
+import { HarRettFpEllerEs } from './HarRettFpEllerEs';
+import { HvorMyeOgHvaSkjerNåLinkPanel } from './HvorMyeOgHvaSkjerNåLinkPanel';
 
 const finnHvemSomHarRett = (fpEllerEsSituasjon: FpEllerEsSituasjon, satser: Satser) => {
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
@@ -63,7 +63,7 @@ interface Props {
     satser: Satser;
 }
 
-const OppsummeringFpEllerEsSide: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser }) => {
+export const OppsummeringFpEllerEsSide = ({ fpEllerEsSituasjon, satser }: Props) => {
     const intl = useIntl();
     const { ref } = useScrollBehaviour();
 
@@ -95,5 +95,3 @@ const OppsummeringFpEllerEsSide: React.FunctionComponent<Props> = ({ fpEllerEsSi
         </>
     );
 };
-
-export default OppsummeringFpEllerEsSide;

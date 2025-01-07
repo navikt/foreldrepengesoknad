@@ -201,7 +201,8 @@ export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
                             (!omBarnet.erFødsel || hvemPlanlegger.type !== Situasjon.FAR_OG_FAR) && (
                                 <Select
                                     defaultValue={fordeling?.antallDagerSøker1}
-                                    label={''}
+                                    label="Velg fordeling fellesperiode"
+                                    hideLabel
                                     name="antallDagerSøker1"
                                     onChange={(e) => {
                                         lagreFordeling({ antallDagerSøker1: parseInt(e.target.value, 10) });

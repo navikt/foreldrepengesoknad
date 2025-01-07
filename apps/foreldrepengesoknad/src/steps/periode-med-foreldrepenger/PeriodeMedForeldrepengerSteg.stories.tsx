@@ -9,7 +9,6 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { AnnenForelder, Barn, BarnType, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
 import { StønadskontoType } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 import { SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
 import { PeriodeMedForeldrepengerSteg } from './PeriodeMedForeldrepengerSteg';
@@ -124,7 +123,6 @@ const meta = {
     title: 'steps/PeriodeMedForeldrepengerSteg',
     component: PeriodeMedForeldrepengerSteg,
     render: ({ gåTilNesteSide, søkersituasjon, annenForelder, barnet, ...rest }) => {
-        initAmplitude();
         return (
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter initialEntries={[SøknadRoutes.PERIODE_MED_FORELDREPENGER]}>

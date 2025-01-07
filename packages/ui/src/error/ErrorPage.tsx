@@ -17,9 +17,9 @@ export const ErrorPage = ({ appName, errorMessage, retryCallback }: Props) => (
     <ContentWrapper>
         <VStack gap="20">
             <Heading size="large" level="2">
-                {appName === 'Engangsstønad' && <FormattedMessage id="ErrorPage.Engangsstønad" />}
-                {appName === 'Foreldrepenger' && <FormattedMessage id="ErrorPage.Foreldrepenger" />}
-                {appName === 'Svangerskapspenger' && <FormattedMessage id="ErrorPage.Svangerskapspenger" />}
+                {appName === 'engangsstonad' && <FormattedMessage id="ErrorPage.Engangsstønad" />}
+                {appName === 'foreldrepengesoknad' && <FormattedMessage id="ErrorPage.Foreldrepenger" />}
+                {appName === 'svangerskapspengesoknad' && <FormattedMessage id="ErrorPage.Svangerskapspenger" />}
             </Heading>
             <VStack gap="10">
                 <Alert variant="warning">

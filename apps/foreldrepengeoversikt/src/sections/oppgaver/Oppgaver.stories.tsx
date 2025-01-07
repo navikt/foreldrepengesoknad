@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
 
-import Oppgaver from './Oppgaver';
+import { Oppgaver } from './Oppgaver';
 
 const queryClient = new QueryClient();
 

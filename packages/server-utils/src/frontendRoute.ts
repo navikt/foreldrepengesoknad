@@ -58,14 +58,14 @@ const setupViteMode = (router: Router) => {
         const viteModeHtml = response.viteModeHtml;
 
         if (viteModeHtml) {
-            const { DECORATOR_HEADER, DECORATOR_STYLES, DECORATOR_SCRIPTS, DECORATOR_FOOTER } =
+            const { DECORATOR_HEADER, DECORATOR_HEAD_ASSETS, DECORATOR_SCRIPTS, DECORATOR_FOOTER } =
                 await fetchDecoratorHtml(dekoratørProps);
 
             const appSettingsScript = `<script type="text/json" id="nav:appSettings">{{{APP_SETTINGS}}}</script>`;
 
             const html = [
                 DECORATOR_HEADER,
-                DECORATOR_STYLES,
+                DECORATOR_HEAD_ASSETS,
                 DECORATOR_SCRIPTS,
                 replaceAppSettings(appSettingsScript),
                 viteModeHtml,

@@ -3,23 +3,23 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { Alert, VStack } from '@navikt/ds-react';
 
-import { erSakOppdatertOptions } from './../../api/api';
-import BekreftelseSendtSøknad from './../../components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
-import { HarIkkeSaker } from './../../components/har-ikke-saker/HarIkkeSaker';
-import { HarSaker } from './../../components/har-saker/HarSaker';
-import { ForsideHeader } from './../../components/header/Header';
-import { SakLink } from './../../components/sak-link/SakLink';
+import { erSakOppdatertOptions } from '../../api/api';
+import { BekreftelseSendtSøknad } from '../../components/bekreftelse-sendt-søknad/BekreftelseSendtSøknad';
+import { HarIkkeSaker } from '../../components/har-ikke-saker/HarIkkeSaker';
+import { HarSaker } from '../../components/har-saker/HarSaker';
+import { ForsideHeader } from '../../components/header/Header';
+import { SakLink } from '../../components/sak-link/SakLink';
 import {
     useGetRedirectedFromSøknadsnummer,
     useSetRedirectedFromSøknadsnummer,
-} from './../../hooks/useRedirectedFromSøknadsnummer';
-import { useSetSelectedRoute } from './../../hooks/useSelectedRoute';
-import { PageRouteLayout } from './../../routes/ForeldrepengeoversiktRoutes';
-import { OversiktRoutes } from './../../routes/routes';
-import { RedirectSource, UKNOWN_SAKSNUMMER } from './../../types/RedirectSource';
-import { SakOppslag } from './../../types/SakOppslag';
-import { SøkerinfoDTO } from './../../types/SøkerinfoDTO';
-import { getAlleYtelser, grupperSakerPåBarn } from './../../utils/sakerUtils';
+} from '../../hooks/useRedirectedFromSøknadsnummer';
+import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
+import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
+import { OversiktRoutes } from '../../routes/routes';
+import { RedirectSource, UKNOWN_SAKSNUMMER } from '../../types/RedirectSource';
+import { SakOppslag } from '../../types/SakOppslag';
+import { SøkerinfoDTO } from '../../types/SøkerinfoDTO';
+import { getAlleYtelser, grupperSakerPåBarn } from '../../utils/sakerUtils';
 import './forside.css';
 
 interface Props {
@@ -28,7 +28,7 @@ interface Props {
     søkerinfo: SøkerinfoDTO;
 }
 
-const Forside: React.FunctionComponent<Props> = ({ saker, isFirstRender, søkerinfo }) => {
+export const Forside = ({ saker, isFirstRender, søkerinfo }: Props) => {
     useSetSelectedRoute(OversiktRoutes.HOVEDSIDE);
     const params = useParams();
     useSetRedirectedFromSøknadsnummer(params.redirect, undefined, isFirstRender);
@@ -82,5 +82,3 @@ const Forside: React.FunctionComponent<Props> = ({ saker, isFirstRender, søkeri
         </PageRouteLayout>
     );
 };
-
-export default Forside;

@@ -6,8 +6,6 @@ import { ComponentProps } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { FerieSteg } from './FerieSteg';
 
 const arbeidsforhold = [
@@ -26,7 +24,6 @@ const meta = {
     title: 'steps/FerieSteg',
     component: FerieSteg,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[addTilretteleggingIdToRoute(SøknadRoute.FERIE, '896929119')]}>
                 <SvpDataContext

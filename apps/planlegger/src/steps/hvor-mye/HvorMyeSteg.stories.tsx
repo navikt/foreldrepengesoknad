@@ -8,8 +8,6 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorMye } from 'types/HvorMye';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { HvorMyeSteg } from './HvorMyeSteg';
 
 type StoryArgs = {
@@ -52,7 +50,6 @@ const meta = {
         locale,
         satser,
     }: StoryArgs) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.HVOR_MYE]}>
                 <PlanleggerDataContext

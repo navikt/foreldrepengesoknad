@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
-
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
 import { ContextDataType, useContextSaveData } from './SvpDataContext';
@@ -10,16 +8,6 @@ import { useStepConfig } from './useStepConfig';
 export const useSvpNavigator = (mellomlagreOgNaviger: () => Promise<void>, arbeidsforhold: Arbeidsforhold[]) => {
     const stepConfig = useStepConfig(arbeidsforhold);
     const oppdaterPath = useContextSaveData(ContextDataType.APP_ROUTE);
-
-    const activeStepId = stepConfig.find((sc) => sc.isSelected);
-
-    useEffect(() => {
-        logAmplitudeEvent('sidevisning', {
-            app: 'svangerskapspenger',
-            team: 'foreldrepenger',
-            pageKey: activeStepId,
-        });
-    }, [activeStepId]);
 
     const goToPreviousDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
@@ -41,11 +29,7 @@ export const useSvpNavigator = (mellomlagreOgNaviger: () => Promise<void>, arbei
     };
 
     const fortsettSøknadSenere = () => {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'svangerskapspenger',
-            team: 'foreldrepenger',
-            hendelse: 'fortsettSenere',
-        });
+        loggAmplitudeEvent({ origin: 'svangerskapspengesoknad', eventName: 'skjema fortsett senere' });
         (window as any).location = 'https://nav.no';
     };
 

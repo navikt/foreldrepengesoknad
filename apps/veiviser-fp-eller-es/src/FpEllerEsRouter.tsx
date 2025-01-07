@@ -1,14 +1,12 @@
 import { FpEllerEsRoutes } from 'appData/routes';
-import { veiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
-import { FunctionComponent, useState } from 'react';
-import { Navigate, Route, Routes, useBeforeUnload } from 'react-router-dom';
+import { useState } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll, Satser } from '@navikt/fp-types';
 
-import FpEllerEsForside from './pages/forside/FpEllerEsForside';
-import OppsummeringFpEllerEsSide from './pages/oppsummering/OppsummeringFpEllerEsSide';
-import SituasjonSide, { FpEllerEsSituasjon } from './pages/situasjon/SituasjonSide';
+import { FpEllerEsForside } from './pages/forside/FpEllerEsForside';
+import { OppsummeringFpEllerEsSide } from './pages/oppsummering/OppsummeringFpEllerEsSide';
+import { FpEllerEsSituasjon, SituasjonSide } from './pages/situasjon/SituasjonSide';
 
 interface Props {
     locale: LocaleAll;
@@ -16,17 +14,8 @@ interface Props {
     satser: Satser;
 }
 
-const FpEllerEsRouter: FunctionComponent<Props> = ({ locale, changeLocale, satser }) => {
+export const FpEllerEsRouter = ({ locale, changeLocale, satser }: Props) => {
     const [fpEllerEsSituasjon, setFpEllerEsSituasjon] = useState<FpEllerEsSituasjon>();
-
-    useBeforeUnload(() => {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: veiviserAmplitudeKey,
-            team: 'foreldrepenger',
-            pageKey: 'page-unload',
-        });
-    });
-
     return (
         <Routes>
             <Route path="/" element={<FpEllerEsForside locale={locale} changeLocale={changeLocale} />} />
@@ -50,5 +39,3 @@ const FpEllerEsRouter: FunctionComponent<Props> = ({ locale, changeLocale, satse
         </Routes>
     );
 };
-
-export default FpEllerEsRouter;

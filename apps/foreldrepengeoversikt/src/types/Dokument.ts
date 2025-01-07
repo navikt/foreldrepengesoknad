@@ -2,7 +2,7 @@ import { DokumentType } from './DokumentType';
 
 export interface Dokument {
     type: DokumentType;
-    mottatt: Date;
+    mottatt: string;
     saksnummer: string;
     tittel: string;
     url: string;
