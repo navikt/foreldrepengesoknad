@@ -7,7 +7,6 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
 import { SivilstandType } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 import { Søker, SøkerBarn, SøkersituasjonFp } from '@navikt/fp-types';
 
 import { AnnenForelderSteg } from './AnnenForelderSteg';
@@ -66,7 +65,6 @@ const meta = {
         gåTilNesteSide = action('button-click'),
         ...rest
     }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.ANNEN_FORELDER]}>
                 <FpDataContext

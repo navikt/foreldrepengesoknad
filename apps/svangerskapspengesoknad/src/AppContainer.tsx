@@ -80,7 +80,7 @@ export const AppContainer = () => {
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary appName="Svangerskapspenger" retryCallback={retryCallback}>
+            <ErrorBoundary appName="svangerskapspengesoknad" retryCallback={retryCallback}>
                 <ByttBrowserModal />
                 <QueryClientProvider client={queryClient}>
                     <ReactQueryDevtools />

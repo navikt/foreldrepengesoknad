@@ -112,7 +112,7 @@ export const Foreldrepengesøknad = ({ locale, onChangeLocale }: Props) => {
     }
 
     return (
-        <ErrorBoundary appName="Foreldrepenger" retryCallback={retryCallback}>
+        <ErrorBoundary appName="foreldrepengesoknad" retryCallback={retryCallback}>
             <FpDataContext initialState={initialState}>
                 <ForeldrepengesøknadRoutes
                     locale={locale}

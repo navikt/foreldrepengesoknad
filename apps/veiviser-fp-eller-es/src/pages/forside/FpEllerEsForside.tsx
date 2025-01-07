@@ -1,13 +1,10 @@
 import { InformationIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { FpEllerEsRoutes } from 'appData/routes';
 import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
-import { veiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
-import { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort } from '@navikt/ds-react';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll } from '@navikt/fp-types';
 import { FrontPage, Infobox } from '@navikt/fp-ui';
 
@@ -20,14 +17,6 @@ export const FpEllerEsForside = ({ locale, changeLocale }: Props) => {
     const intl = useIntl();
 
     const { goToRoute } = useVeiviserNavigator();
-
-    useEffect(() => {
-        logAmplitudeEvent('sidevisning', {
-            app: veiviserAmplitudeKey,
-            team: 'foreldrepenger',
-            pageKey: FpEllerEsRoutes.OM,
-        });
-    }, []);
 
     return (
         <FrontPage

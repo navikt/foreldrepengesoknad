@@ -84,7 +84,7 @@ export const ArbeidsforholdOgInntektSteg = ({ mellomlagreSøknadOgNaviger, avbry
                 onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
-                stønadstype="Foreldrepenger"
+                appOrigin="foreldrepengesoknad"
             />
         </ContentWrapper>
     );

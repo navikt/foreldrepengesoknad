@@ -7,8 +7,6 @@ import { MemoryRouter } from 'react-router-dom';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { BarnehageplassSteg } from './BarnehageplassSteg';
 
 type StoryArgs = {
@@ -21,7 +19,6 @@ const meta = {
     title: 'steg/BarnehageplassSteg',
     component: BarnehageplassSteg,
     render: ({ hvemPlanlegger, omBarnet, gåTilNesteSide = action('button-click'), locale }: StoryArgs) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.ARBEIDSSITUASJON]}>
                 <PlanleggerDataContext

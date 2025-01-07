@@ -10,7 +10,6 @@ import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenInntektType } from 'types/AnnenInntekt';
 
 import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
-import { initAmplitude } from '@navikt/fp-metrics';
 import { ArbeidsforholdOgInntektFp, Situasjon, Søkerinfo } from '@navikt/fp-types';
 
 import { ManglendeVedlegg } from './ManglendeVedlegg';
@@ -131,8 +130,6 @@ const meta = {
         gåTilNesteSide = action('button-click'),
         ...rest
     }) => {
-        initAmplitude();
-
         return (
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter initialEntries={[SøknadRoutes.DOKUMENTASJON]}>

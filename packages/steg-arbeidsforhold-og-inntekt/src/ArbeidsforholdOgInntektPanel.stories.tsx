@@ -56,21 +56,21 @@ export const ForSvangerskapspenger: Story = {
                 isSelected: true,
             },
         ],
-        stønadstype: 'Svangerskapspenger',
+        appOrigin: 'svangerskapspengesoknad',
     },
 };
 
 export const ForForeldrepenger: Story = {
     args: {
         ...ForSvangerskapspenger.args,
-        stønadstype: 'Foreldrepenger',
+        appOrigin: 'foreldrepengesoknad',
     },
 };
 
 export const HarIngenArbeidsforhold: Story = {
     args: {
         ...ForSvangerskapspenger.args,
-        stønadstype: 'Foreldrepenger',
+        appOrigin: 'foreldrepengesoknad',
         aktiveArbeidsforhold: [],
     },
 };

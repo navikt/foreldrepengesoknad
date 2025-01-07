@@ -13,8 +13,6 @@ import { BrowserRouter } from 'react-router-dom';
 
 import '@navikt/ds-css';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { AppContainer } from './AppContainer';
 import './styles/app.css';
 
@@ -29,8 +27,6 @@ Sentry.init({
     environment: window.location.hostname,
     integrations: [Sentry.breadcrumbsIntegration({ console: false })],
 });
-
-initAmplitude();
 
 const container = document.getElementById('app');
 if (container) {

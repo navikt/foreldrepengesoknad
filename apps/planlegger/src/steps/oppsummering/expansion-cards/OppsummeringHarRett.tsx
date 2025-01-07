@@ -14,6 +14,7 @@ import {
     getFornavnPåSøker2,
     getNavnGenitivEierform,
 } from 'utils/HvemPlanleggerUtils';
+import { loggExpansionCardOpen } from 'utils/amplitudeUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import {
     getAntallUkerOgDager,
@@ -25,23 +26,12 @@ import { finnAntallUkerOgDagerMedForeldrepenger, getFamiliehendelsedato, lagFors
 
 import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { UttaksdagenString, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
 
 import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../../utils/barnetUtils';
-
-const onToggleExpansionCard = (open: boolean) => {
-    if (open) {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'planlegger',
-            team: 'foreldrepenger',
-            pageKey: 'toggle-oppgitt-informasjon',
-        });
-    }
-};
 
 interface Props {
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
@@ -111,7 +101,7 @@ export const OppsummeringHarRett = ({
 
     return (
         <VStack gap="10">
-            <ExpansionCard aria-label="" onToggle={onToggleExpansionCard} size="small">
+            <ExpansionCard aria-label="" onToggle={loggExpansionCardOpen('toggle-oppgitt-informasjon')} size="small">
                 <ExpansionCard.Header>
                     <HStack gap="6" align="center" wrap={false}>
                         <IconCircleWrapper size="medium" color="lightBlue">

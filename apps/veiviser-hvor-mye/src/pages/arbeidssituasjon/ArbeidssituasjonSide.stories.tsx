@@ -2,8 +2,6 @@ import { Meta, StoryObj } from '@storybook/react';
 import { HvorMyeRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { ArbeidssituasjonSide } from './ArbeidssituasjonSide';
 
 const satser = {
@@ -33,7 +31,6 @@ const meta = {
     title: 'hvorMye/ArbeidssituasjonSide',
     component: ArbeidssituasjonSide,
     render: (props) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[HvorMyeRoutes.ARBEIDSSITUASJON]}>
                 <ArbeidssituasjonSide {...props} />

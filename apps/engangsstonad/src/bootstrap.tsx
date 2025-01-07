@@ -11,8 +11,6 @@ import 'styles/globals.css';
 
 import '@navikt/ds-css';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { AppContainer } from './AppContainer';
 
 countries.registerLocale(langNB);
@@ -27,8 +25,6 @@ if (process.env.NODE_ENV !== 'development') {
         integrations: [Sentry.breadcrumbsIntegration({ console: false })],
     });
 }
-
-initAmplitude();
 
 const container = document.getElementById('app');
 if (container) {

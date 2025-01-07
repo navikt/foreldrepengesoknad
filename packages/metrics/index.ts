@@ -1,1 +1,1 @@
-export { initAmplitude, logAmplitudeEvent, logAmplitudeEventOnOpen } from './src/amplitude';
+export { loggAmplitudeEvent } from './src/amplitude';

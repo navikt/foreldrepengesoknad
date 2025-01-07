@@ -5,7 +5,7 @@ import { BodyShort, Radio, ReadMore } from '@navikt/ds-react';
 
 import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfRadioGroup, RhfTextField, RhfTextarea } from '@navikt/fp-form-hooks';
-import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { AppName } from '@navikt/fp-types';
 import {
     hasMaxLength,
@@ -27,10 +27,10 @@ interface Props {
     egenNæringFom: string;
     egenNæringTom: string;
     varigEndring: boolean | undefined;
-    stønadstype: AppName;
+    appOrigin: AppName;
 }
 
-export const VarigEndringSpørsmål = ({ egenNæringFom, egenNæringTom, varigEndring, stønadstype }: Props) => {
+export const VarigEndringSpørsmål = ({ egenNæringFom, egenNæringTom, varigEndring, appOrigin }: Props) => {
     const intl = useIntl();
 
     return (
@@ -52,7 +52,13 @@ export const VarigEndringSpørsmål = ({ egenNæringFom, egenNæringTom, varigEn
                 </Radio>
             </RhfRadioGroup>
             <ReadMore
-                onOpenChange={logAmplitudeEventOnOpen(stønadstype, 'Varig_endring')}
+                onOpenChange={(open) =>
+                    loggAmplitudeEvent({
+                        origin: appOrigin,
+                        eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                        eventData: { tittel: 'egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info.åpneLabel' },
+                    })
+                }
                 header={intl.formatMessage({ id: 'egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info.åpneLabel' })}
             >
                 <BodyShort>
