@@ -3,7 +3,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
 
 import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { AppName, Arbeidsforhold } from '@navikt/fp-types';
+import { AppOrigin } from '@navikt/fp-metrics/src/amplitude';
+import { Arbeidsforhold } from '@navikt/fp-types';
 
 import { HarArbeidsforhold } from './HarArbeidsforhold';
 import { HarIkkeArbeidsforhold } from './HarIkkeArbeidsforhold';
@@ -11,10 +12,10 @@ import { HarIkkeArbeidsforhold } from './HarIkkeArbeidsforhold';
 interface Props {
     arbeidsforhold: Arbeidsforhold[];
     visManglerInfo?: boolean;
-    stønadstype: AppName;
+    appOrigin: AppOrigin;
 }
 
-export const ArbeidsforholdInformasjon = ({ stønadstype, arbeidsforhold, visManglerInfo = true }: Props) => {
+export const ArbeidsforholdInformasjon = ({ appOrigin, arbeidsforhold, visManglerInfo = true }: Props) => {
     const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;
     const intl = useIntl();
 
@@ -26,7 +27,7 @@ export const ArbeidsforholdInformasjon = ({ stønadstype, arbeidsforhold, visMan
                 <ReadMore
                     onOpenChange={(open) =>
                         loggAmplitudeEvent({
-                            origin: stønadstype,
+                            origin: appOrigin,
                             eventName: open ? 'readmore åpnet' : 'readmore lukket',
                             eventData: { tittel: 'inntektsinformasjon.arbeidsforhold.info' },
                         })

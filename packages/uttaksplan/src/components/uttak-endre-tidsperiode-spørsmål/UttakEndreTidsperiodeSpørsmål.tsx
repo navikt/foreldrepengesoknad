@@ -108,7 +108,7 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                         max: 100,
                         onChange: (nyUker: number) => {
                             loggAmplitudeEvent({
-                                origin: 'Foreldrepenger',
+                                origin: 'foreldrepengesoknad',
                                 eventName: 'button klikk',
                                 eventData: { tittel: 'ukeStepperKlikk' },
                             });
@@ -130,7 +130,7 @@ const UttakEndreTidsperiodeSpørsmål: React.FunctionComponent<Props> = ({
                         max: 5,
                         onChange: (nyDager: number) => {
                             loggAmplitudeEvent({
-                                origin: 'Foreldrepenger',
+                                origin: 'foreldrepengesoknad',
                                 eventName: 'button klikk',
                                 eventData: { tittel: 'dagStepperKlikk' },
                             });

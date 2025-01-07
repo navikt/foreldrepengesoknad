@@ -9,7 +9,7 @@ import { ContentWrapper } from '@navikt/fp-ui';
 
 export const IkkeKvinne = () => {
     loggAmplitudeEvent({
-        origin: 'Svangerskapspenger',
+        origin: 'svangerskapspengesoknad',
         eventName: 'besøk',
         eventData: { tittel: 'ikkeKvinne' },
     });

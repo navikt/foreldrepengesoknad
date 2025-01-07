@@ -34,7 +34,7 @@ export const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
     };
 
     const fortsettSøknadSenere = () => {
-        loggAmplitudeEvent({ origin: 'Engangsstønad', eventName: 'skjema fortsett senere' });
+        loggAmplitudeEvent({ origin: 'engangsstonad', eventName: 'skjema fortsett senere' });
         (window as any).location = 'https://nav.no';
     };
 

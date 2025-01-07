@@ -17,7 +17,7 @@ import { NyttBarnFørTreÅr } from './NyttBarnFørTreÅr';
 const onToggleExpansionCard = (open: boolean) => {
     if (open) {
         loggAmplitudeEvent({
-            origin: 'Foreldrepengeplanlegger',
+            origin: 'planlegger',
             eventName: 'accordion åpnet',
             eventData: { tittel: "'toggle-uforutsette-endringer'" },
         });

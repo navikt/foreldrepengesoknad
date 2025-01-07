@@ -20,7 +20,7 @@ const SlettbarAvslåttPeriode: FunctionComponent<Props> = ({ periode, handleDele
     const bem = planBemUtils('slettbarAvslåttPeriode');
     const onSlettPeriode = () => {
         loggAmplitudeEvent({
-            origin: 'Foreldrepenger',
+            origin: 'foreldrepengesoknad',
             eventName: 'button klikk',
             eventData: { tittel: 'slettPeriodeKlikk' },
         });

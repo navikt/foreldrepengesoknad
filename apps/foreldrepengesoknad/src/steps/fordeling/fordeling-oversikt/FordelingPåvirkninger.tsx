@@ -65,7 +65,7 @@ export const FordelingPåvirkninger = ({
                 onToggle={(open) => {
                     if (open) {
                         loggAmplitudeEvent({
-                            origin: 'Foreldrepenger',
+                            origin: 'foreldrepengesoknad',
                             eventName: 'accordion åpnet',
                             eventData: { tittel: heading },
                         });

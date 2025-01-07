@@ -190,7 +190,7 @@ const Planlegger: FunctionComponent<Props> = ({
                             variant="secondary"
                             onClick={() => {
                                 loggAmplitudeEvent({
-                                    origin: 'Foreldrepenger',
+                                    origin: 'foreldrepengesoknad',
                                     eventName: 'button klikk',
                                     eventData: { tittel: 'leggTilPeriodeKlikk' },
                                 });
@@ -205,7 +205,7 @@ const Planlegger: FunctionComponent<Props> = ({
                             variant="secondary"
                             onClick={() => {
                                 loggAmplitudeEvent({
-                                    origin: 'Foreldrepenger',
+                                    origin: 'foreldrepengesoknad',
                                     eventName: 'button klikk',
                                     eventData: { tittel: 'leggTilUtsettelseKlikk' },
                                 });

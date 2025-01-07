@@ -8,7 +8,7 @@ import { Infobox } from '@navikt/fp-ui';
 
 const copyUrlToClipboard = async () => {
     loggAmplitudeEvent({
-        origin: 'Foreldrepengeplanlegger',
+        origin: 'planlegger',
         eventName: 'kopier',
         eventData: { tittel: 'OppsummeringSteg.KopierUrl' },
     });

@@ -5,8 +5,7 @@ import { BodyShort, Radio, ReadMore } from '@navikt/ds-react';
 
 import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfRadioGroup, RhfTextField, RhfTextarea } from '@navikt/fp-form-hooks';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { AppName } from '@navikt/fp-types';
+import { AppOrigin, loggAmplitudeEvent } from '@navikt/fp-metrics';
 import {
     hasMaxLength,
     hasMinLength,
@@ -27,10 +26,10 @@ interface Props {
     egenNæringFom: string;
     egenNæringTom: string;
     varigEndring: boolean | undefined;
-    stønadstype: AppName;
+    appOrigin: AppOrigin;
 }
 
-export const VarigEndringSpørsmål = ({ egenNæringFom, egenNæringTom, varigEndring, stønadstype }: Props) => {
+export const VarigEndringSpørsmål = ({ egenNæringFom, egenNæringTom, varigEndring, appOrigin }: Props) => {
     const intl = useIntl();
 
     return (
@@ -54,7 +53,7 @@ export const VarigEndringSpørsmål = ({ egenNæringFom, egenNæringTom, varigEn
             <ReadMore
                 onOpenChange={(open) =>
                     loggAmplitudeEvent({
-                        origin: stønadstype,
+                        origin: appOrigin,
                         eventName: open ? 'readmore åpnet' : 'readmore lukket',
                         eventData: { tittel: 'egenNæring.egenNæringHattVarigEndringDeSiste4Årene.info.åpneLabel' },
                     })

@@ -20,7 +20,7 @@ const ResetUttaksplanModal: FunctionComponent<Props> = ({ isOpen, onClose, handl
 
     const onBekreft = () => {
         loggAmplitudeEvent({
-            origin: 'Foreldrepenger',
+            origin: 'foreldrepengesoknad',
             eventName: 'button klikk',
             eventData: { tittel: 'tilbakestillPlan' },
         });

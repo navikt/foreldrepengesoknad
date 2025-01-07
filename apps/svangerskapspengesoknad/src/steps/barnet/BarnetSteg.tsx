@@ -114,7 +114,7 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                         <ReadMore
                             onOpenChange={(open) =>
                                 loggAmplitudeEvent({
-                                    origin: 'Svangerskapspenger',
+                                    origin: 'svangerskapspengesoknad',
                                     eventName: open ? 'readmore åpnet' : 'readmore lukket',
                                     eventData: { tittel: 'barnet.erBarnetFødt.merInfo.tittel' },
                                 })
@@ -186,7 +186,7 @@ export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeids
                         <ReadMore
                             onOpenChange={(open) =>
                                 loggAmplitudeEvent({
-                                    origin: 'Svangerskapspenger',
+                                    origin: 'svangerskapspengesoknad',
                                     eventName: open ? 'readmore åpnet' : 'readmore lukket',
                                     eventData: { tittel: 'barnet.termindato.merInfo.tittel' },
                                 })

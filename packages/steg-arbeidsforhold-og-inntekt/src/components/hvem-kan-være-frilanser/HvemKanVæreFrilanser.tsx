@@ -3,18 +3,17 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Link, ReadMore, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
-import { AppName } from '@navikt/fp-types';
+import { AppOrigin, loggAmplitudeEvent } from '@navikt/fp-metrics';
 
-type Props = { stønadstype: AppName };
-export const HvemKanVæreFrilanser = ({ stønadstype }: Props) => {
+type Props = { appOrigin: AppOrigin };
+export const HvemKanVæreFrilanser = ({ appOrigin }: Props) => {
     const intl = useIntl();
 
     return (
         <ReadMore
             onOpenChange={(open) =>
                 loggAmplitudeEvent({
-                    origin: stønadstype,
+                    origin: appOrigin,
                     eventName: open ? 'readmore åpnet' : 'readmore lukket',
                     eventData: { tittel: 'inntektsinformasjon.harDuJobbetSomFrilans.apneLabel' },
                 })

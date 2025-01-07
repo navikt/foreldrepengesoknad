@@ -273,7 +273,7 @@ const Uttaksplan: FunctionComponent<Props> = ({
     const handleSlettUttaksplanModalBekreft = () => {
         setSlettUttaksplanModalOpen(false);
         loggAmplitudeEvent({
-            origin: 'Foreldrepenger',
+            origin: 'foreldrepengesoknad',
             eventName: 'button klikk',
             eventData: { tittel: 'slettUttaksplan' },
         });

@@ -15,7 +15,7 @@ export const useAvbrytSøknad = (setHarGodkjentVilkår: (harGodkjentVilkår: boo
     });
 
     const avbrytSøknadHandler = async () => {
-        loggAmplitudeEvent({ origin: 'Svangerskapspenger', eventName: 'skjema avbrutt' });
+        loggAmplitudeEvent({ origin: 'svangerskapspengesoknad', eventName: 'skjema avbrutt' });
 
         reset();
 

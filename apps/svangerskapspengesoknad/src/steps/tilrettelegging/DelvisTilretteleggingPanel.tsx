@@ -106,7 +106,7 @@ export const DelvisTilretteleggingPanel = ({
                     <ReadMore
                         onOpenChange={(open) =>
                             loggAmplitudeEvent({
-                                origin: 'Svangerskapspenger',
+                                origin: 'svangerskapspengesoknad',
                                 eventName: open ? 'readmore åpnet' : 'readmore lukket',
                                 eventData: { tittel: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel' },
                             })

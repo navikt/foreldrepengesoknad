@@ -58,7 +58,7 @@ const TidsperiodeDisplay: React.FunctionComponent<Props> = ({ tidsperiode, toggl
                         e.preventDefault();
                         e.stopPropagation();
                         loggAmplitudeEvent({
-                            origin: 'Foreldrepenger',
+                            origin: 'foreldrepengesoknad',
                             eventName: 'button klikk',
                             eventData: { tittel: 'endrePeriodeTidsromLinkKlikk' },
                         });

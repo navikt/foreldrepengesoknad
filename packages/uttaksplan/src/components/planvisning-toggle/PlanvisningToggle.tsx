@@ -20,7 +20,7 @@ const PlanvisningToggle: FunctionComponent<Props> = ({ setVisningsmodus }) => {
 
     const onChangeHandler = (value: Visningsmodus) => {
         loggAmplitudeEvent({
-            origin: 'Foreldrepenger',
+            origin: 'foreldrepengesoknad',
             eventName: 'button klikk',
             eventData: { tittel: value === 'kalender' ? 'visKalenderIPlanSteget' : 'visListeIPlanSteget' },
         });

@@ -256,7 +256,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
                                     header={intl.formatMessage({ id: 'tilrettelegging.tiltak.info.title' })}
                                     onOpenChange={(open) =>
                                         loggAmplitudeEvent({
-                                            origin: 'Svangerskapspenger',
+                                            origin: 'svangerskapspengesoknad',
                                             eventName: open ? 'readmore åpnet' : 'readmore lukket',
                                             eventData: { tittel: 'tilrettelegging.tiltak.info.title' },
                                         })
@@ -301,7 +301,7 @@ export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad
                             header={intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidType.info.tittel' })}
                             onOpenChange={(open) =>
                                 loggAmplitudeEvent({
-                                    origin: 'Svangerskapspenger',
+                                    origin: 'svangerskapspengesoknad',
                                     eventName: open ? 'readmore åpnet' : 'readmore lukket',
                                     eventData: {
                                         tittel: 'tilrettelegging.tilrettelagtArbeidType.info.tittel',

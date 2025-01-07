@@ -106,7 +106,7 @@ const Periodeliste: FunctionComponent<Props> = ({
             setOpenPeriodeId(null!);
         } else {
             loggAmplitudeEvent({
-                origin: 'Foreldrepenger',
+                origin: 'foreldrepengesoknad',
                 eventName: 'accordion åpnet',
                 eventData: { tittel: 'expandPeriode' },
             });

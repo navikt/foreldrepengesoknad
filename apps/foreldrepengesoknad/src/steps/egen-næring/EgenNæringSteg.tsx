@@ -53,7 +53,7 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
                 onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
-                stønadstype="Foreldrepenger"
+                appOrigin="foreldrepengesoknad"
             />
         </ContentWrapper>
     );

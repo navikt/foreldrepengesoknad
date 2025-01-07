@@ -35,7 +35,7 @@ export const useFpNavigator = (
     };
 
     const fortsettSøknadSenere = () => {
-        loggAmplitudeEvent({ origin: 'Foreldrepenger', eventName: 'skjema fortsett senere' });
+        loggAmplitudeEvent({ origin: 'foreldrepengesoknad', eventName: 'skjema fortsett senere' });
         (window as any).location = 'https://nav.no';
     };
 
