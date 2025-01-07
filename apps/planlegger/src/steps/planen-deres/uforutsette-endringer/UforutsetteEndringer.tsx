@@ -4,25 +4,15 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
+import { loggExpansionCardOpen } from 'utils/amplitudeUtils';
 
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
-import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { HvisManBlirSyk } from './HvisManBlirSyk';
 import { HvisMorBlirSyk } from './HvisMorBlirSyk';
 import { NyttBarnFørTreÅr } from './NyttBarnFørTreÅr';
-
-const onToggleExpansionCard = (open: boolean) => {
-    if (open) {
-        loggAmplitudeEvent({
-            origin: 'planlegger',
-            eventName: 'accordion åpnet',
-            eventData: { tittel: "'toggle-uforutsette-endringer'" },
-        });
-    }
-};
 
 interface Props {
     hvemPlanlegger: HvemPlanlegger;
@@ -34,7 +24,7 @@ export const UforutsetteEndringer = ({ hvemPlanlegger, barnet, arbeidssituasjon 
     const morHarIkkeRett =
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
     return (
-        <ExpansionCard aria-label="." onToggle={onToggleExpansionCard} size="small">
+        <ExpansionCard aria-label="." onToggle={loggExpansionCardOpen('toggle-uforutsette-endringer')} size="small">
             <ExpansionCard.Header>
                 <HStack gap="6" align="center" wrap={false}>
                     <div>
