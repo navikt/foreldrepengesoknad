@@ -5,7 +5,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { ErrorSummaryHookForm, RhfForm, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { AppOrigin, loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { AppName } from '@navikt/fp-types';
 import { Arbeidsforhold, ArbeidsforholdOgInntekt } from '@navikt/fp-types';
 import { ProgressStep, Step, StepButtons } from '@navikt/fp-ui';
 import { isRequired } from '@navikt/fp-validation';
@@ -27,7 +28,7 @@ interface Props<TYPE> {
     onStepChange?: (id: TYPE) => void;
     goToPreviousStep: () => void;
     stepConfig: Array<ProgressStep<TYPE>>;
-    appOrigin: AppOrigin;
+    appOrigin: AppName;
 }
 
 export const ArbeidsforholdOgInntektPanel = <TYPE extends string>({

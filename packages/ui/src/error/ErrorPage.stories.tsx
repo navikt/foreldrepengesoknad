@@ -13,7 +13,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        appName: 'Engangsstønad',
+        appName: 'engangsstonad',
         errorMessage: 'Kall mot url: ‘/hjelpemidler/barnebriller/api/vilkarsgrunnlag’ feilet,  At S.kallFeilet',
         retryCallback: action('button-click'),
     },

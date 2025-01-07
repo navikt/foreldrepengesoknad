@@ -3,7 +3,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Link, ReadMore, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { AppOrigin, loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { AppName } from '@navikt/fp-types';
 
 type Props = { appOrigin: AppOrigin };
 export const HvemKanVæreFrilanser = ({ appOrigin }: Props) => {

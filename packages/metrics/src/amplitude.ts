@@ -1,15 +1,4 @@
-/**
- * Jeg tenker denne typen bør matche app-name i nais.
- */
-export type AppOrigin =
-    | 'engangsstonad'
-    | 'foreldrepengeoversikt'
-    | 'foreldrepengesoknad'
-    | 'planlegger'
-    | 'svangerskapspengesoknad'
-    | 'veiviser-fp-eller-es'
-    | 'veiviser-hva-skjer-nar'
-    | 'veiviser-hvor-mye';
+import { AppName } from '@navikt/fp-types';
 
 /**
  * Bruk kun navn fra denne taksonomien. Med utgangspunkt i https://github.com/navikt/analytics-taxonomy utvides etter behov.
@@ -31,7 +20,7 @@ export const loggAmplitudeEvent = ({
     eventName,
     eventData,
 }: {
-    origin: AppOrigin;
+    origin: AppName;
     eventName: EventNamesTaksonomi;
     eventData?: Record<string, string>;
 }) => {

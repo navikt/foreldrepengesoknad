@@ -14,7 +14,8 @@ import {
     RhfTextField,
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
-import { AppOrigin, loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { AppName } from '@navikt/fp-types';
 import { EgenNæring, Næringstype } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
 import { femMånederSiden, isValidDate as isStringAValidDate } from '@navikt/fp-utils';
@@ -72,7 +73,7 @@ interface Props<TYPE> {
     onStepChange?: (id: TYPE) => void;
     goToPreviousStep: () => void;
     stepConfig: Array<ProgressStep<TYPE>>;
-    appOrigin: AppOrigin;
+    appOrigin: AppName;
 }
 
 export const EgenNæringPanel = <TYPE extends string>({

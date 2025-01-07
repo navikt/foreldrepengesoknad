@@ -5,7 +5,8 @@ import { BodyShort, Radio, ReadMore } from '@navikt/ds-react';
 
 import { DATE_4_YEARS_AGO } from '@navikt/fp-constants';
 import { RhfDatepicker, RhfRadioGroup, RhfTextField, RhfTextarea } from '@navikt/fp-form-hooks';
-import { AppOrigin, loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { AppName } from '@navikt/fp-types';
 import {
     hasMaxLength,
     hasMinLength,
@@ -26,7 +27,7 @@ interface Props {
     egenNæringFom: string;
     egenNæringTom: string;
     varigEndring: boolean | undefined;
-    appOrigin: AppOrigin;
+    appOrigin: AppName;
 }
 
 export const VarigEndringSpørsmål = ({ egenNæringFom, egenNæringTom, varigEndring, appOrigin }: Props) => {
