@@ -24,7 +24,7 @@ Sentry.init({
     dsn: 'https://b28b752e32e846dd9818f2eb7a9fc013@sentry.gc.nav.no/7',
     release: (window as any).APP_VERSION,
     environment: window.location.hostname,
-    integrations: [new Sentry.Integrations.Breadcrumbs({ console: false })],
+    integrations: [Sentry.breadcrumbsIntegration({ console: false })],
 });
 
 const container = document.getElementById('app');
