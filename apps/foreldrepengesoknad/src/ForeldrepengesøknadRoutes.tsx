@@ -322,7 +322,7 @@ export const ForeldrepengesøknadRoutes = ({
     if (errorSendSøknad) {
         return (
             <ErrorPage
-                appName="Foreldrepenger"
+                appName="foreldrepengesoknad"
                 errorMessage={errorSendSøknad.message}
                 retryCallback={() => location.reload()}
             />

@@ -82,7 +82,7 @@ export const AppContainer = () => {
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary appName="Engangsstønad" retryCallback={retryCallback}>
+            <ErrorBoundary appName="engangsstonad" retryCallback={retryCallback}>
                 <QueryClientProvider client={queryClient}>
                     <ReactQueryDevtools />
                     <Engangsstønad locale={locale} onChangeLocale={changeLocale} />

@@ -37,7 +37,11 @@ export const Spinner = () => (
 
 export const ApiErrorHandler = ({ error }: { error: Error }) => {
     return (
-        <ErrorPage appName="Svangerskapspenger" errorMessage={error.message} retryCallback={() => location.reload()} />
+        <ErrorPage
+            appName="svangerskapspengesoknad"
+            errorMessage={error.message}
+            retryCallback={() => location.reload()}
+        />
     );
 };
 

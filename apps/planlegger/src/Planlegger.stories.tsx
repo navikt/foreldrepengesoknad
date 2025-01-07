@@ -136,7 +136,7 @@ const meta = {
             <StrictMode>
                 <MemoryRouter>
                     <IntlProvider locale="nb" messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-                        <ErrorBoundary appName="Foreldrepengeplanlegger" retryCallback={() => undefined}>
+                        <ErrorBoundary appName="planlegger" retryCallback={() => undefined}>
                             <QueryClientProvider client={queryClient}>
                                 <PlanleggerDataContext initialState={{}}>
                                     <PlanleggerDataFetcher locale="nb" changeLocale={() => undefined} />
