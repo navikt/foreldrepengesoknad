@@ -71,5 +71,5 @@
     "valideringsfeil.tilOgMedDato.erIFremtiden": "Sluttdatoen kan ikkje vere meir enn ni månedar fram i tid.",
     "valideringsfeil.tilOgMedDato.etterFraDato": "Sluttdatoen må vere lik eller etter startdatoen.",
     "valideringsfeil.fritekst.kanIkkeInneholdeTegn": "{ugyldigeTegn} er ugyldige teikn i feltet \"{feltNavn}\".",
-    "valideringsfeil.navnPåNæringen.forLang": "\"{feltNavn}\" kan bestå av maksimalt 100 tegn."
+    "valideringsfeil.navnPåNæringen.forLang": "\"{feltNavn}\" kan bestå av maksimalt 100 teikn."
 }
