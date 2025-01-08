@@ -1,0 +1,5 @@
+import{j as e}from"./jsx-runtime-DwRxq3ZX.js";import{a as n}from"./chunk-D5ZWXAHU-DlerbUHg.js";import{M as p,P as l,E as c,C as d}from"./useEsNavigator-8jnwrcOk.js";import{U as o}from"./UtenlandsoppholdSteg-BmfE-5uc.js";import"./index-BX3iQpgp.js";import"./v4-CtRu48qb.js";import"./dateFormValidation-Bl3Cxj6E.js";import"./index-B1dLepta.js";import"./TidligereUtenlandsoppholdPanel-C4n4vhoS.js";import"./ErrorSummaryHookForm-DSvQt0ZC.js";const u=()=>(...r)=>(n("button-click")(...r),Promise.resolve()),P={title:"steg/UtenlandsoppholdSteg",component:o,render:({gåTilNesteSide:r=n("button-click"),mellomlagreOgNaviger:m})=>e.jsx(p,{initialEntries:[l.UTENLANDSOPPHOLD],children:e.jsx(c,{onDispatch:r,initialState:{[d.SØKERSITUASJON]:{situasjon:"fødsel"}},children:e.jsx(o,{mellomlagreOgNaviger:m})})})},t={args:{mellomlagreOgNaviger:u()}};var a,s,i;t.parameters={...t.parameters,docs:{...(a=t.parameters)==null?void 0:a.docs,source:{originalSource:`{
+  args: {
+    mellomlagreOgNaviger: promiseAction()
+  }
+}`,...(i=(s=t.parameters)==null?void 0:s.docs)==null?void 0:i.source}}};const U=["Default"];export{t as Default,U as __namedExportsOrder,P as default};
