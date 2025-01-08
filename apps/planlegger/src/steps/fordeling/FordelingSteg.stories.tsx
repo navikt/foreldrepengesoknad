@@ -10,7 +10,6 @@ import { Dekningsgrad } from 'types/Dekningsgrad';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
 import { StønadskontoType } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 
 import { FordelingSteg } from './FordelingSteg';
 
@@ -59,7 +58,6 @@ const meta = {
         dekningsgrad = Dekningsgrad.HUNDRE_PROSENT,
         locale,
     }: StoryArgs) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.FORDELING]}>
                 <PlanleggerDataContext

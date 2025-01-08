@@ -54,7 +54,7 @@ export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, ar
                 onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
-                stønadstype="Svangerskapspenger"
+                appOrigin="svangerskapspengesoknad"
                 onStepChange={navigator.goToStep}
             />
         </ContentWrapper>

@@ -28,7 +28,7 @@ export const Spinner = () => (
 );
 
 export const ApiErrorHandler = ({ error }: { error: Error }) => {
-    return <ErrorPage appName="Engangsstønad" errorMessage={error.message} retryCallback={() => location.reload()} />;
+    return <ErrorPage appName="engangsstonad" errorMessage={error.message} retryCallback={() => location.reload()} />;
 };
 
 interface Props {

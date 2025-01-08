@@ -5,7 +5,6 @@ import { SøknadRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { initAmplitude } from '@navikt/fp-metrics';
 import { Utenlandsopphold } from '@navikt/fp-types';
 
 import { SenereUtenlandsoppholdSteg } from './SenereUtenlandsoppholdSteg';
@@ -31,7 +30,6 @@ const meta = {
     title: 'steps/SenereUtenlandsoppholdSteg',
     component: SenereUtenlandsoppholdSteg,
     render: ({ gåTilNesteSide = action('button-click'), utenlandsforhold = defaultUtenlandsopphold, ...rest }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoute.SKAL_BO_I_UTLANDET]}>
                 <SvpDataContext

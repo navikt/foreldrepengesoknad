@@ -9,7 +9,6 @@ import { Dokumentasjon } from 'types/Dokumentasjon';
 import { BarnetErFødt, OmBarnet } from 'types/OmBarnet';
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 import { Utenlandsopphold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
@@ -56,7 +55,6 @@ const meta = {
         dokumentasjon = vedleggDefault,
         mellomlagreOgNaviger,
     }) => {
-        initAmplitude();
         return (
             <div id="app">
                 <MemoryRouter initialEntries={[Path.OPPSUMMERING]}>

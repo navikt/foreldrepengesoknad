@@ -5,7 +5,6 @@ import { SøknadRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { initAmplitude } from '@navikt/fp-metrics';
 import { Utenlandsopphold } from '@navikt/fp-types';
 
 import { TidligereUtenlandsoppholdSteg } from './TidligereUtenlandsoppholdSteg';
@@ -33,7 +32,6 @@ const meta = {
         },
         ...rest
     }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoute.HAR_BODD_I_UTLANDET]}>
                 <SvpDataContext

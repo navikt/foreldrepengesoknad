@@ -4,7 +4,6 @@ import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { useDocumentTitle } from '@navikt/fp-utils';
 
 import { ContentWrapper } from '../content-wrapper/ContentWrapper';
@@ -29,12 +28,6 @@ export const Umyndig = ({ appnavn }: Props) => {
 
     const titleText = getTitleText(appnavn, intl);
     useDocumentTitle(titleText);
-
-    logAmplitudeEvent('sidevisning', {
-        app: appnavn,
-        team: 'foreldrepenger',
-        pageKey: 'umyndig',
-    });
 
     return (
         <ContentWrapper>

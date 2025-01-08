@@ -6,7 +6,6 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { DelvisTilrettelegging, IngenTilrettelegging } from 'types/Tilrettelegging';
 
-import { initAmplitude } from '@navikt/fp-metrics';
 import { ArbeidsforholdOgInntektSvp, EgenNæring, Frilans, Næringstype } from '@navikt/fp-types';
 
 import { VelgArbeidSteg } from './VelgArbeidSteg';
@@ -93,7 +92,6 @@ const meta = {
         frilans,
         ...rest
     }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoute.VELG_ARBEID]}>
                 <SvpDataContext

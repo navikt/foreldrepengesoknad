@@ -1,48 +1,35 @@
-import amplitude from 'amplitude-js';
-
 import { AppName } from '@navikt/fp-types';
 
-export const initAmplitude = () => {
-    if (amplitude) {
-        amplitude.getInstance().init('default', '', {
-            apiEndpoint: 'amplitude.nav.no/collect-auto',
-            saveEvents: false,
-            includeUtm: true,
-            includeReferrer: true,
-            platform: window.location.toString(),
-            // eslint-disable-next-line no-console
-            onError: () => console.log('Amplitude klarte ikke å starte opp'),
-        });
-    }
-};
+/**
+ * Bruk kun navn fra denne taksonomien. Med utgangspunkt i https://github.com/navikt/analytics-taxonomy utvides etter behov.
+ * Den er ikke veldig omstendelig. FOreslår vi legger oss på 'AKSEL-COMPONENT HANDLING'. Feks "button klikk", "radio valgt", "readmore åpnet" osv
+ */
+type EventNamesTaksonomi =
+    | 'accordion åpnet'
+    | 'accordion lukket'
+    | 'readmore lukket'
+    | 'readmore åpnet'
+    | 'button klikk'
+    | 'kopier'
+    | 'skjema fortsett senere'
+    | 'skjema avbrutt'
+    | 'besøk';
 
-export const logAmplitudeEvent = (eventName: string, eventData?: any, logToConsoleOnly = false) => {
-    if (logToConsoleOnly) {
-        if (process.env.NODE_ENV !== 'test') {
-            // eslint-disable-next-line no-console
-            console.log({ eventName, eventData });
-        }
-        return;
-    }
-
-    setTimeout(() => {
-        try {
-            if (amplitude) {
-                amplitude.getInstance().logEvent(eventName, eventData);
-            }
-        } catch (error) {
-            // tslint:disable-next-line
-            console.error(error); // eslint-disable-line no-console
-        }
-    });
-};
-
-export const logAmplitudeEventOnOpen = (appName: AppName, hendelsenavn: string) => (open: boolean) => {
-    if (open) {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: appName,
-            team: 'foreldrepenger',
-            hendelse: hendelsenavn,
+export const loggAmplitudeEvent = ({
+    origin,
+    eventName,
+    eventData,
+}: {
+    origin: AppName;
+    eventName: EventNamesTaksonomi;
+    eventData?: Record<string, string>;
+}) => {
+    if (process.env.NODE_ENV === 'production') {
+        // @ts-ignore -- ts-expect-error sier den er unused. Men uten ts-ignore så feil tsc
+        window.dekoratorenAmplitude({
+            origin,
+            eventName,
+            eventData,
         });
     }
 };

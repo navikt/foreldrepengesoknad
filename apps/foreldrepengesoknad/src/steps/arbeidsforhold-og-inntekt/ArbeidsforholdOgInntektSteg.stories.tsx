@@ -6,7 +6,6 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { BarnType } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 
 import { ArbeidsforholdOgInntektSteg } from './ArbeidsforholdOgInntektSteg';
 
@@ -79,7 +78,6 @@ const meta = {
     title: 'steps/ArbeidsforholdOgInntektSteg',
     component: ArbeidsforholdOgInntektSteg,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.ARBEID_OG_INNTEKT]}>
                 <FpDataContext

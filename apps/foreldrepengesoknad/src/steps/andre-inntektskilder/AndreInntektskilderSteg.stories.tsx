@@ -5,8 +5,6 @@ import { SøknadRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { AndreInntektskilderSteg } from './AndreInntektskilderSteg';
 
 const promiseAction =
@@ -24,7 +22,6 @@ const meta = {
     title: 'steps/AndreInntektskilderSteg',
     component: AndreInntektskilderSteg,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.ANDRE_INNTEKTER]}>
                 <FpDataContext

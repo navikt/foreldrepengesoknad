@@ -7,7 +7,6 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { BehandlingTilstand, DekningsgradDTO, Sak, SaksperiodeDTO } from '@navikt/fp-common';
 import { RettighetType } from '@navikt/fp-common/src/common/types/RettighetType';
-import { initAmplitude } from '@navikt/fp-metrics';
 import { Søker, SøkerBarn } from '@navikt/fp-types';
 
 import { Forside } from './Forside';
@@ -200,7 +199,6 @@ const meta = {
     title: 'pages/Forside',
     component: Forside,
     render: ({ onDispatch, ...rest }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.VELKOMMEN]}>
                 <FpDataContext onDispatch={onDispatch}>

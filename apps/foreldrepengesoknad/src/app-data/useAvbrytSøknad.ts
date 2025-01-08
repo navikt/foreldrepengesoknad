@@ -3,7 +3,7 @@ import ky from 'ky';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 
 import { useContextReset } from './FpDataContext';
 
@@ -21,10 +21,9 @@ export const useAvbrytSøknad = (
     });
 
     const avbrytSøknadHandler = useCallback(async () => {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'foreldrepengesoknad',
-            team: 'foreldrepenger',
-            hendelse: 'avbrutt',
+        loggAmplitudeEvent({
+            origin: 'foreldrepengesoknad',
+            eventName: 'skjema avbrutt',
         });
 
         reset();

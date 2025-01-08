@@ -1,27 +1,24 @@
 import { BabyWrappedIcon, WalletIcon } from '@navikt/aksel-icons';
 import { HvorMyeRoutes } from 'appData/routes';
 import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
-import { veiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
-import { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { LocaleAll } from '@navikt/fp-types';
 import { AndreVeivisereLinkPanel, FrontPage } from '@navikt/fp-ui';
 
-export const HvorMyeForside = () => {
+interface Props {
+    locale: LocaleAll;
+    changeLocale: (locale: LocaleAll) => void;
+}
+
+// @ts-expect-error
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- ubrukt frem til languageToggle skal tas i bruk
+export const HvorMyeForside = (props: Props) => {
     const intl = useIntl();
     const { goToRoute } = useVeiviserNavigator();
-
-    useEffect(() => {
-        logAmplitudeEvent('sidevisning', {
-            app: veiviserAmplitudeKey,
-            team: 'foreldrepenger',
-            pageKey: HvorMyeRoutes.OM,
-        });
-    }, []);
 
     return (
         <>
