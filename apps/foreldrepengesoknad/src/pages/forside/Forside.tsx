@@ -151,12 +151,7 @@ export const Forside = ({
     });
 
     const valgtBarnId = formMethods.watch('valgteBarn');
-
-    const valgtBarn =
-        valgtBarnId === SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN
-            ? undefined
-            : selectableBarn.find((barn) => barn.id === valgtBarnId);
-
+    const valgtBarn = selectableBarn.find((barn) => barn.id === valgtBarnId);
     const knapptekst =
         valgtBarn?.kanSøkeOmEndring === true
             ? intl.formatMessage({ id: 'velkommen.endreSøknad' })
