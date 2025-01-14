@@ -19,6 +19,7 @@ export const DinePlikter = () => {
                             ),
                         }}
                     />
+                    .
                 </BodyLong>
             </li>
             <li>
