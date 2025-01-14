@@ -21,7 +21,7 @@ import { RhfConfirmationPanel, RhfForm } from '@navikt/fp-form-hooks';
 import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ContentWrapper, LanguageToggle } from '@navikt/fp-ui';
 
-import { BarnVelger, SelectableBarnOptions } from './BarnVelger';
+import { BarnVelger } from './BarnVelger';
 import { DinePlikter } from './dine-plikter/DinePlikter';
 import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './forsideUtils';
 import { DinePersonopplysningerModal } from './modaler/DinePersonopplysningerModal';
@@ -69,16 +69,14 @@ export const Forside = ({
     const sortedSelectableBarn = [...selectableBarn].sort(sorterSelectableBarnEtterYngst);
 
     const onSubmit = (values: VelkommenFormData) => {
-        if (values.harForståttRettigheterOgPlikter !== true) {
+        if (!values.harForståttRettigheterOgPlikter) {
             return;
         }
+
         setIsSubmitting(true);
 
-        const valgteBarn =
-            values.valgteBarn === SelectableBarnOptions.SØKNAD_GJELDER_NYTT_BARN
-                ? undefined
-                : selectableBarn.find((sb) => sb.id === values.valgteBarn);
-        const vilSøkeOmEndring = valgteBarn !== undefined && !!valgteBarn.kanSøkeOmEndring;
+        const valgteBarn = selectableBarn.find((sb) => sb.id === values.valgteBarn);
+        const vilSøkeOmEndring = !!valgteBarn?.kanSøkeOmEndring;
 
         let barnFraNesteSak = undefined;
         if (valgteBarn !== undefined) {
@@ -86,17 +84,14 @@ export const Forside = ({
             oppdaterDataIState(ContextDataType.BARN_FRA_NESTE_SAK, barnFraNesteSak);
         }
 
-        const valgtEksisterendeSak =
-            vilSøkeOmEndring && valgteBarn.sak !== undefined
-                ? saker.find((sak) => sak.saksnummer === valgteBarn.sak?.saksnummer)
-                : undefined;
+        const valgtEksisterendeSak = vilSøkeOmEndring
+            ? saker.find((sak) => sak.saksnummer === valgteBarn.sak?.saksnummer)
+            : undefined;
 
-        const førsteUttaksdagNesteBarnsSak =
-            barnFraNesteSak !== undefined ? barnFraNesteSak.startdatoFørsteStønadsperiode : undefined;
+        const førsteUttaksdagNesteBarnsSak = barnFraNesteSak?.startdatoFørsteStønadsperiode;
 
         const endringssøknad = vilSøkeOmEndring && valgtEksisterendeSak;
-        const nySøknadPåAlleredeSøktBarn =
-            valgteBarn !== undefined && valgteBarn.sak !== undefined && valgteBarn.kanSøkeOmEndring === false;
+        const nySøknadPåAlleredeSøktBarn = valgteBarn?.sak !== undefined && valgteBarn?.kanSøkeOmEndring === false;
         const nySøknadPåValgteRegistrerteBarn =
             !endringssøknad && !nySøknadPåAlleredeSøktBarn && valgteBarn !== undefined;
 
