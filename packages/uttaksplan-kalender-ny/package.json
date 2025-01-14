@@ -17,8 +17,8 @@
     },
     "dependencies": {
         "@navikt/aksel-icons": "^7.9.0",
-        "@navikt/ds-css": "^7.9.0",
-        "@navikt/ds-react": "^7.9.0",
+        "@navikt/ds-css": "^7.9.1",
+        "@navikt/ds-react": "^7.9.1",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-metrics": "workspace:*",
         "@navikt/fp-types": "workspace:*",
@@ -53,7 +53,7 @@
         "storybook": "8.4.7",
         "storybook-react-intl": "^3.2.2",
         "tsconfig": "workspace:*",
-        "typescript": "^5.7.2",
+        "typescript": "^5.7.3",
         "vite": "^5.4.9",
         "vite-plugin-checker": "^0.8.0",
         "vitest": "^2.1.8"
