@@ -158,7 +158,7 @@ export const Forside = ({
             : selectableBarn.find((barn) => barn.id === valgtBarnId);
 
     const knapptekst =
-        valgtBarn !== undefined && valgtBarn.kanSøkeOmEndring === true
+        valgtBarn?.kanSøkeOmEndring === true
             ? intl.formatMessage({ id: 'velkommen.endreSøknad' })
             : intl.formatMessage({ id: 'velkommen.begynnMedSøknad' });
 
