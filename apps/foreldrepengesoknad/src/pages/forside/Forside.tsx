@@ -61,8 +61,6 @@ export const Forside = ({
     const oppdaterDataIState = useContextSaveAnyData();
     const { oppdaterSøknadIState } = useSetSøknadsdata();
 
-    const [isDinePersonopplysningerModalOpen, setIsDinePersonopplysningerModalOpen] = useState(false);
-
     // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
     const selectableBarn = useMemo(
         () => getSelectableBarnOptions(saker, søkerInfo.søker.barn),
@@ -213,25 +211,7 @@ export const Forside = ({
                                 {knapptekst}
                             </Button>
                         </HStack>
-                        <HStack justify="center">
-                            <BodyShort>
-                                {/* eslint-disable-next-line  jsx-a11y/anchor-is-valid */}
-                                <a
-                                    className="lenke"
-                                    href="#"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setIsDinePersonopplysningerModalOpen(true);
-                                    }}
-                                >
-                                    <FormattedMessage id="velkommen.lesMerOmPersonopplysninger" />
-                                </a>
-                            </BodyShort>
-                        </HStack>
-                        <DinePersonopplysningerModal
-                            isOpen={isDinePersonopplysningerModalOpen}
-                            onRequestClose={() => setIsDinePersonopplysningerModalOpen(false)}
-                        />
+                        <DinePersonopplysningerModal />
                     </VStack>
                 </ContentWrapper>
             </VStack>
