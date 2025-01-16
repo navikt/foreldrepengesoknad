@@ -15,7 +15,7 @@ import { Loader } from '@navikt/ds-react';
 
 import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
-import TilpassPlanenSteg from './steps/tilpass-planen/TilpassPlanenSteg';
+import { TilpassPlanenSteg } from './steps/tilpass-planen/TilpassPlanenSteg';
 
 interface Props {
     locale: LocaleAll;
