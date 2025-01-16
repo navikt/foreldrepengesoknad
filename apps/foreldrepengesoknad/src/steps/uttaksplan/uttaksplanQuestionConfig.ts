@@ -13,6 +13,6 @@ const UttaksplanFormConfig: QuestionConfig<UttaksplanQuestionPayload, Uttaksplan
     },
 };
 
-const uttaksplanQuestionsConfig = Questions<UttaksplanQuestionPayload, UttaksplanFormField>(UttaksplanFormConfig);
-
-export default uttaksplanQuestionsConfig;
+export const uttaksplanQuestionsConfig = Questions<UttaksplanQuestionPayload, UttaksplanFormField>(
+    UttaksplanFormConfig,
+);

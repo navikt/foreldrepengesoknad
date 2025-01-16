@@ -5,11 +5,11 @@ import { validateFødselsnummer, validateTextInputField } from 'utils/validation
 import { Barn, isAdoptertStebarn } from '@navikt/fp-common';
 import { RhfCheckbox, RhfSelect, RhfTextField } from '@navikt/fp-form-hooks';
 import { Søkerrolle } from '@navikt/fp-types';
-import { bemUtils, createCountryOptions } from '@navikt/fp-utils';
+import { createCountryOptions } from '@navikt/fp-utils';
 import { isRequired } from '@navikt/fp-validation';
 
 import { AnnenForelderFormData } from './AnnenForelderFormData';
-import './oppgiPersonalia.css';
+import styles from './oppgiPersonalia.module.css';
 
 const isValidText = (intl: IntlShape, label: string) => (fornavn: string) => {
     return validateTextInputField(fornavn, label, intl);
@@ -28,9 +28,8 @@ interface Props {
     barn: Barn;
 }
 
-const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer, rolle, barn }) => {
+export const OppgiPersonalia = ({ søkersFødselsnummer, rolle, barn }: Props) => {
     const intl = useIntl();
-    const bem = bemUtils('width');
 
     const formMethods = useFormContext<AnnenForelderFormData>();
     const fornavn = formMethods.watch('fornavn');
@@ -54,7 +53,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.fornavnPåkrevd' })),
                             isValidText(intl, 'annenForelder.spørsmål.fornavn'),
                         ]}
-                        className={bem.block}
+                        className={styles.width}
                     />
                     <RhfTextField
                         name="etternavn"
@@ -63,7 +62,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer
                             isRequired(intl.formatMessage({ id: 'valideringsfeil.annenForelder.etternavnPåkrevd' })),
                             isValidText(intl, 'annenForelder.spørsmål.etternavn'),
                         ]}
-                        className={bem.block}
+                        className={styles.width}
                     />
                 </>
             )}
@@ -82,7 +81,7 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer
                                     utenlandskFnr,
                                 ),
                             ]}
-                            className={bem.block}
+                            className={styles.width}
                         />
                         <RhfCheckbox
                             name="utenlandskFnr"
@@ -111,5 +110,3 @@ const OppgiPersonalia: React.FunctionComponent<Props> = ({ søkersFødselsnummer
         </>
     );
 };
-
-export default OppgiPersonalia;

@@ -1,8 +1,7 @@
 import { InformationIcon, PaperplaneIcon, WalletIcon } from '@navikt/aksel-icons';
 import { HvorMyeRoutes } from 'appData/routes';
-import useVeiviserNavigator from 'appData/useVeiviserNavigator';
+import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
 import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
@@ -16,8 +15,8 @@ import { BluePanel, Infobox, VeiviserPage } from '@navikt/fp-ui';
 import { capitalizeFirstLetter, formatCurrencyWithKr, useScrollBehaviour } from '@navikt/fp-utils';
 import { isValidNumber, isValidNumberForm } from '@navikt/fp-validation';
 
-import HarIkkeRettTilFpInfobox from '../felles/HarIkkeRettTilFpInfobox';
-import HøyInntektInfobox from '../felles/HøyInntektInfobox';
+import { HarIkkeRettTilFpInfobox } from '../felles/HarIkkeRettTilFpInfobox';
+import { HøyInntektInfobox } from '../felles/HøyInntektInfobox';
 import styles from './arbeidssituasjonSide.module.css';
 
 export type Arbeidssituasjon = {
@@ -58,8 +57,9 @@ interface Props {
     satser: Satser;
 }
 
-const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setArbeidssituasjon, satser }) => {
+export const ArbeidssituasjonSide = ({ arbeidssituasjon, setArbeidssituasjon, satser }: Props) => {
     const intl = useIntl();
+    const locale = intl.locale;
     const { goToRoute } = useVeiviserNavigator();
 
     const formMethods = useForm<Arbeidssituasjon>({
@@ -214,9 +214,9 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                             <Label>
                                                 <FormattedMessage id="ArbeidssituasjonSide.Gjennomsnitt" />
                                             </Label>
-                                            <Heading size="large">
+                                            <Heading size="large" as="p">
                                                 {gjennomsnittslønnPerMåned
-                                                    ? formatCurrencyWithKr(gjennomsnittslønnPerMåned)
+                                                    ? formatCurrencyWithKr(gjennomsnittslønnPerMåned, locale)
                                                     : '-'}
                                             </Heading>
                                         </div>
@@ -224,9 +224,12 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                             <Label>
                                                 <FormattedMessage id="ArbeidssituasjonSide.GjennomsnittÅrslønn" />
                                             </Label>
-                                            <Heading size="large">
+                                            <Heading size="large" as="p">
                                                 {gjennomsnittslønnPerMåned
-                                                    ? formatCurrencyWithKr(parseInt(gjennomsnittslønnPerMåned, 10) * 12)
+                                                    ? formatCurrencyWithKr(
+                                                          parseInt(gjennomsnittslønnPerMåned, 10) * 12,
+                                                          locale,
+                                                      )
                                                     : '-'}
                                             </Heading>
                                         </div>
@@ -240,6 +243,9 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
                                         </li>
                                         <li>
                                             <FormattedMessage id="ArbeidssituasjonSide.Foreldrepenger" />
+                                        </li>
+                                        <li>
+                                            <FormattedMessage id="ArbeidssituasjonSide.Svangerskapspenger" />
                                         </li>
                                         <li>
                                             <FormattedMessage id="ArbeidssituasjonSide.Arbeidsavklaring" />
@@ -278,5 +284,3 @@ const ArbeidssituasjonSide: FunctionComponent<Props> = ({ arbeidssituasjon, setA
         </VeiviserPage>
     );
 };
-
-export default ArbeidssituasjonSide;

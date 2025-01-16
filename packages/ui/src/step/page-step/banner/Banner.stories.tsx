@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import Banner from './Banner';
+import { Banner } from './Banner';
 
 const meta = {
     title: 'step/Banner',
@@ -13,6 +13,5 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     args: {
         children: 'Dette er innhold for et banner',
-        size: 'small',
     },
 };

@@ -1,13 +1,13 @@
-import { FunctionComponent } from 'react';
 import { ErrorMessage } from '@hookform/error-message';
 import { useFormContext } from 'react-hook-form';
+
 import { ErrorMessage as AkselErrorMessage } from '@navikt/ds-react';
 
 interface Props {
     name: string;
 }
 
-const ErrorMessageHookForm: FunctionComponent<Props> = ({ name }) => {
+export const ErrorMessageHookForm = ({ name }: Props) => {
     const {
         formState: { errors },
     } = useFormContext();
@@ -20,5 +20,3 @@ const ErrorMessageHookForm: FunctionComponent<Props> = ({ name }) => {
         />
     );
 };
-
-export default ErrorMessageHookForm;

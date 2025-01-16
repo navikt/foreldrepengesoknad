@@ -1,6 +1,5 @@
 import { WalletIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
 
 import { BodyShort, Link, VStack } from '@navikt/ds-react';
@@ -8,7 +7,7 @@ import { BodyShort, Link, VStack } from '@navikt/ds-react';
 import { links } from '@navikt/fp-constants';
 import { Satser } from '@navikt/fp-types';
 import { Infobox } from '@navikt/fp-ui';
-import { capitalizeFirstLetter, formatCurrency } from '@navikt/fp-utils';
+import { capitalizeFirstLetter, formatCurrencyWithKr } from '@navikt/fp-utils';
 
 interface Props {
     satser: Satser;
@@ -16,7 +15,8 @@ interface Props {
     fornavn: string;
 }
 
-const Utbetaling: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }) => {
+export const Utbetaling = ({ satser, lønnSøker, fornavn }: Props) => {
+    const locale = useIntl().locale;
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
     const annualMax = 6 * grunnbeløpet;
     const monthlyMax = annualMax / 12;
@@ -37,8 +37,8 @@ const Utbetaling: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }) 
                             id="HvorMyeSteg.VilFå"
                             values={{
                                 hvem: capitalizeFirstLetter(fornavn),
-                                utregning100: formatCurrency(getDailyPayment(lønnSøker, 1)),
-                                utregning80: formatCurrency(getDailyPayment(lønnSøker, decimal80)),
+                                utregning100: formatCurrencyWithKr(getDailyPayment(lønnSøker, 1), locale),
+                                utregning80: formatCurrencyWithKr(getDailyPayment(lønnSøker, decimal80), locale),
                             }}
                         />
                     ) : (
@@ -46,8 +46,8 @@ const Utbetaling: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }) 
                             id="HvorMyeSteg.KanFå"
                             values={{
                                 hvem: capitalizeFirstLetter(fornavn),
-                                utregning100: formatCurrency(getDailyPayment(lønnSøker, 1)),
-                                utregning80: formatCurrency(getDailyPayment(lønnSøker, decimal80)),
+                                utregning100: formatCurrencyWithKr(getDailyPayment(lønnSøker, 1), locale),
+                                utregning80: formatCurrencyWithKr(getDailyPayment(lønnSøker, decimal80), locale),
                             }}
                         />
                     )
@@ -60,8 +60,8 @@ const Utbetaling: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }) 
                         <FormattedMessage
                             id="HvorMyeSteg.Utregning"
                             values={{
-                                utregning100: formatCurrency(getMonthlyPayment(lønnSøker, 1)),
-                                utregning80: formatCurrency(getMonthlyPayment(lønnSøker, decimal80)),
+                                utregning100: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, 1), locale),
+                                utregning80: formatCurrencyWithKr(getMonthlyPayment(lønnSøker, decimal80), locale),
                             }}
                         />
                     </BodyShort>
@@ -71,7 +71,7 @@ const Utbetaling: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }) 
                                 <FormattedMessage
                                     id="HvorMyeSteg.NAVDekker"
                                     values={{
-                                        grunnbeløpet: formatCurrency(grunnbeløpet * 6),
+                                        grunnbeløpet: formatCurrencyWithKr(grunnbeløpet * 6, locale),
                                         a: (msg: any) => (
                                             <Link
                                                 href={links.grunnbeløpet}
@@ -101,5 +101,3 @@ const Utbetaling: FunctionComponent<Props> = ({ satser, lønnSøker, fornavn }) 
         </VStack>
     );
 };
-
-export default Utbetaling;

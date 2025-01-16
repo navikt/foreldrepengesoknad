@@ -32,12 +32,7 @@ type Props = {
     søkerInfo: Søkerinfo;
 };
 
-export const OppsummeringSteg: React.FunctionComponent<Props> = ({
-    sendSøknad,
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-    søkerInfo,
-}) => {
+export const OppsummeringSteg = ({ sendSøknad, mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo }: Props) => {
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, søkerInfo.arbeidsforhold);
 

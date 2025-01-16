@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useIntl } from 'react-intl';
 
 import { AnnenForelder, StønadskontoType, UttaksperiodeBase, isAnnenForelderOppgitt } from '@navikt/fp-common';
@@ -6,10 +5,10 @@ import { MorsAktivitet } from '@navikt/fp-constants';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
 import { getArbeidsformTekst } from '../OppsummeringUtils';
-import Feltoppsummering from './Feltoppsummering';
-import MorsAktivitetDetaljer from './MorsaktiviteterDetaljer';
+import { Feltoppsummering } from './Feltoppsummering';
+import { MorsAktivitetDetaljer } from './MorsaktiviteterDetaljer';
 
-interface UttaksperiodedetaljerProps {
+interface Props {
     periode: UttaksperiodeBase;
     registrerteArbeidsforhold: Arbeidsforhold[] | undefined;
     periodeErNyEllerEndret: boolean;
@@ -17,13 +16,7 @@ interface UttaksperiodedetaljerProps {
     annenForelder: AnnenForelder;
 }
 
-type Props = UttaksperiodedetaljerProps;
-
-const Uttaksperiodedetaljer: React.FunctionComponent<Props> = ({
-    periode,
-    registrerteArbeidsforhold,
-    annenForelder,
-}) => {
+export const Uttaksperiodedetaljer = ({ periode, registrerteArbeidsforhold, annenForelder }: Props) => {
     const {
         konto,
         morsAktivitetIPerioden,
@@ -83,5 +76,3 @@ const Uttaksperiodedetaljer: React.FunctionComponent<Props> = ({
         </>
     );
 };
-
-export default Uttaksperiodedetaljer;

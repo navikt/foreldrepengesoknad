@@ -1,10 +1,9 @@
 import { SackKronerIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
 import { PlanleggerRoutes } from 'appData/routes';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import useStepData from 'appData/useStepData';
-import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
-import { FunctionComponent } from 'react';
+import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
+import { useStepData } from 'appData/useStepData';
+import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { HvorMye } from 'types/HvorMye';
@@ -19,14 +18,14 @@ import { LocaleAll, Satser } from '@navikt/fp-types';
 import { BluePanel, Infobox } from '@navikt/fp-ui';
 import { isValidNumberForm, notEmpty } from '@navikt/fp-validation';
 
-import Utbetaling from './infoboks/Utbetaling';
+import { Utbetaling } from './infoboks/Utbetaling';
 
 interface Props {
     locale: LocaleAll;
     satser: Satser;
 }
 
-const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
+export const HvorMyeSteg = ({ locale, satser }: Props) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
@@ -160,5 +159,3 @@ const HvorMyeSteg: FunctionComponent<Props> = ({ locale, satser }) => {
         </PlanleggerStepPage>
     );
 };
-
-export default HvorMyeSteg;

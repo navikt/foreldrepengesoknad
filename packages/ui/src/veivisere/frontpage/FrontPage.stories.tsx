@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import FrontPage from './FrontPage';
+import { FrontPage } from './FrontPage';
 
 const meta = {
     title: 'components/FrontPage',

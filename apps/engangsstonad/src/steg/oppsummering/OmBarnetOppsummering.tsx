@@ -6,11 +6,11 @@ import { FormSummary } from '@navikt/ds-react';
 import { formatDate } from '@navikt/fp-utils';
 
 interface Props {
-    omBarnet: OmBarnet;
-    onVilEndreSvar: () => void;
+    readonly omBarnet: OmBarnet;
+    readonly onVilEndreSvar: () => void;
 }
 
-function AntallBarnFormattedText({ omBarnet }: { omBarnet: OmBarnet }) {
+function AntallBarnFormattedText({ omBarnet }: { readonly omBarnet: OmBarnet }) {
     const harAdoptert = erAdopsjon(omBarnet);
 
     if (omBarnet.antallBarn === 1) {
@@ -24,7 +24,7 @@ function AntallBarnFormattedText({ omBarnet }: { omBarnet: OmBarnet }) {
     }
 }
 
-const OmBarnetOppsummering = ({ omBarnet, onVilEndreSvar }: Props) => {
+export const OmBarnetOppsummering = ({ omBarnet, onVilEndreSvar }: Props) => {
     const harAdoptert = erAdopsjon(omBarnet);
     const harTermin = erBarnetIkkeFødt(omBarnet);
     const harFødt = erBarnetFødt(omBarnet);
@@ -90,4 +90,3 @@ const OmBarnetOppsummering = ({ omBarnet, onVilEndreSvar }: Props) => {
         </FormSummary>
     );
 };
-export default OmBarnetOppsummering;

@@ -12,7 +12,7 @@ import { IntlProvider } from '@navikt/fp-ui';
 import nbMessages from '../intl/messages/nb_NO.json';
 import { ContextDataType, PlanleggerDataContext } from './PlanleggerDataContext';
 import { PlanleggerRoutes } from './routes';
-import useStepData from './useStepData';
+import { useStepData } from './useStepData';
 
 const MESSAGES_GROUPED_BY_LOCALE = {
     nb: nbMessages,

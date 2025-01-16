@@ -12,9 +12,8 @@ import { HvorLangPeriode } from 'types/HvorLangPeriode';
 import { HvorMye } from 'types/HvorMye';
 
 import { StønadskontoType } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 
-import OppsummeringSteg from './OppsummeringSteg';
+import { OppsummeringSteg } from './OppsummeringSteg';
 
 const MINSTERETTER_FAR_RUNDT_FØDSEL_10 = {
     farRundtFødsel: 10,
@@ -67,7 +66,6 @@ const meta = {
         locale,
         hvorMye,
     }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.OPPSUMMERING]}>
                 <PlanleggerDataContext

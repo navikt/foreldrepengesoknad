@@ -1,24 +1,12 @@
-import { useEffect } from 'react';
-
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 
 import { ContextDataType, useContextSaveData } from './EsDataContext';
 import { Path } from './paths';
-import useStepConfig from './useStepConfig';
+import { useStepConfig } from './useStepConfig';
 
-const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
+export const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
     const stepConfig = useStepConfig();
     const oppdaterPath = useContextSaveData(ContextDataType.CURRENT_PATH);
-
-    const activeStepId = stepConfig.find((sc) => sc.isSelected);
-
-    useEffect(() => {
-        logAmplitudeEvent('sidevisning', {
-            app: 'engangsstonadny',
-            team: 'foreldrepenger',
-            pageKey: activeStepId,
-        });
-    }, [activeStepId]);
 
     const goToPreviousDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
@@ -46,11 +34,7 @@ const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
     };
 
     const fortsettSøknadSenere = () => {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'engangsstonadny',
-            team: 'foreldrepenger',
-            hendelse: 'fortsettSenere',
-        });
+        loggAmplitudeEvent({ origin: 'engangsstonad', eventName: 'skjema fortsett senere' });
         (window as any).location = 'https://nav.no';
     };
 
@@ -62,5 +46,3 @@ const useEsNavigator = (mellomlagreOgNaviger: () => Promise<void>) => {
         fortsettSøknadSenere,
     };
 };
-
-export default useEsNavigator;

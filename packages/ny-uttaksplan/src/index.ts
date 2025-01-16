@@ -1,3 +1,4 @@
+import '../.storybook/index.css';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
 
@@ -5,6 +6,8 @@ export { splittSaksperiodePåDato, splittSaksperiodePåFamiliehendelsesdato } fr
 export { tidperiodeOverlapperDato, andreAugust2022ReglerGjelder } from './utils/dateUtils';
 export {
     starterTidsperiodeInnenforToUkerFørFødselTilSeksUkerEtterFødsel,
+    getFørsteUttaksdag2UkerFørFødsel,
+    getFørsteUttaksdagForeldrepengerFørFødsel,
     ANTALL_UTTAKSDAGER_FAR_MEDMOR_RUNDT_FØDSEL,
 } from './utils/wlbUtils';
 export {
@@ -22,6 +25,7 @@ export {
     sorterPerioder,
 } from './utils/periodeUtils';
 export { default as UttaksplanNy } from './Uttaksplan';
+export { KvoteOppsummering } from './KvoteOppsummering';
 
 export const nyUttaksplanMessages = {
     nb: nbMessages,

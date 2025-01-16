@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { ConfirmationPanel } from '@navikt/ds-react';
@@ -12,7 +12,7 @@ export interface Props {
     children: React.ReactElement;
 }
 
-const RhfConfirmationPanel: FunctionComponent<Props> = ({ name, label, validate = [], children }) => {
+export const RhfConfirmationPanel = ({ name, label, validate = [], children }: Props) => {
     const {
         formState: { errors },
     } = useFormContext();
@@ -36,5 +36,3 @@ const RhfConfirmationPanel: FunctionComponent<Props> = ({ name, label, validate 
         </ConfirmationPanel>
     );
 };
-
-export default RhfConfirmationPanel;

@@ -14,7 +14,7 @@ interface Props {
     children: React.ReactElement | React.ReactElement[];
 }
 
-const PlanleggerForside: React.FunctionComponent<Props> = ({ locale, changeLocale, children }) => (
+export const PlanleggerForside = ({ locale, changeLocale, children }: Props) => (
     <Page
         header={
             <>
@@ -67,5 +67,3 @@ const PlanleggerForside: React.FunctionComponent<Props> = ({ locale, changeLocal
         {children}
     </Page>
 );
-
-export default PlanleggerForside;

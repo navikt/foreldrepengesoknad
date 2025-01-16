@@ -1,14 +1,13 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { initAmplitude } from '@navikt/fp-metrics';
 import { SøkersituasjonFp } from '@navikt/fp-types';
 
-import SøkersituasjonSteg from './SøkersituasjonSteg';
+import { SøkersituasjonSteg } from './SøkersituasjonSteg';
 
 const promiseAction =
     () =>
@@ -26,7 +25,6 @@ const meta = {
     title: 'steps/SøkersituasjonSteg',
     component: SøkersituasjonSteg,
     render: ({ søkersituasjon, gåTilNesteSide = action('button-click'), ...rest }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.SØKERSITUASJON]}>
                 <FpDataContext

@@ -2,17 +2,19 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { BodyShort, ReadMore, VStack } from '@navikt/ds-react';
 
-import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
-import { Arbeidsforhold } from '@navikt/fp-types';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { AppName, Arbeidsforhold } from '@navikt/fp-types';
 
-import HarArbeidsforhold from './HarArbeidsforhold';
-import HarIkkeArbeidsforhold from './HarIkkeArbeidsforhold';
+import { HarArbeidsforhold } from './HarArbeidsforhold';
+import { HarIkkeArbeidsforhold } from './HarIkkeArbeidsforhold';
 
 interface Props {
     arbeidsforhold: Arbeidsforhold[];
     visManglerInfo?: boolean;
+    appOrigin: AppName;
 }
-const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforhold, visManglerInfo = true }) => {
+
+export const ArbeidsforholdInformasjon = ({ appOrigin, arbeidsforhold, visManglerInfo = true }: Props) => {
     const harArbeidsforhold = arbeidsforhold !== undefined && arbeidsforhold.length > 0;
     const intl = useIntl();
 
@@ -22,7 +24,13 @@ const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforh
             <HarArbeidsforhold harArbeidsforhold={harArbeidsforhold} arbeidsforhold={arbeidsforhold} />
             {visManglerInfo && (
                 <ReadMore
-                    onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Feil_eller_mangler')}
+                    onOpenChange={(open) =>
+                        loggAmplitudeEvent({
+                            origin: appOrigin,
+                            eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                            eventData: { tittel: 'inntektsinformasjon.arbeidsforhold.info' },
+                        })
+                    }
                     header={intl.formatMessage({ id: 'inntektsinformasjon.arbeidsforhold.info' })}
                 >
                     <BodyShort>
@@ -33,5 +41,3 @@ const ArbeidsforholdInformasjon: React.FunctionComponent<Props> = ({ arbeidsforh
         </VStack>
     );
 };
-
-export default ArbeidsforholdInformasjon;

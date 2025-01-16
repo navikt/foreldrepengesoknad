@@ -1,6 +1,5 @@
 import { ContextDataType, useContextGetData } from 'appData/FpDataContext';
 import dayjs from 'dayjs';
-import React from 'react';
 import { DayOfWeek } from 'react-day-picker';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { OppstartValg } from 'types/Fordeling';
@@ -84,7 +83,7 @@ interface Props {
     oppstartValg: OppstartValg | undefined;
 }
 
-const OppstartDatoInput: React.FunctionComponent<Props> = ({ oppstartValg }) => {
+export const OppstartDatoInput = ({ oppstartValg }: Props) => {
     const søkersituasjon = notEmpty(useContextGetData(ContextDataType.SØKERSITUASJON));
     const barn = notEmpty(useContextGetData(ContextDataType.OM_BARNET));
     const annenForelder = notEmpty(useContextGetData(ContextDataType.ANNEN_FORELDER));
@@ -127,5 +126,3 @@ const OppstartDatoInput: React.FunctionComponent<Props> = ({ oppstartValg }) => 
         />
     );
 };
-
-export default OppstartDatoInput;

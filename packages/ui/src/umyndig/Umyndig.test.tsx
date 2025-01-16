@@ -13,7 +13,7 @@ describe('<Umyndig>', () => {
         expect(
             screen.getByText(
                 'Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på søknaden' +
-                    ' din sammen med deg. Derfor må du fylle ut søknaden på papir og sende den i posten til NAV.',
+                    ' din sammen med deg. Derfor må du fylle ut søknaden på papir og sende den i posten til Nav.',
             ),
         ).toBeInTheDocument();
         expect(screen.getByText('Gå til papirsøknaden')).toBeInTheDocument();

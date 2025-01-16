@@ -1,6 +1,6 @@
 import { ArrowLeftIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { FpEllerEsRoutes } from 'appData/routes';
-import useVeiviserNavigator from 'appData/useVeiviserNavigator';
+import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
 import { FormattedMessage } from 'react-intl';
 import { finnSisteEngangsstønad, finnSisteGrunnbeløp } from 'utils/satserUtils';
 
@@ -11,15 +11,15 @@ import { Satser } from '@navikt/fp-types';
 import { formatCurrency } from '@navikt/fp-utils';
 
 import { FpEllerEsSituasjon } from '../situasjon/SituasjonSide';
-import HvorforHarJegIkkeRettPanel from './boxes/HvorforHarJegIkkeRettPanel';
-import HvorforHarJegRettEsPanel from './boxes/HvorforHarJegRettEsPanel';
+import { HvorforHarJegIkkeRettPanel } from './boxes/HvorforHarJegIkkeRettPanel';
+import { HvorforHarJegRettEsPanel } from './boxes/HvorforHarJegRettEsPanel';
 
 interface Props {
     fpEllerEsSituasjon: FpEllerEsSituasjon;
     satser: Satser;
 }
 
-const HarRettEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser }) => {
+export const HarRettEs = ({ fpEllerEsSituasjon, satser }: Props) => {
     const { goToRoute } = useVeiviserNavigator();
 
     const grunnbeløpet = finnSisteGrunnbeløp(satser);
@@ -32,7 +32,7 @@ const HarRettEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser 
                 <VStack gap="8">
                     <VStack gap="8" align="center">
                         <StrollerIcon height={48} width={48} fontSize="1.5rem" aria-hidden color="#66A3C4" />
-                        <Heading size="medium" align="center" className="m-6">
+                        <Heading size="medium" align="center" className="m-6" level="2">
                             {erMor ? (
                                 <FormattedMessage id="OppsummeringFpEllerEsSide.DuHarRettPåEs" />
                             ) : (
@@ -42,7 +42,7 @@ const HarRettEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser 
                     </VStack>
                     <Box background="bg-default" padding="4" borderRadius="large">
                         <VStack gap="2">
-                            <Heading size="xsmall">
+                            <Heading size="xsmall" level="2">
                                 <FormattedMessage id="OppsummeringSide.HvaErEs" />
                             </Heading>
                             <BodyShort>
@@ -87,5 +87,3 @@ const HarRettEs: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon, satser 
         </>
     );
 };
-
-export default HarRettEs;

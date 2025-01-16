@@ -24,17 +24,17 @@ import { useDocumentTitle } from '@navikt/fp-utils';
 
 import { sendEttersending, urlPrefiks } from '../../api/api';
 import { EttersendingHeader } from '../../components/header/Header';
+import { ScrollToTop } from '../../components/scroll-to-top/ScrollToTop';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
-import EttersendingDto from '../../types/EttersendingDTO';
+import { OversiktRoutes } from '../../routes/routes';
+import { EttersendingDto } from '../../types/EttersendingDTO';
 import { Sak } from '../../types/Sak';
 import { SakOppslag } from '../../types/SakOppslag';
 import { Ytelse } from '../../types/Ytelse';
 import { getAlleYtelser } from '../../utils/sakerUtils';
 import { getRelevanteSkjemanummer } from '../../utils/skjemanummerUtils';
-import ScrollToTop from './../../components/scroll-to-top/ScrollToTop';
-import OversiktRoutes from './../../routes/routes';
 
 const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 'engangsstonad' => {
     if (sakstype === Ytelse.ENGANGSSTØNAD) {
@@ -44,12 +44,6 @@ const mapYtelse = (sakstype: Ytelse): 'foreldrepenger' | 'svangerskapspenger' | 
         return 'foreldrepenger';
     }
     return 'svangerskapspenger';
-};
-
-export const getListOfUniqueSkjemanummer = (attachments: Attachment[]) => {
-    return attachments
-        .map((a: Attachment) => a.skjemanummer)
-        .filter((s: Skjemanummer, index, self) => self.indexOf(s) === index);
 };
 
 const DEFAULT_OPTION = 'default';
@@ -93,10 +87,10 @@ const konverterSelectVerdi = (selectText: string): Skjemanummer | typeof DEFAULT
 };
 
 type Props = {
-    saker: SakOppslag;
+    readonly saker: SakOppslag;
 };
 
-const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
+const EttersendingPageInner = ({ saker }: Props) => {
     const intl = useIntl();
     useSetBackgroundColor('white');
     useDocumentTitle(
@@ -108,7 +102,6 @@ const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
     const [type, setType] = useState<Skjemanummer | typeof DEFAULT_OPTION>(DEFAULT_OPTION);
     const [vedlegg, setVedlegg] = useState<Attachment[]>([]);
     const [avventerVedlegg, setAvventerVedlegg] = useState(false);
-
     const alleYtelser = getAlleYtelser(saker);
     const sak = alleYtelser.find((ytelse) => ytelse.saksnummer === params.saksnummer);
 
@@ -156,7 +149,7 @@ const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
             <VStack gap="4">
                 <BodyLong>
                     Dokumentene du laster opp vil bli lagt ved søknaden din. Du må velge hva dokumentene inneholder for
-                    at saksbehandlerene i NAV skal kunne behandle saken din.
+                    at saksbehandlerene i Nav skal kunne behandle saken din.
                 </BodyLong>
                 <BodyShort>Du kan laste opp dokumenter i formatene pdf, png og jpg.</BodyShort>
                 <NAVLink target="_blank" href="https://www.nav.no/brukerstotte#sende-soknad-pa-nett">
@@ -213,11 +206,10 @@ const EttersendingPageInner: React.FunctionComponent<Props> = ({ saker }) => {
     );
 };
 
-function EttersendingPage({ saker }: Props) {
+export function EttersendingPage({ saker }: Props) {
     return (
         <PageRouteLayout header={<EttersendingHeader />}>
             <EttersendingPageInner saker={saker} />
         </PageRouteLayout>
     );
 }
-export default EttersendingPage;

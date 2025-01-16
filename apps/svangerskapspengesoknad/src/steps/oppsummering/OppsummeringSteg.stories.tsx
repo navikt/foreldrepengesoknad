@@ -9,7 +9,6 @@ import { ArbeidIUtlandetType } from 'types/ArbeidIUtlandet';
 import { DelivisTilretteleggingPeriodeType, TilOgMedDatoType, Tilretteleggingstype } from 'types/Tilrettelegging';
 
 import { AttachmentType, ISO_DATE_FORMAT, Skjemanummer } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 import { EGEN_NÆRING_ID, FRILANS_ID, Næringstype, Søker } from '@navikt/fp-types';
 
 import { OppsummeringSteg } from './OppsummeringSteg';
@@ -97,7 +96,6 @@ const meta = {
     title: 'steps/OppsummeringSteg',
     component: OppsummeringSteg,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoute.OPPSUMMERING]}>
                 <SvpDataContext

@@ -164,7 +164,7 @@ describe('<ArbeidIUtlandetSteg>', () => {
 
         expect(
             screen.getAllByText(
-                'Datoen er før 5 måneder siden. Hvis du sluttet i jobben for mer enn 5 måneder siden, trenger du ikke å oppgi arbeidsforholdet til NAV.',
+                'Datoen er før 5 måneder siden. Hvis du sluttet i jobben for mer enn 5 måneder siden, trenger du ikke å oppgi arbeidsforholdet til Nav.',
             )[0],
         ).toBeInTheDocument();
     });

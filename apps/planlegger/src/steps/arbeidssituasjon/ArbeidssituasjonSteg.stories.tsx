@@ -6,9 +6,7 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
-import ArbeidssituasjonSteg from './ArbeidssituasjonSteg';
+import { ArbeidssituasjonSteg } from './ArbeidssituasjonSteg';
 
 const DEFAULT_SATSER = {
     engangstønad: [
@@ -41,7 +39,6 @@ type StoryArgs = {
 type Story = StoryObj<typeof meta>;
 
 const customRenderer = ({ hvemPlanlegger, gåTilNesteSide = action('button-click'), satser, locale }: StoryArgs) => {
-    initAmplitude();
     return (
         <MemoryRouter initialEntries={[PlanleggerRoutes.ARBEIDSSITUASJON]}>
             <PlanleggerDataContext

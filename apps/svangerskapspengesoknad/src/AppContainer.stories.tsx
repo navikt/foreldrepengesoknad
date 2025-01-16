@@ -4,7 +4,6 @@ import { MemoryRouter } from 'react-router-dom';
 
 import '@navikt/ds-css';
 
-import { initAmplitude } from '@navikt/fp-metrics';
 import { Søker } from '@navikt/fp-types';
 
 import { AppContainer } from './AppContainer';
@@ -102,7 +101,6 @@ const HANDLERS = [
 const meta = {
     component: AppContainer,
     render: () => {
-        initAmplitude();
         return (
             <MemoryRouter>
                 <AppContainer />

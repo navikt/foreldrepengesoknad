@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import dayjs from 'dayjs';
 import ky from 'ky';
-import { FunctionComponent, useState } from 'react';
+import { useState } from 'react';
 
 import { arbeidsforholdOgInntektMessages } from '@navikt/fp-steg-arbeidsforhold-og-inntekt';
 import { egenNæringMessages } from '@navikt/fp-steg-egen-naering';
@@ -13,7 +13,7 @@ import { LocaleNo } from '@navikt/fp-types';
 import { ByttBrowserModal, ErrorBoundary, IntlProvider, uiMessages } from '@navikt/fp-ui';
 import { getLocaleFromSessionStorage, setLocaleInSessionStorage, utilsMessages } from '@navikt/fp-utils';
 
-import Svangerskapspengesøknad from './Svangerskapspengesøknad';
+import { Svangerskapspengesøknad } from './Svangerskapspengesøknad';
 import nbMessages from './intl/nb_NO.json';
 import nnMessages from './intl/nn_NO.json';
 
@@ -75,12 +75,12 @@ const retryCallback = async () => {
     location.reload();
 };
 
-export const AppContainer: FunctionComponent = () => {
+export const AppContainer = () => {
     const [locale, setLocale] = useState<LocaleNo>(localeFromSessionStorage);
 
     return (
         <IntlProvider locale={locale} messagesGroupedByLocale={MESSAGES_GROUPED_BY_LOCALE}>
-            <ErrorBoundary appName="Svangerskapspenger" retryCallback={retryCallback}>
+            <ErrorBoundary appName="svangerskapspengesoknad" retryCallback={retryCallback}>
                 <ByttBrowserModal />
                 <QueryClientProvider client={queryClient}>
                     <ReactQueryDevtools />

@@ -2,8 +2,7 @@ import { FunctionComponent } from 'react';
 
 import { Accordion } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
-
+import planBemUtils from '../../planBemUtils';
 import Permisjonsperiode from '../../types/Permisjonsperiode';
 import { Planperiode } from '../../types/Planperiode';
 import PeriodeListeContent from '../periode-liste-content/PeriodeListeContent';
@@ -17,7 +16,7 @@ interface Props {
 }
 
 const PeriodeListeItem: FunctionComponent<Props> = ({ permisjonsperiode, erFamiliehendelse, handleUpdatePeriode }) => {
-    const bem = bemUtils('periode-liste-item');
+    const bem = planBemUtils('periode-liste-item');
 
     return (
         <Accordion.Item>

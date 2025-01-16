@@ -1,0 +1,16 @@
+.dokumentHendelseMedium {
+    display: flex;
+    align-items: center;
+    font-size: var(--a-font-size-medium);
+}
+
+.dokumentHendelseLarge {
+    display: flex;
+    align-items: center;
+    font-size: var(--a-font-size-large);
+}
+
+.ikon {
+    color: var(--a-surface-action);
+    min-width: 24px;
+}

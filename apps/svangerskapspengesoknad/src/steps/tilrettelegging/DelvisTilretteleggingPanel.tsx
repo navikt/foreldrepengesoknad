@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Barn } from 'types/Barn';
@@ -17,7 +16,7 @@ import { getDefaultMonth, getKanHaSvpFremTilTreUkerFørTermin, getSisteDagForSva
 import { BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hooks';
-import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { tiMånederSidenDato } from '@navikt/fp-utils';
 import { isRequired, isValidDate } from '@navikt/fp-validation';
 
@@ -37,14 +36,14 @@ export interface Props {
     stillinger: Stilling[];
 }
 
-export const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({
+export const DelvisTilretteleggingPanel = ({
     barnet,
     arbeidsforholdType,
     sluttdatoArbeid,
     startdatoArbeid,
     arbeidsforholdNavn,
     stillinger,
-}) => {
+}: Props) => {
     const intl = useIntl();
 
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barnet);
@@ -105,7 +104,13 @@ export const DelvisTilretteleggingPanel: FunctionComponent<Props> = ({
                         ]}
                     />
                     <ReadMore
-                        onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Ikke_har_100%_stilling')}
+                        onOpenChange={(open) =>
+                            loggAmplitudeEvent({
+                                origin: 'svangerskapspengesoknad',
+                                eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                eventData: { tittel: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel' },
+                            })
+                        }
                         header={intl.formatMessage({
                             id: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
                         })}

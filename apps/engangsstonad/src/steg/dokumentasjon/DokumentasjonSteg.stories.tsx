@@ -7,9 +7,7 @@ import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { OmBarnet } from 'types/OmBarnet';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
-import DokumentasjonSteg from './DokumentasjonSteg';
+import { DokumentasjonSteg } from './DokumentasjonSteg';
 
 const promiseAction =
     () =>
@@ -28,8 +26,6 @@ const meta = {
     title: 'steg/DokumentasjonSteg',
     component: DokumentasjonSteg,
     render: ({ gåTilNesteSide = action('button-click'), mellomlagreOgNaviger, omBarnet, path }) => {
-        initAmplitude();
-
         return (
             <MemoryRouter initialEntries={[path]}>
                 <EsDataContext

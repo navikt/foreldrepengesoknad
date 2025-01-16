@@ -6,14 +6,14 @@ import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
 import { FpEllerEsSituasjon } from '../../situasjon/SituasjonSide';
-import KravinfoBoks from '../KravinfoBoks';
-import KravFarEllerMedmor from './KravFarEllerMedmor';
+import { KravinfoBoks } from '../KravinfoBoks';
+import { KravFarEllerMedmor } from './KravFarEllerMedmor';
 
 interface Props {
     fpEllerEsSituasjon: FpEllerEsSituasjon;
 }
 
-const HvorforHarJegRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSituasjon }) => {
+export const HvorforHarJegRettEsPanel = ({ fpEllerEsSituasjon }: Props) => {
     const { borDuINorge, jobberDuINorge } = fpEllerEsSituasjon;
 
     return (
@@ -23,7 +23,7 @@ const HvorforHarJegRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSit
                     <IconCircleWrapper size="medium" color="lightBlue">
                         <QuestionmarkIcon height={24} width={24} fontSize="1.5rem" aria-hidden />
                     </IconCircleWrapper>
-                    <ExpansionCard.Title size="small">
+                    <ExpansionCard.Title size="small" as="h2">
                         {fpEllerEsSituasjon.situasjon === 'mor' ? (
                             <FormattedMessage id="HvorforHarJegRettPanel.HvorforHarJegRettPåEs" />
                         ) : (
@@ -41,6 +41,7 @@ const HvorforHarJegRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSit
                         <KravinfoBoks
                             testId="harRettEs"
                             headerText={<FormattedMessage id="HvorforHarJegRettPanel.DuMåVæreMedlem" />}
+                            headerLevel="3"
                             boxBodyText={
                                 <FormattedMessage
                                     id="HvorforHarJegRettPanel.OppgittAtDuBorINorge"
@@ -57,5 +58,3 @@ const HvorforHarJegRettEsPanel: React.FunctionComponent<Props> = ({ fpEllerEsSit
         </ExpansionCard>
     );
 };
-
-export default HvorforHarJegRettEsPanel;

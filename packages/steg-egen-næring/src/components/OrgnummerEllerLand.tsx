@@ -1,4 +1,3 @@
-import { FunctionComponent } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 
 import { RhfSelect, RhfTextField } from '@navikt/fp-form-hooks';
@@ -28,7 +27,7 @@ interface Props {
     registrertINorge: boolean | undefined;
 }
 
-const OrgnummerEllerLand: FunctionComponent<Props> = ({ orgNummerErValgfritt, registrertINorge }) => {
+export const OrgnummerEllerLand = ({ orgNummerErValgfritt, registrertINorge }: Props) => {
     const intl = useIntl();
     const orgNrSpm = intl.formatMessage({ id: 'egenNæring.orgnr' });
     const orgNrLabel = orgNummerErValgfritt ? `${orgNrSpm} ${intl.formatMessage({ id: 'valgfritt' })}` : orgNrSpm;
@@ -63,5 +62,3 @@ const OrgnummerEllerLand: FunctionComponent<Props> = ({ orgNummerErValgfritt, re
         </>
     );
 };
-
-export default OrgnummerEllerLand;

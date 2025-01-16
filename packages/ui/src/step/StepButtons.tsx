@@ -1,5 +1,4 @@
 import { PaperplaneIcon } from '@navikt/aksel-icons';
-import { FunctionComponent } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Button, HStack } from '@navikt/ds-react';
@@ -15,7 +14,7 @@ interface Props {
     useSimplifiedTexts?: boolean;
 }
 
-const StepButtons: FunctionComponent<Props> = ({
+export const StepButtons = ({
     goToPreviousStep,
     nextButtonOnClick,
     isDisabledAndLoading = false,
@@ -24,7 +23,7 @@ const StepButtons: FunctionComponent<Props> = ({
     isNextButtonVisible = true,
     isSendButton = false,
     useSimplifiedTexts = false,
-}) => {
+}: Props) => {
     return (
         <HStack gap="2">
             <Button
@@ -57,5 +56,3 @@ const StepButtons: FunctionComponent<Props> = ({
         </HStack>
     );
 };
-
-export default StepButtons;

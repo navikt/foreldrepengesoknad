@@ -7,7 +7,6 @@ import { ComponentProps } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { ISO_DATE_FORMAT } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 import { EGEN_NÆRING_ID, EgenNæring, FRILANS_ID, Frilans, Næringstype } from '@navikt/fp-types';
 
 import { TilretteleggingSteg } from './TilretteleggingSteg';
@@ -60,7 +59,6 @@ const meta = {
         valgtTilretteleggingId,
         ...rest
     }) => {
-        initAmplitude();
         return (
             <MemoryRouter
                 initialEntries={[addTilretteleggingIdToRoute(SøknadRoute.TILRETTELEGGING, valgtTilretteleggingId)]}

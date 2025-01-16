@@ -5,12 +5,10 @@ interface Props {
     className?: string;
 }
 
-const NoeGikkGalt: React.FunctionComponent<Props> = ({ children, className }) => {
+export const NoeGikkGalt = ({ children, className }: Props) => {
     return (
         <Alert className={className} variant="info">
             {children}
         </Alert>
     );
 };
-
-export default NoeGikkGalt;

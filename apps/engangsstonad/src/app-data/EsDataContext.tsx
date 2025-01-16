@@ -1,5 +1,5 @@
-import { FunctionComponent, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
-import Dokumentasjon from 'types/Dokumentasjon';
+import { ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
+import { Dokumentasjon } from 'types/Dokumentasjon';
 import { OmBarnet } from 'types/OmBarnet';
 
 import { Søkersituasjon, Utenlandsopphold, UtenlandsoppholdPeriode } from '@navikt/fp-types';
@@ -34,13 +34,13 @@ type Dispatch = (action: Action) => void;
 const EsStateContext = createContext<ContextDataMap>(defaultInitialState);
 const EsDispatchContext = createContext<Dispatch | undefined>(undefined);
 
-interface OwnProps {
+interface Props {
     children: ReactNode;
     initialState?: ContextDataMap;
     onDispatch?: (action: Action) => void;
 }
 
-export const EsDataContext: FunctionComponent<OwnProps> = ({ children, initialState, onDispatch }): JSX.Element => {
+export const EsDataContext = ({ children, initialState, onDispatch }: Props): JSX.Element => {
     const [state, dispatch] = useReducer((oldState: ContextDataMap, action: Action) => {
         switch (action.type) {
             case 'update':

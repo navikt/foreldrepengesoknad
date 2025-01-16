@@ -13,7 +13,7 @@ interface Props {
     inntektskilde: AndreInntektskilder;
 }
 
-export const JobbIUtlandetPanel: React.FunctionComponent<Props> = ({ index, inntektskilde }) => {
+export const JobbIUtlandetPanel = ({ index, inntektskilde }: Props) => {
     const intl = useIntl();
 
     if (inntektskilde.type !== AnnenInntektType.JOBB_I_UTLANDET) {

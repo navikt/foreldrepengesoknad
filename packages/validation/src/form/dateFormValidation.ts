@@ -78,6 +78,18 @@ export const erI22SvangerskapsukeEllerSenere =
     (date: string): FormValidationResult =>
         dayjs(date).isAfter(ATTEN_UKER_TRE_DAGER) ? i18nText : null;
 
+export const terminbekreftelsedatoMåVæreUtstedetEtter22Svangerskapsuke =
+    (i18nText: string, termindato: string) =>
+    (date: string): FormValidationResult => {
+        const attenUkerOg3DagerFørTermindato = dayjs(termindato)
+            .subtract(18, 'week')
+            .subtract(3, 'day')
+            .startOf('day')
+            .toDate();
+
+        return dayjs(date).isBefore(attenUkerOg3DagerFørTermindato) ? i18nText : null;
+    };
+
 export const isLessThanOneAndHalfYearsAgo =
     (i18nText: string) =>
     (date: string): FormValidationResult =>

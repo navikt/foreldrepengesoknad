@@ -21,17 +21,17 @@ export { shouldChangeBrowser } from './src/browserUtils';
 export { omitOne, omitMany } from './src/objectUtils';
 export { overlapperTidsperioder } from './src/tidsperiodeUtils';
 export { redirect } from './src/loginUtils';
-export { default as useDocumentTitle } from './src/hooks/useDocumentTitle';
-export { default as useBeforeUnload } from './src/hooks/useBeforeUnload';
-export { default as useScrollBehaviour } from './src/hooks/useScrollBehaviour';
+export { useDocumentTitle } from './src/hooks/useDocumentTitle';
+export { useBeforeUnload } from './src/hooks/useBeforeUnload';
+export { useScrollBehaviour } from './src/hooks/useScrollBehaviour';
 export { useMedia } from './src/hooks/useMedia';
-export { default as bemUtils } from './src/bemUtils';
 export { trimNumberValue, getFloatFromString, getNumberFromNumberInputValue } from './src/numberUtils';
 export {
     capitalizeFirstLetter,
     capitalizeFirstLetterInEveryWordOnly,
     getNavnGenitivEierform,
     replaceInvisibleCharsWithSpace,
+    formatOppramsing,
 } from './src/stringUtils';
 export { getFamiliehendelsedato } from './src/barnUtils';
 export { formatCurrencyWithKr, formatCurrency } from './src/currencyUtils';

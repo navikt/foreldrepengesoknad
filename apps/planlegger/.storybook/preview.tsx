@@ -58,11 +58,11 @@ const preview: Preview = {
 
             return (
                 <div style={{ display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 50px)' }}>
-                    <div style={{ backgroundColor: '#AC7976' }}>--- NAV Header (Placeholder) ---</div>
+                    <div style={{ backgroundColor: '#AC7976' }}>--- Nav Header (Placeholder) ---</div>
                     <div id="app">
                         <Story />
                     </div>
-                    <div style={{ backgroundColor: '#AC7976' }}>--- NAV Footer (Placeholder) ---</div>
+                    <div style={{ backgroundColor: '#AC7976' }}>--- Nav Footer (Placeholder) ---</div>
                 </div>
             );
         },

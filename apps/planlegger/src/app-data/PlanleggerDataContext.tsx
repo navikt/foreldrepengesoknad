@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
+import { ReactNode, createContext, useCallback, useContext, useReducer } from 'react';
 import { Arbeidssituasjon } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
@@ -36,17 +36,13 @@ type Dispatch = (action: Action) => void;
 const PlanleggerStateContext = createContext<ContextDataMap>(defaultInitialState);
 const PlanleggerDispatchContext = createContext<Dispatch | undefined>(undefined);
 
-interface OwnProps {
+interface Props {
     children: ReactNode;
     initialState?: ContextDataMap;
     onDispatch?: (action: Action) => void;
 }
 
-export const PlanleggerDataContext: FunctionComponent<OwnProps> = ({
-    children,
-    initialState,
-    onDispatch,
-}): JSX.Element => {
+export const PlanleggerDataContext = ({ children, initialState, onDispatch }: Props): JSX.Element => {
     const [state, dispatch] = useReducer((oldState: ContextDataMap, action: Action) => {
         switch (action.type) {
             case 'update':

@@ -1,4 +1,4 @@
-import isFarEllerMedmor from './isFarEllerMedmor';
+import { isFarEllerMedmor } from './isFarEllerMedmor';
 
 describe('isFarEllerMedmor', () => {
     it('skal returnere true når rolle er far', () => {

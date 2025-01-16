@@ -12,9 +12,8 @@ import { HvemPlanlegger, Situasjon } from 'types/HvemPlanlegger';
 import { HvorLangPeriode } from 'types/HvorLangPeriode';
 
 import { StønadskontoType } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 
-import PlanenDeresSteg from './PlanenDeresSteg';
+import { PlanenDeresSteg } from './PlanenDeresSteg';
 
 const MINSTERETTER = {
     farRundtFødsel: 10,
@@ -43,7 +42,6 @@ const meta = {
         stønadskontoer,
         locale,
     }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.PLANEN_DERES]}>
                 <PlanleggerDataContext

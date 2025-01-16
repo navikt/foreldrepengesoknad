@@ -32,7 +32,7 @@ import {
     sorterDatoEtterEldst,
 } from './dateUtils';
 import { guid } from './guid';
-import fns from './toggleUtils';
+import { toggleUtils } from './toggleUtils';
 
 // Create the IntlProvider to retrieve context for wrapping around.
 const cache = createIntlCache();
@@ -725,7 +725,7 @@ describe('1 juli 2024 regler', () => {
         const dateToday = dayjs();
         //Sjekk at dagens dato er riktig satt
         expect(dateToday).toEqual(dayjs('2024-06-18'));
-        fns.isFeatureEnabled = vitest.fn(() => true);
+        toggleUtils.isFeatureEnabled = vitest.fn(() => true);
         expect(førsteJuli2024ReglerGjelder(barnTermin18Juni2024)).toEqual(true);
         MockDate.reset();
     });
@@ -733,7 +733,7 @@ describe('1 juli 2024 regler', () => {
         MockDate.set(dayjs('2024-06-17').toDate());
         const dateToday = dayjs();
         expect(dateToday).toEqual(dayjs('2024-06-17'));
-        fns.isFeatureEnabled = vitest.fn(() => true);
+        toggleUtils.isFeatureEnabled = vitest.fn(() => true);
         expect(førsteJuli2024ReglerGjelder(barnTermin18Juni2024)).toEqual(false);
         MockDate.reset();
     });
@@ -743,7 +743,7 @@ describe('1 juli 2024 regler', () => {
     } as Barn;
     it('skal returnere at 1 juli 2024 regler gjelder i prod 1. juli 2024 for barn med termin 1. juli 2024', () => {
         MockDate.set(dayjs('2024-07-01').toDate());
-        fns.isFeatureEnabled = vitest.fn(() => false);
+        toggleUtils.isFeatureEnabled = vitest.fn(() => false);
         const dateToday = dayjs();
         expect(dateToday).toEqual(dayjs('2024-07-01'));
         expect(førsteJuli2024ReglerGjelder(barnTermin01Juli2024)).toEqual(true);
@@ -751,7 +751,7 @@ describe('1 juli 2024 regler', () => {
     });
     it('skal returnere at 1 juli 2024 regler ikke gjelder i prod 30. juni 2024  for barn med termin 1. juli 2024', () => {
         MockDate.set(dayjs('2024-06-30').toDate());
-        fns.isFeatureEnabled = vitest.fn(() => false);
+        toggleUtils.isFeatureEnabled = vitest.fn(() => false);
         const dateToday = dayjs();
         expect(dateToday).toEqual(dayjs('2024-06-30'));
         expect(førsteJuli2024ReglerGjelder(barnTermin01Juli2024)).toEqual(false);
@@ -767,7 +767,7 @@ describe('1 juli 2024 regler', () => {
         MockDate.set(dayjs('2024-07-01').toDate());
         const dateToday = dayjs();
         expect(dateToday).toEqual(dayjs('2024-07-01'));
-        fns.isFeatureEnabled = vitest.fn(() => false);
+        toggleUtils.isFeatureEnabled = vitest.fn(() => false);
         expect(førsteJuli2024ReglerGjelder(fødtBarn)).toEqual(false);
         MockDate.reset();
     });

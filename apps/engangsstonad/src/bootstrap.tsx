@@ -11,8 +11,6 @@ import 'styles/globals.css';
 
 import '@navikt/ds-css';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { AppContainer } from './AppContainer';
 
 countries.registerLocale(langNB);
@@ -24,11 +22,9 @@ if (process.env.NODE_ENV !== 'development') {
         dsn: 'https://e2de35941445465aae1e83fcbcc2934d@sentry.gc.nav.no/8',
         release: Environment.APP_VERSION,
         environment: window.location.hostname,
-        integrations: [new Sentry.Integrations.Breadcrumbs({ console: false })],
+        integrations: [Sentry.breadcrumbsIntegration({ console: false })],
     });
 }
-
-initAmplitude();
 
 const container = document.getElementById('app');
 if (container) {

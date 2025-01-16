@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import DinePersonopplysningerModal from './DinePersonopplysningerModal';
+import { DinePersonopplysningerModal } from './DinePersonopplysningerModal';
 
 const meta = {
     title: 'pages/forside/DinePersonopplysningerModal',

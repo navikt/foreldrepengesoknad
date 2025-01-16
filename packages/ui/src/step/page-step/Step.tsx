@@ -3,15 +3,13 @@ import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, VStack } from '@navikt/ds-react';
 
-import { bemUtils } from '@navikt/fp-utils';
+import { ProgressStep, ProgressStepper } from '../progress-stepper/ProgressStepper';
+import { Page } from './Page';
+import { StepBanner } from './StepBanner';
+import { StepFooter } from './step-footer/StepFooter';
+import styles from './step.module.css';
 
-import ProgressStepper, { ProgressStep } from '../progress-stepper/ProgressStepper';
-import Page from './Page';
-import StepBanner from './StepBanner';
-import StepFooter from './step-footer/StepFooter';
-import './step.css';
-
-export interface StepProps<TYPE> {
+interface StepProps<TYPE> {
     bannerTitle?: string;
     steps: Array<ProgressStep<TYPE>>;
     children: React.ReactNode;
@@ -26,7 +24,7 @@ export interface StepProps<TYPE> {
     noFieldsRequired?: boolean;
 }
 
-const Step = <TYPE extends string>({
+export const Step = <TYPE extends string>({
     bannerTitle,
     steps,
     onCancel,
@@ -47,14 +45,13 @@ const Step = <TYPE extends string>({
 
     const title = steps[currentStepIndex].label;
 
-    const bem = bemUtils('step');
     return (
         <Page
-            className={bem.block}
+            className={styles.step}
             ariaLabel={pageAriaLabel}
             topContentRenderer={() => <>{bannerTitle && <StepBanner text={bannerTitle} />}</>}
         >
-            {infoMessage !== undefined && <div className={bem.element('infoMessage')}>{infoMessage}</div>}
+            {infoMessage !== undefined && <div className={styles.infoMessage}>{infoMessage}</div>}
             <VStack gap="6">
                 <div role="presentation">
                     <ProgressStepper steps={steps} hideHeader={hideHeader} onStepChange={onStepChange} />
@@ -85,5 +82,3 @@ const Step = <TYPE extends string>({
         </Page>
     );
 };
-
-export default Step;

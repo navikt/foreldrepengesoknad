@@ -33,7 +33,7 @@ interface Props {
     omBarnet: BarnetErIkkeFødt;
 }
 
-const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAttachments, omBarnet }) => {
+export const TerminDokPanel = ({ attachments, updateAttachments, omBarnet }: Props) => {
     const intl = useIntl();
 
     return (
@@ -66,5 +66,3 @@ const TerminDokPanel: React.FunctionComponent<Props> = ({ attachments, updateAtt
         </>
     );
 };
-
-export default TerminDokPanel;

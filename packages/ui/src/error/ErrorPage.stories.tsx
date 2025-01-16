@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
-import ErrorPage from './ErrorPage';
+import { ErrorPage } from './ErrorPage';
 
 const meta = {
     title: 'ErrorPage',
@@ -13,7 +13,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     args: {
-        appName: 'Engangsstønad',
+        appName: 'engangsstonad',
         errorMessage: 'Kall mot url: ‘/hjelpemidler/barnebriller/api/vilkarsgrunnlag’ feilet,  At S.kallFeilet',
         retryCallback: action('button-click'),
     },

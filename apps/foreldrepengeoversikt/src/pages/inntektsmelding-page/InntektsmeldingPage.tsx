@@ -2,6 +2,7 @@ import { Buildings3Icon, SparklesIcon, WalletIcon } from '@navikt/aksel-icons';
 import { useQuery } from '@tanstack/react-query';
 import classNames from 'classnames';
 import { ReactNode } from 'react';
+import { useIntl } from 'react-intl';
 import { Navigate, useParams } from 'react-router-dom';
 
 import { Alert, BodyShort, Detail, HGrid, Heading, List, Loader, VStack } from '@navikt/ds-react';
@@ -14,7 +15,7 @@ import { InntektsmeldingHeader } from '../../components/header/Header';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import { useSetSelectedRoute } from '../../hooks/useSelectedRoute';
 import { PageRouteLayout } from '../../routes/ForeldrepengeoversiktRoutes';
-import OversiktRoutes from '../../routes/routes';
+import { OversiktRoutes } from '../../routes/routes';
 import { Ytelse } from '../../types/Ytelse';
 import { getAlleYtelser, mapSakerDTOToSaker } from '../../utils/sakerUtils';
 
@@ -38,6 +39,7 @@ export const InntektsmeldingPage = () => {
     const GRUNNBELØP =
         useQuery({ ...hentSatserOptions(), select: (satser) => satser.grunnbeløp[0].verdi }).data ?? Infinity;
     const ytelseTekst = useGetYtelse() === Ytelse.SVANGERSKAPSPENGER ? 'svangerskapspengene' : 'foreldrepengene';
+    const locale = useIntl().locale;
 
     const params = useParams();
     const inntektsmeldingerQuery = useQuery(hentInntektsmelding(params.saksnummer!));
@@ -88,8 +90,9 @@ export const InntektsmeldingPage = () => {
                         </BodyShort>
                         {tjenerOver6G && (
                             <BodyShort>
-                                NAV dekker inntekten du har, opptil {formatCurrencyWithKr(GRUNNBELØP * 6)} (seks ganger
-                                grunnbeløpet). Siden du tjener mer enn dette vil NAV ikke dekke hele inntekten du har.
+                                Nav dekker inntekten du har, opptil {formatCurrencyWithKr(GRUNNBELØP * 6, locale)} (seks
+                                ganger grunnbeløpet). Siden du tjener mer enn dette vil Nav ikke dekke hele inntekten du
+                                har.
                             </BodyShort>
                         )}
                     </VStack>
@@ -261,7 +264,7 @@ const InntektsmeldingSpørsmålOgSvar = () => {
                 </Heading>
                 <BodyShort>
                     I inntektsmeldingen oppgir din arbeidsgiver hva som er din vanlige lønn rundt den tiden da du skal
-                    starte permisjonen din. Inntektsmeldingen er en del av grunnlaget NAV bruker for å beregne hvor mye
+                    starte permisjonen din. Inntektsmeldingen er en del av grunnlaget Nav bruker for å beregne hvor mye
                     du skal få.
                 </BodyShort>
             </VStack>
@@ -271,8 +274,8 @@ const InntektsmeldingSpørsmålOgSvar = () => {
                 </Heading>
                 <BodyShort>
                     Hvis du ser noe som ikke stemmer er det arbeidsgiveren din du må ta kontakt med. Arbeidsgiveren din
-                    kan da rette opp feilen og sende en ny inntektsmelding til NAV. Hvis den nye inntektsmeldingen
-                    endrer hvordan NAV har beregnet din inntekt vil du få et nytt vedtak.
+                    kan da rette opp feilen og sende en ny inntektsmelding til Nav. Hvis den nye inntektsmeldingen
+                    endrer hvordan Nav har beregnet din inntekt vil du få et nytt vedtak.
                 </BodyShort>
             </VStack>
         </VStack>

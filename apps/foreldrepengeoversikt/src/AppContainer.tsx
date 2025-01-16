@@ -8,8 +8,8 @@ import { utilsMessages } from '@navikt/fp-utils';
 import { uttaksplanKalenderMessages } from '@navikt/fp-uttaksplan-kalender-ny';
 import { nyUttaksplanMessages } from '@navikt/fp-uttaksplan-ny';
 
-import Foreldrepengeoversikt from './Foreldrepengeoversikt';
-import ErrorBoundary from './components/error-boundary/ErrorBoundary';
+import { Foreldrepengeoversikt } from './Foreldrepengeoversikt';
+import { ErrorBoundary } from './components/error-boundary/ErrorBoundary';
 import nbMessages from './intl/messages/nb_NO.json';
 
 const queryClient = new QueryClient({

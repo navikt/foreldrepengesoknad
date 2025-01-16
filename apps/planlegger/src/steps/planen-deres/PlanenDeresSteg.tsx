@@ -1,9 +1,8 @@
 import { PencilIcon, PersonGroupIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import useStepData from 'appData/useStepData';
-import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
-import { FunctionComponent } from 'react';
+import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
+import { useStepData } from 'appData/useStepData';
+import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     finnFellesperiodeFordelingOptionTekst,
@@ -28,13 +27,13 @@ import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { PlanleggerRoutes } from '../../app-data/routes';
-import CalendarLabels from '../../components/labels/CalendarLabels';
+import { CalendarLabels } from '../../components/labels/CalendarLabels';
 import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
 import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
 import { barnehagestartDato } from '../barnehageplass/BarnehageplassSteg';
 import styles from './planenDeresSteg.module.css';
-import OmÅTilpassePlanen from './tilpasse-planen/OmÅTilpassePlanen';
-import UforutsetteEndringer from './uforutsette-endringer/UforutsetteEndringer';
+import { OmÅTilpassePlanen } from './tilpasse-planen/OmÅTilpassePlanen';
+import { UforutsetteEndringer } from './uforutsette-endringer/UforutsetteEndringer';
 
 const finnAntallDagerSøker1 = (
     dekningsgrad: Dekningsgrad,
@@ -56,7 +55,7 @@ interface Props {
     locale: LocaleAll;
 }
 
-const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => {
+export const PlanenDeresSteg = ({ stønadskontoer, locale }: Props) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
@@ -206,7 +205,8 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
                             (!omBarnet.erFødsel || hvemPlanlegger.type !== Situasjon.FAR_OG_FAR) && (
                                 <Select
                                     defaultValue={fordeling?.antallDagerSøker1}
-                                    label={''}
+                                    label="Velg fordeling fellesperiode"
+                                    hideLabel
                                     name="antallDagerSøker1"
                                     onChange={(e) => {
                                         lagreFordeling({ antallDagerSøker1: parseInt(e.target.value, 10) });
@@ -307,5 +307,3 @@ const PlanenDeresSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) 
         </form>
     );
 };
-
-export default PlanenDeresSteg;

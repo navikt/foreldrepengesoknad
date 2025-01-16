@@ -1,7 +1,6 @@
 import { BabyWrappedIcon, PaperplaneIcon, StrollerIcon } from '@navikt/aksel-icons';
 import { FpEllerEsRoutes } from 'appData/routes';
-import useVeiviserNavigator from 'appData/useVeiviserNavigator';
-import { FunctionComponent } from 'react';
+import { useVeiviserNavigator } from 'appData/useVeiviserNavigator';
 import { UseFormReturn, useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { finnSisteGrunnbeløp } from 'utils/satserUtils';
@@ -16,7 +15,7 @@ import { formatCurrencyWithKr, useScrollBehaviour } from '@navikt/fp-utils';
 import { isValidDecimal, isValidNumberForm } from '@navikt/fp-validation';
 import { formatValue } from '@navikt/fp-validation/src/form/numberFormValidation';
 
-import BlueRadioGroup from '../BlueRadioGroup';
+import { BlueRadioGroup } from '../BlueRadioGroup';
 
 export enum Situasjon {
     MOR = 'mor',
@@ -72,8 +71,9 @@ interface Props {
     satser: Satser;
 }
 
-const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjon }) => {
+export const SituasjonSide = ({ satser, fpEllerEsSituasjon, setFpEllerEsSituasjon }: Props) => {
     const intl = useIntl();
+    const locale = intl.locale;
     const { goToRoute } = useVeiviserNavigator();
 
     const formMethods = useForm<FpEllerEsSituasjon>({
@@ -145,6 +145,9 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                         <FormattedMessage id="SituasjonSide.HvaGirRett.Sykepenger" />
                                     </List.Item>
                                     <List.Item>
+                                        <FormattedMessage id="SituasjonSide.HvaGirRett.Fp" />
+                                    </List.Item>
+                                    <List.Item>
                                         <FormattedMessage id="SituasjonSide.HvaGirRett.Svp" />
                                     </List.Item>
                                     <List.Item>
@@ -182,6 +185,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                             {harHattAndreInntekter === false && (
                                 <Infobox
                                     header={<FormattedMessage id="SituasjonSide.JobbetMinst6av10" />}
+                                    headingLevel="2"
                                     icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
                                     color="green"
                                 >
@@ -210,6 +214,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                             {harHattInntekt === false && (
                                 <Infobox
                                     header={<FormattedMessage id="SituasjonSide.JobbetMinst6av10" />}
+                                    headingLevel="2"
                                     icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
                                     color="green"
                                 >
@@ -246,9 +251,9 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                             <Label>
                                                 <FormattedMessage id="SituasjonSide.Årsinntekt" />
                                             </Label>
-                                            <Heading size="large">
+                                            <Heading size="large" as="p">
                                                 {lønnPerMånedNummer ? (
-                                                    formatCurrencyWithKr(lønnPerMånedNummer * 12)
+                                                    formatCurrencyWithKr(lønnPerMånedNummer * 12, locale)
                                                 ) : (
                                                     <FormattedMessage id="SituasjonSide.IngenKr" />
                                                 )}
@@ -260,7 +265,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                     <BodyShort>
                                         <FormattedMessage
                                             id="SituasjonSide.HvorMyeMåHaTjentDetaljer"
-                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
+                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn, locale) }}
                                         />
                                     </BodyShort>
                                 </ReadMore>
@@ -270,9 +275,10 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                     header={
                                         <FormattedMessage
                                             id="SituasjonSide.MåTjeneMinst"
-                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn) }}
+                                            values={{ minstelønn: formatCurrencyWithKr(minstelønn, locale) }}
                                         />
                                     }
+                                    headingLevel="2"
                                     icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
                                     color="green"
                                 >
@@ -280,8 +286,8 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                                         <FormattedMessage
                                             id="SituasjonSide.OppgittLønnIkkeRett"
                                             values={{
-                                                årslønn: formatCurrencyWithKr(lønnPerMånedNummer * 12),
-                                                minstelønn: formatCurrencyWithKr(minstelønn),
+                                                årslønn: formatCurrencyWithKr(lønnPerMånedNummer * 12, locale),
+                                                minstelønn: formatCurrencyWithKr(minstelønn, locale),
                                             }}
                                         />
                                     </BodyShort>
@@ -325,6 +331,7 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
                             {jobberDuINorge === false && (
                                 <Infobox
                                     header={<FormattedMessage id="SituasjonSide.MåVæreMedlem" />}
+                                    headingLevel="2"
                                     icon={<BabyWrappedIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
                                     color="green"
                                 >
@@ -360,5 +367,3 @@ const SituasjonSide: FunctionComponent<Props> = ({ satser, fpEllerEsSituasjon, s
         </VeiviserPage>
     );
 };
-
-export default SituasjonSide;

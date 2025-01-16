@@ -2,9 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { FpEllerEsRoutes } from 'appData/routes';
 import { MemoryRouter } from 'react-router-dom';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
-import SituasjonSide from './SituasjonSide';
+import { SituasjonSide } from './SituasjonSide';
 
 const DEFAULT_SATSER = {
     engangstønad: [
@@ -25,7 +23,6 @@ const meta = {
     title: 'fpEllerEs/SituasjonSide',
     component: SituasjonSide,
     render: (props) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[FpEllerEsRoutes.SITUASJON]}>
                 <SituasjonSide {...props} />

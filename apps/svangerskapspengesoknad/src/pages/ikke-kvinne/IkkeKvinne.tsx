@@ -4,14 +4,14 @@ import { FormattedMessage } from 'react-intl';
 import { Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { ContentWrapper } from '@navikt/fp-ui';
 
-export const IkkeKvinne: React.FunctionComponent = () => {
-    logAmplitudeEvent('sidevisning', {
-        app: 'svangerskapspengerny',
-        team: 'foreldrepenger',
-        pageKey: 'ikkeKvinne',
+export const IkkeKvinne = () => {
+    loggAmplitudeEvent({
+        origin: 'svangerskapspengesoknad',
+        eventName: 'besøk',
+        eventData: { tittel: 'ikkeKvinne' },
     });
 
     return (

@@ -1,21 +1,25 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { ReadMore } from '@navikt/ds-react';
+import { BodyShort, ReadMore } from '@navikt/ds-react';
 
-import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 
-const InfoOmArbeidIUtlandet = () => {
+export const InfoOmArbeidIUtlandet = () => {
     const intl = useIntl();
     return (
         <ReadMore
-            onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Hvordan_påvirke_SVP')}
+            onOpenChange={(open) =>
+                loggAmplitudeEvent({
+                    origin: 'svangerskapspengesoknad',
+                    eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                    eventData: { tittel: 'InfoOmArbeidIUtlandet.apneLabel' },
+                })
+            }
             header={intl.formatMessage({ id: 'InfoOmArbeidIUtlandet.apneLabel' })}
         >
-            <div>
+            <BodyShort>
                 <FormattedMessage id="InfoOmArbeidIUtlandet.innhold" />
-            </div>
+            </BodyShort>
         </ReadMore>
     );
 };
-
-export default InfoOmArbeidIUtlandet;

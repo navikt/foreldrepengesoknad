@@ -5,8 +5,6 @@ import { SøknadRoute } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { UtenlandsoppholdSteg } from './UtenlandsoppholdSteg';
 
 const promiseAction =
@@ -24,7 +22,6 @@ const meta = {
     title: 'steps/UtenlandsoppholdSteg',
     component: UtenlandsoppholdSteg,
     render: ({ gåTilNesteSide = action('button-click'), ...rest }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoute.UTENLANDSOPPHOLD]}>
                 <SvpDataContext onDispatch={gåTilNesteSide}>

@@ -5,15 +5,12 @@ import { PlanleggerRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
-import OmPlanleggerenSteg from './OmPlanleggerenSteg';
+import { OmPlanleggerenSteg } from './OmPlanleggerenSteg';
 
 const meta = {
     title: 'steg/OmPlanleggerenSteg',
     component: OmPlanleggerenSteg,
     render: ({ gåTilNesteSide = action('button-click'), locale, changeLocale }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[PlanleggerRoutes.OM_PLANLEGGEREN]}>
                 <PlanleggerDataContext onDispatch={gåTilNesteSide}>

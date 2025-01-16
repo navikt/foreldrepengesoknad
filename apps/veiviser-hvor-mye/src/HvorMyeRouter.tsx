@@ -1,14 +1,12 @@
 import { HvorMyeRoutes } from 'appData/routes';
-import { veiviserAmplitudeKey } from 'appData/veiviserAmplitudeKey';
-import { FunctionComponent, useState } from 'react';
-import { Navigate, Route, Routes, useBeforeUnload } from 'react-router-dom';
+import { useState } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { LocaleAll, Satser, TilgjengeligeStønadskontoer } from '@navikt/fp-types';
 
-import ArbeidssituasjonSide, { Arbeidssituasjon } from './pages/arbeidssituasjon/ArbeidssituasjonSide';
-import HvorMyeForside from './pages/forside/HvorMyeForside';
-import OppsummeringSide from './pages/oppsummering/OppsummeringSide';
+import { Arbeidssituasjon, ArbeidssituasjonSide } from './pages/arbeidssituasjon/ArbeidssituasjonSide';
+import { HvorMyeForside } from './pages/forside/HvorMyeForside';
+import { OppsummeringSide } from './pages/oppsummering/OppsummeringSide';
 
 interface Props {
     locale: LocaleAll;
@@ -17,16 +15,8 @@ interface Props {
     stønadskontoer?: TilgjengeligeStønadskontoer;
 }
 
-export const HvorMyeRouter: FunctionComponent<Props> = ({ locale, changeLocale, satser, stønadskontoer }) => {
+export const HvorMyeRouter = ({ locale, changeLocale, satser, stønadskontoer }: Props) => {
     const [arbeidssituasjon, setArbeidssituasjon] = useState<Arbeidssituasjon>();
-
-    useBeforeUnload(() => {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: veiviserAmplitudeKey,
-            team: 'foreldrepenger',
-            pageKey: 'page-unload',
-        });
-    });
 
     return (
         <Routes>

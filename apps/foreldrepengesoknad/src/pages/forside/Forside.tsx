@@ -1,6 +1,6 @@
 import { ContextDataType, useContextSaveAnyData } from 'appData/FpDataContext';
-import SøknadRoutes from 'appData/routes';
-import useFpNavigator from 'appData/useFpNavigator';
+import { SøknadRoutes } from 'appData/routes';
+import { useFpNavigator } from 'appData/useFpNavigator';
 import { useSetSøknadsdata } from 'appData/useSetSøknadsdata';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -21,22 +21,20 @@ import { RhfConfirmationPanel, RhfForm } from '@navikt/fp-form-hooks';
 import { LocaleNo, Søkerinfo } from '@navikt/fp-types';
 import { ContentWrapper, LanguageToggle } from '@navikt/fp-ui';
 
-import BarnVelger, { SelectableBarnOptions } from './BarnVelger';
-import DinePlikter from './dine-plikter/DinePlikter';
+import { BarnVelger, SelectableBarnOptions } from './BarnVelger';
+import { DinePlikter } from './dine-plikter/DinePlikter';
 import { getBarnFraNesteSak, getSelectableBarnOptions, sorterSelectableBarnEtterYngst } from './forsideUtils';
-import DinePersonopplysningerModal from './modaler/DinePersonopplysningerModal';
+import { DinePersonopplysningerModal } from './modaler/DinePersonopplysningerModal';
 
 type VelkommenFormData = {
     harForståttRettigheterOgPlikter: boolean;
     valgteBarn: string | undefined;
 };
 
-export interface Props {
-    fornavn: string;
+interface Props {
     onChangeLocale: (locale: LocaleNo) => void;
     locale: LocaleNo;
     saker: Sak[];
-    fnr: string;
     harGodkjentVilkår: boolean;
     søkerInfo: Søkerinfo;
     setHarGodkjentVilkår: (harGodkjentVilkår: boolean) => void;
@@ -45,7 +43,7 @@ export interface Props {
     mellomlagreSøknadOgNaviger: () => Promise<void>;
 }
 
-const Forside: React.FunctionComponent<Props> = ({
+export const Forside = ({
     locale,
     saker,
     onChangeLocale,
@@ -55,8 +53,9 @@ const Forside: React.FunctionComponent<Props> = ({
     setErEndringssøknad,
     setSøknadGjelderNyttBarn,
     mellomlagreSøknadOgNaviger,
-}) => {
+}: Props) => {
     const intl = useIntl();
+
     const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const oppdaterDataIState = useContextSaveAnyData();
@@ -244,5 +243,3 @@ const Forside: React.FunctionComponent<Props> = ({
         </RhfForm>
     );
 };
-
-export default Forside;

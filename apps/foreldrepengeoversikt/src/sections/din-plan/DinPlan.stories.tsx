@@ -2,12 +2,12 @@ import { Meta, StoryObj } from '@storybook/react/*';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import saker from 'storybookData/saker/saker.json';
+import { saker } from 'storybookData/saker/saker';
 
 import { Forelder, StønadskontoType } from '@navikt/fp-constants';
 import { OverføringÅrsakType, UttakArbeidType } from '@navikt/fp-types';
 
-import OversiktRoutes from '../../routes/routes';
+import { OversiktRoutes } from '../../routes/routes';
 import { DinPlan } from './DinPlan';
 
 const queryClient = new QueryClient();

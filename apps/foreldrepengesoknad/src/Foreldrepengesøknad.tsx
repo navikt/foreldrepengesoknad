@@ -14,14 +14,14 @@ import { ErrorBoundary } from '@navikt/fp-ui';
 import { redirect, useDocumentTitle } from '@navikt/fp-utils';
 
 import Environment from './Environment';
-import ForeldrepengesøknadRoutes from './ForeldrepengesøknadRoutes';
+import { ForeldrepengesøknadRoutes } from './ForeldrepengesøknadRoutes';
 import { FpDataContext } from './app-data/FpDataContext';
 import { konverterMellomlagretDataTilAppData } from './app-data/konverterMellomlagretDataTilAppData';
-import SøknadRoutes from './app-data/routes';
+import { SøknadRoutes } from './app-data/routes';
 import { Kvittering } from './types/Kvittering';
 import { shouldApplyStorage } from './utils/mellomlagringUtils';
 
-const Spinner: React.FunctionComponent = () => (
+const Spinner = () => (
     <div style={{ textAlign: 'center', padding: '12rem 0' }}>
         <Loader size="2xlarge" />
     </div>
@@ -43,7 +43,7 @@ interface Props {
     onChangeLocale: (locale: LocaleNo) => void;
 }
 
-const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChangeLocale }) => {
+export const Foreldrepengesøknad = ({ locale, onChangeLocale }: Props) => {
     const intl = useIntl();
 
     useDocumentTitle(intl.formatMessage({ id: 'søknad.pagetitle' }));
@@ -112,7 +112,7 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
     }
 
     return (
-        <ErrorBoundary appName="Foreldrepenger" retryCallback={retryCallback}>
+        <ErrorBoundary appName="foreldrepengesoknad" retryCallback={retryCallback}>
             <FpDataContext initialState={initialState}>
                 <ForeldrepengesøknadRoutes
                     locale={locale}
@@ -133,5 +133,3 @@ const Foreldrepengesøknad: React.FunctionComponent<Props> = ({ locale, onChange
         </ErrorBoundary>
     );
 };
-
-export default Foreldrepengesøknad;

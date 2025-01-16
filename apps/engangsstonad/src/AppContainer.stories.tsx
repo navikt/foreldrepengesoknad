@@ -5,8 +5,6 @@ import { VERSJON_MELLOMLAGRING } from 'appData/useEsMellomlagring';
 import { HttpResponse, http } from 'msw';
 import { MemoryRouter } from 'react-router-dom';
 
-import { initAmplitude } from '@navikt/fp-metrics';
-
 import { AppContainer } from './AppContainer';
 
 const KVITTERING = {
@@ -46,7 +44,6 @@ const meta = {
     title: 'Applikasjon - Engangsstønad (AppContainer)',
     component: AppContainer,
     render: () => {
-        initAmplitude();
         return (
             <MemoryRouter>
                 <AppContainer />

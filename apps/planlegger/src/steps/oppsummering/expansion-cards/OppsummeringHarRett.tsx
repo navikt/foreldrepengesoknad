@@ -1,7 +1,7 @@
 import { CalendarIcon } from '@navikt/aksel-icons';
-import CalendarLabels from 'components/labels/CalendarLabels';
-import { FunctionComponent } from 'react';
+import { CalendarLabels } from 'components/labels/CalendarLabels';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { barnehagestartDato } from 'steps/barnehageplass/BarnehageplassSteg';
 import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { Fordeling } from 'types/Fordeling';
@@ -14,6 +14,7 @@ import {
     getFornavnPåSøker2,
     getNavnGenitivEierform,
 } from 'utils/HvemPlanleggerUtils';
+import { loggExpansionCardOpen } from 'utils/amplitudeUtils';
 import { harKunFarSøker1Rett, harKunMedmorEllerFarSøker2Rett, utledHvemSomHarRett } from 'utils/hvemHarRettUtils';
 import {
     getAntallUkerOgDager,
@@ -25,23 +26,12 @@ import { finnAntallUkerOgDagerMedForeldrepenger, getFamiliehendelsedato, lagFors
 
 import { BodyLong, BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 import { BluePanel, IconCircleWrapper } from '@navikt/fp-ui';
 import { UttaksdagenString, capitalizeFirstLetter } from '@navikt/fp-utils';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
 
 import { erBarnetAdoptert, mapOmBarnetTilBarn } from '../../../utils/barnetUtils';
-
-const onToggleExpansionCard = (open: boolean) => {
-    if (open) {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'planlegger',
-            team: 'foreldrepenger',
-            pageKey: 'toggle-oppgitt-informasjon',
-        });
-    }
-};
 
 interface Props {
     valgtStønadskonto: TilgjengeligeStønadskontoerForDekningsgrad;
@@ -52,14 +42,14 @@ interface Props {
     fordeling?: Fordeling;
 }
 
-const OppsummeringHarRett: FunctionComponent<Props> = ({
+export const OppsummeringHarRett = ({
     valgtStønadskonto,
     hvorLangPeriode,
     hvemPlanlegger,
     barnet,
     arbeidssituasjon,
     fordeling,
-}) => {
+}: Props) => {
     const intl = useIntl();
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
@@ -107,9 +97,11 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
     const fornavnSøker2 = getFornavnPåSøker2(hvemPlanlegger, intl);
     const fornavnSøker2Genitiv = fornavnSøker2 ? getNavnGenitivEierform(fornavnSøker2, intl.locale) : undefined;
 
+    const barnehagestartdato = barnehagestartDato(barnet);
+
     return (
         <VStack gap="10">
-            <ExpansionCard aria-label="" onToggle={onToggleExpansionCard} size="small">
+            <ExpansionCard aria-label="" onToggle={loggExpansionCardOpen('toggle-oppgitt-informasjon')} size="small">
                 <ExpansionCard.Header>
                     <HStack gap="6" align="center" wrap={false}>
                         <IconCircleWrapper size="medium" color="lightBlue">
@@ -298,7 +290,6 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                                 </BodyShort>
                             </BluePanel>
                         )}
-                        <CalendarLabels hvemPlanlegger={hvemPlanlegger} barnet={barnet} hvemHarRett={hvemHarRett} />
                         <UttaksplanKalender
                             bareFarHarRett={bareFarMedmorHarRett}
                             erFarEllerMedmor={erFarEllerMedmor}
@@ -307,6 +298,14 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
                             annenPartsPerioder={planforslag.søker2}
                             navnAnnenPart="Test"
                             barn={mapOmBarnetTilBarn(barnet)}
+                            planleggerLegend={
+                                <CalendarLabels
+                                    hvemPlanlegger={hvemPlanlegger}
+                                    barnet={barnet}
+                                    hvemHarRett={hvemHarRett}
+                                />
+                            }
+                            barnehagestartdato={barnehagestartdato}
                         />
                     </VStack>
                 </ExpansionCard.Content>
@@ -314,4 +313,3 @@ const OppsummeringHarRett: FunctionComponent<Props> = ({
         </VStack>
     );
 };
-export default OppsummeringHarRett;

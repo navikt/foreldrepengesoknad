@@ -2,7 +2,7 @@ import { composeStories } from '@storybook/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContextDataType } from 'appData/FpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
 
 import * as stories from './AndreInntektskilderSteg.stories';
@@ -24,7 +24,7 @@ describe('<AndreInntektskilderSteg>', () => {
         await userEvent.selectOptions(screen.getByLabelText('Hvilket land har du jobbet i?'), 'UA');
         await userEvent.tab();
 
-        await userEvent.type(screen.getByLabelText('Hva er navnet på arbeidsgiveren?'), 'NAV');
+        await userEvent.type(screen.getByLabelText('Hva er navnet på arbeidsgiveren?'), 'Nav');
 
         expect(screen.getByText('Jobber du der nå?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
@@ -38,7 +38,7 @@ describe('<AndreInntektskilderSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: [
                 {
-                    arbeidsgiverNavn: 'NAV',
+                    arbeidsgiverNavn: 'Nav',
                     fom: '2023-04-30',
                     land: 'UA',
                     type: 'JOBB_I_UTLANDET',
@@ -71,7 +71,7 @@ describe('<AndreInntektskilderSteg>', () => {
         await userEvent.selectOptions(screen.getByLabelText('Hvilket land har du jobbet i?'), 'UA');
         await userEvent.tab();
 
-        await userEvent.type(screen.getByLabelText('Hva er navnet på arbeidsgiveren?'), 'NAV');
+        await userEvent.type(screen.getByLabelText('Hva er navnet på arbeidsgiveren?'), 'Nav');
 
         expect(screen.getByText('Jobber du der nå?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Nei'));
@@ -89,7 +89,7 @@ describe('<AndreInntektskilderSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: [
                 {
-                    arbeidsgiverNavn: 'NAV',
+                    arbeidsgiverNavn: 'Nav',
                     fom: '2023-04-30',
                     tom: '2023-09-30',
                     land: 'UA',
@@ -422,7 +422,7 @@ describe('<AndreInntektskilderSteg>', () => {
         await userEvent.selectOptions(screen.getByLabelText('Hvilket land har du jobbet i?'), 'UA');
         await userEvent.tab();
 
-        await userEvent.type(screen.getByLabelText('Hva er navnet på arbeidsgiveren?'), 'NAV');
+        await userEvent.type(screen.getByLabelText('Hva er navnet på arbeidsgiveren?'), 'Nav');
 
         expect(screen.getByText('Jobber du der nå?')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
@@ -460,7 +460,7 @@ describe('<AndreInntektskilderSteg>', () => {
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: [
                 {
-                    arbeidsgiverNavn: 'NAV',
+                    arbeidsgiverNavn: 'Nav',
                     fom: '2023-04-30',
                     land: 'UA',
                     type: 'JOBB_I_UTLANDET',

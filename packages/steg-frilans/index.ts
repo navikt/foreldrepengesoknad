@@ -8,4 +8,4 @@ export const frilansMessages = {
     en: enMessages,
 };
 
-export { default as FrilansPanel } from './src/FrilansPanel';
+export { FrilansPanel } from './src/FrilansPanel';

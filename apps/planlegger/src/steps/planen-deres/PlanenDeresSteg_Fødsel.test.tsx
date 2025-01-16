@@ -488,10 +488,6 @@ describe('<PlanenDeresSteg - fødsel>', () => {
         expect(within(nov).getByTestId('day:11;dayColor:LIGHTGREEN;dayType:FIRST_DAY')).toBeInTheDocument();
         expect(within(nov).getAllByTestId('dayColor:BLUE', { exact: false })).toHaveLength(6);
         expect(within(nov).getAllByTestId('dayColor:LIGHTGREEN', { exact: false })).toHaveLength(15);
-
-        // const aug2025 = screen.getByTestId('year:2025;month:7');
-        // expect(within(aug2025).getByTestId('day:29;dayColor:PURPLE;dayType:FIRST_AND_LAST_DAY')).toBeInTheDocument();
-        // expect(within(aug2025).getByTestId('dayColor:PURPLE', { exact: false })).toBeInTheDocument();
     });
 
     it('skal endre fordeling av fellesperiode sånn at de får 8 uker hver', async () => {

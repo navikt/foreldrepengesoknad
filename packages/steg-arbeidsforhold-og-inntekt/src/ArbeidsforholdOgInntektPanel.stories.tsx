@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
-import ArbeidsforholdOgInntektPanel from './ArbeidsforholdOgInntektPanel';
+import { ArbeidsforholdOgInntektPanel } from './ArbeidsforholdOgInntektPanel';
 
 const DEFAULT_ARBEIDSFORHOLD = [
     {
@@ -56,21 +56,21 @@ export const ForSvangerskapspenger: Story = {
                 isSelected: true,
             },
         ],
-        stønadstype: 'Svangerskapspenger',
+        appOrigin: 'svangerskapspengesoknad',
     },
 };
 
 export const ForForeldrepenger: Story = {
     args: {
         ...ForSvangerskapspenger.args,
-        stønadstype: 'Foreldrepenger',
+        appOrigin: 'foreldrepengesoknad',
     },
 };
 
 export const HarIngenArbeidsforhold: Story = {
     args: {
         ...ForSvangerskapspenger.args,
-        stønadstype: 'Foreldrepenger',
+        appOrigin: 'foreldrepengesoknad',
         aktiveArbeidsforhold: [],
     },
 };

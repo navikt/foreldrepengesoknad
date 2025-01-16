@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 
 import { PeriodeColor } from '@navikt/fp-constants';
 
-import Calendar from './Calendar';
+import { Calendar } from './Calendar';
 
 const meta = {
     title: 'Calendar',

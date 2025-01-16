@@ -127,7 +127,7 @@ const showTilpassPlanenStep = (
     return false;
 };
 
-const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
+export const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
     const location = useLocation();
     const intl = useIntl();
     const getStateData = useContextGetAnyData();
@@ -160,5 +160,3 @@ const useStepData = (): Array<ProgressStep<PlanleggerRoutes>> => {
         label: labelMap[p],
     }));
 };
-
-export default useStepData;

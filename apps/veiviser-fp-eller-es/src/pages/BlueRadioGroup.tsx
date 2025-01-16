@@ -1,4 +1,4 @@
-import { ComponentProps, FunctionComponent, useEffect } from 'react';
+import { ComponentProps, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { formatError } from 'utils/customErrorFormatter';
 
@@ -10,7 +10,7 @@ type Props = {
     shouldAutofocus?: boolean;
 } & ComponentProps<typeof RhfRadioGroup>;
 
-const BlueRadioGroup: FunctionComponent<Props> = (props) => {
+export const BlueRadioGroup = (props: Props) => {
     const formMethods = useFormContext();
 
     const value = formMethods.watch(props.name);
@@ -34,5 +34,3 @@ const BlueRadioGroup: FunctionComponent<Props> = (props) => {
         </BluePanel>
     );
 };
-
-export default BlueRadioGroup;

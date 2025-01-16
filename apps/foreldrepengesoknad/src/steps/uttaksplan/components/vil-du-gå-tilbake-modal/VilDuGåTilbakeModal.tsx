@@ -1,4 +1,4 @@
-import { Dispatch, FunctionComponent, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { BodyShort, Button, HStack, Heading, Modal } from '@navikt/ds-react';
@@ -9,7 +9,7 @@ interface Props {
     goToPreviousStep: () => void;
 }
 
-const VilDuGåTilbakeModal: FunctionComponent<Props> = ({ isOpen, setIsOpen, goToPreviousStep }) => {
+export const VilDuGåTilbakeModal = ({ isOpen, setIsOpen, goToPreviousStep }: Props) => {
     return (
         <Modal aria-label={'Vil du gå tilbake'} open={isOpen} onClose={() => setIsOpen(false)}>
             <Modal.Header>
@@ -38,5 +38,3 @@ const VilDuGåTilbakeModal: FunctionComponent<Props> = ({ isOpen, setIsOpen, goT
         </Modal>
     );
 };
-
-export default VilDuGåTilbakeModal;

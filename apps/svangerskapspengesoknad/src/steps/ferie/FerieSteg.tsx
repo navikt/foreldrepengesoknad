@@ -21,7 +21,7 @@ import {
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
 import { Arbeidsforhold } from '@navikt/fp-types';
-import { Step } from '@navikt/fp-ui';
+import { HorizontalLine, Step } from '@navikt/fp-ui';
 import {
     isAfterOrSame,
     isBeforeOrSame,
@@ -31,12 +31,12 @@ import {
     notEmpty,
 } from '@navikt/fp-validation';
 
-import './feriesteg.css';
+import styles from './feriesteg.module.css';
 
 type Props = {
-    mellomlagreSøknadOgNaviger: () => Promise<void>;
-    avbrytSøknad: () => Promise<void>;
-    arbeidsforhold: Arbeidsforhold[];
+    readonly mellomlagreSøknadOgNaviger: () => Promise<void>;
+    readonly avbrytSøknad: () => Promise<void>;
+    readonly arbeidsforhold: Arbeidsforhold[];
 };
 
 const DEFAULT_FERIE_VALUES = {
@@ -251,14 +251,14 @@ function FeriePerioder() {
                                 ),
                             ]}
                         />
-                        {index < fields.length - 1 && <HorizontalIndentDivider />}
+                        {index < fields.length - 1 && <HorizontalLine />}
                     </VStack>
                 ))}
             </VStack>
             <Button
                 onClick={() => append({ fom: undefined, tom: undefined })}
                 size="small"
-                className="legg-til-ferieperiode-button"
+                className={styles.leggTilFerieperiodeButton}
                 type="button"
                 variant="secondary"
                 icon={<PlusIcon />}
@@ -272,8 +272,4 @@ function FeriePerioder() {
             </ReadMore>
         </VStack>
     );
-}
-
-function HorizontalIndentDivider() {
-    return <div className="horizontal-indent-divider"></div>;
 }

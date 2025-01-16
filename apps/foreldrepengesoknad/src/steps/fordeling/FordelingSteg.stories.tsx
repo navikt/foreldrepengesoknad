@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
@@ -10,10 +10,9 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { AnnenForelder, Barn, BarnType, Dekningsgrad, DekningsgradDTO, SaksperiodeDTO } from '@navikt/fp-common';
 import { ISO_DATE_FORMAT, StønadskontoType } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 import { Arbeidsforhold, Søker, SøkersituasjonFp, TilgjengeligeStønadskontoerForDekningsgrad } from '@navikt/fp-types';
 
-import FordelingSteg from './FordelingSteg';
+import { FordelingSteg } from './FordelingSteg';
 
 const UTTAKSPLAN_ANNEN_URL = `${import.meta.env.BASE_URL}/rest/innsyn/v2/annenPartVedtak`;
 const STØNADSKONTO_URL = `${import.meta.env.BASE_URL}/rest/konto`;
@@ -124,8 +123,6 @@ const meta = {
     title: 'steps/FordelingSteg',
     component: FordelingSteg,
     render: ({ gåTilNesteSide, søkersituasjon, annenForelder, barnet, dekningsgrad, ...rest }) => {
-        initAmplitude();
-
         return (
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter initialEntries={[SøknadRoutes.FORDELING]}>

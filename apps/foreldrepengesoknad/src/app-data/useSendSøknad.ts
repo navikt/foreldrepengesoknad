@@ -11,7 +11,7 @@ import { notEmpty } from '@navikt/fp-validation';
 
 import { ContextDataType, useContextGetAnyData } from './FpDataContext';
 
-const useSendSøknad = (
+export const useSendSøknad = (
     fødselsnr: string,
     erEndringssøknad: boolean,
     setKvittering: (kvittering: Kvittering) => void,
@@ -82,5 +82,3 @@ const useSendSøknad = (
 
     return { sendSøknad, errorSendSøknad: error };
 };
-
-export default useSendSøknad;

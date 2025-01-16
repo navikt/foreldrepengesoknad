@@ -3,14 +3,22 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { BodyShort, Link, ReadMore, VStack } from '@navikt/ds-react';
 
 import { links } from '@navikt/fp-constants';
-import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
+import { AppName } from '@navikt/fp-types';
 
-const HvemKanVæreFrilanser = () => {
+type Props = { appOrigin: AppName };
+export const HvemKanVæreFrilanser = ({ appOrigin }: Props) => {
     const intl = useIntl();
 
     return (
         <ReadMore
-            onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Frilanser')}
+            onOpenChange={(open) =>
+                loggAmplitudeEvent({
+                    origin: appOrigin,
+                    eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                    eventData: { tittel: 'inntektsinformasjon.harDuJobbetSomFrilans.apneLabel' },
+                })
+            }
             header={intl.formatMessage({ id: 'inntektsinformasjon.harDuJobbetSomFrilans.apneLabel' })}
         >
             <VStack gap="2">
@@ -36,5 +44,3 @@ const HvemKanVæreFrilanser = () => {
         </ReadMore>
     );
 };
-
-export default HvemKanVæreFrilanser;

@@ -13,7 +13,8 @@ interface Props {
     hvemPlanlegger: HvemPlanlegger;
     arbeidssituasjon: Arbeidssituasjon;
 }
-const DeFørsteSeksUkene: React.FunctionComponent<Props> = ({ hvemPlanlegger, arbeidssituasjon }) => {
+
+export const DeFørsteSeksUkene = ({ hvemPlanlegger, arbeidssituasjon }: Props) => {
     const intl = useIntl();
 
     const hvemHarRett = utledHvemSomHarRett(arbeidssituasjon);
@@ -27,7 +28,7 @@ const DeFørsteSeksUkene: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
                 </IconCircleWrapper>
             </div>
             <div>
-                <Heading size="small">
+                <Heading size="small" level="4">
                     <FormattedMessage id="OmÅTilpassePlanen.DeFørsteSeksUkene" />
                 </Heading>
                 <BodyLong>
@@ -46,4 +47,3 @@ const DeFørsteSeksUkene: React.FunctionComponent<Props> = ({ hvemPlanlegger, ar
         </HStack>
     );
 };
-export default DeFørsteSeksUkene;

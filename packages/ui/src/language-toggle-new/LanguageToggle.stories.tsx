@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
-import LanguageToggle from './LanguageToggle';
+import { LanguageToggle } from './LanguageToggle';
 
 const meta = {
     title: 'components/LanguageToggle',

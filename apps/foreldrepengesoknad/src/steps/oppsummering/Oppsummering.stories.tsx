@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoutes } from 'appData/routes';
 import dayjs from 'dayjs';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
@@ -20,7 +20,6 @@ import {
     SivilstandType,
     Skjemanummer,
 } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 import {
     ArbeidsforholdOgInntektFp,
     EgenNæring,
@@ -33,7 +32,7 @@ import {
     UtenlandsoppholdPeriode,
 } from '@navikt/fp-types';
 
-import Oppsummering from './Oppsummering';
+import { Oppsummering } from './Oppsummering';
 
 const promiseAction =
     () =>
@@ -232,7 +231,6 @@ const meta = {
         vedlegg = defaultVedlegg,
         ...rest
     }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.OPPSUMMERING]}>
                 <FpDataContext

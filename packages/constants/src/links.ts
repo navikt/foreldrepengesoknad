@@ -5,6 +5,7 @@ export const links = {
     kontaktOss: 'https://www.nav.no/person/kontakt-oss/nb/tilbakemeldinger/feil-og-mangler',
     dittNav: 'https://tjenester.nav.no/dittnav/oversikt',
     foreldrepenger: 'https://foreldrepenger.nav.no',
+    foreldrepengesoknad: 'https://nav.no/foreldrepenger/soknad',
     foreldrepengerFarOgFar: 'https://www.nav.no/foreldrepenger#far-far',
     foreldrepengerOpptjening: 'https://www.nav.no/foreldrepenger#opptjening',
     nav: 'https://www.nav.no',

@@ -8,11 +8,11 @@ export const oppsummeringMessages = {
     en: enMessages,
 };
 
-export { default as OppsummeringPanel } from './src/OppsummeringPanel';
+export { OppsummeringPanel } from './src/OppsummeringPanel';
 export { JaNeiTekst } from './src/OppsummeringPanel';
 export {
     ArbeidsforholdOppsummering,
     FrilansOppsummering,
     SelvstendigNæringsdrivendeOppsummering,
 } from './src/arbeidsforhold/ArbeidsforholdOppsummering';
-export { default as BoIUtlandetOppsummering, HendelseType } from './src/utenlandsopphold/BoIUtlandetOppsummering';
+export { BoIUtlandetOppsummering, HendelseType } from './src/utenlandsopphold/BoIUtlandetOppsummering';

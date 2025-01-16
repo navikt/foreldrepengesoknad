@@ -1,16 +1,15 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoutes } from 'appData/routes';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { AnnenForelder as AnnenForelderType, Barn, BarnType } from '@navikt/fp-common';
 import { SivilstandType } from '@navikt/fp-constants';
-import { initAmplitude } from '@navikt/fp-metrics';
 import { Søker, SøkerBarn, SøkersituasjonFp } from '@navikt/fp-types';
 
-import AnnenForelderSteg from './AnnenForelderSteg';
+import { AnnenForelderSteg } from './AnnenForelderSteg';
 
 const promiseAction =
     () =>
@@ -66,7 +65,6 @@ const meta = {
         gåTilNesteSide = action('button-click'),
         ...rest
     }) => {
-        initAmplitude();
         return (
             <MemoryRouter initialEntries={[SøknadRoutes.ANNEN_FORELDER]}>
                 <FpDataContext

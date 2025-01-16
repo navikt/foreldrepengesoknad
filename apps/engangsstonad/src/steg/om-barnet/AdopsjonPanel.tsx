@@ -9,7 +9,7 @@ import { RhfDatepicker, RhfRadioGroup, RhfSelect } from '@navikt/fp-form-hooks';
 import { Kjønn } from '@navikt/fp-types';
 import { isMaxOneYearIntoTheFuture, isRequired, isValidDate } from '@navikt/fp-validation';
 
-import AdopsjonFodselFieldArray from './AdopsjonFodselFieldArray';
+import { AdopsjonFodselFieldArray } from './AdopsjonFodselFieldArray';
 
 export type FormValues = {
     antallBarnDropDown?: string;
@@ -19,7 +19,7 @@ interface Props {
     kjønn: Kjønn;
 }
 
-const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
+export const AdopsjonPanel = ({ kjønn }: Props) => {
     const intl = useIntl();
 
     const { watch } = useFormContext<FormValues>();
@@ -117,5 +117,3 @@ const AdopsjonPanel: React.FunctionComponent<Props> = ({ kjønn }) => {
         </>
     );
 };
-
-export default AdopsjonPanel;

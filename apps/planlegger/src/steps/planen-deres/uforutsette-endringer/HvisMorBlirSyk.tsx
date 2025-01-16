@@ -15,7 +15,8 @@ interface Props {
     hvemPlanlegger: HvemPlanlegger;
     barnet: OmBarnet;
 }
-const HvisMorBlirSyk: React.FunctionComponent<Props> = ({ arbeidssituasjon, barnet, hvemPlanlegger }) => {
+
+export const HvisMorBlirSyk = ({ arbeidssituasjon, barnet, hvemPlanlegger }: Props) => {
     const intl = useIntl();
 
     const antallBarn = barnet.antallBarn;
@@ -31,7 +32,7 @@ const HvisMorBlirSyk: React.FunctionComponent<Props> = ({ arbeidssituasjon, barn
                 </IconCircleWrapper>
             </div>
             <div>
-                <Heading size="small">
+                <Heading size="small" level="4">
                     <FormattedMessage id="UforutsetteEndringer.UforutsetteEndringer.HvisMorBlirSyk" />
                 </Heading>
                 <BodyLong>
@@ -51,4 +52,3 @@ const HvisMorBlirSyk: React.FunctionComponent<Props> = ({ arbeidssituasjon, barn
         </HStack>
     );
 };
-export default HvisMorBlirSyk;

@@ -1,6 +1,6 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/FpDataContext';
-import useFpNavigator from 'appData/useFpNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { useFpNavigator } from 'appData/useFpNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { GyldigeSkjemanummer } from 'types/GyldigeSkjemanummer';
@@ -20,21 +20,21 @@ import { perioderSomKreverVedlegg } from '@navikt/fp-uttaksplan';
 import { notEmpty } from '@navikt/fp-validation';
 
 import { ManglendeVedleggFormData } from './ManglendeVedleggFormData';
-import AleneomsorgDokumentasjon from './dokumentasjon/AleneomsorgDokumentasjon';
-import BarnInnlagtDokumentasjon from './dokumentasjon/BarnInnlagtDokumentasjon';
-import EtterlønnEllerSluttvederlagDokumentasjon from './dokumentasjon/EtterlønnEllerSluttvederlagDokumentasjon';
-import FarForSykDokumentasjon from './dokumentasjon/FarForSykDokumentasjon';
-import FarInnlagtDokumentasjon from './dokumentasjon/FarInnlagtDokumentasjon';
-import MilitærEllerSiviltjenesteDokumentasjon from './dokumentasjon/MilitærEllerSiviltjenesteDokumentasjon';
-import MorForSykDokumentasjon from './dokumentasjon/MorForSykDokumentasjon';
-import MorInnlagtDokumentasjon from './dokumentasjon/MorInnlagtDokumentasjon';
-import MorIntroduksjonsprogrammetDokumentasjon from './dokumentasjon/MorIntroduksjonsprogrammetDokumentasjon';
-import MorJobberDokumentasjon from './dokumentasjon/MorJobberDokumentasjon';
-import MorJobberOgStudererDokumentasjon from './dokumentasjon/MorJobberOgStudererDokumentasjon';
-import MorKvalifiseringsprogrammetDokumentasjon from './dokumentasjon/MorKvalifiseringsprogrammetDokumentasjon';
-import MorStudererDokumentasjon from './dokumentasjon/MorStudererDokumentasjon';
-import OmsorgsovertakelseDokumentasjon from './dokumentasjon/OmsorgsovertakelseDokumentasjon';
-import TerminbekreftelseDokumentasjon from './dokumentasjon/TerminbekreftelseDokumentasjon';
+import { AleneomsorgDokumentasjon } from './dokumentasjon/AleneomsorgDokumentasjon';
+import { BarnInnlagtDokumentasjon } from './dokumentasjon/BarnInnlagtDokumentasjon';
+import { EtterlønnEllerSluttvederlagDokumentasjon } from './dokumentasjon/EtterlønnEllerSluttvederlagDokumentasjon';
+import { FarForSykDokumentasjon } from './dokumentasjon/FarForSykDokumentasjon';
+import { FarInnlagtDokumentasjon } from './dokumentasjon/FarInnlagtDokumentasjon';
+import { MilitærEllerSiviltjenesteDokumentasjon } from './dokumentasjon/MilitærEllerSiviltjenesteDokumentasjon';
+import { MorForSykDokumentasjon } from './dokumentasjon/MorForSykDokumentasjon';
+import { MorInnlagtDokumentasjon } from './dokumentasjon/MorInnlagtDokumentasjon';
+import { MorIntroduksjonsprogrammetDokumentasjon } from './dokumentasjon/MorIntroduksjonsprogrammetDokumentasjon';
+import { MorJobberDokumentasjon } from './dokumentasjon/MorJobberDokumentasjon';
+import { MorJobberOgStudererDokumentasjon } from './dokumentasjon/MorJobberOgStudererDokumentasjon';
+import { MorKvalifiseringsprogrammetDokumentasjon } from './dokumentasjon/MorKvalifiseringsprogrammetDokumentasjon';
+import { MorStudererDokumentasjon } from './dokumentasjon/MorStudererDokumentasjon';
+import { OmsorgsovertakelseDokumentasjon } from './dokumentasjon/OmsorgsovertakelseDokumentasjon';
+import { TerminbekreftelseDokumentasjon } from './dokumentasjon/TerminbekreftelseDokumentasjon';
 import {
     getAleneOmOmsorgVedlegg,
     getBarnInnlagtVedlegg,
@@ -69,12 +69,7 @@ type Props = {
     avbrytSøknad: () => void;
 };
 
-const ManglendeVedlegg: React.FunctionComponent<Props> = ({
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-    søkerInfo,
-    erEndringssøknad,
-}) => {
+export const ManglendeVedlegg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, søkerInfo, erEndringssøknad }: Props) => {
     const intl = useIntl();
     const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger, erEndringssøknad);
     const stepConfig = useStepConfig(søkerInfo.arbeidsforhold, erEndringssøknad);
@@ -299,7 +294,6 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
                         updateAttachments={updateAttachments}
                         barn={barn}
                         arbeidsforhold={søkerInfo.arbeidsforhold}
-                        rolle={søkersituasjon.rolle}
                         erFarEllerMedmor={erFarEllerMedmor}
                     />
                     <OmsorgsovertakelseDokumentasjon
@@ -334,5 +328,3 @@ const ManglendeVedlegg: React.FunctionComponent<Props> = ({
         </Step>
     );
 };
-
-export default ManglendeVedlegg;

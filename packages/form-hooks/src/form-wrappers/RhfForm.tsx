@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { FieldValues, FormProvider, SubmitHandler, UseFormReturn } from 'react-hook-form';
 
-export interface OwnProps<FormValues extends FieldValues> {
+interface OwnProps<FormValues extends FieldValues> {
     formMethods: UseFormReturn<FormValues>;
     children: ReactNode;
     onSubmit?: SubmitHandler<FormValues>;
@@ -10,7 +10,7 @@ export interface OwnProps<FormValues extends FieldValues> {
     id?: string;
 }
 
-const RhfForm = <FormValues extends FieldValues>({
+export const RhfForm = <FormValues extends FieldValues>({
     formMethods,
     children,
     onSubmit,
@@ -33,5 +33,3 @@ const RhfForm = <FormValues extends FieldValues>({
         </FormProvider>
     );
 };
-
-export default RhfForm;

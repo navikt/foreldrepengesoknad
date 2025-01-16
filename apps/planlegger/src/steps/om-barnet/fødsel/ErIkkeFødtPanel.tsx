@@ -34,15 +34,10 @@ const finnAnnenPartTekst = (intl: IntlShape, hvemPlanlegger: HvemPlanlegger): st
 type Props = {
     hvemPlanlegger: HvemPlanlegger;
     erOmBarnetIkkeOppgittFraFør: boolean;
-    antallBarn?: string;
     scrollToBottom: () => void;
 };
 
-const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
-    hvemPlanlegger,
-    erOmBarnetIkkeOppgittFraFør,
-    scrollToBottom,
-}) => {
+export const ErIkkeFødtPanel = ({ hvemPlanlegger, erOmBarnetIkkeOppgittFraFør, scrollToBottom }: Props) => {
     const intl = useIntl();
 
     const formMethods = useFormContext<OmBarnet>();
@@ -246,4 +241,3 @@ const ErIkkeFødtPanel: React.FunctionComponent<Props> = ({
         </VStack>
     );
 };
-export default ErIkkeFødtPanel;

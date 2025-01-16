@@ -1,5 +1,5 @@
 import { BulletListIcon, CalendarIcon } from '@navikt/aksel-icons';
-import { Dispatch, FunctionComponent, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { ToggleGroup } from '@navikt/ds-react';
@@ -12,7 +12,7 @@ interface Props {
     setVisningsmodus: Dispatch<SetStateAction<Visningsmodus>>;
 }
 
-const PlanvisningToggle: FunctionComponent<Props> = ({ setVisningsmodus }) => {
+export const PlanvisningToggle = ({ setVisningsmodus }: Props) => {
     const onChangeHandler = (value: Visningsmodus) => {
         setVisningsmodus(value);
     };
@@ -34,4 +34,3 @@ const PlanvisningToggle: FunctionComponent<Props> = ({ setVisningsmodus }) => {
         </ToggleGroup>
     );
 };
-export default PlanvisningToggle;

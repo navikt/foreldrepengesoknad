@@ -8,10 +8,9 @@ import stønadskontoer from 'storybookData/stonadskontoer/stønadskontoer.json';
 
 import '@navikt/ds-css';
 
-import { initAmplitude } from '@navikt/fp-metrics';
 import { Søkerinfo } from '@navikt/fp-types';
 
-import AppContainer from './AppContainer';
+import { AppContainer } from './AppContainer';
 
 const søkerinfo = {
     søker: {
@@ -75,7 +74,6 @@ const meta = {
         },
     },
     render: () => {
-        initAmplitude();
         return (
             <MemoryRouter>
                 <AppContainer />

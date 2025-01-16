@@ -13,11 +13,11 @@ dayjs.extend(isBetween);
 
 type DateType = string | Date | undefined;
 
-export const formaterDato = (dato: DateType, datoformat?: string): string => {
+export const formaterDato = (dato: DateType, datoformat?: string) => {
     return dayjs(dato).format(datoformat || 'dddd D. MMMM YYYY');
 };
 
-export const formaterTid = (dato: Date): string => {
+export const formaterTid = (dato: DateType) => {
     return formaterDato(dato, 'KL.HH:mm');
 };
 

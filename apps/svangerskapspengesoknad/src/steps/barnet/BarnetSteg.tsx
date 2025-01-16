@@ -15,7 +15,7 @@ import {
     RhfRadioGroup,
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
-import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import {
@@ -58,11 +58,7 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-export const BarnetSteg: React.FunctionComponent<Props> = ({
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-    arbeidsforhold,
-}) => {
+export const BarnetSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
     const intl = useIntl();
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
@@ -116,7 +112,13 @@ export const BarnetSteg: React.FunctionComponent<Props> = ({
                             </Radio>
                         </RhfRadioGroup>
                         <ReadMore
-                            onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'SVP_tilbake_i_tid')}
+                            onOpenChange={(open) =>
+                                loggAmplitudeEvent({
+                                    origin: 'svangerskapspengesoknad',
+                                    eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                    eventData: { tittel: 'barnet.erBarnetFødt.merInfo.tittel' },
+                                })
+                            }
                             header={intl.formatMessage({ id: 'barnet.erBarnetFødt.merInfo.tittel' })}
                         >
                             <BodyShort>
@@ -182,7 +184,13 @@ export const BarnetSteg: React.FunctionComponent<Props> = ({
                             ]}
                         />
                         <ReadMore
-                            onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'SVP_tre_uker_før_termin')}
+                            onOpenChange={(open) =>
+                                loggAmplitudeEvent({
+                                    origin: 'svangerskapspengesoknad',
+                                    eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                    eventData: { tittel: 'barnet.termindato.merInfo.tittel' },
+                                })
+                            }
                             header={intl.formatMessage({ id: 'barnet.termindato.merInfo.tittel' })}
                         >
                             <BodyShort>

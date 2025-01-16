@@ -1,10 +1,10 @@
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/EsDataContext';
-import useEsNavigator from 'appData/useEsNavigator';
-import useStepConfig from 'appData/useStepConfig';
+import { useEsNavigator } from 'appData/useEsNavigator';
+import { useStepConfig } from 'appData/useStepConfig';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import Dokumentasjon from 'types/Dokumentasjon';
+import { Dokumentasjon } from 'types/Dokumentasjon';
 import { erAdopsjon, erBarnetIkkeFødt } from 'types/OmBarnet';
 
 import { VStack } from '@navikt/ds-react';
@@ -14,14 +14,14 @@ import { Attachment } from '@navikt/fp-types';
 import { ScanDocumentInfo, Step } from '@navikt/fp-ui';
 import { notEmpty } from '@navikt/fp-validation';
 
-import AdopsjonDokPanel from './AdopsjonDokPanel';
-import TerminDokPanel from './TerminDokPanel';
+import { AdopsjonDokPanel } from './AdopsjonDokPanel';
+import { TerminDokPanel } from './TerminDokPanel';
 
 type Props = {
     mellomlagreOgNaviger: () => Promise<void>;
 };
 
-const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNaviger }) => {
+export const DokumentasjonSteg = ({ mellomlagreOgNaviger }: Props) => {
     const intl = useIntl();
 
     const stepConfig = useStepConfig();
@@ -92,5 +92,3 @@ const DokumentasjonSteg: React.FunctionComponent<Props> = ({ mellomlagreOgNavige
         </Step>
     );
 };
-
-export default DokumentasjonSteg;

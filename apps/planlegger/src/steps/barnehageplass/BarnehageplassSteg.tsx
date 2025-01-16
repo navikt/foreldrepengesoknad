@@ -1,8 +1,8 @@
 import { BabyWrappedIcon, InformationIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData } from 'appData/PlanleggerDataContext';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import useStepData from 'appData/useStepData';
-import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
+import { usePlanleggerNavigator } from 'appData/usePlanleggerNavigator';
+import { useStepData } from 'appData/useStepData';
+import { PlanleggerStepPage } from 'components/page/PlanleggerStepPage';
 import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { getFamiliehendelsedato } from 'steps/oppsummering/expansion-cards/BarnehageplassOppsummering';
@@ -52,7 +52,7 @@ interface Props {
     uttaksdata?: Uttaksdata;
 }
 
-const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale, uttaksdata }) => {
+export const BarnehageplassSteg = ({ locale, uttaksdata }: Props) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
@@ -68,7 +68,7 @@ const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale, uttaksdata
     return (
         <PlanleggerStepPage steps={stepConfig} goToStep={navigator.goToNextStep}>
             <VStack gap="8">
-                <Heading size="medium">
+                <Heading size="medium" level="2">
                     <FormattedMessage id="BarnehageplassSteg.Tittel" />
                 </Heading>
                 <VStack gap="5">
@@ -161,5 +161,3 @@ const BarnehageplassSteg: React.FunctionComponent<Props> = ({ locale, uttaksdata
         </PlanleggerStepPage>
     );
 };
-
-export default BarnehageplassSteg;

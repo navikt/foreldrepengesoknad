@@ -9,7 +9,7 @@ interface Props {
     erAdopsjon?: boolean;
 }
 
-const PermisjonSamtidig: React.FunctionComponent<Props> = ({ erAdopsjon = false }) => {
+export const PermisjonSamtidig = ({ erAdopsjon = false }: Props) => {
     return (
         <HStack gap="5" wrap={false}>
             <div>
@@ -18,7 +18,7 @@ const PermisjonSamtidig: React.FunctionComponent<Props> = ({ erAdopsjon = false 
                 </IconCircleWrapper>
             </div>
             <div>
-                <Heading size="small">
+                <Heading size="small" level="4">
                     <FormattedMessage id="OmÅTilpassePlanen.PermisjonSamtidig" />
                 </Heading>
                 <BodyLong>
@@ -28,4 +28,3 @@ const PermisjonSamtidig: React.FunctionComponent<Props> = ({ erAdopsjon = false 
         </HStack>
     );
 };
-export default PermisjonSamtidig;

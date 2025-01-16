@@ -4,36 +4,27 @@ import { Arbeidssituasjon, Arbeidsstatus } from 'types/Arbeidssituasjon';
 import { OmBarnet } from 'types/Barnet';
 import { HvemPlanlegger } from 'types/HvemPlanlegger';
 import { erMorDelAvSøknaden } from 'utils/HvemPlanleggerUtils';
+import { loggExpansionCardOpen } from 'utils/amplitudeUtils';
 
 import { ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
 import { IconCircleWrapper } from '@navikt/fp-ui';
 
-import HvisManBlirSyk from './HvisManBlirSyk';
-import HvisMorBlirSyk from './HvisMorBlirSyk';
-import NyttBarnFørTreÅr from './NyttBarnFørTreÅr';
-
-const onToggleExpansionCard = (open: boolean) => {
-    if (open) {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'planlegger',
-            team: 'foreldrepenger',
-            pageKey: 'toggle-uforutsette-endringer',
-        });
-    }
-};
+import { HvisManBlirSyk } from './HvisManBlirSyk';
+import { HvisMorBlirSyk } from './HvisMorBlirSyk';
+import { NyttBarnFørTreÅr } from './NyttBarnFørTreÅr';
 
 interface Props {
     hvemPlanlegger: HvemPlanlegger;
     barnet: OmBarnet;
     arbeidssituasjon: Arbeidssituasjon;
 }
-const UforutsetteEndringer: React.FunctionComponent<Props> = ({ hvemPlanlegger, barnet, arbeidssituasjon }) => {
+
+export const UforutsetteEndringer = ({ hvemPlanlegger, barnet, arbeidssituasjon }: Props) => {
     const morHarIkkeRett =
         arbeidssituasjon.status === Arbeidsstatus.INGEN || arbeidssituasjon.status === Arbeidsstatus.UFØR;
     return (
-        <ExpansionCard aria-label="." onToggle={onToggleExpansionCard} size="small">
+        <ExpansionCard aria-label="." onToggle={loggExpansionCardOpen('toggle-uforutsette-endringer')} size="small">
             <ExpansionCard.Header>
                 <HStack gap="6" align="center" wrap={false}>
                     <div>
@@ -72,5 +63,3 @@ const UforutsetteEndringer: React.FunctionComponent<Props> = ({ hvemPlanlegger, 
         </ExpansionCard>
     );
 };
-
-export default UforutsetteEndringer;

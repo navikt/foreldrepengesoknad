@@ -2,21 +2,11 @@ import { HvorMyeRoutes } from 'appData/routes';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
-
-import { veiviserAmplitudeKey } from './veiviserAmplitudeKey';
-
-const useVeiviserNavigator = () => {
+export const useVeiviserNavigator = () => {
     const navigate = useNavigate();
 
     const goToRoute = useCallback(
         (path: HvorMyeRoutes) => {
-            logAmplitudeEvent('sidevisning', {
-                app: veiviserAmplitudeKey,
-                team: 'foreldrepenger',
-                pageKey: path,
-            });
-
             navigate(path);
         },
         [navigate],
@@ -24,5 +14,3 @@ const useVeiviserNavigator = () => {
 
     return { goToRoute };
 };
-
-export default useVeiviserNavigator;

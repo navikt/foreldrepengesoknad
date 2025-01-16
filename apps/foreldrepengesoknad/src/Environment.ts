@@ -1,4 +1,4 @@
-import FeatureToggle from './FeatureToggle';
+import { FeatureToggle } from './FeatureToggle';
 
 const Environment = () => {
     const settingsNode = document.getElementById('nav:appSettings');

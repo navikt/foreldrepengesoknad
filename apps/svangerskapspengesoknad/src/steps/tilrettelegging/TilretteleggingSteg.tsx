@@ -3,7 +3,6 @@ import { RouteParams, SøknadRoute, addTilretteleggingIdToRoute } from 'appData/
 import { useStepConfig } from 'appData/useStepConfig';
 import { useSvpNavigator } from 'appData/useSvpNavigator';
 import dayjs from 'dayjs';
-import { FunctionComponent } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
@@ -33,7 +32,7 @@ import {
     RhfTextarea,
     StepButtonsHookForm,
 } from '@navikt/fp-form-hooks';
-import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 import { Step } from '@navikt/fp-ui';
 import { capitalizeFirstLetterInEveryWordOnly, tiMånederSidenDato } from '@navikt/fp-utils';
@@ -92,11 +91,7 @@ export interface Props {
     arbeidsforhold: Arbeidsforhold[];
 }
 
-export const TilretteleggingSteg: FunctionComponent<Props> = ({
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-    arbeidsforhold,
-}) => {
+export const TilretteleggingSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
     const intl = useIntl();
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
@@ -259,7 +254,13 @@ export const TilretteleggingSteg: FunctionComponent<Props> = ({
                                 <ReadMore
                                     size="small"
                                     header={intl.formatMessage({ id: 'tilrettelegging.tiltak.info.title' })}
-                                    onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Tiltak')}
+                                    onOpenChange={(open) =>
+                                        loggAmplitudeEvent({
+                                            origin: 'svangerskapspengesoknad',
+                                            eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                            eventData: { tittel: 'tilrettelegging.tiltak.info.title' },
+                                        })
+                                    }
                                 >
                                     <BodyShort>
                                         <FormattedMessage id="tilrettelegging.tiltak.info.description"></FormattedMessage>
@@ -298,7 +299,15 @@ export const TilretteleggingSteg: FunctionComponent<Props> = ({
                         </RhfRadioGroup>
                         <ReadMore
                             header={intl.formatMessage({ id: 'tilrettelegging.tilrettelagtArbeidType.info.tittel' })}
-                            onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Bytte_på_stillingsprosent')}
+                            onOpenChange={(open) =>
+                                loggAmplitudeEvent({
+                                    origin: 'svangerskapspengesoknad',
+                                    eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                    eventData: {
+                                        tittel: 'tilrettelegging.tilrettelagtArbeidType.info.tittel',
+                                    },
+                                })
+                            }
                         >
                             <BodyShort>
                                 <FormattedMessage id="tilrettelegging.tilrettelagtArbeidType.info.tekst"></FormattedMessage>

@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Alert, VStack } from '@navikt/ds-react';
 
-const BrukerKanIkkeSøke = () => {
+export const BrukerKanIkkeSøke = () => {
     return (
         <Alert variant="warning">
             <VStack gap="2">
@@ -34,7 +34,7 @@ const BrukerKanIkkeSøke = () => {
                                 <a
                                     className="lenke"
                                     rel="noopener noreferrer"
-                                    href="https://www.nav.no/no/NAV+og+samfunn/Kontakt+NAV/Relatert+informasjon/chat-med-oss-om-foreldrepenger"
+                                    href="https://www.nav.no/no/Nav+og+samfunn/Kontakt+Nav/Relatert+informasjon/chat-med-oss-om-foreldrepenger"
                                 >
                                     {msg}
                                 </a>
@@ -46,5 +46,3 @@ const BrukerKanIkkeSøke = () => {
         </Alert>
     );
 };
-
-export default BrukerKanIkkeSøke;

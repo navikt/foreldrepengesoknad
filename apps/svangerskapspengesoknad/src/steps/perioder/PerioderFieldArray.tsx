@@ -16,13 +16,11 @@ import {
 import { Alert, BodyShort, Button, HStack, Heading, Radio, ReadMore, Tag, VStack } from '@navikt/ds-react';
 
 import { RhfDatepicker, RhfRadioGroup, RhfTextField } from '@navikt/fp-form-hooks';
-import { logAmplitudeEventOnOpen } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold, EgenNæring, Frilans } from '@navikt/fp-types';
 import { HorizontalLine } from '@navikt/fp-ui';
-import { bemUtils } from '@navikt/fp-utils';
 import { isAfterOrSame, isBeforeOrSame, isRequired, isValidDate, notEmpty } from '@navikt/fp-validation';
 
-import './perioderFieldArray.css';
 import {
     getMinDatoTom,
     getMåSendeNySøknad,
@@ -59,7 +57,7 @@ interface Props {
     frilans?: Frilans;
 }
 
-export const PerioderFieldArray: React.FunctionComponent<Props> = ({
+export const PerioderFieldArray = ({
     barn,
     valgtTilretteleggingId,
     kanHaSVPFremTilTreUkerFørTermin,
@@ -67,8 +65,7 @@ export const PerioderFieldArray: React.FunctionComponent<Props> = ({
     arbeidsforhold,
     egenNæring,
     frilans,
-}) => {
-    const bem = bemUtils('perioderStep');
+}: Props) => {
     const intl = useIntl();
 
     const sisteDagForSvangerskapspenger = getSisteDagForSvangerskapspenger(barn);
@@ -128,7 +125,7 @@ export const PerioderFieldArray: React.FunctionComponent<Props> = ({
                         <VStack gap="1">
                             <HorizontalLine />
                             <HStack justify="space-between" align="center">
-                                <Tag variant="info-moderate" className={bem.element('tag')}>
+                                <Tag variant="info-moderate">
                                     {getPeriodeInfoTekst(
                                         index,
                                         sisteDagForSvangerskapspenger,
@@ -239,7 +236,7 @@ export const PerioderFieldArray: React.FunctionComponent<Props> = ({
                             <RhfTextField
                                 name={`varierendePerioder.${index}.stillingsprosent`}
                                 label={intl.formatMessage({ id: 'perioder.varierende.stillingsprosent.label' })}
-                                className={bem.element('stillingsprosent')}
+                                style={{ maxWidth: '450px' }}
                                 description={intl.formatMessage({
                                     id: 'tilrettelegging.tilrettelagtArbeidType.description',
                                 })}
@@ -254,7 +251,15 @@ export const PerioderFieldArray: React.FunctionComponent<Props> = ({
                                 ]}
                             />
                             <ReadMore
-                                onOpenChange={logAmplitudeEventOnOpen('Svangerskapspenger', 'Ikke_har_100%_stilling')}
+                                onOpenChange={(open) =>
+                                    loggAmplitudeEvent({
+                                        origin: 'svangerskapspengesoknad',
+                                        eventName: open ? 'readmore åpnet' : 'readmore lukket',
+                                        eventData: {
+                                            tittel: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',
+                                        },
+                                    })
+                                }
                                 size="medium"
                                 header={intl.formatMessage({
                                     id: 'tilrettelegging.varierendePerioderStillingsprosent.info.tittel',

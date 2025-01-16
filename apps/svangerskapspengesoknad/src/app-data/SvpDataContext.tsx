@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode, createContext, useContext, useReducer } from 'react';
+import { ReactNode, createContext, useContext, useReducer } from 'react';
 import { ArbeidIUtlandet } from 'types/ArbeidIUtlandet';
 import { AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
 import { Barn } from 'types/Barn';
@@ -57,13 +57,13 @@ type Dispatch = (action: Action) => void;
 const SvpStateContext = createContext<ContextDataMap>(defaultInitialState);
 const SvpDispatchContext = createContext<Dispatch | undefined>(undefined);
 
-interface OwnProps {
+interface Props {
     children: ReactNode;
     initialState?: ContextDataMap;
     onDispatch?: (action: Action) => void;
 }
 
-export const SvpDataContext: FunctionComponent<OwnProps> = ({ children, initialState, onDispatch }): JSX.Element => {
+export const SvpDataContext = ({ children, initialState, onDispatch }: Props): JSX.Element => {
     const [state, dispatch] = useReducer((oldState: ContextDataMap, action: Action) => {
         switch (action.type) {
             case 'update':

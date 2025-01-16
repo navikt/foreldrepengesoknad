@@ -3,7 +3,7 @@ import { Component, ReactElement } from 'react';
 
 import { AppName } from '@navikt/fp-types';
 
-import ErrorPage from './ErrorPage';
+import { ErrorPage } from './ErrorPage';
 
 interface Props {
     appName: AppName;
@@ -19,7 +19,7 @@ interface State {
     errorMessage: string | undefined;
 }
 
-class ErrorBoundary extends Component<Props, State> {
+export class ErrorBoundary extends Component<Props, State> {
     constructor(props: any) {
         super(props);
         this.state = { eventId: null, hasError: false, errorInfo: null, errorMessage: undefined };
@@ -50,5 +50,3 @@ class ErrorBoundary extends Component<Props, State> {
         return this.props.children;
     }
 }
-
-export default ErrorBoundary;

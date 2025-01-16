@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Action, ContextDataType, FpDataContext } from 'appData/FpDataContext';
-import SøknadRoutes from 'appData/routes';
+import { SøknadRoutes } from 'appData/routes';
 import { HttpResponse, http } from 'msw';
 import { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
@@ -10,10 +10,9 @@ import { AndreInntektskilder } from 'types/AndreInntektskilder';
 import { AnnenInntektType } from 'types/AnnenInntekt';
 
 import { AnnenForelder, Barn, BarnType } from '@navikt/fp-common';
-import { initAmplitude } from '@navikt/fp-metrics';
 import { ArbeidsforholdOgInntektFp, Situasjon, Søkerinfo } from '@navikt/fp-types';
 
-import ManglendeVedlegg from './ManglendeVedlegg';
+import { ManglendeVedlegg } from './ManglendeVedlegg';
 
 const promiseAction =
     () =>
@@ -131,8 +130,6 @@ const meta = {
         gåTilNesteSide = action('button-click'),
         ...rest
     }) => {
-        initAmplitude();
-
         return (
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter initialEntries={[SøknadRoutes.DOKUMENTASJON]}>

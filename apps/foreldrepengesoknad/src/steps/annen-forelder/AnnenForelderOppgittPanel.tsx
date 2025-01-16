@@ -3,25 +3,23 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { getFamiliehendelsedato } from 'utils/barnUtils';
-import isFarEllerMedmor from 'utils/isFarEllerMedmor';
+import { isFarEllerMedmor } from 'utils/isFarEllerMedmor';
 
 import { Alert, BodyLong, BodyShort, Radio, ReadMore, VStack } from '@navikt/ds-react';
 
-import { AnnenForelder, Barn } from '@navikt/fp-common';
+import { Barn } from '@navikt/fp-common';
 import { RhfDatepicker, RhfRadioGroup } from '@navikt/fp-form-hooks';
-import { Søker, Søkerrolle } from '@navikt/fp-types';
+import { Søkerrolle } from '@navikt/fp-types';
 import { isAfterOrSame, isRequired, isValidDate } from '@navikt/fp-validation';
 
 import { AnnenForelderFormData, erAnnenForelderOppgitt } from './AnnenForelderFormData';
 
 type Props = {
-    søker: Søker;
     rolle: Søkerrolle;
     barn: Barn;
-    annenForelder?: AnnenForelder;
 };
 
-const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn }) => {
+export const AnnenForelderOppgittPanel = ({ rolle, barn }: Props) => {
     const intl = useIntl();
 
     const familiehendelsedato = getFamiliehendelsedato(barn);
@@ -259,5 +257,3 @@ const AnnenForelderOppgittPanel: React.FunctionComponent<Props> = ({ rolle, barn
         </>
     );
 };
-
-export default AnnenForelderOppgittPanel;

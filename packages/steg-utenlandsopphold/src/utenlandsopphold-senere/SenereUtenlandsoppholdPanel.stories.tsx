@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
-import SenereUtenlandsoppholdPanel from './SenereUtenlandsoppholdPanel';
+import { SenereUtenlandsoppholdPanel } from './SenereUtenlandsoppholdPanel';
 
 const meta = {
     component: SenereUtenlandsoppholdPanel,

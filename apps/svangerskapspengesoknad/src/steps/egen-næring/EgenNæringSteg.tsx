@@ -18,11 +18,7 @@ type Props = {
     arbeidsforhold: Arbeidsforhold[];
 };
 
-export const EgenNæringSteg: React.FunctionComponent<Props> = ({
-    mellomlagreSøknadOgNaviger,
-    avbrytSøknad,
-    arbeidsforhold,
-}) => {
+export const EgenNæringSteg = ({ mellomlagreSøknadOgNaviger, avbrytSøknad, arbeidsforhold }: Props) => {
     const stepConfig = useStepConfig(arbeidsforhold);
     const navigator = useSvpNavigator(mellomlagreSøknadOgNaviger, arbeidsforhold);
 
@@ -58,7 +54,7 @@ export const EgenNæringSteg: React.FunctionComponent<Props> = ({
                 onContinueLater={navigator.fortsettSøknadSenere}
                 goToPreviousStep={navigator.goToPreviousDefaultStep}
                 stepConfig={stepConfig}
-                stønadstype="Svangerskapspenger"
+                appOrigin="svangerskapspengesoknad"
                 onStepChange={navigator.goToStep}
             />
         </ContentWrapper>

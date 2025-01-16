@@ -1,10 +1,6 @@
 import { ArrowRedoIcon, TrashIcon } from '@navikt/aksel-icons';
 import { ContextDataType, useContextGetData, useContextSaveData } from 'appData/PlanleggerDataContext';
-import usePlanleggerNavigator from 'appData/usePlanleggerNavigator';
-import useStepData from 'appData/useStepData';
-import CalendarLabels from 'components/labels/CalendarLabels';
-import PlanleggerStepPage from 'components/page/PlanleggerStepPage';
-import { FunctionComponent, useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Dekningsgrad } from 'types/Dekningsgrad';
 import { erAlenesøker, getErFarEllerMedmor, getNavnPåSøker1, getNavnPåSøker2 } from 'utils/HvemPlanleggerUtils';
@@ -21,11 +17,15 @@ import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
 import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 import { notEmpty } from '@navikt/fp-validation';
 
-import PlanvisningToggle, { Visningsmodus } from '../../components/planvisning-toggle/PlanvisningToggle';
+import { usePlanleggerNavigator } from '../../app-data/usePlanleggerNavigator';
+import { useStepData } from '../../app-data/useStepData';
+import { CalendarLabels } from '../../components/labels/CalendarLabels';
+import { PlanleggerStepPage } from '../../components/page/PlanleggerStepPage';
+import { PlanvisningToggle, Visningsmodus } from '../../components/planvisning-toggle/PlanvisningToggle';
 import { Arbeidsstatus } from '../../types/Arbeidssituasjon';
 import { Situasjon } from '../../types/HvemPlanlegger';
 import { erBarnetAdoptert, getFamiliesituasjon, mapOmBarnetTilBarn } from '../../utils/barnetUtils';
-import HvaErMulig from './hva-er-mulig/HvaErMulig';
+import { HvaErMulig } from './hva-er-mulig/HvaErMulig';
 import styles from './tilpassPlanenSteg.module.css';
 
 interface Props {
@@ -33,7 +33,7 @@ interface Props {
     locale: LocaleAll;
 }
 
-const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }) => {
+export const TilpassPlanenSteg = ({ stønadskontoer, locale }: Props) => {
     const intl = useIntl();
     const navigator = usePlanleggerNavigator(locale);
     const stepConfig = useStepData();
@@ -177,5 +177,3 @@ const TilpassPlanenSteg: FunctionComponent<Props> = ({ stønadskontoer, locale }
         </PlanleggerStepPage>
     );
 };
-
-export default TilpassPlanenSteg;

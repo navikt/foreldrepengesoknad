@@ -1,29 +1,18 @@
-import { useEffect } from 'react';
+import { SøknadRoutes } from 'appData/routes';
 
-import { logAmplitudeEvent } from '@navikt/fp-metrics';
+import { loggAmplitudeEvent } from '@navikt/fp-metrics';
 import { Arbeidsforhold } from '@navikt/fp-types';
 
-import SøknadRoutes from '../app-data/routes';
 import { ContextDataType, useContextSaveData } from './FpDataContext';
-import useStepConfig from './useStepConfig';
+import { useStepConfig } from './useStepConfig';
 
-const useFpNavigator = (
+export const useFpNavigator = (
     arbeidsforhold: Arbeidsforhold[],
     mellomlagreOgNaviger: () => Promise<void>,
     erEndringssøknad = false,
 ) => {
     const stepConfig = useStepConfig(arbeidsforhold, erEndringssøknad);
     const oppdaterPath = useContextSaveData(ContextDataType.APP_ROUTE);
-
-    const activeStepId = stepConfig.find((sc) => sc.isSelected);
-
-    useEffect(() => {
-        logAmplitudeEvent('sidevisning', {
-            app: 'foreldrepengesoknad',
-            team: 'foreldrepenger',
-            pageKey: activeStepId,
-        });
-    }, [activeStepId]);
 
     const goToPreviousDefaultStep = () => {
         const index = stepConfig.findIndex((s) => s.isSelected) - 1;
@@ -46,11 +35,7 @@ const useFpNavigator = (
     };
 
     const fortsettSøknadSenere = () => {
-        logAmplitudeEvent('applikasjon-hendelse', {
-            app: 'foreldrepengesoknad',
-            team: 'foreldrepenger',
-            hendelse: 'fortsettSenere',
-        });
+        loggAmplitudeEvent({ origin: 'foreldrepengesoknad', eventName: 'skjema fortsett senere' });
         (window as any).location = 'https://nav.no';
     };
 
@@ -61,5 +46,3 @@ const useFpNavigator = (
         fortsettSøknadSenere,
     };
 };
-
-export default useFpNavigator;

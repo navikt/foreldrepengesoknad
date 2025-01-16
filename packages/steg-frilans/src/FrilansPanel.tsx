@@ -15,7 +15,7 @@ import { Frilans } from '@navikt/fp-types';
 import { ProgressStep, Step } from '@navikt/fp-ui';
 import { isBeforeTodayOrToday, isRequired, isValidDate } from '@navikt/fp-validation';
 
-export interface Props<TYPE> {
+interface Props<TYPE> {
     frilans?: Frilans;
     saveOnNext: (formValues: Frilans) => void;
     saveOnPrevious: (formValues: Frilans | undefined) => void;
@@ -26,7 +26,7 @@ export interface Props<TYPE> {
     stepConfig: Array<ProgressStep<TYPE>>;
 }
 
-const FrilansPanel = <TYPE extends string>({
+export const FrilansPanel = <TYPE extends string>({
     frilans,
     saveOnNext,
     saveOnPrevious,
@@ -95,5 +95,3 @@ const FrilansPanel = <TYPE extends string>({
         </Step>
     );
 };
-
-export default FrilansPanel;

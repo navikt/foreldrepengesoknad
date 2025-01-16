@@ -17,7 +17,7 @@ const UKJENT_UUID = 'ukjent uuid';
 const FEIL_VED_INNSENDING =
     'Det har oppstått et problem med mellomlagring av søknaden. Vennligst prøv igjen senere. Hvis problemet vedvarer, kontakt oss og oppgi feil-id: ';
 
-const useEsMellomlagring = (locale: LocaleAll, setVelkommen: (erVelkommen: boolean) => void) => {
+export const useEsMellomlagring = (locale: LocaleAll, setVelkommen: (erVelkommen: boolean) => void) => {
     const navigate = useNavigate();
     const state = useContextComplete();
     const resetState = useContextReset();
@@ -98,5 +98,3 @@ const useEsMellomlagring = (locale: LocaleAll, setVelkommen: (erVelkommen: boole
 
     return mellomlagreOgNaviger;
 };
-
-export default useEsMellomlagring;
