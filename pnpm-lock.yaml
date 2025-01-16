@@ -155,7 +155,7 @@ importers:
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
       '@storybook/react-vite':
         specifier: 8.4.7
-        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -185,7 +185,7 @@ importers:
         version: 5.3.3
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.5.1)
@@ -351,7 +351,7 @@ importers:
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
       '@storybook/react-vite':
         specifier: 8.4.7
-        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -384,7 +384,7 @@ importers:
         version: 5.3.3
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.5.1)
@@ -667,7 +667,7 @@ importers:
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
       '@storybook/react-vite':
         specifier: 8.4.7
-        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -721,7 +721,7 @@ importers:
         version: 4.4.12(@types/react@18.3.18)
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.5.1)
@@ -917,7 +917,7 @@ importers:
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
       '@storybook/react-vite':
         specifier: 8.4.7
-        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -941,7 +941,7 @@ importers:
         version: 5.3.3
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.5.1)
@@ -977,7 +977,7 @@ importers:
         version: 5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0)
@@ -1164,7 +1164,7 @@ importers:
         version: 8.4.7(@types/react@18.3.18)(storybook@8.4.7(prettier@3.4.2))
       '@storybook/builder-vite':
         specifier: 8.4.7
-        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@storybook/cli':
         specifier: 8.4.7
         version: 8.4.7(@babel/preset-env@7.26.0(@babel/core@7.26.0))(prettier@3.4.2)
@@ -1173,7 +1173,7 @@ importers:
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
       '@storybook/react-vite':
         specifier: 8.4.7
-        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -1218,7 +1218,7 @@ importers:
         version: 4.4.12(@types/react@18.3.18)
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       acorn:
         specifier: ^8.14.0
         version: 8.14.0
@@ -1396,7 +1396,7 @@ importers:
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
       '@storybook/react-vite':
         specifier: 8.4.7
-        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -1420,7 +1420,7 @@ importers:
         version: 5.3.3
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.5.1)
@@ -1456,7 +1456,7 @@ importers:
         version: 5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0)
@@ -1583,7 +1583,7 @@ importers:
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
       '@storybook/react-vite':
         specifier: 8.4.7
-        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -1607,7 +1607,7 @@ importers:
         version: 5.3.3
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.5.1)
@@ -1640,7 +1640,7 @@ importers:
         version: 5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0)
@@ -1758,7 +1758,7 @@ importers:
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
       '@storybook/react-vite':
         specifier: 8.4.7
-        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -1782,7 +1782,7 @@ importers:
         version: 5.3.3
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       autoprefixer:
         specifier: ^10.4.18
         version: 10.4.20(postcss@8.5.1)
@@ -1815,7 +1815,7 @@ importers:
         version: 5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0)
@@ -1953,7 +1953,7 @@ importers:
         version: 8.4.7(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))
       '@storybook/builder-vite':
         specifier: 8.4.7
-        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@storybook/react':
         specifier: 8.4.7
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
@@ -1968,7 +1968,7 @@ importers:
         version: 14.6.0(@testing-library/dom@10.4.0)
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -1989,7 +1989,7 @@ importers:
         version: 5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0)
@@ -2101,7 +2101,7 @@ importers:
         version: 5.0.4
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       copyfiles:
         specifier: ^2.4.1
         version: 2.4.1
@@ -2206,8 +2206,8 @@ importers:
         specifier: ^18.2.0
         version: 18.3.1
       react-hook-form:
-        specifier: 7.53.1
-        version: 7.53.1(react@18.3.1)
+        specifier: 7.54.2
+        version: 7.54.2(react@18.3.1)
       react-intl:
         specifier: ^7.1.0
         version: 7.1.0(react@18.3.1)(typescript@5.7.3)
@@ -2235,7 +2235,7 @@ importers:
         version: 8.4.7(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))
       '@storybook/builder-vite':
         specifier: 8.4.7
-        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@storybook/react':
         specifier: 8.4.7
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
@@ -2253,7 +2253,7 @@ importers:
         version: 4.17.14
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       mockdate:
         specifier: ^3.0.5
         version: 3.0.5
@@ -2280,7 +2280,7 @@ importers:
         version: 5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0)
@@ -2323,7 +2323,7 @@ importers:
         version: 2.31.0(eslint@9.18.0(jiti@1.21.7))
       eslint-plugin-prettier:
         specifier: 5.2.1
-        version: 5.2.1(eslint-config-prettier@9.1.0(eslint@9.18.0(jiti@1.21.7)))(eslint@9.18.0(jiti@1.21.7))(prettier@3.4.2)
+        version: 5.2.1(@types/eslint@9.6.1)(eslint-config-prettier@9.1.0(eslint@9.18.0(jiti@1.21.7)))(eslint@9.18.0(jiti@1.21.7))(prettier@3.4.2)
       eslint-plugin-react:
         specifier: 7.37.4
         version: 7.37.4(eslint@9.18.0(jiti@1.21.7))
@@ -2420,7 +2420,7 @@ importers:
         version: 8.4.7(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))
       '@storybook/builder-vite':
         specifier: 8.4.7
-        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@storybook/react':
         specifier: 8.4.7
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
@@ -2438,7 +2438,7 @@ importers:
         version: 18.3.18
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
@@ -2459,7 +2459,7 @@ importers:
         version: 5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0)
@@ -2535,7 +2535,7 @@ importers:
         version: 8.4.7(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))
       '@storybook/builder-vite':
         specifier: 8.4.7
-        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@storybook/react':
         specifier: 8.4.7
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
@@ -2553,7 +2553,7 @@ importers:
         version: 18.3.18
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
@@ -2574,7 +2574,7 @@ importers:
         version: 5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0)
@@ -2644,7 +2644,7 @@ importers:
         version: 8.4.7(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))
       '@storybook/builder-vite':
         specifier: 8.4.7
-        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@storybook/react':
         specifier: 8.4.7
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
@@ -2662,7 +2662,7 @@ importers:
         version: 18.3.18
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
@@ -2683,7 +2683,7 @@ importers:
         version: 5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0)
@@ -2747,7 +2747,7 @@ importers:
         version: 8.4.7(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))
       '@storybook/builder-vite':
         specifier: 8.4.7
-        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@storybook/react':
         specifier: 8.4.7
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
@@ -2765,7 +2765,7 @@ importers:
         version: 18.3.18
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
@@ -2786,7 +2786,7 @@ importers:
         version: 5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0)
@@ -2862,7 +2862,7 @@ importers:
         version: 8.4.7(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))
       '@storybook/builder-vite':
         specifier: 8.4.7
-        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@storybook/react':
         specifier: 8.4.7
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
@@ -2880,7 +2880,7 @@ importers:
         version: 18.3.18
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
@@ -2901,7 +2901,7 @@ importers:
         version: 5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0)
@@ -2992,7 +2992,7 @@ importers:
         version: 8.4.7(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))
       '@storybook/builder-vite':
         specifier: 8.4.7
-        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@storybook/react':
         specifier: 8.4.7
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
@@ -3016,7 +3016,7 @@ importers:
         version: 6.2.14
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
@@ -3037,7 +3037,7 @@ importers:
         version: 5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0)
@@ -3089,7 +3089,7 @@ importers:
         version: 18.3.18
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
@@ -3104,7 +3104,7 @@ importers:
         version: 5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0)
@@ -3113,7 +3113,7 @@ importers:
     dependencies:
       '@storybook/react-vite':
         specifier: 8.4.7
-        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -3147,7 +3147,7 @@ importers:
         version: 18.3.5(@types/react@18.3.18)
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -3159,7 +3159,7 @@ importers:
         version: 5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0)
@@ -3271,7 +3271,7 @@ importers:
         version: 8.4.7(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))
       '@storybook/builder-vite':
         specifier: 8.4.7
-        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@storybook/react':
         specifier: 8.4.7
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
@@ -3298,7 +3298,7 @@ importers:
         version: 10.0.0
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
@@ -3325,7 +3325,7 @@ importers:
         version: 5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0)
@@ -3392,13 +3392,13 @@ importers:
         version: 8.4.7(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))
       '@storybook/builder-vite':
         specifier: 8.4.7
-        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@storybook/react':
         specifier: 8.4.7
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
       '@storybook/react-vite':
         specifier: 8.4.7
-        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -3413,7 +3413,7 @@ importers:
         version: 5.2.1(prettier@3.4.2)
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
@@ -3437,7 +3437,7 @@ importers:
         version: 5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0)
@@ -3507,13 +3507,13 @@ importers:
         version: 8.4.7(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))
       '@storybook/builder-vite':
         specifier: 8.4.7
-        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@storybook/react':
         specifier: 8.4.7
         version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
       '@storybook/react-vite':
         specifier: 8.4.7
-        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@testing-library/dom':
         specifier: ^10.1.0
         version: 10.4.0
@@ -3528,7 +3528,7 @@ importers:
         version: 5.2.1(prettier@3.4.2)
       '@vitejs/plugin-react':
         specifier: ^4.3.4
-        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
@@ -3552,7 +3552,7 @@ importers:
         version: 5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+        version: 0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0)
@@ -4865,6 +4865,9 @@ packages:
     peerDependencies:
       '@types/react': '>=17.0.30'
       react: '>=17.0.0 || >19.0.0-rc'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-tailwind@7.9.1':
     resolution: {integrity: sha512-Op7gIqp9RReWvuJ1vBZUlbXyuxcFV8MVyPD3rzq5ZNjJa4Xh4jnhZQWkq4ZsgcTTPbf0yiIQT0XJim27bdPSaQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/7.9.1/8fc6ad80ceef5ad936fb06191857b5e3c0f16d3e}
@@ -4883,6 +4886,9 @@ packages:
       html-react-parser: '>=5.x'
       jsdom: '>=16.x'
       react: '>=17.x'
+    peerDependenciesMeta:
+      react:
+        optional: true
 
   '@navikt/oasis@3.6.0':
     resolution: {integrity: sha512-g+0plp7xNUo1ZNv0ahL80A96Swu8RRv/pE1ZYAp9t1AGo6RHUicF3PYuyiQH+xtXrdiXQk29KumS+jCqURswlA==, tarball: https://npm.pkg.github.com/download/@navikt/oasis/3.6.0/8e7b3918165b037c18cfbc36ad4aeee04fc0650f}
@@ -8811,12 +8817,6 @@ packages:
   react-fast-compare@3.2.2:
     resolution: {integrity: sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==}
 
-  react-hook-form@7.53.1:
-    resolution: {integrity: sha512-6aiQeBda4zjcuaugWvim9WsGqisoUk+etmFEsSUMm451/Ic8L/UAb7sRtMj3V+Hdzm6mMjU1VhiSzYUZeBm0Vg==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      react: ^16.8.0 || ^17 || ^18 || ^19
-
   react-hook-form@7.54.2:
     resolution: {integrity: sha512-eHpAUgUjWbZocoQYUHposymRb4ZP6d0uwUnooL2uOybA9/3tPUvoAKqEWK1WaSiTxxOfTpffNZP7QwlnM3/gEg==}
     engines: {node: '>=18.0.0'}
@@ -11316,7 +11316,7 @@ snapshots:
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
 
-  '@joshwooding/vite-plugin-react-docgen-typescript@0.4.2(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))':
+  '@joshwooding/vite-plugin-react-docgen-typescript@0.4.2(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))':
     dependencies:
       magic-string: 0.27.0
       react-docgen-typescript: 2.2.2(typescript@5.7.3)
@@ -11386,11 +11386,12 @@ snapshots:
       '@floating-ui/react-dom': 2.1.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/aksel-icons': 7.9.1
       '@navikt/ds-tokens': 7.9.1
-      '@types/react': 18.3.18
       clsx: 2.1.1
       date-fns: 3.6.0
       react: 18.3.1
       react-day-picker: 8.10.1(date-fns@3.6.0)(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.18
     transitivePeerDependencies:
       - react-dom
 
@@ -11405,6 +11406,7 @@ snapshots:
       csp-header: 6.0.0
       html-react-parser: 5.2.2(@types/react@18.3.18)(react@18.3.1)
       jsdom: 25.0.1
+    optionalDependencies:
       react: 18.3.1
 
   '@navikt/oasis@3.6.0':
@@ -11750,7 +11752,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@storybook/builder-vite@8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))':
+  '@storybook/builder-vite@8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))':
     dependencies:
       '@storybook/csf-plugin': 8.4.7(storybook@8.4.7(prettier@3.4.2))
       browser-assert: 1.2.1
@@ -11867,11 +11869,11 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       storybook: 8.4.7(prettier@3.4.2)
 
-  '@storybook/react-vite@8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))':
+  '@storybook/react-vite@8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.30.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))':
     dependencies:
-      '@joshwooding/vite-plugin-react-docgen-typescript': 0.4.2(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+      '@joshwooding/vite-plugin-react-docgen-typescript': 0.4.2(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@rollup/pluginutils': 5.1.4(rollup@4.30.1)
-      '@storybook/builder-vite': 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+      '@storybook/builder-vite': 8.4.7(storybook@8.4.7(prettier@3.4.2))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@storybook/react': 8.4.7(@storybook/test@8.4.7(storybook@8.4.7(prettier@3.4.2)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.7(prettier@3.4.2))(typescript@5.7.3)
       find-up: 5.0.0
       magic-string: 0.30.17
@@ -12326,7 +12328,7 @@ snapshots:
 
   '@vercel/ncc@0.38.3': {}
 
-  '@vitejs/plugin-react@4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))':
+  '@vitejs/plugin-react@4.3.4(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))':
     dependencies:
       '@babel/core': 7.26.0
       '@babel/plugin-transform-react-jsx-self': 7.25.9(@babel/core@7.26.0)
@@ -12351,7 +12353,7 @@ snapshots:
       chai: 5.1.2
       tinyrainbow: 1.2.0
 
-  '@vitest/mocker@2.1.8(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))':
+  '@vitest/mocker@2.1.8(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))':
     dependencies:
       '@vitest/spy': 2.1.8
       estree-walker: 3.0.3
@@ -13697,13 +13699,14 @@ snapshots:
       safe-regex-test: 1.1.0
       string.prototype.includes: 2.0.1
 
-  eslint-plugin-prettier@5.2.1(eslint-config-prettier@9.1.0(eslint@9.18.0(jiti@1.21.7)))(eslint@9.18.0(jiti@1.21.7))(prettier@3.4.2):
+  eslint-plugin-prettier@5.2.1(@types/eslint@9.6.1)(eslint-config-prettier@9.1.0(eslint@9.18.0(jiti@1.21.7)))(eslint@9.18.0(jiti@1.21.7))(prettier@3.4.2):
     dependencies:
       eslint: 9.18.0(jiti@1.21.7)
       prettier: 3.4.2
       prettier-linter-helpers: 1.0.0
       synckit: 0.9.2
     optionalDependencies:
+      '@types/eslint': 9.6.1
       eslint-config-prettier: 9.1.0(eslint@9.18.0(jiti@1.21.7))
 
   eslint-plugin-react@7.37.4(eslint@9.18.0(jiti@1.21.7)):
@@ -15778,10 +15781,6 @@ snapshots:
 
   react-fast-compare@3.2.2: {}
 
-  react-hook-form@7.53.1(react@18.3.1):
-    dependencies:
-      react: 18.3.1
-
   react-hook-form@7.54.2(react@18.3.1):
     dependencies:
       react: 18.3.1
@@ -16975,7 +16974,7 @@ snapshots:
       optionator: 0.9.4
       typescript: 5.7.3
 
-  vite-plugin-checker@0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)):
+  vite-plugin-checker@0.8.0(eslint@9.18.0)(optionator@0.9.4)(typescript@5.7.3)(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0)):
     dependencies:
       '@babel/code-frame': 7.26.2
       ansi-escapes: 4.3.2
@@ -17012,7 +17011,7 @@ snapshots:
   vitest@2.1.8(@types/node@22.10.7)(jsdom@25.0.1)(less@4.2.1)(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(sass@1.83.4)(terser@5.37.0):
     dependencies:
       '@vitest/expect': 2.1.8
-      '@vitest/mocker': 2.1.8(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4))
+      '@vitest/mocker': 2.1.8(msw@2.7.0(@types/node@22.10.7)(typescript@5.7.3))(vite@5.4.11(@types/node@22.10.7)(less@4.2.1)(sass@1.83.4)(terser@5.37.0))
       '@vitest/pretty-format': 2.1.8
       '@vitest/runner': 2.1.8
       '@vitest/snapshot': 2.1.8
