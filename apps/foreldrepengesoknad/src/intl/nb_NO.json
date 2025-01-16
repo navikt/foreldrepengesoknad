@@ -66,7 +66,7 @@
     "velkommen.barnVelger.adoptertBarn": "Barn adoptert {adopsjonsdato}",
     "velkommen.barnVelger.ufødtBarn": "<b>{antallBarnTekst} med termin {termin}</b>",
     "velkommen.dinePlikter.listeElement.2": "Jeg forstår at hvis jeg gir uriktige eller holder tilbake opplysninger kan det få konsekvenser for retten min til foreldrepenger.",
-    "velkommen.dinePlikter.listeElement.1": "Jeg har lest og forstått at jeg har plikt til å {link}",
+    "velkommen.dinePlikter.listeElement.1": "Jeg har lest og forstått at jeg har plikt til å {link}.",
     "velkommen.dinePlikter.listeElement.1.link": "gi Nav riktige opplysninger og melde fra om endringer",
     "velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.tittel": "Automatisk behandling av søknaden",
     "velkommen.dinePersonopplysninger.avsnitt.automatiskBehandling.del1": "Nav vil behandle søknaden automatisk hvis vi har tilstrekkelige opplysninger. Den automatiske behandlingen baserer seg på opplysninger",
