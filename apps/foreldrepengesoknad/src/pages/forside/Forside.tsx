@@ -2,7 +2,7 @@ import { ContextDataType, useContextSaveAnyData } from 'appData/FpDataContext';
 import { SøknadRoutes } from 'appData/routes';
 import { useFpNavigator } from 'appData/useFpNavigator';
 import { useSetSøknadsdata } from 'appData/useSetSøknadsdata';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
@@ -61,10 +61,9 @@ export const Forside = ({
 
     // Denne må memoriserast, ellers får barna ulik id for kvar render => trøbbel
     const selectableBarn = useMemo(
-        () => getSelectableBarnOptions(saker, søkerInfo.søker.barn),
+        () => [...getSelectableBarnOptions(saker, søkerInfo.søker.barn)].sort(sorterSelectableBarnEtterYngst),
         [saker, søkerInfo.søker.barn],
     );
-    const sortedSelectableBarn = [...selectableBarn].sort(sorterSelectableBarnEtterYngst);
 
     const onSubmit = (values: VelkommenFormData) => {
         if (!values.harForståttRettigheterOgPlikter) {
@@ -76,7 +75,7 @@ export const Forside = ({
 
         let barnFraNesteSak = undefined;
         if (valgteBarn !== undefined) {
-            barnFraNesteSak = getBarnFraNesteSak(valgteBarn, sortedSelectableBarn);
+            barnFraNesteSak = getBarnFraNesteSak(valgteBarn, selectableBarn);
             oppdaterDataIState(ContextDataType.BARN_FRA_NESTE_SAK, barnFraNesteSak);
         }
 
@@ -170,7 +169,7 @@ export const Forside = ({
                                 />
                             </VStack>
                         </GuidePanel>
-                        <BarnVelger selectableBarn={sortedSelectableBarn} />
+                        <BarnVelger selectableBarn={selectableBarn} />
                         <Alert variant="info">
                             <FormattedMessage id="velkommen.lagring.info" />
                         </Alert>
