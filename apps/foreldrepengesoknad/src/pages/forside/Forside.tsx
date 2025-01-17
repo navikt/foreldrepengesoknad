@@ -56,7 +56,6 @@ export const Forside = ({
     const intl = useIntl();
 
     const navigator = useFpNavigator(søkerInfo.arbeidsforhold, mellomlagreSøknadOgNaviger);
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const oppdaterDataIState = useContextSaveAnyData();
     const { oppdaterSøknadIState } = useSetSøknadsdata();
 
@@ -71,8 +70,6 @@ export const Forside = ({
         if (!values.harForståttRettigheterOgPlikter) {
             return;
         }
-
-        setIsSubmitting(true);
 
         const valgteBarn = selectableBarn.find((sb) => sb.id === values.valgteBarn);
         const vilSøkeOmEndring = !!valgteBarn?.kanSøkeOmEndring;
@@ -199,7 +196,7 @@ export const Forside = ({
                             </VStack>
                         </RhfConfirmationPanel>
                         <HStack justify="center">
-                            <Button type="submit" variant="primary" disabled={isSubmitting} loading={isSubmitting}>
+                            <Button type="submit" variant="primary">
                                 {knapptekst}
                             </Button>
                         </HStack>
