@@ -66,39 +66,39 @@ export const Forside = ({
     );
 
     const onSubmit = (values: VelkommenFormData) => {
+        // Skal i utgangspunktet ikke få submitte hvis denne ikke er true
         if (!values.harForståttRettigheterOgPlikter) {
             return;
         }
+        setHarGodkjentVilkår(true);
 
         const valgteBarn = selectableBarn.find((sb) => sb.id === values.valgteBarn);
-        const vilSøkeOmEndring = !!valgteBarn?.kanSøkeOmEndring;
 
-        let barnFraNesteSak = undefined;
-        if (valgteBarn !== undefined) {
-            barnFraNesteSak = getBarnFraNesteSak(valgteBarn, selectableBarn);
-            oppdaterDataIState(ContextDataType.BARN_FRA_NESTE_SAK, barnFraNesteSak);
+        // Har valgt å opprette en helt ny sak
+        if (valgteBarn === undefined) {
+            setErEndringssøknad(false);
+            setSøknadGjelderNyttBarn(true);
+            return navigator.goToNextStep(SøknadRoutes.SØKERSITUASJON);
         }
 
+        const barnFraNesteSak = getBarnFraNesteSak(valgteBarn, selectableBarn);
+        oppdaterDataIState(ContextDataType.BARN_FRA_NESTE_SAK, barnFraNesteSak);
+        const vilSøkeOmEndring = !!valgteBarn.kanSøkeOmEndring;
+
+        // TODO: hvorfor lete etter sak her. Er ikke sak allerede satt på "valgteBarn"
         const valgtEksisterendeSak = vilSøkeOmEndring
             ? saker.find((sak) => sak.saksnummer === valgteBarn.sak?.saksnummer)
             : undefined;
 
-        const endringssøknad = vilSøkeOmEndring && valgtEksisterendeSak;
-        const nySøknadPåAlleredeSøktBarn = valgteBarn?.sak !== undefined && valgteBarn?.kanSøkeOmEndring === false;
-        const nySøknadPåValgteRegistrerteBarn =
-            !endringssøknad && !nySøknadPåAlleredeSøktBarn && valgteBarn !== undefined;
+        const nySøknadPåAlleredeSøktBarn = valgteBarn.sak !== undefined && valgteBarn.kanSøkeOmEndring === false;
+        const nySøknadPåValgteRegistrerteBarn = !valgtEksisterendeSak && !nySøknadPåAlleredeSøktBarn;
 
-        let nextRoute = SøknadRoutes.SØKERSITUASJON;
-        let søknadGjelderNyttBarn = false;
-
-        if (endringssøknad) {
+        if (valgtEksisterendeSak) {
             const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(
                 valgtEksisterendeSak,
                 barnFraNesteSak?.startdatoFørsteStønadsperiode,
                 valgteBarn.fødselsdatoer,
             );
-
-            nextRoute = SøknadRoutes.UTTAKSPLAN;
 
             const søknad = opprettSøknadFraEksisterendeSak(
                 søkerInfo.søker,
@@ -108,7 +108,14 @@ export const Forside = ({
                 valgteBarn,
             );
             oppdaterSøknadIState(søknad, eksisterendeSak);
-        } else if (nySøknadPåAlleredeSøktBarn) {
+
+            setErEndringssøknad(true);
+            setSøknadGjelderNyttBarn(false);
+            return navigator.goToNextStep(SøknadRoutes.UTTAKSPLAN);
+        }
+
+        // Det finnes en sak som ikke kan endres. Lag derfor ny søknad fra eksisterende sak
+        if (nySøknadPåAlleredeSøktBarn) {
             const søknad = opprettSøknadFraValgteBarnMedSak(
                 valgteBarn,
                 intl,
@@ -116,18 +123,18 @@ export const Forside = ({
                 søkerInfo.søker.fnr,
             );
             oppdaterSøknadIState(søknad);
-        } else if (nySøknadPåValgteRegistrerteBarn) {
-            const søknad = opprettSøknadFraValgteBarn(valgteBarn);
-            oppdaterSøknadIState(søknad);
-        } else {
-            søknadGjelderNyttBarn = true;
         }
 
-        setHarGodkjentVilkår(true);
-        setErEndringssøknad(vilSøkeOmEndring);
-        setSøknadGjelderNyttBarn(søknadGjelderNyttBarn);
+        // Barn er registrert, men det finnes ingen sak
+        if (nySøknadPåValgteRegistrerteBarn) {
+            const søknad = opprettSøknadFraValgteBarn(valgteBarn);
+            oppdaterSøknadIState(søknad);
+        }
 
-        return navigator.goToNextStep(nextRoute);
+        // TODO: vurder om disse skal ligge som default, eller om vi vil ha de inn i "if" og kaste en error hvis ingen av casene slår inn.
+        setErEndringssøknad(false);
+        setSøknadGjelderNyttBarn(false);
+        return navigator.goToNextStep(SøknadRoutes.SØKERSITUASJON);
     };
 
     const formMethods = useForm<VelkommenFormData>({
