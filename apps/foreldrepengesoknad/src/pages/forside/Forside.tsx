@@ -5,7 +5,6 @@ import { useSetSøknadsdata } from 'appData/useSetSøknadsdata';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Søknad } from 'types/Søknad';
 import {
     mapSøkerensEksisterendeSakFromDTO,
     opprettSøknadFraEksisterendeSak,
@@ -88,8 +87,6 @@ export const Forside = ({
             ? saker.find((sak) => sak.saksnummer === valgteBarn.sak?.saksnummer)
             : undefined;
 
-        const førsteUttaksdagNesteBarnsSak = barnFraNesteSak?.startdatoFørsteStønadsperiode;
-
         const endringssøknad = vilSøkeOmEndring && valgtEksisterendeSak;
         const nySøknadPåAlleredeSøktBarn = valgteBarn?.sak !== undefined && valgteBarn?.kanSøkeOmEndring === false;
         const nySøknadPåValgteRegistrerteBarn =
@@ -101,7 +98,7 @@ export const Forside = ({
         if (endringssøknad) {
             const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(
                 valgtEksisterendeSak,
-                førsteUttaksdagNesteBarnsSak,
+                barnFraNesteSak?.startdatoFørsteStønadsperiode,
                 valgteBarn.fødselsdatoer,
             );
 
@@ -109,11 +106,11 @@ export const Forside = ({
 
             const søknad = opprettSøknadFraEksisterendeSak(
                 søkerInfo.søker,
-                eksisterendeSak!,
+                eksisterendeSak,
                 intl,
                 valgtEksisterendeSak.annenPart,
                 valgteBarn,
-            ) as Søknad;
+            );
             oppdaterSøknadIState(søknad, eksisterendeSak);
         } else if (nySøknadPåAlleredeSøktBarn) {
             const søknad = opprettSøknadFraValgteBarnMedSak(
@@ -121,16 +118,16 @@ export const Forside = ({
                 intl,
                 søkerInfo.søker.barn,
                 søkerInfo.søker.fnr,
-            ) as Søknad;
+            );
             oppdaterSøknadIState(søknad);
         } else if (nySøknadPåValgteRegistrerteBarn) {
-            const søknad = opprettSøknadFraValgteBarn(valgteBarn) as Søknad;
+            const søknad = opprettSøknadFraValgteBarn(valgteBarn);
             oppdaterSøknadIState(søknad);
         } else {
             søknadGjelderNyttBarn = true;
         }
 
-        setHarGodkjentVilkår(values.harForståttRettigheterOgPlikter!);
+        setHarGodkjentVilkår(true);
         setErEndringssøknad(vilSøkeOmEndring);
         setSøknadGjelderNyttBarn(søknadGjelderNyttBarn);
 
