@@ -19,13 +19,13 @@
         "i18n-iso-countries": "^7.13.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
-        "react-intl": "^7.1.0"
+        "react-intl": "^7.1.4"
     },
     "devDependencies": {
         "@formatjs/cli-lib": "6.6.1",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@testing-library/jest-dom": "^6.6.3",
-        "@testing-library/react": "^16.1.0",
+        "@testing-library/react": "^16.2.0",
         "@types/react": "^18.3.12",
         "@vitejs/plugin-react": "^4.3.4",
         "fast-glob": "^3.3.3",
