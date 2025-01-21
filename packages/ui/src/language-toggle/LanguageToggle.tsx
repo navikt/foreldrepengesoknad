@@ -1,4 +1,5 @@
 import { ChevronDownIcon } from '@navikt/aksel-icons';
+import { JSX } from 'react';
 import { Button, Menu, MenuItem, Wrapper } from 'react-aria-menubutton';
 import { FormattedMessage } from 'react-intl';
 

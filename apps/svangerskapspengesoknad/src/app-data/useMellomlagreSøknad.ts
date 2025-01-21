@@ -23,7 +23,7 @@ export const useMellomlagreSøknad = (locale: LocaleNo, setHarGodkjentVilkår: (
 
     const [skalMellomlagre, setSkalMellomlagre] = useState(false);
 
-    const promiseRef = useRef<() => void>();
+    const promiseRef = useRef<() => void>(null);
 
     const { mutate: slettMellomlagring } = useMutation({
         mutationFn: () => ky.delete(`${import.meta.env.BASE_URL}/rest/storage/svangerskapspenger`),
