@@ -18,8 +18,8 @@ importers:
         specifier: 9.1.7
         version: 9.1.7
       lint-staged:
-        specifier: 15.3.0
-        version: 15.3.0
+        specifier: 15.4.1
+        version: 15.4.1
       shelljs:
         specifier: 0.8.5
         version: 0.8.5
@@ -30,14 +30,14 @@ importers:
   apps/engangsstonad:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.9.0
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: ^7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-api':
         specifier: workspace:*
         version: link:../../packages/api
@@ -72,11 +72,11 @@ importers:
         specifier: ^8.47.0
         version: 8.48.0
       '@tanstack/react-query':
-        specifier: 5.64.1
-        version: 5.64.1(react@18.3.1)
+        specifier: 5.64.2
+        version: 5.64.2(react@18.3.1)
       '@tanstack/react-query-devtools':
-        specifier: ^5.64.1
-        version: 5.64.1(@tanstack/react-query@5.64.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.64.2
+        version: 5.64.2(@tanstack/react-query@5.64.2(react@18.3.1))(react@18.3.1)
       compression:
         specifier: ^1.7.5
         version: 1.7.5
@@ -244,14 +244,14 @@ importers:
         specifier: ^11.4.9
         version: 11.4.9
       '@navikt/aksel-icons':
-        specifier: ^7.9.0
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: ^7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/ds-tailwind':
         specifier: 7.9.2
         version: 7.9.2
@@ -289,11 +289,11 @@ importers:
         specifier: ^8.47.0
         version: 8.48.0
       '@tanstack/react-query':
-        specifier: 5.64.1
-        version: 5.64.1(react@18.3.1)
+        specifier: 5.64.2
+        version: 5.64.2(react@18.3.1)
       '@tanstack/react-query-devtools':
-        specifier: ^5.64.1
-        version: 5.64.1(@tanstack/react-query@5.64.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.64.2
+        version: 5.64.2(@tanstack/react-query@5.64.2(react@18.3.1))(react@18.3.1)
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -467,14 +467,14 @@ importers:
         specifier: ^11.4.9
         version: 11.4.9
       '@navikt/aksel-icons':
-        specifier: ^7.9.0
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: ^7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fnrvalidator':
         specifier: ^2.1.5
         version: 2.1.5
@@ -533,11 +533,11 @@ importers:
         specifier: ^1.1295.0
         version: 1.1295.0
       '@tanstack/react-query':
-        specifier: 5.64.1
-        version: 5.64.1(react@18.3.1)
+        specifier: 5.64.2
+        version: 5.64.2(react@18.3.1)
       '@tanstack/react-query-devtools':
-        specifier: ^5.64.1
-        version: 5.64.1(@tanstack/react-query@5.64.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.64.2
+        version: 5.64.2(@tanstack/react-query@5.64.2(react@18.3.1))(react@18.3.1)
       bytes:
         specifier: ^3.1.2
         version: 3.1.2
@@ -792,14 +792,14 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1
       '@navikt/aksel-icons':
-        specifier: ^7.9.0
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: ^7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -834,11 +834,11 @@ importers:
         specifier: ^8.47.0
         version: 8.48.0
       '@tanstack/react-query':
-        specifier: 5.64.1
-        version: 5.64.1(react@18.3.1)
+        specifier: 5.64.2
+        version: 5.64.2(react@18.3.1)
       '@tanstack/react-query-devtools':
-        specifier: ^5.64.1
-        version: 5.64.1(@tanstack/react-query@5.64.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.64.2
+        version: 5.64.2(@tanstack/react-query@5.64.2(react@18.3.1))(react@18.3.1)
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -997,17 +997,17 @@ importers:
         specifier: ^11.4.9
         version: 11.4.9
       '@navikt/aksel-icons':
-        specifier: ^7.9.0
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-datepicker':
         specifier: ^4.2.0
-        version: 4.2.0(@navikt/ds-css@7.9.1)(@navikt/ds-react@7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(date-fns@4.1.0)(dayjs@1.11.13)(react-day-picker@8.10.0(date-fns@4.1.0)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(uuid@11.0.5)
+        version: 4.2.0(@navikt/ds-css@7.9.2)(@navikt/ds-react@7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(date-fns@4.1.0)(dayjs@1.11.13)(react-day-picker@8.10.0(date-fns@4.1.0)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(uuid@11.0.5)
       '@navikt/ds-react':
-        specifier: ^7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fnrvalidator':
         specifier: ^2.1.5
         version: 2.1.5
@@ -1051,11 +1051,11 @@ importers:
         specifier: ^8.47.0
         version: 8.48.0
       '@tanstack/react-query':
-        specifier: 5.64.1
-        version: 5.64.1(react@18.3.1)
+        specifier: 5.64.2
+        version: 5.64.2(react@18.3.1)
       '@tanstack/react-query-devtools':
-        specifier: ^5.64.1
-        version: 5.64.1(@tanstack/react-query@5.64.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.64.2
+        version: 5.64.2(@tanstack/react-query@5.64.2(react@18.3.1))(react@18.3.1)
       bytes:
         specifier: ^3.1.2
         version: 3.1.2
@@ -1286,14 +1286,14 @@ importers:
   apps/veiviser-fp-eller-es:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.9.0
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: ^7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -1322,11 +1322,11 @@ importers:
         specifier: ^8.47.0
         version: 8.48.0
       '@tanstack/react-query':
-        specifier: 5.64.1
-        version: 5.64.1(react@18.3.1)
+        specifier: 5.64.2
+        version: 5.64.2(react@18.3.1)
       '@tanstack/react-query-devtools':
-        specifier: ^5.64.1
-        version: 5.64.1(@tanstack/react-query@5.64.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.64.2
+        version: 5.64.2(@tanstack/react-query@5.64.2(react@18.3.1))(react@18.3.1)
       compression:
         specifier: ^1.7.5
         version: 1.7.5
@@ -1467,14 +1467,14 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1
       '@navikt/aksel-icons':
-        specifier: ^7.9.0
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: ^7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -1503,11 +1503,11 @@ importers:
         specifier: ^8.47.0
         version: 8.48.0
       '@tanstack/react-query':
-        specifier: 5.64.1
-        version: 5.64.1(react@18.3.1)
+        specifier: 5.64.2
+        version: 5.64.2(react@18.3.1)
       '@tanstack/react-query-devtools':
-        specifier: ^5.64.1
-        version: 5.64.1(@tanstack/react-query@5.64.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.64.2
+        version: 5.64.2(@tanstack/react-query@5.64.2(react@18.3.1))(react@18.3.1)
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -1648,14 +1648,14 @@ importers:
   apps/veiviser-hvor-mye:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.9.0
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: ^7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/eslint-config-fp-selvbetjening':
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -1684,11 +1684,11 @@ importers:
         specifier: ^8.47.0
         version: 8.48.0
       '@tanstack/react-query':
-        specifier: 5.64.1
-        version: 5.64.1(react@18.3.1)
+        specifier: 5.64.2
+        version: 5.64.2(react@18.3.1)
       '@tanstack/react-query-devtools':
-        specifier: ^5.64.1
-        version: 5.64.1(@tanstack/react-query@5.64.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.64.2
+        version: 5.64.2(@tanstack/react-query@5.64.2(react@18.3.1))(react@18.3.1)
       compression:
         specifier: ^1.7.5
         version: 1.7.5
@@ -1903,11 +1903,11 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1(react-dom@18.3.1(react@18.3.1))(react-hook-form@7.54.2(react@18.3.1))(react@18.3.1)
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: ^7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -1997,11 +1997,11 @@ importers:
   packages/fp-common:
     dependencies:
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: ^7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fnrvalidator':
         specifier: ^2.1.5
         version: 2.1.5
@@ -2161,14 +2161,14 @@ importers:
   packages/ny-uttaksplan:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.9.0
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: ^7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-common':
         specifier: workspace:*
         version: link:../fp-common
@@ -2346,11 +2346,11 @@ importers:
   packages/steg-arbeidsforhold-og-inntekt:
     dependencies:
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: 7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2461,11 +2461,11 @@ importers:
   packages/steg-egen-næring:
     dependencies:
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: 7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2576,11 +2576,11 @@ importers:
   packages/steg-frilans:
     dependencies:
       '@navikt/ds-css':
-        specifier: 7.9.1
-        version: 7.9.1
+        specifier: 7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: 7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2685,11 +2685,11 @@ importers:
   packages/steg-oppsummering:
     dependencies:
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: ^7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-types':
         specifier: workspace:*
         version: link:../types
@@ -2788,14 +2788,14 @@ importers:
   packages/steg-utenlandsopphold:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.9.0
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: ^7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -2915,14 +2915,14 @@ importers:
   packages/ui:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.9.0
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: ^7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -3161,14 +3161,14 @@ importers:
   packages/uttaksplan:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.9.0
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: ^7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@19.0.0(react@18.3.1))(react@18.3.1)
+        specifier: ^7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@19.0.0(react@18.3.1))(react@18.3.1)
       '@navikt/fnrvalidator':
         specifier: 2.1.5
         version: 2.1.5
@@ -3327,14 +3327,14 @@ importers:
   packages/uttaksplan-kalender:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.9.0
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: ^7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -3439,14 +3439,14 @@ importers:
   packages/uttaksplan-kalender-ny:
     dependencies:
       '@navikt/aksel-icons':
-        specifier: ^7.9.0
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-css':
-        specifier: ^7.9.1
-        version: 7.9.1
+        specifier: ^7.9.2
+        version: 7.9.2
       '@navikt/ds-react':
-        specifier: ^7.9.1
-        version: 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.9.2
+        version: 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@navikt/fp-constants':
         specifier: workspace:*
         version: link:../constants
@@ -4865,11 +4865,11 @@ packages:
     resolution: {integrity: sha512-AAwRb5vXFcY4L+FvZ7LZusDuZ0vEe0Zm8ohn1FM6/X7A3bj4mqmkAcGRWuvC2JwSygNwHAAmMnAI73vPHeqsHA==}
     engines: {node: '>=18'}
 
-  '@navikt/aksel-icons@7.9.1':
-    resolution: {integrity: sha512-IbKrPTyu4D39BUQ/sq3DnejUnQx2tNkFxISgOpw/SvAcpNJKP6FgRyuu9c68gGwQx16qSdzQfv+uMGTC1VJVfw==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/7.9.1/10d623cfc6f0786e7ae238ddf73491be74afe282}
+  '@navikt/aksel-icons@7.9.2':
+    resolution: {integrity: sha512-reWddxeyJuLYp8Kqv08KmwcONEayQXHdwrLEruCMTzYqeHTdricDN0qReJm09gC2Wlbzl2enTMzuAGEIe/dsvw==, tarball: https://npm.pkg.github.com/download/@navikt/aksel-icons/7.9.2/f4cf56b33d6f401d1e1e1397b4fe502c7014fe8d}
 
-  '@navikt/ds-css@7.9.1':
-    resolution: {integrity: sha512-nfYTFxrm8khfY2It4qOxIMxFbNlRSg3tb+T/pwD9bO7kfTue9FoIMkONN0DNJ1DzF9mVlstUeibexWWhp/ni8g==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/7.9.1/84cf829697064562f0540cb0425ef890e46038ee}
+  '@navikt/ds-css@7.9.2':
+    resolution: {integrity: sha512-UXJyL8WNlfqACJLfU/MZ0Atv0eqxvECQfJW2li2zTdTHRQzHkfTMjMj3lNx4hCPo27gct33UfwAGRG1m4P9Q0w==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/7.9.2/5fdb8fa9f85aeecd1e0044e69978b0dc6c429dd0}
 
   '@navikt/ds-datepicker@4.2.0':
     resolution: {integrity: sha512-Fn2mKpuGuhmf0P8/R9PwH5BaTDzZBNsK/P/TJPuoRGBqRsMVUpEfunOh2HoXQT/8OhDWTy6nWqtxdf41FWQm2A==, tarball: https://npm.pkg.github.com/download/@navikt/ds-datepicker/4.2.0/301fb6bd6c8eea705a3601e95cad2a104dce9959}
@@ -4883,20 +4883,17 @@ packages:
       react-day-picker: 8.x
       uuid: '9'
 
-  '@navikt/ds-react@7.9.1':
-    resolution: {integrity: sha512-6c9t/eUKJ5MYNxFaHZpNmvS1nKZ2VXGRT8utBKbaOdbaWy5zSxgV5f6XzmW9rzFb+U26FD8eWI0862Khe8OBrQ==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/7.9.1/3f7ec76614c4e2a183b6ee557bea5cee1c4ac821}
+  '@navikt/ds-react@7.9.2':
+    resolution: {integrity: sha512-MgI2W9KYxqzlJfKGeHbRCUJKyFWqw4xzp/wtM7Z210G54UhKl2Br0eg5tPYBhkoNpkh2PQoulbUPQHkdUe6hTw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/7.9.2/624f5c674248abbc90c8f602d4b777b1fe9081ad}
     peerDependencies:
       '@types/react': '>=17.0.30'
       react: '>=17.0.0 || >19.0.0-rc'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
 
   '@navikt/ds-tailwind@7.9.2':
     resolution: {integrity: sha512-5aGuHslC/vKm7Xixsspil8LbaZMeghS4E6NQ6jCNMMz5kklXNAaWQEo0IEh8X9Lco9erY1qGQzfHQauKEc8CWg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tailwind/7.9.2/3733374a7abf2e1b28b7410754d92a02306ce07b}
 
-  '@navikt/ds-tokens@7.9.1':
-    resolution: {integrity: sha512-BxYWfhmuUginhMLyPTsWpmFI9cFiGN0Nik9vO4EVGGi9t5D4Tebq8PuoBQrITUROLE22KnjDJyM+8GqBWjOyEw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/7.9.1/78fb2d1aabb0a187cfe20a553344fb2d6ae16762}
+  '@navikt/ds-tokens@7.9.2':
+    resolution: {integrity: sha512-N+x8kpRmb5sNn08ht5+jwA7Q94w0OK4PqVXeXNWojGkyt0agTfmgAIr30RL/3+A3zEzooBG/qnfKnHusz+28dg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/7.9.2/a8a19df7c9bbfaac8d30bb9aa98e55b285b7be1b}
 
   '@navikt/fnrvalidator@2.1.5':
     resolution: {integrity: sha512-uHzoL3ZTYwrF7OTKaihNf9xHH6S9WnGqz420HX4lEX+yu5367l+dYxI5OIRVT5MKWEDQ4DCVSAuJhoWValv6Fw==, tarball: https://npm.pkg.github.com/download/@navikt/fnrvalidator/2.1.5/e33cbc5693b14419bbcf4d5daee2ac9eeec532e5}
@@ -5387,20 +5384,20 @@ packages:
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
-  '@tanstack/query-core@5.64.1':
-    resolution: {integrity: sha512-978Wx4Wl4UJZbmvU/rkaM9cQtXXrbhK0lsz/UZhYIbyKYA8E4LdomTwyh2GHZ4oU0BKKoDH4YlKk2VscCUgNmg==}
+  '@tanstack/query-core@5.64.2':
+    resolution: {integrity: sha512-hdO8SZpWXoADNTWXV9We8CwTkXU88OVWRBcsiFrk7xJQnhm6WRlweDzMD+uH+GnuieTBVSML6xFa17C2cNV8+g==}
 
-  '@tanstack/query-devtools@5.62.16':
-    resolution: {integrity: sha512-3ff6UBJr0H3nIhfLSl9911rvKqXf0u4B58jl0uYdDWLqPk9pCvYIbxC35cGxK2+8INl4IaFVUHb/IdgWrNkg3Q==}
+  '@tanstack/query-devtools@5.64.2':
+    resolution: {integrity: sha512-3DautR5UpVZdk/qNIhioZVF7g8fdQZ1U98sBEEk4Tzz3tihSBNMPgwlP40nzgbPEDBIrn/j/oyyvNBVSo083Vw==}
 
-  '@tanstack/react-query-devtools@5.64.1':
-    resolution: {integrity: sha512-8ajcGE3wXYlb4KuJnkFYkJwJKc/qmPNTpQD7YTgLRMBPTGGp1xk7VMzxL87DoXuweO8luplUUblJJ3noVs/luQ==}
+  '@tanstack/react-query-devtools@5.64.2':
+    resolution: {integrity: sha512-+ZjJVnPzc8BUV/Eklu2k9T/IAyAyvwoCHqOaOrk2sbU33LFhM52BpX4eyENXn0bx5LwV3DJZgEQlIzucoemfGQ==}
     peerDependencies:
-      '@tanstack/react-query': ^5.64.1
+      '@tanstack/react-query': ^5.64.2
       react: ^18 || ^19
 
-  '@tanstack/react-query@5.64.1':
-    resolution: {integrity: sha512-vW5ggHpIO2Yjj44b4sB+Fd3cdnlMJppXRBJkEHvld6FXh3j5dwWJoQo7mGtKI2RbSFyiyu/PhGAy0+Vv5ev9Eg==}
+  '@tanstack/react-query@5.64.2':
+    resolution: {integrity: sha512-3pakNscZNm8KJkxmovvtZ4RaXLyiYYobwleTMvpIGUoKRa8j8VlrQKNl5W8VUEfVfZKkikvXVddLuWMbcSCA1Q==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -8011,8 +8008,8 @@ packages:
   lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
 
-  lint-staged@15.3.0:
-    resolution: {integrity: sha512-vHFahytLoF2enJklgtOtCtIjZrKD/LoxlaUusd5nh7dWv/dkKQJY74ndFSzxCdv7g0ueGg1ORgTSt4Y9LPZn9A==}
+  lint-staged@15.4.1:
+    resolution: {integrity: sha512-P8yJuVRyLrm5KxCtFx+gjI5Bil+wO7wnTl7C3bXhvtTaAFGirzeB24++D0wGoUwxrUKecNiehemgCob9YL39NA==}
     engines: {node: '>=18.12.0'}
     hasBin: true
 
@@ -11508,14 +11505,14 @@ snapshots:
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
 
-  '@navikt/aksel-icons@7.9.1': {}
+  '@navikt/aksel-icons@7.9.2': {}
 
-  '@navikt/ds-css@7.9.1': {}
+  '@navikt/ds-css@7.9.2': {}
 
-  '@navikt/ds-datepicker@4.2.0(@navikt/ds-css@7.9.1)(@navikt/ds-react@7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(date-fns@4.1.0)(dayjs@1.11.13)(react-day-picker@8.10.0(date-fns@4.1.0)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(uuid@11.0.5)':
+  '@navikt/ds-datepicker@4.2.0(@navikt/ds-css@7.9.2)(@navikt/ds-react@7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(date-fns@4.1.0)(dayjs@1.11.13)(react-day-picker@8.10.0(date-fns@4.1.0)(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(uuid@11.0.5)':
     dependencies:
-      '@navikt/ds-css': 7.9.1
-      '@navikt/ds-react': 7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@navikt/ds-css': 7.9.2
+      '@navikt/ds-react': 7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       classnames: 2.5.1
       date-fns: 4.1.0
       dayjs: 1.11.13
@@ -11527,39 +11524,37 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
-  '@navikt/ds-react@7.9.1(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@navikt/ds-react@7.9.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@floating-ui/react': 0.25.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@floating-ui/react-dom': 2.1.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@navikt/aksel-icons': 7.9.1
-      '@navikt/ds-tokens': 7.9.1
+      '@navikt/aksel-icons': 7.9.2
+      '@navikt/ds-tokens': 7.9.2
+      '@types/react': 18.3.18
       clsx: 2.1.1
       date-fns: 3.6.0
       react: 18.3.1
       react-day-picker: 8.10.1(date-fns@3.6.0)(react@18.3.1)
-    optionalDependencies:
-      '@types/react': 18.3.18
     transitivePeerDependencies:
       - react-dom
 
-  '@navikt/ds-react@7.9.1(@types/react@18.3.18)(react-dom@19.0.0(react@18.3.1))(react@18.3.1)':
+  '@navikt/ds-react@7.9.2(@types/react@18.3.18)(react-dom@19.0.0(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@floating-ui/react': 0.25.4(react-dom@19.0.0(react@18.3.1))(react@18.3.1)
       '@floating-ui/react-dom': 2.1.2(react-dom@19.0.0(react@18.3.1))(react@18.3.1)
-      '@navikt/aksel-icons': 7.9.1
-      '@navikt/ds-tokens': 7.9.1
+      '@navikt/aksel-icons': 7.9.2
+      '@navikt/ds-tokens': 7.9.2
+      '@types/react': 18.3.18
       clsx: 2.1.1
       date-fns: 3.6.0
       react: 18.3.1
       react-day-picker: 8.10.1(date-fns@3.6.0)(react@18.3.1)
-    optionalDependencies:
-      '@types/react': 18.3.18
     transitivePeerDependencies:
       - react-dom
 
   '@navikt/ds-tailwind@7.9.2': {}
 
-  '@navikt/ds-tokens@7.9.1': {}
+  '@navikt/ds-tokens@7.9.2': {}
 
   '@navikt/fnrvalidator@2.1.5': {}
 
@@ -12113,19 +12108,19 @@ snapshots:
     dependencies:
       storybook: 8.5.0(prettier@3.4.2)
 
-  '@tanstack/query-core@5.64.1': {}
+  '@tanstack/query-core@5.64.2': {}
 
-  '@tanstack/query-devtools@5.62.16': {}
+  '@tanstack/query-devtools@5.64.2': {}
 
-  '@tanstack/react-query-devtools@5.64.1(@tanstack/react-query@5.64.1(react@18.3.1))(react@18.3.1)':
+  '@tanstack/react-query-devtools@5.64.2(@tanstack/react-query@5.64.2(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@tanstack/query-devtools': 5.62.16
-      '@tanstack/react-query': 5.64.1(react@18.3.1)
+      '@tanstack/query-devtools': 5.64.2
+      '@tanstack/react-query': 5.64.2(react@18.3.1)
       react: 18.3.1
 
-  '@tanstack/react-query@5.64.1(react@18.3.1)':
+  '@tanstack/react-query@5.64.2(react@18.3.1)':
     dependencies:
-      '@tanstack/query-core': 5.64.1
+      '@tanstack/query-core': 5.64.2
       react: 18.3.1
 
   '@testing-library/dom@10.4.0':
@@ -15153,7 +15148,7 @@ snapshots:
 
   lines-and-columns@1.2.4: {}
 
-  lint-staged@15.3.0:
+  lint-staged@15.4.1:
     dependencies:
       chalk: 5.4.1
       commander: 12.1.0
