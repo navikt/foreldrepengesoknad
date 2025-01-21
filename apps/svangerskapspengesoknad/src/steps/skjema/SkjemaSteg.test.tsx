@@ -29,7 +29,7 @@ describe('<SkjemaSteg>', () => {
 
         await userEvent.click(screen.getByText('Neste steg'));
 
-        expect(screen.getByText('Du må laste opp minst ett dokument')).toBeInTheDocument();
+        expect(await screen.findByText('Du må laste opp minst ett dokument')).toBeInTheDocument();
 
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const fileInput = screen.getByLabelText('Last opp skjema for risiko og tilrettelegging i svangerskapet');
@@ -40,6 +40,9 @@ describe('<SkjemaSteg>', () => {
         await userEvent.click(screen.getByText('Neste steg'));
 
         expect(screen.queryByText('Du må laste opp minst ett dokument')).not.toBeInTheDocument();
+        expect(
+            await screen.findByText('Last opp skjema for risiko og tilrettelegging i svangerskapet'),
+        ).toBeInTheDocument();
 
         expect(gåTilNesteSide).toHaveBeenNthCalledWith(1, {
             data: {
@@ -112,8 +115,11 @@ describe('<SkjemaSteg>', () => {
         });
 
         await userEvent.click(screen.getByText('Neste steg'));
+
         expect(
-            screen.getByText('Du kan laste opp maksimalt 40 vedlegg i din søknad. Slett 1 vedlegg for å gå videre.'),
+            await screen.findByText(
+                'Du kan laste opp maksimalt 40 vedlegg i din søknad. Slett 1 vedlegg for å gå videre.',
+            ),
         ).toBeInTheDocument();
     });
 });

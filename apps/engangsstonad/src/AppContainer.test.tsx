@@ -24,6 +24,8 @@ describe('<AppContainer>', () => {
         await userEvent.click(screen.getByText('Fødsel'));
         await userEvent.click(screen.getByText('Neste steg'));
 
+        console.log(screen.debug(undefined, 50000));
+
         expect(screen.getAllByText('Barnet')).toHaveLength(2);
         expect(screen.getByText('Steg 2 av 4')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Ja'));
