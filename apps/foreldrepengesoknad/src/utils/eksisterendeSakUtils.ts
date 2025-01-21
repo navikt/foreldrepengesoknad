@@ -331,7 +331,7 @@ const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, valgte
             };
         case 'adopsjon':
             return {
-                type: BarnType.ADOPTERT_STEBARN,
+                type: BarnType.ADOPTERT_STEBARN, //TODO: hvordan vet vi om det er adoptert stebarn eller annet barn?
                 adopsjonsdato: sak.omsorgsovertakelsesdato!,
                 antallBarn: sak.antallBarn,
                 fødselsdatoer: getFødselsdatoer(valgteBarn, sak),
