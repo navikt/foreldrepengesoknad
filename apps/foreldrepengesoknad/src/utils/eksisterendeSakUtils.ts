@@ -319,8 +319,8 @@ const getSøkerrolleFromSaksgrunnlag = (
     }
 };
 
-const getFødselsdatoer = (valgteBarn: ValgtBarn | undefined, sak: Saksgrunnlag): string[] => {
-    if (valgteBarn?.fødselsdatoer) {
+const getFødselsdatoer = (valgteBarn: ValgtBarn, sak: Saksgrunnlag): string[] => {
+    if (valgteBarn.fødselsdatoer) {
         return sorterDatoEtterEldst(valgteBarn.fødselsdatoer);
     } else if (sak.fødselsdato) {
         return Array(sak.antallBarn).fill(sak.fødselsdato!);
@@ -328,7 +328,7 @@ const getFødselsdatoer = (valgteBarn: ValgtBarn | undefined, sak: Saksgrunnlag)
     return [];
 };
 
-const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, valgteBarn: ValgtBarn | undefined) => {
+const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, valgteBarn: ValgtBarn) => {
     switch (situasjon) {
         case 'fødsel':
             if (sak.fødselsdato) {
@@ -549,7 +549,9 @@ export const opprettSøknadFraValgteBarnMedSak = (
     registrerteBarn: SøkerBarn[],
     søkerFnr: string,
 ) => {
-    const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, undefined, valgteBarn.fødselsdatoer);
+    const eksisterendeSak = valgteBarn.sak
+        ? mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, undefined, valgteBarn.fødselsdatoer)
+        : undefined;
     const { grunnlag } = eksisterendeSak;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(grunnlag.familiehendelseType);
     const barn = getBarnFromValgteBarn(valgteBarn);
