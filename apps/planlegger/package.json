@@ -58,7 +58,7 @@
         "request": "^2.88.2"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "7.2.1",
+        "@formatjs/cli-lib": "6.6.1",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@navikt/nav-dekoratoren-moduler": "3.1.3",
