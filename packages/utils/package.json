@@ -26,7 +26,7 @@
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.2.0",
-        "@types/react": "^18.3.12",
+        "@types/react": "^19.0.7",
         "@vitejs/plugin-react": "^4.3.4",
         "fast-glob": "^3.3.3",
         "tsconfig": "workspace:*",

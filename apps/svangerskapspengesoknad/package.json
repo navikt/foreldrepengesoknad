@@ -92,7 +92,7 @@
         "@trivago/prettier-plugin-sort-imports": "^5.2.1",
         "@types/bytes": "^3.1.5",
         "@types/lodash": "^4.17.14",
-        "@types/react": "^18.3.12",
+        "@types/react": "^19.0.7",
         "@types/react-aria-menubutton": "^6.2.14",
         "@types/react-collapse": "^5.0.4",
         "@types/react-document-title": "^2.0.10",

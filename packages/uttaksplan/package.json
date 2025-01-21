@@ -24,7 +24,7 @@
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@navikt/fp-uttaksplan-kalender": "workspace:*",
-        "@types/react": "^18.3.12",
+        "@types/react": "^19.0.7",
         "classnames": "^2.5.1",
         "date-fns": "4.1.0",
         "date-holidays": "^3.23.18",

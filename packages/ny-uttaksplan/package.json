@@ -25,7 +25,7 @@
         "@navikt/fp-utils": "workspace:*",
         "@navikt/fp-utils-test": "workspace:*",
         "@navikt/fp-validation": "workspace:*",
-        "@types/react": "^18.3.12",
+        "@types/react": "^19.0.7",
         "classnames": "^2.5.1",
         "dayjs": "^1.11.10",
         "lodash": "^4.17.21",
