@@ -293,23 +293,13 @@ const getSøkersituasjonFromSaksgrunnlag = (familiehendelseType: Familiehendelse
     return 'adopsjon';
 };
 
-const getSøkerrolleFromSaksgrunnlag = (
-    søker: Søker,
-    situasjon: Situasjon,
-    grunnlag: Saksgrunnlag,
-): Søkerrolle | undefined => {
+const getSøkerrolleFromSaksgrunnlag = (søker: Søker, grunnlag: Saksgrunnlag): Søkerrolle => {
     const { søkerErFarEllerMedmor } = grunnlag;
     const søkerErKvinne = søker.kjønn === 'K';
-    switch (situasjon) {
-        case 'fødsel':
-        case 'adopsjon':
-            if (søkerErKvinne) {
-                return søkerErFarEllerMedmor ? 'medmor' : 'mor';
-            }
-            return 'far';
-        default:
-            return undefined;
+    if (søkerErKvinne) {
+        return søkerErFarEllerMedmor ? 'medmor' : 'mor';
     }
+    return 'far';
 };
 
 const getFødselsdatoer = (valgteBarn: ValgtBarn, sak: Saksgrunnlag): string[] => {
@@ -585,10 +575,10 @@ export const opprettSøknadFraEksisterendeSak = (
     const { dekningsgrad, familiehendelseType, søkerErFarEllerMedmor, ønskerJustertUttakVedFødsel } = grunnlag;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(familiehendelseType);
     const barn = getBarnFromSaksgrunnlag(situasjon, grunnlag, valgteBarn);
-    const rolle = getSøkerrolleFromSaksgrunnlag(søker, situasjon, grunnlag);
+    const rolle = getSøkerrolleFromSaksgrunnlag(søker, grunnlag);
 
-    if (!barn || !rolle) {
-        throw new Error('Kan ikke lage endresøknad uten barn eller rolle'); // TODO:
+    if (!barn) {
+        throw new Error('Kan ikke lage endresøknad uten barn'); // TODO:
     }
 
     const annenForelder = opprettAnnenForelderFraEksisterendeSak(
