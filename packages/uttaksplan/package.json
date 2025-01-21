@@ -43,7 +43,7 @@
         "uuid": "11.0.5"
     },
     "devDependencies": {
-        "@formatjs/cli-lib": "6.6.1",
+        "@formatjs/cli-lib": "7.2.1",
         "@navikt/eslint-config-fp-selvbetjening": "workspace:*",
         "@navikt/fp-constants": "workspace:*",
         "@navikt/fp-types": "workspace:*",
@@ -67,9 +67,9 @@
         "storybook": "8.5.0",
         "storybook-react-intl": "^3.2.3",
         "tsconfig": "workspace:*",
-        "vite": "^5.4.9",
+        "vite": "^6.0.10",
         "vite-plugin-checker": "^0.8.0",
-        "vitest": "^2.1.8"
+        "vitest": "^3.0.2"
     },
     "packageManager": "pnpm@9.1.4"
 }

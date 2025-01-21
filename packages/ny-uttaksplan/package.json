@@ -55,8 +55,8 @@
         "storybook-react-intl": "^3.2.3",
         "tailwindcss": "3.4.17",
         "tsconfig": "workspace:*",
-        "vite": "^5.4.9",
+        "vite": "^6.0.10",
         "vite-plugin-checker": "^0.8.0",
-        "vitest": "^2.1.8"
+        "vitest": "^3.0.2"
     }
 }
