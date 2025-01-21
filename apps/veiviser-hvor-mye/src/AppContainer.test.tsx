@@ -36,8 +36,8 @@ describe('<AppContainer>', () => {
         await userEvent.type(måned3, '10000');
 
         await userEvent.click(screen.getByText('Se resultatet'));
-
-        expect(screen.getByText('Oppsummering')).toBeInTheDocument();
+        await expect(screen.findByText('Oppsummering')).resolves.toBeInTheDocument();
+        // expect(screen.getByText('Oppsummering')).toBeInTheDocument();
         expect(screen.getByText('Gjennomsnittlig utbetaling med 100% foreldrepenger i 49 uker')).toBeInTheDocument();
         await userEvent.click(screen.getByText('Tilbake til spørsmålene'));
 
