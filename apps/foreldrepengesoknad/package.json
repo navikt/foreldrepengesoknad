@@ -109,7 +109,7 @@
         "@types/react": "^18.3.12",
         "@types/react-aria-menubutton": "^6.2.14",
         "@types/react-collapse": "^5.0.4",
-        "@types/react-dom": "^18.3.1",
+        "@types/react-dom": "^19.0.3",
         "@types/react-modal": "^3.16.3",
         "@types/react-scroll": "^1.8.10",
         "@types/react-transition-group": "^4.4.12",

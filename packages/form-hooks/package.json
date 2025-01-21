@@ -23,7 +23,7 @@
         "@navikt/fp-ui": "workspace:*",
         "@navikt/fp-utils": "workspace:*",
         "@types/react": "^18.3.12",
-        "@types/react-dom": "^18.3.1",
+        "@types/react-dom": "^19.0.3",
         "dayjs": "^1.11.12",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",

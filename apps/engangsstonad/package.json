@@ -72,7 +72,7 @@
         "@trivago/prettier-plugin-sort-imports": "^5.2.1",
         "@types/react": "^18.3.12",
         "@types/react-document-title": "^2.0.10",
-        "@types/react-dom": "^18.3.1",
+        "@types/react-dom": "^19.0.3",
         "@types/react-router-dom": "^5.3.3",
         "@vitejs/plugin-react": "^4.3.4",
         "autoprefixer": "^10.4.18",
