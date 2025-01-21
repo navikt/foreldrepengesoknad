@@ -147,22 +147,15 @@ const filterAvslåttePeriodeMedInnvilgetPeriodeISammeTidsperiode = (
     return true;
 };
 
-export const getStartdatoFørstePeriodeAnnenPart = (
-    annenPartsSak: AnnenPartVedtakDTO | undefined | '',
-): Date | undefined => {
-    if (
-        annenPartsSak === undefined ||
-        annenPartsSak === '' ||
-        Object.keys(annenPartsSak).length === 0 ||
-        annenPartsSak.perioder.length === 0
-    ) {
+export const getStartdatoFørstePeriodeAnnenPart = (annenPartsSak: AnnenPartVedtakDTO | undefined): Date | undefined => {
+    if (annenPartsSak === undefined || annenPartsSak.perioder.length === 0) {
         return undefined;
     }
     return ISOStringToDate(annenPartsSak.perioder[0].fom);
 };
 
 export const mapAnnenPartsEksisterendeSakFromDTO = (
-    eksisterendeSakAnnenPart: AnnenPartVedtakDTO | undefined | null,
+    eksisterendeSakAnnenPart: AnnenPartVedtakDTO | undefined,
     barn: Barn,
     søkerErFarEllerMedmor: boolean,
     familiehendelsesdato: string,
