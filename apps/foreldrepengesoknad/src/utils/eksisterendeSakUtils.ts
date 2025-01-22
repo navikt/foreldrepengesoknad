@@ -102,20 +102,20 @@ export const mapSaksperiodeFromDTO = (p: SaksperiodeDTO, erAnnenPartsSak: boolea
         samtidigUttak: p.samtidigUttak,
         morsAktivitet: p.morsAktivitet,
         oppholdÅrsak: mapOppholdÅrsakType(p.oppholdÅrsak),
-    } as Saksperiode;
+    };
 
-    if (oppholdÅrsak !== undefined && erAnnenPartsSak === false) {
-        returnPeriode.gjelderAnnenPart = true;
-        returnPeriode.kontoType = getStønadskontoTypeFromOppholdÅrsakType(oppholdÅrsak)!;
+    if (oppholdÅrsak !== undefined) {
+        returnPeriode.kontoType = getStønadskontoTypeFromOppholdÅrsakType(oppholdÅrsak);
+        if (erAnnenPartsSak) {
+            returnPeriode.gjelderAnnenPart = false;
+            returnPeriode.angittAvAnnenPart = true;
+        }
+        if (!erAnnenPartsSak) {
+            returnPeriode.gjelderAnnenPart = true;
+        }
     }
 
-    if (oppholdÅrsak !== undefined && erAnnenPartsSak) {
-        returnPeriode.gjelderAnnenPart = false;
-        returnPeriode.angittAvAnnenPart = true;
-        returnPeriode.kontoType = getStønadskontoTypeFromOppholdÅrsakType(oppholdÅrsak)!;
-    }
-
-    return returnPeriode as Saksperiode;
+    return returnPeriode;
 };
 
 const saksperiodeErInnvilget = (saksperiode: Saksperiode): boolean => saksperiode.resultat.innvilget;
