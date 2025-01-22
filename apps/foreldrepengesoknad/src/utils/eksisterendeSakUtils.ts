@@ -22,7 +22,6 @@ import {
     Situasjon,
     StønadskontoType,
     Søkerrolle,
-    Søkersituasjon,
     UttakArbeidType,
     isAdoptertBarn,
     isFødtBarn,
@@ -527,14 +526,12 @@ export const opprettAnnenForelderFraEksisterendeSak = (
 };
 
 export const opprettSøknadFraValgteBarnMedSak = (
-    valgteBarn: ValgtBarn,
+    valgteBarn: ValgtBarn & { sak: Sak },
     intl: IntlShape,
     registrerteBarn: SøkerBarn[],
     søkerFnr: string,
-) => {
-    const eksisterendeSak = valgteBarn.sak
-        ? mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, undefined, valgteBarn.fødselsdatoer)
-        : undefined;
+): Partial<Søknad> => {
+    const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(valgteBarn.sak, undefined, valgteBarn.fødselsdatoer);
     const { grunnlag } = eksisterendeSak;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(grunnlag.familiehendelseType);
     const barn = getBarnFromValgteBarn(valgteBarn);
@@ -546,22 +543,18 @@ export const opprettSøknadFraValgteBarnMedSak = (
         situasjon,
         valgteBarn.fnr,
     );
-    const søknad: Partial<Søknad> = {
+    const rolle = valgteBarn.sak.sakTilhørerMor ? 'mor' : getRolleFarEllerMedmorFraFnr(søkerFnr);
+    const søkersituasjon = {
+        situasjon: valgteBarn.sak.gjelderAdopsjon ? 'adopsjon' : 'fødsel',
+        rolle,
+    } as const;
+    return {
         barn,
         annenForelder,
+        søkersituasjon,
         erEndringssøknad: false,
         dekningsgrad: grunnlag.dekningsgrad,
     };
-
-    if (valgteBarn.sak !== undefined) {
-        const rolle = valgteBarn.sak.sakTilhørerMor ? 'mor' : getRolleFarEllerMedmorFraFnr(søkerFnr);
-        const søkersituasjon = {
-            situasjon: valgteBarn.sak.gjelderAdopsjon ? 'adopsjon' : 'fødsel',
-            rolle,
-        } as Søkersituasjon;
-        søknad.søkersituasjon = søkersituasjon;
-    }
-    return søknad;
 };
 
 export const opprettSøknadFraEksisterendeSak = (
