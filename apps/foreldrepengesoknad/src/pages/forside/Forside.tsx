@@ -90,9 +90,6 @@ export const Forside = ({
             ? saker.find((sak) => sak.saksnummer === valgteBarn.sak?.saksnummer)
             : undefined;
 
-        const nySøknadPåAlleredeSøktBarn = valgteBarn.sak !== undefined && valgteBarn.kanSøkeOmEndring === false;
-        const nySøknadPåValgteRegistrerteBarn = !valgtEksisterendeSak && !nySøknadPåAlleredeSøktBarn;
-
         if (valgtEksisterendeSak) {
             const eksisterendeSak = mapSøkerensEksisterendeSakFromDTO(
                 valgtEksisterendeSak,
@@ -115,9 +112,9 @@ export const Forside = ({
         }
 
         // Det finnes en sak som ikke kan endres. Lag derfor ny søknad fra eksisterende sak
-        if (nySøknadPåAlleredeSøktBarn) {
+        if (valgteBarn.sak !== undefined && valgteBarn.kanSøkeOmEndring === false) {
             const søknad = opprettSøknadFraValgteBarnMedSak(
-                valgteBarn,
+                { ...valgteBarn, sak: valgteBarn.sak }, //TODO: usikker om dette blir peneere TS eller hacky
                 intl,
                 søkerInfo.søker.barn,
                 søkerInfo.søker.fnr,
@@ -126,7 +123,7 @@ export const Forside = ({
         }
 
         // Barn er registrert, men det finnes ingen sak
-        if (nySøknadPåValgteRegistrerteBarn) {
+        if (!valgtEksisterendeSak) {
             const søknad = opprettSøknadFraValgteBarn(valgteBarn);
             oppdaterSøknadIState(søknad);
         }

@@ -310,7 +310,7 @@ const getFødselsdatoer = (valgteBarn: ValgtBarn, sak: Saksgrunnlag): string[] =
     return [];
 };
 
-const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, valgteBarn: ValgtBarn) => {
+const getBarnFromSaksgrunnlag = (situasjon: Situasjon, sak: Saksgrunnlag, valgteBarn: ValgtBarn): Barn => {
     switch (situasjon) {
         case 'fødsel':
             if (sak.fødselsdato) {
@@ -563,7 +563,7 @@ export const opprettSøknadFraEksisterendeSak = (
     intl: IntlShape,
     annenPartFraSak: PersonFnrDTO | undefined,
     valgteBarn: ValgtBarn,
-) => {
+): Partial<Søknad> => {
     const { grunnlag, uttaksplan } = eksisterendeSak;
     const { dekningsgrad, familiehendelseType, søkerErFarEllerMedmor, ønskerJustertUttakVedFødsel } = grunnlag;
     const situasjon = getSøkersituasjonFromSaksgrunnlag(familiehendelseType);
