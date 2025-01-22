@@ -479,7 +479,7 @@ const getRolleFarEllerMedmorFraFnr = (fnr: string): Søkerrolle => {
     }
 };
 
-export const opprettSøknadFraValgteBarn = (valgteBarn: ValgtBarn) => {
+export const lagNySøknadForRegistrerteBarn = (valgteBarn: ValgtBarn) => {
     const barn = getBarnFromValgteBarn(valgteBarn);
     const annenForelder = getAnnenForelderFromValgteBarn(valgteBarn);
     const søknad = {
@@ -525,7 +525,7 @@ export const opprettAnnenForelderFraEksisterendeSak = (
     return annenForelderFraSak || mockAnnenForelder;
 };
 
-export const opprettSøknadFraValgteBarnMedSak = (
+export const lagSøknadFraValgteBarnMedSak = (
     valgteBarn: ValgtBarn & { sak: Sak },
     intl: IntlShape,
     registrerteBarn: SøkerBarn[],
@@ -537,7 +537,7 @@ export const opprettSøknadFraValgteBarnMedSak = (
     const barn = getBarnFromValgteBarn(valgteBarn);
     const annenForelder = opprettAnnenForelderFraEksisterendeSak(
         intl,
-        valgteBarn.sak?.annenPart,
+        valgteBarn.sak.annenPart,
         grunnlag,
         registrerteBarn,
         situasjon,
@@ -557,7 +557,7 @@ export const opprettSøknadFraValgteBarnMedSak = (
     };
 };
 
-export const opprettSøknadFraEksisterendeSak = (
+export const lagEndringsSøknad = (
     søker: Søker,
     eksisterendeSak: EksisterendeSak,
     intl: IntlShape,

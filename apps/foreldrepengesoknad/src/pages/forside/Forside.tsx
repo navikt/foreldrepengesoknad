@@ -6,10 +6,10 @@ import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
+    lagEndringsSøknad,
+    lagNySøknadForRegistrerteBarn,
+    lagSøknadFraValgteBarnMedSak,
     mapSøkerensEksisterendeSakFromDTO,
-    opprettSøknadFraEksisterendeSak,
-    opprettSøknadFraValgteBarn,
-    opprettSøknadFraValgteBarnMedSak,
 } from 'utils/eksisterendeSakUtils';
 
 import { Alert, BodyShort, Button, GuidePanel, HStack, Heading, VStack } from '@navikt/ds-react';
@@ -97,7 +97,7 @@ export const Forside = ({
                 valgteBarn.fødselsdatoer,
             );
 
-            const søknad = opprettSøknadFraEksisterendeSak(
+            const søknad = lagEndringsSøknad(
                 søkerInfo.søker,
                 eksisterendeSak,
                 intl,
@@ -113,7 +113,7 @@ export const Forside = ({
 
         // Det finnes en sak som ikke kan endres. Lag derfor ny søknad fra eksisterende sak
         if (valgteBarn.sak !== undefined && valgteBarn.kanSøkeOmEndring === false) {
-            const søknad = opprettSøknadFraValgteBarnMedSak(
+            const søknad = lagSøknadFraValgteBarnMedSak(
                 { ...valgteBarn, sak: valgteBarn.sak }, //TODO: usikker om dette blir peneere TS eller hacky
                 intl,
                 søkerInfo.søker.barn,
@@ -124,7 +124,7 @@ export const Forside = ({
 
         // Barn er registrert, men det finnes ingen sak
         if (!valgtEksisterendeSak) {
-            const søknad = opprettSøknadFraValgteBarn(valgteBarn);
+            const søknad = lagNySøknadForRegistrerteBarn(valgteBarn);
             oppdaterSøknadIState(søknad);
         }
 
