@@ -22,7 +22,7 @@ const useEffectOnce = (callback?: () => void) => {
 
 function FormikValuesObserver<FormValues>({ onChange, delay = 100 }: Props<FormValues>) {
     const { values } = useFormikContext<FormValues>();
-    const prefValuesRef = useRef<any>();
+    const prefValuesRef = useRef<any>(null);
     const [mounted, setMounted] = useState(false);
 
     const emitChanged = debounce((valuesChanged: FormValues) => {

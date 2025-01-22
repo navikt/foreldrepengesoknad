@@ -36,7 +36,7 @@ describe('<AppContainer>', () => {
 
         await userEvent.click(screen.getByText('Se resultatet'));
 
-        expect(screen.getByText('Resultat')).toBeInTheDocument();
+        expect(await screen.findByText('Resultat')).toBeInTheDocument();
 
         expect(screen.getByText('Du har rett til foreldrepenger')).toBeInTheDocument();
 

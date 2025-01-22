@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useReducer } from 'react';
+import { JSX, ReactNode, createContext, useContext, useReducer } from 'react';
 import { ArbeidIUtlandet } from 'types/ArbeidIUtlandet';
 import { AvtaltFeriePerArbeidsgiver } from 'types/AvtaltFerie';
 import { Barn } from 'types/Barn';

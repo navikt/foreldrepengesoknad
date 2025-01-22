@@ -6,7 +6,7 @@ import ValidationErrorLink from './ValidationErrorLink';
 
 export interface Props extends Pick<ErrorSummaryProps, 'heading' | 'headingTag'> {
     errors: ValidationSummaryError[];
-    summaryRef?: RefObject<HTMLDivElement>;
+    summaryRef?: RefObject<HTMLDivElement | null>;
 }
 
 export interface ValidationSummaryError {
