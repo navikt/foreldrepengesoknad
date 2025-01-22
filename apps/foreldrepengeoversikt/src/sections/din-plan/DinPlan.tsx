@@ -4,12 +4,11 @@ import { FormattedMessage } from 'react-intl';
 
 import { Button, HStack, ToggleGroup, VStack } from '@navikt/ds-react';
 
-import { NavnPåForeldre, RettighetType } from '@navikt/fp-types';
+import { NavnPåForeldre, RettighetType, SaksperiodeNy } from '@navikt/fp-types';
 import { useMedia } from '@navikt/fp-utils';
 import { UttaksplanKalender } from '@navikt/fp-uttaksplan-kalender-ny';
 import { UttaksplanNy } from '@navikt/fp-uttaksplan-ny';
 
-import { useAnnenPartsVedtak } from '../../hooks/useAnnenPartsVedtak';
 import { useGetSelectedSak } from '../../hooks/useSelectedSak';
 import { Ytelse } from '../../types/Ytelse';
 import { getBarnFraSak, getFamiliehendelseDato, utledFamiliesituasjon } from '../../utils/sakerUtils';
@@ -17,18 +16,14 @@ import { KvoteOversikt } from './KvoteOppsummering';
 
 interface Props {
     navnPåForeldre: NavnPåForeldre;
+    annenPartsPerioder: SaksperiodeNy[];
 }
 
-export const DinPlan: FunctionComponent<Props> = ({ navnPåForeldre }) => {
+export const DinPlan: FunctionComponent<Props> = ({ annenPartsPerioder, navnPåForeldre }) => {
     const gjeldendeSak = useGetSelectedSak();
     const isDesktop = useMedia('screen and (min-width: 768px)');
 
     const [visKalender, setVisKalender] = useState(false);
-
-    const annenPartsQuery = useAnnenPartsVedtak(gjeldendeSak);
-    if (annenPartsQuery.isPending) {
-        return null;
-    }
 
     if (!gjeldendeSak || gjeldendeSak.ytelse !== Ytelse.FORELDREPENGER) {
         return null;
@@ -88,7 +83,7 @@ export const DinPlan: FunctionComponent<Props> = ({ navnPåForeldre }) => {
                             erFarEllerMedmor={søkerErFarEllerMedmor}
                             familiehendelsedato={familiehendelseDato}
                             navnPåForeldre={navnPåForeldre}
-                            annenPartsPerioder={annenPartsQuery.data?.perioder ?? []}
+                            annenPartsPerioder={annenPartsPerioder}
                             søkersPerioder={relevantePerioder}
                             gjelderAdopsjon={gjelderAdopsjon}
                             bareFarHarRett={bareFarHarRett}
@@ -106,7 +101,7 @@ export const DinPlan: FunctionComponent<Props> = ({ navnPåForeldre }) => {
                         erFarEllerMedmor={søkerErFarEllerMedmor}
                         harAktivitetskravIPeriodeUtenUttak={harAktivitetskravIPeriodeUtenUttak}
                         søkersPerioder={relevantePerioder}
-                        annenPartsPerioder={annenPartsQuery.data?.perioder ?? []}
+                        annenPartsPerioder={annenPartsPerioder}
                         navnAnnenPart={søkerErFarEllerMedmor ? navnPåForeldre.mor : navnPåForeldre.farMedmor}
                     />
                 )}

@@ -23,6 +23,7 @@ import { BekreftelseSendtSøknad } from '../../components/bekreftelse-sendt-søk
 import { ContentSection } from '../../components/content-section/ContentSection';
 import { DinSakHeader, getSaksoversiktHeading } from '../../components/header/Header';
 import { LenkePanel } from '../../components/lenke-panel/LenkePanel';
+import { useAnnenPartsVedtak } from '../../hooks/useAnnenPartsVedtak';
 import { useSetBackgroundColor } from '../../hooks/useBackgroundColor';
 import {
     useGetRedirectedFromSøknadsnummer,
@@ -114,6 +115,8 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
         select: (satser) => finnEngangstønadForSøknadstidspunkt(satser, søknadstidspunkt),
     }).data;
 
+    const annenPartsVedtakQuery = useAnnenPartsVedtak(gjeldendeSak);
+
     if (params.redirect === RedirectSource.REDIRECT_FROM_SØKNAD) {
         navigate(`${OversiktRoutes.SAKSOVERSIKT}/${params.saksnummer}`);
     }
@@ -200,8 +203,13 @@ const SaksoversiktInner = ({ søkerinfo, isFirstRender }: Props) => {
                                     ? intl.formatMessage({ id: 'saksoversikt.dinPlan.vedtatt' })
                                     : intl.formatMessage({ id: 'saksoversikt.dinPlan.søktOm' })
                             }
+                            // Fordi annenPartsVedtakQuery kan være et disabled query må man bruke isLoading heller enn isPending:
+                            // https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries/#isloading-previously-isinitialloading
+                            showSkeleton={annenPartsVedtakQuery.isLoading}
+                            skeletonProps={{ height: '210px', variant: 'rounded' }}
                         >
                             <DinPlan
+                                annenPartsPerioder={annenPartsVedtakQuery.data?.perioder ?? []}
                                 navnPåForeldre={getNavnPåForeldre(
                                     gjeldendeSak,
                                     søkerinfo.søker.fornavn,
