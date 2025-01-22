@@ -380,8 +380,8 @@ const getAnnenForelderFromSaksgrunnlag = (
                 harRettPåForeldrepengerIEØS: grunnlag.harAnnenForelderTilsvarendeRettEØS,
                 erAleneOmOmsorg: grunnlag.farMedmorErAleneOmOmsorg || grunnlag.morErAleneOmOmsorg,
             };
-        default:
-            return undefined;
+        case 'omsorgsovertakelse':
+            throw new Error('Støtter ikke omsorgsovertakelse');
     }
 };
 
@@ -453,7 +453,7 @@ const getBarnFromValgteBarn = (valgteBarn: ValgtBarn): Barn => {
     }
 };
 
-const getAnnenForelderFromValgteBarn = (valgteBarn: ValgtBarn): AnnenForelder | undefined => {
+const getAnnenForelderFromValgteBarn = (valgteBarn: ValgtBarn): AnnenForelder => {
     if (valgteBarn.annenForelder !== undefined) {
         return {
             fornavn: valgteBarn.annenForelder.fornavn,
